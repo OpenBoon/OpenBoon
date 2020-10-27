@@ -6,7 +6,7 @@ import { mutate } from 'swr'
 
 import { colors } from '../Styles'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 import { ACTIONS, dispatch } from '../Filters/helpers'
 import { fetcher } from '../Fetch/helpers'
 
@@ -30,10 +30,10 @@ const AssetLabelingMenu = ({
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const [, setLocalModelId] = useLocalStorageState({
+  const [, setLocalModelId] = useLocalStorage({
     key: `AssetLabelingAdd.${projectId}.modelId`,
   })
-  const [, setLocalLabel] = useLocalStorageState({
+  const [, setLocalLabel] = useLocalStorage({
     key: `AssetLabelingAdd.${projectId}.label`,
   })
 

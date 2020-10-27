@@ -69,7 +69,8 @@ enum class LogObject {
     CLUSTER_REPOSITORY,
     DEPEND,
     MODEL,
-    AUTOML
+    AUTOML,
+    FIELD
 }
 
 /**

@@ -250,6 +250,9 @@ constructor(
     @Autowired
     lateinit var esClientCache: EsClientCache
 
+    @Autowired
+    lateinit var indexMappingService: IndexMappingService
+
     @Transactional
     override fun createIndexRoute(spec: IndexRouteSimpleSpec): IndexRoute {
         val newSpec = IndexRouteSpec(
@@ -382,6 +385,12 @@ constructor(
             }
             applyMinorVersionMappingFile(route, patch)
             result = patch
+        }
+
+        // Add custom fields after the patches.
+        if (!indexExisted) {
+            // Add all custom fields to the new index.
+            indexMappingService.addAllFieldsToIndex(route)
         }
 
         return result

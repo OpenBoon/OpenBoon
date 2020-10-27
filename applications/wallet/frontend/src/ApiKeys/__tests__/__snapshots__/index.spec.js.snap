@@ -39,7 +39,7 @@ Array [
      
     <a
       className="emotion-0"
-      href="https://app.gitbook.com/@zorroa/s/zmlp/getting-started"
+      href="https://zorroa.gitbook.io/zmlp/"
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -576,6 +576,8 @@ Array [
 
 .emotion-0 a {
   color: #009f22;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 <div
@@ -613,7 +615,7 @@ Array [
      
     <a
       className="emotion-0"
-      href="https://app.gitbook.com/@zorroa/s/zmlp/getting-started"
+      href="https://zorroa.gitbook.io/zmlp/"
       rel="noopener noreferrer"
       target="_blank"
     >

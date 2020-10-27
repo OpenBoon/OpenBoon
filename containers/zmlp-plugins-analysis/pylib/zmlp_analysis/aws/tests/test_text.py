@@ -11,7 +11,7 @@ class RekognitionLabelDetectionProcessorTests(PluginUnitTestCase):
     model_id = "model-id-12345"
 
     @patch("zmlp_analysis.aws.text.get_proxy_level_path")
-    @patch('zmlp_analysis.aws.text.get_zvi_rekognition_client')
+    @patch('zmlp_analysis.aws.util.AwsEnv.rekognition')
     def test_predict(self, client_patch, proxy_patch):
         client_patch.return_value = MockAWSClient()
 
@@ -34,8 +34,8 @@ expected_results = [
     (
         {"model_id": "model-id-12345"},
         [
-            ('HEY', approx(99.92, 0.01)),
-            ('GIRL,', approx(99.92, 0.01))
+            ('HEY', approx(0.9992, 0.0001)),
+            ('GIRL,', approx(0.9992, 0.0001))
         ]
     )
 ]

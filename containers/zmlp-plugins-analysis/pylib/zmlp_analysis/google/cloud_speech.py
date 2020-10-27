@@ -1,8 +1,4 @@
-import subprocess
-import tempfile
 import time
-import os
-import json
 
 import backoff
 from google.api_core.exceptions import ResourceExhausted
@@ -10,9 +6,10 @@ from google.cloud import speech_v1p1beta1 as speech
 
 from zmlpsdk import Argument, AssetProcessor, file_storage, FileTypes
 from zmlpsdk.analysis import ContentDetectionAnalysis
+from zmlpsdk.audio import has_audio_channel
+from zmlpsdk.proxy import get_audio_proxy_uri
+from .cloud_timeline import save_speech_to_text_webvtt, save_speech_to_text_timeline
 from .gcp_client import initialize_gcp_client
-from .cloud_timeline import save_speech_to_text_webvtt
-from subprocess import check_output
 
 
 class AsyncSpeechToTextProcessor(AssetProcessor):
@@ -51,20 +48,21 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
                 'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
             return
 
-        if not self.has_audio(file_storage.localize_file(asset)):
+        if not has_audio_channel(file_storage.localize_file(asset)):
             self.logger.warning('Skipping, video has no audio.')
             return
 
-        audio_uri = self.get_audio_proxy_uri(asset)
+        audio_uri = get_audio_proxy_uri(asset, auto_create=True)
         audio_result = self.recognize_speech(audio_uri)
 
         if audio_result.results:
             self.set_analysis(asset, audio_result)
             self.save_raw_result(asset, audio_result)
-            self.save_webvtt(asset, audio_result)
+            self.save_timelines(asset, audio_result)
 
-    def save_webvtt(self, asset, audio_result):
+    def save_timelines(self, asset, audio_result):
         save_speech_to_text_webvtt(asset, audio_result)
+        save_speech_to_text_timeline(asset, audio_result)
 
     def save_raw_result(self, asset, audio_result):
         file_storage.assets.store_blob(audio_result.SerializeToString(),
@@ -77,7 +75,6 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         # only keep the highest confidence.
         analysis = ContentDetectionAnalysis()
         languages = set()
-
         for r in audio_result.results:
             sorted_results = sorted(r.alternatives, key=lambda i: i.confidence, reverse=True)
             analysis.add_content(sorted_results[0].transcript)
@@ -114,66 +111,3 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
             self.logger.info('Waiting no google speech to text: {}'.format(audio['uri']))
             time.sleep(0.5)
         return op.result()
-
-    def get_audio_proxy_uri(self, asset):
-        """
-        Get a URI to the audio proxy.  We either have one already
-        made or have to make it.
-        Args:
-            asset: (Asset): The asset to find an audio proxy for.
-
-        Returns:
-            str: A URI to an audio proxy.
-
-        """
-        audio_proxy = asset.get_files(category="audio", name="audio_proxy.flac")
-        if audio_proxy:
-            return file_storage.assets.get_native_uri(audio_proxy[0])
-        else:
-            audio_fname = tempfile.mkstemp(suffix=".flac", prefix="audio", )[1]
-            cmd_line = ['ffmpeg',
-                        '-v',
-                        'quiet',
-                        '-y',
-                        '-i', file_storage.localize_file(asset),
-                        '-vn',
-                        '-acodec', 'flac',
-                        '-ar', str(self.audio_sample_rate),
-                        '-ac', str(self.audio_channels),
-                        audio_fname]
-
-            self.logger.info('Executing {}'.format(" ".join(cmd_line)))
-            subprocess.check_call(cmd_line)
-
-        if not os.path.exists(audio_fname):
-            return None
-
-        sfile = file_storage.assets.store_file(
-            audio_fname, asset, 'audio', rename='audio_proxy.flac')
-        return file_storage.assets.get_native_uri(sfile)
-
-    def has_audio(self, src_path):
-        """Returns the json results of an ffprobe command as a dictionary.
-
-        Args:
-            src_path (str): Path the the media.
-
-        Returns:
-            True is media has at least one audio stream, False otherwise.
-        """
-
-        cmd = ['ffprobe',
-               str(src_path),
-               '-show_streams',
-               '-select_streams', 'a',
-               '-print_format', 'json',
-               '-loglevel', 'error']
-
-        self.logger.debug("running command: %s" % cmd)
-
-        ffprobe_result = check_output(cmd, shell=False)
-        n_streams = len(json.loads(ffprobe_result)['streams'])
-        if n_streams > 0:
-            return True
-        else:
-            return False

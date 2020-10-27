@@ -69,25 +69,17 @@ export default useSWR
  * useSWRInfinite
  */
 
-const { useSWRInfinite: actualUseSWRInfinite } = jest.requireActual('swr')
-
 let mockData = []
 
 export const __setMockUseSWRInfiniteResponse = (data) => {
   mockData = data
 }
 
-export const useSWRInfinite = (getKey, fetcher, options) => {
-  const { mutate: m, size, setSize } = actualUseSWRInfinite(
-    getKey,
-    fetcher,
-    options,
-  )
-
+export const useSWRInfinite = () => {
   return {
     data: mockData,
-    mutate: m,
-    size,
-    setSize,
+    mutate: () => {},
+    size: 10,
+    setSize: () => {},
   }
 }

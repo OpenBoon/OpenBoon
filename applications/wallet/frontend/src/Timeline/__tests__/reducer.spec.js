@@ -1,117 +1,211 @@
-import detections from '../__mocks__/detections'
+import timelines from '../__mocks__/timelines'
 
-import { reducer, ACTIONS } from '../reducer'
+import { reducer, ACTIONS, INITIAL_STATE } from '../reducer'
 
 describe('<Timeline /> reducer', () => {
   it('should return the state', () => {
-    expect(reducer({}, {})).toEqual({})
+    expect(reducer(INITIAL_STATE, {})).toEqual(INITIAL_STATE)
+  })
+
+  it('should update the filter', () => {
+    expect(
+      reducer(INITIAL_STATE, {
+        type: ACTIONS.UPDATE_FILTER,
+        payload: { value: 'cat' },
+      }),
+    ).toEqual({
+      filter: 'cat',
+      highlights: false,
+      width: 200,
+      timelines: {},
+      zoom: 100,
+    })
+  })
+
+  it('should update the timelines width', () => {
+    expect(
+      reducer(INITIAL_STATE, {
+        type: ACTIONS.RESIZE_MODULES,
+        payload: { value: 300 },
+      }),
+    ).toEqual({
+      filter: '',
+      highlights: false,
+      width: 300,
+      timelines: {},
+      zoom: 100,
+    })
   })
 
   it('should open an undefined module', () => {
     expect(
-      reducer(
-        {},
-        {
-          type: ACTIONS.TOGGLE_OPEN,
-          payload: { name: 'gcp-video-logo-detection' },
-        },
-      ),
-    ).toEqual({ 'gcp-video-logo-detection': { isOpen: true } })
+      reducer(INITIAL_STATE, {
+        type: ACTIONS.TOGGLE_OPEN,
+        payload: { timeline: 'gcp-video-logo-detection' },
+      }),
+    ).toEqual({
+      filter: '',
+      highlights: false,
+      width: 200,
+      timelines: { 'gcp-video-logo-detection': { isOpen: true } },
+      zoom: 100,
+    })
   })
 
   it('should open a closed module', () => {
     expect(
       reducer(
-        { 'gcp-video-logo-detection': { isOpen: false } },
+        {
+          filter: '',
+          highlights: false,
+          width: 200,
+          timelines: { 'gcp-video-logo-detection': { isOpen: false } },
+        },
         {
           type: ACTIONS.TOGGLE_OPEN,
-          payload: { name: 'gcp-video-logo-detection' },
+          payload: { timeline: 'gcp-video-logo-detection' },
         },
       ),
-    ).toEqual({ 'gcp-video-logo-detection': { isOpen: true } })
+    ).toEqual({
+      filter: '',
+      highlights: false,
+      width: 200,
+      timelines: { 'gcp-video-logo-detection': { isOpen: true } },
+    })
   })
 
   it('should close an open module', () => {
     expect(
       reducer(
-        { 'gcp-video-logo-detection': { isOpen: true } },
+        {
+          filter: '',
+          highlights: false,
+          width: 200,
+          timelines: { 'gcp-video-logo-detection': { isOpen: true } },
+        },
         {
           type: ACTIONS.TOGGLE_OPEN,
-          payload: { name: 'gcp-video-logo-detection' },
+          payload: { timeline: 'gcp-video-logo-detection' },
         },
       ),
-    ).toEqual({ 'gcp-video-logo-detection': { isOpen: false } })
+    ).toEqual({
+      filter: '',
+      highlights: false,
+      width: 200,
+      timelines: { 'gcp-video-logo-detection': { isOpen: false } },
+    })
   })
 
   it('should hide an undefined module', () => {
     expect(
-      reducer(
-        {},
-        {
-          type: ACTIONS.TOGGLE_VISIBLE,
-          payload: { name: 'gcp-video-logo-detection' },
-        },
-      ),
-    ).toEqual({ 'gcp-video-logo-detection': { isVisible: false } })
+      reducer(INITIAL_STATE, {
+        type: ACTIONS.TOGGLE_VISIBLE,
+        payload: { timeline: 'gcp-video-logo-detection' },
+      }),
+    ).toEqual({
+      filter: '',
+      highlights: false,
+      width: 200,
+      timelines: { 'gcp-video-logo-detection': { isVisible: false } },
+      zoom: 100,
+    })
   })
 
   it('should hide a visible module', () => {
     expect(
       reducer(
-        { 'gcp-video-logo-detection': { isVisible: true } },
+        {
+          filter: '',
+          highlights: false,
+          width: 200,
+          timelines: { 'gcp-video-logo-detection': { isVisible: true } },
+        },
         {
           type: ACTIONS.TOGGLE_VISIBLE,
-          payload: { name: 'gcp-video-logo-detection' },
+          payload: { timeline: 'gcp-video-logo-detection' },
         },
       ),
-    ).toEqual({ 'gcp-video-logo-detection': { isVisible: false } })
+    ).toEqual({
+      filter: '',
+      highlights: false,
+      width: 200,
+      timelines: { 'gcp-video-logo-detection': { isVisible: false } },
+    })
   })
 
   it('should show a hidden module', () => {
     expect(
       reducer(
-        { 'gcp-video-logo-detection': { isVisible: false } },
+        {
+          filter: '',
+          highlights: false,
+          width: 200,
+          timelines: { 'gcp-video-logo-detection': { isVisible: false } },
+        },
         {
           type: ACTIONS.TOGGLE_VISIBLE,
-          payload: { name: 'gcp-video-logo-detection' },
-        },
-      ),
-    ).toEqual({ 'gcp-video-logo-detection': { isVisible: true } })
-  })
-
-  it('should show all modules when one of them is hidden', () => {
-    expect(
-      reducer(
-        { 'gcp-video-logo-detection': { isVisible: false } },
-        {
-          type: ACTIONS.TOGGLE_VISIBLE_ALL,
-          payload: { detections },
+          payload: { timeline: 'gcp-video-logo-detection' },
         },
       ),
     ).toEqual({
-      'gcp-video-explicit-detection': { isVisible: true },
-      'gcp-video-label-detection': { isVisible: true },
-      'gcp-video-logo-detection': { isVisible: true },
-      'gcp-video-object-detection': { isVisible: true },
-      'gcp-video-text-detection': { isVisible: true },
+      filter: '',
+      highlights: false,
+      width: 200,
+      timelines: { 'gcp-video-logo-detection': { isVisible: true } },
     })
   })
 
-  it('should hide all modules when all of them are visible', () => {
+  it('should show all timelines when one of them is hidden', () => {
     expect(
       reducer(
-        { 'gcp-video-logo-detection': { isVisible: true } },
+        {
+          filter: '',
+          highlights: false,
+          width: 200,
+          timelines: { 'gcp-video-logo-detection': { isVisible: false } },
+        },
         {
           type: ACTIONS.TOGGLE_VISIBLE_ALL,
-          payload: { detections },
+          payload: { timelines },
         },
       ),
     ).toEqual({
-      'gcp-video-explicit-detection': { isVisible: false },
-      'gcp-video-label-detection': { isVisible: false },
-      'gcp-video-logo-detection': { isVisible: false },
-      'gcp-video-object-detection': { isVisible: false },
-      'gcp-video-text-detection': { isVisible: false },
+      filter: '',
+      highlights: false,
+      width: 200,
+      timelines: {
+        'gcp-video-label-detection': { isVisible: true },
+        'gcp-video-logo-detection': { isVisible: true },
+        'gcp-video-object-detection': { isVisible: true },
+        'gcp-video-text-detection': { isVisible: true },
+      },
+    })
+  })
+
+  it('should hide all timelines when all of them are visible', () => {
+    expect(
+      reducer(
+        {
+          filter: '',
+          highlights: false,
+          width: 200,
+          timelines: { 'gcp-video-logo-detection': { isVisible: true } },
+        },
+        {
+          type: ACTIONS.TOGGLE_VISIBLE_ALL,
+          payload: { timelines },
+        },
+      ),
+    ).toEqual({
+      filter: '',
+      highlights: false,
+      width: 200,
+      timelines: {
+        'gcp-video-label-detection': { isVisible: false },
+        'gcp-video-logo-detection': { isVisible: false },
+        'gcp-video-object-detection': { isVisible: false },
+        'gcp-video-text-detection': { isVisible: false },
+      },
     })
   })
 })

@@ -2,7 +2,7 @@ from zmlpsdk import AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
-from .util import get_zvi_rekognition_client
+from .util import AwsEnv
 
 
 class RekognitionUnsafeDetection(AssetProcessor):
@@ -18,7 +18,7 @@ class RekognitionUnsafeDetection(AssetProcessor):
 
     def init(self):
         # AWS client
-        self.client = get_zvi_rekognition_client()
+        self.client = AwsEnv.rekognition()
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -59,4 +59,4 @@ class RekognitionUnsafeDetection(AssetProcessor):
         )
 
         # get list of labels
-        return [(r['Name'], r['Confidence']) for r in response['ModerationLabels']]
+        return [(r['Name'], r['Confidence'] / 100.) for r in response['ModerationLabels']]

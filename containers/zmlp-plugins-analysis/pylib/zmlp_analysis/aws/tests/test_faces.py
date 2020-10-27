@@ -9,7 +9,7 @@ class RekognitionFaceDetectionProcessorTests(PluginUnitTestCase):
     model_id = "model-id-12345"
 
     @patch("zmlp_analysis.aws.faces.get_proxy_level_path")
-    @patch('zmlp_analysis.aws.faces.get_zvi_rekognition_client')
+    @patch('zmlp_analysis.aws.util.AwsEnv.rekognition')
     def test_predict(self, client_patch, proxy_patch):
         client_patch.return_value = MockAWSClient()
 

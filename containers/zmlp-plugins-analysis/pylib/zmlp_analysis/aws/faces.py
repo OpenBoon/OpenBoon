@@ -2,7 +2,7 @@ from zmlpsdk import AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
-from .util import get_zvi_rekognition_client
+from .util import AwsEnv
 
 
 class RekognitionFaceDetection(AssetProcessor):
@@ -15,11 +15,10 @@ class RekognitionFaceDetection(AssetProcessor):
     def __init__(self):
         super(RekognitionFaceDetection, self).__init__()
         self.client = None
-        self.analysis = None
 
     def init(self):
         # AWS client
-        self.client = get_zvi_rekognition_client()
+        self.client = AwsEnv.rekognition()
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -30,12 +29,12 @@ class RekognitionFaceDetection(AssetProcessor):
         """
         asset = frame.asset
         proxy_path = get_proxy_level_path(asset, 0)
-        self.analysis = LabelDetectionAnalysis(min_score=0.01)
+        analysis = LabelDetectionAnalysis(min_score=0.01)
 
         for ls in self.predict(proxy_path):
-            self.analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
+            analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
 
-        asset.add_analysis(self.namespace, self.analysis)
+        asset.add_analysis(self.namespace, analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path.
@@ -58,7 +57,7 @@ class RekognitionFaceDetection(AssetProcessor):
         # get bounding box
         results = []
         for i, r in enumerate(response['FaceDetails']):
-            confidence = r['Confidence']
+            conf = r['Confidence']
             bbox = r['BoundingBox']
 
             left = bbox['Left']
@@ -66,5 +65,6 @@ class RekognitionFaceDetection(AssetProcessor):
             width = bbox['Width']
             height = bbox['Height']
 
+            confidence = conf / 100.
             results.append(("face{}".format(i), confidence, [left, top, left+width, top+height]))
         return results

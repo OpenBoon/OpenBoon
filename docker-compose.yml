@@ -275,6 +275,8 @@ services:
 
   reporter:
     image: zmlp/reporter:latest
+    depends_on:
+      - zmlp-plugins-base
     build:
       context: .
       dockerfile: services/reporter/Dockerfile

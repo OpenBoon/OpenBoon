@@ -11,7 +11,6 @@ import FaceLabeling from '../FaceLabeling'
 import AssetDelete from '../AssetDelete'
 import FiltersIcon from '../Filters/Icon'
 import AssetLabeling from '../AssetLabeling'
-import { ENVS } from '../Feature'
 
 import InformationSvg from '../Icons/information.svg'
 import FaceDetectionSvg from '../Icons/faceDetection.svg'
@@ -75,8 +74,6 @@ const VisualizerContent = () => {
               title: 'Add Labels To Model',
               icon: <PenSvg height={constants.icons.regular} />,
               content: <AssetLabeling />,
-              flag: 'asset-labeling',
-              envs: [ENVS.QA],
               isBeta: true,
             },
             delete: {

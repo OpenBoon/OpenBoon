@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import useSWR from 'swr'
 import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
 import { constants, spacing } from '../Styles'
 
@@ -44,8 +44,11 @@ const AssetAsset = ({ isQuickView }) => {
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
   const {
-    data: { mediaType, uri },
-  } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/signed_url/`)
+    data: {
+      signedUrl: { mediaType, uri },
+      tracks = [],
+    },
+  } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/urls/`)
 
   const isVideo = mediaType.includes('video')
 
@@ -86,8 +89,8 @@ const AssetAsset = ({ isQuickView }) => {
           {isVideo && !hasError ? (
             <AssetVideo
               assetRef={assetRef}
-              assetId={assetId}
               uri={uri}
+              tracks={tracks}
               mediaType={mediaType}
               length={length}
               isQuickView={isQuickView}

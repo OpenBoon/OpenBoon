@@ -125,6 +125,7 @@ exports[`Combobox should render properly with an options array 1`] = `
       role="combobox"
       value="label0"
     />
+    <span />
   </div>
 </label>
 `;

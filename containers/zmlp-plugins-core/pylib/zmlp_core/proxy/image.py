@@ -25,6 +25,8 @@ class ImageProxyProcessor(AssetProcessor):
     multipage_formats = ['tiff', 'tif']
     """Multipage image formats that have to be handled specifically for web proxies."""
 
+    use_threads = False
+
     def __init__(self):
         super(ImageProxyProcessor, self).__init__()
         self.created_proxy_count = 0
@@ -109,7 +111,7 @@ class ImageProxyProcessor(AssetProcessor):
 
         # Crete the base of the oiiotool shell command.
         oiiotool_command = ['oiiotool', '-q', '-native', '-wildcardoff', source_path,
-                            '--threads', '3', '--cache', '1024', '--clear-keywords',
+                            '--cache', '1024', '--clear-keywords',
                             '--nosoftwareattrib', '--eraseattrib', 'thumbnail_image',
                             '--eraseattrib', 'Exif:.*', '--eraseattrib', 'IPTC:.*']
 
@@ -232,36 +234,23 @@ class ImageProxyProcessor(AssetProcessor):
         width, height = get_output_dimension(valid_size,
                                              src_size[0], src_size[1])
 
-        # If the source file is a multi-page image then
-        # we have to care about the page number here.
-        if asset.extension in self.multipage_formats:
-            page = int(asset.get_attr('clip.start') or 1) - 1
-        else:
-            page = 0
-
         cmd = [
-            "convert",
-            f"{src_path}[{page}]",
-            "-resize",
-            "%dx%d" % (width, height),
-            "-sampling-factor",
-            "4:2:0",
-            "-define",
-            "jpeg:dct-method=float",
-            "-auto-orient",
-            "-strip",
-            "-quality",
-            self.web_quality,
-            "-interlace",
-            "JPEG",
-            "-colorspace",
-            "RGB",
-            str(output_path)
+            'oiiotool',
+            '-q', '-native', '-wildcardoff',
+            src_path,
+            '--cache', '1024',
+            '--resize:filter=lanczos3',
+            '%dx%d' % (width, height),
+            '--quality', str(self.web_quality),
+            '-o',
+            output_path
         ]
 
         logger.debug("Running cmd: {}".format(" ".join(cmd)))
         with StopWatch("Create web proxy"):
-            subprocess.check_call(cmd, shell=False)
+            subprocess.check_call(cmd, shell=False,
+                                  stdout=subprocess.DEVNULL,
+                                  stderr=subprocess.DEVNULL)
         attrs = {"width": width, "height": height}
         prx = file_storage.assets.store_file(output_path, asset, "web-proxy",
                                              "web-proxy.jpg", attrs)

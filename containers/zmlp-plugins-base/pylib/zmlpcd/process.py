@@ -135,10 +135,28 @@ class ProcessorExecutor(object):
         key = self.get_processor_key(ref)
         if key not in self.processors:
             wrapper = ProcessorWrapper(self.new_processor_instance(ref), ref, self.reactor)
-            wrapper.init()
             self.processors[key] = wrapper
+
+            try:
+                wrapper.init()
+            except Exception as e:
+                # set the instance to None
+                wrapper.instance = None
+
+                msg = "Failed to init() instance of {}, unexpected: " \
+                      "'{}' exception".format(ref["className"], e)
+                logger.exception(msg)
+
+                # If its a standard module it can't fail so its a hard error.
+                # Otherwise we get tons of random errors and its hard to figure
+                # out what is going on..
+                if ref.get("module") == "standard":
+                    self.reactor.write_event("hardfailure", {"message": msg + "(standard)"})
+                else:
+                    self.reactor.error(None, ref["className"], e, False, "init")
         else:
             wrapper = self.processors[key]
+
         return wrapper
 
     def new_processor_instance(self, ref):
@@ -162,9 +180,15 @@ class ProcessorExecutor(object):
             logger.debug("Created new instance of {}".format(ref["className"]))
             return instance
         except Exception as e:
-            logger.warning("Failed to create new instance of {}, {}".format(ref["className"], e))
+            msg = "Failed to create new instance of {}, {}".format(ref["className"], e)
+            logger.exception(msg)
             self.reactor.error(None, ref.get("className"), e, True, "initialize", sys.exc_info()[2])
-            self.reactor.write_event("hardfailure", {})
+
+            # If this is a standard module then this is a hard failure
+            # kill the task.
+            if ref.get("module") == "standard":
+                self.reactor.write_event("hardfailure", {"message": msg})
+
             # Return an empty wrapper here so we can centralize the point
             # where the 'final' event is emitted.
             return None
@@ -234,7 +258,6 @@ class ProcessorWrapper(object):
                 raise ValueError("No file types were supplied in job settings property")
 
             if self.instance:
-                self.reactor.emit_status("Running processor {}".format(self.ref["className"]))
                 self.instance.generate(consumer)
                 total_time = round(time.monotonic() - start_time, 2)
                 self.increment_stat("generate_count")

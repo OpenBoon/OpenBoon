@@ -1,37 +1,77 @@
+import { useMemo } from 'react'
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
 import { colors, spacing, constants } from '../Styles'
 
-import { useLocalStorageReducer } from '../LocalStorage/helpers'
+import DoubleChevronSvg from '../Icons/doubleChevron.svg'
+
+import { useLocalStorage } from '../LocalStorage/helpers'
+import { cleanup } from '../Filters/helpers'
 
 import Button, { VARIANTS } from '../Button'
-import ResizeableVertical from '../ResizeableVertical'
+import CheckboxSwitch from '../Checkbox/Switch'
+import ResizeableWithMessage from '../Resizeable/WithMessage'
 
-import { reducer } from './reducer'
+import { reducer, INITIAL_STATE, ACTIONS } from './reducer'
+import { COLORS } from './helpers'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
+import TimelineModulesResizer from './ModulesResizer'
+import TimelineFilterTracks from './FilterTracks'
 import TimelineRuler from './Ruler'
 import TimelinePlayhead from './Playhead'
 import TimelineAggregate from './Aggregate'
-import TimelineDetections from './Detections'
+import TimelineSearchHits from './SearchHits'
+import TimelineTimelines from './Timelines'
+import TimelineMetadata from './Metadata'
+import TimelineShortcuts from './Shortcuts'
 
-// TODO: fetch modules from backend
-import detections from './__mocks__/detections'
+const TIMELINE_HEIGHT = 200
+const SEPARATOR_WIDTH = 2
 
-const TIMELINE_HEIGHT = 300
+const Timeline = ({ videoRef, length }) => {
+  const {
+    query: { projectId, assetId, query },
+  } = useRouter()
 
-const Timeline = ({ videoRef, length, assetId }) => {
-  const [settings, dispatch] = useLocalStorageReducer({
-    key: `TimelineDetections.${assetId}`,
+  const [settings, dispatch] = useLocalStorage({
+    key: `TimelineTimelines.${assetId}`,
     reducer,
-    initialState: {},
+    initialState: INITIAL_STATE,
   })
 
+  const cleanQuery = cleanup({ query })
+
+  const { data: timelines } = useSWR(
+    `/api/v1/projects/${projectId}/assets/${assetId}/timelines/?query=${cleanQuery}`,
+  )
+
+  useMemo(() => {
+    const value = timelines.reduce((acc, { timeline }, index) => {
+      return {
+        ...acc,
+        [timeline]: {
+          ...(settings.timelines[timeline] || {}),
+          isOpen: settings.timelines[timeline]?.isOpen || false,
+          isVisible: settings.timelines[timeline]?.isVisible || true,
+          color: COLORS[index % COLORS.length],
+        },
+      }
+    }, {})
+
+    dispatch({ type: ACTIONS.UPDATE_TIMELINES, payload: { value } })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
-    <ResizeableVertical
+    <ResizeableWithMessage
       storageName={`Timeline.${assetId}`}
-      minHeight={TIMELINE_HEIGHT}
+      minSize={TIMELINE_HEIGHT}
+      openToThe="top"
+      isInitiallyOpen
       header={({ isOpen, toggleOpen }) => (
         <div
           css={{
@@ -45,23 +85,109 @@ const Timeline = ({ videoRef, length, assetId }) => {
             borderBottom: constants.borders.regular.smoke,
           }}
         >
-          <Button
-            aria-label={`${isOpen ? 'Close' : 'Open'} Timeline`}
-            variant={VARIANTS.ICON}
-            style={{
+          <TimelineShortcuts
+            videoRef={videoRef}
+            timelines={timelines}
+            settings={settings}
+          />
+
+          <div
+            css={{
+              flex: 1,
               padding: spacing.small,
-              ':hover, &.focus-visible:focus': {
-                backgroundColor: colors.structure.mattGrey,
-              },
+              paddingLeft: 0,
+              display: 'flex',
             }}
-            onClick={toggleOpen}
           >
-            Timeline
-          </Button>
+            <Button
+              aria-label={`${isOpen ? 'Close' : 'Open'} Timeline`}
+              variant={VARIANTS.ICON}
+              style={{
+                flexDirection: 'row',
+                padding: spacing.small,
+                paddingRight: spacing.base,
+                ':hover, &.focus-visible:focus': {
+                  backgroundColor: colors.structure.mattGrey,
+                  svg: {
+                    path: {
+                      fill: colors.structure.white,
+                    },
+                  },
+                },
+                textTransform: 'uppercase',
+              }}
+              onClick={toggleOpen}
+            >
+              <DoubleChevronSvg
+                height={constants.icons.regular}
+                color={colors.structure.steel}
+                css={{
+                  transform: `rotate(${isOpen ? 0 : -90}deg)`,
+                }}
+              />
+              <div css={{ width: spacing.small }} />
+              Timeline
+            </Button>
 
-          <TimelineControls videoRef={videoRef} length={length} />
+            <div
+              css={{
+                width: SEPARATOR_WIDTH,
+                backgroundColor: colors.structure.coal,
+                margin: spacing.small,
+              }}
+            />
 
-          <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
+            <CheckboxSwitch
+              option={{
+                value: 'highlights',
+                label: (
+                  <>
+                    <svg width={12} height={14}>
+                      <line
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2={14}
+                      />
+                      <polygon
+                        fill="currentColor"
+                        points="0,0 8,0 6,2.5 8,5 0,5"
+                      />
+                    </svg>
+                    Search Only
+                  </>
+                ),
+                initialValue: settings.highlights,
+                isDisabled: false,
+              }}
+              onClick={() => {
+                dispatch({ type: ACTIONS.TOGGLE_HIGHLIGHTS })
+              }}
+            />
+          </div>
+
+          <TimelineControls
+            videoRef={videoRef}
+            length={length}
+            timelines={timelines}
+            settings={settings}
+          />
+
+          <div
+            css={{
+              display: 'flex',
+              flex: 1,
+              justifyContent: 'flex-end',
+              padding: spacing.small,
+              paddingRight: 0,
+            }}
+          >
+            <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
+
+            <TimelineMetadata videoRef={videoRef} assetId={assetId} />
+          </div>
         </div>
       )}
     >
@@ -80,30 +206,63 @@ const Timeline = ({ videoRef, length, assetId }) => {
               flexDirection: 'column',
               height: '0%',
               position: 'relative',
-              marginLeft: constants.timeline.modulesWidth,
+              marginLeft: settings.width,
               borderLeft: constants.borders.regular.smoke,
             }}
           >
-            <TimelinePlayhead videoRef={videoRef} />
+            <TimelineModulesResizer settings={settings} dispatch={dispatch} />
 
-            <TimelineRuler />
+            <TimelinePlayhead videoRef={videoRef} zoom={settings.zoom} />
+
+            <div
+              css={{
+                display: 'flex',
+                height: constants.timeline.rulerRowHeight,
+              }}
+            >
+              <TimelineFilterTracks settings={settings} dispatch={dispatch} />
+
+              <div css={{ flex: 1, overflow: 'overlay' }}>
+                <div css={{ width: `${settings.zoom}%` }}>
+                  <TimelineRuler
+                    videoRef={videoRef}
+                    length={videoRef.current?.duration || length}
+                    settings={settings}
+                  />
+                </div>
+              </div>
+            </div>
 
             <TimelineAggregate
+              videoRef={videoRef}
+              length={length}
               timelineHeight={size}
-              detections={detections}
+              timelines={timelines}
               settings={settings}
               dispatch={dispatch}
             />
 
-            <TimelineDetections
-              detections={detections}
+            {cleanQuery !== 'W10=' && (
+              <TimelineSearchHits
+                videoRef={videoRef}
+                length={length}
+                timelineHeight={size}
+                timelines={timelines}
+                settings={settings}
+              />
+            )}
+
+            <TimelineTimelines
+              videoRef={videoRef}
+              length={length}
+              timelines={timelines}
               settings={settings}
               dispatch={dispatch}
             />
           </div>
         </div>
       )}
-    </ResizeableVertical>
+    </ResizeableWithMessage>
   )
 }
 
@@ -116,10 +275,10 @@ Timeline.propTypes = {
       removeEventListener: PropTypes.func,
       currentTime: PropTypes.number,
       paused: PropTypes.bool,
+      duration: PropTypes.number,
     }),
   }).isRequired,
   length: PropTypes.number.isRequired,
-  assetId: PropTypes.string.isRequired,
 }
 
 export default Timeline

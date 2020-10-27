@@ -79,6 +79,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
         val result = jdbc.queryForObject(GET_PENDING_TASKS_STATS) { rs, _ ->
             PendingTasksStats(
                 rs.getLong("pending_tasks"),
+                rs.getLong("running_tasks"),
                 rs.getLong("max_running_tasks")
             )
         }
@@ -176,7 +177,8 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
             "job.int_priority,job.time_created,task.time_created LIMIT ?"
 
         private const val GET_PENDING_TASKS_STATS =
-            "SELECT SUM(job_count.int_task_state_0) as pending_tasks, " +
+            "SELECT SUM(job_count.int_task_state_0) as pending_tasks," +
+                "SUM(job_count.int_task_state_1) as running_tasks," +
                 "SUM(job_count.int_max_running_tasks) as max_running_tasks " +
                 "FROM job AS job " +
                 "INNER JOIN job_count AS job_count " +

@@ -494,7 +494,8 @@ class Asset(DocumentMixin):
         return {
             "id": self.id,
             "uri": self.get_attr("source.path"),
-            "document": self.document
+            "document": self.document,
+            "page": self.get_attr("media.pageNumber"),
         }
 
     def __str__(self):

@@ -282,16 +282,24 @@ class AssetServiceImpl : AssetService {
     }
 
     override fun getExistingAssetId(spec: AssetSpec): String? {
+
         val rest = indexRoutingService.getProjectRestClient()
         val req = rest.newSearchRequest()
         val bool = QueryBuilders.boolQuery()
 
-        bool.must(QueryBuilders.termQuery("source.path", spec.uri))
-        if (FileExtResolver.isMultiPage(FileUtils.extension(spec.uri))) {
-            bool.must(QueryBuilders.termQuery("media.pageNumber", spec.getPageNumber()))
-        }
-        spec.getChecksumValue()?.let {
-            bool.must(QueryBuilders.termQuery("source.checksum", it))
+        if (spec.id == null) {
+            bool.must(QueryBuilders.termQuery("source.path", spec.uri))
+
+            // We need to know a page number here, it can be in the attrs sometimes.
+
+            if (FileExtResolver.isMultiPage(FileUtils.extension(spec.uri))) {
+                bool.must(QueryBuilders.termQuery("media.pageNumber", spec.getPageNumber()))
+            }
+            spec.getChecksumValue()?.let {
+                bool.must(QueryBuilders.termQuery("source.checksum", it))
+            }
+        } else {
+            bool.must(QueryBuilders.termQuery("_id", spec.id))
         }
 
         req.source().size(1)

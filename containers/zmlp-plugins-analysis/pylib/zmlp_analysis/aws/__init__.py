@@ -3,3 +3,5 @@ from .labels import RekognitionLabelDetection
 from .text import RekognitionTextDetection
 from .faces import RekognitionFaceDetection
 from .nsfw import RekognitionUnsafeDetection
+from .celebs import RekognitionCelebrityDetection
+from .transcribe import AmazonTranscribeProcessor

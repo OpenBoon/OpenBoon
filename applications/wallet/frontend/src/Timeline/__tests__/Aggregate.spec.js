@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import detections from '../__mocks__/detections'
+import timelines from '../__mocks__/timelines'
 
 import TimelineAggregate from '../Aggregate'
 
@@ -12,9 +12,17 @@ describe('<TimelineAggregate />', () => {
 
     const component = TestRenderer.create(
       <TimelineAggregate
+        videoRef={{ current: undefined }}
+        length={16}
         timelineHeight={400}
-        detections={detections}
-        settings={{ [detections[0].name]: { isVisible: true } }}
+        timelines={timelines}
+        settings={{
+          filter: '',
+          highlights: false,
+          width: 200,
+          zoom: 100,
+          timelines: { [timelines[0].timeline]: { isVisible: true } },
+        }}
         dispatch={mockDispatch}
       />,
     )
@@ -34,16 +42,18 @@ describe('<TimelineAggregate />', () => {
     })
 
     expect(mockDispatch).toHaveBeenCalledWith({
-      payload: { detections },
+      payload: { timelines },
       type: 'TOGGLE_VISIBLE_ALL',
     })
 
     act(() => {
-      component.root.findByProps({ value: detections[0].name }).props.onClick()
+      component.root
+        .findByProps({ value: timelines[0].timeline })
+        .props.onClick()
     })
 
     expect(mockDispatch).toHaveBeenCalledWith({
-      payload: { name: detections[0].name },
+      payload: { timeline: timelines[0].timeline },
       type: 'TOGGLE_VISIBLE',
     })
   })

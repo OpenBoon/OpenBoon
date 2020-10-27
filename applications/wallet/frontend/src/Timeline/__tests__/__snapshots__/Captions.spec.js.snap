@@ -1,26 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TimelineCaptions /> should render a placeholder div in the absence of tracks 1`] = `
-.emotion-0 {
-  width: 68px;
-}
-
-<div
-  className="emotion-0"
-/>
-`;
+exports[`<TimelineCaptions /> should render a placeholder div in the absence of tracks 1`] = `null`;
 
 exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = `
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 4px;
 }
 
 .emotion-1 {
@@ -94,6 +81,12 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
   background-color: #2e2e2e;
 }
 
+.emotion-4 {
+  width: 2px;
+  background-color: #191919;
+  margin: 4px;
+}
+
 .emotion-0 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -159,7 +152,7 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
 }
 
 <div
-  className="emotion-4"
+  className="emotion-5"
 >
   <button
     aria-label="Disable Captions"
@@ -191,20 +184,18 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
       />
     </button>
   </div>
+  <div
+    className="emotion-4"
+  />
 </div>
 `;
 
 exports[`<TimelineCaptions /> should render properly with no track enabled 1`] = `
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 4px;
 }
 
 .emotion-0 {
@@ -342,8 +333,14 @@ exports[`<TimelineCaptions /> should render properly with no track enabled 1`] =
   background-color: #2e2e2e;
 }
 
+.emotion-4 {
+  width: 2px;
+  background-color: #191919;
+  margin: 4px;
+}
+
 <div
-  className="emotion-4"
+  className="emotion-5"
 >
   <button
     aria-label="Enable Captions"
@@ -375,5 +372,8 @@ exports[`<TimelineCaptions /> should render properly with no track enabled 1`] =
       />
     </button>
   </div>
+  <div
+    className="emotion-4"
+  />
 </div>
 `;

@@ -10,7 +10,7 @@ from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get
 class RekognitionUnsafeDetectionProcessorTests(PluginUnitTestCase):
 
     @patch("zmlp_analysis.aws.nsfw.get_proxy_level_path")
-    @patch('zmlp_analysis.aws.nsfw.get_zvi_rekognition_client')
+    @patch('zmlp_analysis.aws.util.AwsEnv.rekognition')
     def test_predict(self, client_patch, proxy_patch):
         client_patch.return_value = MockAWSClient()
 
@@ -33,8 +33,8 @@ expected_results = [
     (
         {"model_id": "model-id-12345"},
         [
-            ('Suggestive', approx(65.14, 0.01)),
-            ('Male Swimwear Or Underwear', approx(65.14, 0.01))
+            ('Suggestive', approx(0.6514, 0.0001)),
+            ('Male Swimwear Or Underwear', approx(0.6514, 0.0001))
         ]
     )
 ]

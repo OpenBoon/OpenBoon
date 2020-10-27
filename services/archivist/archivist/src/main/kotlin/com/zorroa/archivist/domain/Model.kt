@@ -47,8 +47,8 @@ enum class ModelType(
         ModelObjective.LABEL_DETECTION,
         Provider.ZORROA,
         true,
-        1,
-        1,
+        0,
+        0,
         listOf()
     ),
     ZVI_LABEL_DETECTION(

@@ -15,6 +15,8 @@ object Category {
     const val GOOGLE_S2TEXT = "Google Speech-To-Text"
     const val GOOGLE_DLP = "Google Data Loss Prevention"
     const val AWS_REK = "Amazon Rekognition"
+    const val AWS_TRANS = "Amazon Transcribe"
+    const val AZURE_VISION = "Azure Computer Vision"
     const val ZORROA_TL = "Zorroa Timeline Extraction"
     const val ZORROA_STD = "Zorroa Visual Intelligence"
     const val CLARIFAI_STD = "Clarifai Public"
@@ -27,6 +29,7 @@ object Provider {
     const val GOOGLE = "Google"
     const val AMAZON = "Amazon"
     const val CUSTOM = "Custom"
+    const val MICROSOFT = "Microsoft"
 }
 
 object ModelObjective {
@@ -35,11 +38,13 @@ object ModelObjective {
     const val LANDMARK_DETECTION = "Landmark Detection"
     const val LOGO_DETECTION = "Logo Detection"
     const val FACE_RECOGNITION = "Face Recognition"
+    const val FACE_DETECTION = "Face Detection"
     const val CLIPIFIER = "Asset Clipifier"
     const val EXPLICIT_DETECTION = "Explicit Detection"
     const val TEXT_DETECTION = "Text Detection (OCR)"
+    const val IMAGE_TEXT_DETECTION = "Image Text Detection"
     const val SPEECH_RECOGNITION = "Speech Recognition"
-    const val CLUSTERING = "Clustering"
+    const val IMAGE_DESCRIPTION = "Image Description"
 }
 
 /**
@@ -167,7 +172,7 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "clarifai-general-model",
-            "Clarifai prediction API with the general model.",
+            "Recognize over 11,000 concepts including objects, themes, moods and more.",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
@@ -178,8 +183,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
-                            StandardContainers.ANALYSIS,
-                            mapOf("general-model" to true)
+                            StandardContainers.ANALYSIS
                         )
                     )
                 )
@@ -188,7 +192,7 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "clarifai-food-model",
-            "Clarifai prediction API with the food model.",
+            "Recognize more than 1,000 food items and dishes in images down to the ingredient level.",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
@@ -198,9 +202,8 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND_MERGE,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
-                            StandardContainers.ANALYSIS,
-                            mapOf("food-model" to true)
+                            "zmlp_analysis.clarifai.ClarifaiFoodDetectionProcessor",
+                            StandardContainers.ANALYSIS
                         )
                     )
                 )
@@ -209,7 +212,7 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "clarifai-apparel-model",
-            "Clarifai prediction API with the apparel model.",
+            "Detect items of clothing or fashion-related items. ",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
@@ -219,9 +222,128 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND_MERGE,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
-                            StandardContainers.ANALYSIS,
-                            mapOf("apparel-model" to true)
+                            "zmlp_analysis.clarifai.ClarifaiApparelDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "clarifai-travel-model",
+            "Recognize specific features of residential, hotel, and travel-related properties.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiTravelDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "clarifai-wedding-model",
+            "Recognize over 400 concepts related to weddings including bride, groom, flowers and more.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiWeddingDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "clarifai-nsfw-model",
+            "Identify different levels of nudity in visual content and automatically moderate or filter offensive content.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiExplicitDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "clarifai-moderation-model",
+            "Detect if an image contains concepts such as gore, drugs, explicit nudity or suggestive nudity.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiModerationDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "clarifai-logo-model",
+            "Identify up to 500 company brands and logos.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModelObjective.OBJECT_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiLogoDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "clarifai-face-detection-model",
+            "Detect if an image contains human faces and coordinate locations of where those faces appear with a bounding box.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModelObjective.FACE_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiFaceDetectionProcessor",
+                            StandardContainers.ANALYSIS
                         )
                     )
                 )
@@ -291,10 +413,10 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "gcp-image-text-detection",
-            "Detect text within an image, including photographic ones.",
+            "Detect text within a photographic image.",
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
-            ModelObjective.TEXT_DETECTION,
+            ModelObjective.IMAGE_TEXT_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -548,6 +670,352 @@ fun getStandardModules(): List<PipelineModSpec> {
                             StandardContainers.ANALYSIS
                         )
                     )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-face-detection",
+            "Detect faces using Amazon AWS Rekognition",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.FACE_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.RekognitionFaceDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-unsafe-detection",
+            "Detect unsafe content using Amazon AWS Rekognition",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.EXPLICIT_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.RekognitionUnsafeDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-text-detection",
+            "Detect text within an image using Amazon AWS Rekognition",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.IMAGE_TEXT_DETECTION,
+            listOf(FileType.Images),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.RekognitionUnsafeDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-celebrity-detection",
+            "Recognizes thousands of celebrities in a wide range of categories.",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.FACE_RECOGNITION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.RekognitionCelebrityDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-transcribe",
+            "Amazon Transcribe uses a deep learning process called automatic speech recognition (ASR) " +
+                "to convert speech to text quickly and accurately.",
+            Provider.AMAZON,
+            Category.AWS_TRANS,
+            ModelObjective.SPEECH_RECOGNITION,
+            listOf(FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.AmazonTranscribeProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-object-detection",
+            "Identify and tag visual features in an image with a bounding box, from a set of thousands of recognizable objects and living things.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.OBJECT_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionObjectDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoObjectDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-label-detection",
+            "Identify and tag visual features in an image, from a set of thousands of recognizable objects, living things, scenery, and actions.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionLabelDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoLabelDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-image-description-detection",
+            "Analyze an image and generate a human-readable sentence that describes its contents. ",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.IMAGE_DESCRIPTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionImageDescriptionDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoImageDescriptionDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-celebrity-detection",
+            "Recognizes thousands of celebrities in a wide range of categories.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.FACE_RECOGNITION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionCelebrityDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoCelebrityDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-landmark-detection",
+            "Detect popular natural and man-made structures within an image",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.LANDMARK_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionLandmarkDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoLandmarkDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-logo-detection",
+            "Brand detection is a specialized mode of object detection that uses a database of thousands of global logos to identify commercial brands.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.LOGO_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionLogoDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoLogoDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-category-detection",
+            "In addition to tags and a description, generates the taxonomy-based categories detected in an image.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionCategoryDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoCategoryDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-explicit-detection",
+            "Detect adult material in images so that developers can restrict the display of these images in their software.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.EXPLICIT_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionExplicitContentDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoExplicitContentDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-face-detection",
+            "Detect human faces within an image.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.FACE_RECOGNITION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionFaceDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoFaceDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-text-detection",
+            "Optical Character Recognition (OCR) capabilities that extract printed or handwritten text from images. ",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.TEXT_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionTextDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoTextDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                ),
+                ModOp(
+                    ModOpType.SET_ARGS,
+                    mapOf("ocr" to true),
+                    OpFilter(OpFilterType.REGEX, ".*FileImportProcessor")
                 )
             ),
             true

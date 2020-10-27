@@ -9,7 +9,7 @@ import { FixedSizeGrid } from 'react-window'
 import { constants, spacing } from '../Styles'
 
 import { cleanup } from '../Filters/helpers'
-import { useLocalStorageReducer } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import Loading from '../Loading'
 import VisualizerNavigation from '../Visualizer/Navigation'
@@ -34,7 +34,7 @@ const Assets = () => {
   const innerRef = useRef()
   const [virtualLoaderRef, setVirtualLoaderRef] = useState()
 
-  const [state, dispatch] = useLocalStorageReducer({
+  const [state, dispatch] = useLocalStorage({
     key: 'Assets',
     reducer,
     initialState: INITIAL_STATE,
