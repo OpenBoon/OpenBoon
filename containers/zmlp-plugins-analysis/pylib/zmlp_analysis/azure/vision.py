@@ -14,7 +14,7 @@ from .util import get_zvi_azure_cv_client
 __all__ = [
     'AzureVisionObjectDetection',
     'AzureVisionLabelDetection',
-    'AzureVisionImageDescription',
+    'AzureVisionImageDescriptionDetection',
     'AzureVisionImageTagsDetection',
     'AzureVisionCelebrityDetection',
     'AzureVisionLandmarkDetection',
@@ -177,13 +177,13 @@ class AzureVisionLabelDetection(AbstractAzureVisionProcessor):
         return [(r.name, r.confidence) for r in response.tags]
 
 
-class AzureVisionImageDescription(AbstractAzureVisionProcessor):
+class AzureVisionImageDescriptionDetection(AbstractAzureVisionProcessor):
     """Get image descriptions for an image using Azure Computer Vision """
 
     namespace = 'azure-image-description-detection'
 
     def __init__(self):
-        super(AzureVisionImageDescription, self).__init__()
+        super(AzureVisionImageDescriptionDetection, self).__init__()
 
     def predict(self, path):
         """ Make a prediction for an image path.

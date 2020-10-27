@@ -2,7 +2,7 @@ import os
 import pytest
 from unittest.mock import patch
 
-from zmlp_analysis import azure
+from zmlp_analysis.azure import vision
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
 
@@ -34,7 +34,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(azure.AzureVisionObjectDetection())
+        processor = self.init_processor(vision.AzureVisionObjectDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -46,7 +46,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(azure.AzureVisionLabelDetection())
+        processor = self.init_processor(vision.AzureVisionLabelDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -58,7 +58,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(azure.AzureVisionImageDescription())
+        processor = self.init_processor(vision.AzureVisionImageDescription())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -71,7 +71,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(azure.AzureVisionImageTagsDetection())
+        processor = self.init_processor(vision.AzureVisionImageTagsDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -83,7 +83,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = RYAN_GOSLING
         frame = Frame(TestAsset(RYAN_GOSLING))
 
-        processor = self.init_processor(azure.AzureVisionCelebrityDetection())
+        processor = self.init_processor(vision.AzureVisionCelebrityDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -95,7 +95,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = EIFFEL_TOWER
         frame = Frame(TestAsset(EIFFEL_TOWER))
 
-        processor = self.init_processor(azure.AzureVisionLandmarkDetection())
+        processor = self.init_processor(vision.AzureVisionLandmarkDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -107,7 +107,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = LOGOS
         frame = Frame(TestAsset(LOGOS))
 
-        processor = self.init_processor(azure.AzureVisionLogoDetection())
+        processor = self.init_processor(vision.AzureVisionLogoDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -119,7 +119,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = EIFFEL_TOWER
         frame = Frame(TestAsset(EIFFEL_TOWER))
 
-        processor = self.init_processor(azure.AzureVisionCategoryDetection())
+        processor = self.init_processor(vision.AzureVisionCategoryDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -131,7 +131,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = NSFW
         frame = Frame(TestAsset(NSFW))
 
-        processor = self.init_processor(azure.AzureVisionExplicitContentDetection())
+        processor = self.init_processor(vision.AzureVisionExplicitContentDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -143,7 +143,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = FACES
         frame = Frame(TestAsset(FACES))
 
-        processor = self.init_processor(azure.AzureVisionFaceDetection())
+        processor = self.init_processor(vision.AzureVisionFaceDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -157,7 +157,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         localize_patch.return_value = STREETSIGN
         frame = Frame(TestAsset(STREETSIGN))
 
-        processor = self.init_processor(azure.AzureVisionTextDetection())
+        processor = self.init_processor(vision.AzureVisionTextDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
