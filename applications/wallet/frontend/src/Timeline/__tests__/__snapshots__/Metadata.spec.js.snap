@@ -2,7 +2,7 @@
 
 exports[`<TimelineMetadata /> should toggle Metadata 1`] = `
 .emotion-0 {
-  width: 4px;
+  margin-right: 4px;
 }
 
 .emotion-1 {
@@ -39,6 +39,10 @@ exports[`<TimelineMetadata /> should toggle Metadata 1`] = `
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
   padding: 4px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
@@ -86,12 +90,10 @@ exports[`<TimelineMetadata /> should toggle Metadata 1`] = `
   type="button"
 >
   <svg
+    className="emotion-0"
     color="#73b61c"
     data-file-name="timebasedMetadata.svg"
     height={20}
-  />
-  <div
-    className="emotion-0"
   />
   Metadata
 </button>
@@ -132,6 +134,10 @@ exports[`<TimelineMetadata /> should toggle Metadata 2`] = `
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
   padding: 4px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
@@ -173,7 +179,7 @@ exports[`<TimelineMetadata /> should toggle Metadata 2`] = `
 }
 
 .emotion-0 {
-  width: 4px;
+  margin-right: 4px;
 }
 
 <button
@@ -183,12 +189,10 @@ exports[`<TimelineMetadata /> should toggle Metadata 2`] = `
   type="button"
 >
   <svg
+    className="emotion-0"
     color="#808080"
     data-file-name="timebasedMetadata.svg"
     height={20}
-  />
-  <div
-    className="emotion-0"
   />
   Metadata
 </button>
