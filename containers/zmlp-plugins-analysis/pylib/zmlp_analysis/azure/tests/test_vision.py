@@ -97,6 +97,8 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         frame = Frame(TestAsset(DOGBIKE))
 
         processor = self.init_processor(vision.AzureVisionImageDescriptionDetection())
+        processor.process(frame)
+
         namespace = 'azure-image-description-detection'
         analysis = frame.asset.get_analysis(namespace)
         description = 'a dog sitting in front of a mirror posing for the camera'
