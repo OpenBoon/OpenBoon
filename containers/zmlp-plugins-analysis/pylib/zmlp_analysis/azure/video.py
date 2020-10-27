@@ -1,5 +1,4 @@
-# flake8: noqa
-from zmlp_analysis.azure.vision import *
+import zmlp_analysis.azure.vision as vision
 from zmlpsdk import AssetProcessor, FileTypes, file_storage
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis
 from zmlpsdk import proxy
@@ -9,17 +8,17 @@ from zmlpsdk.clips import ClipTracker
 import zmlpsdk.video as video
 
 __all__ = [
-    'AzureVideoObjectDetector',
-    'AzureVideoLabelDetector',
-    'AzureVideoImageDescriptionDetector',
-    'AzureVideoImageTagDetector',
-    'AzureVideoCelebrityDetector',
-    'AzureVideoLandmarkDetector',
-    'AzureVideoLogoDetector',
-    'AzureVideoCategoryDetector',
-    'AzureVideoExplicitContentDetector',
-    'AzureVideoFaceDetector',
-    'AzureVideoTextDetector'
+    'AzureVideoObjectDetection',
+    'AzureVideoLabelDetection',
+    'AzureVideoImageDescriptionDetection',
+    'AzureVideoImageTagDetection',
+    'AzureVideoCelebrityDetection',
+    'AzureVideoLandmarkDetection',
+    'AzureVideoLogoDetection',
+    'AzureVideoCategoryDetection',
+    'AzureVideoExplicitContentDetection',
+    'AzureVideoFaceDetection',
+    'AzureVideoTextDetection'
 ]
 
 MAX_LENGTH_SEC = 120
@@ -90,135 +89,135 @@ class AzureVideoAbstract(AssetProcessor):
         return analysis, clip_tracker
 
 
-class AzureVideoObjectDetector(AzureVideoAbstract):
+class AzureVideoObjectDetection(AzureVideoAbstract):
     """Object detection for a video frame using Azure Computer Vision """
-    namespace = 'azure-video-object-detection'
+    namespace = 'azure-object-detection'
 
     def __init__(self):
-        super(AzureVideoObjectDetector, self).__init__()
+        super(AzureVideoObjectDetection, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionObjectDetection()
+        self.vision_client = vision.AzureVisionObjectDetection()
         self.vision_client.init()
 
 
-class AzureVideoLabelDetector(AzureVideoAbstract):
+class AzureVideoLabelDetection(AzureVideoAbstract):
     """Label detection for a video frame using Azure Computer Vision """
-    namespace = 'azure-video-label-detection'
+    namespace = 'azure-label-detection'
 
     def __init__(self):
-        super(AzureVideoLabelDetector, self).__init__()
+        super(AzureVideoLabelDetection, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionLabelDetection()
+        self.vision_client = vision.AzureVisionLabelDetection()
         self.vision_client.init()
 
 
-class AzureVideoImageDescriptionDetector(AzureVideoAbstract):
+class AzureVideoImageDescriptionDetection(AzureVideoAbstract):
     """Get image descriptions for a video frame using Azure Computer Vision """
-    namespace = 'azure-video-image-description-detection'
+    namespace = 'azure-image-description-detection'
 
     def __init__(self):
-        super(AzureVideoImageDescriptionDetector, self).__init__()
+        super(AzureVideoImageDescriptionDetection, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionImageDescription()
+        self.vision_client = vision.AzureVisionImageDescriptionDetection()
         self.vision_client.init()
 
 
-class AzureVideoImageTagDetector(AzureVideoAbstract):
+class AzureVideoImageTagDetection(AzureVideoAbstract):
     """Get image tags for a video frame using Azure Computer Vision """
-    namespace = 'azure-video-tag-detection'
+    namespace = 'azure-tag-detection'
 
     def __init__(self):
-        super(AzureVideoImageTagDetector, self).__init__()
+        super(AzureVideoImageTagDetection, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionImageTagsDetection()
+        self.vision_client = vision.AzureVisionImageTagsDetection()
         self.vision_client.init()
 
 
-class AzureVideoCelebrityDetector(AzureVideoAbstract):
+class AzureVideoCelebrityDetection(AzureVideoAbstract):
     """Celebrity detection for a video frame using Azure Computer Vision """
-    namespace = 'azure-video-celebrity-detection'
+    namespace = 'azure-celebrity-detection'
 
     def __init__(self):
-        super(AzureVideoCelebrityDetector, self).__init__()
+        super(AzureVideoCelebrityDetection, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionCelebrityDetection()
+        self.vision_client = vision.AzureVisionCelebrityDetection()
         self.vision_client.init()
 
 
-class AzureVideoLandmarkDetector(AzureVideoAbstract):
+class AzureVideoLandmarkDetection(AzureVideoAbstract):
     """Landmark detection for a video frame using Azure Computer Vision """
-    namespace = 'azure-video-landmark-detection'
+    namespace = 'azure-landmark-detection'
 
     def __init__(self):
-        super(AzureVideoLandmarkDetector, self).__init__()
+        super(AzureVideoLandmarkDetection, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionLandmarkDetection()
+        self.vision_client = vision.AzureVisionLandmarkDetection()
         self.vision_client.init()
 
 
-class AzureVideoLogoDetector(AzureVideoAbstract):
+class AzureVideoLogoDetection(AzureVideoAbstract):
     """Logo detection for a video frame using Azure Computer Vision """
-    namespace = 'azure-video-logo-detection'
+    namespace = 'azure-logo-detection'
 
     def __init__(self):
-        super(AzureVideoLogoDetector, self).__init__()
+        super(AzureVideoLogoDetection, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionLogoDetection()
+        self.vision_client = vision.AzureVisionLogoDetection()
         self.vision_client.init()
 
 
-class AzureVideoCategoryDetector(AzureVideoAbstract):
+class AzureVideoCategoryDetection(AzureVideoAbstract):
     """Category detection for a video frame using Azure Computer Vision """
-    namespace = 'azure-video-category-detection'
+    namespace = 'azure-category-detection'
 
     def __init__(self):
-        super(AzureVideoCategoryDetector, self).__init__()
+        super(AzureVideoCategoryDetection, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionCategoryDetection()
+        self.vision_client = vision.AzureVisionCategoryDetection()
         self.vision_client.init()
 
 
-class AzureVideoExplicitContentDetector(AzureVideoAbstract):
+class AzureVideoExplicitContentDetection(AzureVideoAbstract):
     """Explicit Content detection for a video frame using Azure Computer Vision """
-    namespace = 'azure-video-explicit-detection'
+    namespace = 'azure-explicit-detection'
 
     def __init__(self):
-        super(AzureVideoExplicitContentDetector, self).__init__(extract_type='time')
+        super(AzureVideoExplicitContentDetection, self).__init__(extract_type='time')
 
     def init(self):
-        self.vision_client = AzureVisionExplicitContentDetection()
+        self.vision_client = vision.AzureVisionExplicitContentDetection()
         self.vision_client.init()
 
 
-class AzureVideoFaceDetector(AzureVideoAbstract):
+class AzureVideoFaceDetection(AzureVideoAbstract):
     """Face detection for a video frame using Azure Computer Vision """
-    namespace = 'azure-video-face-detection'
+    namespace = 'azure-face-detection'
 
     def __init__(self):
-        super(AzureVideoFaceDetector, self).__init__()
+        super(AzureVideoFaceDetection, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionFaceDetection()
+        self.vision_client = vision.AzureVisionFaceDetection()
         self.vision_client.init()
 
 
-class AzureVideoTextDetector(AzureVideoAbstract):
+class AzureVideoTextDetection(AzureVideoAbstract):
     """Get OCR'd text for a video frame using Azure Computer Vision """
-    namespace = 'azure-video-text-detection'
+    namespace = 'azure-text-detection'
 
     def __init__(self):
-        super(AzureVideoTextDetector, self).__init__()
+        super(AzureVideoTextDetection, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionTextDetection()
+        self.vision_client = vision.AzureVisionTextDetection()
         self.vision_client.init()
 
     def set_analysis(self, extractor, clip_tracker, proc):

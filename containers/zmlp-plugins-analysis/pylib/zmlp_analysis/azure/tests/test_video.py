@@ -1,9 +1,13 @@
-# flake8: noqa
-from zmlp_analysis.azure.tests.test_vision import *
+import os
+from unittest.mock import patch
+
+import zmlp_analysis.azure.tests.test_vision as test_vision
+from zmlpsdk import file_storage
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels, \
     zorroa_test_path, get_mock_stored_file
-from zmlpsdk import file_storage
+
+import zmlp_analysis.azure.video as video
 
 patch_path = 'zmlp_analysis.azure.util.ComputerVisionClient'
 cred_path = 'zmlp_analysis.azure.util.CognitiveServicesCredentials'
@@ -23,22 +27,22 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
     def tearDown(self):
         del os.environ["ZORROA_AZURE_VISION_KEY"]
 
-    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
-    @patch(patch_path, side_effect=MockACVClient)
+    @patch(cred_path, side_effect=test_vision.MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=test_vision.MockACVClient)
     @patch("zmlp_analysis.azure.video.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.azure.video.proxy.get_video_proxy')
-    def test_object_detection(self, get_vid_patch, store_patch, store_blob_patch, t_path, p_path,
-                              c_path):
+    def test_object_detection(self, get_vid_patch, store_patch, store_blob_patch,
+                              _, __, ___):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.azure-video-object-detection'
+        namespace = 'analysis.azure-object-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoObjectDetector())
+        processor = self.init_processor(video.AzureVideoObjectDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -48,22 +52,22 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         predictions = get_prediction_labels(analysis)
         assert 'dog' in predictions
 
-    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
-    @patch(patch_path, side_effect=MockACVClient)
+    @patch(cred_path, side_effect=test_vision.MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=test_vision.MockACVClient)
     @patch("zmlp_analysis.azure.video.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.azure.video.proxy.get_video_proxy')
-    def test_label_detection(self, get_vid_patch, store_patch, store_blob_patch, t_path, p_path,
-                             c_path):
+    def test_label_detection(self, get_vid_patch, store_patch, store_blob_patch,
+                             _, __, ___):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.azure-video-label-detection'
+        namespace = 'analysis.azure-label-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoLabelDetector())
+        processor = self.init_processor(video.AzureVideoLabelDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -73,22 +77,21 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         predictions = get_prediction_labels(analysis)
         assert 'bicycle' in predictions
 
-    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
-    @patch(patch_path, side_effect=MockACVClient)
+    @patch(cred_path, side_effect=test_vision.MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=test_vision.MockACVClient)
     @patch("zmlp_analysis.azure.video.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.azure.video.proxy.get_video_proxy')
-    def test_image_description(self, get_vid_patch, store_patch, store_blob_patch, t_path,
-                               p_path, c_path):
+    def test_image_description(self, get_vid_patch, store_patch, store_blob_patch, _, __, ___):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.azure-video-image-description-detection'
+        namespace = 'analysis.azure-image-description-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoImageDescriptionDetector())
+        processor = self.init_processor(video.AzureVideoImageDescriptionDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -99,22 +102,21 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         description = 'a dog sitting in front of a mirror posing for the camera'
         assert description in predictions
 
-    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
-    @patch(patch_path, side_effect=MockACVClient)
+    @patch(cred_path, side_effect=test_vision.MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=test_vision.MockACVClient)
     @patch("zmlp_analysis.azure.video.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.azure.video.proxy.get_video_proxy')
-    def test_tag_detection(self, get_vid_patch, store_patch, store_blob_patch, t_path, p_path,
-                           c_path):
+    def test_tag_detection(self, get_vid_patch, store_patch, store_blob_patch, _, __, ___):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.azure-video-tag-detection'
+        namespace = 'analysis.azure-tag-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoImageTagDetector())
+        processor = self.init_processor(video.AzureVideoImageTagDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -124,22 +126,22 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         predictions = get_prediction_labels(analysis)
         assert 'bicycle' in predictions
 
-    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
-    @patch(patch_path, side_effect=MockACVClient)
+    @patch(cred_path, side_effect=test_vision.MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=test_vision.MockACVClient)
     @patch("zmlp_analysis.azure.video.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.azure.video.proxy.get_video_proxy')
-    def test_celeb_detection(self, get_vid_patch, store_patch, store_blob_patch, t_path,
-                                p_path, c_path):
+    def test_celeb_detection(self, get_vid_patch, store_patch, store_blob_patch,
+                             _, __, ___):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.azure-video-celebrity-detection'
+        namespace = 'analysis.azure-celebrity-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoCelebrityDetector())
+        processor = self.init_processor(video.AzureVideoCelebrityDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -149,22 +151,22 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         predictions = get_prediction_labels(analysis)
         assert 'Ryan Gosling' in predictions
 
-    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
-    @patch(patch_path, side_effect=MockACVClient)
+    @patch(cred_path, side_effect=test_vision.MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=test_vision.MockACVClient)
     @patch("zmlp_analysis.azure.video.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.azure.video.proxy.get_video_proxy')
-    def test_landmark_detection(self, get_vid_patch, store_patch, store_blob_patch, t_path,
-                                p_path, c_path):
+    def test_landmark_detection(self, get_vid_patch, store_patch, store_blob_patch,
+                                _, __, ___):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.azure-video-landmark-detection'
+        namespace = 'analysis.azure-landmark-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoLandmarkDetector())
+        processor = self.init_processor(video.AzureVideoLandmarkDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -174,22 +176,22 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         predictions = get_prediction_labels(analysis)
         assert 'Eiffel Tower' in predictions
 
-    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
-    @patch(patch_path, side_effect=MockACVClient)
+    @patch(cred_path, side_effect=test_vision.MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=test_vision.MockACVClient)
     @patch("zmlp_analysis.azure.video.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.azure.video.proxy.get_video_proxy')
-    def test_logo_detection(self, get_vid_patch, store_patch, store_blob_patch, t_path, p_path,
-                            c_path):
+    def test_logo_detection(self, get_vid_patch, store_patch, store_blob_patch,
+                            _, __, ___):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.azure-video-logo-detection'
+        namespace = 'analysis.azure-logo-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoLogoDetector())
+        processor = self.init_processor(video.AzureVideoLogoDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -199,22 +201,22 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         predictions = get_prediction_labels(analysis)
         assert 'Shell' in predictions
 
-    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
-    @patch(patch_path, side_effect=MockACVClient)
+    @patch(cred_path, side_effect=test_vision.MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=test_vision.MockACVClient)
     @patch("zmlp_analysis.azure.video.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.azure.video.proxy.get_video_proxy')
-    def test_category_detection(self, get_vid_patch, store_patch, store_blob_patch, t_path,
-                                p_path, c_path):
+    def test_category_detection(self, get_vid_patch, store_patch, store_blob_patch,
+                                _, __, ___):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.azure-video-category-detection'
+        namespace = 'analysis.azure-category-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoCategoryDetector())
+        processor = self.init_processor(video.AzureVideoCategoryDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -224,22 +226,22 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         predictions = get_prediction_labels(analysis)
         assert 'indoor_' in predictions
 
-    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
-    @patch(patch_path, side_effect=MockACVClient)
+    @patch(cred_path, side_effect=test_vision.MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=test_vision.MockACVClient)
     @patch("zmlp_analysis.azure.video.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.azure.video.proxy.get_video_proxy')
-    def test_explicit_detection(self, get_vid_patch, store_patch, store_blob_patch, t_path,
-                                p_path, c_path):
+    def test_explicit_detection(self, get_vid_patch, store_patch, store_blob_patch, _,
+                                __, ___):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.azure-video-explicit-detection'
+        namespace = 'analysis.azure-explicit-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoExplicitContentDetector())
+        processor = self.init_processor(video.AzureVideoExplicitContentDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -249,22 +251,22 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         predictions = get_prediction_labels(analysis)
         assert 'racy' in predictions
 
-    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
-    @patch(patch_path, side_effect=MockACVClient)
+    @patch(cred_path, side_effect=test_vision.MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=test_vision.MockACVClient)
     @patch("zmlp_analysis.azure.video.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.azure.video.proxy.get_video_proxy')
-    def test_face_detection(self, get_vid_patch, store_patch, store_blob_patch, t_path, p_path,
-                            c_path):
+    def test_face_detection(self, get_vid_patch, store_patch, store_blob_patch,
+                            _, __, ___):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.azure-video-face-detection'
+        namespace = 'analysis.azure-face-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoFaceDetector())
+        processor = self.init_processor(video.AzureVideoFaceDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -274,22 +276,22 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         predictions = get_prediction_labels(analysis)
         assert 'Male' in predictions
 
-    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
-    @patch(patch_path, side_effect=MockACVClient)
+    @patch(cred_path, side_effect=test_vision.MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=test_vision.MockACVClient)
     @patch("zmlp_analysis.azure.video.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.azure.video.proxy.get_video_proxy')
-    def test_image_text_detection(self, get_vid_patch, store_patch, store_blob_patch, t_path,
-                                  p_path, c_path):
+    def test_image_text_detection(self, get_vid_patch, store_patch, store_blob_patch,
+                                  _, __, ___):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'azure-video-text-detection'
+        namespace = 'azure-text-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoTextDetector())
+        processor = self.init_processor(video.AzureVideoTextDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
