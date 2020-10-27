@@ -4,9 +4,9 @@ from unittest.mock import patch
 from azure.cognitiveservices.vision.computervision.models import OperationStatusCodes
 
 import zmlp_analysis.azure.vision as vision
+from zmlpsdk import file_storage
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
-from zmlpsdk import file_storage
 
 patch_path = 'zmlp_analysis.azure.util.ComputerVisionClient'
 cred_path = 'zmlp_analysis.azure.util.CognitiveServicesCredentials'
@@ -97,8 +97,6 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         frame = Frame(TestAsset(DOGBIKE))
 
         processor = self.init_processor(vision.AzureVisionImageDescriptionDetection())
-        processor.process(frame)
-
         namespace = 'azure-image-description-detection'
         analysis = frame.asset.get_analysis(namespace)
         description = 'a dog sitting in front of a mirror posing for the camera'

@@ -1,9 +1,8 @@
-# flake8: noqa
 import os
 import pytest
 from unittest.mock import patch
 
-from zmlp_analysis.azure.video import *
+from zmlp_analysis.azure import video
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels, \
     zorroa_test_path, get_mock_stored_file
@@ -39,7 +38,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoObjectDetection())
+        processor = self.init_processor(video.AzureVideoObjectDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -61,7 +60,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoLabelDetection())
+        processor = self.init_processor(video.AzureVideoLabelDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -83,7 +82,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoImageDescriptionDetection())
+        processor = self.init_processor(video.AzureVideoImageDescriptionDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -105,7 +104,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoImageTagDetection())
+        processor = self.init_processor(video.AzureVideoImageTagDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -127,7 +126,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoCelebrityDetection())
+        processor = self.init_processor(video.AzureVideoCelebrityDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -149,7 +148,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoLandmarkDetection())
+        processor = self.init_processor(video.AzureVideoLandmarkDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -171,7 +170,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoLogoDetection())
+        processor = self.init_processor(video.AzureVideoLogoDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -193,7 +192,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoCategoryDetection())
+        processor = self.init_processor(video.AzureVideoCategoryDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -215,7 +214,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoExplicitContentDetection())
+        processor = self.init_processor(video.AzureVideoExplicitContentDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -237,7 +236,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoFaceDetection())
+        processor = self.init_processor(video.AzureVideoFaceDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -259,7 +258,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(AzureVideoTextDetection())
+        processor = self.init_processor(video.zureVideoTextDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)

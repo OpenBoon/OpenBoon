@@ -1,11 +1,10 @@
 import zmlp_analysis.azure.vision as vision
-from zmlpsdk import AssetProcessor, FileTypes, file_storage
-from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis
-from zmlpsdk import proxy
-from zmlp_analysis.google.cloud_timeline import save_timeline
-
-from zmlpsdk.clips import ClipTracker
 import zmlpsdk.video as video
+from zmlp_analysis.google.cloud_timeline import save_timeline
+from zmlpsdk import AssetProcessor, FileTypes, file_storage
+from zmlpsdk import proxy
+from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis
+from zmlpsdk.clips import ClipTracker
 
 __all__ = [
     'AzureVideoObjectDetection',
