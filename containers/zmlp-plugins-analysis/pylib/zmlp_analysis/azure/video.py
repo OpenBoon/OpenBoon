@@ -42,7 +42,7 @@ class AzureVideoAbstract(AssetProcessor):
 
         if final_time > MAX_LENGTH_SEC:
             self.logger.warning(
-                'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
+                'Skipping, video is longer than {} seconds.'.format(MAX_LENGTH_SEC))
             return
 
         video_proxy = proxy.get_video_proxy(asset)
