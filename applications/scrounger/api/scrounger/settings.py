@@ -136,7 +136,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'scrounger/static')
 ZMLP_API_URL = os.environ.get('ZMLP_API_URL', 'https://api.zvi.zorroa.com')
 ZMLP_API_KEY = os.environ.get('ZMLP_API_KEY')
 
-SUPERUSER_EMAIL = 'software@zorroa.com'
+SUPERUSER_EMAIL = os.environ.get('SUPERUSER_EMAIL', 'admin@example.com')
 
 # Logging Settings
 LOGGING = {

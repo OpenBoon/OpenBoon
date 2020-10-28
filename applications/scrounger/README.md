@@ -17,9 +17,8 @@ a "virtual environment" for the project and make sure all the requisite dependen
 this project are installed there, rather than in your global python interpreter. To 
 install the required dependencies:
 
-1. In a terminal, make sure you are in the `application/scrounger` directory inside the
-ZMLP repository.
-1. Run: `pipenv install`
+1. In a terminal, from the `/scrounger`  parent directory, run:
+    - `pipenv install`
 
 #### Pipenv - General Usage
 
@@ -41,7 +40,7 @@ give).
 1. To start the runserver, run:
     - `./manage.py runserver`
     
-- Note: The `manage.py` helper script lives inside the `applications/scrounger/api`
+- Note: The `manage.py` helper script lives inside the `scrounger/api`
 directory.
 
 ### Running the tests
@@ -49,20 +48,20 @@ directory.
 We use `pytest` for running all of our tests. Assuming the dependencies from the pipenv
 file have been installed, running the tests for the backend is as simple as:
 
-1. `cd` into the `applications/scrounger/api` directory
+1. `cd` into the `scrounger/api` directory
 1. Run: `pytest`
 
 ## Build the Docker Container
 
-The Scounger application can be built as a standalone Docker Container. This is a helpful
+The Scrounger application can be built as a standalone Docker Container. This is a helpful
 list of Docker commands you can use to build an image, run the image, and manage the
 resulting container. If doing continual development, it may be wise to create aliases for
 these commands in your shell profile.
 
 ### Build
 
-- From the root of the ZMLP monorepo, tagging the image as "scrounger", run:
-    - `docker build -f applications/scrounger/Dockerfile . -t scrounger` 
+- From the root of the Scrounger directory, tagging the image as "scrounger", run:
+    - `docker build . -t scrounger` 
     
 ### Run
 
@@ -71,7 +70,7 @@ these commands in your shell profile.
     
 - Run the container, mounting a local directory location to store a permananent
   copy of the db, to prevent data loss if the db goes down:
-    - `docker run -p 80:80 -e DATABASE_PATH=/applications/db/db.sqlite3 --mount type=bind,source=/Users/zach.schipono/dev/scrounger_db,destination=/applications/db scrounger`
+    - `docker run -p 80:80 -e DATABASE_PATH=/applications/db/db.sqlite3 --mount type=bind,source=/data/scrounger_db,destination=/applications/db scrounger`
     - Note that the `DATABASE_PATH` env variable refers to the location of the db
     *inside* the container's mounted location. 
     
@@ -80,12 +79,12 @@ these commands in your shell profile.
 - To attach to a shell in the running container, run:
     - ```docker exec -it `docker ps | egrep scrounger | awk '{print $NF}'` /bin/bash```
     
-- To kill the running Scounger container, run:
+- To kill the running Scrounger container, run:
     - ```docker kill `docker ps | egrep scrounger | awk '{print $1}'` ```
     
 ## ENVIRONMENT VARIABLES
 
-Environment variables can be used to control the execution of Scounger. Below is a table
+Environment variables can be used to control the execution of Scrounger. Below is a table
 of the available environment variables that can be used.
 
 | Env Variable Name | Description | Possible Values |
