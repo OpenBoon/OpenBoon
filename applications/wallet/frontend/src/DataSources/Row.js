@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types'
+import Link from 'next/link'
 
 import { colors, spacing, constants, typography } from '../Styles'
 
+import { onRowClickRouterPush } from '../Table/helpers'
 import { formatFullDate } from '../Date/helpers'
 import { FILE_TYPES } from '../DataSourcesAdd/helpers'
 
@@ -30,12 +32,31 @@ const DataSourcesRow = ({
   revalidate,
 }) => {
   return (
-    <tr>
-      <td>{name}</td>
+    <tr
+      css={{ cursor: 'pointer' }}
+      onClick={onRowClickRouterPush(
+        '/[projectId]/data-sources/[dataSourceId]/edit',
+        `/${projectId}/data-sources/${dataSourceId}/edit`,
+      )}
+    >
+      <td>
+        <Link
+          href="/[projectId]/data-sources/[dataSourceId]/edit"
+          as={`/${projectId}/data-sources/${dataSourceId}/edit`}
+          passHref
+        >
+          <a css={{ ':hover': { textDecoration: 'none' } }}>{name}</a>
+        </Link>
+      </td>
+
       <td>{getSource({ uri })}</td>
+
       <td>{uri}</td>
+
       <td>{formatFullDate({ timestamp: timeCreated })}</td>
+
       <td>{formatFullDate({ timestamp: timeModified })}</td>
+
       <td>
         {fileTypes.map((fileType) => {
           const { color } =
@@ -60,6 +81,7 @@ const DataSourcesRow = ({
           )
         })}
       </td>
+
       <td>
         <DataSourcesMenu
           projectId={projectId}
