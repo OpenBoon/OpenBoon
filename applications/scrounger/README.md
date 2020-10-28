@@ -56,7 +56,7 @@ file have been installed, running the tests for the backend is as simple as:
 
 The Scounger application can be built as a standalone Docker Container. This is a helpful
 list of Docker commands you can use to build an image, run the image, and manage the
-resulting container. If doing continual development, it may be wise to create aliases for
+resulting container. If doing continuous development, it may be wise to create aliases for
 these commands in your shell profile.
 
 ### Build
