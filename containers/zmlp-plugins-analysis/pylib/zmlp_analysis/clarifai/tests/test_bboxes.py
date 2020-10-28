@@ -1,11 +1,10 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.bboxes import *
 from zmlpsdk import Frame
-from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
-    TestAsset, get_prediction_labels
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
+from zmlp_analysis.clarifai.bboxes import ClarifaiFaceDetectionProcessor, \
+    ClarifaiLogoDetectionProcessor
 
 client_patch = 'zmlp_analysis.clarifai.util.ClarifaiApp'
 
