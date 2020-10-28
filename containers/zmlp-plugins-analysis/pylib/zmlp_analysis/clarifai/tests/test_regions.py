@@ -1,11 +1,9 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.regions import *
+from zmlp_analysis.clarifai import regions
 from zmlpsdk import Frame
-from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
-    TestAsset, get_prediction_labels
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
 
 client_patch = 'zmlp_analysis.clarifai.util.ClarifaiApp'
 
@@ -30,7 +28,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_celebrity_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiCelebrityDetectionProcessor())
+        processor = self.init_processor(regions.ClarifaiCelebrityDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-celebrity-model')
@@ -43,7 +41,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_demographics_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiDemographicsDetectionProcessor())
+        processor = self.init_processor(regions.ClarifaiDemographicsDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-demographics-model')

@@ -2,7 +2,7 @@ import cv2
 
 from zmlpsdk import AssetProcessor, Argument, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
-from zmlpsdk.proxy import get_proxy_level_path, calculate_normalized_bbox
+from zmlpsdk.proxy import get_proxy_level_path
 
 from .util import get_clarifai_app
 
@@ -48,34 +48,11 @@ class AbstractClarifaiProcessor(AssetProcessor):
         analysis = LabelDetectionAnalysis()
         for label in labels:
             box = label['region_info']['bounding_box']
-            bbox = self.get_bbox(box=box, height=h, width=w)
+            bbox = [box['left_col'], box['top_row'], box['right_col'], box['bottom_row']]
             concepts = label['data'].get('concepts')[0]
             analysis.add_label_and_score(concepts['name'], concepts['value'], bbox=bbox)
 
         asset.add_analysis("-".join([self.namespace, self.model_name]), analysis)
-
-    def get_bbox(self, box, height, width):
-        """ Get Bounding Box from Clarifai regions
-
-        Args:
-            box: (dict) bounding box top/bottom row, left/right col
-            height: image height
-            width: image width
-
-        Returns:
-            list[str] bounding box in [x, y, w, h]
-        """
-        top = box['top_row']
-        bottom = box['bottom_row']
-        left = box['left_col']
-        right = box['right_col']
-
-        x = left * width
-        y = top * height
-        w = (right * width) - x
-        h = (bottom * height) - y
-        normalized_bbox = calculate_normalized_bbox(width, height, [x, y, w, h])
-        return normalized_bbox
 
     def emit_status(self, msg):
         """

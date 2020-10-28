@@ -4,8 +4,8 @@ import { colors, constants, spacing, zIndex } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
-import CirclePlusSvg from './circlePlus.svg'
-import CircleMinusSvg from './circleMinus.svg'
+import CirclePlusSvg from '../Icons/circlePlus.svg'
+import CircleMinusSvg from '../Icons/circleMinus.svg'
 
 import { ACTIONS } from './reducer'
 
