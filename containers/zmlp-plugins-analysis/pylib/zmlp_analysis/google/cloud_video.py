@@ -117,8 +117,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             asset (Asset): The asset.
             results (obj): The Logo detection result.
         """
-        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_logos'),
-                                          collapse_labels=True)
+        analysis = LabelDetectionAnalysis(collapse_labels=True)
         for annotation in results.logo_recognition_annotations:
             for track in annotation.tracks:
                 analysis.add_prediction(Prediction(
@@ -136,8 +135,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             annotation_result (obj): The Object detection result.
 
         """
-        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_objects'),
-                                          collapse_labels=True)
+        analysis = LabelDetectionAnalysis(collapse_labels=True)
         for annotation in annotation_result.object_annotations:
             pred = Prediction(annotation.entity.description,
                               annotation.confidence)
@@ -166,8 +164,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                     for label in labels:
                         analysis.add_prediction(Prediction(label, segment.confidence))
 
-        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_labels'),
-                                          collapse_labels=True)
+        analysis = LabelDetectionAnalysis(collapse_labels=True)
 
         process_label_annotations(annotation_result.segment_label_annotations)
         process_label_annotations(annotation_result.shot_label_annotations)
@@ -202,9 +199,6 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         """
         analysis = ContentDetectionAnalysis()
-        logger.info("-----SPEECH------")
-        logger.info("{}".format(annotation_result.speech_transcriptions))
-        logger.info("-----------------")
         for speech in annotation_result.speech_transcriptions:
             for alternative in speech.alternatives:
                 # Find first one with words.
