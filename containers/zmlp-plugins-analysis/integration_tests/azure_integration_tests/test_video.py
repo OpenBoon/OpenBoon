@@ -251,7 +251,8 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.azure.video.proxy.get_video_proxy')
-    def test_text_detection_processor(self, get_vid_patch, store_patch, store_blob_patch, _):
+    def test_text_detection_processor(self, get_vid_patch, store_patch,
+                                      store_blob_patch, save_tl_patch):
         video_path = zorroa_test_path(VID_MP4)
         namespace = 'azure-text-detection'
 
@@ -268,3 +269,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         analysis = asset.get_analysis(namespace)
         assert 9 == analysis['words']
         assert 'and into of poop, sanitation sanitation, the toilets world' in analysis['content']
+
+        tlb = save_tl_patch.call_args_list[0][0][0]
+        assert 'Detected Text' in tlb.tracks
+        assert len(tlb.tracks['Detected Text']['clips']) == 2

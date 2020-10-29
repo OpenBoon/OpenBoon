@@ -151,12 +151,16 @@ class ClipServiceImpl(
                 buffer.append(formatDuration(clip["start"] as Double))
                 buffer.append(" --> ")
                 buffer.append(formatDuration(clip["stop"] as Double))
-                buffer.append("\n{\n")
-                buffer.append("\"timeline\": \"${clip["timeline"]}\",\n")
-                buffer.append("\"track\": \"${clip["track"]}\",\n")
-                buffer.append("\"content\": ${Json.serializeToString(clip["content"] as Collection<String>)},\n")
-                buffer.append("\"score\": ${clip["score"]}\n")
-                buffer.append("}\n\n")
+
+                val obj = mapOf(
+                    "timeline" to clip["timeline"].toString(),
+                    "track" to clip["track"].toString(),
+                    "content" to clip["content"],
+                    "score" to clip["score"]
+                )
+                buffer.append("\n")
+                buffer.append(Json.prettyString(obj))
+                buffer.append("\n\n")
                 outputStream.write(buffer.toString().toByteArray())
                 buffer.clear()
             }
