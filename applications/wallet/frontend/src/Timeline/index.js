@@ -104,6 +104,7 @@ const Timeline = ({ videoRef, length }) => {
               variant={VARIANTS.ICON}
               style={{
                 flexDirection: 'row',
+                alignItems: 'flex-end',
                 padding: spacing.small,
                 paddingRight: spacing.base,
                 ':hover, &.focus-visible:focus': {
@@ -123,49 +124,53 @@ const Timeline = ({ videoRef, length }) => {
                 color={colors.structure.steel}
                 css={{
                   transform: `rotate(${isOpen ? 0 : -90}deg)`,
+                  marginRight: spacing.small,
                 }}
               />
-              <div css={{ width: spacing.small }} />
               Timeline
             </Button>
 
-            <div
-              css={{
-                width: SEPARATOR_WIDTH,
-                backgroundColor: colors.structure.coal,
-                margin: spacing.small,
-              }}
-            />
+            {cleanQuery !== 'W10=' && (
+              <>
+                <div
+                  css={{
+                    width: SEPARATOR_WIDTH,
+                    backgroundColor: colors.structure.coal,
+                    margin: spacing.small,
+                  }}
+                />
 
-            <CheckboxSwitch
-              option={{
-                value: 'highlights',
-                label: (
-                  <>
-                    <svg width={12} height={14}>
-                      <line
-                        stroke="currentColor"
-                        strokeWidth="4"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2={14}
-                      />
-                      <polygon
-                        fill="currentColor"
-                        points="0,0 8,0 6,2.5 8,5 0,5"
-                      />
-                    </svg>
-                    Search Only
-                  </>
-                ),
-                initialValue: settings.highlights,
-                isDisabled: false,
-              }}
-              onClick={() => {
-                dispatch({ type: ACTIONS.TOGGLE_HIGHLIGHTS })
-              }}
-            />
+                <CheckboxSwitch
+                  option={{
+                    value: 'highlights',
+                    label: (
+                      <>
+                        <svg width={12} height={14}>
+                          <line
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2={14}
+                          />
+                          <polygon
+                            fill="currentColor"
+                            points="0,0 8,0 6,2.5 8,5 0,5"
+                          />
+                        </svg>
+                        Search Only
+                      </>
+                    ),
+                    initialValue: settings.highlights,
+                    isDisabled: false,
+                  }}
+                  onClick={() => {
+                    dispatch({ type: ACTIONS.TOGGLE_HIGHLIGHTS })
+                  }}
+                />
+              </>
+            )}
           </div>
 
           <TimelineControls

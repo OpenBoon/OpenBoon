@@ -4,10 +4,9 @@ import Link from 'next/link'
 import { colors, spacing, constants, zIndex } from '../Styles'
 
 import LogoSvg from '../Icons/logo.svg'
+import HamburgerSvg from '../Icons/hamburger.svg'
 
 import ProjectSwitcher from '../ProjectSwitcher'
-
-import HamburgerSvg from './hamburger.svg'
 
 const LOGO_HEIGHT = 30
 

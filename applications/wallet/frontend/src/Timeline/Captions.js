@@ -11,7 +11,7 @@ import Menu from '../Menu'
 
 const SEPARATOR_WIDTH = 2
 
-let lastEnabledTrackIndex = 0
+let lastEnabledTrackIndex = -1
 
 const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
   const [trackIndex, setTrackIndex] = useState(initialTrackIndex)
@@ -21,6 +21,12 @@ const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
   useEffect(() => {
     /* istanbul ignore next */
     if (!textTracks) return () => {}
+
+    if (lastEnabledTrackIndex === -1) {
+      lastEnabledTrackIndex = Object.values(textTracks).findIndex(
+        ({ kind }) => kind === 'captions',
+      )
+    }
 
     /* istanbul ignore next */
     const onChange = () => {
@@ -94,7 +100,10 @@ const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
             <ul>
               {Object.values(textTracks)
                 .filter(({ kind }) => kind === 'captions')
-                .map(({ label }, index) => {
+                .map(({ label }) => {
+                  const index = Object.values(textTracks).findIndex(
+                    ({ label: l }) => l === label,
+                  )
                   return (
                     <li key={label}>
                       <Button

@@ -56,9 +56,19 @@ Array [
 }
 
 .emotion-0 a {
-  color: #009f22;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-0 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
 }
 
 <div
@@ -197,7 +207,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-28 {
+  .emotion-38 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -234,7 +244,7 @@ Array [
   font-weight: 400;
 }
 
-.emotion-27 {
+.emotion-37 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -288,44 +298,44 @@ Array [
   display: flex;
 }
 
-.emotion-25 {
+.emotion-35 {
   height: auto;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
 
-.emotion-25 tr {
+.emotion-35 tr {
   background-color: #252525;
 }
 
-.emotion-25 tr:nth-of-type(2n) {
+.emotion-35 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-25 tr:hover {
+.emotion-35 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-25 tr:hover .actions {
+.emotion-35 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-25 tr:hover td {
+.emotion-35 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-25 tr:hover td:first-of-type {
+.emotion-35 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-25 tr:hover td:last-of-type {
+.emotion-35 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-25 td {
+.emotion-35 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -337,16 +347,25 @@ Array [
   border-right: 0;
 }
 
-.emotion-25 td:first-of-type {
+.emotion-35 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-25 td:last-of-type {
+.emotion-35 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-10 {
+.emotion-14 {
+  cursor: pointer;
+}
+
+.emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-11 {
   display: inline-block;
   color: #191919;
   background-color: #ebb52e;
@@ -358,12 +377,12 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-12 {
+.emotion-13 {
   position: relative;
   height: 100%;
 }
 
-.emotion-11 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -398,21 +417,21 @@ Array [
   margin: -6px;
 }
 
-.emotion-11:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11:hover,
-.emotion-11.focus-visible:focus {
+.emotion-12:hover,
+.emotion-12.focus-visible:focus {
   color: #ffffff !important;
 }
 
-.emotion-22 {
+.emotion-31 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -425,7 +444,7 @@ Array [
 }
 
 <div
-    className="emotion-28"
+    className="emotion-38"
   >
     <div
       className="emotion-1"
@@ -440,13 +459,13 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-27"
+      className="emotion-37"
     >
       <div
-        className="emotion-26"
+        className="emotion-36"
       >
         <table
-          className="emotion-25"
+          className="emotion-35"
         >
           <thead>
             <tr>
@@ -495,9 +514,19 @@ Array [
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test
+                </a>
               </td>
               <td>
                 Amazon Web Service (AWS)
@@ -513,18 +542,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-11"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -537,9 +566,19 @@ Array [
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test2
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test2
+                </a>
               </td>
               <td>
                 Azure
@@ -555,18 +594,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-11"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -579,9 +618,19 @@ Array [
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test3
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test3
+                </a>
               </td>
               <td>
                 Google Cloud Platform (GCP)
@@ -597,18 +646,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-11"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -621,9 +670,19 @@ Array [
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test4
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test4
+                </a>
               </td>
               <td>
                 Unknown
@@ -639,18 +698,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-11"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -663,9 +722,19 @@ Array [
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test5
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test5
+                </a>
               </td>
               <td>
                 Google Cloud Platform (GCP)
@@ -681,18 +750,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-22"
+                  className="emotion-31"
                 >
                   Movies
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -775,9 +844,19 @@ Array [
 }
 
 .emotion-0 a {
-  color: #009f22;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-0 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
 }
 
 <div
@@ -909,7 +988,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-28 {
+  .emotion-38 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -946,7 +1025,7 @@ Array [
   font-weight: 400;
 }
 
-.emotion-27 {
+.emotion-37 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1000,44 +1079,44 @@ Array [
   display: flex;
 }
 
-.emotion-25 {
+.emotion-35 {
   height: auto;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
 
-.emotion-25 tr {
+.emotion-35 tr {
   background-color: #252525;
 }
 
-.emotion-25 tr:nth-of-type(2n) {
+.emotion-35 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-25 tr:hover {
+.emotion-35 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-25 tr:hover .actions {
+.emotion-35 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-25 tr:hover td {
+.emotion-35 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-25 tr:hover td:first-of-type {
+.emotion-35 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-25 tr:hover td:last-of-type {
+.emotion-35 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-25 td {
+.emotion-35 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1049,16 +1128,25 @@ Array [
   border-right: 0;
 }
 
-.emotion-25 td:first-of-type {
+.emotion-35 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-25 td:last-of-type {
+.emotion-35 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-10 {
+.emotion-14 {
+  cursor: pointer;
+}
+
+.emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-11 {
   display: inline-block;
   color: #191919;
   background-color: #ebb52e;
@@ -1070,12 +1158,12 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-12 {
+.emotion-13 {
   position: relative;
   height: 100%;
 }
 
-.emotion-11 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1110,21 +1198,21 @@ Array [
   margin: -6px;
 }
 
-.emotion-11:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11:hover,
-.emotion-11.focus-visible:focus {
+.emotion-12:hover,
+.emotion-12.focus-visible:focus {
   color: #ffffff !important;
 }
 
-.emotion-22 {
+.emotion-31 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -1137,7 +1225,7 @@ Array [
 }
 
 <div
-    className="emotion-28"
+    className="emotion-38"
   >
     <div
       className="emotion-1"
@@ -1152,13 +1240,13 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-27"
+      className="emotion-37"
     >
       <div
-        className="emotion-26"
+        className="emotion-36"
       >
         <table
-          className="emotion-25"
+          className="emotion-35"
         >
           <thead>
             <tr>
@@ -1207,9 +1295,19 @@ Array [
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test
+                </a>
               </td>
               <td>
                 Amazon Web Service (AWS)
@@ -1225,18 +1323,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-11"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1249,9 +1347,19 @@ Array [
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test2
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test2
+                </a>
               </td>
               <td>
                 Azure
@@ -1267,18 +1375,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-11"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1291,9 +1399,19 @@ Array [
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test3
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test3
+                </a>
               </td>
               <td>
                 Google Cloud Platform (GCP)
@@ -1309,18 +1427,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-11"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1333,9 +1451,19 @@ Array [
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test4
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test4
+                </a>
               </td>
               <td>
                 Unknown
@@ -1351,18 +1479,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-11"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1375,9 +1503,19 @@ Array [
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test5
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test5
+                </a>
               </td>
               <td>
                 Google Cloud Platform (GCP)
@@ -1393,18 +1531,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-22"
+                  className="emotion-31"
                 >
                   Movies
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1487,9 +1625,19 @@ Array [
 }
 
 .emotion-0 a {
-  color: #009f22;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-0 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
 }
 
 <div
@@ -1953,9 +2101,19 @@ Array [
 }
 
 .emotion-0 a {
-  color: #009f22;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-0 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
 }
 
 <div
@@ -2094,7 +2252,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-28 {
+  .emotion-38 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2131,7 +2289,7 @@ Array [
   font-weight: 400;
 }
 
-.emotion-27 {
+.emotion-37 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2185,44 +2343,44 @@ Array [
   display: flex;
 }
 
-.emotion-25 {
+.emotion-35 {
   height: auto;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
 
-.emotion-25 tr {
+.emotion-35 tr {
   background-color: #252525;
 }
 
-.emotion-25 tr:nth-of-type(2n) {
+.emotion-35 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-25 tr:hover {
+.emotion-35 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-25 tr:hover .actions {
+.emotion-35 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-25 tr:hover td {
+.emotion-35 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-25 tr:hover td:first-of-type {
+.emotion-35 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-25 tr:hover td:last-of-type {
+.emotion-35 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-25 td {
+.emotion-35 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2234,16 +2392,25 @@ Array [
   border-right: 0;
 }
 
-.emotion-25 td:first-of-type {
+.emotion-35 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-25 td:last-of-type {
+.emotion-35 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-10 {
+.emotion-14 {
+  cursor: pointer;
+}
+
+.emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-11 {
   display: inline-block;
   color: #191919;
   background-color: #ebb52e;
@@ -2255,12 +2422,12 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-12 {
+.emotion-13 {
   position: relative;
   height: 100%;
 }
 
-.emotion-11 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2295,21 +2462,21 @@ Array [
   margin: -6px;
 }
 
-.emotion-11:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11:hover,
-.emotion-11.focus-visible:focus {
+.emotion-12:hover,
+.emotion-12.focus-visible:focus {
   color: #ffffff !important;
 }
 
-.emotion-22 {
+.emotion-31 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -2322,7 +2489,7 @@ Array [
 }
 
 <div
-    className="emotion-28"
+    className="emotion-38"
   >
     <div
       className="emotion-1"
@@ -2337,13 +2504,13 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-27"
+      className="emotion-37"
     >
       <div
-        className="emotion-26"
+        className="emotion-36"
       >
         <table
-          className="emotion-25"
+          className="emotion-35"
         >
           <thead>
             <tr>
@@ -2392,9 +2559,19 @@ Array [
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test
+                </a>
               </td>
               <td>
                 Amazon Web Service (AWS)
@@ -2410,18 +2587,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-11"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2434,9 +2611,19 @@ Array [
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test2
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test2
+                </a>
               </td>
               <td>
                 Azure
@@ -2452,18 +2639,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-11"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2476,9 +2663,19 @@ Array [
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test3
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test3
+                </a>
               </td>
               <td>
                 Google Cloud Platform (GCP)
@@ -2494,18 +2691,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-11"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2518,9 +2715,19 @@ Array [
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test4
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test4
+                </a>
               </td>
               <td>
                 Unknown
@@ -2536,18 +2743,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-11"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2560,9 +2767,19 @@ Array [
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-14"
+              onClick={[Function]}
+            >
               <td>
-                test5
+                <a
+                  className="emotion-10"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test5
+                </a>
               </td>
               <td>
                 Google Cloud Platform (GCP)
@@ -2578,18 +2795,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-22"
+                  className="emotion-31"
                 >
                   Movies
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-12"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
