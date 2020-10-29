@@ -45,15 +45,15 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
     def __init__(self):
         super(AsyncVideoIntelligenceProcessor, self).__init__()
-        self.add_arg(Argument('detect_explicit', 'int', default=-1,
+        self.add_arg(Argument('detect_explicit', 'int', default=False,
                               toolTip=self.tool_tips['detect_explicit']))
-        self.add_arg(Argument('detect_labels', 'float', default=-1,
+        self.add_arg(Argument('detect_labels', 'float', default=False,
                               toolTip=self.tool_tips['detect_labels']))
         self.add_arg(Argument('detect_text', 'bool', default=False,
                               toolTip=self.tool_tips['detect_text']))
-        self.add_arg(Argument('detect_objects', 'float', default=-1,
+        self.add_arg(Argument('detect_objects', 'float', default=False,
                               toolTip=self.tool_tips['detect_objects']))
-        self.add_arg(Argument('detect_logos', 'float', default=-1,
+        self.add_arg(Argument('detect_logos', 'float', default=False,
                               toolTip=self.tool_tips['detect_logos']))
         self.add_arg(Argument('detect_speech', 'bool', default=False,
                               toolTip=self.tool_tips['detect_speech']))
@@ -85,13 +85,13 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                                        'gcp',
                                        'video-intelligence.dat')
 
-        if self.arg_value('detect_logos') != -1:
+        if self.arg_value('detect_logos'):
             self.handle_detect_logos(asset, annotation_result)
 
-        if self.arg_value('detect_objects') != -1:
+        if self.arg_value('detect_objects'):
             self.handle_detect_objects(asset, annotation_result)
 
-        if self.arg_value('detect_labels') != -1:
+        if self.arg_value('detect_labels'):
             self.handle_detect_labels(asset, annotation_result)
 
         if self.arg_value('detect_text'):
@@ -100,7 +100,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         if self.arg_value('detect_speech'):
             self.handle_detect_speech(asset, annotation_result)
 
-        if self.arg_value('detect_explicit') != -1:
+        if self.arg_value('detect_explicit'):
             self.handle_detect_explicit(asset, annotation_result)
 
     def get_video_proxy_uri(self, asset):
@@ -227,7 +227,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
             pred = Prediction(self.conf_labels[frame.pornography_likelihood], 1)
             analysis.add_prediction(pred)
-            if frame.pornography_likelihood >= self.arg_value("detect_explicit"):
+            if frame.pornography_likelihood >= 4:
                 analysis.set_attr('explicit', True)
 
         asset.add_analysis('gcp-video-explicit-detection', analysis)
@@ -246,9 +246,9 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         """
         features = []
         video_context = {}
-        if self.arg_value('detect_explicit') > -1:
+        if self.arg_value('detect_explicit'):
             features.append(videointelligence.enums.Feature.EXPLICIT_CONTENT_DETECTION)
-        if self.arg_value('detect_labels') > -1:
+        if self.arg_value('detect_labels'):
             features.append(videointelligence.enums.Feature.LABEL_DETECTION)
         if self.arg_value('detect_text'):
             features.append(videointelligence.enums.Feature.TEXT_DETECTION)
@@ -258,9 +258,9 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                     language_code="en-US", enable_automatic_punctuation=True)
             video_context = videointelligence.types.VideoContext(
                     speech_transcription_config=config)
-        if self.arg_value('detect_objects') > -1:
+        if self.arg_value('detect_objects'):
             features.append(videointelligence.enums.Feature.OBJECT_TRACKING)
-        if self.arg_value('detect_logos') > -1:
+        if self.arg_value('detect_logos'):
             features.append(videointelligence.enums.Feature.LOGO_RECOGNITION)
 
         logger.info("Calling Google Video Intelligence,  ctx={}".format(video_context))
