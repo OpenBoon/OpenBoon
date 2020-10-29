@@ -365,7 +365,8 @@ class AzureVisionLogoDetection(AbstractAzureVisionProcessor):
         super(AzureVisionLogoDetection, self).__init__()
 
     def process(self, frame):
-        """Process the given frame for predicting and adding labels to an asset
+        """
+        Process the given frame for predicting and adding labels to an asset
 
         Args:
             frame (Frame): Frame to be processed

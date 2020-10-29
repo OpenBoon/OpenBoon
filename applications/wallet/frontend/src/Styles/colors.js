@@ -29,10 +29,12 @@ const colors = {
     sky: {
       base: '#0074f5',
       background: '#dbecff',
+      strong: '#005dc4',
     },
     grass: {
       base: '#009f22',
       background: '#e3f7e8',
+      strong: '#00791a',
     },
   },
 

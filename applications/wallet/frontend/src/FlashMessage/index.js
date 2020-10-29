@@ -18,7 +18,8 @@ const STYLES = {
         color={colors.signal.grass.base}
       />
     ),
-    linkColor: colors.signal.grass.base,
+    linkBackground: colors.signal.grass.base,
+    linkHover: colors.signal.grass.strong,
   },
   ERROR: {
     backgroundColor: colors.signal.warning.background,
@@ -28,7 +29,8 @@ const STYLES = {
         color={colors.signal.warning.base}
       />
     ),
-    linkColor: colors.signal.warning.base,
+    linkBackground: colors.structure.smoke,
+    linkHover: colors.structure.mattGrey,
   },
   INFO: {
     backgroundColor: colors.signal.sky.background,
@@ -38,7 +40,8 @@ const STYLES = {
         color={colors.signal.sky.base}
       />
     ),
-    linkColor: colors.signal.sky.base,
+    linkBackground: colors.signal.sky.base,
+    linkHover: colors.signal.sky.strong,
   },
   PROCESSING: {
     backgroundColor: colors.signal.sky.background,
@@ -49,7 +52,8 @@ const STYLES = {
         css={{ animation: constants.animations.infiniteRotation }}
       />
     ),
-    linkColor: colors.signal.sky.base,
+    linkBackground: colors.signal.sky.base,
+    linkHover: colors.signal.sky.strong,
   },
 }
 
@@ -80,8 +84,17 @@ const FlashMessage = ({ variant, children }) => {
           fontWeight: typography.weight.medium,
           whiteSpace: 'pre-line',
           a: {
-            color: STYLES[variant].linkColor,
-            textDecoration: 'underline',
+            color: colors.structure.white,
+            backgroundColor: STYLES[variant].linkBackground,
+            padding: spacing.small + spacing.mini,
+            marginLeft: spacing.base,
+            paddingLeft: spacing.base,
+            paddingRight: spacing.base,
+            borderRadius: constants.borderRadius.small,
+            ':hover': {
+              textDecoration: 'none',
+              backgroundColor: STYLES[variant].linkHover,
+            },
           },
         }}
       >
