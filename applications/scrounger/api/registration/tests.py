@@ -1,41 +1,52 @@
 import json
-import pytest
 
+from django.test import TestCase, Client
 from django.urls import reverse
+from django.contrib.auth import get_user_model
 
 
-pytestmark = pytest.mark.django_db
+User = get_user_model()
 
 
-class LoginTests:
+class AuthTestCase(TestCase):
 
-    def test_form_data(self, client, user):
-        response = client.post(reverse('login'),
-                               {'username': 'user',
-                                'password': 'letmein'})
-        assert response.status_code == 200
+    def setUp(self):
+        User.objects.create_user('user', 'user@fake.com', 'letmein')
+        self.client = Client()
 
 
-    def test_json(self, client, user):
-        response = client.post(reverse('login'),
-                               json.dumps({'username': 'user', 'password': 'letmein'}),
-                               content_type='application/json')
-        assert response.status_code == 200
+class LoginTestCase(AuthTestCase):
 
+    def test_form_data(self):
+        response = self.client.post(reverse('login'),
+                                    {'username': 'user',
+                                     'password': 'letmein'})
+        self.assertEqual(response.status_code, 200)
 
-    def test_inactive_user(self, client, user):
+    def test_json(self):
+        response = self.client.post(reverse('login'),
+                                    json.dumps({'username': 'user',
+                                                'password': 'letmein'}),
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+
+    def test_inactive_user(self):
+        user = User.objects.get(username='user')
         user.is_active = False
         user.save()
 
-        response = client.post(reverse('login'),
-                               {'username': 'user',
-                                'password': 'letmein'})
-        assert response.status_code == 401
-        assert response.json() == {'detail': 'No active user for the given '
-                                             'email/password combination found.'}
+        response = self.client.post(reverse('login'),
+                                    {'username': 'user',
+                                     'password': 'letmein'})
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {'detail': 'No active user for the given '
+                                                     'email/password combination found.'})
 
 
-def test_logout(client, user):
-    assert client.login(username='user', password='letmein')
-    response = client.post(reverse('logout'))
-    assert response.status_code == 200
+class LogoutTestCase(AuthTestCase):
+
+    def test_logout(self):
+        self.assertTrue(self.client.login(username='user',
+                                          password='letmein'))
+        response = self.client.post(reverse('logout'))
+        self.assertEqual(response.status_code, 200)
