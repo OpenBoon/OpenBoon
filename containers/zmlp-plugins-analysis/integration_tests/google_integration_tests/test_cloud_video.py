@@ -51,10 +51,11 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
         assert "Nike" in timeline.tracks
         assert "Ford" in timeline.tracks
 
+    @patch("zmlp_analysis.google.cloud_video.proxy.get_proxy_level", return_value=1)
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch.object(file_storage.assets, 'store_blob')
-    def test_detect_labels(self, store_blob_patch, native_patch, tl_patch):
+    def test_detect_labels(self, store_blob_patch, native_patch, tl_patch, _):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         store_blob_patch.return_value = None
         native_patch.return_value = uri
@@ -72,7 +73,7 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
         analysis = frame.asset.get_attr('analysis.gcp-video-label-detection')
         assert 'labels' == analysis['type']
         assert 'stage' in get_prediction_labels(analysis)
-        assert 12 == analysis['count']
+        assert 16 == analysis['count']
 
         timeline = tl_patch.call_args_list[0][0][0]
         assert "television program" in timeline.tracks
