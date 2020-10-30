@@ -21,7 +21,6 @@ const PIPELINE_COLORS = [
 
 const CONTAINER_HEIGHT = 9
 const HOVER_HEIGHT = 13
-const MIN_WIDTH = 8
 
 const MetadataPrettyMetricsBar = ({ pipeline }) => {
   const [legend, setLegend] = useState({})
@@ -63,9 +62,10 @@ const MetadataPrettyMetricsBar = ({ pipeline }) => {
               onMouseLeave={() => setLegend({})}
               onMouseDown={(event) => event.preventDefault()}
               css={{
+                margin: 0,
+                padding: 0,
                 height: '100%',
                 flex: `${processor.executionTime} 0 auto`,
-                minWidth: MIN_WIDTH,
                 backgroundColor: PIPELINE_COLORS[colorIndex],
                 border: '2px solid transparent',
                 ':hover, &.focus-visible:focus': {

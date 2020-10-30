@@ -19,5 +19,5 @@ class ZviLabelDetectionProcessorTests(PluginUnitTestCase):
 
         analysis = frame.asset.get_attr('analysis.zvi-label-detection')
         assert 'toucan' in get_prediction_labels(analysis)
-        assert 1 == analysis['count']
+        assert 5 == analysis['count']
         assert 'labels' == analysis['type']

@@ -420,11 +420,12 @@ Array [
 }
 
 .emotion-62 {
+  margin: 0;
+  padding: 0;
   height: 100%;
   -webkit-flex: 0.11 0 auto;
   -ms-flex: 0.11 0 auto;
   flex: 0.11 0 auto;
-  min-width: 8px;
   background-color: #0074f5;
   border: 2px solid transparent;
 }
@@ -449,11 +450,12 @@ Array [
 }
 
 .emotion-63 {
+  margin: 0;
+  padding: 0;
   height: 100%;
   -webkit-flex: 0.26 0 auto;
   -ms-flex: 0.26 0 auto;
   flex: 0.26 0 auto;
-  min-width: 8px;
   background-color: #a03dc7;
   border: 2px solid transparent;
 }
@@ -478,11 +480,12 @@ Array [
 }
 
 .emotion-64 {
+  margin: 0;
+  padding: 0;
   height: 100%;
   -webkit-flex: 0 0 auto;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
-  min-width: 8px;
   background-color: #d6680b;
   border: 2px solid transparent;
 }
@@ -507,11 +510,12 @@ Array [
 }
 
 .emotion-65 {
+  margin: 0;
+  padding: 0;
   height: 100%;
   -webkit-flex: 0 0 auto;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
-  min-width: 8px;
   background-color: #ebb52e;
   border: 2px solid transparent;
 }
@@ -536,11 +540,12 @@ Array [
 }
 
 .emotion-66 {
+  margin: 0;
+  padding: 0;
   height: 100%;
   -webkit-flex: 0 0 auto;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
-  min-width: 8px;
   background-color: #00bdc1;
   border: 2px solid transparent;
 }

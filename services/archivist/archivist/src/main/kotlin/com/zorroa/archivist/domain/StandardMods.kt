@@ -495,7 +495,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                         ProcessorRef(
                             "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
-                            mapOf("detect_labels" to 0.15)
+                            mapOf("detect_labels" to true)
                         )
                     )
                 )
@@ -516,7 +516,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                         ProcessorRef(
                             "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
-                            mapOf("detect_logos" to 0.15)
+                            mapOf("detect_logos" to true)
                         )
                     )
                 )
@@ -537,7 +537,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                         ProcessorRef(
                             "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
-                            mapOf("detect_objects" to 0.15)
+                            mapOf("detect_objects" to true)
                         )
                     )
                 )
@@ -558,7 +558,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                         ProcessorRef(
                             "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
-                            mapOf("detect_explicit" to 4)
+                            mapOf("detect_explicit" to true)
                         )
                     )
                 )
