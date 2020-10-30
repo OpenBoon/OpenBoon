@@ -7,7 +7,7 @@ import TimelineCaptions from '../Captions'
 const noop = () => {}
 
 describe('<TimelineCaptions />', () => {
-  it('should render a placeholder div in the absence of tracks', () => {
+  it('should return null in the absence of tracks', () => {
     const component = TestRenderer.create(
       <TimelineCaptions
         videoRef={{ current: undefined }}
@@ -15,7 +15,29 @@ describe('<TimelineCaptions />', () => {
       />,
     )
 
-    expect(component.toJSON()).toMatchSnapshot()
+    expect(component.toJSON()).toBe(null)
+  })
+
+  it('should return null in the absence of caption tracks', () => {
+    const metadataTrack = { ...tracks[2] }
+
+    const component = TestRenderer.create(
+      <TimelineCaptions
+        videoRef={{
+          current: {
+            textTracks: {
+              0: metadataTrack,
+              length: 1,
+              addEventListener: noop,
+              removeEventListener: noop,
+            },
+          },
+        }}
+        initialTrackIndex={-1}
+      />,
+    )
+
+    expect(component.toJSON()).toBe(null)
   })
 
   it('should mount and unmount event listeners', () => {
