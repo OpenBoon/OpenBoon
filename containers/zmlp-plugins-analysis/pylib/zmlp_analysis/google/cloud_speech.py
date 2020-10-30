@@ -32,7 +32,8 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         self.add_arg(Argument('language', 'string', default='en-US',
                               toolTip=self.tool_tips['language']))
         self.add_arg(Argument('alt_languages', 'list',
-                              toolTip=self.tool_tips['alt_languages']))
+                              toolTip=self.tool_tips['alt_languages'],
+                              default=['en-GB', 'fr-FR', 'es-US']))
         self.speech_client = None
         self.audio_channels = 2
         self.audio_sample_rate = 44100
