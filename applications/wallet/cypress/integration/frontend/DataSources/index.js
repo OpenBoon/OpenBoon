@@ -28,7 +28,7 @@ describe('DataSources', function () {
      * Delete
      */
 
-    cy.contains(dataSourceName).siblings().last().click()
+    cy.contains(dataSourceName).parent().siblings().last().click()
 
     cy.contains('Delete').click()
 
