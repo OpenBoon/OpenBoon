@@ -1,6 +1,7 @@
 import os
 
 import stringcase
+from django.http import StreamingHttpResponse
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -45,7 +46,8 @@ def task_item_modifier(request, task):
     task['actions'] = {'retry': f'{task_url}retry/',
                        'assets': f'{task_url}assets/',
                        'script': f'{task_url}script/',
-                       'errors': f'{task_url}errors/'}
+                       'errors': f'{task_url}errors/',
+                       'logs': f'{task_url}logs/'}
     task['assetCounts'] = set_asset_total_count(task['assetCounts'])
 
 
@@ -337,3 +339,10 @@ class TaskViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
                                            search_filter={'taskIds': [pk]},
                                            serializer_class=TaskErrorViewSet.serializer_class,
                                            base_url=TaskErrorViewSet.zmlp_root_api_path)
+
+    @action(detail=True, methods=['get'])
+    def logs(self, request, project_pk, pk):
+        """Streams the logs for a task."""
+        path = os.path.join(self.zmlp_root_api_path, pk, '_log')
+        return StreamingHttpResponse(self.stream_zmlp_endpoint(path),
+                                     content_type='text/plain')
