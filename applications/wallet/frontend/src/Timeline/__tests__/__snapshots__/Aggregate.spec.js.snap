@@ -95,7 +95,7 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  overflow: overlay;
+  overflow: hidden;
 }
 
 .emotion-63 {
@@ -657,7 +657,7 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  overflow: overlay;
+  overflow: hidden;
 }
 
 .emotion-105 {

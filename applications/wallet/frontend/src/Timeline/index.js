@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
+import { useScroller } from '../Scroll/helpers'
+
 import { colors, spacing, constants } from '../Styles'
 
 import DoubleChevronSvg from '../Icons/doubleChevron.svg'
@@ -65,6 +67,17 @@ const Timeline = ({ videoRef, length }) => {
     dispatch({ type: ACTIONS.UPDATE_TIMELINES, payload: { value } })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const timelineRef = useScroller({
+    namespace: 'timeline',
+    isWheelEmitter: true,
+  })
+
+  const rulerRef = useScroller({
+    namespace: 'timeline',
+    isWheelListener: true,
+    isScrollListener: true,
+  })
 
   return (
     <ResizeableWithMessage
@@ -205,6 +218,7 @@ const Timeline = ({ videoRef, length }) => {
           }}
         >
           <div
+            ref={timelineRef}
             css={{
               flex: 1,
               display: 'flex',
@@ -227,7 +241,7 @@ const Timeline = ({ videoRef, length }) => {
             >
               <TimelineFilterTracks settings={settings} dispatch={dispatch} />
 
-              <div css={{ flex: 1, overflow: 'overlay' }}>
+              <div ref={rulerRef} css={{ flex: 1, overflow: 'hidden' }}>
                 <div css={{ width: `${settings.zoom}%` }}>
                   <TimelineRuler
                     videoRef={videoRef}
