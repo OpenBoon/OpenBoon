@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, spacing } from '../Styles'
 
+import { useScroller } from '../Scroll/helpers'
+
 import { filterTimelines } from './helpers'
 
 import TimelineAccordion, { COLOR_TAB_WIDTH } from './Accordion'
@@ -16,12 +18,25 @@ const TimelineTimelines = ({
 }) => {
   const filteredTimelines = filterTimelines({ timelines, settings })
 
+  const timelinesRef = useScroller({
+    namespace: 'timeline',
+    isWheelListener: true,
+  })
+
+  const tracksRef = useScroller({
+    namespace: 'timeline',
+    isWheelListener: true,
+    isScrollEmitter: true,
+    isScrollListener: true,
+  })
+
   return (
     <div
+      ref={timelinesRef}
       css={{
         flex: 1,
         display: 'flex',
-        overflow: 'overlay',
+        overflow: 'hidden',
         marginLeft: -settings.width,
         borderTop: constants.borders.regular.smoke,
       }}
@@ -86,10 +101,10 @@ const TimelineTimelines = ({
       </div>
 
       <div
+        ref={tracksRef}
         css={{
           flex: 1,
-          overflowY: 'hidden',
-          overflowX: 'overlay',
+          overflow: 'hidden',
           height: 'fit-content',
         }}
       >

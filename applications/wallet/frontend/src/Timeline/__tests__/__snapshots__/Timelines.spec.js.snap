@@ -9,7 +9,7 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  overflow: overlay;
+  overflow: hidden;
   margin-left: -200px;
   border-top: 1px solid #3b3b3b;
 }
@@ -164,8 +164,7 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  overflow-y: hidden;
-  overflow-x: overlay;
+  overflow: hidden;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
@@ -668,7 +667,7 @@ exports[`<TimelineTimelines /> should render properly with Search Highlights Onl
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  overflow: overlay;
+  overflow: hidden;
   margin-left: -200px;
   border-top: 1px solid #3b3b3b;
 }
@@ -775,8 +774,7 @@ exports[`<TimelineTimelines /> should render properly with Search Highlights Onl
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  overflow-y: hidden;
-  overflow-x: overlay;
+  overflow: hidden;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
