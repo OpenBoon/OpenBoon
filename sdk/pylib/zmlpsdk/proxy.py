@@ -91,7 +91,7 @@ def get_audio_proxy(asset, auto_create=True):
         auto_create (bool): Make the audio proxy if one does not exist
 
     Returns:
-        dict: A URI to an audio proxy.
+        dict: A ZVI file record to the audio proxy.
     """
     audio_proxy = asset.get_files(category="audio", name="audio_proxy.flac")
     if audio_proxy:
