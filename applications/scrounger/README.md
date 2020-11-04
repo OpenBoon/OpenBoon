@@ -45,11 +45,11 @@ directory.
 
 ### Running the tests
 
-We use `pytest` for running all of our tests. Assuming the dependencies from the pipenv
-file have been installed, running the tests for the backend is as simple as:
+We use the built-in Django test runner for running all of our tests. Running the tests 
+for the backend is as simple as:
 
 1. `cd` into the `scrounger/api` directory
-1. Run: `pytest`
+1. Run: `./manage.py test`
 
 ## Build the Docker Container
 

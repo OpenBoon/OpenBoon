@@ -46,6 +46,12 @@ const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
 
   if (!textTracks || !textTracks[0]) return null
 
+  const captionTracks = Object.values(textTracks).filter(
+    ({ kind }) => kind === 'captions',
+  )
+
+  if (captionTracks.length === 0) return null
+
   return (
     <div css={{ display: 'flex' }}>
       <Button
@@ -98,44 +104,42 @@ const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
         {({ onBlur, onClick }) => (
           <div>
             <ul>
-              {Object.values(textTracks)
-                .filter(({ kind }) => kind === 'captions')
-                .map(({ label }) => {
-                  const index = Object.values(textTracks).findIndex(
-                    ({ label: l }) => l === label,
-                  )
-                  return (
-                    <li key={label}>
-                      <Button
-                        variant={VARIANTS.MENU_ITEM}
-                        css={
-                          trackIndex === index
-                            ? {
-                                color: colors.key.white,
-                                backgroundColor: colors.structure.mattGrey,
-                              }
-                            : {}
+              {captionTracks.map(({ label }) => {
+                const index = Object.values(textTracks).findIndex(
+                  ({ label: l }) => l === label,
+                )
+                return (
+                  <li key={label}>
+                    <Button
+                      variant={VARIANTS.MENU_ITEM}
+                      css={
+                        trackIndex === index
+                          ? {
+                              color: colors.key.white,
+                              backgroundColor: colors.structure.mattGrey,
+                            }
+                          : {}
+                      }
+                      onBlur={onBlur}
+                      onClick={(event) => {
+                        for (let i = 0; i < textTracks.length; i += 1) {
+                          textTracks[i].mode = 'disabled'
                         }
-                        onBlur={onBlur}
-                        onClick={(event) => {
-                          for (let i = 0; i < textTracks.length; i += 1) {
-                            textTracks[i].mode = 'disabled'
-                          }
 
-                          textTracks[index].mode = 'showing'
+                        textTracks[index].mode = 'showing'
 
-                          lastEnabledTrackIndex = index
+                        lastEnabledTrackIndex = index
 
-                          onClick(event)
+                        onClick(event)
 
-                          onBlur(event)
-                        }}
-                      >
-                        {label}
-                      </Button>
-                    </li>
-                  )
-                })}
+                        onBlur(event)
+                      }}
+                    >
+                      {label}
+                    </Button>
+                  </li>
+                )
+              })}
             </ul>
           </div>
         )}

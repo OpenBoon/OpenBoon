@@ -70,7 +70,8 @@ enum class LogObject {
     DEPEND,
     MODEL,
     AUTOML,
-    FIELD
+    FIELD,
+    CLIP
 }
 
 /**

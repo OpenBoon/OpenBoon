@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, spacing, zIndex } from '../Styles'
 
+import { useScroller } from '../Scroll/helpers'
+
 import Menu from '../Menu'
 import MenuButton from '../Menu/Button'
 import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
@@ -33,6 +35,13 @@ const TimelineAggregate = ({
   const isAllVisible = Object.values(settings.timelines).every(
     ({ isVisible }) => isVisible === true,
   )
+
+  const aggregateRef = useScroller({
+    namespace: 'timeline',
+    isWheelListener: true,
+    isScrollEmitter: true,
+    isScrollListener: true,
+  })
 
   return (
     <div
@@ -127,7 +136,7 @@ const TimelineAggregate = ({
           )}
         </Menu>
       </div>
-      <div css={{ flex: 1, overflow: 'overlay' }}>
+      <div ref={aggregateRef} css={{ flex: 1, overflow: 'hidden' }}>
         <div
           css={{
             width: `${settings.zoom}%`,

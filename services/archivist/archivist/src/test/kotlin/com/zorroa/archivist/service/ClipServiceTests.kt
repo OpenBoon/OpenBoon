@@ -116,4 +116,13 @@ class ClipServiceTests : AbstractTest() {
         assertEquals(listOf("cat"), data["content"])
         assertEquals(0.5, data["score"])
     }
+
+    @Test
+    fun testDeleteClipsByAssets() {
+        clipService.deleteClips(listOf(asset.id))
+        refreshElastic()
+
+        val search = clipService.searchClips(asset, mapOf(), mapOf())
+        assertEquals(0, search.hits.hits.size)
+    }
 }
