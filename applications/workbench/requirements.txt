@@ -28,3 +28,4 @@ MulticoreTSNE
 cvlib
 nltk
 facenet-pytorch
+clarifai-grpc

@@ -19,6 +19,7 @@ cmake
 cvlib
 matplotlib
 clarifai
+clarifai-grpc==6.10.0
 pytesseract
 facenet-pytorch
 boto3
