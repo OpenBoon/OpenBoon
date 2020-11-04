@@ -34,7 +34,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         analysis = self.frame.asset.get_analysis('clarifai-celebrity-model')
         assert 'ryan gosling' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 1 == analysis['count']
+        assert 20 == analysis['count']
 
     @patch('zmlp_analysis.clarifai.images.regions.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
@@ -47,7 +47,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         analysis = self.frame.asset.get_analysis('clarifai-demographics-model')
         assert 'feminine' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 23 == analysis['count']
+        assert 29 == analysis['count']
 
 
 class PublicModels:

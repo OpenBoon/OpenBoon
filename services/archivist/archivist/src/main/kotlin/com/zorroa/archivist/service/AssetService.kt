@@ -226,6 +226,9 @@ class AssetServiceImpl : AssetService {
     @Autowired
     lateinit var modelJdbcDao: ModelJdbcDao
 
+    @Autowired
+    private final lateinit var clipService: ClipService
+
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
         val rsp = rest.client.get(rest.newGetRequest(id), RequestOptions.DEFAULT)
@@ -570,6 +573,9 @@ class AssetServiceImpl : AssetService {
                     logger.warn("Failed to delete files asset $assetId", ex)
                 }
             }
+
+            logger.info("Removing Clips related to removed assets")
+            clipService.deleteClips(removed)
         }
 
         return BatchDeleteAssetResponse(removed, failures)
