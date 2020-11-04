@@ -59,10 +59,6 @@ variable "clarifai-key" {
   description = "Secret key to allow access to the Clarifai API."
 }
 
-variable "azure-key" {
-  description = "Secret key to allow access to the Azure ML API."
-}
-
 variable "aws-key" {
   description = "Secret key to allow access to the AWS ML API."
 }
