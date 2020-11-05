@@ -6,11 +6,11 @@ import requests
 from botocore.exceptions import ClientError
 
 from zmlp_analysis.aws.util import TranscribeCompleteWaiter, AwsEnv
+from zmlp_analysis.utils.prechecks import Prechecks
 from zmlpsdk import file_storage, FileTypes, Argument, AssetProcessor, ZmlpEnv
 from zmlpsdk.analysis import ContentDetectionAnalysis
-from zmlpsdk.proxy import get_audio_proxy, get_video_proxy
 from zmlpsdk.audio import has_audio_channel
-
+from zmlpsdk.proxy import get_audio_proxy, get_video_proxy
 from .timeline import save_transcribe_timeline, save_transcribe_webvtt, save_raw_transcribe_result
 
 
@@ -36,9 +36,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
         asset = frame.asset
         asset_id = asset.id
 
-        if asset.get_attr('media.length') > 120:
-            self.logger.warning(
-                'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
+        if not Prechecks.is_valid_video_length(asset):
             return
 
         # Look for a .flac audio proxy first.  If one doesn't exist we can

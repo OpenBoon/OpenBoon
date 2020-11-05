@@ -9,6 +9,7 @@ verify_ssl = true
 django = "*"
 flake8 = "*"
 gunicorn = "*"
+zvi-client = "*"
 
 [requires]
 python_version = "3.7"

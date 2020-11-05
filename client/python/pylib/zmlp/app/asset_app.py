@@ -276,7 +276,7 @@ class AssetApp(object):
         Returns:
             Job: The job responsible for processing the assets.
         """
-        asset_ids = [getattr(asset, "id") or asset for asset in as_collection(assets)]
+        asset_ids = [getattr(asset, "id", asset) for asset in as_collection(assets)]
         body = {
             "search": {
                 "query": {
@@ -285,8 +285,9 @@ class AssetApp(object):
                     }
                 }
             },
-            "modules": modules
+            "modules": as_collection(modules)
         }
+
         return self.app.client.post("/api/v3/assets/_search/reprocess", body)
 
     def get_asset(self, id):
