@@ -21,7 +21,7 @@ def authentication_required(view_func):
     def wrapped_view(request, *args, **kwargs):
         if not request.user.is_authenticated:
             return JsonResponse({}, status=401)
-        return view_func()
+        return view_func(request, *args, **kwargs)
     return wrapped_view
 
 
@@ -168,6 +168,7 @@ def search_view(request):
     for asset in app.assets.search(search=search):
         assets.append({'name': asset.get_attr('source.filename'),
                        'path': asset.get_attr('source.path'),
+                       'type': asset.get_attr('mdedia.type'),
                        'id': asset.id})
 
     return JsonResponse({'assets': assets})
