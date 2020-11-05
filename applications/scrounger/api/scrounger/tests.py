@@ -52,4 +52,3 @@ class AuthTestCase(TestCase):
                     'username': self.user.username,
                     'email': self.user.email}
         self.assertEqual(json.loads(response.content), expected)
-
