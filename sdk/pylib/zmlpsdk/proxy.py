@@ -9,7 +9,8 @@ __all__ = [
     'get_proxy_level_path',
     'get_proxy_level',
     'get_audio_proxy',
-    'get_audio_proxy_uri'
+    'get_audio_proxy_uri',
+    'get_video_proxy'
 ]
 
 logger = logging.getLogger(__name__)
@@ -128,7 +129,7 @@ def get_audio_proxy_uri(asset, auto_create=True):
 
 def calculate_normalized_bbox(img_width, img_height, poly):
     """
-    Calculate points for normalized bouding box based on the given
+    Calculate points for normalized bounding box based on the given
     image width and height.
 
     Args:
