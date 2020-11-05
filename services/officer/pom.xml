@@ -136,6 +136,24 @@
             <version>1.6.0</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.13.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <version>1.5.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-stackdriver</artifactId>
+            <version>1.4.1</version>
+        </dependency>
     </dependencies>
 
     <build>

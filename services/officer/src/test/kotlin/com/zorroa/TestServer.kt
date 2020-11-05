@@ -11,6 +11,7 @@ import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
 import spark.kotlin.stop
+import kotlin.test.assertNotNull
 
 class TestServer {
 
@@ -18,6 +19,7 @@ class TestServer {
         @BeforeClass
         @JvmStatic
         fun beforeClass() {
+            System.setProperty("REDIS_HOST", "localhost:6379")
             runServer(9876)
             Thread.sleep(1000)
         }
@@ -70,9 +72,12 @@ class TestServer {
         val prefix = IOHandler.PREFIX
         assertEquals("zmlp://pipeline-storage/$prefix/render_test", content["location"])
 
+        // Wait Assync rendering
+        Thread.sleep(5000)
         val exists = HttpRequest.post("http://localhost:9876/exists")
             .send(Json.mapper.writeValueAsString(opts))
         assertEquals(200, exists.code())
+        assertEquals(false, WorkQueue.unregisterRequest(opts))
     }
 
     @Test
@@ -82,5 +87,48 @@ class TestServer {
             .send(Json.mapper.writeValueAsString(opts))
             .code()
         assertEquals(rsp, 500)
+    }
+
+    @Test
+    fun testRepeatedRequest() {
+        WorkQueue.redis.pool.purge()
+
+        val opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
+        opts.page = 1
+        opts.outputDir = "render_test"
+        opts.requestId = "testId"
+
+        for (i in 0..10) {
+            postDocument(opts).code()
+        }
+
+        assert(WorkQueue.redis.pool.activeCount < 10)
+
+        WorkQueue.unregisterRequest(opts)
+        WorkQueue.redis.pool.purge()
+    }
+
+    @Test
+    fun testUnregister() {
+        val opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
+        opts.page = 1
+        opts.outputDir = "render_test"
+        opts.requestId = "testId"
+
+        val rsp = postDocument(opts).code()
+        assertNotNull(WorkQueue.redis.redisson?.getBucket<String>("testId"))
+        assertEquals(true, WorkQueue.unregisterRequest(opts))
+        assertEquals(false, WorkQueue.unregisterRequest(opts))
+        assertEquals(201, rsp)
+    }
+
+    private fun postDocument(opts: RenderRequest): HttpRequest {
+        return HttpRequest.post("http://localhost:9876/render")
+            .part(
+                "file",
+                "CPB7_WEB.pdf",
+                File("src/test/resources/CPB7_WEB.pdf")
+            )
+            .part("body", Json.mapper.writeValueAsString(opts))
     }
 }

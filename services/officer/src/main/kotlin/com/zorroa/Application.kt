@@ -22,7 +22,8 @@ class RenderRequest(
     var page: Int = -1,
     var outputDir: String = UUID.randomUUID().toString().replace("-", ""),
     var dpi: Int = 100,
-    var disableImageRender: Boolean = false
+    var disableImageRender: Boolean = false,
+    var requestId: String = UUID.randomUUID().toString()
 )
 
 /**
@@ -55,10 +56,6 @@ fun extract(opts: RenderRequest, input: InputStream): Document {
             }
         }
 
-        // calls close automatically
-        doc.use {
-            it.render()
-        }
         return doc
     }
 }
@@ -88,6 +85,7 @@ fun runServer(port: Int) {
 
     // Init the storage manager
     StorageManager
+    WorkQueue
 
     val threads = (os.availableProcessors * 3).coerceAtLeast(8)
     logger.info("init web server: threads=$threads port=$port")
@@ -122,6 +120,8 @@ fun runServer(port: Int) {
             } else {
                 val req = Json.mapper.readValue<RenderRequest>(body.inputStream)
                 val doc = extract(req, file.inputStream)
+                WorkQueue.execute(WorkQueueEntry(doc, req))
+
                 this.response.status(201)
                 Json.mapper.writeValueAsString(mapOf("location" to doc.ioHandler.getOutputUri()))
             }
