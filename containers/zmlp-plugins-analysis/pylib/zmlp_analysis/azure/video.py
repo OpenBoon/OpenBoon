@@ -1,4 +1,5 @@
 import zmlp_analysis.azure.vision as vision
+from zmlp_analysis.utils.prechecks import Prechecks
 import zmlpsdk.video as video
 from zmlpsdk import AssetProcessor, FileTypes, file_storage
 from zmlpsdk import proxy
@@ -20,8 +21,6 @@ __all__ = [
     'AzureVideoTextDetection'
 ]
 
-MAX_LENGTH_SEC = 120
-
 
 class AzureVideoAbstract(AssetProcessor):
     """
@@ -40,9 +39,7 @@ class AzureVideoAbstract(AssetProcessor):
         asset_id = asset.id
         final_time = asset.get_attr('media.length')
 
-        if final_time > MAX_LENGTH_SEC:
-            self.logger.warning(
-                'Skipping, video is longer than {} seconds.'.format(MAX_LENGTH_SEC))
+        if not Prechecks.is_valid_video_length(asset):
             return
 
         video_proxy = proxy.get_video_proxy(asset)
