@@ -75,7 +75,6 @@ object WorkQueue {
             true
         }
     }
-
 }
 
 class WorkQueueEntry(
