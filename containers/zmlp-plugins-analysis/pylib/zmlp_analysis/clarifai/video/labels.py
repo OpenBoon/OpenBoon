@@ -1,8 +1,11 @@
 import os
+import backoff
+from clarifai.errors import ApiClientError
 
 from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlp_analysis.clarifai.images import labels as labels_images
+from zmlp_analysis.clarifai.util import not_a_quota_exception
 
 __all__ = [
     'ClarifaiVideoLabelDetectionProcessor',
@@ -76,6 +79,10 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
         timeline = clip_tracker.build_timeline(final_time)
         video.save_timeline(timeline)
 
+    @backoff.on_exception(backoff.expo,
+                          ApiClientError,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
     def set_analysis(self, extractor, clip_tracker, model):
         """ Set up ClipTracker and Asset Detection Analysis
 
