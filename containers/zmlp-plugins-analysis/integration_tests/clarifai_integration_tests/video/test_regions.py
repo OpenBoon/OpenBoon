@@ -19,8 +19,8 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     def tearDown(self):
         del os.environ['CLARIFAI_KEY']
 
-    @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
-    @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
+    @patch("zmlp_analysis.clarifai.video.regions.video.save_timeline", return_value={})
+    @patch('zmlp_analysis.clarifai.video.regions.proxy.get_video_proxy')
     def run_process(self, proxy_path_patch, _, video_path, detector, attr, assertions):
         proxy_path_patch.return_value = video_path
 
@@ -43,7 +43,7 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             video_path=zorroa_test_path('video/julia_roberts.mp4'),
             detector=regions.ClarifaiVideoCelebrityDetectionProcessor(),
             attr='clarifai-celebrity-model',
-            assertions={'labels': ['julia roberts'], 'count': 1}
+            assertions={'labels': ['julia roberts'], 'count': 32}
         )
 
     def test_demographics_process(self):
@@ -51,5 +51,5 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             video_path=zorroa_test_path('video/julia_roberts.mp4'),
             detector=regions.ClarifaiVideoDemographicsDetectionProcessor(),
             attr='clarifai-demographics-model',
-            assertions={'labels': ['feminine', 'white'], 'count': 19}
+            assertions={'labels': ['feminine', 'white'], 'count': 32}
         )

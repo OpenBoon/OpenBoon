@@ -1,8 +1,11 @@
+import backoff
+from clarifai.errors import ApiClientError
+
 from zmlpsdk import AssetProcessor, Argument, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
-from zmlp_analysis.clarifai.util import get_clarifai_app
+from zmlp_analysis.clarifai.util import get_clarifai_app, not_a_quota_exception
 
 __all__ = [
     'ClarifaiColorDetectionProcessor',
@@ -39,7 +42,7 @@ class AbstractClarifaiProcessor(AssetProcessor):
         p_path = get_proxy_level_path(asset, 1)
 
         model = getattr(self.clarifai.public_models, self.model_name.replace("-", "_"))
-        response = model.predict_by_filename(p_path)
+        response = self.predict(model, p_path)
         labels = response['outputs'][0]['data'].get('colors')
         if not labels:
             return
@@ -52,6 +55,23 @@ class AbstractClarifaiProcessor(AssetProcessor):
                 hex=label['w3c']['hex']
             )
         asset.add_analysis("-".join([self.namespace, self.model_name]), analysis)
+
+    @backoff.on_exception(backoff.expo,
+                          ApiClientError,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
+    def predict(self, model, p_path):
+        """
+        Make a prediction from the filename for a given model
+
+        Args:
+            model: (Clarifai.Model) CLarifai Model type
+            p_path: (str) image path
+
+        Returns:
+            (dict) prediction response
+        """
+        return model.predict_by_filename(p_path)
 
     def emit_status(self, msg):
         """

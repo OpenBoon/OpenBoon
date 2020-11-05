@@ -39,7 +39,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             image_path=zorroa_test_path('images/set06/gif_tahoe.gif'),
             detector=labels.ClarifaiTravelDetectionProcessor(),
             attr='clarifai-travel-model',
-            assertions={'labels': ['Winter'], 'count': 7}
+            assertions={'labels': ['Winter'], 'count': 20}
         )
 
     def test_food_process(self):
@@ -47,7 +47,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             image_path=zorroa_test_path('images/set02/beer_kettle_01.jpg'),
             detector=labels.ClarifaiFoodDetectionProcessor(),
             attr='clarifai-food-model',
-            assertions={'labels': ['beer'], 'count': 19}
+            assertions={'labels': ['beer'], 'count': 20}
         )
 
     def test_apparel_process(self):
@@ -55,7 +55,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             image_path=zorroa_test_path('images/face-recognition/face2.jpg'),
             detector=labels.ClarifaiApparelDetectionProcessor(),
             attr='clarifai-apparel-model',
-            assertions={'labels': ['Necklace'], 'count': 6}
+            assertions={'labels': ['Necklace'], 'count': 20}
         )
 
     def test_wedding_process(self):
@@ -79,7 +79,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             image_path=zorroa_test_path('images/set10/nsfw1.jpg'),
             detector=labels.ClarifaiModerationDetectionProcessor(),
             attr='clarifai-moderation-model',
-            assertions={'labels': ['suggestive'], 'count': 1}
+            assertions={'labels': ['suggestive'], 'count': 5}
         )
 
     def test_textures_and_patterns_process(self):
@@ -87,5 +87,5 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             image_path=zorroa_test_path('images/set09/letter.png'),
             detector=labels.ClarifaiTexturesDetectionProcessor(),
             attr='clarifai-textures-and-patterns-model',
-            assertions={'labels': ['handwriting'], 'count': 1}
+            assertions={'labels': ['handwriting'], 'count': 20}
         )

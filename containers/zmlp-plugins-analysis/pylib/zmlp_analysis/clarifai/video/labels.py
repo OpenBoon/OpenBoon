@@ -79,10 +79,6 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
         timeline = clip_tracker.build_timeline(final_time)
         video.save_timeline(timeline)
 
-    @backoff.on_exception(backoff.expo,
-                          ApiClientError,
-                          max_time=3600,
-                          giveup=not_a_quota_exception)
     def set_analysis(self, extractor, clip_tracker, model):
         """ Set up ClipTracker and Asset Detection Analysis
 
@@ -97,7 +93,7 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
         analysis = LabelDetectionAnalysis(collapse_labels=True)
 
         for time_ms, path in extractor:
-            response = model.predict_by_filename(path)
+            response = self.predict(model, path)
             concepts = response['outputs'][0]['data'].get('concepts')
             if not concepts:
                 continue
@@ -106,6 +102,23 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
             [analysis.add_label_and_score(c['name'], c['value']) for c in concepts]
 
         return analysis, clip_tracker
+
+    @backoff.on_exception(backoff.expo,
+                          ApiClientError,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
+    def predict(self, model, p_path):
+        """
+        Make a prediction from the filename for a given model
+
+        Args:
+            model: (Clarifai.Model) CLarifai Model type
+            p_path: (str) image path
+
+        Returns:
+            (dict) prediction response
+        """
+        return model.predict_by_filename(p_path)
 
     def emit_status(self, msg):
         """

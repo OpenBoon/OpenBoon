@@ -1,10 +1,12 @@
 import cv2
+import backoff
+from clarifai.errors import ApiClientError
 
 from zmlpsdk import AssetProcessor, Argument, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
-from zmlp_analysis.clarifai.util import get_clarifai_app
+from zmlp_analysis.clarifai.util import get_clarifai_app, not_a_quota_exception
 
 models = [
     'face-detection-model',
@@ -40,7 +42,7 @@ class AbstractClarifaiProcessor(AssetProcessor):
         h, w, _ = im.shape
 
         model = getattr(self.clarifai.public_models, self.model_name.replace("-", "_"))
-        response = model.predict_by_filename(p_path)
+        response = self.predict(model, p_path)
         labels = response['outputs'][0]['data'].get('regions')
         if not labels:
             return
@@ -53,6 +55,23 @@ class AbstractClarifaiProcessor(AssetProcessor):
             analysis.add_label_and_score(concepts['name'], concepts['value'], bbox=bbox)
 
         asset.add_analysis("-".join([self.namespace, self.model_name]), analysis)
+
+    @backoff.on_exception(backoff.expo,
+                          ApiClientError,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
+    def predict(self, model, p_path):
+        """
+        Make a prediction from the filename for a given model
+
+        Args:
+            model: (Clarifai.Model) CLarifai Model type
+            p_path: (str) image path
+
+        Returns:
+            (dict) prediction response
+        """
+        return model.predict_by_filename(p_path)
 
     def emit_status(self, msg):
         """

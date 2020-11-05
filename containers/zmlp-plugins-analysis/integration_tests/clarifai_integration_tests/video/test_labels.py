@@ -51,7 +51,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             video_path=zorroa_test_path('video/sample_ipad.m4v'),
             detector=labels.ClarifaiVideoTravelDetectionProcessor(),
             attr='clarifai-travel-model',
-            assertions={'labels': ['Snow & Ski Sports', 'Kids Area', 'Winter'], 'count': 10}
+            assertions={'labels': ['Snow & Ski Sports', 'Kids Area', 'Winter'], 'count': 32}
         )
 
     def test_food_process(self):
@@ -67,7 +67,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             video_path=zorroa_test_path('video/wedding.mp4'),
             detector=labels.ClarifaiVideoApparelDetectionProcessor(),
             attr='clarifai-apparel-model',
-            assertions={'labels': ['Wedding Dress', 'Necklace'], 'count': 9}
+            assertions={'labels': ['Wedding Dress', 'Necklace'], 'count': 20}
         )
 
     def test_wedding_process(self):
@@ -75,7 +75,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             video_path=zorroa_test_path('video/out.mp4'),
             detector=labels.ClarifaiVideoWeddingDetectionProcessor(),
             attr='clarifai-wedding-model',
-            assertions={'labels': ['love', 'vows'], 'count': 20}
+            assertions={'labels': ['love', 'vows'], 'count': 27}
         )
 
     def test_nsfw_process(self):
@@ -83,7 +83,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             video_path=zorroa_test_path('video/model.mp4'),
             detector=labels.ClarifaiVideoExplicitDetectionProcessor(),
             attr='clarifai-nsfw-model',
-            assertions={'labels': ['sfw'], 'count': 1}
+            assertions={'labels': ['sfw'], 'count': 2}
         )
 
     def test_moderation_process(self):
@@ -91,7 +91,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             video_path=zorroa_test_path('video/model.mp4'),
             detector=labels.ClarifaiVideoModerationDetectionProcessor(),
             attr='clarifai-moderation-model',
-            assertions={'labels': ['safe', 'suggestive'], 'count': 2}
+            assertions={'labels': ['safe', 'suggestive'], 'count': 5}
         )
 
     def test_textures_and_patterns_process(self):
@@ -99,5 +99,5 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             video_path=zorroa_test_path('video/beach.mp4'),
             detector=labels.ClarifaiVideoTexturesDetectionProcessor(),
             attr='clarifai-textures-and-patterns-model',
-            assertions={'labels': ['sand'], 'count': 1}
+            assertions={'labels': ['sand'], 'count': 20}
         )
