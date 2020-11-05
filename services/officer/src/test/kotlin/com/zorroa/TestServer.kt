@@ -72,11 +72,17 @@ class TestServer {
         val prefix = IOHandler.PREFIX
         assertEquals("zmlp://pipeline-storage/$prefix/render_test", content["location"])
 
-        // Wait Assync rendering
-        Thread.sleep(5000)
-        val exists = HttpRequest.post("http://localhost:9876/exists")
-            .send(Json.mapper.writeValueAsString(opts))
-        assertEquals(200, exists.code())
+        var exists: HttpRequest? = null
+        for (i in 0..5) {
+            // Wait Assync rendering
+            exists = HttpRequest.post("http://localhost:9876/exists")
+                .send(Json.mapper.writeValueAsString(opts))
+            if(exists.code() == 201)
+                break
+            Thread.sleep(2000)
+        }
+
+        assertEquals(200, exists?.code())
         assertEquals(false, WorkQueue.unregisterRequest(opts))
     }
 
