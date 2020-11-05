@@ -168,7 +168,7 @@ def search_view(request):
     for asset in app.assets.search(search=search):
         assets.append({'name': asset.get_attr('source.filename'),
                        'path': asset.get_attr('source.path'),
-                       'type': asset.get_attr('mdedia.type'),
+                       'type': asset.get_attr('media.type'),
                        'id': asset.id})
 
     return JsonResponse({'assets': assets})
