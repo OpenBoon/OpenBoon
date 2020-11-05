@@ -77,7 +77,7 @@ class TestServer {
             // Wait Assync rendering
             exists = HttpRequest.post("http://localhost:9876/exists")
                 .send(Json.mapper.writeValueAsString(opts))
-            if(exists.code() == 201)
+            if (exists.code() == 201)
                 break
             Thread.sleep(2000)
         }
