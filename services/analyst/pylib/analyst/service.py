@@ -369,10 +369,10 @@ class Executor(object):
         # Don't poll for tasks until the first ping is handled
         # by the archivist.
         while True:
-            time.sleep(self.poll_timer_seconds)
             if self.disable_poll_timer:
                 logger.info("terminating, shutdown by prestop")
                 os._exit(0)
+            time.sleep(self.poll_timer_seconds)
             if not self.first_ping:
                 self.poll_count += 1
                 if self.poll_count % 25 == 0:
