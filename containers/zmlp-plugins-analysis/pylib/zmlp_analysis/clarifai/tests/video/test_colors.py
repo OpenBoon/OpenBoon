@@ -24,6 +24,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         asset = TestAsset(self.video_path)
         asset.set_attr('media.length', 15.0)
         self.frame = Frame(asset)
+        os.environ['PATH'] += ":/usr/local/bin"
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')

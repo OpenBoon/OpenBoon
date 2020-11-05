@@ -24,6 +24,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         asset = TestAsset(self.video_path)
         asset.set_attr('media.length', 15.0)
         self.frame = Frame(asset)
+        os.environ['PATH'] += ":/usr/local/bin"
 
     @patch("zmlp_analysis.clarifai.video.regions.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.regions.proxy.get_video_proxy')
@@ -37,7 +38,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         analysis = self.frame.asset.get_analysis('clarifai-celebrity-model')
         assert 'ryan gosling' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 1 == analysis['count']
+        assert 20 == analysis['count']
 
     @patch("zmlp_analysis.clarifai.video.regions.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.regions.proxy.get_video_proxy')
@@ -51,7 +52,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         analysis = self.frame.asset.get_analysis('clarifai-demographics-model')
         assert 'feminine' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 23 == analysis['count']
+        assert 29 == analysis['count']
 
 
 class PublicModels:

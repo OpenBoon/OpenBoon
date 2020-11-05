@@ -24,6 +24,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         asset = TestAsset(self.video_path)
         asset.set_attr('media.length', 15.0)
         self.frame = Frame(asset)
+        os.environ['PATH'] += ":/usr/local/bin"
 
     @patch("zmlp_analysis.clarifai.video.bboxes.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.bboxes.proxy.get_video_proxy')
@@ -51,7 +52,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         analysis = self.frame.asset.get_analysis('clarifai-logo-model')
         assert 'Shell' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 4 == analysis['count']
+        assert 6 == analysis['count']
 
 
 class PublicModels:

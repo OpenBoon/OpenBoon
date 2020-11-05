@@ -24,6 +24,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         asset = TestAsset(self.video_path)
         asset.set_attr('media.length', 15.0)
         self.frame = Frame(asset)
+        os.environ['PATH'] += ":/usr/local/bin"
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
@@ -50,7 +51,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         analysis = self.frame.asset.get_analysis('clarifai-travel-model')
         assert 'labels' in analysis['type']
-        assert 7 == analysis['count']
+        assert 20 == analysis['count']
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
@@ -64,7 +65,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         analysis = self.frame.asset.get_analysis('clarifai-apparel-model')
         assert 'Earring' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 6 == analysis['count']
+        assert 20 == analysis['count']
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
@@ -106,7 +107,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         analysis = self.frame.asset.get_analysis('clarifai-moderation-model')
         assert 'suggestive' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 1 == analysis['count']
+        assert 5 == analysis['count']
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
@@ -119,7 +120,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         analysis = self.frame.asset.get_analysis('clarifai-textures-and-patterns-model')
         assert 'labels' in analysis['type']
-        assert 1 == analysis['count']
+        assert 20 == analysis['count']
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
@@ -133,7 +134,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         analysis = self.frame.asset.get_analysis('clarifai-food-model')
         assert 'coffee' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 19 == analysis['count']
+        assert 20 == analysis['count']
 
 
 class PublicModels:
