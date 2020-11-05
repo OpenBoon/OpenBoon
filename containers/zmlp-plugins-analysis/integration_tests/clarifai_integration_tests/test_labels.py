@@ -1,9 +1,8 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 import pytest
 
-from zmlp_analysis.clarifai.labels import *
+from zmlp_analysis.clarifai import labels
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
 
@@ -38,7 +37,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     def test_travel_process(self):
         self.run_process(
             image_path=zorroa_test_path('images/set06/gif_tahoe.gif'),
-            detector=ClarifaiTravelDetectionProcessor(),
+            detector=labels.ClarifaiTravelDetectionProcessor(),
             attr='clarifai-travel-model',
             assertions={'labels': ['Winter'], 'count': 7}
         )
@@ -46,7 +45,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     def test_food_process(self):
         self.run_process(
             image_path=zorroa_test_path('images/set02/beer_kettle_01.jpg'),
-            detector=ClarifaiFoodDetectionProcessor(),
+            detector=labels.ClarifaiFoodDetectionProcessor(),
             attr='clarifai-food-model',
             assertions={'labels': ['beer'], 'count': 19}
         )
@@ -54,7 +53,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     def test_apparel_process(self):
         self.run_process(
             image_path=zorroa_test_path('images/face-recognition/face2.jpg'),
-            detector=ClarifaiApparelDetectionProcessor(),
+            detector=labels.ClarifaiApparelDetectionProcessor(),
             attr='clarifai-apparel-model',
             assertions={'labels': ['Necklace'], 'count': 6}
         )
@@ -62,7 +61,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     def test_wedding_process(self):
         self.run_process(
             image_path=zorroa_test_path('images/set11/wedding1.jpg'),
-            detector=ClarifaiWeddingDetectionProcessor(),
+            detector=labels.ClarifaiWeddingDetectionProcessor(),
             attr='clarifai-wedding-model',
             assertions={'labels': ['bride'], 'count': 20}
         )
@@ -70,7 +69,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     def test_nsfw_process(self):
         self.run_process(
             image_path=zorroa_test_path('images/set10/nsfw1.jpg'),
-            detector=ClarifaiExplicitDetectionProcessor(),
+            detector=labels.ClarifaiExplicitDetectionProcessor(),
             attr='clarifai-nsfw-model',
             assertions={'labels': ['nsfw', 'sfw'], 'count': 2}
         )
@@ -78,7 +77,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     def test_moderation_process(self):
         self.run_process(
             image_path=zorroa_test_path('images/set10/nsfw1.jpg'),
-            detector=ClarifaiModerationDetectionProcessor(),
+            detector=labels.ClarifaiModerationDetectionProcessor(),
             attr='clarifai-moderation-model',
             assertions={'labels': ['suggestive'], 'count': 1}
         )
@@ -86,7 +85,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     def test_textures_and_patterns_process(self):
         self.run_process(
             image_path=zorroa_test_path('images/set09/letter.png'),
-            detector=ClarifaiTexturesDetectionProcessor(),
+            detector=labels.ClarifaiTexturesDetectionProcessor(),
             attr='clarifai-textures-and-patterns-model',
             assertions={'labels': ['handwriting'], 'count': 1}
         )

@@ -1,10 +1,8 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 import pytest
-from clarifai.rest import ClarifaiApp
 
-from zmlp_analysis.clarifai.regions import *
+from zmlp_analysis.clarifai import regions
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
 
@@ -39,7 +37,7 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     def test_celebrity_process(self):
         self.run_process(
             image_path=zorroa_test_path('images/set08/meme.jpg'),
-            detector=ClarifaiCelebrityDetectionProcessor(),
+            detector=regions.ClarifaiCelebrityDetectionProcessor(),
             attr='clarifai-celebrity-model',
             assertions={'labels': ['ryan gosling'], 'count': 1}
         )
@@ -47,7 +45,7 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     def test_demographics_process(self):
         self.run_process(
             image_path=zorroa_test_path('images/face-recognition/face2.jpg'),
-            detector=ClarifaiDemographicsDetectionProcessor(),
+            detector=regions.ClarifaiDemographicsDetectionProcessor(),
             attr='clarifai-demographics-model',
             assertions={'labels': ['feminine', 'asian'], 'count': 23}
         )

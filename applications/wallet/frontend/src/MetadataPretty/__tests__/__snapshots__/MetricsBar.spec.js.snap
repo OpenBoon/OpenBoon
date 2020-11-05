@@ -19,11 +19,12 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 }
 
 .emotion-0 {
+  margin: 0;
+  padding: 0;
   height: 100%;
   -webkit-flex: 0.11 0 auto;
   -ms-flex: 0.11 0 auto;
   flex: 0.11 0 auto;
-  min-width: 8px;
   background-color: #0074f5;
   border: 2px solid transparent;
 }
@@ -48,11 +49,12 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 }
 
 .emotion-1 {
+  margin: 0;
+  padding: 0;
   height: 100%;
   -webkit-flex: 0.26 0 auto;
   -ms-flex: 0.26 0 auto;
   flex: 0.26 0 auto;
-  min-width: 8px;
   background-color: #a03dc7;
   border: 2px solid transparent;
 }
@@ -77,11 +79,12 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 }
 
 .emotion-2 {
+  margin: 0;
+  padding: 0;
   height: 100%;
   -webkit-flex: 0 0 auto;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
-  min-width: 8px;
   background-color: #d6680b;
   border: 2px solid transparent;
 }
@@ -106,11 +109,12 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 }
 
 .emotion-3 {
+  margin: 0;
+  padding: 0;
   height: 100%;
   -webkit-flex: 0 0 auto;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
-  min-width: 8px;
   background-color: #ebb52e;
   border: 2px solid transparent;
 }
@@ -135,11 +139,12 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 }
 
 .emotion-4 {
+  margin: 0;
+  padding: 0;
   height: 100%;
   -webkit-flex: 0 0 auto;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
-  min-width: 8px;
   background-color: #00bdc1;
   border: 2px solid transparent;
 }

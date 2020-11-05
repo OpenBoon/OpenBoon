@@ -21,6 +21,7 @@ const TimelineMetadata = ({ assetId }) => {
       variant={VARIANTS.ICON}
       style={{
         flexDirection: 'row',
+        alignItems: 'flex-end',
         padding: spacing.small,
         ':hover, &.focus-visible:focus': {
           backgroundColor: colors.structure.mattGrey,
@@ -45,8 +46,8 @@ const TimelineMetadata = ({ assetId }) => {
       <TimebasedMetadataSvg
         height={constants.icons.regular}
         color={isOpen ? colors.key.one : colors.structure.steel}
+        css={{ marginRight: spacing.small }}
       />
-      <div css={{ width: spacing.small }} />
       Metadata
     </Button>
   )

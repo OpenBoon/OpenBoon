@@ -1,6 +1,7 @@
 import logging
 import os
 
+import requests
 import zmlp
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -135,6 +136,13 @@ class BaseProjectViewSet(ViewSet):
         """
         assert self.paginator is not None
         return self.paginator.get_paginated_response(data)
+
+    def stream_zmlp_endpoint(self, path):
+        """Requests a streaming ZMLP endpoint and returns the response as an iterator."""
+        response = requests.get(self.request.client.get_url(path), verify=False,
+                                headers=self.request.client.headers(), stream=True)
+        for block in response.iter_content(1024):
+            yield block
 
     def _zmlp_list_from_search(self, request, item_modifier=None, search_filter=None,
                                serializer_class=None, base_url=None):

@@ -49,9 +49,19 @@ Array [
 }
 
 .emotion-0 a {
-  color: #009f22;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-0 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
 }
 
 <div
@@ -125,9 +135,19 @@ Array [
 }
 
 .emotion-1 a {
-  color: #0074f5;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #0074f5;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-1 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #005dc4;
 }
 
 <div
@@ -648,9 +668,19 @@ Array [
 }
 
 .emotion-0 a {
-  color: #009f22;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-0 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
 }
 
 <div
@@ -724,9 +754,19 @@ Array [
 }
 
 .emotion-1 a {
-  color: #0074f5;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #0074f5;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-1 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #005dc4;
 }
 
 <div

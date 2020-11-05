@@ -53,6 +53,7 @@ MetadataPretty.propTypes = {
           'gcp',
           'captions',
           'audio',
+          'timeline',
         ]),
         attrs: PropTypes.shape({
           width: PropTypes.number,

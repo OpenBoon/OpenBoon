@@ -1,11 +1,9 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.labels import *
+from zmlp_analysis.clarifai import labels
 from zmlpsdk import Frame
-from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
-    TestAsset, get_prediction_labels
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
 
 client_patch = 'zmlp_analysis.clarifai.util.ClarifaiApp'
 
@@ -30,7 +28,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_general_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiLabelDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiLabelDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-general-model')
@@ -43,46 +41,46 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_food_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiFoodDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiFoodDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-food-model')
         assert 'coffee' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 19 == analysis['count']
+        assert 20 == analysis['count']
 
     @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
     def test_travel_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiTravelDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiTravelDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-travel-model')
         assert 'Winter' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 7 == analysis['count']
+        assert 20 == analysis['count']
 
     @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
     def test_apparel_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiApparelDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiApparelDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-apparel-model')
         assert 'Earring' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 6 == analysis['count']
+        assert 20 == analysis['count']
 
     @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
     def test_wedding_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiWeddingDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiWeddingDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-wedding-model')
@@ -95,7 +93,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_nsfw_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiExplicitDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiExplicitDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-nsfw-model')
@@ -108,26 +106,26 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_moderation_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiModerationDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiModerationDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-moderation-model')
         assert 'suggestive' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 1 == analysis['count']
+        assert 5 == analysis['count']
 
     @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
     def test_textures_and_patterns_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiTexturesDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiTexturesDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-textures-and-patterns-model')
         assert 'handwriting' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 1 == analysis['count']
+        assert 20 == analysis['count']
 
 
 class PublicModels:

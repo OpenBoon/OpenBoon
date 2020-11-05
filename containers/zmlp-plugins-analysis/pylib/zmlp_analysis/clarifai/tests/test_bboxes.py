@@ -1,11 +1,10 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.bboxes import *
 from zmlpsdk import Frame
-from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
-    TestAsset, get_prediction_labels
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
+from zmlp_analysis.clarifai.bboxes import ClarifaiFaceDetectionProcessor, \
+    ClarifaiLogoDetectionProcessor
 
 client_patch = 'zmlp_analysis.clarifai.util.ClarifaiApp'
 
@@ -49,7 +48,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         analysis = self.frame.asset.get_analysis('clarifai-logo-model')
         assert 'Shell' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 4 == analysis['count']
+        assert 6 == analysis['count']
 
 
 class PublicModels:

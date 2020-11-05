@@ -1,9 +1,12 @@
 import os
 import tempfile
 import unittest
+import logging
 
 import zmlpsdk.video as video
 from zmlpsdk.testing import zorroa_test_path
+
+logging.basicConfig(level=logging.NOTSET)
 
 VIDEO_M4V = zorroa_test_path('video/sample_ipad.m4v')
 VIDEO_MOV = zorroa_test_path('video/1324_CAPS_23.0_030.00_15_MISC.mov')
@@ -41,6 +44,7 @@ class FrameExtractors(unittest.TestCase):
 
     def test_shot_based_iterate(self):
         iter = video.ShotBasedFrameExtractor(VIDEO_M4V)
+        iter.clean()
         frames = list(iter)
-        assert len(frames) > 1
+        assert len(frames) > 5
         assert os.path.exists(frames[0][1])

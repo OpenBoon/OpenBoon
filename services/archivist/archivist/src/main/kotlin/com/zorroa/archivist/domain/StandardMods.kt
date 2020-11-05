@@ -495,7 +495,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                         ProcessorRef(
                             "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
-                            mapOf("detect_labels" to 0.15)
+                            mapOf("detect_labels" to true)
                         )
                     )
                 )
@@ -516,7 +516,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                         ProcessorRef(
                             "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
-                            mapOf("detect_logos" to 0.15)
+                            mapOf("detect_logos" to true)
                         )
                     )
                 )
@@ -537,7 +537,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                         ProcessorRef(
                             "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
-                            mapOf("detect_objects" to 0.15)
+                            mapOf("detect_objects" to true)
                         )
                     )
                 )
@@ -558,7 +558,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                         ProcessorRef(
                             "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
-                            mapOf("detect_explicit" to 4)
+                            mapOf("detect_explicit" to true)
                         )
                     )
                 )
@@ -781,13 +781,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.OBJECT_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.azure.AzureVisionObjectDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoObjectDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -801,13 +805,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.azure.AzureVisionLabelDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoLabelDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -821,13 +829,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.IMAGE_DESCRIPTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVisionImageDescription",
+                            "zmlp_analysis.azure.AzureVisionImageDescriptionDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoImageDescriptionDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -841,13 +853,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.FACE_RECOGNITION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.azure.AzureVisionCelebrityDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoCelebrityDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -861,13 +877,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.LANDMARK_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.azure.AzureVisionLandmarkDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoLandmarkDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -881,13 +901,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.LOGO_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.azure.AzureVisionLogoDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoLogoDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -901,13 +925,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.azure.AzureVisionCategoryDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoCategoryDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -921,13 +949,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.EXPLICIT_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.azure.AzureVisionExplicitContentDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoExplicitContentDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -941,13 +973,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.FACE_RECOGNITION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.azure.AzureVisionFaceDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoFaceDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -961,13 +997,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.TEXT_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.azure.AzureVisionTextDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVideoTextDetection",
                             StandardContainers.ANALYSIS
                         )
                     )

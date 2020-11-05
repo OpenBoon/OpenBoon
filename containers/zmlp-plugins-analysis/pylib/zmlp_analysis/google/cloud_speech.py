@@ -6,6 +6,7 @@ from google.cloud import speech_v1p1beta1 as speech
 
 from zmlpsdk import Argument, AssetProcessor, file_storage, FileTypes
 from zmlpsdk.analysis import ContentDetectionAnalysis
+from zmlp_analysis.utils.prechecks import Prechecks
 from zmlpsdk.audio import has_audio_channel
 from zmlpsdk.proxy import get_audio_proxy_uri
 from .cloud_timeline import save_speech_to_text_webvtt, save_speech_to_text_timeline
@@ -25,14 +26,13 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
 
     namespace = 'gcp-speech-to-text'
 
-    max_length_sec = 120 * 60
-
     def __init__(self):
         super(AsyncSpeechToTextProcessor, self).__init__()
         self.add_arg(Argument('language', 'string', default='en-US',
                               toolTip=self.tool_tips['language']))
         self.add_arg(Argument('alt_languages', 'list',
-                              toolTip=self.tool_tips['alt_languages']))
+                              toolTip=self.tool_tips['alt_languages'],
+                              default=['en-GB', 'fr-FR', 'es-US']))
         self.speech_client = None
         self.audio_channels = 2
         self.audio_sample_rate = 44100
@@ -43,9 +43,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
 
-        if asset.get_attr('media.length') > self.max_length_sec:
-            self.logger.warning(
-                'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
+        if not Prechecks.is_valid_video_length(asset):
             return
 
         if not has_audio_channel(file_storage.localize_file(asset)):

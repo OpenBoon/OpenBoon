@@ -1,5 +1,4 @@
 import mimetypes
-import requests
 
 from django.http import StreamingHttpResponse
 from django.urls import reverse
@@ -11,8 +10,8 @@ from rest_framework.response import Response
 from assets.serializers import AssetSerializer
 from assets.utils import AssetBoxImager, get_best_fullscreen_file_data
 from projects.views import BaseProjectViewSet
-from wallet.paginators import ZMLPFromSizePagination
 from searches.utils import FilterBuddy
+from wallet.paginators import ZMLPFromSizePagination
 
 
 def asset_modifier(request, item):
@@ -27,13 +26,6 @@ def asset_modifier(request, item):
 
     if 'files' not in item['metadata']:
         item['metadata']['files'] = []
-
-
-def stream(request, path):
-    response = requests.get(request.client.get_url(path), verify=False,
-                            headers=request.client.headers(), stream=True)
-    for block in response.iter_content(1024):
-        yield block
 
 
 class AssetViewSet(BaseProjectViewSet):
@@ -275,7 +267,7 @@ class WebVttViewSet(BaseProjectViewSet):
             path = f'{self.zmlp_root_api_path}/{asset_pk}/clips/{pk}'
         else:
             path = f'{self.zmlp_root_api_path}/{asset_pk}/clips/timelines/{pk}'
-        response = StreamingHttpResponse(stream(request, path), content_type='text/vtt')
+        response = StreamingHttpResponse(self.stream_zmlp_endpoint(path), content_type='text/vtt')
         patch_response_headers(response, cache_timeout=86400)
         patch_cache_control(response, private=True)
         return response
@@ -293,7 +285,7 @@ class FileNameViewSet(BaseProjectViewSet):
     def retrieve(self, request, project_pk, asset_pk, category_pk, pk):
         path = f'{self.zmlp_root_api_path}/_stream/assets/{asset_pk}/{category_pk}/{pk}'
         content_type, encoding = mimetypes.guess_type(pk)
-        response = StreamingHttpResponse(stream(request, path), content_type=content_type)
+        response = StreamingHttpResponse(self.stream_zmlp_endpoint(path), content_type=content_type)
         patch_response_headers(response, cache_timeout=86400)
         patch_cache_control(response, private=True)
         return response
