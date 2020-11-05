@@ -8296,17 +8296,17 @@ Array [
       </div>
     </form>
   </div>,
-  .emotion-63 {
+  .emotion-65 {
   overflow: auto;
 }
 
-.emotion-62 {
+.emotion-64 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-62:hover summary svg {
+.emotion-64:hover summary svg {
   opacity: 1;
 }
 
@@ -8461,12 +8461,61 @@ Array [
   opacity: 0;
 }
 
-.emotion-61 {
+.emotion-63 {
   max-height: 500px;
   overflow-y: auto;
 }
 
-.emotion-17 {
+.emotion-16 {
+  padding-bottom: 16px;
+}
+
+.emotion-15 {
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
+  background-color: #2e2e2e;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-15::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-15::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-15:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-15::placeholder {
+  font-style: italic;
+}
+
+.emotion-15:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-15:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -8482,11 +8531,11 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-15 {
+.emotion-17 {
   font-style: italic;
 }
 
-.emotion-16 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -8527,21 +8576,21 @@ Array [
   text-transform: uppercase;
 }
 
-.emotion-16:hover {
+.emotion-18:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-16[aria-disabled=true] {
+.emotion-18[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-16:hover,
-.emotion-16.focus-visible:focus {
+.emotion-18:hover,
+.emotion-18.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-18 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -8555,13 +8604,13 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-59 {
+.emotion-61 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-26 {
+.emotion-28 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -8598,44 +8647,44 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-26:hover {
+.emotion-28:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-26[aria-disabled=true] {
+.emotion-28[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-26:hover,
-.emotion-26.focus-visible:focus {
+.emotion-28:hover,
+.emotion-28.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
 
-.emotion-25 {
+.emotion-27 {
   width: 100%;
 }
 
-.emotion-21 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-19 {
+.emotion-21 {
   width: 100%;
   border-top: 4px solid #808080;
 }
 
-.emotion-20 {
+.emotion-22 {
   height: 4px;
   width: 0%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-24 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -8650,33 +8699,33 @@ Array [
   line-height: 18px;
 }
 
-.emotion-22 {
+.emotion-24 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.emotion-23 {
+.emotion-25 {
   padding-left: 8px;
 }
 
-.emotion-51 {
+.emotion-53 {
   width: 0%;
   border-top: 4px solid #808080;
 }
 
-.emotion-52 {
+.emotion-54 {
   height: 4px;
   width: 100%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-60 {
+.emotion-62 {
   padding: 16px;
 }
 
 .emotion-10 {
-  height: 12px;
+  height: 8px;
 }
 
 .emotion-13 {
@@ -8708,44 +8757,44 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-27 {
+.emotion-29 {
   width: 80%;
   border-top: 4px solid #808080;
 }
 
-.emotion-28 {
+.emotion-30 {
   height: 4px;
   width: 20%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-35 {
+.emotion-37 {
   width: 60%;
   border-top: 4px solid #808080;
 }
 
-.emotion-36 {
+.emotion-38 {
   height: 4px;
   width: 40%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-43 {
+.emotion-45 {
   width: 40%;
   border-top: 4px solid #808080;
 }
 
-.emotion-44 {
+.emotion-46 {
   height: 4px;
   width: 60%;
   border-top: 1px solid #3b3b3b;
 }
 
 <div
-    className="emotion-63"
+    className="emotion-65"
   >
     <details
-      className="emotion-62"
+      className="emotion-64"
       onToggle={[Function]}
       open={true}
     >
@@ -8810,10 +8859,10 @@ Array [
         </div>
       </summary>
       <div
-        className="emotion-61"
+        className="emotion-63"
       >
         <div
-          className="emotion-60"
+          className="emotion-62"
         >
           <FilterReset
             assetId=""
@@ -8884,10 +8933,22 @@ Array [
             className="emotion-10"
           />
           <div
-            className="emotion-17"
+            className="emotion-16"
+          >
+            <input
+              aria-label="Filter labels"
+              className="emotion-15"
+              onChange={[Function]}
+              placeholder="Filter labels"
+              type="search"
+              value=""
+            />
+          </div>
+          <div
+            className="emotion-19"
           >
             <div
-              className="emotion-15"
+              className="emotion-17"
             >
               Labels
                Selected:
@@ -8896,7 +8957,7 @@ Array [
             </div>
             <div>
               <button
-                className="emotion-16"
+                className="emotion-18"
                 onClick={[Function]}
                 type="button"
               >
@@ -8905,7 +8966,7 @@ Array [
             </div>
           </div>
           <div
-            className="emotion-18"
+            className="emotion-20"
           >
             <div>
               LABEL
@@ -8915,38 +8976,38 @@ Array [
             </div>
           </div>
           <ul
-            className="emotion-59"
+            className="emotion-61"
           >
             <li>
               <button
                 aria-label="Ford"
-                className="emotion-26"
+                className="emotion-28"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-25"
+                  className="emotion-27"
                 >
                   <div
-                    className="emotion-21"
+                    className="emotion-23"
                   >
                     <div
-                      className="emotion-19"
+                      className="emotion-21"
                     />
                     <div
-                      className="emotion-20"
+                      className="emotion-22"
                     />
                   </div>
                   <div
-                    className="emotion-24"
+                    className="emotion-26"
                   >
                     <div
-                      className="emotion-22"
+                      className="emotion-24"
                     >
                       Ford
                     </div>
                     <div
-                      className="emotion-23"
+                      className="emotion-25"
                     >
                       5
                     </div>
@@ -8957,33 +9018,33 @@ Array [
             <li>
               <button
                 aria-label="Chevrolet"
-                className="emotion-26"
+                className="emotion-28"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-25"
+                  className="emotion-27"
                 >
                   <div
-                    className="emotion-21"
+                    className="emotion-23"
                   >
                     <div
-                      className="emotion-27"
+                      className="emotion-29"
                     />
                     <div
-                      className="emotion-28"
+                      className="emotion-30"
                     />
                   </div>
                   <div
-                    className="emotion-24"
+                    className="emotion-26"
                   >
                     <div
-                      className="emotion-22"
+                      className="emotion-24"
                     >
                       Chevrolet
                     </div>
                     <div
-                      className="emotion-23"
+                      className="emotion-25"
                     >
                       4
                     </div>
@@ -8994,33 +9055,33 @@ Array [
             <li>
               <button
                 aria-label="Peugeot"
-                className="emotion-26"
+                className="emotion-28"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-25"
+                  className="emotion-27"
                 >
                   <div
-                    className="emotion-21"
+                    className="emotion-23"
                   >
                     <div
-                      className="emotion-35"
+                      className="emotion-37"
                     />
                     <div
-                      className="emotion-36"
+                      className="emotion-38"
                     />
                   </div>
                   <div
-                    className="emotion-24"
+                    className="emotion-26"
                   >
                     <div
-                      className="emotion-22"
+                      className="emotion-24"
                     >
                       Peugeot
                     </div>
                     <div
-                      className="emotion-23"
+                      className="emotion-25"
                     >
                       3
                     </div>
@@ -9031,33 +9092,33 @@ Array [
             <li>
               <button
                 aria-label="Audi"
-                className="emotion-26"
+                className="emotion-28"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-25"
+                  className="emotion-27"
                 >
                   <div
-                    className="emotion-21"
+                    className="emotion-23"
                   >
                     <div
-                      className="emotion-43"
+                      className="emotion-45"
                     />
                     <div
-                      className="emotion-44"
+                      className="emotion-46"
                     />
                   </div>
                   <div
-                    className="emotion-24"
+                    className="emotion-26"
                   >
                     <div
-                      className="emotion-22"
+                      className="emotion-24"
                     >
                       Audi
                     </div>
                     <div
-                      className="emotion-23"
+                      className="emotion-25"
                     >
                       2
                     </div>
@@ -9068,33 +9129,33 @@ Array [
             <li>
               <button
                 aria-label="Toyota"
-                className="emotion-26"
+                className="emotion-28"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-25"
+                  className="emotion-27"
                 >
                   <div
-                    className="emotion-21"
+                    className="emotion-23"
                   >
                     <div
-                      className="emotion-51"
+                      className="emotion-53"
                     />
                     <div
-                      className="emotion-52"
+                      className="emotion-54"
                     />
                   </div>
                   <div
-                    className="emotion-24"
+                    className="emotion-26"
                   >
                     <div
-                      className="emotion-22"
+                      className="emotion-24"
                     >
                       Toyota
                     </div>
                     <div
-                      className="emotion-23"
+                      className="emotion-25"
                     >
                       0
                     </div>
