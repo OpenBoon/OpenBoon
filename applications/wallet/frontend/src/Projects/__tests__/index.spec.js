@@ -1,7 +1,9 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import mockUser from '../../User/__mocks__/user'
 import projects from '../__mocks__/projects'
 
+import User from '../../User'
 import Projects from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
@@ -64,32 +66,6 @@ describe('<Projects />', () => {
     expect(mockMutate).toHaveBeenCalledWith({ projectId: PROJECT_ID })
   })
 
-  it('should redirect if there is no project id and the route requires a project id', () => {
-    const mockFn = jest.fn()
-
-    require('next/router').__setMockPushFunction(mockFn)
-
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/jobs',
-      query: {},
-    })
-
-    require('swr').__setMockUseSWRResponse({
-      data: projects,
-    })
-
-    const component = TestRenderer.create(
-      <Projects projectId="">Hello World</Projects>,
-    )
-
-    expect(mockFn).toHaveBeenCalledWith(
-      '/[projectId]/jobs',
-      '/76917058-b147-4556-987a-0a0f11e46d9b/jobs',
-    )
-
-    expect(component.toJSON()).toBeNull()
-  })
-
   it('should not redirect if there is no project id and the route does not require a project id', () => {
     require('next/router').__setUseRouter({
       pathname: '/account',
@@ -107,7 +83,7 @@ describe('<Projects />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should redirect if the url projectId is not of an authorized project', () => {
+  it('should render an access denied screen if the url projectId is not of an authorized project', () => {
     const mockFn = jest.fn()
 
     require('next/router').__setMockPushFunction(mockFn)
@@ -122,15 +98,12 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="">Hello World</Projects>,
+      <User initialUser={mockUser}>
+        <Projects projectId="">Hello World</Projects>
+      </User>,
     )
 
-    expect(mockFn).toHaveBeenCalledWith(
-      '/[projectId]/jobs',
-      '/76917058-b147-4556-987a-0a0f11e46d9b/jobs',
-    )
-
-    expect(component.toJSON()).toBeNull()
+    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should redirect if there is a projectId but no project', () => {
@@ -152,35 +125,6 @@ describe('<Projects />', () => {
     )
 
     expect(mockFn).toHaveBeenCalledWith('/')
-
-    expect(component.toJSON()).toBeNull()
-  })
-
-  it('should reset an invalid user projectId', async () => {
-    const mockMutate = jest.fn()
-
-    require('swr').__setMockMutateFn(mockMutate)
-
-    const mockRouterPush = jest.fn()
-
-    require('next/router').__setMockPushFunction(mockRouterPush)
-
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/jobs',
-      query: { projectId: 'not-a-valid-project-id' },
-    })
-
-    require('swr').__setMockUseSWRResponse({
-      data: projects,
-    })
-
-    const component = TestRenderer.create(
-      <Projects projectId="not-a-valid-project-id">Hello World</Projects>,
-    )
-
-    expect(mockMutate).toHaveBeenCalledWith({ projectId: '' })
-
-    expect(mockRouterPush).not.toHaveBeenCalled()
 
     expect(component.toJSON()).toBeNull()
   })
