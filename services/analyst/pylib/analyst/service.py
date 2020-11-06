@@ -202,6 +202,7 @@ class Executor(object):
         self.ping_timer_seconds = ping_timer_seconds
         self.poll_timer_seconds = poll_timer_seconds
 
+        self.disable_poll_timer = False
         self.poll_count = 0
         self.current_task = None
         self.previous_task = None
@@ -218,8 +219,6 @@ class Executor(object):
         # Setup the task poll timer thread.
         if self.poll_timer_seconds:
             self.start_poll_timer()
-
-        self.disable_poll_timer = False
 
         # Clear out model cache.
         ModelCacheManager.instance.clear_cache_root()
