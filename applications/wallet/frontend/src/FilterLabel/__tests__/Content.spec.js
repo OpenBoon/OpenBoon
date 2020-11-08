@@ -35,6 +35,13 @@ describe('<FilterLabelContent />', () => {
       />,
     )
 
+    // Search
+    act(() => {
+      component.root
+        .findByProps({ type: 'search' })
+        .props.onChange({ target: { value: 'Ford' } })
+    })
+
     // Select scope
     act(() => {
       component.root

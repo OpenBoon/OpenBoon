@@ -15,10 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from registration.views import LoginView, LogoutView
+from scrounger import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/login', LoginView.as_view(), name='login'),
-    path('api/v1/logout', LogoutView.as_view(), name='logout')
+    path('api/v1/login', views.login_view, name='login'),
+    path('api/v1/logout', views.logout_view, name='logout'),
+    path('api/v1/me', views.me_view, name='me'),
+    path('api/v1/assets', views.search_view, name='search'),
+    path('api/v1/assets/<str:asset_id>/thumbnail_file', views.asset_thumbnail_proxy_view, name='thumbnail'),
+    path('api/v1/assets/<str:asset_id>/highres_file', views.asset_highres_proxy_view, name='highres')
 ]

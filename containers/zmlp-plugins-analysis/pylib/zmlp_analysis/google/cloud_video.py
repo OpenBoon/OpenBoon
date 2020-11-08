@@ -5,9 +5,10 @@ import backoff
 import google.cloud.videointelligence_v1p3beta1 as videointelligence
 from google.api_core.exceptions import ResourceExhausted
 
+from zmlp_analysis.utils.prechecks import Prechecks
 from zmlpsdk import Argument, AssetProcessor, FileTypes, file_storage, proxy
-from zmlpsdk.base import ProcessorException
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
+from zmlpsdk.base import ProcessorException
 from . import cloud_timeline
 from .gcp_client import initialize_gcp_client
 
@@ -30,9 +31,6 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         'detect_explicit': 'An integer level of confidence to tag as explicit. 0=disabled, max=5',
         'detect_speech': 'Set to true to recognize speech in video.'
     }
-
-    max_length_sec = 120 * 60
-    """By default we allow up to 120 minutes of video."""
 
     conf_labels = [
         "IGNORE",
@@ -68,10 +66,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         asset = frame.asset
 
         # If the length is over time time
-        if not asset.get_attr('media.length') \
-                or asset.get_attr('media.length') > self.max_length_sec:
-            self.logger.warning(
-                'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
+        if not Prechecks.is_valid_video_length(asset):
             return
 
         # You can't run this on the source because our google creds
