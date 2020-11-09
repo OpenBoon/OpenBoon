@@ -103,7 +103,7 @@
     {
       "//": "app.js",
       "path": ".next/static/chunks/pages/_app**.js",
-      "maxSize": "26 kB"
+      "maxSize": "28 kB"
     },
     {
       "//": "error page",

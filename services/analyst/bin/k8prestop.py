@@ -2,7 +2,6 @@
 import os
 import sys
 import traceback
-import time
 import requests
 
 port = os.environ.get("ANALYST_PORT", "5000")
@@ -10,12 +9,7 @@ port = os.environ.get("ANALYST_PORT", "5000")
 
 def main():
     try:
-        while True:
-            if prestop():
-                break
-            else:
-                print("Waiting for analyst to be idle")
-                time.sleep(10)
+        prestop()
     except Exception as e:
         print("Unexpected exception while waiting for analyst to idle: {}".format(e))
         traceback.print_exc()
