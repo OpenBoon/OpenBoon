@@ -141,7 +141,7 @@
     "react-resizable": "2.0.0",
     "react-use-clipboard": "1.0.2",
     "react-virtualized-auto-sizer": "1.0.2",
-    "react-window": "1.8.5",
+    "react-window": "1.8.6",
     "react-window-infinite-loader": "1.0.5",
     "swr": "0.3.6",
     "use-resize-observer": "6.1.0",
