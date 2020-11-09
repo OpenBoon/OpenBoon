@@ -101,7 +101,7 @@ const CheckboxSwitch = ({
           color: isChecked ? colors.key.one : colors.structure.steel,
           userSelect: 'none',
           fontFamily: typography.family.condensed,
-          marginBottom: -1,
+          marginBottom: -spacing.hairline,
         }}
       >
         {label}

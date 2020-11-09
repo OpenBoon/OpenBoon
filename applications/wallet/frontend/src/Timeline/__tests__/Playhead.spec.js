@@ -7,6 +7,7 @@ describe('<TimelinePlayhead />', () => {
     const component = TestRenderer.create(
       <TimelinePlayhead
         videoRef={{ current: { currentTime: 5, duration: 10 } }}
+        rulerRef={{ current: { scrollLeft: 0 } }}
         zoom={100}
       />,
     )

@@ -17,7 +17,7 @@ import CheckboxSwitch from '../Checkbox/Switch'
 import ResizeableWithMessage from '../Resizeable/WithMessage'
 
 import { reducer, INITIAL_STATE, ACTIONS } from './reducer'
-import { COLORS } from './helpers'
+import { COLORS, GUIDE_WIDTH } from './helpers'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
@@ -68,13 +68,9 @@ const Timeline = ({ videoRef, length }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const timelineRef = useScroller({
-    namespace: 'timeline',
-    isWheelEmitter: true,
-  })
-
   const rulerRef = useScroller({
     namespace: 'timeline',
+    isWheelEmitter: true,
     isWheelListener: true,
     isScrollListener: true,
   })
@@ -218,20 +214,23 @@ const Timeline = ({ videoRef, length }) => {
           }}
         >
           <div
-            ref={timelineRef}
             css={{
               flex: 1,
               display: 'flex',
               flexDirection: 'column',
               height: '0%',
               position: 'relative',
-              marginLeft: settings.width,
+              marginLeft: settings.width - GUIDE_WIDTH / 2,
               borderLeft: constants.borders.regular.smoke,
             }}
           >
             <TimelineModulesResizer settings={settings} dispatch={dispatch} />
 
-            <TimelinePlayhead videoRef={videoRef} zoom={settings.zoom} />
+            <TimelinePlayhead
+              videoRef={videoRef}
+              rulerRef={rulerRef}
+              zoom={settings.zoom}
+            />
 
             <div
               css={{
@@ -245,6 +244,7 @@ const Timeline = ({ videoRef, length }) => {
                 <div css={{ width: `${settings.zoom}%` }}>
                   <TimelineRuler
                     videoRef={videoRef}
+                    rulerRef={rulerRef}
                     length={videoRef.current?.duration || length}
                     settings={settings}
                   />
