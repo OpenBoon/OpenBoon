@@ -19,7 +19,7 @@ class TestServer {
         @BeforeClass
         @JvmStatic
         fun beforeClass() {
-            System.setProperty("REDIS_HOST", "http://localhost:6379")
+            System.setProperty("REDIS_HOST", "localhost:6379")
             runServer(9876)
             Thread.sleep(1000)
         }
