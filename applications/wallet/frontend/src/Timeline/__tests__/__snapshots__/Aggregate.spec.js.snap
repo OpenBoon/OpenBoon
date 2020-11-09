@@ -13,6 +13,8 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
 
 .emotion-2 {
   width: 200px;
+  z-index: 30;
+  margin-bottom: -1px;
 }
 
 .emotion-1 {
@@ -646,6 +648,8 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
 
 .emotion-44 {
   width: 200px;
+  z-index: 30;
+  margin-bottom: -1px;
 }
 
 .emotion-43 {

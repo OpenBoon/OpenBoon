@@ -12,7 +12,7 @@ const WIDTH = 10
 let originX
 let originLeft
 
-const TimelinePlayhead = ({ videoRef, zoom }) => {
+const TimelinePlayhead = ({ videoRef, rulerRef, zoom }) => {
   const playheadRef = useRef()
   const frameRef = useRef()
 
@@ -22,7 +22,14 @@ const TimelinePlayhead = ({ videoRef, zoom }) => {
   const onMount = useCallback(
     (node) => {
       const animate = () => {
-        updatePlayheadPosition({ video, playhead: node, zoom })
+        const offset = rulerRef.current?.scrollLeft || 0
+
+        updatePlayheadPosition({
+          video,
+          playhead: node,
+          zoom,
+          offset,
+        })
 
         frameRef.current = requestAnimationFrame(animate)
       }
@@ -38,13 +45,14 @@ const TimelinePlayhead = ({ videoRef, zoom }) => {
         playheadRef.current = node
       }
     },
-    [video, zoom],
+    [video, zoom, rulerRef],
   )
 
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
     const maxPosition =
-      playheadRef.current.parentNode.offsetWidth - GUIDE_WIDTH / 2
+      playheadRef.current.parentNode.offsetWidth * (zoom / 100) -
+      GUIDE_WIDTH / 2
 
     const newPosition = Math.min(
       Math.max(0, originLeft + clientX - originX),
@@ -65,7 +73,7 @@ const TimelinePlayhead = ({ videoRef, zoom }) => {
   /* istanbul ignore next */
   const handleMouseDown = ({ clientX }) => {
     originX = clientX
-    originLeft = playheadRef.current.offsetLeft
+    originLeft = playheadRef.current.offsetLeft + rulerRef.current.scrollLeft
 
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseup', handleMouseUp)
@@ -87,7 +95,7 @@ const TimelinePlayhead = ({ videoRef, zoom }) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        zIndex: zIndex.layout.interactive,
+        zIndex: zIndex.timeline.playhead,
       }}
     >
       <div
@@ -113,6 +121,11 @@ TimelinePlayhead.propTypes = {
     current: PropTypes.shape({
       currentTime: PropTypes.number.isRequired,
       duration: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
+  rulerRef: PropTypes.shape({
+    current: PropTypes.shape({
+      scrollLeft: PropTypes.number.isRequired,
     }),
   }).isRequired,
   zoom: PropTypes.number.isRequired,
