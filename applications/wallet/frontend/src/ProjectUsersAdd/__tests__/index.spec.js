@@ -64,7 +64,9 @@ describe('<ProjectUsersAdd />', () => {
     })
 
     // Mock Success
-    fetch.mockResponseOnce(JSON.stringify(projectUsersAdd))
+    fetch.mockResponseOnce(JSON.stringify(projectUsersAdd), {
+      headers: { 'content-type': 'application/json' },
+    })
 
     // Submit the form
     await act(async () => {

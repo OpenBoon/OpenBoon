@@ -42,6 +42,12 @@ export const fetcher = async (url, options = {}) => {
   if (response.status >= 400) throw response
 
   try {
+    const contentType = response.headers.get('content-type')
+
+    if (contentType.includes('text/plain')) {
+      return response.text()
+    }
+
     const json = await response.json()
     return json
   } catch (error) {

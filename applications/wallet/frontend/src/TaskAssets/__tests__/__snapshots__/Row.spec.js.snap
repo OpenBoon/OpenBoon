@@ -95,6 +95,7 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
 
 .emotion-9 pre {
   padding: 16px;
+  margin: 0;
 }
 
 <details

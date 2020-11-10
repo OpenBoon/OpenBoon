@@ -348,7 +348,7 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-7 {
+  .emotion-9 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -357,7 +357,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-6 {
+.emotion-8 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -424,17 +424,17 @@ Array [
 }
 
 <nav
-    className="emotion-7"
+    className="emotion-9"
   >
     <ul
-      className="emotion-6"
+      className="emotion-8"
     >
       <li
         className="emotion-1"
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/script"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -463,6 +463,18 @@ Array [
           onMouseEnter={[Function]}
         >
           Errors
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/logs"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Logs
         </a>
       </li>
     </ul>
@@ -819,7 +831,7 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-7 {
+  .emotion-9 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -828,7 +840,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-6 {
+.emotion-8 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -895,17 +907,17 @@ Array [
 }
 
 <nav
-    className="emotion-7"
+    className="emotion-9"
   >
     <ul
-      className="emotion-6"
+      className="emotion-8"
     >
       <li
         className="emotion-1"
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/script"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -936,6 +948,18 @@ Array [
           Errors
         </a>
       </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/logs"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Logs
+        </a>
+      </li>
     </ul>
   </nav>,
   <TaskErrors
@@ -944,7 +968,7 @@ Array [
 ]
 `;
 
-exports[`<Task /> should render properly for Log 1`] = `
+exports[`<Task /> should render properly for Logs 1`] = `
 Array [
   .emotion-7 {
   display: -webkit-box;
@@ -1304,7 +1328,7 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-7 {
+  .emotion-9 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -1313,7 +1337,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-6 {
+.emotion-8 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -1355,18 +1379,42 @@ Array [
   color: #73b61c;
 }
 
+.emotion-6 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
 <nav
-    className="emotion-7"
+    className="emotion-9"
   >
     <ul
-      className="emotion-6"
+      className="emotion-8"
     >
       <li
         className="emotion-1"
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/script"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -1397,9 +1445,21 @@ Array [
           Errors
         </a>
       </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-6"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/logs"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Logs
+        </a>
+      </li>
     </ul>
   </nav>,
-  "Log",
+  <TaskLogs />,
 ]
 `;
 
@@ -1751,7 +1811,7 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-7 {
+  .emotion-9 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -1760,7 +1820,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-6 {
+.emotion-8 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -1827,17 +1887,17 @@ Array [
 }
 
 <nav
-    className="emotion-7"
+    className="emotion-9"
   >
     <ul
-      className="emotion-6"
+      className="emotion-8"
     >
       <li
         className="emotion-1"
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/script"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -1866,6 +1926,18 @@ Array [
           onMouseEnter={[Function]}
         >
           Errors
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/logs"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Logs
         </a>
       </li>
     </ul>
