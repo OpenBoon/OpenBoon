@@ -243,7 +243,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   flex-direction: column;
   height: 0%;
   position: relative;
-  margin-left: 200px;
+  margin-left: 199px;
   border-left: 1px solid #3b3b3b;
 }
 
@@ -404,6 +404,11 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
           onMouseDown={[Function]}
         />
         <TimelinePlayhead
+          rulerRef={
+            Object {
+              "current": null,
+            }
+          }
           videoRef={
             Object {
               "current": Object {
@@ -442,6 +447,11 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
             >
               <TimelineRuler
                 length={18}
+                rulerRef={
+                  Object {
+                    "current": null,
+                  }
+                }
                 settings={
                   Object {
                     "filter": "",
@@ -783,7 +793,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   flex-direction: column;
   height: 0%;
   position: relative;
-  margin-left: 200px;
+  margin-left: 199px;
   border-left: 1px solid #3b3b3b;
 }
 
@@ -933,6 +943,11 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
           onMouseDown={[Function]}
         />
         <TimelinePlayhead
+          rulerRef={
+            Object {
+              "current": null,
+            }
+          }
           videoRef={
             Object {
               "current": Object {
@@ -971,6 +986,11 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
             >
               <TimelineRuler
                 length={18}
+                rulerRef={
+                  Object {
+                    "current": null,
+                  }
+                }
                 settings={
                   Object {
                     "filter": "",
@@ -1381,7 +1401,7 @@ exports[`<Timeline /> should render properly 1`] = `
   flex-direction: column;
   height: 0%;
   position: relative;
-  margin-left: 200px;
+  margin-left: 199px;
   border-left: 1px solid #3b3b3b;
 }
 
@@ -1823,6 +1843,11 @@ exports[`<Timeline /> should render properly 1`] = `
           onMouseDown={[Function]}
         />
         <TimelinePlayhead
+          rulerRef={
+            Object {
+              "current": null,
+            }
+          }
           videoRef={
             Object {
               "current": undefined,
@@ -1874,6 +1899,11 @@ exports[`<Timeline /> should render properly 1`] = `
             >
               <TimelineRuler
                 length={18}
+                rulerRef={
+                  Object {
+                    "current": null,
+                  }
+                }
                 settings={
                   Object {
                     "filter": "",
@@ -2989,7 +3019,7 @@ exports[`<Timeline /> should render properly 2`] = `
   flex-direction: column;
   height: 0%;
   position: relative;
-  margin-left: 200px;
+  margin-left: 199px;
   border-left: 1px solid #3b3b3b;
 }
 
@@ -3489,6 +3519,11 @@ exports[`<Timeline /> should render properly 2`] = `
           onMouseDown={[Function]}
         />
         <TimelinePlayhead
+          rulerRef={
+            Object {
+              "current": null,
+            }
+          }
           videoRef={
             Object {
               "current": undefined,
@@ -3540,6 +3575,11 @@ exports[`<Timeline /> should render properly 2`] = `
             >
               <TimelineRuler
                 length={18}
+                rulerRef={
+                  Object {
+                    "current": null,
+                  }
+                }
                 settings={
                   Object {
                     "filter": "",

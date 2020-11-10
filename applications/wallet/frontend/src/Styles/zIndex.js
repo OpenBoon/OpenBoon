@@ -9,6 +9,11 @@ const zIndex = {
     modal: 20,
     interactive: 10,
   },
+  timeline: {
+    playhead: 10,
+    tracks: 20,
+    menu: 30,
+  },
 }
 
 export default zIndex
