@@ -2,7 +2,13 @@
 
 exports[`<TaskScript /> should render properly 1`] = `
 .emotion-1 {
-  padding-bottom: 32px;
+  height: 100%;
+  overflow: auto;
+  background-color: #191919;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-0 {
@@ -11,6 +17,7 @@ exports[`<TaskScript /> should render properly 1`] = `
 
 .emotion-0 pre {
   padding: 16px;
+  margin: 0;
 }
 
 <div

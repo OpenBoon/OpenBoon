@@ -30,8 +30,8 @@ const JobTasksRow = ({
     <tr
       css={{ cursor: 'pointer' }}
       onClick={onRowClickRouterPush(
-        '/[projectId]/jobs/[jobId]/tasks/[taskId]/script',
-        `/${projectId}/jobs/${jobId}/tasks/${taskId}/script`,
+        '/[projectId]/jobs/[jobId]/tasks/[taskId]',
+        `/${projectId}/jobs/${jobId}/tasks/${taskId}`,
       )}
     >
       <td css={{ display: 'flex' }}>
@@ -41,8 +41,8 @@ const JobTasksRow = ({
 
       <td>
         <Link
-          href="/[projectId]/jobs/[jobId]/tasks/[taskId]/script"
-          as={`/${projectId}/jobs/${jobId}/tasks/${taskId}/script`}
+          href="/[projectId]/jobs/[jobId]/tasks/[taskId]"
+          as={`/${projectId}/jobs/${jobId}/tasks/${taskId}`}
           passHref
         >
           <a css={{ ':hover': { textDecoration: 'none' } }} title={name}>

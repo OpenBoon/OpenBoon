@@ -5,12 +5,18 @@ import { colors } from '../Styles'
 
 import JsonDisplay from '../JsonDisplay'
 
-const TaskScript = () => {
+const TaskLogs = () => {
   const {
     query: { projectId, taskId },
   } = useRouter()
 
-  const { data } = useSWR(`/api/v1/projects/${projectId}/tasks/${taskId}/`)
+  const { data } = useSWR(
+    `/api/v1/projects/${projectId}/tasks/${taskId}/logs/`,
+    {
+      refreshInterval: 1000,
+      refreshWhenHidden: true,
+    },
+  )
 
   return (
     <div
@@ -19,6 +25,7 @@ const TaskScript = () => {
         overflow: 'auto',
         backgroundColor: colors.structure.coal,
         display: 'flex',
+        flexDirection: 'column-reverse',
       }}
     >
       <JsonDisplay json={data} />
@@ -26,4 +33,4 @@ const TaskScript = () => {
   )
 }
 
-export default TaskScript
+export default TaskLogs
