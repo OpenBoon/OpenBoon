@@ -1,4 +1,3 @@
-import os
 import backoff
 from clarifai.errors import ApiClientError
 
