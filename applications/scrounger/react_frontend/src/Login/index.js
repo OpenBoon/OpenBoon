@@ -20,8 +20,12 @@ const Login = () => {
 
   return (
     <div className="flex h-screen justify-center items-center">
-      <div className="bg-white shadow-md rounded p-8">
-        <form method="post" onSubmit={(event) => event.preventDefault()}>
+      <div className="bg-gray-700 shadow-md rounded p-8">
+        <form
+          className="flex flex-col items-center"
+          method="post"
+          onSubmit={(event) => event.preventDefault()}
+        >
           {!!error && (
             <div className="pt-1 pb-2 text-red-600 font-normal italic">
               <span>{error}</span>
@@ -35,6 +39,8 @@ const Login = () => {
             onChange={({ target: { value } }) => dispatch({ username: value })}
           />
 
+          <div className="h-4" />
+
           <Input
             label="Password"
             type="password"
@@ -42,7 +48,7 @@ const Login = () => {
             onChange={({ target: { value } }) => dispatch({ password: value })}
           />
 
-          <div className="h-2" />
+          <div className="h-12" />
 
           <Button
             variant="primary"
