@@ -39,7 +39,7 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             image_path=zorroa_test_path('images/set08/meme.jpg'),
             detector=regions.ClarifaiCelebrityDetectionProcessor(),
             attr='clarifai-celebrity-model',
-            assertions={'labels': ['ryan gosling'], 'count': 1}
+            assertions={'labels': ['ryan gosling'], 'count': 20}
         )
 
     def test_demographics_process(self):
@@ -47,5 +47,5 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             image_path=zorroa_test_path('images/face-recognition/face2.jpg'),
             detector=regions.ClarifaiDemographicsDetectionProcessor(),
             attr='clarifai-demographics-model',
-            assertions={'labels': ['feminine', 'asian'], 'count': 23}
+            assertions={'labels': ['feminine', 'asian'], 'count': 29}
         )

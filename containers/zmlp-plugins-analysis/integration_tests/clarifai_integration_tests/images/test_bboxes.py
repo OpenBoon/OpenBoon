@@ -20,8 +20,7 @@ class ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestC
         del os.environ['CLARIFAI_KEY']
 
     @patch('zmlp_analysis.clarifai.images.bboxes.get_proxy_level_path')
-    def run_process(self, proxy_path_patch,
-                    image_path, detector, attr, assertions):
+    def run_process(self, proxy_path_patch, image_path, detector, attr, assertions):
         frame = Frame(TestAsset(image_path))
         proxy_path_patch.return_value = image_path
 
@@ -47,5 +46,5 @@ class ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestC
             image_path=zorroa_test_path('images/set11/logos.jpg'),
             detector=bboxes.ClarifaiLogoDetectionProcessor(),
             attr='clarifai-logo-model',
-            assertions={'labels': ['Shell', 'Target', 'Starbucks', 'Nike'], 'count': 4}
+            assertions={'labels': ['Shell', 'Target', 'Starbucks', 'Nike'], 'count': 6}
         )

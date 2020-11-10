@@ -40,8 +40,8 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
 
     def test_color_process(self):
         self.run_process(
-            video_path=zorroa_test_path('images/set05/color_test.png'),
+            video_path=zorroa_test_path('video/coloring.mp4'),
             detector=ClarifaiVideoColorDetectionProcessor(),
             attr='clarifai-color-model',
-            assertions={'labels': ['Yellow', 'OrangeRed'], 'count': 4}
+            assertions={'labels': ['DarkGray', 'Gray'], 'count': 5}
         )

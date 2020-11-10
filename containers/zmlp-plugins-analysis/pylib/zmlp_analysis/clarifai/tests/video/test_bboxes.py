@@ -51,7 +51,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         analysis = self.frame.asset.get_analysis('clarifai-logo-model')
         assert 'Shell' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 4 == analysis['count']
+        assert 6 == analysis['count']
 
 
 class PublicModels:

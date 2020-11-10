@@ -1,8 +1,10 @@
-import os
+import backoff
+from clarifai.errors import ApiClientError
 
 from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlp_analysis.clarifai.images.colors import ClarifaiColorDetectionProcessor
+from zmlp_analysis.clarifai.util import not_a_quota_exception
 
 __all__ = [
     'ClarifaiVideoColorDetectionProcessor',
@@ -13,7 +15,6 @@ models = [
 ]
 
 MAX_LENGTH_SEC = 120
-MAX_SIZE = 10**7  # 10MB
 
 
 class AbstractClarifaiVideoProcessor(AssetProcessor):
@@ -49,9 +50,6 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
             return
 
         local_path = file_storage.localize_file(video_proxy)
-        if os.path.getsize(local_path) >= MAX_SIZE:
-            self.logger.warning(f'Video found in {asset_id} exceeds 10MB')
-            return
 
         extractor = video.ShotBasedFrameExtractor(local_path)
         clip_tracker = clips.ClipTracker(asset, self.namespace)
@@ -76,7 +74,7 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
         analysis = LabelDetectionAnalysis(collapse_labels=True)
 
         for time_ms, path in extractor:
-            response = model.predict_by_filename(path)
+            response = self.predict(model, path)
             try:
                 concepts = response['outputs'][0]['data'].get('colors')
             except KeyError:
@@ -88,6 +86,23 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
             [analysis.add_label_and_score(c['w3c']['name'], c['value']) for c in concepts]
 
         return analysis, clip_tracker
+
+    @backoff.on_exception(backoff.expo,
+                          ApiClientError,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
+    def predict(self, model, p_path):
+        """
+        Make a prediction from the filename for a given model
+
+        Args:
+            model: (Clarifai.Model) CLarifai Model type
+            p_path: (str) image path
+
+        Returns:
+            (dict) prediction response
+        """
+        return model.predict_by_filename(p_path)
 
     def emit_status(self, msg):
         """
