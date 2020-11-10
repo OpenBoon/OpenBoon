@@ -1,8 +1,8 @@
 import json
 import logging
 import os
-import threading
 import random
+import threading
 
 import docker
 import zmq
@@ -331,10 +331,10 @@ class DockerContainerWrapper(object):
 
             reg = "https://index.docker.io/v1/"
             dh_creds = creds["auths"][reg]
-            self.docker_client.login_view(dh_creds["username"],
-                                          dh_creds["password"],
-                                          dh_creds["email"],
-                                          reg)
+            self.docker_client.login(dh_creds["username"],
+                                     dh_creds["password"],
+                                     dh_creds["email"],
+                                     reg)
 
         except FileNotFoundError:
             logger.warning("No docker creds file found.")
