@@ -13,7 +13,6 @@ models = [
 ]
 
 MAX_LENGTH_SEC = 120
-MAX_SIZE = 10**7  # 10MB
 
 
 class AbstractClarifaiVideoProcessor(AssetProcessor):
@@ -50,9 +49,6 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
             return
 
         local_path = file_storage.localize_file(video_proxy)
-        if os.path.getsize(local_path) >= MAX_SIZE:
-            self.logger.warning(f'Video found in {asset_id} exceeds 10MB')
-            return
 
         extractor = video.ShotBasedFrameExtractor(local_path)
         clip_tracker = clips.ClipTracker(asset, self.namespace)
