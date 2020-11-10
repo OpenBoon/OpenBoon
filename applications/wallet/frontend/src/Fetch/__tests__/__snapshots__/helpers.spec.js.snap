@@ -1,5 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Fetch /> helpers fetcher() should return the raw response if its neither text nor json 1`] = `
+Response {
+  "size": 0,
+  "timeout": 0,
+  Symbol(Body internals): Object {
+    "body": null,
+    "disturbed": true,
+    "error": null,
+  },
+  Symbol(Response internals): Object {
+    "counter": undefined,
+    "headers": Headers {
+      Symbol(map): Object {
+        "content-type": Array [
+          "image/jpeg",
+        ],
+      },
+    },
+    "status": 200,
+    "statusText": "OK",
+    "url": undefined,
+  },
+}
+`;
+
 exports[`<Fetch /> helpers fetcher() should return the raw response in case of error 1`] = `
 Response {
   "size": 0,
@@ -12,7 +37,11 @@ Response {
   Symbol(Response internals): Object {
     "counter": undefined,
     "headers": Headers {
-      Symbol(map): Object {},
+      Symbol(map): Object {
+        "content-type": Array [
+          "application/json",
+        ],
+      },
     },
     "status": 500,
     "statusText": "Internal Server Error",

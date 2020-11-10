@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants } from '../Styles'
+import { colors, constants, spacing, zIndex } from '../Styles'
 
 import InputSearch, { VARIANTS as INPUT_SEARCH_VARIANTS } from '../Input/Search'
 
@@ -16,6 +16,8 @@ const TimelineFilterTracks = ({ settings, dispatch }) => {
         marginLeft: -settings.width,
         width: settings.width,
         paddingRight: OFFSET,
+        marginBottom: -spacing.hairline,
+        zIndex: zIndex.timeline.tracks,
       }}
     >
       <InputSearch
@@ -31,7 +33,7 @@ const TimelineFilterTracks = ({ settings, dispatch }) => {
           paddingTop: 0,
           paddingBottom: 0,
           color: colors.structure.zinc,
-          backgroundColor: colors.structure.transparent,
+          backgroundColor: colors.structure.coal,
         }}
       />
     </div>

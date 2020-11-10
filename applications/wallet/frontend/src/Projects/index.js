@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import Router, { useRouter } from 'next/router'
 import useSWR, { mutate } from 'swr'
 
+import ProjectBoundary from '../ProjectBoundary'
+
 const NO_PROJECT_ID_ROUTES = ['/icons', '/account', '/account/password']
 
 const Projects = ({ projectId, children }) => {
@@ -24,15 +26,6 @@ const Projects = ({ projectId, children }) => {
     )
   }, [projectId, routerProjectId])
 
-  // Reset user projectId if not part of current projects
-  if (
-    !projects ||
-    (projectId && !projects.find(({ id }) => projectId === id))
-  ) {
-    mutate('/api/v1/me/', (user) => ({ ...user, projectId: '' }), false)
-    return null
-  }
-
   // Render "Account Overview"
   if (pathname === '/') {
     return children
@@ -49,10 +42,9 @@ const Projects = ({ projectId, children }) => {
     return null
   }
 
-  // Remove url projectId if not part of current projects
+  // Check if projectId is part of current projects
   if (!projects.find(({ id }) => routerProjectId === id)) {
-    Router.push('/[projectId]/jobs', `/${projectId || projects[0].id}/jobs`)
-    return null
+    return <ProjectBoundary />
   }
 
   return children
