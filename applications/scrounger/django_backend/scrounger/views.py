@@ -172,7 +172,7 @@ def search_view(request):
     # The SimilarityQuery is then added to the list of query blocks.
     if request.GET.get('similarity_search'):
         simhashes = []
-        for asset_id in request.GET.get('similarity_search').split(','):
+        for asset_id in request.GET.getlist('similarity_search'):
             simhash = app.assets.get_asset(asset_id).get_attr('analysis.zvi-image-similarity.simhash')
             simhashes.append(simhash)
         sim_query = zmlp.SimilarityQuery(simhashes)

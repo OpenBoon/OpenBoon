@@ -2,14 +2,12 @@ FROM nginx:mainline
 RUN apt-get -y update && apt-get -y upgrade && apt-get -y install python3 python3-pip npm libsm6 libxrender-dev libxext6
 
 # Copy the React frontend app files into the container, install dependencies and build it.
-COPY frontend /applications/scrounger/frontend
-WORKDIR /applications/scrounger/frontend
+COPY react_frontend /applications/scrounger/react_frontend
+WORKDIR /applications/scrounger/react_frontend
 ARG CI_COMMIT_SHA
 RUN npm install -g npm@latest
 RUN npm cache verify
 RUN npm ci && CI_COMMIT_SHA=$CI_COMMIT_SHA npm run build
-
-
 
 # Install Python dependencies and copy the Django backend application files into the container.
 COPY django_backend/Pipfile /applications/scrounger/Pipfile
