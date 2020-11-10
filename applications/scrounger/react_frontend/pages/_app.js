@@ -3,6 +3,7 @@ import App from 'next/app'
 import '../styles/tailwind.css'
 
 import Authentication from '../src/Authentication'
+import Header from '../src/Header'
 
 class MyApp extends App {
   render() {
@@ -10,6 +11,7 @@ class MyApp extends App {
 
     return (
       <Authentication>
+        <Header />
         <Component {...pageProps} />
       </Authentication>
     )

@@ -1,3 +1,3 @@
-import Landing from '../src/Landing'
+import Assets from '../src/Assets'
 
-export default Landing
+export default Assets
