@@ -3,6 +3,7 @@ from clarifai.errors import ApiClientError
 
 from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
+from zmlp_analysis.utils.prechecks import Prechecks
 from zmlp_analysis.clarifai.images import labels as labels_images
 from zmlp_analysis.clarifai.util import not_a_quota_exception
 
@@ -28,8 +29,6 @@ models = [
     'wedding-model',
 ]
 
-MAX_LENGTH_SEC = 120
-
 
 class AbstractClarifaiVideoProcessor(AssetProcessor):
     """
@@ -53,9 +52,7 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
         asset_id = asset.id
         final_time = asset.get_attr('media.length')
 
-        if final_time > MAX_LENGTH_SEC:
-            self.logger.warning(
-                'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
+        if not Prechecks.is_valid_video_length(asset):
             return
 
         video_proxy = proxy.get_video_proxy(asset)
