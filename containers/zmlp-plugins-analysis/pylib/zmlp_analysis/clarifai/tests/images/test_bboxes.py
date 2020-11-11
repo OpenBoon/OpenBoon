@@ -31,7 +31,8 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(bboxes.ClarifaiFaceDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-face-detection-model')
+        print(self.frame.asset.get_attr('analysis'))
+        analysis = self.frame.asset.get_analysis('clarifai-face-detection')
         assert 'face' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 1 == analysis['count']
@@ -44,7 +45,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(bboxes.ClarifaiLogoDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-logo-model')
+        analysis = self.frame.asset.get_analysis('clarifai-logo-detection')
         assert 'Shell' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 6 == analysis['count']

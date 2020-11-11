@@ -2,14 +2,14 @@ import backoff
 from clarifai.errors import ApiClientError
 
 from zmlp_analysis.clarifai.images import bboxes as bboxes_images
-from zmlp_analysis.clarifai.util import not_a_quota_exception
+from zmlp_analysis.clarifai.util import not_a_quota_exception, model_map
 from zmlp_analysis.utils.prechecks import Prechecks
-from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
+from zmlpsdk import AssetProcessor, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
 
-models = [
-    'face-detection-model',
-    'logo-model'
+__all__ = [
+    'ClarifaiVideoFaceDetectionProcessor',
+    'ClarifaiVideoLogoDetectionProcessor'
 ]
 
 
@@ -19,17 +19,13 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
     only have to implement the "predict(asset, image) method.
     """
 
-    file_types = FileTypes.images | FileTypes.documents
+    file_types = FileTypes.videos
 
-    namespace = 'clarifai'
-    model_name = 'general-model'
-
-    def __init__(self, model_name, reactor=None):
+    def __init__(self, model):
         super(AbstractClarifaiVideoProcessor, self).__init__()
-        self.add_arg(Argument('debug', 'bool', default=False))
-        self.reactor = reactor
         self.image_client = None
-        self.model_name = model_name
+        self.model = model
+        self.attribiute = 'clarifai-{}'.format(model_map[model])
 
     def process(self, frame):
         asset = frame.asset
@@ -47,11 +43,11 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
         local_path = file_storage.localize_file(video_proxy)
 
         extractor = video.ShotBasedFrameExtractor(local_path)
-        clip_tracker = clips.ClipTracker(asset, self.namespace)
-        model = getattr(self.image_client.clarifai.public_models, self.model_name.replace("-", "_"))
+        clip_tracker = clips.ClipTracker(asset, self.attribiute)
+        model = getattr(self.image_client.clarifai.public_models, self.model)
 
         analysis, clip_tracker = self.set_analysis(extractor, clip_tracker, model)
-        asset.add_analysis("-".join([self.namespace, self.model_name]), analysis)
+        asset.add_analysis(self.attribiute, analysis)
         timeline = clip_tracker.build_timeline(final_time)
         video.save_timeline(timeline)
 
@@ -118,7 +114,7 @@ class ClarifaiVideoFaceDetectionProcessor(AbstractClarifaiVideoProcessor):
     """ Clarifai face detection"""
 
     def __init__(self):
-        super(ClarifaiVideoFaceDetectionProcessor, self).__init__('face-detection-model')
+        super(ClarifaiVideoFaceDetectionProcessor, self).__init__('face_detection_model')
 
     def init(self):
         self.image_client = bboxes_images.ClarifaiFaceDetectionProcessor()
@@ -129,7 +125,7 @@ class ClarifaiVideoLogoDetectionProcessor(AbstractClarifaiVideoProcessor):
     """ Clarifai logo detection"""
 
     def __init__(self):
-        super(ClarifaiVideoLogoDetectionProcessor, self).__init__('logo-model')
+        super(ClarifaiVideoLogoDetectionProcessor, self).__init__('logo_model')
 
     def init(self):
         self.image_client = bboxes_images.ClarifaiLogoDetectionProcessor()

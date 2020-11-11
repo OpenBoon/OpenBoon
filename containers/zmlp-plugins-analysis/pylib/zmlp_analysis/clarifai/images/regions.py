@@ -1,20 +1,15 @@
 import backoff
 from clarifai.errors import ApiClientError
 
-from zmlpsdk import AssetProcessor, Argument, FileTypes
+from zmlpsdk import AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
-from zmlp_analysis.clarifai.util import get_clarifai_app, not_a_quota_exception
+from zmlp_analysis.clarifai.util import get_clarifai_app, not_a_quota_exception, model_map
 
 __all__ = [
     'ClarifaiCelebrityDetectionProcessor',
     'ClarifaiDemographicsDetectionProcessor'
-]
-
-models = [
-    'celebrity-model',
-    'demographics-model'
 ]
 
 
@@ -26,13 +21,10 @@ class AbstractClarifaiProcessor(AssetProcessor):
 
     file_types = FileTypes.images | FileTypes.documents
 
-    namespace = 'clarifai'
-
-    def __init__(self, model_name, reactor=None):
+    def __init__(self, model):
         super(AbstractClarifaiProcessor, self).__init__()
-        self.add_arg(Argument('debug', 'bool', default=False))
-        self.model_name = model_name
-        self.reactor = reactor
+        self.model = model
+        self.attribute = 'clarifai-{}'.format(model_map[model])
         self.clarifai = None
 
     def init(self):
@@ -42,7 +34,7 @@ class AbstractClarifaiProcessor(AssetProcessor):
         asset = frame.asset
         p_path = get_proxy_level_path(asset, 1)
 
-        model = getattr(self.clarifai.public_models, self.model_name.replace("-", "_"))
+        model = getattr(self.clarifai.public_models, self.model)
         response = self.predict(model, p_path)
         try:
             labels = response['outputs'][0]['data']['regions'][0]['data'].get('concepts')
@@ -53,7 +45,7 @@ class AbstractClarifaiProcessor(AssetProcessor):
 
         analysis = LabelDetectionAnalysis()
         [analysis.add_label_and_score(label['name'], label['value']) for label in labels]
-        asset.add_analysis("-".join([self.namespace, self.model_name]), analysis)
+        asset.add_analysis(self.attribute, analysis)
 
     @backoff.on_exception(backoff.expo,
                           ApiClientError,
@@ -89,11 +81,11 @@ class ClarifaiCelebrityDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai label detection"""
 
     def __init__(self):
-        super(ClarifaiCelebrityDetectionProcessor, self).__init__('celebrity-model')
+        super(ClarifaiCelebrityDetectionProcessor, self).__init__('celebrity_model')
 
 
 class ClarifaiDemographicsDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai label detection"""
 
     def __init__(self):
-        super(ClarifaiDemographicsDetectionProcessor, self).__init__('demographics-model')
+        super(ClarifaiDemographicsDetectionProcessor, self).__init__('demographics_model')

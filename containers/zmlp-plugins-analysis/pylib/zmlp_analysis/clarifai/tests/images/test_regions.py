@@ -31,7 +31,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(regions.ClarifaiCelebrityDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-celebrity-model')
+        analysis = self.frame.asset.get_analysis('clarifai-celebrity-detection')
         assert 'ryan gosling' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
@@ -44,7 +44,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(regions.ClarifaiDemographicsDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-demographics-model')
+        analysis = self.frame.asset.get_analysis('clarifai-demographics-detection')
         assert 'feminine' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 29 == analysis['count']

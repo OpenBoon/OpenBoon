@@ -1,20 +1,15 @@
 import backoff
 from clarifai.errors import ApiClientError
 
-from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
+from zmlpsdk import AssetProcessor, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlp_analysis.clarifai.images import regions as regions_images
 from zmlp_analysis.utils.prechecks import Prechecks
-from zmlp_analysis.clarifai.util import not_a_quota_exception
+from zmlp_analysis.clarifai.util import not_a_quota_exception, model_map
 
 __all__ = [
     'ClarifaiVideoCelebrityDetectionProcessor',
     'ClarifaiVideoDemographicsDetectionProcessor'
-]
-
-models = [
-    'celebrity-model',
-    'demographics-model'
 ]
 
 
@@ -24,16 +19,15 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
         only have to implement the "predict(asset, image) method.
         """
 
-    file_types = FileTypes.images | FileTypes.documents
+    file_types = FileTypes.videos
 
     namespace = 'clarifai'
 
-    def __init__(self, model_name, reactor=None):
+    def __init__(self, model):
         super(AbstractClarifaiVideoProcessor, self).__init__()
-        self.add_arg(Argument('debug', 'bool', default=False))
-        self.reactor = reactor
         self.image_client = None
-        self.model_name = model_name
+        self.model = model
+        self.attribute = 'clarifai-{}'.format(model_map[model])
 
     def process(self, frame):
         asset = frame.asset
@@ -51,11 +45,11 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
         local_path = file_storage.localize_file(video_proxy)
 
         extractor = video.ShotBasedFrameExtractor(local_path)
-        clip_tracker = clips.ClipTracker(asset, self.namespace)
-        model = getattr(self.image_client.clarifai.public_models, self.model_name.replace("-", "_"))
+        clip_tracker = clips.ClipTracker(asset, self.attribute)
+        model = getattr(self.image_client.clarifai.public_models, self.model)
 
         analysis, clip_tracker = self.set_analysis(extractor, clip_tracker, model)
-        asset.add_analysis("-".join([self.namespace, self.model_name]), analysis)
+        asset.add_analysis(self.attribute, analysis)
         timeline = clip_tracker.build_timeline(final_time)
         video.save_timeline(timeline)
 
@@ -120,7 +114,7 @@ class ClarifaiVideoCelebrityDetectionProcessor(AbstractClarifaiVideoProcessor):
     """ Clarifai celebrity detection"""
 
     def __init__(self):
-        super(ClarifaiVideoCelebrityDetectionProcessor, self).__init__('celebrity-model')
+        super(ClarifaiVideoCelebrityDetectionProcessor, self).__init__('celebrity_model')
 
     def init(self):
         self.image_client = regions_images.ClarifaiCelebrityDetectionProcessor()
@@ -131,7 +125,7 @@ class ClarifaiVideoDemographicsDetectionProcessor(AbstractClarifaiVideoProcessor
     """ Clarifai landmark detection"""
 
     def __init__(self):
-        super(ClarifaiVideoDemographicsDetectionProcessor, self).__init__('demographics-model')
+        super(ClarifaiVideoDemographicsDetectionProcessor, self).__init__('demographics_model')
 
     def init(self):
         self.image_client = regions_images.ClarifaiDemographicsDetectionProcessor()

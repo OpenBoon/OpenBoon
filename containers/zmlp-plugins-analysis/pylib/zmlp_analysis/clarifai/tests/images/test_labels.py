@@ -31,7 +31,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(labels.ClarifaiLabelDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-general-model')
+        analysis = self.frame.asset.get_analysis('clarifai-label-detection')
         assert 'wheel' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
@@ -44,7 +44,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(labels.ClarifaiFoodDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-food-model')
+        analysis = self.frame.asset.get_analysis('clarifai-food-detection')
         assert 'coffee' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
@@ -57,7 +57,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(labels.ClarifaiTravelDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-travel-model')
+        analysis = self.frame.asset.get_analysis('clarifai-travel-detection')
         assert 'Winter' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
@@ -70,7 +70,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(labels.ClarifaiApparelDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-apparel-model')
+        analysis = self.frame.asset.get_analysis('clarifai-apparel-detection')
         assert 'Earring' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
@@ -83,7 +83,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(labels.ClarifaiWeddingDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-wedding-model')
+        analysis = self.frame.asset.get_analysis('clarifai-wedding-detection')
         assert 'bride' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
@@ -96,7 +96,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(labels.ClarifaiExplicitDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-nsfw-model')
+        analysis = self.frame.asset.get_analysis('clarifai-nsfw-detection')
         assert 'nsfw' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 2 == analysis['count']
@@ -109,7 +109,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(labels.ClarifaiModerationDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-moderation-model')
+        analysis = self.frame.asset.get_analysis('clarifai-unsafe-detection')
         assert 'suggestive' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 5 == analysis['count']
@@ -122,7 +122,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(labels.ClarifaiTexturesDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-textures-and-patterns-model')
+        analysis = self.frame.asset.get_analysis('clarifai-texture-detection')
         assert 'handwriting' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']

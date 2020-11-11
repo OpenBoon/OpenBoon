@@ -2,15 +2,15 @@ import cv2
 import backoff
 from clarifai.errors import ApiClientError
 
-from zmlpsdk import AssetProcessor, Argument, FileTypes
+from zmlpsdk import AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
-from zmlp_analysis.clarifai.util import get_clarifai_app, not_a_quota_exception
+from zmlp_analysis.clarifai.util import get_clarifai_app, not_a_quota_exception, model_map
 
-models = [
-    'face-detection-model',
-    'logo-model'
+__all__ = [
+    'ClarifaiFaceDetectionProcessor',
+    'ClarifaiLogoDetectionProcessor'
 ]
 
 
@@ -22,15 +22,11 @@ class AbstractClarifaiProcessor(AssetProcessor):
 
     file_types = FileTypes.images | FileTypes.documents
 
-    namespace = 'clarifai'
-    model_name = 'general-model'
-
-    def __init__(self, reactor=None):
+    def __init__(self, model):
         super(AbstractClarifaiProcessor, self).__init__()
-        self.add_arg(Argument('debug', 'bool', default=False))
-        self.reactor = reactor
-
         self.clarifai = None
+        self.model = model
+        self.attribute = 'clarifai-{}'.format(model_map[model])
 
     def init(self):
         self.clarifai = get_clarifai_app()
@@ -41,7 +37,7 @@ class AbstractClarifaiProcessor(AssetProcessor):
         im = cv2.imread(p_path)
         h, w, _ = im.shape
 
-        model = getattr(self.clarifai.public_models, self.model_name.replace("-", "_"))
+        model = getattr(self.clarifai.public_models, self.model)
         response = self.predict(model, p_path)
         labels = response['outputs'][0]['data'].get('regions')
         if not labels:
@@ -54,7 +50,7 @@ class AbstractClarifaiProcessor(AssetProcessor):
             concepts = label['data'].get('concepts')[0]
             analysis.add_label_and_score(concepts['name'], concepts['value'], bbox=bbox)
 
-        asset.add_analysis("-".join([self.namespace, self.model_name]), analysis)
+        asset.add_analysis(self.attribute, analysis)
 
     @backoff.on_exception(backoff.expo,
                           ApiClientError,
@@ -90,13 +86,11 @@ class ClarifaiFaceDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai face detection"""
 
     def __init__(self):
-        super(ClarifaiFaceDetectionProcessor, self).__init__()
-        self.model_name = 'face-detection-model'
+        super(ClarifaiFaceDetectionProcessor, self).__init__('face_detection_model')
 
 
 class ClarifaiLogoDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai logo detection"""
 
     def __init__(self):
-        super(ClarifaiLogoDetectionProcessor, self).__init__()
-        self.model_name = 'logo-model'
+        super(ClarifaiLogoDetectionProcessor, self).__init__('logo_model')
