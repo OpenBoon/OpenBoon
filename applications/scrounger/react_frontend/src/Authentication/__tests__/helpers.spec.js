@@ -22,7 +22,7 @@ describe('<Authentication /> helpers', () => {
       })
     })
 
-    test('properly handles response with 200 status', async () => {
+    test('properly handles response with status not equal to 200', async () => {
       fetch.mockResponseOnce(JSON.stringify({}), { status: 201 })
 
       const mockPreventDefault = jest.fn()
