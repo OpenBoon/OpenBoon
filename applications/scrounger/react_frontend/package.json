@@ -5,7 +5,7 @@
     "dev": "next dev",
     "lint": "eslint '{pages,src}/**/*.js'",
     "start": "next start",
-    "test": "jest",
+    "test": "jest --watch --notify --verbose --no-cache",
     "test:cover": "jest --coverage --verbose --no-cache"
   },
   "dependencies": {
@@ -26,6 +26,7 @@
     "eslint-plugin-react": "7.21.5",
     "eslint-plugin-react-hooks": "4.0.0",
     "jest": "26.6.3",
+    "jest-fetch-mock": "3.0.3",
     "prettier": "2.1.2"
   },
   "postcss": {
@@ -70,6 +71,12 @@
   "babel": {
     "presets": [
       "next/babel"
+    ]
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "./jest.setup.js"
     ]
   }
 }
