@@ -42,7 +42,7 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             video_path=zorroa_test_path('video/julia_roberts.mp4'),
             detector=regions.ClarifaiVideoCelebrityDetectionProcessor(),
-            attr='clarifai-celebrity-model',
+            attr='clarifai-celebrity-detection',
             assertions={'labels': ['julia roberts'], 'count': 32}
         )
 
@@ -50,6 +50,6 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             video_path=zorroa_test_path('video/julia_roberts.mp4'),
             detector=regions.ClarifaiVideoDemographicsDetectionProcessor(),
-            attr='clarifai-demographics-model',
+            attr='clarifai-demographics-detection',
             assertions={'labels': ['feminine', 'white'], 'count': 32}
         )

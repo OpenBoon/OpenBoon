@@ -42,7 +42,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             video_path=zorroa_test_path('video/ted_talk.mp4'),
             detector=labels.ClarifaiVideoLabelDetectionProcessor(),
-            attr='clarifai-general-model',
+            attr='clarifai-label-detection',
             assertions={'labels': ['performance', 'music', 'stage'], 'count': 31}
         )
 
@@ -50,7 +50,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             video_path=zorroa_test_path('video/sample_ipad.m4v'),
             detector=labels.ClarifaiVideoTravelDetectionProcessor(),
-            attr='clarifai-travel-model',
+            attr='clarifai-travel-detection',
             assertions={'labels': ['Snow & Ski Sports', 'Kids Area', 'Winter'], 'count': 32}
         )
 
@@ -58,7 +58,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             video_path=zorroa_test_path('video/beer.mp4'),
             detector=labels.ClarifaiVideoFoodDetectionProcessor(),
-            attr='clarifai-food-model',
+            attr='clarifai-food-detection',
             assertions={'labels': ['beer', 'alcohol'], 'count': 20}
         )
 
@@ -66,7 +66,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             video_path=zorroa_test_path('video/wedding.mp4'),
             detector=labels.ClarifaiVideoApparelDetectionProcessor(),
-            attr='clarifai-apparel-model',
+            attr='clarifai-apparel-detection',
             assertions={'labels': ['Wedding Dress', 'Necklace'], 'count': 20}
         )
 
@@ -74,7 +74,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             video_path=zorroa_test_path('video/out.mp4'),
             detector=labels.ClarifaiVideoWeddingDetectionProcessor(),
-            attr='clarifai-wedding-model',
+            attr='clarifai-wedding-detection',
             assertions={'labels': ['love', 'vows'], 'count': 27}
         )
 
@@ -82,7 +82,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             video_path=zorroa_test_path('video/model.mp4'),
             detector=labels.ClarifaiVideoExplicitDetectionProcessor(),
-            attr='clarifai-nsfw-model',
+            attr='clarifai-nsfw-detection',
             assertions={'labels': ['sfw'], 'count': 2}
         )
 
@@ -90,7 +90,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             video_path=zorroa_test_path('video/model.mp4'),
             detector=labels.ClarifaiVideoModerationDetectionProcessor(),
-            attr='clarifai-moderation-model',
+            attr='clarifai-unsafe-detection',
             assertions={'labels': ['safe', 'suggestive'], 'count': 5}
         )
 
@@ -98,6 +98,6 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             video_path=zorroa_test_path('video/beach.mp4'),
             detector=labels.ClarifaiVideoTexturesDetectionProcessor(),
-            attr='clarifai-textures-and-patterns-model',
+            attr='clarifai-texture-detection',
             assertions={'labels': ['sand'], 'count': 20}
         )

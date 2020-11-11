@@ -38,7 +38,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             image_path=zorroa_test_path('images/set06/gif_tahoe.gif'),
             detector=labels.ClarifaiTravelDetectionProcessor(),
-            attr='clarifai-travel-model',
+            attr='clarifai-travel-detection',
             assertions={'labels': ['Winter'], 'count': 20}
         )
 
@@ -46,7 +46,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             image_path=zorroa_test_path('images/set02/beer_kettle_01.jpg'),
             detector=labels.ClarifaiFoodDetectionProcessor(),
-            attr='clarifai-food-model',
+            attr='clarifai-food-detection',
             assertions={'labels': ['beer'], 'count': 20}
         )
 
@@ -54,7 +54,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             image_path=zorroa_test_path('images/face-recognition/face2.jpg'),
             detector=labels.ClarifaiApparelDetectionProcessor(),
-            attr='clarifai-apparel-model',
+            attr='clarifai-apparel-detection',
             assertions={'labels': ['Necklace'], 'count': 20}
         )
 
@@ -62,7 +62,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             image_path=zorroa_test_path('images/set11/wedding1.jpg'),
             detector=labels.ClarifaiWeddingDetectionProcessor(),
-            attr='clarifai-wedding-model',
+            attr='clarifai-wedding-detection',
             assertions={'labels': ['bride'], 'count': 20}
         )
 
@@ -70,7 +70,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             image_path=zorroa_test_path('images/set10/nsfw1.jpg'),
             detector=labels.ClarifaiExplicitDetectionProcessor(),
-            attr='clarifai-nsfw-model',
+            attr='clarifai-nsfw-detection',
             assertions={'labels': ['nsfw', 'sfw'], 'count': 2}
         )
 
@@ -78,7 +78,7 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             image_path=zorroa_test_path('images/set10/nsfw1.jpg'),
             detector=labels.ClarifaiModerationDetectionProcessor(),
-            attr='clarifai-moderation-model',
+            attr='clarifai-unsafe-detection',
             assertions={'labels': ['suggestive'], 'count': 5}
         )
 
@@ -86,6 +86,6 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             image_path=zorroa_test_path('images/set09/letter.png'),
             detector=labels.ClarifaiTexturesDetectionProcessor(),
-            attr='clarifai-textures-and-patterns-model',
+            attr='clarifai-texture-detection',
             assertions={'labels': ['handwriting'], 'count': 20}
         )

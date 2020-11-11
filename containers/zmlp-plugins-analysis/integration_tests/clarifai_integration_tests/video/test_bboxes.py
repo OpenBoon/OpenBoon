@@ -42,7 +42,7 @@ class ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestC
         self.run_process(
             video_path=zorroa_test_path('video/julia_roberts.mp4'),
             detector=bboxes.ClarifaiVideoFaceDetectionProcessor(),
-            attr='clarifai-face-detection-model',
+            attr='clarifai-face-detection',
             assertions={'labels': ['face'], 'count': 1}
         )
 
@@ -50,6 +50,6 @@ class ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestC
         self.run_process(
             video_path=zorroa_test_path('video/logos.mp4'),
             detector=bboxes.ClarifaiVideoLogoDetectionProcessor(),
-            attr='clarifai-logo-model',
+            attr='clarifai-logo-detection',
             assertions={'labels': ['Skype', 'Instagram', 'Facebook'], 'count': 3}
         )

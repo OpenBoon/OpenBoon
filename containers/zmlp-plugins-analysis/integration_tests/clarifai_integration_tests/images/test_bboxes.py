@@ -37,7 +37,7 @@ class ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestC
         self.run_process(
             image_path=zorroa_test_path('images/set01/faces.jpg'),
             detector=bboxes.ClarifaiFaceDetectionProcessor(),
-            attr='clarifai-face-detection-model',
+            attr='clarifai-face-detection',
             assertions={'labels': ['face'], 'count': 2}
         )
 
@@ -45,6 +45,6 @@ class ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestC
         self.run_process(
             image_path=zorroa_test_path('images/set11/logos.jpg'),
             detector=bboxes.ClarifaiLogoDetectionProcessor(),
-            attr='clarifai-logo-model',
+            attr='clarifai-logo-detection',
             assertions={'labels': ['Shell', 'Target', 'Starbucks', 'Nike'], 'count': 6}
         )
