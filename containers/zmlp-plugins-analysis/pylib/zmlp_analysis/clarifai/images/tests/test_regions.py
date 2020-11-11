@@ -60,7 +60,7 @@ class CelebrityModel:
     def predict_by_filename(self, filename):
         mock_data = os.path.join(
             os.path.dirname(__file__),
-            '..',
+            '',
             'mock_data/clarifai_celebrity.rsp'
         )
         with open(mock_data) as fp:
@@ -71,7 +71,7 @@ class DemographicsModel:
     def predict_by_filename(self, filename):
         mock_data = os.path.join(
             os.path.dirname(__file__),
-            '..',
+            '',
             'mock_data/clarifai_demographics.rsp'
         )
         with open(mock_data) as fp:

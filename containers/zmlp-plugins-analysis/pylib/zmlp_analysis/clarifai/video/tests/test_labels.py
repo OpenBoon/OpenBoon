@@ -4,6 +4,7 @@ from unittest.mock import patch
 from zmlp_analysis.clarifai.video import labels
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
+from .util import mock_data_dir
 
 client_patch = 'zmlp_analysis.clarifai.util.ClarifaiApp'
 
@@ -150,59 +151,55 @@ class PublicModels:
 
 class GeneralModel:
     def predict_by_filename(self, filename):
-        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai.rsp')
+        mock_data = os.path.join(mock_data_dir, 'clarifai.rsp')
         with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class FoodModel:
     def predict_by_filename(self, filename):
-        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_food.rsp')
+        mock_data = os.path.join(mock_data_dir, 'clarifai_food.rsp')
         with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class TravelModel:
     def predict_by_filename(self, filename):
-        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_travel.rsp')
+        mock_data = os.path.join(mock_data_dir, 'clarifai_travel.rsp')
         with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class ApparelModel:
     def predict_by_filename(self, filename):
-        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_apparel.rsp')
+        mock_data = os.path.join(mock_data_dir, 'clarifai_apparel.rsp')
         with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class WeddingModel:
     def predict_by_filename(self, filename):
-        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_wedding.rsp')
+        mock_data = os.path.join(mock_data_dir, 'clarifai_wedding.rsp')
         with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class ExplicitModel:
     def predict_by_filename(self, filename):
-        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_nsfw.rsp')
+        mock_data = os.path.join(mock_data_dir, 'clarifai_nsfw.rsp')
         with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class ModerationModel:
     def predict_by_filename(self, filename):
-        mock_data = os.path.join(
-            os.path.dirname(__file__),
-            '..',
-            'mock_data/clarifai_moderation.rsp'
-        )
+        mock_data = os.path.join(mock_data_dir, 'clarifai_moderation.rsp')
         with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class TexturesModel:
     def predict_by_filename(self, filename):
-        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_textures.rsp')
+        mock_data = os.path.join(mock_data_dir, 'clarifai_textures.rsp')
         with open(mock_data) as fp:
             return eval(fp.read())
