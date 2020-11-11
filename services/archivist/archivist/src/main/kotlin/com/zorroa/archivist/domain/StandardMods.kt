@@ -171,19 +171,23 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "clarifai-general-model",
+            "clarifai-label-detection",
             "Recognize over 11,000 concepts including objects, themes, moods and more.",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
-                    ModOpType.APPEND_MERGE,
+                    ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
                             StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiVideoLabelDetectionProcessor",
+                            StandardContainers.ANALYSIS
                         )
                     )
                 )
@@ -191,19 +195,23 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "clarifai-food-model",
+            "clarifai-food-detection",
             "Recognize more than 1,000 food items and dishes in images down to the ingredient level.",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
-                    ModOpType.APPEND_MERGE,
+                    ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.clarifai.ClarifaiFoodDetectionProcessor",
                             StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiVideoFoodDetectionProcessor",
+                            StandardContainers.ANALYSIS
                         )
                     )
                 )
@@ -211,19 +219,23 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "clarifai-apparel-model",
+            "clarifai-apparel-detection",
             "Detect items of clothing or fashion-related items. ",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
-                    ModOpType.APPEND_MERGE,
+                    ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.clarifai.ClarifaiApparelDetectionProcessor",
                             StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiVideoApparelDetectionProcessor",
+                            StandardContainers.ANALYSIS
                         )
                     )
                 )
@@ -231,19 +243,23 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "clarifai-travel-model",
+            "clarifai-travel-detection",
             "Recognize specific features of residential, hotel, and travel-related properties.",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
-                    ModOpType.APPEND_MERGE,
+                    ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.clarifai.ClarifaiTravelDetectionProcessor",
                             StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiVideoTravelDetectionProcessor",
+                            StandardContainers.ANALYSIS
                         )
                     )
                 )
@@ -251,19 +267,23 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "clarifai-wedding-model",
+            "clarifai-wedding-detection",
             "Recognize over 400 concepts related to weddings including bride, groom, flowers and more.",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
-                    ModOpType.APPEND_MERGE,
+                    ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.clarifai.ClarifaiWeddingDetectionProcessor",
                             StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiVideoWeddingDetectionProcessor",
+                            StandardContainers.ANALYSIS
                         )
                     )
                 )
@@ -271,19 +291,23 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "clarifai-nsfw-model",
+            "clarifai-nsfw-detection",
             "Identify different levels of nudity in visual content and automatically moderate or filter offensive content.",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
-            ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            ModelObjective.EXPLICIT_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
-                    ModOpType.APPEND_MERGE,
+                    ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.clarifai.ClarifaiExplicitDetectionProcessor",
                             StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiVideoExplicitDetectionProcessor",
+                            StandardContainers.ANALYSIS
                         )
                     )
                 )
@@ -291,38 +315,22 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "clarifai-moderation-model",
+            "clarifai-unsafe-detection",
             "Detect if an image contains concepts such as gore, drugs, explicit nudity or suggestive nudity.",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
-            ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            ModelObjective.EXPLICIT_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
-                    ModOpType.APPEND_MERGE,
+                    ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.clarifai.ClarifaiModerationDetectionProcessor",
                             StandardContainers.ANALYSIS
-                        )
-                    )
-                )
-            ),
-            true
-        ),
-        PipelineModSpec(
-            "clarifai-logo-model",
-            "Identify up to 500 company brands and logos.",
-            Provider.CLARIFAI,
-            Category.CLARIFAI_STD,
-            ModelObjective.OBJECT_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
-            listOf(
-                ModOp(
-                    ModOpType.APPEND_MERGE,
-                    listOf(
+                        ),
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiLogoDetectionProcessor",
+                            "zmlp_analysis.clarifai.ClarifaiVideoModerationDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -331,18 +339,94 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "clarifai-face-detection-model",
+            "clarifai-logo-detection",
+            "Identify up to 500 company brands and logos.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModelObjective.LOGO_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiLogoDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiVideoLogoDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "clarifai-face-detection",
             "Detect if an image contains human faces and coordinate locations of where those faces appear with a bounding box.",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.FACE_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
-                    ModOpType.APPEND_MERGE,
+                    ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.clarifai.ClarifaiFaceDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiVideoFaceDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "clarifai-celebrity-detection",
+            "Detect whether images contain the face(s) of celebrities.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModelObjective.FACE_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiCelebrityDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiVideoCelebrityDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "clarifai-texture-detection",
+            "Identify textures and patterns within an image including glacial, ice, metallic, veined, feathers and more.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiTexturesDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiVideoTexturesDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
