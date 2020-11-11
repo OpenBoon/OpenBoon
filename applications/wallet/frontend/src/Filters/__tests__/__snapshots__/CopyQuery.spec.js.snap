@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FiltersCopyQuery /> should copy properly 1`] = `
+.emotion-0 {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
+  cursor: pointer;
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+<button
+  aria-label="Copy Search Query"
+  className="emotion-0"
+  onClick={[Function]}
+  title="Copy Search Query"
+  type="button"
+>
+  <svg
+    data-file-name="copy.svg"
+    height={20}
+  />
+</button>
+`;
+
+exports[`<FiltersCopyQuery /> should render properly after copy click 1`] = `
+.emotion-0 {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
+  cursor: pointer;
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+<button
+  aria-label="Copy Search Query"
+  className="emotion-0"
+  onClick={[Function]}
+  title="Copy Search Query"
+  type="button"
+>
+  <svg
+    color="#73b61c"
+    data-file-name="checkmark.svg"
+    height={20}
+  />
+</button>
+`;
