@@ -2,12 +2,13 @@ import { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import PropTypes from 'prop-types'
 
-import Error from '../Error'
 import Loading from '../Loading'
+
+import SuspenseBoundaryFallback from './Fallback'
 
 const SuspenseBoundary = ({ children }) => {
   return (
-    <ErrorBoundary FallbackComponent={<Error />}>
+    <ErrorBoundary FallbackComponent={SuspenseBoundaryFallback}>
       <Suspense fallback={<Loading />}>{children}</Suspense>
     </ErrorBoundary>
   )
