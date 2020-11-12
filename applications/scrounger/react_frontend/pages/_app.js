@@ -15,16 +15,14 @@ class MyApp extends App {
         <SWRConfig
           value={{
             fetcher: (resource, init) =>
-              fetch(resource, init).then((res) => res.json()),
+              fetch(`/api/v1${resource}`, init).then((res) => res.json()),
             suspense: true,
           }}
         >
           <div className="h-screen">
             <div className="flex flex-col items-center w-full h-full">
               <Header />
-              <div className="w-screen max-w-screen-xl h-full">
-                <Component {...pageProps} />
-              </div>
+              <Component {...pageProps} />
             </div>
           </div>
         </SWRConfig>
