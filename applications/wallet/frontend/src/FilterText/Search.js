@@ -27,14 +27,12 @@ const FilterTextSearch = ({
   return (
     <div
       css={{
-        border: constants.borders.regular.transparent,
-        borderBottom: constants.borders.regular.iron,
+        borderBottom: constants.borders.regular.smoke,
         ':hover': {
-          border: constants.borders.regular.steel,
+          backgroundColor: colors.structure.mattGrey,
           svg: { opacity: 1 },
         },
-        padding: spacing.small,
-        paddingLeft: spacing.base,
+        padding: spacing.base,
       }}
     >
       <div
@@ -47,7 +45,7 @@ const FilterTextSearch = ({
         <div
           css={{
             display: 'flex',
-            paddingLeft: spacing.comfy,
+            paddingLeft: constants.icons.regular + spacing.base,
           }}
         >
           <TextSvg
