@@ -17,11 +17,12 @@ const RoleBoundary = () => {
           boxShadow: constants.boxShadows.default,
         }}
       >
-        <LockSvg width={200} />
+        <LockSvg width={200} color={colors.structure.steel} />
 
         <h3
           css={{
-            paddingTop: spacing.normal,
+            paddingTop: spacing.comfy,
+            paddingBottom: spacing.comfy,
             fontSize: typography.size.giant,
             lineHeight: typography.height.giant,
             fontWeight: typography.weight.bold,
@@ -37,6 +38,7 @@ const RoleBoundary = () => {
             lineHeight: typography.height.large,
             color: colors.structure.zinc,
             maxWidth: constants.paragraph.maxWidth,
+            margin: 0,
           }}
         >
           Contact your project admin to be added.
