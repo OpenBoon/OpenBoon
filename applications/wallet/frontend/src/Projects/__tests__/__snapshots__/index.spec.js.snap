@@ -358,6 +358,7 @@ exports[`<Projects /> should render an access denied screen if the url projectId
         className="emotion-13"
       >
         <svg
+          color="#808080"
           data-file-name="lock.svg"
           width={200}
         />
