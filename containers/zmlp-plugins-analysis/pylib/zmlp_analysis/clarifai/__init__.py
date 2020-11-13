@@ -1,5 +1,3 @@
 # flake8: noqa
-from .labels import *
-from .colors import *
-from .regions import *
-from .bboxes import *
+from .images import *
+from .video import *
