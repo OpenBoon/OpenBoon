@@ -139,7 +139,7 @@ exports[`<CreateAccountSuccess /> should render properly 1`] = `
       <h2
         className="emotion-3"
       >
-        Thanks for signing up!
+        Confirmation email sent!
       </h2>
       <svg
         className="emotion-4"
@@ -149,7 +149,9 @@ exports[`<CreateAccountSuccess /> should render properly 1`] = `
       <p
         className="emotion-5"
       >
-        Please click the confirmation link sent to your email to activate your account.
+        Please click the confirmation link sent to your email
+        <br />
+        to activate your account.
       </p>
       <p
         className="emotion-6"
