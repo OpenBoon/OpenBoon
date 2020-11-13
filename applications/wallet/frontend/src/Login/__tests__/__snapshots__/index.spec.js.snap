@@ -49,9 +49,19 @@ exports[`<Login /> should render error 1`] = `
 }
 
 .emotion-0 a {
-  color: #009f22;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-0 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
 }
 
 .emotion-30 {
@@ -375,9 +385,19 @@ exports[`<Login /> should render error 1`] = `
 }
 
 .emotion-10 a {
-  color: #c92300;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-10 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #2e2e2e;
 }
 
 .emotion-14 {
@@ -666,9 +686,19 @@ exports[`<Login /> should render password changed 1`] = `
 }
 
 .emotion-0 a {
-  color: #009f22;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-0 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
 }
 
 .emotion-25 {
@@ -1206,9 +1236,19 @@ exports[`<Login /> should render properly 1`] = `
 }
 
 .emotion-0 a {
-  color: #009f22;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-0 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
 }
 
 .emotion-25 {
@@ -1746,9 +1786,19 @@ exports[`<Login /> should render properly on account activation success 1`] = `
 }
 
 .emotion-0 a {
-  color: #009f22;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-0 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
 }
 
 .emotion-25 {

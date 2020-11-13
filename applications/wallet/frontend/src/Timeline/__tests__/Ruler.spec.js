@@ -10,9 +10,14 @@ describe('<TimelineRuler />', () => {
       current: { duration: 18, currentTime: 0, pause: mockFn },
     }
 
+    const rulerRef = {
+      current: { scrollLeft: 0 },
+    }
+
     const component = TestRenderer.create(
       <TimelineRuler
         videoRef={videoRef}
+        rulerRef={rulerRef}
         length={18}
         settings={{
           filter: '',

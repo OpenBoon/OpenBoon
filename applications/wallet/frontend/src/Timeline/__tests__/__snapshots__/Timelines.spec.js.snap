@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TimelineTimelines /> should render properly 1`] = `
-.emotion-46 {
+.emotion-47 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -9,19 +9,21 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  overflow: overlay;
+  overflow: hidden;
   margin-left: -200px;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-43 {
+.emotion-44 {
   width: 200px;
+  z-index: 20;
+  background-color: #191919;
+  border-right: 1px solid #3b3b3b;
 }
 
 .emotion-6 {
   background-color: #212121;
   border-bottom: 1px solid #3b3b3b;
-  border-right: 1px solid #3b3b3b;
 }
 
 .emotion-5 {
@@ -160,26 +162,30 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   padding: 8px;
 }
 
-.emotion-45 {
+.emotion-43 {
+  height: 16px;
+  background-color: #191919;
+}
+
+.emotion-46 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  overflow-y: hidden;
-  overflow-x: overlay;
+  overflow: hidden;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
 }
 
-.emotion-44 {
+.emotion-45 {
   width: 100%;
 }
 
 <div
-  className="emotion-46"
+  className="emotion-47"
 >
   <div
-    className="emotion-43"
+    className="emotion-44"
   >
     <details
       className="emotion-6"
@@ -378,12 +384,15 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
         </div>
       </div>
     </details>
+    <div
+      className="emotion-43"
+    />
   </div>
   <div
-    className="emotion-45"
+    className="emotion-46"
   >
     <div
-      className="emotion-44"
+      className="emotion-45"
     >
       <TimelineTracks
         color="#a03dc7"
@@ -660,7 +669,7 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
 `;
 
 exports[`<TimelineTimelines /> should render properly with Search Highlights Only 1`] = `
-.emotion-15 {
+.emotion-16 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -668,19 +677,21 @@ exports[`<TimelineTimelines /> should render properly with Search Highlights Onl
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  overflow: overlay;
+  overflow: hidden;
   margin-left: -200px;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-12 {
+.emotion-13 {
   width: 200px;
+  z-index: 20;
+  background-color: #191919;
+  border-right: 1px solid #3b3b3b;
 }
 
 .emotion-11 {
   background-color: #212121;
   border-bottom: 1px solid #3b3b3b;
-  border-right: 1px solid #3b3b3b;
 }
 
 .emotion-5 {
@@ -771,26 +782,30 @@ exports[`<TimelineTimelines /> should render properly with Search Highlights Onl
   padding: 8px;
 }
 
-.emotion-14 {
+.emotion-12 {
+  height: 16px;
+  background-color: #191919;
+}
+
+.emotion-15 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  overflow-y: hidden;
-  overflow-x: overlay;
+  overflow: hidden;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
 }
 
-.emotion-13 {
+.emotion-14 {
   width: 100%;
 }
 
 <div
-  className="emotion-15"
+  className="emotion-16"
 >
   <div
-    className="emotion-12"
+    className="emotion-13"
   >
     <details
       className="emotion-11"
@@ -848,12 +863,15 @@ exports[`<TimelineTimelines /> should render properly with Search Highlights Onl
         </div>
       </div>
     </details>
+    <div
+      className="emotion-12"
+    />
   </div>
   <div
-    className="emotion-14"
+    className="emotion-15"
   >
     <div
-      className="emotion-13"
+      className="emotion-14"
     >
       <TimelineTracks
         color="#009f22"

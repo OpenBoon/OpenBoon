@@ -40,10 +40,6 @@ exports[`<TimelineSearchHits /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-5:last-of-type {
-  margin-bottom: 0;
-}
-
 .emotion-4 {
   position: relative;
   padding: 8px;

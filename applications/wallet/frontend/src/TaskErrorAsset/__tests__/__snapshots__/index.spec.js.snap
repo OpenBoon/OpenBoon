@@ -30,6 +30,7 @@ exports[`<TaskErrorAsset /> should render properly when asset has no proxies 1`]
 
 .emotion-3 pre {
   padding: 16px;
+  margin: 0;
 }
 
 .emotion-0 {
@@ -215,6 +216,7 @@ exports[`<TaskErrorAsset /> should render properly when asset has proxies 1`] = 
 
 .emotion-3 pre {
   padding: 16px;
+  margin: 0;
 }
 
 <div

@@ -33,9 +33,19 @@ exports[`<FlashMessageErrors /> should render with a global error 1`] = `
 }
 
 .emotion-0 a {
-  color: #c92300;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-0 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #2e2e2e;
 }
 
 <div

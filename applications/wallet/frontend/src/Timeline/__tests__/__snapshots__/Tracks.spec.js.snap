@@ -11,10 +11,6 @@ exports[`<TimelineTracks /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-31:last-of-type {
-  margin-bottom: 16px;
-}
-
 .emotion-13 {
   position: relative;
   padding: 8px;

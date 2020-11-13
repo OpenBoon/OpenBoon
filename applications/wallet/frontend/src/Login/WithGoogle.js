@@ -6,8 +6,7 @@ import { colors, constants, spacing } from '../Styles'
 import Button, { VARIANTS } from '../Button'
 
 import GeneratingSvg from '../Icons/generating.svg'
-
-import GoogleLogoSvg from './google_logo.svg'
+import GoogleLogoSvg from '../Icons/google_logo.svg'
 
 const WIDTH = 200
 const HEIGHT = 20
