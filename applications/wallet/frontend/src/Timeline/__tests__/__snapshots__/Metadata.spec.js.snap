@@ -2,10 +2,6 @@
 
 exports[`<TimelineMetadata /> should toggle Metadata 1`] = `
 .emotion-0 {
-  margin-right: 4px;
-}
-
-.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -21,8 +17,8 @@ exports[`<TimelineMetadata /> should toggle Metadata 1`] = `
   -ms-flex-align: flex-end;
   align-items: flex-end;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 4px;
@@ -38,34 +34,38 @@ exports[`<TimelineMetadata /> should toggle Metadata 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-1:hover {
+.emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-0[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   background-color: #2e2e2e;
   color: #73b61c;
 }
 
-.emotion-1:hover svg path,
-.emotion-1.focus-visible:focus svg path {
+.emotion-0:hover svg path,
+.emotion-0.focus-visible:focus svg path {
   fill: #73b61c;
+}
+
+.emotion-1 {
+  margin-right: 4px;
 }
 
 <button
   aria-label="Close Metadata"
-  className="emotion-1"
+  className="emotion-0"
   onClick={[Function]}
   type="button"
 >
   <svg
-    className="emotion-0"
+    className="emotion-1"
     color="#73b61c"
     data-file-name="timebasedMetadata.svg"
     height={20}
@@ -75,7 +75,7 @@ exports[`<TimelineMetadata /> should toggle Metadata 1`] = `
 `;
 
 exports[`<TimelineMetadata /> should toggle Metadata 2`] = `
-.emotion-1 {
+.emotion-0 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -91,8 +91,8 @@ exports[`<TimelineMetadata /> should toggle Metadata 2`] = `
   -ms-flex-align: flex-end;
   align-items: flex-end;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 4px;
@@ -108,38 +108,38 @@ exports[`<TimelineMetadata /> should toggle Metadata 2`] = `
   text-transform: uppercase;
 }
 
-.emotion-1:hover {
+.emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-0[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   background-color: #2e2e2e;
   color: #ffffff;
 }
 
-.emotion-1:hover svg path,
-.emotion-1.focus-visible:focus svg path {
+.emotion-0:hover svg path,
+.emotion-0.focus-visible:focus svg path {
   fill: #ffffff;
 }
 
-.emotion-0 {
+.emotion-1 {
   margin-right: 4px;
 }
 
 <button
   aria-label="Open Metadata"
-  className="emotion-1"
+  className="emotion-0"
   onClick={[Function]}
   type="button"
 >
   <svg
-    className="emotion-0"
+    className="emotion-1"
     color="#808080"
     data-file-name="timebasedMetadata.svg"
     height={20}

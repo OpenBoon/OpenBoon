@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FaceLabelingMessage /> should render properly when a training job just finished 1`] = `
-.emotion-2 {
+.emotion-0 {
   padding-bottom: 16px;
 }
 
@@ -19,7 +19,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -29,7 +29,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   white-space: pre-line;
 }
 
-.emotion-0 a {
+.emotion-2 a {
   color: #ffffff;
   background-color: #009f22;
   padding: 6px;
@@ -39,14 +39,14 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   border-radius: 2px;
 }
 
-.emotion-0 a:hover {
+.emotion-2 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #00791a;
 }
 
 <div
-  className="emotion-2"
+  className="emotion-0"
 >
   <div
     className="emotion-1"
@@ -57,7 +57,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
       height={20}
     />
     <div
-      className="emotion-0"
+      className="emotion-2"
       role="alert"
     >
       Face training complete.
@@ -70,22 +70,24 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
 @keyframes animation-0 {
   from {
     -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
     -ms-transform: rotate(0deg);
     transform: rotate(0deg);
   }
 
   to {
     -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
     -ms-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
 
-.emotion-3 {
+.emotion-0 {
   padding-bottom: 16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -99,12 +101,12 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-animation: animation-0 2s linear infinite;
   animation: animation-0 2s linear infinite;
 }
 
-.emotion-1 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -114,7 +116,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   white-space: pre-line;
 }
 
-.emotion-1 a {
+.emotion-3 a {
   color: #ffffff;
   background-color: #0074f5;
   padding: 6px;
@@ -124,26 +126,26 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   border-radius: 2px;
 }
 
-.emotion-1 a:hover {
+.emotion-3 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #005dc4;
 }
 
 <div
-  className="emotion-3"
+  className="emotion-0"
 >
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
     <svg
-      className="emotion-0"
+      className="emotion-2"
       color="#0074f5"
       data-file-name="generating.svg"
       height={20}
     />
     <div
-      className="emotion-1"
+      className="emotion-3"
       role="alert"
     >
       Face training in progress.
@@ -161,7 +163,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
 `;
 
 exports[`<FaceLabelingMessage /> should render properly when there is an error 1`] = `
-.emotion-2 {
+.emotion-0 {
   padding-bottom: 16px;
 }
 
@@ -179,7 +181,7 @@ exports[`<FaceLabelingMessage /> should render properly when there is an error 1
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -189,7 +191,7 @@ exports[`<FaceLabelingMessage /> should render properly when there is an error 1
   white-space: pre-line;
 }
 
-.emotion-0 a {
+.emotion-2 a {
   color: #ffffff;
   background-color: #3b3b3b;
   padding: 6px;
@@ -199,14 +201,14 @@ exports[`<FaceLabelingMessage /> should render properly when there is an error 1
   border-radius: 2px;
 }
 
-.emotion-0 a:hover {
+.emotion-2 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #2e2e2e;
 }
 
 <div
-  className="emotion-2"
+  className="emotion-0"
 >
   <div
     className="emotion-1"
@@ -217,7 +219,7 @@ exports[`<FaceLabelingMessage /> should render properly when there is an error 1
       height={20}
     />
     <div
-      className="emotion-0"
+      className="emotion-2"
       role="alert"
     >
       Error

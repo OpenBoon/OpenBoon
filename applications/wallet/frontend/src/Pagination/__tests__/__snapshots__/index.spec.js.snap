@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Pagination /> should render properly on first page 1`] = `
-.emotion-6 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
@@ -43,14 +43,15 @@ exports[`<Pagination /> should render properly on first page 1`] = `
   cursor: not-allowed;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #191919;
   -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-2 {
+.emotion-3 {
   padding: 8px 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -64,7 +65,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-3 {
+.emotion-4 {
   padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -105,15 +106,16 @@ exports[`<Pagination /> should render properly on first page 1`] = `
   cursor: pointer;
 }
 
-.emotion-4 {
+.emotion-6 {
   color: #ffffff;
   -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 
 <div
-  className="emotion-6"
+  className="emotion-0"
 >
   <button
     className="emotion-1"
@@ -121,18 +123,18 @@ exports[`<Pagination /> should render properly on first page 1`] = `
     type="button"
   >
     <svg
-      className="emotion-0"
+      className="emotion-2"
       data-file-name="chevron.svg"
       height={16}
     />
   </button>
   <div
-    className="emotion-2"
+    className="emotion-3"
   >
     1
   </div>
   <div
-    className="emotion-3"
+    className="emotion-4"
   >
     of 
     2
@@ -145,7 +147,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
     rel="next"
   >
     <svg
-      className="emotion-4"
+      className="emotion-6"
       data-file-name="chevron.svg"
       height={16}
     />
@@ -154,45 +156,18 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 `;
 
 exports[`<Pagination /> should render properly on last page 1`] = `
-.emotion-6 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
-}
-
-.emotion-2 {
-  padding: 8px 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #ffffff;
-  background-color: #2e2e2e;
-}
-
-.emotion-3 {
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #b3b3b3;
 }
 
 .emotion-1 {
@@ -223,11 +198,39 @@ exports[`<Pagination /> should render properly on last page 1`] = `
   cursor: pointer;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #ffffff;
   -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
+}
+
+.emotion-3 {
+  padding: 8px 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #ffffff;
+  background-color: #2e2e2e;
+}
+
+.emotion-4 {
+  padding: 8px 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #b3b3b3;
 }
 
 .emotion-5 {
@@ -258,15 +261,16 @@ exports[`<Pagination /> should render properly on last page 1`] = `
   cursor: not-allowed;
 }
 
-.emotion-4 {
+.emotion-6 {
   color: #191919;
   -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 
 <div
-  className="emotion-6"
+  className="emotion-0"
 >
   <a
     className="emotion-1"
@@ -276,18 +280,18 @@ exports[`<Pagination /> should render properly on last page 1`] = `
     rel="prev"
   >
     <svg
-      className="emotion-0"
+      className="emotion-2"
       data-file-name="chevron.svg"
       height={16}
     />
   </a>
   <div
-    className="emotion-2"
+    className="emotion-3"
   >
     2
   </div>
   <div
-    className="emotion-3"
+    className="emotion-4"
   >
     of 
     2
@@ -298,7 +302,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
     type="button"
   >
     <svg
-      className="emotion-4"
+      className="emotion-6"
       data-file-name="chevron.svg"
       height={16}
     />

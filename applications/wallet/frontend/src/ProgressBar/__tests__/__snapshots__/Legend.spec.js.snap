@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ProgressBarLegend /> should render properly 1`] = `
-.emotion-20 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -13,7 +13,7 @@ exports[`<ProgressBarLegend /> should render properly 1`] = `
   padding-right: 4px;
 }
 
-.emotion-3 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -21,139 +21,139 @@ exports[`<ProgressBarLegend /> should render properly 1`] = `
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   width: 2px;
   height: 100%;
   background-color: #c92300;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #e0e0e0;
   padding-left: 8px;
 }
 
-.emotion-1 {
+.emotion-4 {
   color: #ffffff;
   font-weight: 700;
 }
 
-.emotion-4 {
+.emotion-6 {
   width: 2px;
   height: 100%;
   background-color: #b3b3b3;
 }
 
-.emotion-8 {
+.emotion-10 {
   width: 2px;
   height: 100%;
   background-color: #009f22;
 }
 
-.emotion-12 {
+.emotion-14 {
   width: 2px;
   height: 100%;
   background-color: #ebb52e;
 }
 
-.emotion-16 {
+.emotion-18 {
   width: 2px;
   height: 100%;
   background-color: #0074f5;
 }
 
 <div
-  className="emotion-20"
+  className="emotion-0"
 >
   <div
-    className="emotion-3"
+    className="emotion-1"
   >
     <div
-      className="emotion-0"
+      className="emotion-2"
     />
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <div>
         Failed:
       </div>
       <div
-        className="emotion-1"
+        className="emotion-4"
       >
         1
       </div>
     </div>
   </div>
   <div
-    className="emotion-3"
+    className="emotion-1"
   >
     <div
-      className="emotion-4"
+      className="emotion-6"
     />
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <div>
         Skipped:
       </div>
       <div
-        className="emotion-1"
+        className="emotion-4"
       >
         0
       </div>
     </div>
   </div>
   <div
-    className="emotion-3"
+    className="emotion-1"
   >
     <div
-      className="emotion-8"
+      className="emotion-10"
     />
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <div>
         Succeeded:
       </div>
       <div
-        className="emotion-1"
+        className="emotion-4"
       >
         0
       </div>
     </div>
   </div>
   <div
-    className="emotion-3"
+    className="emotion-1"
   >
     <div
-      className="emotion-12"
+      className="emotion-14"
     />
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <div>
         Running:
       </div>
       <div
-        className="emotion-1"
+        className="emotion-4"
       >
         0
       </div>
     </div>
   </div>
   <div
-    className="emotion-3"
+    className="emotion-1"
   >
     <div
-      className="emotion-16"
+      className="emotion-18"
     />
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <div>
         Pending:
       </div>
       <div
-        className="emotion-1"
+        className="emotion-4"
       >
         0
       </div>

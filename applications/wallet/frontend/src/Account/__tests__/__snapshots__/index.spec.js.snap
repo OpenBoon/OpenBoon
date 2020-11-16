@@ -39,6 +39,7 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
@@ -82,7 +83,7 @@ Array [
   >
     Account Overview
   </h2>,
-  .emotion-1 {
+  .emotion-0 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -98,25 +99,25 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
 }
 
-.emotion-0 {
+.emotion-1 {
   color: #808080;
   font-weight: 400;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <svg
       data-file-name="noProject.svg"
       width={250}
     />
     <h3
-      className="emotion-0"
+      className="emotion-1"
     >
       You currently have no projects
     </h3>

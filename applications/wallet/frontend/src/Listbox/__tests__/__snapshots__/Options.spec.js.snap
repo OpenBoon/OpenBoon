@@ -2,7 +2,7 @@
 
 exports[`<ListboxOptions /> should render a nested list properly 1`] = `
 Array [
-  .emotion-5 {
+  .emotion-0 {
   list-style: none;
   padding-left: 0;
   padding-bottom: 8px;
@@ -11,23 +11,23 @@ Array [
   font-weight: 500;
 }
 
-.emotion-4 {
+.emotion-1 {
   padding-bottom: 2px;
 }
 
-.emotion-0 {
+.emotion-2 {
   padding-left: 8px;
 }
 
-.emotion-1 {
+.emotion-5 {
   padding-left: 24px;
 }
 
-.emotion-3 {
+.emotion-6 {
   padding: 0;
 }
 
-.emotion-2 {
+.emotion-7 {
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 40px;
@@ -36,44 +36,44 @@ Array [
   font-weight: 400;
 }
 
-.emotion-2:hover {
+.emotion-7:hover {
   background: #b3b3b3;
   cursor: pointer;
 }
 
 <ul
     aria-labelledby="analysis"
-    className="emotion-5"
+    className="emotion-0"
     role="group"
   >
     <li
-      className="emotion-4"
+      className="emotion-1"
       role="presentation"
     >
       <span
-        className="emotion-0"
+        className="emotion-2"
       >
         analysis
       </span>
       <ul
         aria-labelledby="zvi"
-        className="emotion-5"
+        className="emotion-0"
         role="group"
       >
         <li
-          className="emotion-4"
+          className="emotion-1"
           role="presentation"
         >
           <span
-            className="emotion-1"
+            className="emotion-5"
           >
             zvi
           </span>
           <ul
-            className="emotion-3"
+            className="emotion-6"
           >
             <ListboxOption
-              className="emotion-2"
+              className="emotion-7"
               value="analysis.zvi.tinyProxy"
             >
               tinyProxy
@@ -83,7 +83,7 @@ Array [
       </ul>
     </li>
   </ul>,
-  .emotion-10 {
+  .emotion-0 {
   list-style: none;
   padding-left: 0;
   padding-bottom: 8px;
@@ -92,19 +92,19 @@ Array [
   font-weight: 500;
 }
 
-.emotion-9 {
+.emotion-1 {
   padding-bottom: 2px;
 }
 
-.emotion-0 {
+.emotion-2 {
   padding-left: 8px;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding: 0;
 }
 
-.emotion-1 {
+.emotion-4 {
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 24px;
@@ -113,60 +113,60 @@ Array [
   font-weight: 400;
 }
 
-.emotion-1:hover {
+.emotion-4:hover {
   background: #b3b3b3;
   cursor: pointer;
 }
 
 <ul
     aria-labelledby="clip"
-    className="emotion-10"
+    className="emotion-0"
     role="group"
   >
     <li
-      className="emotion-9"
+      className="emotion-1"
       role="presentation"
     >
       <span
-        className="emotion-0"
+        className="emotion-2"
       >
         clip
       </span>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="clip.pile"
         >
           pile
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="clip.sourceAssetId"
         >
           sourceAssetId
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="clip.timeline"
         >
           timeline
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="clip.type"
         >
           type
@@ -174,7 +174,7 @@ Array [
       </ul>
     </li>
   </ul>,
-  .emotion-8 {
+  .emotion-0 {
   list-style: none;
   padding-left: 0;
   padding-bottom: 8px;
@@ -183,19 +183,19 @@ Array [
   font-weight: 500;
 }
 
-.emotion-7 {
+.emotion-1 {
   padding-bottom: 2px;
 }
 
-.emotion-0 {
+.emotion-2 {
   padding-left: 8px;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding: 0;
 }
 
-.emotion-1 {
+.emotion-4 {
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 24px;
@@ -204,50 +204,50 @@ Array [
   font-weight: 400;
 }
 
-.emotion-1:hover {
+.emotion-4:hover {
   background: #b3b3b3;
   cursor: pointer;
 }
 
 <ul
     aria-labelledby="location"
-    className="emotion-8"
+    className="emotion-0"
     role="group"
   >
     <li
-      className="emotion-7"
+      className="emotion-1"
       role="presentation"
     >
       <span
-        className="emotion-0"
+        className="emotion-2"
       >
         location
       </span>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="location.city"
         >
           city
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="location.code"
         >
           code
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="location.country"
         >
           country
@@ -255,7 +255,7 @@ Array [
       </ul>
     </li>
   </ul>,
-  .emotion-16 {
+  .emotion-0 {
   list-style: none;
   padding-left: 0;
   padding-bottom: 8px;
@@ -264,19 +264,19 @@ Array [
   font-weight: 500;
 }
 
-.emotion-15 {
+.emotion-1 {
   padding-bottom: 2px;
 }
 
-.emotion-0 {
+.emotion-2 {
   padding-left: 8px;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding: 0;
 }
 
-.emotion-1 {
+.emotion-4 {
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 24px;
@@ -285,90 +285,90 @@ Array [
   font-weight: 400;
 }
 
-.emotion-1:hover {
+.emotion-4:hover {
   background: #b3b3b3;
   cursor: pointer;
 }
 
 <ul
     aria-labelledby="media"
-    className="emotion-16"
+    className="emotion-0"
     role="group"
   >
     <li
-      className="emotion-15"
+      className="emotion-1"
       role="presentation"
     >
       <span
-        className="emotion-0"
+        className="emotion-2"
       >
         media
       </span>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="media.author"
         >
           author
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="media.content"
         >
           content
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="media.description"
         >
           description
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="media.keywords"
         >
           keywords
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="media.orientation"
         >
           orientation
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="media.title"
         >
           title
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="media.type"
         >
           type
@@ -376,7 +376,7 @@ Array [
       </ul>
     </li>
   </ul>,
-  .emotion-10 {
+  .emotion-0 {
   list-style: none;
   padding-left: 0;
   padding-bottom: 8px;
@@ -385,19 +385,19 @@ Array [
   font-weight: 500;
 }
 
-.emotion-9 {
+.emotion-1 {
   padding-bottom: 2px;
 }
 
-.emotion-0 {
+.emotion-2 {
   padding-left: 8px;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding: 0;
 }
 
-.emotion-1 {
+.emotion-4 {
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 24px;
@@ -406,60 +406,60 @@ Array [
   font-weight: 400;
 }
 
-.emotion-1:hover {
+.emotion-4:hover {
   background: #b3b3b3;
   cursor: pointer;
 }
 
 <ul
     aria-labelledby="source"
-    className="emotion-10"
+    className="emotion-0"
     role="group"
   >
     <li
-      className="emotion-9"
+      className="emotion-1"
       role="presentation"
     >
       <span
-        className="emotion-0"
+        className="emotion-2"
       >
         source
       </span>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="source.extension"
         >
           extension
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="source.filename"
         >
           filename
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="source.mimetype"
         >
           mimetype
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="source.path"
         >
           path
@@ -467,7 +467,7 @@ Array [
       </ul>
     </li>
   </ul>,
-  .emotion-12 {
+  .emotion-0 {
   list-style: none;
   padding-left: 0;
   padding-bottom: 8px;
@@ -476,19 +476,19 @@ Array [
   font-weight: 500;
 }
 
-.emotion-11 {
+.emotion-1 {
   padding-bottom: 2px;
 }
 
-.emotion-0 {
+.emotion-2 {
   padding-left: 8px;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding: 0;
 }
 
-.emotion-1 {
+.emotion-4 {
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 24px;
@@ -497,70 +497,70 @@ Array [
   font-weight: 400;
 }
 
-.emotion-1:hover {
+.emotion-4:hover {
   background: #b3b3b3;
   cursor: pointer;
 }
 
 <ul
     aria-labelledby="system"
-    className="emotion-12"
+    className="emotion-0"
     role="group"
   >
     <li
-      className="emotion-11"
+      className="emotion-1"
       role="presentation"
     >
       <span
-        className="emotion-0"
+        className="emotion-2"
       >
         system
       </span>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="system.dataSourceId"
         >
           dataSourceId
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="system.jobId"
         >
           jobId
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="system.projectId"
         >
           projectId
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="system.state"
         >
           state
         </ListboxOption>
       </ul>
       <ul
-        className="emotion-2"
+        className="emotion-3"
       >
         <ListboxOption
-          className="emotion-1"
+          className="emotion-4"
           value="system.taskId"
         >
           taskId
@@ -573,11 +573,11 @@ Array [
 
 exports[`<ListboxOptions /> should render a non-nested list properly 1`] = `
 Array [
-  .emotion-1 {
+  .emotion-0 {
   padding: 0;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 24px;
@@ -586,26 +586,26 @@ Array [
   font-weight: 400;
 }
 
-.emotion-0:hover {
+.emotion-1:hover {
   background: #b3b3b3;
   cursor: pointer;
 }
 
 <ul
-    className="emotion-1"
+    className="emotion-0"
   >
     <ListboxOption
-      className="emotion-0"
+      className="emotion-1"
       value="fields"
     >
       fields
     </ListboxOption>
   </ul>,
-  .emotion-1 {
+  .emotion-0 {
   padding: 0;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 24px;
@@ -614,16 +614,16 @@ Array [
   font-weight: 400;
 }
 
-.emotion-0:hover {
+.emotion-1:hover {
   background: #b3b3b3;
   cursor: pointer;
 }
 
 <ul
-    className="emotion-1"
+    className="emotion-0"
   >
     <ListboxOption
-      className="emotion-0"
+      className="emotion-1"
       value="media"
     >
       media

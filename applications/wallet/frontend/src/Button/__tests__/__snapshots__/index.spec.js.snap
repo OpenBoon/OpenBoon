@@ -17,8 +17,8 @@ exports[`<Button /> should have a type "button" and be aria-disabled, and not cl
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -78,8 +78,8 @@ exports[`<Button /> should have a type "button", pass additional props, and be c
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -138,8 +138,8 @@ exports[`<Button /> should render a link as an anchor tag with no onClick 1`] = 
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -199,8 +199,8 @@ exports[`<Button /> should render properly for ICON Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 8px;
@@ -259,8 +259,8 @@ exports[`<Button /> should render properly for ICON Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 8px;
@@ -318,8 +318,8 @@ exports[`<Button /> should render properly for LINK Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 4px;
@@ -379,8 +379,8 @@ exports[`<Button /> should render properly for LINK Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 4px;
@@ -439,8 +439,8 @@ exports[`<Button /> should render properly for MENU Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 8px;
@@ -496,8 +496,8 @@ exports[`<Button /> should render properly for MENU Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 8px;
@@ -552,8 +552,8 @@ exports[`<Button /> should render properly for MENU_ITEM Button 1`] = `
   -ms-flex-align: flex-start;
   align-items: flex-start;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 0;
   padding: 8px 16px;
@@ -607,8 +607,8 @@ exports[`<Button /> should render properly for MENU_ITEM Link 1`] = `
   -ms-flex-align: flex-start;
   align-items: flex-start;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 0;
   padding: 8px 16px;
@@ -661,8 +661,8 @@ exports[`<Button /> should render properly for MICRO Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 4px;
@@ -720,8 +720,8 @@ exports[`<Button /> should render properly for MICRO Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 4px;
@@ -778,8 +778,8 @@ exports[`<Button /> should render properly for NEUTRAL Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 0;
@@ -828,8 +828,8 @@ exports[`<Button /> should render properly for NEUTRAL Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 0;
@@ -877,8 +877,8 @@ exports[`<Button /> should render properly for PRIMARY Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -937,8 +937,8 @@ exports[`<Button /> should render properly for PRIMARY Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -996,8 +996,8 @@ exports[`<Button /> should render properly for PRIMARY_SMALL Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 8px 16px;
@@ -1056,8 +1056,8 @@ exports[`<Button /> should render properly for PRIMARY_SMALL Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 8px 16px;
@@ -1115,8 +1115,8 @@ exports[`<Button /> should render properly for SECONDARY Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1175,8 +1175,8 @@ exports[`<Button /> should render properly for SECONDARY Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1234,8 +1234,8 @@ exports[`<Button /> should render properly for SECONDARY_SMALL Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 8px 16px;
@@ -1294,8 +1294,8 @@ exports[`<Button /> should render properly for SECONDARY_SMALL Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 8px 16px;
@@ -1353,8 +1353,8 @@ exports[`<Button /> should render properly for WARNING Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1413,8 +1413,8 @@ exports[`<Button /> should render properly for WARNING Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
