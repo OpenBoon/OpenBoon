@@ -86,17 +86,15 @@ exports[`<Asset /> should handle no query 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
 }
 
 .emotion-0:hover {
@@ -105,7 +103,7 @@ exports[`<Asset /> should handle no query 1`] = `
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-0:hover,
@@ -116,10 +114,6 @@ exports[`<Asset /> should handle no query 1`] = `
 .emotion-0:hover svg,
 .emotion-0.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-2 {
@@ -185,9 +179,9 @@ exports[`<Asset /> should handle no query 1`] = `
 }
 
 .emotion-12 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -203,36 +197,27 @@ exports[`<Asset /> should handle no query 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-  -webkit-flex: none;
-  -ms-flex: none;
-  flex: none;
+  background-color: #252525;
   padding-top: 16px;
   padding-bottom: 16px;
-  background-color: #252525;
   margin-bottom: 1px;
-  color: #808080;
-  border-radius: 0;
 }
 
 .emotion-12:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  background-color: #2e2e2e;
 }
 
 .emotion-12[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-12:hover,
@@ -243,14 +228,6 @@ exports[`<Asset /> should handle no query 1`] = `
 .emotion-12:hover svg,
 .emotion-12.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-12[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-12:hover {
-  background-color: #2e2e2e;
 }
 
 .emotion-16 {
@@ -543,17 +520,15 @@ exports[`<Asset /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
 }
 
 .emotion-0:hover {
@@ -562,7 +537,7 @@ exports[`<Asset /> should render properly 1`] = `
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-0:hover,
@@ -573,10 +548,6 @@ exports[`<Asset /> should render properly 1`] = `
 .emotion-0:hover svg,
 .emotion-0.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-2 {
@@ -648,9 +619,9 @@ exports[`<Asset /> should render properly 1`] = `
 }
 
 .emotion-8 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -666,36 +637,27 @@ exports[`<Asset /> should render properly 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-  -webkit-flex: none;
-  -ms-flex: none;
-  flex: none;
+  background-color: #252525;
   padding-top: 16px;
   padding-bottom: 16px;
-  background-color: #252525;
   margin-bottom: 1px;
-  color: #808080;
-  border-radius: 0;
 }
 
 .emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  background-color: #2e2e2e;
 }
 
 .emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-8:hover,
@@ -706,14 +668,6 @@ exports[`<Asset /> should render properly 1`] = `
 .emotion-8:hover svg,
 .emotion-8.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-8:hover {
-  background-color: #2e2e2e;
 }
 
 .emotion-12 {
@@ -920,17 +874,15 @@ exports[`<Asset /> should render videos properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
 }
 
 .emotion-0:hover {
@@ -939,7 +891,7 @@ exports[`<Asset /> should render videos properly 1`] = `
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-0:hover,
@@ -950,10 +902,6 @@ exports[`<Asset /> should render videos properly 1`] = `
 .emotion-0:hover svg,
 .emotion-0.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-2 {
@@ -1019,9 +967,9 @@ exports[`<Asset /> should render videos properly 1`] = `
 }
 
 .emotion-12 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1037,36 +985,27 @@ exports[`<Asset /> should render videos properly 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-  -webkit-flex: none;
-  -ms-flex: none;
-  flex: none;
+  background-color: #252525;
   padding-top: 16px;
   padding-bottom: 16px;
-  background-color: #252525;
   margin-bottom: 1px;
-  color: #808080;
-  border-radius: 0;
 }
 
 .emotion-12:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  background-color: #2e2e2e;
 }
 
 .emotion-12[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-12:hover,
@@ -1077,14 +1016,6 @@ exports[`<Asset /> should render videos properly 1`] = `
 .emotion-12:hover svg,
 .emotion-12.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-12[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-12:hover {
-  background-color: #2e2e2e;
 }
 
 .emotion-16 {

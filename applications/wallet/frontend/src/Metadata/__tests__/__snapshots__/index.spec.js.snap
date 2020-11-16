@@ -96,17 +96,15 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
@@ -116,7 +114,7 @@ Array [
 }
 
 .emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-2:hover,
@@ -127,10 +125,6 @@ Array [
 .emotion-2:hover svg,
 .emotion-2.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-2 svg {
@@ -203,8 +197,8 @@ Array [
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -212,29 +206,20 @@ Array [
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  border-radius: 0;
+  background-color: #808080;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 12px;
   padding-right: 12px;
-  background-color: #808080;
-  color: #ffffff;
   text-transform: uppercase;
 }
 
 .emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  color: #ffffff;
 }
 
 .emotion-0[aria-disabled=true] {
   color: #2e2e2e;
-}
-
-.emotion-0:hover {
-  color: #ffffff;
 }
 
 .emotion-1 {
@@ -256,38 +241,29 @@ Array [
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #808080;
   background-color: transparent;
-  padding: 0;
-  border-radius: 0;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 12px;
   padding-right: 12px;
-  background-color: transparent;
-  color: #808080;
   text-transform: uppercase;
 }
 
 .emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  color: #ffffff;
 }
 
 .emotion-1[aria-disabled=true] {
   color: #2e2e2e;
-}
-
-.emotion-1:hover {
-  color: #ffffff;
 }
 
 <div
@@ -1874,17 +1850,15 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
@@ -1894,7 +1868,7 @@ Array [
 }
 
 .emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-2:hover,
@@ -1905,10 +1879,6 @@ Array [
 .emotion-2:hover svg,
 .emotion-2.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-2 svg {
@@ -1981,8 +1951,8 @@ Array [
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1990,29 +1960,20 @@ Array [
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  border-radius: 0;
+  background-color: #808080;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 12px;
   padding-right: 12px;
-  background-color: #808080;
-  color: #ffffff;
   text-transform: uppercase;
 }
 
 .emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  color: #ffffff;
 }
 
 .emotion-1[aria-disabled=true] {
   color: #2e2e2e;
-}
-
-.emotion-1:hover {
-  color: #ffffff;
 }
 
 .emotion-0 {
@@ -2034,38 +1995,29 @@ Array [
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #808080;
   background-color: transparent;
-  padding: 0;
-  border-radius: 0;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 12px;
   padding-right: 12px;
-  background-color: transparent;
-  color: #808080;
   text-transform: uppercase;
 }
 
 .emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  color: #ffffff;
 }
 
 .emotion-0[aria-disabled=true] {
   color: #2e2e2e;
-}
-
-.emotion-0:hover {
-  color: #ffffff;
 }
 
 <div

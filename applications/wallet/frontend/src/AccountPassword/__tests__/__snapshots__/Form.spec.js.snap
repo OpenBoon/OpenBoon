@@ -49,17 +49,12 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 }
 
 .emotion-1:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-1:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-17 {
@@ -113,7 +108,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 }
 
 .emotion-15[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-15,
@@ -124,10 +119,6 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 
 .emotion-15:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-15[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-16 {
@@ -167,7 +158,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 }
 
 .emotion-16[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-16,
@@ -178,10 +169,6 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 
 .emotion-16:hover {
   background-color: #96c955;
-}
-
-.emotion-16[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-24 {
@@ -229,7 +216,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -238,7 +225,6 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
 .emotion-21:hover {
@@ -247,7 +233,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 }
 
 .emotion-21[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-21,
@@ -258,10 +244,6 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 
 .emotion-21:hover {
   background-color: #96c955;
-}
-
-.emotion-21[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div
@@ -532,7 +514,7 @@ Array [
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-0,
@@ -543,10 +525,6 @@ Array [
 
 .emotion-0:hover {
   background-color: #96c955;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div
@@ -612,17 +590,12 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 }
 
 .emotion-1:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-1:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-17 {
@@ -676,7 +649,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 }
 
 .emotion-15[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-15,
@@ -687,10 +660,6 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 
 .emotion-15:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-15[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-16 {
@@ -730,7 +699,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 }
 
 .emotion-16[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-16,
@@ -741,10 +710,6 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 
 .emotion-16:hover {
   background-color: #96c955;
-}
-
-.emotion-16[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-24 {
@@ -792,7 +757,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -801,7 +766,6 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
 .emotion-21:hover {
@@ -810,7 +774,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 }
 
 .emotion-21[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-21,
@@ -821,10 +785,6 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 
 .emotion-21:hover {
   background-color: #96c955;
-}
-
-.emotion-21[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div
@@ -1023,17 +983,12 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 }
 
 .emotion-1:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-1:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-17 {
@@ -1087,7 +1042,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 }
 
 .emotion-15[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-15,
@@ -1098,10 +1053,6 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 
 .emotion-15:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-15[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-16 {
@@ -1141,7 +1092,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 }
 
 .emotion-16[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-16,
@@ -1152,10 +1103,6 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 
 .emotion-16:hover {
   background-color: #96c955;
-}
-
-.emotion-16[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-24 {
@@ -1203,7 +1150,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1212,7 +1159,6 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
 .emotion-21:hover {
@@ -1221,7 +1167,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 }
 
 .emotion-21[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-21,
@@ -1232,10 +1178,6 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 
 .emotion-21:hover {
   background-color: #96c955;
-}
-
-.emotion-21[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div

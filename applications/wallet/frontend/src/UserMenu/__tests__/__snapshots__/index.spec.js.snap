@@ -11,9 +11,9 @@ exports[`<UserMenu /> should render properly 1`] = `
 }
 
 .emotion-3 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -30,28 +30,21 @@ exports[`<UserMenu /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
+  background-color: transparent;
+  padding-left: 16px;
   height: 100%;
 }
 
 .emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  cursor: pointer;
 }
 
 .emotion-3[aria-disabled=true] {
@@ -61,10 +54,6 @@ exports[`<UserMenu /> should render properly 1`] = `
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-3:hover {
-  cursor: pointer;
 }
 
 .emotion-2 {
@@ -160,9 +149,9 @@ exports[`<UserMenu /> should render properly 2`] = `
 }
 
 .emotion-3 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -179,29 +168,21 @@ exports[`<UserMenu /> should render properly 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
-  height: 100%;
   background-color: #3b3b3b;
+  padding-left: 16px;
+  height: 100%;
 }
 
 .emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  cursor: pointer;
 }
 
 .emotion-3[aria-disabled=true] {
@@ -211,10 +192,6 @@ exports[`<UserMenu /> should render properly 2`] = `
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-3:hover {
-  cursor: pointer;
 }
 
 .emotion-0 {
@@ -288,9 +265,9 @@ exports[`<UserMenu /> should render properly 2`] = `
 }
 
 .emotion-6 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -298,34 +275,24 @@ exports[`<UserMenu /> should render properly 2`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  padding: 8px 16px;
-  font-weight: 400;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   border-radius: 0;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
 }
 
 .emotion-6:hover {
@@ -455,9 +422,9 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
 }
 
 .emotion-3 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -474,28 +441,21 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
+  background-color: transparent;
+  padding-left: 16px;
   height: 100%;
 }
 
 .emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  cursor: pointer;
 }
 
 .emotion-3[aria-disabled=true] {
@@ -505,10 +465,6 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-3:hover {
-  cursor: pointer;
 }
 
 .emotion-2 {

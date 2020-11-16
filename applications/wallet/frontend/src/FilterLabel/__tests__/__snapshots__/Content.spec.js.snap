@@ -208,23 +208,17 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
@@ -512,23 +506,17 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
@@ -648,9 +636,9 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -660,21 +648,15 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  width: 100%;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
   color: #b3b3b3;
+  width: 100%;
 }
 
 .emotion-7:hover {
@@ -1149,23 +1131,17 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
@@ -1243,9 +1219,9 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1255,7 +1231,7 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1263,14 +1239,8 @@ Array [
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  width: 100%;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
   background-color: #0074f538;
-  color: #ffffff;
+  width: 100%;
 }
 
 .emotion-7:hover {
@@ -1343,9 +1313,9 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1355,21 +1325,15 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  width: 100%;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
   color: #b3b3b3;
+  width: 100%;
 }
 
 .emotion-15:hover {

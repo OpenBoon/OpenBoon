@@ -109,7 +109,7 @@ exports[`<Modal /> should render properly 1`] = `
 }
 
 .emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-3,
@@ -120,10 +120,6 @@ exports[`<Modal /> should render properly 1`] = `
 
 .emotion-3:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-3[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-4 {
@@ -163,7 +159,7 @@ exports[`<Modal /> should render properly 1`] = `
 }
 
 .emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-4,
@@ -174,10 +170,6 @@ exports[`<Modal /> should render properly 1`] = `
 
 .emotion-4:hover {
   opacity: 0.5;
-}
-
-.emotion-4[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <ReactAriaModal

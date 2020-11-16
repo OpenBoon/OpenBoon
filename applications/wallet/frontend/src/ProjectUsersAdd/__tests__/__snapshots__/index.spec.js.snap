@@ -208,17 +208,15 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
 }
 
 .emotion-2:hover {
@@ -320,17 +318,12 @@ Array [
 }
 
 .emotion-1:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-1:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-31 {
@@ -491,7 +484,7 @@ Array [
 }
 
 .emotion-32[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-32,
@@ -502,10 +495,6 @@ Array [
 
 .emotion-32:hover {
   background-color: #96c955;
-}
-
-.emotion-32[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <form
@@ -894,17 +883,15 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
 }
 
 .emotion-2:hover {
@@ -1006,17 +993,12 @@ Array [
 }
 
 .emotion-1:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-1:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-31 {
@@ -1177,7 +1159,7 @@ Array [
 }
 
 .emotion-32[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-32,
@@ -1188,10 +1170,6 @@ Array [
 
 .emotion-32:hover {
   background-color: #96c955;
-}
-
-.emotion-32[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-7 {
@@ -1591,17 +1569,15 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
 }
 
 .emotion-7:hover {
@@ -1681,7 +1657,7 @@ Array [
 }
 
 .emotion-20[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-20,
@@ -1692,10 +1668,6 @@ Array [
 
 .emotion-20:hover {
   background-color: #96c955;
-}
-
-.emotion-20[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-1 {
@@ -1843,7 +1815,7 @@ Array [
 }
 
 .emotion-19[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-19,
@@ -1854,10 +1826,6 @@ Array [
 
 .emotion-19:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-19[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div>
@@ -2196,17 +2164,15 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
 }
 
 .emotion-2:hover {
@@ -2308,17 +2274,12 @@ Array [
 }
 
 .emotion-1:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-1:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-31 {
@@ -2479,7 +2440,7 @@ Array [
 }
 
 .emotion-32[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-32,
@@ -2490,10 +2451,6 @@ Array [
 
 .emotion-32:hover {
   background-color: #96c955;
-}
-
-.emotion-32[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <form

@@ -337,17 +337,12 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
 }
 
 .emotion-14:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-14:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-14:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-21 {
@@ -397,7 +392,7 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
 }
 
 .emotion-18[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-18,
@@ -408,10 +403,6 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
 
 .emotion-18:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-18[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-19 {
@@ -458,7 +449,7 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
 }
 
 .emotion-20[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-20,
@@ -469,10 +460,6 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
 
 .emotion-20:hover {
   background-color: #96c955;
-}
-
-.emotion-20[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div>

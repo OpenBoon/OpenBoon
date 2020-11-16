@@ -78,9 +78,9 @@ exports[`<Projects /> should render an access denied screen if the url projectId
 }
 
 .emotion-6 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -97,28 +97,21 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
+  background-color: transparent;
+  padding-left: 16px;
   height: 100%;
 }
 
 .emotion-6:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  cursor: pointer;
 }
 
 .emotion-6[aria-disabled=true] {
@@ -128,10 +121,6 @@ exports[`<Projects /> should render an access denied screen if the url projectId
 .emotion-6:hover,
 .emotion-6.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-6:hover {
-  cursor: pointer;
 }
 
 .emotion-5 {
@@ -265,7 +254,7 @@ exports[`<Projects /> should render an access denied screen if the url projectId
 }
 
 .emotion-12[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-12,
@@ -276,10 +265,6 @@ exports[`<Projects /> should render an access denied screen if the url projectId
 
 .emotion-12:hover {
   background-color: #96c955;
-}
-
-.emotion-12[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div

@@ -76,7 +76,7 @@ Array [
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-0,
@@ -87,10 +87,6 @@ Array [
 
 .emotion-0:hover {
   background-color: #96c955;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <button
@@ -179,7 +175,7 @@ Array [
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-0,
@@ -190,10 +186,6 @@ Array [
 
 .emotion-0:hover {
   background-color: #96c955;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <button
@@ -261,17 +253,12 @@ Array [
 }
 
 .emotion-1:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-1:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-12 {
@@ -325,7 +312,7 @@ Array [
 }
 
 .emotion-10[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-10,
@@ -336,10 +323,6 @@ Array [
 
 .emotion-10:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-10[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-11 {
@@ -379,7 +362,7 @@ Array [
 }
 
 .emotion-11[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-11,
@@ -390,10 +373,6 @@ Array [
 
 .emotion-11:hover {
   background-color: #96c955;
-}
-
-.emotion-11[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <form
@@ -626,7 +605,7 @@ Array [
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-0,
@@ -637,10 +616,6 @@ Array [
 
 .emotion-0:hover {
   background-color: #96c955;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <button

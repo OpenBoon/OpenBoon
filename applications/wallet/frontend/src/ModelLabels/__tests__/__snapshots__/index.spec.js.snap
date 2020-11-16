@@ -179,18 +179,15 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 6px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
   color: #191919;
-  padding: 6px;
+  background-color: transparent;
   margin: -6px;
 }
 
@@ -855,18 +852,15 @@ exports[`<ModelLabels /> should render properly with required assets per labels 
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 6px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
   color: #191919;
-  padding: 6px;
+  background-color: transparent;
   margin: -6px;
 }
 

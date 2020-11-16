@@ -116,16 +116,16 @@ exports[`<Login /> should render error 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 2px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -133,26 +133,10 @@ exports[`<Login /> should render error 1`] = `
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
+  background-color: #318AF5;
   width: 200px;
   min-width: 200px;
   max-width: 200px;
-  background-color: #318AF5;
-  padding: 2px;
-}
-
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-8:hover {
@@ -253,18 +237,15 @@ exports[`<Login /> should render error 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 12px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
   color: #b3b3b3;
-  padding: 12px;
+  background-color: transparent;
   outline-offset: -2px;
 }
 
@@ -330,7 +311,7 @@ exports[`<Login /> should render error 1`] = `
 }
 
 .emotion-27[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-27,
@@ -341,10 +322,6 @@ exports[`<Login /> should render error 1`] = `
 
 .emotion-27:hover {
   background-color: #96c955;
-}
-
-.emotion-27[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-29 {
@@ -753,16 +730,16 @@ exports[`<Login /> should render password changed 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 2px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -770,26 +747,10 @@ exports[`<Login /> should render password changed 1`] = `
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
+  background-color: #318AF5;
   width: 200px;
   min-width: 200px;
   max-width: 200px;
-  background-color: #318AF5;
-  padding: 2px;
-}
-
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-8:hover {
@@ -911,18 +872,15 @@ exports[`<Login /> should render password changed 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 12px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
   color: #b3b3b3;
-  padding: 12px;
+  background-color: transparent;
   outline-offset: -2px;
 }
 
@@ -988,7 +946,7 @@ exports[`<Login /> should render password changed 1`] = `
 }
 
 .emotion-22[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-22,
@@ -999,10 +957,6 @@ exports[`<Login /> should render password changed 1`] = `
 
 .emotion-22:hover {
   background-color: #96c955;
-}
-
-.emotion-22[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-24 {
@@ -1303,16 +1257,16 @@ exports[`<Login /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 2px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1320,26 +1274,10 @@ exports[`<Login /> should render properly 1`] = `
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
+  background-color: #318AF5;
   width: 200px;
   min-width: 200px;
   max-width: 200px;
-  background-color: #318AF5;
-  padding: 2px;
-}
-
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-8:hover {
@@ -1461,18 +1399,15 @@ exports[`<Login /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 12px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
   color: #b3b3b3;
-  padding: 12px;
+  background-color: transparent;
   outline-offset: -2px;
 }
 
@@ -1538,7 +1473,7 @@ exports[`<Login /> should render properly 1`] = `
 }
 
 .emotion-22[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-22,
@@ -1549,10 +1484,6 @@ exports[`<Login /> should render properly 1`] = `
 
 .emotion-22:hover {
   background-color: #96c955;
-}
-
-.emotion-22[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-24 {
@@ -1853,16 +1784,16 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 2px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1870,26 +1801,10 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
+  background-color: #318AF5;
   width: 200px;
   min-width: 200px;
   max-width: 200px;
-  background-color: #318AF5;
-  padding: 2px;
-}
-
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-8:hover {
@@ -2011,18 +1926,15 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 12px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
   color: #b3b3b3;
-  padding: 12px;
+  background-color: transparent;
   outline-offset: -2px;
 }
 
@@ -2088,7 +2000,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
 }
 
 .emotion-22[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-22,
@@ -2099,10 +2011,6 @@ exports[`<Login /> should render properly on account activation success 1`] = `
 
 .emotion-22:hover {
   background-color: #96c955;
-}
-
-.emotion-22[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-24 {

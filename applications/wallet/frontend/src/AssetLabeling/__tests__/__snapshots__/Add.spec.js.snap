@@ -64,9 +64,9 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
 }
 
 .emotion-5 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -92,9 +92,6 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   margin: 0;
 }
 
@@ -104,7 +101,7 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
 }
 
 .emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-5,
@@ -117,18 +114,14 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-6 {
   padding: 8px;
 }
 
 .emotion-7 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -154,9 +147,6 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   margin: 0;
 }
 
@@ -166,7 +156,7 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
 }
 
 .emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-7,
@@ -177,10 +167,6 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
 
 .emotion-7:hover {
   background-color: #96c955;
-}
-
-.emotion-7[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div
@@ -338,9 +324,9 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
 }
 
 .emotion-5 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -366,9 +352,6 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   margin: 0;
 }
 
@@ -378,7 +361,7 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
 }
 
 .emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-5,
@@ -391,18 +374,14 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-6 {
   padding: 8px;
 }
 
 .emotion-7 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -428,9 +407,6 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   margin: 0;
 }
 
@@ -440,7 +416,7 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
 }
 
 .emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-7,
@@ -451,10 +427,6 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
 
 .emotion-7:hover {
   background-color: #96c955;
-}
-
-.emotion-7[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div

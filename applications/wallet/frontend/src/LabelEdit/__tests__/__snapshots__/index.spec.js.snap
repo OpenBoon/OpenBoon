@@ -42,17 +42,12 @@ exports[`<LabelEdit /> should render properly 1`] = `
 }
 
 .emotion-1:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-1:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-7 {
@@ -106,7 +101,7 @@ exports[`<LabelEdit /> should render properly 1`] = `
 }
 
 .emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-5,
@@ -117,10 +112,6 @@ exports[`<LabelEdit /> should render properly 1`] = `
 
 .emotion-5:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-5[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-6 {
@@ -160,7 +151,7 @@ exports[`<LabelEdit /> should render properly 1`] = `
 }
 
 .emotion-6[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-6,
@@ -171,10 +162,6 @@ exports[`<LabelEdit /> should render properly 1`] = `
 
 .emotion-6:hover {
   background-color: #96c955;
-}
-
-.emotion-6[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <form
