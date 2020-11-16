@@ -9,24 +9,21 @@ object Config {
         val url: String,
         val name: String,
         val accessKey: String?,
-        val secretKey: String?,
-        val credentialsPath: String?
+        val secretKey: String?
     )
 
     class MinioBucketConfiguration() : BucketConfiguration(
         System.getenv("ZMLP_STORAGE_PIPELINE_URL") ?: "http://localhost:9000",
         System.getenv("ZMLP_STORAGE_PIPELINE_BUCKET") ?: "pipeline-storage",
         System.getenv("ZMLP_STORAGE_PIPELINE_ACCESSKEY") ?: "qwerty123",
-        System.getenv("ZMLP_STORAGE_PIPELINE_SECRETKEY") ?: "123qwerty",
-        null
+        System.getenv("ZMLP_STORAGE_PIPELINE_SECRETKEY") ?: "123qwerty"
     )
 
     class GcsBucketConfiguration() : BucketConfiguration(
         System.getenv("ZMLP_STORAGE_PIPELINE_URL") ?: "http://localhost:9000",
         System.getenv("ZMLP_STORAGE_PIPELINE_BUCKET") ?: "pipeline-storage",
         null,
-        null,
-        System.getenv("CREDENTIALS_PATH") ?: "/secrets/gcs/credentials.json"
+        null
     )
 
     class OfficerConfiguration(

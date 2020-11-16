@@ -11,10 +11,7 @@ import io.minio.MinioClient
 import io.minio.errors.ErrorResponseException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.FileInputStream
 import java.io.InputStream
-import java.nio.file.Files
-import java.nio.file.Paths
 import javax.annotation.PostConstruct
 
 object StorageManager {
@@ -166,15 +163,8 @@ open class GcsStorageClient : StorageClient {
     }
 
     private fun loadCredentials(): GoogleCredentials {
-        val credsFile = Paths.get(Config.bucket.credentialsPath)
-
-        return if (Files.exists(credsFile)) {
-            logger.info("Loading credentials from: {}", credsFile)
-            GoogleCredentials.fromStream(FileInputStream(credsFile.toFile()))
-        } else {
-            logger.info("Using default ComputeEngineCredentials")
-            ComputeEngineCredentials.create()
-        }
+        // Use GOOGLE_APPLICATION_CREDENTIALS env var to set a credentials path.
+        return ComputeEngineCredentials.create()
     }
 
     companion object {

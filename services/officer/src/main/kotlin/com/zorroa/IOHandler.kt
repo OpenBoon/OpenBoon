@@ -63,7 +63,6 @@ class IOHandler(val options: RenderRequest) {
 
     fun exists(page: Int = 1): Boolean {
         val path = getMetadataPath(page)
-        logger.info("Checking path: {}", path)
         return StorageManager.storageClient().exists(path)
     }
 
