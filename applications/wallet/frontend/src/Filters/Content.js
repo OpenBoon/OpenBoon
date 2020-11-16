@@ -20,6 +20,8 @@ import FilterDateRange from '../FilterDateRange'
 
 import { dispatch, ACTIONS } from './helpers'
 
+import FiltersCopyQuery from './CopyQuery'
+
 const BUTTON_SIZE = 190
 
 const FiltersContent = ({
@@ -41,13 +43,12 @@ const FiltersContent = ({
       >
         <div css={{ display: 'flex' }}>
           <Button
-            aria-label="Add Metadata Filters"
+            aria-label="Add Filters"
             variant={VARIANTS.PRIMARY}
             style={{
               flex: 1,
               paddingLeft: 0,
               paddingRight: 0,
-              minWidth: BUTTON_SIZE,
               maxWidth: !hasFilters ? BUTTON_SIZE : '',
             }}
             onClick={() => setIsMenuOpen((isMenuOpen) => !isMenuOpen)}
@@ -56,31 +57,35 @@ const FiltersContent = ({
               <div css={{ display: 'flex', paddingRight: spacing.small }}>
                 <PlusSvg height={constants.icons.regular} />
               </div>
-              Add Metadata Filters
+              Add Filters
             </div>
           </Button>
 
-          <div css={{ width: spacing.base, minWidth: spacing.base }} />
-
           {hasFilters && (
-            <Button
-              variant={VARIANTS.SECONDARY}
-              style={{
-                flex: 1,
-                paddingLeft: 0,
-                paddingRight: 0,
-                minWidth: BUTTON_SIZE,
-              }}
-              isDisabled={filters.length === 0}
-              onClick={() => {
-                dispatch({
-                  type: ACTIONS.CLEAR_FILTERS,
-                  payload: { pathname, projectId, assetId },
-                })
-              }}
-            >
-              Clear All Filters
-            </Button>
+            <>
+              <div css={{ width: spacing.small, minWidth: spacing.small }} />
+
+              <Button
+                variant={VARIANTS.SECONDARY}
+                style={{
+                  flex: 1,
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                }}
+                onClick={() => {
+                  dispatch({
+                    type: ACTIONS.CLEAR_FILTERS,
+                    payload: { pathname, projectId, assetId },
+                  })
+                }}
+              >
+                Clear All Filters
+              </Button>
+
+              <div css={{ width: spacing.small, minWidth: spacing.small }} />
+
+              <FiltersCopyQuery />
+            </>
           )}
         </div>
 

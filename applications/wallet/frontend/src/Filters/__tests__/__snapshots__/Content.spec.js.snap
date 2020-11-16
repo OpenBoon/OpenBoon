@@ -2,12 +2,12 @@
 
 exports[`<FiltersContent /> should render the "Date Range" filter 1`] = `
 Array [
-  .emotion-11 {
+  .emotion-13 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -48,7 +48,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-2:hover {
@@ -94,8 +93,8 @@ Array [
 }
 
 .emotion-3 {
-  width: 8px;
-  min-width: 8px;
+  width: 4px;
+  min-width: 4px;
 }
 
 .emotion-4 {
@@ -132,7 +131,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-4:hover {
@@ -159,17 +157,34 @@ Array [
 }
 
 .emotion-6 {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
+  cursor: pointer;
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+.emotion-8 {
   height: 4px;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-9 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -187,27 +202,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-7::-webkit-input-placeholder {
+.emotion-9::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::-moz-placeholder {
+.emotion-9::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-7:-ms-input-placeholder {
+.emotion-9:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::placeholder {
+.emotion-9::placeholder {
   font-style: italic;
 }
 
-.emotion-7:hover {
+.emotion-9:hover {
   border: 1px solid #808080;
 }
 
-.emotion-7:focus {
+.emotion-9:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -215,7 +230,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -237,18 +252,18 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-8 {
+.emotion-10 {
   color: #3b3b3b;
 }
 
 <div
-    className="emotion-11"
+    className="emotion-13"
   >
     <div
-      className="emotion-5"
+      className="emotion-7"
     >
       <button
-        aria-label="Add Metadata Filters"
+        aria-label="Add Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -264,7 +279,7 @@ Array [
               height={20}
             />
           </div>
-          Add Metadata Filters
+          Add Filters
         </div>
       </button>
       <div
@@ -277,9 +292,24 @@ Array [
       >
         Clear All Filters
       </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        aria-label="Copy Search Query"
+        className="emotion-6"
+        onClick={[Function]}
+        title="Copy Search Query"
+        type="button"
+      >
+        <svg
+          data-file-name="copy.svg"
+          height={20}
+        />
+      </button>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-8"
     />
     <form
       action=""
@@ -287,11 +317,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-7"
+          className="emotion-9"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -300,12 +330,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-9"
+          className="emotion-11"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-8"
+            className="emotion-10"
             data-file-name="plus.svg"
             height={20}
           />
@@ -875,12 +905,12 @@ Array [
 
 exports[`<FiltersContent /> should render the "Exists" filter 1`] = `
 Array [
-  .emotion-11 {
+  .emotion-13 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -921,7 +951,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-2:hover {
@@ -967,8 +996,8 @@ Array [
 }
 
 .emotion-3 {
-  width: 8px;
-  min-width: 8px;
+  width: 4px;
+  min-width: 4px;
 }
 
 .emotion-4 {
@@ -1005,7 +1034,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-4:hover {
@@ -1032,17 +1060,34 @@ Array [
 }
 
 .emotion-6 {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
+  cursor: pointer;
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+.emotion-8 {
   height: 4px;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-9 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -1060,27 +1105,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-7::-webkit-input-placeholder {
+.emotion-9::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::-moz-placeholder {
+.emotion-9::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-7:-ms-input-placeholder {
+.emotion-9:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::placeholder {
+.emotion-9::placeholder {
   font-style: italic;
 }
 
-.emotion-7:hover {
+.emotion-9:hover {
   border: 1px solid #808080;
 }
 
-.emotion-7:focus {
+.emotion-9:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -1088,7 +1133,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1110,18 +1155,18 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-8 {
+.emotion-10 {
   color: #3b3b3b;
 }
 
 <div
-    className="emotion-11"
+    className="emotion-13"
   >
     <div
-      className="emotion-5"
+      className="emotion-7"
     >
       <button
-        aria-label="Add Metadata Filters"
+        aria-label="Add Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -1137,7 +1182,7 @@ Array [
               height={20}
             />
           </div>
-          Add Metadata Filters
+          Add Filters
         </div>
       </button>
       <div
@@ -1150,9 +1195,24 @@ Array [
       >
         Clear All Filters
       </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        aria-label="Copy Search Query"
+        className="emotion-6"
+        onClick={[Function]}
+        title="Copy Search Query"
+        type="button"
+      >
+        <svg
+          data-file-name="copy.svg"
+          height={20}
+        />
+      </button>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-8"
     />
     <form
       action=""
@@ -1160,11 +1220,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-7"
+          className="emotion-9"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -1173,12 +1233,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-9"
+          className="emotion-11"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-8"
+            className="emotion-10"
             data-file-name="plus.svg"
             height={20}
           />
@@ -1683,12 +1743,12 @@ Array [
 
 exports[`<FiltersContent /> should render the "Facet" filter 1`] = `
 Array [
-  .emotion-11 {
+  .emotion-13 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1729,7 +1789,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-2:hover {
@@ -1775,8 +1834,8 @@ Array [
 }
 
 .emotion-3 {
-  width: 8px;
-  min-width: 8px;
+  width: 4px;
+  min-width: 4px;
 }
 
 .emotion-4 {
@@ -1813,7 +1872,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-4:hover {
@@ -1840,17 +1898,34 @@ Array [
 }
 
 .emotion-6 {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
+  cursor: pointer;
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+.emotion-8 {
   height: 4px;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-9 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -1868,27 +1943,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-7::-webkit-input-placeholder {
+.emotion-9::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::-moz-placeholder {
+.emotion-9::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-7:-ms-input-placeholder {
+.emotion-9:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::placeholder {
+.emotion-9::placeholder {
   font-style: italic;
 }
 
-.emotion-7:hover {
+.emotion-9:hover {
   border: 1px solid #808080;
 }
 
-.emotion-7:focus {
+.emotion-9:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -1896,7 +1971,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1918,18 +1993,18 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-8 {
+.emotion-10 {
   color: #3b3b3b;
 }
 
 <div
-    className="emotion-11"
+    className="emotion-13"
   >
     <div
-      className="emotion-5"
+      className="emotion-7"
     >
       <button
-        aria-label="Add Metadata Filters"
+        aria-label="Add Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -1945,7 +2020,7 @@ Array [
               height={20}
             />
           </div>
-          Add Metadata Filters
+          Add Filters
         </div>
       </button>
       <div
@@ -1958,9 +2033,24 @@ Array [
       >
         Clear All Filters
       </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        aria-label="Copy Search Query"
+        className="emotion-6"
+        onClick={[Function]}
+        title="Copy Search Query"
+        type="button"
+      >
+        <svg
+          data-file-name="copy.svg"
+          height={20}
+        />
+      </button>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-8"
     />
     <form
       action=""
@@ -1968,11 +2058,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-7"
+          className="emotion-9"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -1981,12 +2071,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-9"
+          className="emotion-11"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-8"
+            className="emotion-10"
             data-file-name="plus.svg"
             height={20}
           />
@@ -2863,12 +2953,12 @@ Array [
 
 exports[`<FiltersContent /> should render the "Label Confidence" filter 1`] = `
 Array [
-  .emotion-11 {
+  .emotion-13 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2909,7 +2999,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-2:hover {
@@ -2955,8 +3044,8 @@ Array [
 }
 
 .emotion-3 {
-  width: 8px;
-  min-width: 8px;
+  width: 4px;
+  min-width: 4px;
 }
 
 .emotion-4 {
@@ -2993,7 +3082,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-4:hover {
@@ -3020,17 +3108,34 @@ Array [
 }
 
 .emotion-6 {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
+  cursor: pointer;
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+.emotion-8 {
   height: 4px;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-9 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -3048,27 +3153,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-7::-webkit-input-placeholder {
+.emotion-9::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::-moz-placeholder {
+.emotion-9::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-7:-ms-input-placeholder {
+.emotion-9:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::placeholder {
+.emotion-9::placeholder {
   font-style: italic;
 }
 
-.emotion-7:hover {
+.emotion-9:hover {
   border: 1px solid #808080;
 }
 
-.emotion-7:focus {
+.emotion-9:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -3076,7 +3181,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3098,18 +3203,18 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-8 {
+.emotion-10 {
   color: #3b3b3b;
 }
 
 <div
-    className="emotion-11"
+    className="emotion-13"
   >
     <div
-      className="emotion-5"
+      className="emotion-7"
     >
       <button
-        aria-label="Add Metadata Filters"
+        aria-label="Add Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -3125,7 +3230,7 @@ Array [
               height={20}
             />
           </div>
-          Add Metadata Filters
+          Add Filters
         </div>
       </button>
       <div
@@ -3138,9 +3243,24 @@ Array [
       >
         Clear All Filters
       </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        aria-label="Copy Search Query"
+        className="emotion-6"
+        onClick={[Function]}
+        title="Copy Search Query"
+        type="button"
+      >
+        <svg
+          data-file-name="copy.svg"
+          height={20}
+        />
+      </button>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-8"
     />
     <form
       action=""
@@ -3148,11 +3268,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-7"
+          className="emotion-9"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -3161,12 +3281,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-9"
+          className="emotion-11"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-8"
+            className="emotion-10"
             data-file-name="plus.svg"
             height={20}
           />
@@ -7985,12 +8105,12 @@ Array [
 
 exports[`<FiltersContent /> should render the "Label" filter 1`] = `
 Array [
-  .emotion-11 {
+  .emotion-13 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -8031,7 +8151,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-2:hover {
@@ -8077,8 +8196,8 @@ Array [
 }
 
 .emotion-3 {
-  width: 8px;
-  min-width: 8px;
+  width: 4px;
+  min-width: 4px;
 }
 
 .emotion-4 {
@@ -8115,7 +8234,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-4:hover {
@@ -8142,17 +8260,34 @@ Array [
 }
 
 .emotion-6 {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
+  cursor: pointer;
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+.emotion-8 {
   height: 4px;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-9 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -8170,27 +8305,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-7::-webkit-input-placeholder {
+.emotion-9::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::-moz-placeholder {
+.emotion-9::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-7:-ms-input-placeholder {
+.emotion-9:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::placeholder {
+.emotion-9::placeholder {
   font-style: italic;
 }
 
-.emotion-7:hover {
+.emotion-9:hover {
   border: 1px solid #808080;
 }
 
-.emotion-7:focus {
+.emotion-9:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -8198,7 +8333,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -8220,18 +8355,18 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-8 {
+.emotion-10 {
   color: #3b3b3b;
 }
 
 <div
-    className="emotion-11"
+    className="emotion-13"
   >
     <div
-      className="emotion-5"
+      className="emotion-7"
     >
       <button
-        aria-label="Add Metadata Filters"
+        aria-label="Add Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -8247,7 +8382,7 @@ Array [
               height={20}
             />
           </div>
-          Add Metadata Filters
+          Add Filters
         </div>
       </button>
       <div
@@ -8260,9 +8395,24 @@ Array [
       >
         Clear All Filters
       </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        aria-label="Copy Search Query"
+        className="emotion-6"
+        onClick={[Function]}
+        title="Copy Search Query"
+        type="button"
+      >
+        <svg
+          data-file-name="copy.svg"
+          height={20}
+        />
+      </button>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-8"
     />
     <form
       action=""
@@ -8270,11 +8420,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-7"
+          className="emotion-9"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -8283,12 +8433,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-9"
+          className="emotion-11"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-8"
+            className="emotion-10"
             data-file-name="plus.svg"
             height={20}
           />
@@ -9173,12 +9323,12 @@ Array [
 
 exports[`<FiltersContent /> should render the "Range" filter 1`] = `
 Array [
-  .emotion-11 {
+  .emotion-13 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -9219,7 +9369,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-2:hover {
@@ -9265,8 +9414,8 @@ Array [
 }
 
 .emotion-3 {
-  width: 8px;
-  min-width: 8px;
+  width: 4px;
+  min-width: 4px;
 }
 
 .emotion-4 {
@@ -9303,7 +9452,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-4:hover {
@@ -9330,17 +9478,34 @@ Array [
 }
 
 .emotion-6 {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
+  cursor: pointer;
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+.emotion-8 {
   height: 4px;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-9 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -9358,27 +9523,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-7::-webkit-input-placeholder {
+.emotion-9::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::-moz-placeholder {
+.emotion-9::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-7:-ms-input-placeholder {
+.emotion-9:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::placeholder {
+.emotion-9::placeholder {
   font-style: italic;
 }
 
-.emotion-7:hover {
+.emotion-9:hover {
   border: 1px solid #808080;
 }
 
-.emotion-7:focus {
+.emotion-9:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -9386,7 +9551,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -9408,18 +9573,18 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-8 {
+.emotion-10 {
   color: #3b3b3b;
 }
 
 <div
-    className="emotion-11"
+    className="emotion-13"
   >
     <div
-      className="emotion-5"
+      className="emotion-7"
     >
       <button
-        aria-label="Add Metadata Filters"
+        aria-label="Add Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -9435,7 +9600,7 @@ Array [
               height={20}
             />
           </div>
-          Add Metadata Filters
+          Add Filters
         </div>
       </button>
       <div
@@ -9448,9 +9613,24 @@ Array [
       >
         Clear All Filters
       </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        aria-label="Copy Search Query"
+        className="emotion-6"
+        onClick={[Function]}
+        title="Copy Search Query"
+        type="button"
+      >
+        <svg
+          data-file-name="copy.svg"
+          height={20}
+        />
+      </button>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-8"
     />
     <form
       action=""
@@ -9458,11 +9638,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-7"
+          className="emotion-9"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -9471,12 +9651,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-9"
+          className="emotion-11"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-8"
+            className="emotion-10"
             data-file-name="plus.svg"
             height={20}
           />
@@ -10017,12 +10197,12 @@ Array [
 
 exports[`<FiltersContent /> should render the "Similarity Range" filter 1`] = `
 Array [
-  .emotion-11 {
+  .emotion-13 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -10063,7 +10243,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-2:hover {
@@ -10109,8 +10288,8 @@ Array [
 }
 
 .emotion-3 {
-  width: 8px;
-  min-width: 8px;
+  width: 4px;
+  min-width: 4px;
 }
 
 .emotion-4 {
@@ -10147,7 +10326,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-4:hover {
@@ -10174,17 +10352,34 @@ Array [
 }
 
 .emotion-6 {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
+  cursor: pointer;
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+.emotion-8 {
   height: 4px;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-9 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -10202,27 +10397,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-7::-webkit-input-placeholder {
+.emotion-9::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::-moz-placeholder {
+.emotion-9::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-7:-ms-input-placeholder {
+.emotion-9:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::placeholder {
+.emotion-9::placeholder {
   font-style: italic;
 }
 
-.emotion-7:hover {
+.emotion-9:hover {
   border: 1px solid #808080;
 }
 
-.emotion-7:focus {
+.emotion-9:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -10230,7 +10425,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -10252,18 +10447,18 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-8 {
+.emotion-10 {
   color: #3b3b3b;
 }
 
 <div
-    className="emotion-11"
+    className="emotion-13"
   >
     <div
-      className="emotion-5"
+      className="emotion-7"
     >
       <button
-        aria-label="Add Metadata Filters"
+        aria-label="Add Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -10279,7 +10474,7 @@ Array [
               height={20}
             />
           </div>
-          Add Metadata Filters
+          Add Filters
         </div>
       </button>
       <div
@@ -10292,9 +10487,24 @@ Array [
       >
         Clear All Filters
       </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        aria-label="Copy Search Query"
+        className="emotion-6"
+        onClick={[Function]}
+        title="Copy Search Query"
+        type="button"
+      >
+        <svg
+          data-file-name="copy.svg"
+          height={20}
+        />
+      </button>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-8"
     />
     <form
       action=""
@@ -10302,11 +10512,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-7"
+          className="emotion-9"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -10315,12 +10525,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-9"
+          className="emotion-11"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-8"
+            className="emotion-10"
             data-file-name="plus.svg"
             height={20}
           />
@@ -10785,12 +10995,12 @@ Array [
 
 exports[`<FiltersContent /> should render the "Text Detection" filter 1`] = `
 Array [
-  .emotion-11 {
+  .emotion-13 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -10831,7 +11041,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-2:hover {
@@ -10877,8 +11086,8 @@ Array [
 }
 
 .emotion-3 {
-  width: 8px;
-  min-width: 8px;
+  width: 4px;
+  min-width: 4px;
 }
 
 .emotion-4 {
@@ -10915,7 +11124,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-4:hover {
@@ -10942,17 +11150,34 @@ Array [
 }
 
 .emotion-6 {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
+  cursor: pointer;
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+.emotion-8 {
   height: 4px;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-9 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -10970,27 +11195,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-7::-webkit-input-placeholder {
+.emotion-9::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::-moz-placeholder {
+.emotion-9::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-7:-ms-input-placeholder {
+.emotion-9:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::placeholder {
+.emotion-9::placeholder {
   font-style: italic;
 }
 
-.emotion-7:hover {
+.emotion-9:hover {
   border: 1px solid #808080;
 }
 
-.emotion-7:focus {
+.emotion-9:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -10998,7 +11223,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11020,18 +11245,18 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-8 {
+.emotion-10 {
   color: #3b3b3b;
 }
 
 <div
-    className="emotion-11"
+    className="emotion-13"
   >
     <div
-      className="emotion-5"
+      className="emotion-7"
     >
       <button
-        aria-label="Add Metadata Filters"
+        aria-label="Add Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -11047,7 +11272,7 @@ Array [
               height={20}
             />
           </div>
-          Add Metadata Filters
+          Add Filters
         </div>
       </button>
       <div
@@ -11060,9 +11285,24 @@ Array [
       >
         Clear All Filters
       </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        aria-label="Copy Search Query"
+        className="emotion-6"
+        onClick={[Function]}
+        title="Copy Search Query"
+        type="button"
+      >
+        <svg
+          data-file-name="copy.svg"
+          height={20}
+        />
+      </button>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-8"
     />
     <form
       action=""
@@ -11070,11 +11310,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-7"
+          className="emotion-9"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -11083,12 +11323,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-9"
+          className="emotion-11"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-8"
+            className="emotion-10"
             data-file-name="plus.svg"
             height={20}
           />
@@ -11462,12 +11702,12 @@ Array [
 
 exports[`<FiltersContent /> should render the default filter 1`] = `
 Array [
-  .emotion-11 {
+  .emotion-13 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11508,7 +11748,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-2:hover {
@@ -11554,8 +11793,8 @@ Array [
 }
 
 .emotion-3 {
-  width: 8px;
-  min-width: 8px;
+  width: 4px;
+  min-width: 4px;
 }
 
 .emotion-4 {
@@ -11592,7 +11831,6 @@ Array [
   flex: 1;
   padding-left: 0;
   padding-right: 0;
-  min-width: 190px;
 }
 
 .emotion-4:hover {
@@ -11619,17 +11857,34 @@ Array [
 }
 
 .emotion-6 {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
+  cursor: pointer;
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+.emotion-8 {
   height: 4px;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-9 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -11647,27 +11902,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-7::-webkit-input-placeholder {
+.emotion-9::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::-moz-placeholder {
+.emotion-9::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-7:-ms-input-placeholder {
+.emotion-9:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::placeholder {
+.emotion-9::placeholder {
   font-style: italic;
 }
 
-.emotion-7:hover {
+.emotion-9:hover {
   border: 1px solid #808080;
 }
 
-.emotion-7:focus {
+.emotion-9:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -11675,7 +11930,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11697,18 +11952,18 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-8 {
+.emotion-10 {
   color: #3b3b3b;
 }
 
 <div
-    className="emotion-11"
+    className="emotion-13"
   >
     <div
-      className="emotion-5"
+      className="emotion-7"
     >
       <button
-        aria-label="Add Metadata Filters"
+        aria-label="Add Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -11724,7 +11979,7 @@ Array [
               height={20}
             />
           </div>
-          Add Metadata Filters
+          Add Filters
         </div>
       </button>
       <div
@@ -11737,9 +11992,24 @@ Array [
       >
         Clear All Filters
       </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        aria-label="Copy Search Query"
+        className="emotion-6"
+        onClick={[Function]}
+        title="Copy Search Query"
+        type="button"
+      >
+        <svg
+          data-file-name="copy.svg"
+          height={20}
+        />
+      </button>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-8"
     />
     <form
       action=""
@@ -11747,11 +12017,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-7"
+          className="emotion-9"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -11760,12 +12030,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-9"
+          className="emotion-11"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-8"
+            className="emotion-10"
             data-file-name="plus.svg"
             height={20}
           />

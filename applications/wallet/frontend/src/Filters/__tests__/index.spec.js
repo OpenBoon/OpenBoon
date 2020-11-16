@@ -11,6 +11,7 @@ const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
 
 jest.mock('../MenuSection', () => 'FiltersMenuSection')
+jest.mock('../CopyQuery', () => 'FiltersCopyQuery')
 
 describe('<Filters />', () => {
   it('should render properly', () => {
@@ -343,7 +344,7 @@ describe('<Filters />', () => {
     // open the menu
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Add Metadata Filters' })
+        .findByProps({ 'aria-label': 'Add Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -374,7 +375,7 @@ describe('<Filters />', () => {
     // open the menu
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Add Metadata Filters' })
+        .findByProps({ 'aria-label': 'Add Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -447,7 +448,7 @@ describe('<Filters />', () => {
     // open the menu
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Add Metadata Filters' })
+        .findByProps({ 'aria-label': 'Add Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
