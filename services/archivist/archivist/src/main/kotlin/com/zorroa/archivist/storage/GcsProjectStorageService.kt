@@ -8,6 +8,7 @@ import com.google.cloud.storage.HttpMethod
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectStorageLocator
 import com.zorroa.archivist.domain.ProjectStorageSpec
@@ -90,6 +91,10 @@ class GcsProjectStorageService constructor(
     }
 
     override fun getNativeUri(locator: ProjectStorageLocator): String {
+        val path = locator.getPath()
+        return "gs://${properties.bucket}/$path"
+    }
+    override fun getNativeUri(locator: ProjectDirLocator): String {
         val path = locator.getPath()
         return "gs://${properties.bucket}/$path"
     }

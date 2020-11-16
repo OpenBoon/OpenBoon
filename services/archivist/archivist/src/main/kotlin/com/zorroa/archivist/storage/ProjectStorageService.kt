@@ -2,6 +2,7 @@ package com.zorroa.archivist.storage
 
 import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
@@ -57,6 +58,11 @@ interface ProjectStorageService {
      * Fetch the URI where the file is stored.
      */
     fun getNativeUri(locator: ProjectStorageLocator): String
+
+    /**
+     * Get he native storage URL for a given directory
+     */
+    fun getNativeUri(locator: ProjectDirLocator): String
 
     /**
      * Get a signed URL for the given [ProjectStorageLocator].

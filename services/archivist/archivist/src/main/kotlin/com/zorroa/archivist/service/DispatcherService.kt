@@ -18,6 +18,7 @@ import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobStateChangeEvent
 import com.zorroa.archivist.domain.PendingTasksStats
+import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageLocator
@@ -257,8 +258,8 @@ class DispatchQueueManager @Autowired constructor(
                 ).getValue("uri").toString()
 
                 task.env["ZORROA_JOB_STORAGE_URI"] = storageService.getNativeUri(
-                    ProjectFileLocator(ProjectStorageEntity.JOB, task.jobId.toString(), "officer", ""))
-
+                    ProjectDirLocator(ProjectStorageEntity.JOB, task.jobId.toString())
+                )
             }
 
             return true
