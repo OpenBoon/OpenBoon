@@ -23,7 +23,7 @@ Array [
   >
     Data Sources
   </h2>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -45,7 +45,7 @@ Array [
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -55,7 +55,7 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-0 a {
+.emotion-2 a {
   color: #ffffff;
   background-color: #009f22;
   padding: 6px;
@@ -65,14 +65,14 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-0 a:hover {
+.emotion-2 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #00791a;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
@@ -83,7 +83,7 @@ Array [
         height={20}
       />
       <div
-        className="emotion-0"
+        className="emotion-2"
         role="alert"
       >
         Data source
@@ -100,7 +100,7 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -109,7 +109,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -120,12 +120,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -144,12 +144,12 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2 {
+.emotion-5 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -169,23 +169,23 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -194,10 +194,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -207,7 +207,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-38 {
+  .emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -229,7 +229,6 @@ Array [
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -237,105 +236,58 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-37 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-2 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: auto;
-}
-
-.emotion-2:nth-of-type(0) {
-  width: 100%;
-}
-
-.emotion-2:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-9 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: 1px;
-}
-
-.emotion-9:nth-of-type(0) {
-  width: 100%;
-}
-
-.emotion-9:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-35 {
+.emotion-5 {
   height: auto;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-35 tr {
+.emotion-5 tr {
   background-color: #252525;
 }
 
-.emotion-35 tr:nth-of-type(2n) {
+.emotion-5 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-35 tr:hover {
+.emotion-5 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-35 tr:hover .actions {
+.emotion-5 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-35 tr:hover td {
+.emotion-5 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-35 tr:hover td:first-of-type {
+.emotion-5 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-35 tr:hover td:last-of-type {
+.emotion-5 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-35 td {
+.emotion-5 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -347,25 +299,72 @@ Array [
   border-right: 0;
 }
 
-.emotion-35 td:first-of-type {
+.emotion-5 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-35 td:last-of-type {
+.emotion-5 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
+}
+
+.emotion-6 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-6:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-6:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-12 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-12:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-12:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-14 {
   cursor: pointer;
 }
 
-.emotion-10:hover {
+.emotion-15:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11 {
+.emotion-16 {
   display: inline-block;
   color: #191919;
   background-color: #ebb52e;
@@ -377,12 +376,12 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-13 {
+.emotion-17 {
   position: relative;
   height: 100%;
 }
 
-.emotion-12 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -398,8 +397,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 6px;
@@ -414,21 +413,21 @@ Array [
   margin: -6px;
 }
 
-.emotion-12:hover {
+.emotion-18:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-18[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-12:hover,
-.emotion-12.focus-visible:focus {
-  color: #ffffff !important;
+.emotion-18:hover,
+.emotion-18.focus-visible:focus {
+  color: #ffffff!important;
 }
 
-.emotion-31 {
+.emotion-36 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -441,13 +440,13 @@ Array [
 }
 
 <div
-    className="emotion-38"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
     >
       <h3
-        className="emotion-0"
+        className="emotion-2"
       >
         Number of 
         Sources
@@ -456,51 +455,51 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-37"
+      className="emotion-3"
     >
       <div
-        className="emotion-36"
+        className="emotion-4"
       >
         <table
-          className="emotion-35"
+          className="emotion-5"
         >
           <thead>
             <tr>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Name
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Source Type
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Path
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Date Created
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Date Modified
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 File Types
               </th>
               <th
-                className="emotion-9"
+                className="emotion-12"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-13"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -517,7 +516,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -539,18 +538,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-11"
+                  className="emotion-16"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -569,7 +568,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -591,18 +590,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-11"
+                  className="emotion-16"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -621,7 +620,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -643,18 +642,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-11"
+                  className="emotion-16"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -673,7 +672,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -695,18 +694,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-11"
+                  className="emotion-16"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -725,7 +724,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -747,18 +746,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-31"
+                  className="emotion-36"
                 >
                   Movies
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -808,7 +807,7 @@ Array [
   >
     Data Sources
   </h2>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -830,7 +829,7 @@ Array [
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -840,7 +839,7 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-0 a {
+.emotion-2 a {
   color: #ffffff;
   background-color: #009f22;
   padding: 6px;
@@ -850,14 +849,14 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-0 a:hover {
+.emotion-2 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #00791a;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
@@ -868,7 +867,7 @@ Array [
         height={20}
       />
       <div
-        className="emotion-0"
+        className="emotion-2"
         role="alert"
       >
         Data source
@@ -878,7 +877,7 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -887,7 +886,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -898,12 +897,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -922,12 +921,12 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2 {
+.emotion-5 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -947,23 +946,23 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -972,10 +971,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -985,7 +984,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-38 {
+  .emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1007,7 +1006,6 @@ Array [
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -1015,105 +1013,58 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-37 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-2 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: auto;
-}
-
-.emotion-2:nth-of-type(0) {
-  width: 100%;
-}
-
-.emotion-2:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-9 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: 1px;
-}
-
-.emotion-9:nth-of-type(0) {
-  width: 100%;
-}
-
-.emotion-9:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-35 {
+.emotion-5 {
   height: auto;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-35 tr {
+.emotion-5 tr {
   background-color: #252525;
 }
 
-.emotion-35 tr:nth-of-type(2n) {
+.emotion-5 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-35 tr:hover {
+.emotion-5 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-35 tr:hover .actions {
+.emotion-5 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-35 tr:hover td {
+.emotion-5 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-35 tr:hover td:first-of-type {
+.emotion-5 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-35 tr:hover td:last-of-type {
+.emotion-5 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-35 td {
+.emotion-5 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1125,25 +1076,72 @@ Array [
   border-right: 0;
 }
 
-.emotion-35 td:first-of-type {
+.emotion-5 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-35 td:last-of-type {
+.emotion-5 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
+}
+
+.emotion-6 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-6:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-6:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-12 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-12:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-12:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-14 {
   cursor: pointer;
 }
 
-.emotion-10:hover {
+.emotion-15:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11 {
+.emotion-16 {
   display: inline-block;
   color: #191919;
   background-color: #ebb52e;
@@ -1155,12 +1153,12 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-13 {
+.emotion-17 {
   position: relative;
   height: 100%;
 }
 
-.emotion-12 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1176,8 +1174,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 6px;
@@ -1192,21 +1190,21 @@ Array [
   margin: -6px;
 }
 
-.emotion-12:hover {
+.emotion-18:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-18[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-12:hover,
-.emotion-12.focus-visible:focus {
-  color: #ffffff !important;
+.emotion-18:hover,
+.emotion-18.focus-visible:focus {
+  color: #ffffff!important;
 }
 
-.emotion-31 {
+.emotion-36 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -1219,13 +1217,13 @@ Array [
 }
 
 <div
-    className="emotion-38"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
     >
       <h3
-        className="emotion-0"
+        className="emotion-2"
       >
         Number of 
         Sources
@@ -1234,51 +1232,51 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-37"
+      className="emotion-3"
     >
       <div
-        className="emotion-36"
+        className="emotion-4"
       >
         <table
-          className="emotion-35"
+          className="emotion-5"
         >
           <thead>
             <tr>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Name
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Source Type
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Path
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Date Created
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Date Modified
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 File Types
               </th>
               <th
-                className="emotion-9"
+                className="emotion-12"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-13"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -1295,7 +1293,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1317,18 +1315,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-11"
+                  className="emotion-16"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1347,7 +1345,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1369,18 +1367,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-11"
+                  className="emotion-16"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1399,7 +1397,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1421,18 +1419,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-11"
+                  className="emotion-16"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1451,7 +1449,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1473,18 +1471,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-11"
+                  className="emotion-16"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1503,7 +1501,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1525,18 +1523,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-31"
+                  className="emotion-36"
                 >
                   Movies
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1586,7 +1584,7 @@ Array [
   >
     Data Sources
   </h2>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1608,7 +1606,7 @@ Array [
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1618,7 +1616,7 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-0 a {
+.emotion-2 a {
   color: #ffffff;
   background-color: #009f22;
   padding: 6px;
@@ -1628,14 +1626,14 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-0 a:hover {
+.emotion-2 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #00791a;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
@@ -1646,7 +1644,7 @@ Array [
         height={20}
       />
       <div
-        className="emotion-0"
+        className="emotion-2"
         role="alert"
       >
         Data source
@@ -1656,7 +1654,7 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -1665,7 +1663,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -1676,12 +1674,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -1700,12 +1698,12 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2 {
+.emotion-5 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -1725,23 +1723,23 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -1750,10 +1748,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -1763,7 +1761,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-15 {
+  .emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1785,7 +1783,6 @@ Array [
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -1793,21 +1790,21 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-14 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-13 {
+.emotion-4 {
   position: absolute;
   top: 0;
   left: 0;
@@ -1815,44 +1812,44 @@ Array [
   bottom: 0;
 }
 
-.emotion-12 {
+.emotion-5 {
   height: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-12 tr {
+.emotion-5 tr {
   background-color: #252525;
 }
 
-.emotion-12 tr:nth-of-type(2n) {
+.emotion-5 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-12 tr:hover {
+.emotion-5 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-12 tr:hover .actions {
+.emotion-5 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-12 tr:hover td {
+.emotion-5 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-12 tr:hover td:first-of-type {
+.emotion-5 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-12 tr:hover td:last-of-type {
+.emotion-5 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-12 td {
+.emotion-5 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1864,16 +1861,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-12 td:first-of-type {
+.emotion-5 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-12 td:last-of-type {
+.emotion-5 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-2 {
+.emotion-6 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -1885,15 +1882,15 @@ Array [
   width: auto;
 }
 
-.emotion-2:nth-of-type(0) {
+.emotion-6:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-2:not(:last-child) {
+.emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-9 {
+.emotion-12 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -1905,27 +1902,27 @@ Array [
   width: 1px;
 }
 
-.emotion-9:nth-of-type(0) {
+.emotion-12:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-9:not(:last-child) {
+.emotion-12:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-14 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-10 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1938,8 +1935,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   text-align: center;
   color: #808080;
@@ -1948,13 +1945,13 @@ Array [
 }
 
 <div
-    className="emotion-15"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
     >
       <h3
-        className="emotion-0"
+        className="emotion-2"
       >
         Number of 
         Sources
@@ -1963,51 +1960,51 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-3"
     >
       <div
-        className="emotion-13"
+        className="emotion-4"
       >
         <table
-          className="emotion-12"
+          className="emotion-5"
         >
           <thead>
             <tr>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Name
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Source Type
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Path
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Date Created
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Date Modified
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 File Types
               </th>
               <th
-                className="emotion-9"
+                className="emotion-12"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-13"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -2019,13 +2016,13 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-11"
+              className="emotion-14"
             >
               <td
                 colSpan={7}
               >
                 <div
-                  className="emotion-10"
+                  className="emotion-15"
                 >
                   No data sources
                 </div>
@@ -2062,7 +2059,7 @@ Array [
   >
     Data Sources
   </h2>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2084,7 +2081,7 @@ Array [
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2094,7 +2091,7 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-0 a {
+.emotion-2 a {
   color: #ffffff;
   background-color: #009f22;
   padding: 6px;
@@ -2104,14 +2101,14 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-0 a:hover {
+.emotion-2 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #00791a;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
@@ -2122,7 +2119,7 @@ Array [
         height={20}
       />
       <div
-        className="emotion-0"
+        className="emotion-2"
         role="alert"
       >
         Data source
@@ -2139,7 +2136,7 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -2148,7 +2145,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -2159,12 +2156,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -2183,12 +2180,12 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2 {
+.emotion-5 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -2208,23 +2205,23 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -2233,10 +2230,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -2246,7 +2243,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-38 {
+  .emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2268,7 +2265,6 @@ Array [
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -2276,105 +2272,58 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-37 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-2 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: auto;
-}
-
-.emotion-2:nth-of-type(0) {
-  width: 100%;
-}
-
-.emotion-2:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-9 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: 1px;
-}
-
-.emotion-9:nth-of-type(0) {
-  width: 100%;
-}
-
-.emotion-9:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-35 {
+.emotion-5 {
   height: auto;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-35 tr {
+.emotion-5 tr {
   background-color: #252525;
 }
 
-.emotion-35 tr:nth-of-type(2n) {
+.emotion-5 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-35 tr:hover {
+.emotion-5 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-35 tr:hover .actions {
+.emotion-5 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-35 tr:hover td {
+.emotion-5 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-35 tr:hover td:first-of-type {
+.emotion-5 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-35 tr:hover td:last-of-type {
+.emotion-5 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-35 td {
+.emotion-5 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2386,25 +2335,72 @@ Array [
   border-right: 0;
 }
 
-.emotion-35 td:first-of-type {
+.emotion-5 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-35 td:last-of-type {
+.emotion-5 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
+}
+
+.emotion-6 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-6:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-6:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-12 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-12:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-12:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-14 {
   cursor: pointer;
 }
 
-.emotion-10:hover {
+.emotion-15:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11 {
+.emotion-16 {
   display: inline-block;
   color: #191919;
   background-color: #ebb52e;
@@ -2416,12 +2412,12 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-13 {
+.emotion-17 {
   position: relative;
   height: 100%;
 }
 
-.emotion-12 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2437,8 +2433,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 6px;
@@ -2453,21 +2449,21 @@ Array [
   margin: -6px;
 }
 
-.emotion-12:hover {
+.emotion-18:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-18[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-12:hover,
-.emotion-12.focus-visible:focus {
-  color: #ffffff !important;
+.emotion-18:hover,
+.emotion-18.focus-visible:focus {
+  color: #ffffff!important;
 }
 
-.emotion-31 {
+.emotion-36 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -2480,13 +2476,13 @@ Array [
 }
 
 <div
-    className="emotion-38"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
     >
       <h3
-        className="emotion-0"
+        className="emotion-2"
       >
         Number of 
         Sources
@@ -2495,51 +2491,51 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-37"
+      className="emotion-3"
     >
       <div
-        className="emotion-36"
+        className="emotion-4"
       >
         <table
-          className="emotion-35"
+          className="emotion-5"
         >
           <thead>
             <tr>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Name
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Source Type
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Path
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Date Created
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Date Modified
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 File Types
               </th>
               <th
-                className="emotion-9"
+                className="emotion-12"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-13"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -2556,7 +2552,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -2578,18 +2574,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-11"
+                  className="emotion-16"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2608,7 +2604,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -2630,18 +2626,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-11"
+                  className="emotion-16"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2660,7 +2656,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -2682,18 +2678,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-11"
+                  className="emotion-16"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2712,7 +2708,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -2734,18 +2730,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-11"
+                  className="emotion-16"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2764,7 +2760,7 @@ Array [
             >
               <td>
                 <a
-                  className="emotion-10"
+                  className="emotion-15"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -2786,18 +2782,18 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-31"
+                  className="emotion-36"
                 >
                   Movies
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-12"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"

@@ -13,32 +13,32 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
-  .emotion-6 {
+  .emotion-0 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-6:hover summary svg {
+.emotion-0:hover summary svg {
   opacity: 1;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 12px;
   background-color: #252525;
 }
 
-.emotion-4::-webkit-details-marker {
+.emotion-1::-webkit-details-marker {
   display: none;
 }
 
-.emotion-4:hover {
+.emotion-1:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -49,14 +49,15 @@ Array [
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-3 {
   color: #808080;
   -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-1 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -67,7 +68,7 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-2 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -83,8 +84,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 4px;
@@ -102,50 +103,50 @@ Array [
   font-weight: 500;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
   color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
 <details
-    className="emotion-6"
+    className="emotion-0"
     onToggle={[Function]}
     open={true}
   >
     <summary
       aria-label="Select a model and add a label"
-      className="emotion-4"
+      className="emotion-1"
     >
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <svg
-          className="emotion-0"
+          className="emotion-3"
           data-file-name="chevron.svg"
           height={20}
         />
         <span
-          className="emotion-1"
+          className="emotion-4"
         >
           Select a model and add a label
         </span>
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
           onClick={[Function]}
         >
@@ -154,7 +155,7 @@ Array [
       </div>
     </summary>
     <div
-      className="emotion-5"
+      className="emotion-6"
     >
       <AssetLabelingAdd
         assetId="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
@@ -177,27 +178,27 @@ Array [
       />
     </div>
   </details>,
-  .emotion-17 {
+  .emotion-0 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-17:hover summary svg {
+.emotion-0:hover summary svg {
   opacity: 1;
 }
 
-.emotion-3 {
+.emotion-1 {
   list-style-type: none;
   padding: 12px;
   background-color: #252525;
 }
 
-.emotion-3::-webkit-details-marker {
+.emotion-1::-webkit-details-marker {
   display: none;
 }
 
-.emotion-3:hover {
+.emotion-1:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
@@ -213,7 +214,15 @@ Array [
   align-items: center;
 }
 
-.emotion-1 {
+.emotion-3 {
+  color: #808080;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
+}
+
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -224,15 +233,11 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-0 {
+.emotion-6 {
   color: #808080;
 }
 
-.emotion-15 {
-  color: #808080;
-}
-
-.emotion-4 th {
+.emotion-7 th {
   text-align: left;
   font-family: Roboto Condensed;
   font-weight: 400;
@@ -242,46 +247,46 @@ Array [
   padding-left: 16px;
 }
 
-.emotion-9 {
+.emotion-8 {
   text-align: left;
   font-family: Roboto Condensed;
   font-weight: 500;
 }
 
-.emotion-9:nth-last-of-type(2) {
+.emotion-8:nth-last-of-type(2) {
   width: 100%;
 }
 
-.emotion-9:hover {
+.emotion-8:hover {
   background-color: #0074f538;
   color: #ffffff;
 }
 
-.emotion-9:hover svg {
+.emotion-8:hover svg {
   color: #ffffff;
 }
 
-.emotion-9 td {
+.emotion-8 td {
   border-top: 1px solid #3b3b3b;
   padding: 12px;
   padding-left: 16px;
 }
 
-.emotion-5 {
+.emotion-9 {
   white-space: nowrap;
 }
 
-.emotion-6 {
+.emotion-10 {
   width: 100%;
   word-break: break-all;
 }
 
-.emotion-8 {
+.emotion-11 {
   position: relative;
   height: 100%;
 }
 
-.emotion-7 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -297,8 +302,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 6px;
@@ -313,54 +318,54 @@ Array [
   margin: -6px;
 }
 
-.emotion-7:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-7:hover,
-.emotion-7.focus-visible:focus {
-  color: #ffffff !important;
+.emotion-12:hover,
+.emotion-12.focus-visible:focus {
+  color: #ffffff!important;
 }
 
 <details
-    className="emotion-17"
+    className="emotion-0"
     onToggle={[Function]}
     open={false}
   >
     <summary
       aria-label="Asset Labels: 2"
-      className="emotion-3"
+      className="emotion-1"
     >
       <div
         className="emotion-2"
       >
         <svg
-          className="emotion-0"
+          className="emotion-3"
           data-file-name="chevron.svg"
           height={20}
         />
         <span
-          className="emotion-1"
+          className="emotion-4"
         >
           Asset Labels: 2
         </span>
       </div>
     </summary>
     <div
-      className="emotion-16"
+      className="emotion-5"
     >
       
       <table
-        className="emotion-15"
+        className="emotion-6"
       >
         <thead>
           <tr
-            className="emotion-4"
+            className="emotion-7"
           >
             <th>
               Model
@@ -372,25 +377,25 @@ Array [
         </thead>
         <tbody>
           <tr
-            className="emotion-9"
+            className="emotion-8"
           >
             <td
-              className="emotion-5"
+              className="emotion-9"
             >
               
             </td>
             <td
-              className="emotion-6"
+              className="emotion-10"
             >
               Space
             </td>
             <td>
               <div
-                className="emotion-8"
+                className="emotion-11"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-7"
+                  className="actions emotion-12"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -404,25 +409,25 @@ Array [
             </td>
           </tr>
           <tr
-            className="emotion-9"
+            className="emotion-8"
           >
             <td
-              className="emotion-5"
+              className="emotion-9"
             >
               
             </td>
             <td
-              className="emotion-6"
+              className="emotion-10"
             >
               Outside
             </td>
             <td>
               <div
-                className="emotion-8"
+                className="emotion-11"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-7"
+                  className="actions emotion-12"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -455,32 +460,32 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
-  .emotion-6 {
+  .emotion-0 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-6:hover summary svg {
+.emotion-0:hover summary svg {
   opacity: 1;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 12px;
   background-color: #252525;
 }
 
-.emotion-4::-webkit-details-marker {
+.emotion-1::-webkit-details-marker {
   display: none;
 }
 
-.emotion-4:hover {
+.emotion-1:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -491,14 +496,15 @@ Array [
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-3 {
   color: #808080;
   -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-1 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -509,7 +515,7 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-2 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -525,8 +531,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 4px;
@@ -544,50 +550,50 @@ Array [
   font-weight: 500;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
   color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
 <details
-    className="emotion-6"
+    className="emotion-0"
     onToggle={[Function]}
     open={true}
   >
     <summary
       aria-label="Select a model and add a label"
-      className="emotion-4"
+      className="emotion-1"
     >
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <svg
-          className="emotion-0"
+          className="emotion-3"
           data-file-name="chevron.svg"
           height={20}
         />
         <span
-          className="emotion-1"
+          className="emotion-4"
         >
           Select a model and add a label
         </span>
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
           onClick={[Function]}
         >
@@ -596,7 +602,7 @@ Array [
       </div>
     </summary>
     <div
-      className="emotion-5"
+      className="emotion-6"
     >
       <AssetLabelingAdd
         assetId="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
@@ -689,27 +695,27 @@ Array [
       />
     </div>
   </details>,
-  .emotion-6 {
+  .emotion-0 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-6:hover summary svg {
+.emotion-0:hover summary svg {
   opacity: 1;
 }
 
-.emotion-3 {
+.emotion-1 {
   list-style-type: none;
   padding: 12px;
   background-color: #252525;
 }
 
-.emotion-3::-webkit-details-marker {
+.emotion-1::-webkit-details-marker {
   display: none;
 }
 
-.emotion-3:hover {
+.emotion-1:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
@@ -725,7 +731,15 @@ Array [
   align-items: center;
 }
 
-.emotion-1 {
+.emotion-3 {
+  color: #808080;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
+}
+
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -736,35 +750,31 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-0 {
-  color: #808080;
-}
-
-.emotion-4 {
+.emotion-6 {
   padding: 16px;
   color: #ffffff;
   font-style: italic;
 }
 
 <details
-    className="emotion-6"
+    className="emotion-0"
     onToggle={[Function]}
     open={false}
   >
     <summary
       aria-label="Asset Labels: 0"
-      className="emotion-3"
+      className="emotion-1"
     >
       <div
         className="emotion-2"
       >
         <svg
-          className="emotion-0"
+          className="emotion-3"
           data-file-name="chevron.svg"
           height={20}
         />
         <span
-          className="emotion-1"
+          className="emotion-4"
         >
           Asset Labels: 0
         </span>
@@ -775,7 +785,7 @@ Array [
     >
       
       <div
-        className="emotion-4"
+        className="emotion-6"
       >
         No labels have been added
       </div>
@@ -811,32 +821,32 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
-  .emotion-6 {
+  .emotion-0 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-6:hover summary svg {
+.emotion-0:hover summary svg {
   opacity: 1;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 12px;
   background-color: #252525;
 }
 
-.emotion-4::-webkit-details-marker {
+.emotion-1::-webkit-details-marker {
   display: none;
 }
 
-.emotion-4:hover {
+.emotion-1:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -847,14 +857,15 @@ Array [
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-3 {
   color: #808080;
   -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-1 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -865,7 +876,7 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-2 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -881,8 +892,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 4px;
@@ -900,50 +911,50 @@ Array [
   font-weight: 500;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
   color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
 <details
-    className="emotion-6"
+    className="emotion-0"
     onToggle={[Function]}
     open={true}
   >
     <summary
       aria-label="Select a model and add a label"
-      className="emotion-4"
+      className="emotion-1"
     >
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <svg
-          className="emotion-0"
+          className="emotion-3"
           data-file-name="chevron.svg"
           height={20}
         />
         <span
-          className="emotion-1"
+          className="emotion-4"
         >
           Select a model and add a label
         </span>
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
           onClick={[Function]}
         >
@@ -952,7 +963,7 @@ Array [
       </div>
     </summary>
     <div
-      className="emotion-5"
+      className="emotion-6"
     >
       <AssetLabelingAdd
         assetId="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
@@ -1058,27 +1069,27 @@ Array [
       />
     </div>
   </details>,
-  .emotion-17 {
+  .emotion-0 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-17:hover summary svg {
+.emotion-0:hover summary svg {
   opacity: 1;
 }
 
-.emotion-3 {
+.emotion-1 {
   list-style-type: none;
   padding: 12px;
   background-color: #252525;
 }
 
-.emotion-3::-webkit-details-marker {
+.emotion-1::-webkit-details-marker {
   display: none;
 }
 
-.emotion-3:hover {
+.emotion-1:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
@@ -1094,7 +1105,15 @@ Array [
   align-items: center;
 }
 
-.emotion-1 {
+.emotion-3 {
+  color: #808080;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
+}
+
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1105,15 +1124,11 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-0 {
+.emotion-6 {
   color: #808080;
 }
 
-.emotion-15 {
-  color: #808080;
-}
-
-.emotion-4 th {
+.emotion-7 th {
   text-align: left;
   font-family: Roboto Condensed;
   font-weight: 400;
@@ -1123,46 +1138,46 @@ Array [
   padding-left: 16px;
 }
 
-.emotion-9 {
+.emotion-8 {
   text-align: left;
   font-family: Roboto Condensed;
   font-weight: 500;
 }
 
-.emotion-9:nth-last-of-type(2) {
+.emotion-8:nth-last-of-type(2) {
   width: 100%;
 }
 
-.emotion-9:hover {
+.emotion-8:hover {
   background-color: #0074f538;
   color: #ffffff;
 }
 
-.emotion-9:hover svg {
+.emotion-8:hover svg {
   color: #ffffff;
 }
 
-.emotion-9 td {
+.emotion-8 td {
   border-top: 1px solid #3b3b3b;
   padding: 12px;
   padding-left: 16px;
 }
 
-.emotion-5 {
+.emotion-9 {
   white-space: nowrap;
 }
 
-.emotion-6 {
+.emotion-10 {
   width: 100%;
   word-break: break-all;
 }
 
-.emotion-8 {
+.emotion-11 {
   position: relative;
   height: 100%;
 }
 
-.emotion-7 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1178,8 +1193,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 6px;
@@ -1194,54 +1209,54 @@ Array [
   margin: -6px;
 }
 
-.emotion-7:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-7:hover,
-.emotion-7.focus-visible:focus {
-  color: #ffffff !important;
+.emotion-12:hover,
+.emotion-12.focus-visible:focus {
+  color: #ffffff!important;
 }
 
 <details
-    className="emotion-17"
+    className="emotion-0"
     onToggle={[Function]}
     open={false}
   >
     <summary
       aria-label="Asset Labels: 2"
-      className="emotion-3"
+      className="emotion-1"
     >
       <div
         className="emotion-2"
       >
         <svg
-          className="emotion-0"
+          className="emotion-3"
           data-file-name="chevron.svg"
           height={20}
         />
         <span
-          className="emotion-1"
+          className="emotion-4"
         >
           Asset Labels: 2
         </span>
       </div>
     </summary>
     <div
-      className="emotion-16"
+      className="emotion-5"
     >
       
       <table
-        className="emotion-15"
+        className="emotion-6"
       >
         <thead>
           <tr
-            className="emotion-4"
+            className="emotion-7"
           >
             <th>
               Model
@@ -1253,25 +1268,25 @@ Array [
         </thead>
         <tbody>
           <tr
-            className="emotion-9"
+            className="emotion-8"
           >
             <td
-              className="emotion-5"
+              className="emotion-9"
             >
               console_face_recognition
             </td>
             <td
-              className="emotion-6"
+              className="emotion-10"
             >
               Space
             </td>
             <td>
               <div
-                className="emotion-8"
+                className="emotion-11"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-7"
+                  className="actions emotion-12"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1285,25 +1300,25 @@ Array [
             </td>
           </tr>
           <tr
-            className="emotion-9"
+            className="emotion-8"
           >
             <td
-              className="emotion-5"
+              className="emotion-9"
             >
               console_cat_recognition
             </td>
             <td
-              className="emotion-6"
+              className="emotion-10"
             >
               Outside
             </td>
             <td>
               <div
-                className="emotion-8"
+                className="emotion-11"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-7"
+                  className="actions emotion-12"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1336,32 +1351,32 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
-  .emotion-6 {
+  .emotion-0 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-6:hover summary svg {
+.emotion-0:hover summary svg {
   opacity: 1;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 12px;
   background-color: #252525;
 }
 
-.emotion-4::-webkit-details-marker {
+.emotion-1::-webkit-details-marker {
   display: none;
 }
 
-.emotion-4:hover {
+.emotion-1:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1372,14 +1387,15 @@ Array [
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-3 {
   color: #808080;
   -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-1 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1390,7 +1406,7 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-2 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1406,8 +1422,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 4px;
@@ -1425,50 +1441,50 @@ Array [
   font-weight: 500;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
   color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
 <details
-    className="emotion-6"
+    className="emotion-0"
     onToggle={[Function]}
     open={true}
   >
     <summary
       aria-label="Select a model and add a label"
-      className="emotion-4"
+      className="emotion-1"
     >
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <svg
-          className="emotion-0"
+          className="emotion-3"
           data-file-name="chevron.svg"
           height={20}
         />
         <span
-          className="emotion-1"
+          className="emotion-4"
         >
           Select a model and add a label
         </span>
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
           onClick={[Function]}
         >
@@ -1477,7 +1493,7 @@ Array [
       </div>
     </summary>
     <div
-      className="emotion-5"
+      className="emotion-6"
     >
       <AssetLabelingAdd
         assetId="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
@@ -1583,27 +1599,27 @@ Array [
       />
     </div>
   </details>,
-  .emotion-17 {
+  .emotion-0 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-17:hover summary svg {
+.emotion-0:hover summary svg {
   opacity: 1;
 }
 
-.emotion-3 {
+.emotion-1 {
   list-style-type: none;
   padding: 12px;
   background-color: #252525;
 }
 
-.emotion-3::-webkit-details-marker {
+.emotion-1::-webkit-details-marker {
   display: none;
 }
 
-.emotion-3:hover {
+.emotion-1:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
@@ -1619,7 +1635,15 @@ Array [
   align-items: center;
 }
 
-.emotion-1 {
+.emotion-3 {
+  color: #808080;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
+}
+
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1630,15 +1654,11 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-0 {
+.emotion-6 {
   color: #808080;
 }
 
-.emotion-15 {
-  color: #808080;
-}
-
-.emotion-4 th {
+.emotion-7 th {
   text-align: left;
   font-family: Roboto Condensed;
   font-weight: 400;
@@ -1648,46 +1668,46 @@ Array [
   padding-left: 16px;
 }
 
-.emotion-9 {
+.emotion-8 {
   text-align: left;
   font-family: Roboto Condensed;
   font-weight: 500;
 }
 
-.emotion-9:nth-last-of-type(2) {
+.emotion-8:nth-last-of-type(2) {
   width: 100%;
 }
 
-.emotion-9:hover {
+.emotion-8:hover {
   background-color: #0074f538;
   color: #ffffff;
 }
 
-.emotion-9:hover svg {
+.emotion-8:hover svg {
   color: #ffffff;
 }
 
-.emotion-9 td {
+.emotion-8 td {
   border-top: 1px solid #3b3b3b;
   padding: 12px;
   padding-left: 16px;
 }
 
-.emotion-5 {
+.emotion-9 {
   white-space: nowrap;
 }
 
-.emotion-6 {
+.emotion-10 {
   width: 100%;
   word-break: break-all;
 }
 
-.emotion-8 {
+.emotion-11 {
   position: relative;
   height: 100%;
 }
 
-.emotion-7 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1703,8 +1723,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 6px;
@@ -1719,54 +1739,54 @@ Array [
   margin: -6px;
 }
 
-.emotion-7:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-7:hover,
-.emotion-7.focus-visible:focus {
-  color: #ffffff !important;
+.emotion-12:hover,
+.emotion-12.focus-visible:focus {
+  color: #ffffff!important;
 }
 
 <details
-    className="emotion-17"
+    className="emotion-0"
     onToggle={[Function]}
     open={false}
   >
     <summary
       aria-label="Asset Labels: 2"
-      className="emotion-3"
+      className="emotion-1"
     >
       <div
         className="emotion-2"
       >
         <svg
-          className="emotion-0"
+          className="emotion-3"
           data-file-name="chevron.svg"
           height={20}
         />
         <span
-          className="emotion-1"
+          className="emotion-4"
         >
           Asset Labels: 2
         </span>
       </div>
     </summary>
     <div
-      className="emotion-16"
+      className="emotion-5"
     >
       
       <table
-        className="emotion-15"
+        className="emotion-6"
       >
         <thead>
           <tr
-            className="emotion-4"
+            className="emotion-7"
           >
             <th>
               Model
@@ -1778,25 +1798,25 @@ Array [
         </thead>
         <tbody>
           <tr
-            className="emotion-9"
+            className="emotion-8"
           >
             <td
-              className="emotion-5"
+              className="emotion-9"
             >
               console_face_recognition
             </td>
             <td
-              className="emotion-6"
+              className="emotion-10"
             >
               Space
             </td>
             <td>
               <div
-                className="emotion-8"
+                className="emotion-11"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-7"
+                  className="actions emotion-12"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1810,25 +1830,25 @@ Array [
             </td>
           </tr>
           <tr
-            className="emotion-9"
+            className="emotion-8"
           >
             <td
-              className="emotion-5"
+              className="emotion-9"
             >
               console_cat_recognition
             </td>
             <td
-              className="emotion-6"
+              className="emotion-10"
             >
               Outside
             </td>
             <td>
               <div
-                className="emotion-8"
+                className="emotion-11"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-7"
+                  className="actions emotion-12"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"

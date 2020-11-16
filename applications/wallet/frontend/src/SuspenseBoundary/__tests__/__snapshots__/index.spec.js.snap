@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SuspenseBoundary /> should not render the child with no roles 1`] = `
-.emotion-3 {
+.emotion-0 {
   height: 100%;
 }
 
-.emotion-2 {
+.emotion-1 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -19,15 +19,15 @@ exports[`<SuspenseBoundary /> should not render the child with no roles 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   text-align: center;
   background-color: #252525;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-0 {
+.emotion-2 {
   padding-top: 24px;
   padding-bottom: 24px;
   font-size: 32px;
@@ -36,7 +36,7 @@ exports[`<SuspenseBoundary /> should not render the child with no roles 1`] = `
   max-width: 600px;
 }
 
-.emotion-1 {
+.emotion-3 {
   font-size: 18px;
   line-height: 21px;
   color: #b3b3b3;
@@ -45,10 +45,10 @@ exports[`<SuspenseBoundary /> should not render the child with no roles 1`] = `
 }
 
 <div
-  className="emotion-3"
+  className="emotion-0"
 >
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
     <svg
       color="#808080"
@@ -56,12 +56,12 @@ exports[`<SuspenseBoundary /> should not render the child with no roles 1`] = `
       width={200}
     />
     <h3
-      className="emotion-0"
+      className="emotion-2"
     >
       You do not have permission to access this page for this project.
     </h3>
     <p
-      className="emotion-1"
+      className="emotion-3"
     >
       Contact your project admin to be added.
     </p>

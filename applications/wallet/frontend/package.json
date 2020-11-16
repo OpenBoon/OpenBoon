@@ -39,7 +39,7 @@
       "src/**/*.js"
     ],
     "snapshotSerializers": [
-      "jest-emotion"
+      "@emotion/jest/serializer"
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/jest.setup.js"
@@ -117,10 +117,9 @@
     }
   ],
   "dependencies": {
-    "@emotion/babel-preset-css-prop": "10.2.1",
-    "@emotion/cache": "10.0.29",
-    "@emotion/core": "10.1.1",
-    "@emotion/eslint-plugin": "11.0.0",
+    "@emotion/babel-preset-css-prop": "11.0.0",
+    "@emotion/cache": "11.0.0",
+    "@emotion/react": "11.0.0",
     "@reach/combobox": "0.11.2",
     "@reach/listbox": "0.11.2",
     "@reach/skip-nav": "0.11.2",
@@ -150,6 +149,8 @@
     "uuid": "8.3.1"
   },
   "devDependencies": {
+    "@emotion/eslint-plugin": "11.0.0",
+    "@emotion/jest": "11.0.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "26.6.3",
     "babel-plugin-dynamic-import-node": "2.3.3",
@@ -168,7 +169,6 @@
     "husky": "4.3.0",
     "import-all.macro": "3.1.0",
     "jest": "26.6.3",
-    "jest-emotion": "10.0.32",
     "jest-fetch-mock": "3.0.3",
     "lint-staged": "10.5.1",
     "morgan": "1.10.0",

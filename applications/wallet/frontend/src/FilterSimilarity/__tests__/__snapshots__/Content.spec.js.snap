@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FilterSimilarityContent /> should render a video properly 1`] = `
-.emotion-1 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -17,34 +17,33 @@ exports[`<FilterSimilarityContent /> should render a video properly 1`] = `
   padding: 16px;
 }
 
+.emotion-1 {
+  height: 74px;
+}
+
 .emotion-2 {
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-3 {
   padding: 16px;
   padding-bottom: 32px;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-4 {
+.emotion-5 {
   padding: 4px;
-}
-
-.emotion-0 {
-  height: 74px;
 }
 
 <div>
@@ -80,11 +79,11 @@ exports[`<FilterSimilarityContent /> should render a video properly 1`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <img
       alt="web-proxy.jpg"
-      className="emotion-0"
+      className="emotion-1"
       src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
     />
   </div>
@@ -95,10 +94,10 @@ exports[`<FilterSimilarityContent /> should render a video properly 1`] = `
     0.75
   </div>
   <div
-    className="emotion-5"
+    className="emotion-3"
   >
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
       <span>
         0.01
@@ -108,7 +107,7 @@ exports[`<FilterSimilarityContent /> should render a video properly 1`] = `
       </span>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-5"
     >
       <Slider
         domain={
@@ -134,14 +133,14 @@ exports[`<FilterSimilarityContent /> should render a video properly 1`] = `
 `;
 
 exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
-.emotion-1 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -150,34 +149,33 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
   padding: 16px;
 }
 
+.emotion-1 {
+  height: 74px;
+}
+
 .emotion-2 {
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-3 {
   padding: 16px;
   padding-bottom: 32px;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-4 {
+.emotion-5 {
   padding: 4px;
-}
-
-.emotion-0 {
-  height: 74px;
 }
 
 <div>
@@ -213,11 +211,11 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <img
       alt="image_512x343.jpg"
-      className="emotion-0"
+      className="emotion-1"
       src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/proxy/name/image_512x343.jpg/"
     />
   </div>
@@ -228,10 +226,10 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
     0.75
   </div>
   <div
-    className="emotion-5"
+    className="emotion-3"
   >
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
       <span>
         0.01
@@ -241,7 +239,7 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
       </span>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-5"
     >
       <Slider
         domain={
@@ -267,14 +265,14 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
 `;
 
 exports[`<FilterSimilarityContent /> should render properly 1`] = `
-.emotion-1 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -283,7 +281,7 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   width: 74px;
 }
 
@@ -291,25 +289,24 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-3 {
   padding: 16px;
   padding-bottom: 32px;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-4 {
+.emotion-5 {
   padding: 4px;
 }
 
@@ -346,11 +343,11 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <img
       alt="image_247x320.jpg"
-      className="emotion-0"
+      className="emotion-1"
       src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/proxy/name/image_247x320.jpg/"
     />
   </div>
@@ -361,10 +358,10 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
     0.75
   </div>
   <div
-    className="emotion-5"
+    className="emotion-3"
   >
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
       <span>
         0.01
@@ -374,7 +371,7 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
       </span>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-5"
     >
       <Slider
         domain={
@@ -400,14 +397,14 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
 `;
 
 exports[`<FilterSimilarityContent /> should render properly 2`] = `
-.emotion-1 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -416,7 +413,7 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   width: 74px;
 }
 
@@ -424,25 +421,24 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-3 {
   padding: 16px;
   padding-bottom: 32px;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-4 {
+.emotion-5 {
   padding: 4px;
 }
 
@@ -479,11 +475,11 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <img
       alt="image_247x320.jpg"
-      className="emotion-0"
+      className="emotion-1"
       src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/proxy/name/image_247x320.jpg/"
     />
   </div>
@@ -494,10 +490,10 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
     0.25
   </div>
   <div
-    className="emotion-5"
+    className="emotion-3"
   >
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
       <span>
         0.01
@@ -507,7 +503,7 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
       </span>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-5"
     >
       <Slider
         domain={
@@ -533,14 +529,14 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
 `;
 
 exports[`<FilterSimilarityContent /> should render properly 3`] = `
-.emotion-1 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -549,7 +545,7 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   width: 74px;
 }
 
@@ -557,25 +553,24 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-3 {
   padding: 16px;
   padding-bottom: 32px;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-4 {
+.emotion-5 {
   padding: 4px;
 }
 
@@ -612,11 +607,11 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <img
       alt="image_247x320.jpg"
-      className="emotion-0"
+      className="emotion-1"
       src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/proxy/name/image_247x320.jpg/"
     />
   </div>
@@ -627,10 +622,10 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
     0.25
   </div>
   <div
-    className="emotion-5"
+    className="emotion-3"
   >
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
       <span>
         0.01
@@ -640,7 +635,7 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
       </span>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-5"
     >
       <Slider
         domain={
@@ -666,14 +661,14 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
 `;
 
 exports[`<FilterSimilarityContent /> should render properly 4`] = `
-.emotion-1 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -682,7 +677,7 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   width: 74px;
 }
 
@@ -690,25 +685,24 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-3 {
   padding: 16px;
   padding-bottom: 32px;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-4 {
+.emotion-5 {
   padding: 4px;
 }
 
@@ -745,11 +739,11 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <img
       alt="image_247x320.jpg"
-      className="emotion-0"
+      className="emotion-1"
       src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/proxy/name/image_247x320.jpg/"
     />
   </div>
@@ -760,10 +754,10 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
     0.75
   </div>
   <div
-    className="emotion-5"
+    className="emotion-3"
   >
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
       <span>
         0.01
@@ -773,7 +767,7 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
       </span>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-5"
     >
       <Slider
         domain={

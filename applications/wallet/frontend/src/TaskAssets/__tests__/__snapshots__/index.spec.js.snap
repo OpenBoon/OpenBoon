@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TaskAssets /> should render properly 1`] = `
-.emotion-61 {
+.emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -23,7 +23,6 @@ exports[`<TaskAssets /> should render properly 1`] = `
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -31,40 +30,40 @@ exports[`<TaskAssets /> should render properly 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-53 {
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+.emotion-3 {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-11 {
+.emotion-4 {
   background-color: #2e2e2e;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-10 {
+.emotion-5 {
   list-style-type: none;
 }
 
-.emotion-10::-webkit-details-marker {
+.emotion-5::-webkit-details-marker {
   display: none;
 }
 
-.emotion-10:hover {
+.emotion-5:hover {
   cursor: pointer;
   background-color: #4a4a4a;
 }
 
-.emotion-10:hover svg {
+.emotion-5:hover svg {
   color: #ffffff;
 }
 
-.emotion-9 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -75,31 +74,31 @@ exports[`<TaskAssets /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-7 {
   width: 60px;
   text-align: center;
 }
 
-.emotion-5 {
+.emotion-8 {
   width: 100px;
   min-width: 100px;
   height: 100px;
 }
 
-.emotion-4 {
+.emotion-9 {
   position: relative;
   border: 4px solid transparent;
   width: 100%;
   height: 100%;
 }
 
-.emotion-3 {
+.emotion-10 {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.emotion-6 {
+.emotion-11 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -113,15 +112,19 @@ exports[`<TaskAssets /> should render properly 1`] = `
   padding-left: 12px;
 }
 
-.emotion-8 {
+.emotion-12 {
   width: 40px;
 }
 
-.emotion-7 {
+.emotion-13 {
   color: #808080;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
 }
 
-.emotion-44 {
+.emotion-51 {
   position: absolute;
   bottom: 4px;
   left: 4px;
@@ -130,21 +133,21 @@ exports[`<TaskAssets /> should render properly 1`] = `
   background-color: #ffffff80;
 }
 
-.emotion-60 {
+.emotion-55 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
 }
 
-.emotion-55 {
+.emotion-56 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -165,21 +168,22 @@ exports[`<TaskAssets /> should render properly 1`] = `
   border-bottom-right-radius: 0;
 }
 
-.emotion-55:hover {
+.emotion-56:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
   cursor: not-allowed;
 }
 
-.emotion-54 {
+.emotion-57 {
   color: #191919;
   -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-56 {
+.emotion-58 {
   padding: 8px 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -193,7 +197,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-57 {
+.emotion-59 {
   padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -206,7 +210,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-59 {
+.emotion-60 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -227,76 +231,77 @@ exports[`<TaskAssets /> should render properly 1`] = `
   border-bottom-right-radius: 2px;
 }
 
-.emotion-59:hover {
+.emotion-60:hover {
   opacity: 0.5;
   -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
 
-.emotion-58 {
+.emotion-61 {
   color: #ffffff;
   -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 
 <div
-  className="emotion-61"
+  className="emotion-0"
 >
   <div
     className="emotion-1"
   >
     <h3
-      className="emotion-0"
+      className="emotion-2"
     >
       Number of Assets: 
       574
     </h3>
   </div>
   <div
-    className="emotion-53"
+    className="emotion-3"
   >
     <details
-      className="emotion-11"
+      className="emotion-4"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="test_document.docx"
-        className="emotion-10"
+        className="emotion-5"
       >
         <div
-          className="emotion-9"
+          className="emotion-6"
         >
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             1
           </div>
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <img
                 alt="test_document.docx"
-                className="emotion-3"
+                className="emotion-10"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </div>
           </div>
           <h4
-            className="emotion-6"
+            className="emotion-11"
           >
             test_document.docx
           </h4>
           <div
-            className="emotion-8"
+            className="emotion-12"
           >
             <svg
-              className="emotion-7"
+              className="emotion-13"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -305,45 +310,45 @@ exports[`<TaskAssets /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-11"
+      className="emotion-4"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="irr.pdf"
-        className="emotion-10"
+        className="emotion-5"
       >
         <div
-          className="emotion-9"
+          className="emotion-6"
         >
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             2
           </div>
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <img
                 alt="irr.pdf"
-                className="emotion-3"
+                className="emotion-10"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </div>
           </div>
           <h4
-            className="emotion-6"
+            className="emotion-11"
           >
             irr.pdf
           </h4>
           <div
-            className="emotion-8"
+            className="emotion-12"
           >
             <svg
-              className="emotion-7"
+              className="emotion-13"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -352,45 +357,45 @@ exports[`<TaskAssets /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-11"
+      className="emotion-4"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="irr.pdf"
-        className="emotion-10"
+        className="emotion-5"
       >
         <div
-          className="emotion-9"
+          className="emotion-6"
         >
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             3
           </div>
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <img
                 alt="irr.pdf"
-                className="emotion-3"
+                className="emotion-10"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </div>
           </div>
           <h4
-            className="emotion-6"
+            className="emotion-11"
           >
             irr.pdf
           </h4>
           <div
-            className="emotion-8"
+            className="emotion-12"
           >
             <svg
-              className="emotion-7"
+              className="emotion-13"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -399,45 +404,45 @@ exports[`<TaskAssets /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-11"
+      className="emotion-4"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="irr.pdf"
-        className="emotion-10"
+        className="emotion-5"
       >
         <div
-          className="emotion-9"
+          className="emotion-6"
         >
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             4
           </div>
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <img
                 alt="irr.pdf"
-                className="emotion-3"
+                className="emotion-10"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </div>
           </div>
           <h4
-            className="emotion-6"
+            className="emotion-11"
           >
             irr.pdf
           </h4>
           <div
-            className="emotion-8"
+            className="emotion-12"
           >
             <svg
-              className="emotion-7"
+              className="emotion-13"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -446,50 +451,50 @@ exports[`<TaskAssets /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-11"
+      className="emotion-4"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="FatManOnABike1914.mp4"
-        className="emotion-10"
+        className="emotion-5"
       >
         <div
-          className="emotion-9"
+          className="emotion-6"
         >
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             5
           </div>
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <img
                 alt="FatManOnABike1914.mp4"
-                className="emotion-3"
+                className="emotion-10"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
               />
               <div
-                className="emotion-44"
+                className="emotion-51"
               >
                 2:24
               </div>
             </div>
           </div>
           <h4
-            className="emotion-6"
+            className="emotion-11"
           >
             FatManOnABike1914.mp4
           </h4>
           <div
-            className="emotion-8"
+            className="emotion-12"
           >
             <svg
-              className="emotion-7"
+              className="emotion-13"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -502,39 +507,39 @@ exports[`<TaskAssets /> should render properly 1`] = `
      
   </div>
   <div
-    className="emotion-60"
+    className="emotion-55"
   >
     <button
-      className="emotion-55"
+      className="emotion-56"
       disabled={true}
       type="button"
     >
       <svg
-        className="emotion-54"
+        className="emotion-57"
         data-file-name="chevron.svg"
         height={16}
       />
     </button>
     <div
-      className="emotion-56"
+      className="emotion-58"
     >
       1
     </div>
     <div
-      className="emotion-57"
+      className="emotion-59"
     >
       of 
       29
     </div>
     <a
-      className="emotion-59"
+      className="emotion-60"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/5262c1ef-91ad-1d33-82b6-d6edb1b855c4?page=2"
       onClick={[Function]}
       onMouseEnter={[Function]}
       rel="next"
     >
       <svg
-        className="emotion-58"
+        className="emotion-61"
         data-file-name="chevron.svg"
         height={16}
       />
@@ -560,14 +565,14 @@ exports[`<TaskAssets /> should render properly without assets 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   height: 100%;
   font-size: 18px;
   line-height: 21px;
   background-color: #252525;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
 <div

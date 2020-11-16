@@ -26,12 +26,12 @@ Array [
   >
     Usage:
   </h3>,
-  .emotion-1 {
+  .emotion-0 {
   padding-bottom: 16px;
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -42,15 +42,15 @@ Array [
   align-items: center;
 }
 
-.emotion-0 img {
+.emotion-1 img {
   margin-right: 12px;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <h4
-      className="emotion-0"
+      className="emotion-1"
     >
       <img
         alt=""
@@ -63,6 +63,11 @@ Array [
     </h4>
   </div>,
   .emotion-0 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -73,20 +78,15 @@ Array [
   align-items: center;
 }
 
-.emotion-0 img {
+.emotion-1 img {
   margin-right: 12px;
 }
 
-.emotion-1 {
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <h4
-      className="emotion-0"
+      className="emotion-1"
     >
       <img
         alt=""
@@ -126,12 +126,12 @@ Array [
   >
     Usage:
   </h3>,
-  .emotion-1 {
+  .emotion-0 {
   padding-bottom: 16px;
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -142,15 +142,15 @@ Array [
   align-items: center;
 }
 
-.emotion-0 img {
+.emotion-1 img {
   margin-right: 12px;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <h4
-      className="emotion-0"
+      className="emotion-1"
     >
       <img
         alt=""
@@ -163,6 +163,11 @@ Array [
     </h4>
   </div>,
   .emotion-0 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -173,20 +178,15 @@ Array [
   align-items: center;
 }
 
-.emotion-0 img {
+.emotion-1 img {
   margin-right: 12px;
 }
 
-.emotion-1 {
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <h4
-      className="emotion-0"
+      className="emotion-1"
     >
       <img
         alt=""
@@ -226,12 +226,12 @@ Array [
   >
     Usage:
   </h3>,
-  .emotion-1 {
+  .emotion-0 {
   padding-bottom: 16px;
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -242,15 +242,15 @@ Array [
   align-items: center;
 }
 
-.emotion-0 img {
+.emotion-1 img {
   margin-right: 12px;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <h4
-      className="emotion-0"
+      className="emotion-1"
     >
       <img
         alt=""
@@ -263,6 +263,11 @@ Array [
     </h4>
   </div>,
   .emotion-0 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -273,20 +278,15 @@ Array [
   align-items: center;
 }
 
-.emotion-0 img {
+.emotion-1 img {
   margin-right: 12px;
 }
 
-.emotion-1 {
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <h4
-      className="emotion-0"
+      className="emotion-1"
     >
       <img
         alt=""
