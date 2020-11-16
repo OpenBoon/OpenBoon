@@ -19,9 +19,9 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
 }
 
 .emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -37,36 +37,27 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-  -webkit-flex: none;
-  -ms-flex: none;
-  flex: none;
+  background-color: #252525;
   padding-top: 16px;
   padding-bottom: 16px;
-  background-color: #252525;
   margin-bottom: 1px;
-  color: #808080;
-  border-radius: 0;
 }
 
 .emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  background-color: #2e2e2e;
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-0:hover,
@@ -77,14 +68,6 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
 .emotion-0:hover svg,
 .emotion-0.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-0:hover {
-  background-color: #2e2e2e;
 }
 
 .emotion-1 {
@@ -145,9 +128,9 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
 }
 
 .emotion-7 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -163,36 +146,27 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  -webkit-flex: none;
-  -ms-flex: none;
-  flex: none;
+  color: #73b61c;
+  background-color: #252525;
   padding-top: 16px;
   padding-bottom: 16px;
-  background-color: #252525;
   margin-bottom: 1px;
-  color: #73b61c;
-  border-radius: 0;
 }
 
 .emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  background-color: #2e2e2e;
 }
 
 .emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-7:hover,
@@ -203,14 +177,6 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
 .emotion-7:hover svg,
 .emotion-7.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-7:hover {
-  background-color: #2e2e2e;
 }
 
 .emotion-4 {
@@ -267,18 +233,15 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-  padding: 0;
+  background-color: transparent;
 }
 
 .emotion-3:hover {
@@ -287,7 +250,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
 }
 
 .emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-3:hover,
@@ -298,10 +261,6 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
 .emotion-3:hover svg,
 .emotion-3.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-5 {
@@ -441,9 +400,9 @@ exports[`<Panel /> should render properly opening to the right 1`] = `
 }
 
 .emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -459,36 +418,27 @@ exports[`<Panel /> should render properly opening to the right 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-  -webkit-flex: none;
-  -ms-flex: none;
-  flex: none;
+  background-color: #252525;
   padding-top: 16px;
   padding-bottom: 16px;
-  background-color: #252525;
   margin-bottom: 1px;
-  color: #808080;
-  border-radius: 0;
 }
 
 .emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  background-color: #2e2e2e;
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-0:hover,
@@ -499,14 +449,6 @@ exports[`<Panel /> should render properly opening to the right 1`] = `
 .emotion-0:hover svg,
 .emotion-0.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-0:hover {
-  background-color: #2e2e2e;
 }
 
 .emotion-1 {
@@ -567,9 +509,9 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
 }
 
 .emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -585,36 +527,27 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  -webkit-flex: none;
-  -ms-flex: none;
-  flex: none;
+  color: #73b61c;
+  background-color: #252525;
   padding-top: 16px;
   padding-bottom: 16px;
-  background-color: #252525;
   margin-bottom: 1px;
-  color: #73b61c;
-  border-radius: 0;
 }
 
 .emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  background-color: #2e2e2e;
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-0:hover,
@@ -625,14 +558,6 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
 .emotion-0:hover svg,
 .emotion-0.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-0:hover {
-  background-color: #2e2e2e;
 }
 
 .emotion-8 {
@@ -702,18 +627,15 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-  padding: 0;
+  background-color: transparent;
 }
 
 .emotion-5:hover {
@@ -722,7 +644,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
 }
 
 .emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-5:hover,
@@ -733,10 +655,6 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-4 {

@@ -77,17 +77,15 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 6px;
 }
 
@@ -97,7 +95,7 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 }
 
 .emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-1:hover,
@@ -108,10 +106,6 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-1 svg {
@@ -367,23 +361,17 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
@@ -850,17 +838,12 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 }
 
 .emotion-19:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-19:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-19:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-26 {
@@ -910,7 +893,7 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 }
 
 .emotion-23[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-23,
@@ -921,10 +904,6 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 
 .emotion-23:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-23[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-24 {
@@ -971,7 +950,7 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 }
 
 .emotion-25[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-25,
@@ -982,10 +961,6 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 
 .emotion-25:hover {
   background-color: #96c955;
-}
-
-.emotion-25[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div
@@ -1228,17 +1203,15 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 6px;
 }
 
@@ -1248,7 +1221,7 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
 }
 
 .emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-1:hover,
@@ -1259,10 +1232,6 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-1 svg {
@@ -1378,23 +1347,17 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }

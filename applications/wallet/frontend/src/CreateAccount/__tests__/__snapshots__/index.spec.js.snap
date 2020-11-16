@@ -229,17 +229,12 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-12:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-12:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-12:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-37 {
@@ -385,7 +380,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-46[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-46,
@@ -396,10 +391,6 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 
 .emotion-46:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-46[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-47 {
@@ -439,7 +430,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-47[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-47,
@@ -450,10 +441,6 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 
 .emotion-47:hover {
   background-color: #96c955;
-}
-
-.emotion-47[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div
@@ -952,17 +939,12 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 }
 
 .emotion-9:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-9:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-9:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-34 {
@@ -1108,7 +1090,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 }
 
 .emotion-43[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-43,
@@ -1119,10 +1101,6 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 
 .emotion-43:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-43[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-44 {
@@ -1162,7 +1140,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 }
 
 .emotion-44[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-44,
@@ -1173,10 +1151,6 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 
 .emotion-44:hover {
   background-color: #96c955;
-}
-
-.emotion-44[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div

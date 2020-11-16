@@ -105,7 +105,7 @@ exports[`<Assets /> should render empty properly 1`] = `
 }
 
 .emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-3,
@@ -116,10 +116,6 @@ exports[`<Assets /> should render empty properly 1`] = `
 
 .emotion-3:hover {
   background-color: #96c955;
-}
-
-.emotion-3[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-4 {
@@ -273,7 +269,7 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
 }
 
 .emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-2,
@@ -284,10 +280,6 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
 
 .emotion-2:hover {
   background-color: #96c955;
-}
-
-.emotion-2[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div
@@ -430,7 +422,7 @@ exports[`<Assets /> should render empty with no filters properly 1`] = `
 }
 
 .emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-3,
@@ -441,10 +433,6 @@ exports[`<Assets /> should render empty with no filters properly 1`] = `
 
 .emotion-3:hover {
   background-color: #96c955;
-}
-
-.emotion-3[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-4 {
@@ -569,7 +557,7 @@ exports[`<Assets /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -578,7 +566,6 @@ exports[`<Assets /> should render properly 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   padding: 8px;
   opacity: 1;
 }
@@ -620,7 +607,7 @@ exports[`<Assets /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -629,7 +616,6 @@ exports[`<Assets /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   padding: 8px;
   opacity: 1;
 }
@@ -760,7 +746,7 @@ exports[`<Assets /> should render properly 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -769,7 +755,6 @@ exports[`<Assets /> should render properly 2`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   padding: 8px;
   opacity: 1;
 }
@@ -811,7 +796,7 @@ exports[`<Assets /> should render properly 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -820,7 +805,6 @@ exports[`<Assets /> should render properly 2`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   padding: 8px;
   opacity: 1;
 }
@@ -951,7 +935,7 @@ exports[`<Assets /> should render properly 3`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -960,7 +944,6 @@ exports[`<Assets /> should render properly 3`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   padding: 8px;
   opacity: 1;
 }
@@ -1002,7 +985,7 @@ exports[`<Assets /> should render properly 3`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1011,7 +994,6 @@ exports[`<Assets /> should render properly 3`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   padding: 8px;
   opacity: 1;
 }

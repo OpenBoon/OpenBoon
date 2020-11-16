@@ -127,7 +127,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 }
 
 .emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-1,
@@ -138,10 +138,6 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 
 .emotion-1:hover {
   background-color: #96c955;
-}
-
-.emotion-1[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div
@@ -258,7 +254,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 }
 
 .emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-1,
@@ -269,10 +265,6 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 
 .emotion-1:hover {
   background-color: #96c955;
-}
-
-.emotion-1[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-5 {
@@ -458,7 +450,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 }
 
 .emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-1,
@@ -469,10 +461,6 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 
 .emotion-1:hover {
   background-color: #96c955;
-}
-
-.emotion-1[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-5 {

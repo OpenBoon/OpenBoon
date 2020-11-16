@@ -72,7 +72,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -81,7 +81,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
 .emotion-4:hover {
@@ -90,7 +89,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
 }
 
 .emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-4,
@@ -101,10 +100,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
 
 .emotion-4:hover {
   background-color: #96c955;
-}
-
-.emotion-4[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-3 {
@@ -626,7 +621,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -635,7 +630,6 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
 .emotion-4:hover {
@@ -644,7 +638,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
 }
 
 .emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-4,
@@ -655,10 +649,6 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
 
 .emotion-4:hover {
   background-color: #96c955;
-}
-
-.emotion-4[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-3 {

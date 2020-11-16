@@ -194,7 +194,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
 }
 
 .emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-8,
@@ -205,10 +205,6 @@ exports[`<ResetPassword /> should render properly 1`] = `
 
 .emotion-8:hover {
   background-color: #96c955;
-}
-
-.emotion-8[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-10 {

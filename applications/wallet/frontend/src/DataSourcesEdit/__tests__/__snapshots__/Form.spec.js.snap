@@ -598,7 +598,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 }
 
 .emotion-128[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-128,
@@ -609,10 +609,6 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 
 .emotion-128:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-128[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-129 {
@@ -652,7 +648,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 }
 
 .emotion-129[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-129,
@@ -663,10 +659,6 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 
 .emotion-129:hover {
   background-color: #96c955;
-}
-
-.emotion-129[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-3 {
@@ -682,17 +674,12 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 }
 
 .emotion-3:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-3:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-3:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-5 {
@@ -1632,17 +1619,12 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 }
 
 .emotion-3:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-3:hover {
   border: 2px solid #ffffff;
-}
-
-.emotion-3:focus {
-  color: #000000;
-  background-color: #ffffff;
 }
 
 .emotion-46 {
@@ -2195,7 +2177,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 }
 
 .emotion-127[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-127,
@@ -2206,10 +2188,6 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 
 .emotion-127:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-127[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-128 {
@@ -2249,7 +2227,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 }
 
 .emotion-128[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-128,
@@ -2260,10 +2238,6 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 
 .emotion-128:hover {
   background-color: #96c955;
-}
-
-.emotion-128[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <form

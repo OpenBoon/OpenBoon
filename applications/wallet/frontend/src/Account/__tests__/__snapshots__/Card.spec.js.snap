@@ -81,7 +81,7 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -90,7 +90,6 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
 .emotion-2:hover {
@@ -99,7 +98,7 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
 }
 
 .emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-2,
@@ -110,10 +109,6 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
 
 .emotion-2:hover {
   background-color: #96c955;
-}
-
-.emotion-2[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <div
@@ -240,7 +235,7 @@ exports[`<AccountCard /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -249,7 +244,6 @@ exports[`<AccountCard /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
 .emotion-2:hover {
@@ -258,7 +252,7 @@ exports[`<AccountCard /> should render properly 1`] = `
 }
 
 .emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-2,
@@ -269,10 +263,6 @@ exports[`<AccountCard /> should render properly 1`] = `
 
 .emotion-2:hover {
   background-color: #96c955;
-}
-
-.emotion-2[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-12 {
@@ -487,7 +477,7 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -496,7 +486,6 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
 .emotion-2:hover {
@@ -505,7 +494,7 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
 }
 
 .emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-2,
@@ -516,10 +505,6 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
 
 .emotion-2:hover {
   background-color: #96c955;
-}
-
-.emotion-2[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-12 {
@@ -734,7 +719,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -743,7 +728,6 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
 .emotion-2:hover {
@@ -752,7 +736,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
 }
 
 .emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-2,
@@ -763,10 +747,6 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
 
 .emotion-2:hover {
   background-color: #96c955;
-}
-
-.emotion-2[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-12 {

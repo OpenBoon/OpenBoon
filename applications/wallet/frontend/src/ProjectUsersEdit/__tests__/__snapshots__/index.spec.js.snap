@@ -338,7 +338,7 @@ Array [
 }
 
 .emotion-28[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-28,
@@ -349,10 +349,6 @@ Array [
 
 .emotion-28:hover {
   background-color: #b3b3b3;
-}
-
-.emotion-28[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-29 {
@@ -392,7 +388,7 @@ Array [
 }
 
 .emotion-29[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-29,
@@ -403,10 +399,6 @@ Array [
 
 .emotion-29:hover {
   background-color: #96c955;
-}
-
-.emotion-29[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <form

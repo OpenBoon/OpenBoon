@@ -92,7 +92,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -101,7 +101,6 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
@@ -113,7 +112,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
 }
 
 .emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-7,
@@ -124,10 +123,6 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
 
 .emotion-7:hover {
   background-color: #96c955;
-}
-
-.emotion-7[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <form
@@ -202,9 +197,9 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
 }
 
 .emotion-5 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -230,9 +225,6 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
 }
 
 .emotion-5:hover {
@@ -241,7 +233,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
 }
 
 .emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-5,
@@ -254,19 +246,15 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-6 {
   width: 8px;
   min-width: 8px;
 }
 
 .emotion-7 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -292,9 +280,6 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
 }
 
 .emotion-7:hover {
@@ -303,7 +288,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
 }
 
 .emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-7,
@@ -314,10 +299,6 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
 
 .emotion-7:hover {
   opacity: 0.5;
-}
-
-.emotion-7[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-2 {

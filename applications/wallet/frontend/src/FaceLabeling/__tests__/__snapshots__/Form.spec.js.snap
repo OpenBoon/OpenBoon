@@ -58,9 +58,9 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
 }
 
 .emotion-3 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -86,9 +86,6 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
 }
 
 .emotion-3:hover {
@@ -97,7 +94,7 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
 }
 
 .emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-3,
@@ -110,19 +107,15 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
   background-color: #b3b3b3;
 }
 
-.emotion-3[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-4 {
   width: 8px;
   min-width: 8px;
 }
 
 .emotion-5 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -148,9 +141,6 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
 }
 
 .emotion-5:hover {
@@ -159,7 +149,7 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
 }
 
 .emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-5,
@@ -170,10 +160,6 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
 
 .emotion-5:hover {
   background-color: #96c955;
-}
-
-.emotion-5[aria-disabled=true] {
-  background-color: #808080;
 }
 
 <form

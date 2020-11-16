@@ -42,7 +42,7 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -51,7 +51,6 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 100%;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -853,7 +852,7 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -862,7 +861,6 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 100%;
   padding-top: 8px;
   padding-bottom: 8px;

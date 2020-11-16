@@ -55,17 +55,15 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
@@ -75,7 +73,7 @@ Array [
 }
 
 .emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-1:hover,
@@ -86,10 +84,6 @@ Array [
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-1 svg {
@@ -512,17 +506,15 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
@@ -532,7 +524,7 @@ Array [
 }
 
 .emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-1:hover,
@@ -543,10 +535,6 @@ Array [
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-1 svg {
@@ -734,17 +722,15 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
@@ -754,7 +740,7 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
 }
 
 .emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-2:hover,
@@ -765,10 +751,6 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
 .emotion-2:hover svg,
 .emotion-2.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-2 svg {
@@ -897,17 +879,15 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
@@ -917,7 +897,7 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
 }
 
 .emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-2:hover,
@@ -928,10 +908,6 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
 .emotion-2:hover svg,
 .emotion-2.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-2 svg {
@@ -995,17 +971,15 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
@@ -1015,7 +989,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
 }
 
 .emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-3:hover,
@@ -1026,10 +1000,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
 .emotion-3:hover svg,
 .emotion-3.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-3 svg {
@@ -1166,7 +1136,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1175,7 +1145,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 100%;
   height: 100%;
   display: -webkit-box;
@@ -1230,7 +1199,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1238,14 +1207,11 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
+  background-color: #3b3b3b80;
   opacity: 0;
   position: absolute;
   top: 4px;
   right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
 }
 
 .emotion-9:hover {
@@ -1283,7 +1249,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1291,14 +1257,11 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
+  background-color: #3b3b3b80;
   opacity: 0;
   position: absolute;
   bottom: 4px;
   right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
 }
 
 .emotion-10:hover {
@@ -1605,17 +1568,15 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
@@ -1625,7 +1586,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
 }
 
 .emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-3:hover,
@@ -1636,10 +1597,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
 .emotion-3:hover svg,
 .emotion-3.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-3 svg {

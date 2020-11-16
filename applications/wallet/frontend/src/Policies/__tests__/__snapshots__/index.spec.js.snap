@@ -204,7 +204,7 @@ exports[`<Policies /> should render properly 1`] = `
 }
 
 .emotion-15[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-15,
@@ -215,10 +215,6 @@ exports[`<Policies /> should render properly 1`] = `
 
 .emotion-15:hover {
   background-color: #96c955;
-}
-
-.emotion-15[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-4 {

@@ -32,17 +32,15 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -65,7 +63,7 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
 }
 
 .emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-3:hover,
@@ -76,10 +74,6 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
 .emotion-3:hover svg,
 .emotion-3.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-3:hover,
@@ -116,17 +110,15 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -149,7 +141,7 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
 }
 
 .emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-1:hover,
@@ -160,10 +152,6 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-1:hover,
@@ -246,17 +234,15 @@ exports[`<FilterActions /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -279,7 +265,7 @@ exports[`<FilterActions /> should render properly 1`] = `
 }
 
 .emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-1:hover,
@@ -290,10 +276,6 @@ exports[`<FilterActions /> should render properly 1`] = `
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-1:hover,
@@ -376,17 +358,15 @@ exports[`<FilterActions /> should render properly 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -409,7 +389,7 @@ exports[`<FilterActions /> should render properly 2`] = `
 }
 
 .emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-1:hover,
@@ -420,10 +400,6 @@ exports[`<FilterActions /> should render properly 2`] = `
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-1:hover,
@@ -506,17 +482,15 @@ exports[`<FilterActions /> should render properly 3`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -539,7 +513,7 @@ exports[`<FilterActions /> should render properly 3`] = `
 }
 
 .emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
+  color: #808080;
 }
 
 .emotion-1:hover,
@@ -550,10 +524,6 @@ exports[`<FilterActions /> should render properly 3`] = `
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
   opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-1:hover,
