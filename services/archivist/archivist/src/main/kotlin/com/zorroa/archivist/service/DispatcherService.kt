@@ -18,6 +18,9 @@ import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobStateChangeEvent
 import com.zorroa.archivist.domain.PendingTasksStats
+import com.zorroa.archivist.domain.ProjectFileLocator
+import com.zorroa.archivist.domain.ProjectStorageEntity
+import com.zorroa.archivist.domain.ProjectStorageLocator
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
@@ -252,6 +255,10 @@ class DispatchQueueManager @Autowired constructor(
                 task.logFile = storageService.getSignedUrl(
                     task.getLogFileLocation(), true, 1, TimeUnit.DAYS
                 ).getValue("uri").toString()
+
+                task.env["ZORROA_JOB_STORAGE_URI"] = storageService.getNativeUri(
+                    ProjectFileLocator(ProjectStorageEntity.JOB, task.jobId.toString(), "officer", ""))
+
             }
 
             return true
