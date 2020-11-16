@@ -81,7 +81,6 @@ object FileExtResolver {
         "m4v",
         "webm",
         "ogv",
-        "ogg",
         "mxf"
     )
 
