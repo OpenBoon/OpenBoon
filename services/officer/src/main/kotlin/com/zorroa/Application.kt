@@ -20,7 +20,7 @@ const val ASPOSE_LICENSE_FILE = "Aspose.Total.Java.lic"
 class RenderRequest(
     val fileName: String,
     var page: Int = -1,
-    var outputDir: String = UUID.randomUUID().toString().replace("-", ""),
+    var outputUri: String = UUID.randomUUID().toString().replace("-", ""),
     var dpi: Int = 100,
     var disableImageRender: Boolean = false
 )
@@ -30,14 +30,14 @@ class RenderRequest(
  */
 class ExistsRequest(
     val page: Int,
-    val outputDir: String
+    val outputUri: String
 )
 
 /**
  * Extract the image and metadata to their resting place.
  */
 fun extract(opts: RenderRequest, input: InputStream): Document {
-    requireNotNull(opts.outputDir) { "An output directory must be provided" }
+    requireNotNull(opts.outputUri) { "An output directory must be provided" }
 
     val fileExt = opts.fileName.substringAfterLast('.', "").toLowerCase()
 
@@ -97,7 +97,7 @@ fun runServer(port: Int) {
 
     post("/exists", "application/json") {
         val options = Json.mapper.readValue<ExistsRequest>(this.request.body())
-        val ioHandler = IOHandler(RenderRequest("none", options.page, options.outputDir))
+        val ioHandler = IOHandler(RenderRequest("none", options.page, options.outputUri))
         if (ioHandler.exists(options.page)) {
             this.response.status(200)
         } else {

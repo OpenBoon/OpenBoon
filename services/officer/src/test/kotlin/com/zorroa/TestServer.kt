@@ -61,7 +61,7 @@ class TestServer {
     fun testRender() {
         val opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
         opts.page = 1
-        opts.outputDir = "render_test"
+        opts.outputUri = "render_test"
         val rsp = HttpRequest.post("http://localhost:9876/render")
             .part("file", "CPB7_WEB.pdf", File("src/test/resources/CPB7_WEB.pdf"))
             .part("body", Json.mapper.writeValueAsString(opts))
@@ -69,8 +69,7 @@ class TestServer {
         assert(rsp.code() == 201)
 
         val content = Json.mapper.readValue(rsp.body(), Map::class.java)
-        val prefix = IOHandler.PREFIX
-        assertEquals("zmlp://pipeline-storage/$prefix/render_test", content["location"])
+        assertEquals("render_test", content["location"])
 
         val exists = HttpRequest.post("http://localhost:9876/exists")
             .send(Json.mapper.writeValueAsString(opts))

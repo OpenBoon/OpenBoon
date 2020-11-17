@@ -29,7 +29,7 @@ abstract class Document(val options: RenderRequest) : Closeable {
 
     fun render() {
         if (isRenderAll()) {
-            logger.info("Rendering to {}", options.outputDir)
+            logger.info("Rendering to {}", options.outputUri)
             if (!options.disableImageRender) {
                 renderAllImages()
             }

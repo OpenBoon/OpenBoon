@@ -93,7 +93,7 @@ class OfficerClient(object):
             asset_id = os.path.basename(tmp_loc)
 
         body = {
-            'outputDir': asset_id,
+            'outputUri': asset_id,
             'page': page
         }
         rsp = requests.post(self.exists_url, json=body,
@@ -127,9 +127,10 @@ class OfficerClient(object):
             page = -1
 
         # Setup the json body
+        job_storage_uri = os.environ.get('ZORROA_JOB_STORAGE_URI')
         body = {
             'fileName': asset.uri,
-            'outputDir': asset.id,
+            'outputUri': '{}/officer/{}'.format(job_storage_uri, asset.id) if job_storage_uri else asset.id,
             'page': page,
             'disableImageRender': disable_images,
             'dpi': self.dpi

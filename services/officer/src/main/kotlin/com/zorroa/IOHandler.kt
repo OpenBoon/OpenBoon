@@ -42,15 +42,15 @@ class IOHandler(val options: RenderRequest) {
     }
 
     fun getImagePath(page: Int): String {
-        return "$PREFIX/${options.outputDir}/proxy.$page.jpg"
+        return "${options.outputUri}/proxy.$page.jpg"
     }
 
     fun getMetadataPath(page: Int): String {
-        return "$PREFIX/${options.outputDir}/metadata.$page.json"
+        return "${options.outputUri}/metadata.$page.json"
     }
 
     fun getOutputUri(): String {
-        return "zmlp://${Config.bucket.name}/$PREFIX/${options.outputDir}"
+        return options.outputUri
     }
 
     fun getMetadata(page: Int = 1): InputStream {
@@ -79,8 +79,5 @@ class IOHandler(val options: RenderRequest) {
 
         // The size of the pre-allocated by array for images.
         val IMG_BUFFER_SIZE = 65536
-
-        // The object path prefix
-        val PREFIX = "tmp-files/officer"
     }
 }
