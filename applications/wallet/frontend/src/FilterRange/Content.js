@@ -37,9 +37,10 @@ const FilterRangeContent = ({
     },
   )
 
-  const { results } = data || {}
+  const { results = {} } = data || {}
 
-  const { min: resultsMin = 0, max: resultsMax = 1 } = results || {}
+  const resultsMin = results?.min || 0
+  const resultsMax = results?.max || 1
 
   const minMaxFix = resultsMin === resultsMax ? 0.001 : 0
 
