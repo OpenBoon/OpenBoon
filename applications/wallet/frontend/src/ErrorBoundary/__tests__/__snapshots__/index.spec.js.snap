@@ -3,7 +3,7 @@
 exports[`<ErrorBoundary /> should render children 1`] = `<div />`;
 
 exports[`<ErrorBoundary /> should render generic when caught 1`] = `
-.emotion-2 {
+.emotion-0 {
   height: 100%;
 }
 
@@ -21,29 +21,29 @@ exports[`<ErrorBoundary /> should render generic when caught 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   text-align: center;
   color: #808080;
   background-color: #252525;
   font-size: 15px;
   line-height: 19px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-0 {
+.emotion-2 {
   max-width: 80%;
 }
 
 <div
-  className="ErrorBoundary emotion-2"
+  className="ErrorBoundary emotion-0"
 >
   <div
     className="emotion-1"
   >
     <svg
-      className="emotion-0"
+      className="emotion-2"
       data-file-name="error.svg"
       width={604}
     />
@@ -56,12 +56,8 @@ exports[`<ErrorBoundary /> should render generic when caught 1`] = `
 `;
 
 exports[`<ErrorBoundary /> should render properly when transparent 1`] = `
-.emotion-2 {
-  height: 100%;
-}
-
 .emotion-0 {
-  max-width: 80%;
+  height: 100%;
 }
 
 .emotion-1 {
@@ -78,8 +74,8 @@ exports[`<ErrorBoundary /> should render properly when transparent 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   text-align: center;
   color: #808080;
@@ -89,14 +85,18 @@ exports[`<ErrorBoundary /> should render properly when transparent 1`] = `
   box-shadow: none;
 }
 
+.emotion-2 {
+  max-width: 80%;
+}
+
 <div
-  className="ErrorBoundary emotion-2"
+  className="ErrorBoundary emotion-0"
 >
   <div
     className="emotion-1"
   >
     <svg
-      className="emotion-0"
+      className="emotion-2"
       data-file-name="error.svg"
       width={604}
     />

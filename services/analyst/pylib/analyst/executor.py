@@ -1,8 +1,8 @@
 import json
 import logging
 import os
-import threading
 import random
+import threading
 
 import docker
 import zmq

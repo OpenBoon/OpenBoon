@@ -3,7 +3,7 @@ from django.db import models
 
 class Provider(models.Model):
     """Provides display details for pipeline module providers."""
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     logo_data_uri = models.TextField(
         help_text='Paste in the base64 data uri text string of an image. '

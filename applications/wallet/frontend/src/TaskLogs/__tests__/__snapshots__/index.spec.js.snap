@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TaskLogs /> should render properly 1`] = `
+.emotion-0 {
+  height: 100%;
+  overflow: auto;
+  background-color: #191919;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column-reverse;
+  -ms-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+}
+
+.emotion-1 {
+  background-color: #191919;
+}
+
+.emotion-1 pre {
+  padding: 16px;
+  margin: 0;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <div
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<pre class=\\"__json-pretty-error__\\">
+running 9 processors in execute, 25 objects
+Exception during processing: &apos;DockerClient&apos; object has no attribute &apos;login_view&apos;
+Traceback (most recent call last):
+  File &quot;/service/pylib/analyst/executor.py&quot;, line 167, in process
+    assets = self.run_containerized_processor(proc, assets)
+  File &quot;/service/pylib/analyst/executor.py&quot;, line 224, in run_containerized_processor
+    self.container.wait_for_container()
+  File &quot;/service/pylib/analyst/executor.py&quot;, line 433, in wait_for_container
+    self.__start_container()
+  File &quot;/service/pylib/analyst/executor.py&quot;, line 383, in __start_container
+    image = self._pull_image()
+  File &quot;/service/pylib/analyst/executor.py&quot;, line 357, in _pull_image
+    self._docker_login()
+  File &quot;/service/pylib/analyst/executor.py&quot;, line 334, in _docker_login
+    self.docker_client.login_view(dh_creds[&quot;username&quot;],
+  File &quot;/usr/local/lib/python3.8/dist-packages/docker/client.py&quot;, line 205, in __getattr__
+    raise AttributeError(&apos; &apos;.join(s))
+AttributeError: &apos;DockerClient&apos; object has no attribute &apos;login_view&apos;
+Stopping container, reason: Exception during processing: &apos;DockerClient&apos; object has no attribute &apos;login_view&apos;
+</pre>",
+        }
+      }
+      id="json-pretty"
+    />
+  </div>
+</div>
+`;

@@ -13,28 +13,28 @@ Array [
   >
     Time Based Metadata:
   </div>,
-  .emotion-27 {
+  .emotion-0 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   overflow-y: auto;
 }
 
-.emotion-10 {
+.emotion-1 {
   border-bottom: 4px solid #3b3b3b;
   box-shadow: inset 3px 0 0 transparent;
 }
 
-.emotion-9 {
+.emotion-2 {
   padding: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-9:not(:first-of-type) {
+.emotion-2:not(:first-of-type) {
   border-top: 4px solid #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-3 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -42,7 +42,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-1 {
+.emotion-4 {
   font-family: Roboto Condensed;
   font-weight: 400;
   text-transform: uppercase;
@@ -53,16 +53,16 @@ Array [
   text-align: left;
 }
 
-.emotion-1:last-of-type {
+.emotion-4:last-of-type {
   text-align: right;
   white-space: nowrap;
 }
 
-.emotion-1:nth-last-of-type(2) {
+.emotion-4:nth-last-of-type(2) {
   width: 100%;
 }
 
-.emotion-5 td {
+.emotion-6 td {
   vertical-align: bottom;
   font-family: Roboto Mono;
   font-size: 14px;
@@ -73,22 +73,22 @@ Array [
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-3:last-of-type {
+.emotion-7:last-of-type {
   text-align: right;
   padding-right: 0;
 }
 
 <div
-    className="emotion-27"
+    className="emotion-0"
   >
     <div
-      className="emotion-10"
+      className="emotion-1"
     >
       <div
-        className="emotion-9"
+        className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           gcp-label-detection
         </div>
@@ -96,12 +96,12 @@ Array [
           <thead>
             <tr>
               <th
-                className="emotion-1"
+                className="emotion-4"
               >
                 label
               </th>
               <th
-                className="emotion-1"
+                className="emotion-4"
               >
                 confidence score
               </th>
@@ -109,29 +109,29 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-5"
+              className="emotion-6"
             >
               <td
-                className="emotion-3"
+                className="emotion-7"
               >
                 cheese
               </td>
               <td
-                className="emotion-3"
+                className="emotion-7"
               >
                 0.91
               </td>
             </tr>
             <tr
-              className="emotion-5"
+              className="emotion-6"
             >
               <td
-                className="emotion-3"
+                className="emotion-7"
               >
                 pepperoni
               </td>
               <td
-                className="emotion-3"
+                className="emotion-7"
               >
                 0.91
               </td>
@@ -141,13 +141,13 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-1"
     >
       <div
-        className="emotion-9"
+        className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           gcp-logo-detection
         </div>
@@ -155,12 +155,12 @@ Array [
           <thead>
             <tr>
               <th
-                className="emotion-1"
+                className="emotion-4"
               >
                 label
               </th>
               <th
-                className="emotion-1"
+                className="emotion-4"
               >
                 confidence score
               </th>
@@ -168,15 +168,15 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-5"
+              className="emotion-6"
             >
               <td
-                className="emotion-3"
+                className="emotion-7"
               >
                 boon
               </td>
               <td
-                className="emotion-3"
+                className="emotion-7"
               >
                 0.91
               </td>
@@ -186,13 +186,13 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-1"
     >
       <div
-        className="emotion-9"
+        className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           gcp-object-detection
         </div>
@@ -200,12 +200,12 @@ Array [
           <thead>
             <tr>
               <th
-                className="emotion-1"
+                className="emotion-4"
               >
                 label
               </th>
               <th
-                className="emotion-1"
+                className="emotion-4"
               >
                 confidence score
               </th>
@@ -213,15 +213,15 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-5"
+              className="emotion-6"
             >
               <td
-                className="emotion-3"
+                className="emotion-7"
               >
                 food
               </td>
               <td
-                className="emotion-3"
+                className="emotion-7"
               >
                 0.91
               </td>
@@ -247,24 +247,24 @@ Array [
   >
     Time Based Metadata:
   </div>,
-  .emotion-1 {
+  .emotion-0 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   overflow-y: auto;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding: 16px;
   color: #ffffff;
   font-style: italic;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       No predictions have been detected in this asset at this time mark. Try scrubbing forward or backward.
     </div>

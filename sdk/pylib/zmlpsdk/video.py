@@ -3,6 +3,9 @@ import os
 import subprocess
 import tempfile
 import shlex
+import hashlib
+import json
+import shutil
 
 from datetime import datetime
 
@@ -162,26 +165,70 @@ class ShotBasedFrameExtractor(VideoFrameExtractor):
     iteration writes over the previous frame.
     """
 
-    sensitivity = 0.125
-    """How sensitive shot detection is, higher is less shots."""
-
-    def __init__(self, video_file):
+    def __init__(self, video_file, sensitivity=0.025, min_length=1.0):
         """
-        Create a new ShotBasedClipGenerator.
+        Create a new ShotBasedClipGenerator.  For best results, it's better to have
+        more sensitive shot detection and a min clip length.
 
         Args:
             video_file (str): The video file path.
+            sensitivity: (float): A lower value creates more shots.
+            min_length: (float): The minimum clip length.
         """
         super(ShotBasedFrameExtractor, self).__init__(video_file)
-        self.output_path = tempfile.mkstemp(".jpg")[1]
+        self.output_dir = self.make_output_dir()
+        self.catalog_path = f'{self.output_dir}/catalog.json'
+        self.sensitivity = sensitivity
+        self.min_length = min_length
+
+    def make_output_dir(self):
+        """
+        Create a temp dir for holding our video frqmes and catalog.
+
+        Returns:
+            str: The path to the temp dir.
+        """
+        tdir = tempfile.gettempdir()
+        hashval = hashlib.sha1(self.video_file.encode()).hexdigest()
+        out_dir = f'{tdir}/{hashval}'
+        os.makedirs(out_dir, exist_ok=True)
+        return out_dir
+
+    def clean(self):
+        try:
+            shutil.rmtree(self.output_dir)
+        except Exception:
+            logger.exception(f'Unable to delete {self.output_dir}')
+        finally:
+            self.make_output_dir()
 
     def __iter__(self):
         return self._generate()
 
     def _generate(self):
-        for shot_time in self._get_shot_times():
-            extract_thumbnail_from_video(self.video_file, self.output_path, shot_time)
-            yield shot_time, self.output_path
+        if not os.path.exists(f'{self.output_dir}/catalog.json'):
+            self._generate_catalog_file()
+
+        with open(self.catalog_path, "r") as fp:
+            catalog = json.load(fp)
+
+        for shot_time, file_path in catalog:
+            yield shot_time, file_path
+
+    def _generate_catalog_file(self):
+        logger.info(f'Creating video frame catalog ${self.catalog_path}')
+
+        catalog = []
+        for idx, shot_time in enumerate(self._get_shot_times()):
+            file_name = f'{self.output_dir}/frame_{idx}.jpg'
+            try:
+                extract_thumbnail_from_video(self.video_file, file_name, shot_time)
+                catalog.append((shot_time, file_name))
+            except IOError:
+                logger.warning(f'Failed to extract frame at {shot_time}')
+
+        with open(self.catalog_path, "w") as fp:
+            json.dump(catalog, fp)
 
     def _get_shot_times(self):
         keyframe_command = ('ffprobe -show_frames -of compact=p=0 -show_entries '
@@ -195,6 +242,7 @@ class ShotBasedFrameExtractor(VideoFrameExtractor):
                              shell=False)
 
         shot_times = [0.0]
+        clip_time = 0.0
         while True:
             line = p.stdout.readline().decode()
             if not line:
@@ -202,8 +250,11 @@ class ShotBasedFrameExtractor(VideoFrameExtractor):
             line = line.strip()
             if not line.startswith('pkt_pts_time'):
                 continue
-            current_seconds = round(float(line.split('|')[0].split('=')[1]), 3)
-            shot_times.append(current_seconds)
+            point = round(float(line.split('|')[0].split('=')[1]), 3)
+            if point - clip_time < self.min_length:
+                continue
+            clip_time = point
+            shot_times.append(point)
 
         try:
             p.wait()

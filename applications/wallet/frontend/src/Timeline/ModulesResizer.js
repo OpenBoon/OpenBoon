@@ -1,18 +1,14 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import PropTypes from 'prop-types'
 
-import { zIndex } from '../Styles'
+import ResizeableHandle from '../Resizeable/Handle'
 
 import { MIN_WIDTH, ACTIONS } from './reducer'
 
-const DRAG_WIDTH = 4
-
-let originX
-
 const TimelineModulesResizer = ({ settings: { width }, dispatch }) => {
   /* istanbul ignore next */
-  const handleMouseMove = ({ clientX }) => {
-    const newWidth = width - (clientX - originX) * -1
+  const handleMouseMove = ({ difference }) => {
+    const newWidth = width - difference
 
     dispatch({
       type: ACTIONS.RESIZE_MODULES,
@@ -21,40 +17,25 @@ const TimelineModulesResizer = ({ settings: { width }, dispatch }) => {
   }
 
   /* istanbul ignore next */
-  const handleMouseUp = ({ clientX }) => {
-    const finalWidth = width - (clientX - originX) * -1
+  const handleMouseUp = ({ difference }) => {
+    const finalWidth = width - difference
 
     dispatch({
       type: ACTIONS.RESIZE_MODULES,
       payload: { value: Math.max(MIN_WIDTH, finalWidth) },
     })
-
-    window.removeEventListener('mousemove', handleMouseMove)
-    window.removeEventListener('mouseup', handleMouseUp)
-  }
-
-  /* istanbul ignore next */
-  const handleMouseDown = ({ clientX }) => {
-    originX = clientX
-
-    window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('mouseup', handleMouseUp)
   }
 
   return (
-    <div
-      css={{
+    <ResizeableHandle
+      openToThe="right"
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      styles={{
         position: 'absolute',
-        userSelect: 'none',
-        cursor: 'col-resize',
         top: 0,
         bottom: 0,
-        width: DRAG_WIDTH,
-        marginLeft: -DRAG_WIDTH / 2,
-        marginRight: -DRAG_WIDTH / 2,
-        zIndex: zIndex.layout.interactive,
       }}
-      onMouseDown={handleMouseDown}
     />
   )
 }

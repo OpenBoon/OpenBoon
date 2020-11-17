@@ -88,11 +88,11 @@ const Input = ({
           name={id}
           value={value}
           onChange={onChange}
-          css={[
-            BASE({ isDisabled }),
-            STYLES[variant],
-            BORDER_STYLES({ hasError }),
-          ]}
+          css={{
+            ...BASE({ isDisabled }),
+            ...STYLES[variant],
+            ...BORDER_STYLES({ hasError }),
+          }}
           disabled={isDisabled}
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...props}

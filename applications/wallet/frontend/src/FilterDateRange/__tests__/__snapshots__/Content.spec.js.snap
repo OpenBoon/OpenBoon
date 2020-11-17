@@ -31,28 +31,27 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-10 {
+  .emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-9 {
+.emotion-3 {
   padding-top: 40px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -61,7 +60,6 @@ Array [
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -81,14 +79,14 @@ Array [
   position: relative;
 }
 
-.emotion-2 {
+.emotion-5 {
   position: absolute;
   right: 6px;
   top: 10px;
   pointer-events: none;
 }
 
-.emotion-3 {
+.emotion-6 {
   text-align: center;
   padding-left: 2px;
   padding-right: 2px;
@@ -100,43 +98,43 @@ Array [
   color: #ffffff;
 }
 
-.emotion-3:hover {
+.emotion-6:hover {
   border: 1px solid #808080;
 }
 
-.emotion-3:focus {
+.emotion-6:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-3::-webkit-input-placeholder {
+.emotion-6::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::-moz-placeholder {
+.emotion-6::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-3:-ms-input-placeholder {
+.emotion-6:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::placeholder {
+.emotion-6::placeholder {
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-7 {
   width: 16px;
   border-bottom: 2px solid white;
 }
 
 <div
-    className="emotion-10"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         05/04/2020
@@ -146,7 +144,7 @@ Array [
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -169,19 +167,19 @@ Array [
       />
     </div>
     <div
-      className="emotion-9"
+      className="emotion-3"
     >
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-05-04"
           min="2020-05-04"
           onBlur={[Function]}
@@ -191,19 +189,19 @@ Array [
         />
       </label>
       <div
-        className="emotion-5"
+        className="emotion-7"
       />
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-10"
           min="2020-05-04"
           onBlur={[Function]}
@@ -248,28 +246,27 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-10 {
+  .emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-9 {
+.emotion-3 {
   padding-top: 40px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -278,7 +275,6 @@ Array [
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -298,14 +294,14 @@ Array [
   position: relative;
 }
 
-.emotion-2 {
+.emotion-5 {
   position: absolute;
   right: 6px;
   top: 10px;
   pointer-events: none;
 }
 
-.emotion-3 {
+.emotion-6 {
   text-align: center;
   padding-left: 2px;
   padding-right: 2px;
@@ -317,43 +313,43 @@ Array [
   color: #ffffff;
 }
 
-.emotion-3:hover {
+.emotion-6:hover {
   border: 1px solid #808080;
 }
 
-.emotion-3:focus {
+.emotion-6:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-3::-webkit-input-placeholder {
+.emotion-6::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::-moz-placeholder {
+.emotion-6::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-3:-ms-input-placeholder {
+.emotion-6:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::placeholder {
+.emotion-6::placeholder {
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-7 {
   width: 16px;
   border-bottom: 2px solid white;
 }
 
 <div
-    className="emotion-10"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         05/04/2020
@@ -363,7 +359,7 @@ Array [
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -386,19 +382,19 @@ Array [
       />
     </div>
     <div
-      className="emotion-9"
+      className="emotion-3"
     >
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-10"
           min="2020-05-04"
           onBlur={[Function]}
@@ -408,19 +404,19 @@ Array [
         />
       </label>
       <div
-        className="emotion-5"
+        className="emotion-7"
       />
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-10"
           min="2020-05-04"
           onBlur={[Function]}
@@ -465,28 +461,27 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-10 {
+  .emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-9 {
+.emotion-3 {
   padding-top: 40px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -495,7 +490,6 @@ Array [
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -515,14 +509,14 @@ Array [
   position: relative;
 }
 
-.emotion-2 {
+.emotion-5 {
   position: absolute;
   right: 6px;
   top: 10px;
   pointer-events: none;
 }
 
-.emotion-3 {
+.emotion-6 {
   text-align: center;
   padding-left: 2px;
   padding-right: 2px;
@@ -534,43 +528,43 @@ Array [
   color: #ffffff;
 }
 
-.emotion-3:hover {
+.emotion-6:hover {
   border: 1px solid #808080;
 }
 
-.emotion-3:focus {
+.emotion-6:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-3::-webkit-input-placeholder {
+.emotion-6::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::-moz-placeholder {
+.emotion-6::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-3:-ms-input-placeholder {
+.emotion-6:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::placeholder {
+.emotion-6::placeholder {
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-7 {
   width: 16px;
   border-bottom: 2px solid white;
 }
 
 <div
-    className="emotion-10"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         05/04/2020
@@ -580,7 +574,7 @@ Array [
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -603,19 +597,19 @@ Array [
       />
     </div>
     <div
-      className="emotion-9"
+      className="emotion-3"
     >
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-10"
           min="2020-05-04"
           onBlur={[Function]}
@@ -625,19 +619,19 @@ Array [
         />
       </label>
       <div
-        className="emotion-5"
+        className="emotion-7"
       />
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-10"
           min="2020-05-05"
           onBlur={[Function]}
@@ -682,28 +676,27 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-10 {
+  .emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-9 {
+.emotion-3 {
   padding-top: 40px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -712,7 +705,6 @@ Array [
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -732,14 +724,14 @@ Array [
   position: relative;
 }
 
-.emotion-2 {
+.emotion-5 {
   position: absolute;
   right: 6px;
   top: 10px;
   pointer-events: none;
 }
 
-.emotion-3 {
+.emotion-6 {
   text-align: center;
   padding-left: 2px;
   padding-right: 2px;
@@ -751,43 +743,43 @@ Array [
   color: #ffffff;
 }
 
-.emotion-3:hover {
+.emotion-6:hover {
   border: 1px solid #808080;
 }
 
-.emotion-3:focus {
+.emotion-6:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-3::-webkit-input-placeholder {
+.emotion-6::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::-moz-placeholder {
+.emotion-6::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-3:-ms-input-placeholder {
+.emotion-6:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::placeholder {
+.emotion-6::placeholder {
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-7 {
   width: 16px;
   border-bottom: 2px solid white;
 }
 
 <div
-    className="emotion-10"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         05/04/2020
@@ -797,7 +789,7 @@ Array [
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -820,19 +812,19 @@ Array [
       />
     </div>
     <div
-      className="emotion-9"
+      className="emotion-3"
     >
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-10"
           min="2020-05-04"
           onBlur={[Function]}
@@ -842,19 +834,19 @@ Array [
         />
       </label>
       <div
-        className="emotion-5"
+        className="emotion-7"
       />
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-10"
           min="2020-05-05"
           onBlur={[Function]}
@@ -899,28 +891,27 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-10 {
+  .emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-9 {
+.emotion-3 {
   padding-top: 40px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -929,7 +920,6 @@ Array [
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -949,14 +939,14 @@ Array [
   position: relative;
 }
 
-.emotion-2 {
+.emotion-5 {
   position: absolute;
   right: 6px;
   top: 10px;
   pointer-events: none;
 }
 
-.emotion-3 {
+.emotion-6 {
   text-align: center;
   padding-left: 2px;
   padding-right: 2px;
@@ -968,43 +958,43 @@ Array [
   color: #ffffff;
 }
 
-.emotion-3:hover {
+.emotion-6:hover {
   border: 1px solid #808080;
 }
 
-.emotion-3:focus {
+.emotion-6:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-3::-webkit-input-placeholder {
+.emotion-6::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::-moz-placeholder {
+.emotion-6::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-3:-ms-input-placeholder {
+.emotion-6:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::placeholder {
+.emotion-6::placeholder {
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-7 {
   width: 16px;
   border-bottom: 2px solid white;
 }
 
 <div
-    className="emotion-10"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         05/04/2020
@@ -1014,7 +1004,7 @@ Array [
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -1037,19 +1027,19 @@ Array [
       />
     </div>
     <div
-      className="emotion-9"
+      className="emotion-3"
     >
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-10"
           min="2020-05-04"
           onBlur={[Function]}
@@ -1059,19 +1049,19 @@ Array [
         />
       </label>
       <div
-        className="emotion-5"
+        className="emotion-7"
       />
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-10"
           min="2020-05-04"
           onBlur={[Function]}
@@ -1116,28 +1106,27 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-10 {
+  .emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-9 {
+.emotion-3 {
   padding-top: 40px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -1146,7 +1135,6 @@ Array [
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -1166,14 +1154,14 @@ Array [
   position: relative;
 }
 
-.emotion-2 {
+.emotion-5 {
   position: absolute;
   right: 6px;
   top: 10px;
   pointer-events: none;
 }
 
-.emotion-3 {
+.emotion-6 {
   text-align: center;
   padding-left: 2px;
   padding-right: 2px;
@@ -1185,43 +1173,43 @@ Array [
   color: #ffffff;
 }
 
-.emotion-3:hover {
+.emotion-6:hover {
   border: 1px solid #808080;
 }
 
-.emotion-3:focus {
+.emotion-6:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-3::-webkit-input-placeholder {
+.emotion-6::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::-moz-placeholder {
+.emotion-6::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-3:-ms-input-placeholder {
+.emotion-6:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::placeholder {
+.emotion-6::placeholder {
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-7 {
   width: 16px;
   border-bottom: 2px solid white;
 }
 
 <div
-    className="emotion-10"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         05/04/2020
@@ -1231,7 +1219,7 @@ Array [
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -1254,19 +1242,19 @@ Array [
       />
     </div>
     <div
-      className="emotion-9"
+      className="emotion-3"
     >
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-10"
           min="2020-05-04"
           onBlur={[Function]}
@@ -1276,19 +1264,19 @@ Array [
         />
       </label>
       <div
-        className="emotion-5"
+        className="emotion-7"
       />
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-10"
           min="2020-05-06"
           onBlur={[Function]}
@@ -1333,28 +1321,27 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-10 {
+  .emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-9 {
+.emotion-3 {
   padding-top: 40px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -1363,7 +1350,6 @@ Array [
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -1383,14 +1369,14 @@ Array [
   position: relative;
 }
 
-.emotion-2 {
+.emotion-5 {
   position: absolute;
   right: 6px;
   top: 10px;
   pointer-events: none;
 }
 
-.emotion-3 {
+.emotion-6 {
   text-align: center;
   padding-left: 2px;
   padding-right: 2px;
@@ -1402,43 +1388,43 @@ Array [
   color: #ffffff;
 }
 
-.emotion-3:hover {
+.emotion-6:hover {
   border: 1px solid #808080;
 }
 
-.emotion-3:focus {
+.emotion-6:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-3::-webkit-input-placeholder {
+.emotion-6::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::-moz-placeholder {
+.emotion-6::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-3:-ms-input-placeholder {
+.emotion-6:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::placeholder {
+.emotion-6::placeholder {
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-7 {
   width: 16px;
   border-bottom: 2px solid white;
 }
 
 <div
-    className="emotion-10"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         05/04/2020
@@ -1448,7 +1434,7 @@ Array [
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -1471,19 +1457,19 @@ Array [
       />
     </div>
     <div
-      className="emotion-9"
+      className="emotion-3"
     >
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-08"
           min="2020-05-04"
           onBlur={[Function]}
@@ -1493,19 +1479,19 @@ Array [
         />
       </label>
       <div
-        className="emotion-5"
+        className="emotion-7"
       />
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-10"
           min="2020-05-06"
           onBlur={[Function]}
@@ -1544,28 +1530,27 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-10 {
+  .emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-9 {
+.emotion-3 {
   padding-top: 40px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -1574,7 +1559,6 @@ Array [
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -1594,14 +1578,14 @@ Array [
   position: relative;
 }
 
-.emotion-2 {
+.emotion-5 {
   position: absolute;
   right: 6px;
   top: 10px;
   pointer-events: none;
 }
 
-.emotion-3 {
+.emotion-6 {
   text-align: center;
   padding-left: 2px;
   padding-right: 2px;
@@ -1613,43 +1597,43 @@ Array [
   color: #ffffff;
 }
 
-.emotion-3:hover {
+.emotion-6:hover {
   border: 1px solid #808080;
 }
 
-.emotion-3:focus {
+.emotion-6:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-3::-webkit-input-placeholder {
+.emotion-6::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::-moz-placeholder {
+.emotion-6::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-3:-ms-input-placeholder {
+.emotion-6:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-3::placeholder {
+.emotion-6::placeholder {
   font-style: italic;
 }
 
-.emotion-5 {
+.emotion-7 {
   width: 16px;
   border-bottom: 2px solid white;
 }
 
 <div
-    className="emotion-10"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         06/08/2020
@@ -1659,7 +1643,7 @@ Array [
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -1682,19 +1666,19 @@ Array [
       />
     </div>
     <div
-      className="emotion-9"
+      className="emotion-3"
     >
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-08"
           min="2020-06-08"
           onBlur={[Function]}
@@ -1704,19 +1688,19 @@ Array [
         />
       </label>
       <div
-        className="emotion-5"
+        className="emotion-7"
       />
       <label
         className="emotion-4"
       >
         <svg
-          className="emotion-2"
+          className="emotion-5"
           color="#808080"
           data-file-name="calendar.svg"
           height={18}
         />
         <input
-          className="emotion-3"
+          className="emotion-6"
           max="2020-06-08"
           min="2020-06-08"
           onBlur={[Function]}

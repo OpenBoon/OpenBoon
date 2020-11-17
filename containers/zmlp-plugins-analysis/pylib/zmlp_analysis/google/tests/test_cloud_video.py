@@ -77,7 +77,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         analysis = frame.asset.get_attr('analysis.gcp-video-label-detection')
         assert 'labels' == analysis['type']
         assert 'stage' in get_prediction_labels(analysis)
-        assert 14 == analysis['count']
+        assert 21 == analysis['count']
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch('zmlp_analysis.google.cloud_video.initialize_gcp_client',

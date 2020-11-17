@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, spacing, zIndex } from '../Styles'
 
+import { useScroller } from '../Scroll/helpers'
+
 import Menu from '../Menu'
 import MenuButton from '../Menu/Button'
 import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
@@ -34,6 +36,14 @@ const TimelineAggregate = ({
     ({ isVisible }) => isVisible === true,
   )
 
+  const aggregateRef = useScroller({
+    namespace: 'timeline',
+    isWheelEmitter: true,
+    isWheelListener: true,
+    isScrollEmitter: true,
+    isScrollListener: true,
+  })
+
   return (
     <div
       css={{
@@ -43,7 +53,13 @@ const TimelineAggregate = ({
         height: constants.timeline.rulerRowHeight,
       }}
     >
-      <div css={{ width: settings.width }}>
+      <div
+        css={{
+          width: settings.width,
+          zIndex: zIndex.timeline.menu,
+          marginBottom: -spacing.hairline,
+        }}
+      >
         <Menu
           open="bottom-center"
           button={({ onBlur, onClick, isMenuOpen }) => (
@@ -127,7 +143,7 @@ const TimelineAggregate = ({
           )}
         </Menu>
       </div>
-      <div css={{ flex: 1, overflow: 'overlay' }}>
+      <div ref={aggregateRef} css={{ flex: 1, overflow: 'hidden' }}>
         <div
           css={{
             width: `${settings.zoom}%`,

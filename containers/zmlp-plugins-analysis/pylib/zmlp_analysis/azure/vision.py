@@ -1,11 +1,14 @@
 import time
+from PIL import Image
+
+import backoff
 
 from azure.cognitiveservices.vision.computervision.models import \
-    VisualFeatureTypes, OperationStatusCodes
+    VisualFeatureTypes, OperationStatusCodes, ComputerVisionErrorException
 
 from zmlpsdk import Argument, AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis
-from zmlpsdk.proxy import get_proxy_level_path, get_proxy_level
+from zmlpsdk.proxy import get_proxy_level_path, get_proxy_level, calculate_normalized_bbox
 from zmlpsdk import file_storage
 
 from .util import get_zvi_azure_cv_client
@@ -13,7 +16,7 @@ from .util import get_zvi_azure_cv_client
 __all__ = [
     'AzureVisionObjectDetection',
     'AzureVisionLabelDetection',
-    'AzureVisionImageDescription',
+    'AzureVisionImageDescriptionDetection',
     'AzureVisionImageTagsDetection',
     'AzureVisionCelebrityDetection',
     'AzureVisionLandmarkDetection',
@@ -23,6 +26,20 @@ __all__ = [
     'AzureVisionFaceDetection',
     'AzureVisionTextDetection'
 ]
+
+
+def not_a_quota_exception(exp):
+    """
+    Returns true if the exception is not an Azure quota exception.  This ensures the backoff
+    function doesn't sleep on the wrong exceptions.
+
+    Args:
+        exp (Exception): The exception
+
+    Returns:
+        bool: True if not a quota exception.
+    """
+    return 'Too Many Requests' not in str(exp)
 
 
 class AbstractAzureVisionProcessor(AssetProcessor):
@@ -38,6 +55,7 @@ class AbstractAzureVisionProcessor(AssetProcessor):
         self.add_arg(Argument('debug', 'bool', default=False))
         self.reactor = reactor
 
+        # The Azure client
         self.client = None
 
     def init(self):
@@ -115,6 +133,10 @@ class AzureVisionObjectDetection(AbstractAzureVisionProcessor):
 
         asset.add_analysis(self.namespace, analysis)
 
+    @backoff.on_exception(backoff.expo,
+                          ComputerVisionErrorException,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
@@ -126,6 +148,10 @@ class AzureVisionObjectDetection(AbstractAzureVisionProcessor):
         Returns:
             list: a list of predictions
         """
+        # get height and width of image
+        image = Image.open(path)
+        img_width, img_height = image.size
+
         with open(path, 'rb') as img:
             response = self.client.detect_objects_in_stream(image=img)
 
@@ -138,7 +164,8 @@ class AzureVisionObjectDetection(AbstractAzureVisionProcessor):
                 r.rectangle.x + r.rectangle.w,
                 r.rectangle.y + r.rectangle.h,
             ]
-            labels.append((r.object_property, r.confidence, bbox))
+            normalized_bbox = calculate_normalized_bbox(img_width, img_height, bbox)
+            labels.append((r.object_property, r.confidence, normalized_bbox))
         return labels
 
 
@@ -150,6 +177,10 @@ class AzureVisionLabelDetection(AbstractAzureVisionProcessor):
     def __init__(self):
         super(AzureVisionLabelDetection, self).__init__()
 
+    @backoff.on_exception(backoff.expo,
+                          ComputerVisionErrorException,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
@@ -171,14 +202,18 @@ class AzureVisionLabelDetection(AbstractAzureVisionProcessor):
         return [(r.name, r.confidence) for r in response.tags]
 
 
-class AzureVisionImageDescription(AbstractAzureVisionProcessor):
+class AzureVisionImageDescriptionDetection(AbstractAzureVisionProcessor):
     """Get image descriptions for an image using Azure Computer Vision """
 
     namespace = 'azure-image-description-detection'
 
     def __init__(self):
-        super(AzureVisionImageDescription, self).__init__()
+        super(AzureVisionImageDescriptionDetection, self).__init__()
 
+    @backoff.on_exception(backoff.expo,
+                          ComputerVisionErrorException,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
@@ -205,6 +240,10 @@ class AzureVisionImageTagsDetection(AbstractAzureVisionProcessor):
     def __init__(self):
         super(AzureVisionImageTagsDetection, self).__init__()
 
+    @backoff.on_exception(backoff.expo,
+                          ComputerVisionErrorException,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
@@ -249,6 +288,10 @@ class AzureVisionCelebrityDetection(AbstractAzureVisionProcessor):
 
         asset.add_analysis(self.namespace, analysis)
 
+    @backoff.on_exception(backoff.expo,
+                          ComputerVisionErrorException,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
@@ -260,6 +303,10 @@ class AzureVisionCelebrityDetection(AbstractAzureVisionProcessor):
         Returns:
             list: a list of predictions
         """
+        # get height and width of image
+        image = Image.open(path)
+        img_width, img_height = image.size
+
         with open(path, 'rb') as img:
             response = self.client.analyze_image_by_domain_in_stream(model=self.model, image=img)
 
@@ -272,7 +319,8 @@ class AzureVisionCelebrityDetection(AbstractAzureVisionProcessor):
                 r['faceRectangle']['left'] + r['faceRectangle']['width'],
                 r['faceRectangle']['top'] + r['faceRectangle']['height'],
             ]
-            labels.append((r['name'], r['confidence'], bbox))
+            normalized_bbox = calculate_normalized_bbox(img_width, img_height, bbox)
+            labels.append((r['name'], r['confidence'], normalized_bbox))
         return labels
 
 
@@ -285,6 +333,10 @@ class AzureVisionLandmarkDetection(AbstractAzureVisionProcessor):
     def __init__(self):
         super(AzureVisionLandmarkDetection, self).__init__()
 
+    @backoff.on_exception(backoff.expo,
+                          ComputerVisionErrorException,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
@@ -313,7 +365,8 @@ class AzureVisionLogoDetection(AbstractAzureVisionProcessor):
         super(AzureVisionLogoDetection, self).__init__()
 
     def process(self, frame):
-        """Process the given frame for predicting and adding labels to an asset
+        """
+        Process the given frame for predicting and adding labels to an asset
 
         Args:
             frame (Frame): Frame to be processed
@@ -329,6 +382,10 @@ class AzureVisionLogoDetection(AbstractAzureVisionProcessor):
 
         asset.add_analysis(self.namespace, analysis)
 
+    @backoff.on_exception(backoff.expo,
+                          ComputerVisionErrorException,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
@@ -340,6 +397,10 @@ class AzureVisionLogoDetection(AbstractAzureVisionProcessor):
         Returns:
             list: a list of predictions
         """
+        # get height and width of image
+        image = Image.open(path)
+        img_width, img_height = image.size
+
         with open(path, 'rb') as img:
             response = self.client.analyze_image_in_stream(
                 image=img,
@@ -355,7 +416,8 @@ class AzureVisionLogoDetection(AbstractAzureVisionProcessor):
                 r.rectangle.x + r.rectangle.w,
                 r.rectangle.y + r.rectangle.h,
             ]
-            labels.append((r.name, r.confidence, bbox))
+            normalized_bbox = calculate_normalized_bbox(img_width, img_height, bbox)
+            labels.append((r.name, r.confidence, normalized_bbox))
         return labels
 
 
@@ -368,6 +430,10 @@ class AzureVisionCategoryDetection(AbstractAzureVisionProcessor):
     def __init__(self):
         super(AzureVisionCategoryDetection, self).__init__()
 
+    @backoff.on_exception(backoff.expo,
+                          ComputerVisionErrorException,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
@@ -398,6 +464,10 @@ class AzureVisionExplicitContentDetection(AbstractAzureVisionProcessor):
     def __init__(self):
         super(AzureVisionExplicitContentDetection, self).__init__()
 
+    @backoff.on_exception(backoff.expo,
+                          ComputerVisionErrorException,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
@@ -449,6 +519,10 @@ class AzureVisionFaceDetection(AbstractAzureVisionProcessor):
 
         asset.add_analysis(self.namespace, analysis)
 
+    @backoff.on_exception(backoff.expo,
+                          ComputerVisionErrorException,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
@@ -460,6 +534,10 @@ class AzureVisionFaceDetection(AbstractAzureVisionProcessor):
         Returns:
             list: a list of predictions
         """
+        # get height and width of image
+        image = Image.open(path)
+        img_width, img_height = image.size
+
         with open(path, 'rb') as img:
             response = self.client.analyze_image_in_stream(
                 image=img,
@@ -475,7 +553,8 @@ class AzureVisionFaceDetection(AbstractAzureVisionProcessor):
                 r.face_rectangle.left + r.face_rectangle.width,
                 r.face_rectangle.top + r.face_rectangle.height,
             ]
-            labels.append((r.gender, '1.00', bbox, r.age))
+            normalized_bbox = calculate_normalized_bbox(img_width, img_height, bbox)
+            labels.append((r.gender, '1.00', normalized_bbox, r.age))
         return labels
 
 
@@ -503,6 +582,10 @@ class AzureVisionTextDetection(AbstractAzureVisionProcessor):
 
         asset.add_analysis(self.namespace, analysis)
 
+    @backoff.on_exception(backoff.expo,
+                          ComputerVisionErrorException,
+                          max_time=3600,
+                          giveup=not_a_quota_exception)
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),

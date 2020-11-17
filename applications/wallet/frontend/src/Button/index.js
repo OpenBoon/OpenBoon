@@ -186,7 +186,7 @@ const Button = forwardRef(
     return (
       <Element
         ref={ref}
-        css={[BASE({ isDisabled }), STYLES[variant], style]}
+        css={{ ...BASE({ isDisabled }), ...STYLES[variant], ...style }}
         {...addedProps}
         {...props}
       >

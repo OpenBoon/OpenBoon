@@ -87,7 +87,7 @@ class LabelDetectionAnalysis:
 
     """
 
-    def __init__(self, min_score=0.15, max_predictions=32, collapse_labels=False):
+    def __init__(self, min_score=0.0, max_predictions=32, collapse_labels=False):
         """
         Create a new LabelDetectionSchema instance.
 

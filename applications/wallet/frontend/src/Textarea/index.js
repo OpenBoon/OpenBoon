@@ -72,7 +72,7 @@ const Textarea = ({
         name={id}
         value={value}
         onChange={onChange}
-        css={[BASE, STYLES[variant], BORDER_STYLES({ hasError })]}
+        css={{ ...BASE, ...STYLES[variant], ...BORDER_STYLES({ hasError }) }}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...props}
       />
