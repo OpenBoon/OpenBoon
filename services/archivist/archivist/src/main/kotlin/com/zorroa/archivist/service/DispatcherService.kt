@@ -19,9 +19,7 @@ import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobStateChangeEvent
 import com.zorroa.archivist.domain.PendingTasksStats
 import com.zorroa.archivist.domain.ProjectDirLocator
-import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageEntity
-import com.zorroa.archivist.domain.ProjectStorageLocator
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent

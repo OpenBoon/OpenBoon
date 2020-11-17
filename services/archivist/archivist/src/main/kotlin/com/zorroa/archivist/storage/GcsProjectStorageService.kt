@@ -8,7 +8,6 @@ import com.google.cloud.storage.HttpMethod
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectStorageLocator
 import com.zorroa.archivist.domain.ProjectStorageSpec

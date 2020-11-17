@@ -2,7 +2,6 @@ package com.zorroa.archivist.storage
 
 import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
