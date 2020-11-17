@@ -128,9 +128,11 @@ class OfficerClient(object):
 
         # Setup the json body
         job_storage_uri = os.environ.get('ZORROA_JOB_STORAGE_URI')
+        output_uri = '{}/officer/{}'.format(job_storage_uri, asset.id) \
+            if job_storage_uri else asset.id
         body = {
             'fileName': asset.uri,
-            'outputUri': '{}/officer/{}'.format(job_storage_uri, asset.id) if job_storage_uri else asset.id,
+            'outputUri': output_uri,
             'page': page,
             'disableImageRender': disable_images,
             'dpi': self.dpi
