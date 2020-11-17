@@ -208,4 +208,49 @@ describe('<Timeline /> reducer', () => {
       },
     })
   })
+
+  it('should increment', () => {
+    expect(
+      reducer(
+        {
+          zoom: 100,
+          timelines: {},
+        },
+        { type: ACTIONS.INCREMENT },
+      ),
+    ).toEqual({
+      zoom: 200,
+      timelines: {},
+    })
+  })
+
+  it('should decrement when zoom is not at minimum', () => {
+    expect(
+      reducer(
+        {
+          zoom: 200,
+          timelines: {},
+        },
+        { type: ACTIONS.DECREMENT },
+      ),
+    ).toEqual({
+      zoom: 100,
+      timelines: {},
+    })
+  })
+
+  it('should not decrement when zoom is at minimum', () => {
+    expect(
+      reducer(
+        {
+          zoom: 100,
+          timelines: {},
+        },
+        { type: ACTIONS.DECREMENT },
+      ),
+    ).toEqual({
+      zoom: 100,
+      timelines: {},
+    })
+  })
 })

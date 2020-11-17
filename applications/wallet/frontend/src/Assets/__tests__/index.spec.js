@@ -76,6 +76,7 @@ describe('<Assets />', () => {
     expect(
       component.root.findByProps({ 'aria-label': 'Zoom Out' }).props.isDisabled,
     ).toBe(true)
+
     expect(component.toJSON()).toMatchSnapshot()
   })
 
