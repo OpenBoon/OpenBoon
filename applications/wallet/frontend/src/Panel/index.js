@@ -2,83 +2,53 @@ import PropTypes from 'prop-types'
 
 import { useLocalStorage } from '../LocalStorage/helpers'
 
-import { colors, spacing, constants } from '../Styles'
+import { reducer } from '../Resizeable/reducer'
 
-import Button, { VARIANTS } from '../Button'
-import Feature, { ENVS } from '../Feature'
+import Resizeable from '../Resizeable'
 
+import PanelHeader from './Header'
 import PanelContent from './Content'
 
+import { onMouseUp } from './helpers'
+
+const MIN_WIDTH = 400
+
 const Panel = ({ openToThe, children }) => {
-  const [openPanel, setOpenPanel] = useLocalStorage({
-    key: `${openToThe}OpeningPanel`,
-    initialState: '',
+  const [{ openPanel, isOpen }, dispatch] = useLocalStorage({
+    key: `${openToThe}OpeningPanelSettings`,
+    reducer,
+    initialState: {
+      size: MIN_WIDTH,
+      originSize: 0,
+      isOpen: false,
+      openPanel: '',
+    },
   })
 
   const panel = children[openPanel] || {}
 
   return (
-    <div css={{ display: 'flex' }}>
-      {!!panel.title && openToThe === 'left' && (
-        <PanelContent
-          openToThe={openToThe}
-          panel={panel}
-          setOpenPanel={setOpenPanel}
-        />
+    <Resizeable
+      storageName={`${openToThe}OpeningPanelSettings`}
+      minSize={MIN_WIDTH}
+      openToThe={openToThe}
+      isInitiallyOpen={false}
+      isDisabled={!panel.title}
+      onMouseUp={onMouseUp({ minWidth: MIN_WIDTH })}
+      header={
+        <PanelHeader
+          openPanel={openPanel}
+          dispatch={dispatch}
+          minWidth={MIN_WIDTH}
+        >
+          {children}
+        </PanelHeader>
+      }
+    >
+      {isOpen && (
+        <PanelContent openToThe={openToThe} panel={panel} dispatch={dispatch} />
       )}
-      <div
-        css={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        {Object.entries(children).map(
-          ([
-            key,
-            { title, icon, flag = '', envs = [...Object.values(ENVS)] },
-          ]) => (
-            <Feature key={title} flag={flag} envs={envs}>
-              <Button
-                aria-label={title}
-                title={title}
-                variant={VARIANTS.ICON}
-                onClick={() =>
-                  setOpenPanel({ value: key === openPanel ? '' : key })
-                }
-                style={{
-                  flex: 'none',
-                  paddingTop: spacing.normal,
-                  paddingBottom: spacing.normal,
-                  backgroundColor: colors.structure.lead,
-                  marginBottom: spacing.hairline,
-                  color:
-                    key === openPanel ? colors.key.one : colors.structure.steel,
-                  ':hover': {
-                    backgroundColor: colors.structure.mattGrey,
-                  },
-                  borderRadius: constants.borderRadius.none,
-                }}
-              >
-                {icon}
-              </Button>
-            </Feature>
-          ),
-        )}
-        <div
-          css={{
-            flex: 1,
-            backgroundColor: colors.structure.lead,
-          }}
-        />
-      </div>
-      {!!panel.title && openToThe === 'right' && (
-        <PanelContent
-          openToThe={openToThe}
-          panel={panel}
-          setOpenPanel={setOpenPanel}
-        />
-      )}
-    </div>
+    </Resizeable>
   )
 }
 

@@ -6,11 +6,11 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  z-index: 10;
   cursor: row-resize;
   height: 4px;
   margin-top: -2px;
   margin-bottom: -2px;
-  z-index: 10;
 }
 
 .emotion-1 {
@@ -177,72 +177,6 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   margin-right: 4px;
 }
 
-.emotion-8 {
-  height: 0;
-}
-
-.emotion-9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  height: 200px;
-}
-
-.emotion-10 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  height: 0%;
-  position: relative;
-  margin-left: 199px;
-  border-left: 1px solid #3b3b3b;
-}
-
-.emotion-11 {
-  position: absolute;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  cursor: col-resize;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  margin-left: -2px;
-  margin-right: -2px;
-  z-index: 10;
-}
-
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 44px;
-}
-
-.emotion-13 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  overflow: hidden;
-}
-
-.emotion-14 {
-  width: 100%;
-}
-
 <div
   style={
     Object {
@@ -341,152 +275,6 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
       </button>
     </div>
   </div>
-  <div
-    className="emotion-8"
-  >
-    <div
-      className="emotion-9"
-    >
-      <div
-        className="emotion-10"
-      >
-        <div
-          className="emotion-11"
-          onMouseDown={[Function]}
-        />
-        <TimelinePlayhead
-          rulerRef={
-            Object {
-              "current": null,
-            }
-          }
-          videoRef={
-            Object {
-              "current": Object {
-                "addEventListener": [Function],
-                "currentTime": 0,
-                "duration": 18,
-                "pause": [Function],
-                "paused": true,
-                "play": [Function],
-                "removeEventListener": [Function],
-              },
-            }
-          }
-          zoom={100}
-        />
-        <div
-          className="emotion-12"
-        >
-          <TimelineFilterTracks
-            dispatch={[Function]}
-            settings={
-              Object {
-                "filter": "",
-                "highlights": false,
-                "timelines": Object {},
-                "width": 200,
-                "zoom": 100,
-              }
-            }
-          />
-          <div
-            className="emotion-13"
-          >
-            <div
-              className="emotion-14"
-            >
-              <TimelineRuler
-                length={18}
-                rulerRef={
-                  Object {
-                    "current": null,
-                  }
-                }
-                settings={
-                  Object {
-                    "filter": "",
-                    "highlights": false,
-                    "timelines": Object {},
-                    "width": 200,
-                    "zoom": 100,
-                  }
-                }
-                videoRef={
-                  Object {
-                    "current": Object {
-                      "addEventListener": [Function],
-                      "currentTime": 0,
-                      "duration": 18,
-                      "pause": [Function],
-                      "paused": true,
-                      "play": [Function],
-                      "removeEventListener": [Function],
-                    },
-                  }
-                }
-              />
-            </div>
-          </div>
-        </div>
-        <TimelineAggregate
-          dispatch={[Function]}
-          length={18}
-          settings={
-            Object {
-              "filter": "",
-              "highlights": false,
-              "timelines": Object {},
-              "width": 200,
-              "zoom": 100,
-            }
-          }
-          timelineHeight={200}
-          timelines={Array []}
-          videoRef={
-            Object {
-              "current": Object {
-                "addEventListener": [Function],
-                "currentTime": 0,
-                "duration": 18,
-                "pause": [Function],
-                "paused": true,
-                "play": [Function],
-                "removeEventListener": [Function],
-              },
-            }
-          }
-        />
-        <TimelineTimelines
-          dispatch={[Function]}
-          length={18}
-          settings={
-            Object {
-              "filter": "",
-              "highlights": false,
-              "timelines": Object {},
-              "width": 200,
-              "zoom": 100,
-            }
-          }
-          timelines={Array []}
-          videoRef={
-            Object {
-              "current": Object {
-                "addEventListener": [Function],
-                "currentTime": 0,
-                "duration": 18,
-                "pause": [Function],
-                "paused": true,
-                "play": [Function],
-                "removeEventListener": [Function],
-              },
-            }
-          }
-        />
-      </div>
-    </div>
-  </div>
 </div>
 `;
 
@@ -496,11 +284,11 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  z-index: 10;
   cursor: row-resize;
   height: 4px;
   margin-top: -2px;
   margin-bottom: -2px;
-  z-index: 10;
 }
 
 .emotion-1 {
@@ -700,18 +488,18 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
 }
 
 .emotion-11 {
-  position: absolute;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  z-index: 10;
   cursor: col-resize;
-  top: 0;
-  bottom: 0;
   width: 4px;
   margin-left: -2px;
   margin-right: -2px;
-  z-index: 10;
+  position: absolute;
+  top: 0;
+  bottom: 0;
 }
 
 .emotion-12 {
@@ -841,6 +629,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
         className="emotion-10"
       >
         <div
+          aria-label="Resize horizontally"
           className="emotion-11"
           onMouseDown={[Function]}
         />
@@ -986,11 +775,11 @@ exports[`<Timeline /> should render properly 1`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  z-index: 10;
   cursor: row-resize;
   height: 4px;
   margin-top: -2px;
   margin-bottom: -2px;
-  z-index: 10;
 }
 
 .emotion-1 {
@@ -1259,18 +1048,18 @@ exports[`<Timeline /> should render properly 1`] = `
 }
 
 .emotion-16 {
-  position: absolute;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  z-index: 10;
   cursor: col-resize;
-  top: 0;
-  bottom: 0;
   width: 4px;
   margin-left: -2px;
   margin-right: -2px;
-  z-index: 10;
+  position: absolute;
+  top: 0;
+  bottom: 0;
 }
 
 .emotion-17 {
@@ -1692,6 +1481,7 @@ exports[`<Timeline /> should render properly 1`] = `
         className="emotion-15"
       >
         <div
+          aria-label="Resize horizontally"
           className="emotion-16"
           onMouseDown={[Function]}
         />
@@ -2613,11 +2403,11 @@ exports[`<Timeline /> should render properly 2`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  z-index: 10;
   cursor: row-resize;
   height: 4px;
   margin-top: -2px;
   margin-bottom: -2px;
-  z-index: 10;
 }
 
 .emotion-1 {
@@ -2886,18 +2676,18 @@ exports[`<Timeline /> should render properly 2`] = `
 }
 
 .emotion-16 {
-  position: absolute;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  z-index: 10;
   cursor: col-resize;
-  top: 0;
-  bottom: 0;
   width: 4px;
   margin-left: -2px;
   margin-right: -2px;
-  z-index: 10;
+  position: absolute;
+  top: 0;
+  bottom: 0;
 }
 
 .emotion-17 {
@@ -3319,6 +3109,7 @@ exports[`<Timeline /> should render properly 2`] = `
         className="emotion-15"
       >
         <div
+          aria-label="Resize horizontally"
           className="emotion-16"
           onMouseDown={[Function]}
         />

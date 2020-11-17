@@ -2,12 +2,12 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, typography } from '../Styles'
 
-const TimelineDropMessage = ({ size, originSize }) => {
+const ResizeableDropMessage = ({ size, originSize, isHorizontal }) => {
   return (
     <div
       css={{
-        height: '100%',
-        width: '100%',
+        [isHorizontal ? 'height' : 'width']: '100%',
+        [isHorizontal ? 'width' : 'height']: size,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -25,9 +25,10 @@ const TimelineDropMessage = ({ size, originSize }) => {
   )
 }
 
-TimelineDropMessage.propTypes = {
+ResizeableDropMessage.propTypes = {
   size: PropTypes.number.isRequired,
   originSize: PropTypes.number.isRequired,
+  isHorizontal: PropTypes.bool.isRequired,
 }
 
-export default TimelineDropMessage
+export default ResizeableDropMessage

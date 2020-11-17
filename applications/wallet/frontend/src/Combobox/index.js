@@ -24,18 +24,32 @@ const Combobox = ({
   )
 
   useEffect(() => {
-    if (typeof options === 'function') {
-      const fetchOptions = async () => {
-        setIsLoading(true)
+    let hasCancelled = false
 
+    if (typeof options === 'function') {
+      setIsLoading(true)
+
+      const getOptions = async () => {
         const data = await options()
 
-        setFetchedOptions(data)
-
-        setIsLoading(false)
+        if (!hasCancelled) {
+          setFetchedOptions(data)
+          setIsLoading(false)
+        }
       }
 
-      fetchOptions()
+      try {
+        getOptions()
+      } catch {
+        /* istanbul ignore next */
+        if (!hasCancelled) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    return () => {
+      hasCancelled = true
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
