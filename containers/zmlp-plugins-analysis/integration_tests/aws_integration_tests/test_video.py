@@ -5,7 +5,6 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp_analysis.aws import AmazonTranscribeProcessor
 from zmlp_analysis.aws.videos.video import VideoDetect
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels, \

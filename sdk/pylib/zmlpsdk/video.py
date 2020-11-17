@@ -241,6 +241,13 @@ class ShotBasedFrameExtractor(VideoFrameExtractor):
                              stdout=subprocess.PIPE,
                              shell=False)
 
+        result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
+                                 "format=duration", "-of",
+                                 "default=noprint_wrappers=1:nokey=1", self.video_file],
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT)
+        video_length = float(result.stdout)
+
         shot_times = [0.0]
         clip_time = 0.0
         while True:
@@ -252,6 +259,8 @@ class ShotBasedFrameExtractor(VideoFrameExtractor):
                 continue
             point = round(float(line.split('|')[0].split('=')[1]), 3)
             if point - clip_time < self.min_length:
+                continue
+            if point == video_length:
                 continue
             clip_time = point
             shot_times.append(point)

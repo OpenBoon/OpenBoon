@@ -93,9 +93,10 @@ class VideoDetect(AssetProcessor):
         Start Detection Analysis
 
         Args:
-            role_arn: AWS Role ARN
-            bucket: Bucket name only (i.e. "zorroa-dev" in "gs://zorroa-dev")
-            video: video name without extension ("video" instead of "video.mp4")
+            role_arn: (str) AWS Role ARN
+            bucket: (str) Bucket name only (i.e. "zorroa-dev" in "gs://zorroa-dev")
+            video: (str) video name without extension ("video" instead of "video.mp4")
+            asset_id: (str) Asset ID
 
         Returns:
             None
