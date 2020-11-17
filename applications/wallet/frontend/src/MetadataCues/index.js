@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 
 import { constants } from '../Styles'
 
-import ResizeableWithMessage from '../Resizeable/WithMessage'
+import Resizeable from '../Resizeable'
 
 import { getMetadata } from './helpers'
 
@@ -61,15 +61,14 @@ const MetadataCues = ({ videoRef }) => {
               borderBottom: constants.borders.regular.black,
             }}
           >
-            <ResizeableWithMessage
+            <Resizeable
               storageName={`MetadataCues.${assetId}`}
               minSize={MIN_WIDTH}
               openToThe="left"
-              header={noop}
               isInitiallyOpen
             >
-              {() => <MetadataCuesContent metadata={metadata} />}
-            </ResizeableWithMessage>
+              <MetadataCuesContent metadata={metadata} />
+            </Resizeable>
           </div>
         )
       }
