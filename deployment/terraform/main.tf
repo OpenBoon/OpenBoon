@@ -265,7 +265,7 @@ module "api-gateway" {
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
   archivist_host         = module.archivist.ip-address
   auth_server_host       = module.auth-server.ip-address
-  ml_bbq_host            = module.ml-bbq.ip-address
+  ml_bbq_host            = "${module.ml-bbq.ip-address}:8282"
   domain                 = var.zmlp-domain
   container-cluster-name = module.gke-cluster.name
   container-tag          = var.container-tag
