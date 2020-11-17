@@ -526,6 +526,7 @@ exports[`<Assets /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  border: 1px solid #4a4a4a;
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -715,6 +716,7 @@ exports[`<Assets /> should render properly 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  border: 1px solid #4a4a4a;
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -904,6 +906,7 @@ exports[`<Assets /> should render properly 3`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  border: 1px solid #4a4a4a;
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);

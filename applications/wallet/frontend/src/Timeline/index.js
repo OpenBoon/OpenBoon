@@ -30,6 +30,7 @@ import TimelineSearchHits from './SearchHits'
 import TimelineTimelines from './Timelines'
 import TimelineMetadata from './Metadata'
 import TimelineShortcuts from './Shortcuts'
+import TimelineResize from './Resize'
 
 const TIMELINE_HEIGHT = 200
 const SEPARATOR_WIDTH = 2
@@ -278,6 +279,7 @@ const Timeline = ({ videoRef, length }) => {
               settings={settings}
               dispatch={dispatch}
             />
+            <TimelineResize dispatch={dispatch} zoom={settings.zoom} />
           </div>
         </div>
       )}

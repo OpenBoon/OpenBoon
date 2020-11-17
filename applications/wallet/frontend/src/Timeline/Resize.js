@@ -9,7 +9,7 @@ import CircleMinusSvg from '../Icons/circleMinus.svg'
 
 import { ACTIONS } from './reducer'
 
-const AssetsResize = ({ dispatch, isMin, isMax }) => (
+const TimelineResize = ({ dispatch, zoom }) => (
   <div
     css={{
       position: 'absolute',
@@ -20,7 +20,7 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
       borderRadius: constants.borderRadius.small,
       backgroundColor: colors.structure.lead,
       boxShadow: constants.boxShadows.default,
-      zIndex: zIndex.layout.interactive,
+      zIndex: zIndex.timeline.menu,
       opacity: constants.opacity.eighth,
       paddingTop: spacing.small,
       paddingBottom: spacing.small,
@@ -33,7 +33,7 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
       onClick={() => {
         dispatch({ type: ACTIONS.DECREMENT })
       }}
-      isDisabled={isMin}
+      isDisabled={zoom === 100}
       variant={VARIANTS.NEUTRAL}
       css={{
         padding: spacing.base,
@@ -53,7 +53,7 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
       onClick={() => {
         dispatch({ type: ACTIONS.INCREMENT })
       }}
-      isDisabled={isMax}
+      isDisabled={false}
       variant={VARIANTS.NEUTRAL}
       css={{
         padding: spacing.base,
@@ -71,10 +71,9 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
   </div>
 )
 
-AssetsResize.propTypes = {
+TimelineResize.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  isMin: PropTypes.bool.isRequired,
-  isMax: PropTypes.bool.isRequired,
+  zoom: PropTypes.number.isRequired,
 }
 
-export default AssetsResize
+export default TimelineResize
