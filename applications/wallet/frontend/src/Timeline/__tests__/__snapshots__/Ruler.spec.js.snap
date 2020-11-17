@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TimelineRuler /> should render properly 1`] = `
-.emotion-22 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -35,7 +35,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   left: calc(0% - 1.5px);
 }
 
-.emotion-0 {
+.emotion-2 {
   width: 2px;
   height: 16px;
   background-color: #4a4a4a;
@@ -59,13 +59,13 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   left: calc(11.11111111111111% - 1.5px);
 }
 
-.emotion-2 {
+.emotion-4 {
   width: 2px;
   height: 12px;
   background-color: #4a4a4a;
 }
 
-.emotion-6 {
+.emotion-5 {
   position: absolute;
   display: -webkit-box;
   display: -webkit-flex;
@@ -83,7 +83,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   left: calc(22.22222222222222% - 1.5px);
 }
 
-.emotion-4 {
+.emotion-6 {
   position: absolute;
   top: -16px;
   -webkit-user-select: none;
@@ -110,7 +110,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   left: calc(33.33333333333333% - 1.5px);
 }
 
-.emotion-11 {
+.emotion-10 {
   position: absolute;
   display: -webkit-box;
   display: -webkit-flex;
@@ -146,7 +146,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   left: calc(55.55555555555556% - 1.5px);
 }
 
-.emotion-16 {
+.emotion-15 {
   position: absolute;
   display: -webkit-box;
   display: -webkit-flex;
@@ -182,7 +182,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   left: calc(77.77777777777779% - 1.5px);
 }
 
-.emotion-21 {
+.emotion-20 {
   position: absolute;
   display: -webkit-box;
   display: -webkit-flex;
@@ -209,90 +209,90 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   }
 >
   <div
-    className="emotion-22"
+    className="emotion-0"
     onClick={[Function]}
   >
     <div
       className="emotion-1"
     >
       <div
-        className="emotion-0"
+        className="emotion-2"
       />
     </div>
     <div
       className="emotion-3"
     >
       <div
-        className="emotion-2"
+        className="emotion-4"
       />
     </div>
     <div
-      className="emotion-6"
+      className="emotion-5"
     >
       <div
-        className="emotion-4"
+        className="emotion-6"
       >
         00:00:04
       </div>
       <div
-        className="emotion-0"
+        className="emotion-2"
       />
     </div>
     <div
       className="emotion-8"
     >
       <div
-        className="emotion-2"
+        className="emotion-4"
       />
     </div>
     <div
-      className="emotion-11"
+      className="emotion-10"
     >
       <div
-        className="emotion-4"
+        className="emotion-6"
       >
         00:00:08
       </div>
       <div
-        className="emotion-0"
+        className="emotion-2"
       />
     </div>
     <div
       className="emotion-13"
     >
       <div
-        className="emotion-2"
+        className="emotion-4"
       />
     </div>
     <div
-      className="emotion-16"
+      className="emotion-15"
     >
       <div
-        className="emotion-4"
+        className="emotion-6"
       >
         00:00:12
       </div>
       <div
-        className="emotion-0"
+        className="emotion-2"
       />
     </div>
     <div
       className="emotion-18"
     >
       <div
-        className="emotion-2"
+        className="emotion-4"
       />
     </div>
     <div
-      className="emotion-21"
+      className="emotion-20"
     >
       <div
-        className="emotion-4"
+        className="emotion-6"
       >
         00:00:16
       </div>
       <div
-        className="emotion-0"
+        className="emotion-2"
       />
     </div>
   </div>

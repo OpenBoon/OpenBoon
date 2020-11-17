@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Breadcrumbs /> should render properly 1`] = `
-.emotion-3 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11,14 +11,14 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-0 {
+.emotion-2 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -28,13 +28,13 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-1 {
+.emotion-3 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -45,13 +45,13 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-3"
+  className="emotion-0"
 >
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
     <a
-      className="emotion-0"
+      className="emotion-2"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/bread"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -59,7 +59,7 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
       Bread
     </a>
     <span
-      className="emotion-1"
+      className="emotion-3"
     >
       /
     </span>

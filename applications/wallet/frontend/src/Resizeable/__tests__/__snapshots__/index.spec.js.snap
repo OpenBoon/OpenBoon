@@ -42,6 +42,13 @@ exports[`<Resizeable /> should render properly with the cursor left 1`] = `
 `;
 
 exports[`<Resizeable /> should render properly with the cursor right 1`] = `
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  width: 400px;
+}
+
 .emotion-1 {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -52,13 +59,6 @@ exports[`<Resizeable /> should render properly with the cursor right 1`] = `
   margin-left: -2px;
   margin-right: -2px;
   z-index: 10;
-}
-
-.emotion-0 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  width: 400px;
 }
 
 <div

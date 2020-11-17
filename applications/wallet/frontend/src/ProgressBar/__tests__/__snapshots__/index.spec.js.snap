@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ProgressBar /> should render properly 1`] = `
-.emotion-2 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -19,7 +19,7 @@ exports[`<ProgressBar /> should render properly 1`] = `
   width: 100%;
 }
 
-.emotion-0 {
+.emotion-2 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -27,19 +27,19 @@ exports[`<ProgressBar /> should render properly 1`] = `
   background-color: #c92300;
 }
 
-.emotion-0:first-of-type {
+.emotion-2:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-0:last-of-type {
+.emotion-2:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
 <div
   aria-label="Progress Bar"
-  className="emotion-2"
+  className="emotion-0"
   onKeyPress={[Function]}
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
@@ -50,14 +50,14 @@ exports[`<ProgressBar /> should render properly 1`] = `
     className="emotion-1"
   >
     <div
-      className="emotion-0"
+      className="emotion-2"
     />
   </div>
 </div>
 `;
 
 exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyPress 1`] = `
-.emotion-2 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -75,7 +75,7 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   width: 100%;
 }
 
-.emotion-0 {
+.emotion-2 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -83,19 +83,19 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   background-color: #c92300;
 }
 
-.emotion-0:first-of-type {
+.emotion-2:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-0:last-of-type {
+.emotion-2:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
 <div
   aria-label="Progress Bar"
-  className="emotion-2"
+  className="emotion-0"
   onKeyPress={[Function]}
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
@@ -106,14 +106,14 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
     className="emotion-1"
   >
     <div
-      className="emotion-0"
+      className="emotion-2"
     />
   </div>
 </div>
 `;
 
 exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyPress 2`] = `
-.emotion-24 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -131,7 +131,7 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   width: 100%;
 }
 
-.emotion-0 {
+.emotion-2 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -139,25 +139,25 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   background-color: #c92300;
 }
 
-.emotion-0:first-of-type {
+.emotion-2:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-0:last-of-type {
+.emotion-2:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-23 {
+.emotion-3 {
   position: absolute;
   top: 24px;
   right: 0;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
 
-.emotion-22 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -177,41 +177,41 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   padding: 12px;
 }
 
-.emotion-2 {
+.emotion-6 {
   width: 2px;
   height: 100%;
   background-color: #c92300;
 }
 
-.emotion-4 {
+.emotion-7 {
   color: #e0e0e0;
   padding-left: 8px;
 }
 
-.emotion-3 {
+.emotion-8 {
   color: #ffffff;
   font-weight: 700;
-}
-
-.emotion-6 {
-  width: 2px;
-  height: 100%;
-  background-color: #b3b3b3;
 }
 
 .emotion-10 {
   width: 2px;
   height: 100%;
-  background-color: #009f22;
+  background-color: #b3b3b3;
 }
 
 .emotion-14 {
   width: 2px;
   height: 100%;
-  background-color: #ebb52e;
+  background-color: #009f22;
 }
 
 .emotion-18 {
+  width: 2px;
+  height: 100%;
+  background-color: #ebb52e;
+}
+
+.emotion-22 {
   width: 2px;
   height: 100%;
   background-color: #0074f5;
@@ -219,7 +219,7 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
 
 <div
   aria-label="Progress Bar"
-  className="emotion-24"
+  className="emotion-0"
   onKeyPress={[Function]}
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
@@ -230,34 +230,15 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
     className="emotion-1"
   >
     <div
-      className="emotion-0"
+      className="emotion-2"
     />
   </div>
   <div
-    className="emotion-23"
+    className="emotion-3"
   >
     <div
-      className="emotion-22"
+      className="emotion-4"
     >
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-2"
-        />
-        <div
-          className="emotion-4"
-        >
-          <div>
-            Failed:
-          </div>
-          <div
-            className="emotion-3"
-          >
-            1
-          </div>
-        </div>
-      </div>
       <div
         className="emotion-5"
       >
@@ -265,15 +246,15 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
           className="emotion-6"
         />
         <div
-          className="emotion-4"
+          className="emotion-7"
         >
           <div>
-            Skipped:
+            Failed:
           </div>
           <div
-            className="emotion-3"
+            className="emotion-8"
           >
-            0
+            1
           </div>
         </div>
       </div>
@@ -284,13 +265,13 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
           className="emotion-10"
         />
         <div
-          className="emotion-4"
+          className="emotion-7"
         >
           <div>
-            Succeeded:
+            Skipped:
           </div>
           <div
-            className="emotion-3"
+            className="emotion-8"
           >
             0
           </div>
@@ -303,13 +284,13 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
           className="emotion-14"
         />
         <div
-          className="emotion-4"
+          className="emotion-7"
         >
           <div>
-            Running:
+            Succeeded:
           </div>
           <div
-            className="emotion-3"
+            className="emotion-8"
           >
             0
           </div>
@@ -322,13 +303,32 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
           className="emotion-18"
         />
         <div
-          className="emotion-4"
+          className="emotion-7"
+        >
+          <div>
+            Running:
+          </div>
+          <div
+            className="emotion-8"
+          >
+            0
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-22"
+        />
+        <div
+          className="emotion-7"
         >
           <div>
             Pending:
           </div>
           <div
-            className="emotion-3"
+            className="emotion-8"
           >
             0
           </div>
@@ -340,7 +340,7 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
 `;
 
 exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyPress 3`] = `
-.emotion-2 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -358,7 +358,7 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   width: 100%;
 }
 
-.emotion-0 {
+.emotion-2 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -366,19 +366,19 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   background-color: #c92300;
 }
 
-.emotion-0:first-of-type {
+.emotion-2:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-0:last-of-type {
+.emotion-2:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
 <div
   aria-label="Progress Bar"
-  className="emotion-2"
+  className="emotion-0"
   onKeyPress={[Function]}
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
@@ -389,14 +389,14 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
     className="emotion-1"
   >
     <div
-      className="emotion-0"
+      className="emotion-2"
     />
   </div>
 </div>
 `;
 
 exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseenter 1`] = `
-.emotion-2 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -414,7 +414,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   width: 100%;
 }
 
-.emotion-0 {
+.emotion-2 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -422,19 +422,19 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   background-color: #c92300;
 }
 
-.emotion-0:first-of-type {
+.emotion-2:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-0:last-of-type {
+.emotion-2:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
 <div
   aria-label="Progress Bar"
-  className="emotion-2"
+  className="emotion-0"
   onKeyPress={[Function]}
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
@@ -445,14 +445,14 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
     className="emotion-1"
   >
     <div
-      className="emotion-0"
+      className="emotion-2"
     />
   </div>
 </div>
 `;
 
 exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseenter 2`] = `
-.emotion-24 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -470,7 +470,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   width: 100%;
 }
 
-.emotion-0 {
+.emotion-2 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -478,25 +478,25 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   background-color: #c92300;
 }
 
-.emotion-0:first-of-type {
+.emotion-2:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-0:last-of-type {
+.emotion-2:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-23 {
+.emotion-3 {
   position: absolute;
   top: 24px;
   right: 0;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
 
-.emotion-22 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -516,41 +516,41 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   padding: 12px;
 }
 
-.emotion-2 {
+.emotion-6 {
   width: 2px;
   height: 100%;
   background-color: #c92300;
 }
 
-.emotion-4 {
+.emotion-7 {
   color: #e0e0e0;
   padding-left: 8px;
 }
 
-.emotion-3 {
+.emotion-8 {
   color: #ffffff;
   font-weight: 700;
-}
-
-.emotion-6 {
-  width: 2px;
-  height: 100%;
-  background-color: #b3b3b3;
 }
 
 .emotion-10 {
   width: 2px;
   height: 100%;
-  background-color: #009f22;
+  background-color: #b3b3b3;
 }
 
 .emotion-14 {
   width: 2px;
   height: 100%;
-  background-color: #ebb52e;
+  background-color: #009f22;
 }
 
 .emotion-18 {
+  width: 2px;
+  height: 100%;
+  background-color: #ebb52e;
+}
+
+.emotion-22 {
   width: 2px;
   height: 100%;
   background-color: #0074f5;
@@ -558,7 +558,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
 
 <div
   aria-label="Progress Bar"
-  className="emotion-24"
+  className="emotion-0"
   onKeyPress={[Function]}
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
@@ -569,34 +569,15 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
     className="emotion-1"
   >
     <div
-      className="emotion-0"
+      className="emotion-2"
     />
   </div>
   <div
-    className="emotion-23"
+    className="emotion-3"
   >
     <div
-      className="emotion-22"
+      className="emotion-4"
     >
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-2"
-        />
-        <div
-          className="emotion-4"
-        >
-          <div>
-            Failed:
-          </div>
-          <div
-            className="emotion-3"
-          >
-            1
-          </div>
-        </div>
-      </div>
       <div
         className="emotion-5"
       >
@@ -604,15 +585,15 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
           className="emotion-6"
         />
         <div
-          className="emotion-4"
+          className="emotion-7"
         >
           <div>
-            Skipped:
+            Failed:
           </div>
           <div
-            className="emotion-3"
+            className="emotion-8"
           >
-            0
+            1
           </div>
         </div>
       </div>
@@ -623,13 +604,13 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
           className="emotion-10"
         />
         <div
-          className="emotion-4"
+          className="emotion-7"
         >
           <div>
-            Succeeded:
+            Skipped:
           </div>
           <div
-            className="emotion-3"
+            className="emotion-8"
           >
             0
           </div>
@@ -642,13 +623,13 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
           className="emotion-14"
         />
         <div
-          className="emotion-4"
+          className="emotion-7"
         >
           <div>
-            Running:
+            Succeeded:
           </div>
           <div
-            className="emotion-3"
+            className="emotion-8"
           >
             0
           </div>
@@ -661,13 +642,32 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
           className="emotion-18"
         />
         <div
-          className="emotion-4"
+          className="emotion-7"
+        >
+          <div>
+            Running:
+          </div>
+          <div
+            className="emotion-8"
+          >
+            0
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-22"
+        />
+        <div
+          className="emotion-7"
         >
           <div>
             Pending:
           </div>
           <div
-            className="emotion-3"
+            className="emotion-8"
           >
             0
           </div>
@@ -679,7 +679,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
 `;
 
 exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseenter 3`] = `
-.emotion-2 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -697,7 +697,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   width: 100%;
 }
 
-.emotion-0 {
+.emotion-2 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -705,19 +705,19 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   background-color: #c92300;
 }
 
-.emotion-0:first-of-type {
+.emotion-2:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-0:last-of-type {
+.emotion-2:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
 <div
   aria-label="Progress Bar"
-  className="emotion-2"
+  className="emotion-0"
   onKeyPress={[Function]}
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
@@ -728,7 +728,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
     className="emotion-1"
   >
     <div
-      className="emotion-0"
+      className="emotion-2"
     />
   </div>
 </div>
