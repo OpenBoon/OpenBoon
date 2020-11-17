@@ -3,6 +3,98 @@
 exports[`<TaskLogs /> should render properly 1`] = `
 .emotion-0 {
   height: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  padding-bottom: 16px;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  background-color: #808080;
+}
+
+.emotion-2:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-3 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-4 {
+  width: 8px;
+}
+
+.emotion-6 {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.emotion-7 {
+  height: 100%;
   overflow: auto;
   background-color: #191919;
   display: -webkit-box;
@@ -14,11 +106,11 @@ exports[`<TaskLogs /> should render properly 1`] = `
   flex-direction: column-reverse;
 }
 
-.emotion-1 {
+.emotion-8 {
   background-color: #191919;
 }
 
-.emotion-1 pre {
+.emotion-8 pre {
   padding: 16px;
   margin: 0;
 }
@@ -29,10 +121,44 @@ exports[`<TaskLogs /> should render properly 1`] = `
   <div
     className="emotion-1"
   >
+    <button
+      aria-label="Scroll to top"
+      className="emotion-2"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        className="emotion-3"
+        data-file-name="back.svg"
+        height={20}
+      />
+    </button>
     <div
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "<pre class=\\"__json-pretty-error__\\">
+      className="emotion-4"
+    />
+    <button
+      aria-label="Scroll to bottom"
+      className="emotion-2"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        className="emotion-6"
+        data-file-name="back.svg"
+        height={20}
+      />
+    </button>
+  </div>
+  <div
+    className="emotion-7"
+  >
+    <div
+      className="emotion-8"
+    >
+      <div
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "<pre class=\\"__json-pretty-error__\\">
 running 9 processors in execute, 25 objects
 Exception during processing: &apos;DockerClient&apos; object has no attribute &apos;login_view&apos;
 Traceback (most recent call last):
@@ -53,10 +179,11 @@ Traceback (most recent call last):
 AttributeError: &apos;DockerClient&apos; object has no attribute &apos;login_view&apos;
 Stopping container, reason: Exception during processing: &apos;DockerClient&apos; object has no attribute &apos;login_view&apos;
 </pre>",
+          }
         }
-      }
-      id="json-pretty"
-    />
+        id="json-pretty"
+      />
+    </div>
   </div>
 </div>
 `;
