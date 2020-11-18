@@ -349,12 +349,12 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
         </tbody>
       </table>
     </div>
-  </div>
-  <div>
-     
-  </div>
-  <div>
-     
+    <div>
+       
+    </div>
+    <div>
+       
+    </div>
   </div>
 </div>
 `;
@@ -1023,12 +1023,12 @@ exports[`<ModelLabels /> should render properly with required assets per labels 
         </tbody>
       </table>
     </div>
-  </div>
-  <div>
-     
-  </div>
-  <div>
-     
+    <div>
+       
+    </div>
+    <div>
+       
+    </div>
   </div>
 </div>
 `;

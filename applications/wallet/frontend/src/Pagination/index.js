@@ -1,49 +1,73 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 
 import { spacing, colors } from '../Styles'
 
+import PaginationNext from './Next'
 import PaginationLink from './Link'
+import PaginationJump from './Jump'
+import PaginationPage from './Page'
 
 const Pagination = ({ currentPage, totalPages }) => {
   if (totalPages === 1) return null
 
   return (
-    <div css={{ display: 'flex', justifyContent: 'flex-end', flexShrink: 0 }}>
-      <PaginationLink
-        currentPage={currentPage}
-        totalPages={totalPages}
-        direction="prev"
-      />
+    <div css={{ display: 'flex', flexShrink: 0 }}>
+      <div css={{ flex: 1 }} />
 
-      <div
-        css={{
-          padding: `${spacing.base}px ${spacing.normal}px`,
-          display: 'flex',
-          alignItems: 'center',
-          color: colors.structure.white,
-          backgroundColor: colors.structure.mattGrey,
-        }}
-      >
-        {currentPage}
+      <div css={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+        <PaginationNext currentPage={currentPage} totalPages={totalPages} />
       </div>
 
       <div
         css={{
-          padding: `${spacing.base}px ${spacing.moderate}px`,
+          flex: 1,
           display: 'flex',
-          alignItems: 'center',
-          color: colors.structure.zinc,
+          justifyContent: 'flex-end',
+          flexShrink: 0,
         }}
       >
-        of {totalPages}
-      </div>
+        <PaginationJump
+          currentPage={currentPage}
+          totalPages={totalPages}
+          direction="prev"
+        />
 
-      <PaginationLink
-        currentPage={currentPage}
-        totalPages={totalPages}
-        direction="next"
-      />
+        <PaginationLink
+          currentPage={currentPage}
+          totalPages={totalPages}
+          direction="prev"
+        />
+
+        <PaginationPage
+          key={currentPage}
+          currentPage={currentPage}
+          totalPages={totalPages}
+        />
+
+        <div
+          css={{
+            display: 'flex',
+            alignItems: 'center',
+            paddingLeft: spacing.base,
+            paddingRight: spacing.base,
+            color: colors.structure.zinc,
+          }}
+        >
+          of {totalPages}
+        </div>
+
+        <PaginationLink
+          currentPage={currentPage}
+          totalPages={totalPages}
+          direction="next"
+        />
+
+        <PaginationJump
+          currentPage={currentPage}
+          totalPages={totalPages}
+          direction="next"
+        />
+      </div>
     </div>
   )
 }

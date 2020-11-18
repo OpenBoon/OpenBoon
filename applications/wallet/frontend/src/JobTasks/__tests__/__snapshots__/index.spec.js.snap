@@ -557,12 +557,12 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
         </tbody>
       </table>
     </div>
-  </div>
-  <div>
-     
-  </div>
-  <div>
-     
+    <div>
+       
+    </div>
+    <div>
+       
+    </div>
   </div>
 </div>
 `;
