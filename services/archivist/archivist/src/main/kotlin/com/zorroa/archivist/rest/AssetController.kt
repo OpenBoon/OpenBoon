@@ -125,64 +125,11 @@ class AssetController @Autowired constructor(
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
-    @PostMapping("/api/v3/assets/{id}/_update")
-    fun update(
-        @ApiParam("Unique ID of the Asset") @PathVariable id: String,
-        @RequestBody(required = true) update: UpdateAssetRequest
-    ): ResponseEntity<Resource> {
-        val bytes = EntityUtils.toByteArray(assetService.update(id, update).entity)
-        return ResponseEntity.ok()
-            .contentLength(bytes.size.toLong())
-            .body(InputStreamResource(bytes.inputStream()))
-    }
-
-    @PreAuthorize("hasAuthority('AssetsImport')")
-    @PostMapping("/api/v3/assets/_update_by_query")
-    fun updateByQuery(
-        @RequestBody(required = true) update: UpdateAssetsByQueryRequest
-    ): ResponseEntity<Resource> {
-        val bytes = EntityUtils.toByteArray(assetService.updateByQuery(update).entity)
-        return ResponseEntity.ok()
-            .contentLength(bytes.size.toLong())
-            .body(InputStreamResource(bytes.inputStream()))
-    }
-
-    @PreAuthorize("hasAuthority('AssetsImport')")
-    @PostMapping("/api/v3/assets/_batch_update")
-    fun batchUpdate(
-        @RequestBody(required = true) batch: Map<String, UpdateAssetRequest>
-    ): ResponseEntity<Resource> {
-        val rsp = assetService.batchUpdate(batch)
-        val content = Strings.toString(rsp)
-        return ResponseEntity.ok()
-            .contentLength(content.length.toLong())
-            .body(InputStreamResource(content.byteInputStream()))
-    }
-
-    @PreAuthorize("hasAuthority('AssetsImport')")
     @PostMapping("/api/v3/assets/_batch_create")
     fun batchCreate(@RequestBody request: BatchCreateAssetsRequest):
         BatchCreateAssetsResponse {
             return assetService.batchCreate(request)
         }
-
-    @PreAuthorize("hasAuthority('AssetsImport')")
-    @PutMapping("/api/v3/assets/{id}/_index")
-    fun index(
-        @ApiParam("Unique ID of the Asset.") @PathVariable id: String,
-        @RequestBody doc: MutableMap<String, Any>
-    ): Any {
-        val bytes = EntityUtils.toByteArray(assetService.index(id, doc).entity)
-        return ResponseEntity.ok()
-            .contentLength(bytes.size.toLong())
-            .body(InputStreamResource(bytes.inputStream()))
-    }
-
-    @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
-    @PostMapping("/api/v3/assets/_batch_index")
-    fun batchIndex(@RequestBody req: Map<String, MutableMap<String, Any>>): BatchIndexResponse {
-        return assetService.batchIndex(req)
-    }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
     @ApiOperation("Create or reprocess assets via a file upload.")
