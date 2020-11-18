@@ -199,7 +199,7 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -207,6 +207,8 @@ Array [
 }
 
 .emotion-11:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -751,15 +753,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-140:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-140[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-140,
 .emotion-140:hover,
 .emotion-140:visited {
@@ -767,7 +760,14 @@ Array [
 }
 
 .emotion-140:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-140[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-141 {
@@ -801,15 +801,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-141:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-141[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-141,
 .emotion-141:hover,
 .emotion-141:visited {
@@ -817,7 +808,14 @@ Array [
 }
 
 .emotion-141:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-141[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <form
@@ -1967,7 +1965,7 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -1975,6 +1973,8 @@ Array [
 }
 
 .emotion-11:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -2524,15 +2524,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-158:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-158[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-158,
 .emotion-158:hover,
 .emotion-158:visited {
@@ -2540,7 +2531,14 @@ Array [
 }
 
 .emotion-158:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-158[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-159 {
@@ -2574,15 +2572,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-159:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-159[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-159,
 .emotion-159:hover,
 .emotion-159:visited {
@@ -2590,7 +2579,14 @@ Array [
 }
 
 .emotion-159:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-159[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <form
@@ -3838,7 +3834,7 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -3846,6 +3842,8 @@ Array [
 }
 
 .emotion-11:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -4395,15 +4393,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-152:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-152[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-152,
 .emotion-152:hover,
 .emotion-152:visited {
@@ -4411,7 +4400,14 @@ Array [
 }
 
 .emotion-152:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-152[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-153 {
@@ -4445,15 +4441,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-153:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-153[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-153,
 .emotion-153:hover,
 .emotion-153:visited {
@@ -4461,7 +4448,14 @@ Array [
 }
 
 .emotion-153:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-153[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <form
@@ -5676,7 +5670,7 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -5684,6 +5678,8 @@ Array [
 }
 
 .emotion-11:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -6233,15 +6229,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-151:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-151[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-151,
 .emotion-151:hover,
 .emotion-151:visited {
@@ -6249,7 +6236,14 @@ Array [
 }
 
 .emotion-151:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-151[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-152 {
@@ -6283,15 +6277,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-152:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-152[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-152,
 .emotion-152:hover,
 .emotion-152:visited {
@@ -6299,7 +6284,14 @@ Array [
 }
 
 .emotion-152:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-152[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <form

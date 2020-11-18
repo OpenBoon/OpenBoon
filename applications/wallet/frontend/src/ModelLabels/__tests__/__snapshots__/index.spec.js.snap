@@ -190,15 +190,6 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
   margin: -6px;
 }
 
-.emotion-18:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-18[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-18:hover,
 .emotion-18.focus-visible:focus {
   color: #ffffff!important;
@@ -859,15 +850,6 @@ exports[`<ModelLabels /> should render properly with required assets per labels 
   color: #191919;
   background-color: transparent;
   margin: -6px;
-}
-
-.emotion-18:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-18[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-18:hover,

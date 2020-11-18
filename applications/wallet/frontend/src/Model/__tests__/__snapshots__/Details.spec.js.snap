@@ -187,15 +187,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-1,
 .emotion-1:hover,
 .emotion-1:visited {
@@ -203,7 +194,14 @@ Array [
 }
 
 .emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
@@ -349,15 +347,6 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-1,
 .emotion-1:hover,
 .emotion-1:visited {
@@ -365,7 +354,14 @@ Array [
 }
 
 .emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-2 {
@@ -870,15 +866,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-1,
 .emotion-1:hover,
 .emotion-1:visited {
@@ -886,7 +873,14 @@ Array [
 }
 
 .emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-3 {
@@ -920,15 +914,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-3,
 .emotion-3:hover,
 .emotion-3:visited {
@@ -936,7 +921,14 @@ Array [
 }
 
 .emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
@@ -1084,15 +1076,6 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-1,
 .emotion-1:hover,
 .emotion-1:visited {
@@ -1100,7 +1083,14 @@ Array [
 }
 
 .emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-2 {
@@ -1605,15 +1595,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-1,
 .emotion-1:hover,
 .emotion-1:visited {
@@ -1621,7 +1602,14 @@ Array [
 }
 
 .emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-3 {
@@ -1655,15 +1643,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-3,
 .emotion-3:hover,
 .emotion-3:visited {
@@ -1671,7 +1650,14 @@ Array [
 }
 
 .emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
@@ -1819,15 +1805,6 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-1,
 .emotion-1:hover,
 .emotion-1:visited {
@@ -1835,7 +1812,14 @@ Array [
 }
 
 .emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-2 {

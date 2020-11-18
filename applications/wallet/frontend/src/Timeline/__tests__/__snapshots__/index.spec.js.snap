@@ -77,15 +77,6 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #2e2e2e;
@@ -94,6 +85,10 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
 .emotion-3:hover svg path,
 .emotion-3.focus-visible:focus svg path {
   fill: #ffffff;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-4 {
@@ -153,15 +148,6 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-6:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-6[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-6:hover,
 .emotion-6.focus-visible:focus {
   background-color: #2e2e2e;
@@ -171,6 +157,10 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
 .emotion-6:hover svg path,
 .emotion-6.focus-visible:focus svg path {
   fill: #ffffff;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-7 {
@@ -355,15 +345,6 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   text-transform: uppercase;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #2e2e2e;
@@ -372,6 +353,10 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
 .emotion-3:hover svg path,
 .emotion-3.focus-visible:focus svg path {
   fill: #ffffff;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-4 {
@@ -431,15 +416,6 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   text-transform: uppercase;
 }
 
-.emotion-6:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-6[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-6:hover,
 .emotion-6.focus-visible:focus {
   background-color: #2e2e2e;
@@ -449,6 +425,10 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
 .emotion-6:hover svg path,
 .emotion-6.focus-visible:focus svg path {
   fill: #ffffff;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-7 {
@@ -575,15 +555,6 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
 }
 
 .emotion-16:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-16[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-16:hover {
   color: #73b61c;
 }
 
@@ -622,15 +593,6 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   background-color: transparent;
   padding: 8px;
   opacity: 1;
-}
-
-.emotion-17:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-17[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-17:hover {
@@ -993,15 +955,6 @@ exports[`<Timeline /> should render properly 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #2e2e2e;
@@ -1010,6 +963,10 @@ exports[`<Timeline /> should render properly 1`] = `
 .emotion-3:hover svg path,
 .emotion-3.focus-visible:focus svg path {
   fill: #ffffff;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-4 {
@@ -1138,15 +1095,6 @@ exports[`<Timeline /> should render properly 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-11:hover,
 .emotion-11.focus-visible:focus {
   background-color: #2e2e2e;
@@ -1156,6 +1104,10 @@ exports[`<Timeline /> should render properly 1`] = `
 .emotion-11:hover svg path,
 .emotion-11.focus-visible:focus svg path {
   fill: #ffffff;
+}
+
+.emotion-11[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-12 {
@@ -1282,15 +1234,6 @@ exports[`<Timeline /> should render properly 1`] = `
 }
 
 .emotion-21:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-21[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-21:hover {
   color: #73b61c;
 }
 
@@ -1329,15 +1272,6 @@ exports[`<Timeline /> should render properly 1`] = `
   background-color: transparent;
   padding: 8px;
   opacity: 1;
-}
-
-.emotion-22:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-22[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-22:hover {
@@ -2768,15 +2702,6 @@ exports[`<Timeline /> should render properly 2`] = `
   text-transform: uppercase;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #2e2e2e;
@@ -2785,6 +2710,10 @@ exports[`<Timeline /> should render properly 2`] = `
 .emotion-3:hover svg path,
 .emotion-3.focus-visible:focus svg path {
   fill: #ffffff;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-4 {
@@ -2913,15 +2842,6 @@ exports[`<Timeline /> should render properly 2`] = `
   text-transform: uppercase;
 }
 
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-11:hover,
 .emotion-11.focus-visible:focus {
   background-color: #2e2e2e;
@@ -2931,6 +2851,10 @@ exports[`<Timeline /> should render properly 2`] = `
 .emotion-11:hover svg path,
 .emotion-11.focus-visible:focus svg path {
   fill: #ffffff;
+}
+
+.emotion-11[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-12 {
@@ -3057,15 +2981,6 @@ exports[`<Timeline /> should render properly 2`] = `
 }
 
 .emotion-21:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-21[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-21:hover {
   color: #73b61c;
 }
 
@@ -3104,15 +3019,6 @@ exports[`<Timeline /> should render properly 2`] = `
   background-color: transparent;
   padding: 8px;
   opacity: 1;
-}
-
-.emotion-22:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-22[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-22:hover {

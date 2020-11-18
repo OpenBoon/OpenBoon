@@ -93,15 +93,6 @@ Array [
   color: #ffffff;
 }
 
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-4,
 .emotion-4:hover,
 .emotion-4:visited {

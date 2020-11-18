@@ -56,15 +56,6 @@ exports[`<TaskLogs /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-2,
 .emotion-2:hover,
 .emotion-2:visited {
@@ -72,7 +63,14 @@ exports[`<TaskLogs /> should render properly 1`] = `
 }
 
 .emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-3 {

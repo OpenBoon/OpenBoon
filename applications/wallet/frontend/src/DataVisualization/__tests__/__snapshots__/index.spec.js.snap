@@ -73,22 +73,24 @@ exports[`<DataVisualization /> should render properly 1`] = `
   margin-bottom: 1px;
 }
 
-.emotion-3:hover {
-  background-color: #2e2e2e;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
 .emotion-3.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-3:hover {
+  background-color: #2e2e2e;
 }
 
 .emotion-4 {
@@ -258,15 +260,6 @@ exports[`<DataVisualization /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-19:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-19[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-19,
 .emotion-19:hover,
 .emotion-19:visited {
@@ -274,7 +267,14 @@ exports[`<DataVisualization /> should render properly 1`] = `
 }
 
 .emotion-19:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-19[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
@@ -537,22 +537,24 @@ exports[`<DataVisualization /> should render properly 2`] = `
   margin-bottom: 1px;
 }
 
-.emotion-3:hover {
-  background-color: #2e2e2e;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
 .emotion-3.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-3:hover {
+  background-color: #2e2e2e;
 }
 
 .emotion-4 {
@@ -639,15 +641,6 @@ exports[`<DataVisualization /> should render properly 2`] = `
   margin-right: 16px;
 }
 
-.emotion-9:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-9[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-9,
 .emotion-9:hover,
 .emotion-9:visited {
@@ -655,7 +648,14 @@ exports[`<DataVisualization /> should render properly 2`] = `
 }
 
 .emotion-9:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-9[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-10 {
@@ -709,15 +709,6 @@ exports[`<DataVisualization /> should render properly 2`] = `
   margin-right: 16px;
 }
 
-.emotion-12:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-12[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-12,
 .emotion-12:hover,
 .emotion-12:visited {
@@ -725,7 +716,14 @@ exports[`<DataVisualization /> should render properly 2`] = `
 }
 
 .emotion-12:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-12[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-13 {
@@ -909,22 +907,24 @@ exports[`<DataVisualization /> should render properly 3`] = `
   margin-bottom: 1px;
 }
 
-.emotion-3:hover {
-  background-color: #2e2e2e;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
 .emotion-3.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-3:hover {
+  background-color: #2e2e2e;
 }
 
 .emotion-4 {
@@ -1038,15 +1038,6 @@ exports[`<DataVisualization /> should render properly 3`] = `
   background-color: transparent;
 }
 
-.emotion-14:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-14[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-14,
 .emotion-14:hover,
 .emotion-14:visited {
@@ -1054,7 +1045,14 @@ exports[`<DataVisualization /> should render properly 3`] = `
 }
 
 .emotion-14:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-14[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-15 {
@@ -1395,22 +1393,24 @@ exports[`<DataVisualization /> should render properly 4`] = `
   margin-bottom: 1px;
 }
 
-.emotion-3:hover {
-  background-color: #2e2e2e;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
 .emotion-3.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-3:hover {
+  background-color: #2e2e2e;
 }
 
 .emotion-4 {
@@ -1580,15 +1580,6 @@ exports[`<DataVisualization /> should render properly 4`] = `
   background-color: transparent;
 }
 
-.emotion-19:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-19[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-19,
 .emotion-19:hover,
 .emotion-19:visited {
@@ -1596,7 +1587,14 @@ exports[`<DataVisualization /> should render properly 4`] = `
 }
 
 .emotion-19:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-19[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
