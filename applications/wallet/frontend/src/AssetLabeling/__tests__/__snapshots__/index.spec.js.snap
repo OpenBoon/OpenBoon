@@ -103,15 +103,6 @@ Array [
   font-weight: 500;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-5,
 .emotion-5:hover,
 .emotion-5:visited {
@@ -316,15 +307,6 @@ Array [
   color: #808080;
   background-color: transparent;
   margin: -6px;
-}
-
-.emotion-12:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-12[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-12:hover,
@@ -548,15 +530,6 @@ Array [
   padding-bottom: 0;
   margin-top: -2px;
   font-weight: 500;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-5,
@@ -911,15 +884,6 @@ Array [
   font-weight: 500;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-5,
 .emotion-5:hover,
 .emotion-5:visited {
@@ -1207,15 +1171,6 @@ Array [
   color: #808080;
   background-color: transparent;
   margin: -6px;
-}
-
-.emotion-12:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-12[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-12:hover,
@@ -1441,15 +1396,6 @@ Array [
   font-weight: 500;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-5,
 .emotion-5:hover,
 .emotion-5:visited {
@@ -1737,15 +1683,6 @@ Array [
   color: #808080;
   background-color: transparent;
   margin: -6px;
-}
-
-.emotion-12:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-12[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-12:hover,

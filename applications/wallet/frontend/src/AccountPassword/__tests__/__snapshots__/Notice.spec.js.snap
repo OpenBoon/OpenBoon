@@ -42,7 +42,7 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -50,6 +50,8 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
 }
 
 .emotion-5:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -107,15 +109,6 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
   background-color: transparent;
 }
 
-.emotion-18:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-18[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-18,
 .emotion-18:hover,
 .emotion-18:visited {
@@ -123,7 +116,14 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
 }
 
 .emotion-18:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-18[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-19 {
@@ -157,15 +157,6 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
   background-color: transparent;
 }
 
-.emotion-19:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-19[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-19,
 .emotion-19:hover,
 .emotion-19:visited {
@@ -173,7 +164,14 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
 }
 
 .emotion-19:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-19[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-20 {
@@ -280,15 +278,6 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
   background-color: transparent;
 }
 
-.emotion-28:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-28[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-28,
 .emotion-28:hover,
 .emotion-28:visited {
@@ -296,7 +285,14 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
 }
 
 .emotion-28:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-28[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div

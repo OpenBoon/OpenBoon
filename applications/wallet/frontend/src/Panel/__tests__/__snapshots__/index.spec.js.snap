@@ -78,23 +78,20 @@ exports[`<Panel /> should render properly with a selection 1`] = `
   background-color: transparent;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
 .emotion-3.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-4 {

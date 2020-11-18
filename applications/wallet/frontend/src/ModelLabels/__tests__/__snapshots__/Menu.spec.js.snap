@@ -38,15 +38,6 @@ exports[`<ModelLabelsMenu /> should render properly 1`] = `
   margin: -6px;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
   color: #ffffff!important;
@@ -110,17 +101,10 @@ exports[`<ModelLabelsMenu /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #4a4a4a;
 }
 

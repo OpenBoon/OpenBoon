@@ -221,7 +221,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -229,6 +229,8 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-17:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -378,15 +380,6 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   background-color: transparent;
 }
 
-.emotion-50:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-50[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-50,
 .emotion-50:hover,
 .emotion-50:visited {
@@ -394,7 +387,14 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-50:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-50[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-51 {
@@ -428,15 +428,6 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   background-color: transparent;
 }
 
-.emotion-51:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-51[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-51,
 .emotion-51:hover,
 .emotion-51:visited {
@@ -444,7 +435,14 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-51:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-51[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
@@ -935,7 +933,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -943,6 +941,8 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 }
 
 .emotion-14:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -1092,15 +1092,6 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   background-color: transparent;
 }
 
-.emotion-47:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-47[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-47,
 .emotion-47:hover,
 .emotion-47:visited {
@@ -1108,7 +1099,14 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 }
 
 .emotion-47:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-47[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-48 {
@@ -1142,15 +1140,6 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   background-color: transparent;
 }
 
-.emotion-48:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-48[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-48,
 .emotion-48:hover,
 .emotion-48:visited {
@@ -1158,7 +1147,14 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 }
 
 .emotion-48:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-48[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div

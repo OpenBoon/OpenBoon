@@ -107,15 +107,6 @@ Array [
   margin: -6px;
 }
 
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-8:hover,
 .emotion-8.focus-visible:focus {
   color: #ffffff!important;
@@ -269,15 +260,6 @@ Array [
   color: #191919;
   background-color: transparent;
   margin: -6px;
-}
-
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-8:hover,
@@ -468,15 +450,6 @@ Array [
   margin: -6px;
 }
 
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-8:hover,
 .emotion-8.focus-visible:focus {
   color: #ffffff!important;
@@ -630,15 +603,6 @@ Array [
   color: #191919;
   background-color: transparent;
   margin: -6px;
-}
-
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-8:hover,

@@ -39,19 +39,14 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
   background-color: transparent;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
   color: #73b61c;
   background-color: #2e2e2e;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-2 {
@@ -94,18 +89,13 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
   background-color: transparent;
 }
 
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
+  background-color: #2e2e2e;
 }
 
 .emotion-4[aria-disabled=true] {
   color: #808080;
-}
-
-.emotion-4:hover,
-.emotion-4.focus-visible:focus {
-  background-color: #2e2e2e;
 }
 
 .emotion-5 {
@@ -192,19 +182,14 @@ exports[`<TimelineCaptions /> should render properly with no track enabled 1`] =
   background-color: transparent;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
   color: #ffffff;
   background-color: #2e2e2e;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-2 {
@@ -247,18 +232,13 @@ exports[`<TimelineCaptions /> should render properly with no track enabled 1`] =
   background-color: transparent;
 }
 
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
+  background-color: #2e2e2e;
 }
 
 .emotion-4[aria-disabled=true] {
   color: #808080;
-}
-
-.emotion-4:hover,
-.emotion-4.focus-visible:focus {
-  background-color: #2e2e2e;
 }
 
 .emotion-5 {

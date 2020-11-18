@@ -32,15 +32,6 @@ exports[`<Refresh /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -48,7 +39,14 @@ exports[`<Refresh /> should render properly 1`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-1 {
@@ -143,15 +141,6 @@ exports[`<Refresh /> should render properly 2`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -159,7 +148,14 @@ exports[`<Refresh /> should render properly 2`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-1 {
@@ -238,15 +234,6 @@ exports[`<Refresh /> should render properly 3`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -254,7 +241,14 @@ exports[`<Refresh /> should render properly 3`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-1 {

@@ -35,7 +35,7 @@ exports[`<LabelEdit /> should render properly 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -43,6 +43,8 @@ exports[`<LabelEdit /> should render properly 1`] = `
 }
 
 .emotion-4:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -100,15 +102,6 @@ exports[`<LabelEdit /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-7,
 .emotion-7:hover,
 .emotion-7:visited {
@@ -116,7 +109,14 @@ exports[`<LabelEdit /> should render properly 1`] = `
 }
 
 .emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-8 {
@@ -150,15 +150,6 @@ exports[`<LabelEdit /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-8,
 .emotion-8:hover,
 .emotion-8:visited {
@@ -166,7 +157,14 @@ exports[`<LabelEdit /> should render properly 1`] = `
 }
 
 .emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-8[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <form

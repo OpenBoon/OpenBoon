@@ -188,7 +188,7 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -196,6 +196,8 @@ Array [
 }
 
 .emotion-4:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -360,15 +362,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-106:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-106[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-106,
 .emotion-106:hover,
 .emotion-106:visited {
@@ -376,7 +369,14 @@ Array [
 }
 
 .emotion-106:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-106[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <form
@@ -1182,15 +1182,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-9:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-9[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-9,
 .emotion-9:hover,
 .emotion-9:visited {
@@ -1242,15 +1233,6 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-}
-
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-11,
@@ -1309,15 +1291,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-13,
 .emotion-13:hover,
 .emotion-13:visited {
@@ -1325,7 +1298,14 @@ Array [
 }
 
 .emotion-13:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-13[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-14 {
@@ -1359,15 +1339,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-14:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-14[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-14,
 .emotion-14:hover,
 .emotion-14:visited {
@@ -1375,7 +1346,14 @@ Array [
 }
 
 .emotion-14:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-14[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div>
@@ -1658,7 +1636,7 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -1666,6 +1644,8 @@ Array [
 }
 
 .emotion-4:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -1830,15 +1810,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-106:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-106[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-106,
 .emotion-106:hover,
 .emotion-106:visited {
@@ -1846,7 +1817,14 @@ Array [
 }
 
 .emotion-106:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-106[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <form

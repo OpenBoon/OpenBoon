@@ -191,15 +191,6 @@ Array [
   color: #ffffff;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-5,
 .emotion-5:hover,
 .emotion-5:visited {
@@ -671,15 +662,6 @@ Array [
   justify-content: space-between;
   margin-bottom: 4px;
   color: #ffffff;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-5,
@@ -1155,15 +1137,6 @@ Array [
   justify-content: space-between;
   margin-bottom: 4px;
   color: #ffffff;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-5,
@@ -1649,15 +1622,6 @@ Array [
   justify-content: space-between;
   margin-bottom: 4px;
   color: #ffffff;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-5,

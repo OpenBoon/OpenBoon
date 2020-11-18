@@ -97,15 +97,6 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   margin: 0;
 }
 
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-8,
 .emotion-8:hover,
 .emotion-8:visited {
@@ -113,7 +104,14 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
 }
 
 .emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-8[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-9 {
@@ -152,15 +150,6 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   margin: 0;
 }
 
-.emotion-10:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-10[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-10,
 .emotion-10:hover,
 .emotion-10:visited {
@@ -168,7 +157,14 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
 }
 
 .emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-10[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
@@ -359,15 +355,6 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   margin: 0;
 }
 
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-8,
 .emotion-8:hover,
 .emotion-8:visited {
@@ -375,7 +362,14 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
 }
 
 .emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-8[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-9 {
@@ -414,15 +408,6 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   margin: 0;
 }
 
-.emotion-10:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-10[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-10,
 .emotion-10:hover,
 .emotion-10:visited {
@@ -430,7 +415,14 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
 }
 
 .emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-10[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div

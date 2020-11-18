@@ -53,15 +53,6 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   background-color: transparent;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-3,
 .emotion-3:hover,
 .emotion-3:visited {
@@ -69,7 +60,14 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 }
 
 .emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-4 {
@@ -248,15 +246,6 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   background-color: transparent;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-3,
 .emotion-3:hover,
 .emotion-3:visited {
@@ -264,7 +253,14 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 }
 
 .emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-4 {
@@ -444,15 +440,6 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   background-color: transparent;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-3,
 .emotion-3:hover,
 .emotion-3:visited {
@@ -460,7 +447,14 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 }
 
 .emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-4 {

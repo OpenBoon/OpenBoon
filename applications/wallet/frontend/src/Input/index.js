@@ -13,7 +13,7 @@ const BASE = ({ isDisabled }) => ({
   borderRadius: constants.borderRadius.small,
   boxShadow: constants.boxShadows.input,
   width: '100%',
-  cursor: isDisabled ? 'not-allowed' : '',
+  cursor: isDisabled ? 'not-allowed' : 'text',
   '&:focus': {
     border: constants.borders.keyOneMedium,
     outline: colors.key.one,
@@ -32,6 +32,8 @@ const STYLES = {
     color: colors.structure.white,
     backgroundColor: colors.structure.smoke,
     '&:focus': {
+      border: constants.borders.keyOneMedium,
+      outline: colors.key.one,
       color: colors.structure.black,
       backgroundColor: colors.structure.white,
     },

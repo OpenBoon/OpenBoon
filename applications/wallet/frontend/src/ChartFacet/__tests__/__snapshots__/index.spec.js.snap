@@ -105,23 +105,20 @@ exports[`<ChartFacet /> should render properly 1`] = `
   padding: 6px;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-5:hover,
 .emotion-5.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-5 svg {
@@ -228,15 +225,6 @@ exports[`<ChartFacet /> should render properly 1`] = `
   -ms-flex-direction: row;
   flex-direction: row;
   color: #ffffff;
-}
-
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-13:hover,
@@ -430,17 +418,10 @@ exports[`<ChartFacet /> should render properly 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-84:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-84[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-84:hover,
 .emotion-84.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
@@ -995,23 +976,20 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   padding: 6px;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-5:hover,
 .emotion-5.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-5 svg {
@@ -1131,17 +1109,10 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-14:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-14[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-14:hover,
 .emotion-14.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 

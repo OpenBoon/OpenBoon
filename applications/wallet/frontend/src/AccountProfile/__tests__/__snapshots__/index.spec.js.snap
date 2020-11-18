@@ -121,15 +121,6 @@ exports[`<AccountProfile /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-10:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-10[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-10,
 .emotion-10:hover,
 .emotion-10:visited {
@@ -137,7 +128,14 @@ exports[`<AccountProfile /> should render properly 1`] = `
 }
 
 .emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-10[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div>

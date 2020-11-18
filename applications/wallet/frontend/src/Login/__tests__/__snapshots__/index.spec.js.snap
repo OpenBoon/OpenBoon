@@ -252,7 +252,7 @@ exports[`<Login /> should render error 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid #c92300;
@@ -326,15 +326,6 @@ exports[`<Login /> should render error 1`] = `
 }
 
 .emotion-26:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-26[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-26:hover {
   color: #73b61c;
 }
 
@@ -381,15 +372,6 @@ exports[`<Login /> should render error 1`] = `
   background-color: transparent;
 }
 
-.emotion-30:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-30[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-30,
 .emotion-30:hover,
 .emotion-30:visited {
@@ -397,7 +379,14 @@ exports[`<Login /> should render error 1`] = `
 }
 
 .emotion-30:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-30[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-31 {
@@ -827,7 +816,7 @@ exports[`<Login /> should render password changed 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -895,15 +884,6 @@ exports[`<Login /> should render password changed 1`] = `
 }
 
 .emotion-22:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-22[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-22:hover {
   color: #73b61c;
 }
 
@@ -950,15 +930,6 @@ exports[`<Login /> should render password changed 1`] = `
   background-color: transparent;
 }
 
-.emotion-25:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-25[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-25,
 .emotion-25:hover,
 .emotion-25:visited {
@@ -966,7 +937,14 @@ exports[`<Login /> should render password changed 1`] = `
 }
 
 .emotion-25:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-25[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-26 {
@@ -1359,7 +1337,7 @@ exports[`<Login /> should render properly 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -1427,15 +1405,6 @@ exports[`<Login /> should render properly 1`] = `
 }
 
 .emotion-22:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-22[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-22:hover {
   color: #73b61c;
 }
 
@@ -1482,15 +1451,6 @@ exports[`<Login /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-25:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-25[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-25,
 .emotion-25:hover,
 .emotion-25:visited {
@@ -1498,7 +1458,14 @@ exports[`<Login /> should render properly 1`] = `
 }
 
 .emotion-25:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-25[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-26 {
@@ -1891,7 +1858,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -1959,15 +1926,6 @@ exports[`<Login /> should render properly on account activation success 1`] = `
 }
 
 .emotion-22:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-22[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-22:hover {
   color: #73b61c;
 }
 
@@ -2014,15 +1972,6 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   background-color: transparent;
 }
 
-.emotion-25:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-25[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-25,
 .emotion-25:hover,
 .emotion-25:visited {
@@ -2030,7 +1979,14 @@ exports[`<Login /> should render properly on account activation success 1`] = `
 }
 
 .emotion-25:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-25[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-26 {
