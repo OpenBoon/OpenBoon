@@ -2,7 +2,6 @@ import io
 import os
 import requests
 from collections import namedtuple
-from urllib.parse import urljoin
 
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
