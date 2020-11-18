@@ -61,19 +61,4 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         processor.process(frame)
 
         analysis = asset.get_attr(namespace)
-        assert 'poop' in self.asset.get_attr('analysis.aws-transcribe.content')
-
-    # @patch("zmlp_analysis.aws.transcribe.save_transcribe_timeline", return_value={})
-    # @patch("zmlp_analysis.aws.transcribe.save_raw_transcribe_result", return_value={})
-    # @patch("zmlp_analysis.aws.transcribe.save_transcribe_webvtt", return_value={})
-    # @patch('zmlp_analysis.aws.transcribe.get_video_proxy')
-    # @patch('zmlp_analysis.aws.transcribe.get_audio_proxy')
-    # def test_process_video_proxy(self, get_prx_patch, get_vid_patch, _, __, ___):
-    #     get_prx_patch.return_value = 0
-    #     get_vid_patch.return_value = zorroa_test_path("video/ted_talk.mp4")
-    #
-    #     processor = self.init_processor(AmazonTranscribeProcessor(), {'language': 'en-US'})
-    #     frame = Frame(self.asset)
-    #     processor.process(frame)
-    #
-    #     assert 'poop' in self.asset.get_attr('analysis.aws-transcribe.content')
+        assert 'poop' in self.asset.get_attr('analysis.aws-video-label-detection')

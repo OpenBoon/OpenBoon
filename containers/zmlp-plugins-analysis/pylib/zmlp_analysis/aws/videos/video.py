@@ -86,7 +86,7 @@ class VideoDetect(AssetProcessor):
         # get audio s3 uri
         s3_uri = f's3://{bucket_name}/{bucket_file}'
 
-        self.start_detection(self.roleArn, bucket_name, bucket_file, asset_id)
+        response = self.start_detection(self.roleArn, bucket_name, bucket_file, asset_id)
 
     def start_detection(self, role_arn, bucket, video, asset_id):
         """
@@ -99,13 +99,15 @@ class VideoDetect(AssetProcessor):
             asset_id: (str) Asset ID
 
         Returns:
-            None
+            (dict) Label Detection Results
         """
+        prepend_name = "AmazonRekognition"
+
         sns_topic_arn, sqs_queue_url = create_topic_and_queue(
             self.sns_client,
             self.sqs_client,
-            topic_name=f"{asset_id}-topic",
-            queue_name=f"{asset_id}-queue"
+            topic_name=f"{prepend_name}-{asset_id}-topic",
+            queue_name=f"{prepend_name}-{asset_id}-queue"
         )
 
         try:
@@ -121,3 +123,5 @@ class VideoDetect(AssetProcessor):
         finally:
             self.sqs_client.delete_queue(QueueUrl=sqs_queue_url)
             self.sns_client.delete_topic(TopicArn=sns_topic_arn)
+
+        return response
