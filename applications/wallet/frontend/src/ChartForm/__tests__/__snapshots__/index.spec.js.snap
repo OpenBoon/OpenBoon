@@ -80,7 +80,7 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -88,6 +88,8 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
 }
 
 .emotion-10:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -141,15 +143,6 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   flex: 1;
 }
 
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-13,
 .emotion-13:hover,
 .emotion-13:visited {
@@ -157,7 +150,14 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
 }
 
 .emotion-13:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-13[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-14 {
@@ -198,15 +198,6 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   flex: 1;
 }
 
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-15,
 .emotion-15:hover,
 .emotion-15:visited {
@@ -214,7 +205,14 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
 }
 
 .emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
@@ -429,7 +427,7 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -437,6 +435,8 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
 }
 
 .emotion-10:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -490,15 +490,6 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   flex: 1;
 }
 
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-13,
 .emotion-13:hover,
 .emotion-13:visited {
@@ -506,7 +497,14 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
 }
 
 .emotion-13:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-13[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-14 {
@@ -547,15 +545,6 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   flex: 1;
 }
 
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-15,
 .emotion-15:hover,
 .emotion-15:visited {
@@ -563,7 +552,14 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
 }
 
 .emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
@@ -778,7 +774,7 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -786,6 +782,8 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
 }
 
 .emotion-10:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -839,15 +837,6 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   flex: 1;
 }
 
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-13,
 .emotion-13:hover,
 .emotion-13:visited {
@@ -855,7 +844,14 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
 }
 
 .emotion-13:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-13[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-14 {
@@ -896,15 +892,6 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   flex: 1;
 }
 
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-15,
 .emotion-15:hover,
 .emotion-15:visited {
@@ -912,7 +899,14 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
 }
 
 .emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div

@@ -1219,15 +1219,6 @@ Array [
   margin: -6px;
 }
 
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-13:hover,
 .emotion-13.focus-visible:focus {
   color: #ffffff!important;

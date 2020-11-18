@@ -226,17 +226,10 @@ Array [
   text-transform: uppercase;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-2:hover,
 .emotion-2.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
@@ -526,17 +519,10 @@ Array [
   text-transform: uppercase;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-2:hover,
 .emotion-2.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
@@ -618,17 +604,8 @@ Array [
   border: none;
   cursor: pointer;
   color: #b3b3b3;
-  background-color: ;
+  background-color: transparent;
   width: 100%;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-1:hover,
@@ -1153,17 +1130,10 @@ Array [
   text-transform: uppercase;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-2:hover,
 .emotion-2.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
@@ -1249,15 +1219,6 @@ Array [
   width: 100%;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
   background-color: #0074f538;
@@ -1338,17 +1299,8 @@ Array [
   border: none;
   cursor: pointer;
   color: #b3b3b3;
-  background-color: ;
+  background-color: transparent;
   width: 100%;
-}
-
-.emotion-9:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-9[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-9:hover,

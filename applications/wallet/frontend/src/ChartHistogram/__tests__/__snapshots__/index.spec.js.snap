@@ -89,23 +89,20 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   padding: 6px;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-5:hover,
 .emotion-5.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-5 svg {
@@ -375,17 +372,10 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-28:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-28[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-28:hover,
 .emotion-28.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
@@ -831,7 +821,7 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -839,6 +829,8 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 }
 
 .emotion-25:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -892,15 +884,6 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   flex: 1;
 }
 
-.emotion-28:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-28[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-28,
 .emotion-28:hover,
 .emotion-28:visited {
@@ -908,7 +891,14 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 }
 
 .emotion-28:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-28[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-29 {
@@ -949,15 +939,6 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   flex: 1;
 }
 
-.emotion-30:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-30[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-30,
 .emotion-30:hover,
 .emotion-30:visited {
@@ -965,7 +946,14 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 }
 
 .emotion-30:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-30[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
@@ -1220,23 +1208,20 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   padding: 6px;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-5:hover,
 .emotion-5.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-5 svg {
@@ -1366,17 +1351,10 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-18:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-18[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-18:hover,
 .emotion-18.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 

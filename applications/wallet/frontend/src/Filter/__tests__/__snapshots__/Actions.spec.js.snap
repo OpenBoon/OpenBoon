@@ -57,23 +57,20 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
   border-radius: 2px;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-1:hover,
@@ -135,23 +132,20 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
   border-radius: 2px;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
 .emotion-3.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-3:hover,
@@ -259,23 +253,20 @@ exports[`<FilterActions /> should render properly 1`] = `
   border-radius: 2px;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-1:hover,
@@ -387,23 +378,20 @@ exports[`<FilterActions /> should render properly 2`] = `
   border-radius: 2px;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-1:hover,
@@ -515,23 +503,20 @@ exports[`<FilterActions /> should render properly 3`] = `
   border-radius: 2px;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-1:hover,

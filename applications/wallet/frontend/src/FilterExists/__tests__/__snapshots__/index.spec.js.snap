@@ -124,23 +124,20 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   border-radius: 2px;
 }
 
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-7:hover svg,
 .emotion-7.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-7:hover,
@@ -216,23 +213,20 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   background-color: transparent;
 }
 
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-15:hover,
 .emotion-15.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-15:hover svg,
 .emotion-15.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-16 {
@@ -281,23 +275,20 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   background-color: #808080;
 }
 
-.emotion-18:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-18[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-18:hover,
 .emotion-18.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-18:hover svg,
 .emotion-18.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-18[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-21 {
@@ -594,23 +585,20 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   border-radius: 2px;
 }
 
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-7:hover svg,
 .emotion-7.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-7:hover,
@@ -686,23 +674,20 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   background-color: #808080;
 }
 
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-15:hover,
 .emotion-15.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-15:hover svg,
 .emotion-15.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-16 {
@@ -751,23 +736,20 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   background-color: transparent;
 }
 
-.emotion-18:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-18[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-18:hover,
 .emotion-18.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-18:hover svg,
 .emotion-18.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-18[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-21 {

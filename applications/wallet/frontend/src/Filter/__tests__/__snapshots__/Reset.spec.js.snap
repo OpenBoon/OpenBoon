@@ -50,17 +50,10 @@ exports[`<FilterReset /> should render properly with no fields 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-2:hover,
 .emotion-2.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
@@ -159,17 +152,10 @@ exports[`<FilterReset /> should reset properly 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
@@ -284,17 +270,10 @@ exports[`<FilterReset /> should switch properly 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 

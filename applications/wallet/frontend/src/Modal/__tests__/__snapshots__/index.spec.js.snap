@@ -102,15 +102,6 @@ exports[`<Modal /> should render properly 1`] = `
   margin-right: 16px;
 }
 
-.emotion-6:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-6[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-6,
 .emotion-6:hover,
 .emotion-6:visited {
@@ -118,7 +109,14 @@ exports[`<Modal /> should render properly 1`] = `
 }
 
 .emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-7 {
@@ -152,15 +150,6 @@ exports[`<Modal /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-7,
 .emotion-7:hover,
 .emotion-7:visited {
@@ -168,7 +157,14 @@ exports[`<Modal /> should render properly 1`] = `
 }
 
 .emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   opacity: 0.5;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <ReactAriaModal

@@ -46,17 +46,10 @@ exports[`<FilterTextDetection /> should clear a text detection 1`] = `
   height: 100%;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-2:hover,
 .emotion-2.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #3b3b3b;
 }
 
@@ -96,23 +89,20 @@ exports[`<FilterTextDetection /> should clear a text detection 1`] = `
   width: 42px;
 }
 
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-4:hover,
 .emotion-4.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-4:hover svg,
 .emotion-4.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-4[aria-disabled=true] {
+  color: #808080;
 }
 
 <div

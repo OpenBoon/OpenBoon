@@ -351,15 +351,6 @@ Array [
   margin: -6px;
 }
 
-.emotion-16:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-16[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-16:hover,
 .emotion-16.focus-visible:focus {
   color: #ffffff!important;

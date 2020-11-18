@@ -49,17 +49,10 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
   border-radius: 32px;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #4a4a4a;
 }
 

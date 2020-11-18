@@ -126,17 +126,15 @@ exports[`<Layout /> should render properly 1`] = `
   height: 100%;
 }
 
-.emotion-8:hover {
-  cursor: pointer;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-8:hover,
 .emotion-8.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #3b3b3b;
+}
+
+.emotion-8:hover {
+  cursor: pointer;
 }
 
 .emotion-9 {
@@ -415,17 +413,15 @@ exports[`<Layout /> should render properly 2`] = `
   height: 100%;
 }
 
-.emotion-8:hover {
-  cursor: pointer;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-8:hover,
 .emotion-8.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #3b3b3b;
+}
+
+.emotion-8:hover {
+  cursor: pointer;
 }
 
 .emotion-9 {

@@ -68,15 +68,6 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   height: 100%;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-3,
 .emotion-3:hover,
 .emotion-3:visited {
@@ -699,15 +690,6 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   color: #ffffff;
   border-radius: 0;
   height: 100%;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-3,

@@ -130,7 +130,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -193,15 +193,6 @@ exports[`<ResetPassword /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-11,
 .emotion-11:hover,
 .emotion-11:visited {
@@ -209,7 +200,14 @@ exports[`<ResetPassword /> should render properly 1`] = `
 }
 
 .emotion-11:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-11[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-12 {
