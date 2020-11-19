@@ -29,15 +29,16 @@ class FieldControllerTests : MockMvcTest() {
 
     @Test
     fun testCreate() {
-        val testSpec = FieldSpec("pet.name", "keyword")
+        val testSpec = FieldSpec("pet_name", "keyword")
         mvc.perform(
-            MockMvcRequestBuilders.post("/api/v3/fields")
+            MockMvcRequestBuilders.post("/api/v3/custom-fields")
                 .headers(admin())
                 .content(Json.serialize(testSpec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("custom.pet.name")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.attrName", CoreMatchers.equalTo("custom.pet_name")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("pet_name")))
             .andReturn()
     }
 
@@ -45,12 +46,13 @@ class FieldControllerTests : MockMvcTest() {
     fun testGet() {
         val field = fieldService.createField(FieldSpec("name", "keyword"))
         mvc.perform(
-            MockMvcRequestBuilders.get("/api/v3/fields/${field.id}")
+            MockMvcRequestBuilders.get("/api/v3/custom-fields/${field.id}")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("custom.name")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("name")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.attrName", CoreMatchers.equalTo("custom.name")))
             .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.equalTo(field.id.toString())))
             .andExpect(MockMvcResultMatchers.jsonPath("$.timeCreated", CoreMatchers.anything()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.timeModified", CoreMatchers.anything()))

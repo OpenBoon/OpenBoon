@@ -54,6 +54,7 @@ class Field(
     @Column(name = "actor_modified")
     @ApiModelProperty("The actor that last made the last modification the Field.")
     val actorModified: String,
+
 ) {
 
     override fun equals(other: Any?): Boolean {
@@ -67,5 +68,36 @@ class Field(
 
     override fun hashCode(): Int {
         return id.hashCode()
+    }
+
+    fun getEsField(): String {
+        return "custom.$name"
+    }
+
+    companion object {
+
+        val NAME_REGEX = Regex("^[a-z0-9_\\-]+$", RegexOption.IGNORE_CASE)
+
+        val ALLOWED_TYPES = setOf(
+            "binary",
+            "boolean",
+            "keyword",
+            "fulltext_keyword", // special
+            "constant_keyword",
+            "wildcard",
+            "long",
+            "integer",
+            "short",
+            "byte",
+            "double",
+            "float",
+            "half_float",
+            "date",
+            "text",
+            "geo_point",
+            "geo_shape",
+            "point",
+            "shape"
+        )
     }
 }

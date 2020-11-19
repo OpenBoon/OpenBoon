@@ -92,7 +92,7 @@ class AssetControllerTests : MockMvcTest() {
         // For co-routing logs
         Thread.sleep(1000)
     }
-    
+
     @Test
     fun testUpdateLabels() {
         val ds = modelService.createModel(ModelSpec("test", ModelType.ZVI_KNN_CLASSIFIER))

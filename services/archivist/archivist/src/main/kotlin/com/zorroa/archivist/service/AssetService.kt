@@ -15,6 +15,7 @@ import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchIndexFailure
 import com.zorroa.archivist.domain.BatchIndexResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
+import com.zorroa.archivist.domain.Field
 import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.InternalTask
@@ -773,15 +774,18 @@ class AssetServiceImpl : AssetService {
         val asset = Asset(id)
         val projectId = getProjectId()
 
+        spec.custom?.forEach { k, v ->
+            if (!k.matches(Field.NAME_REGEX)) {
+                throw IllegalArgumentException(
+                    "Field names '$k' must be alpha-numeric, underscores/dashes are allowed."
+                )
+            }
+            asset.setAttr("custom.$k", v)
+        }
+
+        // Spec.attrs can only be set locally via tests, not via REST endpoints.
         spec.attrs?.forEach { k, v ->
-            val prefix = try {
-                k.substring(0, k.indexOf('.'))
-            } catch (e: StringIndexOutOfBoundsException) {
-                k
-            }
-            if (prefix !in removeFieldsOnCreate) {
-                asset.setAttr(k, v)
-            }
+            asset.setAttr(k, v)
         }
 
         val time = java.time.Clock.systemUTC().instant().toString()

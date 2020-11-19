@@ -195,26 +195,9 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchCreateAssets_WithIgnoreFields() {
-        val spec = AssetSpec(
-            "gs://cats/large-brown-cat.jpg",
-            mapOf("system.hello" to "foo")
-        )
-
-        val req = BatchCreateAssetsRequest(
-            assets = listOf(spec)
-        )
-        val rsp = assetService.batchCreate(req)
-        assertTrue(rsp.failed.isEmpty())
-        val assets = assetService.getAll(rsp.created)
-        assertNull(assets[0].getAttr("system.hello"))
-    }
-
-    @Test
     fun testBatchCreateNonPageableWithPage() {
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.jpg",
-            mapOf("system.hello" to "foo"),
             page = 2
         )
 
@@ -253,12 +236,10 @@ class AssetServiceTests : AbstractTest() {
         val req = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec(
-                    "gs://cats/large-brown-cat.jpg",
-                    mapOf("system.hello" to "foo")
+                    "gs://cats/large-brown-cat.jpg"
                 ),
                 AssetSpec(
                     "gs://cats/large-brown-dog.png",
-                    mapOf("system.hello" to "foo"),
                     page = 2
                 )
             )
@@ -278,7 +259,6 @@ class AssetServiceTests : AbstractTest() {
     fun testBatchCreateAssetsWithPage() {
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.pdf",
-            mapOf("system.hello" to "foo"),
             page = 2
         )
 
@@ -304,7 +284,6 @@ class AssetServiceTests : AbstractTest() {
 
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.jpg",
-            mapOf("system.hello" to "foo"),
             label = Label(ds.id, "bilbo")
         )
 
