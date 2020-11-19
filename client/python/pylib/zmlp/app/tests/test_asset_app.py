@@ -79,6 +79,33 @@ class AssetAppTests(unittest.TestCase):
             }
         }
 
+        self.mock_clip_search_result = {
+            'took': 4,
+            'timed_out': False,
+            'hits': {
+                'total': {'value': 2},
+                'max_score': 0.2876821,
+                'hits': [
+                    {
+                        '_index': 'litvqrkus86sna2w',
+                        '_type': 'asset',
+                        '_id': 'dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',
+                        '_score': 0.2876821,
+                        '_source': {
+                            'clip': {
+                                'id': '12345',
+                                'timeline': 'foo',
+                                'track': 'bar',
+                                'start': 0.5,
+                                'stop': 1.5,
+                                'content': ["everybody dance now"]
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+
     @patch.object(ZmlpClient, 'post')
     def test_import_files(self, post_patch):
         post_patch.return_value = self.mock_import_result
@@ -187,8 +214,23 @@ class AssetAppTests(unittest.TestCase):
 
         post_patch.side_effect = [scroll_result, {'hits': {'hits': []}}]
         del_patch.return_value = {}
-        for asset in self.app.assets.scroll_search():
-            print(asset)
+        c = 0
+        for _ in self.app.assets.scroll_search():
+            c += 1
+        assert c == 2
+
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(ZmlpClient, 'post')
+    def test_scroll_search_clips(self, post_patch, del_patch):
+        scroll_result = copy.deepcopy(self.mock_clip_search_result)
+        scroll_result['_scroll_id'] = 'abc123'
+
+        post_patch.side_effect = [scroll_result, {'hits': {'hits': []}}]
+        del_patch.return_value = {}
+        for clip in self.app.assets.scroll_search_clips('12345'):
+            assert clip.id == 'dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg'
+            assert clip.timeline == 'foo'
+            assert clip.track == 'bar'
 
     @patch.object(ZmlpClient, 'post')
     def test_search_raw_response(self, post_patch):
