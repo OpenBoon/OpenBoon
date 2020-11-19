@@ -5,9 +5,11 @@ import PropTypes from 'prop-types'
 import { colors, constants, zIndex } from '../Styles'
 
 import { updatePlayheadPosition, GUIDE_WIDTH } from './helpers'
+import { getScroller } from '../Scroll/helpers'
 
 const HEIGHT = 12
 const WIDTH = 10
+const SCROLL_BUFFER = 50
 
 let originX
 let originLeft
@@ -18,18 +20,56 @@ const TimelinePlayhead = ({ videoRef, rulerRef, zoom }) => {
 
   const video = videoRef.current
 
+  const scroller = getScroller({ namespace: 'timeline' })
+
   /* istanbul ignore next */
   const onMount = useCallback(
     (node) => {
       const animate = () => {
-        const offset = rulerRef.current?.scrollLeft || 0
+        const visibleAreaWidth = rulerRef.current?.clientWidth
+
+        const contentWidth = rulerRef.current?.scrollWidth
+
+        const timelineOffset = rulerRef.current?.scrollLeft || 0
+
+        const hiddenToTheRight =
+          contentWidth - timelineOffset - visibleAreaWidth
+
+        const currentPlayheadPosition =
+          node.offsetLeft + WIDTH / 2 - GUIDE_WIDTH / 2
+
+        const nextPlayheadPosition = video
+          ? (((video.currentTime / video.duration) * zoom) / 100) *
+              visibleAreaWidth -
+            GUIDE_WIDTH / 2
+          : 0
 
         updatePlayheadPosition({
           video,
           playhead: node,
           zoom,
-          offset,
+          timelineOffset,
         })
+
+        if (
+          currentPlayheadPosition > visibleAreaWidth - SCROLL_BUFFER &&
+          hiddenToTheRight > 0 &&
+          !video?.paused
+        ) {
+          const playheadDelta = nextPlayheadPosition - currentPlayheadPosition
+
+          scroller.emit({
+            eventName: 'scroll',
+            data: {
+              scrollX:
+                currentPlayheadPosition -
+                visibleAreaWidth +
+                SCROLL_BUFFER +
+                playheadDelta,
+              scrollY: 0,
+            },
+          })
+        }
 
         frameRef.current = requestAnimationFrame(animate)
       }
@@ -45,7 +85,7 @@ const TimelinePlayhead = ({ videoRef, rulerRef, zoom }) => {
         playheadRef.current = node
       }
     },
-    [video, zoom, rulerRef],
+    [video, zoom, rulerRef, scroller],
   )
 
   /* istanbul ignore next */
