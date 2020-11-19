@@ -170,26 +170,27 @@ const Button = forwardRef(
     { variant, children, href, style, isDisabled, onClick, target, ...props },
     ref,
   ) => {
-    const Element = href ? 'a' : 'button'
+    const Element = href && !isDisabled ? 'a' : 'button'
 
     const disabled = isDisabled ? { 'aria-disabled': true } : {}
 
-    const addedProps = href
-      ? {
-          href,
-          onClick,
-          target,
-          rel:
-            target && target === '_blank' ? 'noopener noreferrer' : undefined,
-        }
-      : {
-          type: 'button',
-          ...disabled,
-          onClick: (event) => {
-            if (isDisabled) return event.preventDefault()
-            return onClick(event)
-          },
-        }
+    const addedProps =
+      href && !isDisabled
+        ? {
+            href,
+            onClick,
+            target,
+            rel:
+              target && target === '_blank' ? 'noopener noreferrer' : undefined,
+          }
+        : {
+            type: 'button',
+            ...disabled,
+            onClick: (event) => {
+              if (isDisabled) return event.preventDefault()
+              return onClick(event)
+            },
+          }
 
     return (
       <Element

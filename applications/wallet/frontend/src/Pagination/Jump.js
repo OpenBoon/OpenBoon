@@ -5,19 +5,18 @@ import Link from 'next/link'
 
 import { spacing, constants } from '../Styles'
 
-import ChevronSvg from '../Icons/chevron.svg'
+import DoubleChevronSvg from '../Icons/doubleChevron.svg'
 
 import Button, { VARIANTS } from '../Button'
 
-const PaginationLink = ({ currentPage, totalPages, direction }) => {
+const PaginationJump = ({ currentPage, totalPages, direction }) => {
   const { pathname, query } = useRouter()
 
   const isPrev = direction === 'prev'
 
-  const isDisabled = isPrev ? currentPage - 1 <= 0 : currentPage === totalPages
+  const isDisabled = isPrev ? currentPage === 1 : currentPage === totalPages
 
-  const queryParamPage = isPrev ? currentPage - 1 : currentPage + 1
-  const queryParam = queryParamPage === 1 ? '' : `?page=${queryParamPage}`
+  const queryParam = isPrev ? '' : `?page=${totalPages}`
   const href = `${pathname}${queryParam}`
   const as = href
     .split('/')
@@ -27,14 +26,17 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
   return (
     <Link href={href} as={as} passHref>
       <Button
-        aria-label={isPrev ? 'Previous page' : 'Next page'}
-        title={isPrev ? 'Previous page' : 'Next page'}
+        aria-label={isPrev ? 'First page' : 'Last page'}
+        title={isPrev ? 'First page' : 'Last page'}
         variant={VARIANTS.SECONDARY_SMALL}
-        style={{ padding: spacing.moderate }}
+        style={{
+          padding: spacing.moderate,
+          [isPrev ? 'marginRight' : 'marginLeft']: spacing.base,
+        }}
         rel={direction}
         isDisabled={isDisabled}
       >
-        <ChevronSvg
+        <DoubleChevronSvg
           height={constants.icons.mini}
           css={{ transform: `rotate(${isPrev ? '' : '-'}90deg)` }}
         />
@@ -43,10 +45,10 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
   )
 }
 
-PaginationLink.propTypes = {
+PaginationJump.propTypes = {
   currentPage: PropTypes.number.isRequired,
   totalPages: PropTypes.number.isRequired,
   direction: PropTypes.oneOf(['prev', 'next']).isRequired,
 }
 
-export default PaginationLink
+export default PaginationJump

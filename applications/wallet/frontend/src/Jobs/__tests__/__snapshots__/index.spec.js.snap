@@ -1602,16 +1602,16 @@ Array [
           </tbody>
         </table>
       </div>
-    </div>
-    <div>
-       
-    </div>
-    <Pagination
-      currentPage={1}
-      totalPages={1}
-    />
-    <div>
-       
+      <div>
+         
+      </div>
+      <Pagination
+        currentPage={1}
+        totalPages={1}
+      />
+      <div>
+         
+      </div>
     </div>
   </div>,
 ]
