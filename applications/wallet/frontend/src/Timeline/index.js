@@ -14,7 +14,7 @@ import { cleanup } from '../Filters/helpers'
 
 import Button, { VARIANTS } from '../Button'
 import CheckboxSwitch from '../Checkbox/Switch'
-import ResizeableWithMessage from '../Resizeable/WithMessage'
+import Resizeable from '../Resizeable'
 
 import { reducer, INITIAL_STATE, ACTIONS } from './reducer'
 import { COLORS, GUIDE_WIDTH } from './helpers'
@@ -30,6 +30,7 @@ import TimelineSearchHits from './SearchHits'
 import TimelineTimelines from './Timelines'
 import TimelineMetadata from './Metadata'
 import TimelineShortcuts from './Shortcuts'
+import TimelineResize from './Resize'
 
 const TIMELINE_HEIGHT = 200
 const SEPARATOR_WIDTH = 2
@@ -76,7 +77,7 @@ const Timeline = ({ videoRef, length }) => {
   })
 
   return (
-    <ResizeableWithMessage
+    <Resizeable
       storageName={`Timeline.${assetId}`}
       minSize={TIMELINE_HEIGHT}
       openToThe="top"
@@ -278,10 +279,11 @@ const Timeline = ({ videoRef, length }) => {
               settings={settings}
               dispatch={dispatch}
             />
+            <TimelineResize dispatch={dispatch} zoom={settings.zoom} />
           </div>
         </div>
       )}
-    </ResizeableWithMessage>
+    </Resizeable>
   )
 }
 

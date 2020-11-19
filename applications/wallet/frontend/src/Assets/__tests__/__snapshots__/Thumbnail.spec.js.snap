@@ -65,15 +65,6 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   border-radius: 0;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-2 {
   width: 100%;
   height: 100%;
@@ -115,15 +106,6 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   right: 4px;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   opacity: 1;
@@ -163,15 +145,6 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   position: absolute;
   bottom: 4px;
   right: 4px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-4:hover,
@@ -292,15 +265,6 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   border-radius: 0;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-2 {
   width: 100%;
   height: 100%;
@@ -342,15 +306,6 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   right: 4px;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   opacity: 1;
@@ -390,15 +345,6 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   position: absolute;
   bottom: 4px;
   right: 4px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-4:hover,
@@ -519,15 +465,6 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   border-radius: 0;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-2 {
   width: 100%;
   height: 100%;
@@ -569,15 +506,6 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   right: 4px;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   opacity: 1;
@@ -617,15 +545,6 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   position: absolute;
   bottom: 4px;
   right: 4px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-4:hover,
@@ -760,15 +679,6 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   border-radius: 0;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-2 {
   width: 100%;
   height: 100%;
@@ -810,15 +720,6 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   right: 4px;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   opacity: 1;
@@ -858,15 +759,6 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   position: absolute;
   bottom: 4px;
   right: 4px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-4:hover,
@@ -987,15 +879,6 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   border-radius: 0;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-2 {
   width: 100%;
   height: 100%;
@@ -1037,15 +920,6 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   right: 4px;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   opacity: 1;
@@ -1085,15 +959,6 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   position: absolute;
   bottom: 4px;
   right: 4px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-4:hover,

@@ -271,15 +271,6 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   background-color: transparent;
 }
 
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-15,
 .emotion-15:hover,
 .emotion-15:visited {
@@ -287,7 +278,14 @@ exports[`<Authentication /> should render properly when user needs to approve ne
 }
 
 .emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div

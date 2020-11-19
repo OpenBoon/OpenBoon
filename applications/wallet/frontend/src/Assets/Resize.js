@@ -13,10 +13,10 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
   <div
     css={{
       position: 'absolute',
-      bottom: 16,
-      right: 16,
+      bottom: spacing.normal,
+      right: spacing.normal,
       display: 'flex',
-      border: constants.borders.tab,
+      border: constants.borders.regular.iron,
       borderRadius: constants.borderRadius.small,
       backgroundColor: colors.structure.lead,
       boxShadow: constants.boxShadows.default,

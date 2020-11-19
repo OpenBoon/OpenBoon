@@ -109,17 +109,15 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   height: 100%;
 }
 
-.emotion-7:hover {
-  cursor: pointer;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #3b3b3b;
+}
+
+.emotion-7:hover {
+  cursor: pointer;
 }
 
 .emotion-8 {
@@ -251,15 +249,6 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   background-color: transparent;
 }
 
-.emotion-16:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-16[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-16,
 .emotion-16:hover,
 .emotion-16:visited {
@@ -267,7 +256,14 @@ exports[`<Projects /> should render an access denied screen if the url projectId
 }
 
 .emotion-16:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-16[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div

@@ -219,15 +219,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-5,
 .emotion-5:hover,
 .emotion-5:visited {
@@ -311,7 +302,7 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -319,6 +310,8 @@ Array [
 }
 
 .emotion-4:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -483,15 +476,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-34:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-34[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-34,
 .emotion-34:hover,
 .emotion-34:visited {
@@ -499,7 +483,14 @@ Array [
 }
 
 .emotion-34:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-34[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <form
@@ -899,15 +890,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-5,
 .emotion-5:hover,
 .emotion-5:visited {
@@ -991,7 +973,7 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -999,6 +981,8 @@ Array [
 }
 
 .emotion-4:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -1180,15 +1164,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-34:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-34[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-34,
 .emotion-34:hover,
 .emotion-34:visited {
@@ -1196,7 +1171,14 @@ Array [
 }
 
 .emotion-34:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-34[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <form
@@ -1645,15 +1627,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-10:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-10[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-10,
 .emotion-10:hover,
 .emotion-10:visited {
@@ -1769,15 +1742,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-20:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-20[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-20,
 .emotion-20:hover,
 .emotion-20:visited {
@@ -1785,7 +1749,14 @@ Array [
 }
 
 .emotion-20:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-20[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-21 {
@@ -1819,15 +1790,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-21:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-21[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-21,
 .emotion-21:hover,
 .emotion-21:visited {
@@ -1835,7 +1797,14 @@ Array [
 }
 
 .emotion-21:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-21[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div>
@@ -2185,15 +2154,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-5,
 .emotion-5:hover,
 .emotion-5:visited {
@@ -2277,7 +2237,7 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -2285,6 +2245,8 @@ Array [
 }
 
 .emotion-4:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -2449,15 +2411,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-34:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-34[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-34,
 .emotion-34:hover,
 .emotion-34:visited {
@@ -2465,7 +2418,14 @@ Array [
 }
 
 .emotion-34:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-34[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <form

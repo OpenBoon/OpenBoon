@@ -92,15 +92,6 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
   background-color: transparent;
 }
 
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-7,
 .emotion-7:hover,
 .emotion-7:visited {
@@ -108,7 +99,14 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
 }
 
 .emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
@@ -246,15 +244,6 @@ exports[`<AccountCard /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-7,
 .emotion-7:hover,
 .emotion-7:visited {
@@ -262,7 +251,14 @@ exports[`<AccountCard /> should render properly 1`] = `
 }
 
 .emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-8 {
@@ -488,15 +484,6 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
   background-color: transparent;
 }
 
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-7,
 .emotion-7:hover,
 .emotion-7:visited {
@@ -504,7 +491,14 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
 }
 
 .emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-8 {
@@ -730,15 +724,6 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   background-color: transparent;
 }
 
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-7,
 .emotion-7:hover,
 .emotion-7:visited {
@@ -746,7 +731,14 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
 }
 
 .emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-8 {

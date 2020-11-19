@@ -1,5 +1,6 @@
 import io
 import os
+import requests
 from collections import namedtuple
 
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job
@@ -355,6 +356,34 @@ class AssetApp(object):
             return os.path.getsize(dst_file)
         else:
             return io.BytesIO(rsp.content)
+
+    def stream_file(self, stored_file, chunk_size=1024):
+        """
+        Streams a file by iteratively returning chunks of the file using a generator. This
+        can be useful when developing web applications and a full download of the file
+        before continuing is not necessary.
+
+        Args:
+            stored_file (mixed): The StoredFile instance or its ID.
+            chunk_size (int): The byte sizes of each requesting chunk. Defaults to 1024.
+
+        Yields:
+            generator (File-like Object): Content of the file.
+
+        """
+        if isinstance(stored_file, str):
+            path = stored_file
+        elif isinstance(stored_file, StoredFile):
+            path = stored_file.id
+        else:
+            raise ValueError("stored_file must be a string or StoredFile instance")
+
+        url = self.app.client.get_url('/api/v3/files/_stream/{}'.format(path))
+        response = requests.get(url, verify=self.app.client.verify,
+                                headers=self.app.client.headers(), stream=True)
+
+        for block in response.iter_content(chunk_size):
+            yield block
 
     def get_sim_hashes(self, images):
         """

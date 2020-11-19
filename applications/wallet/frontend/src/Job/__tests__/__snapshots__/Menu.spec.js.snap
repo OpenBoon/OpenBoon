@@ -59,15 +59,6 @@ exports[`<JobMenu /> should render properly 1`] = `
   color: #ffffff;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-2,
 .emotion-2:hover,
 .emotion-2:visited {
@@ -140,17 +131,10 @@ exports[`<JobMenu /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-4:hover,
 .emotion-4.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #4a4a4a;
 }
 

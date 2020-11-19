@@ -97,23 +97,20 @@ exports[`<Asset /> should handle no query 1`] = `
   background-color: transparent;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-5:hover,
 .emotion-5.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-6 {
@@ -214,19 +211,12 @@ exports[`<Asset /> should handle no query 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
 }
 
-.emotion-16 {
+.emotion-15 {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
@@ -260,25 +250,27 @@ exports[`<Asset /> should handle no query 1`] = `
   margin-bottom: 1px;
 }
 
-.emotion-16:hover {
-  background-color: #2e2e2e;
-}
-
-.emotion-16[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-16:hover,
-.emotion-16.focus-visible:focus {
+.emotion-15:hover,
+.emotion-15.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-16:hover svg,
-.emotion-16.focus-visible:focus svg {
+.emotion-15:hover svg,
+.emotion-15.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-20 {
+.emotion-15[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-15:hover {
+  background-color: #2e2e2e;
+}
+
+.emotion-19 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -372,14 +364,22 @@ exports[`<Asset /> should handle no query 1`] = `
       </div>
     </div>
     <div
-      className="emotion-14"
+      style={
+        Object {
+          "alignItems": "stretch",
+          "display": "flex",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "height": "100%",
+        }
+      }
     >
       <div
-        className="emotion-15"
+        className="emotion-14"
       >
         <button
           aria-label="Asset Metadata"
-          className="emotion-16"
+          className="emotion-15"
           onClick={[Function]}
           title="Asset Metadata"
           type="button"
@@ -391,7 +391,7 @@ exports[`<Asset /> should handle no query 1`] = `
         </button>
         <button
           aria-label="Face Recognition Training"
-          className="emotion-16"
+          className="emotion-15"
           onClick={[Function]}
           title="Face Recognition Training"
           type="button"
@@ -403,7 +403,7 @@ exports[`<Asset /> should handle no query 1`] = `
         </button>
         <button
           aria-label="Add Labels To Model"
-          className="emotion-16"
+          className="emotion-15"
           onClick={[Function]}
           title="Add Labels To Model"
           type="button"
@@ -415,7 +415,7 @@ exports[`<Asset /> should handle no query 1`] = `
         </button>
         <button
           aria-label="Delete"
-          className="emotion-16"
+          className="emotion-15"
           onClick={[Function]}
           title="Delete"
           type="button"
@@ -426,7 +426,7 @@ exports[`<Asset /> should handle no query 1`] = `
           />
         </button>
         <div
-          className="emotion-20"
+          className="emotion-19"
         />
       </div>
     </div>
@@ -531,23 +531,20 @@ exports[`<Asset /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-5:hover,
 .emotion-5.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-6 {
@@ -606,19 +603,12 @@ exports[`<Asset /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
 }
 
-.emotion-12 {
+.emotion-11 {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
@@ -652,25 +642,27 @@ exports[`<Asset /> should render properly 1`] = `
   margin-bottom: 1px;
 }
 
-.emotion-12:hover {
-  background-color: #2e2e2e;
-}
-
-.emotion-12[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-12:hover,
-.emotion-12.focus-visible:focus {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-12:hover svg,
-.emotion-12.focus-visible:focus svg {
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-16 {
+.emotion-11[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-11:hover {
+  background-color: #2e2e2e;
+}
+
+.emotion-15 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -726,14 +718,22 @@ exports[`<Asset /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-10"
+      style={
+        Object {
+          "alignItems": "stretch",
+          "display": "flex",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "height": "100%",
+        }
+      }
     >
       <div
-        className="emotion-11"
+        className="emotion-10"
       >
         <button
           aria-label="Asset Metadata"
-          className="emotion-12"
+          className="emotion-11"
           onClick={[Function]}
           title="Asset Metadata"
           type="button"
@@ -745,7 +745,7 @@ exports[`<Asset /> should render properly 1`] = `
         </button>
         <button
           aria-label="Face Recognition Training"
-          className="emotion-12"
+          className="emotion-11"
           onClick={[Function]}
           title="Face Recognition Training"
           type="button"
@@ -757,7 +757,7 @@ exports[`<Asset /> should render properly 1`] = `
         </button>
         <button
           aria-label="Add Labels To Model"
-          className="emotion-12"
+          className="emotion-11"
           onClick={[Function]}
           title="Add Labels To Model"
           type="button"
@@ -769,7 +769,7 @@ exports[`<Asset /> should render properly 1`] = `
         </button>
         <button
           aria-label="Delete"
-          className="emotion-12"
+          className="emotion-11"
           onClick={[Function]}
           title="Delete"
           type="button"
@@ -780,7 +780,7 @@ exports[`<Asset /> should render properly 1`] = `
           />
         </button>
         <div
-          className="emotion-16"
+          className="emotion-15"
         />
       </div>
     </div>
@@ -885,23 +885,20 @@ exports[`<Asset /> should render videos properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-5:hover,
 .emotion-5.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-6 {
@@ -1002,19 +999,12 @@ exports[`<Asset /> should render videos properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
 }
 
-.emotion-16 {
+.emotion-15 {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
@@ -1048,25 +1038,27 @@ exports[`<Asset /> should render videos properly 1`] = `
   margin-bottom: 1px;
 }
 
-.emotion-16:hover {
-  background-color: #2e2e2e;
-}
-
-.emotion-16[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-16:hover,
-.emotion-16.focus-visible:focus {
+.emotion-15:hover,
+.emotion-15.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-16:hover svg,
-.emotion-16.focus-visible:focus svg {
+.emotion-15:hover svg,
+.emotion-15.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-20 {
+.emotion-15[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-15:hover {
+  background-color: #2e2e2e;
+}
+
+.emotion-19 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1184,14 +1176,22 @@ exports[`<Asset /> should render videos properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-14"
+      style={
+        Object {
+          "alignItems": "stretch",
+          "display": "flex",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "height": "100%",
+        }
+      }
     >
       <div
-        className="emotion-15"
+        className="emotion-14"
       >
         <button
           aria-label="Asset Metadata"
-          className="emotion-16"
+          className="emotion-15"
           onClick={[Function]}
           title="Asset Metadata"
           type="button"
@@ -1203,7 +1203,7 @@ exports[`<Asset /> should render videos properly 1`] = `
         </button>
         <button
           aria-label="Face Recognition Training"
-          className="emotion-16"
+          className="emotion-15"
           onClick={[Function]}
           title="Face Recognition Training"
           type="button"
@@ -1215,7 +1215,7 @@ exports[`<Asset /> should render videos properly 1`] = `
         </button>
         <button
           aria-label="Add Labels To Model"
-          className="emotion-16"
+          className="emotion-15"
           onClick={[Function]}
           title="Add Labels To Model"
           type="button"
@@ -1227,7 +1227,7 @@ exports[`<Asset /> should render videos properly 1`] = `
         </button>
         <button
           aria-label="Delete"
-          className="emotion-16"
+          className="emotion-15"
           onClick={[Function]}
           title="Delete"
           type="button"
@@ -1238,7 +1238,7 @@ exports[`<Asset /> should render videos properly 1`] = `
           />
         </button>
         <div
-          className="emotion-20"
+          className="emotion-19"
         />
       </div>
     </div>

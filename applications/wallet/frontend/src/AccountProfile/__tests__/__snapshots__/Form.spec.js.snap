@@ -70,15 +70,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -86,7 +77,14 @@ Array [
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <button
@@ -169,15 +167,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -185,7 +174,14 @@ Array [
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <button
@@ -246,7 +242,7 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: ;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
@@ -254,6 +250,8 @@ Array [
 }
 
 .emotion-4:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
@@ -311,15 +309,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-12:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-12[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-12,
 .emotion-12:hover,
 .emotion-12:visited {
@@ -327,7 +316,14 @@ Array [
 }
 
 .emotion-12:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-12[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-13 {
@@ -361,15 +357,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-13,
 .emotion-13:hover,
 .emotion-13:visited {
@@ -377,7 +364,14 @@ Array [
 }
 
 .emotion-13:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-13[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <form
@@ -604,15 +598,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -620,7 +605,14 @@ Array [
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <button

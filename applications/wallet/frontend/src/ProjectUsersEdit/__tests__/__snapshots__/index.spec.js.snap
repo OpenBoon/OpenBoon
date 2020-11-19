@@ -332,15 +332,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-30:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-30[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-30,
 .emotion-30:hover,
 .emotion-30:visited {
@@ -348,7 +339,14 @@ Array [
 }
 
 .emotion-30:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-30[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-31 {
@@ -382,15 +380,6 @@ Array [
   background-color: transparent;
 }
 
-.emotion-31:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-31[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-31,
 .emotion-31:hover,
 .emotion-31:visited {
@@ -398,7 +387,14 @@ Array [
 }
 
 .emotion-31:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-31[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <form

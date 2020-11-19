@@ -32,15 +32,6 @@ exports[`<Button /> should have a type "button" and be aria-disabled, and not cl
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -48,7 +39,14 @@ exports[`<Button /> should have a type "button" and be aria-disabled, and not cl
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <button
@@ -93,15 +91,6 @@ exports[`<Button /> should have a type "button", pass additional props, and be c
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -109,7 +98,14 @@ exports[`<Button /> should have a type "button", pass additional props, and be c
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <button
@@ -153,15 +149,6 @@ exports[`<Button /> should render a link as an anchor tag with no onClick 1`] = 
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -169,7 +156,14 @@ exports[`<Button /> should render a link as an anchor tag with no onClick 1`] = 
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <a
@@ -214,23 +208,20 @@ exports[`<Button /> should render properly for ICON Button 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-0:hover,
 .emotion-0.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-0:hover svg,
 .emotion-0.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #808080;
 }
 
 <button
@@ -274,23 +265,20 @@ exports[`<Button /> should render properly for ICON Link 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #808080;
-}
-
 .emotion-0:hover,
 .emotion-0.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-0:hover svg,
 .emotion-0.focus-visible:focus svg {
   opacity: 1;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #808080;
 }
 
 <a
@@ -331,15 +319,6 @@ exports[`<Button /> should render properly for LINK Button 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-0,
@@ -392,15 +371,6 @@ exports[`<Button /> should render properly for LINK Link 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-0,
@@ -456,17 +426,10 @@ exports[`<Button /> should render properly for MENU Button 1`] = `
   height: 100%;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0:hover,
 .emotion-0.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #3b3b3b;
 }
 
@@ -513,17 +476,10 @@ exports[`<Button /> should render properly for MENU Link 1`] = `
   height: 100%;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0:hover,
 .emotion-0.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #3b3b3b;
 }
 
@@ -567,17 +523,10 @@ exports[`<Button /> should render properly for MENU_ITEM Button 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0:hover,
 .emotion-0.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #4a4a4a;
 }
 
@@ -622,17 +571,10 @@ exports[`<Button /> should render properly for MENU_ITEM Link 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0:hover,
 .emotion-0.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #4a4a4a;
 }
 
@@ -680,17 +622,10 @@ exports[`<Button /> should render properly for MICRO Button 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0:hover,
 .emotion-0.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
@@ -739,17 +674,10 @@ exports[`<Button /> should render properly for MICRO Link 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0:hover,
 .emotion-0.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
@@ -793,15 +721,6 @@ exports[`<Button /> should render properly for NEUTRAL Button 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 <button
   className="emotion-0"
   onClick={[Function]}
@@ -841,15 +760,6 @@ exports[`<Button /> should render properly for NEUTRAL Link 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 <a
@@ -892,15 +802,6 @@ exports[`<Button /> should render properly for PRIMARY Button 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -908,7 +809,14 @@ exports[`<Button /> should render properly for PRIMARY Button 1`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <button
@@ -952,15 +860,6 @@ exports[`<Button /> should render properly for PRIMARY Link 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -968,7 +867,14 @@ exports[`<Button /> should render properly for PRIMARY Link 1`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <a
@@ -1011,15 +917,6 @@ exports[`<Button /> should render properly for PRIMARY_SMALL Button 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -1027,7 +924,14 @@ exports[`<Button /> should render properly for PRIMARY_SMALL Button 1`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <button
@@ -1071,15 +975,6 @@ exports[`<Button /> should render properly for PRIMARY_SMALL Link 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -1087,7 +982,14 @@ exports[`<Button /> should render properly for PRIMARY_SMALL Link 1`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <a
@@ -1130,15 +1032,6 @@ exports[`<Button /> should render properly for SECONDARY Button 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -1146,7 +1039,14 @@ exports[`<Button /> should render properly for SECONDARY Button 1`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <button
@@ -1190,15 +1090,6 @@ exports[`<Button /> should render properly for SECONDARY Link 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -1206,7 +1097,14 @@ exports[`<Button /> should render properly for SECONDARY Link 1`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <a
@@ -1249,15 +1147,6 @@ exports[`<Button /> should render properly for SECONDARY_SMALL Button 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -1265,7 +1154,14 @@ exports[`<Button /> should render properly for SECONDARY_SMALL Button 1`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <button
@@ -1309,15 +1205,6 @@ exports[`<Button /> should render properly for SECONDARY_SMALL Link 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -1325,7 +1212,14 @@ exports[`<Button /> should render properly for SECONDARY_SMALL Link 1`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <a
@@ -1368,15 +1262,6 @@ exports[`<Button /> should render properly for WARNING Button 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -1384,7 +1269,14 @@ exports[`<Button /> should render properly for WARNING Button 1`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   opacity: 0.5;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <button
@@ -1428,15 +1320,6 @@ exports[`<Button /> should render properly for WARNING Link 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
@@ -1444,7 +1327,14 @@ exports[`<Button /> should render properly for WARNING Link 1`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   opacity: 0.5;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <a

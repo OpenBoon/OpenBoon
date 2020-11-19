@@ -61,18 +61,13 @@ exports[`<TimelineControls /> should pause 1`] = `
   background-color: transparent;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
+  background-color: #2e2e2e;
 }
 
 .emotion-3[aria-disabled=true] {
   color: #808080;
-}
-
-.emotion-3:hover,
-.emotion-3.focus-visible:focus {
-  background-color: #2e2e2e;
 }
 
 .emotion-4 {
@@ -268,18 +263,13 @@ exports[`<TimelineControls /> should play 1`] = `
   background-color: transparent;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
+  background-color: #2e2e2e;
 }
 
 .emotion-3[aria-disabled=true] {
   color: #808080;
-}
-
-.emotion-3:hover,
-.emotion-3.focus-visible:focus {
-  background-color: #2e2e2e;
 }
 
 .emotion-4 {

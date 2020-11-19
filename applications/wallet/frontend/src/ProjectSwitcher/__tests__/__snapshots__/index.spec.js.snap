@@ -39,17 +39,10 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
   height: 100%;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #3b3b3b;
 }
 
@@ -138,17 +131,10 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   height: 100%;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #3b3b3b;
 }
 
@@ -234,17 +220,10 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   background-color: transparent;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-5:hover,
 .emotion-5.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #4a4a4a;
 }
 
