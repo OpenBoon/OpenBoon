@@ -38,10 +38,11 @@ const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
         >
           <th>Model</th>
           <th>Label</th>
+          <th>Scope</th>
         </tr>
       </thead>
       <tbody>
-        {labels.map(({ modelId, label }) => {
+        {labels.map(({ modelId, label, scope }) => {
           const { name = '', moduleName = '' } =
             models.find(({ id }) => id === modelId) || {}
 
@@ -66,6 +67,7 @@ const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
               }}
             >
               <td css={{ whiteSpace: 'nowrap' }}>{name}</td>
+
               <td
                 css={{
                   width: '100%',
@@ -74,6 +76,9 @@ const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
               >
                 {label}
               </td>
+
+              <td css={{ wordBreak: 'nowrap' }}>{scope}</td>
+
               <td>
                 <AssetLabelingMenu
                   label={label}
