@@ -52,6 +52,11 @@ class Clip:
         """The stop time of the clip"""
         return self.data['stop']
 
+    @property
+    def score(self):
+        """The prediction score"""
+        return self.data['score']
+
     def __len__(self):
         return self.length
 
