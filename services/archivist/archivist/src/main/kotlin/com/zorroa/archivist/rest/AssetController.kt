@@ -129,7 +129,7 @@ class AssetController @Autowired constructor(
         }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
-    @PostMapping("/api/v3/assets/_batch_update_custom_fields")
+    @PutMapping("/api/v3/assets/_batch_update_custom_fields")
     fun batchUpdateCustomFields(@RequestBody request: BatchUpdateCustomFieldsRequest):
         BatchUpdateCustomFieldsResponse {
             return assetService.batchUpdateCustomFields(request)

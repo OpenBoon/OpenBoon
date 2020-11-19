@@ -71,7 +71,7 @@ class AssetControllerTests : MockMvcTest() {
         val req = mapOf("update" to mapOf(createRsp.created[0] to mapOf("shoe" to "nike")))
 
         mvc.perform(
-            MockMvcRequestBuilders.delete("/api/v3/assets/_batch_update_custom_fields")
+            MockMvcRequestBuilders.put("/api/v3/assets/_batch_update_custom_fields")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(req))
