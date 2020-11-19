@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
 import com.zorroa.archivist.domain.ClipSpec
+import com.zorroa.archivist.domain.FieldSpec
 import com.zorroa.archivist.domain.Label
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelType
@@ -14,6 +15,7 @@ import com.zorroa.archivist.domain.TrackSpec
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.service.AssetSearchService
 import com.zorroa.archivist.service.ClipService
+import com.zorroa.archivist.service.FieldService
 import com.zorroa.archivist.service.ModelService
 import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.archivist.util.bbox
@@ -44,6 +46,9 @@ class AssetControllerTests : MockMvcTest() {
     @Autowired
     lateinit var clipService: ClipService
 
+    @Autowired
+    lateinit var fieldService: FieldService
+
     @Test
     fun testBatchCreate() {
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
@@ -54,6 +59,25 @@ class AssetControllerTests : MockMvcTest() {
                 .content(Json.serialize(mapOf("assets" to listOf(spec))))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
+
+    @Test
+    fun testBatchUpdateCustomFields() {
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val createRsp = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed))
+        fieldService.createField(FieldSpec("shoe", "keyword"))
+
+        val req = mapOf("update" to mapOf(createRsp.created[0] to mapOf("shoe" to "nike")))
+
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/api/v3/assets/_batch_update_custom_fields")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(req))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
             .andReturn()
     }
 

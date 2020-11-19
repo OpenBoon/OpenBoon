@@ -76,7 +76,23 @@ class Field(
 
     companion object {
 
-        val NAME_REGEX = Regex("^[a-z0-9_\\-]+$", RegexOption.IGNORE_CASE)
+        fun isValidFieldName(name: String): Boolean {
+            return name.matches(NAME_REGEX)
+        }
+
+        fun isValidEsFieldName(name: String): Boolean {
+            return name.matches(FIELD_REGEX)
+        }
+
+        /**
+         * A Regex that matches a valid field name.
+         */
+        val NAME_REGEX = Regex("^[a-z0-9_\\-]{2,32}$", RegexOption.IGNORE_CASE)
+
+        /**
+         * A Regex that matches a valid ES field name.
+         */
+        val FIELD_REGEX = Regex("^custom\\.[A-Za-z0-9_\\-]+$")
 
         val ALLOWED_TYPES = setOf(
             "binary",

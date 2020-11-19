@@ -5,6 +5,8 @@ import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
+import com.zorroa.archivist.domain.BatchUpdateCustomFieldsRequest
+import com.zorroa.archivist.domain.BatchUpdateCustomFieldsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
@@ -124,6 +126,13 @@ class AssetController @Autowired constructor(
     fun batchCreate(@RequestBody request: BatchCreateAssetsRequest):
         BatchCreateAssetsResponse {
             return assetService.batchCreate(request)
+        }
+
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @PostMapping("/api/v3/assets/_batch_update_custom_fields")
+    fun batchUpdateCustomFields(@RequestBody request: BatchUpdateCustomFieldsRequest):
+        BatchUpdateCustomFieldsResponse {
+            return assetService.batchUpdateCustomFields(request)
         }
 
     @PreAuthorize("hasAuthority('AssetsImport')")

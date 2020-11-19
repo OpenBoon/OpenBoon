@@ -14,6 +14,8 @@ import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchIndexFailure
 import com.zorroa.archivist.domain.BatchIndexResponse
+import com.zorroa.archivist.domain.BatchUpdateCustomFieldsRequest
+import com.zorroa.archivist.domain.BatchUpdateCustomFieldsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Field
 import com.zorroa.archivist.domain.FileExtResolver
@@ -156,6 +158,8 @@ interface AssetService {
      * utilize either a script or a document, but not both.
      */
     fun batchUpdate(batch: Map<String, UpdateAssetRequest>): BulkResponse
+
+    fun batchUpdateCustomFields(batch: BatchUpdateCustomFieldsRequest): BatchUpdateCustomFieldsResponse
 
     /**
      * Update the the given assets.  The [UpdateAssetRequest] can
@@ -425,6 +429,38 @@ class AssetServiceImpl : AssetService {
         )
 
         return rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
+    }
+
+    override fun batchUpdateCustomFields(batch: BatchUpdateCustomFieldsRequest): BatchUpdateCustomFieldsResponse {
+        if (batch.size() > 1000) {
+            throw IllegalArgumentException("Batch size must be under 1000")
+        }
+
+        val rest = indexRoutingService.getProjectRestClient()
+        val bulkRequest = BulkRequest()
+
+        batch.update.forEach { (id, data) ->
+            val new_data = mapOf(
+                "custom" to
+                    data.map { (k, v) ->
+                        val key = if (k.startsWith("custom.")) {
+                            k.substring(7)
+                        } else {
+                            k
+                        }
+                        key to v
+                    }.toMap()
+            )
+            bulkRequest.add(rest.newUpdateRequest(id).doc(new_data).retryOnConflict(10))
+        }
+
+        return BatchUpdateCustomFieldsResponse(
+            rest.client.bulk(bulkRequest, RequestOptions.DEFAULT).filter {
+                it.isFailed
+            }.map {
+                it.id to it.failureMessage
+            }.toMap()
+        )
     }
 
     override fun updateByQuery(req: UpdateAssetsByQueryRequest): Response {

@@ -38,7 +38,7 @@ class FieldServiceImpl(
             throw IllegalArgumentException("The field type ${spec.type} is not currently supported.")
         }
 
-        if (!spec.name.matches(Field.NAME_REGEX)) {
+        if (!Field.isValidFieldName(spec.name)) {
             throw IllegalArgumentException("Field names must be alpha-numeric, underscores/dashes are allowed.")
         }
 
