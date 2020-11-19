@@ -1,0 +1,318 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModelMatrix /> should render properly 1`] = `
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 100%;
+  margin-left: -32px;
+  margin-right: -32px;
+  margin-bottom: -32px;
+  padding-top: 1px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 4px;
+  background-color: #191919;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  color: #b3b3b3;
+  font-size: 17px;
+  line-height: 20px;
+}
+
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-3 {
+  margin-right: 8px;
+}
+
+.emotion-4 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 16px;
+  border-bottom: 1px solid #191919;
+  font-size: 17px;
+  line-height: 20px;
+  background-color: #252525;
+}
+
+.emotion-6 {
+  font-weight: 700;
+  padding-right: 4px;
+}
+
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #252525;
+}
+
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-9 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 16px;
+  border-right: 1px solid #191919;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-11 {
+  -webkit-writing-mode: vertical-lr;
+  -ms-writing-mode: tb;
+  writing-mode: vertical-lr;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.emotion-12 {
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 20px;
+}
+
+.emotion-13 {
+  color: #b3b3b3;
+}
+
+.emotion-14 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 16px;
+}
+
+.emotion-18 {
+  width: 100px;
+  border-right: 1px solid #191919;
+}
+
+.emotion-20 {
+  padding: 16px;
+  text-align: center;
+}
+
+.emotion-21 {
+  padding: 16px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 20px;
+}
+
+.emotion-22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-left: 1px solid #191919;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <a
+      className="emotion-2"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      <svg
+        className="emotion-3"
+        data-file-name="back.svg"
+        height={20}
+      />
+      Model Details: 
+      console_face_recognition
+    </a>
+  </div>
+  <div
+    className="emotion-4"
+  >
+    <div
+      className="emotion-5"
+    >
+      <span
+        className="emotion-6"
+      >
+        Overall Accuracy:
+      </span>
+      98%
+    </div>
+    <div
+      className="emotion-7"
+    >
+      <div
+        className="emotion-8"
+      >
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-10"
+          >
+            <div
+              className="emotion-11"
+            >
+              <span
+                className="emotion-12"
+              >
+                True Label
+              </span>
+               
+              <span
+                className="emotion-13"
+              >
+                (Number in Set)
+              </span>
+            </div>
+          </div>
+          <div
+            className="emotion-14"
+          >
+            [all the rows]
+          </div>
+        </div>
+        <div
+          className="emotion-15"
+        >
+          <div
+            className="emotion-16"
+          >
+            <div
+              className="emotion-11"
+            >
+               
+            </div>
+          </div>
+          <div
+            className="emotion-18"
+          >
+             
+          </div>
+          <div
+            className="emotion-8"
+          >
+            <div
+              className="emotion-20"
+            >
+              [labels]
+            </div>
+            <div
+              className="emotion-21"
+            >
+              Predictions
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-22"
+      >
+        [preview]
+      </div>
+    </div>
+  </div>
+</div>
+`;
