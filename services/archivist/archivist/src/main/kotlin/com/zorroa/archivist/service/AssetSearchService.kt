@@ -82,7 +82,7 @@ class AssetSearchServiceImpl : AssetSearchService {
         val rest = indexRoutingService.getProjectRestClient()
         val req = SearchScrollRequest(scroll.getValue("scroll_id"))
         req.scroll(scroll.getValue("scroll"))
-        val rsp =  rest.client.scroll(req, RequestOptions.DEFAULT)
+        val rsp = rest.client.scroll(req, RequestOptions.DEFAULT)
         // Clear the scroll automatically if result is empty.
         if (rsp.hits.hits.isEmpty()) {
             clearScroll(scroll)
