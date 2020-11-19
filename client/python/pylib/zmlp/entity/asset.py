@@ -267,10 +267,10 @@ class FileImport(object):
         }
 
     def __setitem__(self, field, value):
-        self.attrs[field] = value
+        self.custom[field] = value
 
     def __getitem__(self, field):
-        return self.attrs[field]
+        return self.custom[field]
 
 
 class FileUpload(FileImport):
