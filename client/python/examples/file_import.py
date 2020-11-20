@@ -11,10 +11,19 @@ def main():
                         help='A URI to import, example https://i.imgur.com/Ly80IrC.jpg')
     parser.add_argument('-m', '--module', action='append',
                         help='Module to apply to the upload')
+    parser.add_argument('-c', '--custom', action='append',
+                        help='Custom metdata value to set.')
 
     args = parser.parse_args()
 
-    assets = [FileImport(path) for path in args.paths]
+    custom = {}
+    if args.custom:
+       for val in args.custom:
+           k,v = val.split("=")
+           custom[k.strip()] = v.strip()
+
+    assets = [FileImport(path, custom=custom) for path in args.paths]
+
     modules = args.module or None
 
     app = app_from_env()

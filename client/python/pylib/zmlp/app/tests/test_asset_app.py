@@ -351,3 +351,23 @@ class AssetAppTests(unittest.TestCase):
         label2 = Model({"id": "abc123"}).make_label("test2")
         rsp = self.app.assets.update_labels(["12345"], add_labels=[label1], remove_labels=[label2])
         assert put_patch.return_value == rsp
+
+    @patch.object(ZmlpClient, 'put')
+    def test_update_custom_fields(self, put_patch):
+        put_patch.return_value = {
+            'success': True
+        }
+        rsp = self.app.assets.update_custom_fields(
+            "12345", {"shoe": "nike"})
+        assert put_patch.return_value == rsp
+
+    @patch.object(ZmlpClient, 'put')
+    def test_batch_custom_fields(self, put_patch):
+        put_patch.return_value = {
+            'success': True
+        }
+        req = {
+            "asset1": {"foo": "bar"}
+        }
+        rsp = self.app.assets.batch_update_custom_fields(req)
+        assert put_patch.return_value == rsp
