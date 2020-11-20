@@ -744,12 +744,12 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
         </tbody>
       </table>
     </div>
-  </div>
-  <div>
-     
-  </div>
-  <div>
-     
+    <div>
+       
+    </div>
+    <div>
+       
+    </div>
   </div>
 </div>
 `;
