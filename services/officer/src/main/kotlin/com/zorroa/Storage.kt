@@ -72,6 +72,7 @@ open class MinioStorageClient : StorageClient {
     }
 
     override fun store(path: String, inputStream: InputStream, size: Long, fileType: String) {
+        logger.info("Storing: {} {}", bucket, path)
         minioClient.putObject(
             bucket, path,
             inputStream,

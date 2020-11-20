@@ -243,11 +243,6 @@ class DispatchQueueManager @Autowired constructor(
             // This call is made with inception key
             val key = authServerClient.getSigningKey(task.projectId, KnownKeys.JOB_RUNNER)
             task.env["ZMLP_APIKEY"] = key.toBase64()
-
-            // So the container can access shared
-            task.env["ZMLP_STORAGE_PIPELINE_URL"] = pipelineStoragProperties.url
-            task.env["ZMLP_STORAGE_PIPELINE_ACCESSKEY"] = pipelineStoragProperties.accessKey
-            task.env["ZMLP_STORAGE_PIPELINE_SECRETKEY"] = pipelineStoragProperties.secretKey
             task.env["ZMLP_CREDENTIALS_TYPES"] = jobService.getCredentialsTypes(task).joinToString(",")
 
             withAuth(InternalThreadAuthentication(task.projectId, setOf())) {

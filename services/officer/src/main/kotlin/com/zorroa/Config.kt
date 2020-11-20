@@ -6,22 +6,25 @@ import org.slf4j.LoggerFactory
 object Config {
 
     open class BucketConfiguration(
-        val url: String,
         val name: String,
         val accessKey: String?,
-        val secretKey: String?
+        val secretKey: String?,
+        val url: String?
     )
 
     class MinioBucketConfiguration() : BucketConfiguration(
-        System.getenv("ZMLP_STORAGE_PIPELINE_URL") ?: "http://localhost:9000",
-        System.getenv("ZMLP_STORAGE_PIPELINE_BUCKET") ?: "pipeline-storage",
-        System.getenv("ZMLP_STORAGE_PIPELINE_ACCESSKEY") ?: "qwerty123",
-        System.getenv("ZMLP_STORAGE_PIPELINE_SECRETKEY") ?: "123qwerty"
+        System.getenv("ZMLP_STORAGE_PROJECT_BUCKET") ?: "project-storage",
+        System.getenv("ZMLP_STORAGE_PROJECT_ACCESSKEY") ?: "qwerty123",
+        System.getenv("ZMLP_STORAGE_PROJECT_SECRETKEY") ?: "123qwerty",
+        System.getenv("ZMLP_STORAGE_PROJECT_URL") ?: "http://localhost:9000",
     )
 
+    /**
+     * We don't need anything besides bucket name for GCS.
+     */
     class GcsBucketConfiguration() : BucketConfiguration(
-        System.getenv("ZMLP_STORAGE_PIPELINE_URL") ?: "http://localhost:9000",
-        System.getenv("ZMLP_STORAGE_PIPELINE_BUCKET") ?: "pipeline-storage",
+        System.getenv("ZMLP_STORAGE_PROJECT_BUCKET") ?: "project-storage",
+        null,
         null,
         null
     )
