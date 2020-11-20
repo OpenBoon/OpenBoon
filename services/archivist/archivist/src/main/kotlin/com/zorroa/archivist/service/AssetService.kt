@@ -824,6 +824,15 @@ class AssetServiceImpl : AssetService {
             asset.setAttr(k, v)
         }
 
+        spec.tmp?.forEach { k, v ->
+            val key = if (k.startsWith("tmp.")) {
+                k
+            } else {
+                "tmp.$k"
+            }
+            asset.setAttr(key, v)
+        }
+
         val time = java.time.Clock.systemUTC().instant().toString()
         if (asset.isAnalyzed()) {
             asset.setAttr("system.timeModified", time)
