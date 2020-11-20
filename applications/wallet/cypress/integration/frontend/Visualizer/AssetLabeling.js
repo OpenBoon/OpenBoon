@@ -39,7 +39,7 @@ describe('Visualizer', function () {
       /**
        * Update
        */
-      cy.get('td').contains(`Cypress-${now}`).next().click()
+      cy.get('td').contains(`Cypress-${now}`).next().next().click()
 
       cy.contains('Edit Label').click()
 
@@ -51,7 +51,7 @@ describe('Visualizer', function () {
       /**
        * Delete
        */
-      cy.get('td').contains(`Cypress-${now}-again`).next().click()
+      cy.get('td').contains(`Cypress-${now}-again`).next().next().click()
 
       cy.contains('Delete Label').click()
 
