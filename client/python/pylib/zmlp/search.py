@@ -1,10 +1,11 @@
 import copy
 
-from .entity import Asset, ZmlpException
+from .entity import Clip, Asset, ZmlpException
 from .util import as_collection
 
 __all__ = [
     'AssetSearchScroller',
+    'AssetClipSearchScroller',
     'AssetSearchResult',
     'AssetSearchCsvExporter',
     'LabelConfidenceQuery',
@@ -16,19 +17,18 @@ __all__ = [
 ]
 
 
-class AssetSearchScroller(object):
+class SearchScroller:
     """
-    The AssetSearchScroller can iterate over large amounts of assets without incurring paging
+    The SearchScroller can iterate over large amounts of data without incurring paging
     overhead by utilizing a server side cursor.  The cursor is held open for the specified
     timeout time unless it is refreshed before the timeout occurs.  In this sense, it's important
     to complete whatever operation you're taking on each asset within the timeout time.  For example
     if your page size is 32 and your timeout is 1m, you have 1 minute to handles 32 assets.  If that
     is not enough time, consider increasing the timeout or lowering your page size.
-
     """
-    def __init__(self, app, search, timeout="1m", raw_response=False):
+    def __init__(self, klass, endpoint, app, search, timeout="1m", raw_response=False):
         """
-        Create a new AssetSearchScroller instance.
+        Create a new AbstractSearchScroller instance.
 
         Args:
             app (ZmlpApp): A ZmlpApp instance.
@@ -38,6 +38,8 @@ class AssetSearchScroller(object):
             raw_response (bool): Yield the raw ES response rather than assets. The raw
                 response will contain the entire page, not individual assets.
         """
+        self.klass = klass
+        self.endpoint = endpoint
         self.app = app
         if search and getattr(search, "to_dict", None):
             search = search.to_dict()
@@ -80,7 +82,7 @@ class AssetSearchScroller(object):
             Asset: Assets that matched the search
         """
         result = self.app.client.post(
-            "api/v3/assets/_search?scroll={}".format(self.timeout), self.search)
+            "{}?scroll={}".format(self.endpoint, self.timeout), self.search)
         scroll_id = result.get("_scroll_id")
         if not scroll_id:
             raise ZmlpException("No scroll ID returned with scroll search, has it timed out?")
@@ -93,9 +95,9 @@ class AssetSearchScroller(object):
                     yield result
                 else:
                     for hit in hits['hits']:
-                        yield Asset({'id': hit['_id'],
-                                     'document': hit['_source'],
-                                     'score': hit['_score']})
+                        yield self.klass({'id': hit['_id'],
+                                          'document': hit['_source'],
+                                          'score': hit['_score']})
 
                 scroll_id = result.get("_scroll_id")
                 if not scroll_id:
@@ -114,6 +116,26 @@ class AssetSearchScroller(object):
 
     def __iter__(self):
         return self.scroll()
+
+
+class AssetSearchScroller(SearchScroller):
+    """
+    AssetSearchScroller handles scrolling through Assets.
+    """
+    def __init__(self, app, search, timeout="1m", raw_response=False):
+        super(AssetSearchScroller, self).__init__(
+            Asset, 'api/v3/assets/_search', app, search, timeout, raw_response
+        )
+
+
+class AssetClipSearchScroller(SearchScroller):
+    """
+    AssetClipSearchScroller handles scrolling through clips for an asset.
+    """
+    def __init__(self, assetId, app, search, timeout="1m", raw_response=False):
+        super(AssetClipSearchScroller, self).__init__(
+            Clip, f'/api/v3/assets/{assetId}/clips/_search', app, search, timeout, raw_response
+        )
 
 
 class AssetSearchCsvExporter:
