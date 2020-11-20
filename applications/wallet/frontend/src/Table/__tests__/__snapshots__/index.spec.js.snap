@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Table /> should prefetch previous and next page 1`] = `
-.emotion-13 {
+.emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -23,366 +23,30 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
-}
-
-.emotion-0 {
-  color: #b3b3b3;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 400;
-}
-
-.emotion-5 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  position: relative;
 }
 
 .emotion-2 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: auto;
-}
-
-.emotion-2:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-2:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-3 {
-  height: auto;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  white-space: nowrap;
-}
-
-.emotion-3 tr {
-  background-color: #252525;
-}
-
-.emotion-3 tr:nth-of-type(2n) {
-  background-color: #2e2e2e;
-}
-
-.emotion-3 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
-}
-
-.emotion-3 tr:hover .actions {
-  color: #b3b3b3;
-}
-
-.emotion-3 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-3 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-3 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
-.emotion-3 td {
-  max-width: calc(100vw / 0);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #e0e0e0;
-  padding: 8px 16px;
-  border: 1px solid transparent;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-3 td:first-of-type {
-  border-left: 1px solid transparent;
-}
-
-.emotion-3 td:last-of-type {
-  border-right: 1px solid transparent;
-  overflow: visible;
-}
-
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
-  border: none;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.emotion-7:hover {
-  opacity: 0.5;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.emotion-6 {
-  color: #ffffff;
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-}
-
-.emotion-8 {
-  padding: 8px 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #ffffff;
-  background-color: #2e2e2e;
-}
-
-.emotion-9 {
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #b3b3b3;
-}
-
-.emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
-  border: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-11:hover {
-  opacity: 0.5;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.emotion-10 {
-  color: #ffffff;
-  -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  transform: rotate(-90deg);
-}
-
-<div
-  className="emotion-13"
->
-  <div
-    className="emotion-1"
-  >
-    <h3
-      className="emotion-0"
-    >
-      Number of 
-      Stuff
-      : 
-      100
-    </h3>
-  </div>
-  <div
-    className="emotion-5"
-  >
-    <div
-      className="emotion-4"
-    >
-      <table
-        className="emotion-3"
-      >
-        <thead>
-          <tr>
-            <th
-              className="emotion-2"
-            >
-              ColumnOne, ColumnTwo
-            </th>
-          </tr>
-        </thead>
-        <tbody />
-      </table>
-    </div>
-  </div>
-  <div>
-     
-  </div>
-  <div
-    className="emotion-12"
-  >
-    <a
-      className="emotion-7"
-      href="/undefined"
-      onClick={[Function]}
-      onMouseEnter={[Function]}
-      rel="prev"
-    >
-      <svg
-        className="emotion-6"
-        data-file-name="chevron.svg"
-        height={16}
-      />
-    </a>
-    <div
-      className="emotion-8"
-    >
-      2
-    </div>
-    <div
-      className="emotion-9"
-    >
-      of 
-      5
-    </div>
-    <a
-      className="emotion-11"
-      href="/undefined?page=3"
-      onClick={[Function]}
-      onMouseEnter={[Function]}
-      rel="next"
-    >
-      <svg
-        className="emotion-10"
-        data-file-name="chevron.svg"
-        height={16}
-      />
-    </a>
-  </div>
-  <FetchAhead
-    url="/api/v1/stuff?from=40&size=20"
-  />
-  <FetchAhead
-    url="/api/v1/stuff?from=0&size=20"
-  />
-  <div>
-     
-  </div>
-</div>
-`;
-
-exports[`<Table /> should render properly without data 1`] = `
-.emotion-8 {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-end;
-  -webkit-box-align: flex-end;
-  -ms-flex-align: flex-end;
-  align-items: flex-end;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  padding-bottom: 16px;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-0 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-7 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-6 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .emotion-5 {
-  height: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  height: auto;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
@@ -396,7 +60,7 @@ exports[`<Table /> should render properly without data 1`] = `
 
 .emotion-5 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
 .emotion-5 tr:hover .actions {
@@ -438,7 +102,7 @@ exports[`<Table /> should render properly without data 1`] = `
   overflow: visible;
 }
 
-.emotion-2 {
+.emotion-6 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -450,20 +114,48 @@ exports[`<Table /> should render properly without data 1`] = `
   width: auto;
 }
 
-.emotion-2:nth-of-type(2) {
+.emotion-6:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-2:not(:last-child) {
+.emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-4 {
-  height: 100%;
-  pointer-events: none;
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
-.emotion-3 {
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-9 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -476,8 +168,592 @@ exports[`<Table /> should render properly without data 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-left: 64px;
+  padding-right: 64px;
+}
+
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited {
+  background-color: #808080;
+}
+
+.emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-10[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-11 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-12 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-right: 8px;
+}
+
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited {
+  background-color: #808080;
+}
+
+.emotion-12:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-12[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-13 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-14 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-14,
+.emotion-14:hover,
+.emotion-14:visited {
+  background-color: #808080;
+}
+
+.emotion-14:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-14[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-15 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-17 {
+  padding: 8px;
+  margin-left: 8px;
+  text-align: center;
+  width: 2.5ch;
+  box-sizing: content-box;
+  border-radius: 2px;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 2px solid transparent;
+  -moz-appearance: textfield;
+}
+
+.emotion-17:hover {
+  border: 2px solid #ffffff;
+}
+
+.emotion-17:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-17::-webkit-outer-spin-button,
+.emotion-17::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.emotion-18 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 8px;
+  padding-right: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-20 {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.emotion-21 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-left: 8px;
+}
+
+.emotion-21,
+.emotion-21:hover,
+.emotion-21:visited {
+  background-color: #808080;
+}
+
+.emotion-21:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-21[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-22 {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <h3
+      className="emotion-2"
+    >
+      Number of 
+      Stuff
+      : 
+      100
+    </h3>
+  </div>
+  <div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-4"
+    >
+      <table
+        className="emotion-5"
+      >
+        <thead>
+          <tr>
+            <th
+              className="emotion-6"
+            >
+              ColumnOne, ColumnTwo
+            </th>
+          </tr>
+        </thead>
+        <tbody />
+      </table>
+    </div>
+    <div>
+       
+    </div>
+    <div
+      className="emotion-7"
+    >
+      <div
+        className="emotion-8"
+      />
+      <div
+        className="emotion-9"
+      >
+        <a
+          className="emotion-10"
+          href="/undefined?page=3"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          rel="next"
+        >
+          Next
+        </a>
+      </div>
+      <div
+        className="emotion-11"
+      >
+        <a
+          aria-label="First page"
+          className="emotion-12"
+          href="/undefined"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          rel="prev"
+          title="First page"
+        >
+          <svg
+            className="emotion-13"
+            data-file-name="doubleChevron.svg"
+            height={16}
+          />
+        </a>
+        <a
+          aria-label="Previous page"
+          className="emotion-14"
+          href="/undefined"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          rel="prev"
+          title="Previous page"
+        >
+          <svg
+            className="emotion-15"
+            data-file-name="chevron.svg"
+            height={16}
+          />
+        </a>
+        <form
+          action=""
+          className="emotion-16"
+          method="get"
+          onSubmit={[Function]}
+        >
+          <input
+            aria-label="Go to page"
+            className="emotion-17"
+            max={5}
+            min="1"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="number"
+            value="2"
+          />
+        </form>
+        <div
+          className="emotion-18"
+        >
+          of 
+          5
+        </div>
+        <a
+          aria-label="Next page"
+          className="emotion-14"
+          href="/undefined?page=3"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          rel="next"
+          title="Next page"
+        >
+          <svg
+            className="emotion-20"
+            data-file-name="chevron.svg"
+            height={16}
+          />
+        </a>
+        <a
+          aria-label="Last page"
+          className="emotion-21"
+          href="/undefined?page=5"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          rel="next"
+          title="Last page"
+        >
+          <svg
+            className="emotion-22"
+            data-file-name="doubleChevron.svg"
+            height={16}
+          />
+        </a>
+      </div>
+    </div>
+    <FetchAhead
+      url="/api/v1/stuff?from=40&size=20"
+    />
+    <FetchAhead
+      url="/api/v1/stuff?from=0&size=20"
+    />
+    <div>
+       
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Table /> should render properly without data 1`] = `
+.emotion-0 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-2 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.emotion-5 {
+  height: 100%;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+.emotion-5 tr {
+  background-color: #252525;
+}
+
+.emotion-5 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-5 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.emotion-5 tr:hover .actions {
+  color: #b3b3b3;
+}
+
+.emotion-5 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-5 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-5 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-5 td {
+  max-width: calc(100vw / 0);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-5 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-5 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-6 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-6:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-6:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-7 {
+  height: 100%;
+  pointer-events: none;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   text-align: center;
   color: #808080;
@@ -486,13 +762,13 @@ exports[`<Table /> should render properly without data 1`] = `
 }
 
 <div
-  className="emotion-8"
+  className="emotion-0"
 >
   <div
     className="emotion-1"
   >
     <h3
-      className="emotion-0"
+      className="emotion-2"
     >
       Number of 
       Stuff
@@ -501,10 +777,10 @@ exports[`<Table /> should render properly without data 1`] = `
     </h3>
   </div>
   <div
-    className="emotion-7"
+    className="emotion-3"
   >
     <div
-      className="emotion-6"
+      className="emotion-4"
     >
       <table
         className="emotion-5"
@@ -512,7 +788,7 @@ exports[`<Table /> should render properly without data 1`] = `
         <thead>
           <tr>
             <th
-              className="emotion-2"
+              className="emotion-6"
             >
               ColumnOne, ColumnTwo
             </th>
@@ -520,13 +796,13 @@ exports[`<Table /> should render properly without data 1`] = `
         </thead>
         <tbody>
           <tr
-            className="emotion-4"
+            className="emotion-7"
           >
             <td
               colSpan={1}
             >
               <div
-                className="emotion-3"
+                className="emotion-8"
               >
                 Empty
               </div>

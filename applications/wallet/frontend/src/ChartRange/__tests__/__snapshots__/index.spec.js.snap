@@ -32,13 +32,13 @@ exports[`<ChartRange /> should not render without an attribute 1`] = `
 `;
 
 exports[`<ChartRange /> should render properly 1`] = `
-.emotion-25 {
+.emotion-0 {
   height: 100%;
   overflow: hidden;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-24 {
+.emotion-1 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -53,14 +53,14 @@ exports[`<ChartRange /> should render properly 1`] = `
   padding-top: 8px;
 }
 
-.emotion-5 {
+.emotion-2 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-bottom: 24px;
 }
 
-.emotion-4 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -72,11 +72,11 @@ exports[`<ChartRange /> should render properly 1`] = `
   margin-right: -8px;
 }
 
-.emotion-4:hover button svg {
+.emotion-3:hover button svg {
   opacity: 1;
 }
 
-.emotion-0 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -88,7 +88,7 @@ exports[`<ChartRange /> should render properly 1`] = `
   text-overflow: ellipsis;
 }
 
-.emotion-1 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -104,93 +104,85 @@ exports[`<ChartRange /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 6px;
 }
 
-.emotion-1:hover {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-1 svg {
+.emotion-5 svg {
   opacity: 0;
 }
 
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-2 {
+.emotion-6 {
   width: 2px;
 }
 
-.emotion-23 {
+.emotion-8 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-22 {
+.emotion-9 {
   height: 100%;
 }
 
-.emotion-22 .Loading {
+.emotion-9 .Loading {
   min-height: auto;
 }
 
-.emotion-21 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 
-.emotion-21 > div {
+.emotion-10>div {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
@@ -200,18 +192,18 @@ exports[`<ChartRange /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-21 > div:nth-of-type(3n) {
+.emotion-10>div:nth-of-type(3n) {
   margin-right: 0;
 }
 
-.emotion-6 {
+.emotion-11 {
   text-transform: uppercase;
   font-family: Roboto Condensed;
   color: #b3b3b3;
   padding-bottom: 4px;
 }
 
-.emotion-7 {
+.emotion-12 {
   border: 1px solid #3b3b3b;
   border-radius: 2px;
   padding: 12px;
@@ -221,19 +213,19 @@ exports[`<ChartRange /> should render properly 1`] = `
   text-overflow: ellipsis;
 }
 
-.emotion-16 {
+.emotion-21 {
   height: 19px;
   margin-bottom: 4px;
 }
 
-.emotion-20 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-19 {
+.emotion-23 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -249,27 +241,21 @@ exports[`<ChartRange /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
   -webkit-flex: 1;
@@ -281,21 +267,14 @@ exports[`<ChartRange /> should render properly 1`] = `
   display: flex;
 }
 
-.emotion-19:hover {
+.emotion-23:hover,
+.emotion-23.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-19[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-19:hover,
-.emotion-19.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-18 {
+.emotion-24 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -306,7 +285,7 @@ exports[`<ChartRange /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-17 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -315,25 +294,25 @@ exports[`<ChartRange /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-25"
+  className="emotion-0"
 >
   <div
-    className="emotion-24"
+    className="emotion-1"
   >
     <div
-      className="emotion-5"
+      className="emotion-2"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
         <h3
-          className="emotion-0"
+          className="emotion-4"
         >
           source.filesize
         </h3>
         <button
           aria-label="Edit Chart"
-          className="emotion-1"
+          className="emotion-5"
           onClick={[Function]}
           title="Edit"
           type="button"
@@ -344,11 +323,11 @@ exports[`<ChartRange /> should render properly 1`] = `
           />
         </button>
         <div
-          className="emotion-2"
+          className="emotion-6"
         />
         <button
           aria-label="Delete Chart"
-          className="emotion-1"
+          className="emotion-5"
           onClick={[Function]}
           title="Delete"
           type="button"
@@ -361,94 +340,94 @@ exports[`<ChartRange /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-23"
+      className="emotion-8"
     >
       <div
-        className="emotion-22"
+        className="emotion-9"
       >
         <div
-          className="emotion-21"
+          className="emotion-10"
         >
           <div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               count
             </div>
             <div
-              className="emotion-7"
+              className="emotion-12"
             >
               -
             </div>
           </div>
           <div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               min
             </div>
             <div
-              className="emotion-7"
+              className="emotion-12"
             >
               180
             </div>
           </div>
           <div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               max
             </div>
             <div
-              className="emotion-7"
+              className="emotion-12"
             >
               8,525
             </div>
           </div>
           <div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               avg
             </div>
             <div
-              className="emotion-7"
+              className="emotion-12"
             >
               899.569
             </div>
           </div>
           <div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               sum
             </div>
             <div
-              className="emotion-7"
+              className="emotion-12"
             >
               521,750
             </div>
           </div>
           <div>
             <div
-              className="emotion-16"
+              className="emotion-21"
             >
                
             </div>
             <div
-              className="emotion-20"
+              className="emotion-22"
             >
               <button
                 aria-label="Add Filter"
-                className="emotion-19"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-24"
                 >
                   <div
-                    className="emotion-17"
+                    className="emotion-25"
                   >
                     <svg
                       data-file-name="filter.svg"
@@ -468,13 +447,13 @@ exports[`<ChartRange /> should render properly 1`] = `
 `;
 
 exports[`<ChartRange /> should render properly without data 1`] = `
-.emotion-15 {
+.emotion-0 {
   height: 100%;
   overflow: hidden;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-14 {
+.emotion-1 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -489,14 +468,14 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   padding-top: 8px;
 }
 
-.emotion-5 {
+.emotion-2 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-bottom: 24px;
 }
 
-.emotion-4 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -508,11 +487,11 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   margin-right: -8px;
 }
 
-.emotion-4:hover button svg {
+.emotion-3:hover button svg {
   opacity: 1;
 }
 
-.emotion-0 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -524,7 +503,7 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   text-overflow: ellipsis;
 }
 
-.emotion-1 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -540,93 +519,85 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 6px;
 }
 
-.emotion-1:hover {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-1 svg {
+.emotion-5 svg {
   opacity: 0;
 }
 
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-2 {
+.emotion-6 {
   width: 2px;
 }
 
-.emotion-13 {
+.emotion-8 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-12 {
+.emotion-9 {
   height: 100%;
 }
 
-.emotion-12 .Loading {
+.emotion-9 .Loading {
   min-height: auto;
 }
 
-.emotion-11 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 
-.emotion-11 > div {
+.emotion-10>div {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
@@ -636,23 +607,23 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-11 > div:nth-of-type(3n) {
+.emotion-10>div:nth-of-type(3n) {
   margin-right: 0;
 }
 
-.emotion-6 {
+.emotion-11 {
   height: 19px;
   margin-bottom: 4px;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-9 {
+.emotion-13 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -668,27 +639,21 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
   -webkit-flex: 1;
@@ -700,21 +665,14 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   display: flex;
 }
 
-.emotion-9:hover {
+.emotion-13:hover,
+.emotion-13.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-9[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-9:hover,
-.emotion-9.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-8 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -725,7 +683,7 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   align-items: center;
 }
 
-.emotion-7 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -734,25 +692,25 @@ exports[`<ChartRange /> should render properly without data 1`] = `
 }
 
 <div
-  className="emotion-15"
+  className="emotion-0"
 >
   <div
-    className="emotion-14"
+    className="emotion-1"
   >
     <div
-      className="emotion-5"
+      className="emotion-2"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
         <h3
-          className="emotion-0"
+          className="emotion-4"
         >
           source.filesize
         </h3>
         <button
           aria-label="Edit Chart"
-          className="emotion-1"
+          className="emotion-5"
           onClick={[Function]}
           title="Edit"
           type="button"
@@ -763,11 +721,11 @@ exports[`<ChartRange /> should render properly without data 1`] = `
           />
         </button>
         <div
-          className="emotion-2"
+          className="emotion-6"
         />
         <button
           aria-label="Delete Chart"
-          className="emotion-1"
+          className="emotion-5"
           onClick={[Function]}
           title="Delete"
           type="button"
@@ -780,34 +738,34 @@ exports[`<ChartRange /> should render properly without data 1`] = `
       </div>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-8"
     >
       <div
-        className="emotion-12"
+        className="emotion-9"
       >
         <div
-          className="emotion-11"
+          className="emotion-10"
         >
           <div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
                
             </div>
             <div
-              className="emotion-10"
+              className="emotion-12"
             >
               <button
                 aria-label="Add Filter"
-                className="emotion-9"
+                className="emotion-13"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-14"
                 >
                   <div
-                    className="emotion-7"
+                    className="emotion-15"
                   >
                     <svg
                       data-file-name="filter.svg"

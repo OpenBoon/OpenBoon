@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Checkbox /> should render properly 1`] = `
-.emotion-6 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -15,7 +15,7 @@ exports[`<Checkbox /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-3 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -23,7 +23,7 @@ exports[`<Checkbox /> should render properly 1`] = `
   position: relative;
 }
 
-.emotion-0 {
+.emotion-2 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -34,7 +34,7 @@ exports[`<Checkbox /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-2 {
+.emotion-3 {
   position: absolute;
   top: 0;
   left: 0;
@@ -45,8 +45,8 @@ exports[`<Checkbox /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -55,7 +55,7 @@ exports[`<Checkbox /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-1 path {
+.emotion-4 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
@@ -72,7 +72,7 @@ exports[`<Checkbox /> should render properly 1`] = `
   padding-left: 12px;
 }
 
-.emotion-4 {
+.emotion-6 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
@@ -80,23 +80,23 @@ exports[`<Checkbox /> should render properly 1`] = `
 }
 
 <label
-  className="emotion-6"
+  className="emotion-0"
 >
   <div
-    className="emotion-3"
+    className="emotion-1"
   >
     <input
-      className="emotion-0"
+      className="emotion-2"
       defaultChecked={false}
       onClick={[Function]}
       type="checkbox"
       value="checkbox"
     />
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <svg
-        className="emotion-1"
+        className="emotion-4"
         data-file-name="checkmark.svg"
         height={20}
       />
@@ -106,7 +106,7 @@ exports[`<Checkbox /> should render properly 1`] = `
     className="emotion-5"
   >
     <span
-      className="emotion-4"
+      className="emotion-6"
     >
       Checkbox
     </span>
@@ -115,7 +115,7 @@ exports[`<Checkbox /> should render properly 1`] = `
 `;
 
 exports[`<Checkbox /> should render properly 2`] = `
-.emotion-6 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -129,7 +129,7 @@ exports[`<Checkbox /> should render properly 2`] = `
   padding-bottom: 16px;
 }
 
-.emotion-3 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -138,45 +138,6 @@ exports[`<Checkbox /> should render properly 2`] = `
 }
 
 .emotion-2 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: pointer;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-left: 12px;
-}
-
-.emotion-4 {
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 700;
-}
-
-.emotion-0 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -187,54 +148,31 @@ exports[`<Checkbox /> should render properly 2`] = `
   cursor: pointer;
 }
 
-.emotion-1 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 100;
-}
-
-<label
-  className="emotion-6"
->
-  <div
-    className="emotion-3"
-  >
-    <input
-      className="emotion-0"
-      defaultChecked={true}
-      onClick={[Function]}
-      type="checkbox"
-      value="checkbox"
-    />
-    <div
-      className="emotion-2"
-    >
-      <svg
-        className="emotion-1"
-        data-file-name="checkmark.svg"
-        height={20}
-      />
-    </div>
-  </div>
-  <div
-    className="emotion-5"
-  >
-    <span
-      className="emotion-4"
-    >
-      Checkbox
-    </span>
-  </div>
-</label>
-`;
-
-exports[`<Checkbox /> should render properly checked and disabled 1`] = `
 .emotion-3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  position: relative;
+  cursor: pointer;
+}
+
+.emotion-4 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
 }
 
 .emotion-5 {
@@ -248,14 +186,50 @@ exports[`<Checkbox /> should render properly checked and disabled 1`] = `
   padding-left: 12px;
 }
 
-.emotion-4 {
+.emotion-6 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-6 {
+<label
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <input
+      className="emotion-2"
+      defaultChecked={true}
+      onClick={[Function]}
+      type="checkbox"
+      value="checkbox"
+    />
+    <div
+      className="emotion-3"
+    >
+      <svg
+        className="emotion-4"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+    </div>
+  </div>
+  <div
+    className="emotion-5"
+  >
+    <span
+      className="emotion-6"
+    >
+      Checkbox
+    </span>
+  </div>
+</label>
+`;
+
+exports[`<Checkbox /> should render properly checked and disabled 1`] = `
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -269,28 +243,15 @@ exports[`<Checkbox /> should render properly checked and disabled 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-2 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  cursor: not-allowed;
+  position: relative;
 }
 
-.emotion-0 {
+.emotion-2 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -301,55 +262,32 @@ exports[`<Checkbox /> should render properly checked and disabled 1`] = `
   cursor: not-allowed;
 }
 
-.emotion-1 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 100;
-  fill: #73b61c;
-}
-
-<label
-  className="emotion-6"
->
-  <div
-    className="emotion-3"
-  >
-    <input
-      className="emotion-0"
-      defaultChecked={true}
-      onClick={[Function]}
-      type="checkbox"
-      value="checkbox"
-    />
-    <div
-      className="emotion-2"
-    >
-      <svg
-        className="emotion-1"
-        data-file-name="checkmark.svg"
-        height={20}
-      />
-    </div>
-  </div>
-  <div
-    className="emotion-5"
-  >
-    <span
-      className="emotion-4"
-    >
-      Checkbox
-    </span>
-  </div>
-</label>
-`;
-
-exports[`<Checkbox /> should render properly disabled 1`] = `
 .emotion-3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  position: relative;
+  cursor: not-allowed;
+}
+
+.emotion-4 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+  fill: #73b61c;
 }
 
 .emotion-5 {
@@ -363,14 +301,50 @@ exports[`<Checkbox /> should render properly disabled 1`] = `
   padding-left: 12px;
 }
 
-.emotion-4 {
+.emotion-6 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-6 {
+<label
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <input
+      className="emotion-2"
+      defaultChecked={true}
+      onClick={[Function]}
+      type="checkbox"
+      value="checkbox"
+    />
+    <div
+      className="emotion-3"
+    >
+      <svg
+        className="emotion-4"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+    </div>
+  </div>
+  <div
+    className="emotion-5"
+  >
+    <span
+      className="emotion-6"
+    >
+      Checkbox
+    </span>
+  </div>
+</label>
+`;
+
+exports[`<Checkbox /> should render properly disabled 1`] = `
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -384,7 +358,15 @@ exports[`<Checkbox /> should render properly disabled 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-2 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -395,7 +377,7 @@ exports[`<Checkbox /> should render properly disabled 1`] = `
   cursor: not-allowed;
 }
 
-.emotion-2 {
+.emotion-3 {
   position: absolute;
   top: 0;
   left: 0;
@@ -406,8 +388,8 @@ exports[`<Checkbox /> should render properly disabled 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -416,31 +398,49 @@ exports[`<Checkbox /> should render properly disabled 1`] = `
   cursor: not-allowed;
 }
 
-.emotion-1 path {
+.emotion-4 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
   fill: #73b61c;
 }
 
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 12px;
+}
+
+.emotion-6 {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 700;
+}
+
 <label
-  className="emotion-6"
+  className="emotion-0"
 >
   <div
-    className="emotion-3"
+    className="emotion-1"
   >
     <input
-      className="emotion-0"
+      className="emotion-2"
       defaultChecked={false}
       onClick={[Function]}
       type="checkbox"
       value="checkbox"
     />
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <svg
-        className="emotion-1"
+        className="emotion-4"
         data-file-name="checkmark.svg"
         height={20}
       />
@@ -450,7 +450,7 @@ exports[`<Checkbox /> should render properly disabled 1`] = `
     className="emotion-5"
   >
     <span
-      className="emotion-4"
+      className="emotion-6"
     >
       Checkbox
     </span>

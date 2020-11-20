@@ -1,23 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Resizeable /> should render properly with the cursor left 1`] = `
+exports[`<Resizeable /> should render properly initially closed 1`] = `
 .emotion-0 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  z-index: 10;
   cursor: col-resize;
   width: 4px;
   margin-left: -2px;
   margin-right: -2px;
-  z-index: 10;
-}
-
-.emotion-1 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  width: 400px;
 }
 
 <div
@@ -25,40 +18,91 @@ exports[`<Resizeable /> should render properly with the cursor left 1`] = `
     Object {
       "alignItems": "stretch",
       "display": "flex",
+      "flexDirection": "row",
       "flexWrap": "nowrap",
+      "height": "100%",
+    }
+  }
+>
+  <div>
+    Header
+  </div>
+  <div
+    aria-label="Resize horizontally"
+    className="emotion-0"
+    onMouseDown={[Function]}
+  />
+</div>
+`;
+
+exports[`<Resizeable /> should render properly initially open 1`] = `
+.emotion-0 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  z-index: 10;
+  cursor: col-resize;
+  width: 4px;
+  margin-left: -2px;
+  margin-right: -2px;
+}
+
+.emotion-1 {
+  width: 400px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+<div
+  style={
+    Object {
+      "alignItems": "stretch",
+      "display": "flex",
+      "flexDirection": "row",
+      "flexWrap": "nowrap",
+      "height": "100%",
     }
   }
 >
   <div
+    aria-label="Resize horizontally"
     className="emotion-0"
     onMouseDown={[Function]}
   />
   <div
     className="emotion-1"
   >
-    Yoga div
+    <div>
+      Body
+    </div>
+  </div>
+  <div>
+    Header
   </div>
 </div>
 `;
 
-exports[`<Resizeable /> should render properly with the cursor right 1`] = `
+exports[`<Resizeable /> should render properly with function children 1`] = `
+.emotion-0 {
+  height: 400px;
+}
+
 .emotion-1 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  cursor: col-resize;
-  width: 4px;
-  margin-left: -2px;
-  margin-right: -2px;
   z-index: 10;
-}
-
-.emotion-0 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  width: 400px;
+  cursor: row-resize;
+  height: 4px;
+  margin-top: -2px;
+  margin-bottom: -2px;
 }
 
 <div
@@ -66,18 +110,69 @@ exports[`<Resizeable /> should render properly with the cursor right 1`] = `
     Object {
       "alignItems": "stretch",
       "display": "flex",
+      "flexDirection": "column",
       "flexWrap": "nowrap",
+      "width": "100%",
     }
   }
 >
   <div
     className="emotion-0"
   >
-    Yoga div
+    <div>
+      Body
+    </div>
   </div>
   <div
+    aria-label="Resize vertically"
     className="emotion-1"
     onMouseDown={[Function]}
   />
+  <div>
+    Header
+  </div>
+</div>
+`;
+
+exports[`<Resizeable /> should render with node children 1`] = `
+.emotion-0 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  z-index: 10;
+  cursor: row-resize;
+  height: 4px;
+  margin-top: -2px;
+  margin-bottom: -2px;
+}
+
+.emotion-1 {
+  height: 400px;
+}
+
+<div
+  style={
+    Object {
+      "alignItems": "stretch",
+      "display": "flex",
+      "flexDirection": "column",
+      "flexWrap": "nowrap",
+      "width": "100%",
+    }
+  }
+>
+  <div
+    aria-label="Resize vertically"
+    className="emotion-0"
+    onMouseDown={[Function]}
+  />
+  <div
+    className="emotion-1"
+  >
+    <div>
+      Body
+    </div>
+  </div>
 </div>
 `;

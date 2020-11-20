@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TaskAssets /> should render properly 1`] = `
-.emotion-61 {
+.emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -23,7 +23,6 @@ exports[`<TaskAssets /> should render properly 1`] = `
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -31,40 +30,40 @@ exports[`<TaskAssets /> should render properly 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-53 {
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+.emotion-3 {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-11 {
+.emotion-4 {
   background-color: #2e2e2e;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-10 {
+.emotion-5 {
   list-style-type: none;
 }
 
-.emotion-10::-webkit-details-marker {
+.emotion-5::-webkit-details-marker {
   display: none;
 }
 
-.emotion-10:hover {
+.emotion-5:hover {
   cursor: pointer;
   background-color: #4a4a4a;
 }
 
-.emotion-10:hover svg {
+.emotion-5:hover svg {
   color: #ffffff;
 }
 
-.emotion-9 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -75,31 +74,31 @@ exports[`<TaskAssets /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-7 {
   width: 60px;
   text-align: center;
 }
 
-.emotion-5 {
+.emotion-8 {
   width: 100px;
   min-width: 100px;
   height: 100px;
 }
 
-.emotion-4 {
+.emotion-9 {
   position: relative;
   border: 4px solid transparent;
   width: 100%;
   height: 100%;
 }
 
-.emotion-3 {
+.emotion-10 {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.emotion-6 {
+.emotion-11 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -113,35 +112,25 @@ exports[`<TaskAssets /> should render properly 1`] = `
   padding-left: 12px;
 }
 
-.emotion-8 {
+.emotion-12 {
   width: 40px;
 }
 
-.emotion-7 {
+.emotion-13 {
   color: #808080;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
 }
 
-.emotion-44 {
+.emotion-51 {
   position: absolute;
   bottom: 4px;
   left: 4px;
   padding: 2px;
   color: #000000;
   background-color: #ffffff80;
-}
-
-.emotion-60 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
 }
 
 .emotion-55 {
@@ -152,49 +141,244 @@ exports[`<TaskAssets /> should render properly 1`] = `
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
+}
+
+.emotion-56 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-57 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-58 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
   border: none;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-left: 64px;
+  padding-right: 64px;
 }
 
-.emotion-55:hover {
-  opacity: 1;
+.emotion-58,
+.emotion-58:hover,
+.emotion-58:visited {
+  background-color: #808080;
+}
+
+.emotion-58:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  cursor: not-allowed;
+  background-color: #b3b3b3;
 }
 
-.emotion-54 {
-  color: #191919;
+.emotion-58[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-59 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-60 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  margin-right: 8px;
+}
+
+.emotion-60,
+.emotion-60:hover,
+.emotion-60:visited {
+  background-color: #808080;
+}
+
+.emotion-60:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-60[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-61 {
   -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-56 {
-  padding: 8px 16px;
+.emotion-62 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
   color: #ffffff;
-  background-color: #2e2e2e;
+  background-color: transparent;
 }
 
-.emotion-57 {
-  padding: 8px 12px;
+.emotion-62,
+.emotion-62:hover,
+.emotion-62:visited {
+  background-color: #808080;
+}
+
+.emotion-62:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-62[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-63 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-64 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-65 {
+  padding: 8px;
+  margin-left: 8px;
+  text-align: center;
+  width: 2.5ch;
+  box-sizing: content-box;
+  border-radius: 2px;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 2px solid transparent;
+  -moz-appearance: textfield;
+}
+
+.emotion-65:hover {
+  border: 2px solid #ffffff;
+}
+
+.emotion-65:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-65::-webkit-outer-spin-button,
+.emotion-65::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.emotion-66 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -203,100 +387,178 @@ exports[`<TaskAssets /> should render properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 8px;
+  padding-right: 8px;
   color: #b3b3b3;
 }
 
-.emotion-59 {
+.emotion-67 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
   border: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
 }
 
-.emotion-59:hover {
-  opacity: 0.5;
+.emotion-67,
+.emotion-67:hover,
+.emotion-67:visited {
+  background-color: #808080;
+}
+
+.emotion-67:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  cursor: pointer;
+  background-color: #b3b3b3;
 }
 
-.emotion-58 {
-  color: #ffffff;
+.emotion-67[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-68 {
   -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.emotion-69 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-left: 8px;
+}
+
+.emotion-69,
+.emotion-69:hover,
+.emotion-69:visited {
+  background-color: #808080;
+}
+
+.emotion-69:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-69[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-70 {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 
 <div
-  className="emotion-61"
+  className="emotion-0"
 >
   <div
     className="emotion-1"
   >
     <h3
-      className="emotion-0"
+      className="emotion-2"
     >
       Number of Assets: 
       574
     </h3>
   </div>
   <div
-    className="emotion-53"
+    className="emotion-3"
   >
     <details
-      className="emotion-11"
+      className="emotion-4"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="test_document.docx"
-        className="emotion-10"
+        className="emotion-5"
       >
         <div
-          className="emotion-9"
+          className="emotion-6"
         >
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             1
           </div>
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <img
                 alt="test_document.docx"
-                className="emotion-3"
+                className="emotion-10"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </div>
           </div>
           <h4
-            className="emotion-6"
+            className="emotion-11"
           >
             test_document.docx
           </h4>
           <div
-            className="emotion-8"
+            className="emotion-12"
           >
             <svg
-              className="emotion-7"
+              className="emotion-13"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -305,45 +567,45 @@ exports[`<TaskAssets /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-11"
+      className="emotion-4"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="irr.pdf"
-        className="emotion-10"
+        className="emotion-5"
       >
         <div
-          className="emotion-9"
+          className="emotion-6"
         >
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             2
           </div>
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <img
                 alt="irr.pdf"
-                className="emotion-3"
+                className="emotion-10"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </div>
           </div>
           <h4
-            className="emotion-6"
+            className="emotion-11"
           >
             irr.pdf
           </h4>
           <div
-            className="emotion-8"
+            className="emotion-12"
           >
             <svg
-              className="emotion-7"
+              className="emotion-13"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -352,45 +614,45 @@ exports[`<TaskAssets /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-11"
+      className="emotion-4"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="irr.pdf"
-        className="emotion-10"
+        className="emotion-5"
       >
         <div
-          className="emotion-9"
+          className="emotion-6"
         >
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             3
           </div>
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <img
                 alt="irr.pdf"
-                className="emotion-3"
+                className="emotion-10"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </div>
           </div>
           <h4
-            className="emotion-6"
+            className="emotion-11"
           >
             irr.pdf
           </h4>
           <div
-            className="emotion-8"
+            className="emotion-12"
           >
             <svg
-              className="emotion-7"
+              className="emotion-13"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -399,45 +661,45 @@ exports[`<TaskAssets /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-11"
+      className="emotion-4"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="irr.pdf"
-        className="emotion-10"
+        className="emotion-5"
       >
         <div
-          className="emotion-9"
+          className="emotion-6"
         >
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             4
           </div>
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <img
                 alt="irr.pdf"
-                className="emotion-3"
+                className="emotion-10"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </div>
           </div>
           <h4
-            className="emotion-6"
+            className="emotion-11"
           >
             irr.pdf
           </h4>
           <div
-            className="emotion-8"
+            className="emotion-12"
           >
             <svg
-              className="emotion-7"
+              className="emotion-13"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -446,50 +708,50 @@ exports[`<TaskAssets /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-11"
+      className="emotion-4"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="FatManOnABike1914.mp4"
-        className="emotion-10"
+        className="emotion-5"
       >
         <div
-          className="emotion-9"
+          className="emotion-6"
         >
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             5
           </div>
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <img
                 alt="FatManOnABike1914.mp4"
-                className="emotion-3"
+                className="emotion-10"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
               />
               <div
-                className="emotion-44"
+                className="emotion-51"
               >
                 2:24
               </div>
             </div>
           </div>
           <h4
-            className="emotion-6"
+            className="emotion-11"
           >
             FatManOnABike1914.mp4
           </h4>
           <div
-            className="emotion-8"
+            className="emotion-12"
           >
             <svg
-              className="emotion-7"
+              className="emotion-13"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -502,43 +764,114 @@ exports[`<TaskAssets /> should render properly 1`] = `
      
   </div>
   <div
-    className="emotion-60"
+    className="emotion-55"
   >
-    <button
-      className="emotion-55"
-      disabled={true}
-      type="button"
-    >
-      <svg
-        className="emotion-54"
-        data-file-name="chevron.svg"
-        height={16}
-      />
-    </button>
     <div
       className="emotion-56"
-    >
-      1
-    </div>
+    />
     <div
       className="emotion-57"
     >
-      of 
-      29
-    </div>
-    <a
-      className="emotion-59"
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/5262c1ef-91ad-1d33-82b6-d6edb1b855c4?page=2"
-      onClick={[Function]}
-      onMouseEnter={[Function]}
-      rel="next"
-    >
-      <svg
+      <a
         className="emotion-58"
-        data-file-name="chevron.svg"
-        height={16}
-      />
-    </a>
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/5262c1ef-91ad-1d33-82b6-d6edb1b855c4?page=2"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        rel="next"
+      >
+        Next
+      </a>
+    </div>
+    <div
+      className="emotion-59"
+    >
+      <button
+        aria-disabled={true}
+        aria-label="First page"
+        className="emotion-60"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        rel="prev"
+        title="First page"
+        type="button"
+      >
+        <svg
+          className="emotion-61"
+          data-file-name="doubleChevron.svg"
+          height={16}
+        />
+      </button>
+      <button
+        aria-disabled={true}
+        aria-label="Previous page"
+        className="emotion-62"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        rel="prev"
+        title="Previous page"
+        type="button"
+      >
+        <svg
+          className="emotion-63"
+          data-file-name="chevron.svg"
+          height={16}
+        />
+      </button>
+      <form
+        action=""
+        className="emotion-64"
+        method="get"
+        onSubmit={[Function]}
+      >
+        <input
+          aria-label="Go to page"
+          className="emotion-65"
+          max={29}
+          min="1"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          type="number"
+          value="1"
+        />
+      </form>
+      <div
+        className="emotion-66"
+      >
+        of 
+        29
+      </div>
+      <a
+        aria-label="Next page"
+        className="emotion-67"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/5262c1ef-91ad-1d33-82b6-d6edb1b855c4?page=2"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        rel="next"
+        title="Next page"
+      >
+        <svg
+          className="emotion-68"
+          data-file-name="chevron.svg"
+          height={16}
+        />
+      </a>
+      <a
+        aria-label="Last page"
+        className="emotion-69"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/5262c1ef-91ad-1d33-82b6-d6edb1b855c4?page=29"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        rel="next"
+        title="Last page"
+      >
+        <svg
+          className="emotion-70"
+          data-file-name="doubleChevron.svg"
+          height={16}
+        />
+      </a>
+    </div>
   </div>
   <div>
      
@@ -560,14 +893,14 @@ exports[`<TaskAssets /> should render properly without assets 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   height: 100%;
   font-size: 18px;
   line-height: 21px;
   background-color: #252525;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
 <div

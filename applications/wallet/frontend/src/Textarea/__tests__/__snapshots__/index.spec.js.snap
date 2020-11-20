@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Textarea /> should render properly with an error 1`] = `
-.emotion-4 {
+.emotion-0 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
@@ -15,7 +15,7 @@ exports[`<Textarea /> should render properly with an error 1`] = `
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -29,16 +29,16 @@ exports[`<Textarea /> should render properly with an error 1`] = `
   border-width: 2px;
 }
 
-.emotion-3 {
+.emotion-5 {
   color: #c92300;
   font-style: italic;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <label
-    className="emotion-0"
+    className="emotion-1"
     htmlFor="username"
   >
     Email
@@ -48,7 +48,7 @@ exports[`<Textarea /> should render properly with an error 1`] = `
   >
     <textarea
       autoFocus={true}
-      className="emotion-1"
+      className="emotion-3"
       id="username"
       name="username"
       onChange={[Function]}
@@ -57,10 +57,10 @@ exports[`<Textarea /> should render properly with an error 1`] = `
     />
   </div>
   <div
-    className="emotion-4"
+    className="emotion-0"
   >
     <span
-      className="emotion-3"
+      className="emotion-5"
     >
       Error
     </span>
@@ -70,11 +70,11 @@ exports[`<Textarea /> should render properly with an error 1`] = `
 `;
 
 exports[`<Textarea /> should render properly with no error 1`] = `
-.emotion-3 {
+.emotion-0 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
@@ -84,7 +84,7 @@ exports[`<Textarea /> should render properly with no error 1`] = `
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -99,10 +99,10 @@ exports[`<Textarea /> should render properly with no error 1`] = `
 }
 
 <div
-  className="emotion-3"
+  className="emotion-0"
 >
   <label
-    className="emotion-0"
+    className="emotion-1"
     htmlFor="username"
   >
     Email
@@ -112,7 +112,7 @@ exports[`<Textarea /> should render properly with no error 1`] = `
   >
     <textarea
       autoFocus={true}
-      className="emotion-1"
+      className="emotion-3"
       id="username"
       name="username"
       onChange={[Function]}
@@ -121,7 +121,7 @@ exports[`<Textarea /> should render properly with no error 1`] = `
     />
   </div>
   <div
-    className="emotion-3"
+    className="emotion-0"
   >
      
   </div>

@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import { spacing, constants, colors } from '../Styles'
+import { spacing, constants } from '../Styles'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
-const BORDER_RADIUS = constants.borderRadius.small
+import Button, { VARIANTS } from '../Button'
 
 const PaginationLink = ({ currentPage, totalPages, direction }) => {
   const { pathname, query } = useRouter()
@@ -15,38 +15,6 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
   const isPrev = direction === 'prev'
 
   const isDisabled = isPrev ? currentPage - 1 <= 0 : currentPage === totalPages
-
-  const styles = {
-    display: 'flex',
-    flexShrink: 0,
-    alignItems: 'center',
-    padding: `${spacing.base}px ${spacing.moderate}px`,
-    backgroundColor: colors.structure.steel,
-    border: 'none',
-    borderTopLeftRadius: isPrev ? BORDER_RADIUS : 0,
-    borderBottomLeftRadius: isPrev ? BORDER_RADIUS : 0,
-    borderTopRightRadius: isPrev ? 0 : BORDER_RADIUS,
-    borderBottomRightRadius: isPrev ? 0 : BORDER_RADIUS,
-    '&:hover': {
-      opacity: isDisabled ? 1 : constants.opacity.half,
-      textDecoration: 'none',
-      cursor: isDisabled ? 'not-allowed' : 'pointer',
-    },
-  }
-
-  if (isDisabled) {
-    return (
-      <button type="button" css={styles} disabled>
-        <ChevronSvg
-          height={constants.icons.mini}
-          css={{
-            color: colors.structure.coal,
-            transform: `rotate(${isPrev ? '' : '-'}90deg)`,
-          }}
-        />
-      </button>
-    )
-  }
 
   const queryParamPage = isPrev ? currentPage - 1 : currentPage + 1
   const queryParam = queryParamPage === 1 ? '' : `?page=${queryParamPage}`
@@ -58,15 +26,19 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
 
   return (
     <Link href={href} as={as} passHref>
-      <a css={styles} rel={direction}>
+      <Button
+        aria-label={isPrev ? 'Previous page' : 'Next page'}
+        title={isPrev ? 'Previous page' : 'Next page'}
+        variant={VARIANTS.SECONDARY_SMALL}
+        style={{ padding: spacing.moderate }}
+        rel={direction}
+        isDisabled={isDisabled}
+      >
         <ChevronSvg
           height={constants.icons.mini}
-          css={{
-            color: colors.structure.white,
-            transform: `rotate(${isPrev ? '' : '-'}90deg)`,
-          }}
+          css={{ transform: `rotate(${isPrev ? '' : '-'}90deg)` }}
         />
-      </a>
+      </Button>
     </Link>
   )
 }

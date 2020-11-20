@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<CreateAccountSuccess /> should render properly 1`] = `
-.emotion-9 {
+.emotion-0 {
   height: 100%;
 }
 
-.emotion-2 {
+.emotion-1 {
   position: fixed;
   top: 0;
   left: 0;
@@ -17,20 +17,19 @@ exports[`<CreateAccountSuccess /> should render properly 1`] = `
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
   z-index: 100;
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -41,7 +40,7 @@ exports[`<CreateAccountSuccess /> should render properly 1`] = `
   align-items: stretch;
 }
 
-.emotion-0 {
+.emotion-3 {
   padding-left: 8px;
   padding-right: 8px;
   display: -webkit-box;
@@ -54,7 +53,7 @@ exports[`<CreateAccountSuccess /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-8 {
+.emotion-4 {
   margin-top: 44px;
   padding: 32px;
   height: calc(100vh - 44px);
@@ -70,12 +69,12 @@ exports[`<CreateAccountSuccess /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
 }
 
-.emotion-7 {
+.emotion-5 {
   background-color: #ffffff;
   padding: 84px;
   padding-left: 108px;
@@ -85,39 +84,39 @@ exports[`<CreateAccountSuccess /> should render properly 1`] = `
   border-radius: 2px;
 }
 
-.emotion-3 {
+.emotion-6 {
   color: #73b61c;
 }
 
-.emotion-4 {
+.emotion-7 {
   margin-top: 40px;
   margin-bottom: 24px;
 }
 
-.emotion-5 {
+.emotion-8 {
   color: #191919;
   font-weight: 700;
   font-size: 18px;
   line-height: 21px;
 }
 
-.emotion-6 {
+.emotion-9 {
   color: #808080;
   font-weight: 500;
 }
 
 <div
-  className="emotion-9"
+  className="emotion-0"
 >
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <a
         aria-label="Home"
-        className="emotion-0"
+        className="emotion-3"
         href="/"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -131,30 +130,30 @@ exports[`<CreateAccountSuccess /> should render properly 1`] = `
     <div />
   </div>
   <div
-    className="emotion-8"
+    className="emotion-4"
   >
     <div
-      className="emotion-7"
+      className="emotion-5"
     >
       <h2
-        className="emotion-3"
+        className="emotion-6"
       >
         Confirmation email sent!
       </h2>
       <svg
-        className="emotion-4"
+        className="emotion-7"
         data-file-name="envelope.svg"
         width={142}
       />
       <p
-        className="emotion-5"
+        className="emotion-8"
       >
         Please click the confirmation link sent to your email
         <br />
         to activate your account.
       </p>
       <p
-        className="emotion-6"
+        className="emotion-9"
       >
         Don’t see it? Check your spam just in case. :)
       </p>

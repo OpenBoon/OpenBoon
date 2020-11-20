@@ -35,7 +35,40 @@ Array [
   >
     content
   </div>,
-  .emotion-1 {
+  .emotion-0 {
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: #b3b3b3;
+}
+
+.emotion-1:hover {
+  background-color: #0074f538;
+  color: #ffffff;
+}
+
+.emotion-1:hover svg {
+  opacity: 1;
+}
+
+.emotion-2 {
+  width: 100%;
+  padding: 12px 16px;
+  word-break: break-word;
+}
+
+.emotion-3 {
+  min-width: 36px;
+  padding-top: 12px;
+  padding-right: 16px;
+}
+
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -51,100 +84,58 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
-.emotion-1:hover {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-4:hover svg,
+.emotion-4.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-1 svg {
+.emotion-4 svg {
   opacity: 0;
 }
 
-.emotion-4 {
-  padding-bottom: 8px;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  color: #b3b3b3;
-}
-
-.emotion-3:hover {
-  background-color: #0074f538;
-  color: #ffffff;
-}
-
-.emotion-3:hover svg {
-  opacity: 1;
-}
-
-.emotion-0 {
-  width: 100%;
-  padding: 12px 16px;
-  word-break: break-word;
-}
-
-.emotion-2 {
-  min-width: 36px;
-  padding-top: 12px;
-  padding-right: 16px;
-}
-
 <div
-    className="emotion-4"
+    className="emotion-0"
   >
     <div
-      className="emotion-3"
+      className="emotion-1"
     >
       <div
-        className="emotion-0"
+        className="emotion-2"
       >
         some result
       </div>
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <button
-          className="emotion-1"
+          className="emotion-4"
           onClick={[Function]}
           title="Copy to Clipboard"
           type="button"
@@ -198,16 +189,20 @@ Array [
 `;
 
 exports[`<MetadataPrettySwitch /> should render label detection with box images properly 1`] = `
-.emotion-14 {
+.emotion-0:not(:first-of-type) {
+  border-top: 4px solid #3b3b3b;
+}
+
+.emotion-1 {
   padding: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-14:not(:first-of-type) {
+.emotion-1:not(:first-of-type) {
   border-top: 4px solid #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-2 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -215,7 +210,7 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
   padding-bottom: 16px;
 }
 
-.emotion-1 {
+.emotion-3 {
   font-family: Roboto Condensed;
   font-weight: 400;
   text-transform: uppercase;
@@ -226,16 +221,16 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
   text-align: left;
 }
 
-.emotion-1:last-of-type {
+.emotion-3:last-of-type {
   text-align: right;
   white-space: nowrap;
 }
 
-.emotion-1:nth-last-of-type(2) {
+.emotion-3:nth-last-of-type(2) {
   width: 100%;
 }
 
-.emotion-8 td {
+.emotion-6 td {
   vertical-align: bottom;
   font-family: Roboto Mono;
   font-size: 14px;
@@ -246,36 +241,32 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-6:last-of-type {
-  text-align: right;
-  padding-right: 0;
-}
-
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-15:not(:first-of-type) {
-  border-top: 4px solid #3b3b3b;
-}
-
-.emotion-4 {
+.emotion-8 {
   max-height: 56px;
   width: 56px;
   object-fit: contain;
 }
 
+.emotion-9:last-of-type {
+  text-align: right;
+  padding-right: 0;
+}
+
 <div
-  className="emotion-15"
+  className="emotion-0"
 >
   <div
-    className="emotion-14"
+    className="emotion-1"
   >
     <div
-      className="emotion-0"
+      className="emotion-2"
     >
       zvi-object-detection
     </div>
@@ -283,17 +274,17 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
       <thead>
         <tr>
           <th
-            className="emotion-1"
+            className="emotion-3"
           >
             bbox
           </th>
           <th
-            className="emotion-1"
+            className="emotion-3"
           >
             label
           </th>
           <th
-            className="emotion-1"
+            className="emotion-3"
           >
             confidence score
           </th>
@@ -301,10 +292,10 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
       </thead>
       <tbody>
         <tr
-          className="emotion-8"
+          className="emotion-6"
         >
           <td
-            className="emotion-5"
+            className="emotion-7"
           >
             <img
               alt={
@@ -315,7 +306,7 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
                   0.921,
                 ]
               }
-              className="emotion-4"
+              className="emotion-8"
               src="data:image/png;base64, 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"
               title={
                 Array [
@@ -328,21 +319,21 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
             />
           </td>
           <td
-            className="emotion-6"
+            className="emotion-9"
           >
             banana
           </td>
           <td
-            className="emotion-6"
+            className="emotion-9"
           >
             0.824
           </td>
         </tr>
         <tr
-          className="emotion-8"
+          className="emotion-6"
         >
           <td
-            className="emotion-5"
+            className="emotion-7"
           >
             <img
               alt={
@@ -353,7 +344,7 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
                   0.921,
                 ]
               }
-              className="emotion-4"
+              className="emotion-8"
               src="data:image/png;base64, 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"
               title={
                 Array [
@@ -366,12 +357,12 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
             />
           </td>
           <td
-            className="emotion-6"
+            className="emotion-9"
           >
             frog
           </td>
           <td
-            className="emotion-6"
+            className="emotion-9"
           >
             0.924
           </td>
@@ -384,16 +375,16 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
 
 exports[`<MetadataPrettySwitch /> should render label with no box images detection properly 1`] = `
 Array [
-  .emotion-9 {
+  .emotion-0 {
   padding: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-9:not(:first-of-type) {
+.emotion-0:not(:first-of-type) {
   border-top: 4px solid #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -401,7 +392,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   font-family: Roboto Condensed;
   font-weight: 400;
   text-transform: uppercase;
@@ -412,16 +403,16 @@ Array [
   text-align: left;
 }
 
-.emotion-1:last-of-type {
+.emotion-2:last-of-type {
   text-align: right;
   white-space: nowrap;
 }
 
-.emotion-1:nth-last-of-type(2) {
+.emotion-2:nth-last-of-type(2) {
   width: 100%;
 }
 
-.emotion-5 td {
+.emotion-4 td {
   vertical-align: bottom;
   font-family: Roboto Mono;
   font-size: 14px;
@@ -432,16 +423,16 @@ Array [
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-3:last-of-type {
+.emotion-5:last-of-type {
   text-align: right;
   padding-right: 0;
 }
 
 <div
-    className="emotion-9"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       zvi-label-detection
     </div>
@@ -449,12 +440,12 @@ Array [
       <thead>
         <tr>
           <th
-            className="emotion-1"
+            className="emotion-2"
           >
             label
           </th>
           <th
-            className="emotion-1"
+            className="emotion-2"
           >
             confidence score
           </th>
@@ -462,29 +453,29 @@ Array [
       </thead>
       <tbody>
         <tr
-          className="emotion-5"
+          className="emotion-4"
         >
           <td
-            className="emotion-3"
+            className="emotion-5"
           >
             tailed_frog
           </td>
           <td
-            className="emotion-3"
+            className="emotion-5"
           >
             0.96
           </td>
         </tr>
         <tr
-          className="emotion-5"
+          className="emotion-4"
         >
           <td
-            className="emotion-3"
+            className="emotion-5"
           >
             banana
           </td>
           <td
-            className="emotion-3"
+            className="emotion-5"
           >
             0.86
           </td>
@@ -492,7 +483,38 @@ Array [
       </tbody>
     </table>
   </div>,
-  .emotion-1 {
+  .emotion-0 {
+  padding: 16px;
+  padding-top: 0;
+}
+
+.emotion-0:hover {
+  background-color: #0074f538;
+}
+
+.emotion-0:hover svg {
+  opacity: 1;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  min-height: 20px;
+  width: 100%;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  color: #808080;
+  border-top: 1px solid #3b3b3b;
+  padding-top: 16px;
+  padding-bottom: 8px;
+}
+
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -508,83 +530,43 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-3:hover svg,
+.emotion-3.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-1 svg {
+.emotion-3 svg {
   opacity: 0;
 }
 
-.emotion-5 {
-  padding: 16px;
-  padding-top: 0;
-}
-
-.emotion-5:hover {
-  background-color: #0074f538;
-}
-
-.emotion-5:hover svg {
-  opacity: 1;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-0 {
-  min-height: 20px;
-  width: 100%;
-  font-family: Roboto Condensed;
-  text-transform: uppercase;
-  color: #808080;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 16px;
-  padding-bottom: 8px;
-}
-
-.emotion-3 {
+.emotion-4 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -597,18 +579,18 @@ Array [
 }
 
 <div
-    className="emotion-5"
+    className="emotion-0"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <div
-        className="emotion-0"
+        className="emotion-2"
       >
         tags
       </div>
       <button
-        className="emotion-1"
+        className="emotion-3"
         onClick={[Function]}
         title="Copy to Clipboard"
         type="button"
@@ -621,12 +603,12 @@ Array [
     </div>
     <div>
       <span
-        className="emotion-3"
+        className="emotion-4"
       >
         frog
       </span>
       <span
-        className="emotion-3"
+        className="emotion-4"
       >
         banana
       </span>
@@ -673,30 +655,30 @@ Array [
 `;
 
 exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
-.emotion-4 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-4:not(:first-of-type) {
+.emotion-0:not(:first-of-type) {
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-4:hover {
+.emotion-0:hover {
   background-color: #0074f538;
 }
 
-.emotion-4:hover div {
+.emotion-0:hover div {
   color: #ffffff;
 }
 
-.emotion-4:hover div svg {
+.emotion-0:hover div svg {
   opacity: 1;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-family: Roboto Condensed;
   color: #808080;
   padding: 12px;
@@ -707,6 +689,18 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   flex: 1;
 }
 
+.emotion-2 {
+  -webkit-flex: 4;
+  -ms-flex: 4;
+  flex: 4;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+  color: #e0e0e0;
+  padding: 12px;
+  word-break: break-word;
+}
+
 .emotion-3 {
   width: 36px;
   padding-top: 12px;
@@ -714,7 +708,7 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   padding-right: 16px;
 }
 
-.emotion-2 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -730,68 +724,47 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
-.emotion-2:hover {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-2:hover svg,
-.emotion-2.focus-visible:focus svg {
+.emotion-4:hover svg,
+.emotion-4.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-2 svg {
+.emotion-4 svg {
   opacity: 0;
 }
 
-.emotion-1 {
-  -webkit-flex: 4;
-  -ms-flex: 4;
-  flex: 4;
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #e0e0e0;
-  padding: 12px;
-  word-break: break-word;
-}
-
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   >
     <span
       title="media.content"
@@ -800,7 +773,7 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
     </span>
   </div>
   <div
-    className="emotion-1"
+    className="emotion-2"
     title="Lorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar Plum"
   >
     Lorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar Plum...
@@ -809,7 +782,7 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
     className="emotion-3"
   >
     <button
-      className="emotion-2"
+      className="emotion-4"
       onClick={[Function]}
       title="Copy to Clipboard"
       type="button"
@@ -824,30 +797,30 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
 `;
 
 exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
-.emotion-4 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-4:not(:first-of-type) {
+.emotion-0:not(:first-of-type) {
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-4:hover {
+.emotion-0:hover {
   background-color: #0074f538;
 }
 
-.emotion-4:hover div {
+.emotion-0:hover div {
   color: #ffffff;
 }
 
-.emotion-4:hover div svg {
+.emotion-0:hover div svg {
   opacity: 1;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-family: Roboto Condensed;
   color: #808080;
   padding: 12px;
@@ -858,7 +831,7 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   flex: 1;
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 4;
   -ms-flex: 4;
   flex: 4;
@@ -877,7 +850,7 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   padding-right: 16px;
 }
 
-.emotion-2 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -893,56 +866,47 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
-.emotion-2:hover {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-2:hover svg,
-.emotion-2.focus-visible:focus svg {
+.emotion-4:hover svg,
+.emotion-4.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-2 svg {
+.emotion-4 svg {
   opacity: 0;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   >
     <span
       title="media.not-content"
@@ -951,7 +915,7 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
     </span>
   </div>
   <div
-    className="emotion-1"
+    className="emotion-2"
     title="Lorem Ipsum Cupcake Sugar Plum"
   >
     Lorem Ipsum Cupcake Sugar Plum
@@ -960,7 +924,7 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
     className="emotion-3"
   >
     <button
-      className="emotion-2"
+      className="emotion-4"
       onClick={[Function]}
       title="Copy to Clipboard"
       type="button"
@@ -975,72 +939,11 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
 `;
 
 exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`] = `
-.emotion-3 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-3:hover,
-.emotion-3.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-3 svg {
-  opacity: 0;
-}
-
-.emotion-35:not(:first-of-type) {
+.emotion-0:not(:first-of-type) {
   border-top: 4px solid #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding: 16px;
   padding-bottom: 8px;
   font-family: Roboto Mono;
@@ -1049,7 +952,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   color: #ffffff;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 8px 16px;
   padding-bottom: 0;
   min-height: 20px;
@@ -1059,26 +962,26 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   color: #808080;
 }
 
-.emotion-34 {
+.emotion-3 {
   padding-bottom: 8px;
 }
 
-.emotion-5 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5:hover {
+.emotion-4:hover {
   background-color: #0074f538;
 }
 
-.emotion-5:hover svg {
+.emotion-4:hover svg {
   opacity: 1;
 }
 
-.emotion-2 {
+.emotion-5 {
   padding: 12px 16px;
   font-family: Roboto Mono;
   font-size: 14px;
@@ -1088,65 +991,13 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   text-overflow: ellipsis;
 }
 
-.emotion-4 {
+.emotion-6 {
   min-width: 36px;
   padding-top: 12px;
   padding-right: 16px;
 }
 
-.emotion-33 {
-  padding: 16px;
-  padding-top: 4px;
-  padding-bottom: 12px;
-}
-
-.emotion-6 {
-  border-top: 1px solid #3b3b3b;
-  padding-top: 16px;
-  padding-bottom: 12px;
-  font-family: Roboto Condensed;
-  text-transform: uppercase;
-  color: #808080;
-}
-
-.emotion-32 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-wrap: nowrap;
-  -ms-flex-wrap: nowrap;
-  flex-wrap: nowrap;
-  overflow-x: scroll;
-}
-
-.emotion-32::-webkit-scrollbar {
-  display: none;
-}
-
-.emotion-12 {
-  width: 100px;
-  min-width: 100px;
-  height: 100px;
-}
-
-.emotion-11 {
-  position: relative;
-  border: 4px solid transparent;
-  width: 100%;
-  height: 100%;
-}
-
-.emotion-11:hover {
-  border: 4px solid #ffffff;
-}
-
-.emotion-11:hover a,
-.emotion-11:hover button {
-  opacity: 1;
-}
-
-.emotion-8 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1162,11 +1013,116 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-7 svg {
+  opacity: 0;
+}
+
+.emotion-8 {
+  padding: 16px;
+  padding-top: 4px;
+  padding-bottom: 12px;
+}
+
+.emotion-9 {
+  border-top: 1px solid #3b3b3b;
+  padding-top: 16px;
+  padding-bottom: 12px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  color: #808080;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex-wrap: nowrap;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+}
+
+.emotion-10::-webkit-scrollbar {
+  display: none;
+}
+
+.emotion-11 {
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
+}
+
+.emotion-12 {
+  position: relative;
+  border: 4px solid transparent;
+  width: 100%;
+  height: 100%;
+}
+
+.emotion-12:hover {
+  border: 4px solid #ffffff;
+}
+
+.emotion-12:hover a,
+.emotion-12:hover button {
+  opacity: 1;
+}
+
+.emotion-13 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1175,7 +1131,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 100%;
   height: 100%;
   display: -webkit-box;
@@ -1183,8 +1138,8 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -1195,22 +1150,13 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   border-radius: 0;
 }
 
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-7 {
+.emotion-14 {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.emotion-9 {
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1226,11 +1172,11 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1238,32 +1184,20 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
+  background-color: #3b3b3b80;
   opacity: 0;
   position: absolute;
   top: 4px;
   right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
 }
 
-.emotion-9:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-9[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-9:hover,
-.emotion-9.focus-visible:focus {
+.emotion-15:hover,
+.emotion-15.focus-visible:focus {
   opacity: 1;
   background-color: #3b3b3b;
 }
 
-.emotion-10 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1279,11 +1213,11 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1291,32 +1225,20 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
+  background-color: #3b3b3b80;
   opacity: 0;
   position: absolute;
   bottom: 4px;
   right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
 }
 
-.emotion-10:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-10[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-10:hover,
-.emotion-10.focus-visible:focus {
+.emotion-16:hover,
+.emotion-16.focus-visible:focus {
   opacity: 1;
   background-color: #3b3b3b;
 }
 
-.emotion-29 {
+.emotion-35 {
   position: absolute;
   bottom: 4px;
   left: 4px;
@@ -1326,35 +1248,35 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
 }
 
 <div
-  className="emotion-35"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   >
     zvi-image-similarity
   </div>
   <div
-    className="emotion-1"
+    className="emotion-2"
   >
     simhash
   </div>
   <div
-    className="emotion-34"
+    className="emotion-3"
   >
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       <div
-        className="emotion-2"
+        className="emotion-5"
         title="FBIJPPAIPBPPAPPPBDPLPICAHBDIDPPAAHPPFPBHIPBBLKBOHJJEPAPPBCABCDAPCPBHCCCCHIKEDPEFNPPPPGOPAHKBIAKPFEPFPGGJPPPCPPFPPPLFLBCAKOPNFPBFGPPFCMIBPJJMCGPDKPKDMPPOPODJDGMBDPPAFBJIPBPBCGEFHMBBBPCPIAEKMGPPPPPEBPIGEDAOHDPCPCPAMPALPJIDPGPGDPPHODHPPPPJAGPAPPPNKKPDPPDPPPJPPLPLPPFGBFPPPPMJPPGBHEPPAKPPPPPBLMMBMDPHJPDPPBCALMHOHPPPEPIIKIPMKPDJGEPHPPDPPIDBBCPPCPPIDJLPCPPDFFANJPPDCPFPMAPPPPPAPMKPPCFPABPBGBHPCFPPPAJPDBDNPPFMHMFMBLAPFHFOLJPJAPJKMDNHBPABEGIJPCPFEPJPIPPLPAPGILPEPPHFAGPPPMDFCAPPAPKNDKPPLGJEDNDHGLCPDIPJBPAKAFOPCKIIPEPFIFAPJPCLFJOPLAPPPHPIPCNCHHIPAPDNPALEPGDEGCFCEPLHPJJPENEPFDPGMAKABLOIPGMPCPJPABPPGPFDKJHAFGPPPDEAODPPPPPPJPBPBALIOCMPCLPPJFOPMCDGBCDPHFGDKPJPOAPPCPPCAMPJKOHEPGHCPOGOBHPADPKPEDPAPPAGNPNPKPAKGPCPDPPIKGPPHBKGKGOPICACPPFPPAADPEJIKBIEPPGPPJIGPHMLOGKAPPPLALJHNNPPGAPPAAOPPEBPKBAGBPEPCPEHPPPIPFPPEGJBKDPHPPIPMPBDAEBPJIGCPOOPKOLPFHDHOCAMLCNAPDNGMEHDPPPPAPPEPCCPIGBPPPAPAIPPPONPPPPPPAONICPOPMEBJPMPBEPCNAIECAEBPPPHHINPEABPPPEOEIAAEPPLPNPAPFIPBPPBGHPPCPJAPAPGAHPPLODAPPPBPCEAEPBDDGKGPDFLDPPCPHPPNDPEABPPPDEKAPPPPPPICADCPFFPPBEPDEPPNHMPOPMEGCNFBEFAIFPCFHPEFPPPNJBAEABKPCPJCPDFIPCPGCENMKJECELHPAPPJCNPAEHHBFAEPPAACIPBAPFBDNPAEEIPPAEMMBBPKBENKPFLPDBPPELJPBAICPPBEPNFDGPHDPJJPAHLDNBAPPPJPMLKBPNBPCKKJFLOMHIOJNPPPPPBBBBMPAAOOBPEOKGPCKKPAPFPDPPLPCICODPKBDGMPPPFBPKEBGIPDBACBPEPJPEDJPPEPPPDBPPIIOPFPCFKLDCPOOLLPCHPGLPHFPPKDPNPPPAJJPPPJDIPPFPBPHPKBEBIDDEFOPPPOHMFPBBPPPKPACPAOPEPPFJPNFBHPGDGADPEHBPKPHLEOADBJPPIIPPGBCABAPPGPIPDPNBPAGLKPFCEHIAIPPPPFJKBPCNIGGBPPPBBNPKDMIPLPHPIPLGCPFBPLMNLPIIPAIPELPGPHPPIPPJEPPAAMPMKPGPCBPAPPMPABAHBPFAODNOEKCOGPPGKDHBCPCJEPBIALBDJPPAEPAPGPCPPLADHBGPPLNGHAGPAEPPEHPOPDGPKAMGPPDGIBPFJBDPIBPJPPPCPDPKIFDHCDPGFPMGHPCBPIJMPFDCPLJBEPPPPDKLAJMPBAPIBPBGMICGCDGBNPOAAEJMKPPHPKPPAHMMPKKLPEHPPNKPEPDLPHBPCCPPPHPNPPJBDBCPFCPOCPPEPHNEPNEPKPAAPPPAFFPPAFBEPBHMDCDIPPPFPGEAFBPGGIKBLPFCPGHOJJPEOAMBACCCGAEEPPPPDPPBPPOICPLEEAPABPCPPKPPBPPENDPCHABIDMPPPPPPPIOOCFPPPBHCKEJNGEPEPPGODFPPDKFFNPBEPFIPPCEDOPBPDEOKDOLDDPHCAICAPLCPHPDPPIDHPPLPLJAPECPHCIPAPPHPPPBPCPDPCJIAHMPDFOJAPHPPOGABBPCNPKNPEFHCPPIPFPMPCAPPFALPBPHADPEPAKPECDCPOGPPEPGPOPKMPHPPG"
       >
         FBIJPPAIPBPPAPPPBDPLPICAHBDIDPPAAHPPFPBHIPBBLKBOHJJEPAPPBCABCDAPCPBHCCCCHIKEDPEFNPPPPGOPAHKBIAKPFEPFPGGJPPPCPPFPPPLFLBCAKOPNFPBFGPPFCMIBPJJMCGPDKPKDMPPOPODJDGMBDPPAFBJIPBPBCGEFHMBBBPCPIAEKMGPPPPPEBPIGEDAOHDPCPCPAMPALPJIDPGPGDPPHODHPPPPJAGPAPPPNKKPDPPDPPPJPPLPLPPFGBFPPPPMJPPGBHEPPAKPPPPPBLMMBMDPHJPDPPBCALMHOHPPPEPIIKIPMKPDJGEPHPPDPPIDBBCPPCPPIDJLPCPPDFFANJPPDCPFPMAPPPPPAPMKPPCFPABPBGBHPCFPPPAJPDBDNPPFMHMFMBLAPFHFOLJPJAPJKMDNHBPABEGIJPCPFEPJPIPPLPAPGILPEPPHFAGPPPMDFCAPPAPKNDKPPLGJEDNDHGLCPDIPJBPAKAFOPCKIIPEPFIFAPJPCLFJOPLAPPPHPIPCNCHHIPAPDNPALEPGDEGCFCEPLHPJJPENEPFDPGMAKABLOIPGMPCPJPABPPGPFDKJHAFGPPPDEAODPPPPPPJPBPBALIOCMPCLPPJFOPMCDGBCDPHFGDKPJPOAPPCPPCAMPJKOHEPGHCPOGOBHPADPKPEDPAPPAGNPNPKPAKGPCPDPPIKGPPHBKGKGOPICACPPFPPAADPEJIKBIEPPGPPJIGPHMLOGKAPPPLALJHNNPPGAPPAAOPPEBPKBAGBPEPCPEHPPPIPFPPEGJBKDPHPPIPMPBDAEBPJIGCPOOPKOLPFHDHOCAMLCNAPDNGMEHDPPPPAPPEPCCPIGBPPPAPAIPPPONPPPPPPAONICPOPMEBJPMPBEPCNAIECAEBPPPHHINPEABPPPEOEIAAEPPLPNPAPFIPBPPBGHPPCPJAPAPGAHPPLODAPPPBPCEAEPBDDGKGPDFLDPPCPHPPNDPEABPPPDEKAPPPPPPICADCPFFPPBEPDEPPNHMPOPMEGCNFBEFAIFPCFHPEFPPPNJBAEABKPCPJCPDFIPCPGCENMKJECELHPAPPJCNPAEHHBFAEPPAACIPBAPFBDNPAEEIPPAEMMBBPKBENKPFLPDBPPELJPBAICPPBEPNFDGPHDPJJPAHLDNBAPPPJPMLKBPNBPCKKJFLOMHIOJNPPPPPBBBBMPAAOOBPEOKGPCKKPAPFPDPPLPCICODPKBDGMPPPFBPKEBGIPDBACBPEPJPEDJPPEPPPDBPPIIOPFPCFKLDCPOOLLPCHPGLPHFPPKDPNPPPAJJPPPJDIPPFPBPHPKBEBIDDEFOPPPOHMFPBBPPPKPACPAOPEPPFJPNFBHPGDGADPEHBPKPHLEOADBJPPIIPPGBCABAPPGPIPDPNBPAGLKPFCEHIAIPPPPFJKBPCNIGGBPPPBBNPKDMIPLPHPIPLGCPFBPLMNLPIIPAIPELPGPHPPIPPJEPPAAMPMKPGPCBPAPPMPABAHBPFAODNOEKCOGPPGKDHBCPCJEPBIALBDJPPAEPAPGPCPPLADHBGPPLNGHAGPAEPPEHPOPDGPKAMGPPDGIBPFJBDPIBPJPPPCPDPKIFDHCDPGFPMGHPCBPIJMPFDCPLJBEPPPPDKLAJMPBAPIBPBGMICGCDGBNPOAAEJMKPPHPKPPAHMMPKKLPEHPPNKPEPDLPHBPCCPPPHPNPPJBDBCPFCPOCPPEPHNEPNEPKPAAPPPAFFPPAFBEPBHMDCDIPPPFPGEAFBPGGIKBLPFCPGHOJJPEOAMBACCCGAEEPPPPDPPBPPOICPLEEAPABPCPPKPPBPPENDPCHABIDMPPPPPPPIOOCFPPPBHCKEJNGEPEPPGODFPPDKFFNPBEPFIPPCEDOPBPDEOKDOLDDPHCAICAPLCPHPDPPIDHPPLPLJAPECPHCIPAPPHPPPBPCPDPCJIAHMPDFOJAPHPPOGABBPCNPKNPEFHCPPIPFPMPCAPPFALPBPHADPEPAKPECDCPOGPPEPGPOPKMPHPPG
       </div>
       <div
-        className="emotion-4"
+        className="emotion-6"
       >
         <button
-          className="emotion-3"
+          className="emotion-7"
           onClick={[Function]}
           title="Copy to Clipboard"
           type="button"
@@ -1367,25 +1289,25 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
       </div>
     </div>
     <div
-      className="emotion-33"
+      className="emotion-8"
     >
       <div
-        className="emotion-6"
+        className="emotion-9"
       >
         Similar Images
       </div>
       <div
-        className="emotion-32"
+        className="emotion-10"
       >
         <div
-          className="emotion-12"
+          className="emotion-11"
         >
           <div
-            className="emotion-11"
+            className="emotion-12"
           >
             <a
               aria-label="Select asset irr.pdf"
-              className="emotion-8"
+              className="emotion-13"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1393,13 +1315,13 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
             >
               <img
                 alt="irr.pdf"
-                className="emotion-7"
+                className="emotion-14"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images to irr.pdf"
-              className="emotion-9"
+              className="emotion-15"
               onClick={[Function]}
               title="Find similar images"
               type="button"
@@ -1412,7 +1334,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
             </button>
             <a
               aria-label="Asset details irr.pdf"
-              className="emotion-10"
+              className="emotion-16"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1427,14 +1349,14 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
           </div>
         </div>
         <div
-          className="emotion-12"
+          className="emotion-11"
         >
           <div
-            className="emotion-11"
+            className="emotion-12"
           >
             <a
               aria-label="Select asset irr.pdf"
-              className="emotion-8"
+              className="emotion-13"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1442,13 +1364,13 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
             >
               <img
                 alt="irr.pdf"
-                className="emotion-7"
+                className="emotion-14"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images to irr.pdf"
-              className="emotion-9"
+              className="emotion-15"
               onClick={[Function]}
               title="Find similar images"
               type="button"
@@ -1461,7 +1383,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
             </button>
             <a
               aria-label="Asset details irr.pdf"
-              className="emotion-10"
+              className="emotion-16"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1476,14 +1398,14 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
           </div>
         </div>
         <div
-          className="emotion-12"
+          className="emotion-11"
         >
           <div
-            className="emotion-11"
+            className="emotion-12"
           >
             <a
               aria-label="Select asset irr.pdf"
-              className="emotion-8"
+              className="emotion-13"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1491,13 +1413,13 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
             >
               <img
                 alt="irr.pdf"
-                className="emotion-7"
+                className="emotion-14"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images to irr.pdf"
-              className="emotion-9"
+              className="emotion-15"
               onClick={[Function]}
               title="Find similar images"
               type="button"
@@ -1510,7 +1432,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
             </button>
             <a
               aria-label="Asset details irr.pdf"
-              className="emotion-10"
+              className="emotion-16"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1525,14 +1447,14 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
           </div>
         </div>
         <div
-          className="emotion-12"
+          className="emotion-11"
         >
           <div
-            className="emotion-11"
+            className="emotion-12"
           >
             <a
               aria-label="Select asset FatManOnABike1914.mp4"
-              className="emotion-8"
+              className="emotion-13"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1540,13 +1462,13 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
             >
               <img
                 alt="FatManOnABike1914.mp4"
-                className="emotion-7"
+                className="emotion-14"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images to FatManOnABike1914.mp4"
-              className="emotion-9"
+              className="emotion-15"
               onClick={[Function]}
               title="Find similar images"
               type="button"
@@ -1559,7 +1481,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
             </button>
             <a
               aria-label="Asset details FatManOnABike1914.mp4"
-              className="emotion-10"
+              className="emotion-16"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1572,7 +1494,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
               />
             </a>
             <div
-              className="emotion-29"
+              className="emotion-35"
             >
               2:24
             </div>
@@ -1585,7 +1507,65 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
 `;
 
 exports[`<MetadataPrettySwitch /> should render similarity detection with no data properly 1`] = `
+.emotion-0:not(:first-of-type) {
+  border-top: 4px solid #3b3b3b;
+}
+
+.emotion-1 {
+  padding: 16px;
+  padding-bottom: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
+}
+
+.emotion-2 {
+  padding: 8px 16px;
+  padding-bottom: 0;
+  min-height: 20px;
+  width: 100%;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  color: #808080;
+}
+
 .emotion-3 {
+  padding-bottom: 8px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-4:hover {
+  background-color: #0074f538;
+}
+
+.emotion-4:hover svg {
+  opacity: 1;
+}
+
+.emotion-5 {
+  padding: 12px 16px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emotion-6 {
+  min-width: 36px;
+  padding-top: 12px;
+  padding-right: 16px;
+}
+
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1601,139 +1581,72 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
-.emotion-3:hover {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-3:hover,
-.emotion-3.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-3 svg {
+.emotion-7 svg {
   opacity: 0;
 }
 
-.emotion-7:not(:first-of-type) {
-  border-top: 4px solid #3b3b3b;
-}
-
-.emotion-0 {
-  padding: 16px;
-  padding-bottom: 8px;
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
-}
-
-.emotion-1 {
-  padding: 8px 16px;
-  padding-bottom: 0;
-  min-height: 20px;
-  width: 100%;
-  font-family: Roboto Condensed;
-  text-transform: uppercase;
-  color: #808080;
-}
-
-.emotion-6 {
-  padding-bottom: 8px;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-5:hover {
-  background-color: #0074f538;
-}
-
-.emotion-5:hover svg {
-  opacity: 1;
-}
-
-.emotion-2 {
-  padding: 12px 16px;
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emotion-4 {
-  min-width: 36px;
-  padding-top: 12px;
-  padding-right: 16px;
-}
-
 <div
-  className="emotion-7"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   >
     zvi-image-similarity
   </div>
   <div
-    className="emotion-1"
+    className="emotion-2"
   >
     simhash
   </div>
   <div
-    className="emotion-6"
+    className="emotion-3"
   >
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       <div
-        className="emotion-2"
+        className="emotion-5"
         title="FBIJPPAIPBPPAPPPBDPLPICAHBDIDPPAAHPPFPBHIPBBLKBOHJJEPAPPBCABCDAPCPBHCCCCHIKEDPEFNPPPPGOPAHKBIAKPFEPFPGGJPPPCPPFPPPLFLBCAKOPNFPBFGPPFCMIBPJJMCGPDKPKDMPPOPODJDGMBDPPAFBJIPBPBCGEFHMBBBPCPIAEKMGPPPPPEBPIGEDAOHDPCPCPAMPALPJIDPGPGDPPHODHPPPPJAGPAPPPNKKPDPPDPPPJPPLPLPPFGBFPPPPMJPPGBHEPPAKPPPPPBLMMBMDPHJPDPPBCALMHOHPPPEPIIKIPMKPDJGEPHPPDPPIDBBCPPCPPIDJLPCPPDFFANJPPDCPFPMAPPPPPAPMKPPCFPABPBGBHPCFPPPAJPDBDNPPFMHMFMBLAPFHFOLJPJAPJKMDNHBPABEGIJPCPFEPJPIPPLPAPGILPEPPHFAGPPPMDFCAPPAPKNDKPPLGJEDNDHGLCPDIPJBPAKAFOPCKIIPEPFIFAPJPCLFJOPLAPPPHPIPCNCHHIPAPDNPALEPGDEGCFCEPLHPJJPENEPFDPGMAKABLOIPGMPCPJPABPPGPFDKJHAFGPPPDEAODPPPPPPJPBPBALIOCMPCLPPJFOPMCDGBCDPHFGDKPJPOAPPCPPCAMPJKOHEPGHCPOGOBHPADPKPEDPAPPAGNPNPKPAKGPCPDPPIKGPPHBKGKGOPICACPPFPPAADPEJIKBIEPPGPPJIGPHMLOGKAPPPLALJHNNPPGAPPAAOPPEBPKBAGBPEPCPEHPPPIPFPPEGJBKDPHPPIPMPBDAEBPJIGCPOOPKOLPFHDHOCAMLCNAPDNGMEHDPPPPAPPEPCCPIGBPPPAPAIPPPONPPPPPPAONICPOPMEBJPMPBEPCNAIECAEBPPPHHINPEABPPPEOEIAAEPPLPNPAPFIPBPPBGHPPCPJAPAPGAHPPLODAPPPBPCEAEPBDDGKGPDFLDPPCPHPPNDPEABPPPDEKAPPPPPPICADCPFFPPBEPDEPPNHMPOPMEGCNFBEFAIFPCFHPEFPPPNJBAEABKPCPJCPDFIPCPGCENMKJECELHPAPPJCNPAEHHBFAEPPAACIPBAPFBDNPAEEIPPAEMMBBPKBENKPFLPDBPPELJPBAICPPBEPNFDGPHDPJJPAHLDNBAPPPJPMLKBPNBPCKKJFLOMHIOJNPPPPPBBBBMPAAOOBPEOKGPCKKPAPFPDPPLPCICODPKBDGMPPPFBPKEBGIPDBACBPEPJPEDJPPEPPPDBPPIIOPFPCFKLDCPOOLLPCHPGLPHFPPKDPNPPPAJJPPPJDIPPFPBPHPKBEBIDDEFOPPPOHMFPBBPPPKPACPAOPEPPFJPNFBHPGDGADPEHBPKPHLEOADBJPPIIPPGBCABAPPGPIPDPNBPAGLKPFCEHIAIPPPPFJKBPCNIGGBPPPBBNPKDMIPLPHPIPLGCPFBPLMNLPIIPAIPELPGPHPPIPPJEPPAAMPMKPGPCBPAPPMPABAHBPFAODNOEKCOGPPGKDHBCPCJEPBIALBDJPPAEPAPGPCPPLADHBGPPLNGHAGPAEPPEHPOPDGPKAMGPPDGIBPFJBDPIBPJPPPCPDPKIFDHCDPGFPMGHPCBPIJMPFDCPLJBEPPPPDKLAJMPBAPIBPBGMICGCDGBNPOAAEJMKPPHPKPPAHMMPKKLPEHPPNKPEPDLPHBPCCPPPHPNPPJBDBCPFCPOCPPEPHNEPNEPKPAAPPPAFFPPAFBEPBHMDCDIPPPFPGEAFBPGGIKBLPFCPGHOJJPEOAMBACCCGAEEPPPPDPPBPPOICPLEEAPABPCPPKPPBPPENDPCHABIDMPPPPPPPIOOCFPPPBHCKEJNGEPEPPGODFPPDKFFNPBEPFIPPCEDOPBPDEOKDOLDDPHCAICAPLCPHPDPPIDHPPLPLJAPECPHCIPAPPHPPPBPCPDPCJIAHMPDFOJAPHPPOGABBPCNPKNPEFHCPPIPFPMPCAPPFALPBPHADPEPAKPECDCPOGPPEPGPOPKMPHPPG"
       >
         FBIJPPAIPBPPAPPPBDPLPICAHBDIDPPAAHPPFPBHIPBBLKBOHJJEPAPPBCABCDAPCPBHCCCCHIKEDPEFNPPPPGOPAHKBIAKPFEPFPGGJPPPCPPFPPPLFLBCAKOPNFPBFGPPFCMIBPJJMCGPDKPKDMPPOPODJDGMBDPPAFBJIPBPBCGEFHMBBBPCPIAEKMGPPPPPEBPIGEDAOHDPCPCPAMPALPJIDPGPGDPPHODHPPPPJAGPAPPPNKKPDPPDPPPJPPLPLPPFGBFPPPPMJPPGBHEPPAKPPPPPBLMMBMDPHJPDPPBCALMHOHPPPEPIIKIPMKPDJGEPHPPDPPIDBBCPPCPPIDJLPCPPDFFANJPPDCPFPMAPPPPPAPMKPPCFPABPBGBHPCFPPPAJPDBDNPPFMHMFMBLAPFHFOLJPJAPJKMDNHBPABEGIJPCPFEPJPIPPLPAPGILPEPPHFAGPPPMDFCAPPAPKNDKPPLGJEDNDHGLCPDIPJBPAKAFOPCKIIPEPFIFAPJPCLFJOPLAPPPHPIPCNCHHIPAPDNPALEPGDEGCFCEPLHPJJPENEPFDPGMAKABLOIPGMPCPJPABPPGPFDKJHAFGPPPDEAODPPPPPPJPBPBALIOCMPCLPPJFOPMCDGBCDPHFGDKPJPOAPPCPPCAMPJKOHEPGHCPOGOBHPADPKPEDPAPPAGNPNPKPAKGPCPDPPIKGPPHBKGKGOPICACPPFPPAADPEJIKBIEPPGPPJIGPHMLOGKAPPPLALJHNNPPGAPPAAOPPEBPKBAGBPEPCPEHPPPIPFPPEGJBKDPHPPIPMPBDAEBPJIGCPOOPKOLPFHDHOCAMLCNAPDNGMEHDPPPPAPPEPCCPIGBPPPAPAIPPPONPPPPPPAONICPOPMEBJPMPBEPCNAIECAEBPPPHHINPEABPPPEOEIAAEPPLPNPAPFIPBPPBGHPPCPJAPAPGAHPPLODAPPPBPCEAEPBDDGKGPDFLDPPCPHPPNDPEABPPPDEKAPPPPPPICADCPFFPPBEPDEPPNHMPOPMEGCNFBEFAIFPCFHPEFPPPNJBAEABKPCPJCPDFIPCPGCENMKJECELHPAPPJCNPAEHHBFAEPPAACIPBAPFBDNPAEEIPPAEMMBBPKBENKPFLPDBPPELJPBAICPPBEPNFDGPHDPJJPAHLDNBAPPPJPMLKBPNBPCKKJFLOMHIOJNPPPPPBBBBMPAAOOBPEOKGPCKKPAPFPDPPLPCICODPKBDGMPPPFBPKEBGIPDBACBPEPJPEDJPPEPPPDBPPIIOPFPCFKLDCPOOLLPCHPGLPHFPPKDPNPPPAJJPPPJDIPPFPBPHPKBEBIDDEFOPPPOHMFPBBPPPKPACPAOPEPPFJPNFBHPGDGADPEHBPKPHLEOADBJPPIIPPGBCABAPPGPIPDPNBPAGLKPFCEHIAIPPPPFJKBPCNIGGBPPPBBNPKDMIPLPHPIPLGCPFBPLMNLPIIPAIPELPGPHPPIPPJEPPAAMPMKPGPCBPAPPMPABAHBPFAODNOEKCOGPPGKDHBCPCJEPBIALBDJPPAEPAPGPCPPLADHBGPPLNGHAGPAEPPEHPOPDGPKAMGPPDGIBPFJBDPIBPJPPPCPDPKIFDHCDPGFPMGHPCBPIJMPFDCPLJBEPPPPDKLAJMPBAPIBPBGMICGCDGBNPOAAEJMKPPHPKPPAHMMPKKLPEHPPNKPEPDLPHBPCCPPPHPNPPJBDBCPFCPOCPPEPHNEPNEPKPAAPPPAFFPPAFBEPBHMDCDIPPPFPGEAFBPGGIKBLPFCPGHOJJPEOAMBACCCGAEEPPPPDPPBPPOICPLEEAPABPCPPKPPBPPENDPCHABIDMPPPPPPPIOOCFPPPBHCKEJNGEPEPPGODFPPDKFFNPBEPFIPPCEDOPBPDEOKDOLDDPHCAICAPLCPHPDPPIDHPPLPLJAPECPHCIPAPPHPPPBPCPDPCJIAHMPDFOJAPHPPOGABBPCNPKNPEFHCPPIPFPMPCAPPFALPBPHADPEPAKPECDCPOGPPEPGPOPKMPHPPG
       </div>
       <div
-        className="emotion-4"
+        className="emotion-6"
       >
         <button
-          className="emotion-3"
+          className="emotion-7"
           onClick={[Function]}
           title="Copy to Clipboard"
           type="button"
@@ -1750,16 +1663,16 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
 `;
 
 exports[`<MetadataPrettySwitch /> should render single-label predictions properly 1`] = `
-.emotion-6 {
+.emotion-0 {
   padding: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-6:not(:first-of-type) {
+.emotion-0:not(:first-of-type) {
   border-top: 4px solid #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -1767,7 +1680,7 @@ exports[`<MetadataPrettySwitch /> should render single-label predictions properl
   padding-bottom: 16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   font-family: Roboto Condensed;
   font-weight: 400;
   text-transform: uppercase;
@@ -1778,16 +1691,16 @@ exports[`<MetadataPrettySwitch /> should render single-label predictions properl
   text-align: left;
 }
 
-.emotion-1:last-of-type {
+.emotion-2:last-of-type {
   text-align: right;
   white-space: nowrap;
 }
 
-.emotion-1:nth-last-of-type(2) {
+.emotion-2:nth-last-of-type(2) {
   width: 100%;
 }
 
-.emotion-5 td {
+.emotion-4 td {
   vertical-align: bottom;
   font-family: Roboto Mono;
   font-size: 14px;
@@ -1798,16 +1711,16 @@ exports[`<MetadataPrettySwitch /> should render single-label predictions properl
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-3:last-of-type {
+.emotion-5:last-of-type {
   text-align: right;
   padding-right: 0;
 }
 
 <div
-  className="emotion-6"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   >
     animal
   </div>
@@ -1815,12 +1728,12 @@ exports[`<MetadataPrettySwitch /> should render single-label predictions properl
     <thead>
       <tr>
         <th
-          className="emotion-1"
+          className="emotion-2"
         >
           label
         </th>
         <th
-          className="emotion-1"
+          className="emotion-2"
         >
           confidence score
         </th>
@@ -1828,15 +1741,15 @@ exports[`<MetadataPrettySwitch /> should render single-label predictions properl
     </thead>
     <tbody>
       <tr
-        className="emotion-5"
+        className="emotion-4"
       >
         <td
-          className="emotion-3"
+          className="emotion-5"
         >
           Horse
         </td>
         <td
-          className="emotion-3"
+          className="emotion-5"
         >
           0.998
         </td>

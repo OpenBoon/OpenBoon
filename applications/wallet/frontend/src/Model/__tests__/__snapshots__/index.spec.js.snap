@@ -16,7 +16,7 @@ Array [
       ]
     }
   />,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -38,7 +38,7 @@ Array [
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -48,7 +48,7 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-0 a {
+.emotion-2 a {
   color: #ffffff;
   background-color: #009f22;
   padding: 6px;
@@ -58,14 +58,14 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-0 a:hover {
+.emotion-2 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #00791a;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
@@ -76,7 +76,7 @@ Array [
         height={20}
       />
       <div
-        className="emotion-0"
+        className="emotion-2"
         role="alert"
       >
         Label updated.
@@ -86,18 +86,20 @@ Array [
   @keyframes animation-0 {
   from {
     -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
     -ms-transform: rotate(0deg);
     transform: rotate(0deg);
   }
 
   to {
     -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
     -ms-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
 
-.emotion-3 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -105,7 +107,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -119,12 +121,12 @@ Array [
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-animation: animation-0 2s linear infinite;
   animation: animation-0 2s linear infinite;
 }
 
-.emotion-1 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -134,7 +136,7 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-1 a {
+.emotion-3 a {
   color: #ffffff;
   background-color: #0074f5;
   padding: 6px;
@@ -144,26 +146,26 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-1 a:hover {
+.emotion-3 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #005dc4;
 }
 
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <svg
-        className="emotion-0"
+        className="emotion-2"
         color="#0074f5"
         data-file-name="generating.svg"
         height={20}
       />
       <div
-        className="emotion-1"
+        className="emotion-3"
         role="alert"
       >
         "
@@ -214,7 +216,7 @@ Array [
       zvi-console_face_recognition-face-recognition
     </li>
   </ul>,
-  .emotion-2 {
+  .emotion-0 {
   padding-top: 8px;
   font-style: italic;
   display: -webkit-box;
@@ -226,19 +228,19 @@ Array [
   flex-direction: column;
 }
 
-.emotion-2 span {
+.emotion-0 span {
   padding-top: 4px;
 }
 
-.emotion-0 {
+.emotion-1 {
   color: #ebb52e;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <span
-      className="emotion-0"
+      className="emotion-1"
     >
       1
        more
@@ -250,7 +252,7 @@ Array [
        unique)
     </span>
     <span
-      className="emotion-0"
+      className="emotion-1"
     >
       15
        more assets need to be labeled (min. =
@@ -259,7 +261,7 @@ Array [
        of each label)
     </span>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -268,12 +270,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-3 button,
-.emotion-3 a {
+.emotion-0 button,
+.emotion-0 a {
   margin-right: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -289,8 +291,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -304,30 +306,24 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-2 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -343,8 +339,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -358,35 +354,29 @@ Array [
   background-color: transparent;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited {
   background-color: #808080;
 }
 
-.emotion-2:hover {
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <button
       aria-disabled={true}
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="button"
     >
@@ -394,21 +384,21 @@ Array [
     </button>
     <button
       aria-disabled={true}
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="button"
     >
       Train & Apply
     </button>
     <button
-      className="emotion-2"
+      className="emotion-3"
       onClick={[Function]}
       type="button"
     >
       Delete
     </button>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -417,7 +407,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -428,12 +418,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -452,22 +442,22 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
 <nav
-    className="emotion-3"
+    className="emotion-0"
   >
     <ul
-      className="emotion-2"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -477,19 +467,19 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-7 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   margin-bottom: -16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -505,11 +495,11 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -518,39 +508,28 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited {
   background-color: #808080;
 }
 
-.emotion-2:hover {
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -561,29 +540,29 @@ Array [
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-3 {
   padding-right: 8px;
 }
 
-.emotion-3 {
+.emotion-4 {
   width: 16px;
 }
 
 <div
-    className="emotion-7"
+    className="emotion-0"
   >
     <a
       aria-label="Add Filter in Visualizer"
-      className="emotion-2"
+      className="emotion-1"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
       <div
-        className="emotion-1"
+        className="emotion-2"
       >
         <svg
-          className="emotion-0"
+          className="emotion-3"
           data-file-name="filter.svg"
           height={20}
         />
@@ -591,20 +570,20 @@ Array [
       </div>
     </a>
     <div
-      className="emotion-3"
+      className="emotion-4"
     />
     <a
       aria-label="Add More Labels"
-      className="emotion-2"
+      className="emotion-1"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
       <div
-        className="emotion-1"
+        className="emotion-2"
       >
         <svg
-          className="emotion-0"
+          className="emotion-3"
           data-file-name="pen.svg"
           height={20}
         />
@@ -635,7 +614,7 @@ Array [
       ]
     }
   />,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -657,7 +636,7 @@ Array [
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -667,7 +646,7 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-0 a {
+.emotion-2 a {
   color: #ffffff;
   background-color: #009f22;
   padding: 6px;
@@ -677,14 +656,14 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-0 a:hover {
+.emotion-2 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #00791a;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
@@ -695,7 +674,7 @@ Array [
         height={20}
       />
       <div
-        className="emotion-0"
+        className="emotion-2"
         role="alert"
       >
         Label deleted.
@@ -705,18 +684,20 @@ Array [
   @keyframes animation-0 {
   from {
     -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
     -ms-transform: rotate(0deg);
     transform: rotate(0deg);
   }
 
   to {
     -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
     -ms-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
 
-.emotion-3 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -724,7 +705,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -738,12 +719,12 @@ Array [
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-animation: animation-0 2s linear infinite;
   animation: animation-0 2s linear infinite;
 }
 
-.emotion-1 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -753,7 +734,7 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-1 a {
+.emotion-3 a {
   color: #ffffff;
   background-color: #0074f5;
   padding: 6px;
@@ -763,26 +744,26 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-1 a:hover {
+.emotion-3 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #005dc4;
 }
 
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <svg
-        className="emotion-0"
+        className="emotion-2"
         color="#0074f5"
         data-file-name="generating.svg"
         height={20}
       />
       <div
-        className="emotion-1"
+        className="emotion-3"
         role="alert"
       >
         "
@@ -833,7 +814,7 @@ Array [
       zvi-console_face_recognition-face-recognition
     </li>
   </ul>,
-  .emotion-2 {
+  .emotion-0 {
   padding-top: 8px;
   font-style: italic;
   display: -webkit-box;
@@ -845,19 +826,19 @@ Array [
   flex-direction: column;
 }
 
-.emotion-2 span {
+.emotion-0 span {
   padding-top: 4px;
 }
 
-.emotion-0 {
+.emotion-1 {
   color: #ebb52e;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <span
-      className="emotion-0"
+      className="emotion-1"
     >
       1
        more
@@ -869,7 +850,7 @@ Array [
        unique)
     </span>
     <span
-      className="emotion-0"
+      className="emotion-1"
     >
       15
        more assets need to be labeled (min. =
@@ -878,7 +859,7 @@ Array [
        of each label)
     </span>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -887,12 +868,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-3 button,
-.emotion-3 a {
+.emotion-0 button,
+.emotion-0 a {
   margin-right: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -908,8 +889,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -923,30 +904,24 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-2 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -962,8 +937,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -977,35 +952,29 @@ Array [
   background-color: transparent;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited {
   background-color: #808080;
 }
 
-.emotion-2:hover {
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <button
       aria-disabled={true}
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="button"
     >
@@ -1013,21 +982,21 @@ Array [
     </button>
     <button
       aria-disabled={true}
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="button"
     >
       Train & Apply
     </button>
     <button
-      className="emotion-2"
+      className="emotion-3"
       onClick={[Function]}
       type="button"
     >
       Delete
     </button>
   </div>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -1036,7 +1005,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -1047,36 +1016,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-2 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -1096,23 +1041,47 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
+.emotion-5 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -1121,10 +1090,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -1133,75 +1102,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.emotion-7 button,
-.emotion-7 a {
-  margin-right: 16px;
-}
-
-.emotion-5 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
-  background-color: #808080;
-}
-
-.emotion-5:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-5[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-8 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1215,47 +1116,63 @@ Array [
   padding-right: 0;
 }
 
-.emotion-3 {
+.emotion-1 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-2 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-2 {
+.emotion-3 {
   position: relative;
 }
 
-.emotion-1 {
+.emotion-4 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-4:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
-}
-
-.emotion-1:hover {
-  border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
+.emotion-4:hover {
+  border: 2px solid #ffffff;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+}
+
 .emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-6 button,
+.emotion-6 a {
+  margin-right: 16px;
+}
+
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1271,8 +1188,56 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
+  background-color: #808080;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1286,50 +1251,44 @@ Array [
   background-color: transparent;
 }
 
-.emotion-6:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-6[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-6,
-.emotion-6:hover,
-.emotion-6:visited {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
   background-color: #73b61c;
 }
 
-.emotion-6:hover {
+.emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-8"
+    className="emotion-0"
     method="post"
     onSubmit={[Function]}
   >
     <div
-      className="emotion-3"
+      className="emotion-1"
     >
       <label
-        className="emotion-0"
+        className="emotion-2"
         htmlFor="newLabel"
       >
         Label
       </label>
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <input
           autoFocus={true}
-          className="emotion-1"
+          className="emotion-4"
           disabled={false}
           id="newLabel"
           name="newLabel"
@@ -1339,16 +1298,16 @@ Array [
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-5"
       >
          
       </div>
     </div>
     <div
-      className="emotion-7"
+      className="emotion-6"
     >
       <a
-        className="emotion-5"
+        className="emotion-7"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -1357,7 +1316,7 @@ Array [
       </a>
       <button
         aria-disabled={true}
-        className="emotion-6"
+        className="emotion-8"
         onClick={[Function]}
         type="submit"
       >

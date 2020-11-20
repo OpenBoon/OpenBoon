@@ -3,7 +3,7 @@
 exports[`<ModelDetails /> should handle train errors properly 1`] = `
 Array [
   "",
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -25,7 +25,7 @@ Array [
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -35,7 +35,7 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-0 a {
+.emotion-2 a {
   color: #ffffff;
   background-color: #3b3b3b;
   padding: 6px;
@@ -45,14 +45,14 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-0 a:hover {
+.emotion-2 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #2e2e2e;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
@@ -63,7 +63,7 @@ Array [
         height={20}
       />
       <div
-        className="emotion-0"
+        className="emotion-2"
         role="alert"
       >
         Something went wrong. Please try again.
@@ -103,7 +103,7 @@ Array [
       zvi-console_face_recognition-face-recognition
     </li>
   </ul>,
-  .emotion-1 {
+  .emotion-0 {
   padding-top: 8px;
   font-style: italic;
   display: -webkit-box;
@@ -115,11 +115,11 @@ Array [
   flex-direction: column;
 }
 
-.emotion-1 span {
+.emotion-0 span {
   padding-top: 4px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -128,10 +128,10 @@ Array [
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <span
-      className="emotion-0"
+      className="emotion-1"
     >
       <svg
         color="#009f22"
@@ -142,7 +142,7 @@ Array [
       Ready to train
     </span>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -151,12 +151,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-3 button,
-.emotion-3 a {
+.emotion-0 button,
+.emotion-0 a {
   margin-right: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -172,8 +172,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -187,55 +187,49 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <button
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="button"
     >
       Train
     </button>
     <button
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="button"
     >
       Train & Apply
     </button>
     <button
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="button"
     >
       Delete
     </button>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -244,7 +238,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -255,12 +249,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -279,19 +273,19 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
 <nav
-    className="emotion-3"
+    className="emotion-0"
   >
     <ul
-      className="emotion-2"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <Link
           as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
@@ -299,7 +293,7 @@ Array [
           passHref={true}
         >
           <a
-            className="emotion-0"
+            className="emotion-3"
             onClick={[Function]}
           >
             View Labels
@@ -308,19 +302,19 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-7 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   margin-bottom: -16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -336,11 +330,11 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -349,39 +343,28 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited {
   background-color: #808080;
 }
 
-.emotion-2:hover {
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -392,16 +375,16 @@ Array [
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-3 {
   padding-right: 8px;
 }
 
-.emotion-3 {
+.emotion-4 {
   width: 16px;
 }
 
 <div
-    className="emotion-7"
+    className="emotion-0"
   >
     <Link
       as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
@@ -410,15 +393,15 @@ Array [
     >
       <button
         aria-label="Add Filter in Visualizer"
-        className="emotion-2"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-1"
+          className="emotion-2"
         >
           <svg
-            className="emotion-0"
+            className="emotion-3"
             data-file-name="filter.svg"
             height={20}
           />
@@ -427,7 +410,7 @@ Array [
       </button>
     </Link>
     <div
-      className="emotion-3"
+      className="emotion-4"
     />
     <Link
       as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
@@ -436,15 +419,15 @@ Array [
     >
       <button
         aria-label="Add More Labels"
-        className="emotion-2"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-1"
+          className="emotion-2"
         >
           <svg
-            className="emotion-0"
+            className="emotion-3"
             data-file-name="pen.svg"
             height={20}
           />
@@ -453,7 +436,7 @@ Array [
       </button>
     </Link>
   </div>,
-  .emotion-16 {
+  .emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -475,7 +458,6 @@ Array [
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -483,21 +465,21 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-15 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-14 {
+.emotion-4 {
   position: absolute;
   top: 0;
   left: 0;
@@ -505,44 +487,44 @@ Array [
   bottom: 0;
 }
 
-.emotion-13 {
+.emotion-5 {
   height: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-13 tr {
+.emotion-5 tr {
   background-color: #252525;
 }
 
-.emotion-13 tr:nth-of-type(2n) {
+.emotion-5 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-13 tr:hover {
+.emotion-5 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-13 tr:hover .actions {
+.emotion-5 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-13 tr:hover td {
+.emotion-5 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-13 tr:hover td:first-of-type {
+.emotion-5 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-13 tr:hover td:last-of-type {
+.emotion-5 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-13 td {
+.emotion-5 td {
   max-width: calc(100vw / 5);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -554,16 +536,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-13 td:first-of-type {
+.emotion-5 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-13 td:last-of-type {
+.emotion-5 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-2 {
+.emotion-6 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -575,22 +557,22 @@ Array [
   width: auto;
 }
 
-.emotion-2:nth-of-type(1) {
+.emotion-6:nth-of-type(1) {
   width: 100%;
 }
 
-.emotion-2:not(:last-child) {
+.emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-6 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-9 {
+.emotion-12 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -602,20 +584,20 @@ Array [
   width: 1px;
 }
 
-.emotion-9:nth-of-type(1) {
+.emotion-12:nth-of-type(1) {
   width: 100%;
 }
 
-.emotion-9:not(:last-child) {
+.emotion-12:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-14 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-11 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -628,8 +610,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   text-align: center;
   color: #808080;
@@ -637,7 +619,7 @@ Array [
   line-height: 19px;
 }
 
-.emotion-10 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -654,13 +636,13 @@ Array [
 }
 
 <div
-    className="emotion-16"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
     >
       <h3
-        className="emotion-0"
+        className="emotion-2"
       >
         Number of 
         Labels
@@ -669,41 +651,41 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-15"
+      className="emotion-3"
     >
       <div
-        className="emotion-14"
+        className="emotion-4"
       >
         <table
-          className="emotion-13"
+          className="emotion-5"
         >
           <thead>
             <tr>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Label
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 # Required
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 # Labeled
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 # Remaining
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 <div
-                  className="emotion-6"
+                  className="emotion-11"
                 >
                   <svg
                     data-file-name="checkmark.svg"
@@ -712,10 +694,10 @@ Array [
                 </div>
               </th>
               <th
-                className="emotion-9"
+                className="emotion-12"
               >
                 <div
-                  className="emotion-6"
+                  className="emotion-11"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -727,16 +709,16 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-12"
+              className="emotion-14"
             >
               <td
                 colSpan={6}
               >
                 <div
-                  className="emotion-11"
+                  className="emotion-15"
                 >
                   <div
-                    className="emotion-10"
+                    className="emotion-16"
                   >
                     <svg
                       data-file-name="noJobs.svg"
@@ -794,7 +776,7 @@ Array [
       zvi-console_face_recognition-face-recognition
     </li>
   </ul>,
-  .emotion-2 {
+  .emotion-0 {
   padding-top: 8px;
   font-style: italic;
   display: -webkit-box;
@@ -806,19 +788,19 @@ Array [
   flex-direction: column;
 }
 
-.emotion-2 span {
+.emotion-0 span {
   padding-top: 4px;
 }
 
-.emotion-0 {
+.emotion-1 {
   color: #ebb52e;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <span
-      className="emotion-0"
+      className="emotion-1"
     >
       1
        more
@@ -830,7 +812,7 @@ Array [
        unique)
     </span>
     <span
-      className="emotion-0"
+      className="emotion-1"
     >
       1
        more assets need to be labeled (min. =
@@ -839,7 +821,7 @@ Array [
        of each label)
     </span>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -848,12 +830,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-3 button,
-.emotion-3 a {
+.emotion-0 button,
+.emotion-0 a {
   margin-right: 16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -869,62 +851,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
-  background-color: #808080;
-}
-
-.emotion-2:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-2[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
   -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -938,35 +866,77 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited {
+  background-color: #808080;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <button
       aria-disabled={true}
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="button"
     >
@@ -974,21 +944,21 @@ Array [
     </button>
     <button
       aria-disabled={true}
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="button"
     >
       Train & Apply
     </button>
     <button
-      className="emotion-2"
+      className="emotion-3"
       onClick={[Function]}
       type="button"
     >
       Delete
     </button>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -997,7 +967,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -1008,12 +978,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -1032,19 +1002,19 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
 <nav
-    className="emotion-3"
+    className="emotion-0"
   >
     <ul
-      className="emotion-2"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <Link
           as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
@@ -1052,7 +1022,7 @@ Array [
           passHref={true}
         >
           <a
-            className="emotion-0"
+            className="emotion-3"
             onClick={[Function]}
           >
             View Labels
@@ -1061,19 +1031,19 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-7 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   margin-bottom: -16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1089,11 +1059,11 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1102,39 +1072,28 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited {
   background-color: #808080;
 }
 
-.emotion-2:hover {
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1145,16 +1104,16 @@ Array [
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-3 {
   padding-right: 8px;
 }
 
-.emotion-3 {
+.emotion-4 {
   width: 16px;
 }
 
 <div
-    className="emotion-7"
+    className="emotion-0"
   >
     <Link
       as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
@@ -1163,15 +1122,15 @@ Array [
     >
       <button
         aria-label="Add Filter in Visualizer"
-        className="emotion-2"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-1"
+          className="emotion-2"
         >
           <svg
-            className="emotion-0"
+            className="emotion-3"
             data-file-name="filter.svg"
             height={20}
           />
@@ -1180,7 +1139,7 @@ Array [
       </button>
     </Link>
     <div
-      className="emotion-3"
+      className="emotion-4"
     />
     <Link
       as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
@@ -1189,15 +1148,15 @@ Array [
     >
       <button
         aria-label="Add More Labels"
-        className="emotion-2"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-1"
+          className="emotion-2"
         >
           <svg
-            className="emotion-0"
+            className="emotion-3"
             data-file-name="pen.svg"
             height={20}
           />
@@ -1206,7 +1165,7 @@ Array [
       </button>
     </Link>
   </div>,
-  .emotion-16 {
+  .emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1228,7 +1187,6 @@ Array [
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -1236,21 +1194,21 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-15 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-14 {
+.emotion-4 {
   position: absolute;
   top: 0;
   left: 0;
@@ -1258,44 +1216,44 @@ Array [
   bottom: 0;
 }
 
-.emotion-13 {
+.emotion-5 {
   height: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-13 tr {
+.emotion-5 tr {
   background-color: #252525;
 }
 
-.emotion-13 tr:nth-of-type(2n) {
+.emotion-5 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-13 tr:hover {
+.emotion-5 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-13 tr:hover .actions {
+.emotion-5 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-13 tr:hover td {
+.emotion-5 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-13 tr:hover td:first-of-type {
+.emotion-5 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-13 tr:hover td:last-of-type {
+.emotion-5 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-13 td {
+.emotion-5 td {
   max-width: calc(100vw / 5);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1307,16 +1265,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-13 td:first-of-type {
+.emotion-5 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-13 td:last-of-type {
+.emotion-5 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-2 {
+.emotion-6 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -1328,22 +1286,22 @@ Array [
   width: auto;
 }
 
-.emotion-2:nth-of-type(1) {
+.emotion-6:nth-of-type(1) {
   width: 100%;
 }
 
-.emotion-2:not(:last-child) {
+.emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-6 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-9 {
+.emotion-12 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -1355,20 +1313,20 @@ Array [
   width: 1px;
 }
 
-.emotion-9:nth-of-type(1) {
+.emotion-12:nth-of-type(1) {
   width: 100%;
 }
 
-.emotion-9:not(:last-child) {
+.emotion-12:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-14 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-11 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1381,8 +1339,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   text-align: center;
   color: #808080;
@@ -1390,7 +1348,7 @@ Array [
   line-height: 19px;
 }
 
-.emotion-10 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1407,13 +1365,13 @@ Array [
 }
 
 <div
-    className="emotion-16"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
     >
       <h3
-        className="emotion-0"
+        className="emotion-2"
       >
         Number of 
         Labels
@@ -1422,41 +1380,41 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-15"
+      className="emotion-3"
     >
       <div
-        className="emotion-14"
+        className="emotion-4"
       >
         <table
-          className="emotion-13"
+          className="emotion-5"
         >
           <thead>
             <tr>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Label
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 # Required
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 # Labeled
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 # Remaining
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 <div
-                  className="emotion-6"
+                  className="emotion-11"
                 >
                   <svg
                     data-file-name="checkmark.svg"
@@ -1465,10 +1423,10 @@ Array [
                 </div>
               </th>
               <th
-                className="emotion-9"
+                className="emotion-12"
               >
                 <div
-                  className="emotion-6"
+                  className="emotion-11"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -1480,16 +1438,16 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-12"
+              className="emotion-14"
             >
               <td
                 colSpan={6}
               >
                 <div
-                  className="emotion-11"
+                  className="emotion-15"
                 >
                   <div
-                    className="emotion-10"
+                    className="emotion-16"
                   >
                     <svg
                       data-file-name="noJobs.svg"
@@ -1547,7 +1505,7 @@ Array [
       zvi-console_face_recognition-face-recognition
     </li>
   </ul>,
-  .emotion-2 {
+  .emotion-0 {
   padding-top: 8px;
   font-style: italic;
   display: -webkit-box;
@@ -1559,19 +1517,19 @@ Array [
   flex-direction: column;
 }
 
-.emotion-2 span {
+.emotion-0 span {
   padding-top: 4px;
 }
 
-.emotion-0 {
+.emotion-1 {
   color: #ebb52e;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <span
-      className="emotion-0"
+      className="emotion-1"
     >
       2
        more
@@ -1583,7 +1541,7 @@ Array [
        unique)
     </span>
     <span
-      className="emotion-0"
+      className="emotion-1"
     >
       1
        more assets need to be labeled (min. =
@@ -1592,7 +1550,7 @@ Array [
        of each label)
     </span>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1601,12 +1559,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-3 button,
-.emotion-3 a {
+.emotion-0 button,
+.emotion-0 a {
   margin-right: 16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1622,62 +1580,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
-  background-color: #808080;
-}
-
-.emotion-2:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-2[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
   -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1691,35 +1595,77 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited {
+  background-color: #808080;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <button
       aria-disabled={true}
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="button"
     >
@@ -1727,21 +1673,21 @@ Array [
     </button>
     <button
       aria-disabled={true}
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="button"
     >
       Train & Apply
     </button>
     <button
-      className="emotion-2"
+      className="emotion-3"
       onClick={[Function]}
       type="button"
     >
       Delete
     </button>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -1750,7 +1696,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -1761,12 +1707,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -1785,19 +1731,19 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
 <nav
-    className="emotion-3"
+    className="emotion-0"
   >
     <ul
-      className="emotion-2"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <Link
           as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
@@ -1805,7 +1751,7 @@ Array [
           passHref={true}
         >
           <a
-            className="emotion-0"
+            className="emotion-3"
             onClick={[Function]}
           >
             View Labels
@@ -1814,19 +1760,19 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-7 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   margin-bottom: -16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1842,11 +1788,11 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1855,39 +1801,28 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited {
   background-color: #808080;
 }
 
-.emotion-2:hover {
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1898,16 +1833,16 @@ Array [
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-3 {
   padding-right: 8px;
 }
 
-.emotion-3 {
+.emotion-4 {
   width: 16px;
 }
 
 <div
-    className="emotion-7"
+    className="emotion-0"
   >
     <Link
       as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
@@ -1916,15 +1851,15 @@ Array [
     >
       <button
         aria-label="Add Filter in Visualizer"
-        className="emotion-2"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-1"
+          className="emotion-2"
         >
           <svg
-            className="emotion-0"
+            className="emotion-3"
             data-file-name="filter.svg"
             height={20}
           />
@@ -1933,7 +1868,7 @@ Array [
       </button>
     </Link>
     <div
-      className="emotion-3"
+      className="emotion-4"
     />
     <Link
       as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
@@ -1942,15 +1877,15 @@ Array [
     >
       <button
         aria-label="Add More Labels"
-        className="emotion-2"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-1"
+          className="emotion-2"
         >
           <svg
-            className="emotion-0"
+            className="emotion-3"
             data-file-name="pen.svg"
             height={20}
           />
@@ -1959,7 +1894,7 @@ Array [
       </button>
     </Link>
   </div>,
-  .emotion-16 {
+  .emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1981,7 +1916,6 @@ Array [
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -1989,21 +1923,21 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-15 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-14 {
+.emotion-4 {
   position: absolute;
   top: 0;
   left: 0;
@@ -2011,44 +1945,44 @@ Array [
   bottom: 0;
 }
 
-.emotion-13 {
+.emotion-5 {
   height: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-13 tr {
+.emotion-5 tr {
   background-color: #252525;
 }
 
-.emotion-13 tr:nth-of-type(2n) {
+.emotion-5 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-13 tr:hover {
+.emotion-5 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-13 tr:hover .actions {
+.emotion-5 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-13 tr:hover td {
+.emotion-5 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-13 tr:hover td:first-of-type {
+.emotion-5 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-13 tr:hover td:last-of-type {
+.emotion-5 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-13 td {
+.emotion-5 td {
   max-width: calc(100vw / 5);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2060,16 +1994,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-13 td:first-of-type {
+.emotion-5 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-13 td:last-of-type {
+.emotion-5 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-2 {
+.emotion-6 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -2081,22 +2015,22 @@ Array [
   width: auto;
 }
 
-.emotion-2:nth-of-type(1) {
+.emotion-6:nth-of-type(1) {
   width: 100%;
 }
 
-.emotion-2:not(:last-child) {
+.emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-6 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-9 {
+.emotion-12 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -2108,20 +2042,20 @@ Array [
   width: 1px;
 }
 
-.emotion-9:nth-of-type(1) {
+.emotion-12:nth-of-type(1) {
   width: 100%;
 }
 
-.emotion-9:not(:last-child) {
+.emotion-12:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-14 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-11 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2134,8 +2068,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   text-align: center;
   color: #808080;
@@ -2143,7 +2077,7 @@ Array [
   line-height: 19px;
 }
 
-.emotion-10 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2160,13 +2094,13 @@ Array [
 }
 
 <div
-    className="emotion-16"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
     >
       <h3
-        className="emotion-0"
+        className="emotion-2"
       >
         Number of 
         Labels
@@ -2175,41 +2109,41 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-15"
+      className="emotion-3"
     >
       <div
-        className="emotion-14"
+        className="emotion-4"
       >
         <table
-          className="emotion-13"
+          className="emotion-5"
         >
           <thead>
             <tr>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Label
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 # Required
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 # Labeled
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 # Remaining
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 <div
-                  className="emotion-6"
+                  className="emotion-11"
                 >
                   <svg
                     data-file-name="checkmark.svg"
@@ -2218,10 +2152,10 @@ Array [
                 </div>
               </th>
               <th
-                className="emotion-9"
+                className="emotion-12"
               >
                 <div
-                  className="emotion-6"
+                  className="emotion-11"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -2233,16 +2167,16 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-12"
+              className="emotion-14"
             >
               <td
                 colSpan={6}
               >
                 <div
-                  className="emotion-11"
+                  className="emotion-15"
                 >
                   <div
-                    className="emotion-10"
+                    className="emotion-16"
                   >
                     <svg
                       data-file-name="noJobs.svg"

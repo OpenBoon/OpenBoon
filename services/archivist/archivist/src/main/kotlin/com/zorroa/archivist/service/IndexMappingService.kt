@@ -27,19 +27,19 @@ class IndexMappingServiceImpl(
 
     override fun addFieldToIndex(field: Field, index: IndexRoute) {
         val client = indexRoutingService.getClusterRestClient(index)
-        addFieldToIndex(field.name, field.type, client)
+        addFieldToIndex(field.getEsField(), field.type, client)
     }
 
     override fun addFieldToIndex(field: Field) {
         val client = indexRoutingService.getProjectRestClient()
-        addFieldToIndex(field.name, field.type, client)
+        addFieldToIndex(field.getEsField(), field.type, client)
     }
 
     override fun addAllFieldsToIndex(index: IndexRoute) {
         val client = indexRoutingService.getClusterRestClient(index)
         for (field in fieldDao.getAllByProjectId(getProjectId())) {
-            logger.info("Adding field ${field.name} to index ${client.route.indexUrl}")
-            addFieldToIndex(field.name, field.type, client)
+            logger.info("Adding field ${field.getEsField()} to index ${client.route.indexUrl}")
+            addFieldToIndex(field.getEsField(), field.type, client)
         }
         client.refresh()
     }
@@ -79,9 +79,9 @@ class IndexMappingServiceImpl(
      * Get a field definition.
      */
     fun getFieldDefinition(type: String): Map<String, Any> {
-        return if (type == "keyword") {
+        return if (type == "fulltext_keyword") {
             mapOf(
-                "type" to type,
+                "type" to "keyword",
                 "fields" to mapOf(
                     "fulltext" to
                         mapOf(

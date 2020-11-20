@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<UserMenu /> should render properly 1`] = `
-.emotion-5 {
+.emotion-0 {
   margin-right: -12px;
 }
 
-.emotion-4 {
+.emotion-1 {
   position: relative;
   height: 100%;
 }
 
-.emotion-3 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -26,48 +26,35 @@ exports[`<UserMenu /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
+  background-color: transparent;
+  padding-left: 16px;
   height: 100%;
 }
 
-.emotion-3:hover {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-3:hover,
-.emotion-3.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-3:hover {
+.emotion-2:hover {
   cursor: pointer;
 }
 
-.emotion-2 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -78,14 +65,14 @@ exports[`<UserMenu /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -101,33 +88,37 @@ exports[`<UserMenu /> should render properly 1`] = `
   font-weight: 700;
 }
 
-.emotion-1 {
+.emotion-5 {
   margin-left: 8px;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
 }
 
 <div
-  className="emotion-5"
+  className="emotion-0"
 >
   <div
-    className="emotion-4"
+    className="emotion-1"
   >
     <button
       aria-label="Open user menu"
-      className="emotion-3"
+      className="emotion-2"
       onBlur={[Function]}
       onClick={[Function]}
       type="button"
     >
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <div
-          className="emotion-0"
+          className="emotion-4"
         >
           JD
         </div>
         <svg
-          className="emotion-1"
+          className="emotion-5"
           color="#808080"
           data-file-name="chevron.svg"
           height={20}
@@ -139,30 +130,19 @@ exports[`<UserMenu /> should render properly 1`] = `
 `;
 
 exports[`<UserMenu /> should render properly 2`] = `
-.emotion-13 {
+.emotion-0 {
   margin-right: -12px;
 }
 
-.emotion-12 {
+.emotion-1 {
   position: relative;
   height: 100%;
 }
 
 .emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-3 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -175,56 +155,53 @@ exports[`<UserMenu /> should render properly 2`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
-  height: 100%;
   background-color: #3b3b3b;
+  padding-left: 16px;
+  height: 100%;
 }
 
-.emotion-3:hover {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-3:hover,
-.emotion-3.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-3:hover {
+.emotion-2:hover {
   cursor: pointer;
 }
 
-.emotion-0 {
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -240,14 +217,15 @@ exports[`<UserMenu /> should render properly 2`] = `
   font-weight: 700;
 }
 
-.emotion-1 {
+.emotion-5 {
   margin-left: 8px;
   -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-11 {
+.emotion-6 {
   position: absolute;
   z-index: 1;
   top: 100%;
@@ -259,7 +237,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   font-family: Roboto,Avenir,"sans-serif";
 }
 
-.emotion-11 ul {
+.emotion-6 ul {
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
@@ -267,19 +245,19 @@ exports[`<UserMenu /> should render properly 2`] = `
   margin: 0;
 }
 
-.emotion-11 li {
+.emotion-6 li {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5 {
+.emotion-7 {
   padding: 16px;
   border-bottom: 1px solid #b3b3b3;
 }
 
-.emotion-4 {
+.emotion-8 {
   font-weight: 700;
 }
 
@@ -287,10 +265,10 @@ exports[`<UserMenu /> should render properly 2`] = `
   border-bottom: 1px solid #b3b3b3;
 }
 
-.emotion-6 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-10 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -298,73 +276,56 @@ exports[`<UserMenu /> should render properly 2`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  padding: 8px 16px;
-  font-weight: 400;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   border-radius: 0;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
 }
 
-.emotion-6:hover {
+.emotion-10:hover,
+.emotion-10.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-6[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
   background-color: #4a4a4a;
 }
 
 <div
-  className="emotion-13"
+  className="emotion-0"
 >
   <div
-    className="emotion-12"
+    className="emotion-1"
   >
     <button
       aria-label="Open user menu"
-      className="emotion-3"
+      className="emotion-2"
       onBlur={[Function]}
       onClick={[Function]}
       type="button"
     >
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <div
-          className="emotion-0"
+          className="emotion-4"
         >
           JD
         </div>
         <svg
-          className="emotion-1"
+          className="emotion-5"
           color="#808080"
           data-file-name="chevron.svg"
           height={20}
@@ -372,14 +333,14 @@ exports[`<UserMenu /> should render properly 2`] = `
       </div>
     </button>
     <div
-      className="emotion-11"
+      className="emotion-6"
     >
       <div>
         <div
-          className="emotion-5"
+          className="emotion-7"
         >
           <div
-            className="emotion-4"
+            className="emotion-8"
           >
             Jane Doe
           </div>
@@ -392,7 +353,7 @@ exports[`<UserMenu /> should render properly 2`] = `
         >
           <li>
             <a
-              className="emotion-6"
+              className="emotion-10"
               href="/account"
               onBlur={[Function]}
               onClick={[Function]}
@@ -403,7 +364,7 @@ exports[`<UserMenu /> should render properly 2`] = `
           </li>
           <li>
             <a
-              className="emotion-6"
+              className="emotion-10"
               href="mailto:zvi-console-support@zorroa.com"
               onBlur={[Function]}
               onClick={[Function]}
@@ -415,7 +376,7 @@ exports[`<UserMenu /> should render properly 2`] = `
           </li>
           <li>
             <a
-              className="emotion-6"
+              className="emotion-10"
               href="https://shipright.community/zorroa"
               onBlur={[Function]}
               onClick={[Function]}
@@ -429,7 +390,7 @@ exports[`<UserMenu /> should render properly 2`] = `
         <ul>
           <li>
             <button
-              className="emotion-6"
+              className="emotion-10"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -445,19 +406,19 @@ exports[`<UserMenu /> should render properly 2`] = `
 `;
 
 exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
-.emotion-5 {
+.emotion-0 {
   margin-right: -12px;
 }
 
-.emotion-4 {
+.emotion-1 {
   position: relative;
   height: 100%;
 }
 
-.emotion-3 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -470,48 +431,35 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
+  background-color: transparent;
+  padding-left: 16px;
   height: 100%;
 }
 
-.emotion-3:hover {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-3:hover,
-.emotion-3.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-3:hover {
+.emotion-2:hover {
   cursor: pointer;
 }
 
-.emotion-2 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -522,14 +470,14 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -545,33 +493,37 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   font-weight: 700;
 }
 
-.emotion-1 {
+.emotion-5 {
   margin-left: 8px;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
 }
 
 <div
-  className="emotion-5"
+  className="emotion-0"
 >
   <div
-    className="emotion-4"
+    className="emotion-1"
   >
     <button
       aria-label="Open user menu"
-      className="emotion-3"
+      className="emotion-2"
       onBlur={[Function]}
       onClick={[Function]}
       type="button"
     >
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <div
-          className="emotion-0"
+          className="emotion-4"
         >
           
         </div>
         <svg
-          className="emotion-1"
+          className="emotion-5"
           color="#808080"
           data-file-name="chevron.svg"
           height={20}

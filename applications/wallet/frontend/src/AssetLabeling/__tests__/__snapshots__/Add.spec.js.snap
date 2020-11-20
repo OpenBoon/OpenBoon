@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AssetLabelingAdd /> should add a label 1`] = `
-.emotion-10 {
+.emotion-0 {
   padding: 16px;
 }
 
-.emotion-9 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -25,12 +25,12 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-1 {
+.emotion-3 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-0 {
+.emotion-4 {
   background-color: #808080;
   border-radius: 2px;
   border: none;
@@ -44,29 +44,31 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   -webkit-appearance: none;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
   background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
 }
 
-.emotion-3 {
+.emotion-5 {
   height: 8px;
 }
 
-.emotion-4 {
+.emotion-6 {
   height: 24px;
 }
 
-.emotion-8 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -79,8 +81,8 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -92,43 +94,34 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   margin: 0;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
   background-color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-6 {
+.emotion-9 {
   padding: 8px;
 }
 
-.emotion-7 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-10 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -141,8 +134,8 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -154,41 +147,32 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   margin: 0;
 }
 
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited {
   background-color: #73b61c;
 }
 
-.emotion-7:hover {
+.emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-10"
+  className="emotion-0"
 >
   <form
     action=""
-    className="emotion-9"
+    className="emotion-1"
     method="post"
     onSubmit={[Function]}
   >
@@ -197,10 +181,10 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
     >
       Model
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <select
-          className="emotion-0"
+          className="emotion-4"
           defaultValue=""
           disabled={false}
           onChange={[Function]}
@@ -235,7 +219,7 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
       </div>
     </label>
     <div
-      className="emotion-3"
+      className="emotion-5"
     />
     <Combobox
       hasError={false}
@@ -245,25 +229,25 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
       value=""
     />
     <div
-      className="emotion-4"
+      className="emotion-6"
     />
     <div
-      className="emotion-8"
+      className="emotion-7"
     >
       <button
         aria-disabled={true}
-        className="emotion-5"
+        className="emotion-8"
         onClick={[Function]}
         type="button"
       >
         Cancel
       </button>
       <div
-        className="emotion-6"
+        className="emotion-9"
       />
       <button
         aria-disabled={true}
-        className="emotion-7"
+        className="emotion-10"
         onClick={[Function]}
         type="submit"
       >
@@ -275,11 +259,11 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
 `;
 
 exports[`<AssetLabelingAdd /> should render with localStorage and update a label 1`] = `
-.emotion-10 {
+.emotion-0 {
   padding: 16px;
 }
 
-.emotion-9 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -299,12 +283,12 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   color: #b3b3b3;
 }
 
-.emotion-1 {
+.emotion-3 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-0 {
+.emotion-4 {
   background-color: #808080;
   border-radius: 2px;
   border: none;
@@ -318,29 +302,31 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   -webkit-appearance: none;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
   background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
 }
 
-.emotion-3 {
+.emotion-5 {
   height: 8px;
 }
 
-.emotion-4 {
+.emotion-6 {
   height: 24px;
 }
 
-.emotion-8 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -353,8 +339,8 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -366,43 +352,34 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   margin: 0;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
   background-color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-6 {
+.emotion-9 {
   padding: 8px;
 }
 
-.emotion-7 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-10 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -415,8 +392,8 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -428,41 +405,32 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   margin: 0;
 }
 
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited {
   background-color: #73b61c;
 }
 
-.emotion-7:hover {
+.emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-10"
+  className="emotion-0"
 >
   <form
     action=""
-    className="emotion-9"
+    className="emotion-1"
     method="post"
     onSubmit={[Function]}
   >
@@ -471,10 +439,10 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
     >
       Model
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <select
-          className="emotion-0"
+          className="emotion-4"
           defaultValue="621bf774-89d9-1244-9596-d6df43f1ede5"
           disabled={false}
           onChange={[Function]}
@@ -509,7 +477,7 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
       </div>
     </label>
     <div
-      className="emotion-3"
+      className="emotion-5"
     />
     <Combobox
       hasError={false}
@@ -519,24 +487,24 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
       value="Existing localStorage"
     />
     <div
-      className="emotion-4"
+      className="emotion-6"
     />
     <div
-      className="emotion-8"
+      className="emotion-7"
     >
       <button
         aria-disabled={true}
-        className="emotion-5"
+        className="emotion-8"
         onClick={[Function]}
         type="button"
       >
         Cancel
       </button>
       <div
-        className="emotion-6"
+        className="emotion-9"
       />
       <button
-        className="emotion-7"
+        className="emotion-10"
         onClick={[Function]}
         type="submit"
       >

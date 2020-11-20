@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TaskErrors /> should render properly with job errors 1`] = `
-.emotion-43 {
+.emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -23,7 +23,6 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -31,58 +30,58 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-42 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-40 {
+.emotion-5 {
   height: auto;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-40 tr {
+.emotion-5 tr {
   background-color: #252525;
 }
 
-.emotion-40 tr:nth-of-type(2n) {
+.emotion-5 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-40 tr:hover {
+.emotion-5 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-40 tr:hover .actions {
+.emotion-5 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-40 tr:hover td {
+.emotion-5 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-40 tr:hover td:first-of-type {
+.emotion-5 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-40 tr:hover td:last-of-type {
+.emotion-5 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-40 td {
+.emotion-5 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -94,16 +93,16 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   border-right: 0;
 }
 
-.emotion-40 td:first-of-type {
+.emotion-5 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-40 td:last-of-type {
+.emotion-5 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-2 {
+.emotion-6 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -115,15 +114,15 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   width: auto;
 }
 
-.emotion-2:nth-of-type(0) {
+.emotion-6:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-2:not(:last-child) {
+.emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-9 {
+.emotion-12 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -135,15 +134,15 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   width: 1px;
 }
 
-.emotion-9:nth-of-type(0) {
+.emotion-12:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-9:not(:last-child) {
+.emotion-12:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -154,37 +153,37 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   cursor: pointer;
 }
 
-.emotion-10 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   alignt-items: center;
   -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
   -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
   justify-content: flex-start;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-right: 8px;
 }
 
-.emotion-10 span {
+.emotion-15 span {
   padding-left: 12px;
   font-weight: 500;
 }
 
-.emotion-11:hover {
+.emotion-16:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-13 {
+.emotion-17 {
   position: relative;
   height: 100%;
 }
 
-.emotion-12 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -200,47 +199,35 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 6px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
   color: #191919;
-  padding: 6px;
+  background-color: transparent;
   margin: -6px;
 }
 
-.emotion-12:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-12[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-12:hover,
-.emotion-12.focus-visible:focus {
-  color: #ffffff !important;
+.emotion-18:hover,
+.emotion-18.focus-visible:focus {
+  color: #ffffff!important;
 }
 
 <div
-  className="emotion-43"
+  className="emotion-0"
 >
   <div
     className="emotion-1"
   >
     <h3
-      className="emotion-0"
+      className="emotion-2"
     >
       Number of 
       Errors
@@ -249,51 +236,51 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
     </h3>
   </div>
   <div
-    className="emotion-42"
+    className="emotion-3"
   >
     <div
-      className="emotion-41"
+      className="emotion-4"
     >
       <table
-        className="emotion-40"
+        className="emotion-5"
       >
         <thead>
           <tr>
             <th
-              className="emotion-2"
+              className="emotion-6"
             >
               Error Type
             </th>
             <th
-              className="emotion-2"
+              className="emotion-6"
             >
               Phase
             </th>
             <th
-              className="emotion-2"
+              className="emotion-6"
             >
               Message
             </th>
             <th
-              className="emotion-2"
+              className="emotion-6"
             >
               File Name
             </th>
             <th
-              className="emotion-2"
+              className="emotion-6"
             >
               Processor
             </th>
             <th
-              className="emotion-2"
+              className="emotion-6"
             >
               Time
             </th>
             <th
-              className="emotion-9"
+              className="emotion-12"
             >
               <div
-                className="emotion-8"
+                className="emotion-13"
               >
                 <svg
                   data-file-name="kebab.svg"
@@ -310,7 +297,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
           >
             <td>
               <div
-                className="emotion-10"
+                className="emotion-15"
               >
                 <svg
                   color="#d6680b"
@@ -333,7 +320,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               }
             >
               <a
-                className="emotion-11"
+                className="emotion-16"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86bc-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -362,11 +349,11 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
             <td>
               <div
-                className="emotion-13"
+                className="emotion-17"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-12"
+                  className="actions emotion-18"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -385,7 +372,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
           >
             <td>
               <div
-                className="emotion-10"
+                className="emotion-15"
               >
                 <svg
                   color="#c92300"
@@ -408,7 +395,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               }
             >
               <a
-                className="emotion-11"
+                className="emotion-16"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86bb-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -437,11 +424,11 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
             <td>
               <div
-                className="emotion-13"
+                className="emotion-17"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-12"
+                  className="actions emotion-18"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -460,7 +447,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
           >
             <td>
               <div
-                className="emotion-10"
+                className="emotion-15"
               >
                 <svg
                   color="#d6680b"
@@ -483,7 +470,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               }
             >
               <a
-                className="emotion-11"
+                className="emotion-16"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86ba-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -512,11 +499,11 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
             <td>
               <div
-                className="emotion-13"
+                className="emotion-17"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-12"
+                  className="actions emotion-18"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -535,7 +522,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
           >
             <td>
               <div
-                className="emotion-10"
+                className="emotion-15"
               >
                 <svg
                   color="#c92300"
@@ -558,7 +545,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               }
             >
               <a
-                className="emotion-11"
+                className="emotion-16"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b9-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -587,11 +574,11 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
             <td>
               <div
-                className="emotion-13"
+                className="emotion-17"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-12"
+                  className="actions emotion-18"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -610,7 +597,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
           >
             <td>
               <div
-                className="emotion-10"
+                className="emotion-15"
               >
                 <svg
                   color="#d6680b"
@@ -633,7 +620,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               }
             >
               <a
-                className="emotion-11"
+                className="emotion-16"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b8-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -662,11 +649,11 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
             <td>
               <div
-                className="emotion-13"
+                className="emotion-17"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-12"
+                  className="actions emotion-18"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -685,7 +672,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
           >
             <td>
               <div
-                className="emotion-10"
+                className="emotion-15"
               >
                 <svg
                   color="#d6680b"
@@ -708,7 +695,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               }
             >
               <a
-                className="emotion-11"
+                className="emotion-16"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b7-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -737,11 +724,11 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
             <td>
               <div
-                className="emotion-13"
+                className="emotion-17"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-12"
+                  className="actions emotion-18"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -757,18 +744,18 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
         </tbody>
       </table>
     </div>
-  </div>
-  <div>
-     
-  </div>
-  <div>
-     
+    <div>
+       
+    </div>
+    <div>
+       
+    </div>
   </div>
 </div>
 `;
 
 exports[`<TaskErrors /> should render properly without job errors 1`] = `
-.emotion-16 {
+.emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -790,7 +777,6 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -798,68 +784,21 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-15 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-2 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: auto;
-}
-
-.emotion-2:nth-of-type(0) {
-  width: 100%;
-}
-
-.emotion-2:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-9 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: 1px;
-}
-
-.emotion-9:nth-of-type(0) {
-  width: 100%;
-}
-
-.emotion-9:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-14 {
+.emotion-4 {
   position: absolute;
   top: 0;
   left: 0;
@@ -867,44 +806,44 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   bottom: 0;
 }
 
-.emotion-13 {
+.emotion-5 {
   height: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-13 tr {
+.emotion-5 tr {
   background-color: #252525;
 }
 
-.emotion-13 tr:nth-of-type(2n) {
+.emotion-5 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-13 tr:hover {
+.emotion-5 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-13 tr:hover .actions {
+.emotion-5 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-13 tr:hover td {
+.emotion-5 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-13 tr:hover td:first-of-type {
+.emotion-5 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-13 tr:hover td:last-of-type {
+.emotion-5 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-13 td {
+.emotion-5 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -916,21 +855,68 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   border-right: 0;
 }
 
-.emotion-13 td:first-of-type {
+.emotion-5 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-13 td:last-of-type {
+.emotion-5 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
+.emotion-6 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-6:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-6:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
 .emotion-12 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-12:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-12:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-14 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-11 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -943,8 +929,8 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   text-align: center;
   color: #808080;
@@ -952,7 +938,7 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   line-height: 19px;
 }
 
-.emotion-10 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -969,13 +955,13 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
 }
 
 <div
-  className="emotion-16"
+  className="emotion-0"
 >
   <div
     className="emotion-1"
   >
     <h3
-      className="emotion-0"
+      className="emotion-2"
     >
       Number of 
       Errors
@@ -984,51 +970,51 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
     </h3>
   </div>
   <div
-    className="emotion-15"
+    className="emotion-3"
   >
     <div
-      className="emotion-14"
+      className="emotion-4"
     >
       <table
-        className="emotion-13"
+        className="emotion-5"
       >
         <thead>
           <tr>
             <th
-              className="emotion-2"
+              className="emotion-6"
             >
               Error Type
             </th>
             <th
-              className="emotion-2"
+              className="emotion-6"
             >
               Phase
             </th>
             <th
-              className="emotion-2"
+              className="emotion-6"
             >
               Message
             </th>
             <th
-              className="emotion-2"
+              className="emotion-6"
             >
               File Name
             </th>
             <th
-              className="emotion-2"
+              className="emotion-6"
             >
               Processor
             </th>
             <th
-              className="emotion-2"
+              className="emotion-6"
             >
               Time
             </th>
             <th
-              className="emotion-9"
+              className="emotion-12"
             >
               <div
-                className="emotion-8"
+                className="emotion-13"
               >
                 <svg
                   data-file-name="kebab.svg"
@@ -1040,16 +1026,16 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
         </thead>
         <tbody>
           <tr
-            className="emotion-12"
+            className="emotion-14"
           >
             <td
               colSpan={7}
             >
               <div
-                className="emotion-11"
+                className="emotion-15"
               >
                 <div
-                  className="emotion-10"
+                  className="emotion-16"
                 >
                   <svg
                     data-file-name="noJobs.svg"

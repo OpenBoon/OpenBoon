@@ -34,7 +34,7 @@ Array [
 <div
     className="emotion-0"
   />,
-  .emotion-2 {
+  .emotion-0 {
   color: #b3b3b3;
 }
 
@@ -43,7 +43,7 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-0 {
+.emotion-2 {
   background-color: #3b3b3b;
   border-radius: 2px;
   border: none;
@@ -57,21 +57,23 @@ Array [
   -webkit-appearance: none;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
   background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
 <label
-    className="emotion-2"
+    className="emotion-0"
   >
     Scope
     <div
       className="emotion-1"
     >
       <select
-        className="emotion-0"
+        className="emotion-2"
         defaultValue="all"
         disabled={true}
         onChange={[Function]}
@@ -107,11 +109,11 @@ Array [
 <div
     className="emotion-0"
   />,
-  .emotion-1 {
+  .emotion-0 {
   padding-bottom: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -122,33 +124,35 @@ Array [
   border-radius: 2px;
   color: #e0e0e0;
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
   background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   background-color: #2e2e2e;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-0::-webkit-input-placeholder {
+.emotion-1::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-0::-moz-placeholder {
+.emotion-1::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-0:-ms-input-placeholder {
+.emotion-1:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-0::placeholder {
+.emotion-1::placeholder {
   font-style: italic;
 }
 
-.emotion-0:hover {
+.emotion-1:hover {
   border: 1px solid #808080;
 }
 
-.emotion-0:focus {
+.emotion-1:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -157,25 +161,24 @@ Array [
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <input
       aria-label="Filter labels"
-      className="emotion-0"
+      className="emotion-1"
       onChange={[Function]}
       placeholder="Filter labels"
       type="search"
       value=""
     />
   </div>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -184,11 +187,11 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-style: italic;
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -204,50 +207,37 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-1:hover {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       Labels
        Selected:
@@ -256,7 +246,7 @@ Array [
     </div>
     <div>
       <button
-        className="emotion-1"
+        className="emotion-2"
         onClick={[Function]}
         type="button"
       >
@@ -271,7 +261,6 @@ Array [
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 8px;
   font-family: Roboto Condensed;
@@ -338,7 +327,7 @@ Array [
 <div
     className="emotion-0"
   />,
-  .emotion-2 {
+  .emotion-0 {
   color: #b3b3b3;
 }
 
@@ -347,7 +336,7 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-0 {
+.emotion-2 {
   background-color: #3b3b3b;
   border-radius: 2px;
   border: none;
@@ -361,21 +350,23 @@ Array [
   -webkit-appearance: none;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
   background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
 <label
-    className="emotion-2"
+    className="emotion-0"
   >
     Scope
     <div
       className="emotion-1"
     >
       <select
-        className="emotion-0"
+        className="emotion-2"
         defaultValue="all"
         disabled={true}
         onChange={[Function]}
@@ -411,11 +402,11 @@ Array [
 <div
     className="emotion-0"
   />,
-  .emotion-1 {
+  .emotion-0 {
   padding-bottom: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -426,33 +417,35 @@ Array [
   border-radius: 2px;
   color: #e0e0e0;
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
   background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   background-color: #2e2e2e;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-0::-webkit-input-placeholder {
+.emotion-1::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-0::-moz-placeholder {
+.emotion-1::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-0:-ms-input-placeholder {
+.emotion-1:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-0::placeholder {
+.emotion-1::placeholder {
   font-style: italic;
 }
 
-.emotion-0:hover {
+.emotion-1:hover {
   border: 1px solid #808080;
 }
 
-.emotion-0:focus {
+.emotion-1:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -461,25 +454,24 @@ Array [
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <input
       aria-label="Filter labels"
-      className="emotion-0"
+      className="emotion-1"
       onChange={[Function]}
       placeholder="Filter labels"
       type="search"
       value=""
     />
   </div>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -488,11 +480,11 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-style: italic;
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -508,50 +500,37 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-1:hover {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       Labels
        Selected:
@@ -560,7 +539,7 @@ Array [
     </div>
     <div>
       <button
-        className="emotion-1"
+        className="emotion-2"
         onClick={[Function]}
         type="button"
       >
@@ -575,7 +554,6 @@ Array [
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 8px;
   font-family: Roboto Condensed;
@@ -592,55 +570,13 @@ Array [
       COUNT
     </div>
   </div>,
-  .emotion-40 {
+  .emotion-0 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-6 {
-  width: 100%;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
 .emotion-1 {
-  height: 4px;
-  width: 0%;
-  border-top: 1px solid #3b3b3b;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  padding: 8px;
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-}
-
-.emotion-3 {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.emotion-4 {
-  padding-left: 8px;
-}
-
-.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -648,132 +584,159 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  width: 100%;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
   color: #b3b3b3;
+  background-color: transparent;
+  width: 100%;
 }
 
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-7:hover,
-.emotion-7.focus-visible:focus {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
 
+.emotion-2 {
+  width: 100%;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-4 {
+  width: 100%;
+  border-top: 4px solid #808080;
+}
+
+.emotion-5 {
+  height: 4px;
+  width: 0%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.emotion-7 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .emotion-8 {
+  padding-left: 8px;
+}
+
+.emotion-12 {
   width: 80%;
   border-top: 4px solid #808080;
 }
 
-.emotion-9 {
+.emotion-13 {
   height: 4px;
   width: 20%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-16 {
+.emotion-20 {
   width: 60%;
   border-top: 4px solid #808080;
 }
 
-.emotion-17 {
+.emotion-21 {
   height: 4px;
   width: 40%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-24 {
+.emotion-28 {
   width: 40%;
   border-top: 4px solid #808080;
 }
 
-.emotion-25 {
+.emotion-29 {
   height: 4px;
   width: 60%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-32 {
+.emotion-36 {
   width: 0%;
   border-top: 4px solid #808080;
 }
 
-.emotion-33 {
+.emotion-37 {
   height: 4px;
   width: 100%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-0 {
-  width: 100%;
-  border-top: 4px solid #808080;
-}
-
 <ul
-    className="emotion-40"
+    className="emotion-0"
   >
     <li>
       <button
         aria-label="Ford"
-        className="emotion-7"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           <div
-            className="emotion-2"
+            className="emotion-3"
           >
             <div
-              className="emotion-0"
+              className="emotion-4"
             />
             <div
-              className="emotion-1"
+              className="emotion-5"
             />
           </div>
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
             <div
-              className="emotion-3"
+              className="emotion-7"
             >
               Ford
             </div>
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               5
             </div>
@@ -784,33 +747,33 @@ Array [
     <li>
       <button
         aria-label="Chevrolet"
-        className="emotion-7"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           <div
-            className="emotion-2"
+            className="emotion-3"
           >
             <div
-              className="emotion-8"
+              className="emotion-12"
             />
             <div
-              className="emotion-9"
+              className="emotion-13"
             />
           </div>
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
             <div
-              className="emotion-3"
+              className="emotion-7"
             >
               Chevrolet
             </div>
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               4
             </div>
@@ -821,33 +784,33 @@ Array [
     <li>
       <button
         aria-label="Peugeot"
-        className="emotion-7"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           <div
-            className="emotion-2"
+            className="emotion-3"
           >
             <div
-              className="emotion-16"
+              className="emotion-20"
             />
             <div
-              className="emotion-17"
+              className="emotion-21"
             />
           </div>
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
             <div
-              className="emotion-3"
+              className="emotion-7"
             >
               Peugeot
             </div>
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               3
             </div>
@@ -858,33 +821,33 @@ Array [
     <li>
       <button
         aria-label="Audi"
-        className="emotion-7"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           <div
-            className="emotion-2"
+            className="emotion-3"
           >
             <div
-              className="emotion-24"
+              className="emotion-28"
             />
             <div
-              className="emotion-25"
+              className="emotion-29"
             />
           </div>
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
             <div
-              className="emotion-3"
+              className="emotion-7"
             >
               Audi
             </div>
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               2
             </div>
@@ -895,33 +858,33 @@ Array [
     <li>
       <button
         aria-label="Toyota"
-        className="emotion-7"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           <div
-            className="emotion-2"
+            className="emotion-3"
           >
             <div
-              className="emotion-32"
+              className="emotion-36"
             />
             <div
-              className="emotion-33"
+              className="emotion-37"
             />
           </div>
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
             <div
-              className="emotion-3"
+              className="emotion-7"
             >
               Toyota
             </div>
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               0
             </div>
@@ -975,7 +938,7 @@ Array [
 <div
     className="emotion-0"
   />,
-  .emotion-2 {
+  .emotion-0 {
   color: #b3b3b3;
 }
 
@@ -984,7 +947,7 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-0 {
+.emotion-2 {
   background-color: #3b3b3b;
   border-radius: 2px;
   border: none;
@@ -998,21 +961,23 @@ Array [
   -webkit-appearance: none;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
   background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
 <label
-    className="emotion-2"
+    className="emotion-0"
   >
     Scope
     <div
       className="emotion-1"
     >
       <select
-        className="emotion-0"
+        className="emotion-2"
         defaultValue="all"
         disabled={false}
         onChange={[Function]}
@@ -1048,11 +1013,11 @@ Array [
 <div
     className="emotion-0"
   />,
-  .emotion-1 {
+  .emotion-0 {
   padding-bottom: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -1063,33 +1028,35 @@ Array [
   border-radius: 2px;
   color: #e0e0e0;
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
   background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   background-color: #2e2e2e;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-0::-webkit-input-placeholder {
+.emotion-1::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-0::-moz-placeholder {
+.emotion-1::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-0:-ms-input-placeholder {
+.emotion-1:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-0::placeholder {
+.emotion-1::placeholder {
   font-style: italic;
 }
 
-.emotion-0:hover {
+.emotion-1:hover {
   border: 1px solid #808080;
 }
 
-.emotion-0:focus {
+.emotion-1:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -1098,25 +1065,24 @@ Array [
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <input
       aria-label="Filter labels"
-      className="emotion-0"
+      className="emotion-1"
       onChange={[Function]}
       placeholder="Filter labels"
       type="search"
       value=""
     />
   </div>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -1125,11 +1091,11 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-style: italic;
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1145,50 +1111,37 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-1:hover {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       Labels
        Selected:
@@ -1197,7 +1150,7 @@ Array [
     </div>
     <div>
       <button
-        className="emotion-1"
+        className="emotion-2"
         onClick={[Function]}
         type="button"
       >
@@ -1212,7 +1165,6 @@ Array [
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 8px;
   font-family: Roboto Condensed;
@@ -1229,13 +1181,13 @@ Array [
       COUNT
     </div>
   </div>,
-  .emotion-40 {
+  .emotion-0 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-7 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1243,19 +1195,19 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1263,61 +1215,45 @@ Array [
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
+  background-color: #0074f538;
   width: 100%;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
-}
-
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-7:hover,
-.emotion-7.focus-visible:focus {
-  background-color: #0074f538;
-  color: #ffffff;
-}
-
-.emotion-6 {
-  width: 100%;
 }
 
 .emotion-2 {
+  width: 100%;
+}
+
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-0 {
+.emotion-4 {
   width: 100%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-1 {
+.emotion-5 {
   height: 4px;
   width: 0%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
   font-family: Roboto Mono;
@@ -1325,17 +1261,17 @@ Array [
   line-height: 18px;
 }
 
-.emotion-3 {
+.emotion-7 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.emotion-4 {
+.emotion-8 {
   padding-left: 8px;
 }
 
-.emotion-15 {
+.emotion-9 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1343,127 +1279,113 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  width: 100%;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
   color: #b3b3b3;
+  background-color: transparent;
+  width: 100%;
 }
 
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-15:hover,
-.emotion-15.focus-visible:focus {
+.emotion-9:hover,
+.emotion-9.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
 
-.emotion-8 {
+.emotion-12 {
   width: 80%;
   border-top: 4px solid #808080;
 }
 
-.emotion-9 {
+.emotion-13 {
   height: 4px;
   width: 20%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-16 {
+.emotion-20 {
   width: 60%;
   border-top: 4px solid #808080;
 }
 
-.emotion-17 {
+.emotion-21 {
   height: 4px;
   width: 40%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-24 {
+.emotion-28 {
   width: 40%;
   border-top: 4px solid #808080;
 }
 
-.emotion-25 {
+.emotion-29 {
   height: 4px;
   width: 60%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-32 {
+.emotion-36 {
   width: 0%;
   border-top: 4px solid #808080;
 }
 
-.emotion-33 {
+.emotion-37 {
   height: 4px;
   width: 100%;
   border-top: 1px solid #3b3b3b;
 }
 
 <ul
-    className="emotion-40"
+    className="emotion-0"
   >
     <li>
       <button
         aria-label="Ford"
-        className="emotion-7"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           <div
-            className="emotion-2"
+            className="emotion-3"
           >
             <div
-              className="emotion-0"
+              className="emotion-4"
             />
             <div
-              className="emotion-1"
+              className="emotion-5"
             />
           </div>
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
             <div
-              className="emotion-3"
+              className="emotion-7"
             >
               Ford
             </div>
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               5
             </div>
@@ -1474,33 +1396,33 @@ Array [
     <li>
       <button
         aria-label="Chevrolet"
-        className="emotion-15"
+        className="emotion-9"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           <div
-            className="emotion-2"
+            className="emotion-3"
           >
             <div
-              className="emotion-8"
+              className="emotion-12"
             />
             <div
-              className="emotion-9"
+              className="emotion-13"
             />
           </div>
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
             <div
-              className="emotion-3"
+              className="emotion-7"
             >
               Chevrolet
             </div>
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               4
             </div>
@@ -1511,33 +1433,33 @@ Array [
     <li>
       <button
         aria-label="Peugeot"
-        className="emotion-15"
+        className="emotion-9"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           <div
-            className="emotion-2"
+            className="emotion-3"
           >
             <div
-              className="emotion-16"
+              className="emotion-20"
             />
             <div
-              className="emotion-17"
+              className="emotion-21"
             />
           </div>
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
             <div
-              className="emotion-3"
+              className="emotion-7"
             >
               Peugeot
             </div>
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               3
             </div>
@@ -1548,33 +1470,33 @@ Array [
     <li>
       <button
         aria-label="Audi"
-        className="emotion-15"
+        className="emotion-9"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           <div
-            className="emotion-2"
+            className="emotion-3"
           >
             <div
-              className="emotion-24"
+              className="emotion-28"
             />
             <div
-              className="emotion-25"
+              className="emotion-29"
             />
           </div>
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
             <div
-              className="emotion-3"
+              className="emotion-7"
             >
               Audi
             </div>
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               2
             </div>
@@ -1585,33 +1507,33 @@ Array [
     <li>
       <button
         aria-label="Toyota"
-        className="emotion-15"
+        className="emotion-9"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           <div
-            className="emotion-2"
+            className="emotion-3"
           >
             <div
-              className="emotion-32"
+              className="emotion-36"
             />
             <div
-              className="emotion-33"
+              className="emotion-37"
             />
           </div>
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
             <div
-              className="emotion-3"
+              className="emotion-7"
             >
               Toyota
             </div>
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               0
             </div>

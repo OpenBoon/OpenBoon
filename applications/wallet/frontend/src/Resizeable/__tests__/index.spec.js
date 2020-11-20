@@ -1,37 +1,72 @@
 import TestRenderer from 'react-test-renderer'
 
-import Resizeable from '..'
-
-const noop = () => () => {}
+import Resizeable, { noop } from '..'
 
 describe('<Resizeable />', () => {
-  it('should render properly with the cursor left', () => {
+  it('should render properly initially closed', () => {
     const component = TestRenderer.create(
       <Resizeable
-        minWidth={400}
-        storageName="yoga-div"
-        openToThe="left"
-        onMouseUp={noop}
+        storageName="CursorRightWithMessage"
+        minSize={400}
+        openToThe="right"
+        header={() => <div>Header</div>}
+        isInitiallyOpen={false}
       >
-        Yoga div
+        {() => <div>Body</div>}
       </Resizeable>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly with the cursor right', () => {
+  it('should render properly initially open', () => {
     const component = TestRenderer.create(
       <Resizeable
-        minWidth={400}
-        storageName="yoga-div"
-        openToThe="right"
-        onMouseUp={noop}
+        storageName="CursorLeftWithMessage"
+        minSize={400}
+        openToThe="left"
+        header={() => <div>Header</div>}
+        isInitiallyOpen
       >
-        Yoga div
+        {() => <div>Body</div>}
       </Resizeable>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render with node children', () => {
+    const component = TestRenderer.create(
+      <Resizeable
+        storageName="CursorTopWithMessage"
+        minSize={400}
+        openToThe="top"
+        isInitiallyOpen
+      >
+        <div>Body</div>
+      </Resizeable>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with function children', () => {
+    const component = TestRenderer.create(
+      <Resizeable
+        storageName="CursorBottomWithMessage"
+        minSize={400}
+        openToThe="bottom"
+        header={() => <div>Header</div>}
+        isInitiallyOpen
+      >
+        {() => <div>Body</div>}
+      </Resizeable>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('noop should do nothing', () => {
+    expect(noop()).toBe(undefined)
   })
 })

@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ChartForm /> should cancel properly when editing 1`] = `
-.emotion-15 {
+.emotion-0 {
   height: 100%;
   overflow: hidden;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-14 {
+.emotion-1 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -22,14 +22,14 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   padding-top: 8px;
 }
 
-.emotion-13 {
+.emotion-2 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-12 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -45,69 +45,71 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   padding: 0;
 }
 
-.emotion-0 {
+.emotion-4 {
   padding-top: 8px;
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
 }
 
-.emotion-1 {
+.emotion-5 {
   height: 24px;
 }
 
-.emotion-2 {
+.emotion-6 {
   height: 16px;
 }
 
-.emotion-6 {
+.emotion-7 {
   padding-top: 8px;
 }
 
-.emotion-3 {
+.emotion-8 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-5 {
+.emotion-9 {
   position: relative;
 }
 
-.emotion-4 {
+.emotion-10 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-4:focus {
+.emotion-10:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
-}
-
-.emotion-4:hover {
-  border: 2px solid #ffffff;
-}
-
-.emotion-4:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
+.emotion-10:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-11 {
+  padding-top: 8px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-8 {
+.emotion-13 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -123,8 +125,8 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -141,34 +143,28 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   flex: 1;
 }
 
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited {
+.emotion-13,
+.emotion-13:hover,
+.emotion-13:visited {
   background-color: #808080;
 }
 
-.emotion-8:hover {
+.emotion-13:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-13[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-9 {
+.emotion-14 {
   width: 8px;
 }
 
-.emotion-10 {
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -184,8 +180,8 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -202,52 +198,46 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   flex: 1;
 }
 
-.emotion-10:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-10[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited {
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
   background-color: #73b61c;
 }
 
-.emotion-10:hover {
+.emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-15"
+  className="emotion-0"
 >
   <div
-    className="emotion-14"
+    className="emotion-1"
   >
     <div
-      className="emotion-13"
+      className="emotion-2"
     >
       <form
         action=""
-        className="emotion-12"
+        className="emotion-3"
         method="post"
         onSubmit={[Function]}
       >
         <h2
-          className="emotion-0"
+          className="emotion-4"
         >
           Facet
            Visualization
         </h2>
         <div
-          className="emotion-1"
+          className="emotion-5"
         />
         <Listbox
           label="Metadata Type"
@@ -299,22 +289,22 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
           value=""
         />
         <div
-          className="emotion-2"
+          className="emotion-6"
         />
         <div
-          className="emotion-6"
+          className="emotion-7"
         >
           <label
-            className="emotion-3"
+            className="emotion-8"
             htmlFor="values"
           >
             Number of Values Shown
           </label>
           <div
-            className="emotion-5"
+            className="emotion-9"
           >
             <input
-              className="emotion-4"
+              className="emotion-10"
               disabled={false}
               id="values"
               name="values"
@@ -324,27 +314,27 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
             />
           </div>
           <div
-            className="emotion-6"
+            className="emotion-11"
           >
              
           </div>
         </div>
         <div
-          className="emotion-11"
+          className="emotion-12"
         >
           <button
-            className="emotion-8"
+            className="emotion-13"
             onClick={[Function]}
             type="button"
           >
             Cancel
           </button>
           <div
-            className="emotion-9"
+            className="emotion-14"
           />
           <button
             aria-disabled={true}
-            className="emotion-10"
+            className="emotion-15"
             onClick={[Function]}
             type="submit"
           >
@@ -358,13 +348,13 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
 `;
 
 exports[`<ChartForm /> should render properly without attribute 1`] = `
-.emotion-15 {
+.emotion-0 {
   height: 100%;
   overflow: hidden;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-14 {
+.emotion-1 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -379,14 +369,14 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   padding-top: 8px;
 }
 
-.emotion-13 {
+.emotion-2 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-12 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -402,69 +392,71 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   padding: 0;
 }
 
-.emotion-0 {
+.emotion-4 {
   padding-top: 8px;
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
 }
 
-.emotion-1 {
+.emotion-5 {
   height: 24px;
 }
 
-.emotion-2 {
+.emotion-6 {
   height: 16px;
 }
 
-.emotion-6 {
+.emotion-7 {
   padding-top: 8px;
 }
 
-.emotion-3 {
+.emotion-8 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-5 {
+.emotion-9 {
   position: relative;
 }
 
-.emotion-4 {
+.emotion-10 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-4:focus {
+.emotion-10:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
-}
-
-.emotion-4:hover {
-  border: 2px solid #ffffff;
-}
-
-.emotion-4:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
+.emotion-10:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-11 {
+  padding-top: 8px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-8 {
+.emotion-13 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -480,8 +472,8 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -498,34 +490,28 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   flex: 1;
 }
 
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited {
+.emotion-13,
+.emotion-13:hover,
+.emotion-13:visited {
   background-color: #808080;
 }
 
-.emotion-8:hover {
+.emotion-13:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-13[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-9 {
+.emotion-14 {
   width: 8px;
 }
 
-.emotion-10 {
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -541,8 +527,8 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -559,52 +545,46 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   flex: 1;
 }
 
-.emotion-10:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-10[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited {
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
   background-color: #73b61c;
 }
 
-.emotion-10:hover {
+.emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-15"
+  className="emotion-0"
 >
   <div
-    className="emotion-14"
+    className="emotion-1"
   >
     <div
-      className="emotion-13"
+      className="emotion-2"
     >
       <form
         action=""
-        className="emotion-12"
+        className="emotion-3"
         method="post"
         onSubmit={[Function]}
       >
         <h2
-          className="emotion-0"
+          className="emotion-4"
         >
           Facet
            Visualization
         </h2>
         <div
-          className="emotion-1"
+          className="emotion-5"
         />
         <Listbox
           label="Metadata Type"
@@ -656,22 +636,22 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
           value=""
         />
         <div
-          className="emotion-2"
+          className="emotion-6"
         />
         <div
-          className="emotion-6"
+          className="emotion-7"
         >
           <label
-            className="emotion-3"
+            className="emotion-8"
             htmlFor="values"
           >
             Number of Values Shown
           </label>
           <div
-            className="emotion-5"
+            className="emotion-9"
           >
             <input
-              className="emotion-4"
+              className="emotion-10"
               disabled={false}
               id="values"
               name="values"
@@ -681,27 +661,27 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
             />
           </div>
           <div
-            className="emotion-6"
+            className="emotion-11"
           >
              
           </div>
         </div>
         <div
-          className="emotion-11"
+          className="emotion-12"
         >
           <button
-            className="emotion-8"
+            className="emotion-13"
             onClick={[Function]}
             type="button"
           >
             Cancel
           </button>
           <div
-            className="emotion-9"
+            className="emotion-14"
           />
           <button
             aria-disabled={true}
-            className="emotion-10"
+            className="emotion-15"
             onClick={[Function]}
             type="submit"
           >
@@ -715,13 +695,13 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
 `;
 
 exports[`<ChartForm /> should render properly without attribute 2`] = `
-.emotion-15 {
+.emotion-0 {
   height: 100%;
   overflow: hidden;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-14 {
+.emotion-1 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -736,14 +716,14 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   padding-top: 8px;
 }
 
-.emotion-13 {
+.emotion-2 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-12 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -759,69 +739,71 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   padding: 0;
 }
 
-.emotion-0 {
+.emotion-4 {
   padding-top: 8px;
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
 }
 
-.emotion-1 {
+.emotion-5 {
   height: 24px;
 }
 
-.emotion-2 {
+.emotion-6 {
   height: 16px;
 }
 
-.emotion-6 {
+.emotion-7 {
   padding-top: 8px;
 }
 
-.emotion-3 {
+.emotion-8 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-5 {
+.emotion-9 {
   position: relative;
 }
 
-.emotion-4 {
+.emotion-10 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-4:focus {
+.emotion-10:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
-}
-
-.emotion-4:hover {
-  border: 2px solid #ffffff;
-}
-
-.emotion-4:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
+.emotion-10:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-11 {
+  padding-top: 8px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-8 {
+.emotion-13 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -837,8 +819,8 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -855,34 +837,28 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   flex: 1;
 }
 
-.emotion-8:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-8[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited {
+.emotion-13,
+.emotion-13:hover,
+.emotion-13:visited {
   background-color: #808080;
 }
 
-.emotion-8:hover {
+.emotion-13:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-13[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-9 {
+.emotion-14 {
   width: 8px;
 }
 
-.emotion-10 {
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -898,8 +874,8 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -916,52 +892,46 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   flex: 1;
 }
 
-.emotion-10:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-10[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited {
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
   background-color: #73b61c;
 }
 
-.emotion-10:hover {
+.emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-15"
+  className="emotion-0"
 >
   <div
-    className="emotion-14"
+    className="emotion-1"
   >
     <div
-      className="emotion-13"
+      className="emotion-2"
     >
       <form
         action=""
-        className="emotion-12"
+        className="emotion-3"
         method="post"
         onSubmit={[Function]}
       >
         <h2
-          className="emotion-0"
+          className="emotion-4"
         >
           Facet
            Visualization
         </h2>
         <div
-          className="emotion-1"
+          className="emotion-5"
         />
         <Listbox
           label="Metadata Type"
@@ -1013,22 +983,22 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
           value="system.type"
         />
         <div
-          className="emotion-2"
+          className="emotion-6"
         />
         <div
-          className="emotion-6"
+          className="emotion-7"
         >
           <label
-            className="emotion-3"
+            className="emotion-8"
             htmlFor="values"
           >
             Number of Values Shown
           </label>
           <div
-            className="emotion-5"
+            className="emotion-9"
           >
             <input
-              className="emotion-4"
+              className="emotion-10"
               disabled={false}
               id="values"
               name="values"
@@ -1038,26 +1008,26 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
             />
           </div>
           <div
-            className="emotion-6"
+            className="emotion-11"
           >
              
           </div>
         </div>
         <div
-          className="emotion-11"
+          className="emotion-12"
         >
           <button
-            className="emotion-8"
+            className="emotion-13"
             onClick={[Function]}
             type="button"
           >
             Cancel
           </button>
           <div
-            className="emotion-9"
+            className="emotion-14"
           />
           <button
-            className="emotion-10"
+            className="emotion-15"
             onClick={[Function]}
             type="submit"
           >

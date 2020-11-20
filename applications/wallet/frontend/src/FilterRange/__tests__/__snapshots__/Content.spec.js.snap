@@ -1,28 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
-.emotion-7 {
+.emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-6 {
+.emotion-3 {
   padding-top: 24px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -30,12 +29,12 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
   -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
   justify-content: space-around;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -46,7 +45,7 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-5 {
   text-align: center;
   padding-left: 12px;
   padding-right: 12px;
@@ -59,30 +58,30 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
   width: 60%;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   border: 1px solid #808080;
 }
 
-.emotion-2:focus {
+.emotion-5:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-2::-webkit-input-placeholder {
+.emotion-5::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::-moz-placeholder {
+.emotion-5::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-2:-ms-input-placeholder {
+.emotion-5:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::placeholder {
+.emotion-5::placeholder {
   font-style: italic;
 }
 
@@ -111,10 +110,10 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-7"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         1
@@ -124,7 +123,7 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -147,14 +146,14 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
       />
     </div>
     <div
-      className="emotion-6"
+      className="emotion-3"
     >
       <label
-        className="emotion-3"
+        className="emotion-4"
       >
         MIN  
         <input
-          className="emotion-2"
+          className="emotion-5"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}
@@ -163,11 +162,11 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
         />
       </label>
       <label
-        className="emotion-3"
+        className="emotion-4"
       >
         MAX  
         <input
-          className="emotion-2"
+          className="emotion-5"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}
@@ -181,28 +180,27 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
 `;
 
 exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
-.emotion-7 {
+.emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-6 {
+.emotion-3 {
   padding-top: 24px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -210,12 +208,12 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
   -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
   justify-content: space-around;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -226,7 +224,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-5 {
   text-align: center;
   padding-left: 12px;
   padding-right: 12px;
@@ -239,30 +237,30 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
   width: 60%;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   border: 1px solid #808080;
 }
 
-.emotion-2:focus {
+.emotion-5:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-2::-webkit-input-placeholder {
+.emotion-5::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::-moz-placeholder {
+.emotion-5::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-2:-ms-input-placeholder {
+.emotion-5:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::placeholder {
+.emotion-5::placeholder {
   font-style: italic;
 }
 
@@ -297,10 +295,10 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-7"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         180 Bytes
@@ -310,7 +308,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -333,14 +331,14 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
       />
     </div>
     <div
-      className="emotion-6"
+      className="emotion-3"
     >
       <label
-        className="emotion-3"
+        className="emotion-4"
       >
         MIN  
         <input
-          className="emotion-2"
+          className="emotion-5"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}
@@ -349,11 +347,11 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
         />
       </label>
       <label
-        className="emotion-3"
+        className="emotion-4"
       >
         MAX  
         <input
-          className="emotion-2"
+          className="emotion-5"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}
@@ -367,28 +365,27 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
 `;
 
 exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
-.emotion-7 {
+.emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-6 {
+.emotion-3 {
   padding-top: 24px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -396,12 +393,12 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
   -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
   justify-content: space-around;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -412,7 +409,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-5 {
   text-align: center;
   padding-left: 12px;
   padding-right: 12px;
@@ -425,30 +422,30 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
   width: 60%;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   border: 1px solid #808080;
 }
 
-.emotion-2:focus {
+.emotion-5:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-2::-webkit-input-placeholder {
+.emotion-5::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::-moz-placeholder {
+.emotion-5::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-2:-ms-input-placeholder {
+.emotion-5:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::placeholder {
+.emotion-5::placeholder {
   font-style: italic;
 }
 
@@ -483,10 +480,10 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-7"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         180 Bytes
@@ -496,7 +493,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -519,14 +516,14 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
       />
     </div>
     <div
-      className="emotion-6"
+      className="emotion-3"
     >
       <label
-        className="emotion-3"
+        className="emotion-4"
       >
         MIN  
         <input
-          className="emotion-2"
+          className="emotion-5"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}
@@ -535,11 +532,11 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
         />
       </label>
       <label
-        className="emotion-3"
+        className="emotion-4"
       >
         MAX  
         <input
-          className="emotion-2"
+          className="emotion-5"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}
@@ -553,28 +550,27 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
 `;
 
 exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
-.emotion-7 {
+.emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-6 {
+.emotion-3 {
   padding-top: 24px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -582,12 +578,12 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
   -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
   justify-content: space-around;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -598,7 +594,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-5 {
   text-align: center;
   padding-left: 12px;
   padding-right: 12px;
@@ -611,30 +607,30 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
   width: 60%;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   border: 1px solid #808080;
 }
 
-.emotion-2:focus {
+.emotion-5:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-2::-webkit-input-placeholder {
+.emotion-5::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::-moz-placeholder {
+.emotion-5::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-2:-ms-input-placeholder {
+.emotion-5:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::placeholder {
+.emotion-5::placeholder {
   font-style: italic;
 }
 
@@ -669,10 +665,10 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-7"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         180 Bytes
@@ -682,7 +678,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -705,14 +701,14 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
       />
     </div>
     <div
-      className="emotion-6"
+      className="emotion-3"
     >
       <label
-        className="emotion-3"
+        className="emotion-4"
       >
         MIN  
         <input
-          className="emotion-2"
+          className="emotion-5"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}
@@ -721,11 +717,11 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
         />
       </label>
       <label
-        className="emotion-3"
+        className="emotion-4"
       >
         MAX  
         <input
-          className="emotion-2"
+          className="emotion-5"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}
@@ -739,28 +735,27 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
 `;
 
 exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
-.emotion-7 {
+.emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-6 {
+.emotion-3 {
   padding-top: 24px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -768,12 +763,12 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
   -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
   justify-content: space-around;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -784,7 +779,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-5 {
   text-align: center;
   padding-left: 12px;
   padding-right: 12px;
@@ -797,30 +792,30 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
   width: 60%;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   border: 1px solid #808080;
 }
 
-.emotion-2:focus {
+.emotion-5:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-2::-webkit-input-placeholder {
+.emotion-5::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::-moz-placeholder {
+.emotion-5::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-2:-ms-input-placeholder {
+.emotion-5:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::placeholder {
+.emotion-5::placeholder {
   font-style: italic;
 }
 
@@ -855,10 +850,10 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-7"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         180 Bytes
@@ -868,7 +863,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -891,14 +886,14 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
       />
     </div>
     <div
-      className="emotion-6"
+      className="emotion-3"
     >
       <label
-        className="emotion-3"
+        className="emotion-4"
       >
         MIN  
         <input
-          className="emotion-2"
+          className="emotion-5"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}
@@ -907,11 +902,11 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
         />
       </label>
       <label
-        className="emotion-3"
+        className="emotion-4"
       >
         MAX  
         <input
-          className="emotion-2"
+          className="emotion-5"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}
@@ -925,28 +920,27 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
 `;
 
 exports[`<FilterRangeContent /> should render with no data 1`] = `
-.emotion-7 {
+.emotion-0 {
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding: 4px;
 }
 
-.emotion-6 {
+.emotion-3 {
   padding-top: 24px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -954,12 +948,12 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
   -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
   justify-content: space-around;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -970,7 +964,7 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-5 {
   text-align: center;
   padding-left: 12px;
   padding-right: 12px;
@@ -983,30 +977,30 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
   width: 60%;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   border: 1px solid #808080;
 }
 
-.emotion-2:focus {
+.emotion-5:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-2::-webkit-input-placeholder {
+.emotion-5::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::-moz-placeholder {
+.emotion-5::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-2:-ms-input-placeholder {
+.emotion-5:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::placeholder {
+.emotion-5::placeholder {
   font-style: italic;
 }
 
@@ -1035,10 +1029,10 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-7"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <span>
         0
@@ -1048,7 +1042,7 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
       </span>
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <Slider
         domain={
@@ -1071,14 +1065,14 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
       />
     </div>
     <div
-      className="emotion-6"
+      className="emotion-3"
     >
       <label
-        className="emotion-3"
+        className="emotion-4"
       >
         MIN  
         <input
-          className="emotion-2"
+          className="emotion-5"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}
@@ -1087,11 +1081,11 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
         />
       </label>
       <label
-        className="emotion-3"
+        className="emotion-4"
       >
         MAX  
         <input
-          className="emotion-2"
+          className="emotion-5"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}

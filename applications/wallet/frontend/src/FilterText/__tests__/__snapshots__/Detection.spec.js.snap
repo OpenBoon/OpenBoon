@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FilterTextDetection /> should clear a text detection 1`] = `
-.emotion-4 {
+.emotion-0 {
   padding: 16px;
 }
 
-.emotion-3 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -13,10 +13,10 @@ exports[`<FilterTextDetection /> should clear a text detection 1`] = `
   height: 42px;
 }
 
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -24,61 +24,40 @@ exports[`<FilterTextDetection /> should clear a text detection 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
-  color: #73b61c;
-  font-weight: 400;
-  height: 100%;
-  padding: 0;
-  padding-left: 12px;
-  color: #e0e0e0;
-  background-color: #2e2e2e;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #e0e0e0;
+  background-color: #2e2e2e;
+  padding-left: 12px;
+  height: 100%;
 }
 
-.emotion-1:hover {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-3 {
   padding-left: 1px;
 }
 
-.emotion-2 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -94,70 +73,59 @@ exports[`<FilterTextDetection /> should clear a text detection 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 12px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-  width: 42px;
-  padding: 12px;
   background-color: #191919;
+  width: 42px;
 }
 
-.emotion-2:hover {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-2:hover svg,
-.emotion-2.focus-visible:focus svg {
+.emotion-4:hover svg,
+.emotion-4.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   color: #808080;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <div
-    className="emotion-3"
+    className="emotion-1"
   >
     <button
       aria-label="Edit Text Detection"
-      className="emotion-1"
+      className="emotion-2"
       onClick={[Function]}
       type="button"
     >
       <span
-        className="emotion-0"
+        className="emotion-3"
       >
         cats
       </span>
     </button>
     <button
       aria-label="Clear Text Detection"
-      className="emotion-2"
+      className="emotion-4"
       onClick={[Function]}
       title="Clear"
       type="button"
@@ -172,11 +140,11 @@ exports[`<FilterTextDetection /> should clear a text detection 1`] = `
 `;
 
 exports[`<FilterTextDetection /> should edit a text detection 1`] = `
-.emotion-3 {
+.emotion-0 {
   padding: 16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -185,7 +153,7 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
   position: relative;
 }
 
-.emotion-0 {
+.emotion-2 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -196,33 +164,35 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
   border-radius: 2px;
   color: #e0e0e0;
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
   background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   background-color: #2e2e2e;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-0::-webkit-input-placeholder {
+.emotion-2::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-0::-moz-placeholder {
+.emotion-2::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-0:-ms-input-placeholder {
+.emotion-2:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-0::placeholder {
+.emotion-2::placeholder {
   font-style: italic;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   border: 1px solid #808080;
 }
 
-.emotion-0:focus {
+.emotion-2:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -230,14 +200,14 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-1 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -259,15 +229,15 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
   onSubmit={[Function]}
 >
   <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <input
         aria-label="Add Text Detection Filter"
         autoFocus={true}
-        className="emotion-0"
+        className="emotion-2"
         onChange={[Function]}
         placeholder="Filter by detected text"
         type="search"
@@ -276,7 +246,7 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
       <button
         aria-disabled={false}
         aria-label="Search"
-        className="emotion-1"
+        className="emotion-3"
         onClick={[Function]}
         type="submit"
       >
@@ -292,11 +262,11 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
 `;
 
 exports[`<FilterTextDetection /> should select a facet 1`] = `
-.emotion-3 {
+.emotion-0 {
   padding: 16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -305,7 +275,7 @@ exports[`<FilterTextDetection /> should select a facet 1`] = `
   position: relative;
 }
 
-.emotion-0 {
+.emotion-2 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -316,33 +286,35 @@ exports[`<FilterTextDetection /> should select a facet 1`] = `
   border-radius: 2px;
   color: #e0e0e0;
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
   background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   background-color: #2e2e2e;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-0::-webkit-input-placeholder {
+.emotion-2::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-0::-moz-placeholder {
+.emotion-2::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-0:-ms-input-placeholder {
+.emotion-2:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-0::placeholder {
+.emotion-2::placeholder {
   font-style: italic;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   border: 1px solid #808080;
 }
 
-.emotion-0:focus {
+.emotion-2:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -350,14 +322,14 @@ exports[`<FilterTextDetection /> should select a facet 1`] = `
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-1 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -379,15 +351,15 @@ exports[`<FilterTextDetection /> should select a facet 1`] = `
   onSubmit={[Function]}
 >
   <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <input
         aria-label="Add Text Detection Filter"
         autoFocus={true}
-        className="emotion-0"
+        className="emotion-2"
         onChange={[Function]}
         placeholder="Filter by detected text"
         type="search"
@@ -396,7 +368,7 @@ exports[`<FilterTextDetection /> should select a facet 1`] = `
       <button
         aria-disabled={true}
         aria-label="Search"
-        className="emotion-1"
+        className="emotion-3"
         onClick={[Function]}
         type="submit"
       >

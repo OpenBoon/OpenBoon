@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Toggletip /> should open properly to the right 1`] = `
-.emotion-3 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -10,20 +10,20 @@ exports[`<Toggletip /> should open properly to the right 1`] = `
   margin-left: 8px;
 }
 
-.emotion-3:hover div,
-.emotion-3:focus-within div {
+.emotion-0:hover div,
+.emotion-0:focus-within div {
   visibility: visible;
   opacity: 1;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
 }
 
-.emotion-3:hover button,
-.emotion-3:focus-within button {
+.emotion-0:hover button,
+.emotion-0:focus-within button {
   color: #ffffff;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -41,7 +41,7 @@ exports[`<Toggletip /> should open properly to the right 1`] = `
   color: #191919;
   background-color: #ffffff;
   border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   padding: 12px;
   width: -webkit-max-content;
   width: -moz-max-content;
@@ -59,7 +59,7 @@ exports[`<Toggletip /> should open properly to the right 1`] = `
   opacity: 1;
 }
 
-.emotion-1:before {
+.emotion-3:before {
   content: ' ';
   position: absolute;
   top: -6px;
@@ -70,12 +70,12 @@ exports[`<Toggletip /> should open properly to the right 1`] = `
 }
 
 <div
-  className="emotion-3"
+  className="emotion-0"
 >
   <button
     aria-details="LabelString"
     aria-label="Label String"
-    className="emotion-0"
+    className="emotion-1"
     type="button"
   >
     <svg
@@ -89,7 +89,7 @@ exports[`<Toggletip /> should open properly to the right 1`] = `
     role="tooltip"
   >
     <div
-      className="emotion-1"
+      className="emotion-3"
     />
     Toggle Tip
   </div>

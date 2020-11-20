@@ -2,12 +2,12 @@
 
 exports[`<Filters /> should render properly 1`] = `
 Array [
-  .emotion-9 {
+  .emotion-0 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-3 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -15,9 +15,9 @@ Array [
 }
 
 .emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -30,8 +30,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -43,21 +43,9 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   padding-left: 0;
   padding-right: 0;
   max-width: 190px;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-2,
@@ -67,14 +55,17 @@ Array [
 }
 
 .emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
 .emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-1 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -85,7 +76,7 @@ Array [
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -93,18 +84,18 @@ Array [
   padding-right: 4px;
 }
 
-.emotion-4 {
+.emotion-5 {
   height: 4px;
 }
 
-.emotion-8 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5 {
+.emotion-7 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -115,34 +106,36 @@ Array [
   border-radius: 2px;
   color: #e0e0e0;
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
   background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   background-color: #2e2e2e;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
   background-color: #191919;
 }
 
-.emotion-5::-webkit-input-placeholder {
+.emotion-7::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-5::-moz-placeholder {
+.emotion-7::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-5:-ms-input-placeholder {
+.emotion-7:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-5::placeholder {
+.emotion-7::placeholder {
   font-style: italic;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   border: 1px solid #808080;
 }
 
-.emotion-5:focus {
+.emotion-7:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -150,14 +143,14 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-7 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -172,15 +165,15 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-6 {
+.emotion-9 {
   color: #3b3b3b;
 }
 
 <div
-    className="emotion-9"
+    className="emotion-0"
   >
     <div
-      className="emotion-3"
+      className="emotion-1"
     >
       <button
         aria-label="Add Filters"
@@ -189,10 +182,10 @@ Array [
         type="button"
       >
         <div
-          className="emotion-1"
+          className="emotion-3"
         >
           <div
-            className="emotion-0"
+            className="emotion-4"
           >
             <svg
               data-file-name="plus.svg"
@@ -204,7 +197,7 @@ Array [
       </button>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-5"
     />
     <form
       action=""
@@ -212,11 +205,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-8"
+        className="emotion-6"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-5"
+          className="emotion-7"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -225,12 +218,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-7"
+          className="emotion-8"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-6"
+            className="emotion-9"
             data-file-name="plus.svg"
             height={20}
           />

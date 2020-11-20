@@ -22,12 +22,6 @@ const BASE = ({ isDisabled }) => ({
   cursor: isDisabled ? 'not-allowed' : 'pointer',
   color: colors.structure.white,
   backgroundColor: colors.structure.transparent,
-  ':hover': {
-    textDecoration: 'none',
-  },
-  '&[aria-disabled=true]': {
-    color: colors.structure.mattGrey,
-  },
 })
 
 const STYLES = {
@@ -36,9 +30,11 @@ const STYLES = {
       backgroundColor: colors.key.one,
     },
     '&:hover': {
+      textDecoration: 'none',
       backgroundColor: colors.key.two,
     },
     '&[aria-disabled=true]': {
+      color: colors.structure.mattGrey,
       backgroundColor: colors.structure.steel,
     },
   },
@@ -48,9 +44,11 @@ const STYLES = {
       backgroundColor: colors.key.one,
     },
     '&:hover': {
+      textDecoration: 'none',
       backgroundColor: colors.key.two,
     },
     '&[aria-disabled=true]': {
+      color: colors.structure.mattGrey,
       backgroundColor: colors.structure.steel,
     },
   },
@@ -59,9 +57,11 @@ const STYLES = {
       backgroundColor: colors.structure.steel,
     },
     '&:hover': {
+      textDecoration: 'none',
       backgroundColor: colors.structure.zinc,
     },
     '&[aria-disabled=true]': {
+      color: colors.structure.mattGrey,
       backgroundColor: colors.structure.steel,
     },
   },
@@ -71,9 +71,11 @@ const STYLES = {
       backgroundColor: colors.structure.steel,
     },
     '&:hover': {
+      textDecoration: 'none',
       backgroundColor: colors.structure.zinc,
     },
     '&[aria-disabled=true]': {
+      color: colors.structure.mattGrey,
       backgroundColor: colors.structure.steel,
     },
   },
@@ -82,9 +84,11 @@ const STYLES = {
       backgroundColor: colors.signal.warning.base,
     },
     '&:hover': {
+      textDecoration: 'none',
       opacity: constants.opacity.half,
     },
     '&[aria-disabled=true]': {
+      color: colors.structure.mattGrey,
       backgroundColor: colors.structure.steel,
     },
   },
@@ -109,6 +113,7 @@ const STYLES = {
     fontWeight: typography.weight.regular,
     height: '100%',
     ':hover, &.focus-visible:focus': {
+      textDecoration: 'none',
       backgroundColor: colors.structure.smoke,
     },
   },
@@ -119,6 +124,7 @@ const STYLES = {
     fontWeight: typography.weight.regular,
     borderRadius: 0,
     ':hover, &.focus-visible:focus': {
+      textDecoration: 'none',
       backgroundColor: colors.structure.iron,
     },
   },
@@ -126,6 +132,7 @@ const STYLES = {
     padding: spacing.base,
     color: colors.structure.steel,
     ':hover, &.focus-visible:focus': {
+      textDecoration: 'none',
       color: colors.structure.white,
       svg: {
         opacity: 1,
@@ -147,6 +154,7 @@ const STYLES = {
     fontFamily: typography.family.condensed,
     textTransform: 'uppercase',
     ':hover, &.focus-visible:focus': {
+      textDecoration: 'none',
       color: colors.structure.white,
     },
   },
@@ -162,31 +170,32 @@ const Button = forwardRef(
     { variant, children, href, style, isDisabled, onClick, target, ...props },
     ref,
   ) => {
-    const Element = href ? 'a' : 'button'
+    const Element = href && !isDisabled ? 'a' : 'button'
 
     const disabled = isDisabled ? { 'aria-disabled': true } : {}
 
-    const addedProps = href
-      ? {
-          href,
-          onClick,
-          target,
-          rel:
-            target && target === '_blank' ? 'noopener noreferrer' : undefined,
-        }
-      : {
-          type: 'button',
-          ...disabled,
-          onClick: (event) => {
-            if (isDisabled) return event.preventDefault()
-            return onClick(event)
-          },
-        }
+    const addedProps =
+      href && !isDisabled
+        ? {
+            href,
+            onClick,
+            target,
+            rel:
+              target && target === '_blank' ? 'noopener noreferrer' : undefined,
+          }
+        : {
+            type: 'button',
+            ...disabled,
+            onClick: (event) => {
+              if (isDisabled) return event.preventDefault()
+              return onClick(event)
+            },
+          }
 
     return (
       <Element
         ref={ref}
-        css={[BASE({ isDisabled }), STYLES[variant], style]}
+        css={{ ...BASE({ isDisabled }), ...STYLES[variant], ...style }}
         {...addedProps}
         {...props}
       >

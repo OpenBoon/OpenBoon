@@ -2,7 +2,7 @@
 
 exports[`<MetadataPrettyLabelsContent /> should render properly 1`] = `
 Array [
-  .emotion-9 {
+  .emotion-0 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -10,17 +10,17 @@ Array [
   vertical-align: bottom;
 }
 
-.emotion-9:hover {
+.emotion-0:hover {
   background-color: #0074f538;
 }
 
-.emotion-9:hover button svg {
+.emotion-0:hover button svg {
   color: #808080;
 }
 
-.emotion-9:hover button:hover svg,
-.emotion-9:hover button.focus-visible:focus svg {
-  color: #ffffff !important;
+.emotion-0:hover button:hover svg,
+.emotion-0:hover button.focus-visible:focus svg {
+  color: #ffffff!important;
 }
 
 .emotion-1 {
@@ -29,7 +29,7 @@ Array [
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-2 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #808080;
@@ -41,20 +41,20 @@ Array [
   -ms-flex-direction: column;
   flex-direction: column;
   -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   min-width: 56px;
   min-height: 56px;
 }
 
-.emotion-2 {
+.emotion-4 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #808080;
 }
 
-.emotion-4 {
+.emotion-5 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #808080;
@@ -65,17 +65,17 @@ Array [
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-7 {
+.emotion-6 {
   padding-top: 8px;
   vertical-align: top;
 }
 
-.emotion-6 {
+.emotion-7 {
   position: relative;
   height: 100%;
 }
 
-.emotion-5 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -91,52 +91,40 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 6px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
   color: #191919;
-  padding: 6px;
+  background-color: transparent;
   margin: -6px;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+.emotion-8:hover,
+.emotion-8.focus-visible:focus {
+  color: #ffffff!important;
 }
 
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-5:hover,
-.emotion-5.focus-visible:focus {
-  color: #ffffff !important;
-}
-
-.emotion-8 {
-  border-bottom: none !important;
+.emotion-9 {
+  border-bottom: none!important;
 }
 
 <tr
-    className="emotion-9"
+    className="emotion-0"
   >
     <td />
     <td
       className="emotion-1"
     >
       <div
-        className="emotion-0"
+        className="emotion-2"
       >
         N/A
       </div>
@@ -146,7 +134,7 @@ Array [
       title="Model ID: c0e83460-6a25-1238-86fa-0242ac150002"
     >
       <span
-        className="emotion-2"
+        className="emotion-4"
       >
         Gundam
       </span>
@@ -154,19 +142,19 @@ Array [
       Exia
     </td>
     <td
-      className="emotion-4"
+      className="emotion-5"
     >
       Train
     </td>
     <td
-      className="emotion-7"
+      className="emotion-6"
     >
       <div
-        className="emotion-6"
+        className="emotion-7"
       >
         <button
           aria-label="Toggle Actions Menu"
-          className="actions emotion-5"
+          className="actions emotion-8"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
@@ -179,10 +167,10 @@ Array [
       </div>
     </td>
     <td
-      className="emotion-8"
+      className="emotion-9"
     />
   </tr>,
-  .emotion-9 {
+  .emotion-0 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -190,17 +178,17 @@ Array [
   vertical-align: bottom;
 }
 
-.emotion-9:hover {
+.emotion-0:hover {
   background-color: #0074f538;
 }
 
-.emotion-9:hover button svg {
+.emotion-0:hover button svg {
   color: #808080;
 }
 
-.emotion-9:hover button:hover svg,
-.emotion-9:hover button.focus-visible:focus svg {
-  color: #ffffff !important;
+.emotion-0:hover button:hover svg,
+.emotion-0:hover button.focus-visible:focus svg {
+  color: #ffffff!important;
 }
 
 .emotion-1 {
@@ -210,12 +198,18 @@ Array [
 }
 
 .emotion-2 {
+  max-height: 56px;
+  width: 56px;
+  object-fit: contain;
+}
+
+.emotion-4 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #808080;
 }
 
-.emotion-4 {
+.emotion-5 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #808080;
@@ -226,17 +220,17 @@ Array [
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-7 {
+.emotion-6 {
   padding-top: 8px;
   vertical-align: top;
 }
 
-.emotion-6 {
+.emotion-7 {
   position: relative;
   height: 100%;
 }
 
-.emotion-5 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -252,51 +246,33 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 6px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
   color: #191919;
-  padding: 6px;
+  background-color: transparent;
   margin: -6px;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+.emotion-8:hover,
+.emotion-8.focus-visible:focus {
+  color: #ffffff!important;
 }
 
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-5:hover,
-.emotion-5.focus-visible:focus {
-  color: #ffffff !important;
-}
-
-.emotion-8 {
-  border-bottom: none !important;
-}
-
-.emotion-0 {
-  max-height: 56px;
-  width: 56px;
-  object-fit: contain;
+.emotion-9 {
+  border-bottom: none!important;
 }
 
 <tr
-    className="emotion-9"
+    className="emotion-0"
   >
     <td />
     <td
@@ -311,7 +287,7 @@ Array [
             0.813,
           ]
         }
-        className="emotion-0"
+        className="emotion-2"
         src="data:image/png;base64, iVBORw0KGgoAAAANSUhEU..."
         title={
           Array [
@@ -328,7 +304,7 @@ Array [
       title="Model ID: 621bf774-89d9-1244-9596-d6df43f1ede5"
     >
       <span
-        className="emotion-2"
+        className="emotion-4"
       >
         console_face_recognition
       </span>
@@ -336,19 +312,19 @@ Array [
       Mark Ruffalo
     </td>
     <td
-      className="emotion-4"
+      className="emotion-5"
     >
       Train
     </td>
     <td
-      className="emotion-7"
+      className="emotion-6"
     >
       <div
-        className="emotion-6"
+        className="emotion-7"
       >
         <button
           aria-label="Toggle Actions Menu"
-          className="actions emotion-5"
+          className="actions emotion-8"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
@@ -361,7 +337,7 @@ Array [
       </div>
     </td>
     <td
-      className="emotion-8"
+      className="emotion-9"
     />
   </tr>,
 ]
@@ -369,7 +345,7 @@ Array [
 
 exports[`<MetadataPrettyLabelsContent /> should render properly with missing model 1`] = `
 Array [
-  .emotion-9 {
+  .emotion-0 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -377,17 +353,17 @@ Array [
   vertical-align: bottom;
 }
 
-.emotion-9:hover {
+.emotion-0:hover {
   background-color: #0074f538;
 }
 
-.emotion-9:hover button svg {
+.emotion-0:hover button svg {
   color: #808080;
 }
 
-.emotion-9:hover button:hover svg,
-.emotion-9:hover button.focus-visible:focus svg {
-  color: #ffffff !important;
+.emotion-0:hover button:hover svg,
+.emotion-0:hover button.focus-visible:focus svg {
+  color: #ffffff!important;
 }
 
 .emotion-1 {
@@ -396,7 +372,7 @@ Array [
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-2 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #808080;
@@ -408,20 +384,20 @@ Array [
   -ms-flex-direction: column;
   flex-direction: column;
   -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   min-width: 56px;
   min-height: 56px;
 }
 
-.emotion-2 {
+.emotion-4 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #808080;
 }
 
-.emotion-4 {
+.emotion-5 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #808080;
@@ -432,17 +408,17 @@ Array [
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-7 {
+.emotion-6 {
   padding-top: 8px;
   vertical-align: top;
 }
 
-.emotion-6 {
+.emotion-7 {
   position: relative;
   height: 100%;
 }
 
-.emotion-5 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -458,52 +434,40 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 6px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
   color: #191919;
-  padding: 6px;
+  background-color: transparent;
   margin: -6px;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+.emotion-8:hover,
+.emotion-8.focus-visible:focus {
+  color: #ffffff!important;
 }
 
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-5:hover,
-.emotion-5.focus-visible:focus {
-  color: #ffffff !important;
-}
-
-.emotion-8 {
-  border-bottom: none !important;
+.emotion-9 {
+  border-bottom: none!important;
 }
 
 <tr
-    className="emotion-9"
+    className="emotion-0"
   >
     <td />
     <td
       className="emotion-1"
     >
       <div
-        className="emotion-0"
+        className="emotion-2"
       >
         N/A
       </div>
@@ -513,7 +477,7 @@ Array [
       title="Model ID: c0e83460-6a25-1238-86fa-0242ac150002"
     >
       <span
-        className="emotion-2"
+        className="emotion-4"
       >
         
       </span>
@@ -521,19 +485,19 @@ Array [
       Exia
     </td>
     <td
-      className="emotion-4"
+      className="emotion-5"
     >
       Train
     </td>
     <td
-      className="emotion-7"
+      className="emotion-6"
     >
       <div
-        className="emotion-6"
+        className="emotion-7"
       >
         <button
           aria-label="Toggle Actions Menu"
-          className="actions emotion-5"
+          className="actions emotion-8"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
@@ -546,10 +510,10 @@ Array [
       </div>
     </td>
     <td
-      className="emotion-8"
+      className="emotion-9"
     />
   </tr>,
-  .emotion-9 {
+  .emotion-0 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -557,17 +521,17 @@ Array [
   vertical-align: bottom;
 }
 
-.emotion-9:hover {
+.emotion-0:hover {
   background-color: #0074f538;
 }
 
-.emotion-9:hover button svg {
+.emotion-0:hover button svg {
   color: #808080;
 }
 
-.emotion-9:hover button:hover svg,
-.emotion-9:hover button.focus-visible:focus svg {
-  color: #ffffff !important;
+.emotion-0:hover button:hover svg,
+.emotion-0:hover button.focus-visible:focus svg {
+  color: #ffffff!important;
 }
 
 .emotion-1 {
@@ -577,12 +541,18 @@ Array [
 }
 
 .emotion-2 {
+  max-height: 56px;
+  width: 56px;
+  object-fit: contain;
+}
+
+.emotion-4 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #808080;
 }
 
-.emotion-4 {
+.emotion-5 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #808080;
@@ -593,17 +563,17 @@ Array [
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-7 {
+.emotion-6 {
   padding-top: 8px;
   vertical-align: top;
 }
 
-.emotion-6 {
+.emotion-7 {
   position: relative;
   height: 100%;
 }
 
-.emotion-5 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -619,51 +589,33 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 6px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
   color: #191919;
-  padding: 6px;
+  background-color: transparent;
   margin: -6px;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+.emotion-8:hover,
+.emotion-8.focus-visible:focus {
+  color: #ffffff!important;
 }
 
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-5:hover,
-.emotion-5.focus-visible:focus {
-  color: #ffffff !important;
-}
-
-.emotion-8 {
-  border-bottom: none !important;
-}
-
-.emotion-0 {
-  max-height: 56px;
-  width: 56px;
-  object-fit: contain;
+.emotion-9 {
+  border-bottom: none!important;
 }
 
 <tr
-    className="emotion-9"
+    className="emotion-0"
   >
     <td />
     <td
@@ -678,7 +630,7 @@ Array [
             0.813,
           ]
         }
-        className="emotion-0"
+        className="emotion-2"
         src="data:image/png;base64, iVBORw0KGgoAAAANSUhEU..."
         title={
           Array [
@@ -695,7 +647,7 @@ Array [
       title="Model ID: 621bf774-89d9-1244-9596-d6df43f1ede5"
     >
       <span
-        className="emotion-2"
+        className="emotion-4"
       >
         
       </span>
@@ -703,19 +655,19 @@ Array [
       Mark Ruffalo
     </td>
     <td
-      className="emotion-4"
+      className="emotion-5"
     >
       Train
     </td>
     <td
-      className="emotion-7"
+      className="emotion-6"
     >
       <div
-        className="emotion-6"
+        className="emotion-7"
       >
         <button
           aria-label="Toggle Actions Menu"
-          className="actions emotion-5"
+          className="actions emotion-8"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
@@ -728,7 +680,7 @@ Array [
       </div>
     </td>
     <td
-      className="emotion-8"
+      className="emotion-9"
     />
   </tr>,
 ]

@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Input /> should render properly with an error and disabled 1`] = `
-.emotion-4 {
+.emotion-0 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
@@ -15,7 +15,7 @@ exports[`<Input /> should render properly with an error and disabled 1`] = `
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -28,26 +28,30 @@ exports[`<Input /> should render properly with an error and disabled 1`] = `
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-3:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-1:hover {
+.emotion-3:hover {
   border: 2px solid #ffffff;
 }
 
-.emotion-3 {
+.emotion-4 {
+  padding-top: 8px;
+}
+
+.emotion-5 {
   color: #c92300;
   font-style: italic;
   white-space: pre-line;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <label
-    className="emotion-0"
+    className="emotion-1"
     htmlFor="username"
   >
     Email
@@ -57,7 +61,7 @@ exports[`<Input /> should render properly with an error and disabled 1`] = `
   >
     <input
       autoFocus={true}
-      className="emotion-1"
+      className="emotion-3"
       disabled={true}
       id="username"
       name="username"
@@ -70,7 +74,7 @@ exports[`<Input /> should render properly with an error and disabled 1`] = `
     className="emotion-4"
   >
     <span
-      className="emotion-3"
+      className="emotion-5"
     >
       Error
     </span>

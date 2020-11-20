@@ -17,7 +17,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-6 {
+.emotion-1 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -26,7 +26,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-5 {
+.emotion-2 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -37,12 +37,12 @@ exports[`<AccountProfile /> should render properly 1`] = `
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-1 {
+.emotion-4 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -62,7 +62,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
   font-weight: 700;
 }
 
-.emotion-1:hover {
+.emotion-4:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
@@ -106,8 +106,8 @@ exports[`<AccountProfile /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -121,15 +121,6 @@ exports[`<AccountProfile /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-10:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-10[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-10,
 .emotion-10:hover,
 .emotion-10:visited {
@@ -137,10 +128,13 @@ exports[`<AccountProfile /> should render properly 1`] = `
 }
 
 .emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
 .emotion-10[aria-disabled=true] {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -151,16 +145,16 @@ exports[`<AccountProfile /> should render properly 1`] = `
     Account Profile
   </h2>
   <nav
-    className="emotion-6"
+    className="emotion-1"
   >
     <ul
-      className="emotion-5"
+      className="emotion-2"
     >
       <li
-        className="emotion-2"
+        className="emotion-3"
       >
         <a
-          className="emotion-1"
+          className="emotion-4"
           href="/account"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -169,10 +163,10 @@ exports[`<AccountProfile /> should render properly 1`] = `
         </a>
       </li>
       <li
-        className="emotion-2"
+        className="emotion-3"
       >
         <a
-          className="emotion-1"
+          className="emotion-4"
           href="/account/password"
           onClick={[Function]}
           onMouseEnter={[Function]}
