@@ -18,12 +18,11 @@ def main():
 
     custom = {}
     if args.custom:
-       for val in args.custom:
-           k,v = val.split("=")
-           custom[k.strip()] = v.strip()
+        for val in args.custom:
+            k, v = val.split("=")
+            custom[k.strip()] = v.strip()
 
     assets = [FileImport(path, custom=custom) for path in args.paths]
-
     modules = args.module or None
 
     app = app_from_env()
