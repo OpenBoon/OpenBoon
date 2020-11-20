@@ -1,11 +1,14 @@
+import AutoSizer from 'react-virtualized-auto-sizer'
+
 import { colors, constants, spacing, typography } from '../Styles'
 
-const ROW_LABELS_WIDTH = 100
+import ModelMatrixTable, { LABELS_WIDTH } from './Table'
 
 const ModelMatrixLayout = () => {
   return (
     <div
       css={{
+        width: '100%',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -35,6 +38,7 @@ const ModelMatrixLayout = () => {
       <div
         css={{
           flex: 1,
+          width: '100%',
           display: 'flex',
           backgroundColor: colors.structure.lead,
         }}
@@ -44,12 +48,14 @@ const ModelMatrixLayout = () => {
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
+            width: '0%',
           }}
         >
           <div
             css={{
               flex: 1,
               display: 'flex',
+              width: '100%',
             }}
           >
             <div
@@ -58,7 +64,6 @@ const ModelMatrixLayout = () => {
                 alignItems: 'center',
                 padding: spacing.normal,
                 borderRight: constants.borders.regular.coal,
-                borderBottom: constants.borders.regular.coal,
               }}
             >
               <div
@@ -82,30 +87,32 @@ const ModelMatrixLayout = () => {
               </div>
             </div>
 
-            <div
-              css={{
-                flex: 1,
-                display: 'flex',
-                borderBottom: constants.borders.regular.coal,
-              }}
-            >
-              [all the rows]
+            <div css={{ width: '100%' }}>
+              <AutoSizer defaultWidth={800} defaultHeight={600}>
+                {({ width, height }) => (
+                  <ModelMatrixTable width={width} height={height} />
+                )}
+              </AutoSizer>
             </div>
           </div>
 
-          <div css={{ display: 'flex' }}>
+          <div
+            css={{ display: 'flex', borderTop: constants.borders.regular.coal }}
+          >
             {/* begin placeholder for "True Label" column width */}
             <div
               css={{
                 display: 'flex',
                 alignItems: 'center',
                 padding: spacing.normal,
+                borderRight: constants.borders.regular.transparent,
               }}
             >
               <div
                 css={{
                   writingMode: 'vertical-lr',
                   transform: 'rotate(180deg)',
+                  lineHeight: typography.height.medium,
                 }}
               >
                 &nbsp;
@@ -116,7 +123,8 @@ const ModelMatrixLayout = () => {
             {/* begin placeholde for row labels */}
             <div
               css={{
-                width: ROW_LABELS_WIDTH,
+                paddingLeft: spacing.normal,
+                width: LABELS_WIDTH,
                 borderRight: constants.borders.regular.coal,
               }}
             >
@@ -124,7 +132,13 @@ const ModelMatrixLayout = () => {
             </div>
             {/* end placeholde for row labels */}
 
-            <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <div
+              css={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
               <div css={{ padding: spacing.normal, textAlign: 'center' }}>
                 [labels]
               </div>
@@ -144,7 +158,11 @@ const ModelMatrixLayout = () => {
           </div>
         </div>
         <div
-          css={{ display: 'flex', borderLeft: constants.borders.regular.coal }}
+          css={{
+            display: 'flex',
+            flexShrink: 0,
+            borderLeft: constants.borders.regular.coal,
+          }}
         >
           [preview]
         </div>
