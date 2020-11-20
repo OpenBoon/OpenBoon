@@ -72,6 +72,9 @@ class AssetSpec(
     @ApiModelProperty("Additional metadata fields to add to the custom namespace")
     var custom: Map<String, Any>? = null,
 
+    @ApiModelProperty("Temp unindexed attributes that get removed after the asset is processed.")
+    var tmp: Map<String, Any>? = null,
+
 ) {
     @JsonIgnore
     fun getChecksumValue(): Int? {

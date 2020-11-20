@@ -233,7 +233,7 @@ class FileImport(object):
     An FileImport is used to import a new file and metadata into ZMLP.
     """
 
-    def __init__(self, uri, custom=None, page=None, label=None):
+    def __init__(self, uri, custom=None, page=None, label=None, tmp=None):
         """
         Construct an FileImport instance which can point to a remote URI.
 
@@ -243,12 +243,14 @@ class FileImport(object):
             page (int): The specific page to import if any.
             label (Label): An optional Label which will add the file to
                 a Model training set.
+            tmp: (dict): A dict of temp attrs that are removed after procssing.
         """
         super(FileImport, self).__init__()
         self.uri = uri
         self.custom = custom or {}
         self.page = page
         self.label = label
+        self.tmp = tmp
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
@@ -263,7 +265,8 @@ class FileImport(object):
             "uri": self.uri,
             "custom": self.custom,
             "page": self.page,
-            "label": self.label
+            "label": self.label,
+            "tmp": self.tmp
         }
 
     def __setitem__(self, field, value):
