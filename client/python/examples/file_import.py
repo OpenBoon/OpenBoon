@@ -12,7 +12,7 @@ def main():
     parser.add_argument('-m', '--module', action='append',
                         help='Module to apply to the upload')
     parser.add_argument('-c', '--custom', action='append',
-                        help='Custom metdata value to set.')
+                        help='Custom metadata value to set.')
 
     args = parser.parse_args()
 
