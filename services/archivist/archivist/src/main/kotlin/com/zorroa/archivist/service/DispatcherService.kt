@@ -250,9 +250,8 @@ class DispatchQueueManager @Autowired constructor(
                     task.getLogFileLocation(), true, 1, TimeUnit.DAYS
                 ).getValue("uri").toString()
 
-                task.env["ZORROA_JOB_STORAGE_URI"] = storageService.getNativeUri(
-                    ProjectDirLocator(ProjectStorageEntity.JOB, task.jobId.toString())
-                )
+                task.env["ZORROA_JOB_STORAGE_PATH"] =
+                    ProjectDirLocator(ProjectStorageEntity.JOB, task.jobId.toString()).getPath()
             }
 
             return true
