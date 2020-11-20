@@ -51,21 +51,16 @@ const TimelinePlayhead = ({ videoRef, rulerRef, zoom }) => {
           timelineOffset,
         })
 
-        if (
-          currentPlayheadPosition > visibleAreaWidth - SCROLL_BUFFER &&
-          hiddenToTheRight > 0 &&
-          !video?.paused
-        ) {
-          const playheadDelta = nextPlayheadPosition - currentPlayheadPosition
+        const isPlayheadOutOfViewRange =
+          currentPlayheadPosition < 0 ||
+          (currentPlayheadPosition > visibleAreaWidth - SCROLL_BUFFER &&
+            hiddenToTheRight > 0)
 
+        if (isPlayheadOutOfViewRange && !video?.paused) {
           scroller.emit({
             eventName: 'scroll',
             data: {
-              scrollX:
-                currentPlayheadPosition -
-                visibleAreaWidth +
-                SCROLL_BUFFER +
-                playheadDelta,
+              scrollX: nextPlayheadPosition,
               scrollY: 0,
             },
           })
