@@ -4,7 +4,8 @@ import requests
 from collections import namedtuple
 
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job
-from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
+from ..search import AssetSearchResult, \
+    AssetSearchScroller, SimilarityQuery, AssetClipSearchScroller
 from ..util import as_collection, as_id_collection, as_id
 
 
@@ -247,6 +248,21 @@ class AssetApp(object):
 
         """
         return AssetSearchScroller(self.app, search, timeout)
+
+    def scroll_search_clips(self, asset, search=None, timeout="1m"):
+        """
+        Scroll through clips for given asset using the ElasticSearch query DSL.
+
+        Args:
+            asset (Asset): The asset or unique AssetId.
+            search (dict): The ElasticSearch search to execute
+            timeout (str): The scroll timeout.  Defaults to 1 minute.
+
+        Returns:
+            AssetClipSearchScroller - a clip scroller instance for generating clips.
+
+        """
+        return AssetClipSearchScroller(as_id(asset), self.app, search, timeout)
 
     def reprocess_search(self, search, modules):
         """
