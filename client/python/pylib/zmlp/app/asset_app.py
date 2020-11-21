@@ -341,6 +341,44 @@ class AssetApp(object):
             raise ValueError("Must pass at least and add_labels or remove_labels argument")
         return self.app.client.put("/api/v3/assets/_batch_update_labels", body)
 
+    def update_custom_fields(self, asset, values):
+        """
+        Set the values of custom metadata fields.
+
+        Args:
+            asset (Asset): The asset or unique Asset id.
+            values (dict): A dictionary of values.
+
+        Returns:
+            dict: A status dictionary with failures or succcess
+        """
+        body = {
+            "update": {
+                as_id(asset): values
+            }
+        }
+        return self.app.client.put("/api/v3/assets/_batch_update_custom_fields", body)
+
+    def batch_update_custom_fields(self, update):
+        """
+        Set the values of custom metadata fields.
+
+        Examples:
+            {
+                "asset-id1": {"shoe": "nike"},
+                "asset-id2": {"country": "New Zealand"}
+            }
+
+        Args:
+            update (dict): A dict o dicts which describe the
+        Returns:
+            dict: A status dictionary with failures or success
+        """
+        body = {
+            'update': update
+        }
+        return self.app.client.put('/api/v3/assets/_batch_update_custom_fields', body)
+
     def download_file(self, stored_file, dst_file=None):
         """
         Download given file and store results in memory, or optionally
