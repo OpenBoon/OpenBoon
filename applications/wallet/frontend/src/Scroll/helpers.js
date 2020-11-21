@@ -121,12 +121,12 @@ export const initializeScroller = ({
 
   /* istanbul ignore else */
   if (isScrollEmitter) {
-    const deregiter = handleEventListener({
+    const deregister = handleEventListener({
       eventName: 'scroll',
       node,
       scroller,
     })
-    deregisterCallbacks.push(deregiter)
+    deregisterCallbacks.push(deregister)
   }
 
   /* istanbul ignore else */
