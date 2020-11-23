@@ -4,8 +4,73 @@ Classes and functions for building timelines.
 from ..util import as_id, as_collection
 
 __all__ = [
-    'TimelineBuilder'
+    'TimelineBuilder',
+    'Clip'
 ]
+
+
+class Clip:
+    """
+    Clips represent a prediction for a section of video.
+    """
+    def __init__(self, data):
+        self._data = data['document']['clip']
+        self.id = data['id']
+
+    @property
+    def asset_id(self):
+        """The Asset id the clip is associated with."""
+        return self._data['assetId']
+
+    @property
+    def timeline(self):
+        """The name of the timeline, this is the same as the pipeline module."""
+        return self._data['timeline']
+
+    @property
+    def track(self):
+        """The track name"""
+        return self._data['track']
+
+    @property
+    def content(self):
+        """The content of the clip. This is the prediction"""
+        return self._data['content']
+
+    @property
+    def length(self):
+        """The length of the clip"""
+        return self.data['length']
+
+    @property
+    def start(self):
+        """The start time of the clip"""
+        return self.data['start']
+
+    @property
+    def stop(self):
+        """The stop time of the clip"""
+        return self.data['stop']
+
+    @property
+    def score(self):
+        """The prediction score"""
+        return self.data['score']
+
+    def __len__(self):
+        return self.length
+
+    def __str__(self):
+        return "<Clip id='{}'/>".format(self.id)
+
+    def __repr__(self):
+        return "<Clip id='{}' at {}/>".format(self.id, hex(id(self)))
+
+    def __eq__(self, other):
+        return other.id
+
+    def __hash__(self):
+        return hash(self.id)
 
 
 class TimelineBuilder:

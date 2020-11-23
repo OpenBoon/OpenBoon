@@ -273,11 +273,15 @@ Array [
 }
 
 .emotion-11 {
+  word-break: nowrap;
+}
+
+.emotion-12 {
   position: relative;
   height: 100%;
 }
 
-.emotion-12 {
+.emotion-13 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -309,8 +313,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-12:hover,
-.emotion-12.focus-visible:focus {
+.emotion-13:hover,
+.emotion-13.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -355,6 +359,9 @@ Array [
             <th>
               Label
             </th>
+            <th>
+              Scope
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -371,13 +378,18 @@ Array [
             >
               Space
             </td>
+            <td
+              className="emotion-11"
+            >
+              TRAIN
+            </td>
             <td>
               <div
-                className="emotion-11"
+                className="emotion-12"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-12"
+                  className="actions emotion-13"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -403,13 +415,18 @@ Array [
             >
               Outside
             </td>
+            <td
+              className="emotion-11"
+            >
+              TRAIN
+            </td>
             <td>
               <div
-                className="emotion-11"
+                className="emotion-12"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-12"
+                  className="actions emotion-13"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1137,11 +1154,15 @@ Array [
 }
 
 .emotion-11 {
+  word-break: nowrap;
+}
+
+.emotion-12 {
   position: relative;
   height: 100%;
 }
 
-.emotion-12 {
+.emotion-13 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1173,8 +1194,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-12:hover,
-.emotion-12.focus-visible:focus {
+.emotion-13:hover,
+.emotion-13.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -1219,6 +1240,9 @@ Array [
             <th>
               Label
             </th>
+            <th>
+              Scope
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -1235,13 +1259,18 @@ Array [
             >
               Space
             </td>
+            <td
+              className="emotion-11"
+            >
+              TRAIN
+            </td>
             <td>
               <div
-                className="emotion-11"
+                className="emotion-12"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-12"
+                  className="actions emotion-13"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1267,13 +1296,18 @@ Array [
             >
               Outside
             </td>
+            <td
+              className="emotion-11"
+            >
+              TRAIN
+            </td>
             <td>
               <div
-                className="emotion-11"
+                className="emotion-12"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-12"
+                  className="actions emotion-13"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1649,11 +1683,15 @@ Array [
 }
 
 .emotion-11 {
+  word-break: nowrap;
+}
+
+.emotion-12 {
   position: relative;
   height: 100%;
 }
 
-.emotion-12 {
+.emotion-13 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1685,8 +1723,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-12:hover,
-.emotion-12.focus-visible:focus {
+.emotion-13:hover,
+.emotion-13.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -1731,6 +1769,9 @@ Array [
             <th>
               Label
             </th>
+            <th>
+              Scope
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -1747,13 +1788,18 @@ Array [
             >
               Space
             </td>
+            <td
+              className="emotion-11"
+            >
+              TRAIN
+            </td>
             <td>
               <div
-                className="emotion-11"
+                className="emotion-12"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-12"
+                  className="actions emotion-13"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1779,13 +1825,18 @@ Array [
             >
               Outside
             </td>
+            <td
+              className="emotion-11"
+            >
+              TRAIN
+            </td>
             <td>
               <div
-                className="emotion-11"
+                className="emotion-12"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-12"
+                  className="actions emotion-13"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
