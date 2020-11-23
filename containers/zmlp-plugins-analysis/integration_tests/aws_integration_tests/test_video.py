@@ -5,12 +5,12 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp_analysis.aws.videos.video import VideoDetect
+from zmlp_analysis.aws.videos.video import SegmentVideoDetectProcessor
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels, \
     zorroa_test_path, get_mock_stored_file
 
-VID_MP4 = "video/ted_talk.mp4"
+VID_MP4 = "video/credits.mov"
 
 logging.basicConfig()
 
@@ -45,7 +45,7 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
 
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
-    @patch('zmlp_analysis.aws.videos.video.get_audio_proxy')
+    @patch('zmlp_analysis.aws.videos.labels.proxy.get_video_proxy')
     def test_process_audio_proxy(self, get_prx_patch, store_patch, store_blob_patch):
         video_path = zorroa_test_path(VID_MP4)
         namespace = 'analysis.aws-video-label-detection'
@@ -54,7 +54,7 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(VideoDetect())
+        processor = self.init_processor(SegmentVideoDetectProcessor())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(self.asset)

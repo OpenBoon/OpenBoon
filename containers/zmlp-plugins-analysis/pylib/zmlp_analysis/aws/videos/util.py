@@ -223,7 +223,7 @@ def delete_topic_and_queue(sqs_client, sns_client, sqs_queue_url, sns_topic_arn)
     sns_client.delete_topic(TopicArn=sns_topic_arn)
 
 
-def StartSegmentDetection(rek_client, bucket, video, role_arn, sns_topic_arn):
+def start_segment_detection(rek_client, bucket, video, role_arn, sns_topic_arn):
     """
     Start AWS Rekog segment detection
 
@@ -237,21 +237,22 @@ def StartSegmentDetection(rek_client, bucket, video, role_arn, sns_topic_arn):
     Returns:
         (str) Job ID created for label detection
     """
-    min_Technical_Cue_Confidence = 80.0
-    min_Shot_Confidence = 80.0
+    min_techincal_cue_confidence = 80.0
+    min_shot_confidence = 80.0
 
     response = rek_client.start_segment_detection(
         Video={'S3Object': {'Bucket': bucket, 'Name': video}},
         NotificationChannel={'RoleArn': role_arn, 'SNSTopicArn': sns_topic_arn},
         SegmentTypes=['TECHNICAL_CUE', 'SHOT'],
-        Filters={'TechnicalCueFilter': {'MinSegmentConfidence': min_Technical_Cue_Confidence},
-                 'ShotFilter': {'MinSegmentConfidence': min_Shot_Confidence}})
+        Filters={'TechnicalCueFilter': {'MinSegmentConfidence': min_techincal_cue_confidence},
+                 'ShotFilter': {'MinSegmentConfidence': min_shot_confidence}})
 
     start_job_id = response['JobId']
     print('Start Job Id: ' + start_job_id)
     return start_job_id
 
-def GetSegmentDetectionResults(rek_client, start_job_id, max_results=10):
+
+def get_segment_detection_results(rek_client, start_job_id, max_results=10):
     """
         Run AWS Rekog label detection and get results
 
@@ -269,8 +270,8 @@ def GetSegmentDetectionResults(rek_client, start_job_id, max_results=10):
 
     while not finished:
         response = rek_client.get_segment_detection(JobId=start_job_id,
-                                                  MaxResults=max_results,
-                                                  NextToken=pagination_token)
+                                                    MaxResults=max_results,
+                                                    NextToken=pagination_token)
 
         if first_time:
             print('Status\n------\n' + response['JobStatus'])

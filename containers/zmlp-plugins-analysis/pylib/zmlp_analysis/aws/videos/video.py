@@ -5,20 +5,18 @@ import os
 
 from zmlp_analysis.aws.util import AwsEnv
 from zmlp_analysis.aws.videos.util import *
-from zmlpsdk import file_storage, FileTypes, AssetProcessor, ZmlpEnv
-from zmlpsdk.proxy import get_audio_proxy, get_video_proxy
-from zmlpsdk.audio import has_audio_channel
+from zmlpsdk import AssetProcessor, Argument, FileTypes, ZmlpEnv, file_storage, proxy, clips, video
 
 MAX_LENGTH_SEC = 120
 
 
-class VideoDetect(AssetProcessor):
+class AbstractVideoDetectProcessor(AssetProcessor):
     """ AWS Rekognition for Video Label Detection"""
-    namespace = 'aws-video-label-detection'
+    namespace = 'aws-video-detection'
     file_types = FileTypes.videos
 
     def __init__(self):
-        super(VideoDetect, self).__init__()
+        super(AbstractVideoDetectProcessor, self).__init__()
 
         self.rek_client = None
         self.s3_client = None
@@ -54,27 +52,21 @@ class VideoDetect(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
         asset_id = asset.id
+        final_time = asset.get_attr('media.length')
 
-        if asset.get_attr('media.length') > 120:
+        if final_time > MAX_LENGTH_SEC:
             self.logger.warning(
-                'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
+                'Skipping, video is longer than {} seconds.'.format(MAX_LENGTH_SEC))
             return
 
-        # Look for a .flac audio proxy first.  If one doesn't exist we can
-        # use the MP4, but it's larger and thus slower.
-        audio_proxy = get_audio_proxy(asset, False)
-        if not audio_proxy:
-            # We can use the video proxy.
-            audio_proxy = get_video_proxy(asset)
+        video_proxy = proxy.get_video_proxy(asset)
 
-        if not audio_proxy:
-            self.logger.warning(f'No audio could be found for {asset_id}')
+        if not video_proxy:
+            self.logger.warning(f'No video could be found for {asset_id}')
             return
 
-        local_path = file_storage.localize_file(audio_proxy)
-        if not has_audio_channel(local_path):
-            self.logger.warning(f'No audio channel could be found for {asset_id}')
-            return
+        local_path = file_storage.localize_file(video_proxy)
+        extractor = video.TimeBasedFrameExtractor(local_path)
 
         ext = os.path.splitext(local_path)[1]
         bucket_file = f'{ZmlpEnv.get_project_id()}/video/{asset_id}{ext}'
@@ -86,9 +78,40 @@ class VideoDetect(AssetProcessor):
         # get audio s3 uri
         s3_uri = f's3://{bucket_name}/{bucket_file}'
 
-        response = self.start_detection(self.roleArn, bucket_name, bucket_file, asset_id)
+        sns_topic_arn, sqs_queue_url = self.create_topic_queue(asset_id)
 
-    def start_detection(self, role_arn, bucket, video, asset_id):
+        try:
+            response = self.start_detection_analysis(
+                role_arn=self.roleArn,
+                bucket=bucket_name,
+                video=bucket_file,
+                sns_topic_arn=sns_topic_arn,
+                sqs_queue_url=sqs_queue_url
+            )
+        finally:
+            self.sqs_client.delete_queue(QueueUrl=sqs_queue_url)
+            self.sns_client.delete_topic(TopicArn=sns_topic_arn)
+
+    def create_topic_queue(self, name):
+        """
+        Create AWS SNS Topic and SQS Queue
+
+        Args:
+            name: (str) the name that will be prepended to the topic and queue
+
+        Returns:
+            tuple(str, str) (SNS Topic ARN, SQS Queue URL)
+        """
+        prepend_name = "AmazonRekognition"
+
+        return create_topic_and_queue(
+            self.sns_client,
+            self.sqs_client,
+            topic_name=f"{prepend_name}-{name}-topic",
+            queue_name=f"{prepend_name}-{name}-queue"
+        )
+
+    def start_detection_analysis(self, role_arn, bucket, video, sns_topic_arn, sqs_queue_url):
         """
         Start Detection Analysis
 
@@ -96,32 +119,74 @@ class VideoDetect(AssetProcessor):
             role_arn: (str) AWS Role ARN
             bucket: (str) Bucket name only (i.e. "zorroa-dev" in "gs://zorroa-dev")
             video: (str) video name without extension ("video" instead of "video.mp4")
-            asset_id: (str) Asset ID
+            sns_topic_arn: (str) SNS Topic ARN
+            sqs_queue_url: (str) SQS Queue URL
 
         Returns:
             (dict) Label Detection Results
         """
-        prepend_name = "AmazonRekognition"
+        raise NotImplementedError
 
-        sns_topic_arn, sqs_queue_url = create_topic_and_queue(
-            self.sns_client,
-            self.sqs_client,
-            topic_name=f"{prepend_name}-{asset_id}-topic",
-            queue_name=f"{prepend_name}-{asset_id}-queue"
+
+class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
+    """ Label Detection for Videos using AWS """
+    def __init__(self):
+        super(LabelVideoDetectProcessor, self).__init__()
+
+    def start_detection_analysis(self, role_arn, bucket, video, sns_topic_arn, sqs_queue_url):
+        """
+        Start Label Detection Analysis
+
+        Args:
+            role_arn: (str) AWS Role ARN
+            bucket: (str) Bucket name only (i.e. "zorroa-dev" in "gs://zorroa-dev")
+            video: (str) video name without extension ("video" instead of "video.mp4")
+            sns_topic_arn: (str) SNS Topic ARN
+            sqs_queue_url: (str) SQS Queue URL
+
+        Returns:
+            (dict) Label Detection Results
+        """
+        start_job_id = start_label_detection(
+            self.rek_client,
+            bucket=bucket,
+            video=video,
+            role_arn=role_arn,
+            sns_topic_arn=sns_topic_arn
         )
+        if get_sqs_message_success(self.sqs_client, sqs_queue_url, start_job_id):
+            response = get_label_detection_results(self.rek_client, start_job_id)
 
-        try:
-            start_job_id = start_label_detection(
-                self.rek_client,
-                bucket=bucket,
-                video=video,
-                role_arn=role_arn,
-                sns_topic_arn=sns_topic_arn
-            )
-            if get_sqs_message_success(self.sqs_client, sqs_queue_url, start_job_id):
-                response = get_label_detection_results(self.rek_client, start_job_id)
-        finally:
-            self.sqs_client.delete_queue(QueueUrl=sqs_queue_url)
-            self.sns_client.delete_topic(TopicArn=sns_topic_arn)
+        return response
+
+
+class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
+    """ Segment Detection for Videos using AWS """
+    def __init__(self):
+        super(SegmentVideoDetectProcessor, self).__init__()
+
+    def start_detection_analysis(self, role_arn, bucket, video, sns_topic_arn, sqs_queue_url):
+        """
+        Start Segment Detection Analysis
+
+        Args:
+            role_arn: (str) AWS Role ARN
+            bucket: (str) Bucket name only (i.e. "zorroa-dev" in "gs://zorroa-dev")
+            video: (str) video name without extension ("video" instead of "video.mp4")
+            sns_topic_arn: (str) SNS Topic ARN
+            sqs_queue_url: (str) SQS Queue URL
+
+        Returns:
+            (dict) Label Detection Results
+        """
+        start_job_id = start_segment_detection(
+            self.rek_client,
+            bucket=bucket,
+            video=video,
+            role_arn=role_arn,
+            sns_topic_arn=sns_topic_arn
+        )
+        if get_sqs_message_success(self.sqs_client, sqs_queue_url, start_job_id):
+            response = get_segment_detection_results(self.rek_client, start_job_id)
 
         return response
