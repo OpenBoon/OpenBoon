@@ -65,7 +65,9 @@ describe('<TimelineCaptions />', () => {
 
     expect(mockAddEventListener).toHaveBeenCalled()
 
-    component.unmount()
+    act(() => {
+      component.unmount()
+    })
 
     expect(mockRemoveEventListener).toHaveBeenCalled()
   })
