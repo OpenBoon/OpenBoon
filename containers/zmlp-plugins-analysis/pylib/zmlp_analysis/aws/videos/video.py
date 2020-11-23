@@ -2,16 +2,17 @@
 # PDX-License-Identifier: MIT-0 (For details, see https://github.com/awsdocs/amazon-rekognition-developer-guide/blob/master/LICENSE-SAMPLECODE.)
 
 import os
+import tempfile
 
 from zmlp_analysis.aws.util import AwsEnv
 from zmlp_analysis.aws.videos.util import *
-from zmlpsdk import AssetProcessor, Argument, FileTypes, ZmlpEnv, file_storage, proxy, clips, video
+from zmlpsdk import AssetProcessor, FileTypes, ZmlpEnv, file_storage, proxy, clips, video
 
 MAX_LENGTH_SEC = 120
 
 
 class AbstractVideoDetectProcessor(AssetProcessor):
-    """ AWS Rekognition for Video Label Detection"""
+    """ AWS Rekognition for Video Detection"""
     namespace = 'aws-video-detection'
     file_types = FileTypes.videos
 
@@ -66,7 +67,8 @@ class AbstractVideoDetectProcessor(AssetProcessor):
             return
 
         local_path = file_storage.localize_file(video_proxy)
-        extractor = video.TimeBasedFrameExtractor(local_path)
+        output_path = tempfile.mkstemp(".jpg")[1]
+        clip_tracker = clips.ClipTracker(asset, self.namespace)
 
         ext = os.path.splitext(local_path)[1]
         bucket_file = f'{ZmlpEnv.get_project_id()}/video/{asset_id}{ext}'
@@ -81,7 +83,10 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         sns_topic_arn, sqs_queue_url = self.create_topic_queue(asset_id)
 
         try:
-            response = self.start_detection_analysis(
+            clip_tracker = self.start_detection_analysis(
+                clip_tracker=clip_tracker,
+                output_dir=local_path,
+                output_path=output_path,
                 role_arn=self.roleArn,
                 bucket=bucket_name,
                 video=bucket_file,
@@ -91,6 +96,9 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         finally:
             self.sqs_client.delete_queue(QueueUrl=sqs_queue_url)
             self.sns_client.delete_topic(TopicArn=sns_topic_arn)
+
+        timeline = clip_tracker.build_timeline(final_time)
+        video.save_timeline(timeline)
 
     def create_topic_queue(self, name):
         """
@@ -111,7 +119,8 @@ class AbstractVideoDetectProcessor(AssetProcessor):
             queue_name=f"{prepend_name}-{name}-queue"
         )
 
-    def start_detection_analysis(self, role_arn, bucket, video, sns_topic_arn, sqs_queue_url):
+    def start_detection_analysis(self, clip_tracker, output_dir, output_path, role_arn, bucket,
+                                 video, sns_topic_arn, sqs_queue_url):
         """
         Start Detection Analysis
 
@@ -133,7 +142,8 @@ class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
     def __init__(self):
         super(LabelVideoDetectProcessor, self).__init__()
 
-    def start_detection_analysis(self, role_arn, bucket, video, sns_topic_arn, sqs_queue_url):
+    def start_detection_analysis(self, clip_tracker, output_dir, output_path, role_arn, bucket, \
+                                 video, sns_topic_arn, sqs_queue_url):
         """
         Start Label Detection Analysis
 
@@ -165,7 +175,8 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
     def __init__(self):
         super(SegmentVideoDetectProcessor, self).__init__()
 
-    def start_detection_analysis(self, role_arn, bucket, video, sns_topic_arn, sqs_queue_url):
+    def start_detection_analysis(self, clip_tracker, output_dir, output_path, role_arn, bucket, \
+                                 video, sns_topic_arn, sqs_queue_url):
         """
         Start Segment Detection Analysis
 
@@ -187,6 +198,52 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
             sns_topic_arn=sns_topic_arn
         )
         if get_sqs_message_success(self.sqs_client, sqs_queue_url, start_job_id):
-            response = get_segment_detection_results(self.rek_client, start_job_id)
+            clip_tracker = self.get_segment_detection_results(
+                clip_tracker=clip_tracker,
+                rek_client=self.rek_client,
+                start_job_id=start_job_id,
+                output_dir=output_dir,
+                output_path=output_path
+            )
 
-        return response
+        return clip_tracker
+
+    def get_segment_detection_results(self, clip_tracker, rek_client, start_job_id, output_dir,
+                                      output_path, max_results=10):
+        """
+        Run AWS Rekog label detection and get results
+
+        Args:
+            rek_client: AWS Rekog Client
+            start_job_id: (str) Job ID
+            max_results: (int) maximum results to get, default 10
+
+        Returns:
+            (dict) segment detection response
+        """
+        pagination_token = ''
+        finished = False
+
+        while not finished:
+            response = rek_client.get_segment_detection(JobId=start_job_id,
+                                                        MaxResults=max_results,
+                                                        NextToken=pagination_token)
+            for segment in response['Segments']:
+
+                if segment['Type'] == 'TECHNICAL_CUE':
+                    print('Technical Cue')
+                    print('\tConfidence: ' + str(segment['TechnicalCueSegment']['Confidence']))
+                    print('\tType: ' + segment['TechnicalCueSegment']['Type'])
+
+                    segment_type = segment['TechnicalCueSegment']['Type']
+                    start_time = segment['StartTimestampMillis'] / 1000
+
+                    video.extract_thumbnail_from_video(output_dir, output_path, start_time)
+                    clip_tracker.append(start_time, [segment_type])
+
+            if 'NextToken' in response:
+                pagination_token = response['NextToken']
+            else:
+                finished = True
+
+        return clip_tracker

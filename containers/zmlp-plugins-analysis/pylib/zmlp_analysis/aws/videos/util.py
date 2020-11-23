@@ -266,38 +266,11 @@ def get_segment_detection_results(rek_client, start_job_id, max_results=10):
         """
     pagination_token = ''
     finished = False
-    first_time = True
 
     while not finished:
         response = rek_client.get_segment_detection(JobId=start_job_id,
                                                     MaxResults=max_results,
                                                     NextToken=pagination_token)
-
-        if first_time:
-            print('Status\n------\n' + response['JobStatus'])
-            print('\nRequested Types\n---------------')
-            for selectedSegmentType in response['SelectedSegmentTypes']:
-                print("\tType: " + selectedSegmentType['Type'])
-                print("\t\tModel Version: " + selectedSegmentType['ModelVersion'])
-
-            print()
-            print('\nAudio metadata\n--------------')
-            for audioMetadata in response['AudioMetadata']:
-                print('\tCodec: ' + audioMetadata['Codec'])
-                print('\tDuration: ' + str(audioMetadata['DurationMillis']))
-                print('\tNumber of Channels: ' + str(audioMetadata['NumberOfChannels']))
-                print('\tSample rate: ' + str(audioMetadata['SampleRate']))
-            print()
-            print('\nVideo metadata\n--------------')
-            for videoMetadata in response['VideoMetadata']:
-                print('\tCodec: ' + videoMetadata['Codec'])
-                print('\tDuration: ' + str(videoMetadata['DurationMillis']))
-                print('\tFormat: ' + videoMetadata['Format'])
-                print('\tFrame rate: ' + str(videoMetadata['FrameRate']))
-                print('\nSegments\n--------')
-
-            first_time = False
-
         for segment in response['Segments']:
 
             if segment['Type'] == 'TECHNICAL_CUE':
