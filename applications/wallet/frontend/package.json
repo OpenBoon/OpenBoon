@@ -78,7 +78,7 @@
     {
       "//": "framework",
       "path": ".next/static/chunks/framework**.js",
-      "maxSize": "40 kB"
+      "maxSize": "42 kB"
     },
     {
       "//": "main runtime",
@@ -113,12 +113,11 @@
     {
       "//": "all pages",
       "path": ".next/static/chunks/pages/**/!(_app|_error)*.js",
-      "maxSize": "44 kB"
+      "maxSize": "40 kB"
     }
   ],
   "dependencies": {
     "@emotion/babel-preset-css-prop": "11.0.0",
-    "@emotion/cache": "11.0.0",
     "@emotion/react": "11.1.1",
     "@reach/combobox": "0.11.2",
     "@reach/listbox": "0.11.2",
@@ -132,10 +131,10 @@
     "focus-visible": "5.2.0",
     "next": "10.0.1",
     "prop-types": "15.7.2",
-    "react": "16.14.0",
+    "react": "17.0.1",
     "react-aria-modal": "4.0.0",
     "react-compound-slider": "3.3.1",
-    "react-dom": "16.14.0",
+    "react-dom": "17.0.1",
     "react-grid-layout": "1.2.0",
     "react-json-pretty": "2.2.0",
     "react-resizable": "2.0.0",
@@ -173,7 +172,7 @@
     "lint-staged": "10.5.1",
     "morgan": "1.10.0",
     "prettier": "2.2.0",
-    "react-test-renderer": "16.14.0",
+    "react-test-renderer": "17.0.1",
     "webpack-bundle-analyzer": "4.1.0"
   }
 }

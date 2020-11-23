@@ -52,16 +52,16 @@ const ResizeableHandle = ({ onMouseMove, onMouseUp, openToThe, styles }) => {
 
     onMouseUp({ difference })
 
-    window.removeEventListener('mousemove', handleMouseMove)
-    window.removeEventListener('mouseup', handleMouseUp)
+    document.removeEventListener('mousemove', handleMouseMove)
+    document.removeEventListener('mouseup', handleMouseUp)
   }
 
   /* istanbul ignore next */
   const handleMouseDown = ({ clientX, clientY }) => {
     origin = isHorizontal ? clientX : clientY
 
-    window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('mouseup', handleMouseUp)
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleMouseUp)
   }
 
   return (
