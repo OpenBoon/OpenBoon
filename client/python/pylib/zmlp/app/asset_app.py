@@ -4,7 +4,8 @@ import requests
 from collections import namedtuple
 
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job
-from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
+from ..search import AssetSearchResult, \
+    AssetSearchScroller, SimilarityQuery, AssetClipSearchScroller
 from ..util import as_collection, as_id_collection, as_id
 
 
@@ -248,6 +249,21 @@ class AssetApp(object):
         """
         return AssetSearchScroller(self.app, search, timeout)
 
+    def scroll_search_clips(self, asset, search=None, timeout="1m"):
+        """
+        Scroll through clips for given asset using the ElasticSearch query DSL.
+
+        Args:
+            asset (Asset): The asset or unique AssetId.
+            search (dict): The ElasticSearch search to execute
+            timeout (str): The scroll timeout.  Defaults to 1 minute.
+
+        Returns:
+            AssetClipSearchScroller - a clip scroller instance for generating clips.
+
+        """
+        return AssetClipSearchScroller(as_id(asset), self.app, search, timeout)
+
     def reprocess_search(self, search, modules):
         """
         Reprocess the given search with the supplied modules.
@@ -324,6 +340,44 @@ class AssetApp(object):
         if not body:
             raise ValueError("Must pass at least and add_labels or remove_labels argument")
         return self.app.client.put("/api/v3/assets/_batch_update_labels", body)
+
+    def update_custom_fields(self, asset, values):
+        """
+        Set the values of custom metadata fields.
+
+        Args:
+            asset (Asset): The asset or unique Asset id.
+            values (dict): A dictionary of values.
+
+        Returns:
+            dict: A status dictionary with failures or succcess
+        """
+        body = {
+            "update": {
+                as_id(asset): values
+            }
+        }
+        return self.app.client.put("/api/v3/assets/_batch_update_custom_fields", body)
+
+    def batch_update_custom_fields(self, update):
+        """
+        Set the values of custom metadata fields.
+
+        Examples:
+            {
+                "asset-id1": {"shoe": "nike"},
+                "asset-id2": {"country": "New Zealand"}
+            }
+
+        Args:
+            update (dict): A dict o dicts which describe the
+        Returns:
+            dict: A status dictionary with failures or success
+        """
+        body = {
+            'update': update
+        }
+        return self.app.client.put('/api/v3/assets/_batch_update_custom_fields', body)
 
     def download_file(self, stored_file, dst_file=None):
         """

@@ -81,7 +81,7 @@ class IndexMappingServiceTests : AbstractTest() {
         val field = Field(
             UUID.randomUUID(),
             getProjectId(),
-            "custom.$name",
+            name,
             type,
             time, time,
             actor, actor

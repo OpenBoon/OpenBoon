@@ -96,7 +96,7 @@ class OfficeImporter(AssetProcessor):
                 # Start on page 2 since we just processed page 1
                 for page_num in range(2, num_pages + 1):
                     file_import = FileImport("asset:{}".format(asset.id), page=page_num)
-                    file_import.attrs[self.tmp_loc_attr] = output_uri
+                    file_import.tmp = {self.tmp_loc_attr: output_uri}
                     expand = ExpandFrame(file_import)
                     self.expand(frame, expand)
 

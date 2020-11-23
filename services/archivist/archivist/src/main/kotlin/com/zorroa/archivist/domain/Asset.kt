@@ -45,6 +45,8 @@ class AssetSpec(
     @ApiModelProperty("The URI location of the asset.")
     var uri: String,
 
+    // These cannot be sent over-wire.
+    @JsonIgnore
     @ApiModelProperty("Additional metadata fields to add to the Asset in key/value format.")
     var attrs: Map<String, Any>? = null,
 
@@ -65,7 +67,13 @@ class AssetSpec(
     var checksum: Int? = null,
 
     @JsonIgnore
-    var parentAsset: Asset? = null
+    var parentAsset: Asset? = null,
+
+    @ApiModelProperty("Additional metadata fields to add to the custom namespace")
+    var custom: Map<String, Any>? = null,
+
+    @ApiModelProperty("Temp unindexed attributes that get removed after the asset is processed.")
+    var tmp: Map<String, Any>? = null,
 
 ) {
     @JsonIgnore
