@@ -767,6 +767,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
     className="emotion-8"
   >
     <div
+      aria-label="Timeline"
       className="emotion-9"
       onWheel={[Function]}
     >
@@ -1771,6 +1772,7 @@ exports[`<Timeline /> should render properly 1`] = `
     className="emotion-13"
   >
     <div
+      aria-label="Timeline"
       className="emotion-14"
       onWheel={[Function]}
     >
@@ -3551,6 +3553,7 @@ exports[`<Timeline /> should render properly 2`] = `
     className="emotion-13"
   >
     <div
+      aria-label="Timeline"
       className="emotion-14"
       onWheel={[Function]}
     >
@@ -3563,7 +3566,7 @@ exports[`<Timeline /> should render properly 2`] = `
           onMouseDown={[Function]}
         />
         <TimelinePlayhead
-          followPlayhead={true}
+          followPlayhead={false}
           rulerRef={
             Object {
               "current": null,

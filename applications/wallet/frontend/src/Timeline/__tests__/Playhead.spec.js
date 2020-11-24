@@ -6,9 +6,10 @@ describe('<TimelinePlayhead />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
       <TimelinePlayhead
-        videoRef={{ current: { currentTime: 5, duration: 10 } }}
+        videoRef={{ current: { currentTime: 5, duration: 10, paused: true } }}
         rulerRef={{ current: { scrollLeft: 0 } }}
         zoom={100}
+        followPlayhead
       />,
     )
 

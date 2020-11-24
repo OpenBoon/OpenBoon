@@ -156,6 +156,7 @@ TimelinePlayhead.propTypes = {
     current: PropTypes.shape({
       currentTime: PropTypes.number.isRequired,
       duration: PropTypes.number.isRequired,
+      paused: PropTypes.bool.isRequired,
     }),
   }).isRequired,
   rulerRef: PropTypes.shape({
@@ -164,6 +165,7 @@ TimelinePlayhead.propTypes = {
     }),
   }).isRequired,
   zoom: PropTypes.number.isRequired,
+  followPlayhead: PropTypes.bool.isRequired,
 }
 
 export default TimelinePlayhead

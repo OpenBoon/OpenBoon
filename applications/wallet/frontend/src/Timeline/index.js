@@ -70,6 +70,7 @@ const Timeline = ({ videoRef, length }) => {
   }, [])
 
   const [followPlayhead, setFollowPlayhead] = useState(true)
+  const handleOnWheel = () => setFollowPlayhead(false)
 
   const rulerRef = useScroller({
     namespace: 'Timeline',
@@ -212,12 +213,13 @@ const Timeline = ({ videoRef, length }) => {
     >
       {({ size }) => (
         <div
+          aria-label="Timeline"
           css={{
             display: 'flex',
             flexDirection: 'column',
             height: size,
           }}
-          onWheel={() => setFollowPlayhead(false)}
+          onWheel={handleOnWheel}
         >
           <div
             css={{
