@@ -1,11 +1,13 @@
 # Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# PDX-License-Identifier: MIT-0 (For details, see https://github.com/awsdocs/amazon-rekognition-developer-guide/blob/master/LICENSE-SAMPLECODE.)
+# PDX-License-Identifier: MIT-0 (For details,
+# see https://github.com/awsdocs/amazon-rekognition-developer-guide/blob/master/LICENSE-SAMPLECODE.)
 
 import os
 import tempfile
+import logging
 
 from zmlp_analysis.aws.util import AwsEnv
-from zmlp_analysis.aws.videos.util import *
+from zmlp_analysis.aws.videos import util
 from zmlpsdk import AssetProcessor, Argument, FileTypes, ZmlpEnv, file_storage, proxy, clips, video
 
 logger = logging.getLogger(__name__)
@@ -110,7 +112,7 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         """
         prepend_name = "AmazonRekognition"
 
-        return create_topic_and_queue(
+        return util.create_topic_and_queue(
             self.sns_client,
             self.sqs_client,
             topic_name=f"{prepend_name}-{name}-topic",
@@ -172,14 +174,14 @@ class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
         Returns:
             (dict) Label Detection Results
         """
-        start_job_id = start_label_detection(
+        start_job_id = util.start_label_detection(
             self.rek_client,
             bucket=bucket,
             video=video,
             role_arn=role_arn,
             sns_topic_arn=sns_topic_arn
         )
-        if get_sqs_message_success(self.sqs_client, sqs_queue_url, start_job_id):
+        if util.get_sqs_message_success(self.sqs_client, sqs_queue_url, start_job_id):
             clip_tracker = self.get_detection_results(
                 clip_tracker=clip_tracker,
                 rek_client=self.rek_client,
@@ -207,18 +209,24 @@ class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
         pagination_token = ''
         finished = False
 
-        if self.extract_type == 'time':
-            extractor = video.TimeBasedFrameExtractor(local_video_path)
-        else:
-            extractor = video.ShotBasedFrameExtractor(local_video_path)
+        output_path = tempfile.mkstemp(".jpg")[1]
         while not finished:
             response = rek_client.get_label_detection(JobId=start_job_id,
                                                       MaxResults=max_results,
                                                       NextToken=pagination_token,
                                                       SortBy='TIMESTAMP')
-            for time_ms, path in extractor:
-                labels = [label['Label'] for label in response['Labels']]
-                clip_tracker.append(time_ms, labels)
+            for labelDetection in response['Labels']:
+                label = labelDetection['Label']
+                name = label['Name']
+                confidence = label['Confidence']
+                start_time = labelDetection['Timestamp'] / 1000  # ms to s
+
+                logger.debug(f'\tLabel: {name}')
+                logger.debug(f'\tConfidence: {confidence}')
+
+                video.extract_thumbnail_from_video(local_video_path, output_path,
+                                                   start_time)
+                clip_tracker.append(start_time, [name])
 
             if 'NextToken' in response:
                 pagination_token = response['NextToken']
@@ -230,8 +238,9 @@ class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
 
 class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
     """ Segment Detection for Videos using AWS """
-    def __init__(self):
+    def __init__(self, cue=None):
         super(SegmentVideoDetectProcessor, self).__init__()
+        self.cue = cue
 
     def start_detection_analysis(self, clip_tracker, local_video_path, role_arn, bucket, video,
                                  sns_topic_arn, sqs_queue_url):
@@ -248,14 +257,14 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
         Returns:
             (dict) Label Detection Results
         """
-        start_job_id = start_segment_detection(
+        start_job_id = util.start_segment_detection(
             self.rek_client,
             bucket=bucket,
             video=video,
             role_arn=role_arn,
             sns_topic_arn=sns_topic_arn
         )
-        if get_sqs_message_success(self.sqs_client, sqs_queue_url, start_job_id):
+        if util.get_sqs_message_success(self.sqs_client, sqs_queue_url, start_job_id):
             clip_tracker = self.get_detection_results(
                 clip_tracker=clip_tracker,
                 rek_client=self.rek_client,
@@ -291,15 +300,17 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
             for segment in response['Segments']:
                 if segment['Type'] == 'TECHNICAL_CUE':
                     segment_type = segment['TechnicalCueSegment']['Type']
-                    confidence = segment['TechnicalCueSegment']['Confidence']
-                    start_time = segment['StartTimestampMillis'] / 1000  # ms to s
+                    if segment_type == self.cue:
+                        confidence = segment['TechnicalCueSegment']['Confidence']
+                        start_time = segment['StartTimestampMillis'] / 1000  # ms to s
 
-                    logging.debug('Technical Cue')
-                    logging.debug(f'\tConfidence: {confidence}')
-                    logging.debug(f'\tType: {segment_type}')
+                        logger.debug('Technical Cue')
+                        logger.debug(f'\tConfidence: {confidence}')
+                        logger.debug(f'\tType: {segment_type}')
 
-                    video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
-                    clip_tracker.append(start_time, [segment_type])
+                        video.extract_thumbnail_from_video(local_video_path, output_path,
+                                                           start_time)
+                        clip_tracker.append(start_time, [segment_type])
 
             if 'NextToken' in response:
                 pagination_token = response['NextToken']
@@ -307,3 +318,16 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
                 finished = True
 
         return clip_tracker
+
+
+class BlackFramesVideoDetectProcessor(SegmentVideoDetectProcessor):
+    """ Black Frames Detector in a video using AWS Rekognition """
+    def __init__(self):
+        super(BlackFramesVideoDetectProcessor, self).__init__(cue='BlackFrames')
+
+
+class EndCreditsVideoDetectProcessor(SegmentVideoDetectProcessor):
+    """ Rolling Credits Detector in a video using AWS Rekognition """
+
+    def __init__(self):
+        super(EndCreditsVideoDetectProcessor, self).__init__(cue='EndCredits')

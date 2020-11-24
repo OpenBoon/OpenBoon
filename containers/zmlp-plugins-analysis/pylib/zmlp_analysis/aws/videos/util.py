@@ -40,10 +40,10 @@ def get_sqs_message_success(sqs_client, sqs_queue_url, start_job_id):
             for message in sqs_response['Messages']:
                 notification = json.loads(message['Body'])
                 rek_message = json.loads(notification['Message'])
-                logging.debug(rek_message['JobId'])
-                logging.debug(rek_message['Status'])
+                logger.debug(rek_message['JobId'])
+                logger.debug(rek_message['Status'])
                 if rek_message['JobId'] == start_job_id:
-                    logging.info('Matching Job Found:' + rek_message['JobId'])
+                    logger.info('Matching Job Found:' + rek_message['JobId'])
                     job_found = True
                     if rek_message['Status'] == 'SUCCEEDED':
                         succeeded = True
@@ -51,7 +51,7 @@ def get_sqs_message_success(sqs_client, sqs_queue_url, start_job_id):
                     sqs_client.delete_message(QueueUrl=sqs_queue_url,
                                               ReceiptHandle=message['ReceiptHandle'])
                 else:
-                    logging.info(
+                    logger.info(
                         "Job didn't match:" + str(rek_message['JobId']) + ' : ' + start_job_id
                     )
                 # Delete the unknown message. Consider sending to dead letter queue
@@ -59,57 +59,6 @@ def get_sqs_message_success(sqs_client, sqs_queue_url, start_job_id):
                                           ReceiptHandle=message['ReceiptHandle'])
 
     return succeeded
-
-
-def start_label_detection(rek_client, bucket, video, role_arn, sns_topic_arn):
-    """
-    Start AWS Rekog label detection
-
-    Args:
-        rek_client: AWS Rekog Client
-        bucket: (str) bucket name
-        video: (str) video name with extension
-        role_arn: (str) AWS ARN
-        sns_topic_arn: (str) SNS Topic ARN
-
-    Returns:
-        (str) Job ID created for label detection
-    """
-    response = rek_client.start_label_detection(
-        Video={'S3Object': {'Bucket': bucket, 'Name': video}},
-        NotificationChannel={'RoleArn': role_arn, 'SNSTopicArn': sns_topic_arn})
-
-    start_job_id = response['JobId']
-    logging.debug('Start Job Id: ' + start_job_id)
-    return start_job_id
-
-
-def get_label_detection_results(rek_client, start_job_id, max_results=10):
-    """
-    Run AWS Rekog label detection and get results
-
-    Args:
-        rek_client: AWS Rekog Client
-        start_job_id: (str) Job ID
-        max_results: (int) maximum results to get, default 10
-
-    Returns:
-        (dict) label detection response
-    """
-    pagination_token = ''
-    finished = False
-
-    while not finished:
-        response = rek_client.get_label_detection(JobId=start_job_id,
-                                                  MaxResults=max_results,
-                                                  NextToken=pagination_token,
-                                                  SortBy='TIMESTAMP')
-        if 'NextToken' in response:
-            pagination_token = response['NextToken']
-        else:
-            finished = True
-
-    return response
 
 
 def create_topic_and_queue(sns_client, sqs_client, topic_name, queue_name):
@@ -168,7 +117,7 @@ def create_topic_and_queue(sns_client, sqs_client, topic_name, queue_name):
         ]
         }}""".format(sqs_queue_arn, sns_topic_arn)
 
-    response = sqs_client.set_queue_attributes(
+    sqs_client.set_queue_attributes(
         QueueUrl=sqs_queue_url,
         Attributes={'Policy': policy}
     )
@@ -191,6 +140,29 @@ def delete_topic_and_queue(sqs_client, sns_client, sqs_queue_url, sns_topic_arn)
     """
     sqs_client.delete_queue(QueueUrl=sqs_queue_url)
     sns_client.delete_topic(TopicArn=sns_topic_arn)
+
+
+def start_label_detection(rek_client, bucket, video, role_arn, sns_topic_arn):
+    """
+    Start AWS Rekog label detection
+
+    Args:
+        rek_client: AWS Rekog Client
+        bucket: (str) bucket name
+        video: (str) video name with extension
+        role_arn: (str) AWS ARN
+        sns_topic_arn: (str) SNS Topic ARN
+
+    Returns:
+        (str) Job ID created for label detection
+    """
+    response = rek_client.start_label_detection(
+        Video={'S3Object': {'Bucket': bucket, 'Name': video}},
+        NotificationChannel={'RoleArn': role_arn, 'SNSTopicArn': sns_topic_arn})
+
+    start_job_id = response['JobId']
+    logger.debug('Start Job Id: ' + start_job_id)
+    return start_job_id
 
 
 def start_segment_detection(rek_client, bucket, video, role_arn, sns_topic_arn):
@@ -218,32 +190,5 @@ def start_segment_detection(rek_client, bucket, video, role_arn, sns_topic_arn):
                  'ShotFilter': {'MinSegmentConfidence': min_shot_confidence}})
 
     start_job_id = response['JobId']
-    logging.debug('Start Job Id: ' + start_job_id)
+    logger.debug('Start Job Id: ' + start_job_id)
     return start_job_id
-
-
-def get_segment_detection_results(rek_client, start_job_id, max_results=10):
-    """
-        Run AWS Rekog label detection and get results
-
-        Args:
-            rek_client: AWS Rekog Client
-            start_job_id: (str) Job ID
-            max_results: (int) maximum results to get, default 10
-
-        Returns:
-            (dict) segment detection response
-        """
-    pagination_token = ''
-    finished = False
-
-    while not finished:
-        response = rek_client.get_segment_detection(JobId=start_job_id,
-                                                    MaxResults=max_results,
-                                                    NextToken=pagination_token)
-        if 'NextToken' in response:
-            pagination_token = response['NextToken']
-        else:
-            finished = True
-
-    return response
