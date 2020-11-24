@@ -30,10 +30,8 @@ def get_sqs_message_success(sqs_client, sqs_queue_url, start_job_id):
         if sqs_response:
             if 'Messages' not in sqs_response:
                 if dot_line < 40:
-                    print('.', end='')
                     dot_line = dot_line + 1
                 else:
-                    print()
                     dot_line = 0
                 sys.stdout.flush()
                 time.sleep(5)
@@ -42,8 +40,8 @@ def get_sqs_message_success(sqs_client, sqs_queue_url, start_job_id):
             for message in sqs_response['Messages']:
                 notification = json.loads(message['Body'])
                 rek_message = json.loads(notification['Message'])
-                print(rek_message['JobId'])
-                print(rek_message['Status'])
+                logging.debug(rek_message['JobId'])
+                logging.debug(rek_message['Status'])
                 if rek_message['JobId'] == start_job_id:
                     logging.info('Matching Job Found:' + rek_message['JobId'])
                     job_found = True
@@ -82,7 +80,7 @@ def start_label_detection(rek_client, bucket, video, role_arn, sns_topic_arn):
         NotificationChannel={'RoleArn': role_arn, 'SNSTopicArn': sns_topic_arn})
 
     start_job_id = response['JobId']
-    print('Start Job Id: ' + start_job_id)
+    logging.debug('Start Job Id: ' + start_job_id)
     return start_job_id
 
 
@@ -106,38 +104,10 @@ def get_label_detection_results(rek_client, start_job_id, max_results=10):
                                                   MaxResults=max_results,
                                                   NextToken=pagination_token,
                                                   SortBy='TIMESTAMP')
-
-        print('Codec: ' + response['VideoMetadata']['Codec'])
-        print('Duration: ' + str(response['VideoMetadata']['DurationMillis']))
-        print('Format: ' + response['VideoMetadata']['Format'])
-        print('Frame rate: ' + str(response['VideoMetadata']['FrameRate']))
-        print()
-
-        for labelDetection in response['Labels']:
-            label = labelDetection['Label']
-
-            print("Timestamp: " + str(labelDetection['Timestamp']))
-            print("   Label: " + label['Name'])
-            print("   Confidence: " + str(label['Confidence']))
-            print("   Instances:")
-            for instance in label['Instances']:
-                print("      Confidence: " + str(instance['Confidence']))
-                print("      Bounding box")
-                print("        Top: " + str(instance['BoundingBox']['Top']))
-                print("        Left: " + str(instance['BoundingBox']['Left']))
-                print("        Width: " + str(instance['BoundingBox']['Width']))
-                print("        Height: " + str(instance['BoundingBox']['Height']))
-                print()
-            print()
-            print("   Parents:")
-            for parent in label['Parents']:
-                print("      " + parent['Name'])
-            print()
-
-            if 'NextToken' in response:
-                pagination_token = response['NextToken']
-            else:
-                finished = True
+        if 'NextToken' in response:
+            pagination_token = response['NextToken']
+        else:
+            finished = True
 
     return response
 
@@ -248,7 +218,7 @@ def start_segment_detection(rek_client, bucket, video, role_arn, sns_topic_arn):
                  'ShotFilter': {'MinSegmentConfidence': min_shot_confidence}})
 
     start_job_id = response['JobId']
-    print('Start Job Id: ' + start_job_id)
+    logging.debug('Start Job Id: ' + start_job_id)
     return start_job_id
 
 
@@ -271,30 +241,6 @@ def get_segment_detection_results(rek_client, start_job_id, max_results=10):
         response = rek_client.get_segment_detection(JobId=start_job_id,
                                                     MaxResults=max_results,
                                                     NextToken=pagination_token)
-        for segment in response['Segments']:
-
-            if segment['Type'] == 'TECHNICAL_CUE':
-                print('Technical Cue')
-                print('\tConfidence: ' +
-                      str(segment['TechnicalCueSegment']['Confidence']))
-                print('\tType: ' +
-                      segment['TechnicalCueSegment']['Type'])
-
-            if segment['Type'] == 'SHOT':
-                print('Shot')
-                print('\tConfidence: ' +
-                      str(segment['ShotSegment']['Confidence']))
-                print('\tIndex: ' +
-                      str(segment['ShotSegment']['Index']))
-
-            print('\tDuration (milliseconds): ' + str(segment['DurationMillis']))
-            print('\tStart Timestamp (milliseconds): ' + str(segment['StartTimestampMillis']))
-            print('\tEnd Timestamp (milliseconds): ' + str(segment['EndTimestampMillis']))
-            print('\tStart timecode: ' + segment['StartTimecodeSMPTE'])
-            print('\tEnd timecode: ' + segment['EndTimecodeSMPTE'])
-            print('\tDuration timecode: ' + segment['DurationSMPTE'])
-            print()
-
         if 'NextToken' in response:
             pagination_token = response['NextToken']
         else:
