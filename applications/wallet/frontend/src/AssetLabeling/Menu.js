@@ -16,8 +16,9 @@ import ButtonActions from '../Button/Actions'
 import Modal from '../Modal'
 
 const AssetLabelingMenu = ({
-  label,
   modelId,
+  label,
+  scope,
   moduleName,
   triggerReload,
   setError,
@@ -30,11 +31,14 @@ const AssetLabelingMenu = ({
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const [, setLocalModelId] = useLocalStorage({
-    key: `AssetLabelingAdd.${projectId}.modelId`,
-  })
-  const [, setLocalLabel] = useLocalStorage({
-    key: `AssetLabelingAdd.${projectId}.label`,
+  const [, setModelFields] = useLocalStorage({
+    key: `AssetLabelingAdd.${projectId}`,
+    reducer: (state, action) => ({ ...state, ...action }),
+    initialState: {
+      modelId: '',
+      label: '',
+      scope: '',
+    },
   })
 
   return (
@@ -93,10 +97,13 @@ const AssetLabelingMenu = ({
                 variant={VARIANTS.MENU_ITEM}
                 onBlur={onBlur}
                 onClick={() => {
-                  setLocalModelId({ value: modelId })
-                  setLocalLabel({ value: label })
+                  setModelFields({ modelId, scope, label, assetId })
 
-                  triggerReload()
+                  /**
+                   * Since AssetLabelingAdd is already mounted with the old state, when triggerReload is called immediately, AssetLabelingAdd
+                   * reloads and emits the outdated state. setTimeout holds off the reload until the new state is set
+                   */
+                  setTimeout(triggerReload, 1)
 
                   onClick()
                 }}
@@ -161,8 +168,9 @@ const AssetLabelingMenu = ({
 }
 
 AssetLabelingMenu.propTypes = {
-  label: PropTypes.string.isRequired,
   modelId: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  scope: PropTypes.string.isRequired,
   moduleName: PropTypes.string.isRequired,
   triggerReload: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
