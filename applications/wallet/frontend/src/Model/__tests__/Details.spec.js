@@ -209,13 +209,8 @@ describe('<ModelDetails />', () => {
     expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
 
     expect(spy).toHaveBeenCalledWith(
-      `AssetLabelingAdd.${PROJECT_ID}.modelId`,
-      `"${MODEL_ID}"`,
-    )
-
-    expect(spy).toHaveBeenCalledWith(
-      `AssetLabelingAdd.${PROJECT_ID}.label`,
-      `""`,
+      `AssetLabelingAdd.${PROJECT_ID}`,
+      `{"modelId":"${MODEL_ID}","label":"","scope":""}`,
     )
   })
 
