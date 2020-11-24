@@ -37,7 +37,6 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         os.environ['ZORROA_AWS_BUCKET'] = 'rgz-test'  # 'zorroa-integration-tests'
         os.environ['ZORROA_AWS_REGION'] = 'us-east-2'
         os.environ['ZMLP_PROJECT_ID'] = '00000000-0000-0000-0000-000000000001'
-        os.environ['PATH'] += ':/usr/local/bin'
 
     def tearDown(self):
         del os.environ['ZORROA_AWS_KEY']
