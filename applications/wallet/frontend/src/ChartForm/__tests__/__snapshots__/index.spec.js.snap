@@ -87,14 +87,16 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   border-width: 2px;
 }
 
-.emotion-10:focus {
+.emotion-10:focus,
+.emotion-10 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-10:hover {
+.emotion-10:hover,
+.emotion-10 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -145,17 +147,20 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
 
 .emotion-13,
 .emotion-13:hover,
-.emotion-13:visited {
+.emotion-13:visited,
+.emotion-13 .noop {
   background-color: #808080;
 }
 
-.emotion-13:hover {
+.emotion-13:hover,
+.emotion-13 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-13[aria-disabled=true] {
+.emotion-13[aria-disabled=true],
+.emotion-13 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -200,17 +205,20 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
 
 .emotion-15,
 .emotion-15:hover,
-.emotion-15:visited {
+.emotion-15:visited,
+.emotion-15 .noop {
   background-color: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-15:hover,
+.emotion-15 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-15[aria-disabled=true],
+.emotion-15 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -434,14 +442,16 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   border-width: 2px;
 }
 
-.emotion-10:focus {
+.emotion-10:focus,
+.emotion-10 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-10:hover {
+.emotion-10:hover,
+.emotion-10 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -492,17 +502,20 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
 
 .emotion-13,
 .emotion-13:hover,
-.emotion-13:visited {
+.emotion-13:visited,
+.emotion-13 .noop {
   background-color: #808080;
 }
 
-.emotion-13:hover {
+.emotion-13:hover,
+.emotion-13 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-13[aria-disabled=true] {
+.emotion-13[aria-disabled=true],
+.emotion-13 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -547,17 +560,20 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
 
 .emotion-15,
 .emotion-15:hover,
-.emotion-15:visited {
+.emotion-15:visited,
+.emotion-15 .noop {
   background-color: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-15:hover,
+.emotion-15 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-15[aria-disabled=true],
+.emotion-15 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -781,14 +797,16 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   border-width: 2px;
 }
 
-.emotion-10:focus {
+.emotion-10:focus,
+.emotion-10 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-10:hover {
+.emotion-10:hover,
+.emotion-10 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -839,17 +857,20 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
 
 .emotion-13,
 .emotion-13:hover,
-.emotion-13:visited {
+.emotion-13:visited,
+.emotion-13 .noop {
   background-color: #808080;
 }
 
-.emotion-13:hover {
+.emotion-13:hover,
+.emotion-13 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-13[aria-disabled=true] {
+.emotion-13[aria-disabled=true],
+.emotion-13 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -894,17 +915,20 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
 
 .emotion-15,
 .emotion-15:hover,
-.emotion-15:visited {
+.emotion-15:visited,
+.emotion-15 .noop {
   background-color: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-15:hover,
+.emotion-15 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-15[aria-disabled=true],
+.emotion-15 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

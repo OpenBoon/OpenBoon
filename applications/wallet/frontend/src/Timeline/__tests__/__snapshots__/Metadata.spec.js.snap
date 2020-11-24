@@ -35,6 +35,25 @@ exports[`<TimelineMetadata /> should toggle Metadata 1`] = `
 }
 
 .emotion-0:hover,
+.emotion-0.focus-visible:focus,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-0:hover svg,
+.emotion-0.focus-visible:focus svg,
+.emotion-0 .noop svg {
+  opacity: 1;
+}
+
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #808080;
+}
+
+.emotion-0:hover,
 .emotion-0.focus-visible:focus {
   background-color: #2e2e2e;
   color: #73b61c;
@@ -43,10 +62,6 @@ exports[`<TimelineMetadata /> should toggle Metadata 1`] = `
 .emotion-0:hover svg path,
 .emotion-0.focus-visible:focus svg path {
   fill: #73b61c;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-1 {
@@ -104,6 +119,25 @@ exports[`<TimelineMetadata /> should toggle Metadata 2`] = `
 }
 
 .emotion-0:hover,
+.emotion-0.focus-visible:focus,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-0:hover svg,
+.emotion-0.focus-visible:focus svg,
+.emotion-0 .noop svg {
+  opacity: 1;
+}
+
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #808080;
+}
+
+.emotion-0:hover,
 .emotion-0.focus-visible:focus {
   background-color: #2e2e2e;
   color: #ffffff;
@@ -112,10 +146,6 @@ exports[`<TimelineMetadata /> should toggle Metadata 2`] = `
 .emotion-0:hover svg path,
 .emotion-0.focus-visible:focus svg path {
   fill: #ffffff;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-1 {

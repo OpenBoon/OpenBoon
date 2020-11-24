@@ -40,7 +40,8 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
 }
 
 .emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #3b3b3b;
@@ -132,7 +133,8 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
 }
 
 .emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #3b3b3b;
@@ -221,7 +223,8 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
 }
 
 .emotion-5:hover,
-.emotion-5.focus-visible:focus {
+.emotion-5.focus-visible:focus,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #4a4a4a;

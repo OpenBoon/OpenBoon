@@ -40,13 +40,28 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
 }
 
 .emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #808080;
+}
+
+.emotion-1:hover,
 .emotion-1.focus-visible:focus {
   color: #73b61c;
   background-color: #2e2e2e;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-2 {
@@ -90,12 +105,27 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
 }
 
 .emotion-4:hover,
-.emotion-4.focus-visible:focus {
-  background-color: #2e2e2e;
+.emotion-4.focus-visible:focus,
+.emotion-4 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-4:hover svg,
+.emotion-4.focus-visible:focus svg,
+.emotion-4 .noop svg {
+  opacity: 1;
+}
+
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #808080;
+}
+
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
+  background-color: #2e2e2e;
 }
 
 .emotion-5 {
@@ -183,13 +213,28 @@ exports[`<TimelineCaptions /> should render properly with no track enabled 1`] =
 }
 
 .emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #808080;
+}
+
+.emotion-1:hover,
 .emotion-1.focus-visible:focus {
   color: #ffffff;
   background-color: #2e2e2e;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-2 {
@@ -233,12 +278,27 @@ exports[`<TimelineCaptions /> should render properly with no track enabled 1`] =
 }
 
 .emotion-4:hover,
-.emotion-4.focus-visible:focus {
-  background-color: #2e2e2e;
+.emotion-4.focus-visible:focus,
+.emotion-4 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-4:hover svg,
+.emotion-4.focus-visible:focus svg,
+.emotion-4 .noop svg {
+  opacity: 1;
+}
+
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #808080;
+}
+
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
+  background-color: #2e2e2e;
 }
 
 .emotion-5 {

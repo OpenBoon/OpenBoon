@@ -334,17 +334,20 @@ Array [
 
 .emotion-30,
 .emotion-30:hover,
-.emotion-30:visited {
+.emotion-30:visited,
+.emotion-30 .noop {
   background-color: #808080;
 }
 
-.emotion-30:hover {
+.emotion-30:hover,
+.emotion-30 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-30[aria-disabled=true] {
+.emotion-30[aria-disabled=true],
+.emotion-30 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -382,17 +385,20 @@ Array [
 
 .emotion-31,
 .emotion-31:hover,
-.emotion-31:visited {
+.emotion-31:visited,
+.emotion-31 .noop {
   background-color: #73b61c;
 }
 
-.emotion-31:hover {
+.emotion-31:hover,
+.emotion-31 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-31[aria-disabled=true] {
+.emotion-31[aria-disabled=true],
+.emotion-31 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

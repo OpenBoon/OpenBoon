@@ -338,14 +338,16 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   border-width: 2px;
 }
 
-.emotion-20:focus {
+.emotion-20:focus,
+.emotion-20 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-20:hover {
+.emotion-20:hover,
+.emotion-20 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -396,17 +398,20 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
 
 .emotion-23,
 .emotion-23:hover,
-.emotion-23:visited {
+.emotion-23:visited,
+.emotion-23 .noop {
   background-color: #808080;
 }
 
-.emotion-23:hover {
+.emotion-23:hover,
+.emotion-23 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-23[aria-disabled=true] {
+.emotion-23[aria-disabled=true],
+.emotion-23 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -451,17 +456,20 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
 
 .emotion-25,
 .emotion-25:hover,
-.emotion-25:visited {
+.emotion-25:visited,
+.emotion-25 .noop {
   background-color: #73b61c;
 }
 
-.emotion-25:hover {
+.emotion-25:hover,
+.emotion-25 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-25[aria-disabled=true] {
+.emotion-25[aria-disabled=true],
+.emotion-25 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

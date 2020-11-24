@@ -58,18 +58,21 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
 }
 
 .emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
   color: #808080;
 }
 
@@ -133,18 +136,21 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
 }
 
 .emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
   opacity: 1;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #808080;
 }
 
@@ -254,18 +260,21 @@ exports[`<FilterActions /> should render properly 1`] = `
 }
 
 .emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
   color: #808080;
 }
 
@@ -379,18 +388,21 @@ exports[`<FilterActions /> should render properly 2`] = `
 }
 
 .emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
   color: #808080;
 }
 
@@ -504,18 +516,21 @@ exports[`<FilterActions /> should render properly 3`] = `
 }
 
 .emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
   color: #808080;
 }
 

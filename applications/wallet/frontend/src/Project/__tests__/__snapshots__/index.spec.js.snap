@@ -113,17 +113,20 @@ Array [
 
 .emotion-7,
 .emotion-7:hover,
-.emotion-7:visited {
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #73b61c;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -232,17 +235,20 @@ Array [
 
 .emotion-19,
 .emotion-19:hover,
-.emotion-19:visited {
+.emotion-19:visited,
+.emotion-19 .noop {
   background-color: #808080;
 }
 
-.emotion-19:hover {
+.emotion-19:hover,
+.emotion-19 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-19[aria-disabled=true] {
+.emotion-19[aria-disabled=true],
+.emotion-19 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

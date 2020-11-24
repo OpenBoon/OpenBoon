@@ -154,14 +154,16 @@ Array [
   border-width: 2px;
 }
 
-.emotion-5:focus {
+.emotion-5:focus,
+.emotion-5 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -216,17 +218,20 @@ Array [
 
 .emotion-18,
 .emotion-18:hover,
-.emotion-18:visited {
+.emotion-18:visited,
+.emotion-18 .noop {
   background-color: #808080;
 }
 
-.emotion-18:hover {
+.emotion-18:hover,
+.emotion-18 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-18[aria-disabled=true] {
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -264,17 +269,20 @@ Array [
 
 .emotion-19,
 .emotion-19:hover,
-.emotion-19:visited {
+.emotion-19:visited,
+.emotion-19 .noop {
   background-color: #73b61c;
 }
 
-.emotion-19:hover {
+.emotion-19:hover,
+.emotion-19 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-19[aria-disabled=true] {
+.emotion-19[aria-disabled=true],
+.emotion-19 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -337,17 +345,20 @@ Array [
 
 .emotion-25,
 .emotion-25:hover,
-.emotion-25:visited {
+.emotion-25:visited,
+.emotion-25 .noop {
   background-color: #73b61c;
 }
 
-.emotion-25:hover {
+.emotion-25:hover,
+.emotion-25 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-25[aria-disabled=true] {
+.emotion-25[aria-disabled=true],
+.emotion-25 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

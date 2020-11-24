@@ -259,12 +259,14 @@ exports[`<Login /> should render error 1`] = `
   border-width: 2px;
 }
 
-.emotion-18:focus {
+.emotion-18:focus,
+.emotion-18 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-18:hover {
+.emotion-18:hover,
+.emotion-18 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -374,17 +376,20 @@ exports[`<Login /> should render error 1`] = `
 
 .emotion-30,
 .emotion-30:hover,
-.emotion-30:visited {
+.emotion-30:visited,
+.emotion-30 .noop {
   background-color: #73b61c;
 }
 
-.emotion-30:hover {
+.emotion-30:hover,
+.emotion-30 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-30[aria-disabled=true] {
+.emotion-30[aria-disabled=true],
+.emotion-30 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -823,12 +828,14 @@ exports[`<Login /> should render password changed 1`] = `
   border-width: 2px;
 }
 
-.emotion-15:focus {
+.emotion-15:focus,
+.emotion-15 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-15:hover,
+.emotion-15 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -932,17 +939,20 @@ exports[`<Login /> should render password changed 1`] = `
 
 .emotion-25,
 .emotion-25:hover,
-.emotion-25:visited {
+.emotion-25:visited,
+.emotion-25 .noop {
   background-color: #73b61c;
 }
 
-.emotion-25:hover {
+.emotion-25:hover,
+.emotion-25 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-25[aria-disabled=true] {
+.emotion-25[aria-disabled=true],
+.emotion-25 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1344,12 +1354,14 @@ exports[`<Login /> should render properly 1`] = `
   border-width: 2px;
 }
 
-.emotion-15:focus {
+.emotion-15:focus,
+.emotion-15 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-15:hover,
+.emotion-15 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -1453,17 +1465,20 @@ exports[`<Login /> should render properly 1`] = `
 
 .emotion-25,
 .emotion-25:hover,
-.emotion-25:visited {
+.emotion-25:visited,
+.emotion-25 .noop {
   background-color: #73b61c;
 }
 
-.emotion-25:hover {
+.emotion-25:hover,
+.emotion-25 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-25[aria-disabled=true] {
+.emotion-25[aria-disabled=true],
+.emotion-25 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1865,12 +1880,14 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   border-width: 2px;
 }
 
-.emotion-15:focus {
+.emotion-15:focus,
+.emotion-15 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-15:hover,
+.emotion-15 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -1974,17 +1991,20 @@ exports[`<Login /> should render properly on account activation success 1`] = `
 
 .emotion-25,
 .emotion-25:hover,
-.emotion-25:visited {
+.emotion-25:visited,
+.emotion-25 .noop {
   background-color: #73b61c;
 }
 
-.emotion-25:hover {
+.emotion-25:hover,
+.emotion-25 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-25[aria-disabled=true] {
+.emotion-25[aria-disabled=true],
+.emotion-25 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

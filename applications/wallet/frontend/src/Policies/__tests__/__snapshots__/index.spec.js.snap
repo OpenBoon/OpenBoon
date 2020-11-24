@@ -248,17 +248,20 @@ exports[`<Policies /> should render properly 1`] = `
 
 .emotion-18,
 .emotion-18:hover,
-.emotion-18:visited {
+.emotion-18:visited,
+.emotion-18 .noop {
   background-color: #73b61c;
 }
 
-.emotion-18:hover {
+.emotion-18:hover,
+.emotion-18 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-18[aria-disabled=true] {
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

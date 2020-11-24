@@ -50,7 +50,8 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
 }
 
 .emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #4a4a4a;

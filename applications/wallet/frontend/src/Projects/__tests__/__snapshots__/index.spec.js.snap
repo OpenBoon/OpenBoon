@@ -110,7 +110,8 @@ exports[`<Projects /> should render an access denied screen if the url projectId
 }
 
 .emotion-7:hover,
-.emotion-7.focus-visible:focus {
+.emotion-7.focus-visible:focus,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #3b3b3b;
@@ -251,17 +252,20 @@ exports[`<Projects /> should render an access denied screen if the url projectId
 
 .emotion-16,
 .emotion-16:hover,
-.emotion-16:visited {
+.emotion-16:visited,
+.emotion-16 .noop {
   background-color: #73b61c;
 }
 
-.emotion-16:hover {
+.emotion-16:hover,
+.emotion-16 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-16[aria-disabled=true] {
+.emotion-16[aria-disabled=true],
+.emotion-16 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
