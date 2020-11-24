@@ -1,64 +1,8 @@
 import time
-import sys
 import json
 import logging
 
 logger = logging.getLogger(__name__)
-
-
-def get_sqs_message_success(sqs_client, sqs_queue_url, start_job_id):
-    """
-    Check for SQS response meaning label detection has finished
-
-    Args:
-        sqs_client: AWS SNS Client
-        sqs_queue_url: (str) SQS Queue URL
-        start_job_id: (str) Job ID
-
-    Returns:
-        (bool) whether the job successfully finished or not
-    """
-    job_found = False
-    succeeded = False
-
-    dot_line = 0
-    while not job_found:
-        sqs_response = sqs_client.receive_message(QueueUrl=sqs_queue_url,
-                                                  MessageAttributeNames=['ALL'],
-                                                  MaxNumberOfMessages=10)
-
-        if sqs_response:
-            if 'Messages' not in sqs_response:
-                if dot_line < 40:
-                    dot_line = dot_line + 1
-                else:
-                    dot_line = 0
-                sys.stdout.flush()
-                time.sleep(5)
-                continue
-
-            for message in sqs_response['Messages']:
-                notification = json.loads(message['Body'])
-                rek_message = json.loads(notification['Message'])
-                logger.debug(rek_message['JobId'])
-                logger.debug(rek_message['Status'])
-                if rek_message['JobId'] == start_job_id:
-                    logger.info('Matching Job Found:' + rek_message['JobId'])
-                    job_found = True
-                    if rek_message['Status'] == 'SUCCEEDED':
-                        succeeded = True
-
-                    sqs_client.delete_message(QueueUrl=sqs_queue_url,
-                                              ReceiptHandle=message['ReceiptHandle'])
-                else:
-                    logger.info(
-                        "Job didn't match:" + str(rek_message['JobId']) + ' : ' + start_job_id
-                    )
-                # Delete the unknown message. Consider sending to dead letter queue
-                sqs_client.delete_message(QueueUrl=sqs_queue_url,
-                                          ReceiptHandle=message['ReceiptHandle'])
-
-    return succeeded
 
 
 def create_topic_and_queue(sns_client, sqs_client, topic_name, queue_name):
@@ -123,6 +67,54 @@ def create_topic_and_queue(sns_client, sqs_client, topic_name, queue_name):
     )
 
     return sns_topic_arn, sqs_queue_url
+
+
+def get_sqs_message_success(sqs_client, sqs_queue_url, start_job_id):
+    """
+    Check for SQS response meaning label detection has finished
+
+    Args:
+        sqs_client: AWS SNS Client
+        sqs_queue_url: (str) SQS Queue URL
+        start_job_id: (str) Job ID
+
+    Returns:
+        (bool) whether the job successfully finished or not
+    """
+    job_found = False
+    succeeded = False
+
+    while not job_found:
+        sqs_response = sqs_client.receive_message(QueueUrl=sqs_queue_url,
+                                                  MessageAttributeNames=['ALL'],
+                                                  MaxNumberOfMessages=10)
+        if sqs_response:
+            if 'Messages' not in sqs_response:
+                time.sleep(5)
+                continue
+
+            for message in sqs_response['Messages']:
+                notification = json.loads(message['Body'])
+                rek_message = json.loads(notification['Message'])
+                logger.debug(rek_message['JobId'])
+                logger.debug(rek_message['Status'])
+                if rek_message['JobId'] == start_job_id:
+                    logger.info('Matching Job Found:' + rek_message['JobId'])
+                    job_found = True
+                    if rek_message['Status'] == 'SUCCEEDED':
+                        succeeded = True
+
+                    sqs_client.delete_message(QueueUrl=sqs_queue_url,
+                                              ReceiptHandle=message['ReceiptHandle'])
+                else:
+                    logger.info(
+                        "Job didn't match:" + str(rek_message['JobId']) + ' : ' + start_job_id
+                    )
+                # Delete the unknown message. Consider sending to dead letter queue
+                sqs_client.delete_message(QueueUrl=sqs_queue_url,
+                                          ReceiptHandle=message['ReceiptHandle'])
+
+    return succeeded
 
 
 def delete_topic_and_queue(sqs_client, sns_client, sqs_queue_url, sns_topic_arn):
