@@ -15,6 +15,7 @@ class MockSNSClient:
     def delete_topic(self, TopicArn=None):
         return self
 
+
 class MockSQSClient:
     def create_queue(self, QueueName=None):
         return self
@@ -59,6 +60,7 @@ class MockRekClient:
 sns_client = MockSNSClient()
 sqs_client = MockSQSClient()
 rek_client = MockRekClient()
+
 
 class RekognitionVideoDetectionUtilsTests(PluginUnitTestCase):
 
