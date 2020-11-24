@@ -17,6 +17,8 @@ describe('<TimelinePlayhead />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    component.unmount()
+    act(() => {
+      component.unmount()
+    })
   })
 })
