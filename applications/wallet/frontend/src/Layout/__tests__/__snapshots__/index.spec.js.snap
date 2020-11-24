@@ -127,7 +127,8 @@ exports[`<Layout /> should render properly 1`] = `
 }
 
 .emotion-8:hover,
-.emotion-8.focus-visible:focus {
+.emotion-8.focus-visible:focus,
+.emotion-8 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #3b3b3b;
@@ -414,7 +415,8 @@ exports[`<Layout /> should render properly 2`] = `
 }
 
 .emotion-8:hover,
-.emotion-8.focus-visible:focus {
+.emotion-8.focus-visible:focus,
+.emotion-8 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #3b3b3b;

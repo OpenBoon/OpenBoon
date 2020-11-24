@@ -105,11 +105,13 @@ Array [
 
 .emotion-5,
 .emotion-5:hover,
-.emotion-5:visited {
+.emotion-5:visited,
+.emotion-5 .noop {
   color: #73b61c;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5 .noop {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
@@ -551,11 +553,13 @@ Array [
 
 .emotion-5,
 .emotion-5:hover,
-.emotion-5:visited {
+.emotion-5:visited,
+.emotion-5 .noop {
   color: #73b61c;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5 .noop {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
@@ -903,11 +907,13 @@ Array [
 
 .emotion-5,
 .emotion-5:hover,
-.emotion-5:visited {
+.emotion-5:visited,
+.emotion-5 .noop {
   color: #73b61c;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5 .noop {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }

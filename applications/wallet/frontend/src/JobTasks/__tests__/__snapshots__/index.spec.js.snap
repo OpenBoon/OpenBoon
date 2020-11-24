@@ -86,17 +86,20 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
 
 .emotion-3,
 .emotion-3:hover,
-.emotion-3:visited {
+.emotion-3:visited,
+.emotion-3 .noop {
   background-color: #73b61c;
 }
 
-.emotion-3:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -637,17 +640,20 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
 
 .emotion-3,
 .emotion-3:hover,
-.emotion-3:visited {
+.emotion-3:visited,
+.emotion-3 .noop {
   background-color: #73b61c;
 }
 
-.emotion-3:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

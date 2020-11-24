@@ -78,6 +78,25 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
 }
 
 .emotion-3:hover,
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-3:hover svg,
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
+  opacity: 1;
+}
+
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #808080;
+}
+
+.emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #2e2e2e;
 }
@@ -85,10 +104,6 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
 .emotion-3:hover svg path,
 .emotion-3.focus-visible:focus svg path {
   fill: #ffffff;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-4 {
@@ -149,6 +164,25 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
 }
 
 .emotion-6:hover,
+.emotion-6.focus-visible:focus,
+.emotion-6 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-6:hover svg,
+.emotion-6.focus-visible:focus svg,
+.emotion-6 .noop svg {
+  opacity: 1;
+}
+
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
+  color: #808080;
+}
+
+.emotion-6:hover,
 .emotion-6.focus-visible:focus {
   background-color: #2e2e2e;
   color: #ffffff;
@@ -157,10 +191,6 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
 .emotion-6:hover svg path,
 .emotion-6.focus-visible:focus svg path {
   fill: #ffffff;
-}
-
-.emotion-6[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-7 {
@@ -346,6 +376,25 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
 }
 
 .emotion-3:hover,
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-3:hover svg,
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
+  opacity: 1;
+}
+
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #808080;
+}
+
+.emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #2e2e2e;
 }
@@ -353,10 +402,6 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
 .emotion-3:hover svg path,
 .emotion-3.focus-visible:focus svg path {
   fill: #ffffff;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-4 {
@@ -417,6 +462,25 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
 }
 
 .emotion-6:hover,
+.emotion-6.focus-visible:focus,
+.emotion-6 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-6:hover svg,
+.emotion-6.focus-visible:focus svg,
+.emotion-6 .noop svg {
+  opacity: 1;
+}
+
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
+  color: #808080;
+}
+
+.emotion-6:hover,
 .emotion-6.focus-visible:focus {
   background-color: #2e2e2e;
   color: #ffffff;
@@ -425,10 +489,6 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
 .emotion-6:hover svg path,
 .emotion-6.focus-visible:focus svg path {
   fill: #ffffff;
-}
-
-.emotion-6[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-7 {
@@ -956,6 +1016,25 @@ exports[`<Timeline /> should render properly 1`] = `
 }
 
 .emotion-3:hover,
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-3:hover svg,
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
+  opacity: 1;
+}
+
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #808080;
+}
+
+.emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #2e2e2e;
 }
@@ -963,10 +1042,6 @@ exports[`<Timeline /> should render properly 1`] = `
 .emotion-3:hover svg path,
 .emotion-3.focus-visible:focus svg path {
   fill: #ffffff;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-4 {
@@ -1096,6 +1171,25 @@ exports[`<Timeline /> should render properly 1`] = `
 }
 
 .emotion-11:hover,
+.emotion-11.focus-visible:focus,
+.emotion-11 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg,
+.emotion-11 .noop svg {
+  opacity: 1;
+}
+
+.emotion-11[aria-disabled=true],
+.emotion-11 .noop {
+  color: #808080;
+}
+
+.emotion-11:hover,
 .emotion-11.focus-visible:focus {
   background-color: #2e2e2e;
   color: #ffffff;
@@ -1104,10 +1198,6 @@ exports[`<Timeline /> should render properly 1`] = `
 .emotion-11:hover svg path,
 .emotion-11.focus-visible:focus svg path {
   fill: #ffffff;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-12 {
@@ -2703,6 +2793,25 @@ exports[`<Timeline /> should render properly 2`] = `
 }
 
 .emotion-3:hover,
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-3:hover svg,
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
+  opacity: 1;
+}
+
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #808080;
+}
+
+.emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #2e2e2e;
 }
@@ -2710,10 +2819,6 @@ exports[`<Timeline /> should render properly 2`] = `
 .emotion-3:hover svg path,
 .emotion-3.focus-visible:focus svg path {
   fill: #ffffff;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-4 {
@@ -2843,6 +2948,25 @@ exports[`<Timeline /> should render properly 2`] = `
 }
 
 .emotion-11:hover,
+.emotion-11.focus-visible:focus,
+.emotion-11 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg,
+.emotion-11 .noop svg {
+  opacity: 1;
+}
+
+.emotion-11[aria-disabled=true],
+.emotion-11 .noop {
+  color: #808080;
+}
+
+.emotion-11:hover,
 .emotion-11.focus-visible:focus {
   background-color: #2e2e2e;
   color: #ffffff;
@@ -2851,10 +2975,6 @@ exports[`<Timeline /> should render properly 2`] = `
 .emotion-11:hover svg path,
 .emotion-11.focus-visible:focus svg path {
   fill: #ffffff;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-12 {

@@ -28,12 +28,14 @@ exports[`<Input /> should render properly with an error and disabled 1`] = `
   border-width: 2px;
 }
 
-.emotion-3:focus {
+.emotion-3:focus,
+.emotion-3 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-3:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
   border: 2px solid #ffffff;
 }
 

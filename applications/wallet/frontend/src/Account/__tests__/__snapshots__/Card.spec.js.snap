@@ -94,17 +94,20 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
 
 .emotion-7,
 .emotion-7:hover,
-.emotion-7:visited {
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #73b61c;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -246,17 +249,20 @@ exports[`<AccountCard /> should render properly 1`] = `
 
 .emotion-7,
 .emotion-7:hover,
-.emotion-7:visited {
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #73b61c;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -486,17 +492,20 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
 
 .emotion-7,
 .emotion-7:hover,
-.emotion-7:visited {
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #73b61c;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -726,17 +735,20 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
 
 .emotion-7,
 .emotion-7:hover,
-.emotion-7:visited {
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #73b61c;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

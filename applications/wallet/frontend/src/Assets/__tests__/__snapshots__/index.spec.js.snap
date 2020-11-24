@@ -101,17 +101,20 @@ exports[`<Assets /> should render empty properly 1`] = `
 
 .emotion-7,
 .emotion-7:hover,
-.emotion-7:visited {
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #73b61c;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -263,17 +266,20 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
 
 .emotion-5,
 .emotion-5:hover,
-.emotion-5:visited {
+.emotion-5:visited,
+.emotion-5 .noop {
   background-color: #73b61c;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -414,17 +420,20 @@ exports[`<Assets /> should render empty with no filters properly 1`] = `
 
 .emotion-7,
 .emotion-7:hover,
-.emotion-7:visited {
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #73b61c;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

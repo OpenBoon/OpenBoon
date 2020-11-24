@@ -23,7 +23,7 @@ const STYLES = {
   SECONDARY: {
     color: colors.structure.white,
     backgroundColor: colors.structure.smoke,
-    '&:focus': {
+    '&:focus, .noop': {
       border: constants.borders.keyOneMedium,
       backgroundColor: colors.structure.white,
       outline: colors.key.one,

@@ -99,17 +99,20 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
 
 .emotion-12,
 .emotion-12:hover,
-.emotion-12:visited {
+.emotion-12:visited,
+.emotion-12 .noop {
   background-color: #808080;
 }
 
-.emotion-12:hover {
+.emotion-12:hover,
+.emotion-12 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-12[aria-disabled=true],
+.emotion-12 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -152,17 +155,20 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
 
 .emotion-14,
 .emotion-14:hover,
-.emotion-14:visited {
+.emotion-14:visited,
+.emotion-14 .noop {
   background-color: #73b61c;
 }
 
-.emotion-14:hover {
+.emotion-14:hover,
+.emotion-14 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-14[aria-disabled=true] {
+.emotion-14[aria-disabled=true],
+.emotion-14 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -392,17 +398,20 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
 
 .emotion-12,
 .emotion-12:hover,
-.emotion-12:visited {
+.emotion-12:visited,
+.emotion-12 .noop {
   background-color: #808080;
 }
 
-.emotion-12:hover {
+.emotion-12:hover,
+.emotion-12 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-12[aria-disabled=true],
+.emotion-12 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -445,17 +454,20 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
 
 .emotion-14,
 .emotion-14:hover,
-.emotion-14:visited {
+.emotion-14:visited,
+.emotion-14 .noop {
   background-color: #73b61c;
 }
 
-.emotion-14:hover {
+.emotion-14:hover,
+.emotion-14 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-14[aria-disabled=true] {
+.emotion-14[aria-disabled=true],
+.emotion-14 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

@@ -44,7 +44,8 @@ exports[`<UserMenu /> should render properly 1`] = `
 }
 
 .emotion-2:hover,
-.emotion-2.focus-visible:focus {
+.emotion-2.focus-visible:focus,
+.emotion-2 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #3b3b3b;
@@ -173,7 +174,8 @@ exports[`<UserMenu /> should render properly 2`] = `
 }
 
 .emotion-2:hover,
-.emotion-2.focus-visible:focus {
+.emotion-2.focus-visible:focus,
+.emotion-2 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #3b3b3b;
@@ -297,7 +299,8 @@ exports[`<UserMenu /> should render properly 2`] = `
 }
 
 .emotion-10:hover,
-.emotion-10.focus-visible:focus {
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #4a4a4a;
@@ -449,7 +452,8 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
 }
 
 .emotion-2:hover,
-.emotion-2.focus-visible:focus {
+.emotion-2.focus-visible:focus,
+.emotion-2 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #3b3b3b;

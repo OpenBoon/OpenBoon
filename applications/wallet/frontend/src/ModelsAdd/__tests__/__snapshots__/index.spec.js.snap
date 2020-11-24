@@ -200,14 +200,16 @@ Array [
   border-width: 2px;
 }
 
-.emotion-7:focus {
+.emotion-7:focus,
+.emotion-7 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -262,17 +264,20 @@ Array [
 
 .emotion-15,
 .emotion-15:hover,
-.emotion-15:visited {
+.emotion-15:visited,
+.emotion-15 .noop {
   background-color: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-15:hover,
+.emotion-15 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-15[aria-disabled=true],
+.emotion-15 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -598,14 +603,16 @@ Array [
   border-width: 2px;
 }
 
-.emotion-7:focus {
+.emotion-7:focus,
+.emotion-7 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -660,17 +667,20 @@ Array [
 
 .emotion-15,
 .emotion-15:hover,
-.emotion-15:visited {
+.emotion-15:visited,
+.emotion-15 .noop {
   background-color: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-15:hover,
+.emotion-15 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-15[aria-disabled=true],
+.emotion-15 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

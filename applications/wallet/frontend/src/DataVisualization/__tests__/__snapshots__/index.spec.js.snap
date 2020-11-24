@@ -74,18 +74,21 @@ exports[`<DataVisualization /> should render properly 1`] = `
 }
 
 .emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
   opacity: 1;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #808080;
 }
 
@@ -262,17 +265,20 @@ exports[`<DataVisualization /> should render properly 1`] = `
 
 .emotion-19,
 .emotion-19:hover,
-.emotion-19:visited {
+.emotion-19:visited,
+.emotion-19 .noop {
   background-color: #808080;
 }
 
-.emotion-19:hover {
+.emotion-19:hover,
+.emotion-19 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-19[aria-disabled=true] {
+.emotion-19[aria-disabled=true],
+.emotion-19 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -538,18 +544,21 @@ exports[`<DataVisualization /> should render properly 2`] = `
 }
 
 .emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
   opacity: 1;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #808080;
 }
 
@@ -643,17 +652,20 @@ exports[`<DataVisualization /> should render properly 2`] = `
 
 .emotion-9,
 .emotion-9:hover,
-.emotion-9:visited {
+.emotion-9:visited,
+.emotion-9 .noop {
   background-color: #808080;
 }
 
-.emotion-9:hover {
+.emotion-9:hover,
+.emotion-9 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-9[aria-disabled=true] {
+.emotion-9[aria-disabled=true],
+.emotion-9 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -711,17 +723,20 @@ exports[`<DataVisualization /> should render properly 2`] = `
 
 .emotion-12,
 .emotion-12:hover,
-.emotion-12:visited {
+.emotion-12:visited,
+.emotion-12 .noop {
   background-color: #808080;
 }
 
-.emotion-12:hover {
+.emotion-12:hover,
+.emotion-12 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-12[aria-disabled=true],
+.emotion-12 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -908,18 +923,21 @@ exports[`<DataVisualization /> should render properly 3`] = `
 }
 
 .emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
   opacity: 1;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #808080;
 }
 
@@ -1040,17 +1058,20 @@ exports[`<DataVisualization /> should render properly 3`] = `
 
 .emotion-14,
 .emotion-14:hover,
-.emotion-14:visited {
+.emotion-14:visited,
+.emotion-14 .noop {
   background-color: #808080;
 }
 
-.emotion-14:hover {
+.emotion-14:hover,
+.emotion-14 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-14[aria-disabled=true] {
+.emotion-14[aria-disabled=true],
+.emotion-14 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1394,18 +1415,21 @@ exports[`<DataVisualization /> should render properly 4`] = `
 }
 
 .emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
   opacity: 1;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #808080;
 }
 
@@ -1582,17 +1606,20 @@ exports[`<DataVisualization /> should render properly 4`] = `
 
 .emotion-19,
 .emotion-19:hover,
-.emotion-19:visited {
+.emotion-19:visited,
+.emotion-19 .noop {
   background-color: #808080;
 }
 
-.emotion-19:hover {
+.emotion-19:hover,
+.emotion-19 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-19[aria-disabled=true] {
+.emotion-19[aria-disabled=true],
+.emotion-19 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

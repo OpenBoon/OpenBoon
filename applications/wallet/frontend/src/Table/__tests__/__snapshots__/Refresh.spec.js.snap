@@ -34,17 +34,20 @@ exports[`<Refresh /> should render properly 1`] = `
 
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -143,17 +146,20 @@ exports[`<Refresh /> should render properly 2`] = `
 
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -236,17 +242,20 @@ exports[`<Refresh /> should render properly 3`] = `
 
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
