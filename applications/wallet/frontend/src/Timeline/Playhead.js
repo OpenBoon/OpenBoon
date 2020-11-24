@@ -14,7 +14,7 @@ const SCROLL_BUFFER = 50
 let originX
 let originLeft
 
-const TimelinePlayhead = ({ videoRef, rulerRef, zoom, shouldFollowScroll }) => {
+const TimelinePlayhead = ({ videoRef, rulerRef, zoom, followPlayhead }) => {
   const playheadRef = useRef()
   const frameRef = useRef()
 
@@ -56,7 +56,7 @@ const TimelinePlayhead = ({ videoRef, rulerRef, zoom, shouldFollowScroll }) => {
           (currentPlayheadPosition > visibleAreaWidth - SCROLL_BUFFER &&
             hiddenToTheRight > 0)
 
-        if (isPlayheadOutOfViewRange && !video?.paused && shouldFollowScroll) {
+        if (isPlayheadOutOfViewRange && !video?.paused && followPlayhead) {
           scroller.emit({
             eventName: 'scroll',
             data: {
@@ -80,7 +80,7 @@ const TimelinePlayhead = ({ videoRef, rulerRef, zoom, shouldFollowScroll }) => {
         playheadRef.current = node
       }
     },
-    [video, zoom, rulerRef, scroller],
+    [video, zoom, rulerRef, scroller, followPlayhead],
   )
 
   /* istanbul ignore next */
