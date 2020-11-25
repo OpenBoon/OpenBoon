@@ -26,41 +26,35 @@ const TimelinePlayhead = ({ videoRef, rulerRef, zoom, followPlayhead }) => {
   const onMount = useCallback(
     (node) => {
       const animate = () => {
-        const visibleAreaWidth = rulerRef.current?.clientWidth
+        if (!video) return
 
-        const contentWidth = rulerRef.current?.scrollWidth
+        const { scrollWidth = 0, scrollLeft = 0, clientWidth = 0 } =
+          rulerRef.current || {}
 
-        const timelineOffset = rulerRef.current?.scrollLeft || 0
+        const hiddenToTheRight = scrollWidth - scrollLeft - clientWidth > 0
 
-        const hiddenToTheRight =
-          contentWidth - timelineOffset - visibleAreaWidth
+        const currentPosition = node.offsetLeft + WIDTH / 2 - GUIDE_WIDTH / 2
 
-        const currentPlayheadPosition =
-          node.offsetLeft + WIDTH / 2 - GUIDE_WIDTH / 2
-
-        const nextPlayheadPosition = video
-          ? (((video.currentTime / video.duration) * zoom) / 100) *
-              visibleAreaWidth -
-            GUIDE_WIDTH / 2
-          : 0
+        const nextPosition =
+          (((video.currentTime / video.duration) * zoom) / 100) * clientWidth -
+          GUIDE_WIDTH / 2
 
         updatePlayheadPosition({
           video,
           playhead: node,
           zoom,
-          timelineOffset,
+          scrollLeft,
         })
 
-        const isPlayheadOutOfViewRange =
-          currentPlayheadPosition < 0 ||
-          (currentPlayheadPosition > visibleAreaWidth - SCROLL_BUFFER &&
-            hiddenToTheRight > 0)
+        const isOutOfView =
+          currentPosition < 0 ||
+          (currentPosition > clientWidth - SCROLL_BUFFER && hiddenToTheRight)
 
-        if (isPlayheadOutOfViewRange && !video?.paused && followPlayhead) {
+        if (isOutOfView && !video.paused && followPlayhead) {
           scroller.emit({
             eventName: 'scroll',
             data: {
-              scrollX: nextPlayheadPosition,
+              scrollX: nextPosition,
               scrollY: 0,
             },
           })
@@ -161,7 +155,9 @@ TimelinePlayhead.propTypes = {
   }).isRequired,
   rulerRef: PropTypes.shape({
     current: PropTypes.shape({
+      scrollWidth: PropTypes.number.isRequired,
       scrollLeft: PropTypes.number.isRequired,
+      clientWidth: PropTypes.number.isRequired,
     }),
   }).isRequired,
   zoom: PropTypes.number.isRequired,

@@ -7,7 +7,6 @@ const noop = () => {}
 describe('<TimelineControls />', () => {
   it('should play', () => {
     const mockPlay = jest.fn()
-    const mockSetFollowPlayhead = jest.fn()
 
     const component = TestRenderer.create(
       <TimelineControls
@@ -30,7 +29,7 @@ describe('<TimelineControls />', () => {
           zoom: 100,
           timelines: {},
         }}
-        setFollowPlayhead={mockSetFollowPlayhead}
+        setFollowPlayhead={noop}
       />,
     )
 
@@ -45,7 +44,6 @@ describe('<TimelineControls />', () => {
 
   it('should pause', () => {
     const mockPause = jest.fn()
-    const mockSetFollowPlayhead = jest.fn()
 
     const component = TestRenderer.create(
       <TimelineControls
@@ -68,7 +66,7 @@ describe('<TimelineControls />', () => {
           zoom: 100,
           timelines: {},
         }}
-        setFollowPlayhead={mockSetFollowPlayhead}
+        setFollowPlayhead={noop}
       />,
     )
 
@@ -83,7 +81,6 @@ describe('<TimelineControls />', () => {
 
   it('should seek the previous second', () => {
     const mockPause = jest.fn()
-    const mockSetFollowPlayhead = jest.fn()
 
     const current = {
       play: noop,
@@ -106,7 +103,7 @@ describe('<TimelineControls />', () => {
           zoom: 100,
           timelines: {},
         }}
-        setFollowPlayhead={mockSetFollowPlayhead}
+        setFollowPlayhead={noop}
       />,
     )
 
@@ -123,7 +120,6 @@ describe('<TimelineControls />', () => {
 
   it('should seek the next second', () => {
     const mockPause = jest.fn()
-    const mockSetFollowPlayhead = jest.fn()
 
     const current = {
       play: noop,
@@ -146,7 +142,7 @@ describe('<TimelineControls />', () => {
           zoom: 100,
           timelines: {},
         }}
-        setFollowPlayhead={mockSetFollowPlayhead}
+        setFollowPlayhead={noop}
       />,
     )
 

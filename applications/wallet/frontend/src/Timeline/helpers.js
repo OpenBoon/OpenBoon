@@ -42,7 +42,7 @@ export const updatePlayheadPosition = ({
   video,
   playhead,
   zoom,
-  timelineOffset,
+  scrollLeft,
 }) => {
   if (!video || !playhead) return null
 
@@ -50,7 +50,7 @@ export const updatePlayheadPosition = ({
     'left',
     `calc(${(video.currentTime / video.duration) * zoom}% - ${
       GUIDE_WIDTH / 2
-    }px - ${timelineOffset}px)`,
+    }px - ${scrollLeft}px)`,
   )
 }
 

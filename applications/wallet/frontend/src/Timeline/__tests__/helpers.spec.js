@@ -61,7 +61,7 @@ describe('<Timeline /> helpers', () => {
         },
       }
 
-      updatePlayheadPosition({ video, playhead, zoom: 100, timelineOffset: 0 })
+      updatePlayheadPosition({ video, playhead, zoom: 100, scrollLeft: 0 })
 
       expect(mockSetProperty).toHaveBeenCalledWith(
         'left',
