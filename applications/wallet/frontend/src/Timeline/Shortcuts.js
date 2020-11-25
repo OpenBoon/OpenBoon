@@ -76,7 +76,7 @@ const TimelineShortcuts = ({
         gotoNextHit({ videoRef, timelines, settings })()
       }
     },
-    [videoRef, timelines, settings],
+    [videoRef, timelines, settings, setFollowPlayhead],
   )
 
   useEffect(() => {

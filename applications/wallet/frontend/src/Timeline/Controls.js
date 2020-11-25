@@ -216,6 +216,7 @@ TimelineControls.propTypes = {
     timelines: PropTypes.shape({}).isRequired,
     zoom: PropTypes.number.isRequired,
   }).isRequired,
+  setFollowPlayhead: PropTypes.func.isRequired,
 }
 
 export default TimelineControls
