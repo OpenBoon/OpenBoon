@@ -20,7 +20,7 @@ const TimelinePlayhead = ({ videoRef, rulerRef, zoom, followPlayhead }) => {
 
   const video = videoRef.current
 
-  const scroller = getScroller({ namespace: 'timeline' })
+  const scroller = getScroller({ namespace: 'Timeline' })
 
   /* istanbul ignore next */
   const onMount = useCallback(
