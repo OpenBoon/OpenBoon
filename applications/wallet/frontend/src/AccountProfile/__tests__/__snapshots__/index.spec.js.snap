@@ -123,17 +123,20 @@ exports[`<AccountProfile /> should render properly 1`] = `
 
 .emotion-10,
 .emotion-10:hover,
-.emotion-10:visited {
+.emotion-10:visited,
+.emotion-10 .noop {
   background-color: #73b61c;
 }
 
-.emotion-10:hover {
+.emotion-10:hover,
+.emotion-10 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

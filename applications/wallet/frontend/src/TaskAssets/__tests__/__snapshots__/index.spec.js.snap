@@ -198,17 +198,20 @@ exports[`<TaskAssets /> should render properly 1`] = `
 
 .emotion-58,
 .emotion-58:hover,
-.emotion-58:visited {
+.emotion-58:visited,
+.emotion-58 .noop {
   background-color: #808080;
 }
 
-.emotion-58:hover {
+.emotion-58:hover,
+.emotion-58 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-58[aria-disabled=true] {
+.emotion-58[aria-disabled=true],
+.emotion-58 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -264,17 +267,20 @@ exports[`<TaskAssets /> should render properly 1`] = `
 
 .emotion-60,
 .emotion-60:hover,
-.emotion-60:visited {
+.emotion-60:visited,
+.emotion-60 .noop {
   background-color: #808080;
 }
 
-.emotion-60:hover {
+.emotion-60:hover,
+.emotion-60 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-60[aria-disabled=true] {
+.emotion-60[aria-disabled=true],
+.emotion-60 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -319,17 +325,20 @@ exports[`<TaskAssets /> should render properly 1`] = `
 
 .emotion-62,
 .emotion-62:hover,
-.emotion-62:visited {
+.emotion-62:visited,
+.emotion-62 .noop {
   background-color: #808080;
 }
 
-.emotion-62:hover {
+.emotion-62:hover,
+.emotion-62 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-62[aria-disabled=true] {
+.emotion-62[aria-disabled=true],
+.emotion-62 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -425,17 +434,20 @@ exports[`<TaskAssets /> should render properly 1`] = `
 
 .emotion-67,
 .emotion-67:hover,
-.emotion-67:visited {
+.emotion-67:visited,
+.emotion-67 .noop {
   background-color: #808080;
 }
 
-.emotion-67:hover {
+.emotion-67:hover,
+.emotion-67 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-67[aria-disabled=true] {
+.emotion-67[aria-disabled=true],
+.emotion-67 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -481,17 +493,20 @@ exports[`<TaskAssets /> should render properly 1`] = `
 
 .emotion-69,
 .emotion-69:hover,
-.emotion-69:visited {
+.emotion-69:visited,
+.emotion-69 .noop {
   background-color: #808080;
 }
 
-.emotion-69:hover {
+.emotion-69:hover,
+.emotion-69 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-69[aria-disabled=true] {
+.emotion-69[aria-disabled=true],
+.emotion-69 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

@@ -13,6 +13,7 @@ import BetaBadge from '../BetaBadge'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
+import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
 import ModelsEmpty from './Empty'
 import ModelsRow from './Row'
@@ -26,12 +27,14 @@ const Models = () => {
     key: 'leftOpeningPanel',
   })
 
-  const [, setModelId] = useLocalStorage({
-    key: `AssetLabelingAdd.${projectId}.modelId`,
-  })
-
-  const [, setLabel] = useLocalStorage({
-    key: `AssetLabelingAdd.${projectId}.label`,
+  const [, setModelFields] = useLocalStorage({
+    key: `AssetLabelingAdd.${projectId}`,
+    reducer: (state, a) => ({ ...state, ...a }),
+    initialState: {
+      modelId: modelId || '',
+      label: '',
+      scope: '',
+    },
   })
 
   return (
@@ -58,8 +61,11 @@ const Models = () => {
                 onClick={() => {
                   setPanel({ value: 'assetLabeling' })
                   if (modelId) {
-                    setModelId({ value: modelId })
-                    setLabel({ value: '' })
+                    setModelFields({
+                      modelId,
+                      scope: SCOPE_OPTIONS[0].value,
+                      label: '',
+                    })
                   }
                 }}
               >

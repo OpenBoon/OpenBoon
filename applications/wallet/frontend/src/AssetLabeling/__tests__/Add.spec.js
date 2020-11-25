@@ -46,6 +46,13 @@ describe('<AssetLabelingAdd />', () => {
         .props.onChange({ value: 'Flimflarm' })
     })
 
+    // Select Scope
+    act(() => {
+      component.root
+        .findByProps({ label: 'Scope' })
+        .props.onChange({ value: 'TEST' })
+    })
+
     // Mock Failure
     fetch.mockResponseOnce(
       JSON.stringify({ label: ['I guess you cannot use this label'] }),
@@ -104,6 +111,7 @@ describe('<AssetLabelingAdd />', () => {
           {
             assetId: ASSET_ID,
             label: 'Flimflarm',
+            scope: 'TEST',
           },
         ],
       }),
@@ -112,12 +120,8 @@ describe('<AssetLabelingAdd />', () => {
 
   it('should render with localStorage and update a label', async () => {
     localStorage.setItem(
-      `AssetLabelingAdd.${PROJECT_ID}.modelId`,
-      `"${MODEL_ID}"`,
-    )
-    localStorage.setItem(
-      `AssetLabelingAdd.${PROJECT_ID}.label`,
-      `"Existing localStorage"`,
+      `AssetLabelingAdd.${PROJECT_ID}`,
+      `{"modelId":"${MODEL_ID},"scope":"TRAIN","label":"Existing localStorage"}`,
     )
 
     const component = TestRenderer.create(
@@ -184,6 +188,7 @@ describe('<AssetLabelingAdd />', () => {
           {
             assetId: ASSET_ID,
             label: 'Other Flimflarm',
+            scope: 'TRAIN',
           },
         ],
       }),

@@ -66,17 +66,20 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 
 .emotion-3,
 .emotion-3:hover,
-.emotion-3:visited {
+.emotion-3:visited,
+.emotion-3 .noop {
   background-color: #808080;
 }
 
-.emotion-3:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -132,17 +135,20 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 
 .emotion-5,
 .emotion-5:hover,
-.emotion-5:visited {
+.emotion-5:visited,
+.emotion-5 .noop {
   background-color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -187,17 +193,20 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 
 .emotion-7,
 .emotion-7:hover,
-.emotion-7:visited {
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #808080;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -293,17 +302,20 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 
 .emotion-12,
 .emotion-12:hover,
-.emotion-12:visited {
+.emotion-12:visited,
+.emotion-12 .noop {
   background-color: #808080;
 }
 
-.emotion-12:hover {
+.emotion-12:hover,
+.emotion-12 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-12[aria-disabled=true],
+.emotion-12 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -349,17 +361,20 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 
 .emotion-14,
 .emotion-14:hover,
-.emotion-14:visited {
+.emotion-14:visited,
+.emotion-14 .noop {
   background-color: #808080;
 }
 
-.emotion-14:hover {
+.emotion-14:hover,
+.emotion-14 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-14[aria-disabled=true] {
+.emotion-14[aria-disabled=true],
+.emotion-14 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -565,17 +580,20 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 
 .emotion-4,
 .emotion-4:hover,
-.emotion-4:visited {
+.emotion-4:visited,
+.emotion-4 .noop {
   background-color: #808080;
 }
 
-.emotion-4:hover {
+.emotion-4:hover,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -620,17 +638,20 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 
 .emotion-6,
 .emotion-6:hover,
-.emotion-6:visited {
+.emotion-6:visited,
+.emotion-6 .noop {
   background-color: #808080;
 }
 
-.emotion-6:hover {
+.emotion-6:hover,
+.emotion-6 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -726,17 +747,20 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 
 .emotion-11,
 .emotion-11:hover,
-.emotion-11:visited {
+.emotion-11:visited,
+.emotion-11 .noop {
   background-color: #808080;
 }
 
-.emotion-11:hover {
+.emotion-11:hover,
+.emotion-11 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-11[aria-disabled=true],
+.emotion-11 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -782,17 +806,20 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 
 .emotion-13,
 .emotion-13:hover,
-.emotion-13:visited {
+.emotion-13:visited,
+.emotion-13 .noop {
   background-color: #808080;
 }
 
-.emotion-13:hover {
+.emotion-13:hover,
+.emotion-13 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-13[aria-disabled=true] {
+.emotion-13[aria-disabled=true],
+.emotion-13 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

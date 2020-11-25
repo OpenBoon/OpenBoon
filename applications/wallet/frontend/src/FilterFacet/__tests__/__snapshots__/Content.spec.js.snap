@@ -150,7 +150,8 @@ Array [
 }
 
 .emotion-2:hover,
-.emotion-2.focus-visible:focus {
+.emotion-2.focus-visible:focus,
+.emotion-2 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
@@ -366,7 +367,8 @@ Array [
 }
 
 .emotion-2:hover,
-.emotion-2.focus-visible:focus {
+.emotion-2.focus-visible:focus,
+.emotion-2 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
@@ -778,7 +780,8 @@ Array [
 }
 
 .emotion-2:hover,
-.emotion-2.focus-visible:focus {
+.emotion-2.focus-visible:focus,
+.emotion-2 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
@@ -1120,7 +1123,8 @@ Array [
 }
 
 .emotion-2:hover,
-.emotion-2.focus-visible:focus {
+.emotion-2.focus-visible:focus,
+.emotion-2 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;

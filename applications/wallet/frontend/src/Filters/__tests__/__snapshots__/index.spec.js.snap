@@ -50,17 +50,20 @@ Array [
 
 .emotion-2,
 .emotion-2:hover,
-.emotion-2:visited {
+.emotion-2:visited,
+.emotion-2 .noop {
   background-color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-2:hover,
+.emotion-2 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-2[aria-disabled=true],
+.emotion-2 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

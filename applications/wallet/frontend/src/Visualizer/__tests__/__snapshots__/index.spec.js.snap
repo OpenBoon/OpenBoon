@@ -74,18 +74,21 @@ exports[`<Visualizer /> should render properly 1`] = `
 }
 
 .emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
   opacity: 1;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #808080;
 }
 
@@ -531,18 +534,21 @@ exports[`<Visualizer /> should render selected asset 1`] = `
 }
 
 .emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
   opacity: 1;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #808080;
 }
 

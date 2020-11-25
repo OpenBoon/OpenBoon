@@ -273,17 +273,20 @@ exports[`<Authentication /> should render properly when user needs to approve ne
 
 .emotion-15,
 .emotion-15:hover,
-.emotion-15:visited {
+.emotion-15:visited,
+.emotion-15 .noop {
   background-color: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-15:hover,
+.emotion-15 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-15[aria-disabled=true],
+.emotion-15 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

@@ -20,6 +20,7 @@ import ButtonGroup from '../Button/Group'
 import Modal from '../Modal'
 import Tabs from '../Tabs'
 import ModelLabels from '../ModelLabels'
+import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
 import { onTrain } from './helpers'
 
@@ -39,12 +40,14 @@ const ModelDetails = () => {
     key: 'leftOpeningPanel',
   })
 
-  const [, setModelId] = useLocalStorage({
-    key: `AssetLabelingAdd.${projectId}.modelId`,
-  })
-
-  const [, setLabel] = useLocalStorage({
-    key: `AssetLabelingAdd.${projectId}.label`,
+  const [, setModelFields] = useLocalStorage({
+    key: `AssetLabelingAdd.${projectId}`,
+    reducer: (state, action) => ({ ...state, ...action }),
+    initialState: {
+      modelId,
+      label: '',
+      scope: '',
+    },
   })
 
   const { data: model } = useSWR(
@@ -305,8 +308,12 @@ const ModelDetails = () => {
               variant={BUTTON_VARIANTS.SECONDARY_SMALL}
               onClick={() => {
                 setPanel({ value: 'assetLabeling' })
-                setModelId({ value: modelId })
-                setLabel({ value: '' })
+
+                setModelFields({
+                  modelId,
+                  scope: SCOPE_OPTIONS[0].value,
+                  label: '',
+                })
               }}
               style={{
                 display: 'flex',

@@ -101,18 +101,21 @@ Array [
 }
 
 .emotion-4:hover,
-.emotion-4.focus-visible:focus {
+.emotion-4.focus-visible:focus,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-4:hover svg,
-.emotion-4.focus-visible:focus svg {
+.emotion-4.focus-visible:focus svg,
+.emotion-4 .noop svg {
   opacity: 1;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #808080;
 }
 
@@ -547,18 +550,21 @@ Array [
 }
 
 .emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
   opacity: 1;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #808080;
 }
 
@@ -741,18 +747,21 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
 }
 
 .emotion-4:hover,
-.emotion-4.focus-visible:focus {
+.emotion-4.focus-visible:focus,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-4:hover svg,
-.emotion-4.focus-visible:focus svg {
+.emotion-4.focus-visible:focus svg,
+.emotion-4 .noop svg {
   opacity: 1;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #808080;
 }
 
@@ -883,18 +892,21 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
 }
 
 .emotion-4:hover,
-.emotion-4.focus-visible:focus {
+.emotion-4.focus-visible:focus,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-4:hover svg,
-.emotion-4.focus-visible:focus svg {
+.emotion-4.focus-visible:focus svg,
+.emotion-4 .noop svg {
   opacity: 1;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #808080;
 }
 
@@ -1030,18 +1042,21 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
 }
 
 .emotion-7:hover,
-.emotion-7.focus-visible:focus {
+.emotion-7.focus-visible:focus,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
+.emotion-7.focus-visible:focus svg,
+.emotion-7 .noop svg {
   opacity: 1;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #808080;
 }
 
@@ -1598,18 +1613,21 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
 }
 
 .emotion-7:hover,
-.emotion-7.focus-visible:focus {
+.emotion-7.focus-visible:focus,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
+.emotion-7.focus-visible:focus svg,
+.emotion-7 .noop svg {
   opacity: 1;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #808080;
 }
 

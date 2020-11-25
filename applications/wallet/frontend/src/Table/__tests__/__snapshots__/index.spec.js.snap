@@ -187,17 +187,20 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
 
 .emotion-10,
 .emotion-10:hover,
-.emotion-10:visited {
+.emotion-10:visited,
+.emotion-10 .noop {
   background-color: #808080;
 }
 
-.emotion-10:hover {
+.emotion-10:hover,
+.emotion-10 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -253,17 +256,20 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
 
 .emotion-12,
 .emotion-12:hover,
-.emotion-12:visited {
+.emotion-12:visited,
+.emotion-12 .noop {
   background-color: #808080;
 }
 
-.emotion-12:hover {
+.emotion-12:hover,
+.emotion-12 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-12[aria-disabled=true],
+.emotion-12 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -308,17 +314,20 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
 
 .emotion-14,
 .emotion-14:hover,
-.emotion-14:visited {
+.emotion-14:visited,
+.emotion-14 .noop {
   background-color: #808080;
 }
 
-.emotion-14:hover {
+.emotion-14:hover,
+.emotion-14 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-14[aria-disabled=true] {
+.emotion-14[aria-disabled=true],
+.emotion-14 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -422,17 +431,20 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
 
 .emotion-21,
 .emotion-21:hover,
-.emotion-21:visited {
+.emotion-21:visited,
+.emotion-21 .noop {
   background-color: #808080;
 }
 
-.emotion-21:hover {
+.emotion-21:hover,
+.emotion-21 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-21[aria-disabled=true],
+.emotion-21 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

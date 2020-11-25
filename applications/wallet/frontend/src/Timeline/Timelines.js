@@ -19,13 +19,13 @@ const TimelineTimelines = ({
   const filteredTimelines = filterTimelines({ timelines, settings })
 
   const timelinesRef = useScroller({
-    namespace: 'timeline',
+    namespace: 'Timeline',
     isWheelEmitter: true,
     isWheelListener: true,
   })
 
   const tracksRef = useScroller({
-    namespace: 'timeline',
+    namespace: 'Timeline',
     isWheelEmitter: true,
     isWheelListener: true,
     isScrollEmitter: true,

@@ -106,18 +106,21 @@ exports[`<ChartFacet /> should render properly 1`] = `
 }
 
 .emotion-5:hover,
-.emotion-5.focus-visible:focus {
+.emotion-5.focus-visible:focus,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-5:hover svg,
-.emotion-5.focus-visible:focus svg {
+.emotion-5.focus-visible:focus svg,
+.emotion-5 .noop svg {
   opacity: 1;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #808080;
 }
 
@@ -419,7 +422,8 @@ exports[`<ChartFacet /> should render properly 1`] = `
 }
 
 .emotion-84:hover,
-.emotion-84.focus-visible:focus {
+.emotion-84.focus-visible:focus,
+.emotion-84 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
@@ -977,18 +981,21 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
 }
 
 .emotion-5:hover,
-.emotion-5.focus-visible:focus {
+.emotion-5.focus-visible:focus,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-5:hover svg,
-.emotion-5.focus-visible:focus svg {
+.emotion-5.focus-visible:focus svg,
+.emotion-5 .noop svg {
   opacity: 1;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #808080;
 }
 
@@ -1110,7 +1117,8 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
 }
 
 .emotion-14:hover,
-.emotion-14.focus-visible:focus {
+.emotion-14.focus-visible:focus,
+.emotion-14 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;

@@ -132,7 +132,8 @@ exports[`<TaskMenu /> should render properly 1`] = `
 }
 
 .emotion-4:hover,
-.emotion-4.focus-visible:focus {
+.emotion-4.focus-visible:focus,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #4a4a4a;
