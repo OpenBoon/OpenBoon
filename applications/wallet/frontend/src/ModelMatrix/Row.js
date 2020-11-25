@@ -4,7 +4,10 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import { useScroller } from '../Scroll/helpers'
 
+import { getColor } from './helpers'
+
 export const LABELS_WIDTH = 100
+const CONTRAST_THRESHOLD = 69
 
 const ModelMatrixRow = ({ matrix, cellDimension, label, index }) => {
   const rowRef = useScroller({
@@ -62,11 +65,10 @@ const ModelMatrixRow = ({ matrix, cellDimension, label, index }) => {
         }}
       >
         {matrix.matrix[index].map((value, col) => {
+          const percent = (value / rowTotal) * 100
+
           return (
-            <div
-              key={matrix.labels[col]}
-              css={{ backgroundColor: colors.structure.white }}
-            >
+            <div key={matrix.labels[col]}>
               <div
                 css={{
                   width: cellDimension,
@@ -74,12 +76,14 @@ const ModelMatrixRow = ({ matrix, cellDimension, label, index }) => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  // TODO: use correct blue gradient
-                  backgroundColor: 'blue',
-                  opacity: value / rowTotal,
+                  backgroundColor: getColor({ percent }),
+                  color:
+                    percent > CONTRAST_THRESHOLD
+                      ? colors.structure.white
+                      : colors.structure.coal,
                 }}
               >
-                {(value / rowTotal) * 100}%
+                {Math.round(percent)}%
               </div>
             </div>
           )
