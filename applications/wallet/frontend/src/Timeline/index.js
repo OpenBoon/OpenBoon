@@ -70,7 +70,7 @@ const Timeline = ({ videoRef, length }) => {
   }, [])
 
   const rulerRef = useScroller({
-    namespace: 'timeline',
+    namespace: 'Timeline',
     isWheelEmitter: true,
     isWheelListener: true,
     isScrollListener: true,
