@@ -4,8 +4,9 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, zIndex } from '../Styles'
 
-import { updatePlayheadPosition, GUIDE_WIDTH } from './helpers'
 import { getScroller } from '../Scroll/helpers'
+
+import { updatePlayheadPosition, GUIDE_WIDTH } from './helpers'
 
 const HEIGHT = 12
 const WIDTH = 10
