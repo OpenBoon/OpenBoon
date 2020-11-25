@@ -178,7 +178,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  height: 300px;
+  height: 54.54545454545455px;
 }
 
 .emotion-17 {
@@ -216,11 +216,26 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-20 {
-  background-color: #ffffff;
+  width: 54.54545454545455px;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background-color: rgb(255,255,255);
+  color: #191919;
 }
 
 .emotion-21 {
-  width: 300px;
+  width: 54.54545454545455px;
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -234,12 +249,12 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-  background-color: blue;
-  opacity: 0.6;
+  background-color: rgb(0,39,107);
+  color: #ffffff;
 }
 
-.emotion-23 {
-  width: 300px;
+.emotion-34 {
+  width: 54.54545454545455px;
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -253,11 +268,163 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-  background-color: blue;
-  opacity: 0.4;
+  background-color: rgb(215,238,255);
+  color: #191919;
 }
 
-.emotion-25 {
+.emotion-35 {
+  width: 54.54545454545455px;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background-color: rgb(0,69,147);
+  color: #ffffff;
+}
+
+.emotion-48 {
+  width: 54.54545454545455px;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background-color: rgb(174,221,255);
+  color: #191919;
+}
+
+.emotion-49 {
+  width: 54.54545454545455px;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background-color: rgb(0,98,187);
+  color: #ffffff;
+}
+
+.emotion-62 {
+  width: 54.54545454545455px;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background-color: rgb(134,205,255);
+  color: #191919;
+}
+
+.emotion-63 {
+  width: 54.54545454545455px;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background-color: rgb(0,128,227);
+  color: #ffffff;
+}
+
+.emotion-76 {
+  width: 54.54545454545455px;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background-color: rgb(93,188,255);
+  color: #191919;
+}
+
+.emotion-77 {
+  width: 54.54545454545455px;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background-color: rgb(12,154,255);
+  color: #191919;
+}
+
+.emotion-90 {
+  width: 54.54545454545455px;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background-color: rgb(53,171,255);
+  color: #191919;
+}
+
+.emotion-157 {
   width: 100px;
   padding-left: 16px;
   display: -webkit-box;
@@ -274,45 +441,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-bottom: 1px solid transparent;
 }
 
-.emotion-29 {
-  width: 300px;
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  background-color: blue;
-  opacity: 1;
-}
-
-.emotion-31 {
-  width: 300px;
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  background-color: blue;
-  opacity: 0;
-}
-
-.emotion-32 {
+.emotion-170 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -320,7 +449,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-top: 1px solid #191919;
 }
 
-.emotion-33 {
+.emotion-171 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -333,7 +462,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-right: 1px solid transparent;
 }
 
-.emotion-34 {
+.emotion-172 {
   -webkit-writing-mode: vertical-lr;
   -ms-writing-mode: tb;
   writing-mode: vertical-lr;
@@ -344,13 +473,13 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   line-height: 20px;
 }
 
-.emotion-35 {
+.emotion-173 {
   padding-left: 16px;
   width: 100px;
   border-right: 1px solid #191919;
 }
 
-.emotion-36 {
+.emotion-174 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -363,12 +492,12 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-37 {
+.emotion-175 {
   padding: 16px;
   text-align: center;
 }
 
-.emotion-38 {
+.emotion-176 {
   padding: 16px;
   text-align: center;
   font-weight: 700;
@@ -376,7 +505,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   line-height: 20px;
 }
 
-.emotion-39 {
+.emotion-177 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -470,7 +599,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                   <div
                     className="emotion-17"
                   >
-                    Dahlia
+                    0
                      
                     <span
                       className="emotion-18"
@@ -483,23 +612,83 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                   <div
                     className="emotion-19"
                   >
-                    <div
-                      className="emotion-20"
-                    >
+                    <div>
                       <div
-                        className="emotion-21"
+                        className="emotion-20"
                       >
-                        60
+                        0
                         %
                       </div>
                     </div>
-                    <div
-                      className="emotion-20"
-                    >
+                    <div>
                       <div
-                        className="emotion-23"
+                        className="emotion-21"
                       >
-                        40
+                        100
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
                         %
                       </div>
                     </div>
@@ -509,36 +698,1005 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                   className="emotion-16"
                 >
                   <div
-                    className="emotion-25"
+                    className="emotion-17"
                   >
-                    Rose
+                    1
                      
                     <span
                       className="emotion-18"
                     >
                       (
-                      25
+                      10
                       )
                     </span>
                   </div>
                   <div
                     className="emotion-19"
                   >
-                    <div
-                      className="emotion-20"
-                    >
+                    <div>
                       <div
-                        className="emotion-29"
+                        className="emotion-34"
+                      >
+                        10
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-35"
+                      >
+                        90
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-16"
+                >
+                  <div
+                    className="emotion-17"
+                  >
+                    2
+                     
+                    <span
+                      className="emotion-18"
+                    >
+                      (
+                      10
+                      )
+                    </span>
+                  </div>
+                  <div
+                    className="emotion-19"
+                  >
+                    <div>
+                      <div
+                        className="emotion-48"
+                      >
+                        20
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-49"
+                      >
+                        80
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-16"
+                >
+                  <div
+                    className="emotion-17"
+                  >
+                    3
+                     
+                    <span
+                      className="emotion-18"
+                    >
+                      (
+                      10
+                      )
+                    </span>
+                  </div>
+                  <div
+                    className="emotion-19"
+                  >
+                    <div>
+                      <div
+                        className="emotion-62"
+                      >
+                        30
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-63"
+                      >
+                        70
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-16"
+                >
+                  <div
+                    className="emotion-17"
+                  >
+                    4
+                     
+                    <span
+                      className="emotion-18"
+                    >
+                      (
+                      10
+                      )
+                    </span>
+                  </div>
+                  <div
+                    className="emotion-19"
+                  >
+                    <div>
+                      <div
+                        className="emotion-76"
+                      >
+                        40
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-77"
+                      >
+                        60
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-16"
+                >
+                  <div
+                    className="emotion-17"
+                  >
+                    5
+                     
+                    <span
+                      className="emotion-18"
+                    >
+                      (
+                      10
+                      )
+                    </span>
+                  </div>
+                  <div
+                    className="emotion-19"
+                  >
+                    <div>
+                      <div
+                        className="emotion-90"
+                      >
+                        50
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-90"
+                      >
+                        50
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-16"
+                >
+                  <div
+                    className="emotion-17"
+                  >
+                    6
+                     
+                    <span
+                      className="emotion-18"
+                    >
+                      (
+                      10
+                      )
+                    </span>
+                  </div>
+                  <div
+                    className="emotion-19"
+                  >
+                    <div>
+                      <div
+                        className="emotion-77"
+                      >
+                        60
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-76"
+                      >
+                        40
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-16"
+                >
+                  <div
+                    className="emotion-17"
+                  >
+                    7
+                     
+                    <span
+                      className="emotion-18"
+                    >
+                      (
+                      10
+                      )
+                    </span>
+                  </div>
+                  <div
+                    className="emotion-19"
+                  >
+                    <div>
+                      <div
+                        className="emotion-63"
+                      >
+                        70
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-62"
+                      >
+                        30
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-16"
+                >
+                  <div
+                    className="emotion-17"
+                  >
+                    8
+                     
+                    <span
+                      className="emotion-18"
+                    >
+                      (
+                      10
+                      )
+                    </span>
+                  </div>
+                  <div
+                    className="emotion-19"
+                  >
+                    <div>
+                      <div
+                        className="emotion-49"
+                      >
+                        80
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-48"
+                      >
+                        20
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-16"
+                >
+                  <div
+                    className="emotion-17"
+                  >
+                    9
+                     
+                    <span
+                      className="emotion-18"
+                    >
+                      (
+                      10
+                      )
+                    </span>
+                  </div>
+                  <div
+                    className="emotion-19"
+                  >
+                    <div>
+                      <div
+                        className="emotion-35"
+                      >
+                        90
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-34"
+                      >
+                        10
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-16"
+                >
+                  <div
+                    className="emotion-157"
+                  >
+                    10
+                     
+                    <span
+                      className="emotion-18"
+                    >
+                      (
+                      10
+                      )
+                    </span>
+                  </div>
+                  <div
+                    className="emotion-19"
+                  >
+                    <div>
+                      <div
+                        className="emotion-21"
                       >
                         100
                         %
                       </div>
                     </div>
-                    <div
-                      className="emotion-20"
-                    >
+                    <div>
                       <div
-                        className="emotion-31"
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
+                      >
+                        0
+                        %
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        className="emotion-20"
                       >
                         0
                         %
@@ -551,32 +1709,32 @@ exports[`<ModelMatrix /> should render properly 1`] = `
           </div>
         </div>
         <div
-          className="emotion-32"
+          className="emotion-170"
         >
           <div
-            className="emotion-33"
+            className="emotion-171"
           >
             <div
-              className="emotion-34"
+              className="emotion-172"
             >
                
             </div>
           </div>
           <div
-            className="emotion-35"
+            className="emotion-173"
           >
              
           </div>
           <div
-            className="emotion-36"
+            className="emotion-174"
           >
             <div
-              className="emotion-37"
+              className="emotion-175"
             >
               [labels]
             </div>
             <div
-              className="emotion-38"
+              className="emotion-176"
             >
               Predictions
             </div>
@@ -584,7 +1742,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
         </div>
       </div>
       <div
-        className="emotion-39"
+        className="emotion-177"
       >
         [preview]
       </div>
