@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import model from '../../Model/__mocks__/model'
 
@@ -30,5 +30,8 @@ describe('<ModelMatrix />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    // useEffect
+    act(() => {})
   })
 })

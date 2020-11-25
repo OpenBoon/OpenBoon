@@ -1,10 +1,19 @@
+import { useReducer } from 'react'
 import AutoSizer from 'react-virtualized-auto-sizer'
+
+// TODO: fetch data
+import matrix from './__mocks__/matrix'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import { INITIAL_STATE, reducer } from './reducer'
+
 import ModelMatrixTable, { LABELS_WIDTH } from './Table'
+import ModelMatrixLabels from './Labels'
 
 const ModelMatrixLayout = () => {
+  const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
+
   return (
     <div
       css={{
@@ -90,14 +99,23 @@ const ModelMatrixLayout = () => {
             <div css={{ width: '100%' }}>
               <AutoSizer defaultWidth={800} defaultHeight={600}>
                 {({ width, height }) => (
-                  <ModelMatrixTable width={width} height={height} />
+                  <ModelMatrixTable
+                    matrix={matrix}
+                    width={width}
+                    height={height}
+                    dispatch={dispatch}
+                  />
                 )}
               </AutoSizer>
             </div>
           </div>
 
           <div
-            css={{ display: 'flex', borderTop: constants.borders.regular.coal }}
+            css={{
+              display: 'flex',
+              borderTop: constants.borders.regular.coal,
+              width: '100%',
+            }}
           >
             {/* begin placeholder for "True Label" column width */}
             <div
@@ -120,39 +138,41 @@ const ModelMatrixLayout = () => {
             </div>
             {/* end placeholder for "True Label" column width */}
 
-            {/* begin placeholde for row labels */}
-            <div
-              css={{
-                paddingLeft: spacing.normal,
-                width: LABELS_WIDTH,
-                borderRight: constants.borders.regular.coal,
-              }}
-            >
-              &nbsp;
-            </div>
-            {/* end placeholde for row labels */}
-
-            <div
-              css={{
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <div css={{ padding: spacing.normal, textAlign: 'center' }}>
-                [labels]
-              </div>
-
+            <div css={{ display: 'flex', width: settings.width }}>
+              {/* begin placeholde for row labels */}
               <div
                 css={{
-                  padding: spacing.normal,
-                  textAlign: 'center',
-                  fontWeight: typography.weight.bold,
-                  fontSize: typography.size.medium,
-                  lineHeight: typography.height.medium,
+                  paddingLeft: spacing.normal,
+                  width: LABELS_WIDTH,
+                  minWidth: LABELS_WIDTH,
+                  borderRight: constants.borders.regular.coal,
                 }}
               >
-                Predictions
+                &nbsp;
+              </div>
+              {/* end placeholde for row labels */}
+
+              <div css={{ flex: 1, width: '0%' }}>
+                <div
+                  css={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <ModelMatrixLabels matrix={matrix} settings={settings} />
+
+                  <div
+                    css={{
+                      padding: spacing.normal,
+                      textAlign: 'center',
+                      fontWeight: typography.weight.bold,
+                      fontSize: typography.size.medium,
+                      lineHeight: typography.height.medium,
+                    }}
+                  >
+                    Predictions
+                  </div>
+                </div>
               </div>
             </div>
           </div>
