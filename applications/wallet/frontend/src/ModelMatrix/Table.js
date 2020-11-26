@@ -2,25 +2,24 @@ import PropTypes from 'prop-types'
 import { useEffect } from 'react'
 
 import { useScroller } from '../Scroll/helpers'
+import ModelMatrixResize from './Resize'
 
 import ModelMatrixRow from './Row'
 
 export const LABELS_WIDTH = 100
 
-const ZOOM = 1
-
-const ModelMatrixTable = ({ matrix, width, height, dispatch }) => {
+const ModelMatrixTable = ({ matrix, width, height, zoom, dispatch }) => {
   const tableRef = useScroller({
     namespace: 'ModelMatrixVertical',
     isWheelEmitter: true,
     isWheelListener: true,
   })
 
-  const cellDimension = (height / matrix.labels.length) * ZOOM
-
   useEffect(() => {
-    dispatch({ width, cellDimension })
-  }, [dispatch, width, cellDimension])
+    dispatch({ width, height })
+  }, [dispatch, width, height])
+
+  const cellDimension = (height / matrix.labels.length) * zoom
 
   return (
     <div
@@ -44,6 +43,8 @@ const ModelMatrixTable = ({ matrix, width, height, dispatch }) => {
           />
         )
       })}
+
+      <ModelMatrixResize zoom={zoom} dispatch={dispatch} />
     </div>
   )
 }
@@ -57,6 +58,7 @@ ModelMatrixTable.propTypes = {
   }).isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  zoom: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired,
 }
 

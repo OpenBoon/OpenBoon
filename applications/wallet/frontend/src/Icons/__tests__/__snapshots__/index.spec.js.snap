@@ -934,6 +934,22 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./preview.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="preview.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./queue.svg
       </div>
       <div
