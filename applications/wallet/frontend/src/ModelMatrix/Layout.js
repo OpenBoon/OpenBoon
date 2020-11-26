@@ -6,6 +6,10 @@ import matrix from './__mocks__/matrix'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import Button, { VARIANTS } from '../Button'
+
+import PreviewSvg from '../Icons/preview.svg'
+
 import { INITIAL_STATE, reducer } from './reducer'
 
 import ModelMatrixTable, { LABELS_WIDTH } from './Table'
@@ -103,6 +107,7 @@ const ModelMatrixLayout = () => {
                     matrix={matrix}
                     width={width}
                     height={height}
+                    zoom={settings.zoom}
                     dispatch={dispatch}
                   />
                 )}
@@ -177,14 +182,36 @@ const ModelMatrixLayout = () => {
             </div>
           </div>
         </div>
+
         <div
           css={{
             display: 'flex',
             flexShrink: 0,
+            alignItems: 'flex-start',
             borderLeft: constants.borders.regular.coal,
           }}
         >
-          [preview]
+          <Button
+            aria-label="Preview"
+            title="Preview"
+            variant={VARIANTS.ICON}
+            href="#"
+            style={{
+              flex: 'none',
+              paddingTop: spacing.normal,
+              paddingBottom: spacing.normal,
+              borderBottom: constants.borders.regular.coal,
+              color: /* istanbul ignore next */ settings.isPreviewOpen
+                ? colors.key.one
+                : colors.structure.steel,
+              ':hover': {
+                backgroundColor: colors.structure.mattGrey,
+              },
+              borderRadius: constants.borderRadius.none,
+            }}
+          >
+            <PreviewSvg width={constants.icons.regular} />
+          </Button>
         </div>
       </div>
     </div>

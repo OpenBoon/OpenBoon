@@ -4,12 +4,14 @@ import { constants, spacing } from '../Styles'
 
 import { useScroller } from '../Scroll/helpers'
 
-const ModelMatrixLabels = ({ matrix, settings: { cellDimension } }) => {
+const ModelMatrixLabels = ({ matrix, settings: { height, zoom } }) => {
   const rowRef = useScroller({
     namespace: 'ModelMatrixHorizontal',
     isWheelEmitter: true,
     isWheelListener: true,
   })
+
+  const cellDimension = (height / matrix.labels.length) * zoom
 
   return (
     <div
@@ -49,7 +51,8 @@ ModelMatrixLabels.propTypes = {
     matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   }).isRequired,
   settings: PropTypes.shape({
-    cellDimension: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+    zoom: PropTypes.number.isRequired,
   }).isRequired,
 }
 
