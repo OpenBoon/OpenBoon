@@ -12,7 +12,13 @@ import Button, { VARIANTS } from '../Button'
 
 import { formatPaddedSeconds, gotoNextHit, gotoPreviousHit } from './helpers'
 
-const TimelineControls = ({ videoRef, length, timelines, settings }) => {
+const TimelineControls = ({
+  videoRef,
+  length,
+  timelines,
+  settings,
+  setFollowPlayhead,
+}) => {
   const currentTimeRef = useRef()
   const frameRef = useRef()
 
@@ -102,6 +108,7 @@ const TimelineControls = ({ videoRef, length, timelines, settings }) => {
           }}
           onClick={() => {
             if (video?.paused) {
+              setFollowPlayhead(true)
               video?.play()
             } else {
               video?.pause()
@@ -209,6 +216,7 @@ TimelineControls.propTypes = {
     timelines: PropTypes.shape({}).isRequired,
     zoom: PropTypes.number.isRequired,
   }).isRequired,
+  setFollowPlayhead: PropTypes.func.isRequired,
 }
 
 export default TimelineControls
