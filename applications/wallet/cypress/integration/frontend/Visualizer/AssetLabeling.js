@@ -32,9 +32,15 @@ describe('Visualizer', function () {
 
       cy.get('summary[aria-label*="Asset Labels"]').click()
 
-      cy.contains('Model').get('select').select('console')
+      cy.get('label').contains('Model').children().children().select('console')
 
-      cy.contains('Label').get('input').type(`Cypress-${now}`).type('{enter}')
+      cy.get('label')
+        .contains('Label')
+        .children()
+        .type(`Cypress-${now}`)
+        .type('{enter}')
+
+      cy.get('label').contains('Scope').children().children().select('Test')
 
       /**
        * Update

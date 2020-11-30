@@ -1,30 +1,30 @@
 import PropTypes from 'prop-types'
-
-// TODO: fetch data
-import matrix from './__mocks__/matrix'
+import { useEffect } from 'react'
 
 import { useScroller } from '../Scroll/helpers'
+import ModelMatrixResize from './Resize'
 
 import ModelMatrixRow from './Row'
 
 export const LABELS_WIDTH = 100
 
-const ZOOM = 1
-
-const ModelMatrixTable = ({ width, height }) => {
+const ModelMatrixTable = ({ matrix, width, height, zoom, dispatch }) => {
   const tableRef = useScroller({
     namespace: 'ModelMatrixVertical',
     isWheelEmitter: true,
     isWheelListener: true,
   })
 
-  const cellDimension = (height / matrix.labels.length) * ZOOM
+  useEffect(() => {
+    dispatch({ width, height })
+  }, [dispatch, width, height])
+
+  const cellDimension = (height / matrix.labels.length) * zoom
 
   return (
     <div
       ref={tableRef}
       css={{
-        flex: 1,
         display: 'flex',
         flexDirection: 'column',
         width,
@@ -43,13 +43,23 @@ const ModelMatrixTable = ({ width, height }) => {
           />
         )
       })}
+
+      <ModelMatrixResize zoom={zoom} dispatch={dispatch} />
     </div>
   )
 }
 
 ModelMatrixTable.propTypes = {
+  matrix: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    overallAccuracy: PropTypes.number.isRequired,
+    labels: PropTypes.arrayOf(PropTypes.string).isRequired,
+    matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  }).isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  zoom: PropTypes.number.isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default ModelMatrixTable

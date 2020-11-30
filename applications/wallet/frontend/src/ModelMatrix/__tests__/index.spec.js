@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import model from '../../Model/__mocks__/model'
 
@@ -30,5 +30,22 @@ describe('<ModelMatrix />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    // Does nothing since zoom = 1 = min
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Zoom Out' }).props.onClick()
+    })
+
+    // Zoom 2x
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Zoom In' }).props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Back to zoom 1x
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Zoom Out' }).props.onClick()
+    })
   })
 })

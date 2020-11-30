@@ -33,6 +33,7 @@ const ModelMatrixRow = ({ matrix, cellDimension, label, index }) => {
         css={{
           width: LABELS_WIDTH,
           paddingLeft: spacing.normal,
+          paddingRight: spacing.normal,
           display: 'flex',
           alignItems: 'center',
           fontFamily: typography.family.condensed,
@@ -44,7 +45,15 @@ const ModelMatrixRow = ({ matrix, cellDimension, label, index }) => {
               : constants.borders.regular.coal,
         }}
       >
-        {label}{' '}
+        <span
+          css={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {label}{' '}
+        </span>
         <span
           css={{
             color: colors.structure.zinc,
@@ -83,7 +92,16 @@ const ModelMatrixRow = ({ matrix, cellDimension, label, index }) => {
                       : colors.structure.coal,
                 }}
               >
-                {Math.round(percent)}%
+                <div
+                  css={{
+                    margin: 'auto',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {Math.round(percent)}%
+                </div>
               </div>
             </div>
           )
