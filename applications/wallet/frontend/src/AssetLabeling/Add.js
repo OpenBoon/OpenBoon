@@ -46,7 +46,7 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
     ...INITIAL_STATE,
     modelId: (hasModel && modelId) || '',
     label: label || '',
-    scope,
+    scope: scope || SCOPE_OPTIONS[0].value,
   })
 
   const options = models.map(({ name, id }) => ({ value: id, label: name }))
@@ -157,9 +157,9 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
             }}
             isDisabled={
               existingLabel ||
-              !hasModel ||
               !localState.modelId ||
-              (!localState.label && !label) ||
+              !localState.label ||
+              !localState.scope ||
               localState.isLoading ||
               (localState.success && !localState.isLoading)
             }

@@ -446,7 +446,7 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   line-height: 19px;
   font-weight: 500;
   border: none;
-  cursor: not-allowed;
+  cursor: pointer;
   color: #ffffff;
   background-color: transparent;
   margin: 0;
@@ -490,7 +490,7 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
       >
         <select
           className="emotion-4"
-          defaultValue=""
+          defaultValue="621bf774-89d9-1244-9596-d6df43f1ede5"
           disabled={false}
           onChange={[Function]}
         >
@@ -531,7 +531,7 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
       label="Label"
       onChange={[Function]}
       options={[Function]}
-      value=""
+      value="Existing localStorage"
     />
     <div
       className="emotion-5"
@@ -586,7 +586,6 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
         className="emotion-13"
       />
       <button
-        aria-disabled={true}
         className="emotion-14"
         onClick={[Function]}
         type="submit"

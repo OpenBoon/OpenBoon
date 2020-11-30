@@ -17,6 +17,11 @@ const noop = () => () => {}
 
 describe('<AssetLabelingAdd />', () => {
   it('should add a label', async () => {
+    localStorage.setItem(
+      `AssetLabelingAdd.${PROJECT_ID}`,
+      `{"modelId":"","scope":"","label":""}`,
+    )
+
     const component = TestRenderer.create(
       <AssetLabelingAdd
         projectId={PROJECT_ID}
@@ -121,7 +126,7 @@ describe('<AssetLabelingAdd />', () => {
   it('should render with localStorage and update a label', async () => {
     localStorage.setItem(
       `AssetLabelingAdd.${PROJECT_ID}`,
-      `{"modelId":"${MODEL_ID},"scope":"TRAIN","label":"Existing localStorage"}`,
+      `{"modelId":"${MODEL_ID}","scope":"TRAIN","label":"Existing localStorage"}`,
     )
 
     const component = TestRenderer.create(
