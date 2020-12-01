@@ -25,8 +25,7 @@ class RekognitionFaceDetectionProcessorTests(PluginUnitTestCase):
         processor.process(frame)
 
         analysis = frame.asset.get_analysis('aws-ppe-detection')
-        preds = get_prediction_labels(analysis)
-        assert 'person0' in preds
+        assert 'person0' in get_prediction_labels(analysis)
         assert analysis['predictions'][0]['bbox'] == [
             0.5334620475769043,
             0.18087884783744812,
