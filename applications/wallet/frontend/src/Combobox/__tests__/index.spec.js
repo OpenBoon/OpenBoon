@@ -94,6 +94,8 @@ describe('Combobox', () => {
       />,
     )
 
-    component.unmount()
+    act(() => {
+      component.unmount()
+    })
   })
 })

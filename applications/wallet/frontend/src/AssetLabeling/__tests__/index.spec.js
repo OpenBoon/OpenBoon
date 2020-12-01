@@ -29,8 +29,6 @@ describe('<AssetLabeling />', () => {
 
     const component = TestRenderer.create(<AssetLabeling />)
 
-    expect(component.toJSON()).toMatchSnapshot()
-
     // Click Accordion header link
     act(() => {
       component.root
@@ -95,12 +93,8 @@ describe('<AssetLabeling />', () => {
     })
 
     expect(spy).toHaveBeenCalledWith(
-      `AssetLabelingAdd.${PROJECT_ID}.modelId`,
-      `"${MODEL_ID}"`,
-    )
-    expect(spy).toHaveBeenCalledWith(
-      `AssetLabelingAdd.${PROJECT_ID}.label`,
-      '"Space"',
+      `AssetLabelingAdd.${PROJECT_ID}`,
+      `{"modelId":"${MODEL_ID}","label":"Space","scope":"TRAIN","assetId":"${ASSET_ID}"}`,
     )
 
     spy.mockClear()

@@ -42,14 +42,16 @@ exports[`<LabelEdit /> should render properly 1`] = `
   border-width: 2px;
 }
 
-.emotion-4:focus {
+.emotion-4:focus,
+.emotion-4 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-4:hover {
+.emotion-4:hover,
+.emotion-4 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -104,17 +106,20 @@ exports[`<LabelEdit /> should render properly 1`] = `
 
 .emotion-7,
 .emotion-7:hover,
-.emotion-7:visited {
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #808080;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -152,17 +157,20 @@ exports[`<LabelEdit /> should render properly 1`] = `
 
 .emotion-8,
 .emotion-8:hover,
-.emotion-8:visited {
+.emotion-8:visited,
+.emotion-8 .noop {
   background-color: #73b61c;
 }
 
-.emotion-8:hover {
+.emotion-8:hover,
+.emotion-8 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-8[aria-disabled=true],
+.emotion-8 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

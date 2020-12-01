@@ -54,18 +54,18 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   height: 8px;
 }
 
-.emotion-6 {
+.emotion-10 {
   height: 24px;
 }
 
-.emotion-7 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-8 {
+.emotion-12 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -97,28 +97,31 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   margin: 0;
 }
 
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited {
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited,
+.emotion-12 .noop {
   background-color: #808080;
 }
 
-.emotion-8:hover {
+.emotion-12:hover,
+.emotion-12 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-12[aria-disabled=true],
+.emotion-12 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-9 {
+.emotion-13 {
   padding: 8px;
 }
 
-.emotion-10 {
+.emotion-14 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -150,19 +153,22 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
   margin: 0;
 }
 
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited {
+.emotion-14,
+.emotion-14:hover,
+.emotion-14:visited,
+.emotion-14 .noop {
   background-color: #73b61c;
 }
 
-.emotion-10:hover {
+.emotion-14:hover,
+.emotion-14 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-14[aria-disabled=true],
+.emotion-14 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -229,25 +235,60 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
       value=""
     />
     <div
-      className="emotion-6"
+      className="emotion-5"
+    />
+    <label
+      className="emotion-2"
+    >
+      Scope
+      <div
+        className="emotion-3"
+      >
+        <select
+          className="emotion-4"
+          defaultValue="TRAIN"
+          disabled={false}
+          onChange={[Function]}
+        >
+          <option
+            disabled={true}
+            value=""
+          >
+            Select an option...
+          </option>
+          <option
+            value="TRAIN"
+          >
+            Train
+          </option>
+          <option
+            value="TEST"
+          >
+            Test
+          </option>
+        </select>
+      </div>
+    </label>
+    <div
+      className="emotion-10"
     />
     <div
-      className="emotion-7"
+      className="emotion-11"
     >
       <button
         aria-disabled={true}
-        className="emotion-8"
+        className="emotion-12"
         onClick={[Function]}
         type="button"
       >
         Cancel
       </button>
       <div
-        className="emotion-9"
+        className="emotion-13"
       />
       <button
         aria-disabled={true}
-        className="emotion-10"
+        className="emotion-14"
         onClick={[Function]}
         type="submit"
       >
@@ -312,18 +353,18 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   height: 8px;
 }
 
-.emotion-6 {
+.emotion-10 {
   height: 24px;
 }
 
-.emotion-7 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-8 {
+.emotion-12 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -355,28 +396,31 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   margin: 0;
 }
 
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited {
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited,
+.emotion-12 .noop {
   background-color: #808080;
 }
 
-.emotion-8:hover {
+.emotion-12:hover,
+.emotion-12 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-12[aria-disabled=true],
+.emotion-12 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-9 {
+.emotion-13 {
   padding: 8px;
 }
 
-.emotion-10 {
+.emotion-14 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -408,19 +452,22 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
   margin: 0;
 }
 
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited {
+.emotion-14,
+.emotion-14:hover,
+.emotion-14:visited,
+.emotion-14 .noop {
   background-color: #73b61c;
 }
 
-.emotion-10:hover {
+.emotion-14:hover,
+.emotion-14 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-14[aria-disabled=true],
+.emotion-14 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -487,24 +534,59 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
       value="Existing localStorage"
     />
     <div
-      className="emotion-6"
+      className="emotion-5"
+    />
+    <label
+      className="emotion-2"
+    >
+      Scope
+      <div
+        className="emotion-3"
+      >
+        <select
+          className="emotion-4"
+          defaultValue="TRAIN"
+          disabled={false}
+          onChange={[Function]}
+        >
+          <option
+            disabled={true}
+            value=""
+          >
+            Select an option...
+          </option>
+          <option
+            value="TRAIN"
+          >
+            Train
+          </option>
+          <option
+            value="TEST"
+          >
+            Test
+          </option>
+        </select>
+      </div>
+    </label>
+    <div
+      className="emotion-10"
     />
     <div
-      className="emotion-7"
+      className="emotion-11"
     >
       <button
         aria-disabled={true}
-        className="emotion-8"
+        className="emotion-12"
         onClick={[Function]}
         type="button"
       >
         Cancel
       </button>
       <div
-        className="emotion-9"
+        className="emotion-13"
       />
       <button
-        className="emotion-10"
+        className="emotion-14"
         onClick={[Function]}
         type="submit"
       >

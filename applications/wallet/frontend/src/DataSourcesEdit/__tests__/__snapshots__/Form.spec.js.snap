@@ -61,14 +61,16 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   border-width: 2px;
 }
 
-.emotion-7:focus {
+.emotion-7:focus,
+.emotion-7 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -629,17 +631,20 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 
 .emotion-130,
 .emotion-130:hover,
-.emotion-130:visited {
+.emotion-130:visited,
+.emotion-130 .noop {
   background-color: #808080;
 }
 
-.emotion-130:hover {
+.emotion-130:hover,
+.emotion-130 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-130[aria-disabled=true] {
+.emotion-130[aria-disabled=true],
+.emotion-130 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -677,17 +682,20 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 
 .emotion-131,
 .emotion-131:hover,
-.emotion-131:visited {
+.emotion-131:visited,
+.emotion-131 .noop {
   background-color: #73b61c;
 }
 
-.emotion-131:hover {
+.emotion-131:hover,
+.emotion-131 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-131[aria-disabled=true] {
+.emotion-131[aria-disabled=true],
+.emotion-131 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1623,14 +1631,16 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   border-width: 2px;
 }
 
-.emotion-7:focus {
+.emotion-7:focus,
+.emotion-7 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -2185,17 +2195,20 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 
 .emotion-129,
 .emotion-129:hover,
-.emotion-129:visited {
+.emotion-129:visited,
+.emotion-129 .noop {
   background-color: #808080;
 }
 
-.emotion-129:hover {
+.emotion-129:hover,
+.emotion-129 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-129[aria-disabled=true] {
+.emotion-129[aria-disabled=true],
+.emotion-129 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -2233,17 +2246,20 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 
 .emotion-130,
 .emotion-130:hover,
-.emotion-130:visited {
+.emotion-130:visited,
+.emotion-130 .noop {
   background-color: #73b61c;
 }
 
-.emotion-130:hover {
+.emotion-130:hover,
+.emotion-130 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-130[aria-disabled=true] {
+.emotion-130[aria-disabled=true],
+.emotion-130 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

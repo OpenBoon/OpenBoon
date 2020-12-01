@@ -137,12 +137,14 @@ exports[`<ResetPassword /> should render properly 1`] = `
   border-width: 2px;
 }
 
-.emotion-8:focus {
+.emotion-8:focus,
+.emotion-8 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-8:hover {
+.emotion-8:hover,
+.emotion-8 .noop {
   border: 2px solid #ffffff;
 }
 
@@ -195,17 +197,20 @@ exports[`<ResetPassword /> should render properly 1`] = `
 
 .emotion-11,
 .emotion-11:hover,
-.emotion-11:visited {
+.emotion-11:visited,
+.emotion-11 .noop {
   background-color: #73b61c;
 }
 
-.emotion-11:hover {
+.emotion-11:hover,
+.emotion-11 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-11[aria-disabled=true],
+.emotion-11 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

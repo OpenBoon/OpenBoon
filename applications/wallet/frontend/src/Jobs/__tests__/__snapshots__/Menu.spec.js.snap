@@ -102,7 +102,8 @@ exports[`<JobsMenu /> should render properly 1`] = `
 }
 
 .emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #4a4a4a;

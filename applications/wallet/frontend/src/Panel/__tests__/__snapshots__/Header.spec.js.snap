@@ -46,18 +46,21 @@ exports[`<PanelHeader /> should open properly 1`] = `
 }
 
 .emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
   color: #808080;
 }
 

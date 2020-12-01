@@ -19,6 +19,7 @@ describe('<Scroll /> helpers', () => {
     it('should return properly', () => {
       const mockCallback = jest.fn()
       const mockCallBackAgain = jest.fn()
+
       const scroller = getScroller({ namespace: 'NameSpace' })
 
       scroller.register({

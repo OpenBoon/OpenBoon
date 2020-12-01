@@ -1,4 +1,3 @@
-import React from 'react'
 import { Global, css } from '@emotion/react'
 
 import { colors, constants, typography, spacing } from '.'

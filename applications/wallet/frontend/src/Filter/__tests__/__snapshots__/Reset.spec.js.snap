@@ -51,7 +51,8 @@ exports[`<FilterReset /> should render properly with no fields 1`] = `
 }
 
 .emotion-2:hover,
-.emotion-2.focus-visible:focus {
+.emotion-2.focus-visible:focus,
+.emotion-2 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
@@ -153,7 +154,8 @@ exports[`<FilterReset /> should reset properly 1`] = `
 }
 
 .emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
@@ -271,7 +273,8 @@ exports[`<FilterReset /> should switch properly 1`] = `
 }
 
 .emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;

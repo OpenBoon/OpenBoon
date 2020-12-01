@@ -108,17 +108,20 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
 
 .emotion-8,
 .emotion-8:hover,
-.emotion-8:visited {
+.emotion-8:visited,
+.emotion-8 .noop {
   background-color: #73b61c;
 }
 
-.emotion-8:hover {
+.emotion-8:hover,
+.emotion-8 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-8[aria-disabled=true],
+.emotion-8 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -276,17 +279,20 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
 
 .emotion-7,
 .emotion-7:hover,
-.emotion-7:visited {
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #808080;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -329,17 +335,20 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
 
 .emotion-9,
 .emotion-9:hover,
-.emotion-9:visited {
+.emotion-9:visited,
+.emotion-9 .noop {
   background-color: #c92300;
 }
 
-.emotion-9:hover {
+.emotion-9:hover,
+.emotion-9 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   opacity: 0.5;
 }
 
-.emotion-9[aria-disabled=true] {
+.emotion-9[aria-disabled=true],
+.emotion-9 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }

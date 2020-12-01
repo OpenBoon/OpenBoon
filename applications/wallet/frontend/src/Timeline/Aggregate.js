@@ -37,7 +37,7 @@ const TimelineAggregate = ({
   )
 
   const aggregateRef = useScroller({
-    namespace: 'timeline',
+    namespace: 'Timeline',
     isWheelEmitter: true,
     isWheelListener: true,
     isScrollEmitter: true,
