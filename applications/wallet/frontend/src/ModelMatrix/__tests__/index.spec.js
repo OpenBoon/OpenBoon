@@ -31,6 +31,11 @@ describe('<ModelMatrix />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Hide Minimap
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Mini map' }).props.onClick()
+    })
+
     // Does nothing since zoom = 1 = min
     act(() => {
       component.root.findByProps({ 'aria-label': 'Zoom Out' }).props.onClick()
