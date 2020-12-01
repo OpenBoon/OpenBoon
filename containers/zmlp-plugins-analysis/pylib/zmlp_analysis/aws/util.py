@@ -14,6 +14,16 @@ class AwsEnv:
     """
 
     @staticmethod
+    def general_aws_client(service):
+        """
+        Return an AWS client configured for service specified with ZVI credentials.
+
+        Returns:
+            boto3.client: A boto3 client for specified service
+        """
+        return boto3.client(service, **AwsEnv.get_aws_env())
+
+    @staticmethod
     def s3():
         return boto3.client('s3', **AwsEnv.get_aws_env())
 
