@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -69,6 +69,9 @@ const Timeline = ({ videoRef, length }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const [followPlayhead, setFollowPlayhead] = useState(true)
+  const handleOnWheel = () => setFollowPlayhead(false)
+
   const rulerRef = useScroller({
     namespace: 'Timeline',
     isWheelEmitter: true,
@@ -99,6 +102,7 @@ const Timeline = ({ videoRef, length }) => {
             videoRef={videoRef}
             timelines={timelines}
             settings={settings}
+            setFollowPlayhead={setFollowPlayhead}
           />
 
           <div
@@ -188,6 +192,7 @@ const Timeline = ({ videoRef, length }) => {
             length={length}
             timelines={timelines}
             settings={settings}
+            setFollowPlayhead={setFollowPlayhead}
           />
 
           <div
@@ -208,11 +213,13 @@ const Timeline = ({ videoRef, length }) => {
     >
       {({ size }) => (
         <div
+          aria-label="Timeline"
           css={{
             display: 'flex',
             flexDirection: 'column',
             height: size,
           }}
+          onWheel={handleOnWheel}
         >
           <div
             css={{
@@ -231,6 +238,7 @@ const Timeline = ({ videoRef, length }) => {
               videoRef={videoRef}
               rulerRef={rulerRef}
               zoom={settings.zoom}
+              followPlayhead={followPlayhead}
             />
 
             <div

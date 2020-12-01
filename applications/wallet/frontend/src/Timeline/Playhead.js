@@ -4,32 +4,62 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, zIndex } from '../Styles'
 
+import { getScroller } from '../Scroll/helpers'
+
 import { updatePlayheadPosition, GUIDE_WIDTH } from './helpers'
 
 const HEIGHT = 12
 const WIDTH = 10
+const SCROLL_BUFFER = 50
 
 let originX
 let originLeft
 
-const TimelinePlayhead = ({ videoRef, rulerRef, zoom }) => {
+const TimelinePlayhead = ({ videoRef, rulerRef, zoom, followPlayhead }) => {
   const playheadRef = useRef()
   const frameRef = useRef()
 
   const video = videoRef.current
 
+  const scroller = getScroller({ namespace: 'Timeline' })
+
   /* istanbul ignore next */
   const onMount = useCallback(
     (node) => {
       const animate = () => {
-        const offset = rulerRef.current?.scrollLeft || 0
+        if (!video) return
+
+        const { scrollWidth = 0, scrollLeft = 0, clientWidth = 0 } =
+          rulerRef.current || {}
+
+        const hiddenToTheRight = scrollWidth - scrollLeft - clientWidth > 0
+
+        const currentPosition = node.offsetLeft + WIDTH / 2 - GUIDE_WIDTH / 2
+
+        const nextPosition =
+          (((video.currentTime / video.duration) * zoom) / 100) * clientWidth -
+          GUIDE_WIDTH / 2
 
         updatePlayheadPosition({
           video,
           playhead: node,
           zoom,
-          offset,
+          scrollLeft,
         })
+
+        const isOutOfView =
+          currentPosition < 0 ||
+          (currentPosition > clientWidth - SCROLL_BUFFER && hiddenToTheRight)
+
+        if (isOutOfView && !video.paused && followPlayhead) {
+          scroller.emit({
+            eventName: 'scroll',
+            data: {
+              scrollX: nextPosition,
+              scrollY: 0,
+            },
+          })
+        }
 
         frameRef.current = requestAnimationFrame(animate)
       }
@@ -45,7 +75,7 @@ const TimelinePlayhead = ({ videoRef, rulerRef, zoom }) => {
         playheadRef.current = node
       }
     },
-    [video, zoom, rulerRef],
+    [video, zoom, rulerRef, scroller, followPlayhead],
   )
 
   /* istanbul ignore next */
@@ -121,14 +151,18 @@ TimelinePlayhead.propTypes = {
     current: PropTypes.shape({
       currentTime: PropTypes.number.isRequired,
       duration: PropTypes.number.isRequired,
+      paused: PropTypes.bool.isRequired,
     }),
   }).isRequired,
   rulerRef: PropTypes.shape({
     current: PropTypes.shape({
+      scrollWidth: PropTypes.number.isRequired,
       scrollLeft: PropTypes.number.isRequired,
+      clientWidth: PropTypes.number.isRequired,
     }),
   }).isRequired,
   zoom: PropTypes.number.isRequired,
+  followPlayhead: PropTypes.bool.isRequired,
 }
 
 export default TimelinePlayhead

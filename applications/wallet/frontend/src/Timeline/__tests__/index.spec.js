@@ -68,6 +68,11 @@ describe('<Timeline />', () => {
       component.root.findByProps({ 'aria-label': 'Zoom Out' }).props.isDisabled,
     ).toBe(true)
 
+    // Scroll timeline with mousewheel
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Timeline' }).props.onWheel()
+    })
+
     expect(component.toJSON()).toMatchSnapshot()
   })
 
