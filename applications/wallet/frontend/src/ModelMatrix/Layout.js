@@ -12,7 +12,7 @@ import PreviewSvg from '../Icons/preview.svg'
 
 import { INITIAL_STATE, reducer } from './reducer'
 
-import ModelMatrixTable, { LABELS_WIDTH } from './Table'
+import ModelMatrixTable from './Table'
 import ModelMatrixLabels from './Labels'
 
 const ModelMatrixLayout = () => {
@@ -107,7 +107,7 @@ const ModelMatrixLayout = () => {
                     matrix={matrix}
                     width={width}
                     height={height}
-                    zoom={settings.zoom}
+                    settings={settings}
                     dispatch={dispatch}
                   />
                 )}
@@ -148,8 +148,8 @@ const ModelMatrixLayout = () => {
               <div
                 css={{
                   paddingLeft: spacing.normal,
-                  width: LABELS_WIDTH,
-                  minWidth: LABELS_WIDTH,
+                  width: settings.labelsWidth,
+                  minWidth: settings.labelsWidth,
                   borderRight: constants.borders.regular.coal,
                 }}
               >
