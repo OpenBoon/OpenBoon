@@ -55,4 +55,3 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         ]
         assert analysis['predictions'][0]['body_part'] == 'FACE'
         assert analysis['predictions'][0]['type'] == 'FACE_COVER'
-
