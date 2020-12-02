@@ -175,7 +175,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  height: 54.54545454545455px;
+  height: 0;
 }
 
 .emotion-17 {
@@ -220,7 +220,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-21 {
-  width: 54.54545454545455px;
+  width: 0;
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -246,7 +246,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-23 {
-  width: 54.54545454545455px;
+  width: 0;
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -265,7 +265,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-48 {
-  width: 54.54545454545455px;
+  width: 0;
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -284,7 +284,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-50 {
-  width: 54.54545454545455px;
+  width: 0;
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -303,7 +303,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-75 {
-  width: 54.54545454545455px;
+  width: 0;
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -322,7 +322,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-77 {
-  width: 54.54545454545455px;
+  width: 0;
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -341,7 +341,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-102 {
-  width: 54.54545454545455px;
+  width: 0;
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -360,7 +360,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-104 {
-  width: 54.54545454545455px;
+  width: 0;
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -379,7 +379,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-129 {
-  width: 54.54545454545455px;
+  width: 0;
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -398,7 +398,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-131 {
-  width: 54.54545454545455px;
+  width: 0;
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -417,7 +417,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-156 {
-  width: 54.54545454545455px;
+  width: 0;
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -457,6 +457,86 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   position: absolute;
   bottom: 16px;
   right: 16px;
+  z-index: 10;
+}
+
+.emotion-314 {
+  opacity: 1;
+  position: relative;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  display: grid;
+  grid-template: repeat(11, 1fr)/repeat(11, 1fr);
+}
+
+.emotion-315 {
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+}
+
+.emotion-316 {
+  padding-bottom: 100%;
+  background-color: rgb(0,39,107);
+}
+
+.emotion-326 {
+  padding-bottom: 100%;
+  background-color: rgb(215,238,255);
+}
+
+.emotion-327 {
+  padding-bottom: 100%;
+  background-color: rgb(0,69,147);
+}
+
+.emotion-337 {
+  padding-bottom: 100%;
+  background-color: rgb(174,221,255);
+}
+
+.emotion-338 {
+  padding-bottom: 100%;
+  background-color: rgb(0,98,187);
+}
+
+.emotion-348 {
+  padding-bottom: 100%;
+  background-color: rgb(134,205,255);
+}
+
+.emotion-349 {
+  padding-bottom: 100%;
+  background-color: rgb(0,128,227);
+}
+
+.emotion-359 {
+  padding-bottom: 100%;
+  background-color: rgb(93,188,255);
+}
+
+.emotion-360 {
+  padding-bottom: 100%;
+  background-color: rgb(12,154,255);
+}
+
+.emotion-370 {
+  padding-bottom: 100%;
+  background-color: rgb(53,171,255);
+}
+
+.emotion-436 {
+  position: absolute;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #c92300;
+  top: 0;
+  left: 0;
+  width: -Infinity%;
+  height: 100%;
+}
+
+.emotion-437 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -465,7 +545,6 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  z-index: 10;
   opacity: 0.8;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -473,7 +552,55 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   padding-right: 8px;
 }
 
-.emotion-314 {
+.emotion-438 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  color: #73b61c;
+  padding: 8px;
+  opacity: 1;
+}
+
+.emotion-438:hover {
+  color: #73b61c;
+}
+
+.emotion-438[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-439 {
+  background-color: #808080;
+  width: 1px;
+  margin: 8px;
+}
+
+.emotion-440 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -506,15 +633,15 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   opacity: 1;
 }
 
-.emotion-314:hover {
+.emotion-440:hover {
   color: #73b61c;
 }
 
-.emotion-314[aria-disabled=true] {
+.emotion-440[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-315 {
+.emotion-441 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -547,15 +674,15 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   opacity: 1;
 }
 
-.emotion-315:hover {
+.emotion-441:hover {
   color: #73b61c;
 }
 
-.emotion-315[aria-disabled=true] {
+.emotion-441[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-316 {
+.emotion-442 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -564,7 +691,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   width: 100%;
 }
 
-.emotion-317 {
+.emotion-443 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -577,7 +704,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-right: 1px solid transparent;
 }
 
-.emotion-318 {
+.emotion-444 {
   -webkit-writing-mode: vertical-lr;
   -ms-writing-mode: tb;
   writing-mode: vertical-lr;
@@ -588,7 +715,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   line-height: 20px;
 }
 
-.emotion-319 {
+.emotion-445 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -596,21 +723,21 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   width: 0;
 }
 
-.emotion-320 {
+.emotion-446 {
   padding-left: 16px;
   width: 100px;
   min-width: 100px;
   border-right: 1px solid #191919;
 }
 
-.emotion-321 {
+.emotion-447 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   width: 0%;
 }
 
-.emotion-322 {
+.emotion-448 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -620,7 +747,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-323 {
+.emotion-449 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -632,7 +759,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-324 {
+.emotion-450 {
   min-width: 0;
   max-width: 0;
   padding: 16px;
@@ -642,7 +769,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-right: 1px solid #191919;
 }
 
-.emotion-335 {
+.emotion-461 {
   padding: 16px;
   text-align: center;
   font-weight: 700;
@@ -650,7 +777,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   line-height: 20px;
 }
 
-.emotion-336 {
+.emotion-462 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -665,7 +792,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-left: 1px solid #191919;
 }
 
-.emotion-337 {
+.emotion-463 {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
@@ -699,26 +826,26 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-337:hover,
-.emotion-337.focus-visible:focus,
-.emotion-337 .noop {
+.emotion-463:hover,
+.emotion-463.focus-visible:focus,
+.emotion-463 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-337:hover svg,
-.emotion-337.focus-visible:focus svg,
-.emotion-337 .noop svg {
+.emotion-463:hover svg,
+.emotion-463.focus-visible:focus svg,
+.emotion-463 .noop svg {
   opacity: 1;
 }
 
-.emotion-337[aria-disabled=true],
-.emotion-337 .noop {
+.emotion-463[aria-disabled=true],
+.emotion-463 .noop {
   color: #808080;
 }
 
-.emotion-337:hover {
+.emotion-463:hover {
   background-color: #2e2e2e;
 }
 
@@ -2529,121 +2656,509 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                 <div
                   className="emotion-313"
                 >
-                  <button
-                    aria-disabled={true}
-                    aria-label="Zoom Out"
+                  <div
                     className="emotion-314"
-                    onClick={[Function]}
-                    type="button"
                   >
-                    <svg
-                      data-file-name="circleMinus.svg"
-                      height={20}
+                    <div
+                      className="emotion-315"
                     />
-                  </button>
-                  <button
-                    aria-label="Zoom In"
-                    className="emotion-315"
-                    onClick={[Function]}
-                    type="button"
+                    <div
+                      className="emotion-316"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-326"
+                    />
+                    <div
+                      className="emotion-327"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-337"
+                    />
+                    <div
+                      className="emotion-338"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-348"
+                    />
+                    <div
+                      className="emotion-349"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-359"
+                    />
+                    <div
+                      className="emotion-360"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-370"
+                    />
+                    <div
+                      className="emotion-370"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-360"
+                    />
+                    <div
+                      className="emotion-359"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-349"
+                    />
+                    <div
+                      className="emotion-348"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-338"
+                    />
+                    <div
+                      className="emotion-337"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-327"
+                    />
+                    <div
+                      className="emotion-326"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-316"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-436"
+                    />
+                  </div>
+                  <div
+                    className="emotion-437"
                   >
-                    <svg
-                      data-file-name="circlePlus.svg"
-                      height={20}
+                    <button
+                      aria-label="Mini map"
+                      className="emotion-438"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="minimap.svg"
+                        height={20}
+                      />
+                    </button>
+                    <div
+                      className="emotion-439"
                     />
-                  </button>
+                    <button
+                      aria-disabled={true}
+                      aria-label="Zoom Out"
+                      className="emotion-440"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="circleMinus.svg"
+                        height={20}
+                      />
+                    </button>
+                    <button
+                      aria-label="Zoom In"
+                      className="emotion-441"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="circlePlus.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div
-          className="emotion-316"
+          className="emotion-442"
         >
           <div
-            className="emotion-317"
+            className="emotion-443"
           >
             <div
-              className="emotion-318"
+              className="emotion-444"
             >
                
             </div>
           </div>
           <div
-            className="emotion-319"
+            className="emotion-445"
           >
             <div
-              className="emotion-320"
+              className="emotion-446"
             >
                
             </div>
             <div
-              className="emotion-321"
+              className="emotion-447"
             >
               <div
-                className="emotion-322"
+                className="emotion-448"
               >
                 <div
-                  className="emotion-323"
+                  className="emotion-449"
                 >
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Dahlia
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Cherry Blossom
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Sacred Lotus
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Rose
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Hydrangea
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Orchids
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Chrysanthemum
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Peony
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Lily 'Stargazer'
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Irises
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Bird of Paradise Flower
                   </div>
                 </div>
                 <div
-                  className="emotion-335"
+                  className="emotion-461"
                 >
                   Predictions
                 </div>
@@ -2653,11 +3168,11 @@ exports[`<ModelMatrix /> should render properly 1`] = `
         </div>
       </div>
       <div
-        className="emotion-336"
+        className="emotion-462"
       >
         <a
           aria-label="Preview"
-          className="emotion-337"
+          className="emotion-463"
           href="#"
           title="Preview"
         >
@@ -3129,6 +3644,86 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   position: absolute;
   bottom: 16px;
   right: 16px;
+  z-index: 10;
+}
+
+.emotion-314 {
+  opacity: 0;
+  position: relative;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  display: grid;
+  grid-template: repeat(11, 1fr)/repeat(11, 1fr);
+}
+
+.emotion-315 {
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+}
+
+.emotion-316 {
+  padding-bottom: 100%;
+  background-color: rgb(0,39,107);
+}
+
+.emotion-326 {
+  padding-bottom: 100%;
+  background-color: rgb(215,238,255);
+}
+
+.emotion-327 {
+  padding-bottom: 100%;
+  background-color: rgb(0,69,147);
+}
+
+.emotion-337 {
+  padding-bottom: 100%;
+  background-color: rgb(174,221,255);
+}
+
+.emotion-338 {
+  padding-bottom: 100%;
+  background-color: rgb(0,98,187);
+}
+
+.emotion-348 {
+  padding-bottom: 100%;
+  background-color: rgb(134,205,255);
+}
+
+.emotion-349 {
+  padding-bottom: 100%;
+  background-color: rgb(0,128,227);
+}
+
+.emotion-359 {
+  padding-bottom: 100%;
+  background-color: rgb(93,188,255);
+}
+
+.emotion-360 {
+  padding-bottom: 100%;
+  background-color: rgb(12,154,255);
+}
+
+.emotion-370 {
+  padding-bottom: 100%;
+  background-color: rgb(53,171,255);
+}
+
+.emotion-436 {
+  position: absolute;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #c92300;
+  top: 0;
+  left: 0;
+  width: 58.333333333333336%;
+  height: 50%;
+}
+
+.emotion-437 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3137,7 +3732,6 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  z-index: 10;
   opacity: 0.8;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -3145,7 +3739,55 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   padding-right: 8px;
 }
 
-.emotion-314 {
+.emotion-438 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  color: #ffffff;
+  padding: 8px;
+  opacity: 1;
+}
+
+.emotion-438:hover {
+  color: #73b61c;
+}
+
+.emotion-438[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-439 {
+  background-color: #808080;
+  width: 1px;
+  margin: 8px;
+}
+
+.emotion-440 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -3178,15 +3820,15 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   opacity: 1;
 }
 
-.emotion-314:hover {
+.emotion-440:hover {
   color: #73b61c;
 }
 
-.emotion-314[aria-disabled=true] {
+.emotion-440[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-316 {
+.emotion-442 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3195,7 +3837,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   width: 100%;
 }
 
-.emotion-317 {
+.emotion-443 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3208,7 +3850,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-right: 1px solid transparent;
 }
 
-.emotion-318 {
+.emotion-444 {
   -webkit-writing-mode: vertical-lr;
   -ms-writing-mode: tb;
   writing-mode: vertical-lr;
@@ -3219,7 +3861,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   line-height: 20px;
 }
 
-.emotion-319 {
+.emotion-445 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3227,21 +3869,21 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   width: 800px;
 }
 
-.emotion-320 {
+.emotion-446 {
   padding-left: 16px;
   width: 100px;
   min-width: 100px;
   border-right: 1px solid #191919;
 }
 
-.emotion-321 {
+.emotion-447 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   width: 0%;
 }
 
-.emotion-322 {
+.emotion-448 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3251,7 +3893,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   flex-direction: column;
 }
 
-.emotion-323 {
+.emotion-449 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -3263,7 +3905,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-324 {
+.emotion-450 {
   min-width: 109.0909090909091px;
   max-width: 109.0909090909091px;
   padding: 16px;
@@ -3273,7 +3915,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-right: 1px solid #191919;
 }
 
-.emotion-335 {
+.emotion-461 {
   padding: 16px;
   text-align: center;
   font-weight: 700;
@@ -3281,7 +3923,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   line-height: 20px;
 }
 
-.emotion-336 {
+.emotion-462 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3296,7 +3938,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-left: 1px solid #191919;
 }
 
-.emotion-337 {
+.emotion-463 {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
@@ -3330,26 +3972,26 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-337:hover,
-.emotion-337.focus-visible:focus,
-.emotion-337 .noop {
+.emotion-463:hover,
+.emotion-463.focus-visible:focus,
+.emotion-463 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-337:hover svg,
-.emotion-337.focus-visible:focus svg,
-.emotion-337 .noop svg {
+.emotion-463:hover svg,
+.emotion-463.focus-visible:focus svg,
+.emotion-463 .noop svg {
   opacity: 1;
 }
 
-.emotion-337[aria-disabled=true],
-.emotion-337 .noop {
+.emotion-463[aria-disabled=true],
+.emotion-463 .noop {
   color: #808080;
 }
 
-.emotion-337:hover {
+.emotion-463:hover {
   background-color: #2e2e2e;
 }
 
@@ -5160,120 +5802,508 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                 <div
                   className="emotion-313"
                 >
-                  <button
-                    aria-label="Zoom Out"
+                  <div
                     className="emotion-314"
-                    onClick={[Function]}
-                    type="button"
                   >
-                    <svg
-                      data-file-name="circleMinus.svg"
-                      height={20}
+                    <div
+                      className="emotion-315"
                     />
-                  </button>
-                  <button
-                    aria-label="Zoom In"
-                    className="emotion-314"
-                    onClick={[Function]}
-                    type="button"
+                    <div
+                      className="emotion-316"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-326"
+                    />
+                    <div
+                      className="emotion-327"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-337"
+                    />
+                    <div
+                      className="emotion-338"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-348"
+                    />
+                    <div
+                      className="emotion-349"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-359"
+                    />
+                    <div
+                      className="emotion-360"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-370"
+                    />
+                    <div
+                      className="emotion-370"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-360"
+                    />
+                    <div
+                      className="emotion-359"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-349"
+                    />
+                    <div
+                      className="emotion-348"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-338"
+                    />
+                    <div
+                      className="emotion-337"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-327"
+                    />
+                    <div
+                      className="emotion-326"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-316"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-315"
+                    />
+                    <div
+                      className="emotion-436"
+                    />
+                  </div>
+                  <div
+                    className="emotion-437"
                   >
-                    <svg
-                      data-file-name="circlePlus.svg"
-                      height={20}
+                    <button
+                      aria-label="Mini map"
+                      className="emotion-438"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="minimap.svg"
+                        height={20}
+                      />
+                    </button>
+                    <div
+                      className="emotion-439"
                     />
-                  </button>
+                    <button
+                      aria-label="Zoom Out"
+                      className="emotion-440"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="circleMinus.svg"
+                        height={20}
+                      />
+                    </button>
+                    <button
+                      aria-label="Zoom In"
+                      className="emotion-440"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="circlePlus.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div
-          className="emotion-316"
+          className="emotion-442"
         >
           <div
-            className="emotion-317"
+            className="emotion-443"
           >
             <div
-              className="emotion-318"
+              className="emotion-444"
             >
                
             </div>
           </div>
           <div
-            className="emotion-319"
+            className="emotion-445"
           >
             <div
-              className="emotion-320"
+              className="emotion-446"
             >
                
             </div>
             <div
-              className="emotion-321"
+              className="emotion-447"
             >
               <div
-                className="emotion-322"
+                className="emotion-448"
               >
                 <div
-                  className="emotion-323"
+                  className="emotion-449"
                 >
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Dahlia
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Cherry Blossom
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Sacred Lotus
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Rose
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Hydrangea
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Orchids
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Chrysanthemum
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Peony
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Lily 'Stargazer'
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Irises
                   </div>
                   <div
-                    className="emotion-324"
+                    className="emotion-450"
                   >
                     Bird of Paradise Flower
                   </div>
                 </div>
                 <div
-                  className="emotion-335"
+                  className="emotion-461"
                 >
                   Predictions
                 </div>
@@ -5283,11 +6313,11 @@ exports[`<ModelMatrix /> should render properly 2`] = `
         </div>
       </div>
       <div
-        className="emotion-336"
+        className="emotion-462"
       >
         <a
           aria-label="Preview"
-          className="emotion-337"
+          className="emotion-463"
           href="#"
           title="Preview"
         >
