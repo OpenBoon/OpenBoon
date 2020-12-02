@@ -49,9 +49,6 @@ class RekognitionVideoFaceDetection(AssetProcessor):
         # upload to s3
         self.s3_client.upload_file(local_path, bucket_name, bucket_file)
 
-        # get audio s3 uri
-        s3_uri = f's3://{bucket_name}/{bucket_file}'
-
         if self.extract_type == 'time':
             extractor = video.TimeBasedFrameExtractor(local_path)
         else:
