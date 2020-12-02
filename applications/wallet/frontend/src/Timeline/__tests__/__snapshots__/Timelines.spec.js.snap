@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TimelineTimelines /> should render properly 1`] = `
-.emotion-46 {
+.emotion-0 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -14,26 +14,28 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-43 {
+.emotion-1 {
   width: 200px;
-}
-
-.emotion-6 {
-  background-color: #212121;
-  border-bottom: 1px solid #3b3b3b;
+  z-index: 20;
+  background-color: #191919;
   border-right: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
+.emotion-2 {
+  background-color: #212121;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-3 {
   list-style-type: none;
   background-color: #212121;
 }
 
-.emotion-5::-webkit-details-marker {
+.emotion-3::-webkit-details-marker {
   display: none;
 }
 
-.emotion-5:hover {
+.emotion-3:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
@@ -45,15 +47,16 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   display: flex;
 }
 
-.emotion-0 {
+.emotion-5 {
   width: 3px;
   background-color: #a03dc7;
   margin-right: 8px;
 }
 
-.emotion-1 {
+.emotion-6 {
   color: #a03dc7;
   -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
   -webkit-align-self: center;
@@ -61,7 +64,7 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   align-self: center;
 }
 
-.emotion-2 {
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -72,19 +75,20 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   padding-right: 0;
 }
 
-.emotion-3 {
+.emotion-8 {
   padding: 8px;
 }
 
-.emotion-7 {
+.emotion-12 {
   width: 3px;
   background-color: #d6680b;
   margin-right: 8px;
 }
 
-.emotion-8 {
+.emotion-13 {
   color: #d6680b;
   -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
   -webkit-align-self: center;
@@ -92,15 +96,16 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   align-self: center;
 }
 
-.emotion-14 {
+.emotion-19 {
   width: 3px;
   background-color: #ebb52e;
   margin-right: 8px;
 }
 
-.emotion-15 {
+.emotion-20 {
   color: #ebb52e;
   -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
   -webkit-align-self: center;
@@ -108,32 +113,36 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   align-self: center;
 }
 
-.emotion-21 {
+.emotion-26 {
   width: 3px;
   background-color: #009f22;
   margin-right: 8px;
 }
 
-.emotion-22 {
+.emotion-27 {
   color: #009f22;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.emotion-31 {
+.emotion-30 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-27 {
+.emotion-31 {
   width: 3px;
   background-color: #009f22;
 }
 
-.emotion-30 {
+.emotion-32 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -144,7 +153,7 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   overflow: hidden;
 }
 
-.emotion-28 {
+.emotion-33 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -156,57 +165,62 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   padding-right: 0;
 }
 
-.emotion-29 {
+.emotion-34 {
   padding: 8px;
 }
 
 .emotion-45 {
+  height: 16px;
+  background-color: #191919;
+}
+
+.emotion-46 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   overflow: hidden;
   height: -webkit-fit-content;
-  height: -moz-fit-content;
+  height: -moz-content;
   height: fit-content;
 }
 
-.emotion-44 {
+.emotion-47 {
   width: 100%;
 }
 
 <div
-  className="emotion-46"
+  className="emotion-0"
 >
   <div
-    className="emotion-43"
+    className="emotion-1"
   >
     <details
-      className="emotion-6"
+      className="emotion-2"
       open={false}
     >
       <summary
         aria-label="gcp-video-label-detection"
-        className="emotion-5"
+        className="emotion-3"
         onClick={[Function]}
       >
         <div
           className="emotion-4"
         >
           <div
-            className="emotion-0"
+            className="emotion-5"
           />
           <svg
-            className="emotion-1"
+            className="emotion-6"
             data-file-name="chevron.svg"
             height={20}
           />
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             gcp-video-label-detection
           </div>
           <div
-            className="emotion-3"
+            className="emotion-8"
           >
             (2)
           </div>
@@ -214,32 +228,32 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-6"
+      className="emotion-2"
       open={false}
     >
       <summary
         aria-label="gcp-video-logo-detection"
-        className="emotion-5"
+        className="emotion-3"
         onClick={[Function]}
       >
         <div
           className="emotion-4"
         >
           <div
-            className="emotion-7"
+            className="emotion-12"
           />
           <svg
-            className="emotion-8"
+            className="emotion-13"
             data-file-name="chevron.svg"
             height={20}
           />
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             gcp-video-logo-detection
           </div>
           <div
-            className="emotion-3"
+            className="emotion-8"
           >
             (3)
           </div>
@@ -247,32 +261,32 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-6"
+      className="emotion-2"
       open={false}
     >
       <summary
         aria-label="gcp-video-object-detection"
-        className="emotion-5"
+        className="emotion-3"
         onClick={[Function]}
       >
         <div
           className="emotion-4"
         >
           <div
-            className="emotion-14"
+            className="emotion-19"
           />
           <svg
-            className="emotion-15"
+            className="emotion-20"
             data-file-name="chevron.svg"
             height={20}
           />
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             gcp-video-object-detection
           </div>
           <div
-            className="emotion-3"
+            className="emotion-8"
           >
             (3)
           </div>
@@ -280,32 +294,32 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-6"
+      className="emotion-2"
       open={true}
     >
       <summary
         aria-label="gcp-video-text-detection"
-        className="emotion-5"
+        className="emotion-3"
         onClick={[Function]}
       >
         <div
           className="emotion-4"
         >
           <div
-            className="emotion-21"
+            className="emotion-26"
           />
           <svg
-            className="emotion-22"
+            className="emotion-27"
             data-file-name="chevron.svg"
             height={20}
           />
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             gcp-video-text-detection
           </div>
           <div
-            className="emotion-3"
+            className="emotion-8"
           >
             (3)
           </div>
@@ -313,63 +327,63 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
       </summary>
       <div>
         <div
-          className="emotion-31"
+          className="emotion-30"
         >
           <div
-            className="emotion-27"
+            className="emotion-31"
           />
           <div
-            className="emotion-30"
+            className="emotion-32"
           >
             <div
-              className="emotion-28"
+              className="emotion-33"
             >
               Gh st
             </div>
             <div
-              className="emotion-29"
+              className="emotion-34"
             >
               (3)
             </div>
           </div>
         </div>
         <div
-          className="emotion-31"
+          className="emotion-30"
         >
           <div
-            className="emotion-27"
+            className="emotion-31"
           />
           <div
-            className="emotion-30"
+            className="emotion-32"
           >
             <div
-              className="emotion-28"
+              className="emotion-33"
             >
               Lemon
             </div>
             <div
-              className="emotion-29"
+              className="emotion-34"
             >
               (1)
             </div>
           </div>
         </div>
         <div
-          className="emotion-31"
+          className="emotion-30"
         >
           <div
-            className="emotion-27"
+            className="emotion-31"
           />
           <div
-            className="emotion-30"
+            className="emotion-32"
           >
             <div
-              className="emotion-28"
+              className="emotion-33"
             >
               Busters
             </div>
             <div
-              className="emotion-29"
+              className="emotion-34"
             >
               (3)
             </div>
@@ -377,12 +391,15 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
         </div>
       </div>
     </details>
+    <div
+      className="emotion-45"
+    />
   </div>
   <div
-    className="emotion-45"
+    className="emotion-46"
   >
     <div
-      className="emotion-44"
+      className="emotion-47"
     >
       <TimelineTracks
         color="#a03dc7"
@@ -659,7 +676,7 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
 `;
 
 exports[`<TimelineTimelines /> should render properly with Search Highlights Only 1`] = `
-.emotion-15 {
+.emotion-0 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -672,26 +689,28 @@ exports[`<TimelineTimelines /> should render properly with Search Highlights Onl
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-12 {
+.emotion-1 {
   width: 200px;
-}
-
-.emotion-11 {
-  background-color: #212121;
-  border-bottom: 1px solid #3b3b3b;
+  z-index: 20;
+  background-color: #191919;
   border-right: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
+.emotion-2 {
+  background-color: #212121;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-3 {
   list-style-type: none;
   background-color: #212121;
 }
 
-.emotion-5::-webkit-details-marker {
+.emotion-3::-webkit-details-marker {
   display: none;
 }
 
-.emotion-5:hover {
+.emotion-3:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
@@ -703,7 +722,24 @@ exports[`<TimelineTimelines /> should render properly with Search Highlights Onl
   display: flex;
 }
 
-.emotion-2 {
+.emotion-5 {
+  width: 3px;
+  background-color: #009f22;
+  margin-right: 8px;
+}
+
+.emotion-6 {
+  color: #009f22;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -714,36 +750,23 @@ exports[`<TimelineTimelines /> should render properly with Search Highlights Onl
   padding-right: 0;
 }
 
-.emotion-3 {
+.emotion-8 {
   padding: 8px;
 }
 
-.emotion-0 {
-  width: 3px;
-  background-color: #009f22;
-  margin-right: 8px;
-}
-
-.emotion-1 {
-  color: #009f22;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.emotion-10 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-6 {
+.emotion-10 {
   width: 3px;
   background-color: #009f22;
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -754,7 +777,7 @@ exports[`<TimelineTimelines /> should render properly with Search Highlights Onl
   overflow: hidden;
 }
 
-.emotion-7 {
+.emotion-12 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -766,57 +789,62 @@ exports[`<TimelineTimelines /> should render properly with Search Highlights Onl
   padding-right: 0;
 }
 
-.emotion-8 {
+.emotion-13 {
   padding: 8px;
 }
 
 .emotion-14 {
+  height: 16px;
+  background-color: #191919;
+}
+
+.emotion-15 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   overflow: hidden;
   height: -webkit-fit-content;
-  height: -moz-fit-content;
+  height: -moz-content;
   height: fit-content;
 }
 
-.emotion-13 {
+.emotion-16 {
   width: 100%;
 }
 
 <div
-  className="emotion-15"
+  className="emotion-0"
 >
   <div
-    className="emotion-12"
+    className="emotion-1"
   >
     <details
-      className="emotion-11"
+      className="emotion-2"
       open={true}
     >
       <summary
         aria-label="gcp-video-text-detection"
-        className="emotion-5"
+        className="emotion-3"
         onClick={[Function]}
       >
         <div
           className="emotion-4"
         >
           <div
-            className="emotion-0"
+            className="emotion-5"
           />
           <svg
-            className="emotion-1"
+            className="emotion-6"
             data-file-name="chevron.svg"
             height={20}
           />
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             gcp-video-text-detection
           </div>
           <div
-            className="emotion-3"
+            className="emotion-8"
           >
             (1)
           </div>
@@ -824,21 +852,21 @@ exports[`<TimelineTimelines /> should render properly with Search Highlights Onl
       </summary>
       <div>
         <div
-          className="emotion-10"
+          className="emotion-9"
         >
           <div
-            className="emotion-6"
+            className="emotion-10"
           />
           <div
-            className="emotion-9"
+            className="emotion-11"
           >
             <div
-              className="emotion-7"
+              className="emotion-12"
             >
               Lemon
             </div>
             <div
-              className="emotion-8"
+              className="emotion-13"
             >
               (1)
             </div>
@@ -846,12 +874,15 @@ exports[`<TimelineTimelines /> should render properly with Search Highlights Onl
         </div>
       </div>
     </details>
+    <div
+      className="emotion-14"
+    />
   </div>
   <div
-    className="emotion-14"
+    className="emotion-15"
   >
     <div
-      className="emotion-13"
+      className="emotion-16"
     >
       <TimelineTracks
         color="#009f22"

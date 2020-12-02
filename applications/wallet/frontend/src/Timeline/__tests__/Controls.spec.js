@@ -29,6 +29,7 @@ describe('<TimelineControls />', () => {
           zoom: 100,
           timelines: {},
         }}
+        setFollowPlayhead={noop}
       />,
     )
 
@@ -65,6 +66,7 @@ describe('<TimelineControls />', () => {
           zoom: 100,
           timelines: {},
         }}
+        setFollowPlayhead={noop}
       />,
     )
 
@@ -101,6 +103,7 @@ describe('<TimelineControls />', () => {
           zoom: 100,
           timelines: {},
         }}
+        setFollowPlayhead={noop}
       />,
     )
 
@@ -139,6 +142,7 @@ describe('<TimelineControls />', () => {
           zoom: 100,
           timelines: {},
         }}
+        setFollowPlayhead={noop}
       />,
     )
 

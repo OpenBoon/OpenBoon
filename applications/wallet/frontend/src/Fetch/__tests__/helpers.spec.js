@@ -9,7 +9,9 @@ import {
 describe('<Fetch /> helpers', () => {
   describe('fetcher()', () => {
     it('should fetch data', async () => {
-      fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
+      fetch.mockResponseOnce(JSON.stringify({ id: 12345 }), {
+        headers: { 'content-type': 'application/json' },
+      })
 
       const data = await fetcher('/url')
 
@@ -17,7 +19,10 @@ describe('<Fetch /> helpers', () => {
     })
 
     it('should return the raw response in case of error', async () => {
-      fetch.mockResponseOnce(null, { status: 500 })
+      fetch.mockResponseOnce(null, {
+        status: 500,
+        headers: { 'content-type': 'application/json' },
+      })
 
       try {
         await fetcher('/url')
@@ -30,18 +35,30 @@ describe('<Fetch /> helpers', () => {
       }
     })
 
-    it('should return the raw response if its not a json', async () => {
-      fetch.mockResponseOnce(null, { status: 200 })
+    it('should return the text response if its a plain text response', async () => {
+      fetch.mockResponseOnce('text response', {
+        status: 200,
+        headers: { 'content-type': 'text/plain' },
+      })
 
-      try {
-        await fetcher('/url')
-      } catch (response) {
-        expect(response.status).toBe(200)
+      const data = await fetcher('/url')
 
-        expect(response.statusText).toBe('Ok')
+      expect(data).toEqual('text response')
+    })
 
-        expect(response).toMatchSnapshot()
-      }
+    it('should return the raw response if its neither text nor json', async () => {
+      fetch.mockResponseOnce(null, {
+        status: 200,
+        headers: { 'content-type': 'image/jpeg' },
+      })
+
+      const response = await fetcher('/url')
+
+      expect(response.status).toBe(200)
+
+      expect(response.statusText).toBe('OK')
+
+      expect(response).toMatchSnapshot()
     })
 
     it('should logout the user', async () => {
@@ -49,7 +66,10 @@ describe('<Fetch /> helpers', () => {
 
       require('swr').__setMockMutateFn(mockMutate)
 
-      fetch.mockResponseOnce(null, { status: 401 })
+      fetch.mockResponseOnce(null, {
+        status: 401,
+        headers: { 'content-type': 'application/json' },
+      })
 
       try {
         await fetcher('/url')

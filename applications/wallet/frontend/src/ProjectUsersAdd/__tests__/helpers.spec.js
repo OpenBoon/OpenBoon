@@ -9,7 +9,9 @@ describe('<ProjectUsersAdd /> helpers', () => {
     it('should call the API', async () => {
       const mockFn = jest.fn()
 
-      fetch.mockResponseOnce(JSON.stringify(projectUsersAdd))
+      fetch.mockResponseOnce(JSON.stringify(projectUsersAdd), {
+        headers: { 'content-type': 'application/json' },
+      })
 
       await onSubmit({
         dispatch: mockFn,

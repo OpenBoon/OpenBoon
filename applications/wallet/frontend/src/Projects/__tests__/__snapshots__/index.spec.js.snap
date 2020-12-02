@@ -4,4 +4,378 @@ exports[`<Projects /> should not redirect if there is no project id and the rout
 
 exports[`<Projects /> should render Account Overview properly 1`] = `"Account Overview"`;
 
+exports[`<Projects /> should render an access denied screen if the url projectId is not of an authorized project 1`] = `
+.emotion-0 {
+  height: 100%;
+}
+
+.emotion-1:focus {
+  background-color: #3b3b3b;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  z-index: 101;
+  border-radius: 2px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #2e2e2e;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+.emotion-4 {
+  padding-left: 8px;
+  padding-right: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-5 {
+  margin-right: -12px;
+}
+
+.emotion-6 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #73b61c;
+  background-color: transparent;
+  padding-left: 16px;
+  height: 100%;
+}
+
+.emotion-7:hover,
+.emotion-7.focus-visible:focus,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #3b3b3b;
+}
+
+.emotion-7:hover {
+  cursor: pointer;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 0;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 28px;
+  color: #252525;
+  background-color: #808080;
+  font-weight: 700;
+}
+
+.emotion-10 {
+  margin-left: 8px;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
+}
+
+.emotion-11 {
+  margin-top: 44px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 32px;
+  height: calc(100vh - 44px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-12 {
+  height: 100%;
+}
+
+.emotion-13 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #252525;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.emotion-14 {
+  padding-top: 16px;
+  font-size: 32px;
+  line-height: 43px;
+  font-weight: 700;
+  max-width: 600px;
+}
+
+.emotion-15 {
+  font-size: 18px;
+  line-height: 21px;
+  color: #b3b3b3;
+  max-width: 600px;
+}
+
+.emotion-16 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited,
+.emotion-16 .noop {
+  background-color: #73b61c;
+}
+
+.emotion-16:hover,
+.emotion-16 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #96c955;
+}
+
+.emotion-16[aria-disabled=true],
+.emotion-16 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <a
+    className="emotion-1"
+    data-reach-skip-link=""
+    data-reach-skip-nav-link=""
+    href="#reach-skip-nav"
+  >
+    Skip to content
+  </a>
+  <div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-3"
+    >
+      <a
+        aria-label="Home"
+        className="emotion-4"
+        href="/"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        <svg
+          data-file-name="logo.svg"
+          height={30}
+        />
+      </a>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-6"
+      >
+        <button
+          aria-label="Open user menu"
+          className="emotion-7"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
+        >
+          <div
+            className="emotion-8"
+          >
+            <div
+              className="emotion-9"
+            >
+              JD
+            </div>
+            <svg
+              className="emotion-10"
+              color="#808080"
+              data-file-name="chevron.svg"
+              height={20}
+            />
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    data-reach-skip-nav-content=""
+    id="reach-skip-nav"
+  />
+  <div
+    className="emotion-11"
+  >
+    <div
+      className="emotion-12"
+    >
+      <div
+        className="emotion-13"
+      >
+        <svg
+          color="#808080"
+          data-file-name="lock.svg"
+          width={200}
+        />
+        <h3
+          className="emotion-14"
+        >
+          You do not have permission
+          <br />
+           to access this project.
+        </h3>
+        <p
+          className="emotion-15"
+        >
+          Please request permission from the project owner.
+        </p>
+        <div>
+          <a
+            className="emotion-16"
+            href="/"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+          >
+            Go to Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<Projects /> should render properly with projects 1`] = `"Hello World"`;

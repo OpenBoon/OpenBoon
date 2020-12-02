@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ProjectSwitcher /> should render properly with data 1`] = `
-.emotion-3 {
+.emotion-0 {
   position: relative;
   height: 100%;
 }
 
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -22,51 +22,39 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
+  background-color: transparent;
+  padding-left: 16px;
   height: 100%;
 }
 
-.emotion-2:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -74,25 +62,29 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-3 {
   margin-left: 8px;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
 }
 
 <div
-  className="emotion-3"
+  className="emotion-0"
 >
   <button
-    className="emotion-2"
+    className="emotion-1"
     onBlur={[Function]}
     onClick={[Function]}
     type="button"
   >
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       qwerty
       <svg
-        className="emotion-0"
+        className="emotion-3"
         data-file-name="chevron.svg"
         height={20}
       />
@@ -102,15 +94,15 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
 `;
 
 exports[`<ProjectSwitcher /> should render properly with data 2`] = `
-.emotion-6 {
+.emotion-0 {
   position: relative;
   height: 100%;
 }
 
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -123,51 +115,39 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
+  background-color: transparent;
+  padding-left: 16px;
   height: 100%;
 }
 
-.emotion-2:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -175,14 +155,15 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-3 {
   margin-left: 8px;
   -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-5 {
+.emotion-4 {
   position: absolute;
   z-index: 1;
   top: 100%;
@@ -195,7 +176,7 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   font-family: Roboto,Avenir,"sans-serif";
 }
 
-.emotion-5 ul {
+.emotion-4 ul {
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
@@ -203,17 +184,17 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   margin: 0;
 }
 
-.emotion-5 li {
+.emotion-4 li {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-3 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-5 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -221,77 +202,61 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  padding: 8px 16px;
-  font-weight: 400;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   border-radius: 0;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
 }
 
-.emotion-3:hover {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-3:hover,
-.emotion-3.focus-visible:focus {
   background-color: #4a4a4a;
 }
 
 <div
-  className="emotion-6"
+  className="emotion-0"
 >
   <button
-    className="emotion-2"
+    className="emotion-1"
     onBlur={[Function]}
     onClick={[Function]}
     type="button"
   >
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       qwerty
       <svg
-        className="emotion-0"
+        className="emotion-3"
         data-file-name="chevron.svg"
         height={20}
       />
     </div>
   </button>
   <div
-    className="emotion-5"
+    className="emotion-4"
   >
     <ul>
       <li>
         <a
-          className="emotion-3"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
           onBlur={[Function]}
           onClick={[Function]}
@@ -302,7 +267,7 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
       </li>
       <li>
         <a
-          className="emotion-3"
+          className="emotion-5"
           href="/e93cbadb-e5ae-4598-8395-4cf5b30c0e94/jobs"
           onBlur={[Function]}
           onClick={[Function]}
@@ -323,8 +288,8 @@ exports[`<ProjectSwitcher /> should render properly with one project 1`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;

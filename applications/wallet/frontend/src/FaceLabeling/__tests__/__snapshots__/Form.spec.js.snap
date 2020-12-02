@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FaceLabelingForm /> should render with no data 1`] = `
-.emotion-7 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -18,7 +18,7 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
   overflow: hidden;
 }
 
-.emotion-2 {
+.emotion-1 {
   padding: 16px;
   background-color: #191919;
   -webkit-flex: 1;
@@ -27,7 +27,7 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
   overflow: auto;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -39,14 +39,14 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-0 {
+.emotion-3 {
   max-height: 64px;
   width: 64px;
   object-fit: contain;
   margin-right: 16px;
 }
 
-.emotion-6 {
+.emotion-4 {
   padding: 8px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -57,72 +57,10 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-3 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-3,
-.emotion-3:hover,
-.emotion-3:visited {
-  background-color: #808080;
-}
-
-.emotion-3:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-3[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-4 {
-  width: 8px;
-  min-width: 8px;
-}
-
 .emotion-5 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -135,8 +73,8 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -148,45 +86,95 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-5,
 .emotion-5:hover,
-.emotion-5:visited {
+.emotion-5:visited,
+.emotion-5 .noop {
+  background-color: #808080;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-6 {
+  width: 8px;
+  min-width: 8px;
+}
+
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #73b61c;
 }
 
-.emotion-5:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-7"
+  className="emotion-0"
   method="post"
   onSubmit={[Function]}
 >
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <img
         alt={
@@ -197,7 +185,7 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
             0.584,
           ]
         }
-        className="emotion-0"
+        className="emotion-3"
         title={
           Array [
             0.38,
@@ -217,22 +205,22 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
     </div>
   </div>
   <div
-    className="emotion-6"
+    className="emotion-4"
   >
     <button
       aria-disabled={true}
-      className="emotion-3"
+      className="emotion-5"
       onClick={[Function]}
       type="button"
     >
       Cancel
     </button>
     <div
-      className="emotion-4"
+      className="emotion-6"
     />
     <button
       aria-disabled={true}
-      className="emotion-5"
+      className="emotion-7"
       onClick={[Function]}
       type="submit"
     >

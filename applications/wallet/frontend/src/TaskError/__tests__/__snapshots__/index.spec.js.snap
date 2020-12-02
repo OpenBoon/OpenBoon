@@ -2,7 +2,7 @@
 
 exports[`<TaskError /> should render properly with a fatal error 1`] = `
 Array [
-  .emotion-10 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -12,14 +12,14 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-0 {
+.emotion-2 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -29,13 +29,13 @@ Array [
   color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-1 {
+.emotion-3 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -45,7 +45,7 @@ Array [
   color: #808080;
 }
 
-.emotion-9 {
+.emotion-10 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -62,13 +62,13 @@ Array [
 }
 
 <div
-    className="emotion-10"
+    className="emotion-0"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <a
-        className="emotion-0"
+        className="emotion-2"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -76,16 +76,16 @@ Array [
         Job Queue
       </a>
       <span
-        className="emotion-1"
+        className="emotion-3"
       >
         /
       </span>
     </div>
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <a
-        className="emotion-0"
+        className="emotion-2"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -93,30 +93,30 @@ Array [
         Job Details
       </a>
       <span
-        className="emotion-1"
+        className="emotion-3"
       >
         /
       </span>
     </div>
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <a
-        className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/script"
+        className="emotion-2"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
         Task Details
       </a>
       <span
-        className="emotion-1"
+        className="emotion-3"
       >
         /
       </span>
     </div>
     <h2
-      className="emotion-9"
+      className="emotion-10"
     >
       Error Details
     </h2>
@@ -134,7 +134,7 @@ Array [
     Job: 
     Applying modules:  to gs://zorroa-dev-data
   </h3>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -142,20 +142,20 @@ Array [
   padding-top: 32px;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding-right: 8px;
 }
 
-.emotion-1 {
+.emotion-2 {
   color: #c92300;
   font-weight: 700;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <svg
         color="#c92300"
@@ -164,42 +164,42 @@ Array [
       />
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       Error Type: 
       Fatal
     </div>
   </div>,
-  .emotion-2 {
+  .emotion-0 {
   padding-top: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-weight: 700;
   color: #ffffff;
   padding-bottom: 4px;
 }
 
-.emotion-1 {
+.emotion-2 {
   color: #b3b3b3;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       Error Message
       :
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
   </div>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -213,7 +213,7 @@ Array [
   height: 100%;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -229,11 +229,11 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -242,7 +242,6 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 200px;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -253,44 +252,34 @@ Array [
   flex-direction: row;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   margin-bottom: 4px;
   color: #ffffff;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
     >
       <button
         aria-label="Toggle Dropdown Menu"
-        className="emotion-0"
+        className="emotion-2"
         onBlur={[Function]}
         onClick={[Function]}
         type="button"
@@ -303,52 +292,53 @@ Array [
       </button>
     </div>
   </div>,
-  .emotion-2 {
-  padding-top: 16px;
-}
-
-.emotion-0 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-1 {
-  color: #b3b3b3;
-}
-
-.emotion-25 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   padding-top: 16px;
 }
 
-.emotion-12 {
+.emotion-1 {
   padding-right: 64px;
 }
 
+.emotion-2 {
+  padding-top: 16px;
+}
+
+.emotion-3 {
+  font-weight: 700;
+  color: #ffffff;
+  padding-bottom: 4px;
+}
+
+.emotion-4 {
+  color: #b3b3b3;
+}
+
 <div
-    className="emotion-25"
+    className="emotion-0"
   >
     <div
-      className="emotion-12"
+      className="emotion-1"
     >
       <div
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Job ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           85f0d094-0631-104b-a57e-ce490d54f27a
         </div>
@@ -357,13 +347,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Task ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           d2bb6ad3-54d0-11ea-9250-32240f207bfa
         </div>
@@ -372,13 +362,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Error ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           85f0d09b-0631-104b-a57e-ce490d54f27a
         </div>
@@ -387,13 +377,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Host ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           not-implemented
         </div>
@@ -404,13 +394,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Phase
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           index
         </div>
@@ -419,13 +409,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           File Path
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           gs://zorroa-dev-data/image/cat.gif
         </div>
@@ -434,13 +424,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Processor
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           unknown
         </div>
@@ -449,20 +439,20 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Time of Error
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           2020-02-21 17:37:49
         </div>
       </div>
     </div>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -471,7 +461,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -482,12 +472,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -506,22 +496,22 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
 <nav
-    className="emotion-3"
+    className="emotion-0"
   >
     <ul
-      className="emotion-2"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -531,11 +521,11 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-1 {
+  .emotion-0 {
   padding-bottom: 32px;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-family: Roboto Mono;
   padding: 16px;
   background-color: #191919;
@@ -543,10 +533,10 @@ Array [
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       "message": 
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
@@ -599,7 +589,7 @@ Array [
 
 exports[`<TaskError /> should render properly with a non-fatal error 1`] = `
 Array [
-  .emotion-10 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -609,14 +599,14 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-0 {
+.emotion-2 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -626,13 +616,13 @@ Array [
   color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-1 {
+.emotion-3 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -642,7 +632,7 @@ Array [
   color: #808080;
 }
 
-.emotion-9 {
+.emotion-10 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -659,13 +649,13 @@ Array [
 }
 
 <div
-    className="emotion-10"
+    className="emotion-0"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <a
-        className="emotion-0"
+        className="emotion-2"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -673,16 +663,16 @@ Array [
         Job Queue
       </a>
       <span
-        className="emotion-1"
+        className="emotion-3"
       >
         /
       </span>
     </div>
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <a
-        className="emotion-0"
+        className="emotion-2"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -690,30 +680,30 @@ Array [
         Job Details
       </a>
       <span
-        className="emotion-1"
+        className="emotion-3"
       >
         /
       </span>
     </div>
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <a
-        className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/script"
+        className="emotion-2"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
         Task Details
       </a>
       <span
-        className="emotion-1"
+        className="emotion-3"
       >
         /
       </span>
     </div>
     <h2
-      className="emotion-9"
+      className="emotion-10"
     >
       Error Details
     </h2>
@@ -731,7 +721,7 @@ Array [
     Job: 
     Applying modules:  to gs://zorroa-dev-data
   </h3>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -739,20 +729,20 @@ Array [
   padding-top: 32px;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding-right: 8px;
 }
 
-.emotion-1 {
+.emotion-2 {
   color: #d6680b;
   font-weight: 700;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <svg
         color="#d6680b"
@@ -761,42 +751,42 @@ Array [
       />
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       Error Type: 
       Warning
     </div>
   </div>,
-  .emotion-2 {
+  .emotion-0 {
   padding-top: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-weight: 700;
   color: #ffffff;
   padding-bottom: 4px;
 }
 
-.emotion-1 {
+.emotion-2 {
   color: #b3b3b3;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       Error Message
       :
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
   </div>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -810,7 +800,7 @@ Array [
   height: 100%;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -826,11 +816,11 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -839,7 +829,6 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 200px;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -850,44 +839,34 @@ Array [
   flex-direction: row;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   margin-bottom: 4px;
   color: #ffffff;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
     >
       <button
         aria-label="Toggle Dropdown Menu"
-        className="emotion-0"
+        className="emotion-2"
         onBlur={[Function]}
         onClick={[Function]}
         type="button"
@@ -900,52 +879,53 @@ Array [
       </button>
     </div>
   </div>,
-  .emotion-2 {
-  padding-top: 16px;
-}
-
-.emotion-0 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-1 {
-  color: #b3b3b3;
-}
-
-.emotion-25 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   padding-top: 16px;
 }
 
-.emotion-12 {
+.emotion-1 {
   padding-right: 64px;
 }
 
+.emotion-2 {
+  padding-top: 16px;
+}
+
+.emotion-3 {
+  font-weight: 700;
+  color: #ffffff;
+  padding-bottom: 4px;
+}
+
+.emotion-4 {
+  color: #b3b3b3;
+}
+
 <div
-    className="emotion-25"
+    className="emotion-0"
   >
     <div
-      className="emotion-12"
+      className="emotion-1"
     >
       <div
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Job ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           85f0d094-0631-104b-a57e-ce490d54f27a
         </div>
@@ -954,13 +934,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Task ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           d2bb6ad3-54d0-11ea-9250-32240f207bfa
         </div>
@@ -969,13 +949,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Error ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           85f0d09b-0631-104b-a57e-ce490d54f27a
         </div>
@@ -984,13 +964,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Host ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           not-implemented
         </div>
@@ -1001,13 +981,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Phase
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           index
         </div>
@@ -1016,13 +996,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           File Path
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           gs://zorroa-dev-data/image/cat.gif
         </div>
@@ -1031,13 +1011,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Processor
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           unknown
         </div>
@@ -1046,20 +1026,20 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Time of Error
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           2020-02-21 17:37:49
         </div>
       </div>
     </div>
   </div>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -1068,7 +1048,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -1079,12 +1059,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -1103,12 +1083,12 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2 {
+.emotion-5 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -1128,23 +1108,23 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -1153,10 +1133,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a/asset"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -1166,11 +1146,11 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-1 {
+  .emotion-0 {
   padding-bottom: 32px;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-family: Roboto Mono;
   padding: 16px;
   background-color: #191919;
@@ -1178,10 +1158,10 @@ Array [
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       "message": 
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
@@ -1234,7 +1214,7 @@ Array [
 
 exports[`<TaskError /> should render properly with a non-fatal error 2`] = `
 Array [
-  .emotion-10 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1244,14 +1224,14 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-0 {
+.emotion-2 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -1261,13 +1241,13 @@ Array [
   color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-1 {
+.emotion-3 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -1277,7 +1257,7 @@ Array [
   color: #808080;
 }
 
-.emotion-9 {
+.emotion-10 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -1294,13 +1274,13 @@ Array [
 }
 
 <div
-    className="emotion-10"
+    className="emotion-0"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <a
-        className="emotion-0"
+        className="emotion-2"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -1308,16 +1288,16 @@ Array [
         Job Queue
       </a>
       <span
-        className="emotion-1"
+        className="emotion-3"
       >
         /
       </span>
     </div>
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <a
-        className="emotion-0"
+        className="emotion-2"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -1325,30 +1305,30 @@ Array [
         Job Details
       </a>
       <span
-        className="emotion-1"
+        className="emotion-3"
       >
         /
       </span>
     </div>
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <a
-        className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/script"
+        className="emotion-2"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
         Task Details
       </a>
       <span
-        className="emotion-1"
+        className="emotion-3"
       >
         /
       </span>
     </div>
     <h2
-      className="emotion-9"
+      className="emotion-10"
     >
       Error Details
     </h2>
@@ -1366,7 +1346,7 @@ Array [
     Job: 
     Applying modules:  to gs://zorroa-dev-data
   </h3>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1374,20 +1354,20 @@ Array [
   padding-top: 32px;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding-right: 8px;
 }
 
-.emotion-1 {
+.emotion-2 {
   color: #d6680b;
   font-weight: 700;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <svg
         color="#d6680b"
@@ -1396,42 +1376,42 @@ Array [
       />
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       Error Type: 
       Warning
     </div>
   </div>,
-  .emotion-2 {
+  .emotion-0 {
   padding-top: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-weight: 700;
   color: #ffffff;
   padding-bottom: 4px;
 }
 
-.emotion-1 {
+.emotion-2 {
   color: #b3b3b3;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       Error Message
       :
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
   </div>,
-  .emotion-4 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1440,12 +1420,12 @@ Array [
   padding-top: 24px;
 }
 
-.emotion-3 {
+.emotion-1 {
   position: relative;
   height: 100%;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1461,11 +1441,11 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1474,7 +1454,6 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 200px;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -1485,36 +1464,26 @@ Array [
   flex-direction: row;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   margin-bottom: 4px;
   color: #ffffff;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-2 {
+.emotion-3 {
   position: absolute;
   z-index: 1;
   top: 100%;
@@ -1526,7 +1495,7 @@ Array [
   font-family: Roboto,Avenir,"sans-serif";
 }
 
-.emotion-2 ul {
+.emotion-3 ul {
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
@@ -1534,17 +1503,17 @@ Array [
   margin: 0;
 }
 
-.emotion-2 li {
+.emotion-3 li {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1552,59 +1521,43 @@ Array [
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  padding: 8px 16px;
-  font-weight: 400;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   border-radius: 0;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
 }
 
-.emotion-1:hover {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   background-color: #4a4a4a;
 }
 
 <div
-    className="emotion-4"
+    className="emotion-0"
   >
     <div
-      className="emotion-3"
+      className="emotion-1"
     >
       <button
         aria-label="Toggle Dropdown Menu"
-        className="emotion-0"
+        className="emotion-2"
         onBlur={[Function]}
         onClick={[Function]}
         type="button"
@@ -1616,13 +1569,13 @@ Array [
         />
       </button>
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <div>
           <ul>
             <li>
               <button
-                className="emotion-1"
+                className="emotion-4"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -1635,52 +1588,53 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-2 {
-  padding-top: 16px;
-}
-
-.emotion-0 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-1 {
-  color: #b3b3b3;
-}
-
-.emotion-25 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   padding-top: 16px;
 }
 
-.emotion-12 {
+.emotion-1 {
   padding-right: 64px;
 }
 
+.emotion-2 {
+  padding-top: 16px;
+}
+
+.emotion-3 {
+  font-weight: 700;
+  color: #ffffff;
+  padding-bottom: 4px;
+}
+
+.emotion-4 {
+  color: #b3b3b3;
+}
+
 <div
-    className="emotion-25"
+    className="emotion-0"
   >
     <div
-      className="emotion-12"
+      className="emotion-1"
     >
       <div
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Job ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           85f0d094-0631-104b-a57e-ce490d54f27a
         </div>
@@ -1689,13 +1643,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Task ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           d2bb6ad3-54d0-11ea-9250-32240f207bfa
         </div>
@@ -1704,13 +1658,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Error ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           85f0d09b-0631-104b-a57e-ce490d54f27a
         </div>
@@ -1719,13 +1673,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Host ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           not-implemented
         </div>
@@ -1736,13 +1690,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Phase
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           index
         </div>
@@ -1751,13 +1705,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           File Path
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           gs://zorroa-dev-data/image/cat.gif
         </div>
@@ -1766,13 +1720,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Processor
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           unknown
         </div>
@@ -1781,20 +1735,20 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Time of Error
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           2020-02-21 17:37:49
         </div>
       </div>
     </div>
   </div>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -1803,7 +1757,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -1814,12 +1768,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -1838,12 +1792,12 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2 {
+.emotion-5 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -1863,23 +1817,23 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -1888,10 +1842,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a/asset"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -1901,11 +1855,11 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-1 {
+  .emotion-0 {
   padding-bottom: 32px;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-family: Roboto Mono;
   padding: 16px;
   background-color: #191919;
@@ -1913,10 +1867,10 @@ Array [
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       "message": 
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
@@ -1969,7 +1923,7 @@ Array [
 
 exports[`<TaskError /> should render properly with an asset 1`] = `
 Array [
-  .emotion-10 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1979,14 +1933,14 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-0 {
+.emotion-2 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -1996,13 +1950,13 @@ Array [
   color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-1 {
+.emotion-3 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -2012,7 +1966,7 @@ Array [
   color: #808080;
 }
 
-.emotion-9 {
+.emotion-10 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -2029,13 +1983,13 @@ Array [
 }
 
 <div
-    className="emotion-10"
+    className="emotion-0"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <a
-        className="emotion-0"
+        className="emotion-2"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -2043,16 +1997,16 @@ Array [
         Job Queue
       </a>
       <span
-        className="emotion-1"
+        className="emotion-3"
       >
         /
       </span>
     </div>
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <a
-        className="emotion-0"
+        className="emotion-2"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -2060,30 +2014,30 @@ Array [
         Job Details
       </a>
       <span
-        className="emotion-1"
+        className="emotion-3"
       >
         /
       </span>
     </div>
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <a
-        className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/script"
+        className="emotion-2"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
         Task Details
       </a>
       <span
-        className="emotion-1"
+        className="emotion-3"
       >
         /
       </span>
     </div>
     <h2
-      className="emotion-9"
+      className="emotion-10"
     >
       Error Details
     </h2>
@@ -2101,7 +2055,7 @@ Array [
     Job: 
     Applying modules:  to gs://zorroa-dev-data
   </h3>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2109,20 +2063,20 @@ Array [
   padding-top: 32px;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding-right: 8px;
 }
 
-.emotion-1 {
+.emotion-2 {
   color: #c92300;
   font-weight: 700;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <svg
         color="#c92300"
@@ -2131,42 +2085,42 @@ Array [
       />
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       Error Type: 
       Fatal
     </div>
   </div>,
-  .emotion-2 {
+  .emotion-0 {
   padding-top: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-weight: 700;
   color: #ffffff;
   padding-bottom: 4px;
 }
 
-.emotion-1 {
+.emotion-2 {
   color: #b3b3b3;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       Error Message
       :
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
   </div>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2180,7 +2134,7 @@ Array [
   height: 100%;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2196,11 +2150,11 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -2209,7 +2163,6 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 200px;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -2220,44 +2173,34 @@ Array [
   flex-direction: row;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   margin-bottom: 4px;
   color: #ffffff;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
     >
       <button
         aria-label="Toggle Dropdown Menu"
-        className="emotion-0"
+        className="emotion-2"
         onBlur={[Function]}
         onClick={[Function]}
         type="button"
@@ -2270,52 +2213,53 @@ Array [
       </button>
     </div>
   </div>,
-  .emotion-2 {
-  padding-top: 16px;
-}
-
-.emotion-0 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-1 {
-  color: #b3b3b3;
-}
-
-.emotion-25 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   padding-top: 16px;
 }
 
-.emotion-12 {
+.emotion-1 {
   padding-right: 64px;
 }
 
+.emotion-2 {
+  padding-top: 16px;
+}
+
+.emotion-3 {
+  font-weight: 700;
+  color: #ffffff;
+  padding-bottom: 4px;
+}
+
+.emotion-4 {
+  color: #b3b3b3;
+}
+
 <div
-    className="emotion-25"
+    className="emotion-0"
   >
     <div
-      className="emotion-12"
+      className="emotion-1"
     >
       <div
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Job ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           85f0d094-0631-104b-a57e-ce490d54f27a
         </div>
@@ -2324,13 +2268,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Task ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           d2bb6ad3-54d0-11ea-9250-32240f207bfa
         </div>
@@ -2339,13 +2283,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Error ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           85f0d09b-0631-104b-a57e-ce490d54f27a
         </div>
@@ -2354,13 +2298,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Host ID
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           not-implemented
         </div>
@@ -2371,13 +2315,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Phase
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           index
         </div>
@@ -2386,13 +2330,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           File Path
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           gs://zorroa-dev-data/image/cat.gif
         </div>
@@ -2401,13 +2345,13 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Processor
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           unknown
         </div>
@@ -2416,20 +2360,20 @@ Array [
         className="emotion-2"
       >
         <div
-          className="emotion-0"
+          className="emotion-3"
         >
           Time of Error
           :
         </div>
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           2020-02-21 17:37:49
         </div>
       </div>
     </div>
   </div>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -2438,7 +2382,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -2449,36 +2393,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-2 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -2498,23 +2418,47 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
+.emotion-5 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -2523,10 +2467,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a/asset"
           onClick={[Function]}
           onMouseEnter={[Function]}

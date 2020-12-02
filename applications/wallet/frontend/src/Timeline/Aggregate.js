@@ -37,7 +37,8 @@ const TimelineAggregate = ({
   )
 
   const aggregateRef = useScroller({
-    namespace: 'timeline',
+    namespace: 'Timeline',
+    isWheelEmitter: true,
     isWheelListener: true,
     isScrollEmitter: true,
     isScrollListener: true,
@@ -52,7 +53,13 @@ const TimelineAggregate = ({
         height: constants.timeline.rulerRowHeight,
       }}
     >
-      <div css={{ width: settings.width }}>
+      <div
+        css={{
+          width: settings.width,
+          zIndex: zIndex.timeline.menu,
+          marginBottom: -spacing.hairline,
+        }}
+      >
         <Menu
           open="bottom-center"
           button={({ onBlur, onClick, isMenuOpen }) => (

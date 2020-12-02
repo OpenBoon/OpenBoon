@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AccountPasswordForm /> should render properly 1`] = `
-.emotion-25 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-18 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -22,44 +22,48 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   padding-right: 0;
 }
 
-.emotion-3 {
+.emotion-2 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-3 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-2 {
+.emotion-4 {
   position: relative;
 }
 
-.emotion-1 {
+.emotion-5 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-5:focus,
+.emotion-5 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
-.emotion-1:hover {
+.emotion-5:hover,
+.emotion-5 .noop {
   border: 2px solid #ffffff;
 }
 
-.emotion-1:focus {
-  color: #000000;
-  background-color: #ffffff;
+.emotion-6 {
+  padding-top: 8px;
 }
 
 .emotion-17 {
@@ -76,7 +80,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   margin-right: 16px;
 }
 
-.emotion-15 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -92,8 +96,8 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -107,30 +111,27 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-15,
-.emotion-15:hover,
-.emotion-15:visited {
+.emotion-18,
+.emotion-18:hover,
+.emotion-18:visited,
+.emotion-18 .noop {
   background-color: #808080;
 }
 
-.emotion-15:hover {
+.emotion-18:hover,
+.emotion-18 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-16 {
+.emotion-19 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -146,8 +147,8 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -161,55 +162,52 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-16:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-16[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-16,
-.emotion-16:hover,
-.emotion-16:visited {
+.emotion-19,
+.emotion-19:hover,
+.emotion-19:visited,
+.emotion-19 .noop {
   background-color: #73b61c;
 }
 
-.emotion-16:hover {
+.emotion-19:hover,
+.emotion-19 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-16[aria-disabled=true] {
+.emotion-19[aria-disabled=true],
+.emotion-19 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-24 {
+.emotion-20 {
   padding-top: 24px;
   padding-left: 48px;
 }
 
-.emotion-23 {
+.emotion-21 {
   width: 470px;
   border: 1px solid #3b3b3b;
   border-radius: 2px;
   padding: 32px;
 }
 
-.emotion-19 {
+.emotion-22 {
   color: #ffffff;
   font-weight: 500;
   padding-bottom: 4px;
 }
 
-.emotion-20 {
+.emotion-23 {
   color: #808080;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-21 {
+.emotion-25 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -225,11 +223,11 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -238,56 +236,52 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
-.emotion-21:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-21[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-21,
-.emotion-21:hover,
-.emotion-21:visited {
+.emotion-25,
+.emotion-25:hover,
+.emotion-25:visited,
+.emotion-25 .noop {
   background-color: #73b61c;
 }
 
-.emotion-21:hover {
+.emotion-25:hover,
+.emotion-25 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-25[aria-disabled=true],
+.emotion-25 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-25"
+  className="emotion-0"
 >
   <form
     action=""
-    className="emotion-18"
+    className="emotion-1"
     method="post"
     onSubmit={[Function]}
   >
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <label
-        className="emotion-0"
+        className="emotion-3"
         htmlFor="currentPassword"
       >
         Current Password
       </label>
       <div
-        className="emotion-2"
+        className="emotion-4"
       >
         <input
           autoFocus={true}
-          className="emotion-1"
+          className="emotion-5"
           disabled={false}
           id="currentPassword"
           name="currentPassword"
@@ -297,25 +291,25 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
          
       </div>
     </div>
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <label
-        className="emotion-0"
+        className="emotion-3"
         htmlFor="newPassword"
       >
         New Password
       </label>
       <div
-        className="emotion-2"
+        className="emotion-4"
       >
         <input
-          className="emotion-1"
+          className="emotion-5"
           disabled={false}
           id="newPassword"
           name="newPassword"
@@ -325,25 +319,25 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
          
       </div>
     </div>
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <label
-        className="emotion-0"
+        className="emotion-3"
         htmlFor="confirmPassword"
       >
         Confirm Password
       </label>
       <div
-        className="emotion-2"
+        className="emotion-4"
       >
         <input
-          className="emotion-1"
+          className="emotion-5"
           disabled={false}
           id="confirmPassword"
           name="confirmPassword"
@@ -353,7 +347,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
          
       </div>
@@ -362,7 +356,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
       className="emotion-17"
     >
       <button
-        className="emotion-15"
+        className="emotion-18"
         onClick={[Function]}
         type="button"
       >
@@ -370,7 +364,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
       </button>
       <button
         aria-disabled={true}
-        className="emotion-16"
+        className="emotion-19"
         onClick={[Function]}
         type="submit"
       >
@@ -379,19 +373,19 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
     </div>
   </form>
   <div
-    className="emotion-24"
+    className="emotion-20"
   >
     
     <div
-      className="emotion-23"
+      className="emotion-21"
     >
       <div
-        className="emotion-19"
+        className="emotion-22"
       >
         Did you sign in with Google or another service?
       </div>
       <div
-        className="emotion-20"
+        className="emotion-23"
       >
         If so, you may not have a Zorroa password. You can create one by resetting the password and checking your email for instructions.
       </div>
@@ -399,7 +393,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
         className="emotion-17"
       >
         <button
-          className="emotion-21"
+          className="emotion-25"
           onClick={[Function]}
           type="button"
         >
@@ -413,7 +407,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 
 exports[`<AccountPasswordForm /> should render properly 2`] = `
 Array [
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -436,7 +430,7 @@ Array [
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -446,7 +440,7 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-0 a {
+.emotion-2 a {
   color: #ffffff;
   background-color: #009f22;
   padding: 6px;
@@ -456,14 +450,14 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-0 a:hover {
+.emotion-2 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #00791a;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
@@ -474,14 +468,14 @@ Array [
         height={20}
       />
       <div
-        className="emotion-0"
+        className="emotion-2"
         role="alert"
       >
         New password saved.
       </div>
     </div>
   </div>,
-  .emotion-1 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -490,12 +484,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-1 button,
-.emotion-1 a {
+.emotion-0 button,
+.emotion-0 a {
   margin-right: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -511,8 +505,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -526,34 +520,31 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited,
+.emotion-1 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-1:hover,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <button
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="button"
     >
@@ -564,14 +555,14 @@ Array [
 `;
 
 exports[`<AccountPasswordForm /> should render properly 3`] = `
-.emotion-25 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-18 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -585,44 +576,48 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   padding-right: 0;
 }
 
-.emotion-3 {
+.emotion-2 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-3 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-2 {
+.emotion-4 {
   position: relative;
 }
 
-.emotion-1 {
+.emotion-5 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-5:focus,
+.emotion-5 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
-.emotion-1:hover {
+.emotion-5:hover,
+.emotion-5 .noop {
   border: 2px solid #ffffff;
 }
 
-.emotion-1:focus {
-  color: #000000;
-  background-color: #ffffff;
+.emotion-6 {
+  padding-top: 8px;
 }
 
 .emotion-17 {
@@ -639,7 +634,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   margin-right: 16px;
 }
 
-.emotion-15 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -655,8 +650,8 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -670,30 +665,27 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   background-color: transparent;
 }
 
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-15,
-.emotion-15:hover,
-.emotion-15:visited {
+.emotion-18,
+.emotion-18:hover,
+.emotion-18:visited,
+.emotion-18 .noop {
   background-color: #808080;
 }
 
-.emotion-15:hover {
+.emotion-18:hover,
+.emotion-18 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-16 {
+.emotion-19 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -709,8 +701,8 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -724,55 +716,52 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   background-color: transparent;
 }
 
-.emotion-16:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-16[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-16,
-.emotion-16:hover,
-.emotion-16:visited {
+.emotion-19,
+.emotion-19:hover,
+.emotion-19:visited,
+.emotion-19 .noop {
   background-color: #73b61c;
 }
 
-.emotion-16:hover {
+.emotion-19:hover,
+.emotion-19 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-16[aria-disabled=true] {
+.emotion-19[aria-disabled=true],
+.emotion-19 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-24 {
+.emotion-20 {
   padding-top: 24px;
   padding-left: 48px;
 }
 
-.emotion-23 {
+.emotion-21 {
   width: 470px;
   border: 1px solid #3b3b3b;
   border-radius: 2px;
   padding: 32px;
 }
 
-.emotion-19 {
+.emotion-22 {
   color: #ffffff;
   font-weight: 500;
   padding-bottom: 4px;
 }
 
-.emotion-20 {
+.emotion-23 {
   color: #808080;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-21 {
+.emotion-25 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -788,11 +777,11 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -801,56 +790,52 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
-.emotion-21:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-21[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-21,
-.emotion-21:hover,
-.emotion-21:visited {
+.emotion-25,
+.emotion-25:hover,
+.emotion-25:visited,
+.emotion-25 .noop {
   background-color: #73b61c;
 }
 
-.emotion-21:hover {
+.emotion-25:hover,
+.emotion-25 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-25[aria-disabled=true],
+.emotion-25 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-25"
+  className="emotion-0"
 >
   <form
     action=""
-    className="emotion-18"
+    className="emotion-1"
     method="post"
     onSubmit={[Function]}
   >
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <label
-        className="emotion-0"
+        className="emotion-3"
         htmlFor="currentPassword"
       >
         Current Password
       </label>
       <div
-        className="emotion-2"
+        className="emotion-4"
       >
         <input
           autoFocus={true}
-          className="emotion-1"
+          className="emotion-5"
           disabled={false}
           id="currentPassword"
           name="currentPassword"
@@ -860,25 +845,25 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
          
       </div>
     </div>
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <label
-        className="emotion-0"
+        className="emotion-3"
         htmlFor="newPassword"
       >
         New Password
       </label>
       <div
-        className="emotion-2"
+        className="emotion-4"
       >
         <input
-          className="emotion-1"
+          className="emotion-5"
           disabled={false}
           id="newPassword"
           name="newPassword"
@@ -888,25 +873,25 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
          
       </div>
     </div>
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <label
-        className="emotion-0"
+        className="emotion-3"
         htmlFor="confirmPassword"
       >
         Confirm Password
       </label>
       <div
-        className="emotion-2"
+        className="emotion-4"
       >
         <input
-          className="emotion-1"
+          className="emotion-5"
           disabled={false}
           id="confirmPassword"
           name="confirmPassword"
@@ -916,7 +901,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
          
       </div>
@@ -925,7 +910,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
       className="emotion-17"
     >
       <button
-        className="emotion-15"
+        className="emotion-18"
         onClick={[Function]}
         type="button"
       >
@@ -933,7 +918,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
       </button>
       <button
         aria-disabled={true}
-        className="emotion-16"
+        className="emotion-19"
         onClick={[Function]}
         type="submit"
       >
@@ -942,19 +927,19 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
     </div>
   </form>
   <div
-    className="emotion-24"
+    className="emotion-20"
   >
     
     <div
-      className="emotion-23"
+      className="emotion-21"
     >
       <div
-        className="emotion-19"
+        className="emotion-22"
       >
         Did you sign in with Google or another service?
       </div>
       <div
-        className="emotion-20"
+        className="emotion-23"
       >
         If so, you may not have a Zorroa password. You can create one by resetting the password and checking your email for instructions.
       </div>
@@ -962,7 +947,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
         className="emotion-17"
       >
         <button
-          className="emotion-21"
+          className="emotion-25"
           onClick={[Function]}
           type="button"
         >
@@ -975,14 +960,14 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 `;
 
 exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] = `
-.emotion-25 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-18 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -996,44 +981,48 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   padding-right: 0;
 }
 
-.emotion-3 {
+.emotion-2 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-3 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-2 {
+.emotion-4 {
   position: relative;
 }
 
-.emotion-1 {
+.emotion-5 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-5:focus,
+.emotion-5 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
-.emotion-1:hover {
+.emotion-5:hover,
+.emotion-5 .noop {
   border: 2px solid #ffffff;
 }
 
-.emotion-1:focus {
-  color: #000000;
-  background-color: #ffffff;
+.emotion-6 {
+  padding-top: 8px;
 }
 
 .emotion-17 {
@@ -1050,7 +1039,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   margin-right: 16px;
 }
 
-.emotion-15 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1066,8 +1055,8 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1081,30 +1070,27 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   background-color: transparent;
 }
 
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-15,
-.emotion-15:hover,
-.emotion-15:visited {
+.emotion-18,
+.emotion-18:hover,
+.emotion-18:visited,
+.emotion-18 .noop {
   background-color: #808080;
 }
 
-.emotion-15:hover {
+.emotion-18:hover,
+.emotion-18 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-16 {
+.emotion-19 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1120,8 +1106,8 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1135,55 +1121,52 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   background-color: transparent;
 }
 
-.emotion-16:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-16[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-16,
-.emotion-16:hover,
-.emotion-16:visited {
+.emotion-19,
+.emotion-19:hover,
+.emotion-19:visited,
+.emotion-19 .noop {
   background-color: #73b61c;
 }
 
-.emotion-16:hover {
+.emotion-19:hover,
+.emotion-19 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-16[aria-disabled=true] {
+.emotion-19[aria-disabled=true],
+.emotion-19 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-24 {
+.emotion-20 {
   padding-top: 24px;
   padding-left: 48px;
 }
 
-.emotion-23 {
+.emotion-21 {
   width: 470px;
   border: 1px solid #3b3b3b;
   border-radius: 2px;
   padding: 32px;
 }
 
-.emotion-19 {
+.emotion-22 {
   color: #ffffff;
   font-weight: 500;
   padding-bottom: 4px;
 }
 
-.emotion-20 {
+.emotion-23 {
   color: #808080;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-21 {
+.emotion-25 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1199,11 +1182,11 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1212,56 +1195,52 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
-.emotion-21:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-21[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-21,
-.emotion-21:hover,
-.emotion-21:visited {
+.emotion-25,
+.emotion-25:hover,
+.emotion-25:visited,
+.emotion-25 .noop {
   background-color: #73b61c;
 }
 
-.emotion-21:hover {
+.emotion-25:hover,
+.emotion-25 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-25[aria-disabled=true],
+.emotion-25 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-25"
+  className="emotion-0"
 >
   <form
     action=""
-    className="emotion-18"
+    className="emotion-1"
     method="post"
     onSubmit={[Function]}
   >
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <label
-        className="emotion-0"
+        className="emotion-3"
         htmlFor="currentPassword"
       >
         Current Password
       </label>
       <div
-        className="emotion-2"
+        className="emotion-4"
       >
         <input
           autoFocus={true}
-          className="emotion-1"
+          className="emotion-5"
           disabled={false}
           id="currentPassword"
           name="currentPassword"
@@ -1271,25 +1250,25 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
          
       </div>
     </div>
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <label
-        className="emotion-0"
+        className="emotion-3"
         htmlFor="newPassword"
       >
         New Password
       </label>
       <div
-        className="emotion-2"
+        className="emotion-4"
       >
         <input
-          className="emotion-1"
+          className="emotion-5"
           disabled={false}
           id="newPassword"
           name="newPassword"
@@ -1299,25 +1278,25 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
          
       </div>
     </div>
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <label
-        className="emotion-0"
+        className="emotion-3"
         htmlFor="confirmPassword"
       >
         Confirm Password
       </label>
       <div
-        className="emotion-2"
+        className="emotion-4"
       >
         <input
-          className="emotion-1"
+          className="emotion-5"
           disabled={false}
           id="confirmPassword"
           name="confirmPassword"
@@ -1327,7 +1306,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
          
       </div>
@@ -1336,7 +1315,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
       className="emotion-17"
     >
       <button
-        className="emotion-15"
+        className="emotion-18"
         onClick={[Function]}
         type="button"
       >
@@ -1344,7 +1323,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
       </button>
       <button
         aria-disabled={true}
-        className="emotion-16"
+        className="emotion-19"
         onClick={[Function]}
         type="submit"
       >
@@ -1353,19 +1332,19 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
     </div>
   </form>
   <div
-    className="emotion-24"
+    className="emotion-20"
   >
     
     <div
-      className="emotion-23"
+      className="emotion-21"
     >
       <div
-        className="emotion-19"
+        className="emotion-22"
       >
         Did you sign in with Google or another service?
       </div>
       <div
-        className="emotion-20"
+        className="emotion-23"
       >
         If so, you may not have a Zorroa password. You can create one by resetting the password and checking your email for instructions.
       </div>
@@ -1373,7 +1352,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
         className="emotion-17"
       >
         <button
-          className="emotion-21"
+          className="emotion-25"
           onClick={[Function]}
           type="button"
         >

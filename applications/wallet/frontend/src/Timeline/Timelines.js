@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, zIndex } from '../Styles'
 
 import { useScroller } from '../Scroll/helpers'
 
@@ -19,12 +19,14 @@ const TimelineTimelines = ({
   const filteredTimelines = filterTimelines({ timelines, settings })
 
   const timelinesRef = useScroller({
-    namespace: 'timeline',
+    namespace: 'Timeline',
+    isWheelEmitter: true,
     isWheelListener: true,
   })
 
   const tracksRef = useScroller({
-    namespace: 'timeline',
+    namespace: 'Timeline',
+    isWheelEmitter: true,
     isWheelListener: true,
     isScrollEmitter: true,
     isScrollListener: true,
@@ -41,7 +43,14 @@ const TimelineTimelines = ({
         borderTop: constants.borders.regular.smoke,
       }}
     >
-      <div css={{ width: settings.width }}>
+      <div
+        css={{
+          width: settings.width,
+          zIndex: zIndex.timeline.tracks,
+          backgroundColor: colors.structure.coal,
+          borderRight: constants.borders.regular.smoke,
+        }}
+      >
         {filteredTimelines
           .filter(({ timeline }) => {
             return settings.timelines[timeline]?.isVisible !== false
@@ -98,6 +107,12 @@ const TimelineTimelines = ({
               </TimelineAccordion>
             )
           })}
+        <div
+          css={{
+            height: spacing.normal,
+            backgroundColor: colors.structure.coal,
+          }}
+        />
       </div>
 
       <div

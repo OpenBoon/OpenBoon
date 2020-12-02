@@ -1,0 +1,190 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TaskLogs /> should render properly 1`] = `
+.emotion-0 {
+  height: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  padding-bottom: 16px;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited,
+.emotion-2 .noop {
+  background-color: #808080;
+}
+
+.emotion-2:hover,
+.emotion-2 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-2[aria-disabled=true],
+.emotion-2 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-3 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-4 {
+  width: 8px;
+}
+
+.emotion-6 {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.emotion-7 {
+  height: 100%;
+  overflow: auto;
+  background-color: #191919;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column-reverse;
+  -ms-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+}
+
+.emotion-8 {
+  background-color: #191919;
+}
+
+.emotion-8 pre {
+  padding: 16px;
+  margin: 0;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <button
+      aria-label="Scroll to top"
+      className="emotion-2"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        className="emotion-3"
+        data-file-name="back.svg"
+        height={20}
+      />
+    </button>
+    <div
+      className="emotion-4"
+    />
+    <button
+      aria-label="Scroll to bottom"
+      className="emotion-2"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        className="emotion-6"
+        data-file-name="back.svg"
+        height={20}
+      />
+    </button>
+  </div>
+  <div
+    className="emotion-7"
+  >
+    <div
+      className="emotion-8"
+    >
+      <div
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "<pre class=\\"__json-pretty-error__\\">
+running 9 processors in execute, 25 objects
+Exception during processing: &apos;DockerClient&apos; object has no attribute &apos;login_view&apos;
+Traceback (most recent call last):
+  File &quot;/service/pylib/analyst/executor.py&quot;, line 167, in process
+    assets = self.run_containerized_processor(proc, assets)
+  File &quot;/service/pylib/analyst/executor.py&quot;, line 224, in run_containerized_processor
+    self.container.wait_for_container()
+  File &quot;/service/pylib/analyst/executor.py&quot;, line 433, in wait_for_container
+    self.__start_container()
+  File &quot;/service/pylib/analyst/executor.py&quot;, line 383, in __start_container
+    image = self._pull_image()
+  File &quot;/service/pylib/analyst/executor.py&quot;, line 357, in _pull_image
+    self._docker_login()
+  File &quot;/service/pylib/analyst/executor.py&quot;, line 334, in _docker_login
+    self.docker_client.login_view(dh_creds[&quot;username&quot;],
+  File &quot;/usr/local/lib/python3.8/dist-packages/docker/client.py&quot;, line 205, in __getattr__
+    raise AttributeError(&apos; &apos;.join(s))
+AttributeError: &apos;DockerClient&apos; object has no attribute &apos;login_view&apos;
+Stopping container, reason: Exception during processing: &apos;DockerClient&apos; object has no attribute &apos;login_view&apos;
+</pre>",
+          }
+        }
+        id="json-pretty"
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -14,10 +14,10 @@ import { cleanup } from '../Filters/helpers'
 
 import Button, { VARIANTS } from '../Button'
 import CheckboxSwitch from '../Checkbox/Switch'
-import ResizeableWithMessage from '../Resizeable/WithMessage'
+import Resizeable from '../Resizeable'
 
 import { reducer, INITIAL_STATE, ACTIONS } from './reducer'
-import { COLORS } from './helpers'
+import { COLORS, GUIDE_WIDTH } from './helpers'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
@@ -30,6 +30,7 @@ import TimelineSearchHits from './SearchHits'
 import TimelineTimelines from './Timelines'
 import TimelineMetadata from './Metadata'
 import TimelineShortcuts from './Shortcuts'
+import TimelineResize from './Resize'
 
 const TIMELINE_HEIGHT = 200
 const SEPARATOR_WIDTH = 2
@@ -68,19 +69,18 @@ const Timeline = ({ videoRef, length }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const timelineRef = useScroller({
-    namespace: 'timeline',
-    isWheelEmitter: true,
-  })
+  const [followPlayhead, setFollowPlayhead] = useState(true)
+  const handleOnWheel = () => setFollowPlayhead(false)
 
   const rulerRef = useScroller({
-    namespace: 'timeline',
+    namespace: 'Timeline',
+    isWheelEmitter: true,
     isWheelListener: true,
     isScrollListener: true,
   })
 
   return (
-    <ResizeableWithMessage
+    <Resizeable
       storageName={`Timeline.${assetId}`}
       minSize={TIMELINE_HEIGHT}
       openToThe="top"
@@ -102,6 +102,7 @@ const Timeline = ({ videoRef, length }) => {
             videoRef={videoRef}
             timelines={timelines}
             settings={settings}
+            setFollowPlayhead={setFollowPlayhead}
           />
 
           <div
@@ -191,6 +192,7 @@ const Timeline = ({ videoRef, length }) => {
             length={length}
             timelines={timelines}
             settings={settings}
+            setFollowPlayhead={setFollowPlayhead}
           />
 
           <div
@@ -211,27 +213,33 @@ const Timeline = ({ videoRef, length }) => {
     >
       {({ size }) => (
         <div
+          aria-label="Timeline"
           css={{
             display: 'flex',
             flexDirection: 'column',
             height: size,
           }}
+          onWheel={handleOnWheel}
         >
           <div
-            ref={timelineRef}
             css={{
               flex: 1,
               display: 'flex',
               flexDirection: 'column',
               height: '0%',
               position: 'relative',
-              marginLeft: settings.width,
+              marginLeft: settings.width - GUIDE_WIDTH / 2,
               borderLeft: constants.borders.regular.smoke,
             }}
           >
             <TimelineModulesResizer settings={settings} dispatch={dispatch} />
 
-            <TimelinePlayhead videoRef={videoRef} zoom={settings.zoom} />
+            <TimelinePlayhead
+              videoRef={videoRef}
+              rulerRef={rulerRef}
+              zoom={settings.zoom}
+              followPlayhead={followPlayhead}
+            />
 
             <div
               css={{
@@ -245,6 +253,7 @@ const Timeline = ({ videoRef, length }) => {
                 <div css={{ width: `${settings.zoom}%` }}>
                   <TimelineRuler
                     videoRef={videoRef}
+                    rulerRef={rulerRef}
                     length={videoRef.current?.duration || length}
                     settings={settings}
                   />
@@ -278,10 +287,11 @@ const Timeline = ({ videoRef, length }) => {
               settings={settings}
               dispatch={dispatch}
             />
+            <TimelineResize dispatch={dispatch} zoom={settings.zoom} />
           </div>
         </div>
       )}
-    </ResizeableWithMessage>
+    </Resizeable>
   )
 }
 

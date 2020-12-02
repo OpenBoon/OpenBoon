@@ -94,7 +94,9 @@ describe('<ModelsAdd />', () => {
     })
 
     // Mock Success
-    fetch.mockResponseOnce(JSON.stringify({ results: { id: MODEL_ID } }))
+    fetch.mockResponseOnce(JSON.stringify({ results: { id: MODEL_ID } }), {
+      headers: { 'content-type': 'application/json' },
+    })
 
     // Click Submit
     await act(async () => {

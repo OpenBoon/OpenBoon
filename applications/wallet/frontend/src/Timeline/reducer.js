@@ -8,6 +8,8 @@ export const ACTIONS = {
   TOGGLE_OPEN: 'TOGGLE_OPEN',
   TOGGLE_VISIBLE: 'TOGGLE_VISIBLE',
   TOGGLE_VISIBLE_ALL: 'TOGGLE_VISIBLE_ALL',
+  INCREMENT: 'INCREMENT',
+  DECREMENT: 'DECREMENT',
 }
 
 export const INITIAL_STATE = {
@@ -100,6 +102,24 @@ export const reducer = (
         ),
       }
     }
+
+    case ACTIONS.INCREMENT:
+      return {
+        ...state,
+        zoom: state.zoom + 100,
+      }
+
+    case ACTIONS.DECREMENT:
+      if (state.zoom > 100) {
+        const zoom = state.zoom - 100
+
+        return {
+          ...state,
+          zoom,
+        }
+      }
+
+      return state
 
     default:
       return state

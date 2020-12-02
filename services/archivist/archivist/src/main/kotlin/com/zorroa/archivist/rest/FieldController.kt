@@ -24,14 +24,14 @@ class FieldController(
         return indexRoutingService.getProjectRestClient().getMapping()
     }
 
-    @PreAuthorize("hasAuthority('AssetsRead')")
-    @PostMapping(value = ["/api/v3/fields"])
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @PostMapping(value = ["/api/v3/custom-fields"])
     fun createField(@RequestBody spec: FieldSpec): Field {
         return fieldService.createField(spec)
     }
 
     @PreAuthorize("hasAuthority('AssetsRead')")
-    @GetMapping(value = ["/api/v3/fields/{id}"])
+    @GetMapping(value = ["/api/v3/custom-fields/{id}"])
     fun getField(@PathVariable id: UUID): Field {
         return fieldService.getField(id)
     }

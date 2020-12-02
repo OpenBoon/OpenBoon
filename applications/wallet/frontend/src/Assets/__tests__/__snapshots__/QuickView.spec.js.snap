@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AssetsQuickView /> should render properly 1`] = `
-.emotion-2 {
+.emotion-0 {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -11,10 +11,10 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
   background-color: #000000e6;
 }
 
-.emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -22,34 +22,24 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  padding: 8px 16px;
-  font-weight: 400;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   border-radius: 0;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
   position: absolute;
   top: 16px;
   left: 16px;
@@ -59,25 +49,19 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
   border-radius: 32px;
 }
 
-.emotion-0:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
   background-color: #4a4a4a;
 }
 
-.emotion-0:hover {
+.emotion-1:hover {
   color: #ffffff;
 }
 
-.emotion-1 {
+.emotion-2 {
   width: 100%;
   height: 100%;
   display: -webkit-box;
@@ -85,8 +69,8 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -96,11 +80,11 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-2"
+  className="emotion-0"
 >
   <button
     aria-label="Close"
-    className="emotion-0"
+    className="emotion-1"
     onClick={[Function]}
     type="button"
   >
@@ -110,7 +94,7 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
     />
   </button>
   <div
-    className="emotion-1"
+    className="emotion-2"
   >
     <AssetAsset
       isQuickView={true}

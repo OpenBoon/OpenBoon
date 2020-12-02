@@ -221,8 +221,11 @@ class ShotBasedFrameExtractor(VideoFrameExtractor):
         catalog = []
         for idx, shot_time in enumerate(self._get_shot_times()):
             file_name = f'{self.output_dir}/frame_{idx}.jpg'
-            extract_thumbnail_from_video(self.video_file, file_name, shot_time)
-            catalog.append((shot_time, file_name))
+            try:
+                extract_thumbnail_from_video(self.video_file, file_name, shot_time)
+                catalog.append((shot_time, file_name))
+            except IOError:
+                logger.warning(f'Failed to extract frame at {shot_time}')
 
         with open(self.catalog_path, "w") as fp:
             json.dump(catalog, fp)

@@ -39,7 +39,7 @@
       "src/**/*.js"
     ],
     "snapshotSerializers": [
-      "jest-emotion"
+      "@emotion/jest/serializer"
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/jest.setup.js"
@@ -78,7 +78,7 @@
     {
       "//": "framework",
       "path": ".next/static/chunks/framework**.js",
-      "maxSize": "40 kB"
+      "maxSize": "42 kB"
     },
     {
       "//": "main runtime",
@@ -103,7 +103,7 @@
     {
       "//": "app.js",
       "path": ".next/static/chunks/pages/_app**.js",
-      "maxSize": "26 kB"
+      "maxSize": "28 kB"
     },
     {
       "//": "error page",
@@ -113,51 +113,51 @@
     {
       "//": "all pages",
       "path": ".next/static/chunks/pages/**/!(_app|_error)*.js",
-      "maxSize": "44 kB"
+      "maxSize": "40 kB"
     }
   ],
   "dependencies": {
-    "@emotion/babel-preset-css-prop": "10.0.27",
-    "@emotion/cache": "10.0.29",
-    "@emotion/core": "10.0.35",
+    "@emotion/babel-preset-css-prop": "11.0.0",
+    "@emotion/react": "11.1.1",
     "@reach/combobox": "0.11.2",
     "@reach/listbox": "0.11.2",
     "@reach/skip-nav": "0.11.2",
-    "@sentry/browser": "5.27.2",
-    "@svgr/webpack": "5.4.0",
+    "@sentry/browser": "5.27.4",
+    "@svgr/webpack": "5.5.0",
     "body-scroll-lock": "3.1.5",
     "camelcase": "6.2.0",
     "deep-filter": "1.0.2",
     "dotenv": "8.2.0",
     "focus-visible": "5.2.0",
-    "next": "9.5.5",
+    "next": "10.0.1",
     "prop-types": "15.7.2",
-    "react": "16.14.0",
+    "react": "17.0.1",
     "react-aria-modal": "4.0.0",
-    "react-compound-slider": "2.5.0",
-    "react-dom": "16.14.0",
-    "react-grid-layout": "1.1.1",
+    "react-compound-slider": "3.3.1",
+    "react-dom": "17.0.1",
+    "react-grid-layout": "1.2.0",
     "react-json-pretty": "2.2.0",
     "react-resizable": "2.0.0",
     "react-use-clipboard": "1.0.2",
     "react-virtualized-auto-sizer": "1.0.2",
-    "react-window": "1.8.5",
+    "react-window": "1.8.6",
     "react-window-infinite-loader": "1.0.5",
-    "swr": "0.3.6",
-    "use-resize-observer": "6.1.0",
+    "swr": "0.3.9",
+    "use-resize-observer": "7.0.0",
     "utf8": "3.0.0",
     "uuid": "8.3.1"
   },
   "devDependencies": {
+    "@emotion/eslint-plugin": "11.0.0",
+    "@emotion/jest": "11.1.0",
     "babel-eslint": "10.1.0",
-    "babel-jest": "26.6.1",
+    "babel-jest": "26.6.3",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-macros": "2.8.0",
     "bundlesize": "0.18.0",
-    "eslint": "7.12.1",
-    "eslint-config-airbnb": "18.2.0",
+    "eslint": "7.14.0",
+    "eslint-config-airbnb": "18.2.1",
     "eslint-config-prettier": "6.15.0",
-    "eslint-plugin-emotion": "10.0.27",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsx-a11y": "6.4.1",
     "eslint-plugin-react": "7.21.5",
@@ -167,13 +167,12 @@
     "http-proxy-middleware": "1.0.6",
     "husky": "4.3.0",
     "import-all.macro": "3.1.0",
-    "jest": "26.6.1",
-    "jest-emotion": "10.0.32",
+    "jest": "26.6.3",
     "jest-fetch-mock": "3.0.3",
     "lint-staged": "10.5.1",
     "morgan": "1.10.0",
-    "prettier": "2.1.2",
-    "react-test-renderer": "16.14.0",
-    "webpack-bundle-analyzer": "3.9.0"
+    "prettier": "2.2.0",
+    "react-test-renderer": "17.0.1",
+    "webpack-bundle-analyzer": "4.1.0"
   }
 }

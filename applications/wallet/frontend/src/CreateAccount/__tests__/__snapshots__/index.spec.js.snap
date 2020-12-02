@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<CreateAccount /> should render properly when the activation link is expired 1`] = `
-.emotion-51 {
+.emotion-0 {
   height: 100%;
 }
 
-.emotion-2 {
+.emotion-1 {
   position: fixed;
   top: 0;
   left: 0;
@@ -17,20 +17,19 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
   z-index: 100;
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -41,7 +40,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   align-items: stretch;
 }
 
-.emotion-0 {
+.emotion-3 {
   padding-left: 8px;
   padding-right: 8px;
   display: -webkit-box;
@@ -54,7 +53,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   align-items: center;
 }
 
-.emotion-50 {
+.emotion-4 {
   margin-top: 44px;
   padding-left: 32px;
   padding-right: 32px;
@@ -69,7 +68,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   flex-direction: column;
 }
 
-.emotion-3 {
+.emotion-5 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -93,7 +92,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-top: 8px;
 }
 
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -107,7 +106,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding: 12px;
 }
 
-.emotion-4 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -117,7 +116,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   white-space: pre-line;
 }
 
-.emotion-4 a {
+.emotion-8 a {
   color: #ffffff;
   background-color: #0074f5;
   padding: 6px;
@@ -127,13 +126,13 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   border-radius: 2px;
 }
 
-.emotion-4 a:hover {
+.emotion-8 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #005dc4;
 }
 
-.emotion-49 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -147,7 +146,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-right: 0;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -155,7 +154,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-bottom: 8px;
 }
 
-.emotion-8 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -169,7 +168,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding: 12px;
 }
 
-.emotion-7 {
+.emotion-12 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -179,7 +178,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   white-space: pre-line;
 }
 
-.emotion-7 a {
+.emotion-12 a {
   color: #ffffff;
   background-color: #3b3b3b;
   padding: 6px;
@@ -189,13 +188,13 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   border-radius: 2px;
 }
 
-.emotion-7 a:hover {
+.emotion-12 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #2e2e2e;
 }
 
-.emotion-10 {
+.emotion-13 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
@@ -206,57 +205,61 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-top: 8px;
 }
 
-.emotion-11 {
+.emotion-15 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-13 {
+.emotion-16 {
   position: relative;
 }
 
-.emotion-12 {
+.emotion-17 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-12:focus {
+.emotion-17:focus,
+.emotion-17 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
-}
-
-.emotion-12:hover {
-  border: 2px solid #ffffff;
-}
-
-.emotion-12:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-37 {
+.emotion-17:hover,
+.emotion-17 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-18 {
+  padding-top: 8px;
+}
+
+.emotion-40 {
   margin: 0;
   padding-top: 32px;
   color: #b3b3b3;
 }
 
-.emotion-37 a {
+.emotion-40 a {
   color: #73b61c;
 }
 
-.emotion-45 {
+.emotion-41 {
   padding-top: 16px;
 }
 
-.emotion-44 {
+.emotion-42 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -270,7 +273,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-bottom: 16px;
 }
 
-.emotion-41 {
+.emotion-43 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -278,7 +281,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   position: relative;
 }
 
-.emotion-38 {
+.emotion-44 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -289,7 +292,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   cursor: pointer;
 }
 
-.emotion-40 {
+.emotion-45 {
   position: absolute;
   top: 0;
   left: 0;
@@ -300,8 +303,8 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -310,13 +313,13 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   cursor: pointer;
 }
 
-.emotion-39 path {
+.emotion-46 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-43 {
+.emotion-47 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -327,14 +330,14 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-left: 12px;
 }
 
-.emotion-42 {
+.emotion-48 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-48 {
+.emotion-49 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -343,12 +346,12 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-bottom: 16px;
 }
 
-.emotion-48 button,
-.emotion-48 a {
+.emotion-49 button,
+.emotion-49 a {
   margin-right: 16px;
 }
 
-.emotion-46 {
+.emotion-50 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -364,8 +367,8 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -379,27 +382,693 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   background-color: transparent;
 }
 
-.emotion-46:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-46[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-46,
-.emotion-46:hover,
-.emotion-46:visited {
+.emotion-50,
+.emotion-50:hover,
+.emotion-50:visited,
+.emotion-50 .noop {
   background-color: #808080;
 }
 
-.emotion-46:hover {
+.emotion-50:hover,
+.emotion-50 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-46[aria-disabled=true] {
+.emotion-50[aria-disabled=true],
+.emotion-50 .noop {
+  color: #2e2e2e;
   background-color: #808080;
+}
+
+.emotion-51 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-51,
+.emotion-51:hover,
+.emotion-51:visited,
+.emotion-51 .noop {
+  background-color: #73b61c;
+}
+
+.emotion-51:hover,
+.emotion-51 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #96c955;
+}
+
+.emotion-51[aria-disabled=true],
+.emotion-51 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-2"
+    >
+      <a
+        aria-label="Home"
+        className="emotion-3"
+        href="/"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        <svg
+          data-file-name="logo.svg"
+          height={30}
+        />
+      </a>
+    </div>
+    <div />
+  </div>
+  <div
+    className="emotion-4"
+  >
+    <h2
+      className="emotion-5"
+    >
+      Create an Account
+    </h2>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-7"
+      >
+        <svg
+          color="#0074f5"
+          data-file-name="information.svg"
+          height={20}
+        />
+        <div
+          className="emotion-8"
+          role="alert"
+        >
+          A confirmation link will be sent to your email. Please click to confirm before logging in.
+        </div>
+      </div>
+    </div>
+    <form
+      action=""
+      className="emotion-9"
+      method="post"
+      onSubmit={[Function]}
+    >
+      <div
+        className="emotion-10"
+      >
+        <div
+          className="emotion-11"
+        >
+          <svg
+            color="#c92300"
+            data-file-name="warning.svg"
+            height={20}
+          />
+          <div
+            className="emotion-12"
+            role="alert"
+          >
+            Confirmation link expired. Links expire after three days. Please create a new account.
+          </div>
+        </div>
+      </div>
+      <h3
+        className="emotion-13"
+      >
+        Name
+      </h3>
+      <div
+        className="emotion-14"
+      >
+        <label
+          className="emotion-15"
+          htmlFor="firstName"
+        >
+          First Name
+        </label>
+        <div
+          className="emotion-16"
+        >
+          <input
+            autoFocus={true}
+            className="emotion-17"
+            disabled={false}
+            id="firstName"
+            name="firstName"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-18"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-14"
+      >
+        <label
+          className="emotion-15"
+          htmlFor="lastName"
+        >
+          Last Name
+        </label>
+        <div
+          className="emotion-16"
+        >
+          <input
+            className="emotion-17"
+            disabled={false}
+            id="lastName"
+            name="lastName"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-18"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-14"
+      >
+        <label
+          className="emotion-15"
+          htmlFor="email"
+        >
+          Email
+        </label>
+        <div
+          className="emotion-16"
+        >
+          <input
+            className="emotion-17"
+            disabled={false}
+            id="email"
+            name="email"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-18"
+        >
+           
+        </div>
+      </div>
+      <h3
+        className="emotion-13"
+      >
+        Password
+      </h3>
+      <div
+        className="emotion-14"
+      >
+        <label
+          className="emotion-15"
+          htmlFor="password"
+        >
+          Password
+        </label>
+        <div
+          className="emotion-16"
+        >
+          <input
+            className="emotion-17"
+            disabled={false}
+            id="password"
+            name="password"
+            onChange={[Function]}
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-18"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-14"
+      >
+        <label
+          className="emotion-15"
+          htmlFor="confirmPassword"
+        >
+          Confirm Password
+        </label>
+        <div
+          className="emotion-16"
+        >
+          <input
+            className="emotion-17"
+            disabled={false}
+            id="confirmPassword"
+            name="confirmPassword"
+            onChange={[Function]}
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-18"
+        >
+           
+        </div>
+      </div>
+      <p
+        className="emotion-40"
+      >
+        By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
+         
+        <a
+          href="/policies/20200414/terms-of-use.pdf"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Terms of Use
+        </a>
+         
+        and
+         
+        <a
+          href="/policies/20200414/privacy-policy.pdf"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Privacy Policy
+        </a>
+        .
+      </p>
+      <div
+        className="emotion-41"
+      >
+        <label
+          className="emotion-42"
+        >
+          <div
+            className="emotion-43"
+          >
+            <input
+              className="emotion-44"
+              defaultChecked={false}
+              onClick={[Function]}
+              type="checkbox"
+              value="isChecked"
+            />
+            <div
+              className="emotion-45"
+            >
+              <svg
+                className="emotion-46"
+                data-file-name="checkmark.svg"
+                height={20}
+              />
+            </div>
+          </div>
+          <div
+            className="emotion-47"
+          >
+            <span
+              className="emotion-48"
+            >
+              Accept
+            </span>
+          </div>
+        </label>
+      </div>
+      <div
+        className="emotion-49"
+      >
+        <a
+          className="emotion-50"
+          href="/"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Cancel
+        </a>
+        <button
+          aria-disabled={true}
+          className="emotion-51"
+          onClick={[Function]}
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`<CreateAccount /> should render properly when there is a token 1`] = `null`;
+
+exports[`<CreateAccount /> should render properly when there is no token 1`] = `
+.emotion-0 {
+  height: 100%;
+}
+
+.emotion-1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #2e2e2e;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+.emotion-3 {
+  padding-left: 8px;
+  padding-right: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  margin-top: 44px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 32px;
+  height: calc(100vh - 44px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-5 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #dbecff;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-8 a {
+  color: #ffffff;
+  background-color: #0074f5;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-8 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #005dc4;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-10 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-11 {
+  padding-top: 8px;
+}
+
+.emotion-12 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-13 {
+  position: relative;
+}
+
+.emotion-14 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-14:focus,
+.emotion-14 .noop {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-14:hover,
+.emotion-14 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-15 {
+  padding-top: 8px;
+}
+
+.emotion-37 {
+  margin: 0;
+  padding-top: 32px;
+  color: #b3b3b3;
+}
+
+.emotion-37 a {
+  color: #73b61c;
+}
+
+.emotion-38 {
+  padding-top: 16px;
+}
+
+.emotion-39 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 0;
+  padding-bottom: 16px;
+}
+
+.emotion-40 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-41 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-42 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+}
+
+.emotion-43 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-44 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 12px;
+}
+
+.emotion-45 {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 700;
+}
+
+.emotion-46 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-46 button,
+.emotion-46 a {
+  margin-right: 16px;
 }
 
 .emotion-47 {
@@ -418,8 +1087,59 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-47,
+.emotion-47:hover,
+.emotion-47:visited,
+.emotion-47 .noop {
+  background-color: #808080;
+}
+
+.emotion-47:hover,
+.emotion-47 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-47[aria-disabled=true],
+.emotion-47 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-48 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -433,41 +1153,38 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   background-color: transparent;
 }
 
-.emotion-47:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-47[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-47,
-.emotion-47:hover,
-.emotion-47:visited {
+.emotion-48,
+.emotion-48:hover,
+.emotion-48:visited,
+.emotion-48 .noop {
   background-color: #73b61c;
 }
 
-.emotion-47:hover {
+.emotion-48:hover,
+.emotion-48 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-47[aria-disabled=true] {
+.emotion-48[aria-disabled=true],
+.emotion-48 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-51"
+  className="emotion-0"
 >
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <a
         aria-label="Home"
-        className="emotion-0"
+        className="emotion-3"
         href="/"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -481,10 +1198,10 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
     <div />
   </div>
   <div
-    className="emotion-50"
+    className="emotion-4"
   >
     <h2
-      className="emotion-3"
+      className="emotion-5"
     >
       Create an Account
     </h2>
@@ -492,7 +1209,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
       className="emotion-6"
     >
       <div
-        className="emotion-5"
+        className="emotion-7"
       >
         <svg
           color="#0074f5"
@@ -500,7 +1217,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           height={20}
         />
         <div
-          className="emotion-4"
+          className="emotion-8"
           role="alert"
         >
           A confirmation link will be sent to your email. Please click to confirm before logging in.
@@ -509,39 +1226,20 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
     </div>
     <form
       action=""
-      className="emotion-49"
+      className="emotion-9"
       method="post"
       onSubmit={[Function]}
     >
-      <div
-        className="emotion-9"
-      >
-        <div
-          className="emotion-8"
-        >
-          <svg
-            color="#c92300"
-            data-file-name="warning.svg"
-            height={20}
-          />
-          <div
-            className="emotion-7"
-            role="alert"
-          >
-            Confirmation link expired. Links expire after three days. Please create a new account.
-          </div>
-        </div>
-      </div>
       <h3
         className="emotion-10"
       >
         Name
       </h3>
       <div
-        className="emotion-14"
+        className="emotion-11"
       >
         <label
-          className="emotion-11"
+          className="emotion-12"
           htmlFor="firstName"
         >
           First Name
@@ -551,7 +1249,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         >
           <input
             autoFocus={true}
-            className="emotion-12"
+            className="emotion-14"
             disabled={false}
             id="firstName"
             name="firstName"
@@ -561,16 +1259,16 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           />
         </div>
         <div
-          className="emotion-14"
+          className="emotion-15"
         >
            
         </div>
       </div>
       <div
-        className="emotion-14"
+        className="emotion-11"
       >
         <label
-          className="emotion-11"
+          className="emotion-12"
           htmlFor="lastName"
         >
           Last Name
@@ -579,7 +1277,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           className="emotion-13"
         >
           <input
-            className="emotion-12"
+            className="emotion-14"
             disabled={false}
             id="lastName"
             name="lastName"
@@ -589,16 +1287,16 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           />
         </div>
         <div
-          className="emotion-14"
+          className="emotion-15"
         >
            
         </div>
       </div>
       <div
-        className="emotion-14"
+        className="emotion-11"
       >
         <label
-          className="emotion-11"
+          className="emotion-12"
           htmlFor="email"
         >
           Email
@@ -607,7 +1305,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           className="emotion-13"
         >
           <input
-            className="emotion-12"
+            className="emotion-14"
             disabled={false}
             id="email"
             name="email"
@@ -617,7 +1315,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           />
         </div>
         <div
-          className="emotion-14"
+          className="emotion-15"
         >
            
         </div>
@@ -628,10 +1326,10 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         Password
       </h3>
       <div
-        className="emotion-14"
+        className="emotion-11"
       >
         <label
-          className="emotion-11"
+          className="emotion-12"
           htmlFor="password"
         >
           Password
@@ -640,7 +1338,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           className="emotion-13"
         >
           <input
-            className="emotion-12"
+            className="emotion-14"
             disabled={false}
             id="password"
             name="password"
@@ -650,16 +1348,16 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           />
         </div>
         <div
-          className="emotion-14"
+          className="emotion-15"
         >
            
         </div>
       </div>
       <div
-        className="emotion-14"
+        className="emotion-11"
       >
         <label
-          className="emotion-11"
+          className="emotion-12"
           htmlFor="confirmPassword"
         >
           Confirm Password
@@ -668,7 +1366,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           className="emotion-13"
         >
           <input
-            className="emotion-12"
+            className="emotion-14"
             disabled={false}
             id="confirmPassword"
             name="confirmPassword"
@@ -678,7 +1376,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           />
         </div>
         <div
-          className="emotion-14"
+          className="emotion-15"
         >
            
         </div>
@@ -708,740 +1406,36 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         .
       </p>
       <div
-        className="emotion-45"
+        className="emotion-38"
       >
         <label
-          className="emotion-44"
+          className="emotion-39"
         >
-          <div
-            className="emotion-41"
-          >
-            <input
-              className="emotion-38"
-              defaultChecked={false}
-              onClick={[Function]}
-              type="checkbox"
-              value="isChecked"
-            />
-            <div
-              className="emotion-40"
-            >
-              <svg
-                className="emotion-39"
-                data-file-name="checkmark.svg"
-                height={20}
-              />
-            </div>
-          </div>
-          <div
-            className="emotion-43"
-          >
-            <span
-              className="emotion-42"
-            >
-              Accept
-            </span>
-          </div>
-        </label>
-      </div>
-      <div
-        className="emotion-48"
-      >
-        <a
-          className="emotion-46"
-          href="/"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Cancel
-        </a>
-        <button
-          aria-disabled={true}
-          className="emotion-47"
-          onClick={[Function]}
-          type="submit"
-        >
-          Save
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
-`;
-
-exports[`<CreateAccount /> should render properly when there is a token 1`] = `null`;
-
-exports[`<CreateAccount /> should render properly when there is no token 1`] = `
-.emotion-48 {
-  height: 100%;
-}
-
-.emotion-2 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 44px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
-  z-index: 100;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
-}
-
-.emotion-0 {
-  padding-left: 8px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-47 {
-  margin-top: 44px;
-  padding-left: 32px;
-  padding-right: 32px;
-  padding-bottom: 32px;
-  height: calc(100vh - 44px);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-3 {
-  font-size: 18px;
-  line-height: 21px;
-  font-weight: 400;
-  padding-top: 24px;
-  padding-bottom: 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 8px;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #dbecff;
-  border-radius: 2px;
-  padding: 12px;
-}
-
-.emotion-4 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
-}
-
-.emotion-4 a {
-  color: #ffffff;
-  background-color: #0074f5;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
-}
-
-.emotion-4 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #005dc4;
-}
-
-.emotion-46 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.emotion-7 {
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 500;
-  padding-top: 16px;
-}
-
-.emotion-11 {
-  padding-top: 8px;
-}
-
-.emotion-8 {
-  display: block;
-  padding-bottom: 8px;
-  color: #b3b3b3;
-}
-
-.emotion-10 {
-  position: relative;
-}
-
-.emotion-9 {
-  outline-offset: 0;
-  padding: 10px 12px;
-  border-radius: 2px;
-  box-shadow: inset 0 1px 3px 0 transparent;
-  width: 100%;
-  color: #ffffff;
-  background-color: #3b3b3b;
-  border: 1px solid transparent;
-  border-width: 2px;
-}
-
-.emotion-9:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
-}
-
-.emotion-9:hover {
-  border: 2px solid #ffffff;
-}
-
-.emotion-9:focus {
-  color: #000000;
-  background-color: #ffffff;
-}
-
-.emotion-34 {
-  margin: 0;
-  padding-top: 32px;
-  color: #b3b3b3;
-}
-
-.emotion-34 a {
-  color: #73b61c;
-}
-
-.emotion-42 {
-  padding-top: 16px;
-}
-
-.emotion-41 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: pointer;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-left: 0;
-  padding-bottom: 16px;
-}
-
-.emotion-38 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-}
-
-.emotion-35 {
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #808080;
-  border-radius: 2px;
-  cursor: pointer;
-}
-
-.emotion-37 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: pointer;
-}
-
-.emotion-36 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 0;
-}
-
-.emotion-40 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-left: 12px;
-}
-
-.emotion-39 {
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 700;
-}
-
-.emotion-45 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.emotion-45 button,
-.emotion-45 a {
-  margin-right: 16px;
-}
-
-.emotion-43 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-43:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-43[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-43,
-.emotion-43:hover,
-.emotion-43:visited {
-  background-color: #808080;
-}
-
-.emotion-43:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-43[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-44 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-44:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-44[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-44,
-.emotion-44:hover,
-.emotion-44:visited {
-  background-color: #73b61c;
-}
-
-.emotion-44:hover {
-  background-color: #96c955;
-}
-
-.emotion-44[aria-disabled=true] {
-  background-color: #808080;
-}
-
-<div
-  className="emotion-48"
->
-  <div
-    className="emotion-2"
-  >
-    <div
-      className="emotion-1"
-    >
-      <a
-        aria-label="Home"
-        className="emotion-0"
-        href="/"
-        onClick={[Function]}
-        onMouseEnter={[Function]}
-      >
-        <svg
-          data-file-name="logo.svg"
-          height={30}
-        />
-      </a>
-    </div>
-    <div />
-  </div>
-  <div
-    className="emotion-47"
-  >
-    <h2
-      className="emotion-3"
-    >
-      Create an Account
-    </h2>
-    <div
-      className="emotion-6"
-    >
-      <div
-        className="emotion-5"
-      >
-        <svg
-          color="#0074f5"
-          data-file-name="information.svg"
-          height={20}
-        />
-        <div
-          className="emotion-4"
-          role="alert"
-        >
-          A confirmation link will be sent to your email. Please click to confirm before logging in.
-        </div>
-      </div>
-    </div>
-    <form
-      action=""
-      className="emotion-46"
-      method="post"
-      onSubmit={[Function]}
-    >
-      <h3
-        className="emotion-7"
-      >
-        Name
-      </h3>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="firstName"
-        >
-          First Name
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            autoFocus={true}
-            className="emotion-9"
-            disabled={false}
-            id="firstName"
-            name="firstName"
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="lastName"
-        >
-          Last Name
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-9"
-            disabled={false}
-            id="lastName"
-            name="lastName"
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="email"
-        >
-          Email
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-9"
-            disabled={false}
-            id="email"
-            name="email"
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <h3
-        className="emotion-7"
-      >
-        Password
-      </h3>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="password"
-        >
-          Password
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-9"
-            disabled={false}
-            id="password"
-            name="password"
-            onChange={[Function]}
-            type="password"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="confirmPassword"
-        >
-          Confirm Password
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-9"
-            disabled={false}
-            id="confirmPassword"
-            name="confirmPassword"
-            onChange={[Function]}
-            type="password"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <p
-        className="emotion-34"
-      >
-        By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
-         
-        <a
-          href="/policies/20200414/terms-of-use.pdf"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Terms of Use
-        </a>
-         
-        and
-         
-        <a
-          href="/policies/20200414/privacy-policy.pdf"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Privacy Policy
-        </a>
-        .
-      </p>
-      <div
-        className="emotion-42"
-      >
-        <label
-          className="emotion-41"
-        >
-          <div
-            className="emotion-38"
-          >
-            <input
-              className="emotion-35"
-              defaultChecked={false}
-              onClick={[Function]}
-              type="checkbox"
-              value="isChecked"
-            />
-            <div
-              className="emotion-37"
-            >
-              <svg
-                className="emotion-36"
-                data-file-name="checkmark.svg"
-                height={20}
-              />
-            </div>
-          </div>
           <div
             className="emotion-40"
           >
+            <input
+              className="emotion-41"
+              defaultChecked={false}
+              onClick={[Function]}
+              type="checkbox"
+              value="isChecked"
+            />
+            <div
+              className="emotion-42"
+            >
+              <svg
+                className="emotion-43"
+                data-file-name="checkmark.svg"
+                height={20}
+              />
+            </div>
+          </div>
+          <div
+            className="emotion-44"
+          >
             <span
-              className="emotion-39"
+              className="emotion-45"
             >
               Accept
             </span>
@@ -1449,10 +1443,10 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
         </label>
       </div>
       <div
-        className="emotion-45"
+        className="emotion-46"
       >
         <a
-          className="emotion-43"
+          className="emotion-47"
           href="/"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -1461,7 +1455,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
         </a>
         <button
           aria-disabled={true}
-          className="emotion-44"
+          className="emotion-48"
           onClick={[Function]}
           type="submit"
         >

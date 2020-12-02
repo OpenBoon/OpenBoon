@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Layout /> should render properly 1`] = `
-.emotion-12 {
+.emotion-0 {
   height: 100%;
 }
 
-.emotion-0:focus {
+.emotion-1:focus {
   background-color: #3b3b3b;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   z-index: 101;
   border-radius: 2px;
   font-size: 15px;
@@ -15,7 +15,7 @@ exports[`<Layout /> should render properly 1`] = `
   font-weight: 500;
 }
 
-.emotion-10 {
+.emotion-2 {
   position: fixed;
   top: 0;
   left: 0;
@@ -27,14 +27,13 @@ exports[`<Layout /> should render properly 1`] = `
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
   z-index: 100;
   padding-left: 16px;
   padding-right: 16px;
@@ -51,7 +50,7 @@ exports[`<Layout /> should render properly 1`] = `
   align-items: stretch;
 }
 
-.emotion-1 {
+.emotion-4 {
   border: 0;
   background-color: inherit;
   color: #808080;
@@ -60,8 +59,8 @@ exports[`<Layout /> should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -72,7 +71,7 @@ exports[`<Layout /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-2 {
+.emotion-5 {
   padding-left: 8px;
   padding-right: 8px;
   display: -webkit-box;
@@ -85,19 +84,19 @@ exports[`<Layout /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-9 {
+.emotion-6 {
   margin-right: -12px;
 }
 
-.emotion-8 {
+.emotion-7 {
   position: relative;
   height: 100%;
 }
 
-.emotion-7 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -110,48 +109,36 @@ exports[`<Layout /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
+  background-color: transparent;
+  padding-left: 16px;
   height: 100%;
 }
 
-.emotion-7:hover {
+.emotion-8:hover,
+.emotion-8.focus-visible:focus,
+.emotion-8 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-7:hover,
-.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-7:hover {
+.emotion-8:hover {
   cursor: pointer;
 }
 
-.emotion-6 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -162,14 +149,14 @@ exports[`<Layout /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-4 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -185,11 +172,15 @@ exports[`<Layout /> should render properly 1`] = `
   font-weight: 700;
 }
 
-.emotion-5 {
+.emotion-11 {
   margin-left: 8px;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
 }
 
-.emotion-11 {
+.emotion-12 {
   margin-top: 44px;
   padding-left: 32px;
   padding-right: 32px;
@@ -205,10 +196,10 @@ exports[`<Layout /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-12"
+  className="emotion-0"
 >
   <a
-    className="emotion-0"
+    className="emotion-1"
     data-reach-skip-link=""
     data-reach-skip-nav-link=""
     href="#reach-skip-nav"
@@ -216,14 +207,14 @@ exports[`<Layout /> should render properly 1`] = `
     Skip to content
   </a>
   <div
-    className="emotion-10"
+    className="emotion-2"
   >
     <div
       className="emotion-3"
     >
       <button
         aria-label="Open Sidebar Menu"
-        className="emotion-1"
+        className="emotion-4"
         onClick={[Function]}
         type="button"
       >
@@ -234,7 +225,7 @@ exports[`<Layout /> should render properly 1`] = `
       </button>
       <a
         aria-label="Home"
-        className="emotion-2"
+        className="emotion-5"
         href="/"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -249,28 +240,28 @@ exports[`<Layout /> should render properly 1`] = `
       />
     </div>
     <div
-      className="emotion-9"
+      className="emotion-6"
     >
       <div
-        className="emotion-8"
+        className="emotion-7"
       >
         <button
           aria-label="Open user menu"
-          className="emotion-7"
+          className="emotion-8"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
         >
           <div
-            className="emotion-6"
+            className="emotion-9"
           >
             <div
-              className="emotion-4"
+              className="emotion-10"
             >
               JD
             </div>
             <svg
-              className="emotion-5"
+              className="emotion-11"
               color="#808080"
               data-file-name="chevron.svg"
               height={20}
@@ -290,7 +281,7 @@ exports[`<Layout /> should render properly 1`] = `
     id="reach-skip-nav"
   />
   <div
-    className="emotion-11"
+    className="emotion-12"
   >
     Hello World
   </div>
@@ -298,13 +289,13 @@ exports[`<Layout /> should render properly 1`] = `
 `;
 
 exports[`<Layout /> should render properly 2`] = `
-.emotion-12 {
+.emotion-0 {
   height: 100%;
 }
 
-.emotion-0:focus {
+.emotion-1:focus {
   background-color: #3b3b3b;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   z-index: 101;
   border-radius: 2px;
   font-size: 15px;
@@ -312,7 +303,7 @@ exports[`<Layout /> should render properly 2`] = `
   font-weight: 500;
 }
 
-.emotion-10 {
+.emotion-2 {
   position: fixed;
   top: 0;
   left: 0;
@@ -324,14 +315,13 @@ exports[`<Layout /> should render properly 2`] = `
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
   z-index: 100;
   padding-left: 16px;
   padding-right: 16px;
@@ -348,7 +338,7 @@ exports[`<Layout /> should render properly 2`] = `
   align-items: stretch;
 }
 
-.emotion-1 {
+.emotion-4 {
   border: 0;
   background-color: inherit;
   color: #808080;
@@ -357,8 +347,8 @@ exports[`<Layout /> should render properly 2`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -369,7 +359,7 @@ exports[`<Layout /> should render properly 2`] = `
   cursor: pointer;
 }
 
-.emotion-2 {
+.emotion-5 {
   padding-left: 8px;
   padding-right: 8px;
   display: -webkit-box;
@@ -382,19 +372,19 @@ exports[`<Layout /> should render properly 2`] = `
   align-items: center;
 }
 
-.emotion-9 {
+.emotion-6 {
   margin-right: -12px;
 }
 
-.emotion-8 {
+.emotion-7 {
   position: relative;
   height: 100%;
 }
 
-.emotion-7 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -407,48 +397,36 @@ exports[`<Layout /> should render properly 2`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
+  background-color: transparent;
+  padding-left: 16px;
   height: 100%;
 }
 
-.emotion-7:hover {
+.emotion-8:hover,
+.emotion-8.focus-visible:focus,
+.emotion-8 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-7:hover,
-.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-7:hover {
+.emotion-8:hover {
   cursor: pointer;
 }
 
-.emotion-6 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -459,14 +437,14 @@ exports[`<Layout /> should render properly 2`] = `
   align-items: center;
 }
 
-.emotion-4 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -482,11 +460,15 @@ exports[`<Layout /> should render properly 2`] = `
   font-weight: 700;
 }
 
-.emotion-5 {
+.emotion-11 {
   margin-left: 8px;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
 }
 
-.emotion-11 {
+.emotion-12 {
   margin-top: 44px;
   padding-left: 32px;
   padding-right: 32px;
@@ -502,10 +484,10 @@ exports[`<Layout /> should render properly 2`] = `
 }
 
 <div
-  className="emotion-12"
+  className="emotion-0"
 >
   <a
-    className="emotion-0"
+    className="emotion-1"
     data-reach-skip-link=""
     data-reach-skip-nav-link=""
     href="#reach-skip-nav"
@@ -513,14 +495,14 @@ exports[`<Layout /> should render properly 2`] = `
     Skip to content
   </a>
   <div
-    className="emotion-10"
+    className="emotion-2"
   >
     <div
       className="emotion-3"
     >
       <button
         aria-label="Open Sidebar Menu"
-        className="emotion-1"
+        className="emotion-4"
         onClick={[Function]}
         type="button"
       >
@@ -531,7 +513,7 @@ exports[`<Layout /> should render properly 2`] = `
       </button>
       <a
         aria-label="Home"
-        className="emotion-2"
+        className="emotion-5"
         href="/"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -546,28 +528,28 @@ exports[`<Layout /> should render properly 2`] = `
       />
     </div>
     <div
-      className="emotion-9"
+      className="emotion-6"
     >
       <div
-        className="emotion-8"
+        className="emotion-7"
       >
         <button
           aria-label="Open user menu"
-          className="emotion-7"
+          className="emotion-8"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
         >
           <div
-            className="emotion-6"
+            className="emotion-9"
           >
             <div
-              className="emotion-4"
+              className="emotion-10"
             >
               JD
             </div>
             <svg
-              className="emotion-5"
+              className="emotion-11"
               color="#808080"
               data-file-name="chevron.svg"
               height={20}
@@ -587,7 +569,7 @@ exports[`<Layout /> should render properly 2`] = `
     id="reach-skip-nav"
   />
   <div
-    className="emotion-11"
+    className="emotion-12"
   >
     Hello World
   </div>

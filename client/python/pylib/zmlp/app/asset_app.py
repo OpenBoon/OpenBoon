@@ -1,9 +1,11 @@
 import io
 import os
+import requests
 from collections import namedtuple
 
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job
-from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
+from ..search import AssetSearchResult, \
+    AssetSearchScroller, SimilarityQuery, AssetClipSearchScroller
 from ..util import as_collection, as_id_collection, as_id
 
 
@@ -247,6 +249,21 @@ class AssetApp(object):
         """
         return AssetSearchScroller(self.app, search, timeout)
 
+    def scroll_search_clips(self, asset, search=None, timeout="1m"):
+        """
+        Scroll through clips for given asset using the ElasticSearch query DSL.
+
+        Args:
+            asset (Asset): The asset or unique AssetId.
+            search (dict): The ElasticSearch search to execute
+            timeout (str): The scroll timeout.  Defaults to 1 minute.
+
+        Returns:
+            AssetClipSearchScroller - a clip scroller instance for generating clips.
+
+        """
+        return AssetClipSearchScroller(as_id(asset), self.app, search, timeout)
+
     def reprocess_search(self, search, modules):
         """
         Reprocess the given search with the supplied modules.
@@ -324,6 +341,44 @@ class AssetApp(object):
             raise ValueError("Must pass at least and add_labels or remove_labels argument")
         return self.app.client.put("/api/v3/assets/_batch_update_labels", body)
 
+    def update_custom_fields(self, asset, values):
+        """
+        Set the values of custom metadata fields.
+
+        Args:
+            asset (Asset): The asset or unique Asset id.
+            values (dict): A dictionary of values.
+
+        Returns:
+            dict: A status dictionary with failures or succcess
+        """
+        body = {
+            "update": {
+                as_id(asset): values
+            }
+        }
+        return self.app.client.put("/api/v3/assets/_batch_update_custom_fields", body)
+
+    def batch_update_custom_fields(self, update):
+        """
+        Set the values of custom metadata fields.
+
+        Examples:
+            {
+                "asset-id1": {"shoe": "nike"},
+                "asset-id2": {"country": "New Zealand"}
+            }
+
+        Args:
+            update (dict): A dict o dicts which describe the
+        Returns:
+            dict: A status dictionary with failures or success
+        """
+        body = {
+            'update': update
+        }
+        return self.app.client.put('/api/v3/assets/_batch_update_custom_fields', body)
+
     def download_file(self, stored_file, dst_file=None):
         """
         Download given file and store results in memory, or optionally
@@ -355,6 +410,34 @@ class AssetApp(object):
             return os.path.getsize(dst_file)
         else:
             return io.BytesIO(rsp.content)
+
+    def stream_file(self, stored_file, chunk_size=1024):
+        """
+        Streams a file by iteratively returning chunks of the file using a generator. This
+        can be useful when developing web applications and a full download of the file
+        before continuing is not necessary.
+
+        Args:
+            stored_file (mixed): The StoredFile instance or its ID.
+            chunk_size (int): The byte sizes of each requesting chunk. Defaults to 1024.
+
+        Yields:
+            generator (File-like Object): Content of the file.
+
+        """
+        if isinstance(stored_file, str):
+            path = stored_file
+        elif isinstance(stored_file, StoredFile):
+            path = stored_file.id
+        else:
+            raise ValueError("stored_file must be a string or StoredFile instance")
+
+        url = self.app.client.get_url('/api/v3/files/_stream/{}'.format(path))
+        response = requests.get(url, verify=self.app.client.verify,
+                                headers=self.app.client.headers(), stream=True)
+
+        for block in response.iter_content(chunk_size):
+            yield block
 
     def get_sim_hashes(self, images):
         """

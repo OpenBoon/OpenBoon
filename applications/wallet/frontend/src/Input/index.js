@@ -13,12 +13,12 @@ const BASE = ({ isDisabled }) => ({
   borderRadius: constants.borderRadius.small,
   boxShadow: constants.boxShadows.input,
   width: '100%',
-  cursor: isDisabled ? 'not-allowed' : '',
-  '&:focus': {
+  cursor: isDisabled ? 'not-allowed' : 'text',
+  '&:focus, .noop': {
     border: constants.borders.keyOneMedium,
     outline: colors.key.one,
   },
-  '&:hover': {
+  '&:hover, .noop': {
     border: constants.borders.medium.white,
   },
 })
@@ -31,7 +31,9 @@ const STYLES = {
   SECONDARY: {
     color: colors.structure.white,
     backgroundColor: colors.structure.smoke,
-    '&:focus': {
+    '&:focus, .noop': {
+      border: constants.borders.keyOneMedium,
+      outline: colors.key.one,
       color: colors.structure.black,
       backgroundColor: colors.structure.white,
     },
@@ -88,11 +90,11 @@ const Input = ({
           name={id}
           value={value}
           onChange={onChange}
-          css={[
-            BASE({ isDisabled }),
-            STYLES[variant],
-            BORDER_STYLES({ hasError }),
-          ]}
+          css={{
+            ...BASE({ isDisabled }),
+            ...STYLES[variant],
+            ...BORDER_STYLES({ hasError }),
+          }}
           disabled={isDisabled}
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...props}

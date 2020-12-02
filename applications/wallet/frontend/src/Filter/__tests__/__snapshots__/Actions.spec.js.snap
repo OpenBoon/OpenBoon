@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FilterActions /> should render disabled properly 1`] = `
-.emotion-4 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -10,6 +10,84 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 4px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #808080;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  color: #d6680b;
+}
+
+.emotion-2 {
+  opacity: 1;
 }
 
 .emotion-3 {
@@ -28,29 +106,27 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   padding: 4px;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -59,26 +135,22 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
   border-radius: 2px;
 }
 
-.emotion-3:hover {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-3:hover,
-.emotion-3.focus-visible:focus {
   color: #ffffff;
 }
 
 .emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
   opacity: 1;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #808080;
 }
 
@@ -92,96 +164,12 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
   color: #ffffff;
 }
 
-.emotion-2 {
+.emotion-4 {
   opacity: 0;
 }
 
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 4px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border-radius: 2px;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  background-color: #3b3b3b;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  color: #d6680b;
-}
-
-.emotion-0 {
-  opacity: 1;
-}
-
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <button
     aria-label="Enable Filter"
@@ -191,7 +179,7 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
     type="button"
   >
     <svg
-      className="emotion-0"
+      className="emotion-2"
       color="#d6680b"
       data-file-name="hidden.svg"
       height={20}
@@ -205,7 +193,7 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
     type="button"
   >
     <svg
-      className="emotion-2"
+      className="emotion-4"
       color="#808080"
       data-file-name="cross.svg"
       height={20}
@@ -215,7 +203,7 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
 `;
 
 exports[`<FilterActions /> should render properly 1`] = `
-.emotion-4 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -242,29 +230,27 @@ exports[`<FilterActions /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   padding: 4px;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -273,26 +259,22 @@ exports[`<FilterActions /> should render properly 1`] = `
   border-radius: 2px;
 }
 
-.emotion-1:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
 .emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
   color: #808080;
 }
 
@@ -306,12 +288,16 @@ exports[`<FilterActions /> should render properly 1`] = `
   color: #ffffff;
 }
 
-.emotion-0 {
+.emotion-2 {
+  opacity: 0;
+}
+
+.emotion-4 {
   opacity: 0;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <button
     aria-label="Disable Filter"
@@ -321,7 +307,7 @@ exports[`<FilterActions /> should render properly 1`] = `
     type="button"
   >
     <svg
-      className="emotion-0"
+      className="emotion-2"
       color="#808080"
       data-file-name="hidden.svg"
       height={20}
@@ -335,7 +321,7 @@ exports[`<FilterActions /> should render properly 1`] = `
     type="button"
   >
     <svg
-      className="emotion-0"
+      className="emotion-4"
       color="#808080"
       data-file-name="cross.svg"
       height={20}
@@ -345,7 +331,7 @@ exports[`<FilterActions /> should render properly 1`] = `
 `;
 
 exports[`<FilterActions /> should render properly 2`] = `
-.emotion-4 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -372,29 +358,27 @@ exports[`<FilterActions /> should render properly 2`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   padding: 4px;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -403,26 +387,22 @@ exports[`<FilterActions /> should render properly 2`] = `
   border-radius: 2px;
 }
 
-.emotion-1:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
 .emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
   color: #808080;
 }
 
@@ -436,12 +416,16 @@ exports[`<FilterActions /> should render properly 2`] = `
   color: #ffffff;
 }
 
-.emotion-0 {
+.emotion-2 {
+  opacity: 0;
+}
+
+.emotion-4 {
   opacity: 0;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <button
     aria-label="Disable Filter"
@@ -451,7 +435,7 @@ exports[`<FilterActions /> should render properly 2`] = `
     type="button"
   >
     <svg
-      className="emotion-0"
+      className="emotion-2"
       color="#808080"
       data-file-name="hidden.svg"
       height={20}
@@ -465,7 +449,7 @@ exports[`<FilterActions /> should render properly 2`] = `
     type="button"
   >
     <svg
-      className="emotion-0"
+      className="emotion-4"
       color="#808080"
       data-file-name="cross.svg"
       height={20}
@@ -475,7 +459,7 @@ exports[`<FilterActions /> should render properly 2`] = `
 `;
 
 exports[`<FilterActions /> should render properly 3`] = `
-.emotion-4 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -502,29 +486,27 @@ exports[`<FilterActions /> should render properly 3`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   padding: 4px;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -533,26 +515,22 @@ exports[`<FilterActions /> should render properly 3`] = `
   border-radius: 2px;
 }
 
-.emotion-1:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
 .emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
   color: #808080;
 }
 
@@ -566,12 +544,16 @@ exports[`<FilterActions /> should render properly 3`] = `
   color: #ffffff;
 }
 
-.emotion-0 {
+.emotion-2 {
+  opacity: 0;
+}
+
+.emotion-4 {
   opacity: 0;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <button
     aria-label="Disable Filter"
@@ -581,7 +563,7 @@ exports[`<FilterActions /> should render properly 3`] = `
     type="button"
   >
     <svg
-      className="emotion-0"
+      className="emotion-2"
       color="#808080"
       data-file-name="hidden.svg"
       height={20}
@@ -595,7 +577,7 @@ exports[`<FilterActions /> should render properly 3`] = `
     type="button"
   >
     <svg
-      className="emotion-0"
+      className="emotion-4"
       color="#808080"
       data-file-name="cross.svg"
       height={20}

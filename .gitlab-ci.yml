@@ -20,7 +20,7 @@ scrounger-frontend-test-suite:
   stage: test
   image: node:12
   before_script:
-    - cd applications/scrounger/frontend
+    - cd applications/scrounger/react_frontend
     - npm ci
   script:
     - npm run lint
@@ -28,7 +28,7 @@ scrounger-frontend-test-suite:
     # MR to development with Frontend changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development"
       changes:
-        - "applications/scrounger/frontend/**/*"
+        - "applications/scrounger/react_frontend/**/*"
     - when: never
 
 ########  Wallet  ########

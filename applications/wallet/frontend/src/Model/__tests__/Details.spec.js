@@ -80,7 +80,9 @@ describe('<ModelDetails />', () => {
     const component = TestRenderer.create(<ModelDetails />)
 
     // Mock Success
-    fetch.mockResponseOnce(JSON.stringify({ jobId: JOB_ID }))
+    fetch.mockResponseOnce(JSON.stringify({ jobId: JOB_ID }), {
+      headers: { 'content-type': 'application/json' },
+    })
 
     await act(async () => {
       component.root
@@ -207,13 +209,8 @@ describe('<ModelDetails />', () => {
     expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
 
     expect(spy).toHaveBeenCalledWith(
-      `AssetLabelingAdd.${PROJECT_ID}.modelId`,
-      `"${MODEL_ID}"`,
-    )
-
-    expect(spy).toHaveBeenCalledWith(
-      `AssetLabelingAdd.${PROJECT_ID}.label`,
-      `""`,
+      `AssetLabelingAdd.${PROJECT_ID}`,
+      `{"modelId":"${MODEL_ID}","label":"","scope":""}`,
     )
   })
 

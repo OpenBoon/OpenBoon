@@ -23,7 +23,7 @@ Array [
   >
     Data Sources
   </h2>,
-  .emotion-7 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -32,7 +32,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-6 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -43,12 +43,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -68,13 +68,13 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
-.emotion-2 {
+.emotion-5 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -93,22 +93,22 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
 <nav
-    className="emotion-7"
+    className="emotion-0"
   >
     <ul
-      className="emotion-6"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -117,10 +117,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -129,10 +129,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
           onClick={[Function]}
           onMouseEnter={[Function]}

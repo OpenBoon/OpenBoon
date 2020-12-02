@@ -3,7 +3,12 @@ import PropTypes from 'prop-types'
 
 import { gotoNextHit, gotoPreviousHit } from './helpers'
 
-const TimelineShortcuts = ({ videoRef, timelines, settings }) => {
+const TimelineShortcuts = ({
+  videoRef,
+  timelines,
+  settings,
+  setFollowPlayhead,
+}) => {
   /* istanbul ignore next */
   const keydownHandler = useCallback(
     (event) => {
@@ -20,6 +25,7 @@ const TimelineShortcuts = ({ videoRef, timelines, settings }) => {
 
       if (code === 'Space') {
         if (videoRef.current.paused) {
+          setFollowPlayhead(true)
           videoRef.current.play()
         } else {
           videoRef.current.pause()
@@ -70,7 +76,7 @@ const TimelineShortcuts = ({ videoRef, timelines, settings }) => {
         gotoNextHit({ videoRef, timelines, settings })()
       }
     },
-    [videoRef, timelines, settings],
+    [videoRef, timelines, settings, setFollowPlayhead],
   )
 
   useEffect(() => {
