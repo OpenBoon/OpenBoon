@@ -1,13 +1,16 @@
-from unittest.mock import patch
-from pytest import approx
+import os
 
+from unittest.mock import patch
+
+from .conftest import MockS3Client
 from zmlp_analysis.aws.videos import RekognitionVideoUnsafeDetection
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels, \
     zorroa_test_path, get_mock_stored_file
 from zmlpsdk import file_storage
 
-patch_path = 'zmlp_analysis.aws.util.AwsEnv.rekognition'
+rek_patch_path = 'zmlp_analysis.aws.util.AwsEnv.rekognition'
+s3_patch_path = 'zmlp_analysis.aws.util.AwsEnv.s3'
 
 VID_MP4 = "video/ted_talk.mp4"
 
@@ -31,12 +34,18 @@ class MockAWSClient:
 
 class RekognitionVideoUnsafeDetectionProcessorTests(PluginUnitTestCase):
 
-    @patch(patch_path, side_effect=MockAWSClient)
+    @patch(s3_patch_path, side_effect=MockS3Client)
+    def setUp(self, s3_patch):
+        os.environ['ZMLP_PROJECT_ID'] = '00000000-0000-0000-0000-000000000001'
+        os.environ['ZORROA_AWS_BUCKET'] = 'zorroa-unit-tests'
+
+    @patch(s3_patch_path, side_effect=MockS3Client)
+    @patch(rek_patch_path, side_effect=MockAWSClient)
     @patch("zmlp_analysis.aws.videos.nsfw.video.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.aws.videos.nsfw.proxy.get_video_proxy')
-    def test_unsafe_detection(self, get_vid_patch, store_patch, store_blob_patch, _, __):
+    def test_unsafe_detection(self, get_vid_patch, store_patch, store_blob_patch, _, __, ___):
         video_path = zorroa_test_path(VID_MP4)
         namespace = 'analysis.aws-unsafe-detection'
 
@@ -54,14 +63,3 @@ class RekognitionVideoUnsafeDetectionProcessorTests(PluginUnitTestCase):
         assert 'Suggestive' in get_prediction_labels(analysis)
         assert 'Male Swimwear Or Underwear' in get_prediction_labels(analysis)
         assert analysis['count'] == 2
-
-
-expected_results = [
-    (
-        {"model_id": "model-id-12345"},
-        [
-            ('Suggestive', approx(0.6514, 0.0001)),
-            ('Male Swimwear Or Underwear', approx(0.6514, 0.0001))
-        ]
-    )
-]

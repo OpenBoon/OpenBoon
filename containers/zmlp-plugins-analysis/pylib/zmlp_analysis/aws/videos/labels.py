@@ -1,8 +1,10 @@
-from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
+import os
+
+from zmlp_analysis.aws.util import AwsEnv
+from zmlp_analysis.utils.prechecks import Prechecks
+from zmlpsdk import AssetProcessor, Argument, FileTypes, ZmlpEnv, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlp_analysis.aws.labels import RekognitionLabelDetection
-
-MAX_LENGTH_SEC = 120
 
 
 class RekognitionVideoLabelDetection(AssetProcessor):
@@ -18,19 +20,19 @@ class RekognitionVideoLabelDetection(AssetProcessor):
         self.extract_type = extract_type
         self.reactor = reactor
         self.image_client = None
+        self.s3_client = None
 
     def init(self):
         self.image_client = RekognitionLabelDetection()
         self.image_client.init()
+        self.s3_client = AwsEnv.s3()
 
     def process(self, frame):
         asset = frame.asset
         asset_id = asset.id
         final_time = asset.get_attr('media.length')
 
-        if final_time > MAX_LENGTH_SEC:
-            self.logger.warning(
-                'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
+        if not Prechecks.is_valid_video_length(asset):
             return
 
         video_proxy = proxy.get_video_proxy(asset)
@@ -40,6 +42,15 @@ class RekognitionVideoLabelDetection(AssetProcessor):
             return
 
         local_path = file_storage.localize_file(video_proxy)
+        ext = os.path.splitext(local_path)[1]
+        bucket_file = f'{ZmlpEnv.get_project_id()}/video/{asset_id}{ext}'
+        bucket_name = AwsEnv.get_bucket_name()
+
+        # upload to s3
+        self.s3_client.upload_file(local_path, bucket_name, bucket_file)
+
+        # get audio s3 uri
+        s3_uri = f's3://{bucket_name}/{bucket_file}'
 
         if self.extract_type == 'time':
             extractor = video.TimeBasedFrameExtractor(local_path)
