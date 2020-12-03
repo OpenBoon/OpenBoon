@@ -5,11 +5,28 @@ import org.slf4j.LoggerFactory
 
 object Config {
 
-    class BucketConfiguration(
-        val url: String = System.getenv("ZMLP_STORAGE_PIPELINE_URL") ?: "http://localhost:9000",
-        val name: String = System.getenv("ZMLP_STORAGE_PIPELINE_BUCKET") ?: "pipeline-storage",
-        val accessKey: String = System.getenv("ZMLP_STORAGE_PIPELINE_ACCESSKEY") ?: "qwerty123",
-        val secretKey: String = System.getenv("ZMLP_STORAGE_PIPELINE_SECRETKEY") ?: "123qwerty"
+    open class BucketConfiguration(
+        val name: String,
+        val accessKey: String?,
+        val secretKey: String?,
+        val url: String?
+    )
+
+    class MinioBucketConfiguration() : BucketConfiguration(
+        System.getenv("ZMLP_STORAGE_PROJECT_BUCKET") ?: "project-storage",
+        System.getenv("ZMLP_STORAGE_PROJECT_ACCESSKEY") ?: "qwerty123",
+        System.getenv("ZMLP_STORAGE_PROJECT_SECRETKEY") ?: "123qwerty",
+        System.getenv("ZMLP_STORAGE_PROJECT_URL") ?: "http://localhost:9000",
+    )
+
+    /**
+     * We don't need anything besides bucket name for GCS.
+     */
+    class GcsBucketConfiguration() : BucketConfiguration(
+        System.getenv("ZMLP_STORAGE_PROJECT_BUCKET") ?: "project-storage",
+        null,
+        null,
+        null
     )
 
     class OfficerConfiguration(
@@ -21,10 +38,16 @@ object Config {
 
     val officer: OfficerConfiguration
     val bucket: BucketConfiguration
+    val storageClient = System.getenv("ZMLP_STORAGE_CLIENT") ?: "minio"
 
     init {
-        bucket = BucketConfiguration()
         officer = OfficerConfiguration()
+
+        bucket = when (storageClient) {
+            "minio" -> MinioBucketConfiguration()
+            "gcs" -> GcsBucketConfiguration()
+            else -> MinioBucketConfiguration()
+        }
     }
 
     fun logSystemConfiguration() {
