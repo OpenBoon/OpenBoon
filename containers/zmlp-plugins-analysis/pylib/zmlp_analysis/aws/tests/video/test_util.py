@@ -48,23 +48,25 @@ class RekognitionVideoDetectionUtilsTests(PluginUnitTestCase):
         )
 
     def test_start_label_detection(self):
-        job_id = util.start_label_detection(
+        job_id = util.start_detection(
             rek_client=rek_client,
             bucket='rgz-test',
             video='ted_talk.mp4',
             role_arn='abcd1234',
-            sns_topic_arn='abc123'
+            sns_topic_arn='abc123',
+            func='start_label_detection'
         )
 
         assert job_id == '313bc6725817ff2740d34e104ef4187cab09cf86d0fc5f2d29703139b21c2575'
 
     def test_start_segment_detection(self):
-        job_id = util.start_segment_detection(
+        job_id = util.start_detection(
             rek_client=rek_client,
             bucket='rgz-test',
             video='ted_talk.mp4',
             role_arn='abcd1234',
-            sns_topic_arn='abc123'
+            sns_topic_arn='abc123',
+            func='start_segment_detection'
         )
 
         assert job_id == 'c792050cf2a88c38d4ea1bf2de182c7d07d4b6497062b019ba99cd8b90be24ef'

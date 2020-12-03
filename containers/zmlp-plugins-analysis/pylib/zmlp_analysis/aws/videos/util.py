@@ -152,9 +152,14 @@ def start_detection(rek_client, bucket, video, role_arn, sns_topic_arn, func, **
     response = getattr(rek_client, func)(
         Video={'S3Object': {'Bucket': bucket, 'Name': video}},
         NotificationChannel={'RoleArn': role_arn, 'SNSTopicArn': sns_topic_arn},
-        **kwargs,
+        **kwargs
     )
 
     start_job_id = response['JobId']
     logger.debug('Start Job Id: ' + start_job_id)
+
+    import json
+    with open('text_detection.json', 'w') as fp:
+        json.dump(response, fp)
+
     return start_job_id
