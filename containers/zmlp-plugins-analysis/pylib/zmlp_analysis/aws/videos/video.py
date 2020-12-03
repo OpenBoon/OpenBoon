@@ -287,10 +287,6 @@ class TextVideoDetectProcessor(AbstractVideoDetectProcessor):
                 NextToken=pagination_token
             )
 
-            import json
-            with open('text_detection_results.json', 'w') as fp:
-                json.dump(response, fp)
-
             for textDetection in response['TextDetections']:
                 text = textDetection['TextDetection']
                 detected_text = text['DetectedText']

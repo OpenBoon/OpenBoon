@@ -157,9 +157,4 @@ def start_detection(rek_client, bucket, video, role_arn, sns_topic_arn, func, **
 
     start_job_id = response['JobId']
     logger.debug('Start Job Id: ' + start_job_id)
-
-    import json
-    with open('text_detection.json', 'w') as fp:
-        json.dump(response, fp)
-
     return start_job_id
