@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import Router, { useRouter } from 'next/router'
 import useSWR from 'swr'
+import Router, { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import { colors, constants, spacing, typography } from '../Styles'
@@ -19,6 +19,7 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import Modal from '../Modal'
 import Tabs from '../Tabs'
+import ModelAssets from '../ModelAssets'
 import ModelLabels from '../ModelLabels'
 import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
@@ -28,6 +29,7 @@ const LINE_HEIGHT = '23px'
 
 const ModelDetails = () => {
   const {
+    pathname,
     query: { projectId, modelId, edit = '' },
   } = useRouter()
 
@@ -251,6 +253,11 @@ const ModelDetails = () => {
             href: '/[projectId]/models/[modelId]',
             isSelected: edit ? false : undefined,
           },
+          {
+            title: 'Labeled Assets',
+            href: '/[projectId]/models/[modelId]/assets',
+            isSelected: edit ? false : undefined,
+          },
           edit
             ? {
                 title: 'Edit Label',
@@ -333,7 +340,17 @@ const ModelDetails = () => {
         </div>
       )}
 
-      {!edit && <ModelLabels requiredAssetsPerLabel={requiredAssetsPerLabel} />}
+      {pathname === '/[projectId]/models/[modelId]' && !edit && (
+        <ModelLabels requiredAssetsPerLabel={requiredAssetsPerLabel} />
+      )}
+
+      {pathname === '/[projectId]/models/[modelId]/assets' && (
+        <ModelAssets
+          projectId={projectId}
+          modelId={modelId}
+          moduleName={moduleName}
+        />
+      )}
     </>
   )
 }

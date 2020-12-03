@@ -93,6 +93,10 @@ class GcsProjectStorageService constructor(
         val path = locator.getPath()
         return "gs://${properties.bucket}/$path"
     }
+    override fun getNativeUri(locator: ProjectDirLocator): String {
+        val path = locator.getPath()
+        return "gs://${properties.bucket}/$path"
+    }
 
     override fun getSignedUrl(
         locator: ProjectStorageLocator,

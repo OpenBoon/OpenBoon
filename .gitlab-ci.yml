@@ -673,10 +673,10 @@ zmlp-services-unit-tests:
     - mvn clean install -f lib/jvm-common -q -Dmaven.test.skip=true
     - mvn test verify -f lib/jvm-common -q
     - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true
+    - mvn test verify -f services/officer -q
     - mvn test verify -f services/archivist -q
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
     - mvn test verify -f services/auth-server -q
-    - mvn test verify -f services/officer -q
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'

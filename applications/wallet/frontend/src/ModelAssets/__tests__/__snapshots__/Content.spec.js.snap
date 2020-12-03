@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModelAssets /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  padding-bottom: 16px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    Number of Assets: 
+    574
+  </h3>,
+  .emotion-0 {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 1px;
+}
+
+.emotion-1 {
+  position: relative;
+  border: 4px solid transparent;
+  width: 100%;
+  height: 100%;
+}
+
+.emotion-1:hover {
+  border: 4px solid #ffffff;
+}
+
+.emotion-2 {
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  padding-bottom: 100%;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #2e2e2e;
+}
+
+.emotion-3 {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-2"
+      >
+        <img
+          className="emotion-3"
+          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-2"
+      >
+        <img
+          className="emotion-3"
+          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-2"
+      >
+        <img
+          className="emotion-3"
+          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-2"
+      >
+        <img
+          className="emotion-3"
+          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-2"
+      >
+        <img
+          className="emotion-3"
+          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
+        />
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<ModelAssets /> should render properly without data 1`] = `
+Array [
+  .emotion-0 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  padding-bottom: 16px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    Number of Assets: 
+  </h3>,
+  .emotion-0 {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 1px;
+}
+
+<div
+    className="emotion-0"
+  />,
+]
+`;
