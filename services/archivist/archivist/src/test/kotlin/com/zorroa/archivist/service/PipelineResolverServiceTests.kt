@@ -117,10 +117,10 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineNameAndMinusModules() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("zvi-document-page-extraction"))
+        val pspec = PipelineSpec("test", modules = listOf("zvi-page-extraction"))
         val pipeline = pipelineService.create(pspec)
 
-        val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("-zvi-document-page-extraction"))
+        val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("-zvi-page-extraction"))
         val resolved = rpipeline.execute
         val last = resolved.last()
 
