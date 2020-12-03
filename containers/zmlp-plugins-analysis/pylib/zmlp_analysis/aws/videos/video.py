@@ -266,7 +266,7 @@ class TextVideoDetectProcessor(AbstractVideoDetectProcessor):
 
 
 class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
-    """ Text Detection for Videos using AWS """
+    """ Face Detection for Videos using AWS """
     def __init__(self):
         super(FaceVideoDetectProcessor, self).__init__(detector_func='start_face_detection')
 
@@ -318,7 +318,7 @@ class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
 
 
 class UnsafeVideoDetectProcessor(AbstractVideoDetectProcessor):
-    """ Text Detection for Videos using AWS """
+    """ Content Moderation Detection for Videos using AWS """
     def __init__(self):
         super(UnsafeVideoDetectProcessor, self).__init__(detector_func='start_content_moderation')
 
@@ -369,7 +369,7 @@ class UnsafeVideoDetectProcessor(AbstractVideoDetectProcessor):
 
 
 class CelebrityVideoDetectProcessor(AbstractVideoDetectProcessor):
-    """ Text Detection for Videos using AWS """
+    """ Celebrity Detection for Videos using AWS """
     def __init__(self):
         super(CelebrityVideoDetectProcessor, self).__init__(
             detector_func='start_celebrity_recognition')
@@ -421,7 +421,7 @@ class CelebrityVideoDetectProcessor(AbstractVideoDetectProcessor):
 
 
 class PeoplePathingVideoDetectProcessor(AbstractVideoDetectProcessor):
-    """ Text Detection for Videos using AWS """
+    """ People Tracking for Videos using AWS """
     def __init__(self):
         super(PeoplePathingVideoDetectProcessor, self).__init__(
             detector_func='start_person_tracking')
