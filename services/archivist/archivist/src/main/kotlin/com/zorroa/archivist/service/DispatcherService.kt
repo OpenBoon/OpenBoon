@@ -42,7 +42,6 @@ import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
-import com.zorroa.archivist.storage.PipelineStorageConfiguration
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
@@ -135,7 +134,6 @@ class DispatchQueueManager @Autowired constructor(
     val analystService: AnalystService,
     val properties: ApplicationProperties,
     val authServerClient: AuthServerClient,
-    val pipelineStoragProperties: PipelineStorageConfiguration,
     val jobService: JobService,
     val systemStorageService: SystemStorageService,
     val assetService: AssetService,
