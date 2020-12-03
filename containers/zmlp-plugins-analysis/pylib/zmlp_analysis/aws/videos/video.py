@@ -239,7 +239,7 @@ class TextVideoDetectProcessor(AbstractVideoDetectProcessor):
 
     def start_detection_analysis(self, role_arn, bucket, video, sns_topic_arn, sqs_queue_url, func):
         """
-        Start Label Detection Analysis
+        Start Text Detection Analysis
 
         Args:
             role_arn: (str) AWS Role ARN
@@ -299,6 +299,81 @@ class TextVideoDetectProcessor(AbstractVideoDetectProcessor):
                 video.extract_thumbnail_from_video(local_video_path, output_path,
                                                    start_time)
                 clip_tracker.append(start_time, [detected_text])
+
+            if 'NextToken' in response:
+                pagination_token = response['NextToken']
+            else:
+                finished = True
+
+        return clip_tracker
+
+
+class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
+    """ Text Detection for Videos using AWS """
+    def __init__(self):
+        super(FaceVideoDetectProcessor, self).__init__(detector_func='start_face_detection')
+
+    def start_detection_analysis(self, role_arn, bucket, video, sns_topic_arn, sqs_queue_url, func):
+        """
+        Start Text Detection Analysis
+
+        Args:
+            role_arn: (str) AWS Role ARN
+            bucket: (str) Bucket name only (i.e. "zorroa-dev" in "gs://zorroa-dev")
+            video: (str) video name without extension ("video" instead of "video.mp4")
+            sns_topic_arn: (str) SNS Topic ARN
+            sqs_queue_url: (str) SQS Queue URL
+            func: (str) type of detection to run (label, face, text, segment)
+
+        Returns:
+            (dict) Label Detection Results
+        """
+        return util.start_detection(
+            self.rek_client,
+            bucket=bucket,
+            video=video,
+            role_arn=role_arn,
+            sns_topic_arn=sns_topic_arn,
+            func=func
+        )
+
+    def get_detection_results(self, clip_tracker, rek_client, start_job_id, local_video_path,
+                              max_results=10):
+        """
+        Get detection results
+
+        Args:
+            clip_tracker: ClipTracker for building Timeline
+            rek_client: AWS Rekog Client
+            start_job_id: (str) Job ID
+            local_video_path: (str) locally created video file
+            max_results: (int) maximum results to get, default 10
+
+        Returns:
+            (ClipTracker) built clip tracker clips for timeline building
+        """
+        pagination_token = ''
+        finished = False
+
+        output_path = tempfile.mkstemp(".jpg")[1]
+        while not finished:
+            response = rek_client.get_face_detection(
+                JobId=start_job_id,
+                MaxResults=max_results,
+                NextToken=pagination_token
+            )
+
+            for i, faceDetection in enumerate(response['Faces']):
+                face = faceDetection['Face']
+                confidence = face['Confidence']
+                start_time = faceDetection['Timestamp'] / 1000  # ms to s
+
+                logger.debug(f'\tFace Detected: {face}')
+                logger.debug(f'\tConfidence: {confidence}')
+
+                video.extract_thumbnail_from_video(local_video_path, output_path,
+                                                   start_time)
+                clip_tracker.append(start_time, [f"face{i}"])
 
             if 'NextToken' in response:
                 pagination_token = response['NextToken']

@@ -5,8 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp_analysis.aws.videos.video import LabelVideoDetectProcessor, \
-    BlackFramesVideoDetectProcessor, EndCreditsVideoDetectProcessor, TextVideoDetectProcessor
+from zmlp_analysis.aws.videos import video
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_mock_stored_file
 
@@ -59,7 +58,7 @@ class AmazonVideoProcessorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(LabelVideoDetectProcessor())
+        processor = self.init_processor(video.LabelVideoDetectProcessor())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(self.asset)
@@ -75,7 +74,23 @@ class AmazonVideoProcessorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(TextVideoDetectProcessor())
+        processor = self.init_processor(video.TextVideoDetectProcessor())
+        asset = TestAsset(video_path)
+        asset.set_attr('media.length', MEDIA_LENGTH)
+        frame = Frame(self.asset)
+        processor.process(frame)
+
+    @patch("zmlp_analysis.aws.videos.video.video.save_timeline", return_value={})
+    @patch.object(file_storage.assets, 'store_blob')
+    @patch.object(file_storage.assets, 'store_file')
+    @patch('zmlp_analysis.aws.videos.video.proxy.get_video_proxy')
+    def test_process_face_detection(self, get_prx_patch, store_patch, store_blob_patch, _):
+        video_path = zorroa_test_path(TED_TALK)
+        get_prx_patch.return_value = zorroa_test_path(TED_TALK)
+        store_patch.return_value = get_mock_stored_file()
+        store_blob_patch.return_value = get_mock_stored_file()
+
+        processor = self.init_processor(video.FaceVideoDetectProcessor())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(self.asset)
@@ -91,7 +106,7 @@ class AmazonVideoProcessorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(BlackFramesVideoDetectProcessor())
+        processor = self.init_processor(video.BlackFramesVideoDetectProcessor())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(self.asset)
@@ -107,7 +122,7 @@ class AmazonVideoProcessorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(EndCreditsVideoDetectProcessor())
+        processor = self.init_processor(video.EndCreditsVideoDetectProcessor())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(self.asset)

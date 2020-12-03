@@ -52,6 +52,12 @@ class MockRekClient:
         with open(json_file, "r") as fp:
             return json.load(fp)
 
+    def start_face_detection(self, Video=None, NotificationChannel=None):
+        json_file = os.path.join(os.path.dirname(__file__), "..", "mock-data",
+                                 "face_detection.json")
+        with open(json_file, "r") as fp:
+            return json.load(fp)
+
     def start_segment_detection(self, Video=None, NotificationChannel=None, SegmentTypes=None,
                                 Filters=None):
         json_file = os.path.join(os.path.dirname(__file__), "..", "mock-data",
@@ -68,6 +74,12 @@ class MockRekClient:
     def get_text_detection(self, JobId=None, MaxResults=None, NextToken=None, SortBy=None):
         json_file = os.path.join(os.path.dirname(__file__), "..", "mock-data",
                                  "text_detection_results.json")
+        with open(json_file, "r") as fp:
+            return json.load(fp)
+
+    def get_face_detection(self, JobId=None, MaxResults=None, NextToken=None, SortBy=None):
+        json_file = os.path.join(os.path.dirname(__file__), "..", "mock-data",
+                                 "face_detection_results.json")
         with open(json_file, "r") as fp:
             return json.load(fp)
 
