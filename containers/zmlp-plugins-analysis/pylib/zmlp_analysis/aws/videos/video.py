@@ -6,12 +6,12 @@ import os
 import tempfile
 import logging
 
+from zmlp_analysis.utils.prechecks import Prechecks
 from zmlp_analysis.aws.util import AwsEnv
 from zmlp_analysis.aws.videos import util
 from zmlpsdk import AssetProcessor, Argument, FileTypes, ZmlpEnv, file_storage, proxy, clips, video
 
 logger = logging.getLogger(__name__)
-MAX_LENGTH_SEC = 120
 
 
 class AbstractVideoDetectProcessor(AssetProcessor):
@@ -45,9 +45,9 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         self.s3_client = AwsEnv.s3()
         self.sqs_client = AwsEnv.general_aws_client(service='sqs')
         self.sns_client = AwsEnv.general_aws_client(service='sns')
+        self.roleArn = AwsEnv.get_rekognition_role_arn()
 
         self.jobId = ''
-        self.roleArn = 'arn:aws:iam::018430816410:role/ZRgRekog'
         self.bucket = ''
         self.video = ''
         self.startJobId = ''
@@ -61,9 +61,7 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         asset_id = asset.id
         final_time = asset.get_attr('media.length')
 
-        if final_time > MAX_LENGTH_SEC:
-            self.logger.warning(
-                'Skipping, video is longer than {} seconds.'.format(MAX_LENGTH_SEC))
+        if not Prechecks.is_valid_video_length(asset):
             return
 
         video_proxy = proxy.get_video_proxy(asset)

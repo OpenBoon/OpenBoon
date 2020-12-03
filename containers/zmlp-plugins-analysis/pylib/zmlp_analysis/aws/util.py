@@ -12,6 +12,15 @@ class AwsEnv:
     """
     AWS client utility client.
     """
+    @staticmethod
+    def get_rekognition_role_arn():
+        """
+        Get Rekognition Role ARN
+
+        Returns:
+            (str): role ARN name
+        """
+        return os.environ.get('ZORROA_AWS_ML_USER_ROLE_ARN')
 
     @staticmethod
     def general_aws_client(service):
