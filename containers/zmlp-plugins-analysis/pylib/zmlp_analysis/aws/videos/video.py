@@ -366,6 +366,58 @@ class UnsafeVideoDetectProcessor(AbstractVideoDetectProcessor):
         return clip_tracker
 
 
+class CelebrityVideoDetectProcessor(AbstractVideoDetectProcessor):
+    """ Text Detection for Videos using AWS """
+    def __init__(self):
+        super(CelebrityVideoDetectProcessor, self).__init__(
+            detector_func='start_celebrity_recognition')
+
+    def get_detection_results(self, clip_tracker, rek_client, start_job_id, local_video_path,
+                              max_results=10):
+        """
+        Get detection results
+
+        Args:
+            clip_tracker: ClipTracker for building Timeline
+            rek_client: AWS Rekog Client
+            start_job_id: (str) Job ID
+            local_video_path: (str) locally created video file
+            max_results: (int) maximum results to get, default 10
+
+        Returns:
+            (ClipTracker) built clip tracker clips for timeline building
+        """
+        pagination_token = ''
+        finished = False
+
+        output_path = tempfile.mkstemp(".jpg")[1]
+        while not finished:
+            response = rek_client.get_celebrity_recognition(
+                JobId=start_job_id,
+                MaxResults=max_results,
+                NextToken=pagination_token
+            )
+
+            for celebrityRecognition in response['Celebrities']:
+                content = celebrityRecognition['Celebrity']
+                name = content['Name']
+                confidence = content['Confidence']
+                start_time = celebrityRecognition['Timestamp'] / 1000  # ms to s
+
+                logger.debug(f'\tCelebrity: {name}')
+                logger.debug(f'\tConfidence: {confidence}')
+
+                video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
+                clip_tracker.append(start_time, [name])
+
+            if 'NextToken' in response:
+                pagination_token = response['NextToken']
+            else:
+                finished = True
+
+        return clip_tracker
+
+
 class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
     """ Segment Detection for Videos using AWS """
     def __init__(self, cue=None):

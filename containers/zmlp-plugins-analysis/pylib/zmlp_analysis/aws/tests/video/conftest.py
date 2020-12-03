@@ -60,7 +60,13 @@ class MockRekClient:
 
     def start_content_moderation(self, Video=None, NotificationChannel=None):
         json_file = os.path.join(os.path.dirname(__file__), "..", "mock-data",
-                                 "face_detection.json")
+                                 "nsfw_detection.json")
+        with open(json_file, "r") as fp:
+            return json.load(fp)
+
+    def start_celebrity_recognition(self, Video=None, NotificationChannel=None):
+        json_file = os.path.join(os.path.dirname(__file__), "..", "mock-data",
+                                 "celeb_detection.json")
         with open(json_file, "r") as fp:
             return json.load(fp)
 
@@ -92,6 +98,12 @@ class MockRekClient:
     def get_content_moderation(self, JobId=None, MaxResults=None, NextToken=None, SortBy=None):
         json_file = os.path.join(os.path.dirname(__file__), "..", "mock-data",
                                  "nsfw_detection_results.json")
+        with open(json_file, "r") as fp:
+            return json.load(fp)
+
+    def get_celebrity_recognition(self, JobId=None, MaxResults=None, NextToken=None, SortBy=None):
+        json_file = os.path.join(os.path.dirname(__file__), "..", "mock-data",
+                                 "celeb_detection_results.json")
         with open(json_file, "r") as fp:
             return json.load(fp)
 
