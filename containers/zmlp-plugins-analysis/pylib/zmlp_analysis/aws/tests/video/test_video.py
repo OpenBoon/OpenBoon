@@ -36,7 +36,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.aws.videos.video.proxy.get_video_proxy')
     def test_process_label_detection(self, get_prx_patch, store_patch, store_blob_patch,
-                                           _, __, ___, ____, _____):
+                                     _, __, ___, ____, _____):
         video_path = zorroa_test_path(VID_MP4)
         get_prx_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
@@ -57,7 +57,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.aws.videos.video.proxy.get_video_proxy')
     def test_process_text_detection(self, get_prx_patch, store_patch, store_blob_patch,
-                                           _, __, ___, ____, _____):
+                                    _, __, ___, ____, _____):
         video_path = zorroa_test_path(VID_MP4)
         get_prx_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
