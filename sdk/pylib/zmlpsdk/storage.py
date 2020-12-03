@@ -16,7 +16,7 @@ import requests
 from zmlp import app_from_env, Asset, StoredFile, PipelineMod, \
     ZmlpException, util
 from .base import ZmlpEnv
-from .cloud import get_cached_google_storage_client, get_pipeline_storage_client, \
+from .cloud import get_cached_google_storage_client, \
     get_cached_aws_client, get_cached_azure_storage_client
 
 
@@ -539,10 +539,8 @@ class FileCache(object):
 
         # ZMLP ML storage
         elif parsed_uri.scheme == 'zmlp':
-            data = get_pipeline_storage_client().get_object(parsed_uri.netloc, parsed_uri.path[1:])
-            with open(path, 'wb') as fpw:
-                for d in data.stream(32 * 1024):
-                    fpw.write(d)
+            file_id = parsed_uri.netloc + parsed_uri.path
+            self.app.assets.download_file(file_id, path)
 
         # GCS buckets
         elif parsed_uri.scheme == 'gs':

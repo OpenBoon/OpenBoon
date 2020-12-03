@@ -453,6 +453,32 @@ Array [
   text-decoration: none;
 }
 
+.emotion-5 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
 <nav
     className="emotion-0"
   >
@@ -469,6 +495,18 @@ Array [
           onMouseEnter={[Function]}
         >
           View Labels
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-5"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/assets"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Labeled Assets
         </a>
       </li>
     </ul>
@@ -1062,7 +1100,7 @@ Array [
   color: #73b61c;
 }
 
-.emotion-5 {
+.emotion-7 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -1081,7 +1119,7 @@ Array [
   font-weight: 700;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
@@ -1108,7 +1146,19 @@ Array [
         className="emotion-2"
       >
         <a
-          className="emotion-5"
+          className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/assets"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Labeled Assets
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-7"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >

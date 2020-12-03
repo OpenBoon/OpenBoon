@@ -145,6 +145,10 @@ class AwsProjectStorageService constructor(
         return "s3://${properties.bucket}/${locator.getPath()}"
     }
 
+    override fun getNativeUri(locator: ProjectDirLocator): String {
+        return "s3://${properties.bucket}/${locator.getPath()}"
+    }
+
     override fun getSignedUrl(
         locator: ProjectStorageLocator,
         forWrite: Boolean,

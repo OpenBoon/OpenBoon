@@ -6,7 +6,6 @@ from unittest import TestCase
 from unittest.mock import patch
 
 import pytest
-from minio.api import Minio
 
 import zmlp
 from zmlp import StoredFile, ZmlpClient, PipelineMod, Job, Model
@@ -138,11 +137,12 @@ class FileStorageTests(TestCase):
         path = self.fs.localize_file('https://i.imgur.com/WkomVeG.jpg')
         assert os.path.exists(path)
 
-    @patch.object(Minio, 'get_object')
+    @patch.object(ZmlpClient, 'get')
     def test_localize_internal_uri(self, get_object_patch):
         class MockStream:
-            def stream(self, _):
-                return [b'ninja turles']
+            @property
+            def content(self):
+                return b'ninja turles'
 
         get_object_patch.return_value = MockStream()
         path = self.fs.localize_file('zmlp://internal/officer/pdf/proxy.1.jpg')
