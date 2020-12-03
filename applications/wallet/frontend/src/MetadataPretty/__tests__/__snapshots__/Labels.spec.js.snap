@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] = `
-.emotion-5 {
+.emotion-0 {
   padding-top: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-0 {
+.emotion-1 {
   min-width: 16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   font-family: Roboto Condensed;
   font-weight: 400;
   text-transform: uppercase;
@@ -22,45 +22,45 @@ exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] 
   white-space: nowrap;
 }
 
-.emotion-1:nth-of-type(2) {
+.emotion-2:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-1:nth-of-type(3) {
+.emotion-2:nth-of-type(3) {
   text-align: right;
 }
 
-.emotion-4 {
+.emotion-5 {
   min-width: 8px;
 }
 
 <div
-  className="emotion-5"
+  className="emotion-0"
 >
   <table>
     <thead>
       <tr>
         <td
-          className="emotion-0"
+          className="emotion-1"
         />
         <th
-          className="emotion-1"
+          className="emotion-2"
         >
           bbox
         </th>
         <th
-          className="emotion-1"
+          className="emotion-2"
         >
           model name/label
         </th>
         <th
-          className="emotion-1"
+          className="emotion-2"
         >
           scope
         </th>
         <td />
         <td
-          className="emotion-4"
+          className="emotion-5"
         />
       </tr>
     </thead>
@@ -159,16 +159,16 @@ exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] 
 `;
 
 exports[`<MetadataPrettyLabels /> should render properly on the grid 1`] = `
-.emotion-5 {
+.emotion-0 {
   padding-top: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-0 {
+.emotion-1 {
   min-width: 16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   font-family: Roboto Condensed;
   font-weight: 400;
   text-transform: uppercase;
@@ -180,45 +180,45 @@ exports[`<MetadataPrettyLabels /> should render properly on the grid 1`] = `
   white-space: nowrap;
 }
 
-.emotion-1:nth-of-type(2) {
+.emotion-2:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-1:nth-of-type(3) {
+.emotion-2:nth-of-type(3) {
   text-align: right;
 }
 
-.emotion-4 {
+.emotion-5 {
   min-width: 8px;
 }
 
 <div
-  className="emotion-5"
+  className="emotion-0"
 >
   <table>
     <thead>
       <tr>
         <td
-          className="emotion-0"
+          className="emotion-1"
         />
         <th
-          className="emotion-1"
+          className="emotion-2"
         >
           bbox
         </th>
         <th
-          className="emotion-1"
+          className="emotion-2"
         >
           model name/label
         </th>
         <th
-          className="emotion-1"
+          className="emotion-2"
         >
           scope
         </th>
         <td />
         <td
-          className="emotion-4"
+          className="emotion-5"
         />
       </tr>
     </thead>

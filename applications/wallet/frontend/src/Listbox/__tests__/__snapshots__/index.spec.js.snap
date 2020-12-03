@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Listbox should render properly 1`] = `
-.emotion-9 [data-reach-listbox-input][data-state="expanded"] {
+.emotion-0 [data-reach-listbox-input][data-state="expanded"] {
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding-bottom: 8px;
   color: #ffffff;
   font-size: 15px;
@@ -13,7 +13,7 @@ exports[`Listbox should render properly 1`] = `
   font-weight: 500;
 }
 
-.emotion-8 {
+.emotion-2 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -26,7 +26,7 @@ exports[`Listbox should render properly 1`] = `
   border-radius: 2px;
 }
 
-.emotion-1 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -41,23 +41,22 @@ exports[`Listbox should render properly 1`] = `
   align-items: center;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
 }
 
-.emotion-7 {
+.emotion-4 {
   background-color: transparent;
   border: none;
   padding: 0;
 }
 
-.emotion-7:focus-within {
+.emotion-4:focus-within {
   outline: none;
   box-shadow: none;
 }
 
-.emotion-6 {
+.emotion-5 {
   overflow-y: hidden;
   padding: 8px;
   padding-top: 0;
@@ -65,18 +64,18 @@ exports[`Listbox should render properly 1`] = `
   margin-bottom: 0;
 }
 
-.emotion-5 {
+.emotion-6 {
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
   background-color: #808080;
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-3 {
+.emotion-7 {
   padding: 4px;
 }
 
-.emotion-2 {
+.emotion-8 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -87,33 +86,35 @@ exports[`Listbox should render properly 1`] = `
   border-radius: 2px;
   color: #e0e0e0;
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
   background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-2::-webkit-input-placeholder {
+.emotion-8::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::-moz-placeholder {
+.emotion-8::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-2:-ms-input-placeholder {
+.emotion-8:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::placeholder {
+.emotion-8::placeholder {
   font-style: italic;
 }
 
-.emotion-2:hover {
+.emotion-8:hover {
   border: 1px solid #808080;
 }
 
-.emotion-2:focus {
+.emotion-8:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -121,7 +122,7 @@ exports[`Listbox should render properly 1`] = `
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-4 {
+.emotion-9 {
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
   margin: 0;
@@ -135,15 +136,15 @@ exports[`Listbox should render properly 1`] = `
 }
 
 <label
-  className="emotion-9"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   >
     Metadata Type
   </div>
   <ListboxInput
-    className="emotion-8"
+    className="emotion-2"
     defaultValue=""
     onChange={[Function]}
   >
@@ -154,25 +155,25 @@ exports[`Listbox should render properly 1`] = `
           height={20}
         />
       }
-      className="emotion-1"
+      className="emotion-3"
     >
       Select Type
     </ListboxButton>
     <ListboxPopover
-      className="emotion-7"
+      className="emotion-4"
     >
       <div
-        className="emotion-6"
+        className="emotion-5"
       >
         <div
-          className="emotion-5"
+          className="emotion-6"
         >
           <div
-            className="emotion-3"
+            className="emotion-7"
           >
             <input
               aria-label="Filter Types"
-              className="emotion-2"
+              className="emotion-8"
               onChange={[Function]}
               placeholder="Filter types"
               type="search"
@@ -180,7 +181,7 @@ exports[`Listbox should render properly 1`] = `
             />
           </div>
           <ListboxList
-            className="emotion-4"
+            className="emotion-9"
           >
             <ListboxOptions
               nestedCount={0}
@@ -236,11 +237,11 @@ exports[`Listbox should render properly 1`] = `
 `;
 
 exports[`Listbox should render properly 2`] = `
-.emotion-9 [data-reach-listbox-input][data-state="expanded"] {
+.emotion-0 [data-reach-listbox-input][data-state="expanded"] {
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding-bottom: 8px;
   color: #ffffff;
   font-size: 15px;
@@ -248,7 +249,7 @@ exports[`Listbox should render properly 2`] = `
   font-weight: 500;
 }
 
-.emotion-8 {
+.emotion-2 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -261,7 +262,7 @@ exports[`Listbox should render properly 2`] = `
   border-radius: 2px;
 }
 
-.emotion-1 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -276,23 +277,22 @@ exports[`Listbox should render properly 2`] = `
   align-items: center;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
 }
 
-.emotion-7 {
+.emotion-4 {
   background-color: transparent;
   border: none;
   padding: 0;
 }
 
-.emotion-7:focus-within {
+.emotion-4:focus-within {
   outline: none;
   box-shadow: none;
 }
 
-.emotion-6 {
+.emotion-5 {
   overflow-y: hidden;
   padding: 8px;
   padding-top: 0;
@@ -300,18 +300,18 @@ exports[`Listbox should render properly 2`] = `
   margin-bottom: 0;
 }
 
-.emotion-5 {
+.emotion-6 {
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
   background-color: #808080;
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-3 {
+.emotion-7 {
   padding: 4px;
 }
 
-.emotion-2 {
+.emotion-8 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -322,33 +322,35 @@ exports[`Listbox should render properly 2`] = `
   border-radius: 2px;
   color: #e0e0e0;
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
   background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-2::-webkit-input-placeholder {
+.emotion-8::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::-moz-placeholder {
+.emotion-8::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-2:-ms-input-placeholder {
+.emotion-8:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::placeholder {
+.emotion-8::placeholder {
   font-style: italic;
 }
 
-.emotion-2:hover {
+.emotion-8:hover {
   border: 1px solid #808080;
 }
 
-.emotion-2:focus {
+.emotion-8:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -356,20 +358,20 @@ exports[`Listbox should render properly 2`] = `
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-4 {
+.emotion-9 {
   padding: 8px;
 }
 
 <label
-  className="emotion-9"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   >
     Metadata Type
   </div>
   <ListboxInput
-    className="emotion-8"
+    className="emotion-2"
     defaultValue=""
     onChange={[Function]}
   >
@@ -380,25 +382,25 @@ exports[`Listbox should render properly 2`] = `
           height={20}
         />
       }
-      className="emotion-1"
+      className="emotion-3"
     >
       Select Type
     </ListboxButton>
     <ListboxPopover
-      className="emotion-7"
+      className="emotion-4"
     >
       <div
-        className="emotion-6"
+        className="emotion-5"
       >
         <div
-          className="emotion-5"
+          className="emotion-6"
         >
           <div
-            className="emotion-3"
+            className="emotion-7"
           >
             <input
               aria-label="Filter Types"
-              className="emotion-2"
+              className="emotion-8"
               onChange={[Function]}
               placeholder="Filter types"
               type="search"
@@ -406,7 +408,7 @@ exports[`Listbox should render properly 2`] = `
             />
           </div>
           <div
-            className="emotion-4"
+            className="emotion-9"
           >
             No Results
           </div>
@@ -418,11 +420,11 @@ exports[`Listbox should render properly 2`] = `
 `;
 
 exports[`Listbox should render properly 3`] = `
-.emotion-9 [data-reach-listbox-input][data-state="expanded"] {
+.emotion-0 [data-reach-listbox-input][data-state="expanded"] {
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding-bottom: 8px;
   color: #ffffff;
   font-size: 15px;
@@ -430,7 +432,7 @@ exports[`Listbox should render properly 3`] = `
   font-weight: 500;
 }
 
-.emotion-8 {
+.emotion-2 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -443,7 +445,7 @@ exports[`Listbox should render properly 3`] = `
   border-radius: 2px;
 }
 
-.emotion-1 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -458,23 +460,22 @@ exports[`Listbox should render properly 3`] = `
   align-items: center;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
 }
 
-.emotion-7 {
+.emotion-4 {
   background-color: transparent;
   border: none;
   padding: 0;
 }
 
-.emotion-7:focus-within {
+.emotion-4:focus-within {
   outline: none;
   box-shadow: none;
 }
 
-.emotion-6 {
+.emotion-5 {
   overflow-y: hidden;
   padding: 8px;
   padding-top: 0;
@@ -482,18 +483,18 @@ exports[`Listbox should render properly 3`] = `
   margin-bottom: 0;
 }
 
-.emotion-5 {
+.emotion-6 {
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
   background-color: #808080;
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-3 {
+.emotion-7 {
   padding: 4px;
 }
 
-.emotion-2 {
+.emotion-8 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -504,33 +505,35 @@ exports[`Listbox should render properly 3`] = `
   border-radius: 2px;
   color: #e0e0e0;
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
   background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-2::-webkit-input-placeholder {
+.emotion-8::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::-moz-placeholder {
+.emotion-8::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-2:-ms-input-placeholder {
+.emotion-8:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::placeholder {
+.emotion-8::placeholder {
   font-style: italic;
 }
 
-.emotion-2:hover {
+.emotion-8:hover {
   border: 1px solid #808080;
 }
 
-.emotion-2:focus {
+.emotion-8:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -538,7 +541,7 @@ exports[`Listbox should render properly 3`] = `
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-4 {
+.emotion-9 {
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
   margin: 0;
@@ -552,15 +555,15 @@ exports[`Listbox should render properly 3`] = `
 }
 
 <label
-  className="emotion-9"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   >
     Metadata Type
   </div>
   <ListboxInput
-    className="emotion-8"
+    className="emotion-2"
     defaultValue=""
     onChange={[Function]}
   >
@@ -571,25 +574,25 @@ exports[`Listbox should render properly 3`] = `
           height={20}
         />
       }
-      className="emotion-1"
+      className="emotion-3"
     >
       Select Type
     </ListboxButton>
     <ListboxPopover
-      className="emotion-7"
+      className="emotion-4"
     >
       <div
-        className="emotion-6"
+        className="emotion-5"
       >
         <div
-          className="emotion-5"
+          className="emotion-6"
         >
           <div
-            className="emotion-3"
+            className="emotion-7"
           >
             <input
               aria-label="Filter Types"
-              className="emotion-2"
+              className="emotion-8"
               onChange={[Function]}
               placeholder="Filter types"
               type="search"
@@ -597,7 +600,7 @@ exports[`Listbox should render properly 3`] = `
             />
           </div>
           <ListboxList
-            className="emotion-4"
+            className="emotion-9"
           >
             <ListboxOptions
               nestedCount={0}
@@ -618,11 +621,11 @@ exports[`Listbox should render properly 3`] = `
 `;
 
 exports[`Listbox should render properly 4`] = `
-.emotion-9 [data-reach-listbox-input][data-state="expanded"] {
+.emotion-0 [data-reach-listbox-input][data-state="expanded"] {
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding-bottom: 8px;
   color: #ffffff;
   font-size: 15px;
@@ -630,7 +633,7 @@ exports[`Listbox should render properly 4`] = `
   font-weight: 500;
 }
 
-.emotion-8 {
+.emotion-2 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -643,7 +646,7 @@ exports[`Listbox should render properly 4`] = `
   border-radius: 2px;
 }
 
-.emotion-1 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -658,23 +661,22 @@ exports[`Listbox should render properly 4`] = `
   align-items: center;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
 }
 
-.emotion-7 {
+.emotion-4 {
   background-color: transparent;
   border: none;
   padding: 0;
 }
 
-.emotion-7:focus-within {
+.emotion-4:focus-within {
   outline: none;
   box-shadow: none;
 }
 
-.emotion-6 {
+.emotion-5 {
   overflow-y: hidden;
   padding: 8px;
   padding-top: 0;
@@ -682,18 +684,18 @@ exports[`Listbox should render properly 4`] = `
   margin-bottom: 0;
 }
 
-.emotion-5 {
+.emotion-6 {
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
   background-color: #808080;
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-3 {
+.emotion-7 {
   padding: 4px;
 }
 
-.emotion-2 {
+.emotion-8 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -704,33 +706,35 @@ exports[`Listbox should render properly 4`] = `
   border-radius: 2px;
   color: #e0e0e0;
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
   background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-2::-webkit-input-placeholder {
+.emotion-8::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::-moz-placeholder {
+.emotion-8::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-2:-ms-input-placeholder {
+.emotion-8:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::placeholder {
+.emotion-8::placeholder {
   font-style: italic;
 }
 
-.emotion-2:hover {
+.emotion-8:hover {
   border: 1px solid #808080;
 }
 
-.emotion-2:focus {
+.emotion-8:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -738,7 +742,7 @@ exports[`Listbox should render properly 4`] = `
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-4 {
+.emotion-9 {
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
   margin: 0;
@@ -752,15 +756,15 @@ exports[`Listbox should render properly 4`] = `
 }
 
 <label
-  className="emotion-9"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   >
     Metadata Type
   </div>
   <ListboxInput
-    className="emotion-8"
+    className="emotion-2"
     defaultValue=""
     onChange={[Function]}
   >
@@ -771,25 +775,25 @@ exports[`Listbox should render properly 4`] = `
           height={20}
         />
       }
-      className="emotion-1"
+      className="emotion-3"
     >
       Select Type
     </ListboxButton>
     <ListboxPopover
-      className="emotion-7"
+      className="emotion-4"
     >
       <div
-        className="emotion-6"
+        className="emotion-5"
       >
         <div
-          className="emotion-5"
+          className="emotion-6"
         >
           <div
-            className="emotion-3"
+            className="emotion-7"
           >
             <input
               aria-label="Filter Types"
-              className="emotion-2"
+              className="emotion-8"
               onChange={[Function]}
               placeholder="Filter types"
               type="search"
@@ -797,7 +801,7 @@ exports[`Listbox should render properly 4`] = `
             />
           </div>
           <ListboxList
-            className="emotion-4"
+            className="emotion-9"
           >
             <ListboxOptions
               nestedCount={0}
@@ -818,11 +822,11 @@ exports[`Listbox should render properly 4`] = `
 `;
 
 exports[`Listbox should render properly with existing attribute 1`] = `
-.emotion-9 [data-reach-listbox-input][data-state="expanded"] {
+.emotion-0 [data-reach-listbox-input][data-state="expanded"] {
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding-bottom: 8px;
   color: #ffffff;
   font-size: 15px;
@@ -830,7 +834,7 @@ exports[`Listbox should render properly with existing attribute 1`] = `
   font-weight: 500;
 }
 
-.emotion-8 {
+.emotion-2 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -843,7 +847,7 @@ exports[`Listbox should render properly with existing attribute 1`] = `
   border-radius: 2px;
 }
 
-.emotion-1 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -858,23 +862,22 @@ exports[`Listbox should render properly with existing attribute 1`] = `
   align-items: center;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
 }
 
-.emotion-7 {
+.emotion-4 {
   background-color: transparent;
   border: none;
   padding: 0;
 }
 
-.emotion-7:focus-within {
+.emotion-4:focus-within {
   outline: none;
   box-shadow: none;
 }
 
-.emotion-6 {
+.emotion-5 {
   overflow-y: hidden;
   padding: 8px;
   padding-top: 0;
@@ -882,18 +885,18 @@ exports[`Listbox should render properly with existing attribute 1`] = `
   margin-bottom: 0;
 }
 
-.emotion-5 {
+.emotion-6 {
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
   background-color: #808080;
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-3 {
+.emotion-7 {
   padding: 4px;
 }
 
-.emotion-2 {
+.emotion-8 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -904,33 +907,35 @@ exports[`Listbox should render properly with existing attribute 1`] = `
   border-radius: 2px;
   color: #e0e0e0;
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
   background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-2::-webkit-input-placeholder {
+.emotion-8::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::-moz-placeholder {
+.emotion-8::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-2:-ms-input-placeholder {
+.emotion-8:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-2::placeholder {
+.emotion-8::placeholder {
   font-style: italic;
 }
 
-.emotion-2:hover {
+.emotion-8:hover {
   border: 1px solid #808080;
 }
 
-.emotion-2:focus {
+.emotion-8:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -938,7 +943,7 @@ exports[`Listbox should render properly with existing attribute 1`] = `
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-4 {
+.emotion-9 {
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
   margin: 0;
@@ -952,15 +957,15 @@ exports[`Listbox should render properly with existing attribute 1`] = `
 }
 
 <label
-  className="emotion-9"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   >
     Metadata Type
   </div>
   <ListboxInput
-    className="emotion-8"
+    className="emotion-2"
     defaultValue="clip.timeline"
     onChange={[Function]}
   >
@@ -971,25 +976,25 @@ exports[`Listbox should render properly with existing attribute 1`] = `
           height={20}
         />
       }
-      className="emotion-1"
+      className="emotion-3"
     >
       timeline
     </ListboxButton>
     <ListboxPopover
-      className="emotion-7"
+      className="emotion-4"
     >
       <div
-        className="emotion-6"
+        className="emotion-5"
       >
         <div
-          className="emotion-5"
+          className="emotion-6"
         >
           <div
-            className="emotion-3"
+            className="emotion-7"
           >
             <input
               aria-label="Filter Types"
-              className="emotion-2"
+              className="emotion-8"
               onChange={[Function]}
               placeholder="Filter types"
               type="search"
@@ -997,7 +1002,7 @@ exports[`Listbox should render properly with existing attribute 1`] = `
             />
           </div>
           <ListboxList
-            className="emotion-4"
+            className="emotion-9"
           >
             <ListboxOptions
               nestedCount={0}

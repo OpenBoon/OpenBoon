@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TaskMenu /> should render properly 1`] = `
-.emotion-4 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -10,12 +10,12 @@ exports[`<TaskMenu /> should render properly 1`] = `
   padding-right: 48px;
 }
 
-.emotion-3 {
+.emotion-1 {
   position: relative;
   height: 100%;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -31,11 +31,11 @@ exports[`<TaskMenu /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -44,7 +44,6 @@ exports[`<TaskMenu /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 200px;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -55,36 +54,26 @@ exports[`<TaskMenu /> should render properly 1`] = `
   flex-direction: row;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   margin-bottom: 4px;
   color: #ffffff;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-2 {
+.emotion-3 {
   position: absolute;
   z-index: 1;
   top: 100%;
@@ -96,7 +85,7 @@ exports[`<TaskMenu /> should render properly 1`] = `
   font-family: Roboto,Avenir,"sans-serif";
 }
 
-.emotion-2 ul {
+.emotion-3 ul {
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
@@ -104,17 +93,17 @@ exports[`<TaskMenu /> should render properly 1`] = `
   margin: 0;
 }
 
-.emotion-2 li {
+.emotion-3 li {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -122,59 +111,43 @@ exports[`<TaskMenu /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  padding: 8px 16px;
-  font-weight: 400;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   border-radius: 0;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
 }
 
-.emotion-1:hover {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   background-color: #4a4a4a;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <div
-    className="emotion-3"
+    className="emotion-1"
   >
     <button
       aria-label="Toggle Dropdown Menu"
-      className="emotion-0"
+      className="emotion-2"
       onBlur={[Function]}
       onClick={[Function]}
       type="button"
@@ -186,13 +159,13 @@ exports[`<TaskMenu /> should render properly 1`] = `
       />
     </button>
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <div>
         <ul>
           <li>
             <button
-              className="emotion-1"
+              className="emotion-4"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"

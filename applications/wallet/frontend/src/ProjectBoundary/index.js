@@ -34,7 +34,7 @@ const ProjectBoundary = () => {
             boxShadow: constants.boxShadows.default,
           }}
         >
-          <LockSvg width={200} />
+          <LockSvg width={200} color={colors.structure.steel} />
 
           <h3
             css={{

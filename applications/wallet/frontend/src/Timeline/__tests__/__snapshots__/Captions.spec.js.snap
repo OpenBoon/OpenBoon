@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = `
-.emotion-5 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -9,6 +9,62 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
 }
 
 .emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #73b61c;
+  background-color: transparent;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #808080;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #73b61c;
+  background-color: #2e2e2e;
+}
+
+.emotion-2 {
   width: 4px;
 }
 
@@ -17,7 +73,7 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
   height: 100%;
 }
 
-.emotion-2 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -33,128 +89,57 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-  padding: 4px;
+  background-color: transparent;
 }
 
-.emotion-2:hover {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-2:hover svg,
-.emotion-2.focus-visible:focus svg {
+.emotion-4:hover svg,
+.emotion-4.focus-visible:focus svg,
+.emotion-4 .noop svg {
   opacity: 1;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #808080;
 }
 
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
   background-color: #2e2e2e;
 }
 
-.emotion-4 {
+.emotion-5 {
   width: 2px;
   background-color: #191919;
   margin: 4px;
 }
 
-.emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 4px;
-  color: #73b61c;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-0:hover svg,
-.emotion-0.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
-  color: #73b61c;
-  background-color: #2e2e2e;
-}
-
 <div
-  className="emotion-5"
+  className="emotion-0"
 >
   <button
     aria-label="Disable Captions"
-    className="emotion-0"
+    className="emotion-1"
     onClick={[Function]}
     type="button"
   >
@@ -164,14 +149,14 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
     />
   </button>
   <div
-    className="emotion-1"
+    className="emotion-2"
   />
   <div
     className="emotion-3"
   >
     <button
       aria-label="Toggle Captions Menu"
-      className="actions emotion-2"
+      className="actions emotion-4"
       onBlur={[Function]}
       onClick={[Function]}
       type="button"
@@ -183,20 +168,20 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
     </button>
   </div>
   <div
-    className="emotion-4"
+    className="emotion-5"
   />
 </div>
 `;
 
 exports[`<TimelineCaptions /> should render properly with no track enabled 1`] = `
-.emotion-5 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-0 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -212,55 +197,47 @@ exports[`<TimelineCaptions /> should render properly with no track enabled 1`] =
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #808080;
   background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 4px;
-  color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-0:hover svg,
-.emotion-0.focus-visible:focus svg {
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
   opacity: 1;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
   color: #808080;
 }
 
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   color: #ffffff;
   background-color: #2e2e2e;
 }
 
-.emotion-1 {
+.emotion-2 {
   width: 4px;
 }
 
@@ -269,7 +246,7 @@ exports[`<TimelineCaptions /> should render properly with no track enabled 1`] =
   height: 100%;
 }
 
-.emotion-2 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -285,64 +262,57 @@ exports[`<TimelineCaptions /> should render properly with no track enabled 1`] =
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-  padding: 4px;
+  background-color: transparent;
 }
 
-.emotion-2:hover {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-2:hover svg,
-.emotion-2.focus-visible:focus svg {
+.emotion-4:hover svg,
+.emotion-4.focus-visible:focus svg,
+.emotion-4 .noop svg {
   opacity: 1;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #808080;
 }
 
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
   background-color: #2e2e2e;
 }
 
-.emotion-4 {
+.emotion-5 {
   width: 2px;
   background-color: #191919;
   margin: 4px;
 }
 
 <div
-  className="emotion-5"
+  className="emotion-0"
 >
   <button
     aria-label="Enable Captions"
-    className="emotion-0"
+    className="emotion-1"
     onClick={[Function]}
     type="button"
   >
@@ -352,14 +322,14 @@ exports[`<TimelineCaptions /> should render properly with no track enabled 1`] =
     />
   </button>
   <div
-    className="emotion-1"
+    className="emotion-2"
   />
   <div
     className="emotion-3"
   >
     <button
       aria-label="Toggle Captions Menu"
-      className="actions emotion-2"
+      className="actions emotion-4"
       onBlur={[Function]}
       onClick={[Function]}
       type="button"
@@ -371,7 +341,7 @@ exports[`<TimelineCaptions /> should render properly with no track enabled 1`] =
     </button>
   </div>
   <div
-    className="emotion-4"
+    className="emotion-5"
   />
 </div>
 `;

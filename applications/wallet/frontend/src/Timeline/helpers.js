@@ -38,14 +38,19 @@ export const formatPaddedSeconds = ({ seconds: s }) => {
   return `00:0${ISOString.substr(15, 4)}`
 }
 
-export const updatePlayheadPosition = ({ video, playhead, zoom, offset }) => {
+export const updatePlayheadPosition = ({
+  video,
+  playhead,
+  zoom,
+  scrollLeft,
+}) => {
   if (!video || !playhead) return null
 
   return playhead.style.setProperty(
     'left',
     `calc(${(video.currentTime / video.duration) * zoom}% - ${
       GUIDE_WIDTH / 2
-    }px - ${offset}px)`,
+    }px - ${scrollLeft}px)`,
   )
 }
 

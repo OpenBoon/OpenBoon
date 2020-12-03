@@ -233,7 +233,7 @@ class ModelServiceTests : AbstractTest() {
     fun setupTestAsset(): Asset {
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.jpg",
-            mapOf("aux.pet" to "dog")
+            attrs = mapOf("aux.pet" to "dog")
         )
         val req = BatchCreateAssetsRequest(assets = listOf(spec))
         val rsp = assetService.batchCreate(req)

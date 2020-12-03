@@ -15,7 +15,8 @@ class FieldServiceTests : AbstractTest() {
     fun testCreateField() {
         val spec = FieldSpec("player", "text")
         val field = fieldService.createField(spec)
-        assertEquals("custom.player", field.name)
+        assertEquals("player", field.name)
+        assertEquals("custom.player", field.getEsField())
     }
 
     @Test

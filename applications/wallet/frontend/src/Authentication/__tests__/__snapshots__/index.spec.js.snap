@@ -74,7 +74,7 @@ exports[`<Authentication /> should render properly when user is logged out 1`] =
 `;
 
 exports[`<Authentication /> should render properly when user needs to approve new policies 1`] = `
-.emotion-15 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -83,8 +83,8 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   -ms-flex-direction: column;
   flex-direction: column;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -93,7 +93,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   height: 100vh;
 }
 
-.emotion-14 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -105,23 +105,23 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   width: 446px;
   background-color: #2e2e2e;
   border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.emotion-1 {
+.emotion-3 {
   text-align: center;
   font-size: 18px;
   line-height: 21px;
   padding-top: 32px;
 }
 
-.emotion-11 {
+.emotion-4 {
   text-align: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -136,21 +136,21 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-5 {
   margin: 0;
   padding-top: 32px;
   color: #b3b3b3;
 }
 
-.emotion-2 a {
+.emotion-5 a {
   color: #73b61c;
 }
 
-.emotion-10 {
+.emotion-6 {
   padding-top: 16px;
 }
 
-.emotion-9 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -164,7 +164,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   padding-bottom: 16px;
 }
 
-.emotion-6 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -172,7 +172,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   position: relative;
 }
 
-.emotion-3 {
+.emotion-9 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -183,7 +183,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   cursor: pointer;
 }
 
-.emotion-5 {
+.emotion-10 {
   position: absolute;
   top: 0;
   left: 0;
@@ -194,8 +194,8 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -204,13 +204,13 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   cursor: pointer;
 }
 
-.emotion-4 path {
+.emotion-11 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-8 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -221,26 +221,26 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   padding-left: 12px;
 }
 
-.emotion-7 {
+.emotion-13 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-13 {
+.emotion-14 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
 }
 
-.emotion-12 {
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -256,8 +256,8 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -271,52 +271,49 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   background-color: transparent;
 }
 
-.emotion-12:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-12[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-12,
-.emotion-12:hover,
-.emotion-12:visited {
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited,
+.emotion-15 .noop {
   background-color: #73b61c;
 }
 
-.emotion-12:hover {
+.emotion-15:hover,
+.emotion-15 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-15[aria-disabled=true],
+.emotion-15 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-15"
+  className="emotion-0"
 >
   <form
-    className="emotion-14"
+    className="emotion-1"
     method="post"
     onSubmit={[Function]}
   >
     <svg
-      className="emotion-0"
+      className="emotion-2"
       data-file-name="largeLogo.svg"
       width={180}
     />
     <h3
-      className="emotion-1"
+      className="emotion-3"
     >
       Terms of Use and Privacy Policy
     </h3>
     <div
-      className="emotion-11"
+      className="emotion-4"
     >
       <p
-        className="emotion-2"
+        className="emotion-5"
       >
         By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
          
@@ -340,36 +337,36 @@ exports[`<Authentication /> should render properly when user needs to approve ne
         .
       </p>
       <div
-        className="emotion-10"
+        className="emotion-6"
       >
         <label
-          className="emotion-9"
+          className="emotion-7"
         >
           <div
-            className="emotion-6"
+            className="emotion-8"
           >
             <input
-              className="emotion-3"
+              className="emotion-9"
               defaultChecked={false}
               onClick={[Function]}
               type="checkbox"
               value="isChecked"
             />
             <div
-              className="emotion-5"
+              className="emotion-10"
             >
               <svg
-                className="emotion-4"
+                className="emotion-11"
                 data-file-name="checkmark.svg"
                 height={20}
               />
             </div>
           </div>
           <div
-            className="emotion-8"
+            className="emotion-12"
           >
             <span
-              className="emotion-7"
+              className="emotion-13"
             >
               Accept
             </span>
@@ -378,11 +375,11 @@ exports[`<Authentication /> should render properly when user needs to approve ne
       </div>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-14"
     >
       <button
         aria-disabled={true}
-        className="emotion-12"
+        className="emotion-15"
         onClick={[Function]}
         type="submit"
       >

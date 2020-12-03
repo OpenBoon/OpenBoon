@@ -159,6 +159,7 @@ resource "google_storage_bucket_object" "task_env" {
   "ZORROA_AWS_SECRET": "${var.aws-secret}",
   "ZORROA_AWS_REGION": "${var.aws-region}",
   "ZORROA_AWS_BUCKET": "${module.aws-ml.bucket}",
+  "ZORROA_AWS_ML_USER_ROLE_ARN": "${module.aws-ml.ml-user-role-arn}",
   "ZORROA_AZURE_VISION_REGION": "${module.azure-ml.vision-region}",
   "ZORROA_AZURE_VISION_ENDPOINT": "${module.azure-ml.vision-endpoint}",
   "ZORROA_AZURE_VISION_KEY": "${module.azure-ml.vision-key}"
@@ -265,7 +266,7 @@ module "api-gateway" {
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
   archivist_host         = module.archivist.ip-address
   auth_server_host       = module.auth-server.ip-address
-  ml_bbq_host            = module.ml-bbq.ip-address
+  ml_bbq_host            = "${module.ml-bbq.ip-address}:8282"
   domain                 = var.zmlp-domain
   container-cluster-name = module.gke-cluster.name
   container-tag          = var.container-tag

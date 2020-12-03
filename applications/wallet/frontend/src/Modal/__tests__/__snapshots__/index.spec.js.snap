@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Modal /> should render properly 1`] = `
-.emotion-7 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -21,7 +21,6 @@ exports[`<Modal /> should render properly 1`] = `
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -31,17 +30,17 @@ exports[`<Modal /> should render properly 1`] = `
   text-transform: uppercase;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
 }
 
-.emotion-6 {
+.emotion-3 {
   height: 100%;
   background-color: #4a4a4a;
   padding: 32px;
 }
 
-.emotion-2 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -58,8 +57,8 @@ exports[`<Modal /> should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   padding-top: 32px;
 }
@@ -71,7 +70,7 @@ exports[`<Modal /> should render properly 1`] = `
   border-radius: 2px;
 }
 
-.emotion-3 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -87,8 +86,8 @@ exports[`<Modal /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -103,30 +102,27 @@ exports[`<Modal /> should render properly 1`] = `
   margin-right: 16px;
 }
 
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-3,
-.emotion-3:hover,
-.emotion-3:visited {
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited,
+.emotion-6 .noop {
   background-color: #808080;
 }
 
-.emotion-3:hover {
+.emotion-6:hover,
+.emotion-6 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-4 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -142,8 +138,8 @@ exports[`<Modal /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -157,26 +153,23 @@ exports[`<Modal /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #c92300;
 }
 
-.emotion-4:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   opacity: 0.5;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -188,13 +181,13 @@ exports[`<Modal /> should render properly 1`] = `
   verticallyCenter={true}
 >
   <div
-    className="emotion-7"
+    className="emotion-0"
   >
     <header
       className="emotion-1"
     >
       <div
-        className="emotion-0"
+        className="emotion-2"
       >
         Delete API Key
       </div>
@@ -213,10 +206,10 @@ exports[`<Modal /> should render properly 1`] = `
       </div>
     </header>
     <div
-      className="emotion-6"
+      className="emotion-3"
     >
       <div
-        className="emotion-2"
+        className="emotion-4"
       >
         Deleting this key cannot be undone.
       </div>
@@ -224,14 +217,14 @@ exports[`<Modal /> should render properly 1`] = `
         className="emotion-5"
       >
         <button
-          className="emotion-3"
+          className="emotion-6"
           onClick={[Function]}
           type="button"
         >
           Cancel
         </button>
         <button
-          className="emotion-4"
+          className="emotion-7"
           onClick={[Function]}
           type="button"
         >

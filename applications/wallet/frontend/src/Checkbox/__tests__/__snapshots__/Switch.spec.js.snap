@@ -2,17 +2,60 @@
 
 exports[`<Checkbox /> should render properly 1`] = `
 .emotion-0 {
-  -webkit-transition: all .15s ease;
-  transition: all .15s ease;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px;
+  background-color: #2e2e2e;
+  outline: auto 5px -webkit-focus-ring-color;
+}
+
+.emotion-0:hover {
+  background-color: #2e2e2e;
+}
+
+.emotion-0:hover div {
+  color: #ffffff;
+}
+
+.emotion-0:hover rect {
+  stroke: #ffffff;
+}
+
+.emotion-0:hover circle {
+  fill: #ffffff;
+}
+
+.emotion-0 div {
+  color: #ffffff;
+}
+
+.emotion-0 rect {
+  stroke: #ffffff;
+}
+
+.emotion-0 circle {
+  fill: #ffffff;
 }
 
 .emotion-1 {
   -webkit-transition: all .15s ease;
   transition: all .15s ease;
-  fill: #4a4a4a;
 }
 
 .emotion-2 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  fill: #4a4a4a;
+}
+
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -35,51 +78,8 @@ exports[`<Checkbox /> should render properly 1`] = `
   margin-bottom: -1px;
 }
 
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  cursor: pointer;
-  padding: 4px;
-  background-color: #2e2e2e;
-  outline: auto 5px -webkit-focus-ring-color;
-}
-
-.emotion-3:hover {
-  background-color: #2e2e2e;
-}
-
-.emotion-3:hover div {
-  color: #ffffff;
-}
-
-.emotion-3:hover rect {
-  stroke: #ffffff;
-}
-
-.emotion-3:hover circle {
-  fill: #ffffff;
-}
-
-.emotion-3 div {
-  color: #ffffff;
-}
-
-.emotion-3 rect {
-  stroke: #ffffff;
-}
-
-.emotion-3 circle {
-  fill: #ffffff;
-}
-
 <label
-  className="emotion-3"
+  className="emotion-0"
 >
   <input
     className="hidden"
@@ -95,7 +95,7 @@ exports[`<Checkbox /> should render properly 1`] = `
     width={30}
   >
     <rect
-      className="emotion-0"
+      className="emotion-1"
       fill="#191919"
       height={8}
       rx={4}
@@ -105,14 +105,14 @@ exports[`<Checkbox /> should render properly 1`] = `
       y={4}
     />
     <circle
-      className="emotion-1"
+      className="emotion-2"
       cx={8}
       cy={8}
       r={8}
     />
   </svg>
   <div
-    className="emotion-2"
+    className="emotion-3"
   >
     Checkbox
   </div>
@@ -121,11 +121,6 @@ exports[`<Checkbox /> should render properly 1`] = `
 
 exports[`<Checkbox /> should render properly 2`] = `
 .emotion-0 {
-  -webkit-transition: all .15s ease;
-  transition: all .15s ease;
-}
-
-.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -140,41 +135,46 @@ exports[`<Checkbox /> should render properly 2`] = `
   outline: auto 5px -webkit-focus-ring-color;
 }
 
-.emotion-3:hover {
+.emotion-0:hover {
   background-color: #2e2e2e;
 }
 
-.emotion-3:hover div {
+.emotion-0:hover div {
   color: #73b61c;
 }
 
-.emotion-3:hover rect {
+.emotion-0:hover rect {
   stroke: #3b3b3b;
 }
 
-.emotion-3:hover circle {
+.emotion-0:hover circle {
   fill: #73b61c;
 }
 
-.emotion-3 div {
+.emotion-0 div {
   color: #73b61c;
 }
 
-.emotion-3 rect {
+.emotion-0 rect {
   stroke: #3b3b3b;
 }
 
-.emotion-3 circle {
+.emotion-0 circle {
   fill: #73b61c;
 }
 
 .emotion-1 {
   -webkit-transition: all .15s ease;
   transition: all .15s ease;
-  fill: #73b61c;
 }
 
 .emotion-2 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  fill: #73b61c;
+}
+
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -198,7 +198,7 @@ exports[`<Checkbox /> should render properly 2`] = `
 }
 
 <label
-  className="emotion-3"
+  className="emotion-0"
 >
   <input
     className="hidden"
@@ -214,7 +214,7 @@ exports[`<Checkbox /> should render properly 2`] = `
     width={30}
   >
     <rect
-      className="emotion-0"
+      className="emotion-1"
       fill="#191919"
       height={8}
       rx={4}
@@ -224,14 +224,14 @@ exports[`<Checkbox /> should render properly 2`] = `
       y={4}
     />
     <circle
-      className="emotion-1"
+      className="emotion-2"
       cx={22}
       cy={8}
       r={8}
     />
   </svg>
   <div
-    className="emotion-2"
+    className="emotion-3"
   >
     Checkbox
   </div>
@@ -240,40 +240,6 @@ exports[`<Checkbox /> should render properly 2`] = `
 
 exports[`<Checkbox /> should render properly 3`] = `
 .emotion-0 {
-  -webkit-transition: all .15s ease;
-  transition: all .15s ease;
-}
-
-.emotion-1 {
-  -webkit-transition: all .15s ease;
-  transition: all .15s ease;
-  fill: #73b61c;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  white-space: nowrap;
-  margin-left: 8px;
-  text-transform: uppercase;
-  -webkit-transition: all .15s ease;
-  transition: all .15s ease;
-  color: #73b61c;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-family: Roboto Condensed;
-  margin-bottom: -1px;
-}
-
-.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -286,24 +252,58 @@ exports[`<Checkbox /> should render properly 3`] = `
   padding: 4px;
 }
 
-.emotion-3:hover {
+.emotion-0:hover {
   background-color: #2e2e2e;
 }
 
-.emotion-3:hover div {
+.emotion-0:hover div {
   color: #73b61c;
 }
 
-.emotion-3:hover rect {
+.emotion-0:hover rect {
   stroke: #3b3b3b;
 }
 
-.emotion-3:hover circle {
+.emotion-0:hover circle {
   fill: #73b61c;
 }
 
+.emotion-1 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+}
+
+.emotion-2 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  fill: #73b61c;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 8px;
+  text-transform: uppercase;
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  color: #73b61c;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Roboto Condensed;
+  margin-bottom: -1px;
+}
+
 <label
-  className="emotion-3"
+  className="emotion-0"
 >
   <input
     className="hidden"
@@ -319,7 +319,7 @@ exports[`<Checkbox /> should render properly 3`] = `
     width={30}
   >
     <rect
-      className="emotion-0"
+      className="emotion-1"
       fill="#191919"
       height={8}
       rx={4}
@@ -329,14 +329,14 @@ exports[`<Checkbox /> should render properly 3`] = `
       y={4}
     />
     <circle
-      className="emotion-1"
+      className="emotion-2"
       cx={22}
       cy={8}
       r={8}
     />
   </svg>
   <div
-    className="emotion-2"
+    className="emotion-3"
   >
     Checkbox
   </div>

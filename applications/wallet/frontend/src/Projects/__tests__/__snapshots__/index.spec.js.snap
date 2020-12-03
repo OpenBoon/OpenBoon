@@ -5,13 +5,13 @@ exports[`<Projects /> should not redirect if there is no project id and the rout
 exports[`<Projects /> should render Account Overview properly 1`] = `"Account Overview"`;
 
 exports[`<Projects /> should render an access denied screen if the url projectId is not of an authorized project 1`] = `
-.emotion-16 {
+.emotion-0 {
   height: 100%;
 }
 
-.emotion-0:focus {
+.emotion-1:focus {
   background-color: #3b3b3b;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   z-index: 101;
   border-radius: 2px;
   font-size: 15px;
@@ -19,7 +19,7 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   font-weight: 500;
 }
 
-.emotion-9 {
+.emotion-2 {
   position: fixed;
   top: 0;
   left: 0;
@@ -31,20 +31,19 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
   z-index: 100;
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.emotion-2 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -55,7 +54,7 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   align-items: stretch;
 }
 
-.emotion-1 {
+.emotion-4 {
   padding-left: 8px;
   padding-right: 8px;
   display: -webkit-box;
@@ -68,19 +67,19 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   align-items: center;
 }
 
-.emotion-8 {
+.emotion-5 {
   margin-right: -12px;
 }
 
-.emotion-7 {
+.emotion-6 {
   position: relative;
   height: 100%;
 }
 
-.emotion-6 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -93,48 +92,36 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
+  background-color: transparent;
+  padding-left: 16px;
   height: 100%;
 }
 
-.emotion-6:hover {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-6[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   cursor: pointer;
 }
 
-.emotion-5 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -145,14 +132,14 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -168,11 +155,15 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   font-weight: 700;
 }
 
-.emotion-4 {
+.emotion-10 {
   margin-left: 8px;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
 }
 
-.emotion-15 {
+.emotion-11 {
   margin-top: 44px;
   padding-left: 32px;
   padding-right: 32px;
@@ -187,7 +178,7 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   flex-direction: column;
 }
 
-.emotion-14 {
+.emotion-12 {
   height: 100%;
 }
 
@@ -205,15 +196,15 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   text-align: center;
   background-color: #252525;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-10 {
+.emotion-14 {
   padding-top: 16px;
   font-size: 32px;
   line-height: 43px;
@@ -221,14 +212,14 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   max-width: 600px;
 }
 
-.emotion-11 {
+.emotion-15 {
   font-size: 18px;
   line-height: 21px;
   color: #b3b3b3;
   max-width: 600px;
 }
 
-.emotion-12 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -244,8 +235,8 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -259,34 +250,31 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   background-color: transparent;
 }
 
-.emotion-12:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-12[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-12,
-.emotion-12:hover,
-.emotion-12:visited {
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited,
+.emotion-16 .noop {
   background-color: #73b61c;
 }
 
-.emotion-12:hover {
+.emotion-16:hover,
+.emotion-16 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-16[aria-disabled=true],
+.emotion-16 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-16"
+  className="emotion-0"
 >
   <a
-    className="emotion-0"
+    className="emotion-1"
     data-reach-skip-link=""
     data-reach-skip-nav-link=""
     href="#reach-skip-nav"
@@ -294,14 +282,14 @@ exports[`<Projects /> should render an access denied screen if the url projectId
     Skip to content
   </a>
   <div
-    className="emotion-9"
+    className="emotion-2"
   >
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <a
         aria-label="Home"
-        className="emotion-1"
+        className="emotion-4"
         href="/"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -313,28 +301,28 @@ exports[`<Projects /> should render an access denied screen if the url projectId
       </a>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-5"
     >
       <div
-        className="emotion-7"
+        className="emotion-6"
       >
         <button
           aria-label="Open user menu"
-          className="emotion-6"
+          className="emotion-7"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
         >
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-3"
+              className="emotion-9"
             >
               JD
             </div>
             <svg
-              className="emotion-4"
+              className="emotion-10"
               color="#808080"
               data-file-name="chevron.svg"
               height={20}
@@ -349,33 +337,34 @@ exports[`<Projects /> should render an access denied screen if the url projectId
     id="reach-skip-nav"
   />
   <div
-    className="emotion-15"
+    className="emotion-11"
   >
     <div
-      className="emotion-14"
+      className="emotion-12"
     >
       <div
         className="emotion-13"
       >
         <svg
+          color="#808080"
           data-file-name="lock.svg"
           width={200}
         />
         <h3
-          className="emotion-10"
+          className="emotion-14"
         >
           You do not have permission
           <br />
            to access this project.
         </h3>
         <p
-          className="emotion-11"
+          className="emotion-15"
         >
           Please request permission from the project owner.
         </p>
         <div>
           <a
-            className="emotion-12"
+            className="emotion-16"
             href="/"
             onClick={[Function]}
             onMouseEnter={[Function]}

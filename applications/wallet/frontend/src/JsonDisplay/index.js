@@ -7,7 +7,7 @@ const JsonDisplay = ({ json }) => (
   <div
     css={{
       backgroundColor: colors.structure.coal,
-      pre: { padding: spacing.normal },
+      pre: { padding: spacing.normal, margin: 0 },
     }}
   >
     <JSONPretty
@@ -24,7 +24,11 @@ const JsonDisplay = ({ json }) => (
 )
 
 JsonDisplay.propTypes = {
-  json: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
+  json: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+    PropTypes.string,
+  ]).isRequired,
 }
 
 export default JsonDisplay

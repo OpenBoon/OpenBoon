@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FiltersIcon /> should render properly with a green dot 1`] = `
-.emotion-1 {
+.emotion-0 {
   position: relative;
 }
 
-.emotion-0 {
+.emotion-1 {
   background-color: #73b61c;
   width: 10px;
   height: 10px;
@@ -17,10 +17,10 @@ exports[`<FiltersIcon /> should render properly with a green dot 1`] = `
 }
 
 <div
-  className="emotion-1"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   />
   <svg
     data-file-name="filter.svg"
@@ -30,11 +30,11 @@ exports[`<FiltersIcon /> should render properly with a green dot 1`] = `
 `;
 
 exports[`<FiltersIcon /> should render properly with a grey dot 1`] = `
-.emotion-1 {
+.emotion-0 {
   position: relative;
 }
 
-.emotion-0 {
+.emotion-1 {
   background-color: #808080;
   width: 10px;
   height: 10px;
@@ -46,10 +46,10 @@ exports[`<FiltersIcon /> should render properly with a grey dot 1`] = `
 }
 
 <div
-  className="emotion-1"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   />
   <svg
     data-file-name="filter.svg"

@@ -23,7 +23,7 @@ Array [
   >
     Job Queue
   </h2>,
-  .emotion-137 {
+  .emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -34,7 +34,7 @@ Array [
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -45,7 +45,6 @@ Array [
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -53,14 +52,14 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-4 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -76,11 +75,11 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -89,33 +88,29 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited,
+.emotion-3 .noop {
   background-color: #73b61c;
 }
 
-.emotion-4:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -126,102 +121,60 @@ Array [
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-5 {
+  -webkit-animation: ;
+  animation: ;
+}
+
+.emotion-6 {
   padding-left: 4px;
 }
 
-.emotion-136 {
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-6 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: auto;
-}
-
-.emotion-6:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-6:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-14 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: 1px;
-}
-
-.emotion-14:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-14:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-13 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-134 {
+.emotion-9 {
   height: auto;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-134 tr {
+.emotion-9 tr {
   background-color: #252525;
 }
 
-.emotion-134 tr:nth-of-type(2n) {
+.emotion-9 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-134 tr:hover {
+.emotion-9 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-134 tr:hover .actions {
+.emotion-9 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-134 tr:hover td {
+.emotion-9 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-134 tr:hover td:first-of-type {
+.emotion-9 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-134 tr:hover td:last-of-type {
+.emotion-9 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-134 td {
+.emotion-9 td {
   max-width: calc(100vw / 7);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -233,20 +186,67 @@ Array [
   border-right: 0;
 }
 
-.emotion-134 td:first-of-type {
+.emotion-9 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-134 td:last-of-type {
+.emotion-9 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-29 {
+.emotion-10 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-10:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-10:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-17 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-17:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-17:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-18 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-19 {
   cursor: pointer;
 }
 
-.emotion-15 {
+.emotion-20 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -262,27 +262,27 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-16:hover {
+.emotion-21:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-17 {
+.emotion-22 {
   text-align: center;
 }
 
-.emotion-20 {
+.emotion-24 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
 }
 
-.emotion-19 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -292,11 +292,11 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   width: -webkit-fit-content;
-  width: -moz-fit-content;
+  width: -moz-content;
   width: fit-content;
   min-width: 32px;
   height: 32px;
@@ -306,7 +306,7 @@ Array [
   color: #c92300;
 }
 
-.emotion-19:hover {
+.emotion-25:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
@@ -323,7 +323,7 @@ Array [
   position: relative;
 }
 
-.emotion-25 {
+.emotion-27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -331,7 +331,7 @@ Array [
   width: 100%;
 }
 
-.emotion-21 {
+.emotion-28 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -339,17 +339,17 @@ Array [
   background-color: #c92300;
 }
 
-.emotion-21:first-of-type {
+.emotion-28:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-21:last-of-type {
+.emotion-28:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-22 {
+.emotion-29 {
   height: 100%;
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
@@ -357,17 +357,17 @@ Array [
   background-color: #009f22;
 }
 
-.emotion-22:first-of-type {
+.emotion-29:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-22:last-of-type {
+.emotion-29:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-23 {
+.emotion-30 {
   height: 100%;
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
@@ -375,17 +375,17 @@ Array [
   background-color: #ebb52e;
 }
 
-.emotion-23:first-of-type {
+.emotion-30:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-23:last-of-type {
+.emotion-30:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-24 {
+.emotion-31 {
   height: 100%;
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
@@ -393,22 +393,22 @@ Array [
   background-color: #0074f5;
 }
 
-.emotion-24:first-of-type {
+.emotion-31:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-24:last-of-type {
+.emotion-31:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-28 {
+.emotion-32 {
   position: relative;
   height: 100%;
 }
 
-.emotion-27 {
+.emotion-33 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -424,40 +424,28 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 6px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
   color: #191919;
-  padding: 6px;
+  background-color: transparent;
   margin: -6px;
 }
 
-.emotion-27:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+.emotion-33:hover,
+.emotion-33.focus-visible:focus {
+  color: #ffffff!important;
 }
 
-.emotion-27[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-27:hover,
-.emotion-27.focus-visible:focus {
-  color: #ffffff !important;
-}
-
-.emotion-30 {
+.emotion-35 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -473,7 +461,7 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-39 {
+.emotion-46 {
   height: 100%;
   -webkit-flex: 14 0 auto;
   -ms-flex: 14 0 auto;
@@ -481,17 +469,17 @@ Array [
   background-color: #0074f5;
 }
 
-.emotion-39:first-of-type {
+.emotion-46:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-39:last-of-type {
+.emotion-46:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-45 {
+.emotion-50 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -507,7 +495,7 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-52 {
+.emotion-59 {
   height: 100%;
   -webkit-flex: 8 0 auto;
   -ms-flex: 8 0 auto;
@@ -515,17 +503,17 @@ Array [
   background-color: #009f22;
 }
 
-.emotion-52:first-of-type {
+.emotion-59:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-52:last-of-type {
+.emotion-59:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-53 {
+.emotion-60 {
   height: 100%;
   -webkit-flex: 4 0 auto;
   -ms-flex: 4 0 auto;
@@ -533,17 +521,17 @@ Array [
   background-color: #0074f5;
 }
 
-.emotion-53:first-of-type {
+.emotion-60:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-53:last-of-type {
+.emotion-60:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-57 {
+.emotion-62 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -559,7 +547,7 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-67 {
+.emotion-72 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -575,7 +563,7 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-79 {
+.emotion-84 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -591,7 +579,7 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-95 {
+.emotion-102 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -599,24 +587,24 @@ Array [
   background-color: #009f22;
 }
 
-.emotion-95:first-of-type {
+.emotion-102:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-95:last-of-type {
+.emotion-102:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
 <div
-    className="emotion-137"
+    className="emotion-0"
   >
     <div
-      className="emotion-5"
+      className="emotion-1"
     >
       <h3
-        className="emotion-0"
+        className="emotion-2"
       >
         Number of 
         Jobs
@@ -624,21 +612,21 @@ Array [
         11
       </h3>
       <button
-        className="emotion-4"
+        className="emotion-3"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-3"
+          className="emotion-4"
         >
           <svg
-            className="emotion-1"
+            className="emotion-5"
             color="#ffffff"
             data-file-name="refresh.svg"
             height={20}
           />
           <div
-            className="emotion-2"
+            className="emotion-6"
           >
             Refresh 
             Jobs
@@ -647,56 +635,56 @@ Array [
       </button>
     </div>
     <div
-      className="emotion-136"
+      className="emotion-7"
     >
       <div
-        className="emotion-135"
+        className="emotion-8"
       >
         <table
-          className="emotion-134"
+          className="emotion-9"
         >
           <thead>
             <tr>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 Status
               </th>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 Job Name
               </th>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 Priority
               </th>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 Created
               </th>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 # Assets
               </th>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 Errors
               </th>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 Task Progress
               </th>
               <th
-                className="emotion-14"
+                className="emotion-17"
               >
                 <div
-                  className="emotion-13"
+                  className="emotion-18"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -708,19 +696,19 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-29"
+              className="emotion-19"
               onClick={[Function]}
             >
               <td>
                 <div
-                  className="emotion-15"
+                  className="emotion-20"
                 >
                   In Progress
                 </div>
               </td>
               <td>
                 <a
-                  className="emotion-16"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -729,7 +717,7 @@ Array [
                 </a>
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 100
               </td>
@@ -737,16 +725,16 @@ Array [
                 2019-11-07 01:38:36
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 4
               </td>
               <td>
                 <div
-                  className="emotion-20"
+                  className="emotion-24"
                 >
                   <a
-                    className="emotion-19"
+                    className="emotion-25"
                     href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/errors"
                     onClick={[Function]}
                     onMouseEnter={[Function]}
@@ -777,30 +765,30 @@ Array [
                   tabIndex="0"
                 >
                   <div
-                    className="emotion-25"
+                    className="emotion-27"
                   >
                     <div
-                      className="emotion-21"
+                      className="emotion-28"
                     />
                     <div
-                      className="emotion-22"
+                      className="emotion-29"
                     />
                     <div
-                      className="emotion-23"
+                      className="emotion-30"
                     />
                     <div
-                      className="emotion-24"
+                      className="emotion-31"
                     />
                   </div>
                 </div>
               </td>
               <td>
                 <div
-                  className="emotion-28"
+                  className="emotion-32"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-27"
+                    className="actions emotion-33"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -814,19 +802,19 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-29"
+              className="emotion-19"
               onClick={[Function]}
             >
               <td>
                 <div
-                  className="emotion-30"
+                  className="emotion-35"
                 >
                   Cancelled
                 </div>
               </td>
               <td>
                 <a
-                  className="emotion-16"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000955"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -835,7 +823,7 @@ Array [
                 </a>
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 100
               </td>
@@ -843,16 +831,16 @@ Array [
                 2019-11-07 01:38:36
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 4
               </td>
               <td>
                 <div
-                  className="emotion-20"
+                  className="emotion-24"
                 >
                   <a
-                    className="emotion-19"
+                    className="emotion-25"
                     href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000955/errors"
                     onClick={[Function]}
                     onMouseEnter={[Function]}
@@ -883,30 +871,30 @@ Array [
                   tabIndex="0"
                 >
                   <div
-                    className="emotion-25"
+                    className="emotion-27"
                   >
                     <div
-                      className="emotion-21"
+                      className="emotion-28"
                     />
                     <div
-                      className="emotion-22"
+                      className="emotion-29"
                     />
                     <div
-                      className="emotion-23"
+                      className="emotion-30"
                     />
                     <div
-                      className="emotion-39"
+                      className="emotion-46"
                     />
                   </div>
                 </div>
               </td>
               <td>
                 <div
-                  className="emotion-28"
+                  className="emotion-32"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-27"
+                    className="actions emotion-33"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -920,19 +908,19 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-29"
+              className="emotion-19"
               onClick={[Function]}
             >
               <td>
                 <div
-                  className="emotion-45"
+                  className="emotion-50"
                 >
                   Success
                 </div>
               </td>
               <td>
                 <a
-                  className="emotion-16"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308a-67c2-1433-8fef-0a580a000955"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -941,7 +929,7 @@ Array [
                 </a>
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 100
               </td>
@@ -949,16 +937,16 @@ Array [
                 2019-11-07 01:36:29
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 4
               </td>
               <td>
                 <div
-                  className="emotion-20"
+                  className="emotion-24"
                 >
                   <a
-                    className="emotion-19"
+                    className="emotion-25"
                     href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308a-67c2-1433-8fef-0a580a000955/errors"
                     onClick={[Function]}
                     onMouseEnter={[Function]}
@@ -989,16 +977,16 @@ Array [
                   tabIndex="0"
                 >
                   <div
-                    className="emotion-25"
+                    className="emotion-27"
                   >
                     <div
-                      className="emotion-21"
+                      className="emotion-28"
                     />
                     <div
-                      className="emotion-52"
+                      className="emotion-59"
                     />
                     <div
-                      className="emotion-53"
+                      className="emotion-60"
                     />
                   </div>
                 </div>
@@ -1006,19 +994,19 @@ Array [
               <td />
             </tr>
             <tr
-              className="emotion-29"
+              className="emotion-19"
               onClick={[Function]}
             >
               <td>
                 <div
-                  className="emotion-57"
+                  className="emotion-62"
                 >
                   Archived
                 </div>
               </td>
               <td>
                 <a
-                  className="emotion-16"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d53089-67c2-1433-8fef-0a580a000955"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1027,7 +1015,7 @@ Array [
                 </a>
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 100
               </td>
@@ -1035,16 +1023,16 @@ Array [
                 2019-11-07 01:35:36
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 4
               </td>
               <td>
                 <div
-                  className="emotion-20"
+                  className="emotion-24"
                 >
                   <a
-                    className="emotion-19"
+                    className="emotion-25"
                     href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d53089-67c2-1433-8fef-0a580a000955/errors"
                     onClick={[Function]}
                     onMouseEnter={[Function]}
@@ -1075,10 +1063,10 @@ Array [
                   tabIndex="0"
                 >
                   <div
-                    className="emotion-25"
+                    className="emotion-27"
                   >
                     <div
-                      className="emotion-21"
+                      className="emotion-28"
                     />
                   </div>
                 </div>
@@ -1086,19 +1074,19 @@ Array [
               <td />
             </tr>
             <tr
-              className="emotion-29"
+              className="emotion-19"
               onClick={[Function]}
             >
               <td>
                 <div
-                  className="emotion-67"
+                  className="emotion-72"
                 >
                   Failure
                 </div>
               </td>
               <td>
                 <a
-                  className="emotion-16"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c0975970-62ef-1f81-83f8-0a580a000954"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1107,7 +1095,7 @@ Array [
                 </a>
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 100
               </td>
@@ -1115,16 +1103,16 @@ Array [
                 2019-10-11 21:11:03
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 4
               </td>
               <td>
                 <div
-                  className="emotion-20"
+                  className="emotion-24"
                 >
                   <a
-                    className="emotion-19"
+                    className="emotion-25"
                     href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c0975970-62ef-1f81-83f8-0a580a000954/errors"
                     onClick={[Function]}
                     onMouseEnter={[Function]}
@@ -1155,21 +1143,21 @@ Array [
                   tabIndex="0"
                 >
                   <div
-                    className="emotion-25"
+                    className="emotion-27"
                   >
                     <div
-                      className="emotion-21"
+                      className="emotion-28"
                     />
                   </div>
                 </div>
               </td>
               <td>
                 <div
-                  className="emotion-28"
+                  className="emotion-32"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-27"
+                    className="actions emotion-33"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1183,19 +1171,19 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-29"
+              className="emotion-19"
               onClick={[Function]}
             >
               <td>
                 <div
-                  className="emotion-79"
+                  className="emotion-84"
                 >
                   Paused
                 </div>
               </td>
               <td>
                 <a
-                  className="emotion-16"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1204,7 +1192,7 @@ Array [
                 </a>
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 100
               </td>
@@ -1212,16 +1200,16 @@ Array [
                 2019-10-11 21:03:27
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 4
               </td>
               <td>
                 <div
-                  className="emotion-20"
+                  className="emotion-24"
                 >
                   <a
-                    className="emotion-19"
+                    className="emotion-25"
                     href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors"
                     onClick={[Function]}
                     onMouseEnter={[Function]}
@@ -1252,21 +1240,21 @@ Array [
                   tabIndex="0"
                 >
                   <div
-                    className="emotion-25"
+                    className="emotion-27"
                   >
                     <div
-                      className="emotion-21"
+                      className="emotion-28"
                     />
                   </div>
                 </div>
               </td>
               <td>
                 <div
-                  className="emotion-28"
+                  className="emotion-32"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-27"
+                    className="actions emotion-33"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1280,19 +1268,19 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-29"
+              className="emotion-19"
               onClick={[Function]}
             >
               <td>
                 <div
-                  className="emotion-45"
+                  className="emotion-50"
                 >
                   Success
                 </div>
               </td>
               <td>
                 <a
-                  className="emotion-16"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/1585ca03-4db0-14d1-8edd-0a580a000926"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1301,7 +1289,7 @@ Array [
                 </a>
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 1
               </td>
@@ -1309,7 +1297,7 @@ Array [
                 2019-08-01 22:52:19
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 4
               </td>
@@ -1332,10 +1320,10 @@ Array [
                   tabIndex="0"
                 >
                   <div
-                    className="emotion-25"
+                    className="emotion-27"
                   >
                     <div
-                      className="emotion-95"
+                      className="emotion-102"
                     />
                   </div>
                 </div>
@@ -1343,19 +1331,19 @@ Array [
               <td />
             </tr>
             <tr
-              className="emotion-29"
+              className="emotion-19"
               onClick={[Function]}
             >
               <td>
                 <div
-                  className="emotion-45"
+                  className="emotion-50"
                 >
                   Success
                 </div>
               </td>
               <td>
                 <a
-                  className="emotion-16"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/be47702d-cbd6-1cce-a096-0a580a000920"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1364,7 +1352,7 @@ Array [
                 </a>
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 1
               </td>
@@ -1372,7 +1360,7 @@ Array [
                 2019-07-08 18:53:44
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 4
               </td>
@@ -1395,10 +1383,10 @@ Array [
                   tabIndex="0"
                 >
                   <div
-                    className="emotion-25"
+                    className="emotion-27"
                   >
                     <div
-                      className="emotion-21"
+                      className="emotion-28"
                     />
                   </div>
                 </div>
@@ -1406,19 +1394,19 @@ Array [
               <td />
             </tr>
             <tr
-              className="emotion-29"
+              className="emotion-19"
               onClick={[Function]}
             >
               <td>
                 <div
-                  className="emotion-45"
+                  className="emotion-50"
                 >
                   Success
                 </div>
               </td>
               <td>
                 <a
-                  className="emotion-16"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/be47702c-cbd6-1cce-a096-0a580a000920"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1427,7 +1415,7 @@ Array [
                 </a>
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 1
               </td>
@@ -1435,7 +1423,7 @@ Array [
                 2019-07-08 18:43:03
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 4
               </td>
@@ -1458,10 +1446,10 @@ Array [
                   tabIndex="0"
                 >
                   <div
-                    className="emotion-25"
+                    className="emotion-27"
                   >
                     <div
-                      className="emotion-21"
+                      className="emotion-28"
                     />
                   </div>
                 </div>
@@ -1469,19 +1457,19 @@ Array [
               <td />
             </tr>
             <tr
-              className="emotion-29"
+              className="emotion-19"
               onClick={[Function]}
             >
               <td>
                 <div
-                  className="emotion-45"
+                  className="emotion-50"
                 >
                   Success
                 </div>
               </td>
               <td>
                 <a
-                  className="emotion-16"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd91540-08c1-199f-b899-0a580a00091e"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1490,7 +1478,7 @@ Array [
                 </a>
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 100
               </td>
@@ -1498,7 +1486,7 @@ Array [
                 2019-07-03 16:49:15
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 4
               </td>
@@ -1521,10 +1509,10 @@ Array [
                   tabIndex="0"
                 >
                   <div
-                    className="emotion-25"
+                    className="emotion-27"
                   >
                     <div
-                      className="emotion-21"
+                      className="emotion-28"
                     />
                   </div>
                 </div>
@@ -1532,19 +1520,19 @@ Array [
               <td />
             </tr>
             <tr
-              className="emotion-29"
+              className="emotion-19"
               onClick={[Function]}
             >
               <td>
                 <div
-                  className="emotion-45"
+                  className="emotion-50"
                 >
                   Success
                 </div>
               </td>
               <td>
                 <a
-                  className="emotion-16"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd9153f-08c1-199f-b899-0a580a00091e"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1553,7 +1541,7 @@ Array [
                 </a>
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 100
               </td>
@@ -1561,16 +1549,16 @@ Array [
                 2019-07-03 01:29:41
               </td>
               <td
-                className="emotion-17"
+                className="emotion-22"
               >
                 4
               </td>
               <td>
                 <div
-                  className="emotion-20"
+                  className="emotion-24"
                 >
                   <a
-                    className="emotion-19"
+                    className="emotion-25"
                     href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd9153f-08c1-199f-b899-0a580a00091e/errors"
                     onClick={[Function]}
                     onMouseEnter={[Function]}
@@ -1601,13 +1589,13 @@ Array [
                   tabIndex="0"
                 >
                   <div
-                    className="emotion-25"
+                    className="emotion-27"
                   >
                     <div
-                      className="emotion-21"
+                      className="emotion-28"
                     />
                     <div
-                      className="emotion-95"
+                      className="emotion-102"
                     />
                   </div>
                 </div>
@@ -1617,16 +1605,16 @@ Array [
           </tbody>
         </table>
       </div>
-    </div>
-    <div>
-       
-    </div>
-    <Pagination
-      currentPage={1}
-      totalPages={1}
-    />
-    <div>
-       
+      <div>
+         
+      </div>
+      <Pagination
+        currentPage={1}
+        totalPages={1}
+      />
+      <div>
+         
+      </div>
     </div>
   </div>,
 ]
@@ -1655,7 +1643,7 @@ Array [
   >
     Job Queue
   </h2>,
-  .emotion-21 {
+  .emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1666,7 +1654,7 @@ Array [
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1677,7 +1665,6 @@ Array [
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -1685,14 +1672,14 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-4 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1708,11 +1695,11 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1721,33 +1708,29 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited,
+.emotion-3 .noop {
   background-color: #73b61c;
 }
 
-.emotion-4:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1758,18 +1741,23 @@ Array [
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-5 {
+  -webkit-animation: ;
+  animation: ;
+}
+
+.emotion-6 {
   padding-left: 4px;
 }
 
-.emotion-20 {
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-19 {
+.emotion-8 {
   position: absolute;
   top: 0;
   left: 0;
@@ -1777,44 +1765,44 @@ Array [
   bottom: 0;
 }
 
-.emotion-18 {
+.emotion-9 {
   height: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-18 tr {
+.emotion-9 tr {
   background-color: #252525;
 }
 
-.emotion-18 tr:nth-of-type(2n) {
+.emotion-9 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-18 tr:hover {
+.emotion-9 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-18 tr:hover .actions {
+.emotion-9 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-18 tr:hover td {
+.emotion-9 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-18 tr:hover td:first-of-type {
+.emotion-9 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-18 tr:hover td:last-of-type {
+.emotion-9 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-18 td {
+.emotion-9 td {
   max-width: calc(100vw / 7);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1826,16 +1814,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-18 td:first-of-type {
+.emotion-9 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-18 td:last-of-type {
+.emotion-9 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-6 {
+.emotion-10 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -1847,15 +1835,15 @@ Array [
   width: auto;
 }
 
-.emotion-6:nth-of-type(2) {
+.emotion-10:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-10:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-14 {
+.emotion-17 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -1867,27 +1855,27 @@ Array [
   width: 1px;
 }
 
-.emotion-14:nth-of-type(2) {
+.emotion-17:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-14:not(:last-child) {
+.emotion-17:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-13 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-17 {
+.emotion-19 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-16 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1900,8 +1888,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   text-align: center;
   color: #808080;
@@ -1909,7 +1897,7 @@ Array [
   line-height: 19px;
 }
 
-.emotion-15 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1926,13 +1914,13 @@ Array [
 }
 
 <div
-    className="emotion-21"
+    className="emotion-0"
   >
     <div
-      className="emotion-5"
+      className="emotion-1"
     >
       <h3
-        className="emotion-0"
+        className="emotion-2"
       >
         Number of 
         Jobs
@@ -1940,21 +1928,21 @@ Array [
         0
       </h3>
       <button
-        className="emotion-4"
+        className="emotion-3"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-3"
+          className="emotion-4"
         >
           <svg
-            className="emotion-1"
+            className="emotion-5"
             color="#ffffff"
             data-file-name="refresh.svg"
             height={20}
           />
           <div
-            className="emotion-2"
+            className="emotion-6"
           >
             Refresh 
             Jobs
@@ -1963,56 +1951,56 @@ Array [
       </button>
     </div>
     <div
-      className="emotion-20"
+      className="emotion-7"
     >
       <div
-        className="emotion-19"
+        className="emotion-8"
       >
         <table
-          className="emotion-18"
+          className="emotion-9"
         >
           <thead>
             <tr>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 Status
               </th>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 Job Name
               </th>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 Priority
               </th>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 Created
               </th>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 # Assets
               </th>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 Errors
               </th>
               <th
-                className="emotion-6"
+                className="emotion-10"
               >
                 Task Progress
               </th>
               <th
-                className="emotion-14"
+                className="emotion-17"
               >
                 <div
-                  className="emotion-13"
+                  className="emotion-18"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -2024,16 +2012,16 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-17"
+              className="emotion-19"
             >
               <td
                 colSpan={8}
               >
                 <div
-                  className="emotion-16"
+                  className="emotion-20"
                 >
                   <div
-                    className="emotion-15"
+                    className="emotion-21"
                   >
                     <svg
                       data-file-name="noJobs.svg"

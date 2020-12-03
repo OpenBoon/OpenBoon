@@ -41,7 +41,7 @@ const CreateAccountSuccess = () => {
             borderRadius: constants.borderRadius.small,
           }}
         >
-          <h2 css={{ color: colors.key.one }}>Thanks for signing up!</h2>
+          <h2 css={{ color: colors.key.one }}>Confirmation email sent!</h2>
 
           <EnvelopeSvg
             width={142}
@@ -56,8 +56,9 @@ const CreateAccountSuccess = () => {
               lineHeight: typography.height.large,
             }}
           >
-            Please click the confirmation link sent to your email to activate
-            your account.
+            Please click the confirmation link sent to your email
+            <br />
+            to activate your account.
           </p>
 
           <p

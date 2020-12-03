@@ -22,7 +22,7 @@ User = get_user_model()
 
 
 def test_register_user_invalid_password(api_client):
-    api_client.logout_view()
+    api_client.logout()
     response = api_client.post(reverse('api-user-register'), {'email': 'fake@fakerson.com',
                                                               'firstName': 'Fakey',
                                                               'lastName': 'Fakerson',
@@ -32,7 +32,7 @@ def test_register_user_invalid_password(api_client):
 
 
 def test_register_user_with_invalid_email(api_client):
-    api_client.logout_view()
+    api_client.logout()
     response = api_client.post(reverse('api-user-register'), {'email': 'test@ise.io"or"2""="2"',
                                                               'firstName': 'Fakey',
                                                               'lastName': 'Fakerson',
@@ -42,7 +42,7 @@ def test_register_user_with_invalid_email(api_client):
 
 
 def test_register_invalid_request(api_client):
-    api_client.logout_view()
+    api_client.logout()
     response = api_client.post(reverse('api-user-register'), {'email': 'fake@fakerson.com',
                                                               'firstName': 'Fakey',
                                                               'password': 'simple'})
@@ -50,7 +50,7 @@ def test_register_invalid_request(api_client):
 
 
 def test_register_already_active_user(api_client, user):
-    api_client.logout_view()
+    api_client.logout()
     response = api_client.post(reverse('api-user-register'), {'email': user.username,
                                                               'firstName': 'Fakey',
                                                               'lastName': 'Fakerson',
@@ -60,7 +60,7 @@ def test_register_already_active_user(api_client, user):
 
 
 def test_re_register_user(api_client, user):
-    api_client.logout_view()
+    api_client.logout()
     request_data = {'email': 'fake@fakerson.com',
                     'firstName': 'Fakey',
                     'lastName': 'Fakerson',
@@ -75,7 +75,7 @@ def test_re_register_user(api_client, user):
 
 
 def test_register_and_confirm(api_client, mailoutbox):
-    api_client.logout_view()
+    api_client.logout()
 
     # Register a user
     password = str(uuid.uuid4())
@@ -105,7 +105,7 @@ def test_register_and_confirm(api_client, mailoutbox):
 
 
 def test_register_confirm_with_policies_date(api_client, mailoutbox):
-    api_client.logout_view()
+    api_client.logout()
 
     # Register a user
     password = str(uuid.uuid4())
@@ -139,7 +139,7 @@ def test_register_confirm_with_policies_date(api_client, mailoutbox):
 
 
 def test_confirm_expired_registration_token(api_client, user):
-    api_client.logout_view()
+    api_client.logout()
     token = UserRegistrationToken.objects.create(user=user)
     token.createdAt = now() - timedelta(days=100)
     token.save()
@@ -150,13 +150,13 @@ def test_confirm_expired_registration_token(api_client, user):
 
 
 def test_confirm_missing_registration_token(api_client):
-    api_client.logout_view()
+    api_client.logout()
     response = api_client.post(reverse('api-user-confirm'), {'token': uuid.uuid4(), 'userId': 1})
     assert response.status_code == 404
 
 
 def test_confirm_missing_params(api_client):
-    api_client.logout_view()
+    api_client.logout()
     response = api_client.post(reverse('api-user-confirm'), {'token': uuid.uuid4()})
     assert response.status_code == 400
 
@@ -173,7 +173,7 @@ def test_password_change(api_client, user):
 
 
 def test_reset_password(api_client, user, mailoutbox):
-    api_client.logout_view()
+    api_client.logout()
     assert not user.check_password('7BMQv5Pb(KpdS+!z')
     response = api_client.post(reverse('api-password-reset'), {'email': user.email})
     assert response.status_code == 200
@@ -192,7 +192,7 @@ def test_reset_password(api_client, user, mailoutbox):
 
 
 def test_api_login_user_pass(api_client, user):
-    api_client.logout_view()
+    api_client.logout()
     response = api_client.post(reverse('api-login'),
                                {'username': 'user', 'password': 'letmein'})
     assert response.status_code == 200
@@ -205,7 +205,7 @@ def test_api_login_user_pass(api_client, user):
 
 def test_api_login_includes_projects(api_client, user, project, project2,
                                      zmlp_project_membership, zmlp_project2_membership):
-    api_client.logout_view()
+    api_client.logout()
     response = api_client.post(reverse('api-login'),
                                {'username': 'user', 'password': 'letmein'})
     assert response.status_code == 200
@@ -220,7 +220,7 @@ def test_api_login_includes_projects(api_client, user, project, project2,
 
 
 def test_api_login_includes_invalid_agreement(api_client, user):
-    api_client.logout_view()
+    api_client.logout()
     response = api_client.post(reverse('api-login'),
                                {'username': 'user', 'password': 'letmein'})
     assert response.status_code == 200
@@ -243,7 +243,7 @@ def test_api_login_includes_agreement_date(api_client, user):
     agreement2.createdDate = timezone.localize(date)
     agreement2.save()
 
-    api_client.logout_view()
+    api_client.logout()
     response = api_client.post(reverse('api-login'),
                                {'username': 'user', 'password': 'letmein'})
     assert response.status_code == 200
@@ -252,7 +252,7 @@ def test_api_login_includes_agreement_date(api_client, user):
 
 
 def test_api_login_inactive_user_fail(api_client, user):
-    api_client.logout_view()
+    api_client.logout()
     user.is_active = False
     user.save()
     response = api_client.post(reverse('api-login'),
@@ -375,7 +375,7 @@ def test_patch_me(login, api_client):
 
 
 def test_api_logout(api_client, user):
-    api_client.logout_view()
+    api_client.logout()
     api_client.force_login(user)
     assert api_client.get(reverse('project-list')).status_code == 200
     response = api_client.post(reverse('api-logout'), {})
@@ -384,7 +384,7 @@ def test_api_logout(api_client, user):
 
 
 def test_api_login_lockout(api_client, user):
-    api_client.logout_view()
+    api_client.logout()
     axes.utils.reset()
     credentials = {'username': user.username, 'password': 'nope'}
 

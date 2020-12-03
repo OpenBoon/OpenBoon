@@ -115,7 +115,7 @@ const FilterBuckets = ({
                   flexDirection: 'row',
                   backgroundColor: isSelected
                     ? `${colors.signal.sky.base}${constants.opacity.hex22Pct}`
-                    : '',
+                    : colors.structure.transparent,
                   color: isSelected
                     ? colors.structure.white
                     : colors.structure.zinc,

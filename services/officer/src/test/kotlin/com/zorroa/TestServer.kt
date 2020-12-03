@@ -1,10 +1,10 @@
 package com.zorroa
 
 import com.github.kevinsawicki.http.HttpRequest
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.spy
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.spy
+import com.nhaarman.mockitokotlin2.whenever
 import java.io.File
 import kotlin.test.assertEquals
 import org.junit.AfterClass
@@ -14,6 +14,8 @@ import spark.kotlin.stop
 import kotlin.test.assertNotNull
 
 class TestServer {
+
+    val storageClient = MinioStorageClient()
 
     companion object {
         @BeforeClass
@@ -40,7 +42,7 @@ class TestServer {
 
     @Test
     fun testStatusFailure() {
-        val minioSpy = spy(StorageManager.minioClient)
+        val minioSpy = spy(storageClient.minioClient)
         doReturn(false).whenever(minioSpy).bucketExists(any())
 
         val rsp = HttpRequest.get("http://localhost:9876/monitor/health")
@@ -61,7 +63,7 @@ class TestServer {
     fun testRender() {
         val opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
         opts.page = 1
-        opts.outputDir = "render_test"
+        opts.outputPath = "render_test"
         val rsp = HttpRequest.post("http://localhost:9876/render")
             .part("file", "CPB7_WEB.pdf", File("src/test/resources/CPB7_WEB.pdf"))
             .part("body", Json.mapper.writeValueAsString(opts))
@@ -69,8 +71,7 @@ class TestServer {
         assert(rsp.code() == 201)
 
         val content = Json.mapper.readValue(rsp.body(), Map::class.java)
-        val prefix = IOHandler.PREFIX
-        assertEquals("zmlp://pipeline-storage/$prefix/render_test", content["location"])
+        assertEquals("render_test", content["location"])
 
         var exists: HttpRequest? = null
         for (i in 0..5) {

@@ -7,10 +7,11 @@
     "lint": "eslint '{pages,src}/**/*.js'"
   },
   "dependencies": {
-    "next": "9.5.5",
+    "next": "10.0.1",
     "prop-types": "15.7.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-error-boundary": "3.0.2",
     "swr": "0.3.6",
     "tailwindcss": "1.9.6"
   },

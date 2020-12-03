@@ -23,7 +23,7 @@ Array [
   >
     Account Profile
   </h2>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -32,7 +32,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -43,12 +43,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -68,23 +68,23 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/account"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -93,10 +93,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/account/password"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -106,14 +106,14 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-25 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-18 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -127,44 +127,48 @@ Array [
   padding-right: 0;
 }
 
-.emotion-3 {
+.emotion-2 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-3 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-2 {
+.emotion-4 {
   position: relative;
 }
 
-.emotion-1 {
+.emotion-5 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-5:focus,
+.emotion-5 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
 }
 
-.emotion-1:hover {
+.emotion-5:hover,
+.emotion-5 .noop {
   border: 2px solid #ffffff;
 }
 
-.emotion-1:focus {
-  color: #000000;
-  background-color: #ffffff;
+.emotion-6 {
+  padding-top: 8px;
 }
 
 .emotion-17 {
@@ -181,7 +185,7 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-15 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -197,8 +201,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -212,30 +216,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-15,
-.emotion-15:hover,
-.emotion-15:visited {
+.emotion-18,
+.emotion-18:hover,
+.emotion-18:visited,
+.emotion-18 .noop {
   background-color: #808080;
 }
 
-.emotion-15:hover {
+.emotion-18:hover,
+.emotion-18 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-16 {
+.emotion-19 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -251,8 +252,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -266,55 +267,52 @@ Array [
   background-color: transparent;
 }
 
-.emotion-16:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-16[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-16,
-.emotion-16:hover,
-.emotion-16:visited {
+.emotion-19,
+.emotion-19:hover,
+.emotion-19:visited,
+.emotion-19 .noop {
   background-color: #73b61c;
 }
 
-.emotion-16:hover {
+.emotion-19:hover,
+.emotion-19 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-16[aria-disabled=true] {
+.emotion-19[aria-disabled=true],
+.emotion-19 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-24 {
+.emotion-20 {
   padding-top: 24px;
   padding-left: 48px;
 }
 
-.emotion-23 {
+.emotion-21 {
   width: 470px;
   border: 1px solid #3b3b3b;
   border-radius: 2px;
   padding: 32px;
 }
 
-.emotion-19 {
+.emotion-22 {
   color: #ffffff;
   font-weight: 500;
   padding-bottom: 4px;
 }
 
-.emotion-20 {
+.emotion-23 {
   color: #808080;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-21 {
+.emotion-25 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -330,11 +328,11 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -343,56 +341,52 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
-.emotion-21:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-21[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-21,
-.emotion-21:hover,
-.emotion-21:visited {
+.emotion-25,
+.emotion-25:hover,
+.emotion-25:visited,
+.emotion-25 .noop {
   background-color: #73b61c;
 }
 
-.emotion-21:hover {
+.emotion-25:hover,
+.emotion-25 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-25[aria-disabled=true],
+.emotion-25 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-    className="emotion-25"
+    className="emotion-0"
   >
     <form
       action=""
-      className="emotion-18"
+      className="emotion-1"
       method="post"
       onSubmit={[Function]}
     >
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <label
-          className="emotion-0"
+          className="emotion-3"
           htmlFor="currentPassword"
         >
           Current Password
         </label>
         <div
-          className="emotion-2"
+          className="emotion-4"
         >
           <input
             autoFocus={true}
-            className="emotion-1"
+            className="emotion-5"
             disabled={false}
             id="currentPassword"
             name="currentPassword"
@@ -402,25 +396,25 @@ Array [
           />
         </div>
         <div
-          className="emotion-3"
+          className="emotion-6"
         >
            
         </div>
       </div>
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <label
-          className="emotion-0"
+          className="emotion-3"
           htmlFor="newPassword"
         >
           New Password
         </label>
         <div
-          className="emotion-2"
+          className="emotion-4"
         >
           <input
-            className="emotion-1"
+            className="emotion-5"
             disabled={false}
             id="newPassword"
             name="newPassword"
@@ -430,25 +424,25 @@ Array [
           />
         </div>
         <div
-          className="emotion-3"
+          className="emotion-6"
         >
            
         </div>
       </div>
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <label
-          className="emotion-0"
+          className="emotion-3"
           htmlFor="confirmPassword"
         >
           Confirm Password
         </label>
         <div
-          className="emotion-2"
+          className="emotion-4"
         >
           <input
-            className="emotion-1"
+            className="emotion-5"
             disabled={false}
             id="confirmPassword"
             name="confirmPassword"
@@ -458,7 +452,7 @@ Array [
           />
         </div>
         <div
-          className="emotion-3"
+          className="emotion-6"
         >
            
         </div>
@@ -467,7 +461,7 @@ Array [
         className="emotion-17"
       >
         <button
-          className="emotion-15"
+          className="emotion-18"
           onClick={[Function]}
           type="button"
         >
@@ -475,7 +469,7 @@ Array [
         </button>
         <button
           aria-disabled={true}
-          className="emotion-16"
+          className="emotion-19"
           onClick={[Function]}
           type="submit"
         >
@@ -484,19 +478,19 @@ Array [
       </div>
     </form>
     <div
-      className="emotion-24"
+      className="emotion-20"
     >
       
       <div
-        className="emotion-23"
+        className="emotion-21"
       >
         <div
-          className="emotion-19"
+          className="emotion-22"
         >
           Did you sign in with Google or another service?
         </div>
         <div
-          className="emotion-20"
+          className="emotion-23"
         >
           If so, you may not have a Zorroa password. You can create one by resetting the password and checking your email for instructions.
         </div>
@@ -504,7 +498,7 @@ Array [
           className="emotion-17"
         >
           <button
-            className="emotion-21"
+            className="emotion-25"
             onClick={[Function]}
             type="button"
           >

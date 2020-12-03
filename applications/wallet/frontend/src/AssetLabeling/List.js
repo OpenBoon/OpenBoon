@@ -5,6 +5,7 @@ import modelShape from '../Model/shape'
 import { colors, constants, spacing, typography } from '../Styles'
 
 import AssetLabelingMenu from './Menu'
+import { SCOPE_OPTIONS } from './helpers'
 
 const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
   if (!labels.length)
@@ -38,12 +39,17 @@ const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
         >
           <th>Model</th>
           <th>Label</th>
+          <th>Scope</th>
         </tr>
       </thead>
       <tbody>
-        {labels.map(({ modelId, label }) => {
+        {labels.map(({ modelId, label, scope }) => {
           const { name = '', moduleName = '' } =
             models.find(({ id }) => id === modelId) || {}
+
+          const { label: scopeLabel } = SCOPE_OPTIONS.find(
+            ({ value }) => value === scope,
+          )
 
           return (
             <tr
@@ -66,6 +72,7 @@ const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
               }}
             >
               <td css={{ whiteSpace: 'nowrap' }}>{name}</td>
+
               <td
                 css={{
                   width: '100%',
@@ -74,10 +81,14 @@ const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
               >
                 {label}
               </td>
+
+              <td css={{ wordBreak: 'nowrap' }}>{scopeLabel}</td>
+
               <td>
                 <AssetLabelingMenu
-                  label={label}
                   modelId={modelId}
+                  label={label}
+                  scope={scope}
                   moduleName={moduleName}
                   triggerReload={triggerReload}
                   setError={setError}

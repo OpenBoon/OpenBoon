@@ -23,7 +23,7 @@ Array [
   >
     Project User Admin
   </h2>,
-  .emotion-7 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -32,7 +32,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-6 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -43,12 +43,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -68,13 +68,13 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
-.emotion-4 {
+.emotion-7 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -93,22 +93,22 @@ Array [
   font-weight: 700;
 }
 
-.emotion-4:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
 <nav
-    className="emotion-7"
+    className="emotion-0"
   >
     <ul
-      className="emotion-6"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -117,10 +117,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -129,10 +129,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-4"
+          className="emotion-7"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users/42/edit"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -142,7 +142,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-31 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -156,21 +156,21 @@ Array [
   padding-right: 0;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-top: 16px;
 }
 
-.emotion-27 {
+.emotion-2 {
   border: none;
   padding: 0;
   margin: 0;
   padding-top: 12px;
 }
 
-.emotion-1 {
+.emotion-3 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -183,11 +183,11 @@ Array [
   display: flex;
 }
 
-.emotion-2 {
+.emotion-4 {
   clear: both;
 }
 
-.emotion-10 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -209,7 +209,7 @@ Array [
   position: relative;
 }
 
-.emotion-3 {
+.emotion-7 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -220,7 +220,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-5 {
+.emotion-8 {
   position: absolute;
   top: 0;
   left: 0;
@@ -231,8 +231,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -241,13 +241,13 @@ Array [
   cursor: pointer;
 }
 
-.emotion-4 path {
+.emotion-9 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -258,19 +258,19 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-7 {
+.emotion-11 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-8 {
+.emotion-12 {
   padding-left: 0;
   color: #b3b3b3;
 }
 
-.emotion-19 {
+.emotion-23 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -281,13 +281,13 @@ Array [
   cursor: pointer;
 }
 
-.emotion-20 path {
+.emotion-25 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-30 {
+.emotion-29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -296,12 +296,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-30 button,
-.emotion-30 a {
+.emotion-29 button,
+.emotion-29 a {
   margin-right: 16px;
 }
 
-.emotion-28 {
+.emotion-30 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -317,8 +317,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -332,30 +332,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-28:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-28[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-28,
-.emotion-28:hover,
-.emotion-28:visited {
+.emotion-30,
+.emotion-30:hover,
+.emotion-30:visited,
+.emotion-30 .noop {
   background-color: #808080;
 }
 
-.emotion-28:hover {
+.emotion-30:hover,
+.emotion-30 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-28[aria-disabled=true] {
+.emotion-30[aria-disabled=true],
+.emotion-30 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-29 {
+.emotion-31 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -371,8 +368,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -386,162 +383,159 @@ Array [
   background-color: transparent;
 }
 
-.emotion-29:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-29[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-29,
-.emotion-29:hover,
-.emotion-29:visited {
+.emotion-31,
+.emotion-31:hover,
+.emotion-31:visited,
+.emotion-31 .noop {
   background-color: #73b61c;
 }
 
-.emotion-29:hover {
+.emotion-31:hover,
+.emotion-31 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-29[aria-disabled=true] {
+.emotion-31[aria-disabled=true],
+.emotion-31 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-31"
+    className="emotion-0"
     method="post"
     onSubmit={[Function]}
   >
     <h3
-      className="emotion-0"
+      className="emotion-1"
     >
       Email: 
       jane@zorroa.com
     </h3>
     <fieldset
-      className="emotion-27"
+      className="emotion-2"
     >
       <legend
-        className="emotion-1"
+        className="emotion-3"
       >
         Edit Roles
       </legend>
       
       <div
-        className="emotion-2"
+        className="emotion-4"
       />
       <label
-        className="emotion-10"
+        className="emotion-5"
       >
         <div
           className="emotion-6"
         >
           <input
-            className="emotion-3"
+            className="emotion-7"
             defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="ML_Tools"
           />
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <svg
-              className="emotion-4"
+              className="emotion-9"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-9"
+          className="emotion-10"
         >
           <span
-            className="emotion-7"
+            className="emotion-11"
           >
             ML Tools
           </span>
           <span
-            className="emotion-8"
+            className="emotion-12"
           >
             Provides access to the Job Queue, Data Sources, and Visualizer.
           </span>
         </div>
       </label>
       <label
-        className="emotion-10"
+        className="emotion-5"
       >
         <div
           className="emotion-6"
         >
           <input
-            className="emotion-3"
+            className="emotion-7"
             defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="API_Keys"
           />
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <svg
-              className="emotion-4"
+              className="emotion-9"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-9"
+          className="emotion-10"
         >
           <span
-            className="emotion-7"
+            className="emotion-11"
           >
             API Keys
           </span>
           <span
-            className="emotion-8"
+            className="emotion-12"
           >
             Provides access to API Key provisioning.
           </span>
         </div>
       </label>
       <label
-        className="emotion-10"
+        className="emotion-5"
       >
         <div
           className="emotion-6"
         >
           <input
-            className="emotion-19"
+            className="emotion-23"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="User_Admin"
           />
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <svg
-              className="emotion-20"
+              className="emotion-25"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-9"
+          className="emotion-10"
         >
           <span
-            className="emotion-7"
+            className="emotion-11"
           >
             User Admin
           </span>
           <span
-            className="emotion-8"
+            className="emotion-12"
           >
             Allows adding and removing users as well as managing their roles. This includes adding and removing their own roles.
           </span>
@@ -549,10 +543,10 @@ Array [
       </label>
     </fieldset>
     <div
-      className="emotion-30"
+      className="emotion-29"
     >
       <a
-        className="emotion-28"
+        className="emotion-30"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -560,7 +554,7 @@ Array [
         Cancel
       </a>
       <button
-        className="emotion-29"
+        className="emotion-31"
         onClick={[Function]}
         type="submit"
       >
