@@ -287,6 +287,7 @@ class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
         """
         pagination_token = ''
         finished = False
+        counter = 0
 
         output_path = tempfile.mkstemp(".jpg")[1]
         while not finished:
@@ -296,7 +297,7 @@ class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
                 NextToken=pagination_token
             )
 
-            for i, faceDetection in enumerate(response['Faces']):
+            for i, faceDetection in enumerate(response['Faces'], counter):
                 face = faceDetection['Face']
                 confidence = face['Confidence']
                 start_time = faceDetection['Timestamp'] / 1000  # ms to s
@@ -306,6 +307,7 @@ class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
 
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [f"face{i}"])
+            counter = i
 
             if 'NextToken' in response:
                 pagination_token = response['NextToken']
@@ -409,6 +411,57 @@ class CelebrityVideoDetectProcessor(AbstractVideoDetectProcessor):
 
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [name])
+
+            if 'NextToken' in response:
+                pagination_token = response['NextToken']
+            else:
+                finished = True
+
+        return clip_tracker
+
+
+class PeoplePathingVideoDetectProcessor(AbstractVideoDetectProcessor):
+    """ Text Detection for Videos using AWS """
+    def __init__(self):
+        super(PeoplePathingVideoDetectProcessor, self).__init__(
+            detector_func='start_person_tracking')
+
+    def get_detection_results(self, clip_tracker, rek_client, start_job_id, local_video_path,
+                              max_results=10):
+        """
+        Get detection results
+
+        Args:
+            clip_tracker: ClipTracker for building Timeline
+            rek_client: AWS Rekog Client
+            start_job_id: (str) Job ID
+            local_video_path: (str) locally created video file
+            max_results: (int) maximum results to get, default 10
+
+        Returns:
+            (ClipTracker) built clip tracker clips for timeline building
+        """
+        pagination_token = ''
+        finished = False
+        counter = 0
+
+        output_path = tempfile.mkstemp(".jpg")[1]
+        while not finished:
+            response = rek_client.get_person_tracking(
+                JobId=start_job_id,
+                MaxResults=max_results,
+                NextToken=pagination_token
+            )
+
+            for i, personDetection in enumerate(response['Persons'], counter):
+                person = personDetection['Person']
+                start_time = personDetection['Timestamp'] / 1000  # ms to s
+
+                logger.debug(f'\tPerson Detected: {person}')
+
+                video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
+                clip_tracker.append(start_time, [f"person{i}"])
+            counter = i
 
             if 'NextToken' in response:
                 pagination_token = response['NextToken']
