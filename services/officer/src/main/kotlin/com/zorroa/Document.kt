@@ -29,7 +29,7 @@ abstract class Document(val options: RenderRequest) : Closeable {
 
     fun render() {
         if (isRenderAll()) {
-            logger.info("Rendering to {}", options.outputUri)
+            logger.info("Rendering to {}", options.outputPath)
             if (!options.disableImageRender) {
                 renderAllImages()
             }
@@ -49,7 +49,7 @@ abstract class Document(val options: RenderRequest) : Closeable {
     fun logImageTime(page: Int, time: Long) {
         val mem = Runtime.getRuntime().freeMemory() / 1024 / 1024
         logger.info(
-            "proxy input='${options.fileName}' output='${ioHandler.getOutputUri()}' page='$page' in time='{}ms', freemem='{}m'",
+            "proxy input='${options.fileName}' output='${ioHandler.getOutputPath()}' page='$page' in time='{}ms', freemem='{}m'",
             time,
             mem
         )
@@ -58,7 +58,7 @@ abstract class Document(val options: RenderRequest) : Closeable {
     fun logMetadataTime(page: Int, time: Long) {
         val mem = Runtime.getRuntime().freeMemory() / 1024 / 1024
         logger.info(
-            "metadata input='${options.fileName}'  output='${ioHandler.getOutputUri()}' page='$page' in time='{}ms', freemem='{}m'",
+            "metadata input='${options.fileName}'  output='${ioHandler.getOutputPath()}' page='$page' in time='{}ms', freemem='{}m'",
             time,
             mem
         )

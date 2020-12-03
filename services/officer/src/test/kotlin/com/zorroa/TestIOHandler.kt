@@ -61,18 +61,18 @@ class TestIOHandler {
     @Test
     fun testGetImagePath() {
         val path = handler.getImagePath(5)
-        assertEquals("${options.outputUri}/proxy.5.jpg", path)
+        assertEquals("${options.outputPath}_proxy.5.jpg", path)
     }
 
     @Test
     fun getMetadataPath() {
         val path = handler.getMetadataPath(5)
-        assertEquals("${options.outputUri}/metadata.5.json", path)
+        assertEquals("${options.outputPath}_metadata.5.json", path)
     }
 
     @Test
     fun getOutputUri() {
-        val path = handler.getOutputUri()
-        assertEquals(options.outputUri, path)
+        val path = handler.getOutputPath()
+        assertEquals(options.outputPath, path)
     }
 }

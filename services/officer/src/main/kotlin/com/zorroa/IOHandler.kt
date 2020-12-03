@@ -42,15 +42,15 @@ class IOHandler(val options: RenderRequest) {
     }
 
     fun getImagePath(page: Int): String {
-        return "${options.outputUri}/proxy.$page.jpg"
+        return "${options.outputPath}_proxy.$page.jpg"
     }
 
     fun getMetadataPath(page: Int): String {
-        return "${options.outputUri}/metadata.$page.json"
+        return "${options.outputPath}_metadata.$page.json"
     }
 
-    fun getOutputUri(): String {
-        return options.outputUri
+    fun getOutputPath(): String {
+        return options.outputPath
     }
 
     fun getMetadata(page: Int = 1): InputStream {

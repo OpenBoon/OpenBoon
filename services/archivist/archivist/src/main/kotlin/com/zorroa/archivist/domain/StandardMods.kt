@@ -53,7 +53,7 @@ object ModelObjective {
 fun getStandardModules(): List<PipelineModSpec> {
     return listOf(
         PipelineModSpec(
-            "zvi-document-page-extraction",
+            "zvi-extract-pages",
             "Extract all pages in MS Office/PDF documents into separate assets.",
             Provider.ZORROA,
             Category.ZORROA_TL,
@@ -69,7 +69,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "zvi-image-layer-extraction",
+            "zvi-extract-layers",
             "Extract all layers in multilayer or multi-page image formats such as tiff and psd as as " +
                 "separate assets",
             Provider.ZORROA,

@@ -41,7 +41,7 @@ class OfficeImporter(AssetProcessor):
             self.arg('dpi').value = 300
         self.oclient = OfficerClient(dpi=self.arg_value('dpi'))
 
-    def get_metadata(self, uri, page):
+    def get_metadata(self, asset, page):
         """
         Get the rendered metadata blob for given output URI.
 
@@ -57,25 +57,12 @@ class OfficeImporter(AssetProcessor):
 
         """
         try:
-            zuri = '{}/metadata.{}.json'.format(uri, page)
-            with open(file_storage.localize_file(zuri), 'r') as fp:
+            file_id = self.oclient.get_metadata_file_id(asset, page)
+            with open(file_storage.localize_file(file_id), 'r') as fp:
                 return json.load(fp, object_hook=_content_sanitizer)
         except ZmlpStorageException as e:
             raise ZmlpFatalProcessorException(
-                'Unable to obtain officer metadata, {} {}, {}'.format(uri, page, e))
-
-    def get_image_uri(self, uri, page):
-        """
-        Return the ZMLP storage URL for the given page.
-
-        Args:
-            uri (str):  A previously created output uri.
-            page (int): The page number, 0 for parent page.
-
-        Returns:
-            str: the ZMLP URL to the image.
-        """
-        return '{}/proxy.{}.jpg'.format(uri, max(page, 0))
+                'Unable to obtain officer metadata, {} {}, {}'.format(asset, page, e))
 
     def process(self, frame):
         """Processes the given frame by sending it to the Officer service for render.
@@ -86,7 +73,7 @@ class OfficeImporter(AssetProcessor):
         asset = frame.asset
         page = max(int(asset.get_attr('media.pageNumber') or 1), 1)
 
-        output_uri = self.render_pages(asset, page, page == 1)
+        self.render_pages(asset, page, page == 1)
 
         # If we're on page 1 and extract_doc_pages is true.
         if page == 1 and self.arg_value('extract_doc_pages'):
@@ -96,7 +83,6 @@ class OfficeImporter(AssetProcessor):
                 # Start on page 2 since we just processed page 1
                 for page_num in range(2, num_pages + 1):
                     file_import = FileImport("asset:{}".format(asset.id), page=page_num)
-                    file_import.tmp = {self.tmp_loc_attr: output_uri}
                     expand = ExpandFrame(file_import)
                     self.expand(frame, expand)
 
@@ -139,7 +125,7 @@ class OfficeImporter(AssetProcessor):
 
             # Need these set in order to render PDFs
             media = asset.get_attr('media') or {}
-            media.update(self.get_metadata(cache_loc, page))
+            media.update(self.get_metadata(asset, page))
             asset.set_attr('media', media)
             asset.set_attr('media.type', 'document')
 
@@ -150,11 +136,13 @@ class OfficeImporter(AssetProcessor):
                 if self.arg_value('ocr'):
                     self.store_ocr_proxy(asset, full_size_render)
             else:
-                asset.set_attr('tmp.proxy_source_image', self.get_image_uri(cache_loc, page))
+                asset.set_attr('tmp.proxy_source_image',
+                               self.oclient.get_image_file_id(asset, page))
 
             return cache_loc
 
         except Exception as e:
+            self.logger.exception("Unable to determine page cache location")
             raise ZmlpFatalProcessorException(
                 'Unable to determine page cache location {}, {}'.format(asset.id, e), e)
 

@@ -1,3 +1,4 @@
+import os
 import unittest
 from unittest.mock import patch
 
@@ -13,6 +14,12 @@ class OfficerPythonClientTests(unittest.TestCase):
     def setUp(self):
         self.path = Path('/tmp/path/file.pdf')
         self.asset = TestAsset(str(self.path), id="abcdefg1234")
+        os.environ['ZMLP_JOB_ID'] = "abc123"
+        os.environ['ZORROA_JOB_STORAGE_PATH'] = "/projects/foo"
+
+    def tearDown(self):
+        del os.environ['ZMLP_JOB_ID']
+        del os.environ['ZORROA_JOB_STORAGE_PATH']
 
     def test_service_url(self):
         client = OfficerClient()
@@ -46,7 +53,7 @@ class OfficerPythonClientTests(unittest.TestCase):
         assert body[1][1][0] is None
 
         assert '"fileName": "/tmp/path/file.pdf"' in body[1][1][1]
-        assert '"outputUri": "abcdefg1234"' in body[1][1][1]
+        assert '"outputPath": "/projects/foo/officer/abcdefg1234"' in body[1][1][1]
         assert '"page": -1' in body[1][1][1]
         assert '"disableImageRender": true' in body[1][1][1]
 
@@ -65,7 +72,7 @@ class OfficerPythonClientTests(unittest.TestCase):
         assert body[1][1][0] is None
 
         assert '"fileName": "/tmp/path/file.pdf"' in body[1][1][1]
-        assert '"outputUri": "abcdefg1234"' in body[1][1][1]
+        assert '"outputPath": "/projects/foo/officer/abcdefg1234"' in body[1][1][1]
         assert '"page": 5' in body[1][1][1]
         assert '"disableImageRender": false' in body[1][1][1]
 
@@ -75,7 +82,7 @@ class OfficerPythonClientTests(unittest.TestCase):
         client = OfficerClient()
         assert client.get_cache_location(self.asset, 1) == "/foo"
         args = post_patch.call_args_list[0][1]
-        assert args['json']['outputUri'] == 'abcdefg1234'
+        assert args['json']['outputPath'] == '/projects/foo/officer/abcdefg1234'
         assert args['json']['page'] == 1
         assert args['headers']['Content-Type'] == 'application/json'
 
@@ -85,6 +92,6 @@ class OfficerPythonClientTests(unittest.TestCase):
         client = OfficerClient()
         assert client.get_cache_location(self.asset, 1) is None
         args = post_patch.call_args_list[0][1]
-        assert args['json']['outputUri'] == 'abcdefg1234'
+        assert args['json']['outputPath'] == '/projects/foo/officer/abcdefg1234'
         assert args['json']['page'] == 1
         assert args['headers']['Content-Type'] == 'application/json'

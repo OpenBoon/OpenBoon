@@ -72,9 +72,9 @@ open class MinioStorageClient : StorageClient {
     }
 
     override fun store(path: String, inputStream: InputStream, size: Long, fileType: String) {
-        logger.info("Storing: {} {}", bucket, path)
+        logger.info("Storing: {} {}", bucket, path.removePrefix("/"))
         minioClient.putObject(
-            bucket, path,
+            bucket, path.removePrefix("/"),
             inputStream,
             size,
             null,
@@ -93,10 +93,10 @@ open class MinioStorageClient : StorageClient {
 
     override fun exists(path: String): Boolean {
         return try {
-            minioClient.statObject(Config.bucket.name, path)
+            minioClient.statObject(Config.bucket.name, path.removePrefix("/"))
             true
         } catch (e: ErrorResponseException) {
-            IOHandler.logger.warn("Object does not exist: {}", path)
+            IOHandler.logger.warn("Object does not exist: {} / {}", Config.bucket.name, path)
             false
         }
     }
@@ -126,14 +126,14 @@ open class GcsStorageClient : StorageClient {
     }
 
     override fun store(path: String, inputStream: InputStream, size: Long, fileType: String) {
-        val blobId = getBlobId(path)
+        val blobId = getBlobId(path.removePrefix("/"))
         val info = BlobInfo.newBuilder(blobId)
         info.setContentType(fileType)
         gcs.create(info.build(), inputStream.readBytes())
     }
 
     override fun fetch(path: String): InputStream {
-        val blobId = getBlobId(path)
+        val blobId = getBlobId(path.removePrefix("/"))
         val blob = gcs.get(blobId)
         return blob.getContent().inputStream()
     }
@@ -160,7 +160,7 @@ open class GcsStorageClient : StorageClient {
     }
 
     fun getBlobId(path: String): BlobId {
-        return BlobId.of(Config.bucket.name, path)
+        return BlobId.of(Config.bucket.name, path.removePrefix("/"))
     }
 
     private fun loadCredentials(): GoogleCredentials {

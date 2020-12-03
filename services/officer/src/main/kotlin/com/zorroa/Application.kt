@@ -20,7 +20,7 @@ const val ASPOSE_LICENSE_FILE = "Aspose.Total.Java.lic"
 class RenderRequest(
     val fileName: String,
     var page: Int = -1,
-    var outputUri: String = UUID.randomUUID().toString().replace("-", ""),
+    var outputPath: String = "/projects/" + UUID.randomUUID().toString(),
     var dpi: Int = 100,
     var disableImageRender: Boolean = false
 )
@@ -30,14 +30,14 @@ class RenderRequest(
  */
 class ExistsRequest(
     val page: Int,
-    val outputUri: String
+    val outputPath: String
 )
 
 /**
  * Extract the image and metadata to their resting place.
  */
 fun extract(opts: RenderRequest, input: InputStream): Document {
-    requireNotNull(opts.outputUri) { "An output directory must be provided" }
+    requireNotNull(opts.outputPath) { "An output directory must be provided" }
 
     val fileExt = opts.fileName.substringAfterLast('.', "").toLowerCase()
 
@@ -97,13 +97,14 @@ fun runServer(port: Int) {
 
     post("/exists", "application/json") {
         val options = Json.mapper.readValue<ExistsRequest>(this.request.body())
-        val ioHandler = IOHandler(RenderRequest("none", options.page, options.outputUri))
+        val ioHandler = IOHandler(RenderRequest("none", options.page, options.outputPath))
+        logger.info("checking output path: {}", options.outputPath)
         if (ioHandler.exists(options.page)) {
             this.response.status(200)
         } else {
             this.response.status(404)
         }
-        Json.mapper.writeValueAsString(mapOf("location" to ioHandler.getOutputUri()))
+        Json.mapper.writeValueAsString(mapOf("location" to ioHandler.getOutputPath()))
     }
 
     post("/render") {
@@ -123,7 +124,11 @@ fun runServer(port: Int) {
                 val req = Json.mapper.readValue<RenderRequest>(body.inputStream)
                 val doc = extract(req, file.inputStream)
                 this.response.status(201)
-                Json.mapper.writeValueAsString(mapOf("location" to doc.ioHandler.getOutputUri()))
+                Json.mapper.writeValueAsString(
+                    mapOf(
+                        "location" to doc.ioHandler.getOutputPath()
+                    )
+                )
             }
         } catch (e: Exception) {
             logger.warn("failed to process", e)

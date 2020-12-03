@@ -61,7 +61,7 @@ class TestServer {
     fun testRender() {
         val opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
         opts.page = 1
-        opts.outputUri = "render_test"
+        opts.outputPath = "render_test"
         val rsp = HttpRequest.post("http://localhost:9876/render")
             .part("file", "CPB7_WEB.pdf", File("src/test/resources/CPB7_WEB.pdf"))
             .part("body", Json.mapper.writeValueAsString(opts))

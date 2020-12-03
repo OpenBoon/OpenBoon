@@ -13,7 +13,7 @@ class TestPdfDocument {
     @Before
     fun setup() {
         opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
-        opts.outputUri = "pdf"
+        opts.outputPath = "pdf"
     }
 
     @Test

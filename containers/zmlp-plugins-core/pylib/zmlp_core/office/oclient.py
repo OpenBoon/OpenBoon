@@ -8,6 +8,7 @@ import requests
 from zmlpsdk import ZmlpFatalProcessorException
 from zmlpsdk.storage import file_storage, ZmlpStorageException
 from zmlp.client import ZmlpJsonEncoder
+from zmlp.util import as_id
 
 logger = logging.getLogger(__name__)
 
@@ -85,15 +86,8 @@ class OfficerClient(object):
         Returns:
             bool: True if the both the metadata and proxy file exist for the page.
         """
-        # Look at the tmp_loc_attr first because it won't
-        # always have the current asset Id.
-        tmp_loc = asset.get_attr(self.tmp_loc_attr)
-        asset_id = asset.id
-        if tmp_loc:
-            asset_id = os.path.basename(tmp_loc)
-
         body = {
-            'outputUri': asset_id,
+            'outputPath': self.get_full_storage_prefix(asset),
             'page': page
         }
         rsp = requests.post(self.exists_url, json=body,
@@ -126,13 +120,9 @@ class OfficerClient(object):
             # -1 means render everything.
             page = -1
 
-        # Setup the json body
-        job_storage_uri = os.environ.get('ZORROA_JOB_STORAGE_PATH')
-        output_uri = '{}/officer/{}'.format(job_storage_uri, asset.id) \
-            if job_storage_uri else asset.id
         body = {
             'fileName': asset.uri,
-            'outputUri': output_uri,
+            'outputPath': self.get_full_storage_prefix(asset),
             'page': page,
             'disableImageRender': disable_images,
             'dpi': self.dpi
@@ -144,3 +134,67 @@ class OfficerClient(object):
             ('body', (None, json.dumps(body, cls=ZmlpJsonEncoder), 'application/json'))
         ]
         return post_files
+
+    @staticmethod
+    def get_full_storage_prefix(asset):
+        """
+        Return the full native file storage path prefix for the given asset.
+
+        Args:
+            asset (Asset): The asset or its unique Id.
+
+        Returns:
+
+        """
+        job_storage_path = os.environ.get('ZORROA_JOB_STORAGE_PATH')
+        return '{}/officer/{}'.format(job_storage_path, as_id(asset))
+
+    @staticmethod
+    def get_file_storage_uri(asset, fname):
+        """
+        Return a ZMLP file storage URI for the given asset and file name.  The
+        ZMLP URI is always stored under the current job. and looks like:
+
+            zmlp://job/<jobid>/officer/<asset_id>_<file name>
+
+        This form of URI can be obtained using file_storage.
+
+        Args:
+            asset (Asset): The Asset or unique id.
+            fname (str): The file name.
+
+        Returns:
+            str: The URI.
+        """
+        jid = os.environ.get('ZMLP_JOB_ID')
+        return 'zmlp://job/{}/officer/{}_{}'.format(jid, as_id(asset), fname)
+
+    @staticmethod
+    def get_metadata_file_id(asset, page):
+        """
+        Return the ZMLP storage URL for the given page.
+
+        Args:
+            asset (Asset): The asset the metadata file is associated wiht.
+            page (int): The page number, 0 for parent page.
+
+        Returns:
+            str: the ZMLP URL to the image.
+        """
+        return OfficerClient.get_file_storage_uri(
+            as_id(asset), "metadata.{}.json".format(max(page, 0)))
+
+    @staticmethod
+    def get_image_file_id(asset, page):
+        """
+        Return the ZMLP storage URL for the given page.
+
+        Args:
+            asset (Asset): The asset the image file is associated with.
+            page (int): The page number, 0 for parent page.
+
+        Returns:
+            str: the ZMLP URL to the image.
+        """
+        return OfficerClient.get_file_storage_uri(
+            as_id(asset), "proxy.{}.jpg".format(max(page, 0)))

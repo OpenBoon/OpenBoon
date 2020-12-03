@@ -27,7 +27,7 @@ class TestCellsDocument {
     fun setup() {
         opts = RenderRequest("src/test/resources/test_sheet.xlsx")
         opts.page = 1
-        opts.outputUri = "xlsx"
+        opts.outputPath = "xlsx"
     }
 
     @Ignore
