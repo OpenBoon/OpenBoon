@@ -166,7 +166,9 @@ class AbstractVideoDetectProcessor(AssetProcessor):
 
 
 class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
-    """ Label Detection for Videos using AWS """
+    """ Label Detection for Videos using AWS Rekognition """
+    namespace = 'aws-label-detection'
+
     def __init__(self):
         super(LabelVideoDetectProcessor, self).__init__(detector_func='start_label_detection')
 
@@ -215,7 +217,9 @@ class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
 
 
 class TextVideoDetectProcessor(AbstractVideoDetectProcessor):
-    """ Text Detection for Videos using AWS """
+    """ Text Detection for Videos using AWS Rekognition """
+    namespace = 'aws-text-detection'
+
     def __init__(self):
         super(TextVideoDetectProcessor, self).__init__(detector_func='start_text_detection')
 
@@ -266,7 +270,9 @@ class TextVideoDetectProcessor(AbstractVideoDetectProcessor):
 
 
 class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
-    """ Face Detection for Videos using AWS """
+    """ Face Detection for Videos using AWS Rekognition """
+    namespace = 'aws-face-detection'
+
     def __init__(self):
         super(FaceVideoDetectProcessor, self).__init__(detector_func='start_face_detection')
 
@@ -318,7 +324,9 @@ class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
 
 
 class UnsafeVideoDetectProcessor(AbstractVideoDetectProcessor):
-    """ Content Moderation Detection for Videos using AWS """
+    """ Content Moderation Detection for Videos using AWS Rekognition """
+    namespace = 'aws-unsafe-detection'
+
     def __init__(self):
         super(UnsafeVideoDetectProcessor, self).__init__(detector_func='start_content_moderation')
 
@@ -369,7 +377,9 @@ class UnsafeVideoDetectProcessor(AbstractVideoDetectProcessor):
 
 
 class CelebrityVideoDetectProcessor(AbstractVideoDetectProcessor):
-    """ Celebrity Detection for Videos using AWS """
+    """ Celebrity Detection for Videos using AWS Rekognition """
+    namespace = 'aws-celebrity-detection'
+
     def __init__(self):
         super(CelebrityVideoDetectProcessor, self).__init__(
             detector_func='start_celebrity_recognition')
@@ -421,7 +431,9 @@ class CelebrityVideoDetectProcessor(AbstractVideoDetectProcessor):
 
 
 class PeoplePathingVideoDetectProcessor(AbstractVideoDetectProcessor):
-    """ People Tracking for Videos using AWS """
+    """ People Tracking for Videos using AWS Rekognition """
+    namespace = 'aws-person-tracking-detection'
+
     def __init__(self):
         super(PeoplePathingVideoDetectProcessor, self).__init__(
             detector_func='start_person_tracking')
@@ -472,7 +484,9 @@ class PeoplePathingVideoDetectProcessor(AbstractVideoDetectProcessor):
 
 
 class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
-    """ Segment Detection for Videos using AWS """
+    """ Segment Detection for Videos using AWS Rekognition """
+    namespace = 'aws-segment-detection'
+
     def __init__(self, cue=None):
         super(SegmentVideoDetectProcessor, self).__init__(detector_func='start_segment_detection')
         self.cue = cue
@@ -561,12 +575,15 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
 
 class BlackFramesVideoDetectProcessor(SegmentVideoDetectProcessor):
     """ Black Frames Detector in a video using AWS Rekognition """
+    namespace = 'aws-black-frames-detection'
+
     def __init__(self):
         super(BlackFramesVideoDetectProcessor, self).__init__(cue='BlackFrames')
 
 
 class EndCreditsVideoDetectProcessor(SegmentVideoDetectProcessor):
     """ Rolling Credits Detector in a video using AWS Rekognition """
+    namespace = 'aws-credits-detection'
 
     def __init__(self):
         super(EndCreditsVideoDetectProcessor, self).__init__(cue='EndCredits')
