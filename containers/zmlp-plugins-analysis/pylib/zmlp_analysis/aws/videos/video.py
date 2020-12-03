@@ -19,10 +19,10 @@ class AbstractVideoDetectProcessor(AssetProcessor):
     namespace = 'aws-video-detection'
     file_types = FileTypes.videos
 
-    def __init__(self, extract_type=None, reactor=None):
+    def __init__(self, detector_func=None, reactor=None):
         super(AbstractVideoDetectProcessor, self).__init__()
         self.add_arg(Argument('debug', 'bool', default=False))
-        self.extract_type = extract_type
+        self.detector_func = detector_func
         self.reactor = reactor
 
         self.rek_client = None
@@ -82,15 +82,21 @@ class AbstractVideoDetectProcessor(AssetProcessor):
 
         sns_topic_arn, sqs_queue_url = self.create_topic_queue(asset_id)
         try:
-            clip_tracker = self.start_detection_analysis(
-                clip_tracker=clip_tracker,
-                local_video_path=local_path,
+            start_job_id = self.start_detection_analysis(
                 role_arn=self.roleArn,
                 bucket=bucket_name,
                 video=bucket_file,
                 sns_topic_arn=sns_topic_arn,
-                sqs_queue_url=sqs_queue_url
+                sqs_queue_url=sqs_queue_url,
+                func=self.detector_func
             )
+            if util.get_sqs_message_success(self.sqs_client, sqs_queue_url, start_job_id):
+                clip_tracker = self.get_detection_results(
+                    clip_tracker=clip_tracker,
+                    rek_client=self.rek_client,
+                    start_job_id=start_job_id,
+                    local_video_path=local_path,
+                )
         finally:
             self.sqs_client.delete_queue(QueueUrl=sqs_queue_url)
             self.sns_client.delete_topic(TopicArn=sns_topic_arn)
@@ -117,8 +123,7 @@ class AbstractVideoDetectProcessor(AssetProcessor):
             queue_name=f"{prepend_name}-{name}-queue"
         )
 
-    def start_detection_analysis(self, clip_tracker, local_video_path, role_arn, bucket, video,
-                                 sns_topic_arn, sqs_queue_url):
+    def start_detection_analysis(self, role_arn, bucket, video, sns_topic_arn, sqs_queue_url, func):
         """
         Start Detection Analysis
 
@@ -128,6 +133,7 @@ class AbstractVideoDetectProcessor(AssetProcessor):
             video: (str) video name without extension ("video" instead of "video.mp4")
             sns_topic_arn: (str) SNS Topic ARN
             sqs_queue_url: (str) SQS Queue URL
+            func: (str) type of detection to run (label, face, text, segment)
 
         Returns:
             (dict) Label Detection Results
@@ -155,10 +161,9 @@ class AbstractVideoDetectProcessor(AssetProcessor):
 class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
     """ Label Detection for Videos using AWS """
     def __init__(self):
-        super(LabelVideoDetectProcessor, self).__init__()
+        super(LabelVideoDetectProcessor, self).__init__(detector_func='start_label_detection')
 
-    def start_detection_analysis(self, clip_tracker, local_video_path, role_arn, bucket, video,
-                                 sns_topic_arn, sqs_queue_url):
+    def start_detection_analysis(self, role_arn, bucket, video, sns_topic_arn, sqs_queue_url, func):
         """
         Start Label Detection Analysis
 
@@ -168,26 +173,19 @@ class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
             video: (str) video name without extension ("video" instead of "video.mp4")
             sns_topic_arn: (str) SNS Topic ARN
             sqs_queue_url: (str) SQS Queue URL
+            func: (str) type of detection to run (label, face, text, segment)
 
         Returns:
             (dict) Label Detection Results
         """
-        start_job_id = util.start_label_detection(
+        return util.start_detection(
             self.rek_client,
             bucket=bucket,
             video=video,
             role_arn=role_arn,
-            sns_topic_arn=sns_topic_arn
+            sns_topic_arn=sns_topic_arn,
+            func=func
         )
-        if util.get_sqs_message_success(self.sqs_client, sqs_queue_url, start_job_id):
-            clip_tracker = self.get_detection_results(
-                clip_tracker=clip_tracker,
-                rek_client=self.rek_client,
-                start_job_id=start_job_id,
-                local_video_path=local_video_path,
-            )
-
-        return clip_tracker
 
     def get_detection_results(self, clip_tracker, rek_client, start_job_id, local_video_path,
                               max_results=10):
@@ -237,11 +235,10 @@ class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
 class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
     """ Segment Detection for Videos using AWS """
     def __init__(self, cue=None):
-        super(SegmentVideoDetectProcessor, self).__init__()
+        super(SegmentVideoDetectProcessor, self).__init__(detector_func='start_segment_detection')
         self.cue = cue
 
-    def start_detection_analysis(self, clip_tracker, local_video_path, role_arn, bucket, video,
-                                 sns_topic_arn, sqs_queue_url):
+    def start_detection_analysis(self, role_arn, bucket, video, sns_topic_arn, sqs_queue_url, func):
         """
         Start Segment Detection Analysis
 
@@ -251,26 +248,31 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
             video: (str) video name without extension ("video" instead of "video.mp4")
             sns_topic_arn: (str) SNS Topic ARN
             sqs_queue_url: (str) SQS Queue URL
+            func: (str) type of detection to run (label, face, text, segment)
 
         Returns:
             (dict) Label Detection Results
         """
-        start_job_id = util.start_segment_detection(
+        segment_types = ['TECHNICAL_CUE', 'SHOT']
+        filters = {
+            'TechnicalCueFilter': {
+                'MinSegmentConfidence': 80.0
+            },
+            'ShotFilter': {
+                'MinSegmentConfidence': 80.0
+            }
+        }
+
+        return util.start_detection(
             self.rek_client,
             bucket=bucket,
             video=video,
             role_arn=role_arn,
-            sns_topic_arn=sns_topic_arn
+            sns_topic_arn=sns_topic_arn,
+            func=func,
+            SegmentTypes=segment_types,
+            Filters=filters
         )
-        if util.get_sqs_message_success(self.sqs_client, sqs_queue_url, start_job_id):
-            clip_tracker = self.get_detection_results(
-                clip_tracker=clip_tracker,
-                rek_client=self.rek_client,
-                start_job_id=start_job_id,
-                local_video_path=local_video_path
-            )
-
-        return clip_tracker
 
     def get_detection_results(self, clip_tracker, rek_client, start_job_id, local_video_path,
                               max_results=10):

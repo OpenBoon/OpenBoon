@@ -134,52 +134,26 @@ def delete_topic_and_queue(sqs_client, sns_client, sqs_queue_url, sns_topic_arn)
     sns_client.delete_topic(TopicArn=sns_topic_arn)
 
 
-def start_label_detection(rek_client, bucket, video, role_arn, sns_topic_arn):
+def start_detection(rek_client, bucket, video, role_arn, sns_topic_arn, func, **kwargs):
     """
-    Start AWS Rekog label detection
-
+    Start AWS Rekog video detection
     Args:
         rek_client: AWS Rekog Client
         bucket: (str) bucket name
         video: (str) video name with extension
         role_arn: (str) AWS ARN
         sns_topic_arn: (str) SNS Topic ARN
+        func: (str) type of detection to run (label, face, text, segment)
+        **kwargs: parameters to add when getting response
 
     Returns:
         (str) Job ID created for label detection
     """
-    response = rek_client.start_label_detection(
-        Video={'S3Object': {'Bucket': bucket, 'Name': video}},
-        NotificationChannel={'RoleArn': role_arn, 'SNSTopicArn': sns_topic_arn})
-
-    start_job_id = response['JobId']
-    logger.debug('Start Job Id: ' + start_job_id)
-    return start_job_id
-
-
-def start_segment_detection(rek_client, bucket, video, role_arn, sns_topic_arn):
-    """
-    Start AWS Rekog segment detection
-
-    Args:
-        rek_client: AWS Rekog Client
-        bucket: (str) bucket name
-        video: (str) video name with extension
-        role_arn: (str) AWS ARN
-        sns_topic_arn: (str) SNS Topic ARN
-
-    Returns:
-        (str) Job ID created for label detection
-    """
-    min_techincal_cue_confidence = 80.0
-    min_shot_confidence = 80.0
-
-    response = rek_client.start_segment_detection(
+    response = getattr(rek_client, func)(
         Video={'S3Object': {'Bucket': bucket, 'Name': video}},
         NotificationChannel={'RoleArn': role_arn, 'SNSTopicArn': sns_topic_arn},
-        SegmentTypes=['TECHNICAL_CUE', 'SHOT'],
-        Filters={'TechnicalCueFilter': {'MinSegmentConfidence': min_techincal_cue_confidence},
-                 'ShotFilter': {'MinSegmentConfidence': min_shot_confidence}})
+        **kwargs,
+    )
 
     start_job_id = response['JobId']
     logger.debug('Start Job Id: ' + start_job_id)
