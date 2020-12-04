@@ -119,7 +119,7 @@
   "dependencies": {
     "@emotion/babel-preset-css-prop": "11.0.0",
     "@emotion/react": "11.1.1",
-    "@reach/combobox": "0.11.2",
+    "@reach/combobox": "0.12.1",
     "@reach/listbox": "0.11.2",
     "@reach/skip-nav": "0.11.2",
     "@sentry/browser": "5.28.0",
