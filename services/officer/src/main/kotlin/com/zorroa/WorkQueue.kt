@@ -39,7 +39,7 @@ object WorkQueue {
             try {
                 logger.info("Registering request ${request.requestId}")
                 redis.redisson.getBucket<String>(request.requestId).trySet(
-                    request.outputDir, 5, TimeUnit.MINUTES
+                    request.outputPath, 5, TimeUnit.MINUTES
                 )
             } catch (ex: Exception) {
                 logger.warn("Failed to register request with Reddis", ex)
@@ -54,7 +54,7 @@ object WorkQueue {
         if (redis.redisson != null) {
             try {
                 redis.redisson.getBucket<String>(request.requestId).set(
-                    request.outputDir, 5, TimeUnit.MINUTES
+                    request.outputPath, 5, TimeUnit.MINUTES
                 )
             } catch (e: Exception) {
                 logger.warn("Failed to update request with Reddis", e)
