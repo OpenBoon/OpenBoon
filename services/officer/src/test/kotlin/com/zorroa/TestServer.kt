@@ -102,7 +102,7 @@ class TestServer {
 
         val opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
         opts.page = 1
-        opts.outputDir = "render_test"
+        opts.outputPath = "render_test"
         opts.requestId = "testId"
 
         for (i in 0..10) {
@@ -119,7 +119,7 @@ class TestServer {
     fun testUnregister() {
         val opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
         opts.page = 1
-        opts.outputDir = "render_test"
+        opts.outputPath = "render_test"
         opts.requestId = "testId"
 
         val rsp = postDocument(opts).code()
