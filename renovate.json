@@ -6,7 +6,6 @@
   ],
   "unpublishSafe": true,
   "prCreation": "not-pending",
-  "//schedule": "before 5am on Monday",
   "timezone": "America/Los_Angeles",
   "rebaseStalePrs": true
 }
