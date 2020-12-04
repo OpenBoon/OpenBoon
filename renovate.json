@@ -3,6 +3,7 @@
     "applications/wallet/frontend/*",
     "applications/wallet/cypress/*"
   ],
+  "extends": ["config:base"],
   "unpublishSafe": true,
   "schedule": "before 5am on Monday",
   "timezone": "America/Los_Angeles",
