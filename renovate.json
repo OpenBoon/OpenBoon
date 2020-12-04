@@ -1,11 +1,9 @@
 {
-  "extends": ["config:base"],
   "includePaths": [
     "applications/wallet/frontend/*",
     "applications/wallet/cypress/*"
   ],
   "unpublishSafe": true,
-  "prCreation": "not-pending",
   "timezone": "America/Los_Angeles",
   "rebaseStalePrs": true
 }
