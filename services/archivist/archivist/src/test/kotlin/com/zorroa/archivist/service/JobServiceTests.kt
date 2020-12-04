@@ -245,7 +245,8 @@ class JobServiceTests : AbstractTest() {
             ProjectStorageEntity.JOB,
             job.id.toString(),
             ProjectStorageCategory.SOURCE,
-            "log.txt")
+            "log.txt"
+        )
 
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "logTests".toByteArray())
         projectStorageService.store(spec)

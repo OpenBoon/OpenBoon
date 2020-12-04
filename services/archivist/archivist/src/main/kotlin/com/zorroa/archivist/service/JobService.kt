@@ -192,13 +192,13 @@ class JobServiceImpl @Autowired constructor(
             )
         )
 
-         projectStorageService.recursiveDelete(
-             ProjectDirLocator(
-                 ProjectStorageEntity.JOB,
-                 job.jobId.toString(),
-                 getProjectId()
-             )
-         )
+        projectStorageService.recursiveDelete(
+            ProjectDirLocator(
+                ProjectStorageEntity.JOB,
+                job.jobId.toString(),
+                getProjectId()
+            )
+        )
 
         return jobDao.delete(job)
     }
