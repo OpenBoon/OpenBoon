@@ -1,19 +1,21 @@
 import os
 
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from zmlp.client import ZmlpNotFoundException
-from zmlp.entity.model import LabelScope
 
 from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 AddLabelsSerializer, UpdateLabelsSerializer,
                                 RemoveLabelsSerializer, RenameLabelSerializer,
-                                DestroyLabelSerializer, ModelDetailSerializer)
+                                DestroyLabelSerializer, ModelDetailSerializer,
+                                ConfusionMatrixSerializer)
+from models.utils import ConfusionMatrix
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 from wallet.utils import validate_zmlp_data
+from zmlp.client import ZmlpNotFoundException
+from zmlp.entity.model import LabelScope
 
 
 def get_model_type_restrictions(label_counts, min_concepts, min_examples):
@@ -290,6 +292,39 @@ class ModelViewSet(BaseProjectViewSet):
         serializer = RenameLabelSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(request.client.put(path, serializer.validated_data))
+
+    @action(methods=['get'], detail=True)
+    def confusion_matrix(self, request, project_pk, pk):
+        """Returns data required to construct a confusion matrix for the model.
+
+        Available Query Params:
+
+        - *minScore* - Minimum confidence score to filter by (float).
+        - *maxScore* - Maximum confidence score to filter by (float).
+        - *testSetOnly* - Boolean, if true then only assets in the test set are evaluated.
+        - *normalize* - Boolean, if true then the values are normalized between 0-1.
+
+        """
+        model = request.app.models.get_model(pk)
+        matrix = ConfusionMatrix(model, request.app,
+                                 min_score=request.query_params.get('minScore', 0.0),
+                                 max_score=request.query_params.get('maxScore', 1.0),
+                                 test_set_only=request.query_params.get('testSetOnly', True))
+        response_data = matrix.to_dict(normalize_matrix=request.query_params.get('normalize', False))
+        serializer = ConfusionMatrixSerializer(data=response_data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.validated_data)
+
+    @action(methods=['get'], detail=True)
+    def confusion_matrix_thumbnail(self, request, project_pk, pk):
+        """Returns a thumbnail image of the confusion matrix for this model."""
+        model = request.app.models.get_model(pk)
+        matrix = ConfusionMatrix(model, request.app,
+                                 min_score=request.data.get('minScore', 0.0),
+                                 max_score=request.data.get('maxScore', 1.0),
+                                 test_set_only=request.data.get('testSetOnly', True))
+        thumbnail = matrix.create_thumbnail_image()
+        return HttpResponse(thumbnail.read(), content_type='image/png')
 
     def _get_assets_and_labels(self, app, model, data):
         """Get a list of Label objects from request data."""

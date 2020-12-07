@@ -4,17 +4,24 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
-import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobFilter
 import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
+import com.zorroa.archivist.domain.ProjectFileLocator
+import com.zorroa.archivist.domain.ProjectStorageCategory
+import com.zorroa.archivist.domain.ProjectStorageEntity
+import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.domain.emptyZpsScripts
+import com.zorroa.archivist.storage.ProjectStorageException
+import com.zorroa.archivist.storage.ProjectStorageService
 import org.junit.Before
 import org.junit.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -27,6 +34,9 @@ class JobServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var credentialsService: CredentialsService
+
+    @Autowired
+    lateinit var projectStorageService: ProjectStorageService
 
     lateinit var spec: JobSpec
     lateinit var job: Job
@@ -226,5 +236,35 @@ class JobServiceTests : AbstractTest() {
                 Int::class.java, job2.jobId
             )
         )
+    }
+
+    @Test
+    fun testDeleteJob() {
+
+        val loc = ProjectFileLocator(
+            ProjectStorageEntity.JOB,
+            job.id.toString(),
+            ProjectStorageCategory.SOURCE,
+            "log.txt"
+        )
+
+        val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "logTests".toByteArray())
+        projectStorageService.store(spec)
+
+        val logs = projectStorageService.fetch(loc)
+        assert(logs.isNotEmpty())
+
+        jobService.deleteJob(job)
+
+        assertEquals(
+            0,
+            jdbc.queryForObject(
+                "SELECT COUNT(0) FROM job WHERE pk_job=?",
+                Int::class.java, job.jobId
+            )
+        )
+        assertThrows<ProjectStorageException> {
+            projectStorageService.fetch(loc)
+        }
     }
 }
