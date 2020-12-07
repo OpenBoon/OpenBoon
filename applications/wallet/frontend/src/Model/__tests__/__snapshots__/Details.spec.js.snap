@@ -352,14 +352,31 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   -webkit-box-pack: end;
   -ms-flex-pack: end;
   -webkit-justify-content: flex-end;
   justify-content: flex-end;
-  margin-bottom: -16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -392,27 +409,27 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-1,
-.emotion-1:hover,
-.emotion-1:visited,
-.emotion-1 .noop {
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited,
+.emotion-2 .noop {
   background-color: #808080;
 }
 
-.emotion-1:hover,
-.emotion-1 .noop {
+.emotion-2:hover,
+.emotion-2 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-1[aria-disabled=true],
-.emotion-1 .noop {
+.emotion-2[aria-disabled=true],
+.emotion-2 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-2 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -423,66 +440,70 @@ Array [
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-4 {
   padding-right: 8px;
 }
 
-.emotion-4 {
+.emotion-5 {
   width: 16px;
 }
 
 <div
     className="emotion-0"
   >
-    <Link
-      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-      href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-      passHref={true}
-    >
-      <button
-        aria-label="Add Filter in Visualizer"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <div
-          className="emotion-2"
-        >
-          <svg
-            className="emotion-3"
-            data-file-name="filter.svg"
-            height={20}
-          />
-          Add Filter in Visualizer
-        </div>
-      </button>
-    </Link>
     <div
-      className="emotion-4"
-    />
-    <Link
-      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
-      href="/[projectId]/visualizer"
-      passHref={true}
+      className="emotion-1"
     >
-      <button
-        aria-label="Add More Labels"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
+      <Link
+        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+        href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+        passHref={true}
       >
-        <div
+        <button
+          aria-label="Add Filter in Visualizer"
           className="emotion-2"
+          onClick={[Function]}
+          type="button"
         >
-          <svg
+          <div
             className="emotion-3"
-            data-file-name="pen.svg"
-            height={20}
-          />
-          Add More Labels
-        </div>
-      </button>
-    </Link>
+          >
+            <svg
+              className="emotion-4"
+              data-file-name="filter.svg"
+              height={20}
+            />
+            Add Filter in Visualizer
+          </div>
+        </button>
+      </Link>
+      <div
+        className="emotion-5"
+      />
+      <Link
+        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+        href="/[projectId]/visualizer"
+        passHref={true}
+      >
+        <button
+          aria-label="Add More Labels"
+          className="emotion-2"
+          onClick={[Function]}
+          type="button"
+        >
+          <div
+            className="emotion-3"
+          >
+            <svg
+              className="emotion-4"
+              data-file-name="pen.svg"
+              height={20}
+            />
+            Add More Labels
+          </div>
+        </button>
+      </Link>
+    </div>
   </div>,
   .emotion-0 {
   height: 100%;
@@ -1132,14 +1153,63 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  background-color: #808080;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  height: 40px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+.emotion-3 {
+  width: 16px;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   -webkit-box-pack: end;
   -ms-flex-pack: end;
   -webkit-justify-content: flex-end;
   justify-content: flex-end;
-  margin-bottom: -16px;
 }
 
-.emotion-1 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1172,27 +1242,27 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-1,
-.emotion-1:hover,
-.emotion-1:visited,
-.emotion-1 .noop {
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited,
+.emotion-6 .noop {
   background-color: #808080;
 }
 
-.emotion-1:hover,
-.emotion-1 .noop {
+.emotion-6:hover,
+.emotion-6 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-1[aria-disabled=true],
-.emotion-1 .noop {
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-2 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1203,71 +1273,128 @@ Array [
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-8 {
   padding-right: 8px;
 }
 
-.emotion-4 {
+.emotion-9 {
   width: 16px;
 }
 
 <div
     className="emotion-0"
   >
-    <Link
-      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-      href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-      passHref={true}
-    >
-      <button
-        aria-label="Add Filter in Visualizer"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <div
-          className="emotion-2"
-        >
-          <svg
-            className="emotion-3"
-            data-file-name="filter.svg"
-            height={20}
-          />
-          Add Filter in Visualizer
-        </div>
-      </button>
-    </Link>
     <div
-      className="emotion-4"
-    />
-    <Link
-      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
-      href="/[projectId]/visualizer"
-      passHref={true}
+      className="emotion-1"
     >
-      <button
-        aria-label="Add More Labels"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
+      <select
+        aria-label="Scope"
+        className="emotion-2"
+        defaultValue="Train"
+        disabled={false}
+        onChange={[Function]}
       >
-        <div
-          className="emotion-2"
+        <option
+          disabled={true}
+          value=""
         >
-          <svg
-            className="emotion-3"
-            data-file-name="pen.svg"
-            height={20}
-          />
-          Add More Labels
-        </div>
-      </button>
-    </Link>
+          Select an option...
+        </option>
+        <option
+          value="TRAIN"
+        >
+          Train
+        </option>
+        <option
+          value="TEST"
+        >
+          Test
+        </option>
+      </select>
+      <div
+        className="emotion-3"
+      />
+      <select
+        aria-label="Label"
+        className="emotion-2"
+        defaultValue="cat"
+        disabled={false}
+        onChange={[Function]}
+      >
+        <option
+          disabled={true}
+          value=""
+        >
+          Select an option...
+        </option>
+        <option
+          value="cat"
+        >
+          cat
+        </option>
+        <option
+          value="dog"
+        >
+          dog
+        </option>
+      </select>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <Link
+        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+        href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+        passHref={true}
+      >
+        <button
+          aria-label="Add Filter in Visualizer"
+          className="emotion-6"
+          onClick={[Function]}
+          type="button"
+        >
+          <div
+            className="emotion-7"
+          >
+            <svg
+              className="emotion-8"
+              data-file-name="filter.svg"
+              height={20}
+            />
+            Add Filter in Visualizer
+          </div>
+        </button>
+      </Link>
+      <div
+        className="emotion-9"
+      />
+      <Link
+        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+        href="/[projectId]/visualizer"
+        passHref={true}
+      >
+        <button
+          aria-label="Add More Labels"
+          className="emotion-6"
+          onClick={[Function]}
+          type="button"
+        >
+          <div
+            className="emotion-7"
+          >
+            <svg
+              className="emotion-8"
+              data-file-name="pen.svg"
+              height={20}
+            />
+            Add More Labels
+          </div>
+        </button>
+      </Link>
+    </div>
   </div>,
   <ModelAssets
-    modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
     moduleName="zvi-console_face_recognition-face-recognition"
-    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
 ]
 `;
@@ -1617,14 +1744,31 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   -webkit-box-pack: end;
   -ms-flex-pack: end;
   -webkit-justify-content: flex-end;
   justify-content: flex-end;
-  margin-bottom: -16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1657,27 +1801,27 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-1,
-.emotion-1:hover,
-.emotion-1:visited,
-.emotion-1 .noop {
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited,
+.emotion-2 .noop {
   background-color: #808080;
 }
 
-.emotion-1:hover,
-.emotion-1 .noop {
+.emotion-2:hover,
+.emotion-2 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-1[aria-disabled=true],
-.emotion-1 .noop {
+.emotion-2[aria-disabled=true],
+.emotion-2 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-2 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1688,66 +1832,70 @@ Array [
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-4 {
   padding-right: 8px;
 }
 
-.emotion-4 {
+.emotion-5 {
   width: 16px;
 }
 
 <div
     className="emotion-0"
   >
-    <Link
-      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-      href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-      passHref={true}
-    >
-      <button
-        aria-label="Add Filter in Visualizer"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <div
-          className="emotion-2"
-        >
-          <svg
-            className="emotion-3"
-            data-file-name="filter.svg"
-            height={20}
-          />
-          Add Filter in Visualizer
-        </div>
-      </button>
-    </Link>
     <div
-      className="emotion-4"
-    />
-    <Link
-      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
-      href="/[projectId]/visualizer"
-      passHref={true}
+      className="emotion-1"
     >
-      <button
-        aria-label="Add More Labels"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
+      <Link
+        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+        href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+        passHref={true}
       >
-        <div
+        <button
+          aria-label="Add Filter in Visualizer"
           className="emotion-2"
+          onClick={[Function]}
+          type="button"
         >
-          <svg
+          <div
             className="emotion-3"
-            data-file-name="pen.svg"
-            height={20}
-          />
-          Add More Labels
-        </div>
-      </button>
-    </Link>
+          >
+            <svg
+              className="emotion-4"
+              data-file-name="filter.svg"
+              height={20}
+            />
+            Add Filter in Visualizer
+          </div>
+        </button>
+      </Link>
+      <div
+        className="emotion-5"
+      />
+      <Link
+        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+        href="/[projectId]/visualizer"
+        passHref={true}
+      >
+        <button
+          aria-label="Add More Labels"
+          className="emotion-2"
+          onClick={[Function]}
+          type="button"
+        >
+          <div
+            className="emotion-3"
+          >
+            <svg
+              className="emotion-4"
+              data-file-name="pen.svg"
+              height={20}
+            />
+            Add More Labels
+          </div>
+        </button>
+      </Link>
+    </div>
   </div>,
   .emotion-0 {
   height: 100%;
@@ -2397,14 +2545,31 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   -webkit-box-pack: end;
   -ms-flex-pack: end;
   -webkit-justify-content: flex-end;
   justify-content: flex-end;
-  margin-bottom: -16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2437,27 +2602,27 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-1,
-.emotion-1:hover,
-.emotion-1:visited,
-.emotion-1 .noop {
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited,
+.emotion-2 .noop {
   background-color: #808080;
 }
 
-.emotion-1:hover,
-.emotion-1 .noop {
+.emotion-2:hover,
+.emotion-2 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-1[aria-disabled=true],
-.emotion-1 .noop {
+.emotion-2[aria-disabled=true],
+.emotion-2 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-2 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2468,66 +2633,70 @@ Array [
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-4 {
   padding-right: 8px;
 }
 
-.emotion-4 {
+.emotion-5 {
   width: 16px;
 }
 
 <div
     className="emotion-0"
   >
-    <Link
-      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-      href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-      passHref={true}
-    >
-      <button
-        aria-label="Add Filter in Visualizer"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <div
-          className="emotion-2"
-        >
-          <svg
-            className="emotion-3"
-            data-file-name="filter.svg"
-            height={20}
-          />
-          Add Filter in Visualizer
-        </div>
-      </button>
-    </Link>
     <div
-      className="emotion-4"
-    />
-    <Link
-      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
-      href="/[projectId]/visualizer"
-      passHref={true}
+      className="emotion-1"
     >
-      <button
-        aria-label="Add More Labels"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
+      <Link
+        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+        href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+        passHref={true}
       >
-        <div
+        <button
+          aria-label="Add Filter in Visualizer"
           className="emotion-2"
+          onClick={[Function]}
+          type="button"
         >
-          <svg
+          <div
             className="emotion-3"
-            data-file-name="pen.svg"
-            height={20}
-          />
-          Add More Labels
-        </div>
-      </button>
-    </Link>
+          >
+            <svg
+              className="emotion-4"
+              data-file-name="filter.svg"
+              height={20}
+            />
+            Add Filter in Visualizer
+          </div>
+        </button>
+      </Link>
+      <div
+        className="emotion-5"
+      />
+      <Link
+        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+        href="/[projectId]/visualizer"
+        passHref={true}
+      >
+        <button
+          aria-label="Add More Labels"
+          className="emotion-2"
+          onClick={[Function]}
+          type="button"
+        >
+          <div
+            className="emotion-3"
+          >
+            <svg
+              className="emotion-4"
+              data-file-name="pen.svg"
+              height={20}
+            />
+            Add More Labels
+          </div>
+        </button>
+      </Link>
+    </div>
   </div>,
   .emotion-0 {
   height: 100%;
