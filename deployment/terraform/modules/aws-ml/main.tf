@@ -4,7 +4,7 @@ resource "aws_s3_bucket" "ml" {
 }
 
 resource "aws_iam_role" "ml-user" {
-  name               = "ml-user"
+  name               = "${var.environment}-ml-user"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
