@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { colors, constants, spacing, typography } from '../Styles'
 
 const SIZE = 32
+const DIMENSIONS = 150
 
 const ModelAssetsContent = ({ projectId, query }) => {
   const { data } = useSWR(
@@ -28,9 +29,9 @@ const ModelAssetsContent = ({ projectId, query }) => {
 
       <div
         css={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(8, minmax(0, 1fr))',
-          gap: 1,
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'flex-start',
         }}
       >
         {results.map(({ id, name, thumbnailUrl }) => {
@@ -42,8 +43,8 @@ const ModelAssetsContent = ({ projectId, query }) => {
               css={{
                 position: 'relative',
                 border: constants.borders.large.transparent,
-                width: '100%',
-                height: '100%',
+                width: DIMENSIONS,
+                height: DIMENSIONS,
                 ':hover': {
                   border: constants.borders.large.white,
                 },
