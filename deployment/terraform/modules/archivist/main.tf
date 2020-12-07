@@ -226,18 +226,6 @@ resource "kubernetes_deployment" "archivist" {
             value = var.auth-server-url
           }
           env {
-            name  = "ZMLP_STORAGE_PIPELINE_URL"
-            value = var.minio-url
-          }
-          env {
-            name  = "ZMLP_STORAGE_PIPELINE_SECRETKEY"
-            value = var.minio-secret-key
-          }
-          env {
-            name  = "ZMLP_STORAGE_PIPELINE_ACCESSKEY"
-            value = var.minio-access-key
-          }
-          env {
             name  = "ANALYST_SHAREDKEY"
             value = var.analyst-shared-key
           }

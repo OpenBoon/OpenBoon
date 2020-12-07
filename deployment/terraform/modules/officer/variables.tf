@@ -10,13 +10,10 @@ variable "container-cluster-name" {
 variable "image-pull-secret" {
 }
 
-variable "minio-url" {
+variable "data-bucket-name" {
 }
 
-variable "minio-access-key" {
-}
-
-variable "minio-secret-key" {
+variable "redis-host" {
 }
 
 variable "container-tag" {

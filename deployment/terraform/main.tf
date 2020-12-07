@@ -240,8 +240,6 @@ module "archivist" {
   sql-connection-name     = module.postgres.connection-name
   sql-instance-name       = module.postgres.instance-name
   inception-key-b64       = local.inception-key-b64
-  minio-access-key        = module.minio.access-key
-  minio-secret-key        = module.minio.secret-key
   system-bucket           = google_storage_bucket.system.name
   container-cluster-name  = module.gke-cluster.name
   analyst-shared-key      = module.analyst.shared-key
@@ -278,10 +276,9 @@ module "officer" {
   zone                   = var.zone
   container-cluster-name = module.gke-cluster.name
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
-  minio-url              = "http://${module.minio.ip-address}:9000"
-  minio-access-key       = module.minio.access-key
-  minio-secret-key       = module.minio.secret-key
   container-tag          = var.container-tag
+  redis-host             = "${module.redis.ip-address}:6379"
+  data-bucket-name       = module.archivist.data-bucket-name
 }
 
 module "analyst" {
