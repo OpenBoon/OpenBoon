@@ -81,7 +81,11 @@ object FileExtResolver {
         "m4v",
         "webm",
         "ogv",
-        "mxf"
+        "mxf",
+        "avi",
+        "dcm",
+        "rla",
+        "heif"
     )
 
     val doc = setOf(
