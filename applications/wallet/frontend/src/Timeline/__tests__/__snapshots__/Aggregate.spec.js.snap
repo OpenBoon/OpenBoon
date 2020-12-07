@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TimelineAggregate /> should render properly 1`] = `
-.emotion-3 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11,16 +11,18 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   height: 44px;
 }
 
-.emotion-2 {
+.emotion-1 {
   width: 200px;
+  z-index: 30;
+  margin-bottom: -1px;
 }
 
-.emotion-1 {
+.emotion-2 {
   position: relative;
   height: 100%;
 }
 
-.emotion-0 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -36,11 +38,11 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -49,8 +51,7 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
-  width: 200px;
+  width: 100%;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 16px;
@@ -60,7 +61,6 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   flex-direction: row;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   margin-bottom: 0;
   color: #ffffff;
@@ -68,49 +68,555 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   height: 100%;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited {
   background-color: #3b3b3b;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   background-color: #808080;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   background-color: #3b3b3b;
 }
 
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+}
+
+.emotion-5 {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 8px;
+  border-bottom: 1px solid #191919;
+  background-color: #191919;
+}
+
+.emotion-6 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(0% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-7 {
+  background-color: #808080;
+  width: 100%;
+  height: 100%;
+}
+
+.emotion-8 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(25% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-10 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(62.5% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-12 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(37.5% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-16 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(81.25% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-18 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(93.75% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-20 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(6.25% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-22 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(18.75% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-24 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(68.75% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-26 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(43.75% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-28 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(100% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
 <div
-  className="emotion-3"
+  className="emotion-0"
 >
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <button
         aria-label="Toggle Dropdown Menu"
-        className="emotion-0"
+        className="emotion-3"
         onBlur={[Function]}
         onClick={[Function]}
         type="button"
       >
-        Detections (5)
+        Timelines (4)
         <svg
           data-file-name="chevron.svg"
           height={20}
+        />
+      </button>
+    </div>
+  </div>
+  <div
+    className="emotion-4"
+  >
+    <div
+      className="emotion-5"
+    >
+       
+      <button
+        aria-label="00:00:00"
+        className="emotion-6"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-8"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-10"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:06"
+        className="emotion-12"
+        onClick={[Function]}
+        title="00:00:06-00:00:07"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:06"
+        className="emotion-12"
+        onClick={[Function]}
+        title="00:00:06-00:00:07"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:13"
+        className="emotion-16"
+        onClick={[Function]}
+        title="00:00:13-00:00:14"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:15"
+        className="emotion-18"
+        onClick={[Function]}
+        title="00:00:15-00:00:15"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:01"
+        className="emotion-20"
+        onClick={[Function]}
+        title="00:00:01-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:03"
+        className="emotion-22"
+        onClick={[Function]}
+        title="00:00:03-00:00:06"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:11"
+        className="emotion-24"
+        onClick={[Function]}
+        title="00:00:11-00:00:15"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:07"
+        className="emotion-26"
+        onClick={[Function]}
+        title="00:00:07-00:00:10"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:16"
+        className="emotion-28"
+        onClick={[Function]}
+        title="00:00:16-00:00:17"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:00"
+        className="emotion-6"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-8"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-10"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:00"
+        className="emotion-6"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-8"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-10"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:00"
+        className="emotion-6"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-8"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-10"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:00"
+        className="emotion-6"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-8"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-10"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:00"
+        className="emotion-6"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-8"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-10"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:00"
+        className="emotion-6"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-8"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-7"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-10"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-7"
         />
       </button>
     </div>
@@ -119,7 +625,7 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
 `;
 
 exports[`<TimelineAggregate /> should render properly 2`] = `
-.emotion-53 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -129,16 +635,18 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   height: 44px;
 }
 
-.emotion-52 {
+.emotion-1 {
   width: 200px;
+  z-index: 30;
+  margin-bottom: -1px;
 }
 
-.emotion-51 {
+.emotion-2 {
   position: relative;
   height: 100%;
 }
 
-.emotion-0 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -154,11 +662,11 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -167,8 +675,7 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
-  width: 200px;
+  width: 100%;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 16px;
@@ -178,7 +685,6 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   flex-direction: row;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   margin-bottom: 0;
   color: #ffffff;
@@ -186,30 +692,21 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   height: 100%;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   background-color: #808080;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   background-color: #3b3b3b;
 }
 
-.emotion-50 {
+.emotion-4 {
   position: absolute;
   z-index: 1;
   top: 100%;
@@ -222,7 +719,7 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   font-family: Roboto,Avenir,"sans-serif";
 }
 
-.emotion-50 ul {
+.emotion-4 ul {
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
@@ -230,20 +727,20 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   margin: 0;
 }
 
-.emotion-50 li {
+.emotion-4 li {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-49 {
+.emotion-5 {
   background-color: #4a4a4a;
-  max-height: 268px;
+  max-height: 312px;
   overflow-y: auto;
 }
 
-.emotion-8 {
+.emotion-6 {
   border-bottom: 2px solid #808080;
 }
 
@@ -261,7 +758,7 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   border-top: 2px solid #808080;
 }
 
-.emotion-4 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -269,7 +766,7 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   position: relative;
 }
 
-.emotion-1 {
+.emotion-9 {
   padding: 0;
   width: 16px;
   height: 16px;
@@ -280,7 +777,7 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   cursor: pointer;
 }
 
-.emotion-3 {
+.emotion-10 {
   position: absolute;
   top: 0;
   left: 0;
@@ -291,8 +788,8 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -301,13 +798,13 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   cursor: pointer;
 }
 
-.emotion-2 path {
+.emotion-11 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
 }
 
-.emotion-6 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -316,77 +813,252 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   padding-left: 8px;
 }
 
-.emotion-5 {
+.emotion-13 {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.emotion-14 {
+.emotion-21 {
   padding-left: 2px;
 }
 
+.emotion-46 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+}
+
+.emotion-47 {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 8px;
+  border-bottom: 1px solid #191919;
+  background-color: #191919;
+}
+
+.emotion-48 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(0% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-49 {
+  background-color: #808080;
+  width: 100%;
+  height: 100%;
+}
+
+.emotion-50 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(25% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-52 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(62.5% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-54 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(37.5% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-58 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(81.25% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-60 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(93.75% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-62 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(6.25% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-64 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(18.75% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-66 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(68.75% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-68 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(43.75% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.emotion-70 {
+  margin: 0;
+  border: 0;
+  z-index: 11;
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: calc(100% - 3.5px);
+  width: 6px;
+  background-color: #191919;
+  padding: 2px;
+  cursor: pointer;
+}
+
 <div
-  className="emotion-53"
+  className="emotion-0"
 >
   <div
-    className="emotion-52"
+    className="emotion-1"
   >
     <div
-      className="emotion-51"
+      className="emotion-2"
     >
       <button
         aria-label="Toggle Dropdown Menu"
-        className="emotion-0"
+        className="emotion-3"
         onBlur={[Function]}
         onClick={[Function]}
         type="button"
       >
-        Detections (5)
+        Timelines (4)
         <svg
           data-file-name="chevron.svg"
           height={20}
         />
       </button>
       <div
-        className="emotion-50"
+        className="emotion-4"
       >
         <div
-          className="emotion-49"
+          className="emotion-5"
           tabIndex="1"
         >
           <div
-            className="emotion-8"
+            className="emotion-6"
           >
             <label
               className="emotion-7"
             >
               <div
-                className="emotion-4"
+                className="emotion-8"
               >
                 <input
-                  className="emotion-1"
+                  className="emotion-9"
                   defaultChecked={true}
-                  onBlur={[Function]}
                   onClick={[Function]}
                   type="checkbox"
                   value="all"
                 />
                 <div
-                  className="emotion-3"
+                  className="emotion-10"
                 >
                   <svg
-                    className="emotion-2"
+                    className="emotion-11"
                     data-file-name="checkmark.svg"
                     height={20}
                   />
                 </div>
               </div>
               <div
-                className="emotion-6"
+                className="emotion-12"
               >
                 <span
-                  className="emotion-5"
+                  className="emotion-13"
                 >
                   All
                 </span>
@@ -397,36 +1069,35 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
             className="emotion-7"
           >
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               <input
-                className="emotion-1"
+                className="emotion-9"
                 defaultChecked={true}
-                onBlur={[Function]}
                 onClick={[Function]}
                 type="checkbox"
-                value="gcp-video-explicit-detection"
+                value="gcp-video-label-detection"
               />
               <div
-                className="emotion-3"
+                className="emotion-10"
               >
                 <svg
-                  className="emotion-2"
+                  className="emotion-11"
                   data-file-name="checkmark.svg"
                   height={20}
                 />
               </div>
             </div>
             <div
-              className="emotion-6"
+              className="emotion-12"
             >
               <span
-                className="emotion-5"
+                className="emotion-13"
               >
-                gcp-video-explicit-detection
+                gcp-video-label-detection
               </span>
               <span
-                className="emotion-14"
+                className="emotion-21"
               >
                 (2)
               </span>
@@ -436,75 +1107,35 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
             className="emotion-7"
           >
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               <input
-                className="emotion-1"
+                className="emotion-9"
                 defaultChecked={true}
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="checkbox"
-                value="gcp-video-label-detection"
-              />
-              <div
-                className="emotion-3"
-              >
-                <svg
-                  className="emotion-2"
-                  data-file-name="checkmark.svg"
-                  height={20}
-                />
-              </div>
-            </div>
-            <div
-              className="emotion-6"
-            >
-              <span
-                className="emotion-5"
-              >
-                gcp-video-label-detection
-              </span>
-              <span
-                className="emotion-14"
-              >
-                (3)
-              </span>
-            </div>
-          </label>
-          <label
-            className="emotion-7"
-          >
-            <div
-              className="emotion-4"
-            >
-              <input
-                className="emotion-1"
-                defaultChecked={true}
-                onBlur={[Function]}
                 onClick={[Function]}
                 type="checkbox"
                 value="gcp-video-logo-detection"
               />
               <div
-                className="emotion-3"
+                className="emotion-10"
               >
                 <svg
-                  className="emotion-2"
+                  className="emotion-11"
                   data-file-name="checkmark.svg"
                   height={20}
                 />
               </div>
             </div>
             <div
-              className="emotion-6"
+              className="emotion-12"
             >
               <span
-                className="emotion-5"
+                className="emotion-13"
               >
                 gcp-video-logo-detection
               </span>
               <span
-                className="emotion-14"
+                className="emotion-21"
               >
                 (3)
               </span>
@@ -514,36 +1145,35 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
             className="emotion-7"
           >
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               <input
-                className="emotion-1"
+                className="emotion-9"
                 defaultChecked={true}
-                onBlur={[Function]}
                 onClick={[Function]}
                 type="checkbox"
                 value="gcp-video-object-detection"
               />
               <div
-                className="emotion-3"
+                className="emotion-10"
               >
                 <svg
-                  className="emotion-2"
+                  className="emotion-11"
                   data-file-name="checkmark.svg"
                   height={20}
                 />
               </div>
             </div>
             <div
-              className="emotion-6"
+              className="emotion-12"
             >
               <span
-                className="emotion-5"
+                className="emotion-13"
               >
                 gcp-video-object-detection
               </span>
               <span
-                className="emotion-14"
+                className="emotion-21"
               >
                 (3)
               </span>
@@ -553,43 +1183,381 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
             className="emotion-7"
           >
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               <input
-                className="emotion-1"
+                className="emotion-9"
                 defaultChecked={true}
-                onBlur={[Function]}
                 onClick={[Function]}
                 type="checkbox"
                 value="gcp-video-text-detection"
               />
               <div
-                className="emotion-3"
+                className="emotion-10"
               >
                 <svg
-                  className="emotion-2"
+                  className="emotion-11"
                   data-file-name="checkmark.svg"
                   height={20}
                 />
               </div>
             </div>
             <div
-              className="emotion-6"
+              className="emotion-12"
             >
               <span
-                className="emotion-5"
+                className="emotion-13"
               >
                 gcp-video-text-detection
               </span>
               <span
-                className="emotion-14"
+                className="emotion-21"
               >
-                (4)
+                (3)
               </span>
             </div>
           </label>
         </div>
       </div>
+    </div>
+  </div>
+  <div
+    className="emotion-46"
+  >
+    <div
+      className="emotion-47"
+    >
+       
+      <button
+        aria-label="00:00:00"
+        className="emotion-48"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-50"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-52"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:06"
+        className="emotion-54"
+        onClick={[Function]}
+        title="00:00:06-00:00:07"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:06"
+        className="emotion-54"
+        onClick={[Function]}
+        title="00:00:06-00:00:07"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:13"
+        className="emotion-58"
+        onClick={[Function]}
+        title="00:00:13-00:00:14"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:15"
+        className="emotion-60"
+        onClick={[Function]}
+        title="00:00:15-00:00:15"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:01"
+        className="emotion-62"
+        onClick={[Function]}
+        title="00:00:01-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:03"
+        className="emotion-64"
+        onClick={[Function]}
+        title="00:00:03-00:00:06"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:11"
+        className="emotion-66"
+        onClick={[Function]}
+        title="00:00:11-00:00:15"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:07"
+        className="emotion-68"
+        onClick={[Function]}
+        title="00:00:07-00:00:10"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:16"
+        className="emotion-70"
+        onClick={[Function]}
+        title="00:00:16-00:00:17"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:00"
+        className="emotion-48"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-50"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-52"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:00"
+        className="emotion-48"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-50"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-52"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:00"
+        className="emotion-48"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-50"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-52"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:00"
+        className="emotion-48"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-50"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-52"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:00"
+        className="emotion-48"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-50"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-52"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:00"
+        className="emotion-48"
+        onClick={[Function]}
+        title="00:00:00-00:00:02"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:04"
+        className="emotion-50"
+        onClick={[Function]}
+        title="00:00:04-00:00:05"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
+      <button
+        aria-label="00:00:10"
+        className="emotion-52"
+        onClick={[Function]}
+        title="00:00:10-00:00:12"
+        type="button"
+      >
+        <div
+          className="emotion-49"
+        />
+      </button>
     </div>
   </div>
 </div>

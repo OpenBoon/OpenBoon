@@ -21,6 +21,15 @@ describe('<TimelineControls />', () => {
           },
         }}
         length={18}
+        timelines={[]}
+        settings={{
+          filter: '',
+          highlights: false,
+          width: 100,
+          zoom: 100,
+          timelines: {},
+        }}
+        setFollowPlayhead={noop}
       />,
     )
 
@@ -49,6 +58,15 @@ describe('<TimelineControls />', () => {
           },
         }}
         length={18}
+        timelines={[]}
+        settings={{
+          filter: '',
+          highlights: false,
+          width: 100,
+          zoom: 100,
+          timelines: {},
+        }}
+        setFollowPlayhead={noop}
       />,
     )
 
@@ -74,7 +92,19 @@ describe('<TimelineControls />', () => {
     }
 
     const component = TestRenderer.create(
-      <TimelineControls videoRef={{ current }} length={18} />,
+      <TimelineControls
+        videoRef={{ current }}
+        length={18}
+        timelines={[]}
+        settings={{
+          filter: '',
+          highlights: false,
+          width: 100,
+          zoom: 100,
+          timelines: {},
+        }}
+        setFollowPlayhead={noop}
+      />,
     )
 
     act(() => {
@@ -101,7 +131,19 @@ describe('<TimelineControls />', () => {
     }
 
     const component = TestRenderer.create(
-      <TimelineControls videoRef={{ current }} length={18} />,
+      <TimelineControls
+        videoRef={{ current }}
+        length={18}
+        timelines={[]}
+        settings={{
+          filter: '',
+          highlights: false,
+          width: 100,
+          zoom: 100,
+          timelines: {},
+        }}
+        setFollowPlayhead={noop}
+      />,
     )
 
     act(() => {

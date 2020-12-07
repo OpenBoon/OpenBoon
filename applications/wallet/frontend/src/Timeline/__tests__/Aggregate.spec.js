@@ -1,15 +1,30 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import detections from '../__mocks__/detections'
+import timelines from '../__mocks__/timelines'
 
-import TimelineAggregate, { noop } from '../Aggregate'
+import TimelineAggregate from '../Aggregate'
 
 jest.mock('../Tracks', () => 'TimelineTracks')
 
 describe('<TimelineAggregate />', () => {
   it('should render properly', () => {
+    const mockDispatch = jest.fn()
+
     const component = TestRenderer.create(
-      <TimelineAggregate detections={detections} timelineHeight={400} />,
+      <TimelineAggregate
+        videoRef={{ current: undefined }}
+        length={16}
+        timelineHeight={400}
+        timelines={timelines}
+        settings={{
+          filter: '',
+          highlights: false,
+          width: 200,
+          zoom: 100,
+          timelines: { [timelines[0].timeline]: { isVisible: true } },
+        }}
+        dispatch={mockDispatch}
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -21,9 +36,25 @@ describe('<TimelineAggregate />', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
-  })
 
-  it('noop should do nothing', () => {
-    expect(noop()).toBe(undefined)
+    act(() => {
+      component.root.findByProps({ value: 'all' }).props.onClick()
+    })
+
+    expect(mockDispatch).toHaveBeenCalledWith({
+      payload: { timelines },
+      type: 'TOGGLE_VISIBLE_ALL',
+    })
+
+    act(() => {
+      component.root
+        .findByProps({ value: timelines[0].timeline })
+        .props.onClick()
+    })
+
+    expect(mockDispatch).toHaveBeenCalledWith({
+      payload: { timeline: timelines[0].timeline },
+      type: 'TOGGLE_VISIBLE',
+    })
   })
 })

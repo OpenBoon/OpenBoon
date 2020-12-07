@@ -1,0 +1,300 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TimelineRuler /> should render properly 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  height: 44px;
+  width: 501.5px;
+  margin-left: -1.5px;
+  background-color: #252525;
+  cursor: pointer;
+}
+
+.emotion-1 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  color: #808080;
+  left: calc(0% - 1.5px);
+}
+
+.emotion-2 {
+  width: 2px;
+  height: 16px;
+  background-color: #4a4a4a;
+}
+
+.emotion-3 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  color: #808080;
+  left: calc(11.11111111111111% - 1.5px);
+}
+
+.emotion-4 {
+  width: 2px;
+  height: 12px;
+  background-color: #4a4a4a;
+}
+
+.emotion-5 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  color: #808080;
+  left: calc(22.22222222222222% - 1.5px);
+}
+
+.emotion-6 {
+  position: absolute;
+  top: -16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.emotion-8 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  color: #808080;
+  left: calc(33.33333333333333% - 1.5px);
+}
+
+.emotion-10 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  color: #808080;
+  left: calc(44.44444444444444% - 1.5px);
+}
+
+.emotion-13 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  color: #808080;
+  left: calc(55.55555555555556% - 1.5px);
+}
+
+.emotion-15 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  color: #808080;
+  left: calc(66.66666666666666% - 1.5px);
+}
+
+.emotion-18 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  color: #808080;
+  left: calc(77.77777777777779% - 1.5px);
+}
+
+.emotion-20 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  color: #808080;
+  left: calc(88.88888888888889% - 1.5px);
+}
+
+<div
+  style={
+    Object {
+      "overflow": "visible",
+      "width": 0,
+    }
+  }
+>
+  <div
+    className="emotion-0"
+    onClick={[Function]}
+  >
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-2"
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <div
+        className="emotion-4"
+      />
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-6"
+      >
+        00:00:04
+      </div>
+      <div
+        className="emotion-2"
+      />
+    </div>
+    <div
+      className="emotion-8"
+    >
+      <div
+        className="emotion-4"
+      />
+    </div>
+    <div
+      className="emotion-10"
+    >
+      <div
+        className="emotion-6"
+      >
+        00:00:08
+      </div>
+      <div
+        className="emotion-2"
+      />
+    </div>
+    <div
+      className="emotion-13"
+    >
+      <div
+        className="emotion-4"
+      />
+    </div>
+    <div
+      className="emotion-15"
+    >
+      <div
+        className="emotion-6"
+      >
+        00:00:12
+      </div>
+      <div
+        className="emotion-2"
+      />
+    </div>
+    <div
+      className="emotion-18"
+    >
+      <div
+        className="emotion-4"
+      />
+    </div>
+    <div
+      className="emotion-20"
+    >
+      <div
+        className="emotion-6"
+      >
+        00:00:16
+      </div>
+      <div
+        className="emotion-2"
+      />
+    </div>
+  </div>
+</div>
+`;

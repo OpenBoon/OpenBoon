@@ -94,7 +94,9 @@ describe('<ModelsAdd />', () => {
     })
 
     // Mock Success
-    fetch.mockResponseOnce(JSON.stringify({ results: { id: MODEL_ID } }))
+    fetch.mockResponseOnce(JSON.stringify({ results: { id: MODEL_ID } }), {
+      headers: { 'content-type': 'application/json' },
+    })
 
     // Click Submit
     await act(async () => {
@@ -103,7 +105,7 @@ describe('<ModelsAdd />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(fetch.mock.calls.length).toEqual(4)
+    expect(fetch.mock.calls.length).toEqual(5)
 
     expect(fetch.mock.calls[0][0]).toEqual(
       `/api/v1/projects/${PROJECT_ID}/models/`,

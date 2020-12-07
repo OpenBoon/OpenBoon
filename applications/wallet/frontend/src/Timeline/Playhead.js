@@ -1,39 +1,88 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useRef, useEffect } from 'react'
+import { useRef, useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 import { colors, constants, zIndex } from '../Styles'
 
+import { getScroller } from '../Scroll/helpers'
+
 import { updatePlayheadPosition, GUIDE_WIDTH } from './helpers'
 
-const DRAG_WIDTH = 10
+const HEIGHT = 12
+const WIDTH = 10
+const SCROLL_BUFFER = 50
 
 let originX
 let originLeft
 
-const TimelinePlayhead = ({ videoRef }) => {
+const TimelinePlayhead = ({ videoRef, rulerRef, zoom, followPlayhead }) => {
   const playheadRef = useRef()
   const frameRef = useRef()
 
   const video = videoRef.current
-  const playhead = playheadRef.current
+
+  const scroller = getScroller({ namespace: 'Timeline' })
 
   /* istanbul ignore next */
-  useEffect(() => {
-    const animate = () => {
-      updatePlayheadPosition({ video, playhead })
+  const onMount = useCallback(
+    (node) => {
+      const animate = () => {
+        if (!video) return
 
-      frameRef.current = requestAnimationFrame(animate)
-    }
+        const { scrollWidth = 0, scrollLeft = 0, clientWidth = 0 } =
+          rulerRef.current || {}
 
-    frameRef.current = requestAnimationFrame(animate)
+        const hiddenToTheRight = scrollWidth - scrollLeft - clientWidth > 0
 
-    return () => cancelAnimationFrame(frameRef.current)
-  }, [video, playhead])
+        const currentPosition = node.offsetLeft + WIDTH / 2 - GUIDE_WIDTH / 2
+
+        const nextPosition =
+          (((video.currentTime / video.duration) * zoom) / 100) * clientWidth -
+          GUIDE_WIDTH / 2
+
+        updatePlayheadPosition({
+          video,
+          playhead: node,
+          zoom,
+          scrollLeft,
+        })
+
+        const isOutOfView =
+          currentPosition < 0 ||
+          (currentPosition > clientWidth - SCROLL_BUFFER && hiddenToTheRight)
+
+        if (isOutOfView && !video.paused && followPlayhead) {
+          scroller.emit({
+            eventName: 'scroll',
+            data: {
+              scrollX: nextPosition,
+              scrollY: 0,
+            },
+          })
+        }
+
+        frameRef.current = requestAnimationFrame(animate)
+      }
+
+      if (frameRef.current && !node) {
+        cancelAnimationFrame(frameRef.current)
+        frameRef.current = null
+        playheadRef.current = null
+      }
+
+      if (!frameRef.current && node) {
+        animate()
+        playheadRef.current = node
+      }
+    },
+    [video, zoom, rulerRef, scroller, followPlayhead],
+  )
 
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
-    const maxPosition = playhead.parentNode.offsetWidth - GUIDE_WIDTH / 2
+    const maxPosition =
+      playheadRef.current.parentNode.offsetWidth * (zoom / 100) -
+      GUIDE_WIDTH / 2
 
     const newPosition = Math.min(
       Math.max(0, originLeft + clientX - originX),
@@ -47,45 +96,42 @@ const TimelinePlayhead = ({ videoRef }) => {
 
   /* istanbul ignore next */
   const handleMouseUp = () => {
-    window.removeEventListener('mousemove', handleMouseMove)
-    window.removeEventListener('mouseup', handleMouseUp)
+    document.removeEventListener('mousemove', handleMouseMove)
+    document.removeEventListener('mouseup', handleMouseUp)
   }
 
   /* istanbul ignore next */
   const handleMouseDown = ({ clientX }) => {
     originX = clientX
-    originLeft = playhead.offsetLeft
+    originLeft = playheadRef.current.offsetLeft + rulerRef.current.scrollLeft
 
-    window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('mouseup', handleMouseUp)
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleMouseUp)
   }
 
   return (
     <div
-      ref={playheadRef}
+      ref={onMount}
       onMouseDown={handleMouseDown}
       css={{
         userSelect: 'none',
         cursor: 'col-resize',
         position: 'absolute',
         marginTop: 0,
-        top:
-          constants.timeline.rulerRowHeight - constants.timeline.playheadHeight,
+        top: constants.timeline.rulerRowHeight - HEIGHT,
         bottom: 0,
-        marginLeft: -DRAG_WIDTH / 2,
-        width: DRAG_WIDTH,
+        marginLeft: -(WIDTH / 2) + constants.borderWidths.regular / 2,
+        width: WIDTH,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        zIndex: zIndex.layout.interactive,
+        zIndex: zIndex.timeline.playhead,
       }}
     >
       <div
         css={{
           borderStyle: 'solid',
-          borderWidth: `${constants.timeline.playheadHeight}px ${
-            constants.timeline.playheadWidth / 2
-          }px 0 ${constants.timeline.playheadWidth / 2}px`,
+          borderWidth: `${HEIGHT}px ${WIDTH}px 0 ${WIDTH}px`,
           borderColor: `${colors.signal.sky.base} transparent transparent transparent`,
         }}
       />
@@ -105,8 +151,18 @@ TimelinePlayhead.propTypes = {
     current: PropTypes.shape({
       currentTime: PropTypes.number.isRequired,
       duration: PropTypes.number.isRequired,
+      paused: PropTypes.bool.isRequired,
     }),
   }).isRequired,
+  rulerRef: PropTypes.shape({
+    current: PropTypes.shape({
+      scrollWidth: PropTypes.number.isRequired,
+      scrollLeft: PropTypes.number.isRequired,
+      clientWidth: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
+  zoom: PropTypes.number.isRequired,
+  followPlayhead: PropTypes.bool.isRequired,
 }
 
 export default TimelinePlayhead

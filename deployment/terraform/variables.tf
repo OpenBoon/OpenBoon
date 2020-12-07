@@ -8,7 +8,23 @@ variable "environment" {
 }
 
 variable "terraform-credentials" {
-  description = "Contents of a credential json file to use for creating resources."
+  description = "Contents of a GCP credential json file to use for creating resources."
+}
+
+variable "azure-subscription-id" {
+  description = "Azure subscription ID to be used with Azure provider."
+}
+
+variable "azure-client-id" {
+  description = "Client ID from the Azure service principal to be used with the Azure provider."
+}
+
+variable "azure-tenant-id" {
+  description = "Tenant/directory ID of the Azure service principal to be used with the Azure provider."
+}
+
+variable "azure-client-secret" {
+  description = "Secret key generated for the Azure service principal to be used with the Azure provider."
 }
 
 variable "docker-username" {
@@ -41,6 +57,19 @@ variable "zmlp-domain" {
 
 variable "clarifai-key" {
   description = "Secret key to allow access to the Clarifai API."
+}
+
+variable "aws-key" {
+  description = "Secret key to allow access to the AWS ML API."
+}
+
+variable "aws-secret" {
+  description = "Secret to allow access to the AWS ML API."
+}
+
+variable "aws-region" {
+  description = "Region where AWS resources will be created."
+  default     = "us-east-2"
 }
 
 variable "analyst-memory-request" {

@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import { useLocalStorageState, useLocalStorageReducer } from '../helpers'
+import { useLocalStorage } from '../helpers'
 
 describe('<LocalStorage /> helpers', () => {
   const { getItem, setItem, clear } = localStorage
@@ -19,12 +19,12 @@ describe('<LocalStorage /> helpers', () => {
     })
   })
 
-  describe('useLocalStorageState()', () => {
+  describe('useLocalStorage()', () => {
     it('should return properly', () => {
       const TestComponent = () => {
-        const [value, setValue] = useLocalStorageState({
+        const [value, setValue] = useLocalStorage({
           key: 'name',
-          initialValue: 100,
+          initialState: 100,
         })
         return (
           <button type="button" onClick={setValue}>
@@ -49,7 +49,7 @@ describe('<LocalStorage /> helpers', () => {
       mockGet.mockImplementationOnce(() => 200)
 
       const TestComponent = () => {
-        const [value, setValue] = useLocalStorageState({ key: 'name' })
+        const [value, setValue] = useLocalStorage({ key: 'name' })
         return (
           <button type="button" onClick={setValue}>
             {value}
@@ -68,9 +68,9 @@ describe('<LocalStorage /> helpers', () => {
       mockGet.mockImplementationOnce(() => 'invalid json')
 
       const TestComponent = () => {
-        const [value, setValue] = useLocalStorageState({
+        const [value, setValue] = useLocalStorage({
           key: 'name',
-          initialValue: 'initialValue',
+          initialState: 'initialState',
         })
         return (
           <button type="button" onClick={setValue}>
@@ -83,16 +83,16 @@ describe('<LocalStorage /> helpers', () => {
 
       expect(
         component.root.findByProps({ type: 'button' }).props.children,
-      ).toEqual('initialValue')
+      ).toEqual('initialState')
     })
   })
 
-  describe('useLocalStorageReducer()', () => {
+  describe('useLocalStorage() with reducer', () => {
     it('should handle a corrupt value', () => {
       mockGet.mockImplementationOnce(() => 'invalid json')
 
       const TestComponent = () => {
-        const [state, dispatch] = useLocalStorageReducer({
+        const [state, dispatch] = useLocalStorage({
           key: 'name',
           reducer: () => {},
           initialState: 'initialState',

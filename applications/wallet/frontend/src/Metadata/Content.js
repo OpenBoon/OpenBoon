@@ -3,7 +3,7 @@ import useSWR from 'swr'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 import Button, { VARIANTS } from '../Button'
@@ -16,9 +16,9 @@ import { formatDisplayName } from './helpers'
 const DISPLAY_OPTIONS = ['pretty', 'raw json']
 
 const MetadataContent = ({ projectId, assetId }) => {
-  const [displayOption, setDisplayOption] = useLocalStorageState({
+  const [displayOption, setDisplayOption] = useLocalStorage({
     key: 'metadataFormat',
-    initialValue: 'pretty',
+    initialState: 'pretty',
   })
 
   const {

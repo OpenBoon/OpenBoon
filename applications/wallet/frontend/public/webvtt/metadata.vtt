@@ -2,49 +2,49 @@ WEBVTT
 
 00:00:00.000 --> 00:00:11.000
 {
-  "module": "gcp-label-detection",
+  "timeline": "gcp-label-detection",
   "score": 0.91,
-  "label": "cheese"
+  "track": "cheese"
 }
 
 00:00:00.000 --> 00:00:11.000
 {
-  "module": "gcp-label-detection",
+  "timeline": "gcp-label-detection",
   "score": 0.82,
-  "label": "pepperoni"
+  "track": "pepperoni"
 }
 
 00:00:00.000 --> 00:00:11.000
 {
-  "module": "gcp-object-detection",
+  "timeline": "gcp-object-detection",
   "score": 0.73,
-  "label": "food"
+  "track": "food"
 }
 
 00:00:01.000 --> 00:00:04.000
 {
-  "module": "gcp-label-detection",
+  "timeline": "gcp-label-detection",
   "score": 0.64,
-  "label": "hand"
+  "track": "hand"
 }
 
 00:00:00.500 --> 00:00:04.500
 {
-  "module": "gcp-object-detection",
+  "timeline": "gcp-object-detection",
   "score": 0.55,
-  "label": "person"
+  "track": "person"
 }
 
 00:00:02.000 --> 00:00:11.000
 {
-  "module": "gcp-label-detection",
+  "timeline": "gcp-label-detection",
   "score": 0.46,
-  "label": "cardboard box"
+  "track": "cardboard box"
 }
 
 00:00:05.000 --> 00:00:11.000
 {
-  "module": "gcp-label-detection",
+  "timeline": "gcp-label-detection",
   "score": 0.37,
-  "label": "plastic thingy"
+  "track": "plastic thingy"
 }

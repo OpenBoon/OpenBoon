@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<LabelEdit /> should render properly 1`] = `
-.emotion-8 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -15,47 +15,51 @@ exports[`<LabelEdit /> should render properly 1`] = `
   padding-right: 0;
 }
 
-.emotion-3 {
+.emotion-1 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-2 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-2 {
+.emotion-3 {
   position: relative;
 }
 
-.emotion-1 {
+.emotion-4 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-4:focus,
+.emotion-4 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
-}
-
-.emotion-1:hover {
-  border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-7 {
+.emotion-4:hover,
+.emotion-4 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+}
+
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -64,12 +68,12 @@ exports[`<LabelEdit /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-7 button,
-.emotion-7 a {
+.emotion-6 button,
+.emotion-6 a {
   margin-right: 16px;
 }
 
-.emotion-5 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -85,8 +89,8 @@ exports[`<LabelEdit /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -100,30 +104,27 @@ exports[`<LabelEdit /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-6 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -139,8 +140,8 @@ exports[`<LabelEdit /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -154,50 +155,47 @@ exports[`<LabelEdit /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-6:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-6[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-6,
-.emotion-6:hover,
-.emotion-6:visited {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited,
+.emotion-8 .noop {
   background-color: #73b61c;
 }
 
-.emotion-6:hover {
+.emotion-8:hover,
+.emotion-8 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-8[aria-disabled=true],
+.emotion-8 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-8"
+  className="emotion-0"
   method="post"
   onSubmit={[Function]}
 >
   <div
-    className="emotion-3"
+    className="emotion-1"
   >
     <label
-      className="emotion-0"
+      className="emotion-2"
       htmlFor="newLabel"
     >
       Label
     </label>
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <input
         autoFocus={true}
-        className="emotion-1"
+        className="emotion-4"
         disabled={false}
         id="newLabel"
         name="newLabel"
@@ -207,16 +205,16 @@ exports[`<LabelEdit /> should render properly 1`] = `
       />
     </div>
     <div
-      className="emotion-3"
+      className="emotion-5"
     >
        
     </div>
   </div>
   <div
-    className="emotion-7"
+    className="emotion-6"
   >
     <a
-      className="emotion-5"
+      className="emotion-7"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -225,7 +223,7 @@ exports[`<LabelEdit /> should render properly 1`] = `
     </a>
     <button
       aria-disabled={true}
-      className="emotion-6"
+      className="emotion-8"
       onClick={[Function]}
       type="submit"
     >

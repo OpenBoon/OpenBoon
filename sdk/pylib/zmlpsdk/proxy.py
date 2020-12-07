@@ -1,10 +1,16 @@
+import os
 import logging
 
+
 from zmlpsdk.storage import file_storage
+from zmlpsdk.audio import extract_audio_file
 
 __all__ = [
     'get_proxy_level_path',
-    'get_proxy_level'
+    'get_proxy_level',
+    'get_audio_proxy',
+    'get_audio_proxy_uri',
+    'get_video_proxy'
 ]
 
 logger = logging.getLogger(__name__)
@@ -63,9 +69,67 @@ def get_proxy_level(asset, level, mimetype="image/"):
         return None
 
 
+def get_video_proxy(asset):
+    """
+    Return the video proxy or None if there is None.
+
+    Args:
+        asset (Asset): The Asset.
+
+    Returns:
+         dict: A proxy file record.
+    """
+    return get_proxy_level(asset, 1, "video/mp4")
+
+
+def get_audio_proxy(asset, auto_create=True):
+    """
+    Get a StoredFile record for an audio proxy.  Optionally make
+    the proxy if one does not exist.
+
+    Args:
+        asset: (Asset): The asset to find an audio proxy for.
+        auto_create (bool): Make the audio proxy if one does not exist
+
+    Returns:
+        dict: A ZVI file record to the audio proxy.
+    """
+    audio_proxy = asset.get_files(category="audio", name="audio_proxy.flac")
+    if audio_proxy:
+        return audio_proxy[0]
+    elif auto_create:
+        audio_file = extract_audio_file(file_storage.localize_file(asset))
+        if not audio_file or not os.path.exists(audio_file):
+            return None
+
+        return file_storage.assets.store_file(
+                audio_file, asset, 'audio', rename='audio_proxy.flac')
+    else:
+        return None
+
+
+def get_audio_proxy_uri(asset, auto_create=True):
+    """
+    Get a URI to the audio proxy.  We either have one already
+    made or have to make it.
+
+    Args:
+        asset: (Asset): The asset to find an audio proxy for.
+        auto_create (bool): Make the audio proxy if one does not exist
+
+    Returns:
+        str: A URI to an audio proxy or None if no proxy exists
+    """
+    sfile = get_audio_proxy(asset, auto_create=auto_create)
+    if sfile:
+        return file_storage.assets.get_native_uri(sfile)
+    else:
+        return None
+
+
 def calculate_normalized_bbox(img_width, img_height, poly):
     """
-    Calculate points for normalized bouding box based on the given
+    Calculate points for normalized bounding box based on the given
     image width and height.
 
     Args:

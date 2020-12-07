@@ -16,6 +16,9 @@ class ZviOcrProcessor(AssetProcessor):
 
     namespace = "zvi-text-detection"
 
+    # Tesseract uses a lot of CPU
+    use_threads = False
+
     def __init__(self):
         super(ZviOcrProcessor, self).__init__()
 

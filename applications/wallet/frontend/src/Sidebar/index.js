@@ -4,7 +4,6 @@ import Router from 'next/router'
 
 import { colors, spacing, zIndex, constants } from '../Styles'
 
-import Feature, { ENVS } from '../Feature'
 import BetaBadge from '../BetaBadge'
 
 import DashboardSvg from '../Icons/dashboard.svg'
@@ -34,6 +33,8 @@ const Sidebar = forwardRef(
         Router.events.off('routeChangeStart', handleRouteChange)
       }
     }, [setSidebarOpen])
+
+    if (!projectId) return null
 
     return (
       <div>
@@ -79,13 +80,11 @@ const Sidebar = forwardRef(
               Job Queue
             </SidebarLink>
 
-            <Feature flag="asset-labeling" envs={[ENVS.QA]}>
-              <SidebarLink projectId={projectId} href="/[projectId]/models">
-                <ModelsSvg height={constants.icons.regular} />
-                Custom Models
-                <BetaBadge />
-              </SidebarLink>
-            </Feature>
+            <SidebarLink projectId={projectId} href="/[projectId]/models">
+              <ModelsSvg height={constants.icons.regular} />
+              Custom Models
+              <BetaBadge />
+            </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/visualizer">
               <VisualizerSvg height={constants.icons.regular} />

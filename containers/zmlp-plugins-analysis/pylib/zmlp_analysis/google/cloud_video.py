@@ -5,9 +5,10 @@ import backoff
 import google.cloud.videointelligence_v1p3beta1 as videointelligence
 from google.api_core.exceptions import ResourceExhausted
 
+from zmlp_analysis.utils.prechecks import Prechecks
 from zmlpsdk import Argument, AssetProcessor, FileTypes, file_storage, proxy
-from zmlpsdk.base import ProcessorException
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
+from zmlpsdk.base import ProcessorException
 from . import cloud_timeline
 from .gcp_client import initialize_gcp_client
 
@@ -31,9 +32,6 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         'detect_speech': 'Set to true to recognize speech in video.'
     }
 
-    max_length_sec = 120 * 60
-    """By default we allow up to 120 minutes of video."""
-
     conf_labels = [
         "IGNORE",
         "very_unlikely",
@@ -45,15 +43,15 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
     def __init__(self):
         super(AsyncVideoIntelligenceProcessor, self).__init__()
-        self.add_arg(Argument('detect_explicit', 'int', default=-1,
+        self.add_arg(Argument('detect_explicit', 'int', default=False,
                               toolTip=self.tool_tips['detect_explicit']))
-        self.add_arg(Argument('detect_labels', 'float', default=-1,
+        self.add_arg(Argument('detect_labels', 'float', default=False,
                               toolTip=self.tool_tips['detect_labels']))
         self.add_arg(Argument('detect_text', 'bool', default=False,
                               toolTip=self.tool_tips['detect_text']))
-        self.add_arg(Argument('detect_objects', 'float', default=-1,
+        self.add_arg(Argument('detect_objects', 'float', default=False,
                               toolTip=self.tool_tips['detect_objects']))
-        self.add_arg(Argument('detect_logos', 'float', default=-1,
+        self.add_arg(Argument('detect_logos', 'float', default=False,
                               toolTip=self.tool_tips['detect_logos']))
         self.add_arg(Argument('detect_speech', 'bool', default=False,
                               toolTip=self.tool_tips['detect_speech']))
@@ -68,10 +66,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         asset = frame.asset
 
         # If the length is over time time
-        if not asset.get_attr('media.length') \
-                or asset.get_attr('media.length') > self.max_length_sec:
-            self.logger.warning(
-                'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
+        if not Prechecks.is_valid_video_length(asset):
             return
 
         # You can't run this on the source because our google creds
@@ -85,13 +80,13 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                                        'gcp',
                                        'video-intelligence.dat')
 
-        if self.arg_value('detect_logos') != -1:
+        if self.arg_value('detect_logos'):
             self.handle_detect_logos(asset, annotation_result)
 
-        if self.arg_value('detect_objects') != -1:
+        if self.arg_value('detect_objects'):
             self.handle_detect_objects(asset, annotation_result)
 
-        if self.arg_value('detect_labels') != -1:
+        if self.arg_value('detect_labels'):
             self.handle_detect_labels(asset, annotation_result)
 
         if self.arg_value('detect_text'):
@@ -100,7 +95,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         if self.arg_value('detect_speech'):
             self.handle_detect_speech(asset, annotation_result)
 
-        if self.arg_value('detect_explicit') != -1:
+        if self.arg_value('detect_explicit'):
             self.handle_detect_explicit(asset, annotation_result)
 
     def get_video_proxy_uri(self, asset):
@@ -117,8 +112,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             asset (Asset): The asset.
             results (obj): The Logo detection result.
         """
-        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_logos'),
-                                          collapse_labels=True)
+        analysis = LabelDetectionAnalysis(collapse_labels=True)
         for annotation in results.logo_recognition_annotations:
             for track in annotation.tracks:
                 analysis.add_prediction(Prediction(
@@ -136,8 +130,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             annotation_result (obj): The Object detection result.
 
         """
-        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_objects'),
-                                          collapse_labels=True)
+        analysis = LabelDetectionAnalysis(collapse_labels=True)
         for annotation in annotation_result.object_annotations:
             pred = Prediction(annotation.entity.description,
                               annotation.confidence)
@@ -166,8 +159,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                     for label in labels:
                         analysis.add_prediction(Prediction(label, segment.confidence))
 
-        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_labels'),
-                                          collapse_labels=True)
+        analysis = LabelDetectionAnalysis(collapse_labels=True)
 
         process_label_annotations(annotation_result.segment_label_annotations)
         process_label_annotations(annotation_result.shot_label_annotations)
@@ -202,15 +194,16 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         """
         analysis = ContentDetectionAnalysis()
-
         for speech in annotation_result.speech_transcriptions:
             for alternative in speech.alternatives:
+                # Find first one with words.
                 if alternative.words:
                     analysis.add_content(alternative.transcript.strip())
+                    break
 
-        if analysis.content:
-            asset.add_analysis('gcp-video-speech-transcription', analysis)
-            cloud_timeline.save_speech_transcription_timeline(asset, annotation_result)
+        asset.add_analysis('gcp-video-speech-transcription', analysis)
+        cloud_timeline.save_speech_transcription_timeline(asset, annotation_result)
+        cloud_timeline.save_video_speech_transcription_webvtt(asset, annotation_result)
 
     def handle_detect_explicit(self, asset, annotation_result):
         """
@@ -229,7 +222,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
             pred = Prediction(self.conf_labels[frame.pornography_likelihood], 1)
             analysis.add_prediction(pred)
-            if frame.pornography_likelihood >= self.arg_value("detect_explicit"):
+            if frame.pornography_likelihood >= 4:
                 analysis.set_attr('explicit', True)
 
         asset.add_analysis('gcp-video-explicit-detection', analysis)
@@ -248,9 +241,9 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         """
         features = []
         video_context = {}
-        if self.arg_value('detect_explicit') > -1:
+        if self.arg_value('detect_explicit'):
             features.append(videointelligence.enums.Feature.EXPLICIT_CONTENT_DETECTION)
-        if self.arg_value('detect_labels') > -1:
+        if self.arg_value('detect_labels'):
             features.append(videointelligence.enums.Feature.LABEL_DETECTION)
         if self.arg_value('detect_text'):
             features.append(videointelligence.enums.Feature.TEXT_DETECTION)
@@ -260,17 +253,18 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                     language_code="en-US", enable_automatic_punctuation=True)
             video_context = videointelligence.types.VideoContext(
                     speech_transcription_config=config)
-        if self.arg_value('detect_objects') > -1:
+        if self.arg_value('detect_objects'):
             features.append(videointelligence.enums.Feature.OBJECT_TRACKING)
-        if self.arg_value('detect_logos') > -1:
+        if self.arg_value('detect_logos'):
             features.append(videointelligence.enums.Feature.LOGO_RECOGNITION)
 
+        logger.info("Calling Google Video Intelligence,  ctx={}".format(video_context))
         operation = self.video_intel_client.annotate_video(input_uri=uri, features=features,
                                                            video_context=video_context)
 
         while not operation.done():
             logger.info("Waiting on Google Visual Intelligence {}".format(uri))
-            time.sleep(0.5)
+            time.sleep(5)
 
         res = operation.result()
         return res.annotation_results[0]

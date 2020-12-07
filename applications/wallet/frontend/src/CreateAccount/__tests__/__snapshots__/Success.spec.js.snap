@@ -1,0 +1,163 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CreateAccountSuccess /> should render properly 1`] = `
+.emotion-0 {
+  height: 100%;
+}
+
+.emotion-1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #2e2e2e;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+.emotion-3 {
+  padding-left: 8px;
+  padding-right: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  margin-top: 44px;
+  padding: 32px;
+  height: calc(100vh - 44px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-5 {
+  background-color: #ffffff;
+  padding: 84px;
+  padding-left: 108px;
+  padding-right: 108px;
+  text-align: center;
+  max-width: 50%;
+  border-radius: 2px;
+}
+
+.emotion-6 {
+  color: #73b61c;
+}
+
+.emotion-7 {
+  margin-top: 40px;
+  margin-bottom: 24px;
+}
+
+.emotion-8 {
+  color: #191919;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.emotion-9 {
+  color: #808080;
+  font-weight: 500;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-2"
+    >
+      <a
+        aria-label="Home"
+        className="emotion-3"
+        href="/"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        <svg
+          data-file-name="logo.svg"
+          height={30}
+        />
+      </a>
+    </div>
+    <div />
+  </div>
+  <div
+    className="emotion-4"
+  >
+    <div
+      className="emotion-5"
+    >
+      <h2
+        className="emotion-6"
+      >
+        Confirmation email sent!
+      </h2>
+      <svg
+        className="emotion-7"
+        data-file-name="envelope.svg"
+        width={142}
+      />
+      <p
+        className="emotion-8"
+      >
+        Please click the confirmation link sent to your email
+        <br />
+        to activate your account.
+      </p>
+      <p
+        className="emotion-9"
+      >
+        Don’t see it? Check your spam just in case. :)
+      </p>
+    </div>
+  </div>
+</div>
+`;

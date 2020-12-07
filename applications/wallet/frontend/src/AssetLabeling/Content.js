@@ -21,7 +21,7 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
 
   const {
     data: { results: models },
-  } = useSWR(`/api/v1/projects/${projectId}/models/`)
+  } = useSWR(`/api/v1/projects/${projectId}/models/all/`)
 
   const {
     data: {

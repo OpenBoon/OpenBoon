@@ -1,35 +1,28 @@
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 
 import { colors, constants, spacing, typography } from '../Styles'
+
+import { useLocalStorage } from '../LocalStorage/helpers'
+import { reducer, INITIAL_STATE } from '../Timeline/reducer'
 
 import MetadataPrettyPredictionsContent from '../MetadataPretty/PredictionsContent'
 
 const COLOR_WIDTH = 3
 
-const COLORS = [
-  colors.signal.sky.base,
-  colors.graph.magenta,
-  colors.signal.halloween.base,
-  colors.signal.canary.base,
-  colors.graph.seafoam,
-  colors.graph.rust,
-  colors.graph.coral,
-  colors.graph.iris,
-  colors.graph.marigold,
-  colors.graph.magenta,
-  colors.signal.grass.base,
-]
+const MetadataCuesContent = ({ metadata }) => {
+  const {
+    query: { assetId },
+  } = useRouter()
 
-const MetadataCuesContent = ({ metadata, height }) => {
+  const [settings] = useLocalStorage({
+    key: `TimelineTimelines.${assetId}`,
+    reducer,
+    initialState: INITIAL_STATE,
+  })
+
   return (
-    <div
-      css={{
-        height,
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-      }}
-    >
+    <>
       <div
         css={{
           padding: spacing.base,
@@ -41,7 +34,8 @@ const MetadataCuesContent = ({ metadata, height }) => {
       </div>
 
       <div css={{ flex: 1, overflowY: 'auto' }}>
-        {Object.keys(metadata).length === 0 && (
+        {Object.values(metadata).filter((predictions) => predictions.length > 0)
+          .length === 0 && (
           <div
             css={{
               padding: spacing.normal,
@@ -54,26 +48,33 @@ const MetadataCuesContent = ({ metadata, height }) => {
           </div>
         )}
 
-        {Object.entries(metadata).map(([module, predictions], index) => {
-          const colorIndex = index % COLORS.length
-
-          return (
-            <div
-              key={module}
-              css={{
-                borderBottom: constants.borders.large.smoke,
-                boxShadow: `inset ${COLOR_WIDTH}px 0 0 ${COLORS[colorIndex]}`,
-              }}
-            >
-              <MetadataPrettyPredictionsContent
-                name={module}
-                predictions={predictions}
-              />
-            </div>
-          )
-        })}
+        {Object.entries(metadata)
+          .filter(([, predictions]) => predictions.length > 0)
+          .filter(([timeline]) => {
+            return settings.timelines[timeline]?.isVisible !== false
+          })
+          .sort(([a], [b]) => (a > b ? 1 : -1))
+          .map(([timeline, predictions]) => {
+            return (
+              <div
+                key={timeline}
+                css={{
+                  borderBottom: constants.borders.large.smoke,
+                  boxShadow: `inset ${COLOR_WIDTH}px 0 0 ${
+                    settings.timelines[timeline]?.color ||
+                    colors.structure.transparent
+                  }`,
+                }}
+              >
+                <MetadataPrettyPredictionsContent
+                  name={timeline}
+                  predictions={predictions}
+                />
+              </div>
+            )
+          })}
       </div>
-    </div>
+    </>
   )
 }
 
@@ -86,7 +87,6 @@ MetadataCuesContent.propTypes = {
       }).isRequired,
     ).isRequired,
   ).isRequired,
-  height: PropTypes.number.isRequired,
 }
 
 export default MetadataCuesContent

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TimelinePlayhead /> should render properly 1`] = `
-.emotion-2 {
+.emotion-0 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -9,9 +9,9 @@ exports[`<TimelinePlayhead /> should render properly 1`] = `
   cursor: col-resize;
   position: absolute;
   margin-top: 0;
-  top: 30px;
+  top: 32px;
   bottom: 0;
-  margin-left: -5px;
+  margin-left: -4.5px;
   width: 10px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -27,13 +27,13 @@ exports[`<TimelinePlayhead /> should render properly 1`] = `
   z-index: 10;
 }
 
-.emotion-0 {
+.emotion-1 {
   border-style: solid;
-  border-width: 14px 10px 0 10px;
+  border-width: 12px 10px 0 10px;
   border-color: #0074f5 transparent transparent transparent;
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -42,14 +42,14 @@ exports[`<TimelinePlayhead /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-2"
+  className="emotion-0"
   onMouseDown={[Function]}
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   />
   <div
-    className="emotion-1"
+    className="emotion-2"
   />
 </div>
 `;

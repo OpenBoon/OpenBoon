@@ -17,11 +17,12 @@ exports[`<Icons /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-123 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
@@ -44,7 +45,7 @@ exports[`<Icons /> should render properly 1`] = `
   height: 200px;
 }
 
-.emotion-1 {
+.emotion-3 {
   height: 100%;
   padding: 32px;
   display: -webkit-box;
@@ -63,7 +64,7 @@ exports[`<Icons /> should render properly 1`] = `
     Icons
   </h2>
   <div
-    className="emotion-123"
+    className="emotion-1"
   >
     <div
       className="emotion-2"
@@ -72,7 +73,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./assets.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="assets.svg"
@@ -88,7 +89,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./back.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="back.svg"
@@ -104,7 +105,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./calendar.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="calendar.svg"
@@ -120,7 +121,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./captions.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="captions.svg"
@@ -136,7 +137,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./charts.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="charts.svg"
@@ -152,7 +153,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./checkmark.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="checkmark.svg"
@@ -168,7 +169,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./chevron.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="chevron.svg"
@@ -181,10 +182,42 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./circleMinus.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="circleMinus.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./circlePlus.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="circlePlus.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./clock.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="clock.svg"
@@ -200,7 +233,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./copy.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="copy.svg"
@@ -216,7 +249,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./cross.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="cross.svg"
@@ -232,7 +265,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./crossSmall.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="crossSmall.svg"
@@ -248,7 +281,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./dash.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="dash.svg"
@@ -264,7 +297,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./dashboard.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="dashboard.svg"
@@ -280,7 +313,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./datasources.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="datasources.svg"
@@ -296,7 +329,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./dotDotDot.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="dotDotDot.svg"
@@ -312,7 +345,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./doubleChevron.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="doubleChevron.svg"
@@ -325,10 +358,26 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./envelope.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="envelope.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./error.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="error.svg"
@@ -344,7 +393,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./errorFatal.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="errorFatal.svg"
@@ -360,7 +409,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./errorWarning.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="errorWarning.svg"
@@ -376,7 +425,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./exists.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="exists.svg"
@@ -392,7 +441,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./expand.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="expand.svg"
@@ -408,7 +457,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./faceDetection.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="faceDetection.svg"
@@ -424,7 +473,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./facet.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="facet.svg"
@@ -440,7 +489,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./fallback.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="fallback.svg"
@@ -453,10 +502,26 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./fast-forward.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="fast-forward.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./filter.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="filter.svg"
@@ -472,7 +537,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./gear.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="gear.svg"
@@ -488,7 +553,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./generating.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="generating.svg"
@@ -501,10 +566,26 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./google_logo.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="google_logo.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./googleCloud.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="googleCloud.svg"
@@ -517,10 +598,26 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./hamburger.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="hamburger.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./help.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="help.svg"
@@ -536,7 +633,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./hidden.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="hidden.svg"
@@ -552,7 +649,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./histogram.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="histogram.svg"
@@ -568,7 +665,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./information.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="information.svg"
@@ -584,7 +681,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./jobQueue.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="jobQueue.svg"
@@ -600,7 +697,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./kebab.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="kebab.svg"
@@ -616,7 +713,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./key.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="key.svg"
@@ -632,7 +729,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./largeLogo.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="largeLogo.svg"
@@ -648,7 +745,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./lock.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="lock.svg"
@@ -664,7 +761,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./logo.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="logo.svg"
@@ -677,10 +774,26 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./minimap.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="minimap.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./missing.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="missing.svg"
@@ -696,7 +809,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./models.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="models.svg"
@@ -712,7 +825,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./noAssets.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="noAssets.svg"
@@ -728,7 +841,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./noJobs.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="noJobs.svg"
@@ -741,10 +854,26 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./noProject.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="noProject.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./pause.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="pause.svg"
@@ -760,7 +889,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./paused.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="paused.svg"
@@ -776,7 +905,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./pen.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="pen.svg"
@@ -792,7 +921,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./play.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="play.svg"
@@ -808,7 +937,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./plus.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="plus.svg"
@@ -821,10 +950,26 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./preview.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="preview.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./queue.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="queue.svg"
@@ -840,7 +985,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./range.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="range.svg"
@@ -856,7 +1001,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./refresh.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="refresh.svg"
@@ -872,7 +1017,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./search.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="search.svg"
@@ -888,7 +1033,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./seek.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="seek.svg"
@@ -904,7 +1049,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./similarity.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="similarity.svg"
@@ -920,7 +1065,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./squareSquareSquare.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="squareSquareSquare.svg"
@@ -936,7 +1081,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./text.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="text.svg"
@@ -949,10 +1094,26 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./timebasedMetadata.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="timebasedMetadata.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./trash.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="trash.svg"
@@ -968,7 +1129,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./upload.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="upload.svg"
@@ -984,7 +1145,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./users.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="users.svg"
@@ -1000,7 +1161,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./visible.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="visible.svg"
@@ -1016,7 +1177,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./visualizer.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="visualizer.svg"
@@ -1032,7 +1193,7 @@ exports[`<Icons /> should render properly 1`] = `
         ./warning.svg
       </div>
       <div
-        className="emotion-1"
+        className="emotion-3"
       >
         <svg
           data-file-name="warning.svg"

@@ -128,3 +128,17 @@ def truncate(number, places):
         context.rounding = decimal.ROUND_DOWN
         exponent = decimal.Decimal(str(10 ** - places))
         return decimal.Decimal(str(number)).quantize(exponent)
+
+
+def round_all(items, precision=3):
+    """
+    Round all items in the list.
+
+    Args:
+        items (list): A list of floats.
+        precision: (int): number of decimal places.
+
+    Returns:
+        list: A rounded list.
+    """
+    return [round(i, precision) for i in items]

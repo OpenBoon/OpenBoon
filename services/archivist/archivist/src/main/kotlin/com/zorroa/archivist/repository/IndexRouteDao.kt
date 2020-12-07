@@ -81,6 +81,8 @@ interface IndexRouteDao {
      * Set the state of the [IndexRoute].
      */
     fun setState(route: IndexRoute, state: IndexRouteState): Boolean
+
+    fun setState(routeUUID: UUID, state: IndexRouteState): Boolean
 }
 
 @Repository
@@ -160,6 +162,10 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
 
     override fun setState(route: IndexRoute, state: IndexRouteState): Boolean {
         return jdbc.update(UPDATE_STATE, state.ordinal, System.currentTimeMillis(), route.id) == 1
+    }
+
+    override fun setState(routeUUID: UUID, state: IndexRouteState): Boolean {
+        return jdbc.update(UPDATE_STATE, state.ordinal, System.currentTimeMillis(), routeUUID) == 1
     }
 
     override fun count(filter: IndexRouteFilter): Long {

@@ -17,8 +17,8 @@ exports[`<Button /> should have a type "button" and be aria-disabled, and not cl
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -32,26 +32,23 @@ exports[`<Button /> should have a type "button" and be aria-disabled, and not cl
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -82,8 +79,8 @@ exports[`<Button /> should have a type "button", pass additional props, and be c
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -97,26 +94,23 @@ exports[`<Button /> should have a type "button", pass additional props, and be c
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -146,8 +140,8 @@ exports[`<Button /> should render a link as an anchor tag with no onClick 1`] = 
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -161,26 +155,23 @@ exports[`<Button /> should render a link as an anchor tag with no onClick 1`] = 
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -211,43 +202,37 @@ exports[`<Button /> should render properly for ICON Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: transparent;
 }
 
 .emotion-0:hover,
-.emotion-0.focus-visible:focus {
+.emotion-0.focus-visible:focus,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-0:hover svg,
-.emotion-0.focus-visible:focus svg {
+.emotion-0.focus-visible:focus svg,
+.emotion-0 .noop svg {
   opacity: 1;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
   color: #808080;
 }
 
@@ -277,43 +262,37 @@ exports[`<Button /> should render properly for ICON Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: transparent;
 }
 
 .emotion-0:hover,
-.emotion-0.focus-visible:focus {
+.emotion-0.focus-visible:focus,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-0:hover svg,
-.emotion-0.focus-visible:focus svg {
+.emotion-0.focus-visible:focus svg,
+.emotion-0 .noop svg {
   opacity: 1;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
   color: #808080;
 }
 
@@ -342,39 +321,30 @@ exports[`<Button /> should render properly for LINK Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
@@ -405,39 +375,30 @@ exports[`<Button /> should render properly for LINK Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
@@ -452,9 +413,9 @@ exports[`<Button /> should render properly for LINK Link 1`] = `
 
 exports[`<Button /> should render properly for MENU Button 1`] = `
 .emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -467,40 +428,28 @@ exports[`<Button /> should render properly for MENU Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
+  background-color: transparent;
+  padding-left: 16px;
   height: 100%;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus,
+.emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
@@ -515,9 +464,9 @@ exports[`<Button /> should render properly for MENU Button 1`] = `
 
 exports[`<Button /> should render properly for MENU Link 1`] = `
 .emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -530,40 +479,28 @@ exports[`<Button /> should render properly for MENU Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 8px;
-  padding-left: 16px;
   color: #73b61c;
-  font-weight: 400;
+  background-color: transparent;
+  padding-left: 16px;
   height: 100%;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus,
+.emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
@@ -577,9 +514,9 @@ exports[`<Button /> should render properly for MENU Link 1`] = `
 
 exports[`<Button /> should render properly for MENU_ITEM Button 1`] = `
 .emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -587,47 +524,31 @@ exports[`<Button /> should render properly for MENU_ITEM Button 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  padding: 8px 16px;
-  font-weight: 400;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   border-radius: 0;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
 }
 
 .emotion-0:hover,
-.emotion-0.focus-visible:focus {
+.emotion-0.focus-visible:focus,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #4a4a4a;
 }
 
@@ -642,9 +563,9 @@ exports[`<Button /> should render properly for MENU_ITEM Button 1`] = `
 
 exports[`<Button /> should render properly for MENU_ITEM Link 1`] = `
 .emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -652,47 +573,31 @@ exports[`<Button /> should render properly for MENU_ITEM Link 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  padding: 8px 16px;
-  font-weight: 400;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   border-radius: 0;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
 }
 
 .emotion-0:hover,
-.emotion-0.focus-visible:focus {
+.emotion-0.focus-visible:focus,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #4a4a4a;
 }
 
@@ -721,42 +626,30 @@ exports[`<Button /> should render properly for MICRO Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus,
+.emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
   color: #ffffff;
 }
 
@@ -786,42 +679,30 @@ exports[`<Button /> should render properly for MICRO Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus,
+.emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
   color: #ffffff;
 }
 
@@ -850,11 +731,11 @@ exports[`<Button /> should render properly for NEUTRAL Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -863,16 +744,6 @@ exports[`<Button /> should render properly for NEUTRAL Button 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 <button
@@ -901,11 +772,11 @@ exports[`<Button /> should render properly for NEUTRAL Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -914,16 +785,6 @@ exports[`<Button /> should render properly for NEUTRAL Link 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 <a
@@ -951,8 +812,8 @@ exports[`<Button /> should render properly for PRIMARY Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -966,26 +827,23 @@ exports[`<Button /> should render properly for PRIMARY Button 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -1015,8 +873,8 @@ exports[`<Button /> should render properly for PRIMARY Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1030,26 +888,23 @@ exports[`<Button /> should render properly for PRIMARY Link 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -1078,11 +933,11 @@ exports[`<Button /> should render properly for PRIMARY_SMALL Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1091,29 +946,25 @@ exports[`<Button /> should render properly for PRIMARY_SMALL Button 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -1143,11 +994,11 @@ exports[`<Button /> should render properly for PRIMARY_SMALL Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1156,29 +1007,25 @@ exports[`<Button /> should render properly for PRIMARY_SMALL Link 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -1207,8 +1054,8 @@ exports[`<Button /> should render properly for SECONDARY Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1222,26 +1069,23 @@ exports[`<Button /> should render properly for SECONDARY Button 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -1271,8 +1115,8 @@ exports[`<Button /> should render properly for SECONDARY Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1286,26 +1130,23 @@ exports[`<Button /> should render properly for SECONDARY Link 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -1334,11 +1175,11 @@ exports[`<Button /> should render properly for SECONDARY_SMALL Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1347,29 +1188,25 @@ exports[`<Button /> should render properly for SECONDARY_SMALL Button 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -1399,11 +1236,11 @@ exports[`<Button /> should render properly for SECONDARY_SMALL Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1412,29 +1249,25 @@ exports[`<Button /> should render properly for SECONDARY_SMALL Link 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #808080;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -1463,8 +1296,8 @@ exports[`<Button /> should render properly for WARNING Button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1478,26 +1311,23 @@ exports[`<Button /> should render properly for WARNING Button 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #c92300;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   opacity: 0.5;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -1527,8 +1357,8 @@ exports[`<Button /> should render properly for WARNING Link 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1542,26 +1372,23 @@ exports[`<Button /> should render properly for WARNING Link 1`] = `
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #c92300;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   opacity: 0.5;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 

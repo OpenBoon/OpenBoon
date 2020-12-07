@@ -25,7 +25,7 @@ from rest_framework_nested.routers import NestedSimpleRouter
 from agreements.views import AgreementViewSet
 from apikeys.views import ApikeyViewSet
 from assets.views import (AssetViewSet, FileCategoryViewSet,
-                          FileNameViewSet)
+                          FileNameViewSet, WebVttViewSet)
 from datasources.views import DataSourceViewSet
 from faces.views import FaceViewSet
 from gcpmarketplace.views import signup_success, SignUpView
@@ -38,7 +38,7 @@ from registration.views import UserRegistrationView, UserConfirmationView, \
     ApiPasswordChangeView, LogoutView, MeView, LoginView, ApiPasswordResetView, \
     ApiPasswordResetConfirmView
 from roles.views import RolesViewSet
-from searches.views import SearchViewSet, MetadataExportViewSet
+from searches.views import SearchViewSet
 from subscriptions.views import SubscriptionViewSet
 from supportadmin.admin import support_admin_site
 from visualizations.views import VisualizationViewSet
@@ -62,7 +62,6 @@ projects_router.register('data_sources', DataSourceViewSet, basename='datasource
 projects_router.register('subscriptions', SubscriptionViewSet, basename='subscription')
 projects_router.register('modules', ModuleViewSet, basename='module')
 projects_router.register('providers', ProviderViewSet, basename='provider')
-projects_router.register('searches/export', MetadataExportViewSet, basename='export')
 projects_router.register('searches', SearchViewSet, basename='search')
 projects_router.register('faces', FaceViewSet, basename='face')
 projects_router.register('visualizations', VisualizationViewSet, basename='visualization')
@@ -71,6 +70,7 @@ projects_router.register('models', ModelViewSet, basename='model')
 
 assets_files_router = NestedSimpleRouter(projects_router, 'assets', lookup='asset')
 assets_files_router.register('files/category', FileCategoryViewSet, basename='category')
+assets_files_router.register('webvtt', WebVttViewSet, basename='webvtt')
 
 assets_file_names_router = NestedSimpleRouter(assets_files_router, 'files/category', lookup='category')  # noqa
 assets_file_names_router.register('name', FileNameViewSet, basename='file_name')

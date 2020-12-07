@@ -33,4 +33,9 @@ interface SystemStorageService {
      * Fetch the given path and marshall the data into the specified type.
      */
     fun <T> fetchObject(path: String, valueType: TypeReference<T>): T
+
+    /**
+     * Delete all associated files below a path.
+     */
+    fun recursiveDelete(path: String)
 }

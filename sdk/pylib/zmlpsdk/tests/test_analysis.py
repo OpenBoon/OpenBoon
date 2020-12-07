@@ -43,7 +43,7 @@ class PredicationTests(TestCase):
 class LabelDetectionAnalysisTestsCollapsed(TestCase):
 
     def setUp(self):
-        self.analysis = analysis.LabelDetectionAnalysis(collapse_labels=True)
+        self.analysis = analysis.LabelDetectionAnalysis(min_score=0.15, collapse_labels=True)
         self.pred = analysis.Prediction('cat', 0.50)
 
     def test_add_prediction(self):
@@ -75,7 +75,7 @@ class LabelDetectionAnalysisTestsCollapsed(TestCase):
 class LabelDetectionAnalysisTests(TestCase):
 
     def setUp(self):
-        self.analysis = analysis.LabelDetectionAnalysis(collapse_labels=False)
+        self.analysis = analysis.LabelDetectionAnalysis(min_score=0.15, collapse_labels=False)
         self.pred = analysis.Prediction('cat', 0.50)
 
     def test_add_prediction(self):

@@ -1,22 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MetadataCues /> should render properly with a video with a metadata track 1`] = `
-.emotion-0 {
-  width: 400px;
-  border-left: 1px solid #000000;
-  border-bottom: 1px solid #000000;
-}
-
 <div
-  className="emotion-0"
->
-  <div
-    style={
-      Object {
-        "height": 0,
-        "overflow": "visible",
-      }
+  style={
+    Object {
+      "height": 0,
+      "overflow": "visible",
     }
-  />
-</div>
+  }
+/>
+`;
+
+exports[`<MetadataCues /> should render properly without a video 1`] = `
+<div
+  style={
+    Object {
+      "height": 0,
+      "overflow": "visible",
+    }
+  }
+/>
 `;

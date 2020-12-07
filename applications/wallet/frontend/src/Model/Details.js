@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import Router, { useRouter } from 'next/router'
 import useSWR from 'swr'
+import Router, { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 import FilterSvg from '../Icons/filter.svg'
@@ -19,7 +19,9 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import Modal from '../Modal'
 import Tabs from '../Tabs'
+import ModelAssets from '../ModelAssets'
 import ModelLabels from '../ModelLabels'
+import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
 import { onTrain } from './helpers'
 
@@ -27,6 +29,7 @@ const LINE_HEIGHT = '23px'
 
 const ModelDetails = () => {
   const {
+    pathname,
     query: { projectId, modelId, edit = '' },
   } = useRouter()
 
@@ -35,16 +38,18 @@ const ModelDetails = () => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const [, setPanel] = useLocalStorageState({
+  const [, setPanel] = useLocalStorage({
     key: 'leftOpeningPanel',
   })
 
-  const [, setModelId] = useLocalStorageState({
-    key: `AssetLabelingAdd.${projectId}.modelId`,
-  })
-
-  const [, setLabel] = useLocalStorageState({
-    key: `AssetLabelingAdd.${projectId}.label`,
+  const [, setModelFields] = useLocalStorage({
+    key: `AssetLabelingAdd.${projectId}`,
+    reducer: (state, action) => ({ ...state, ...action }),
+    initialState: {
+      modelId,
+      label: '',
+      scope: '',
+    },
   })
 
   const { data: model } = useSWR(
@@ -227,6 +232,11 @@ const ModelDetails = () => {
                 paginated: true,
               })
 
+              await revalidate({
+                key: `/api/v1/projects/${projectId}/models/all/`,
+                paginated: false,
+              })
+
               Router.push(
                 '/[projectId]/models?action=delete-model-success',
                 `/${projectId}/models`,
@@ -241,6 +251,11 @@ const ModelDetails = () => {
           {
             title: 'View Labels',
             href: '/[projectId]/models/[modelId]',
+            isSelected: edit ? false : undefined,
+          },
+          {
+            title: 'Labeled Assets',
+            href: '/[projectId]/models/[modelId]/assets',
             isSelected: edit ? false : undefined,
           },
           edit
@@ -300,8 +315,12 @@ const ModelDetails = () => {
               variant={BUTTON_VARIANTS.SECONDARY_SMALL}
               onClick={() => {
                 setPanel({ value: 'assetLabeling' })
-                setModelId({ value: modelId })
-                setLabel({ value: '' })
+
+                setModelFields({
+                  modelId,
+                  scope: SCOPE_OPTIONS[0].value,
+                  label: '',
+                })
               }}
               style={{
                 display: 'flex',
@@ -321,7 +340,17 @@ const ModelDetails = () => {
         </div>
       )}
 
-      {!edit && <ModelLabels requiredAssetsPerLabel={requiredAssetsPerLabel} />}
+      {pathname === '/[projectId]/models/[modelId]' && !edit && (
+        <ModelLabels requiredAssetsPerLabel={requiredAssetsPerLabel} />
+      )}
+
+      {pathname === '/[projectId]/models/[modelId]/assets' && (
+        <ModelAssets
+          projectId={projectId}
+          modelId={modelId}
+          moduleName={moduleName}
+        />
+      )}
     </>
   )
 }

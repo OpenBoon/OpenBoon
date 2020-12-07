@@ -5,9 +5,55 @@ from google.cloud.videointelligence_v1.proto import video_intelligence_pb2
 
 from zmlp_analysis.google import cloud_timeline
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset
+from zmlpsdk import file_storage
+
+from .test_cloud_speech import load_results as speech_load_results
 
 
 class TestCloudTimelineBuilder(PluginUnitTestCase):
+
+    @patch.object(file_storage.assets, 'store_file')
+    def test_save_video_speech_transcription_webvtt(self, patch):
+        patch.return_value = None
+
+        annots = self.load_results('detect-speech.dat')
+        path, sf = cloud_timeline.save_video_speech_transcription_webvtt(
+            TestAsset(id="123"), annots)
+
+        with open(path, "r") as fp:
+            data = fp.read()
+
+        assert 'We have main engine start or three two one.' in data
+        assert '00:00:04.700 --> 00:00:09.800' in data
+
+    @patch.object(file_storage.assets, 'store_file')
+    def test_save_save_speech_to_text_webvtt(self, patch):
+        patch.return_value = None
+
+        annots = speech_load_results()
+        path, sf = cloud_timeline.save_speech_to_text_webvtt(
+            TestAsset(id="123"), annots)
+
+        with open(path, "r") as fp:
+            data = fp.read()
+
+        assert "toilets and poop" in data
+        assert "00:00:04.400 --> 00:00:06.200" in data
+
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
+    def test_save_speech_speech_to_text_timeline(self, _):
+        annots = speech_load_results()
+        timeline = cloud_timeline.save_speech_to_text_timeline(TestAsset(id="123"), annots)
+
+        assert 'gcp-speech-to-text' == timeline.name
+        assert 1 == len(timeline.tracks)
+
+        clips = timeline.tracks['Language en-us']['clips']
+        clips = sorted(clips, key=lambda i: i['start'])
+
+        assert ['sanitation does mold killing Sanitation'] == clips[0]["content"]
+        assert ['toilets and poop'] == clips[1]["content"]
+        assert ['and I have yet to emerge'] == clips[2]["content"]
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     def test_save_speech_transcription_timeline(self, _):

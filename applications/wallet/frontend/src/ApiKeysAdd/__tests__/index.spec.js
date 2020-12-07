@@ -52,7 +52,9 @@ describe('<ApiKeysAdd />', () => {
     })
 
     // Mock Success
-    fetch.mockResponseOnce(JSON.stringify(apiKey))
+    fetch.mockResponseOnce(JSON.stringify(apiKey), {
+      headers: { 'content-type': 'application/json' },
+    })
 
     // Submit form
     await act(async () => {

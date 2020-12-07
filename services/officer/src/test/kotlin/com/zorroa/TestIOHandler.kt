@@ -61,22 +61,18 @@ class TestIOHandler {
     @Test
     fun testGetImagePath() {
         val path = handler.getImagePath(5)
-        val prefix = IOHandler.PREFIX
-        assertEquals("$prefix/${options.outputDir}/proxy.5.jpg", path)
+        assertEquals("${options.outputPath}_proxy.5.jpg", path)
     }
 
     @Test
     fun getMetadataPath() {
         val path = handler.getMetadataPath(5)
-        val prefix = IOHandler.PREFIX
-        assertEquals("$prefix/${options.outputDir}/metadata.5.json", path)
+        assertEquals("${options.outputPath}_metadata.5.json", path)
     }
 
     @Test
     fun getOutputUri() {
-        val bucket = StorageManager.bucket
-        val prefix = IOHandler.PREFIX
-        val path = handler.getOutputUri()
-        assertEquals("zmlp://$bucket/$prefix/${options.outputDir}", path)
+        val path = handler.getOutputPath()
+        assertEquals(options.outputPath, path)
     }
 }

@@ -1,12 +1,9 @@
-# flake8: noqa
 import os
-import uuid
 from unittest.mock import patch
 
 import pytest
 
-from zmlp import ZmlpClient, StoredFile
-from zmlp_analysis.google.cloud_vision import *
+from zmlp_analysis.google import cloud_vision
 from zmlp_analysis.google.cloud_vision import file_storage
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, \
@@ -31,7 +28,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         localize_patch.return_value = path
         proxy_patch.return_value = get_mock_stored_file()
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionDetectImageText())
+        processor = self.init_processor(cloud_vision.CloudVisionDetectImageText())
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-image-text-detection')
@@ -48,7 +45,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         localize_patch.return_value = path
         proxy_patch.return_value = get_mock_stored_file()
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionDetectDocumentText())
+        processor = self.init_processor(cloud_vision.CloudVisionDetectDocumentText())
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-doc-text-detection')
@@ -65,7 +62,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         localize_patch.return_value = path
         proxy_patch.return_value = get_mock_stored_file()
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionDetectLandmarks())
+        processor = self.init_processor(cloud_vision.CloudVisionDetectLandmarks())
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-landmark-detection')
@@ -84,7 +81,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = get_mock_stored_file()
 
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionDetectExplicit())
+        processor = self.init_processor(cloud_vision.CloudVisionDetectExplicit())
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-content-moderation')
@@ -104,7 +101,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = get_mock_stored_file()
         asset = TestAsset(path)
         frame = Frame(asset)
-        processor = self.init_processor(CloudVisionDetectFaces())
+        processor = self.init_processor(cloud_vision.CloudVisionDetectFaces())
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-face-detection')
@@ -120,7 +117,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         localize_patch.return_value = path
         proxy_patch.return_value = get_mock_stored_file()
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionDetectLogos())
+        processor = self.init_processor(cloud_vision.CloudVisionDetectLogos())
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-logo-detection')
@@ -137,7 +134,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         localize_patch.return_value = path
         proxy_patch.return_value = get_mock_stored_file()
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionDetectLabels())
+        processor = self.init_processor(cloud_vision.CloudVisionDetectLabels())
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-label-detection')
@@ -154,7 +151,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         localize_patch.return_value = path
         proxy_patch.return_value = get_mock_stored_file()
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionDetectObjects())
+        processor = self.init_processor(cloud_vision.CloudVisionDetectObjects())
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-object-detection')

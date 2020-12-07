@@ -23,23 +23,23 @@ Array [
   >
     Project API Keys
   </h2>,
-  .emotion-1 {
+  .emotion-0 {
   max-width: 600px;
   color: #b3b3b3;
 }
 
-.emotion-0 {
+.emotion-1 {
   color: #73b61c;
 }
 
 <p
-    className="emotion-1"
+    className="emotion-0"
   >
     Create and manage API Keys for applications or tools you would like to integrate with ZVI. An API Key is required to access data for this project using the ZVI SDK and REST APIs. For more information please visit
      
     <a
-      className="emotion-0"
-      href="https://app.gitbook.com/@zorroa/s/zmlp/getting-started"
+      className="emotion-1"
+      href="https://zorroa.gitbook.io/zmlp/"
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -47,7 +47,7 @@ Array [
     </a>
     .
   </p>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -56,7 +56,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -67,12 +67,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -91,12 +91,12 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2 {
+.emotion-5 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -116,23 +116,23 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -141,10 +141,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -154,7 +154,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-20 {
+  .emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -176,7 +176,6 @@ Array [
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -184,105 +183,58 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-19 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-2 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: auto;
-}
-
-.emotion-2:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-2:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
 .emotion-5 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: 1px;
-}
-
-.emotion-5:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-5:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-17 {
   height: auto;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-17 tr {
+.emotion-5 tr {
   background-color: #252525;
 }
 
-.emotion-17 tr:nth-of-type(2n) {
+.emotion-5 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-17 tr:hover {
+.emotion-5 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-17 tr:hover .actions {
+.emotion-5 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-17 tr:hover td {
+.emotion-5 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-17 tr:hover td:first-of-type {
+.emotion-5 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-17 tr:hover td:last-of-type {
+.emotion-5 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-17 td {
+.emotion-5 td {
   max-width: calc(100vw / 2);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -294,16 +246,63 @@ Array [
   border-right: 0;
 }
 
-.emotion-17 td:first-of-type {
+.emotion-5 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-17 td:last-of-type {
+.emotion-5 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
 .emotion-6 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-6:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-6:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-8 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-8:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-8:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-10 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -315,12 +314,12 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-12 {
+.emotion-15 {
   position: relative;
   height: 100%;
 }
 
-.emotion-11 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -336,47 +335,35 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 6px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
   color: #191919;
-  padding: 6px;
+  background-color: transparent;
   margin: -6px;
 }
 
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-11:hover,
-.emotion-11.focus-visible:focus {
-  color: #ffffff !important;
+.emotion-16:hover,
+.emotion-16.focus-visible:focus {
+  color: #ffffff!important;
 }
 
 <div
-    className="emotion-20"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
     >
       <h3
-        className="emotion-0"
+        className="emotion-2"
       >
         Number of 
         Keys
@@ -385,31 +372,31 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-19"
+      className="emotion-3"
     >
       <div
-        className="emotion-18"
+        className="emotion-4"
       >
         <table
-          className="emotion-17"
+          className="emotion-5"
         >
           <thead>
             <tr>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 API Key Name
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Permissions
               </th>
               <th
-                className="emotion-5"
+                className="emotion-8"
               >
                 <div
-                  className="emotion-4"
+                  className="emotion-9"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -426,38 +413,38 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-6"
+                  className="emotion-10"
                 >
                    Assets Read
                 </span>
                 <span
-                  className="emotion-6"
+                  className="emotion-10"
                 >
                    Assets Import
                 </span>
                 <span
-                  className="emotion-6"
+                  className="emotion-10"
                 >
                    Project Files Read
                 </span>
                 <span
-                  className="emotion-6"
+                  className="emotion-10"
                 >
                    System Project Decrypt
                 </span>
                 <span
-                  className="emotion-6"
+                  className="emotion-10"
                 >
                    Project Files Write
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-15"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-16"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -476,23 +463,23 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-6"
+                  className="emotion-10"
                 >
                    Api Key Manage
                 </span>
                 <span
-                  className="emotion-6"
+                  className="emotion-10"
                 >
                    Project Manage
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-12"
+                  className="emotion-15"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-11"
+                    className="actions emotion-16"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -508,12 +495,12 @@ Array [
           </tbody>
         </table>
       </div>
-    </div>
-    <div>
-       
-    </div>
-    <div>
-       
+      <div>
+         
+      </div>
+      <div>
+         
+      </div>
     </div>
   </div>,
 ]
@@ -542,7 +529,7 @@ Array [
   >
     Project API Keys
   </h2>,
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -564,7 +551,7 @@ Array [
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -574,12 +561,24 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-0 a {
-  color: #009f22;
+.emotion-2 a {
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-2 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
@@ -590,30 +589,30 @@ Array [
         height={20}
       />
       <div
-        className="emotion-0"
+        className="emotion-2"
         role="alert"
       >
         API Key deleted.
       </div>
     </div>
   </div>,
-  .emotion-1 {
+  .emotion-0 {
   max-width: 600px;
   color: #b3b3b3;
 }
 
-.emotion-0 {
+.emotion-1 {
   color: #73b61c;
 }
 
 <p
-    className="emotion-1"
+    className="emotion-0"
   >
     Create and manage API Keys for applications or tools you would like to integrate with ZVI. An API Key is required to access data for this project using the ZVI SDK and REST APIs. For more information please visit
      
     <a
-      className="emotion-0"
-      href="https://app.gitbook.com/@zorroa/s/zmlp/getting-started"
+      className="emotion-1"
+      href="https://zorroa.gitbook.io/zmlp/"
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -621,7 +620,7 @@ Array [
     </a>
     .
   </p>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -630,7 +629,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -641,12 +640,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -665,12 +664,12 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2 {
+.emotion-5 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -690,23 +689,23 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -715,10 +714,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -728,7 +727,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-11 {
+  .emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -750,7 +749,6 @@ Array [
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -758,21 +756,21 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-10 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-9 {
+.emotion-4 {
   position: absolute;
   top: 0;
   left: 0;
@@ -780,44 +778,44 @@ Array [
   bottom: 0;
 }
 
-.emotion-8 {
+.emotion-5 {
   height: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-8 tr {
+.emotion-5 tr {
   background-color: #252525;
 }
 
-.emotion-8 tr:nth-of-type(2n) {
+.emotion-5 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-8 tr:hover {
+.emotion-5 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-8 tr:hover .actions {
+.emotion-5 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-8 tr:hover td {
+.emotion-5 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-8 tr:hover td:first-of-type {
+.emotion-5 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-8 tr:hover td:last-of-type {
+.emotion-5 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-8 td {
+.emotion-5 td {
   max-width: calc(100vw / 2);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -829,16 +827,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-8 td:first-of-type {
+.emotion-5 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-8 td:last-of-type {
+.emotion-5 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-2 {
+.emotion-6 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -850,15 +848,15 @@ Array [
   width: auto;
 }
 
-.emotion-2:nth-of-type(2) {
+.emotion-6:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-2:not(:last-child) {
+.emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-5 {
+.emotion-8 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -870,27 +868,27 @@ Array [
   width: 1px;
 }
 
-.emotion-5:nth-of-type(2) {
+.emotion-8:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-5:not(:last-child) {
+.emotion-8:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-4 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-10 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-6 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -903,8 +901,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   text-align: center;
   color: #808080;
@@ -913,13 +911,13 @@ Array [
 }
 
 <div
-    className="emotion-11"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
     >
       <h3
-        className="emotion-0"
+        className="emotion-2"
       >
         Number of 
         Keys
@@ -928,31 +926,31 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-3"
     >
       <div
-        className="emotion-9"
+        className="emotion-4"
       >
         <table
-          className="emotion-8"
+          className="emotion-5"
         >
           <thead>
             <tr>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 API Key Name
               </th>
               <th
-                className="emotion-2"
+                className="emotion-6"
               >
                 Permissions
               </th>
               <th
-                className="emotion-5"
+                className="emotion-8"
               >
                 <div
-                  className="emotion-4"
+                  className="emotion-9"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -964,13 +962,13 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-7"
+              className="emotion-10"
             >
               <td
                 colSpan={3}
               >
                 <div
-                  className="emotion-6"
+                  className="emotion-11"
                 >
                   No api keys
                 </div>

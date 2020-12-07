@@ -4,12 +4,14 @@ import { colors, constants, spacing } from '../Styles'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
+import { ACTIONS } from './reducer'
+
 export const COLOR_TAB_WIDTH = 3
 
 const TimelineAccordion = ({
-  moduleColor,
-  name,
-  predictions,
+  color,
+  timeline,
+  tracks,
   dispatch,
   isOpen,
   children,
@@ -19,12 +21,11 @@ const TimelineAccordion = ({
       css={{
         backgroundColor: colors.structure.soot,
         borderBottom: constants.borders.regular.smoke,
-        borderRight: constants.borders.regular.smoke,
       }}
       open={isOpen}
     >
       <summary
-        aria-label={name}
+        aria-label={timeline}
         css={{
           listStyleType: 'none',
           '::-webkit-details-marker': { display: 'none' },
@@ -36,14 +37,14 @@ const TimelineAccordion = ({
         }}
         onClick={(event) => {
           event.preventDefault()
-          dispatch({ [name]: !isOpen })
+          dispatch({ type: ACTIONS.TOGGLE_OPEN, payload: { timeline } })
         }}
       >
         <div css={{ display: 'flex' }}>
           <div
             css={{
               width: COLOR_TAB_WIDTH,
-              backgroundColor: moduleColor,
+              backgroundColor: color,
               marginRight: spacing.base,
             }}
           />
@@ -51,7 +52,7 @@ const TimelineAccordion = ({
           <ChevronSvg
             height={constants.icons.regular}
             css={{
-              color: moduleColor,
+              color,
               transform: isOpen ? '' : 'rotate(-90deg)',
               alignSelf: 'center',
             }}
@@ -67,14 +68,14 @@ const TimelineAccordion = ({
               paddingRight: 0,
             }}
           >
-            {name}
+            {timeline}
           </div>
 
           <div
             css={{
               padding: spacing.base,
             }}
-          >{`(${predictions.length})`}</div>
+          >{`(${tracks.length})`}</div>
         </div>
       </summary>
 
@@ -84,13 +85,18 @@ const TimelineAccordion = ({
 }
 
 TimelineAccordion.propTypes = {
-  moduleColor: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  predictions: PropTypes.arrayOf(
+  color: PropTypes.string.isRequired,
+  timeline: PropTypes.string.isRequired,
+  tracks: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      count: PropTypes.number.isRequired,
-    }),
+      track: PropTypes.string.isRequired,
+      hits: PropTypes.arrayOf(
+        PropTypes.shape({
+          start: PropTypes.number.isRequired,
+          stop: PropTypes.number.isRequired,
+        }).isRequired,
+      ).isRequired,
+    }).isRequired,
   ).isRequired,
   isOpen: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,

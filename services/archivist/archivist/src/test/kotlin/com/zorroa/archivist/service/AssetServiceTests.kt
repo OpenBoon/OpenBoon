@@ -5,7 +5,9 @@ import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetMetrics
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.BatchUpdateCustomFieldsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
+import com.zorroa.archivist.domain.FieldSpec
 import com.zorroa.archivist.domain.Label
 import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.InternalTask
@@ -63,6 +65,9 @@ class AssetServiceTests : AbstractTest() {
     @Autowired
     lateinit var projectQuotasDao: ProjectQuotasDao
 
+    @Autowired
+    lateinit var fieldService: FieldService
+
     override fun requiresElasticSearch(): Boolean {
         return true
     }
@@ -91,6 +96,19 @@ class AssetServiceTests : AbstractTest() {
         )
         assetService.batchCreate(req)
         assertNotNull(assetService.getExistingAssetId(spec))
+    }
+
+    @Test
+    fun testGetExistingAssetIdById() {
+        val spec = AssetSpec("gs://cats/large-brown-cat.pdf", id = "abcd12345")
+        assertNull(assetService.getExistingAssetId(spec))
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        assetService.batchCreate(req)
+        assertNotNull(assetService.getExistingAssetId(spec))
+        assertTrue(assetService.getAll(listOf("abcd12345")).isNotEmpty())
     }
 
     @Test
@@ -182,26 +200,9 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchCreateAssets_WithIgnoreFields() {
-        val spec = AssetSpec(
-            "gs://cats/large-brown-cat.jpg",
-            mapOf("system.hello" to "foo")
-        )
-
-        val req = BatchCreateAssetsRequest(
-            assets = listOf(spec)
-        )
-        val rsp = assetService.batchCreate(req)
-        assertTrue(rsp.failed.isEmpty())
-        val assets = assetService.getAll(rsp.created)
-        assertNull(assets[0].getAttr("system.hello"))
-    }
-
-    @Test
     fun testBatchCreateNonPageableWithPage() {
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.jpg",
-            mapOf("system.hello" to "foo"),
             page = 2
         )
 
@@ -240,12 +241,10 @@ class AssetServiceTests : AbstractTest() {
         val req = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec(
-                    "gs://cats/large-brown-cat.jpg",
-                    mapOf("system.hello" to "foo")
+                    "gs://cats/large-brown-cat.jpg"
                 ),
                 AssetSpec(
                     "gs://cats/large-brown-dog.png",
-                    mapOf("system.hello" to "foo"),
                     page = 2
                 )
             )
@@ -265,7 +264,6 @@ class AssetServiceTests : AbstractTest() {
     fun testBatchCreateAssetsWithPage() {
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.pdf",
-            mapOf("system.hello" to "foo"),
             page = 2
         )
 
@@ -291,7 +289,6 @@ class AssetServiceTests : AbstractTest() {
 
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.jpg",
-            mapOf("system.hello" to "foo"),
             label = Label(ds.id, "bilbo")
         )
 
@@ -395,6 +392,60 @@ class AssetServiceTests : AbstractTest() {
         )
         val rsp = assetService.batchUpdate(update)
         assertFalse(rsp.hasFailures())
+    }
+
+    @Test
+    fun testBatchUpdateCustomFields() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-cat.jpg"),
+
+            )
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        var asset1 = assetService.getAsset(createRsp.created[0])
+
+        val req = BatchUpdateCustomFieldsRequest(
+            mapOf(
+                asset1.id to mapOf(
+                    "country" to "New Zealand",
+                    "custom.shoe" to "nike"
+                )
+            )
+        )
+
+        fieldService.createField(FieldSpec("country", "keyword"))
+        fieldService.createField(FieldSpec("shoe", "keyword"))
+
+        val rsp = assetService.batchUpdateCustomFields(req)
+        assertTrue(rsp.success)
+
+        asset1 = assetService.getAsset(asset1.id)
+        assertEquals("New Zealand", asset1.getAttr("custom.country"))
+        assertEquals("nike", asset1.getAttr("custom.shoe"))
+    }
+
+    @Test
+    fun testBatchUpdateCustomFieldsFailure() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-cat.jpg")
+            )
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        var asset1 = assetService.getAsset(createRsp.created[0])
+
+        val req = BatchUpdateCustomFieldsRequest(
+            mapOf(
+                asset1.id to mapOf(
+                    "country" to "New Zealand",
+                    "custom.shoe" to "nike"
+                )
+            )
+        )
+
+        val rsp = assetService.batchUpdateCustomFields(req)
+        assertFalse(rsp.success)
     }
 
     @Test

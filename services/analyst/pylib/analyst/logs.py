@@ -53,8 +53,8 @@ class LogFileRotator:
             self.handler.close()
             task_logger.removeHandler(self.handler)
             self.upload_log_file()
-        except Exception as e:
-            logger.warning(f'Failed to publish task log for {self.task_id}', e)
+        except Exception:
+            logger.exception(f'Failed to publish task log for {self.task_id}')
         finally:
             self.cleanup_log_file()
             self.handler = None

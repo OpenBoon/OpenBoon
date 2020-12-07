@@ -4,10 +4,10 @@ import subprocess
 import tempfile
 
 from zmlp import FileImport
-from zmlpsdk import AssetProcessor, Argument, ExpandFrame, ZmlpFatalProcessorException, FileTypes
+from zmlpsdk import AssetProcessor, Argument, \
+    ExpandFrame, ZmlpFatalProcessorException, FileTypes, StopWatch
 from zmlpsdk.storage import file_storage, ZmlpStorageException
 from .oclient import OfficerClient
-
 from ..util.media import media_size
 
 __all__ = ['OfficeImporter', '_content_sanitizer']
@@ -21,6 +21,9 @@ class OfficeImporter(AssetProcessor):
 
     default_dpi = 150
     """The default DPI for PDF rendering"""
+
+    max_pdf_res = 10000
+    """Max PDF render resolution.  Azure max is 10k"""
 
     def __init__(self):
         super(OfficeImporter, self).__init__()
@@ -38,7 +41,7 @@ class OfficeImporter(AssetProcessor):
             self.arg('dpi').value = 300
         self.oclient = OfficerClient(dpi=self.arg_value('dpi'))
 
-    def get_metadata(self, uri, page):
+    def get_metadata(self, asset, page):
         """
         Get the rendered metadata blob for given output URI.
 
@@ -54,25 +57,12 @@ class OfficeImporter(AssetProcessor):
 
         """
         try:
-            zuri = '{}/metadata.{}.json'.format(uri, page)
-            with open(file_storage.localize_file(zuri), 'r') as fp:
+            file_id = self.oclient.get_metadata_file_id(asset, page)
+            with open(file_storage.localize_file(file_id), 'r') as fp:
                 return json.load(fp, object_hook=_content_sanitizer)
         except ZmlpStorageException as e:
             raise ZmlpFatalProcessorException(
-                'Unable to obtain officer metadata, {} {}, {}'.format(uri, page, e))
-
-    def get_image_uri(self, uri, page):
-        """
-        Return the ZMLP storage URL for the given page.
-
-        Args:
-            uri (str):  A previously created output uri.
-            page (int): The page number, 0 for parent page.
-
-        Returns:
-            str: the ZMLP URL to the image.
-        """
-        return '{}/proxy.{}.jpg'.format(uri, max(page, 0))
+                'Unable to obtain officer metadata, {} {}, {}'.format(asset, page, e))
 
     def process(self, frame):
         """Processes the given frame by sending it to the Officer service for render.
@@ -83,11 +73,7 @@ class OfficeImporter(AssetProcessor):
         asset = frame.asset
         page = max(int(asset.get_attr('media.pageNumber') or 1), 1)
 
-        output_uri = self.render_pages(asset, page, page == 1)
-        media = asset.get_attr('media') or {}
-        media.update(self.get_metadata(output_uri, page))
-        asset.set_attr('media', media)
-        asset.set_attr('media.type', 'document')
+        self.render_pages(asset, page, page == 1)
 
         # If we're on page 1 and extract_doc_pages is true.
         if page == 1 and self.arg_value('extract_doc_pages'):
@@ -97,7 +83,6 @@ class OfficeImporter(AssetProcessor):
                 # Start on page 2 since we just processed page 1
                 for page_num in range(2, num_pages + 1):
                     file_import = FileImport("asset:{}".format(asset.id), page=page_num)
-                    file_import.attrs[self.tmp_loc_attr] = output_uri
                     expand = ExpandFrame(file_import)
                     self.expand(frame, expand)
 
@@ -123,33 +108,41 @@ class OfficeImporter(AssetProcessor):
         """
         try:
             # Don't render images for PDF
-            disable_image_render = asset.extension == 'pdf'
+            is_pdf = asset.extension == 'pdf'
             cache_loc = self.oclient.get_cache_location(asset, page)
 
             if cache_loc:
                 self.logger.info('CACHED proxy and metadata outputs: {}'.format(cache_loc))
             else:
                 if all_pages and self.arg_value('extract_doc_pages'):
-                    cache_loc = self.oclient.render(asset, -1, disable_image_render)
+                    cache_loc = self.oclient.render(asset, -1, is_pdf)
                     self.logger.info(
                         'ALL render of proxy and metadata outputs to: {}'.format(cache_loc))
                 else:
-                    cache_loc = self.oclient.render(asset, page, disable_image_render)
+                    cache_loc = self.oclient.render(asset, page, is_pdf)
                     self.logger.info(
                         'SINGLE render of proxy and metadata outputs to: {}'.format(cache_loc))
 
+            # Need these set in order to render PDFs
+            media = asset.get_attr('media') or {}
+            media.update(self.get_metadata(asset, page))
+            asset.set_attr('media', media)
+            asset.set_attr('media.type', 'document')
+
             # Officer only renders metadata for PDFs, the image is rendered here.
-            if disable_image_render:
+            if is_pdf:
                 full_size_render = self.render_pdf_page(asset, page)
                 asset.set_attr('tmp.proxy_source_image', full_size_render)
                 if self.arg_value('ocr'):
                     self.store_ocr_proxy(asset, full_size_render)
             else:
-                asset.set_attr('tmp.proxy_source_image', self.get_image_uri(cache_loc, page))
+                asset.set_attr('tmp.proxy_source_image',
+                               self.oclient.get_image_file_id(asset, page))
 
             return cache_loc
 
         except Exception as e:
+            self.logger.exception("Unable to determine page cache location")
             raise ZmlpFatalProcessorException(
                 'Unable to determine page cache location {}, {}'.format(asset.id, e), e)
 
@@ -166,6 +159,15 @@ class OfficeImporter(AssetProcessor):
         """
         input_path = file_storage.localize_file(asset)
         dst_path = os.path.join(tempfile.gettempdir(), asset.id + "_pdf_proxy")
+        dpi = self.arg_value('dpi')
+
+        # Attempt to figure out scale.  PDFs use 'pts' and not 'dpi'.
+        # Standard 'pts' value is 72
+        scale = None
+        w_res = (asset.get_attr('media.width') / float(72)) * dpi
+        h_res = (asset.get_attr('media.height') / float(72)) * dpi
+        if w_res > self.max_pdf_res or h_res > self.max_pdf_res:
+            scale = ['-scale-to', str(self.max_pdf_res)]
 
         # Overall the png results in a smaller size for most PDF files.
         # Because the compression works better on documents with just
@@ -174,13 +176,22 @@ class OfficeImporter(AssetProcessor):
                '-singlefile',
                '-f', str(page),
                '-r', str(self.arg_value('dpi')),
-               '-hide-annotations',
-               '-png',
-               input_path, dst_path]
-        self.logger.debug(cmd)
+               '-hide-annotations']
 
-        subprocess.check_call(cmd, shell=False)
-        return f"{dst_path}.png"
+        if scale:
+            cmd.extend(scale)
+
+        cmd.extend([
+            '-jpegopt', 'quality=100',
+            '-jpegopt', 'optimize=y',
+            '-jpeg',
+            input_path, dst_path])
+
+        with StopWatch("Render PDF"):
+            self.logger.debug(cmd)
+            subprocess.check_call(cmd, shell=False)
+
+        return f"{dst_path}.jpg"
 
     def store_ocr_proxy(self, asset, src_path):
         """
@@ -198,10 +209,10 @@ class OfficeImporter(AssetProcessor):
             self.logger.warning("There was no proxy_source_image to store as an OCR proxy.")
             return
 
-        # Note the OCR image for PDF is a ping
+        # Note the OCR image for PDF is a jpg
         size = media_size(src_path)
         attrs = {"width": size[0], "height": size[1]}
-        prx = file_storage.assets.store_file(src_path, asset, "ocr-proxy", "ocr-proxy.png", attrs)
+        prx = file_storage.assets.store_file(src_path, asset, "ocr-proxy", "ocr-proxy.jpg", attrs)
         return prx
 
 

@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import Feature, { ENVS } from '..'
 
@@ -13,6 +13,10 @@ describe('<Feature />', () => {
     )
 
     expect(component.toJSON()).toEqual(null)
+
+    act(() => {
+      component.unmount()
+    })
   })
 
   it('should render an enabled feature', () => {
@@ -25,6 +29,10 @@ describe('<Feature />', () => {
     )
 
     expect(component.toJSON()).toEqual('Hello')
+
+    act(() => {
+      component.unmount()
+    })
   })
 
   it('should render a feature with no env in localdev', () => {

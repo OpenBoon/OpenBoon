@@ -241,3 +241,10 @@ class FilterBuddy(object):
         for _filter in filters:
             query = _filter.add_to_query(query)
         return query
+
+    def reduce_filters_to_clip_query(self, filters):
+        """Takes a list of Filters and combines their clip queries into one."""
+        query = {}
+        for _filter in filters:
+            query = _filter.add_to_clip_query(query)
+        return query

@@ -1,0 +1,916 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TimelineTimelines /> should render properly 1`] = `
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  margin-left: -200px;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-1 {
+  width: 200px;
+  z-index: 20;
+  background-color: #191919;
+  border-right: 1px solid #3b3b3b;
+}
+
+.emotion-2 {
+  background-color: #212121;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-3 {
+  list-style-type: none;
+  background-color: #212121;
+}
+
+.emotion-3::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-3:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5 {
+  width: 3px;
+  background-color: #a03dc7;
+  margin-right: 8px;
+}
+
+.emotion-6 {
+  color: #a03dc7;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 8px;
+  padding-right: 0;
+}
+
+.emotion-8 {
+  padding: 8px;
+}
+
+.emotion-12 {
+  width: 3px;
+  background-color: #d6680b;
+  margin-right: 8px;
+}
+
+.emotion-13 {
+  color: #d6680b;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-19 {
+  width: 3px;
+  background-color: #ebb52e;
+  margin-right: 8px;
+}
+
+.emotion-20 {
+  color: #ebb52e;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-26 {
+  width: 3px;
+  background-color: #009f22;
+  margin-right: 8px;
+}
+
+.emotion-27 {
+  color: #009f22;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-30 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-31 {
+  width: 3px;
+  background-color: #009f22;
+}
+
+.emotion-32 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  border-top: 1px solid #3b3b3b;
+  background-color: #191919;
+  overflow: hidden;
+}
+
+.emotion-33 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 8px;
+  padding-left: 40px;
+  padding-right: 0;
+}
+
+.emotion-34 {
+  padding: 8px;
+}
+
+.emotion-45 {
+  height: 16px;
+  background-color: #191919;
+}
+
+.emotion-46 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  height: -webkit-fit-content;
+  height: -moz-content;
+  height: fit-content;
+}
+
+.emotion-47 {
+  width: 100%;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <details
+      className="emotion-2"
+      open={false}
+    >
+      <summary
+        aria-label="gcp-video-label-detection"
+        className="emotion-3"
+        onClick={[Function]}
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-5"
+          />
+          <svg
+            className="emotion-6"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-7"
+          >
+            gcp-video-label-detection
+          </div>
+          <div
+            className="emotion-8"
+          >
+            (2)
+          </div>
+        </div>
+      </summary>
+    </details>
+    <details
+      className="emotion-2"
+      open={false}
+    >
+      <summary
+        aria-label="gcp-video-logo-detection"
+        className="emotion-3"
+        onClick={[Function]}
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-12"
+          />
+          <svg
+            className="emotion-13"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-7"
+          >
+            gcp-video-logo-detection
+          </div>
+          <div
+            className="emotion-8"
+          >
+            (3)
+          </div>
+        </div>
+      </summary>
+    </details>
+    <details
+      className="emotion-2"
+      open={false}
+    >
+      <summary
+        aria-label="gcp-video-object-detection"
+        className="emotion-3"
+        onClick={[Function]}
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-19"
+          />
+          <svg
+            className="emotion-20"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-7"
+          >
+            gcp-video-object-detection
+          </div>
+          <div
+            className="emotion-8"
+          >
+            (3)
+          </div>
+        </div>
+      </summary>
+    </details>
+    <details
+      className="emotion-2"
+      open={true}
+    >
+      <summary
+        aria-label="gcp-video-text-detection"
+        className="emotion-3"
+        onClick={[Function]}
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-26"
+          />
+          <svg
+            className="emotion-27"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-7"
+          >
+            gcp-video-text-detection
+          </div>
+          <div
+            className="emotion-8"
+          >
+            (3)
+          </div>
+        </div>
+      </summary>
+      <div>
+        <div
+          className="emotion-30"
+        >
+          <div
+            className="emotion-31"
+          />
+          <div
+            className="emotion-32"
+          >
+            <div
+              className="emotion-33"
+            >
+              Gh st
+            </div>
+            <div
+              className="emotion-34"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-30"
+        >
+          <div
+            className="emotion-31"
+          />
+          <div
+            className="emotion-32"
+          >
+            <div
+              className="emotion-33"
+            >
+              Lemon
+            </div>
+            <div
+              className="emotion-34"
+            >
+              (1)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-30"
+        >
+          <div
+            className="emotion-31"
+          />
+          <div
+            className="emotion-32"
+          >
+            <div
+              className="emotion-33"
+            >
+              Busters
+            </div>
+            <div
+              className="emotion-34"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <div
+      className="emotion-45"
+    />
+  </div>
+  <div
+    className="emotion-46"
+  >
+    <div
+      className="emotion-47"
+    >
+      <TimelineTracks
+        color="#a03dc7"
+        isOpen={false}
+        length={18}
+        tracks={
+          Array [
+            Object {
+              "hits": Array [
+                Object {
+                  "highlight": false,
+                  "start": 1,
+                  "stop": 2,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 3,
+                  "stop": 6,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 11,
+                  "stop": 15,
+                },
+              ],
+              "track": "Label 1",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "highlight": false,
+                  "start": 7,
+                  "stop": 10,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 16,
+                  "stop": 17,
+                },
+              ],
+              "track": "Label 2 Plus More Text to Make A Long Label String",
+            },
+          ]
+        }
+        videoRef={
+          Object {
+            "current": Object {
+              "duration": 18,
+            },
+          }
+        }
+      />
+      <TimelineTracks
+        color="#d6680b"
+        isOpen={false}
+        length={18}
+        tracks={
+          Array [
+            Object {
+              "hits": Array [
+                Object {
+                  "highlight": false,
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Logo 1",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "highlight": false,
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Logo 2",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "highlight": false,
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Logo 3",
+            },
+          ]
+        }
+        videoRef={
+          Object {
+            "current": Object {
+              "duration": 18,
+            },
+          }
+        }
+      />
+      <TimelineTracks
+        color="#ebb52e"
+        isOpen={false}
+        length={18}
+        tracks={
+          Array [
+            Object {
+              "hits": Array [
+                Object {
+                  "highlight": false,
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Object 1",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "highlight": false,
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Object 2",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "highlight": false,
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Object 3",
+            },
+          ]
+        }
+        videoRef={
+          Object {
+            "current": Object {
+              "duration": 18,
+            },
+          }
+        }
+      />
+      <TimelineTracks
+        color="#009f22"
+        isOpen={true}
+        length={18}
+        tracks={
+          Array [
+            Object {
+              "hits": Array [
+                Object {
+                  "highlight": false,
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Gh st",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "highlight": true,
+                  "start": 6,
+                  "stop": 7,
+                },
+              ],
+              "track": "Lemon",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "highlight": false,
+                  "start": 6,
+                  "stop": 7,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 13,
+                  "stop": 14,
+                },
+                Object {
+                  "highlight": false,
+                  "start": 15,
+                  "stop": 15,
+                },
+              ],
+              "track": "Busters",
+            },
+          ]
+        }
+        videoRef={
+          Object {
+            "current": Object {
+              "duration": 18,
+            },
+          }
+        }
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TimelineTimelines /> should render properly with Search Highlights Only 1`] = `
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  margin-left: -200px;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-1 {
+  width: 200px;
+  z-index: 20;
+  background-color: #191919;
+  border-right: 1px solid #3b3b3b;
+}
+
+.emotion-2 {
+  background-color: #212121;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-3 {
+  list-style-type: none;
+  background-color: #212121;
+}
+
+.emotion-3::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-3:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5 {
+  width: 3px;
+  background-color: #009f22;
+  margin-right: 8px;
+}
+
+.emotion-6 {
+  color: #009f22;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 8px;
+  padding-right: 0;
+}
+
+.emotion-8 {
+  padding: 8px;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-10 {
+  width: 3px;
+  background-color: #009f22;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  border-top: 1px solid #3b3b3b;
+  background-color: #191919;
+  overflow: hidden;
+}
+
+.emotion-12 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 8px;
+  padding-left: 40px;
+  padding-right: 0;
+}
+
+.emotion-13 {
+  padding: 8px;
+}
+
+.emotion-14 {
+  height: 16px;
+  background-color: #191919;
+}
+
+.emotion-15 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  height: -webkit-fit-content;
+  height: -moz-content;
+  height: fit-content;
+}
+
+.emotion-16 {
+  width: 100%;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <details
+      className="emotion-2"
+      open={true}
+    >
+      <summary
+        aria-label="gcp-video-text-detection"
+        className="emotion-3"
+        onClick={[Function]}
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-5"
+          />
+          <svg
+            className="emotion-6"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-7"
+          >
+            gcp-video-text-detection
+          </div>
+          <div
+            className="emotion-8"
+          >
+            (1)
+          </div>
+        </div>
+      </summary>
+      <div>
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-10"
+          />
+          <div
+            className="emotion-11"
+          >
+            <div
+              className="emotion-12"
+            >
+              Lemon
+            </div>
+            <div
+              className="emotion-13"
+            >
+              (1)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <div
+      className="emotion-14"
+    />
+  </div>
+  <div
+    className="emotion-15"
+  >
+    <div
+      className="emotion-16"
+    >
+      <TimelineTracks
+        color="#009f22"
+        isOpen={true}
+        length={18}
+        tracks={
+          Array [
+            Object {
+              "hits": Array [
+                Object {
+                  "highlight": true,
+                  "start": 6,
+                  "stop": 7,
+                },
+              ],
+              "track": "Lemon",
+            },
+          ]
+        }
+        videoRef={
+          Object {
+            "current": Object {
+              "duration": 18,
+            },
+          }
+        }
+      />
+    </div>
+  </div>
+</div>
+`;

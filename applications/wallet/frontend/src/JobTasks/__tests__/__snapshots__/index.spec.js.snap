@@ -4,18 +4,20 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
 @keyframes animation-0 {
   from {
     -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
     -ms-transform: rotate(0deg);
     transform: rotate(0deg);
   }
 
   to {
     -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
     -ms-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
 
-.emotion-41 {
+.emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -26,7 +28,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -37,7 +39,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -45,14 +46,14 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-4 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -68,11 +69,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -81,33 +82,29 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited,
+.emotion-3 .noop {
   background-color: #73b61c;
 }
 
-.emotion-4:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -118,55 +115,60 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-5 {
+  -webkit-animation: ;
+  animation: ;
+}
+
+.emotion-6 {
   padding-left: 4px;
 }
 
-.emotion-40 {
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-38 {
+.emotion-9 {
   height: auto;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-38 tr {
+.emotion-9 tr {
   background-color: #252525;
 }
 
-.emotion-38 tr:nth-of-type(2n) {
+.emotion-9 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-38 tr:hover {
+.emotion-9 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-38 tr:hover .actions {
+.emotion-9 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-38 tr:hover td {
+.emotion-9 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-38 tr:hover td:first-of-type {
+.emotion-9 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-38 tr:hover td:last-of-type {
+.emotion-9 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-38 td {
+.emotion-9 td {
   max-width: calc(100vw / 4);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -178,16 +180,16 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   border-right: 0;
 }
 
-.emotion-38 td:first-of-type {
+.emotion-9 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-38 td:last-of-type {
+.emotion-9 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-6 {
+.emotion-10 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -199,51 +201,51 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   width: auto;
 }
 
-.emotion-6:nth-of-type(2) {
+.emotion-10:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-10:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-16 {
+.emotion-15 {
   cursor: pointer;
 }
 
-.emotion-12 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-17 {
   padding-left: 16px;
 }
 
-.emotion-13:hover {
+.emotion-18:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-14 {
+.emotion-19 {
   font-style: italic;
 }
 
-.emotion-17 {
+.emotion-23 {
   -webkit-animation: animation-0 2s linear infinite;
   animation: animation-0 2s linear infinite;
 }
 
 <div
-  className="emotion-41"
+  className="emotion-0"
 >
   <div
-    className="emotion-5"
+    className="emotion-1"
   >
     <h3
-      className="emotion-0"
+      className="emotion-2"
     >
       Number of 
       Tasks
@@ -251,21 +253,21 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
       3
     </h3>
     <button
-      className="emotion-4"
+      className="emotion-3"
       onClick={[Function]}
       type="button"
     >
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
         <svg
-          className="emotion-1"
+          className="emotion-5"
           color="#ffffff"
           data-file-name="refresh.svg"
           height={20}
         />
         <div
-          className="emotion-2"
+          className="emotion-6"
         >
           Refresh 
           Tasks
@@ -274,38 +276,38 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
     </button>
   </div>
   <div
-    className="emotion-40"
+    className="emotion-7"
   >
     <div
-      className="emotion-39"
+      className="emotion-8"
     >
       <table
-        className="emotion-38"
+        className="emotion-9"
       >
         <thead>
           <tr>
             <th
-              className="emotion-6"
+              className="emotion-10"
             >
               State
             </th>
             <th
-              className="emotion-6"
+              className="emotion-10"
             >
               Description
             </th>
             <th
-              className="emotion-6"
+              className="emotion-10"
             >
               Started
             </th>
             <th
-              className="emotion-6"
+              className="emotion-10"
             >
               Duration
             </th>
             <th
-              className="emotion-6"
+              className="emotion-10"
             >
               Errors
             </th>
@@ -313,11 +315,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
         </thead>
         <tbody>
           <tr
-            className="emotion-16"
+            className="emotion-15"
             onClick={[Function]}
           >
             <td
-              className="emotion-12"
+              className="emotion-16"
             >
               <svg
                 color="#ffffff"
@@ -325,15 +327,15 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
                 height={20}
               />
               <span
-                className="emotion-11"
+                className="emotion-17"
               >
                 Waiting
               </span>
             </td>
             <td>
               <a
-                className="emotion-13"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f6/script"
+                className="emotion-18"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f6"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="Expand with 20 assets, 8 processors."
@@ -343,14 +345,14 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             </td>
             <td>
               <div
-                className="emotion-14"
+                className="emotion-19"
               >
                 Waiting...
               </div>
             </td>
             <td>
               <div
-                className="emotion-14"
+                className="emotion-19"
               >
                 Waiting...
               </div>
@@ -360,28 +362,28 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-16"
+            className="emotion-15"
             onClick={[Function]}
           >
             <td
-              className="emotion-12"
+              className="emotion-16"
             >
               <svg
-                className="emotion-17"
+                className="emotion-23"
                 color="#ebb52e"
                 data-file-name="generating.svg"
                 height={20}
               />
               <span
-                className="emotion-11"
+                className="emotion-17"
               >
                 Running
               </span>
             </td>
             <td>
               <a
-                className="emotion-13"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82545/script"
+                className="emotion-18"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82545"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'"
@@ -400,11 +402,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-16"
+            className="emotion-15"
             onClick={[Function]}
           >
             <td
-              className="emotion-12"
+              className="emotion-16"
             >
               <svg
                 color="#009f22"
@@ -412,15 +414,15 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
                 height={20}
               />
               <span
-                className="emotion-11"
+                className="emotion-17"
               >
                 Success
               </span>
             </td>
             <td>
               <a
-                className="emotion-13"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82545/script"
+                className="emotion-18"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82545"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="Expand with 15 assets, 8 processors."
@@ -439,11 +441,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-16"
+            className="emotion-15"
             onClick={[Function]}
           >
             <td
-              className="emotion-12"
+              className="emotion-16"
             >
               <svg
                 color="#c92300"
@@ -451,15 +453,15 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
                 height={20}
               />
               <span
-                className="emotion-11"
+                className="emotion-17"
               >
                 Failure
               </span>
             </td>
             <td>
               <a
-                className="emotion-13"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f9/script"
+                className="emotion-18"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f9"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="Expand with 20 assets, 8 processors."
@@ -478,11 +480,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-16"
+            className="emotion-15"
             onClick={[Function]}
           >
             <td
-              className="emotion-12"
+              className="emotion-16"
             >
               <svg
                 color="#808080"
@@ -490,15 +492,15 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
                 height={20}
               />
               <span
-                className="emotion-11"
+                className="emotion-17"
               >
                 Skipped
               </span>
             </td>
             <td>
               <a
-                className="emotion-13"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82549/script"
+                className="emotion-18"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82549"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'"
@@ -517,11 +519,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-16"
+            className="emotion-15"
             onClick={[Function]}
           >
             <td
-              className="emotion-12"
+              className="emotion-16"
             >
               <svg
                 color="#0074f5"
@@ -529,15 +531,15 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
                 height={20}
               />
               <span
-                className="emotion-11"
+                className="emotion-17"
               >
                 Queued
               </span>
             </td>
             <td>
               <a
-                className="emotion-13"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82549/script"
+                className="emotion-18"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82549"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="Expand with 15 assets, 8 processors."
@@ -558,18 +560,18 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
         </tbody>
       </table>
     </div>
-  </div>
-  <div>
-     
-  </div>
-  <div>
-     
+    <div>
+       
+    </div>
+    <div>
+       
+    </div>
   </div>
 </div>
 `;
 
 exports[`<JobTasks /> should render properly without job tasks 1`] = `
-.emotion-17 {
+.emotion-0 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -580,7 +582,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -591,7 +593,6 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   align-items: flex-end;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   -webkit-flex-shrink: 0;
@@ -599,14 +600,14 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-0 {
+.emotion-2 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-4 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -622,11 +623,11 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -635,33 +636,29 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited,
+.emotion-3 .noop {
   background-color: #73b61c;
 }
 
-.emotion-4:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -672,38 +669,23 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-5 {
+  -webkit-animation: ;
+  animation: ;
+}
+
+.emotion-6 {
   padding-left: 4px;
 }
 
-.emotion-16 {
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-6 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: auto;
-}
-
-.emotion-6:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-6:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-15 {
+.emotion-8 {
   position: absolute;
   top: 0;
   left: 0;
@@ -711,44 +693,44 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   bottom: 0;
 }
 
-.emotion-14 {
+.emotion-9 {
   height: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-14 tr {
+.emotion-9 tr {
   background-color: #252525;
 }
 
-.emotion-14 tr:nth-of-type(2n) {
+.emotion-9 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-14 tr:hover {
+.emotion-9 tr:hover {
   background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-14 tr:hover .actions {
+.emotion-9 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-14 tr:hover td {
+.emotion-9 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-14 tr:hover td:first-of-type {
+.emotion-9 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-14 tr:hover td:last-of-type {
+.emotion-9 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-14 td {
+.emotion-9 td {
   max-width: calc(100vw / 4);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -760,21 +742,41 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   border-right: 0;
 }
 
-.emotion-14 td:first-of-type {
+.emotion-9 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-14 td:last-of-type {
+.emotion-9 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-13 {
+.emotion-10 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-10:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-10:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-15 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-12 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -787,8 +789,8 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   text-align: center;
   color: #808080;
@@ -796,7 +798,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   line-height: 19px;
 }
 
-.emotion-11 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -813,13 +815,13 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
 }
 
 <div
-  className="emotion-17"
+  className="emotion-0"
 >
   <div
-    className="emotion-5"
+    className="emotion-1"
   >
     <h3
-      className="emotion-0"
+      className="emotion-2"
     >
       Number of 
       Tasks
@@ -827,21 +829,21 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
       0
     </h3>
     <button
-      className="emotion-4"
+      className="emotion-3"
       onClick={[Function]}
       type="button"
     >
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
         <svg
-          className="emotion-1"
+          className="emotion-5"
           color="#ffffff"
           data-file-name="refresh.svg"
           height={20}
         />
         <div
-          className="emotion-2"
+          className="emotion-6"
         >
           Refresh 
           Tasks
@@ -850,38 +852,38 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
     </button>
   </div>
   <div
-    className="emotion-16"
+    className="emotion-7"
   >
     <div
-      className="emotion-15"
+      className="emotion-8"
     >
       <table
-        className="emotion-14"
+        className="emotion-9"
       >
         <thead>
           <tr>
             <th
-              className="emotion-6"
+              className="emotion-10"
             >
               State
             </th>
             <th
-              className="emotion-6"
+              className="emotion-10"
             >
               Description
             </th>
             <th
-              className="emotion-6"
+              className="emotion-10"
             >
               Started
             </th>
             <th
-              className="emotion-6"
+              className="emotion-10"
             >
               Duration
             </th>
             <th
-              className="emotion-6"
+              className="emotion-10"
             >
               Errors
             </th>
@@ -889,16 +891,16 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
         </thead>
         <tbody>
           <tr
-            className="emotion-13"
+            className="emotion-15"
           >
             <td
               colSpan={5}
             >
               <div
-                className="emotion-12"
+                className="emotion-16"
               >
                 <div
-                  className="emotion-11"
+                  className="emotion-17"
                 >
                   <svg
                     data-file-name="noJobs.svg"

@@ -202,6 +202,7 @@ class Executor(object):
         self.ping_timer_seconds = ping_timer_seconds
         self.poll_timer_seconds = poll_timer_seconds
 
+        self.disable_poll_timer = False
         self.poll_count = 0
         self.current_task = None
         self.previous_task = None
@@ -218,8 +219,6 @@ class Executor(object):
         # Setup the task poll timer thread.
         if self.poll_timer_seconds:
             self.start_poll_timer()
-
-        self.disable_poll_timer = False
 
         # Clear out model cache.
         ModelCacheManager.instance.clear_cache_root()
@@ -290,9 +289,20 @@ class Executor(object):
         Returns:
             bool: True if there is no current task.
         """
-        logger.info("Analyst shutting down, disabling poll timer")
+        logger.info("Analyst shutting down, current task={}".format(self.current_task))
         self.disable_poll_timer = True
-        return self.current_task is None
+        if self.current_task:
+            return {
+                "task": self.current_task.task['taskId'],
+                "name": self.current_task.task['name'],
+                "exit": False
+            }
+        else:
+            return {
+                "task": None,
+                "name": None,
+                "exit": True
+            }
 
     def send_ping(self):
         """
@@ -358,9 +368,10 @@ class Executor(object):
         # Don't poll for tasks until the first ping is handled
         # by the archivist.
         while True:
-            time.sleep(self.poll_timer_seconds)
             if self.disable_poll_timer:
-                return
+                logger.info("terminating, shutdown by prestop")
+                os._exit(0)
+            time.sleep(self.poll_timer_seconds)
             if not self.first_ping:
                 self.poll_count += 1
                 if self.poll_count % 25 == 0:
@@ -368,7 +379,7 @@ class Executor(object):
                 try:
                     while True:
                         if self.disable_poll_timer:
-                            return
+                            break
                         task = self.queue_next_task()
                         if task:
                             self.run_task(task)

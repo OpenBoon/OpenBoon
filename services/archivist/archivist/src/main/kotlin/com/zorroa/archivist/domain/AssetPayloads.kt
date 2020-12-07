@@ -131,7 +131,10 @@ class ReprocessAssetSearchRequest(
     val dependOnJobIds: List<UUID>? = null,
 
     @ApiModelProperty("Filter by file types, defaults to all types.")
-    var fileTypes: List<FileType> = FileType.allTypes()
+    var fileTypes: List<FileType> = FileType.allTypes(),
+
+    @ApiModelProperty("Include standard modules in pipeline.")
+    val includeStandard: Boolean = true
 )
 
 @ApiModel(
@@ -225,3 +228,29 @@ class GenericBatchUpdateResponse(
     @ApiModelProperty("The number of assets deleted.")
     val deleted: Long? = null
 )
+
+@ApiModel(
+    "Batch Update Custom Field Request",
+    description = "Update custom fields on the given assets."
+)
+class BatchUpdateCustomFieldsRequest(
+
+    val update: Map<String, Map<String, Any>>
+
+) {
+    fun size(): Int {
+        return update.size
+    }
+}
+
+@ApiModel(
+    "Batch Update Custom Field Response",
+    description = "Update custom fields on the given assets."
+)
+class BatchUpdateCustomFieldsResponse(
+
+    val failed: Map<String, String>
+
+) {
+    val success = failed.isEmpty()
+}

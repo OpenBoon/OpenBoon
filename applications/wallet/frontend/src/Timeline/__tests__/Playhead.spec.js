@@ -6,7 +6,12 @@ describe('<TimelinePlayhead />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
       <TimelinePlayhead
-        videoRef={{ current: { currentTime: 5, duration: 10 } }}
+        videoRef={{ current: { currentTime: 5, duration: 10, paused: true } }}
+        rulerRef={{
+          current: { scrollWidth: 0, scrollLeft: 0, clientWidth: 0 },
+        }}
+        zoom={100}
+        followPlayhead
       />,
     )
 
@@ -15,6 +20,8 @@ describe('<TimelinePlayhead />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    component.unmount()
+    act(() => {
+      component.unmount()
+    })
   })
 })

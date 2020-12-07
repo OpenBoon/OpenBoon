@@ -1,2 +1,3 @@
 # flake8: noqa
-from .labels import ClarifaiLabelDetectionProcessor
+from .images import *
+from .video import *

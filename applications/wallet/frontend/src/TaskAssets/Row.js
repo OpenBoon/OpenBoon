@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import { typography, colors, spacing, constants } from '../Styles'
 
@@ -25,9 +25,9 @@ const TaskAssetsRow = ({
     },
   },
 }) => {
-  const [isOpen, setOpen] = useLocalStorageState({
+  const [isOpen, setOpen] = useLocalStorage({
     key: `TaskAssets.${id}`,
-    initialValue: false,
+    initialState: false,
   })
 
   return (

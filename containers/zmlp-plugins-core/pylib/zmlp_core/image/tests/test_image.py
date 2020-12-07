@@ -5,7 +5,6 @@ from zmlp_core.image.importers import ImageImporter
 TOUCAN = zorroa_test_data("images/set01/toucan.jpg")
 OFFICE = zorroa_test_data("office/multipage_tiff_small.tif")
 GEO_TAG = zorroa_test_data("images/set05/geo_tag_test.jpg")
-LGTS_BTY = zorroa_test_data("sequences/full/lgts_bty.16.png")
 RLA_FILE = zorroa_test_data("images/set06/ginsu_a_nc10.rla")
 
 
@@ -29,13 +28,6 @@ class ImageImporterUnitTestCase(PluginUnitTestCase):
         processor.process(frame)
         asset = frame.asset
         assert "2018-05-24T14:56:02" == asset.get_attr("media.timeCreated")
-
-    def test_extact_date_alt_format(self):
-        frame = Frame(TestAsset(LGTS_BTY))
-        processor = self.init_processor(ImageImporter(), {})
-        processor.process(frame)
-        document = frame.asset
-        assert document.get_attr('media.timeCreated') == "2016-09-22T14:02:54"
 
     def test_process_multipage_tiff(self):
         frame = Frame(TestAsset(OFFICE))

@@ -225,7 +225,7 @@ class JobLaunchServiceImpl(
             args = mapOf("search" to req.search)
         )
 
-        val pipeline = pipelineResolverService.resolveModular(req.modules)
+        val pipeline = pipelineResolverService.resolveModular(req.modules, req.includeStandard)
         val settings = mapOf(
             "index" to true,
             "batchSize" to clampBatchSize(req.batchSize),

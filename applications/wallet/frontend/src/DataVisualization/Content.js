@@ -3,10 +3,7 @@ import { useRouter } from 'next/router'
 
 import { constants, spacing } from '../Styles'
 
-import {
-  useLocalStorageReducer,
-  useLocalStorageState,
-} from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import VisualizerNavigation from '../Visualizer/Navigation'
 
@@ -21,15 +18,15 @@ const DataVisualizationContent = () => {
     query: { projectId },
   } = useRouter()
 
-  const [charts, dispatch] = useLocalStorageReducer({
+  const [charts, dispatch] = useLocalStorage({
     key: `DataVisualization.${projectId}`,
     reducer,
     initialState: [],
   })
 
-  const [layouts, setLayouts] = useLocalStorageState({
+  const [layouts, setLayouts] = useLocalStorage({
     key: `Charts.${projectId}`,
-    initialValue: {},
+    initialState: {},
   })
 
   const [isCreating, setIsCreating] = useState(charts.length === 0)

@@ -1,17 +1,25 @@
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { useRouter } from 'next/router'
 
 import { constants } from '../Styles'
+
+import Resizeable from '../Resizeable'
 
 import { getMetadata } from './helpers'
 
 import MetadataCuesContent from './Content'
 
-// TODO: make resizeable
-const MIN_WIDTH = 400
+export const MIN_WIDTH = 400
+
+export const noop = () => {}
 
 const MetadataCues = ({ videoRef }) => {
+  const {
+    query: { assetId },
+  } = useRouter()
+
   const [metadata, setMetadata] = useState({})
 
   const video = videoRef.current
@@ -41,25 +49,30 @@ const MetadataCues = ({ videoRef }) => {
       )
   }, [metadataTracks])
 
-  if (!video || !video.duration || metadataTracks.length === 0) return null
-
   return (
-    <div
-      css={{
-        width: MIN_WIDTH,
-        borderLeft: constants.borders.regular.black,
-        borderBottom: constants.borders.regular.black,
-      }}
-    >
-      <AutoSizer defaultHeight={0} disableWidth>
-        {
-          /* istanbul ignore next */
-          ({ height }) => (
-            <MetadataCuesContent metadata={metadata} height={height} />
-          )
-        }
-      </AutoSizer>
-    </div>
+    <AutoSizer defaultHeight={0} disableWidth>
+      {
+        /* istanbul ignore next */
+        ({ height }) => (
+          <div
+            css={{
+              height,
+              borderLeft: constants.borders.regular.black,
+              borderBottom: constants.borders.regular.black,
+            }}
+          >
+            <Resizeable
+              storageName={`MetadataCues.${assetId}`}
+              minSize={MIN_WIDTH}
+              openToThe="left"
+              isInitiallyOpen
+            >
+              <MetadataCuesContent metadata={metadata} />
+            </Resizeable>
+          </div>
+        )
+      }
+    </AutoSizer>
   )
 }
 

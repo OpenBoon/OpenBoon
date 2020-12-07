@@ -145,6 +145,10 @@ class AwsProjectStorageService constructor(
         return "s3://${properties.bucket}/${locator.getPath()}"
     }
 
+    override fun getNativeUri(locator: ProjectDirLocator): String {
+        return "s3://${properties.bucket}/${locator.getPath()}"
+    }
+
     override fun getSignedUrl(
         locator: ProjectStorageLocator,
         forWrite: Boolean,
@@ -201,6 +205,23 @@ class AwsProjectStorageService constructor(
                 LogObject.PROJECT_STORAGE, LogAction.DELETE,
                 "Failed to delete ${ex.message}",
                 mapOf("entityId" to locator.entityId, "entity" to locator.entity)
+            )
+        }
+    }
+
+    override fun recursiveDelete(path: String) {
+        logger.info("Recursive delete path:${properties.bucket}/$path")
+
+        try {
+            s3Client.listObjects(properties.bucket, path).objectSummaries.forEach {
+                s3Client.deleteObject(properties.bucket, it.key)
+                logDeleteEvent("${properties.bucket}${it.key}")
+            }
+        } catch (ex: AmazonS3Exception) {
+            logger.warnEvent(
+                LogObject.PROJECT_STORAGE, LogAction.DELETE,
+                "Failed to delete ${ex.message}",
+                mapOf("path" to path)
             )
         }
     }

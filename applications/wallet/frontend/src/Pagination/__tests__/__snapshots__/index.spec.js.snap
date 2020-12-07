@@ -1,71 +1,261 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Pagination /> should render properly on first page 1`] = `
-.emotion-6 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
 }
 
 .emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
   border: none;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-left: 64px;
+  padding-right: 64px;
 }
 
-.emotion-1:hover {
-  opacity: 1;
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited,
+.emotion-3 .noop {
+  background-color: #808080;
+}
+
+.emotion-3:hover,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  cursor: not-allowed;
+  background-color: #b3b3b3;
 }
 
-.emotion-0 {
-  color: #191919;
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  margin-right: 8px;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
+  background-color: #808080;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-6 {
   -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-2 {
-  padding: 8px 16px;
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
   color: #ffffff;
-  background-color: #2e2e2e;
+  background-color: transparent;
 }
 
-.emotion-3 {
-  padding: 8px 12px;
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
+  background-color: #808080;
+}
+
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-8 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-10 {
+  padding: 8px;
+  margin-left: 8px;
+  text-align: center;
+  width: 2.5ch;
+  box-sizing: content-box;
+  border-radius: 2px;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 2px solid transparent;
+  -moz-appearance: textfield;
+}
+
+.emotion-10:hover {
+  border: 2px solid #ffffff;
+}
+
+.emotion-10:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-10::-webkit-outer-spin-button,
+.emotion-10::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -74,234 +264,671 @@ exports[`<Pagination /> should render properly on first page 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 8px;
+  padding-right: 8px;
   color: #b3b3b3;
 }
 
-.emotion-5 {
+.emotion-12 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
   border: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
 }
 
-.emotion-5:hover {
-  opacity: 0.5;
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited,
+.emotion-12 .noop {
+  background-color: #808080;
+}
+
+.emotion-12:hover,
+.emotion-12 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  cursor: pointer;
+  background-color: #b3b3b3;
 }
 
-.emotion-4 {
-  color: #ffffff;
+.emotion-12[aria-disabled=true],
+.emotion-12 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-13 {
   -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.emotion-14 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-left: 8px;
+}
+
+.emotion-14,
+.emotion-14:hover,
+.emotion-14:visited,
+.emotion-14 .noop {
+  background-color: #808080;
+}
+
+.emotion-14:hover,
+.emotion-14 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-14[aria-disabled=true],
+.emotion-14 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-15 {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 
 <div
-  className="emotion-6"
+  className="emotion-0"
 >
-  <button
+  <div
     className="emotion-1"
-    disabled={true}
-    type="button"
-  >
-    <svg
-      className="emotion-0"
-      data-file-name="chevron.svg"
-      height={16}
-    />
-  </button>
+  />
   <div
     className="emotion-2"
   >
-    1
+    <a
+      className="emotion-3"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs?page=2"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      rel="next"
+    >
+      Next
+    </a>
   </div>
   <div
-    className="emotion-3"
+    className="emotion-4"
   >
-    of 
-    2
+    <button
+      aria-disabled={true}
+      aria-label="First page"
+      className="emotion-5"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      rel="prev"
+      title="First page"
+      type="button"
+    >
+      <svg
+        className="emotion-6"
+        data-file-name="doubleChevron.svg"
+        height={16}
+      />
+    </button>
+    <button
+      aria-disabled={true}
+      aria-label="Previous page"
+      className="emotion-7"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      rel="prev"
+      title="Previous page"
+      type="button"
+    >
+      <svg
+        className="emotion-8"
+        data-file-name="chevron.svg"
+        height={16}
+      />
+    </button>
+    <form
+      action=""
+      className="emotion-9"
+      method="get"
+      onSubmit={[Function]}
+    >
+      <input
+        aria-label="Go to page"
+        className="emotion-10"
+        max={2}
+        min="1"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        type="number"
+        value="1"
+      />
+    </form>
+    <div
+      className="emotion-11"
+    >
+      of 
+      2
+    </div>
+    <a
+      aria-label="Next page"
+      className="emotion-12"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs?page=2"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      rel="next"
+      title="Next page"
+    >
+      <svg
+        className="emotion-13"
+        data-file-name="chevron.svg"
+        height={16}
+      />
+    </a>
+    <a
+      aria-label="Last page"
+      className="emotion-14"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs?page=2"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      rel="next"
+      title="Last page"
+    >
+      <svg
+        className="emotion-15"
+        data-file-name="doubleChevron.svg"
+        height={16}
+      />
+    </a>
   </div>
-  <a
-    className="emotion-5"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs?page=2"
-    onClick={[Function]}
-    onMouseEnter={[Function]}
-    rel="next"
-  >
-    <svg
-      className="emotion-4"
-      data-file-name="chevron.svg"
-      height={16}
-    />
-  </a>
 </div>
 `;
 
 exports[`<Pagination /> should render properly on last page 1`] = `
-.emotion-6 {
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
   -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
 }
 
-.emotion-2 {
-  padding: 8px 16px;
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  color: #ffffff;
-  background-color: #2e2e2e;
-}
-
-.emotion-3 {
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #b3b3b3;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
   border: none;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-right: 8px;
 }
 
-.emotion-1:hover {
-  opacity: 0.5;
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
+  background-color: #808080;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  cursor: pointer;
+  background-color: #b3b3b3;
 }
 
-.emotion-0 {
-  color: #ffffff;
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-5 {
   -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-5 {
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
   border: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
 }
 
-.emotion-5:hover {
-  opacity: 1;
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited,
+.emotion-6 .noop {
+  background-color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  cursor: not-allowed;
+  background-color: #b3b3b3;
 }
 
-.emotion-4 {
-  color: #191919;
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-7 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-9 {
+  padding: 8px;
+  margin-left: 8px;
+  text-align: center;
+  width: 2.5ch;
+  box-sizing: content-box;
+  border-radius: 2px;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 2px solid transparent;
+  -moz-appearance: textfield;
+}
+
+.emotion-9:hover {
+  border: 2px solid #ffffff;
+}
+
+.emotion-9:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-9::-webkit-outer-spin-button,
+.emotion-9::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 8px;
+  padding-right: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-11 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-11,
+.emotion-11:hover,
+.emotion-11:visited,
+.emotion-11 .noop {
+  background-color: #808080;
+}
+
+.emotion-11:hover,
+.emotion-11 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-11[aria-disabled=true],
+.emotion-11 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-12 {
   -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.emotion-13 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  margin-left: 8px;
+}
+
+.emotion-13,
+.emotion-13:hover,
+.emotion-13:visited,
+.emotion-13 .noop {
+  background-color: #808080;
+}
+
+.emotion-13:hover,
+.emotion-13 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-13[aria-disabled=true],
+.emotion-13 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-14 {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 
 <div
-  className="emotion-6"
+  className="emotion-0"
 >
-  <a
+  <div
     className="emotion-1"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
-    onClick={[Function]}
-    onMouseEnter={[Function]}
-    rel="prev"
-  >
-    <svg
-      className="emotion-0"
-      data-file-name="chevron.svg"
-      height={16}
-    />
-  </a>
+  />
   <div
     className="emotion-2"
-  >
-    2
-  </div>
+  />
   <div
     className="emotion-3"
   >
-    of 
-    2
-  </div>
-  <button
-    className="emotion-5"
-    disabled={true}
-    type="button"
-  >
-    <svg
+    <a
+      aria-label="First page"
       className="emotion-4"
-      data-file-name="chevron.svg"
-      height={16}
-    />
-  </button>
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      rel="prev"
+      title="First page"
+    >
+      <svg
+        className="emotion-5"
+        data-file-name="doubleChevron.svg"
+        height={16}
+      />
+    </a>
+    <a
+      aria-label="Previous page"
+      className="emotion-6"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      rel="prev"
+      title="Previous page"
+    >
+      <svg
+        className="emotion-7"
+        data-file-name="chevron.svg"
+        height={16}
+      />
+    </a>
+    <form
+      action=""
+      className="emotion-8"
+      method="get"
+      onSubmit={[Function]}
+    >
+      <input
+        aria-label="Go to page"
+        className="emotion-9"
+        max={2}
+        min="1"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        type="number"
+        value="2"
+      />
+    </form>
+    <div
+      className="emotion-10"
+    >
+      of 
+      2
+    </div>
+    <button
+      aria-disabled={true}
+      aria-label="Next page"
+      className="emotion-11"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      rel="next"
+      title="Next page"
+      type="button"
+    >
+      <svg
+        className="emotion-12"
+        data-file-name="chevron.svg"
+        height={16}
+      />
+    </button>
+    <button
+      aria-disabled={true}
+      aria-label="Last page"
+      className="emotion-13"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      rel="next"
+      title="Last page"
+      type="button"
+    >
+      <svg
+        className="emotion-14"
+        data-file-name="doubleChevron.svg"
+        height={16}
+      />
+    </button>
+  </div>
 </div>
 `;

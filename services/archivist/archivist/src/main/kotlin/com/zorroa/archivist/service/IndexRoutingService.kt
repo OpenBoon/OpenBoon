@@ -23,6 +23,7 @@ import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
+import com.zorroa.zmlp.service.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
 import com.zorroa.zmlp.util.readValueOrNull
 import org.apache.http.HttpHost
@@ -170,6 +171,11 @@ interface IndexRoutingService {
     fun closeIndex(route: IndexRoute): Boolean
 
     /**
+     * Close indexes grouping by clusters
+     */
+    fun batchCloseIndex(routes: List<IndexRoute>)
+
+    /**
      * Reopen the index
      */
     fun openIndex(route: IndexRoute): Boolean
@@ -185,9 +191,19 @@ interface IndexRoutingService {
     fun deleteIndex(route: IndexRoute, force: Boolean = false): Boolean
 
     /**
+     * Delete a batch of IndexRoute grouping by cluster
+     */
+    fun batchDeleteIndex(routes: List<IndexRoute>): Boolean
+
+    /**
      * Close and delete the given index.
      */
     fun closeAndDeleteIndex(route: IndexRoute): Boolean
+
+    /**
+     * Close and delete all Indexes of a Project.
+     */
+    fun closeAndDeleteProjectIndexes(projectUUID: UUID)
 
     /**
      * Sets the index refresh interval. Setting to -1 disables refreshing, this is used
@@ -221,6 +237,7 @@ class IndexRoutingServiceImpl @Autowired
 constructor(
     val indexRouteDao: IndexRouteDao,
     val indexClusterDao: IndexClusterDao,
+    val systemStorageService: SystemStorageService,
     val projectCustomDao: ProjectCustomDao,
     val properties: ApplicationProperties,
     val txEvent: TransactionEventManager,
@@ -228,10 +245,10 @@ constructor(
 ) : IndexRoutingService {
 
     @Autowired
-    lateinit var jobService: JobService
+    lateinit var esClientCache: EsClientCache
 
     @Autowired
-    lateinit var esClientCache: EsClientCache
+    lateinit var indexMappingService: IndexMappingService
 
     @Transactional
     override fun createIndexRoute(spec: IndexRouteSimpleSpec): IndexRoute {
@@ -365,6 +382,12 @@ constructor(
             }
             applyMinorVersionMappingFile(route, patch)
             result = patch
+        }
+
+        // Add custom fields after the patches.
+        if (!indexExisted) {
+            // Add all custom fields to the new index.
+            indexMappingService.addAllFieldsToIndex(route)
         }
 
         return result
@@ -516,6 +539,77 @@ constructor(
         return rsp.isAcknowledged
     }
 
+    override fun batchCloseIndex(routes: List<IndexRoute>) {
+
+        routes.groupBy {
+            it.clusterUrl
+        }
+            .forEach {
+
+                val indexMapNameIndex = it.value.map { i -> i.indexName to i.id }.toMap()
+                val rsp = esClientCache
+                    .getRestHighLevelClient(it.key)
+                    .indices()
+                    .close(
+                        CloseIndexRequest(*indexMapNameIndex.keys.toTypedArray()),
+                        RequestOptions.DEFAULT
+                    )
+
+                if (rsp.isAcknowledged) {
+                    rsp.indices.forEach { indexResult ->
+                        if (!indexResult.hasFailures()) {
+                            indexMapNameIndex[indexResult.index]?.let { uuid ->
+                                indexRouteDao.setState(uuid, IndexRouteState.CLOSED)
+                                logger.event(
+                                    LogObject.INDEX_ROUTE, LogAction.STATE_CHANGE,
+                                    mapOf(
+                                        "indexRouteId" to uuid,
+                                        "indexRouteState" to IndexRouteState.CLOSED.name
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+    }
+
+    override fun batchDeleteIndex(routes: List<IndexRoute>): Boolean {
+
+        routes.groupBy {
+            it.clusterUrl
+        }.forEach {
+
+            val indexMapNameIndex = it.value.map { i -> i.indexName to i.id }.toMap()
+            val rsp = esClientCache
+                .getRestHighLevelClient(it.key)
+                .indices()
+                .delete(
+                    DeleteIndexRequest(*indexMapNameIndex.keys.toTypedArray()),
+                    RequestOptions.DEFAULT
+                )
+
+            if (rsp.isAcknowledged) {
+                it.value.forEach { indexRoute ->
+                    logger.event(
+                        LogObject.INDEX_ROUTE, LogAction.DELETE,
+                        mapOf(
+                            "indexRouteId" to indexRoute.id,
+                            "indexRouteName" to indexRoute.indexName
+                        )
+                    )
+                    indexRouteDao.delete(indexRoute)
+                    deleteIndexBackups(indexRoute)
+                }
+            }
+        }
+        return true
+    }
+
+    private fun deleteIndexBackups(indexRoute: IndexRoute) {
+        systemStorageService.recursiveDelete("index-clusters/${indexRoute.id}")
+    }
+
     override fun openIndex(route: IndexRoute): Boolean {
         val rsp = getClusterRestClient(route).client.indices()
             .open(OpenIndexRequest(route.indexName), RequestOptions.DEFAULT)
@@ -560,6 +654,12 @@ constructor(
         return false
     }
 
+    override fun closeAndDeleteProjectIndexes(projectUUID: UUID) {
+        val indexes = getAll(IndexRouteFilter(projectIds = listOf(projectUUID))).toList()
+        batchCloseIndex(indexes)
+        batchDeleteIndex(indexes)
+    }
+
     override fun closeAndDeleteIndex(route: IndexRoute): Boolean {
         closeIndex(route)
         return deleteIndex(route, force = true)
@@ -589,9 +689,11 @@ constructor(
                     "newIndexRoute" to route.id
                 )
             )
+
+            openIndex(route)
+
             // Make sure this comes after the
             txEvent.afterCommit {
-
                 jedis.resource.use {
                     it.del(route.redisCacheKey())
                 }

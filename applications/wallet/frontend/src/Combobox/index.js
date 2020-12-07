@@ -19,26 +19,40 @@ const Combobox = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [showAllOptions, setShowAllOptions] = useState(true)
-  const [fetchedOptions, setFetchedOptions] = useState([])
+  const [fetchedOptions, setFetchedOptions] = useState(
+    typeof options === 'function' ? [] : options,
+  )
 
   useEffect(() => {
-    const fetchOptions = async () => {
+    let hasCancelled = false
+
+    if (typeof options === 'function') {
       setIsLoading(true)
 
-      const data = await options()
+      const getOptions = async () => {
+        const data = await options()
 
-      setFetchedOptions(data)
-      setIsLoading(false)
-    }
+        if (!hasCancelled) {
+          setFetchedOptions(data)
+          setIsLoading(false)
+        }
+      }
 
-    if (!fetchedOptions.length) {
-      if (typeof options === 'function') {
-        fetchOptions()
-      } else {
-        setFetchedOptions(options)
+      try {
+        getOptions()
+      } catch {
+        /* istanbul ignore next */
+        if (!hasCancelled) {
+          setIsLoading(false)
+        }
       }
     }
-  }, [options, fetchedOptions.length])
+
+    return () => {
+      hasCancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <label
@@ -64,6 +78,7 @@ const Combobox = ({
             onChange({ value: target.value })
           }}
         />
+
         <ComboboxOptions
           options={fetchedOptions}
           isLoading={isLoading}
@@ -71,6 +86,7 @@ const Combobox = ({
           value={value}
         />
       </ComboboxContainer>
+
       {hasError && errorMessage && (
         <div
           css={{

@@ -18,7 +18,11 @@ import { authenticateUser, logout } from './helpers'
 
 import AuthenticationLoading from './Loading'
 
-const AUTHENTICATION_LESS_ROUTES = ['/create-account', '/reset-password']
+const AUTHENTICATION_LESS_ROUTES = [
+  '/create-account',
+  '/create-account-success',
+  '/reset-password',
+]
 
 const {
   publicRuntimeConfig: { GOOGLE_OAUTH_CLIENT_ID },

@@ -154,3 +154,44 @@ class TestHistogram(TestBaseVisualizationTestCase):
                 'offset': 10500219.0
             }
         }
+
+    def test_get_agg_empty_interval_response(self, data, monkeypatch, zmlp_apikey):
+
+        def mock_response(*args, **kwargs):
+            return {
+                'took': 4,
+                'timed_out': False,
+                '_shards': {'total': 2, 'successful': 2, 'skipped': 0, 'failed': 0},
+                'hits': {'total': {'value': 0, 'relation': 'eq'},
+                         'max_score': None, 'hits': []},
+                'aggregations': {
+                    'nested#mySpecialGuy': {
+                        'doc_count': 0,
+                        'extended_stats#stats': {
+                            'count': 0,
+                            'min': None,
+                            'max': None,
+                            'avg': None,
+                            'sum': 0.0,
+                            'sum_of_squares': None,
+                            'variance': None,
+                            'std_deviation': None,
+                            'std_deviation_bounds': {
+                                'upper': None,
+                                'lower': None}}}}}
+
+        client = ZmlpClient(apikey=convert_json_to_base64(zmlp_apikey), server='localhost')
+        viz = self.Viz(data, Mock(client=client), query={})
+        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        viz._field_type = 'prediction'
+        agg = viz.get_es_agg()
+        assert agg == {
+            'aggs': {
+                'labels': {
+                    'aggs': {
+                        'scores': {
+                            'histogram': {'field': 'media.author.predictions.score',
+                                          'interval': 1,
+                                          'offset': 1}}},
+                    'filter': {'match_all': {}}}},
+            'nested': {'path': 'media.author.predictions'}}

@@ -25,10 +25,11 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
     def tearDown(self):
         del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch.object(file_storage.assets, 'get_native_uri')
-    def test_speech_detection(self, native_url_patch, store_patch, store_blob_patch):
+    def test_speech_detection(self, native_url_patch, store_patch, store_blob_patch, _):
         native_url_patch.return_value = 'gs://zorroa-dev-data/video/audio8D0_VU.flac'
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
@@ -40,11 +41,12 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         assert 'en-us' in asset.get_attr('analysis.gcp-speech-to-text.language')
         assert 'poop' in asset.get_attr('analysis.gcp-speech-to-text.content')
 
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     def test_speech_detection_existing_proxy(
-            self, native_url_patch, store_patch, store_blob_patch):
+            self, native_url_patch, store_patch, store_blob_patch, _):
         native_url_patch.return_value = 'gs://zorroa-dev-data/video/audio8D0_VU.flac'
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
@@ -60,3 +62,8 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         self.processor.process(frame)
         assert 'en-us' in asset.get_attr('analysis.gcp-speech-to-text.language')
         assert 'poop' in asset.get_attr('analysis.gcp-speech-to-text.content')
+
+        with open(store_patch.call_args_list[0][0][0]) as fp:
+            vtt = fp.read()
+        assert "toilets and poop" in vtt
+        assert "and I have yet to emerge" in vtt

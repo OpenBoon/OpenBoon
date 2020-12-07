@@ -1,6 +1,7 @@
 import logging
 import os
 
+import requests
 import zmlp
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -59,6 +60,8 @@ class BaseProjectViewSet(ViewSet):
         except Membership.DoesNotExist:
             return JsonResponse(data={'detail': [f'{request.user.username} is not a member of '
                                                  f'the project {project}']}, status=403)
+        except TypeError:
+            return JsonResponse(data={'detail': ['Unauthorized.']}, status=403)
 
         # Attach some useful objects for interacting with ZMLP/ZVI to the request.
         if settings.PLATFORM == 'zmlp':
@@ -133,6 +136,13 @@ class BaseProjectViewSet(ViewSet):
         """
         assert self.paginator is not None
         return self.paginator.get_paginated_response(data)
+
+    def stream_zmlp_endpoint(self, path):
+        """Requests a streaming ZMLP endpoint and returns the response as an iterator."""
+        response = requests.get(self.request.client.get_url(path), verify=False,
+                                headers=self.request.client.headers(), stream=True)
+        for block in response.iter_content(1024):
+            yield block
 
     def _zmlp_list_from_search(self, request, item_modifier=None, search_filter=None,
                                serializer_class=None, base_url=None):
@@ -308,6 +318,45 @@ class BaseProjectViewSet(ViewSet):
         path = os.path.join(base_url, '_search')
         response = request.client.post(path, payload)
         return self._get_content(response)
+
+    def _zmlp_get_all_content_from_es_search(self, request, search_filter=None, base_url=None,
+                                             default_page_size=None):
+        """Generates and runs the search query against a ZMLP ES search endpoint and gets all pages.
+
+        Args:
+            request (Request): Request the view method was given.
+            search_filter (dict): Optional filter to pass to the zmlp search endpoint.
+            base_url (str): The base zmlp api url to use.
+            default_page_size (int): Paging size to use
+
+        Returns:
+            Response: DRF Response that can be used directly by viewset action method.
+
+        """
+        base_url = base_url or self.zmlp_root_api_path
+        page_size = default_page_size or settings.REST_FRAMEWORK['PAGE_SIZE']
+        size = request.query_params.get('size', page_size)
+        payload = {'from': 0, 'size': size}
+
+        if search_filter:
+            payload.update(search_filter)
+        path = os.path.join(base_url, '_search')
+
+        additional_pages = True
+        items = []
+        while additional_pages:
+            response = request.client.post(path, payload)
+            content = self._get_content(response)
+            items.extend(content['hits']['hits'])
+
+            _total = content['hits']['total']['value']
+            _next = (int(payload['from']) + int(payload['size']))
+            if _next < _total:
+                payload['from'] = _next
+            else:
+                additional_pages = False
+
+        return items
 
     def _get_modified_items_from_content(self, request, content, item_modifier=None):
         """Modifies the structure of each item with the given item modifier and returns them.

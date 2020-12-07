@@ -51,7 +51,7 @@ interface PipelineResolverService {
     /**
      * Resolve a list of Pipeline Mods into a list of [ProcessorRef]
      */
-    fun resolveModular(mods: List<PipelineMod>): ResolvedPipeline
+    fun resolveModular(mods: List<PipelineMod>, includeStandard: Boolean = true): ResolvedPipeline
 
     /**
      * Resolve a list of [ProcessorRef] into a new list of [ProcessorRef]
@@ -61,7 +61,7 @@ interface PipelineResolverService {
     /**
      * Resolve a list of module names or ids into a new list of [ProcessorRef]
      */
-    fun resolveModular(mods: Collection<String>?): ResolvedPipeline
+    fun resolveModular(mods: Collection<String>?, includeStandard: Boolean = true): ResolvedPipeline
 
     /**
      * Resolve a list of processors into a new list of processors.
@@ -138,12 +138,12 @@ class PipelineResolverServiceImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun resolveModular(mods: Collection<String>?): ResolvedPipeline {
-        return resolveModular(pipelineModService.getByNames(mods ?: listOf()))
+    override fun resolveModular(mods: Collection<String>?, includeStandard: Boolean): ResolvedPipeline {
+        return resolveModular(pipelineModService.getByNames(mods ?: listOf()), includeStandard)
     }
 
     @Transactional(readOnly = true)
-    override fun resolveModular(mods: List<PipelineMod>): ResolvedPipeline {
+    override fun resolveModular(mods: List<PipelineMod>, includeStandard: Boolean): ResolvedPipeline {
 
         val objectives = mutableSetOf<String>()
         val globalArgs = mutableMapOf<String, Any>("pipeline.objectives" to objectives)
@@ -158,7 +158,11 @@ class PipelineResolverServiceImpl(
          * means that ModOps in the same module cannot see modifications made by
          * previous ModOps.
          */
-        var currentPipeline = getStandardPipeline()
+        var currentPipeline = if (includeStandard) {
+            getStandardPipeline()
+        } else {
+            mutableListOf(ProcessorRef("PrependMarker", "none"))
+        }
 
         for (module in mods) {
 
@@ -408,7 +412,9 @@ class RecursivePipelineBuilder(
         appliedModules.add(module.name)
 
         val prependMarker = newPipeline.indexOfFirst { it.className == "PrependMarker" }
-        newPipeline.addAll(prependMarker, prepend)
+        if (prependMarker != -1) {
+            newPipeline.addAll(prependMarker, prepend)
+        }
         newPipeline.addAll(append)
         newPipeline.addAll(last)
         return newPipeline

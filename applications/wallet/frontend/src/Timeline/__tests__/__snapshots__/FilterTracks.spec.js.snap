@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TimelineFilterTracks /> should render properly 1`] = `
+.emotion-0 {
+  margin-left: -200px;
+  width: 200px;
+  padding-right: 1.5px;
+  margin-bottom: -1px;
+  z-index: 20;
+}
+
+.emotion-1 {
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
+  background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+  background-color: #2e2e2e;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+  height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+  color: #b3b3b3;
+  background-color: #191919;
+}
+
+.emotion-1::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-1::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-1:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-1::placeholder {
+  font-style: italic;
+}
+
+.emotion-1:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-1:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+<div
+  className="emotion-0"
+>
+  <input
+    aria-label="Filter tracks"
+    className="emotion-1"
+    onChange={[Function]}
+    placeholder="Filter tracks"
+    type="search"
+    value=""
+  />
+</div>
+`;

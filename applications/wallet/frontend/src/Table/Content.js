@@ -180,26 +180,26 @@ const TableContent = ({
             </tbody>
           </table>
         </div>
+
+        {count > 0 && <div>&nbsp;</div>}
+
+        {count > 0 && (
+          <Pagination
+            currentPage={parsedPage}
+            totalPages={Math.ceil(count / SIZE)}
+          />
+        )}
+
+        {count > 0 && parsedPage < Math.ceil(count / SIZE) && (
+          <FetchAhead url={`${url}?from=${from + SIZE}&size=${SIZE}`} />
+        )}
+
+        {count > 0 && parsedPage > 1 && (
+          <FetchAhead url={`${url}?from=${from - SIZE}&size=${SIZE}`} />
+        )}
+
+        {count > 0 && <div>&nbsp;</div>}
       </div>
-
-      {count > 0 && <div>&nbsp;</div>}
-
-      {count > 0 && (
-        <Pagination
-          currentPage={parsedPage}
-          totalPages={Math.ceil(count / SIZE)}
-        />
-      )}
-
-      {count > 0 && parsedPage < Math.ceil(count / SIZE) && (
-        <FetchAhead url={`${url}?from=${from + SIZE}&size=${SIZE}`} />
-      )}
-
-      {count > 0 && parsedPage > 1 && (
-        <FetchAhead url={`${url}?from=${from - SIZE}&size=${SIZE}`} />
-      )}
-
-      {count > 0 && <div>&nbsp;</div>}
     </div>
   )
 }

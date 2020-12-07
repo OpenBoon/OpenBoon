@@ -13,6 +13,24 @@ stages:
   - push
   - deploy
 
+########  Scrounger  ########
+
+## Scrounger Frontend CI Tests
+scrounger-frontend-test-suite:
+  stage: test
+  image: node:12
+  before_script:
+    - cd applications/scrounger/react_frontend
+    - npm ci
+  script:
+    - npm run lint
+  rules:
+    # MR to development with Frontend changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development"
+      changes:
+        - "applications/scrounger/react_frontend/**/*"
+    - when: never
+
 ########  Wallet  ########
 
 ## Wallet Integration CI Tests
@@ -195,7 +213,6 @@ wallet-deploy-qa:
       changes:
         - "**/*"
 
-
 ########  ZMLP Services & Plugins  ########
 
 ## Backend Python Lint
@@ -257,9 +274,9 @@ sdk-unit-tests:
     - pip install .
     - pytest
     - cd ../../sdk
-    - tar -xJf ffmpeg-4.2.1-amd64-static.tar.xz
-    - cp ffmpeg-4.2.1-amd64-static/ffmpeg /usr/bin
-    - cp ffmpeg-4.2.1-amd64-static/ffprobe /usr/bin
+    - tar -xJf ffmpeg-amd64-static.tar.xz
+    - cp ffmpeg-4.2.2-amd64-static/ffmpeg /usr/bin
+    - cp ffmpeg-4.2.2-amd64-static/ffprobe /usr/bin
     - pip install .
     - pytest
     - cd ../containers/zmlp-plugins-base
@@ -461,7 +478,6 @@ zmlp-deploy-qa:
       changes:
         - "**/*"
 
-
 # Production Push and Deploy
 zmlp-dockerhub-build-push-prod:
   image: zmlp/docker-buildx
@@ -635,12 +651,10 @@ zmlp-services-unit-tests:
     ZMLP_STORAGE_PROJECT_ACCESSKEY: "qwerty123"
     ZMLP_STORAGE_PROJECT_SECRETKEY: "123qwerty"
     ZMLP_STORAGE_PROJECT_URL: "http://localhost:9000"
-    ZMLP_STORAGE_PIPELINE_ACCESSKEY: "qwerty123"
-    ZMLP_STORAGE_PIPELINE_SECRETKEY: "123qwerty"
-    ZMLP_STORAGE_PIPELINE_URL: "http://localhost:9000"
     ZMLP_STORAGE_SYSTEM_ACCESSKEY: "qwerty123"
     ZMLP_STORAGE_SYSTEM_SECRETKEY: "123qwerty"
     ZMLP_STORAGE_SYSTEM_URL: "http://localhost:9000"
+    ZMLP_STORAGE_CLIENT: "minio"
     MINIO_ACCESS_KEY: "qwerty123"
     MINIO_SECRET_KEY: "123qwerty"
     MXNET_OS: "linux"
@@ -651,16 +665,15 @@ zmlp-services-unit-tests:
     - export
     - IP="$(cat /etc/hosts |grep $HOSTNAME|cut -d$'\t' -f1)"
     - ARCHIVIST_ES_URL="http://${IP}:9200"
-    - ZMLP_STORAGE_PIPELINE_URL="http://${IP}:9000"
     - ZMLP_STORAGE_PROJECT_URL="http://${IP}:9000"
     - ZMLP_STORAGE_SYSTEM_URL="http://${IP}:9000"
     - mvn clean install -f lib/jvm-common -q -Dmaven.test.skip=true
     - mvn test verify -f lib/jvm-common -q
     - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true
+    - mvn test verify -f services/officer -q
     - mvn test verify -f services/archivist -q
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
     - mvn test verify -f services/auth-server -q
-    - mvn test verify -f services/officer -q
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'

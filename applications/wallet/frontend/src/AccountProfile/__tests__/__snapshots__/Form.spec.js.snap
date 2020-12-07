@@ -55,8 +55,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -70,26 +70,23 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -158,8 +155,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -173,26 +170,23 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -220,7 +214,7 @@ Array [
   >
     Email: jane.doe@zorroa.com
   </h3>,
-  .emotion-13 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -234,47 +228,51 @@ Array [
   padding-right: 0;
 }
 
-.emotion-3 {
+.emotion-1 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-2 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-2 {
+.emotion-3 {
   position: relative;
 }
 
-.emotion-1 {
+.emotion-4 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-4:focus,
+.emotion-4 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
-}
-
-.emotion-1:hover {
-  border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-12 {
+.emotion-4:hover,
+.emotion-4 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+}
+
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -283,12 +281,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-12 button,
-.emotion-12 a {
+.emotion-11 button,
+.emotion-11 a {
   margin-right: 16px;
 }
 
-.emotion-10 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -304,8 +302,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -319,30 +317,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-10:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-10[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited {
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited,
+.emotion-12 .noop {
   background-color: #808080;
 }
 
-.emotion-10:hover {
+.emotion-12:hover,
+.emotion-12 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-12[aria-disabled=true],
+.emotion-12 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-11 {
+.emotion-13 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -358,8 +353,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -373,50 +368,47 @@ Array [
   background-color: transparent;
 }
 
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
+.emotion-13,
+.emotion-13:hover,
+.emotion-13:visited,
+.emotion-13 .noop {
   background-color: #73b61c;
 }
 
-.emotion-11:hover {
+.emotion-13:hover,
+.emotion-13 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-13[aria-disabled=true],
+.emotion-13 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-13"
+    className="emotion-0"
     method="post"
     onSubmit={[Function]}
   >
     <div
-      className="emotion-3"
+      className="emotion-1"
     >
       <label
-        className="emotion-0"
+        className="emotion-2"
         htmlFor="firstName"
       >
         First Name
       </label>
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <input
           autoFocus={true}
-          className="emotion-1"
+          className="emotion-4"
           disabled={false}
           id="firstName"
           name="firstName"
@@ -426,25 +418,25 @@ Array [
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-5"
       >
          
       </div>
     </div>
     <div
-      className="emotion-3"
+      className="emotion-1"
     >
       <label
-        className="emotion-0"
+        className="emotion-2"
         htmlFor="lastName"
       >
         Last Name
       </label>
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <input
-          className="emotion-1"
+          className="emotion-4"
           disabled={false}
           id="lastName"
           name="lastName"
@@ -454,16 +446,16 @@ Array [
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-5"
       >
          
       </div>
     </div>
     <div
-      className="emotion-12"
+      className="emotion-11"
     >
       <button
-        className="emotion-10"
+        className="emotion-12"
         onClick={[Function]}
         type="button"
       >
@@ -471,7 +463,7 @@ Array [
       </button>
       <button
         aria-disabled={true}
-        className="emotion-11"
+        className="emotion-13"
         onClick={[Function]}
         type="submit"
       >
@@ -484,7 +476,7 @@ Array [
 
 exports[`<AccountProfileForm /> should render properly when a user edits their name 3`] = `
 Array [
-  .emotion-2 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -507,7 +499,7 @@ Array [
   padding: 12px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -517,12 +509,24 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-0 a {
-  color: #009f22;
+.emotion-2 a {
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-2 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
 }
 
 <div
-    className="emotion-2"
+    className="emotion-0"
   >
     <div
       className="emotion-1"
@@ -533,7 +537,7 @@ Array [
         height={20}
       />
       <div
-        className="emotion-0"
+        className="emotion-2"
         role="alert"
       >
         New name saved.
@@ -593,8 +597,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -608,26 +612,23 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-0,
 .emotion-0:hover,
-.emotion-0:visited {
+.emotion-0:visited,
+.emotion-0 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-0[aria-disabled=true],
+.emotion-0 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 

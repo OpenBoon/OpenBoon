@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import random
 import threading
 
 import docker
@@ -10,8 +11,11 @@ from .cache import TaskCacheManager, ModelCacheManager
 
 logger = logging.getLogger('task')
 
-# The default container port
+# The default internal container port
 CONTAINER_PORT = 5001
+
+# The default local container port range
+CONTAINER_PORT_RANGE = (20000, 60000)
 
 # The hard failure exit status.
 EXIT_STATUS_HARD_FAIL = 9
@@ -238,9 +242,11 @@ class ZpsExecutor(object):
 
         """
         if self.task["id"] == task_id:
+            logger.info("killing task id: {}".format(task_id))
             if self.stop_container(reason):
                 self.new_state = new_state
                 return True
+        logger.warning("Not killing task {}!={}".format(self.task["id"], task_id))
         return False
 
     def stop_container(self, reason):
@@ -314,6 +320,7 @@ class DockerContainerWrapper(object):
 
         ctx = zmq.Context()
         self.socket = ctx.socket(zmq.PAIR)
+        self.port = random.randint(*CONTAINER_PORT_RANGE)
 
     def _docker_login(self):
         creds_file = os.environ.get("ANALYST_DOCKER_CREDS_FILE",
@@ -386,7 +393,7 @@ class DockerContainerWrapper(object):
         logger.info("Docker network ID: {}".format(network))
 
         if not network:
-            ports = {"{}/tcp".format(CONTAINER_PORT): CONTAINER_PORT}
+            ports = {"{}/tcp".format(CONTAINER_PORT): self.port}
         else:
             ports = None
 
@@ -400,10 +407,12 @@ class DockerContainerWrapper(object):
             "ANALYST_THREADS": env.get("ANALYST_THREADS", os.environ.get("ANALYST_THREADS"))
         })
 
-        logger.info("starting container {} vols={} network={}".format(self.image, volumes, network))
+        logger.info("starting container {} vols={} network={} ports={}".format(
+            self.image, volumes, network, ports))
+        command = ["/usr/local/bin/server", "-p", str(self.port)]
         self.container = self.docker_client.containers.run(image, detach=True,
                                                            environment=env, volumes=volumes,
-                                                           entrypoint="/usr/local/bin/server",
+                                                           entrypoint=command,
                                                            network=network,
                                                            ports=ports,
                                                            labels=["zmlpcd"])
@@ -423,7 +432,7 @@ class DockerContainerWrapper(object):
         self.check_killed()
         self.__start_container()
 
-        uri = "tcp://localhost:{}".format(CONTAINER_PORT)
+        uri = "tcp://localhost:{}".format(self.port)
         logger.info("Waiting for container '{}' on '{}' to come to life....".format(
             self.image, uri))
 
@@ -469,7 +478,7 @@ class DockerContainerWrapper(object):
         if not self.killed and self.container:
             logger.info(
                 "stopping container id='{}' image='{}'".format(self.container.id, self.image))
-            self.container.kill(9)
+            self.container.kill()
             self.killed = True
             return True
         return False

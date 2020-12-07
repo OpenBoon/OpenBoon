@@ -8,6 +8,10 @@ import com.zorroa.archivist.domain.TimelineSpec
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.bd
 import com.zorroa.archivist.util.formatDuration
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
+import com.zorroa.zmlp.service.logging.event
+import com.zorroa.zmlp.service.logging.warnEvent
 import com.zorroa.zmlp.util.Json
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.search.SearchResponse
@@ -20,10 +24,12 @@ import org.elasticsearch.common.xcontent.NamedXContentRegistry
 import org.elasticsearch.common.xcontent.XContentFactory
 import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.index.reindex.DeleteByQueryRequest
 import org.elasticsearch.search.SearchModule
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.OutputStream
 import java.math.BigDecimal
@@ -39,13 +45,17 @@ interface ClipService {
     fun getWebvttByTimeline(asset: Asset, timeline: String, outputStream: OutputStream)
 
     fun mapToSearchSourceBuilder(asset: Asset, search: Map<String, Any>): SearchSourceBuilder
+
+    fun deleteClips(assetIdList: List<String>)
 }
 
 @Service
 class ClipServiceImpl(
     val indexRoutingService: IndexRoutingService,
-    val assetService: AssetService
 ) : ClipService {
+
+    @Autowired
+    private lateinit var assetService: AssetService
 
     override fun createClips(timeline: TimelineSpec): CreateTimelineResponse {
         val asset = assetService.getAsset(timeline.assetId)
@@ -112,7 +122,11 @@ class ClipServiceImpl(
         return response
     }
 
-    override fun searchClips(asset: Asset, search: Map<String, Any>, params: Map<String, Array<String>>): SearchResponse {
+    override fun searchClips(
+        asset: Asset,
+        search: Map<String, Any>,
+        params: Map<String, Array<String>>
+    ): SearchResponse {
         val rest = indexRoutingService.getProjectRestClient()
         val ssb = mapToSearchSourceBuilder(asset, search)
         val req = rest.newSearchRequest()
@@ -151,12 +165,16 @@ class ClipServiceImpl(
                 buffer.append(formatDuration(clip["start"] as Double))
                 buffer.append(" --> ")
                 buffer.append(formatDuration(clip["stop"] as Double))
-                buffer.append("\n\n{\n")
-                buffer.append("\"timeline\": \"${clip["timeline"]}\"\n")
-                buffer.append("\"track\": \"${clip["track"]}\"\n")
-                buffer.append("\"content\" : ${Json.serializeToString(clip["content"] as Collection<String>)}\n")
-                buffer.append("\"score\": ${clip["score"]}\n")
-                buffer.append("}\n\n")
+
+                val obj = mapOf(
+                    "timeline" to clip["timeline"].toString(),
+                    "track" to clip["track"].toString(),
+                    "content" to clip["content"],
+                    "score" to clip["score"]
+                )
+                buffer.append("\n")
+                buffer.append(Json.prettyString(obj))
+                buffer.append("\n\n")
                 outputStream.write(buffer.toString().toByteArray())
                 buffer.clear()
             }
@@ -193,6 +211,29 @@ class ClipServiceImpl(
         }
 
         return ssb
+    }
+
+    override fun deleteClips(assetIdList: List<String>) {
+        val rest = indexRoutingService.getProjectRestClient()
+
+        val query = QueryBuilders.termsQuery(
+            "clip.assetId", assetIdList
+        )
+
+        val rsp = rest.client.deleteByQuery(
+            DeleteByQueryRequest(rest.route.indexName)
+                .setQuery(query),
+            RequestOptions.DEFAULT
+        )
+
+        for (failure in rsp.bulkFailures) {
+            logger.warnEvent(
+                LogObject.CLIP, LogAction.DELETE, failure.message,
+                mapOf("clipId" to failure.id)
+            )
+        }
+
+        logger.event(LogObject.CLIP, LogAction.DELETE, mapOf("total" to rsp.deleted))
     }
 
     companion object {

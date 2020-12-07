@@ -2,14 +2,14 @@ WEBVTT
 
 00:00:00.000 --> 00:00:11.000
 {
-  "module": "gcp-object-detection",
+  "timeline": "gcp-object-detection",
   "score": 0.73,
-  "label": "food"
+  "track": "food"
 }
 
 00:00:00.500 --> 00:00:04.500
 {
-  "module": "gcp-object-detection",
+  "timeline": "gcp-object-detection",
   "score": 0.55,
-  "label": "person"
+  "track": "person"
 }

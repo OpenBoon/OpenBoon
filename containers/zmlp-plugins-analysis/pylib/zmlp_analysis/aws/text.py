@@ -2,7 +2,7 @@ from zmlpsdk import AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
-from .util import get_zvi_rekognition_client
+from .util import AwsEnv
 
 
 class RekognitionTextDetection(AssetProcessor):
@@ -10,7 +10,8 @@ class RekognitionTextDetection(AssetProcessor):
 
     namespace = 'aws-text-detection'
 
-    file_types = FileTypes.documents | FileTypes.images
+    # Only images, this isn't for OCR I don't think.
+    file_types = FileTypes.images
 
     def __init__(self):
         super(RekognitionTextDetection, self).__init__()
@@ -18,7 +19,7 @@ class RekognitionTextDetection(AssetProcessor):
 
     def init(self):
         # AWS client
-        self.client = get_zvi_rekognition_client()
+        self.client = AwsEnv.rekognition()
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -59,9 +60,10 @@ class RekognitionTextDetection(AssetProcessor):
         bbox_result = []
         for i, r in enumerate(response['TextDetections']):
             text = r['DetectedText']
-            confidence = r['Confidence']
+            conf = r['Confidence']
             geometry = r['Geometry']
 
+            confidence = conf / 100.
             if geometry:
                 bbox = geometry['BoundingBox']
 

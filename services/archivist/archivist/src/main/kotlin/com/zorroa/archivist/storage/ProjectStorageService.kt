@@ -59,6 +59,11 @@ interface ProjectStorageService {
     fun getNativeUri(locator: ProjectStorageLocator): String
 
     /**
+     * Get he native storage URL for a given directory
+     */
+    fun getNativeUri(locator: ProjectDirLocator): String
+
+    /**
      * Get a signed URL for the given [ProjectStorageLocator].
      */
     fun getSignedUrl(
@@ -77,6 +82,11 @@ interface ProjectStorageService {
      * Delete all associated files stored against a particular entity.
      */
     fun recursiveDelete(locator: ProjectDirLocator)
+
+    /**
+     * Delete recursively ALL FILES below a certain path
+     */
+    fun recursiveDelete(path: String)
 
     /**
      * Log the storage of a file.

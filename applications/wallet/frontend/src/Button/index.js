@@ -22,79 +22,83 @@ const BASE = ({ isDisabled }) => ({
   cursor: isDisabled ? 'not-allowed' : 'pointer',
   color: colors.structure.white,
   backgroundColor: colors.structure.transparent,
-  ':hover': {
-    textDecoration: 'none',
-  },
-  '&[aria-disabled=true]': {
-    color: colors.structure.mattGrey,
-  },
 })
 
 const STYLES = {
   PRIMARY: {
-    '&,&:hover,&:visited': {
+    '&, &:hover, &:visited, .noop': {
       backgroundColor: colors.key.one,
     },
-    '&:hover': {
+    '&:hover, .noop': {
+      textDecoration: 'none',
       backgroundColor: colors.key.two,
     },
-    '&[aria-disabled=true]': {
+    '&[aria-disabled=true], .noop': {
+      color: colors.structure.mattGrey,
       backgroundColor: colors.structure.steel,
     },
   },
   PRIMARY_SMALL: {
     padding: `${spacing.base}px ${spacing.normal}px`,
-    '&,&:hover,&:visited': {
+    '&, &:hover, &:visited, .noop': {
       backgroundColor: colors.key.one,
     },
-    '&:hover': {
+    '&:hover, .noop': {
+      textDecoration: 'none',
       backgroundColor: colors.key.two,
     },
-    '&[aria-disabled=true]': {
+    '&[aria-disabled=true], .noop': {
+      color: colors.structure.mattGrey,
       backgroundColor: colors.structure.steel,
     },
   },
   SECONDARY: {
-    '&,&:hover,&:visited': {
+    '&, &:hover, &:visited, .noop': {
       backgroundColor: colors.structure.steel,
     },
-    '&:hover': {
+    '&:hover, .noop': {
+      textDecoration: 'none',
       backgroundColor: colors.structure.zinc,
     },
-    '&[aria-disabled=true]': {
+    '&[aria-disabled=true], .noop': {
+      color: colors.structure.mattGrey,
       backgroundColor: colors.structure.steel,
     },
   },
   SECONDARY_SMALL: {
     padding: `${spacing.base}px ${spacing.normal}px`,
-    '&,&:hover,&:visited': {
+    '&, &:hover, &:visited, .noop': {
       backgroundColor: colors.structure.steel,
     },
-    '&:hover': {
+    '&:hover, .noop': {
+      textDecoration: 'none',
       backgroundColor: colors.structure.zinc,
     },
-    '&[aria-disabled=true]': {
+    '&[aria-disabled=true], .noop': {
+      color: colors.structure.mattGrey,
       backgroundColor: colors.structure.steel,
     },
   },
   WARNING: {
-    '&,&:hover,&:visited': {
+    '&, &:hover, &:visited, .noop': {
       backgroundColor: colors.signal.warning.base,
     },
-    '&:hover': {
+    '&:hover, .noop': {
+      textDecoration: 'none',
       opacity: constants.opacity.half,
     },
-    '&[aria-disabled=true]': {
+    '&[aria-disabled=true], .noop': {
+      color: colors.structure.mattGrey,
       backgroundColor: colors.structure.steel,
     },
   },
   LINK: {
     padding: spacing.small,
     fontWeight: typography.weight.regular,
-    '&,&:hover,&:visited': {
+    '&, &:hover, &:visited, .noop': {
       color: colors.key.one,
     },
-    '&:hover': {
+    '&:hover, .noop': {
       textDecoration: 'underline',
     },
   },
@@ -108,7 +112,8 @@ const STYLES = {
     color: colors.key.one,
     fontWeight: typography.weight.regular,
     height: '100%',
-    ':hover, &.focus-visible:focus': {
+    '&:hover, &.focus-visible:focus, .noop': {
+      textDecoration: 'none',
       backgroundColor: colors.structure.smoke,
     },
   },
@@ -118,20 +123,22 @@ const STYLES = {
     padding: `${spacing.base}px ${spacing.normal}px`,
     fontWeight: typography.weight.regular,
     borderRadius: 0,
-    ':hover, &.focus-visible:focus': {
+    '&:hover, &.focus-visible:focus, .noop': {
+      textDecoration: 'none',
       backgroundColor: colors.structure.iron,
     },
   },
   ICON: {
     padding: spacing.base,
     color: colors.structure.steel,
-    ':hover, &.focus-visible:focus': {
+    '&:hover, &.focus-visible:focus, .noop': {
+      textDecoration: 'none',
       color: colors.structure.white,
       svg: {
         opacity: 1,
       },
     },
-    '&[aria-disabled=true]': {
+    '&[aria-disabled=true], .noop': {
       color: colors.structure.steel,
     },
   },
@@ -146,7 +153,8 @@ const STYLES = {
     fontSize: typography.size.regular,
     fontFamily: typography.family.condensed,
     textTransform: 'uppercase',
-    ':hover, &.focus-visible:focus': {
+    '&:hover, &.focus-visible:focus, .noop': {
+      textDecoration: 'none',
       color: colors.structure.white,
     },
   },
@@ -162,31 +170,32 @@ const Button = forwardRef(
     { variant, children, href, style, isDisabled, onClick, target, ...props },
     ref,
   ) => {
-    const Element = href ? 'a' : 'button'
+    const Element = href && !isDisabled ? 'a' : 'button'
 
     const disabled = isDisabled ? { 'aria-disabled': true } : {}
 
-    const addedProps = href
-      ? {
-          href,
-          onClick,
-          target,
-          rel:
-            target && target === '_blank' ? 'noopener noreferrer' : undefined,
-        }
-      : {
-          type: 'button',
-          ...disabled,
-          onClick: (event) => {
-            if (isDisabled) return event.preventDefault()
-            return onClick(event)
-          },
-        }
+    const addedProps =
+      href && !isDisabled
+        ? {
+            href,
+            onClick,
+            target,
+            rel:
+              target && target === '_blank' ? 'noopener noreferrer' : undefined,
+          }
+        : {
+            type: 'button',
+            ...disabled,
+            onClick: (event) => {
+              if (isDisabled) return event.preventDefault()
+              return onClick(event)
+            },
+          }
 
     return (
       <Element
         ref={ref}
-        css={[BASE({ isDisabled }), STYLES[variant], style]}
+        css={{ ...BASE({ isDisabled }), ...STYLES[variant], ...style }}
         {...addedProps}
         {...props}
       >

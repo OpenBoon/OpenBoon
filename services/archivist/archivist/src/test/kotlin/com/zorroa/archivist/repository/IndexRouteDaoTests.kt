@@ -156,4 +156,15 @@ class IndexRouteDaoTests : AbstractTest() {
             jdbc.queryForObject("SELECT int_state FROM index_route WHERE pk_index_route=?", Int::class.java, route.id)
         )
     }
+
+    @Test
+    fun testSetStateById() {
+        val spec = getTestSpec()
+        val route = indexRouteDao.create(spec)
+        indexRouteDao.setState(route.id, IndexRouteState.CLOSED)
+        assertEquals(
+            IndexRouteState.CLOSED.ordinal,
+            jdbc.queryForObject("SELECT int_state FROM index_route WHERE pk_index_route=?", Int::class.java, route.id)
+        )
+    }
 }

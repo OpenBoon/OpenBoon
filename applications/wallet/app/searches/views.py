@@ -312,7 +312,14 @@ class SearchViewSet(CreateModelMixin,
 
 
 class MetadataExportViewSet(BaseProjectViewSet):
-    """Exports asset metadata as CSV file."""
+    """Exports asset metadata as CSV file.
+
+    Notes:
+        Disabled due to a security vulnerability found by ISE and a bug where large exports
+        result in a 504. If we find a need for this in the future those issue will need to be
+        addressed before re-enabling.
+
+    """
     renderer_classes = [CSVRenderer, CamelCaseBrowsableAPIRenderer]
 
     def _search_for_assets(self, request):

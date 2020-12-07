@@ -21,8 +21,9 @@ describe('<AssetLabelingMenu />', () => {
 
     const component = TestRenderer.create(
       <AssetLabelingMenu
-        label="Mark Ruffalo"
         modelId={MODEL_ID}
+        label="Mark Ruffalo"
+        scope="TRAIN"
         moduleName="zvi-face-recognition"
         triggerReload={noop}
         setError={noop}
@@ -71,8 +72,9 @@ describe('<AssetLabelingMenu />', () => {
 
     const component = TestRenderer.create(
       <AssetLabelingMenu
-        label="Mark Ruffalo"
         modelId={MODEL_ID}
+        label="Mark Ruffalo"
+        scope="TRAIN"
         moduleName="zvi-face-recognition"
         triggerReload={mockFn}
         setError={noop}
@@ -113,8 +115,9 @@ describe('<AssetLabelingMenu />', () => {
 
     const component = TestRenderer.create(
       <AssetLabelingMenu
-        label="Mark Ruffalo"
         modelId={MODEL_ID}
+        label="Mark Ruffalo"
+        scope="TRAIN"
         moduleName="zvi-face-recognition"
         triggerReload={mockFn}
         setError={noop}

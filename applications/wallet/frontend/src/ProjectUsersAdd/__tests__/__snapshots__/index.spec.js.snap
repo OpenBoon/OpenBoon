@@ -23,7 +23,7 @@ Array [
   >
     Project User Admin
   </h2>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -32,7 +32,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -43,12 +43,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -68,13 +68,13 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
-.emotion-2 {
+.emotion-5 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -93,22 +93,22 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -117,10 +117,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -142,16 +142,16 @@ Array [
   >
     Add User(s) to Project
   </h3>,
-  .emotion-5 {
+  .emotion-0 {
   padding-top: 12px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   color: #808080;
 }
 
-.emotion-4 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -163,7 +163,7 @@ Array [
   padding-top: 16px;
 }
 
-.emotion-1 {
+.emotion-3 {
   width: 470px;
   font-size: 15px;
   line-height: 19px;
@@ -175,7 +175,7 @@ Array [
   resize: none;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -188,7 +188,7 @@ Array [
   padding-right: 4px;
 }
 
-.emotion-2 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -204,73 +204,64 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
   color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-5:hover,
+.emotion-5 .noop {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
-.emotion-2:active {
+.emotion-5:active {
   opacity: 0;
   -webkit-transition: opacity .3s ease;
   transition: opacity .3s ease;
 }
 
 <div
-    className="emotion-5"
+    className="emotion-0"
   >
     <label
-      className="emotion-0"
+      className="emotion-1"
       htmlFor="copyLink"
     >
       A user must have an account to be added. Accounts can be created here:
     </label>
     <div
-      className="emotion-4"
+      className="emotion-2"
     >
       <input
-        className="emotion-1"
+        className="emotion-3"
         id="copyLink"
         readOnly={true}
         type="text"
         value="http://localhost/create-account"
       />
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
         <button
-          className="emotion-2"
+          className="emotion-5"
           onClick={[Function]}
           type="button"
         >
@@ -279,7 +270,7 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-34 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -293,54 +284,58 @@ Array [
   padding-right: 0;
 }
 
-.emotion-3 {
+.emotion-1 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-2 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-2 {
+.emotion-3 {
   position: relative;
 }
 
-.emotion-1 {
+.emotion-4 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-4:focus,
+.emotion-4 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
-}
-
-.emotion-1:hover {
-  border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-31 {
+.emotion-4:hover,
+.emotion-4 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+}
+
+.emotion-6 {
   border: none;
   padding: 0;
   margin: 0;
   padding-top: 12px;
 }
 
-.emotion-5 {
+.emotion-7 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -353,11 +348,11 @@ Array [
   display: flex;
 }
 
-.emotion-6 {
+.emotion-8 {
   clear: both;
 }
 
-.emotion-14 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -379,7 +374,7 @@ Array [
   position: relative;
 }
 
-.emotion-7 {
+.emotion-11 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -390,7 +385,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-9 {
+.emotion-12 {
   position: absolute;
   top: 0;
   left: 0;
@@ -401,8 +396,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -411,13 +406,13 @@ Array [
   cursor: pointer;
 }
 
-.emotion-8 path {
+.emotion-13 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-13 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -428,14 +423,14 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-11 {
+.emotion-15 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-12 {
+.emotion-16 {
   padding-left: 0;
   color: #b3b3b3;
 }
@@ -454,7 +449,7 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-32 {
+.emotion-34 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -470,8 +465,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -485,50 +480,47 @@ Array [
   background-color: transparent;
 }
 
-.emotion-32:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-32[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-32,
-.emotion-32:hover,
-.emotion-32:visited {
+.emotion-34,
+.emotion-34:hover,
+.emotion-34:visited,
+.emotion-34 .noop {
   background-color: #73b61c;
 }
 
-.emotion-32:hover {
+.emotion-34:hover,
+.emotion-34 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-32[aria-disabled=true] {
+.emotion-34[aria-disabled=true],
+.emotion-34 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-34"
+    className="emotion-0"
     method="post"
     onSubmit={[Function]}
   >
     <div
-      className="emotion-3"
+      className="emotion-1"
     >
       <label
-        className="emotion-0"
+        className="emotion-2"
         htmlFor="emails"
       >
         Email(s)
       </label>
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <input
           autoFocus={true}
-          className="emotion-1"
+          className="emotion-4"
           disabled={false}
           id="emails"
           name="emails"
@@ -538,134 +530,134 @@ Array [
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-5"
       >
          
       </div>
     </div>
     <fieldset
-      className="emotion-31"
+      className="emotion-6"
     >
       <legend
-        className="emotion-5"
+        className="emotion-7"
       >
         Add Roles
       </legend>
       
       <div
-        className="emotion-6"
+        className="emotion-8"
       />
       <label
-        className="emotion-14"
+        className="emotion-9"
       >
         <div
           className="emotion-10"
         >
           <input
-            className="emotion-7"
+            className="emotion-11"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="ML_Tools"
           />
           <div
-            className="emotion-9"
+            className="emotion-12"
           >
             <svg
-              className="emotion-8"
+              className="emotion-13"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-13"
+          className="emotion-14"
         >
           <span
-            className="emotion-11"
+            className="emotion-15"
           >
             ML Tools
           </span>
           <span
-            className="emotion-12"
+            className="emotion-16"
           >
             Provides access to the Job Queue, Data Sources, and Visualizer.
           </span>
         </div>
       </label>
       <label
-        className="emotion-14"
+        className="emotion-9"
       >
         <div
           className="emotion-10"
         >
           <input
-            className="emotion-7"
+            className="emotion-11"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="API_Keys"
           />
           <div
-            className="emotion-9"
+            className="emotion-12"
           >
             <svg
-              className="emotion-8"
+              className="emotion-13"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-13"
+          className="emotion-14"
         >
           <span
-            className="emotion-11"
+            className="emotion-15"
           >
             API Keys
           </span>
           <span
-            className="emotion-12"
+            className="emotion-16"
           >
             Provides access to API Key provisioning.
           </span>
         </div>
       </label>
       <label
-        className="emotion-14"
+        className="emotion-9"
       >
         <div
           className="emotion-10"
         >
           <input
-            className="emotion-7"
+            className="emotion-11"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="User_Admin"
           />
           <div
-            className="emotion-9"
+            className="emotion-12"
           >
             <svg
-              className="emotion-8"
+              className="emotion-13"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-13"
+          className="emotion-14"
         >
           <span
-            className="emotion-11"
+            className="emotion-15"
           >
             User Admin
           </span>
           <span
-            className="emotion-12"
+            className="emotion-16"
           >
-            Provides access to User Administration for a Project.
+            Allows adding and removing users as well as managing their roles. This includes adding and removing their own roles.
           </span>
         </div>
       </label>
@@ -675,7 +667,7 @@ Array [
     >
       <button
         aria-disabled={true}
-        className="emotion-32"
+        className="emotion-34"
         onClick={[Function]}
         type="submit"
       >
@@ -709,7 +701,7 @@ Array [
   >
     Project User Admin
   </h2>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -718,7 +710,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -729,12 +721,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -754,13 +746,13 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
-.emotion-2 {
+.emotion-5 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -779,22 +771,22 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -803,10 +795,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -828,16 +820,16 @@ Array [
   >
     Add User(s) to Project
   </h3>,
-  .emotion-5 {
+  .emotion-0 {
   padding-top: 12px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   color: #808080;
 }
 
-.emotion-4 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -849,7 +841,7 @@ Array [
   padding-top: 16px;
 }
 
-.emotion-1 {
+.emotion-3 {
   width: 470px;
   font-size: 15px;
   line-height: 19px;
@@ -861,7 +853,7 @@ Array [
   resize: none;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -874,7 +866,7 @@ Array [
   padding-right: 4px;
 }
 
-.emotion-2 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -890,73 +882,64 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
   color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-5:hover,
+.emotion-5 .noop {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
-.emotion-2:active {
+.emotion-5:active {
   opacity: 0;
   -webkit-transition: opacity .3s ease;
   transition: opacity .3s ease;
 }
 
 <div
-    className="emotion-5"
+    className="emotion-0"
   >
     <label
-      className="emotion-0"
+      className="emotion-1"
       htmlFor="copyLink"
     >
       A user must have an account to be added. Accounts can be created here:
     </label>
     <div
-      className="emotion-4"
+      className="emotion-2"
     >
       <input
-        className="emotion-1"
+        className="emotion-3"
         id="copyLink"
         readOnly={true}
         type="text"
         value="http://localhost/create-account"
       />
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
         <button
-          className="emotion-2"
+          className="emotion-5"
           onClick={[Function]}
           type="button"
         >
@@ -965,7 +948,7 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-34 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -979,54 +962,58 @@ Array [
   padding-right: 0;
 }
 
-.emotion-3 {
+.emotion-1 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-2 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-2 {
+.emotion-3 {
   position: relative;
 }
 
-.emotion-1 {
+.emotion-4 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-4:focus,
+.emotion-4 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
-}
-
-.emotion-1:hover {
-  border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-31 {
+.emotion-4:hover,
+.emotion-4 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+}
+
+.emotion-6 {
   border: none;
   padding: 0;
   margin: 0;
   padding-top: 12px;
 }
 
-.emotion-5 {
+.emotion-7 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -1039,11 +1026,11 @@ Array [
   display: flex;
 }
 
-.emotion-6 {
+.emotion-8 {
   clear: both;
 }
 
-.emotion-14 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1065,18 +1052,18 @@ Array [
   position: relative;
 }
 
-.emotion-15 {
+.emotion-11 {
   padding: 0;
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #808080;
+  background-color: #73b61c;
+  border: 2px solid #73b61c;
   border-radius: 2px;
   cursor: pointer;
 }
 
-.emotion-9 {
+.emotion-12 {
   position: absolute;
   top: 0;
   left: 0;
@@ -1087,8 +1074,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1097,13 +1084,13 @@ Array [
   cursor: pointer;
 }
 
-.emotion-16 path {
+.emotion-13 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 0;
+  opacity: 100;
 }
 
-.emotion-13 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1114,16 +1101,33 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-11 {
+.emotion-15 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-12 {
+.emotion-16 {
   padding-left: 0;
   color: #b3b3b3;
+}
+
+.emotion-19 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-21 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
 }
 
 .emotion-33 {
@@ -1140,7 +1144,7 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-32 {
+.emotion-34 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1156,8 +1160,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1171,67 +1175,47 @@ Array [
   background-color: transparent;
 }
 
-.emotion-32:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-32[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-32,
-.emotion-32:hover,
-.emotion-32:visited {
+.emotion-34,
+.emotion-34:hover,
+.emotion-34:visited,
+.emotion-34 .noop {
   background-color: #73b61c;
 }
 
-.emotion-32:hover {
+.emotion-34:hover,
+.emotion-34 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-32[aria-disabled=true] {
+.emotion-34[aria-disabled=true],
+.emotion-34 .noop {
+  color: #2e2e2e;
   background-color: #808080;
-}
-
-.emotion-7 {
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: #73b61c;
-  border: 2px solid #73b61c;
-  border-radius: 2px;
-  cursor: pointer;
-}
-
-.emotion-8 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 100;
 }
 
 <form
     action=""
-    className="emotion-34"
+    className="emotion-0"
     method="post"
     onSubmit={[Function]}
   >
     <div
-      className="emotion-3"
+      className="emotion-1"
     >
       <label
-        className="emotion-0"
+        className="emotion-2"
         htmlFor="emails"
       >
         Email(s)
       </label>
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <input
           autoFocus={true}
-          className="emotion-1"
+          className="emotion-4"
           disabled={false}
           id="emails"
           name="emails"
@@ -1241,134 +1225,134 @@ Array [
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-5"
       >
          
       </div>
     </div>
     <fieldset
-      className="emotion-31"
+      className="emotion-6"
     >
       <legend
-        className="emotion-5"
+        className="emotion-7"
       >
         Add Roles
       </legend>
       
       <div
-        className="emotion-6"
+        className="emotion-8"
       />
       <label
-        className="emotion-14"
+        className="emotion-9"
       >
         <div
           className="emotion-10"
         >
           <input
-            className="emotion-7"
+            className="emotion-11"
             defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="ML_Tools"
           />
           <div
-            className="emotion-9"
+            className="emotion-12"
           >
             <svg
-              className="emotion-8"
+              className="emotion-13"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-13"
+          className="emotion-14"
         >
           <span
-            className="emotion-11"
+            className="emotion-15"
           >
             ML Tools
           </span>
           <span
-            className="emotion-12"
+            className="emotion-16"
           >
             Provides access to the Job Queue, Data Sources, and Visualizer.
           </span>
         </div>
       </label>
       <label
-        className="emotion-14"
+        className="emotion-9"
       >
         <div
           className="emotion-10"
         >
           <input
-            className="emotion-15"
+            className="emotion-19"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="API_Keys"
           />
           <div
-            className="emotion-9"
+            className="emotion-12"
           >
             <svg
-              className="emotion-16"
+              className="emotion-21"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-13"
+          className="emotion-14"
         >
           <span
-            className="emotion-11"
+            className="emotion-15"
           >
             API Keys
           </span>
           <span
-            className="emotion-12"
+            className="emotion-16"
           >
             Provides access to API Key provisioning.
           </span>
         </div>
       </label>
       <label
-        className="emotion-14"
+        className="emotion-9"
       >
         <div
           className="emotion-10"
         >
           <input
-            className="emotion-15"
+            className="emotion-19"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="User_Admin"
           />
           <div
-            className="emotion-9"
+            className="emotion-12"
           >
             <svg
-              className="emotion-16"
+              className="emotion-21"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-13"
+          className="emotion-14"
         >
           <span
-            className="emotion-11"
+            className="emotion-15"
           >
             User Admin
           </span>
           <span
-            className="emotion-12"
+            className="emotion-16"
           >
-            Provides access to User Administration for a Project.
+            Allows adding and removing users as well as managing their roles. This includes adding and removing their own roles.
           </span>
         </div>
       </label>
@@ -1377,7 +1361,7 @@ Array [
       className="emotion-33"
     >
       <button
-        className="emotion-32"
+        className="emotion-34"
         onClick={[Function]}
         type="submit"
       >
@@ -1411,7 +1395,7 @@ Array [
   >
     Project User Admin
   </h2>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -1420,7 +1404,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -1431,12 +1415,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -1456,13 +1440,13 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
-.emotion-2 {
+.emotion-5 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -1481,22 +1465,22 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -1505,10 +1489,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -1518,23 +1502,78 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-3 {
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-2 a {
+  color: #ffffff;
+  background-color: #3b3b3b;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-2 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #2e2e2e;
+}
+
+.emotion-3 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-top: 16px;
 }
 
-.emotion-10 {
+.emotion-4 {
   padding-top: 12px;
+  padding-bottom: 12px;
+  color: #808080;
 }
 
 .emotion-5 {
+  padding-top: 12px;
+}
+
+.emotion-6 {
   display: block;
   color: #808080;
 }
 
-.emotion-9 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1546,7 +1585,7 @@ Array [
   padding-top: 16px;
 }
 
-.emotion-6 {
+.emotion-8 {
   width: 470px;
   font-size: 15px;
   line-height: 19px;
@@ -1558,7 +1597,7 @@ Array [
   resize: none;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1571,7 +1610,7 @@ Array [
   padding-right: 4px;
 }
 
-.emotion-7 {
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1587,50 +1626,94 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
 }
 
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited,
+.emotion-10 .noop {
   color: #73b61c;
 }
 
-.emotion-7:hover {
+.emotion-10:hover,
+.emotion-10 .noop {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
-.emotion-7:active {
+.emotion-10:active {
   opacity: 0;
   -webkit-transition: opacity .3s ease;
   transition: opacity .3s ease;
 }
 
-.emotion-21 {
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-13 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-13 a {
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-13 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
+}
+
+.emotion-15 {
+  padding-top: 12px;
+  color: #808080;
+}
+
+.emotion-17 {
+  color: #b3b3b3;
+}
+
+.emotion-18 {
+  font-weight: 700;
+}
+
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1639,8 +1722,8 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-21 button,
-.emotion-21 a {
+.emotion-19 button,
+.emotion-19 a {
   margin-right: 16px;
 }
 
@@ -1660,8 +1743,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1675,114 +1758,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-20:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-20[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-20,
 .emotion-20:hover,
-.emotion-20:visited {
-  background-color: #73b61c;
-}
-
-.emotion-20:hover {
-  background-color: #96c955;
-}
-
-.emotion-20[aria-disabled=true] {
+.emotion-20:visited,
+.emotion-20 .noop {
   background-color: #808080;
 }
 
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #ffb6b2;
-  border-radius: 2px;
-  padding: 12px;
+.emotion-20:hover,
+.emotion-20 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
 }
 
-.emotion-0 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
+.emotion-20[aria-disabled=true],
+.emotion-20 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
-.emotion-0 a {
-  color: #c92300;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-4 {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  color: #808080;
-}
-
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #e3f7e8;
-  border-radius: 2px;
-  padding: 12px;
-}
-
-.emotion-11 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
-}
-
-.emotion-11 a {
-  color: #009f22;
-}
-
-.emotion-15 {
-  padding-top: 12px;
-  color: #808080;
-}
-
-.emotion-18 {
-  color: #b3b3b3;
-}
-
-.emotion-17 {
-  font-weight: 700;
-}
-
-.emotion-19 {
+.emotion-21 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1798,8 +1794,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -1813,32 +1809,29 @@ Array [
   background-color: transparent;
 }
 
-.emotion-19:hover {
+.emotion-21,
+.emotion-21:hover,
+.emotion-21:visited,
+.emotion-21 .noop {
+  background-color: #73b61c;
+}
+
+.emotion-21:hover,
+.emotion-21 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
+  background-color: #96c955;
 }
 
-.emotion-19[aria-disabled=true] {
+.emotion-21[aria-disabled=true],
+.emotion-21 .noop {
   color: #2e2e2e;
-}
-
-.emotion-19,
-.emotion-19:hover,
-.emotion-19:visited {
-  background-color: #808080;
-}
-
-.emotion-19:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-19[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div>
     <div
-      className="emotion-2"
+      className="emotion-0"
     >
       <div
         className="emotion-1"
@@ -1849,7 +1842,7 @@ Array [
           height={20}
         />
         <div
-          className="emotion-0"
+          className="emotion-2"
           role="alert"
         >
           Users not added.
@@ -1867,29 +1860,29 @@ Array [
       danny@zorroa.com
     </div>
     <div
-      className="emotion-10"
+      className="emotion-5"
     >
       <label
-        className="emotion-5"
+        className="emotion-6"
         htmlFor="copyLink"
       >
         A user must have an account to be added. Accounts can be created here:
       </label>
       <div
-        className="emotion-9"
+        className="emotion-7"
       >
         <input
-          className="emotion-6"
+          className="emotion-8"
           id="copyLink"
           readOnly={true}
           type="text"
           value="http://localhost/create-account"
         />
         <div
-          className="emotion-8"
+          className="emotion-9"
         >
           <button
-            className="emotion-7"
+            className="emotion-10"
             onClick={[Function]}
             type="button"
           >
@@ -1899,7 +1892,7 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-2"
+      className="emotion-0"
     >
       <div
         className="emotion-12"
@@ -1910,7 +1903,7 @@ Array [
           height={20}
         />
         <div
-          className="emotion-11"
+          className="emotion-13"
           role="alert"
         >
           Users added.
@@ -1933,26 +1926,26 @@ Array [
       Roles
     </h3>
     <ul
-      className="emotion-18"
+      className="emotion-17"
     >
       <li
-        className="emotion-17"
+        className="emotion-18"
       >
         ML Tools
       </li>
     </ul>
     <div
-      className="emotion-21"
+      className="emotion-19"
     >
       <button
-        className="emotion-19"
+        className="emotion-20"
         onClick={[Function]}
         type="button"
       >
         Add Another User
       </button>
       <a
-        className="emotion-20"
+        className="emotion-21"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -1987,7 +1980,7 @@ Array [
   >
     Project User Admin
   </h2>,
-  .emotion-5 {
+  .emotion-0 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -1996,7 +1989,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-4 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -2007,12 +2000,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-0 {
+.emotion-3 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -2032,13 +2025,13 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
-.emotion-2 {
+.emotion-5 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -2057,22 +2050,22 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
 <nav
-    className="emotion-5"
+    className="emotion-0"
   >
     <ul
-      className="emotion-4"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -2081,10 +2074,10 @@ Array [
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -2106,16 +2099,16 @@ Array [
   >
     Add User(s) to Project
   </h3>,
-  .emotion-5 {
+  .emotion-0 {
   padding-top: 12px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   color: #808080;
 }
 
-.emotion-4 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2127,7 +2120,7 @@ Array [
   padding-top: 16px;
 }
 
-.emotion-1 {
+.emotion-3 {
   width: 470px;
   font-size: 15px;
   line-height: 19px;
@@ -2139,7 +2132,7 @@ Array [
   resize: none;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2152,7 +2145,7 @@ Array [
   padding-right: 4px;
 }
 
-.emotion-2 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2168,73 +2161,64 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
   color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-5:hover,
+.emotion-5 .noop {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
-.emotion-2:active {
+.emotion-5:active {
   opacity: 0;
   -webkit-transition: opacity .3s ease;
   transition: opacity .3s ease;
 }
 
 <div
-    className="emotion-5"
+    className="emotion-0"
   >
     <label
-      className="emotion-0"
+      className="emotion-1"
       htmlFor="copyLink"
     >
       A user must have an account to be added. Accounts can be created here:
     </label>
     <div
-      className="emotion-4"
+      className="emotion-2"
     >
       <input
-        className="emotion-1"
+        className="emotion-3"
         id="copyLink"
         readOnly={true}
         type="text"
         value="http://localhost/create-account"
       />
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
         <button
-          className="emotion-2"
+          className="emotion-5"
           onClick={[Function]}
           type="button"
         >
@@ -2243,7 +2227,7 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-34 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2257,54 +2241,58 @@ Array [
   padding-right: 0;
 }
 
-.emotion-3 {
+.emotion-1 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-2 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-2 {
+.emotion-3 {
   position: relative;
 }
 
-.emotion-1 {
+.emotion-4 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-4:focus,
+.emotion-4 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
-}
-
-.emotion-1:hover {
-  border: 2px solid #ffffff;
-}
-
-.emotion-1:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-31 {
+.emotion-4:hover,
+.emotion-4 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+}
+
+.emotion-6 {
   border: none;
   padding: 0;
   margin: 0;
   padding-top: 12px;
 }
 
-.emotion-5 {
+.emotion-7 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -2317,11 +2305,11 @@ Array [
   display: flex;
 }
 
-.emotion-6 {
+.emotion-8 {
   clear: both;
 }
 
-.emotion-14 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2343,7 +2331,7 @@ Array [
   position: relative;
 }
 
-.emotion-7 {
+.emotion-11 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -2354,7 +2342,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-9 {
+.emotion-12 {
   position: absolute;
   top: 0;
   left: 0;
@@ -2365,8 +2353,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2375,13 +2363,13 @@ Array [
   cursor: pointer;
 }
 
-.emotion-8 path {
+.emotion-13 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-13 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2392,14 +2380,14 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-11 {
+.emotion-15 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-12 {
+.emotion-16 {
   padding-left: 0;
   color: #b3b3b3;
 }
@@ -2418,7 +2406,7 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-32 {
+.emotion-34 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2434,8 +2422,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -2449,50 +2437,47 @@ Array [
   background-color: transparent;
 }
 
-.emotion-32:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-32[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-32,
-.emotion-32:hover,
-.emotion-32:visited {
+.emotion-34,
+.emotion-34:hover,
+.emotion-34:visited,
+.emotion-34 .noop {
   background-color: #73b61c;
 }
 
-.emotion-32:hover {
+.emotion-34:hover,
+.emotion-34 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-32[aria-disabled=true] {
+.emotion-34[aria-disabled=true],
+.emotion-34 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-34"
+    className="emotion-0"
     method="post"
     onSubmit={[Function]}
   >
     <div
-      className="emotion-3"
+      className="emotion-1"
     >
       <label
-        className="emotion-0"
+        className="emotion-2"
         htmlFor="emails"
       >
         Email(s)
       </label>
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <input
           autoFocus={true}
-          className="emotion-1"
+          className="emotion-4"
           disabled={false}
           id="emails"
           name="emails"
@@ -2502,134 +2487,134 @@ Array [
         />
       </div>
       <div
-        className="emotion-3"
+        className="emotion-5"
       >
          
       </div>
     </div>
     <fieldset
-      className="emotion-31"
+      className="emotion-6"
     >
       <legend
-        className="emotion-5"
+        className="emotion-7"
       >
         Add Roles
       </legend>
       
       <div
-        className="emotion-6"
+        className="emotion-8"
       />
       <label
-        className="emotion-14"
+        className="emotion-9"
       >
         <div
           className="emotion-10"
         >
           <input
-            className="emotion-7"
+            className="emotion-11"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="ML_Tools"
           />
           <div
-            className="emotion-9"
+            className="emotion-12"
           >
             <svg
-              className="emotion-8"
+              className="emotion-13"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-13"
+          className="emotion-14"
         >
           <span
-            className="emotion-11"
+            className="emotion-15"
           >
             ML Tools
           </span>
           <span
-            className="emotion-12"
+            className="emotion-16"
           >
             Provides access to the Job Queue, Data Sources, and Visualizer.
           </span>
         </div>
       </label>
       <label
-        className="emotion-14"
+        className="emotion-9"
       >
         <div
           className="emotion-10"
         >
           <input
-            className="emotion-7"
+            className="emotion-11"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="API_Keys"
           />
           <div
-            className="emotion-9"
+            className="emotion-12"
           >
             <svg
-              className="emotion-8"
+              className="emotion-13"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-13"
+          className="emotion-14"
         >
           <span
-            className="emotion-11"
+            className="emotion-15"
           >
             API Keys
           </span>
           <span
-            className="emotion-12"
+            className="emotion-16"
           >
             Provides access to API Key provisioning.
           </span>
         </div>
       </label>
       <label
-        className="emotion-14"
+        className="emotion-9"
       >
         <div
           className="emotion-10"
         >
           <input
-            className="emotion-7"
+            className="emotion-11"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="User_Admin"
           />
           <div
-            className="emotion-9"
+            className="emotion-12"
           >
             <svg
-              className="emotion-8"
+              className="emotion-13"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-13"
+          className="emotion-14"
         >
           <span
-            className="emotion-11"
+            className="emotion-15"
           >
             User Admin
           </span>
           <span
-            className="emotion-12"
+            className="emotion-16"
           >
-            Provides access to User Administration for a Project.
+            Allows adding and removing users as well as managing their roles. This includes adding and removing their own roles.
           </span>
         </div>
       </label>
@@ -2639,7 +2624,7 @@ Array [
     >
       <button
         aria-disabled={true}
-        className="emotion-32"
+        className="emotion-34"
         onClick={[Function]}
         type="submit"
       >

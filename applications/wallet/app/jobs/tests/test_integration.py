@@ -1,4 +1,6 @@
 import pytest
+import requests
+from django.http import StreamingHttpResponse
 from django.test import override_settings
 from django.urls import reverse
 from requests import Response
@@ -490,6 +492,18 @@ class TestTaskViewSet:
         url = reverse('task-errors', kwargs={'project_pk': project.id, 'pk': task_id})
         _json = check_response(api_client.get(url))
         assert _json['count'] == 12
+
+    def test_logs(self, monkeypatch, api_client, zmlp_project_user, project, login):
+        def mock_streamer(*args, **kwargs):
+            for x in range(0, 1024):
+                yield x
+
+        monkeypatch.setattr(requests, 'get', mock_streamer)
+        task_id = '5cd3eedf-ab69-1a12-8017-3e6d2d97ef02'
+        url = reverse('task-logs', kwargs={'project_pk': project.id, 'pk': task_id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert isinstance(response, StreamingHttpResponse)
 
 
 class TestTaskErrorViewSet:

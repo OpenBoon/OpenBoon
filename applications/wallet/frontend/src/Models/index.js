@@ -6,13 +6,14 @@ import Link from 'next/link'
 
 import { spacing } from '../Styles'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import PageTitle from '../PageTitle'
 import BetaBadge from '../BetaBadge'
-import FlashMessage, { VARIANTS } from '../FlashMessage'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
+import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
 import ModelsEmpty from './Empty'
 import ModelsRow from './Row'
@@ -22,16 +23,18 @@ const Models = () => {
     query: { projectId, action, modelId },
   } = useRouter()
 
-  const [, setPanel] = useLocalStorageState({
+  const [, setPanel] = useLocalStorage({
     key: 'leftOpeningPanel',
   })
 
-  const [, setModelId] = useLocalStorageState({
-    key: `AssetLabelingAdd.${projectId}.modelId`,
-  })
-
-  const [, setLabel] = useLocalStorageState({
-    key: `AssetLabelingAdd.${projectId}.label`,
+  const [, setModelFields] = useLocalStorage({
+    key: `AssetLabelingAdd.${projectId}`,
+    reducer: (state, a) => ({ ...state, ...a }),
+    initialState: {
+      modelId: modelId || '',
+      label: '',
+      scope: '',
+    },
   })
 
   return (
@@ -47,7 +50,7 @@ const Models = () => {
 
       {action === 'add-model-success' && (
         <div css={{ display: 'flex', paddingTop: spacing.base }}>
-          <FlashMessage variant={VARIANTS.SUCCESS}>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
             Model created.{' '}
             <Link
               href="/[projectId]/visualizer"
@@ -58,8 +61,11 @@ const Models = () => {
                 onClick={() => {
                   setPanel({ value: 'assetLabeling' })
                   if (modelId) {
-                    setModelId({ value: modelId })
-                    setLabel({ value: '' })
+                    setModelFields({
+                      modelId,
+                      scope: SCOPE_OPTIONS[0].value,
+                      label: '',
+                    })
                   }
                 }}
               >
@@ -72,7 +78,9 @@ const Models = () => {
 
       {action === 'delete-model-success' && (
         <div css={{ display: 'flex', paddingTop: spacing.base }}>
-          <FlashMessage variant={VARIANTS.SUCCESS}>Model deleted.</FlashMessage>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Model deleted.
+          </FlashMessage>
         </div>
       )}
 

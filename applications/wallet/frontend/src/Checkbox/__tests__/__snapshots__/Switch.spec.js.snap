@@ -1,0 +1,344 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Checkbox /> should render properly 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px;
+  background-color: #2e2e2e;
+  outline: auto 5px -webkit-focus-ring-color;
+}
+
+.emotion-0:hover {
+  background-color: #2e2e2e;
+}
+
+.emotion-0:hover div {
+  color: #ffffff;
+}
+
+.emotion-0:hover rect {
+  stroke: #ffffff;
+}
+
+.emotion-0:hover circle {
+  fill: #ffffff;
+}
+
+.emotion-0 div {
+  color: #ffffff;
+}
+
+.emotion-0 rect {
+  stroke: #ffffff;
+}
+
+.emotion-0 circle {
+  fill: #ffffff;
+}
+
+.emotion-1 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+}
+
+.emotion-2 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  fill: #4a4a4a;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 8px;
+  text-transform: uppercase;
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  color: #808080;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Roboto Condensed;
+  margin-bottom: -1px;
+}
+
+<label
+  className="emotion-0"
+>
+  <input
+    className="hidden"
+    defaultChecked={false}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    type="checkbox"
+    value="checkbox"
+  />
+  <svg
+    height={16}
+    width={30}
+  >
+    <rect
+      className="emotion-1"
+      fill="#191919"
+      height={8}
+      rx={4}
+      stroke="#3b3b3b"
+      width={30}
+      x={0}
+      y={4}
+    />
+    <circle
+      className="emotion-2"
+      cx={8}
+      cy={8}
+      r={8}
+    />
+  </svg>
+  <div
+    className="emotion-3"
+  >
+    Checkbox
+  </div>
+</label>
+`;
+
+exports[`<Checkbox /> should render properly 2`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px;
+  background-color: #2e2e2e;
+  outline: auto 5px -webkit-focus-ring-color;
+}
+
+.emotion-0:hover {
+  background-color: #2e2e2e;
+}
+
+.emotion-0:hover div {
+  color: #73b61c;
+}
+
+.emotion-0:hover rect {
+  stroke: #3b3b3b;
+}
+
+.emotion-0:hover circle {
+  fill: #73b61c;
+}
+
+.emotion-0 div {
+  color: #73b61c;
+}
+
+.emotion-0 rect {
+  stroke: #3b3b3b;
+}
+
+.emotion-0 circle {
+  fill: #73b61c;
+}
+
+.emotion-1 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+}
+
+.emotion-2 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  fill: #73b61c;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 8px;
+  text-transform: uppercase;
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  color: #73b61c;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Roboto Condensed;
+  margin-bottom: -1px;
+}
+
+<label
+  className="emotion-0"
+>
+  <input
+    className="hidden"
+    defaultChecked={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    type="checkbox"
+    value="checkbox"
+  />
+  <svg
+    height={16}
+    width={30}
+  >
+    <rect
+      className="emotion-1"
+      fill="#191919"
+      height={8}
+      rx={4}
+      stroke="#3b3b3b"
+      width={30}
+      x={0}
+      y={4}
+    />
+    <circle
+      className="emotion-2"
+      cx={22}
+      cy={8}
+      r={8}
+    />
+  </svg>
+  <div
+    className="emotion-3"
+  >
+    Checkbox
+  </div>
+</label>
+`;
+
+exports[`<Checkbox /> should render properly 3`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.emotion-0:hover {
+  background-color: #2e2e2e;
+}
+
+.emotion-0:hover div {
+  color: #73b61c;
+}
+
+.emotion-0:hover rect {
+  stroke: #3b3b3b;
+}
+
+.emotion-0:hover circle {
+  fill: #73b61c;
+}
+
+.emotion-1 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+}
+
+.emotion-2 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  fill: #73b61c;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 8px;
+  text-transform: uppercase;
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  color: #73b61c;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Roboto Condensed;
+  margin-bottom: -1px;
+}
+
+<label
+  className="emotion-0"
+>
+  <input
+    className="hidden"
+    defaultChecked={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    type="checkbox"
+    value="checkbox"
+  />
+  <svg
+    height={16}
+    width={30}
+  >
+    <rect
+      className="emotion-1"
+      fill="#191919"
+      height={8}
+      rx={4}
+      stroke="#3b3b3b"
+      width={30}
+      x={0}
+      y={4}
+    />
+    <circle
+      className="emotion-2"
+      cx={22}
+      cy={8}
+      r={8}
+    />
+  </svg>
+  <div
+    className="emotion-3"
+  >
+    Checkbox
+  </div>
+</label>
+`;

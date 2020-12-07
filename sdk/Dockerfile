@@ -25,12 +25,12 @@ COPY ./ /build
 WORKDIR /build
 RUN pip3 install .
 
-ARG ffmver=4.2.1-amd64
-COPY ffmpeg-$ffmver-static.tar.xz .
-RUN tar -xJf ffmpeg-$ffmver-static.tar.xz
+ARG ffmver=4.2.2-amd64
+COPY ffmpeg-amd64-static.tar.xz .
+RUN tar -xJf ffmpeg-amd64-static.tar.xz
 RUN cp ffmpeg-$ffmver-static/ffmpeg /usr/bin
 RUN cp ffmpeg-$ffmver-static/ffprobe /usr/bin
-RUN rm -rf ffmpeg-$ffmver-static*
+RUN rm -rf ffmpeg*
 
 WORKDIR /zps
 

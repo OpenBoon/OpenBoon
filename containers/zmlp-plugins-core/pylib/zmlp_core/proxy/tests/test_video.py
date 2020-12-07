@@ -4,59 +4,9 @@ from unittest.mock import patch
 from zmlpsdk import Frame
 from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from zmlp.client import ZmlpClient
-from zmlp_core.proxy.video import ExtractVideoClipProxyProcessor, VideoProxyProcessor
+from zmlp_core.proxy.video import VideoProxyProcessor
 
 logging.basicConfig(level=logging.INFO)
-
-
-class ExtractVideoClipProxyProcessorTests(PluginUnitTestCase):
-
-    def setUp(self):
-        self.movie_path = zorroa_test_data('video/FatManOnABike1914.mp4')
-        self.frame = Frame(TestAsset(self.movie_path))
-        self.processor = self.init_processor(ExtractVideoClipProxyProcessor(), {})
-
-    @patch.object(ZmlpClient, 'upload_file')
-    @patch('zmlp_core.proxy.video.store_media_proxy')
-    def test_process(self, store_patch, post_patch):
-        post_patch.return_value = {
-            "name": "video_512x341.jpg",
-            "category": "proxy",
-            "mimetype": "image/jpeg",
-            "assetId": "12345",
-            "attrs": {
-                "width": 450,
-                "height": 360
-            }
-        }
-        asset = self.frame.asset
-        asset.set_attr('media', {'width': 450, 'height': 360})
-        asset.set_attr('clip', {'start': 10, 'stop': 15, 'length': 5, 'track': 'random'})
-        self.processor.process(self.frame)
-
-        call = store_patch.call_args_list[0]
-        asset, path, ptype = call[0]
-
-        assert self.frame.asset.id == asset.id
-        assert path.endswith('.mp4')
-        assert ptype == 'video'
-
-    @patch('zmlp_core.proxy.video.store_media_proxy')
-    def test_process_skipped_no_clip(self, store_patch):
-        # No clip defined so it was skipped
-        asset = self.frame.asset
-        asset.set_attr('media', {'width': 450, 'height': 360})
-        self.processor.process(self.frame)
-        assert len(store_patch.call_args_list) == 0
-
-    @patch('zmlp_core.proxy.video.store_media_proxy')
-    def test_process_skipped_full(self, store_patch):
-        # A clip is on the full track, so its skipped.
-        asset = self.frame.asset
-        asset.set_attr('media', {'width': 450, 'height': 360})
-        asset.set_attr('clip', {'start': 10, 'stop': 15, 'length': 5, 'track': 'full'})
-        self.processor.process(self.frame)
-        assert len(store_patch.call_args_list) == 0
 
 
 class VideoProxyProcessorTests(PluginUnitTestCase):
@@ -71,10 +21,21 @@ class VideoProxyProcessorTests(PluginUnitTestCase):
         op = self.processor.get_transcoding_process(frame.asset)
         self.assertEquals('TRANSCODE', op)
 
+    def test_get_transcode_op_transcode_too_large(self):
+        movie_path = zorroa_test_data('video/out.mp4')
+        frame = Frame(TestAsset(movie_path))
+        frame.asset.set_attr('media.videoCodec', 'h264')
+        frame.asset.set_attr('media.width', 2368)
+        frame.asset.set_attr('media.height', 1080)
+        op = self.processor.get_transcoding_process(frame.asset)
+        self.assertEquals('TRANSCODE', op)
+
     def test_get_transcode_op_copy(self):
         movie_path = zorroa_test_data('video/out.mp4')
         frame = Frame(TestAsset(movie_path))
         frame.asset.set_attr('media.videoCodec', 'h264')
+        frame.asset.set_attr('media.width', 1280)
+        frame.asset.set_attr('media.height', 1080)
         op = self.processor.get_transcoding_process(frame.asset)
         self.assertEquals('COPY', op)
 
@@ -82,13 +43,15 @@ class VideoProxyProcessorTests(PluginUnitTestCase):
         movie_path = zorroa_test_data('video/ted_talk.mp4')
         frame = Frame(TestAsset(movie_path))
         frame.asset.set_attr('media.videoCodec', 'h264')
+        frame.asset.set_attr('media.width', 854)
+        frame.asset.set_attr('media.height', 480)
         op = self.processor.get_transcoding_process(frame.asset)
         self.assertEquals('OPTIMIZE', op)
 
     @patch.object(ZmlpClient, 'upload_file')
     @patch('zmlp_core.proxy.video.store_media_proxy')
     def test_process_transcode(self, store_patch, post_patch):
-        movie_path = zorroa_test_data('video/Search.mp4')
+        movie_path = zorroa_test_data('video/test_P1113171.mov')
         frame = Frame(TestAsset(movie_path))
 
         post_patch.return_value = {
@@ -97,12 +60,13 @@ class VideoProxyProcessorTests(PluginUnitTestCase):
             "mimetype": "image/jpeg",
             "assetId": "12345",
             "attrs": {
-                "width": 640,
-                "height": 360
+                "width": 1280,
+                "height": 720
             }
         }
+
         asset = frame.asset
-        asset.set_attr('media', {'videoCodec': 'mjpeg', 'width': 1024, 'height': 683})
+        asset.set_attr('media', {'videoCodec': 'mjpeg', 'width': 3840, 'height': 2160})
         asset.set_attr('clip', {'start': 0, 'stop': 15.05, 'length': 15.05, 'track': 'full'})
         self.processor.process(frame)
 

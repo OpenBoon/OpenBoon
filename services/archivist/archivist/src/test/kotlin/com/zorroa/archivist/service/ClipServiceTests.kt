@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.ClipSpec
 import com.zorroa.archivist.domain.CreateTimelineResponse
 import com.zorroa.archivist.domain.TimelineSpec
 import com.zorroa.archivist.domain.TrackSpec
+import com.zorroa.zmlp.util.Json
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.join.query.JoinQueryBuilders
@@ -99,9 +100,29 @@ class ClipServiceTests : AbstractTest() {
         clipService.getWebvtt(asset, mapOf(), output)
 
         val webvtt = String(output.toByteArray())
+
         // Check the times.
         assertTrue("00:00:11.684 --> 00:00:14.231" in webvtt)
         assertTrue("00:00:11.200 --> 00:00:12.500" in webvtt)
         assertTrue("00:00:11.684 --> 00:00:14.231" in webvtt)
+
+        val startPos = webvtt.indexOf('{')
+        val endPos = webvtt.indexOf('}')
+        val json = webvtt.substring(startPos, endPos + 1)
+
+        val data = Json.Mapper.readValue(json, Json.GENERIC_MAP)
+        assertEquals("zvi-label-detection", data["timeline"])
+        assertEquals("cats", data["track"])
+        assertEquals(listOf("cat"), data["content"])
+        assertEquals(0.5, data["score"])
+    }
+
+    @Test
+    fun testDeleteClipsByAssets() {
+        clipService.deleteClips(listOf(asset.id))
+        refreshElastic()
+
+        val search = clipService.searchClips(asset, mapOf(), mapOf())
+        assertEquals(0, search.hits.hits.size)
     }
 }

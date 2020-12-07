@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FilterReset /> should render properly with no fields 1`] = `
-.emotion-2 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -9,13 +9,13 @@ exports[`<FilterReset /> should render properly with no fields 1`] = `
   padding-bottom: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -31,53 +31,41 @@ exports[`<FilterReset /> should render properly with no fields 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-1:hover {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus,
+.emotion-2 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
 <div
-  className="emotion-2"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   />
   <button
-    className="emotion-1"
+    className="emotion-2"
     onClick={[Function]}
     type="button"
   >
@@ -87,7 +75,7 @@ exports[`<FilterReset /> should render properly with no fields 1`] = `
 `;
 
 exports[`<FilterReset /> should reset properly 1`] = `
-.emotion-3 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -95,7 +83,7 @@ exports[`<FilterReset /> should reset properly 1`] = `
   padding-bottom: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding: 4px;
   padding-left: 6px;
   padding-right: 26px;
@@ -111,24 +99,26 @@ exports[`<FilterReset /> should reset properly 1`] = `
   background-color: #3b3b3b;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2IzYjNiMyIgLz4KPC9zdmc+');
   background-repeat: no-repeat;
+  -webkit-background-size: 20px;
   background-size: 20px;
+  -webkit-background-position: right 3px top 3px;
   background-position: right 3px top 3px;
   cursor: pointer;
 }
 
-.emotion-0:hover,
-.emotion-0:focus {
+.emotion-1:hover,
+.emotion-1:focus {
   color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-2 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -144,50 +134,38 @@ exports[`<FilterReset /> should reset properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-2:hover {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
   color: #ffffff;
 }
 
 <div
-  className="emotion-3"
+  className="emotion-0"
 >
   <select
-    className="emotion-0"
+    className="emotion-1"
     defaultValue="range"
     onChange={[Function]}
   >
@@ -203,10 +181,10 @@ exports[`<FilterReset /> should reset properly 1`] = `
     </option>
   </select>
   <div
-    className="emotion-1"
+    className="emotion-2"
   />
   <button
-    className="emotion-2"
+    className="emotion-3"
     onClick={[Function]}
     type="button"
   >
@@ -216,7 +194,7 @@ exports[`<FilterReset /> should reset properly 1`] = `
 `;
 
 exports[`<FilterReset /> should switch properly 1`] = `
-.emotion-3 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -224,7 +202,7 @@ exports[`<FilterReset /> should switch properly 1`] = `
   padding-bottom: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding: 4px;
   padding-left: 6px;
   padding-right: 26px;
@@ -240,24 +218,26 @@ exports[`<FilterReset /> should switch properly 1`] = `
   background-color: #3b3b3b;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2IzYjNiMyIgLz4KPC9zdmc+');
   background-repeat: no-repeat;
+  -webkit-background-size: 20px;
   background-size: 20px;
+  -webkit-background-position: right 3px top 3px;
   background-position: right 3px top 3px;
   cursor: pointer;
 }
 
-.emotion-0:hover,
-.emotion-0:focus {
+.emotion-1:hover,
+.emotion-1:focus {
   color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-2 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -273,50 +253,38 @@ exports[`<FilterReset /> should switch properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-2:hover {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
   color: #ffffff;
 }
 
 <div
-  className="emotion-3"
+  className="emotion-0"
 >
   <select
-    className="emotion-0"
+    className="emotion-1"
     defaultValue="range"
     onChange={[Function]}
   >
@@ -332,10 +300,10 @@ exports[`<FilterReset /> should switch properly 1`] = `
     </option>
   </select>
   <div
-    className="emotion-1"
+    className="emotion-2"
   />
   <button
-    className="emotion-2"
+    className="emotion-3"
     onClick={[Function]}
     type="button"
   >
@@ -345,7 +313,7 @@ exports[`<FilterReset /> should switch properly 1`] = `
 `;
 
 exports[`<FilterReset /> should switch properly 2`] = `
-.emotion-2 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -353,7 +321,7 @@ exports[`<FilterReset /> should switch properly 2`] = `
   padding-bottom: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding: 4px;
   padding-left: 6px;
   padding-right: 26px;
@@ -369,28 +337,30 @@ exports[`<FilterReset /> should switch properly 2`] = `
   background-color: #3b3b3b;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2IzYjNiMyIgLz4KPC9zdmc+');
   background-repeat: no-repeat;
+  -webkit-background-size: 20px;
   background-size: 20px;
+  -webkit-background-position: right 3px top 3px;
   background-position: right 3px top 3px;
   cursor: pointer;
 }
 
-.emotion-0:hover,
-.emotion-0:focus {
+.emotion-1:hover,
+.emotion-1:focus {
   color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
 <div
-  className="emotion-2"
+  className="emotion-0"
 >
   <select
-    className="emotion-0"
+    className="emotion-1"
     defaultValue="exists"
     onChange={[Function]}
   >
@@ -406,7 +376,7 @@ exports[`<FilterReset /> should switch properly 2`] = `
     </option>
   </select>
   <div
-    className="emotion-1"
+    className="emotion-2"
   />
 </div>
 `;

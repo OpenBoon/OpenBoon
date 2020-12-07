@@ -17,7 +17,7 @@ const DataSourcesAddCopy = () => {
         css={{ color: colors.key.one }}
         target="_blank"
         rel="noopener noreferrer"
-        href="https://app.gitbook.com/@zorroa/s/zmlp/client/assets/importing-assets/asset-datasource"
+        href="https://zorroa.gitbook.io/zmlp/client/assets/importing-assets/asset-datasource"
       >
         Learn more about data sources.
       </a>

@@ -1,13 +1,23 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.domain.ProjectStorageCategory
+import com.zorroa.archivist.domain.ProjectStorageEntity
+import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.repository.IndexRouteDao
+import com.zorroa.archivist.security.getProjectId
+import com.zorroa.zmlp.service.storage.SystemStorageException
+import com.zorroa.zmlp.service.storage.SystemStorageService
+import com.zorroa.archivist.storage.ProjectStorageException
+import com.zorroa.archivist.storage.ProjectStorageService
 
 import org.junit.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import java.util.UUID
@@ -21,6 +31,12 @@ class ProjectServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
+
+    @Autowired
+    lateinit var systemStorageService: SystemStorageService
+
+    @Autowired
+    lateinit var projectStorageService: ProjectStorageService
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -132,5 +148,45 @@ class ProjectServiceTests : AbstractTest() {
         )
 
         assertEquals("project_test_renamed", newName)
+    }
+
+    @Test
+    fun testDeleteSystemStorage() {
+
+        systemStorageService.storeObject(
+            "projects/${getProjectId()}/test1.json",
+            mapOf("foo1" to "bar1")
+        )
+        systemStorageService.storeObject(
+            "projects/${getProjectId()}/test2.json",
+            mapOf("foo2" to "bar2")
+        )
+
+        val obj1 = systemStorageService.fetchObject("projects/${getProjectId()}/test1.json", Map::class.java)
+        val obj2 = systemStorageService.fetchObject("projects/${getProjectId()}/test2.json", Map::class.java)
+
+        projectService.deleteProjectSystemStorage(project)
+
+        assertEquals(true, obj1.isNotEmpty())
+        assertEquals(true, obj2.isNotEmpty())
+        assertThrows<SystemStorageException> {
+            systemStorageService.fetchObject("projects/${getProjectId()}/test1.json", Map::class.java)
+        }
+        assertThrows<SystemStorageException> {
+            systemStorageService.fetchObject("projects/${getProjectId()}/test2.json", Map::class.java)
+        }
+    }
+
+    @Test
+    fun testDeleteProjectStorageFiles() {
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
+        val result = projectStorageService.store(spec)
+        projectService.deleteProjectStorage(project)
+
+        assertEquals(true, result.size > 0)
+        assertThrows<ProjectStorageException> {
+            projectStorageService.fetch(loc)
+        }
     }
 }

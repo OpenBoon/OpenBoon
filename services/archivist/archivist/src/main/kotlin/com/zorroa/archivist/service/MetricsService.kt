@@ -27,6 +27,18 @@ class MetricsServiceImpl(
                 dispatcherService.getPendingTasksStats().pendingTasks
             }
             .register(MeterRegistryHolder.meterRegistry)
+        Gauge
+            .builder("tasks.running") {
+                dispatcherService.getPendingTasksStats().runningTasks
+            }
+            .register(MeterRegistryHolder.meterRegistry)
+
+        Gauge
+            .builder("tasks.active") {
+                val stats = dispatcherService.getPendingTasksStats()
+                stats.runningTasks + stats.pendingTasks
+            }
+            .register(MeterRegistryHolder.meterRegistry)
 
         Gauge
             .builder("tasks.max_running") {

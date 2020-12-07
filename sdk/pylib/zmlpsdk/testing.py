@@ -37,6 +37,12 @@ class TestProcessor(AssetProcessor):
                               toolTip='Raise a ZmlpFatalProcessorException'))
         self.add_arg(Argument('raise', 'bool', default=False,
                               toolTip='Raise a ProcessorException'))
+        self.add_arg(Argument('raise_on_init', 'bool', default=False,
+                              toolTip='Raise a ProcessorException on init'))
+
+    def init(self):
+        if self.arg_value('raise_on_init'):
+            raise ZmlpProcessorException('Failed to initialize!')
 
     def process(self, frame):
         self.logger.info('Running TestProcessor process()')

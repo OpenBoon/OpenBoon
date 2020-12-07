@@ -20,23 +20,24 @@ const AssetNavigation = ({ projectId, assetId, query, filename }) => {
         color: colors.structure.steel,
         marginBottom: spacing.hairline,
         display: 'flex',
-        justifyContent: 'space-between',
         alignItems: 'center',
       }}
     >
-      <Link
-        href={`/[projectId]/visualizer${idString}${queryString}`}
-        as={`/${projectId}/visualizer${idString}${queryString}`}
-        passHref
-      >
-        <Button variant={VARIANTS.ICON}>
-          <BackSvg height={constants.icons.regular} />
-        </Button>
-      </Link>
+      <div css={{ flex: 1, display: 'flex' }}>
+        <Link
+          href={`/[projectId]/visualizer${idString}${queryString}`}
+          as={`/${projectId}/visualizer${idString}${queryString}`}
+          passHref
+        >
+          <Button variant={VARIANTS.ICON}>
+            <BackSvg height={constants.icons.regular} />
+          </Button>
+        </Link>
+      </div>
 
       <div>{filename}</div>
 
-      <div css={{ width: spacing.base * 2 + constants.icons.regular }} />
+      <div css={{ flex: 1 }} />
     </div>
   )
 }

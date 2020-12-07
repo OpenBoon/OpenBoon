@@ -40,6 +40,11 @@ export const onSubmit = async ({
       paginated: true,
     })
 
+    await revalidate({
+      key: `/api/v1/projects/${projectId}/models/all/`,
+      paginated: false,
+    })
+
     const queryString = getQueryString({
       action: 'add-model-success',
       modelId,

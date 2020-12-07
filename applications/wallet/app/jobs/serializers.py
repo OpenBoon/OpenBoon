@@ -82,6 +82,7 @@ class TaskActionsSerializer(serializers.Serializer):
     assets = serializers.CharField(required=True)
     script = serializers.CharField(required=True)
     errors = serializers.CharField(required=True)
+    logs = serializers.CharField(required=True)
 
 
 class TaskSerializer(serializers.Serializer):

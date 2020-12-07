@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TimelineControls /> should pause 1`] = `
-.emotion-9 {
+.emotion-0 {
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -14,6 +17,20 @@ exports[`<TimelineControls /> should pause 1`] = `
 }
 
 .emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 4px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -29,63 +46,60 @@ exports[`<TimelineControls /> should pause 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-  padding: 4px;
+  background-color: transparent;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-3:hover svg,
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #808080;
 }
 
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
   background-color: #2e2e2e;
 }
 
-.emotion-0 {
+.emotion-4 {
   -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-2 {
+.emotion-7 {
   width: 4px;
 }
 
-.emotion-8 {
+.emotion-12 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   padding: 4px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -97,7 +111,7 @@ exports[`<TimelineControls /> should pause 1`] = `
   align-items: center;
 }
 
-.emotion-6 {
+.emotion-13 {
   background-color: #191919;
   padding: 4px;
   padding-left: 8px;
@@ -105,65 +119,96 @@ exports[`<TimelineControls /> should pause 1`] = `
   color: #0074f5;
 }
 
-.emotion-7 {
+.emotion-14 {
   padding: 4px;
   padding-left: 8px;
   padding-right: 8px;
+  white-space: nowrap;
 }
 
 <div
-  className="emotion-9"
+  className="emotion-0"
 >
-  <button
-    aria-label="Previous Second"
+  <div
     className="emotion-1"
-    onClick={[Function]}
-    type="button"
-  >
-    <svg
-      className="emotion-0"
-      data-file-name="seek.svg"
-      height={20}
-    />
-  </button>
+  />
   <div
     className="emotion-2"
-  />
-  <button
-    aria-label="Pause"
-    className="emotion-1"
-    onClick={[Function]}
-    type="button"
   >
-    <svg
-      data-file-name="pause.svg"
-      height={20}
+    <button
+      aria-label="Previous Detection"
+      className="emotion-3"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        className="emotion-4"
+        data-file-name="fast-forward.svg"
+        height={20}
+      />
+    </button>
+    <button
+      aria-label="Previous Second"
+      className="emotion-3"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        className="emotion-4"
+        data-file-name="seek.svg"
+        height={20}
+      />
+    </button>
+    <div
+      className="emotion-7"
     />
-  </button>
-  <div
-    className="emotion-2"
-  />
-  <button
-    aria-label="Next Second"
-    className="emotion-1"
-    onClick={[Function]}
-    type="button"
-  >
-    <svg
-      data-file-name="seek.svg"
-      height={20}
+    <button
+      aria-label="Pause"
+      className="emotion-3"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        data-file-name="pause.svg"
+        height={20}
+      />
+    </button>
+    <div
+      className="emotion-7"
     />
-  </button>
+    <button
+      aria-label="Next Second"
+      className="emotion-3"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        data-file-name="seek.svg"
+        height={20}
+      />
+    </button>
+    <button
+      aria-label="Next Detection"
+      className="emotion-3"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        data-file-name="fast-forward.svg"
+        height={20}
+      />
+    </button>
+  </div>
   <div
-    className="emotion-8"
+    className="emotion-12"
   >
     <div
-      className="emotion-6"
+      className="emotion-13"
     >
       00:00:06
     </div>
     <div
-      className="emotion-7"
+      className="emotion-14"
     >
       / 
       00:00:18
@@ -173,7 +218,10 @@ exports[`<TimelineControls /> should pause 1`] = `
 `;
 
 exports[`<TimelineControls /> should play 1`] = `
-.emotion-9 {
+.emotion-0 {
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -186,6 +234,20 @@ exports[`<TimelineControls /> should play 1`] = `
 }
 
 .emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 4px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -201,63 +263,60 @@ exports[`<TimelineControls /> should play 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-  padding: 4px;
+  background-color: transparent;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-3:hover svg,
+.emotion-3.focus-visible:focus svg,
+.emotion-3 .noop svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
   color: #808080;
 }
 
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
   background-color: #2e2e2e;
 }
 
-.emotion-0 {
+.emotion-4 {
   -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-2 {
+.emotion-7 {
   width: 4px;
 }
 
-.emotion-8 {
+.emotion-12 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   padding: 4px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -269,7 +328,7 @@ exports[`<TimelineControls /> should play 1`] = `
   align-items: center;
 }
 
-.emotion-6 {
+.emotion-13 {
   background-color: #191919;
   padding: 4px;
   padding-left: 8px;
@@ -277,65 +336,96 @@ exports[`<TimelineControls /> should play 1`] = `
   color: #0074f5;
 }
 
-.emotion-7 {
+.emotion-14 {
   padding: 4px;
   padding-left: 8px;
   padding-right: 8px;
+  white-space: nowrap;
 }
 
 <div
-  className="emotion-9"
+  className="emotion-0"
 >
-  <button
-    aria-label="Previous Second"
+  <div
     className="emotion-1"
-    onClick={[Function]}
-    type="button"
-  >
-    <svg
-      className="emotion-0"
-      data-file-name="seek.svg"
-      height={20}
-    />
-  </button>
+  />
   <div
     className="emotion-2"
-  />
-  <button
-    aria-label="Play"
-    className="emotion-1"
-    onClick={[Function]}
-    type="button"
   >
-    <svg
-      data-file-name="play.svg"
-      height={20}
+    <button
+      aria-label="Previous Detection"
+      className="emotion-3"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        className="emotion-4"
+        data-file-name="fast-forward.svg"
+        height={20}
+      />
+    </button>
+    <button
+      aria-label="Previous Second"
+      className="emotion-3"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        className="emotion-4"
+        data-file-name="seek.svg"
+        height={20}
+      />
+    </button>
+    <div
+      className="emotion-7"
     />
-  </button>
-  <div
-    className="emotion-2"
-  />
-  <button
-    aria-label="Next Second"
-    className="emotion-1"
-    onClick={[Function]}
-    type="button"
-  >
-    <svg
-      data-file-name="seek.svg"
-      height={20}
+    <button
+      aria-label="Play"
+      className="emotion-3"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        data-file-name="play.svg"
+        height={20}
+      />
+    </button>
+    <div
+      className="emotion-7"
     />
-  </button>
+    <button
+      aria-label="Next Second"
+      className="emotion-3"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        data-file-name="seek.svg"
+        height={20}
+      />
+    </button>
+    <button
+      aria-label="Next Detection"
+      className="emotion-3"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        data-file-name="fast-forward.svg"
+        height={20}
+      />
+    </button>
+  </div>
   <div
-    className="emotion-8"
+    className="emotion-12"
   >
     <div
-      className="emotion-6"
+      className="emotion-13"
     >
       00:00:00
     </div>
     <div
-      className="emotion-7"
+      className="emotion-14"
     >
       / 
       00:00:18

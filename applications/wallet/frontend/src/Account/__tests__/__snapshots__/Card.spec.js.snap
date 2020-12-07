@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AccountCard /> should not render without subscriptions 1`] = `
-.emotion-7 {
+.emotion-0 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-6 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -16,11 +16,11 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #3b3b3b;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   border-radius: 2px;
 }
 
-.emotion-5 {
+.emotion-2 {
   padding: 16px;
   border-bottom: 1px solid #4a4a4a;
   display: -webkit-box;
@@ -33,35 +33,35 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
   align-items: center;
 }
 
-.emotion-5 svg {
+.emotion-2 svg {
   margin-right: 8px;
 }
 
-.emotion-4 {
+.emotion-3 {
   padding: 16px;
   width: 100%;
 }
 
-.emotion-0 {
+.emotion-4 {
   padding-bottom: 8px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.emotion-1 {
+.emotion-5 {
   color: #b3b3b3;
   padding-bottom: 16px;
 }
 
-.emotion-3 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-2 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -77,11 +77,11 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -90,62 +90,58 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-7"
+  className="emotion-0"
 >
   <div
-    className="emotion-6"
+    className="emotion-1"
   >
     <div
-      className="emotion-5"
+      className="emotion-2"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
         <h3
-          className="emotion-0"
+          className="emotion-4"
           title="Project Zero"
         >
           Project: 
           Project Zero
         </h3>
         <div
-          className="emotion-1"
+          className="emotion-5"
         >
           Project ID: 
           00000000-0000-0000-0000-000000000000
         </div>
         <div
-          className="emotion-3"
+          className="emotion-6"
         >
           <a
-            className="emotion-2"
+            className="emotion-7"
             href="/00000000-0000-0000-0000-000000000000"
             onClick={[Function]}
             onMouseEnter={[Function]}
@@ -160,13 +156,13 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
 `;
 
 exports[`<AccountCard /> should render properly 1`] = `
-.emotion-14 {
+.emotion-0 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-13 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -175,11 +171,11 @@ exports[`<AccountCard /> should render properly 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #3b3b3b;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   border-radius: 2px;
 }
 
-.emotion-5 {
+.emotion-2 {
   padding: 16px;
   border-bottom: 1px solid #4a4a4a;
   display: -webkit-box;
@@ -192,35 +188,35 @@ exports[`<AccountCard /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-5 svg {
+.emotion-2 svg {
   margin-right: 8px;
 }
 
-.emotion-4 {
+.emotion-3 {
   padding: 16px;
   width: 100%;
 }
 
-.emotion-0 {
+.emotion-4 {
   padding-bottom: 8px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.emotion-1 {
+.emotion-5 {
   color: #b3b3b3;
   padding-bottom: 16px;
 }
 
-.emotion-3 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-2 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -236,11 +232,11 @@ exports[`<AccountCard /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -249,55 +245,51 @@ exports[`<AccountCard /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-12 {
+.emotion-8 {
   padding: 32px;
 }
 
-.emotion-6 {
+.emotion-9 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-bottom: 12px;
 }
 
-.emotion-7 {
+.emotion-10 {
   padding-bottom: 24px;
   font-size: 15px;
   line-height: 19px;
 }
 
-.emotion-9 {
+.emotion-11 {
   padding-bottom: 16px;
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-8 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -308,45 +300,45 @@ exports[`<AccountCard /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-8 img {
+.emotion-12 img {
   margin-right: 12px;
 }
 
-.emotion-11 {
+.emotion-13 {
   padding-top: 16px;
   padding-bottom: 16px;
 }
 
 <div
-  className="emotion-14"
+  className="emotion-0"
 >
   <div
-    className="emotion-13"
+    className="emotion-1"
   >
     <div
-      className="emotion-5"
+      className="emotion-2"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
         <h3
-          className="emotion-0"
+          className="emotion-4"
           title="Project Zero"
         >
           Project: 
           Project Zero
         </h3>
         <div
-          className="emotion-1"
+          className="emotion-5"
         >
           Project ID: 
           00000000-0000-0000-0000-000000000000
         </div>
         <div
-          className="emotion-3"
+          className="emotion-6"
         >
           <a
-            className="emotion-2"
+            className="emotion-7"
             href="/00000000-0000-0000-0000-000000000000"
             onClick={[Function]}
             onMouseEnter={[Function]}
@@ -357,24 +349,24 @@ exports[`<AccountCard /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-12"
+      className="emotion-8"
     >
       <div
-        className="emotion-6"
+        className="emotion-9"
       >
         Project Tier: 
         Premier
       </div>
       <h3
-        className="emotion-7"
+        className="emotion-10"
       >
         Usage:
       </h3>
       <div
-        className="emotion-9"
+        className="emotion-11"
       >
         <h4
-          className="emotion-8"
+          className="emotion-12"
         >
           <img
             alt=""
@@ -387,10 +379,10 @@ exports[`<AccountCard /> should render properly 1`] = `
         </h4>
       </div>
       <div
-        className="emotion-11"
+        className="emotion-13"
       >
         <h4
-          className="emotion-8"
+          className="emotion-12"
         >
           <img
             alt=""
@@ -407,13 +399,13 @@ exports[`<AccountCard /> should render properly 1`] = `
 `;
 
 exports[`<AccountCard /> should render properly with no modules 1`] = `
-.emotion-14 {
+.emotion-0 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-13 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -422,11 +414,11 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #3b3b3b;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   border-radius: 2px;
 }
 
-.emotion-5 {
+.emotion-2 {
   padding: 16px;
   border-bottom: 1px solid #4a4a4a;
   display: -webkit-box;
@@ -439,35 +431,35 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
   align-items: center;
 }
 
-.emotion-5 svg {
+.emotion-2 svg {
   margin-right: 8px;
 }
 
-.emotion-4 {
+.emotion-3 {
   padding: 16px;
   width: 100%;
 }
 
-.emotion-0 {
+.emotion-4 {
   padding-bottom: 8px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.emotion-1 {
+.emotion-5 {
   color: #b3b3b3;
   padding-bottom: 16px;
 }
 
-.emotion-3 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-2 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -483,11 +475,11 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -496,55 +488,51 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-12 {
+.emotion-8 {
   padding: 32px;
 }
 
-.emotion-6 {
+.emotion-9 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-bottom: 12px;
 }
 
-.emotion-7 {
+.emotion-10 {
   padding-bottom: 24px;
   font-size: 15px;
   line-height: 19px;
 }
 
-.emotion-9 {
+.emotion-11 {
   padding-bottom: 16px;
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-8 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -555,45 +543,45 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
   align-items: center;
 }
 
-.emotion-8 img {
+.emotion-12 img {
   margin-right: 12px;
 }
 
-.emotion-11 {
+.emotion-13 {
   padding-top: 16px;
   padding-bottom: 16px;
 }
 
 <div
-  className="emotion-14"
+  className="emotion-0"
 >
   <div
-    className="emotion-13"
+    className="emotion-1"
   >
     <div
-      className="emotion-5"
+      className="emotion-2"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
         <h3
-          className="emotion-0"
+          className="emotion-4"
           title="Project Zero"
         >
           Project: 
           Project Zero
         </h3>
         <div
-          className="emotion-1"
+          className="emotion-5"
         >
           Project ID: 
           00000000-0000-0000-0000-000000000000
         </div>
         <div
-          className="emotion-3"
+          className="emotion-6"
         >
           <a
-            className="emotion-2"
+            className="emotion-7"
             href="/00000000-0000-0000-0000-000000000000"
             onClick={[Function]}
             onMouseEnter={[Function]}
@@ -604,24 +592,24 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
       </div>
     </div>
     <div
-      className="emotion-12"
+      className="emotion-8"
     >
       <div
-        className="emotion-6"
+        className="emotion-9"
       >
         Project Tier: 
         Premier
       </div>
       <h3
-        className="emotion-7"
+        className="emotion-10"
       >
         Usage:
       </h3>
       <div
-        className="emotion-9"
+        className="emotion-11"
       >
         <h4
-          className="emotion-8"
+          className="emotion-12"
         >
           <img
             alt=""
@@ -634,10 +622,10 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
         </h4>
       </div>
       <div
-        className="emotion-11"
+        className="emotion-13"
       >
         <h4
-          className="emotion-8"
+          className="emotion-12"
         >
           <img
             alt=""
@@ -654,13 +642,13 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
 `;
 
 exports[`<AccountCard /> should render properly with over usage 1`] = `
-.emotion-14 {
+.emotion-0 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-13 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -669,11 +657,11 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #3b3b3b;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   border-radius: 2px;
 }
 
-.emotion-5 {
+.emotion-2 {
   padding: 16px;
   border-bottom: 1px solid #4a4a4a;
   display: -webkit-box;
@@ -686,35 +674,35 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   align-items: center;
 }
 
-.emotion-5 svg {
+.emotion-2 svg {
   margin-right: 8px;
 }
 
-.emotion-4 {
+.emotion-3 {
   padding: 16px;
   width: 100%;
 }
 
-.emotion-0 {
+.emotion-4 {
   padding-bottom: 8px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.emotion-1 {
+.emotion-5 {
   color: #b3b3b3;
   padding-bottom: 16px;
 }
 
-.emotion-3 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-2 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -730,11 +718,11 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px 16px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -743,55 +731,51 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px 16px;
 }
 
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-12 {
+.emotion-8 {
   padding: 32px;
 }
 
-.emotion-6 {
+.emotion-9 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-bottom: 12px;
 }
 
-.emotion-7 {
+.emotion-10 {
   padding-bottom: 24px;
   font-size: 15px;
   line-height: 19px;
 }
 
-.emotion-9 {
+.emotion-11 {
   padding-bottom: 16px;
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-8 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -802,45 +786,45 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   align-items: center;
 }
 
-.emotion-8 img {
+.emotion-12 img {
   margin-right: 12px;
 }
 
-.emotion-11 {
+.emotion-13 {
   padding-top: 16px;
   padding-bottom: 16px;
 }
 
 <div
-  className="emotion-14"
+  className="emotion-0"
 >
   <div
-    className="emotion-13"
+    className="emotion-1"
   >
     <div
-      className="emotion-5"
+      className="emotion-2"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
         <h3
-          className="emotion-0"
+          className="emotion-4"
           title="Project Zero"
         >
           Project: 
           Project Zero
         </h3>
         <div
-          className="emotion-1"
+          className="emotion-5"
         >
           Project ID: 
           00000000-0000-0000-0000-000000000000
         </div>
         <div
-          className="emotion-3"
+          className="emotion-6"
         >
           <a
-            className="emotion-2"
+            className="emotion-7"
             href="/00000000-0000-0000-0000-000000000000"
             onClick={[Function]}
             onMouseEnter={[Function]}
@@ -851,24 +835,24 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
       </div>
     </div>
     <div
-      className="emotion-12"
+      className="emotion-8"
     >
       <div
-        className="emotion-6"
+        className="emotion-9"
       >
         Project Tier: 
         Premier
       </div>
       <h3
-        className="emotion-7"
+        className="emotion-10"
       >
         Usage:
       </h3>
       <div
-        className="emotion-9"
+        className="emotion-11"
       >
         <h4
-          className="emotion-8"
+          className="emotion-12"
         >
           <img
             alt=""
@@ -881,10 +865,10 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
         </h4>
       </div>
       <div
-        className="emotion-11"
+        className="emotion-13"
       >
         <h4
-          className="emotion-8"
+          className="emotion-12"
         >
           <img
             alt=""

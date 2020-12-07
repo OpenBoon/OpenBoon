@@ -18,6 +18,8 @@ import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobStateChangeEvent
 import com.zorroa.archivist.domain.PendingTasksStats
+import com.zorroa.archivist.domain.ProjectDirLocator
+import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
@@ -40,7 +42,6 @@ import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
-import com.zorroa.archivist.storage.PipelineStorageConfiguration
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
@@ -133,7 +134,6 @@ class DispatchQueueManager @Autowired constructor(
     val analystService: AnalystService,
     val properties: ApplicationProperties,
     val authServerClient: AuthServerClient,
-    val pipelineStoragProperties: PipelineStorageConfiguration,
     val jobService: JobService,
     val systemStorageService: SystemStorageService,
     val assetService: AssetService,
@@ -241,17 +241,15 @@ class DispatchQueueManager @Autowired constructor(
             // This call is made with inception key
             val key = authServerClient.getSigningKey(task.projectId, KnownKeys.JOB_RUNNER)
             task.env["ZMLP_APIKEY"] = key.toBase64()
-
-            // So the container can access shared
-            task.env["ZMLP_STORAGE_PIPELINE_URL"] = pipelineStoragProperties.url
-            task.env["ZMLP_STORAGE_PIPELINE_ACCESSKEY"] = pipelineStoragProperties.accessKey
-            task.env["ZMLP_STORAGE_PIPELINE_SECRETKEY"] = pipelineStoragProperties.secretKey
             task.env["ZMLP_CREDENTIALS_TYPES"] = jobService.getCredentialsTypes(task).joinToString(",")
 
             withAuth(InternalThreadAuthentication(task.projectId, setOf())) {
                 task.logFile = storageService.getSignedUrl(
                     task.getLogFileLocation(), true, 1, TimeUnit.DAYS
                 ).getValue("uri").toString()
+
+                task.env["ZORROA_JOB_STORAGE_PATH"] =
+                    ProjectDirLocator(ProjectStorageEntity.JOB, task.jobId.toString()).getPath()
             }
 
             return true
@@ -429,7 +427,7 @@ class DispatcherServiceImpl @Autowired constructor(
                     TaskErrorEvent(
                         null,
                         null,
-                        "Hard task container failure, all assets failed, exit ${event.exitStatus}",
+                        "Hard task container failure, all assets failed, exit ${event.exitStatus},",
                         "unknown",
                         true,
                         "unknown"

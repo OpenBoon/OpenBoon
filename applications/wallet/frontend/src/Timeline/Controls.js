@@ -6,12 +6,19 @@ import { colors, spacing, constants } from '../Styles'
 import PlaySvg from '../Icons/play.svg'
 import PauseSvg from '../Icons/pause.svg'
 import SeekSvg from '../Icons/seek.svg'
+import FastForwardSvg from '../Icons/fast-forward.svg'
 
 import Button, { VARIANTS } from '../Button'
 
-import { formatPaddedSeconds } from './helpers'
+import { formatPaddedSeconds, gotoNextHit, gotoPreviousHit } from './helpers'
 
-const TimelineControls = ({ videoRef, length }) => {
+const TimelineControls = ({
+  videoRef,
+  length,
+  timelines,
+  settings,
+  setFollowPlayhead,
+}) => {
   const currentTimeRef = useRef()
   const frameRef = useRef()
 
@@ -42,78 +49,116 @@ const TimelineControls = ({ videoRef, length }) => {
   return (
     <div
       css={{
+        flex: 2,
         display: 'flex',
         alignItems: 'center',
         padding: spacing.small,
       }}
     >
-      <Button
-        aria-label="Previous Second"
-        variant={VARIANTS.ICON}
-        style={{
-          padding: spacing.small,
-          ':hover, &.focus-visible:focus': {
-            backgroundColor: colors.structure.mattGrey,
-          },
-        }}
-        onClick={async () => {
-          video?.pause()
-          video.currentTime = Math.trunc(video?.currentTime) - 1
-        }}
-      >
-        <SeekSvg
-          height={constants.icons.regular}
-          css={{ transform: 'rotate(-180deg)' }}
-        />
-      </Button>
+      <div css={{ flex: 1, padding: spacing.small }} />
 
-      <div css={{ width: spacing.small }} />
+      <div css={{ display: 'flex' }}>
+        <Button
+          aria-label="Previous Detection"
+          variant={VARIANTS.ICON}
+          style={{
+            padding: spacing.small,
+            ':hover, &.focus-visible:focus': {
+              backgroundColor: colors.structure.mattGrey,
+            },
+          }}
+          onClick={gotoPreviousHit({ videoRef, timelines, settings })}
+        >
+          <FastForwardSvg
+            height={constants.icons.regular}
+            css={{ transform: 'rotate(-180deg)' }}
+          />
+        </Button>
 
-      <Button
-        aria-label={video?.paused ? 'Play' : 'Pause'}
-        variant={VARIANTS.ICON}
-        style={{
-          padding: spacing.small,
-          ':hover, &.focus-visible:focus': {
-            backgroundColor: colors.structure.mattGrey,
-          },
-        }}
-        onClick={async () => {
-          if (video?.paused) {
-            video?.play()
-          } else {
+        <Button
+          aria-label="Previous Second"
+          variant={VARIANTS.ICON}
+          style={{
+            padding: spacing.small,
+            ':hover, &.focus-visible:focus': {
+              backgroundColor: colors.structure.mattGrey,
+            },
+          }}
+          onClick={() => {
             video?.pause()
-          }
-        }}
-      >
-        {video?.paused || !video ? (
-          <PlaySvg height={constants.icons.regular} />
-        ) : (
-          <PauseSvg height={constants.icons.regular} />
-        )}
-      </Button>
+            video.currentTime = Math.trunc(video?.currentTime) - 1
+          }}
+        >
+          <SeekSvg
+            height={constants.icons.regular}
+            css={{ transform: 'rotate(-180deg)' }}
+          />
+        </Button>
 
-      <div css={{ width: spacing.small }} />
+        <div css={{ width: spacing.small }} />
 
-      <Button
-        aria-label="Next Second"
-        variant={VARIANTS.ICON}
-        style={{
-          padding: spacing.small,
-          ':hover, &.focus-visible:focus': {
-            backgroundColor: colors.structure.mattGrey,
-          },
-        }}
-        onClick={async () => {
-          video?.pause()
-          video.currentTime = Math.trunc(video?.currentTime) + 1
-        }}
-      >
-        <SeekSvg height={constants.icons.regular} />
-      </Button>
+        <Button
+          aria-label={video?.paused ? 'Play' : 'Pause'}
+          variant={VARIANTS.ICON}
+          style={{
+            padding: spacing.small,
+            ':hover, &.focus-visible:focus': {
+              backgroundColor: colors.structure.mattGrey,
+            },
+          }}
+          onClick={() => {
+            if (video?.paused) {
+              setFollowPlayhead(true)
+              video?.play()
+            } else {
+              video?.pause()
+            }
+          }}
+        >
+          {video?.paused || !video ? (
+            <PlaySvg height={constants.icons.regular} />
+          ) : (
+            <PauseSvg height={constants.icons.regular} />
+          )}
+        </Button>
+
+        <div css={{ width: spacing.small }} />
+
+        <Button
+          aria-label="Next Second"
+          variant={VARIANTS.ICON}
+          style={{
+            padding: spacing.small,
+            ':hover, &.focus-visible:focus': {
+              backgroundColor: colors.structure.mattGrey,
+            },
+          }}
+          onClick={() => {
+            video?.pause()
+            video.currentTime = Math.trunc(video?.currentTime) + 1
+          }}
+        >
+          <SeekSvg height={constants.icons.regular} />
+        </Button>
+
+        <Button
+          aria-label="Next Detection"
+          variant={VARIANTS.ICON}
+          style={{
+            padding: spacing.small,
+            ':hover, &.focus-visible:focus': {
+              backgroundColor: colors.structure.mattGrey,
+            },
+          }}
+          onClick={gotoNextHit({ videoRef, timelines, settings })}
+        >
+          <FastForwardSvg height={constants.icons.regular} />
+        </Button>
+      </div>
 
       <div
         css={{
+          flex: 1,
           padding: spacing.small,
           display: 'flex',
           alignItems: 'center',
@@ -137,6 +182,7 @@ const TimelineControls = ({ videoRef, length }) => {
             padding: spacing.small,
             paddingLeft: spacing.base,
             paddingRight: spacing.base,
+            whiteSpace: 'nowrap',
           }}
         >
           / {formatPaddedSeconds({ seconds: length })}
@@ -158,6 +204,19 @@ TimelineControls.propTypes = {
     }),
   }).isRequired,
   length: PropTypes.number.isRequired,
+  timelines: PropTypes.arrayOf(
+    PropTypes.shape({
+      timeline: PropTypes.string.isRequired,
+      tracks: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
+    }),
+  ).isRequired,
+  settings: PropTypes.shape({
+    filter: PropTypes.string.isRequired,
+    width: PropTypes.number.isRequired,
+    timelines: PropTypes.shape({}).isRequired,
+    zoom: PropTypes.number.isRequired,
+  }).isRequired,
+  setFollowPlayhead: PropTypes.func.isRequired,
 }
 
 export default TimelineControls

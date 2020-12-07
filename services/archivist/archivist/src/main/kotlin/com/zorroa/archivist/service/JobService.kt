@@ -10,6 +10,8 @@ import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobStateChangeEvent
 import com.zorroa.archivist.domain.JobUpdateSpec
+import com.zorroa.archivist.domain.ProjectDirLocator
+import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.Task
@@ -25,7 +27,9 @@ import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.isUUID
 import com.zorroa.zmlp.service.logging.event
 import org.slf4j.LoggerFactory
@@ -72,8 +76,8 @@ class JobServiceImpl @Autowired constructor(
     val jobDao: JobDao,
     val taskDao: TaskDao,
     val taskErrorDao: TaskErrorDao,
-    val txevent: TransactionEventManager
-
+    val txevent: TransactionEventManager,
+    val projectStorageService: ProjectStorageService
 ) : JobService {
 
     @Autowired
@@ -185,6 +189,14 @@ class JobServiceImpl @Autowired constructor(
             LogObject.JOB, LogAction.DELETE,
             mapOf(
                 "jobId" to job.jobId
+            )
+        )
+
+        projectStorageService.recursiveDelete(
+            ProjectDirLocator(
+                ProjectStorageEntity.JOB,
+                job.jobId.toString(),
+                getProjectId()
             )
         )
 

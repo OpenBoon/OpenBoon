@@ -93,6 +93,10 @@ class GcsProjectStorageService constructor(
         val path = locator.getPath()
         return "gs://${properties.bucket}/$path"
     }
+    override fun getNativeUri(locator: ProjectDirLocator): String {
+        val path = locator.getPath()
+        return "gs://${properties.bucket}/$path"
+    }
 
     override fun getSignedUrl(
         locator: ProjectStorageLocator,
@@ -144,6 +148,19 @@ class GcsProjectStorageService constructor(
 
     override fun recursiveDelete(locator: ProjectDirLocator) {
         val path = locator.getPath()
+        val bucket = gcs.get(properties.bucket)
+        val blobs = bucket.list(
+            Storage.BlobListOption.prefix(path),
+            Storage.BlobListOption.pageSize(100)
+        )
+
+        for (blob in blobs.iterateAll()) {
+            gcs.delete(blob.blobId)
+            logDeleteEvent(blob.name)
+        }
+    }
+
+    override fun recursiveDelete(path: String) {
         val bucket = gcs.get(properties.bucket)
         val blobs = bucket.list(
             Storage.BlobListOption.prefix(path),

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
-.emotion-6 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -10,7 +10,7 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
   position: relative;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -18,71 +18,14 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
   width: 100%;
 }
 
-.emotion-0 {
+.emotion-2 {
+  margin: 0;
+  padding: 0;
   height: 100%;
   -webkit-flex: 0.11 0 auto;
   -ms-flex: 0.11 0 auto;
   flex: 0.11 0 auto;
-  min-width: 8px;
   background-color: #0074f5;
-  border: 2px solid transparent;
-}
-
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
-  position: relative;
-  height: 13px;
-  top: -2px;
-  border: 2px solid #ffffff;
-  outline: 1px solid transparent;
-}
-
-.emotion-0:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-0:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-1 {
-  height: 100%;
-  -webkit-flex: 0.26 0 auto;
-  -ms-flex: 0.26 0 auto;
-  flex: 0.26 0 auto;
-  min-width: 8px;
-  background-color: #a03dc7;
-  border: 2px solid transparent;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  position: relative;
-  height: 13px;
-  top: -2px;
-  border: 2px solid #ffffff;
-  outline: 1px solid transparent;
-}
-
-.emotion-1:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-1:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-2 {
-  height: 100%;
-  -webkit-flex: 0 0 auto;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-  min-width: 8px;
-  background-color: #d6680b;
   border: 2px solid transparent;
 }
 
@@ -106,12 +49,13 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 }
 
 .emotion-3 {
+  margin: 0;
+  padding: 0;
   height: 100%;
-  -webkit-flex: 0 0 auto;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-  min-width: 8px;
-  background-color: #ebb52e;
+  -webkit-flex: 0.26 0 auto;
+  -ms-flex: 0.26 0 auto;
+  flex: 0.26 0 auto;
+  background-color: #a03dc7;
   border: 2px solid transparent;
 }
 
@@ -135,12 +79,13 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 }
 
 .emotion-4 {
+  margin: 0;
+  padding: 0;
   height: 100%;
   -webkit-flex: 0 0 auto;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
-  min-width: 8px;
-  background-color: #00bdc1;
+  background-color: #d6680b;
   border: 2px solid transparent;
 }
 
@@ -163,34 +108,74 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
   border-bottom-right-radius: 2px;
 }
 
+.emotion-5 {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  background-color: #ebb52e;
+  border: 2px solid transparent;
+}
+
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
+  position: relative;
+  height: 13px;
+  top: -2px;
+  border: 2px solid #ffffff;
+  outline: 1px solid transparent;
+}
+
+.emotion-5:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-5:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-6 {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  background-color: #00bdc1;
+  border: 2px solid transparent;
+}
+
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
+  position: relative;
+  height: 13px;
+  top: -2px;
+  border: 2px solid #ffffff;
+  outline: 1px solid transparent;
+}
+
+.emotion-6:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-6:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
 <div
-  className="emotion-6"
+  className="emotion-0"
 >
   <div
-    className="emotion-5"
+    className="emotion-1"
   >
     <button
       aria-label="zmlp_core.core.processors.PreCacheSourceFileProcessor"
-      className="emotion-0"
-      onBlur={[Function]}
-      onFocus={[Function]}
-      onMouseDown={[Function]}
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
-      type="button"
-    />
-    <button
-      aria-label="zmlp_core.image.importers.ImageImporter"
-      className="emotion-1"
-      onBlur={[Function]}
-      onFocus={[Function]}
-      onMouseDown={[Function]}
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
-      type="button"
-    />
-    <button
-      aria-label="zmlp_core.office.importers.OfficeImporter"
       className="emotion-2"
       onBlur={[Function]}
       onFocus={[Function]}
@@ -200,7 +185,7 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
       type="button"
     />
     <button
-      aria-label="zmlp_core.video.VideoImporter"
+      aria-label="zmlp_core.image.importers.ImageImporter"
       className="emotion-3"
       onBlur={[Function]}
       onFocus={[Function]}
@@ -210,8 +195,28 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
       type="button"
     />
     <button
-      aria-label="zmlp_core.core.processors.AssertAttributesProcessor"
+      aria-label="zmlp_core.office.importers.OfficeImporter"
       className="emotion-4"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="button"
+    />
+    <button
+      aria-label="zmlp_core.video.VideoImporter"
+      className="emotion-5"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="button"
+    />
+    <button
+      aria-label="zmlp_core.core.processors.AssertAttributesProcessor"
+      className="emotion-6"
       onBlur={[Function]}
       onFocus={[Function]}
       onMouseDown={[Function]}

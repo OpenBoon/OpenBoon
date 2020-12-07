@@ -1,26 +1,44 @@
-import { useState, useReducer, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
-export const useLocalStorageState = ({ key, initialValue }) => {
-  const [storedValue, setStoredValue] = useState(() => {
-    const item = localStorage.getItem(key)
+const emitters = {}
 
-    try {
-      return item ? JSON.parse(item) : initialValue
-    } catch (error) {
-      return initialValue
+const registerEmitter = ({ key, callback, initialState }) => {
+  if (!emitters[key]) {
+    emitters[key] = {
+      callbacks: [],
+      value: initialState,
     }
-  })
-
-  const setValue = ({ value }) => {
-    setStoredValue(value)
-    localStorage.setItem(key, JSON.stringify(value))
   }
+  emitters[key].callbacks.push(callback)
 
-  return [storedValue, setValue]
+  return {
+    deregister: () => {
+      const { callbacks } = emitters[key]
+      const index = callbacks.indexOf(callback)
+
+      /* istanbul ignore else */
+      if (index > -1) {
+        callbacks.splice(index, 1)
+      }
+    },
+    emit: ({ value }) => {
+      if (emitters[key].value !== value) {
+        emitters[key].value = value
+
+        emitters[key].callbacks.forEach((c) => {
+          if (c !== callback) {
+            c(value)
+          }
+        })
+      }
+    },
+  }
 }
 
-export const useLocalStorageReducer = ({ key, reducer, initialState }) => {
-  const [state, dispatch] = useReducer(reducer, initialState, () => {
+export const useLocalStorage = ({ key, initialState, reducer }) => {
+  const emitterRef = useRef(null)
+
+  const [state, setState] = useState(() => {
     const item = localStorage.getItem(key)
 
     try {
@@ -30,8 +48,29 @@ export const useLocalStorageReducer = ({ key, reducer, initialState }) => {
     }
   })
 
+  const dispatch = reducer
+    ? (action) => {
+        const nextState = reducer(state, action)
+        setState(nextState)
+        return action
+      }
+    : ({ value }) => setState(value)
+
+  useEffect(() => {
+    emitterRef.current = registerEmitter({
+      key,
+      callback: setState,
+      initialState,
+    })
+
+    return () => emitterRef.current.deregister()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(state))
+
+    emitterRef.current.emit({ value: state })
   }, [key, state])
 
   return [state, dispatch]

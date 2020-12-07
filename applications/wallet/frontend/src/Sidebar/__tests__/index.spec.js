@@ -100,7 +100,9 @@ describe('<Sidebar />', () => {
     expect(mockOnFunction).toHaveBeenCalled()
     expect(mockSetSidebarOpen).toHaveBeenCalled()
 
-    component.unmount()
+    act(() => {
+      component.unmount()
+    })
 
     expect(mockOffFunction).toHaveBeenCalled()
   })

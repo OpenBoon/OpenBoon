@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ChartHistogram /> should render properly 1`] = `
-.emotion-34 {
+.emotion-0 {
   height: 100%;
   overflow: hidden;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-33 {
+.emotion-1 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -22,14 +22,14 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   padding-top: 8px;
 }
 
-.emotion-5 {
+.emotion-2 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-bottom: 24px;
 }
 
-.emotion-4 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -41,11 +41,11 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   margin-right: -8px;
 }
 
-.emotion-4:hover button svg {
+.emotion-3:hover button svg {
   opacity: 1;
 }
 
-.emotion-0 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -57,7 +57,7 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   text-overflow: ellipsis;
 }
 
-.emotion-1 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -73,76 +73,70 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 6px;
 }
 
-.emotion-1:hover {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg,
+.emotion-5 .noop svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #808080;
 }
 
-.emotion-1 svg {
+.emotion-5 svg {
   opacity: 0;
 }
 
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-2 {
+.emotion-6 {
   width: 2px;
 }
 
-.emotion-32 {
+.emotion-8 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-31 {
+.emotion-9 {
   height: 100%;
 }
 
-.emotion-31 .Loading {
+.emotion-9 .Loading {
   min-height: auto;
 }
 
-.emotion-21 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -153,14 +147,14 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   height: 100%;
 }
 
-.emotion-6 {
+.emotion-11 {
   text-transform: uppercase;
   font-family: Roboto Condensed;
   color: #b3b3b3;
   padding-bottom: 32px;
 }
 
-.emotion-17 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -173,107 +167,9 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   padding-bottom: 8px;
 }
 
-.emotion-7 {
-  width: 10%;
-  height: 100%;
-  background-color: #73b61c;
-}
-
-.emotion-7:not(:last-of-type) {
-  margin-right: 3.3333333333333335%;
-}
-
-.emotion-7:hover {
-  background-color: #96c955;
-}
-
-.emotion-8 {
-  width: 10%;
-  height: 64%;
-  background-color: #73b61c;
-}
-
-.emotion-8:not(:last-of-type) {
-  margin-right: 3.3333333333333335%;
-}
-
-.emotion-8:hover {
-  background-color: #96c955;
-}
-
-.emotion-9 {
-  width: 10%;
-  height: 47%;
-  background-color: #73b61c;
-}
-
-.emotion-9:not(:last-of-type) {
-  margin-right: 3.3333333333333335%;
-}
-
-.emotion-9:hover {
-  background-color: #96c955;
-}
-
-.emotion-10 {
-  width: 10%;
-  height: 37%;
-  background-color: #73b61c;
-}
-
-.emotion-10:not(:last-of-type) {
-  margin-right: 3.3333333333333335%;
-}
-
-.emotion-10:hover {
-  background-color: #96c955;
-}
-
-.emotion-11 {
-  width: 10%;
-  height: 33%;
-  background-color: #73b61c;
-}
-
-.emotion-11:not(:last-of-type) {
-  margin-right: 3.3333333333333335%;
-}
-
-.emotion-11:hover {
-  background-color: #96c955;
-}
-
-.emotion-12 {
-  width: 10%;
-  height: 28%;
-  background-color: #73b61c;
-}
-
-.emotion-12:not(:last-of-type) {
-  margin-right: 3.3333333333333335%;
-}
-
-.emotion-12:hover {
-  background-color: #96c955;
-}
-
-.emotion-13 {
-  width: 10%;
-  height: 27%;
-  background-color: #73b61c;
-}
-
-.emotion-13:not(:last-of-type) {
-  margin-right: 3.3333333333333335%;
-}
-
-.emotion-13:hover {
-  background-color: #96c955;
-}
-
 .emotion-14 {
   width: 10%;
-  height: 29%;
+  height: 100%;
   background-color: #73b61c;
 }
 
@@ -287,7 +183,7 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 
 .emotion-15 {
   width: 10%;
-  height: 55%;
+  height: 64%;
   background-color: #73b61c;
 }
 
@@ -301,7 +197,7 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 
 .emotion-16 {
   width: 10%;
-  height: 4%;
+  height: 47%;
   background-color: #73b61c;
 }
 
@@ -313,41 +209,138 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   background-color: #96c955;
 }
 
+.emotion-17 {
+  width: 10%;
+  height: 37%;
+  background-color: #73b61c;
+}
+
+.emotion-17:not(:last-of-type) {
+  margin-right: 3.3333333333333335%;
+}
+
+.emotion-17:hover {
+  background-color: #96c955;
+}
+
 .emotion-18 {
+  width: 10%;
+  height: 33%;
+  background-color: #73b61c;
+}
+
+.emotion-18:not(:last-of-type) {
+  margin-right: 3.3333333333333335%;
+}
+
+.emotion-18:hover {
+  background-color: #96c955;
+}
+
+.emotion-19 {
+  width: 10%;
+  height: 28%;
+  background-color: #73b61c;
+}
+
+.emotion-19:not(:last-of-type) {
+  margin-right: 3.3333333333333335%;
+}
+
+.emotion-19:hover {
+  background-color: #96c955;
+}
+
+.emotion-20 {
+  width: 10%;
+  height: 27%;
+  background-color: #73b61c;
+}
+
+.emotion-20:not(:last-of-type) {
+  margin-right: 3.3333333333333335%;
+}
+
+.emotion-20:hover {
+  background-color: #96c955;
+}
+
+.emotion-21 {
+  width: 10%;
+  height: 29%;
+  background-color: #73b61c;
+}
+
+.emotion-21:not(:last-of-type) {
+  margin-right: 3.3333333333333335%;
+}
+
+.emotion-21:hover {
+  background-color: #96c955;
+}
+
+.emotion-22 {
+  width: 10%;
+  height: 55%;
+  background-color: #73b61c;
+}
+
+.emotion-22:not(:last-of-type) {
+  margin-right: 3.3333333333333335%;
+}
+
+.emotion-22:hover {
+  background-color: #96c955;
+}
+
+.emotion-23 {
+  width: 10%;
+  height: 4%;
+  background-color: #73b61c;
+}
+
+.emotion-23:not(:last-of-type) {
+  margin-right: 3.3333333333333335%;
+}
+
+.emotion-23:hover {
+  background-color: #96c955;
+}
+
+.emotion-24 {
   height: 1px;
   background-color: #3b3b3b;
 }
 
-.emotion-20 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
   padding-top: 12px;
 }
 
-.emotion-19 {
+.emotion-26 {
   font-family: Roboto,Avenir,"sans-serif";
 }
 
-.emotion-29 {
+.emotion-27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
 }
 
-.emotion-24 {
+.emotion-28 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -363,46 +356,34 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-24:hover {
+.emotion-28:hover,
+.emotion-28.focus-visible:focus,
+.emotion-28 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-24[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-24:hover,
-.emotion-24.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-23 {
+.emotion-29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -413,34 +394,34 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-22 {
+.emotion-30 {
   padding-right: 8px;
 }
 
-.emotion-25 {
+.emotion-31 {
   width: 8px;
 }
 
 <div
-  className="emotion-34"
+  className="emotion-0"
 >
   <div
-    className="emotion-33"
+    className="emotion-1"
   >
     <div
-      className="emotion-5"
+      className="emotion-2"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
         <h3
-          className="emotion-0"
+          className="emotion-4"
         >
           analysis.zvi-face-detection
         </h3>
         <button
           aria-label="Edit Chart"
-          className="emotion-1"
+          className="emotion-5"
           onClick={[Function]}
           title="Edit"
           type="button"
@@ -451,11 +432,11 @@ exports[`<ChartHistogram /> should render properly 1`] = `
           />
         </button>
         <div
-          className="emotion-2"
+          className="emotion-6"
         />
         <button
           aria-label="Delete Chart"
-          className="emotion-1"
+          className="emotion-5"
           onClick={[Function]}
           title="Delete"
           type="button"
@@ -468,77 +449,77 @@ exports[`<ChartHistogram /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-32"
+      className="emotion-8"
     >
       <div
-        className="emotion-31"
+        className="emotion-9"
       >
         <div
-          className="emotion-21"
+          className="emotion-10"
         >
           <div
-            className="emotion-6"
+            className="emotion-11"
           >
             Label Prediction Confidence
           </div>
           <div
-            className="emotion-21"
+            className="emotion-10"
           >
             <div
-              className="emotion-17"
+              className="emotion-13"
             >
               <div
-                className="emotion-7"
+                className="emotion-14"
                 title="93974 (0.15 - 0.24)"
               />
               <div
-                className="emotion-8"
+                className="emotion-15"
                 title="59476 (0.24 - 0.34)"
               />
               <div
-                className="emotion-9"
+                className="emotion-16"
                 title="43784 (0.34 - 0.43)"
               />
               <div
-                className="emotion-10"
+                className="emotion-17"
                 title="34280 (0.43 - 0.53)"
               />
               <div
-                className="emotion-11"
+                className="emotion-18"
                 title="30313 (0.53 - 0.62)"
               />
               <div
-                className="emotion-12"
+                className="emotion-19"
                 title="26139 (0.62 - 0.72)"
               />
               <div
-                className="emotion-13"
+                className="emotion-20"
                 title="25302 (0.72 - 0.81)"
               />
               <div
-                className="emotion-14"
+                className="emotion-21"
                 title="26865 (0.81 - 0.91)"
               />
               <div
-                className="emotion-15"
+                className="emotion-22"
                 title="51524 (0.91 - 1.00)"
               />
               <div
-                className="emotion-16"
+                className="emotion-23"
                 title="3667 (1.00 - 1.09)"
               />
             </div>
             <div
-              className="emotion-18"
+              className="emotion-24"
             />
             <div
-              className="emotion-20"
+              className="emotion-25"
             >
               <span>
                 0.15
               </span>
               <span
-                className="emotion-19"
+                className="emotion-26"
               >
                 Confidence Score Range
               </span>
@@ -548,19 +529,19 @@ exports[`<ChartHistogram /> should render properly 1`] = `
             </div>
           </div>
           <div
-            className="emotion-29"
+            className="emotion-27"
           >
             <button
               aria-label="Add Filter"
-              className="emotion-24"
+              className="emotion-28"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-23"
+                className="emotion-29"
               >
                 <svg
-                  className="emotion-22"
+                  className="emotion-30"
                   data-file-name="filter.svg"
                   height={20}
                 />
@@ -568,19 +549,19 @@ exports[`<ChartHistogram /> should render properly 1`] = `
               </div>
             </button>
             <div
-              className="emotion-25"
+              className="emotion-31"
             />
             <button
               aria-label="Add Facet Visualization"
-              className="emotion-24"
+              className="emotion-28"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-23"
+                className="emotion-29"
               >
                 <svg
-                  className="emotion-22"
+                  className="emotion-30"
                   data-file-name="facet.svg"
                   height={20}
                 />
@@ -596,13 +577,13 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 `;
 
 exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
-.emotion-30 {
+.emotion-0 {
   height: 100%;
   overflow: hidden;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-29 {
+.emotion-1 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -617,14 +598,14 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   padding-top: 8px;
 }
 
-.emotion-28 {
+.emotion-2 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-27 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -640,22 +621,22 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   padding: 0;
 }
 
-.emotion-0 {
+.emotion-4 {
   padding-top: 8px;
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
 }
 
-.emotion-1 {
+.emotion-5 {
   height: 24px;
 }
 
-.emotion-16 [data-reach-listbox-input][data-state="expanded"] {
+.emotion-6 [data-reach-listbox-input][data-state="expanded"] {
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-2 {
+.emotion-7 {
   padding-bottom: 8px;
   color: #ffffff;
   font-size: 15px;
@@ -663,7 +644,7 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   font-weight: 500;
 }
 
-.emotion-15 {
+.emotion-8 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -676,7 +657,7 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   border-radius: 2px;
 }
 
-.emotion-3 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -691,23 +672,22 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   align-items: center;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
 }
 
-.emotion-14 {
+.emotion-10 {
   background-color: transparent;
   border: none;
   padding: 0;
 }
 
-.emotion-14:focus-within {
+.emotion-10:focus-within {
   outline: none;
   box-shadow: none;
 }
 
-.emotion-13 {
+.emotion-11 {
   overflow-y: hidden;
   padding: 8px;
   padding-top: 0;
@@ -722,11 +702,11 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-5 {
+.emotion-13 {
   padding: 4px;
 }
 
-.emotion-4 {
+.emotion-14 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -737,33 +717,35 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   border-radius: 2px;
   color: #e0e0e0;
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
   background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-4::-webkit-input-placeholder {
+.emotion-14::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-4::-moz-placeholder {
+.emotion-14::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-4:-ms-input-placeholder {
+.emotion-14:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-4::placeholder {
+.emotion-14::placeholder {
   font-style: italic;
 }
 
-.emotion-4:hover {
+.emotion-14:hover {
   border: 1px solid #808080;
 }
 
-.emotion-4:focus {
+.emotion-14:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -771,7 +753,7 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-11 {
+.emotion-15 {
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
   margin: 0;
@@ -784,7 +766,7 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   padding-bottom: 8px;
 }
 
-.emotion-10 {
+.emotion-16 {
   list-style: none;
   padding-left: 0;
   padding-bottom: 8px;
@@ -793,19 +775,19 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   font-weight: 500;
 }
 
-.emotion-9 {
+.emotion-17 {
   padding-bottom: 2px;
 }
 
-.emotion-6 {
+.emotion-18 {
   padding-left: 8px;
 }
 
-.emotion-8 {
+.emotion-19 {
   padding: 0;
 }
 
-.emotion-7 {
+.emotion-20 {
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 24px;
@@ -814,63 +796,67 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   font-weight: 400;
 }
 
-.emotion-7:hover {
+.emotion-20:hover {
   background: #b3b3b3;
   cursor: pointer;
 }
 
-.emotion-17 {
+.emotion-21 {
   height: 16px;
 }
 
-.emotion-21 {
+.emotion-22 {
   padding-top: 8px;
 }
 
-.emotion-18 {
+.emotion-23 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-20 {
+.emotion-24 {
   position: relative;
 }
 
-.emotion-19 {
+.emotion-25 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-19:focus {
+.emotion-25:focus,
+.emotion-25 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
-}
-
-.emotion-19:hover {
-  border: 2px solid #ffffff;
-}
-
-.emotion-19:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
+.emotion-25:hover,
+.emotion-25 .noop {
+  border: 2px solid #ffffff;
+}
+
 .emotion-26 {
+  padding-top: 8px;
+}
+
+.emotion-27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-23 {
+.emotion-28 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -886,8 +872,8 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -904,34 +890,31 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   flex: 1;
 }
 
-.emotion-23:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-23[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-23,
-.emotion-23:hover,
-.emotion-23:visited {
+.emotion-28,
+.emotion-28:hover,
+.emotion-28:visited,
+.emotion-28 .noop {
   background-color: #808080;
 }
 
-.emotion-23:hover {
+.emotion-28:hover,
+.emotion-28 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-23[aria-disabled=true] {
+.emotion-28[aria-disabled=true],
+.emotion-28 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-24 {
+.emotion-29 {
   width: 8px;
 }
 
-.emotion-25 {
+.emotion-30 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -947,8 +930,8 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -965,63 +948,60 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   flex: 1;
 }
 
-.emotion-25:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-25[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-25,
-.emotion-25:hover,
-.emotion-25:visited {
+.emotion-30,
+.emotion-30:hover,
+.emotion-30:visited,
+.emotion-30 .noop {
   background-color: #73b61c;
 }
 
-.emotion-25:hover {
+.emotion-30:hover,
+.emotion-30 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-25[aria-disabled=true] {
+.emotion-30[aria-disabled=true],
+.emotion-30 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-30"
+  className="emotion-0"
 >
   <div
-    className="emotion-29"
+    className="emotion-1"
   >
     <div
-      className="emotion-28"
+      className="emotion-2"
     >
       <form
         action=""
-        className="emotion-27"
+        className="emotion-3"
         method="post"
         onSubmit={[Function]}
       >
         <h2
-          className="emotion-0"
+          className="emotion-4"
         >
           Histogram
            Visualization
         </h2>
         <div
-          className="emotion-1"
+          className="emotion-5"
         />
         <label
-          className="emotion-16"
+          className="emotion-6"
         >
           <div
-            className="emotion-2"
+            className="emotion-7"
           >
             Metadata Type
           </div>
           <ListboxInput
-            className="emotion-15"
+            className="emotion-8"
             defaultValue=""
             onChange={[Function]}
           >
@@ -1032,25 +1012,25 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
                   height={20}
                 />
               }
-              className="emotion-3"
+              className="emotion-9"
             >
               Select Type
             </ListboxButton>
             <ListboxPopover
-              className="emotion-14"
+              className="emotion-10"
             >
               <div
-                className="emotion-13"
+                className="emotion-11"
               >
                 <div
                   className="emotion-12"
                 >
                   <div
-                    className="emotion-5"
+                    className="emotion-13"
                   >
                     <input
                       aria-label="Filter Types"
-                      className="emotion-4"
+                      className="emotion-14"
                       onChange={[Function]}
                       placeholder="Filter types"
                       type="search"
@@ -1058,27 +1038,27 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
                     />
                   </div>
                   <ListboxList
-                    className="emotion-11"
+                    className="emotion-15"
                   >
                     <ul
                       aria-labelledby="Analysis"
-                      className="emotion-10"
+                      className="emotion-16"
                       role="group"
                     >
                       <li
-                        className="emotion-9"
+                        className="emotion-17"
                         role="presentation"
                       >
                         <span
-                          className="emotion-6"
+                          className="emotion-18"
                         >
                           Analysis
                         </span>
                         <ul
-                          className="emotion-8"
+                          className="emotion-19"
                         >
                           <ListboxOption
-                            className="emotion-7"
+                            className="emotion-20"
                             value="analysis.zvi-face-detection"
                           >
                             zvi-face-detection
@@ -1093,22 +1073,22 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
           </ListboxInput>
         </label>
         <div
-          className="emotion-17"
+          className="emotion-21"
         />
         <div
-          className="emotion-21"
+          className="emotion-22"
         >
           <label
-            className="emotion-18"
+            className="emotion-23"
             htmlFor="values"
           >
             Number of Values Shown
           </label>
           <div
-            className="emotion-20"
+            className="emotion-24"
           >
             <input
-              className="emotion-19"
+              className="emotion-25"
               disabled={false}
               id="values"
               name="values"
@@ -1118,27 +1098,27 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
             />
           </div>
           <div
-            className="emotion-21"
+            className="emotion-26"
           >
              
           </div>
         </div>
         <div
-          className="emotion-26"
+          className="emotion-27"
         >
           <button
-            className="emotion-23"
+            className="emotion-28"
             onClick={[Function]}
             type="button"
           >
             Cancel
           </button>
           <div
-            className="emotion-24"
+            className="emotion-29"
           />
           <button
             aria-disabled={true}
-            className="emotion-25"
+            className="emotion-30"
             onClick={[Function]}
             type="submit"
           >
@@ -1152,13 +1132,13 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 `;
 
 exports[`<ChartHistogram /> should render properly without data 1`] = `
-.emotion-24 {
+.emotion-0 {
   height: 100%;
   overflow: hidden;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-23 {
+.emotion-1 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1173,14 +1153,14 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   padding-top: 8px;
 }
 
-.emotion-5 {
+.emotion-2 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-bottom: 24px;
 }
 
-.emotion-4 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1192,11 +1172,11 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   margin-right: -8px;
 }
 
-.emotion-4:hover button svg {
+.emotion-3:hover button svg {
   opacity: 1;
 }
 
-.emotion-0 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1208,7 +1188,7 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   text-overflow: ellipsis;
 }
 
-.emotion-1 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1224,76 +1204,70 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 6px;
 }
 
-.emotion-1:hover {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg,
+.emotion-5 .noop svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #808080;
 }
 
-.emotion-1 svg {
+.emotion-5 svg {
   opacity: 0;
 }
 
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-2 {
+.emotion-6 {
   width: 2px;
 }
 
-.emotion-22 {
+.emotion-8 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-21 {
+.emotion-9 {
   height: 100%;
 }
 
-.emotion-21 .Loading {
+.emotion-9 .Loading {
   min-height: auto;
 }
 
-.emotion-11 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1304,14 +1278,14 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   height: 100%;
 }
 
-.emotion-6 {
+.emotion-11 {
   text-transform: uppercase;
   font-family: Roboto Condensed;
   color: #b3b3b3;
   padding-bottom: 32px;
 }
 
-.emotion-7 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1324,41 +1298,40 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   padding-bottom: 8px;
 }
 
-.emotion-8 {
+.emotion-14 {
   height: 1px;
   background-color: #3b3b3b;
 }
 
-.emotion-10 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
   font-family: Roboto Mono;
   padding-top: 12px;
 }
 
-.emotion-9 {
+.emotion-16 {
   font-family: Roboto,Avenir,"sans-serif";
 }
 
-.emotion-19 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
 }
 
-.emotion-14 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1374,46 +1347,34 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
   padding-left: 6px;
   padding-right: 6px;
-  border-radius: 2px;
-  background-color: #3b3b3b;
-  color: #b3b3b3;
-  line-height: 19px;
-  font-size: 15px;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-14:hover {
+.emotion-18:hover,
+.emotion-18.focus-visible:focus,
+.emotion-18 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-14[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-14:hover,
-.emotion-14.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-13 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1424,34 +1385,34 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   align-items: center;
 }
 
-.emotion-12 {
+.emotion-20 {
   padding-right: 8px;
 }
 
-.emotion-15 {
+.emotion-21 {
   width: 8px;
 }
 
 <div
-  className="emotion-24"
+  className="emotion-0"
 >
   <div
-    className="emotion-23"
+    className="emotion-1"
   >
     <div
-      className="emotion-5"
+      className="emotion-2"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
         <h3
-          className="emotion-0"
+          className="emotion-4"
         >
           analysis.zvi-face-detection
         </h3>
         <button
           aria-label="Edit Chart"
-          className="emotion-1"
+          className="emotion-5"
           onClick={[Function]}
           title="Edit"
           type="button"
@@ -1462,11 +1423,11 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
           />
         </button>
         <div
-          className="emotion-2"
+          className="emotion-6"
         />
         <button
           aria-label="Delete Chart"
-          className="emotion-1"
+          className="emotion-5"
           onClick={[Function]}
           title="Delete"
           type="button"
@@ -1479,36 +1440,36 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
       </div>
     </div>
     <div
-      className="emotion-22"
+      className="emotion-8"
     >
       <div
-        className="emotion-21"
+        className="emotion-9"
       >
         <div
-          className="emotion-11"
+          className="emotion-10"
         >
           <div
-            className="emotion-6"
+            className="emotion-11"
           >
             Label Prediction Confidence
           </div>
           <div
-            className="emotion-11"
+            className="emotion-10"
           >
             <div
-              className="emotion-7"
+              className="emotion-13"
             />
             <div
-              className="emotion-8"
+              className="emotion-14"
             />
             <div
-              className="emotion-10"
+              className="emotion-15"
             >
               <span>
                 0.00
               </span>
               <span
-                className="emotion-9"
+                className="emotion-16"
               >
                 Confidence Score Range
               </span>
@@ -1518,19 +1479,19 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
             </div>
           </div>
           <div
-            className="emotion-19"
+            className="emotion-17"
           >
             <button
               aria-label="Add Filter"
-              className="emotion-14"
+              className="emotion-18"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-13"
+                className="emotion-19"
               >
                 <svg
-                  className="emotion-12"
+                  className="emotion-20"
                   data-file-name="filter.svg"
                   height={20}
                 />
@@ -1538,19 +1499,19 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
               </div>
             </button>
             <div
-              className="emotion-15"
+              className="emotion-21"
             />
             <button
               aria-label="Add Facet Visualization"
-              className="emotion-14"
+              className="emotion-18"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-13"
+                className="emotion-19"
               >
                 <svg
-                  className="emotion-12"
+                  className="emotion-20"
                   data-file-name="facet.svg"
                   height={20}
                 />

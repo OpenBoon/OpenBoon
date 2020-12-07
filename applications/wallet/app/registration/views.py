@@ -3,10 +3,10 @@ from datetime import timedelta
 from axes.handlers.proxy import AxesProxyHandler
 from django.conf import settings
 from django.contrib.auth import get_user_model, logout, login, authenticate
-from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.mail import send_mail
+from django.core.mail.message import sanitize_address
 from django.db import transaction
 from django.http import Http404
 from django.template.loader import render_to_string
@@ -66,8 +66,9 @@ Response Codes:
         try:
             validate_password(password)
         except ValidationError as e:
-            return Response({'detail': ['Password not strong enough'],
-                             'errors': e.messages}, status=422)
+            return Response({'detail': ['Password not strong enough.'],
+                             'errors': e.messages},
+                            status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
         with transaction.atomic():
             # If a registration token already exists for the user delete it so a new on
@@ -108,6 +109,12 @@ Response Codes:
         body = (f'Click this link to confirm your email address and activate your account.\n'
                 f'{settings.FQDN}/accounts/confirm?'
                 f'token={token.token}&userId={user.id}')
+        try:
+            sanitize_address(user.username, 'utf-8')
+        except ValueError:
+            user.delete()
+            return Response(data={'detail': ['Email address invalid.']},
+                            status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         send_mail(subject=subject, message=body, html_message=html, fail_silently=False,
                   from_email='do_not_reply@zorroa.com', recipient_list=[user.username])
 

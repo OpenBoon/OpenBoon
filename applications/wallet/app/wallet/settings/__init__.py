@@ -152,6 +152,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Add the django-axes authentication backend and configure.
+AXES_META_PRECEDENCE_ORDER = ['HTTP_X_FORWARDED_FOR']
 AXES_FAILURE_LIMIT = 5
 AUTHENTICATION_BACKENDS = [
     # AxesBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
@@ -284,7 +285,8 @@ ROLES = [
      'description': 'Provides access to API Key provisioning.',
      'permissions': ['ProjectManage']},
     {'name': 'User_Admin',
-     'description': 'Provides access to User Administration for a Project.',
+     'description': 'Allows adding and removing users as well as managing their roles. This '
+                    'includes adding and removing their own roles.',
      'permissions': ['ProjectManage']},
 ]
 

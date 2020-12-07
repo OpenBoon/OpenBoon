@@ -1,4 +1,4 @@
-import { keyframes } from '@emotion/core'
+import { keyframes } from '@emotion/react'
 
 import colors from './colors'
 
@@ -15,7 +15,7 @@ const borderRadius = {
   round: 32,
 }
 
-const borderWidths = { regular: '1px', medium: '2px', large: '4px' }
+const borderWidths = { regular: 1, medium: 2, large: 4 }
 
 const newBorders = Object.entries(borderWidths).reduce((acc, [name, size]) => {
   return {
@@ -24,7 +24,7 @@ const newBorders = Object.entries(borderWidths).reduce((acc, [name, size]) => {
       (acc2, [colorName, colorHex]) => {
         return {
           ...acc2,
-          [colorName]: `${size} solid ${colorHex}`,
+          [colorName]: `${size}px solid ${colorHex}`,
         }
       },
       {},
@@ -87,14 +87,12 @@ const constants = {
     maxWidth: 600,
   },
   animations: {
+    slide: 'all .15s ease',
     infiniteRotation: `${rotate} 2s linear infinite`,
     dualRotation: `${rotate} 1s linear 2`,
   },
   timeline: {
     rulerRowHeight: 44,
-    modulesWidth: 200,
-    playheadWidth: 20,
-    playheadHeight: 14,
   },
 }
 

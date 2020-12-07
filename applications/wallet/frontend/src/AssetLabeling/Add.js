@@ -5,14 +5,14 @@ import modelShape from '../Model/shape'
 
 import { spacing } from '../Styles'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 import Form from '../Form'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import FlashMessageErrors from '../FlashMessage/Errors'
 import Select from '../Select'
 import Combobox from '../Combobox'
 
-import { onSubmit, getSubmitText, getOptions } from './helpers'
+import { onSubmit, getSubmitText, getOptions, SCOPE_OPTIONS } from './helpers'
 
 import AssetLabelingShortcuts from './Shortcuts'
 
@@ -26,35 +26,43 @@ const INITIAL_STATE = {
 const reducer = (state, action) => ({ ...state, ...action })
 
 const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
-  const [localModelId, setLocalModelId] = useLocalStorageState({
-    key: `AssetLabelingAdd.${projectId}.modelId`,
-    initialValue: '',
+  const [
+    { modelId, label, scope, assetId: storedAssetId },
+    dispatch,
+  ] = useLocalStorage({
+    key: `AssetLabelingAdd.${projectId}`,
+    reducer,
+    initialState: {
+      modelId: '',
+      label: '',
+      scope: SCOPE_OPTIONS[0].value,
+      assetId,
+    },
   })
 
-  const [localLabel, setLocalLabel] = useLocalStorageState({
-    key: `AssetLabelingAdd.${projectId}.label`,
-    initialValue: '',
-  })
+  const hasModel = models.find(({ id }) => id === modelId)
 
-  const hasModel = models.find(({ id }) => id === localModelId)
-
-  const [state, dispatch] = useReducer(reducer, {
+  const [localState, localDispatch] = useReducer(reducer, {
     ...INITIAL_STATE,
-    modelId: (hasModel && localModelId) || '',
-    label: localLabel || '',
+    modelId: (hasModel && modelId) || '',
+    label: label || '',
+    scope: scope || SCOPE_OPTIONS[0].value,
   })
 
   const options = models.map(({ name, id }) => ({ value: id, label: name }))
 
-  const existingLabel = labels.find(
-    ({ modelId, label }) => modelId === state.modelId && label === state.label,
+  const existingLabel = !!labels.find(
+    (l) =>
+      l.modelId === localState.modelId &&
+      l.scope === localState.scope &&
+      l.label === localState.label,
   )
 
   return (
     <div css={{ padding: spacing.normal }}>
       <AssetLabelingShortcuts
-        dispatch={dispatch}
-        state={state}
+        dispatch={localDispatch}
+        state={localState}
         labels={labels}
         projectId={projectId}
         assetId={assetId}
@@ -62,17 +70,16 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
 
       <Form style={{ width: '100%', padding: 0 }}>
         <FlashMessageErrors
-          errors={state.errors}
+          errors={localState.errors}
           styles={{ paddingTop: spacing.base, paddingBottom: spacing.comfy }}
         />
         <Select
-          key={`model${state.reloadKey}`}
+          key={`model${localState.reloadKey}`}
           label="Model"
           options={options}
-          defaultValue={state.modelId}
+          defaultValue={localState.modelId}
           onChange={({ value }) => {
-            dispatch({ modelId: value, label: '', success: false })
-            setLocalModelId({ value })
+            localDispatch({ modelId: value, label: '', success: false })
           }}
           isRequired={false}
           style={{ width: '100%' }}
@@ -81,16 +88,29 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
         <div css={{ height: spacing.base }} />
 
         <Combobox
-          key={`label${state.reloadKey}${state.modelId}`}
+          key={`label${localState.reloadKey}${localState.modelId}`}
           label="Label"
-          options={() => getOptions({ projectId, modelId: state.modelId })}
-          value={state.label}
+          options={() => getOptions({ projectId, modelId: localState.modelId })}
+          value={localState.label}
           onChange={({ value }) => {
-            dispatch({ label: value, success: false })
-            setLocalLabel({ value })
+            localDispatch({ label: value, success: false })
           }}
-          hasError={state.errors.label !== undefined}
-          errorMessage={state.errors.label}
+          hasError={localState.errors.label !== undefined}
+          errorMessage={localState.errors.label}
+        />
+
+        <div css={{ height: spacing.base }} />
+
+        <Select
+          key={`scope${localState.reloadKey}`}
+          label="Scope"
+          options={SCOPE_OPTIONS}
+          defaultValue={localState.scope}
+          onChange={({ value }) => {
+            localDispatch({ scope: value, success: false })
+          }}
+          isRequired={false}
+          style={{ width: '100%' }}
         />
 
         <div css={{ height: spacing.comfy }} />
@@ -99,20 +119,22 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
           <Button
             variant={BUTTON_VARIANTS.SECONDARY}
             onClick={() => {
-              dispatch({
-                modelId: localModelId,
-                label: localLabel,
-                reloadKey: state.reloadKey + 1,
+              localDispatch({
+                modelId,
+                label,
+                scope,
+                reloadKey: localState.reloadKey + 1,
               })
             }}
             style={{ flex: 1, margin: 0 }}
+            /*
+             * Cancel should only be enabled when a user has made changes
+             * that differs from the localStorage values
+             *
+             * assetId is checked so Cancel is properly disabled when users navigate between assets
+             */
             isDisabled={
-              !localModelId ||
-              !localLabel ||
-              (localModelId &&
-                localLabel &&
-                localModelId === state.modelId &&
-                localLabel === state.label)
+              !modelId || !label || assetId !== storedAssetId || existingLabel
             }
           >
             Cancel
@@ -124,19 +146,26 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() => {
-              onSubmit({ dispatch, state, labels, projectId, assetId })
+              onSubmit({
+                dispatch,
+                localDispatch,
+                localState,
+                labels,
+                projectId,
+                assetId,
+              })
             }}
             isDisabled={
-              !hasModel ||
-              !state.modelId ||
-              (!state.label && !localLabel) ||
-              state.isLoading ||
-              (state.success && !state.isLoading) ||
-              !!existingLabel
+              existingLabel ||
+              !localState.modelId ||
+              !localState.label ||
+              !localState.scope ||
+              localState.isLoading ||
+              (localState.success && !localState.isLoading)
             }
             style={{ flex: 1, margin: 0 }}
           >
-            {getSubmitText({ state, existingLabel })}
+            {getSubmitText({ localState, existingLabel })}
           </Button>
         </div>
       </Form>

@@ -1,14 +1,14 @@
-import pytest
+from unittest.mock import patch, Mock
 
+import pytest
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.response import Response
-from unittest.mock import patch, Mock
-
-from searches.models import Search
-from searches.filters import BaseFilter
-from searches.views import MetadataExportViewSet, SearchViewSet, search_asset_modifier
 from zmlp import ZmlpClient
+
+from searches.filters import BaseFilter
+from searches.models import Search
+from searches.views import MetadataExportViewSet, SearchViewSet, search_asset_modifier
 from wallet.tests.utils import check_response
 from wallet.utils import convert_json_to_base64
 
@@ -519,6 +519,7 @@ class TestAggregate(BaseFiltersTestCase):
         assert content['detail'] == ['This Filter does not support aggregations.']
 
 
+@pytest.mark.skip(reason='API is currently disabled due to bugs and security issues.')
 class TestMetadataExportView:
 
     def test_get(self, login, api_client, monkeypatch, project):

@@ -1,46 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MetadataCuesContent /> should render properly with metadata 1`] = `
-.emotion-21 {
-  height: 300px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.emotion-0 {
+Array [
+  .emotion-0 {
   padding: 8px;
   padding-left: 12px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-20 {
+<div
+    className="emotion-0"
+  >
+    Time Based Metadata:
+  </div>,
+  .emotion-0 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   overflow-y: auto;
 }
 
-.emotion-11 {
+.emotion-1 {
   border-bottom: 4px solid #3b3b3b;
-  box-shadow: inset 3px 0 0 #0074f5;
+  box-shadow: inset 3px 0 0 transparent;
 }
 
-.emotion-10 {
+.emotion-2 {
   padding: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-10:not(:first-of-type) {
+.emotion-2:not(:first-of-type) {
   border-top: 4px solid #3b3b3b;
 }
 
-.emotion-1 {
+.emotion-3 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -48,7 +42,7 @@ exports[`<MetadataCuesContent /> should render properly with metadata 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-2 {
+.emotion-4 {
   font-family: Roboto Condensed;
   font-weight: 400;
   text-transform: uppercase;
@@ -59,12 +53,12 @@ exports[`<MetadataCuesContent /> should render properly with metadata 1`] = `
   text-align: left;
 }
 
-.emotion-2:last-of-type {
+.emotion-4:last-of-type {
   text-align: right;
   white-space: nowrap;
 }
 
-.emotion-2:nth-last-of-type(2) {
+.emotion-4:nth-last-of-type(2) {
   width: 100%;
 }
 
@@ -79,35 +73,22 @@ exports[`<MetadataCuesContent /> should render properly with metadata 1`] = `
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-4:last-of-type {
+.emotion-7:last-of-type {
   text-align: right;
   padding-right: 0;
 }
 
-.emotion-19 {
-  border-bottom: 4px solid #3b3b3b;
-  box-shadow: inset 3px 0 0 #a03dc7;
-}
-
 <div
-  className="emotion-21"
->
-  <div
     className="emotion-0"
   >
-    Time Based Metadata:
-  </div>
-  <div
-    className="emotion-20"
-  >
     <div
-      className="emotion-11"
+      className="emotion-1"
     >
       <div
-        className="emotion-10"
+        className="emotion-2"
       >
         <div
-          className="emotion-1"
+          className="emotion-3"
         >
           gcp-label-detection
         </div>
@@ -115,12 +96,12 @@ exports[`<MetadataCuesContent /> should render properly with metadata 1`] = `
           <thead>
             <tr>
               <th
-                className="emotion-2"
+                className="emotion-4"
               >
                 label
               </th>
               <th
-                className="emotion-2"
+                className="emotion-4"
               >
                 confidence score
               </th>
@@ -131,12 +112,12 @@ exports[`<MetadataCuesContent /> should render properly with metadata 1`] = `
               className="emotion-6"
             >
               <td
-                className="emotion-4"
+                className="emotion-7"
               >
                 cheese
               </td>
               <td
-                className="emotion-4"
+                className="emotion-7"
               >
                 0.91
               </td>
@@ -145,12 +126,12 @@ exports[`<MetadataCuesContent /> should render properly with metadata 1`] = `
               className="emotion-6"
             >
               <td
-                className="emotion-4"
+                className="emotion-7"
               >
                 pepperoni
               </td>
               <td
-                className="emotion-4"
+                className="emotion-7"
               >
                 0.91
               </td>
@@ -160,26 +141,26 @@ exports[`<MetadataCuesContent /> should render properly with metadata 1`] = `
       </div>
     </div>
     <div
-      className="emotion-19"
+      className="emotion-1"
     >
       <div
-        className="emotion-10"
+        className="emotion-2"
       >
         <div
-          className="emotion-1"
+          className="emotion-3"
         >
-          gcp-object-detection
+          gcp-logo-detection
         </div>
         <table>
           <thead>
             <tr>
               <th
-                className="emotion-2"
+                className="emotion-4"
               >
                 label
               </th>
               <th
-                className="emotion-2"
+                className="emotion-4"
               >
                 confidence score
               </th>
@@ -190,12 +171,12 @@ exports[`<MetadataCuesContent /> should render properly with metadata 1`] = `
               className="emotion-6"
             >
               <td
-                className="emotion-4"
+                className="emotion-7"
               >
-                food
+                boon
               </td>
               <td
-                className="emotion-4"
+                className="emotion-7"
               >
                 0.91
               </td>
@@ -204,30 +185,69 @@ exports[`<MetadataCuesContent /> should render properly with metadata 1`] = `
         </table>
       </div>
     </div>
-  </div>
-</div>
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-3"
+        >
+          gcp-object-detection
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th
+                className="emotion-4"
+              >
+                label
+              </th>
+              <th
+                className="emotion-4"
+              >
+                confidence score
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-6"
+            >
+              <td
+                className="emotion-7"
+              >
+                food
+              </td>
+              <td
+                className="emotion-7"
+              >
+                0.91
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+]
 `;
 
 exports[`<MetadataCuesContent /> should render properly with no metadata 1`] = `
-.emotion-3 {
-  height: 300px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.emotion-0 {
+Array [
+  .emotion-0 {
   padding: 8px;
   padding-left: 12px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-2 {
+<div
+    className="emotion-0"
+  >
+    Time Based Metadata:
+  </div>,
+  .emotion-0 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -241,21 +261,13 @@ exports[`<MetadataCuesContent /> should render properly with no metadata 1`] = `
 }
 
 <div
-  className="emotion-3"
->
-  <div
     className="emotion-0"
-  >
-    Time Based Metadata:
-  </div>
-  <div
-    className="emotion-2"
   >
     <div
       className="emotion-1"
     >
       No predictions have been detected in this asset at this time mark. Try scrubbing forward or backward.
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;

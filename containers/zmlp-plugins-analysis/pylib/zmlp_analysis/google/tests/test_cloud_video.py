@@ -1,4 +1,5 @@
 import os
+import logging
 from unittest.mock import patch
 from google.cloud.videointelligence_v1.proto import video_intelligence_pb2
 
@@ -7,6 +8,8 @@ from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
 
 client_las = 'zmlp_analysis.google.cloud_video.initialize_gcp_client'
+
+logging.basicConfig(level=logging.INFO)
 
 
 class MockVideoIntelligenceClient:
@@ -74,7 +77,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         analysis = frame.asset.get_attr('analysis.gcp-video-label-detection')
         assert 'labels' == analysis['type']
         assert 'stage' in get_prediction_labels(analysis)
-        assert 14 == analysis['count']
+        assert 21 == analysis['count']
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch('zmlp_analysis.google.cloud_video.initialize_gcp_client',
@@ -114,9 +117,11 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
-    def test_speech_transcription(self, store_blob_patch,
+    @patch.object(file_storage.assets, 'store_file')
+    def test_speech_transcription(self, store_file_patch, store_blob_patch,
                                   proxy_patch, annot_patch, _, __):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
+        store_file_patch.return_value = None
         store_blob_patch.return_value = None
         annot_patch.return_value = self.load_results("detect-speech.dat")
         proxy_patch.return_value = uri
@@ -128,7 +133,6 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
         asset = TestAsset(uri)
         asset.set_attr('media.length', 15.0)
-        asset.set_attr('clip.track', 'full')
         frame = Frame(asset)
         processor.process(frame)
 

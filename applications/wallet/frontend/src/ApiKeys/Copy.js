@@ -15,7 +15,7 @@ const ApiKeysCopy = () => {
         css={{ color: colors.key.one }}
         target="_blank"
         rel="noopener noreferrer"
-        href="https://app.gitbook.com/@zorroa/s/zmlp/getting-started"
+        href="https://zorroa.gitbook.io/zmlp/"
       >
         our documentation
       </a>

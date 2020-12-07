@@ -59,7 +59,7 @@ describe('Visualizer', function () {
 
       cy.get('button[aria-label="Filters"]').click()
 
-      cy.contains('Add Metadata Filters').click()
+      cy.contains('Add Filters').click()
 
       cy.get('summary[aria-label="Source"]').click()
 
@@ -83,7 +83,7 @@ describe('Visualizer', function () {
 
       cy.get('button[aria-label="Filters"]').click()
 
-      cy.contains('Add Metadata Filters').click()
+      cy.contains('Add Filters').click()
 
       cy.get('summary[aria-label="Source"]').click()
 
@@ -107,7 +107,7 @@ describe('Visualizer', function () {
 
       cy.get('button[aria-label="Filters"]').click()
 
-      cy.contains('Add Metadata Filters').click()
+      cy.contains('Add Filters').click()
 
       cy.get('summary[aria-label="Location"]').click()
 
@@ -129,7 +129,7 @@ describe('Visualizer', function () {
 
       cy.get('button[aria-label="Filters"]').click()
 
-      cy.contains('Add Metadata Filters').click()
+      cy.contains('Add Filters').click()
 
       cy.get('summary[aria-label="Analysis"]').click()
 
@@ -153,7 +153,7 @@ describe('Visualizer', function () {
 
       cy.get('button[aria-label="Filters"]').click()
 
-      cy.contains('Add Metadata Filters').click()
+      cy.contains('Add Filters').click()
 
       cy.get('summary[aria-label="Analysis"]').click()
 

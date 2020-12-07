@@ -1,0 +1,71 @@
+{
+  "CelebrityFaces": [
+    {
+      "Urls": [
+        "www.imdb.com/name/nm0331516"
+      ],
+      "Name": "Ryan Gosling",
+      "Id": "175ov0",
+      "Face": {
+        "BoundingBox": {
+          "Width": 0.49666666984558105,
+          "Height": 0.49666666984558105,
+          "Left": 0.3466666638851166,
+          "Top": 0.20000000298023224
+        },
+        "Confidence": 99.99774932861328,
+        "Landmarks": [
+          {
+            "Type": "eyeLeft",
+            "X": 0.5166648626327515,
+            "Y": 0.3739556074142456
+          },
+          {
+            "Type": "eyeRight",
+            "X": 0.6655324697494507,
+            "Y": 0.38119855523109436
+          },
+          {
+            "Type": "nose",
+            "X": 0.5731040835380554,
+            "Y": 0.4762060046195984
+          },
+          {
+            "Type": "mouthLeft",
+            "X": 0.5146728754043579,
+            "Y": 0.5476338863372803
+          },
+          {
+            "Type": "mouthRight",
+            "X": 0.6754570603370667,
+            "Y": 0.5528379082679749
+          }
+        ],
+        "Pose": {
+          "Roll": 3.1760129928588867,
+          "Yaw": -12.707228660583496,
+          "Pitch": -3.304750680923462
+        },
+        "Quality": {
+          "Brightness": 92.17418670654297,
+          "Sharpness": 99.20050811767578
+        }
+      },
+      "MatchConfidence": 99.0
+    }
+  ],
+  "UnrecognizedFaces": [],
+  "OrientationCorrection": "ROTATE_0",
+  "ResponseMetadata": {
+    "RequestId": "bc782dae-0a6f-4765-8dfb-01f0dacaa386",
+    "HTTPStatusCode": 200,
+    "HTTPHeaders": {
+      "content-type": "application/x-amz-json-1.1",
+      "date": "Wed, 30 Sep 2020 23:31:33 GMT",
+      "x-amzn-requestid": "bc782dae-0a6f-4765-8dfb-01f0dacaa386",
+      "content-length": "847",
+      "connection": "keep-alive"
+    },
+    "RetryAttempts": 0
+  }
+}
