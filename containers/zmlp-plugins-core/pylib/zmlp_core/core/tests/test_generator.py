@@ -7,7 +7,7 @@ from dateutil.tz import tzutc
 
 from zmlp import ZmlpClient, Asset
 from zmlp_core.core.generators import GcsBucketGenerator, AssetSearchGenerator, \
-    S3BucketGenerator, AzureBucketGenerator, DeleteBySearchGenerator
+    S3BucketGenerator, AzureBucketGenerator
 from zmlpsdk import Context
 from zmlp.app import AssetApp
 
@@ -88,21 +88,6 @@ class AssetSearchGeneratorTests(unittest.TestCase):
         consumer = TestConsumer()
         generator = AssetSearchGenerator()
         generator.set_context(Context(None, {'uri': 'gs://zorroa-dev-data'}, {}))
-        generator.generate(consumer)
-        assert consumer.count > 0
-
-
-class DeleteBySearchGeneratorTests(unittest.TestCase):
-
-    @patch.object(ZmlpClient, 'delete')
-    @patch.object(AssetApp, 'scroll_search')
-    def test_generate(self, scroll_search_patch, del_patch):
-        scroll_search_patch.return_value = mock_delete_asset
-        del_patch.return_value = {}
-
-        consumer = TestConsumer()
-        generator = DeleteBySearchGenerator()
-        generator.set_context(Context(None, {'dataSourceId': 'c13cf8ae-a009-4ff8-b8f0-6db7eec96cf1'}, {}))
         generator.generate(consumer)
         assert consumer.count > 0
 
