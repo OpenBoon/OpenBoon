@@ -1,5 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import { CURRENT_POLICIES_DATE } from '../helpers'
+
 import Policies from '..'
 
 const noop = () => () => {}
@@ -45,12 +47,12 @@ describe('<Policies />', () => {
         'X-CSRFToken': 'CSRF_TOKEN',
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      body: '{"policiesDate":"20200414"}',
+      body: `{"policiesDate":"${CURRENT_POLICIES_DATE}"}`,
       method: 'POST',
     })
 
     expect(mockMutate).toHaveBeenCalledWith({
-      agreedToPoliciesDate: '20200414',
+      agreedToPoliciesDate: CURRENT_POLICIES_DATE,
     })
   })
 
