@@ -6,8 +6,6 @@ import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics
 import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
-import io.micrometer.stackdriver.StackdriverConfig
-import io.micrometer.stackdriver.StackdriverMeterRegistry
 import org.redisson.Redisson
 import org.redisson.api.RedissonClient
 import org.redisson.config.TransportMode
@@ -147,31 +145,15 @@ class RedisConfig {
     }
 
     object Metrics {
-
         val meters = getMeterRegistry()
-
         fun getMeterRegistry(): MeterRegistry {
-            val registry = if (System.getenv("project") != null) {
-                StackdriverMeterRegistry.builder(InteralStackDriverConfig()).build()
-            } else {
-                SimpleMeterRegistry()
-            }
+            val registry = SimpleMeterRegistry()
+
             registry.config().commonTags("application", "officer")
             JvmMemoryMetrics().bindTo(registry)
             JvmGcMetrics().bindTo(registry)
             ProcessorMetrics().bindTo(registry)
             return registry
-        }
-
-        class InteralStackDriverConfig : StackdriverConfig {
-
-            override fun projectId(): String {
-                return System.getenv("project") ?: "zorroa-deploy"
-            }
-
-            override fun get(p0: String): String? {
-                return null
-            }
         }
     }
 }
