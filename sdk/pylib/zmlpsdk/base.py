@@ -30,7 +30,7 @@ class FileTypes:
 
     images = frozenset(["bmp", "cin", "dpx", "gif", "jpg",
                         "jpeg", "exr", "png", "psd", "rla", "tif", "tiff",
-                        "dcm", "rla", "heic"])
+                        "dcm", "rla"])
     """A set of supported image file formats."""
 
     documents = frozenset(['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'vsd', 'vsdx'])

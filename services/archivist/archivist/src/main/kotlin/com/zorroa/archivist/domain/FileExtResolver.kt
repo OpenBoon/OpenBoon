@@ -72,8 +72,7 @@ object FileExtResolver {
         "tif",
         "tiff",
         "dcm",
-        "rla",
-        "heic"
+        "rla"
     )
 
     val video = setOf(
