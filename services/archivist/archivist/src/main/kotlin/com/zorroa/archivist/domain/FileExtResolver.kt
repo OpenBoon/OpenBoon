@@ -70,7 +70,10 @@ object FileExtResolver {
         "psd",
         "rla",
         "tif",
-        "tiff"
+        "tiff",
+        "dcm",
+        "rla",
+        "heic"
     )
 
     val video = setOf(
@@ -82,10 +85,7 @@ object FileExtResolver {
         "webm",
         "ogv",
         "mxf",
-        "avi",
-        "dcm",
-        "rla",
-        "heif"
+        "avi"
     )
 
     val doc = setOf(

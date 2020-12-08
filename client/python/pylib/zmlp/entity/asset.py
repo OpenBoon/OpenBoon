@@ -601,12 +601,12 @@ class FileTypes:
     A class for storing the supported file types.
     """
 
-    videos = frozenset(['mov', 'mp4', 'mpg', 'mpeg', 'm4v', 'webm', 'ogv', 'ogg', 'mxf', 'avi',
-                        'dcm', 'rla', 'heif'])
+    videos = frozenset(['mov', 'mp4', 'mpg', 'mpeg', 'm4v', 'webm', 'ogv', 'ogg', 'mxf', 'avi'])
     """A set of supported video file formats."""
 
     images = frozenset(["bmp", "cin", "dpx", "gif", "jpg",
-                        "jpeg", "exr", "png", "psd", "rla", "tif", "tiff"])
+                        "jpeg", "exr", "png", "psd", "rla", "tif", "tiff",
+                        "dcm", "rla", "heic"])
     """A set of supported image file formats."""
 
     documents = frozenset(['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'vsd', 'vsdx'])
