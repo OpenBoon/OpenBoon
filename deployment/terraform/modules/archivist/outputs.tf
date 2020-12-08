@@ -5,3 +5,8 @@ output "ip-address" {
 output "monitor-password" {
   value = random_string.monitor-password.result
 }
+
+output "data-bucket-name" {
+  value = google_storage_bucket.data.name
+}
+

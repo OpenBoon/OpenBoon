@@ -1,6 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import model from '../__mocks__/model'
+import labels from '../../ModelLabels/__mocks__/modelLabels'
 
 import ModelDetails from '../Details'
 
@@ -160,6 +161,10 @@ describe('<ModelDetails />', () => {
   })
 
   it('should render Labeled Assets properly', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]/assets',
       query: { projectId: PROJECT_ID, modelId: MODEL_ID },
@@ -168,6 +173,7 @@ describe('<ModelDetails />', () => {
     require('swr').__setMockUseSWRResponse({
       data: {
         ...model,
+        ...labels,
         runningJobId: '',
         modelTypeRestrictions: {
           requiredLabels: 2,
@@ -181,6 +187,40 @@ describe('<ModelDetails />', () => {
     const component = TestRenderer.create(<ModelDetails />)
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    // Select Scope
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Scope' })
+        .props.onChange({ target: { value: 'TEST' } })
+    })
+
+    // Select Label
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Label' })
+        .props.onChange({ target: { value: 'Test Label' } })
+    })
+
+    const scopeQuery = btoa(
+      JSON.stringify({
+        scope: 'TEST',
+      }),
+    )
+
+    const labelQuery = btoa(
+      JSON.stringify({
+        label: 'Test Label',
+      }),
+    )
+
+    expect(mockRouterPush.mock.calls[0][1]).toBe(
+      `/${PROJECT_ID}/models/${MODEL_ID}/assets?query=${scopeQuery}`,
+    )
+
+    expect(mockRouterPush.mock.calls[1][1]).toBe(
+      `/${PROJECT_ID}/models/${MODEL_ID}/assets?query=${labelQuery}`,
+    )
   })
 
   it('should handle filter properly', async () => {

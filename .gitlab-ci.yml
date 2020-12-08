@@ -651,12 +651,10 @@ zmlp-services-unit-tests:
     ZMLP_STORAGE_PROJECT_ACCESSKEY: "qwerty123"
     ZMLP_STORAGE_PROJECT_SECRETKEY: "123qwerty"
     ZMLP_STORAGE_PROJECT_URL: "http://localhost:9000"
-    ZMLP_STORAGE_PIPELINE_ACCESSKEY: "qwerty123"
-    ZMLP_STORAGE_PIPELINE_SECRETKEY: "123qwerty"
-    ZMLP_STORAGE_PIPELINE_URL: "http://localhost:9000"
     ZMLP_STORAGE_SYSTEM_ACCESSKEY: "qwerty123"
     ZMLP_STORAGE_SYSTEM_SECRETKEY: "123qwerty"
     ZMLP_STORAGE_SYSTEM_URL: "http://localhost:9000"
+    ZMLP_STORAGE_CLIENT: "minio"
     MINIO_ACCESS_KEY: "qwerty123"
     MINIO_SECRET_KEY: "123qwerty"
     MXNET_OS: "linux"
@@ -668,7 +666,6 @@ zmlp-services-unit-tests:
     - export
     - IP="$(cat /etc/hosts |grep $HOSTNAME|cut -d$'\t' -f1)"
     - ARCHIVIST_ES_URL="http://${IP}:9200"
-    - ZMLP_STORAGE_PIPELINE_URL="http://${IP}:9000"
     - ZMLP_STORAGE_PROJECT_URL="http://${IP}:9000"
     - ZMLP_STORAGE_SYSTEM_URL="http://${IP}:9000"
     - mvn clean install -f lib/jvm-common -q -Dmaven.test.skip=true
