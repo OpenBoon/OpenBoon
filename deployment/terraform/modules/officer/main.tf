@@ -83,16 +83,12 @@ resource "kubernetes_deployment" "officer" {
           image             = "zmlp/officer:${var.container-tag}"
           image_pull_policy = "Always"
           env {
-            name  = "ZMLP_STORAGE_PIPELINE_URL"
-            value = var.minio-url
+            name  = "ZMLP_STORAGE_PROJECT_BUCKET"
+            value = var.data-bucket-name
           }
           env {
-            name  = "ZMLP_STORAGE_PIPELINE_ACCESSKEY"
-            value = var.minio-access-key
-          }
-          env {
-            name  = "ZMLP_STORAGE_PIPELINE_SECRETKEY"
-            value = var.minio-secret-key
+            name  = "REDIS_HOST"
+            value = var.redis-host
           }
           liveness_probe {
             initial_delay_seconds = 120

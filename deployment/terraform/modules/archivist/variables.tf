@@ -19,12 +19,6 @@ variable "sql-service-account-key" {
 variable "inception-key-b64" {
 }
 
-variable "minio-access-key" {
-}
-
-variable "minio-secret-key" {
-}
-
 variable "system-bucket" {
 }
 
@@ -65,10 +59,6 @@ variable "database-user" {
 
 variable "namespace" {
   default = "default"
-}
-
-variable "minio-url" {
-  default = "http://10.3.240.102:9000"
 }
 
 variable "auth-server-url" {

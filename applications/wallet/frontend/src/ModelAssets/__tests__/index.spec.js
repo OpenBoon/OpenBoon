@@ -1,10 +1,7 @@
 import TestRenderer from 'react-test-renderer'
 
 import model from '../../Model/__mocks__/model'
-import mockUser from '../../User/__mocks__/user'
 import labels from '../../ModelLabels/__mocks__/modelLabels'
-
-import User from '../../User'
 
 import ModelAssets from '..'
 
@@ -26,15 +23,7 @@ describe('<ModelAssets />', () => {
 
     require('swr').__setMockUseSWRResponse({ data: { ...model, ...labels } })
 
-    const component = TestRenderer.create(
-      <User initialUser={mockUser}>
-        <ModelAssets
-          projectId={PROJECT_ID}
-          modelId={MODEL_ID}
-          moduleName="Module"
-        />
-      </User>,
-    )
+    const component = TestRenderer.create(<ModelAssets moduleName="Module" />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })

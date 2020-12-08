@@ -138,7 +138,6 @@ fun runServer(port: Int) {
     }
 
     get("/monitor/health") {
-        logger.info("Storage Client: ${Config.storageClient}")
         response.type("application/json")
         if (StorageManager.storageClient().bucketExists(Config.bucket.name)) {
             """{"status": "UP"}"""
