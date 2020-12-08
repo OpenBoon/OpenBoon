@@ -1,6 +1,5 @@
 package com.zorroa
 
-import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.Storage
@@ -11,7 +10,6 @@ import io.minio.errors.ErrorResponseException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.InputStream
-
 
 object StorageManager {
 
@@ -109,7 +107,7 @@ open class MinioStorageClient : StorageClient {
     }
 }
 
-open class GcsStorageClient(bucketName: String?=null) : StorageClient {
+open class GcsStorageClient(bucketName: String? = null) : StorageClient {
 
     val gcs: Storage = StorageOptions.getDefaultInstance().service
     private val bucket = bucketName ?: Config.bucket.name
