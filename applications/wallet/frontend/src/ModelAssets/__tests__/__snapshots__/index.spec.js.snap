@@ -3,6 +3,6 @@
 exports[`<ModelAssets /> should render properly 1`] = `
 <ModelAssetsContent
   projectId="76917058-b147-4556-987a-0a0f11e46d9b"
-  query="W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLk1vZHVsZSIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnsic2NvcGUiOiJhbGwiLCJsYWJlbHMiOlsiY2F0IiwiZG9nIl19fV0="
+  query="W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLk1vZHVsZSIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnsic2NvcGUiOiJUcmFpbiIsImxhYmVscyI6WyJjYXQiXX19XQ=="
 />
 `;
