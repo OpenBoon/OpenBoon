@@ -1,7 +1,5 @@
 package com.zorroa
 
-import com.google.auth.oauth2.ComputeEngineCredentials
-import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.Storage
@@ -12,7 +10,6 @@ import io.minio.errors.ErrorResponseException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.InputStream
-import javax.annotation.PostConstruct
 
 object StorageManager {
 
@@ -110,20 +107,10 @@ open class MinioStorageClient : StorageClient {
     }
 }
 
-open class GcsStorageClient : StorageClient {
+open class GcsStorageClient(bucketName: String? = null) : StorageClient {
 
-    val options: StorageOptions = StorageOptions.newBuilder()
-        .setCredentials(loadCredentials()).build()
-
-    val gcs: Storage = options.service
-    private val bucket = Config.bucket.name
-
-    @PostConstruct
-    fun initialize() {
-        logger.info(
-            "Initializing GCS Storage Backend (bucket='$bucket')"
-        )
-    }
+    val gcs: Storage = StorageOptions.getDefaultInstance().service
+    private val bucket = bucketName ?: Config.bucket.name
 
     override fun store(path: String, inputStream: InputStream, size: Long, fileType: String) {
         val blobId = getBlobId(path.removePrefix("/"))
@@ -148,7 +135,13 @@ open class GcsStorageClient : StorageClient {
     }
 
     override fun exists(path: String): Boolean {
-        return gcs.get(getBlobId(path)).exists()
+        return try {
+            val blob = gcs.get(getBlobId(path))
+            blob?.exists() ?: false
+        } catch (e: StorageException) {
+            logger.warn("Failed to access $path to check exists", e)
+            false
+        }
     }
 
     override fun delete(path: String) {
@@ -160,12 +153,7 @@ open class GcsStorageClient : StorageClient {
     }
 
     fun getBlobId(path: String): BlobId {
-        return BlobId.of(Config.bucket.name, path.removePrefix("/"))
-    }
-
-    private fun loadCredentials(): GoogleCredentials {
-        // Use GOOGLE_APPLICATION_CREDENTIALS env var to set a credentials path.
-        return ComputeEngineCredentials.create()
+        return BlobId.of(bucket, path.removePrefix("/"))
     }
 
     companion object {
