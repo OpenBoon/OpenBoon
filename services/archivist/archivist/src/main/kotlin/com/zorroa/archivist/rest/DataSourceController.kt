@@ -57,7 +57,7 @@ class DataSourceController(
     ): Any {
         dataSourceService.delete(
             id,
-            dataSourceDelete
+            dataSourceDelete ?: DataSourceDelete()
         )
         return HttpUtils.deleted("DataSource", id, true)
     }

@@ -40,7 +40,7 @@ interface DataSourceService {
     /**
      * Delete an existing [DataSource]
      */
-    fun delete(id: UUID, dataSourceDelete: DataSourceDelete?)
+    fun delete(id: UUID, dataSourceDelete: DataSourceDelete)
 
     /**
      * Get a [DataSource] by its unique ID.
@@ -144,7 +144,7 @@ class DataSourceServiceImpl(
         return get(id)
     }
 
-    override fun delete(id: UUID, dataSourceDelete: DataSourceDelete?) {
+    override fun delete(id: UUID, dataSourceDelete: DataSourceDelete) {
         logger.event(LogObject.DATASOURCE, LogAction.DELETE, mapOf("dataSourceId" to id))
         val ds = get(id)
 
@@ -157,11 +157,6 @@ class DataSourceServiceImpl(
         )
 
         logger.info("Canceling ${jobs.size()} DataSource ${ds.id} jobs")
-
-        dataSourceDelete?.let {
-            if (it.deleteAssets && it.credentials == null)
-                it.credentials = ds.credentials.map { cred -> cred.toString() }.toSet()
-        }
 
         // If this thing commits we async cancel all the jobs for the
         // DS which involves killing all the running tasks.

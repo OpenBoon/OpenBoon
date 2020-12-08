@@ -87,23 +87,22 @@ class JobLaunchServiceImpl(
 
         val script = ZpsScript(
             name = name,
-            generate = listOf(
+            generate = null,
+            execute = listOf(
                 ProcessorRef(
-                    className = "zmlp_core.core.generators.DeleteBySearchGenerator",
+                    className = "zmlp_core.core.processors.DeleteBySearchProcessor",
                     image = StandardContainers.CORE,
                     args = mapOf("dataSourceId" to dataSource.id)
                 )
             ),
-            assets = null,
-            execute = null
+            assets = listOf(Asset())
         )
-        script.setSettting("fileTypes", FileExtResolver.resolve(dataSource.fileTypes))
-        script.setSettting("batchSize", clampBatchSize(options.batchSize))
 
+        // Disable indexing result
+        script.setSettting("index", false)
         val spec = JobSpec(
             name,
-            listOf(script),
-            credentials = options.credentials
+            listOf(script)
         )
         return launchJob(spec)
     }
