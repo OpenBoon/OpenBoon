@@ -245,9 +245,6 @@ constructor(
 ) : IndexRoutingService {
 
     @Autowired
-    lateinit var jobService: JobService
-
-    @Autowired
     lateinit var esClientCache: EsClientCache
 
     @Autowired

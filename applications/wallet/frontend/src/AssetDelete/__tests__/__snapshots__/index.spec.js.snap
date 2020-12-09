@@ -102,7 +102,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
   color: #ffffff;
   background-color: transparent;
   width: -webkit-fit-content;
-  width: -moz-content;
+  width: -moz-fit-content;
   width: fit-content;
 }
 
