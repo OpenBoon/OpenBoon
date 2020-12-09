@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
-class PipelineModAppTests(unittest.TestCase):
+class AnalysisModuleAppTests(unittest.TestCase):
 
     def setUp(self):
         # This is not a valid key
@@ -25,21 +25,21 @@ class PipelineModAppTests(unittest.TestCase):
         }
 
     @patch.object(ZmlpClient, 'get')
-    def test_get_pipeline_mod(self, get_patch):
+    def test_get_analyis_module(self, get_patch):
         get_patch.return_value = self.obj_data
-        plmod = self.app.pmods.get_pipeline_mod('12345')
+        plmod = self.app.analysis.get_analysis_module('12345')
         self.assert_pipeline_mod(plmod)
 
     @patch.object(ZmlpClient, 'post')
-    def test_find_one_pipeline_mod(self, post_patch):
+    def test_find_one_analysis_module(self, post_patch):
         post_patch.return_value = self.obj_data
-        plmod = self.app.pmods.find_one_pipeline_mod(id="12345")
+        plmod = self.app.analysis.find_one_analysis_module(id="12345")
         self.assert_pipeline_mod(plmod)
 
     @patch.object(ZmlpClient, 'post')
     def test_find_pipeline_mods(self, post_patch):
         post_patch.return_value = {"list": [self.obj_data]}
-        plmod = list(self.app.pmods.find_pipeline_mods(id="12345", limit=1))
+        plmod = list(self.app.analysis.find_analysis_modules(id="12345", limit=1))
         self.assert_pipeline_mod(plmod[0])
 
     def assert_pipeline_mod(self, mod):
