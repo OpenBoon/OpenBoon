@@ -12,11 +12,16 @@ logger = logging.getLogger(__name__)
 def upgrade_subscription(apps, schema_editor):
     # Create a default Premier Subscription for Project Zero
     project_zero = Project.objects.get(id='00000000-0000-0000-0000-000000000000')
-    subscription = Subscription(project=project_zero,
-                                tier=Tier.PREMIER)
-    subscription.save()
-    project_zero.sync_with_zmlp()
-    logger.debug('Created Project Zero Premier Subscripton.')
+    try:
+        project_zero.subscription
+    except Project.subscription.RelatedObjectDoesNotExist:
+        subscription = Subscription(project=project_zero,
+                                    tier=Tier.PREMIER)
+        subscription.save()
+        project_zero.sync_with_zmlp()
+        logger.debug('Created Project Zero Premier Subscripton.')
+    else:
+        logger.debug('Project Zero already has a subscription. No action taken.')
 
 
 class Migration(migrations.Migration):
