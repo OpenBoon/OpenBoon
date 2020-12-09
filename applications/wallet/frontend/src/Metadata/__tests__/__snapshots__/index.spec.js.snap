@@ -33,7 +33,7 @@ Array [
   display: -ms-flexbox;
   display: flex;
   min-height: -webkit-fit-content;
-  min-height: -moz-content;
+  min-height: -moz-fit-content;
   min-height: fit-content;
   border-bottom: 1px solid #3b3b3b;
 }
@@ -172,7 +172,7 @@ Array [
   display: -ms-flexbox;
   display: flex;
   width: -webkit-fit-content;
-  width: -moz-content;
+  width: -moz-fit-content;
   width: fit-content;
   border: 1px solid #808080;
   border-radius: 2px;
@@ -1783,7 +1783,7 @@ Array [
   display: -ms-flexbox;
   display: flex;
   min-height: -webkit-fit-content;
-  min-height: -moz-content;
+  min-height: -moz-fit-content;
   min-height: fit-content;
   border-bottom: 1px solid #3b3b3b;
 }
@@ -1922,7 +1922,7 @@ Array [
   display: -ms-flexbox;
   display: flex;
   width: -webkit-fit-content;
-  width: -moz-content;
+  width: -moz-fit-content;
   width: fit-content;
   border: 1px solid #808080;
   border-radius: 2px;
