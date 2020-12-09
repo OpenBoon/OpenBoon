@@ -50,7 +50,7 @@ resource "aws_sqs_queue_policy" "ml-user" {
     {
       "Sid":"AmazonRekognitionQueue",
       "Effect":"Allow",
-      "Principal" : {{"AWS" : "*"}},
+      "Principal" : {"AWS" : "*"},
       "Action":"SQS:SendMessage",
       "Resource": "${aws_sqs_queue.ml-user.arn}",
       "Condition":{
