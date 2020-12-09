@@ -160,6 +160,9 @@ resource "google_storage_bucket_object" "task_env" {
   "ZORROA_AWS_REGION": "${var.aws-region}",
   "ZORROA_AWS_BUCKET": "${module.aws-ml.bucket}",
   "ZORROA_AWS_ML_USER_ROLE_ARN": "${module.aws-ml.ml-user-role-arn}",
+  "ZORROA_AWS_ML_USER_SQS_URL": "${module.aws-ml.ml-user-sqs-url}",
+  "ZORROA_AWS_ML_USER_SQS_ARN": "${module.aws-ml.ml-user-sqs-arn}",
+  "ZORROA_AWS_ML_USER_SNS_TOPIC_ARN": "${module.aws-ml.ml-user-sns-topic-arn}",
   "ZORROA_AZURE_VISION_REGION": "${module.azure-ml.vision-region}",
   "ZORROA_AZURE_VISION_ENDPOINT": "${module.azure-ml.vision-endpoint}",
   "ZORROA_AZURE_VISION_KEY": "${module.azure-ml.vision-key}"
