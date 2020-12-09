@@ -15,9 +15,8 @@ def upgrade_subscription(apps, schema_editor):
     try:
         project_zero.subscription
     except Project.subscription.RelatedObjectDoesNotExist:
-        subscription = Subscription(project=project_zero,
-                                    tier=Tier.PREMIER)
-        subscription.save()
+        Subscription.object.create(project=project_zero,
+                                   tier=Tier.PREMIER)
         project_zero.sync_with_zmlp()
         logger.debug('Created Project Zero Premier Subscripton.')
     else:
