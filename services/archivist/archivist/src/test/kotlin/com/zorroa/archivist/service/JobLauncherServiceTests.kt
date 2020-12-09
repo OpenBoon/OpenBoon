@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
+import com.zorroa.archivist.domain.DataSourceDelete
 import com.zorroa.archivist.domain.DataSourceImportOptions
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.FileType
@@ -190,5 +191,30 @@ class JobLauncherServiceTests : AbstractTest() {
         val tasks = jobService.getTasks(job.id)
         val script = jobService.getZpsScript(tasks.first().id)
         assertEquals(2, script.assetIds?.size)
+    }
+
+    @Test
+    fun testLaunchDeleteDataSourceJob() {
+
+        credentialsService.create(
+            CredentialsSpec(
+                "test",
+                CredentialsType.AWS, TEST_AWS_CREDS
+            )
+        )
+        val spec = DataSourceSpec(
+            "dev-data",
+            "gs://zorroa-dev-data",
+            fileTypes = FileType.allTypes(),
+            credentials = setOf("test")
+        )
+        val ds = dataSourceService.create(spec)
+
+        val launchJob = jobLaunchService.launchJob(ds, DataSourceDelete(deleteAssets = true))
+        val tasks = jobService.getTasks(launchJob.id)
+        val script = jobService.getZpsScript(tasks.first().id)
+
+        assertEquals("zmlp_core.core.processors.DeleteBySearchProcessor", script.execute!![0]!!.className)
+        assertEquals(ds.id.toString(), script.execute?.get(0)?.args?.get("dataSourceId"))
     }
 }
