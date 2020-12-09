@@ -215,6 +215,6 @@ class JobLauncherServiceTests : AbstractTest() {
         val script = jobService.getZpsScript(tasks.first().id)
 
         assertEquals("zmlp_core.core.generators.DeleteBySearchGenerator", script.generate!![0]!!.className)
-        assertEquals(ds.id.toString(), script.generate?.get(0)?.args?.get("dataSourceId"))
+        assertEquals(ds.id.toString(), script.execute?.get(0)?.args?.get("dataSourceId"))
     }
 }
