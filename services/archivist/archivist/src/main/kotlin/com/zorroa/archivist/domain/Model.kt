@@ -22,6 +22,7 @@ import javax.persistence.Table
  * Type of models that can be trained.
  */
 enum class ModelType(
+    val label: String,
     val trainProcessor: String,
     val trainArgs: Map<String, Any>,
     val classifyProcessor: String,
@@ -36,6 +37,7 @@ enum class ModelType(
     val dependencies: List<String>
 ) {
     ZVI_KNN_CLASSIFIER(
+        "Sci-kit Learn KNN Classifier",
         "zmlp_train.knn.KnnLabelDetectionTrainer",
         mapOf(),
         "zmlp_analysis.custom.KnnLabelDetectionClassifier",
@@ -52,6 +54,7 @@ enum class ModelType(
         listOf()
     ),
     ZVI_LABEL_DETECTION(
+        "Tensorflow CNN Classifier",
         "zmlp_train.tf2.TensorflowTransferLearningTrainer",
         mapOf(
             "train-test-ratio" to 4
@@ -70,6 +73,7 @@ enum class ModelType(
         listOf()
     ),
     ZVI_FACE_RECOGNITION(
+        "Face Recognition Classsifier"
         "zmlp_train.face_rec.KnnFaceRecognitionTrainer",
         mapOf(),
         "zmlp_analysis.custom.KnnFaceRecognitionClassifier",
@@ -84,6 +88,7 @@ enum class ModelType(
         listOf("zvi-face-detection")
     ),
     GCP_LABEL_DETECTION(
+        "Google AutoML Classifier"
         "zmlp_train.automl.AutoMLModelTrainer",
         mapOf(),
         "zmlp_analysis.automl.AutoMLVisionClassifier",
