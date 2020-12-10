@@ -32,16 +32,16 @@ class AnalysisModuleApp:
 
     def find_one_analysis_module(self, id=None, name=None, type=None, category=None, provider=None):
         """
-        Find a single PipelineMod based on various properties.
+        Find a single AnalysisModule based on various properties.
 
         Args:
             id (str): The ID or list of Ids.
             name (str): The model name or list of names.
-            type: (str): A PipelineMod typ type or collection of types to filter on.
-            category (str): The category of PipelineModule
-            provider (str): The provider of the PipelineModule
+            type: (str): A AnalysisModule typ type or collection of types to filter on.
+            category (str): The category of AnalysisModuleule
+            provider (str): The provider of the AnalysisModuleule
         Returns:
-            PipelineMod: The matching PipelineMod.
+            AnalysisModule: The matching AnalysisModule.
         """
         body = {
             'names': as_collection(name),
@@ -61,7 +61,7 @@ class AnalysisModuleApp:
             keywords(str): Keywords that match various fields on a AnalysisModule
             id (str): An ID or collection of IDs to filter on.
             name (str): A name or collection of names to filter on.
-            type: (str): A PipelineMod type type or collection of types to filter on.
+            type: (str): A AnalysisModule type type or collection of types to filter on.
             category (str): The category or collection of category names.
             provider (str): The provider or collection provider names.
             limit: (int) Limit the number of results.
