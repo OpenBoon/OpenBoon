@@ -1,8 +1,10 @@
 {
-  "includePaths": [
-    "applications/wallet/frontend/*",
-    "applications/wallet/cypress/*"
-  ],
   "extends": ["config:base"],
-  "unpublishSafe": true
+  "unpublishSafe": true,
+  "pipenv": {
+    "enabled": true
+  },
+  "maven": {
+    "enabled": true
+  }
 }

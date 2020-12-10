@@ -5,11 +5,11 @@ from unittest.mock import patch
 
 from dateutil.tz import tzutc
 
-from zmlp import ZmlpClient
+from zmlp import ZmlpClient, Asset
 from zmlp_core.core.generators import GcsBucketGenerator, AssetSearchGenerator, \
     S3BucketGenerator, AzureBucketGenerator
 from zmlpsdk import Context
-
+from zmlp.app import AssetApp
 
 class TestConsumer:
     def __init__(self):
@@ -170,3 +170,7 @@ mock_azure_result = [
      'creation_time': datetime.datetime(2020, 3, 22, 21, 2, 46, tzinfo=datetime.timezone.utc), 'archive_status': None,
      'encryption_key_sha256': None, 'encryption_scope': None, 'request_server_encrypted': None}
 ]
+
+mock_delete_asset = [Asset({'id': "123Id",
+                            'document': {"doc":{}},
+                            'score': 0.999})]

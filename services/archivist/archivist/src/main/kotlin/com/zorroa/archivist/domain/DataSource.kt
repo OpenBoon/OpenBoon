@@ -195,5 +195,12 @@ class DataSourceFilter(
 class DataSourceImportOptions(
 
     @ApiModelProperty("The number of Assets to include in a Task.")
-    val batchSize: Int = 20
+    val batchSize: Int = 40
+)
+
+@ApiModel("DataSource Delete Options", description = "The options for Deleting a DataSource and its assets")
+class DataSourceDelete(
+
+    @ApiModelProperty("Should Delete Assets from Storage")
+    val deleteAssets: Boolean = false
 )
