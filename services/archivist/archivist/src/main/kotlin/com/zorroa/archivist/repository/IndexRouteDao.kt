@@ -141,7 +141,7 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
     }
 
     override fun getOpen(cluster: IndexCluster): List<IndexRoute> {
-        return jdbc.query("$GET_OPEN AND index_cluster.pk_index_cluster=?",  MAPPER, cluster.id)
+        return jdbc.query("$GET_OPEN AND index_cluster.pk_index_cluster=?", MAPPER, cluster.id)
     }
 
     override fun getAll(cluster: IndexCluster): List<IndexRoute> {
