@@ -25,17 +25,19 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     def setUp(self, s3_patch):
         os.environ['ZMLP_PROJECT_ID'] = '00000000-0000-0000-0000-000000000001'
         os.environ['ZORROA_AWS_BUCKET'] = 'zorroa-unit-tests'
+        os.environ['PATH'] += ':usr/local/bin'
 
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)
     @patch(rek_patch_path, side_effect=MockRekClient)
     @patch("zmlp_analysis.aws.videos.video.save_timeline", return_value={})
+    @patch("zmlp_analysis.aws.videos.video.extract_thumbnail_from_video", return_value=None)
     @patch('zmlp_analysis.aws.videos.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.aws.videos.proxy.get_video_proxy')
     def test_process_label_detection(self, get_prx_patch, store_patch, store_blob_patch,
-                                     _, __, ___, ____, _____):
+                                     _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
         get_prx_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
@@ -51,12 +53,13 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch(s3_patch_path, side_effect=MockS3Client)
     @patch(rek_patch_path, side_effect=MockRekClient)
     @patch("zmlp_analysis.aws.videos.video.save_timeline", return_value={})
+    @patch("zmlp_analysis.aws.videos.video.extract_thumbnail_from_video", return_value=None)
     @patch('zmlp_analysis.aws.videos.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.aws.videos.proxy.get_video_proxy')
     def test_process_text_detection(self, get_prx_patch, store_patch, store_blob_patch,
-                                    _, __, ___, ____, _____):
+                                    _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
         get_prx_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
@@ -72,12 +75,13 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch(s3_patch_path, side_effect=MockS3Client)
     @patch(rek_patch_path, side_effect=MockRekClient)
     @patch("zmlp_analysis.aws.videos.video.save_timeline", return_value={})
+    @patch("zmlp_analysis.aws.videos.video.extract_thumbnail_from_video", return_value=None)
     @patch('zmlp_analysis.aws.videos.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.aws.videos.proxy.get_video_proxy')
     def test_process_face_detection(self, get_prx_patch, store_patch, store_blob_patch,
-                                    _, __, ___, ____, _____):
+                                    _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
         get_prx_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
@@ -93,12 +97,13 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch(s3_patch_path, side_effect=MockS3Client)
     @patch(rek_patch_path, side_effect=MockRekClient)
     @patch("zmlp_analysis.aws.videos.video.save_timeline", return_value={})
+    @patch("zmlp_analysis.aws.videos.video.extract_thumbnail_from_video", return_value=None)
     @patch('zmlp_analysis.aws.videos.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.aws.videos.proxy.get_video_proxy')
     def test_process_unsafe_detection(self, get_prx_patch, store_patch, store_blob_patch,
-                                      _, __, ___, ____, _____):
+                                      _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
         get_prx_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
@@ -114,12 +119,13 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch(s3_patch_path, side_effect=MockS3Client)
     @patch(rek_patch_path, side_effect=MockRekClient)
     @patch("zmlp_analysis.aws.videos.video.save_timeline", return_value={})
+    @patch("zmlp_analysis.aws.videos.video.extract_thumbnail_from_video", return_value=None)
     @patch('zmlp_analysis.aws.videos.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.aws.videos.proxy.get_video_proxy')
     def test_process_celebrity_detection(self, get_prx_patch, store_patch, store_blob_patch,
-                                         _, __, ___, ____, _____):
+                                         _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
         get_prx_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
@@ -135,12 +141,13 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch(s3_patch_path, side_effect=MockS3Client)
     @patch(rek_patch_path, side_effect=MockRekClient)
     @patch("zmlp_analysis.aws.videos.video.save_timeline", return_value={})
+    @patch("zmlp_analysis.aws.videos.video.extract_thumbnail_from_video", return_value=None)
     @patch('zmlp_analysis.aws.videos.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.aws.videos.proxy.get_video_proxy')
     def test_process_person_tracking(self, get_prx_patch, store_patch, store_blob_patch,
-                                     _, __, ___, ____, _____):
+                                     _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
         get_prx_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
@@ -156,12 +163,13 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch(s3_patch_path, side_effect=MockS3Client)
     @patch(rek_patch_path, side_effect=MockRekClient)
     @patch("zmlp_analysis.aws.videos.video.save_timeline", return_value={})
+    @patch("zmlp_analysis.aws.videos.video.extract_thumbnail_from_video", return_value=None)
     @patch('zmlp_analysis.aws.videos.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.aws.videos.proxy.get_video_proxy')
     def test_process_black_frame_detection(self, get_prx_patch, store_patch, store_blob_patch,
-                                           _, __, ___, ____, _____):
+                                           _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
         get_prx_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
@@ -177,12 +185,13 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch(s3_patch_path, side_effect=MockS3Client)
     @patch(rek_patch_path, side_effect=MockRekClient)
     @patch("zmlp_analysis.aws.videos.video.save_timeline", return_value={})
+    @patch("zmlp_analysis.aws.videos.video.extract_thumbnail_from_video", return_value=None)
     @patch('zmlp_analysis.aws.videos.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.aws.videos.proxy.get_video_proxy')
     def test_process_end_credits_detection(self, get_prx_patch, store_patch, store_blob_patch,
-                                           _, __, ___, ____, _____):
+                                           _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
         get_prx_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()

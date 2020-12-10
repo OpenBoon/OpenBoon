@@ -23,6 +23,36 @@ class AwsEnv:
         return os.environ.get('ZORROA_AWS_ML_USER_ROLE_ARN')
 
     @staticmethod
+    def get_sns_topic_arn():
+        """
+        Get SNS Topic ARN for ML User
+
+        Returns:
+            (str): SNS Topic ARN
+        """
+        return os.environ.get('ZORROA_AWS_ML_USER_SNS_TOPIC_ARN')
+
+    @staticmethod
+    def get_sqs_queue_arn():
+        """
+        Get SQS Queue ARN for ML User
+
+        Returns:
+            (str): SQS Queue ARN
+        """
+        return os.environ.get('ZORROA_AWS_ML_USER_SQS_ARN')
+
+    @staticmethod
+    def get_sqs_queue_url():
+        """
+        Get SQS Queue URL for ML User
+
+        Returns:
+            (str): SQS Queue URL
+        """
+        return os.environ.get('ZORROA_AWS_ML_USER_SQS_URL')
+
+    @staticmethod
     def general_aws_client(service):
         """
         Return an AWS client configured for service specified with ZVI credentials.

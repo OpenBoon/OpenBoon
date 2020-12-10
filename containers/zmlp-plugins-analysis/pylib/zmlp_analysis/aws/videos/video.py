@@ -30,31 +30,27 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         self.sqs_client = None
         self.sns_client = None
 
-        self.jobId = None
         self.roleArn = None
+        self.sns_topic_arn = None
+        self.sqs_queue_url = None
+
+        self.jobId = None
         self.bucket = None
         self.video = None
-        self.startJobId = None
-
-        self.sqsQueueUrl = None
-        self.snsTopicArn = None
-        self.processType = None
 
     def init(self):
         self.rek_client = AwsEnv.rekognition()
         self.s3_client = AwsEnv.s3()
         self.sqs_client = AwsEnv.general_aws_client(service='sqs')
         self.sns_client = AwsEnv.general_aws_client(service='sns')
+
         self.roleArn = AwsEnv.get_rekognition_role_arn()
+        self.sns_topic_arn = AwsEnv.get_sns_topic_arn()
+        self.sqs_queue_url = AwsEnv.get_sqs_queue_url()
 
         self.jobId = ''
         self.bucket = ''
         self.video = ''
-        self.startJobId = ''
-
-        self.sqsQueueUrl = ''
-        self.snsTopicArn = ''
-        self.processType = ''
 
     def process(self, frame):
         asset = frame.asset
@@ -80,17 +76,16 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         # upload to s3
         self.s3_client.upload_file(local_path, bucket_name, bucket_file)
 
-        sns_topic_arn, sqs_queue_url = self.create_topic_queue(asset_id)
         try:
             start_job_id = self.start_detection_analysis(
                 role_arn=self.roleArn,
                 bucket=bucket_name,
                 video=bucket_file,
-                sns_topic_arn=sns_topic_arn,
-                sqs_queue_url=sqs_queue_url,
+                sns_topic_arn=self.sns_topic_arn,
+                sqs_queue_url=self.sqs_queue_url,
                 func=self.detector_func
             )
-            if util.get_sqs_message_success(self.sqs_client, sqs_queue_url, start_job_id):
+            if util.get_sqs_message_success(self.sqs_client, self.sqs_queue_url, start_job_id):
                 clip_tracker = self.get_detection_results(
                     clip_tracker=clip_tracker,
                     rek_client=self.rek_client,
@@ -98,8 +93,8 @@ class AbstractVideoDetectProcessor(AssetProcessor):
                     local_video_path=local_path,
                 )
         finally:
-            self.sqs_client.delete_queue(QueueUrl=sqs_queue_url)
-            self.sns_client.delete_topic(TopicArn=sns_topic_arn)
+            self.sqs_client.delete_queue(QueueUrl=self.sqs_queue_url)
+            self.sns_client.delete_topic(TopicArn=self.sns_topic_arn)
 
         timeline = clip_tracker.build_timeline(final_time)
         video.save_timeline(timeline)
