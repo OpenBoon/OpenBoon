@@ -161,3 +161,17 @@ export const gotoNextHit = ({ videoRef, timelines, settings }) => () => {
   // eslint-disable-next-line no-param-reassign
   videoRef.current.currentTime = nextHit || duration
 }
+
+export const getNextScrollLeft = ({ videoRef, rulerRef, zoom, nextZoom }) => {
+  const { currentTime = 0, duration = 0 } = videoRef.current || {}
+  const { scrollWidth = 0, scrollLeft = 0 } = rulerRef.current || {}
+
+  const playheadLeftOffset = (currentTime / duration) * scrollWidth - scrollLeft
+
+  const nextScrollWidth = (scrollWidth / zoom) * nextZoom + GUIDE_WIDTH / 2
+
+  const nextScrollLeft =
+    (currentTime / duration) * nextScrollWidth - playheadLeftOffset
+
+  return nextScrollLeft
+}

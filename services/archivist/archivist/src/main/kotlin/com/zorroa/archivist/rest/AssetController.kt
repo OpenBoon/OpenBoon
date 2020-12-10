@@ -96,18 +96,20 @@ class AssetController @Autowired constructor(
 
     @PreAuthorize("hasAuthority('AssetsRead')")
     @DeleteMapping("/api/v3/assets/_search/scroll")
-    fun clearScroll(@RequestBody(required = false) scroll: Map<String, String>, output: ServletOutputStream):
-        ResponseEntity<Resource> {
+    fun clearScroll(@RequestBody(required = false) scroll: Map<String, String>): Any {
+        return try {
             val rsp = assetSearchService.clearScroll(scroll)
-            val output = RawByteArrayOutputStream(1024 * 1)
-            XContentFactory.jsonBuilder(output).use {
-                rsp.toXContent(it, ToXContent.EMPTY_PARAMS)
-            }
-
-            return ResponseEntity.ok()
-                .contentLength(output.size().toLong())
-                .body(InputStreamResource(output.toInputStream()))
+            mapOf(
+                "succeeded" to rsp.isSucceeded,
+                "num_freed" to rsp.numFreed
+            )
+        } catch (e: Exception) {
+            mapOf(
+                "succeeded" to false,
+                "num_freed" to 0
+            )
         }
+    }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
     @PostMapping("/api/v3/assets/_search/reprocess")

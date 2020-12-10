@@ -96,8 +96,8 @@ class SearchScroller:
                 else:
                     for hit in hits['hits']:
                         yield self.klass({'id': hit['_id'],
-                                          'document': hit['_source'],
-                                          'score': hit['_score']})
+                                          'document': hit.get('_source', {}),
+                                          'score': hit.get('_score', 0)})
 
                 scroll_id = result.get("_scroll_id")
                 if not scroll_id:

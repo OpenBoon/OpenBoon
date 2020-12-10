@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.DataSource
+import com.zorroa.archivist.domain.DataSourceDelete
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.domain.FileType
@@ -39,7 +40,7 @@ interface DataSourceService {
     /**
      * Delete an existing [DataSource]
      */
-    fun delete(id: UUID)
+    fun delete(id: UUID, dataSourceDelete: DataSourceDelete)
 
     /**
      * Get a [DataSource] by its unique ID.
@@ -63,6 +64,9 @@ class DataSourceServiceImpl(
 
     @Autowired
     lateinit var jobService: JobService
+
+    @Autowired
+    lateinit var jobLaunchService: JobLaunchService
 
     @Autowired
     lateinit var pipelineService: PipelineService
@@ -140,7 +144,7 @@ class DataSourceServiceImpl(
         return get(id)
     }
 
-    override fun delete(id: UUID) {
+    override fun delete(id: UUID, dataSourceDelete: DataSourceDelete) {
         logger.event(LogObject.DATASOURCE, LogAction.DELETE, mapOf("dataSourceId" to id))
         val ds = get(id)
 
@@ -158,6 +162,15 @@ class DataSourceServiceImpl(
         // DS which involves killing all the running tasks.
         txEvent.afterCommit(sync = false) {
             jobs.forEach { jobService.cancelJob(it) }
+
+            // Launch a delete Assets Job
+            dataSourceDelete?.let {
+                if (it.deleteAssets)
+                    jobLaunchService.launchJob(
+                        ds,
+                        it
+                    )
+            }
         }
         dataSourceDao.delete(ds)
     }
