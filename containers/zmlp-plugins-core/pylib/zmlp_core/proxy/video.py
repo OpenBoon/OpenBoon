@@ -61,6 +61,7 @@ class VideoProxyProcessor(AssetProcessor):
             '-threads', '0',
             '-pix_fmt', 'yuv420p',
             '-movflags', '+faststart',
+            '-movflags', 'use_metadata_tags',
             '-preset', 'slow'
         ]
 
@@ -90,6 +91,7 @@ class VideoProxyProcessor(AssetProcessor):
             '-y',
             '-i', src_path,
             '-movflags', '+faststart',
+            '-movflags', 'use_metadata_tags',
             '-threads', '0',
             '-acodec', 'aac',
             '-vcodec', 'copy',
