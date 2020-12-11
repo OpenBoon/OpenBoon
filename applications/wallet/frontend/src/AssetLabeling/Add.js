@@ -58,15 +58,20 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
       l.label === localState.label,
   )
 
+  const handleOnSubmit = () => {
+    onSubmit({
+      dispatch,
+      localDispatch,
+      localState,
+      labels,
+      projectId,
+      assetId,
+    })
+  }
+
   return (
     <div css={{ padding: spacing.normal }}>
-      <AssetLabelingShortcuts
-        dispatch={localDispatch}
-        state={localState}
-        labels={labels}
-        projectId={projectId}
-        assetId={assetId}
-      />
+      <AssetLabelingShortcuts onSubmit={handleOnSubmit} />
 
       <Form style={{ width: '100%', padding: 0 }}>
         <FlashMessageErrors
@@ -145,16 +150,7 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
           <Button
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
-            onClick={() => {
-              onSubmit({
-                dispatch,
-                localDispatch,
-                localState,
-                labels,
-                projectId,
-                assetId,
-              })
-            }}
+            onClick={handleOnSubmit}
             isDisabled={
               existingLabel ||
               !localState.modelId ||
