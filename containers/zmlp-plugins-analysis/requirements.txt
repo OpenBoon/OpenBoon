@@ -25,4 +25,4 @@ boto3
 nameparser
 street-address
 dateparser
-azure-cognitiveservices-vision-computervision==0.6.0
+azure-cognitiveservices-vision-computervision==0.7.0
