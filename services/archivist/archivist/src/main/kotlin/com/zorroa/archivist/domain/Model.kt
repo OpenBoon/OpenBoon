@@ -34,7 +34,9 @@ enum class ModelType(
     val deployOnTrainingSet: Boolean,
     val minConcepts: Int,
     val minExamples: Int,
-    val dependencies: List<String>
+    val dependencies: List<String>,
+    val trainable: Boolean,
+    val uploadable: Boolean
 ) {
     ZVI_KNN_CLASSIFIER(
         "Sci-kit Learn KNN Classifier",
@@ -51,7 +53,9 @@ enum class ModelType(
         true,
         0,
         0,
-        listOf()
+        listOf(),
+        true,
+        false
     ),
     ZVI_LABEL_DETECTION(
         "Tensorflow CNN Classifier",
@@ -70,10 +74,12 @@ enum class ModelType(
         false,
         2,
         10,
-        listOf()
+        listOf(),
+        true,
+        false
     ),
     ZVI_FACE_RECOGNITION(
-        "Face Recognition Classsifier"
+        "Face Recognition Classifier",
         "zmlp_train.face_rec.KnnFaceRecognitionTrainer",
         mapOf(),
         "zmlp_analysis.custom.KnnFaceRecognitionClassifier",
@@ -85,10 +91,12 @@ enum class ModelType(
         true,
         1,
         1,
-        listOf("zvi-face-detection")
+        listOf("zvi-face-detection"),
+        true,
+        false
     ),
     GCP_LABEL_DETECTION(
-        "Google AutoML Classifier"
+        "Google AutoML Classifier",
         "zmlp_train.automl.AutoMLModelTrainer",
         mapOf(),
         "zmlp_analysis.automl.AutoMLVisionClassifier",
@@ -100,7 +108,26 @@ enum class ModelType(
         true,
         2,
         10,
-        listOf()
+        listOf(),
+        true,
+        false
+    ),
+    CUSTOM_TENSORFLOW(
+        "Custom Tensorflow Image Classifier",
+        "zmlp_train.automl.AutoMLModelTrainer",
+        mapOf(),
+        "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
+        mapOf(),
+        null,
+        "Utilize Google AutoML to train an image classifier.",
+        ModelObjective.LABEL_DETECTION,
+        Provider.GOOGLE,
+        true,
+        2,
+        10,
+        listOf(),
+        false,
+        true
     );
 
     fun asMap(): Map<String, Any> {
@@ -219,6 +246,12 @@ class Model(
     @JsonIgnore
     fun getLabel(label: String, bbox: List<BigDecimal>? = null): Label {
         return Label(id, label, bbox = bbox)
+    }
+
+    fun getModelStorageLocator(): ProjectFileLocator {
+        return ProjectFileLocator(
+            ProjectStorageEntity.MODELS, id.toString(), "model", "model.zip"
+        )
     }
 
     override fun equals(other: Any?): Boolean {
