@@ -17,7 +17,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <kotlin.version>1.4.21</kotlin.version>
+        <kotlin.version>1.4.20</kotlin.version>
         <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
         <zmlp-common.version>1.0.0</zmlp-common.version>
     </properties>
