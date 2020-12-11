@@ -7,9 +7,9 @@ import { spacing } from '../Styles'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
 import FlashMessageErrors from '../FlashMessage/Errors'
 import ButtonGroup from '../Button/Group'
-import Select from '../Select'
 
 import { onSubmit, slugify } from './helpers'
 
@@ -49,6 +49,7 @@ const ModelsAddForm = () => {
         onChange={({ value }) => {
           dispatch({ type: value })
         }}
+        variant={SELECT_VARIANTS.COLUMN}
         isRequired={false}
       />
 

@@ -9,7 +9,7 @@ import { useLocalStorage } from '../LocalStorage/helpers'
 import Form from '../Form'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import FlashMessageErrors from '../FlashMessage/Errors'
-import Select from '../Select'
+import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
 import Combobox from '../Combobox'
 
 import { onSubmit, getSubmitText, getOptions, SCOPE_OPTIONS } from './helpers'
@@ -87,6 +87,7 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
             localDispatch({ modelId: value, label: '', success: false })
           }}
           isRequired={false}
+          variant={SELECT_VARIANTS.COLUMN}
           style={{ width: '100%' }}
         />
 
@@ -115,6 +116,7 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
             localDispatch({ scope: value, success: false })
           }}
           isRequired={false}
+          variant={SELECT_VARIANTS.COLUMN}
           style={{ width: '100%' }}
         />
 
