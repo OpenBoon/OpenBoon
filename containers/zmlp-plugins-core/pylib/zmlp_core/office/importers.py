@@ -73,9 +73,11 @@ class OfficeImporter(AssetProcessor):
         asset = frame.asset
         page = max(int(asset.get_attr('media.pageNumber') or 1), 1)
 
-        self.logger.info("IRON DEBUG Extracting DOC PAGES : {}".format(self.arg_value('extract_doc_pages')))
+        self.logger.info("IRON DEBUG Extracting DOC PAGES : {}"
+                         .format(self.arg_value('extract_doc_pages')))
         self.logger.info("IRON DEBUG Media Length : {}".format(asset.get_attr('media.length')))
-        self.logger.info("IRON DEBUG Media page Number : {}".format(asset.get_attr('media.pageNumber')))
+        self.logger.info("IRON DEBUG Media page Number : {}"
+                         .format(asset.get_attr('media.pageNumber')))
         self.logger.info("IRON DEBUG AssetExtension : {}".format(asset.extension))
 
         self.render_pages(asset, page, page == 1)

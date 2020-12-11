@@ -100,7 +100,7 @@ fun runServer(port: Int) {
         logger.info("checking output path: {}", options.outputPath)
         if (ioHandler.exists(options.page)) {
             this.response.status(200)
-        } else if(WorkQueue.existsResquest(options)) {
+        } else if (WorkQueue.existsResquest(options)) {
             // Waiting for rendering
             this.response.status(404)
         } else {

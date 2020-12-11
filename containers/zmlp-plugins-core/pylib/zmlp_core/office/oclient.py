@@ -68,7 +68,8 @@ class OfficerClient(object):
             logger.info('IRON DEBUG One Or Another = {} '.format(asset.get_attr('media.length')
                                                                  or json_response['page-count']))
 
-            asset.set_attr('media.length', asset.get_attr('media.length') or json_response['page-count'])
+            asset.set_attr('media.length', asset.get_attr('media.length')
+                           or json_response['page-count'])
             asset.set_attr('tmp.request.id', json_response['request-id'])
             return json_response['location']
 
@@ -148,13 +149,15 @@ class OfficerClient(object):
                 logger.info("Page: {} is ready".format(page))
                 break
             if rsp.status_code == 410:
-                logger.error("An error occurred. Page {} will not be rendered by officer".format(page))
+                logger.error("An error occurred. Page {} will not be rendered by officer"
+                             .format(page))
                 raise ZmlpFatalProcessorException(
                     'Rendering failure, Asset: {} Page: {} will not render'.format(asset.id, page))
 
             logger.info("IRON DEBUG WAIT FOR RENDERING")
             rsp.raise_for_status()
-            logger.info('Waiting page : {} of asset: {} try number: {}'.format(page, asset.id, retry_number))
+            logger.info('Waiting page : {} of asset: {} try number: {}'
+                        .format(page, asset.id, retry_number))
             time.sleep(1)
             retry_number += 1
             if retry_number > number_of_retries:
