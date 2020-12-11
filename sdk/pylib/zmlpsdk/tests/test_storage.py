@@ -8,7 +8,7 @@ from unittest.mock import patch
 import pytest
 
 import zmlp
-from zmlp import StoredFile, ZmlpClient, PipelineMod, Job, Model
+from zmlp import StoredFile, ZmlpClient, AnalysisModule, Job, Model
 from zmlp.app import ModelApp
 from zmlpsdk import storage
 from zmlpsdk.testing import zorroa_test_data, TestAsset
@@ -383,7 +383,7 @@ class ModelStorageTests(TestCase):
             'category': 'fake',
             'size': 100
         }
-        publish_patch.return_value = PipelineMod({
+        publish_patch.return_value = AnalysisModule({
             'id': '12345'
         })
         deploy_patch.return_value = Job({"id": "abcde"})
