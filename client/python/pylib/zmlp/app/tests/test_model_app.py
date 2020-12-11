@@ -1,3 +1,4 @@
+import os
 import logging
 import unittest
 from unittest.mock import patch
@@ -27,6 +28,13 @@ class ModelAppTests(unittest.TestCase):
         get_patch.return_value = self.model_data
         model = self.app.models.get_model('12345')
         self.assert_model(model)
+
+    @patch.object(ZmlpClient, 'send_file')
+    def test_upload_model_file(self, post_patch):
+        post_patch.return_value = {'category': 'model'}
+        path = os.path.dirname(__file__) + '/model.zip'
+        model_file = self.app.models.upload_custom_model('12345', path)
+        assert model_file.category == 'model'
 
     @patch.object(ZmlpClient, 'post')
     def test_find_one_model(self, post_patch):
