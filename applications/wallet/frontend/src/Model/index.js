@@ -35,7 +35,7 @@ const Model = () => {
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
             {action === 'edit-label-success' && 'Label updated.'}
             {action === 'delete-label-success' && 'Label deleted.'}
-            {action === 'remove-label-success' &&
+            {action === 'remove-asset-success' &&
               'Asset has been removed from set.'}
           </FlashMessage>
         </div>

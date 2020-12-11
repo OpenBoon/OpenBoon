@@ -63,7 +63,7 @@ describe('<Model />', () => {
       query: {
         projectId: PROJECT_ID,
         modelId: MODEL_ID,
-        action: 'remove-label-success',
+        action: 'remove-asset-success',
       },
     })
 
