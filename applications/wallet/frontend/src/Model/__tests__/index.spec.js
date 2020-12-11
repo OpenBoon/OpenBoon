@@ -56,4 +56,25 @@ describe('<Model />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render removing an asset properly', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+        action: 'remove-label-success',
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: model })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Model />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })
