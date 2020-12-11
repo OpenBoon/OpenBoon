@@ -31,6 +31,10 @@ class VisioDocument(options: RenderRequest, inputStream: InputStream) : Document
         return diagram.pages.count()
     }
 
+    override fun pageCount(): Int {
+        return diagram.pages.count()
+    }
+
     fun saveImage(page: Int, opts: ImageSaveOptions) {
         val time = measureTimeMillis {
             val output = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)

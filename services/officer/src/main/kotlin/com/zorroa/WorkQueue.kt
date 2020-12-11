@@ -73,6 +73,12 @@ object WorkQueue {
             true
         }
     }
+
+    fun existsResquest(existsRequest: ExistsRequest): Boolean {
+        if (redis.redisson == null || existsRequest.requestId == null)
+            return false
+        return redis.redisson.getBucket<String>(existsRequest.requestId).isExists
+    }
 }
 
 class WorkQueueEntry(
@@ -84,8 +90,13 @@ class WorkQueueEntry(
         // calls close automatically
         document.use {
             logger.info("Rendering ${request.fileName}. Id: ${request.requestId}")
-            it.render()
-            WorkQueue.unregisterRequest(request)
+            try {
+                it.render()
+            } finally {
+                logger.info("IRON DEBUG UNRESGISTERING")
+                WorkQueue.unregisterRequest(request)
+                logger.info("IRON DEBUG UNREGISTERED")
+            }
         }
     }
 
@@ -157,3 +168,4 @@ class RedisConfig {
         }
     }
 }
+

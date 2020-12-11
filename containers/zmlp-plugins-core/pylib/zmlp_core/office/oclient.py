@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import time
 
 import backoff
 import requests
@@ -54,14 +55,22 @@ class OfficerClient(object):
             disable_images (bool): Disable the image render.
         Returns:
             (str): An internal ZMLP URL where the thumbnails and metadata are located.
-
         """
         try:
             post_files = self._get_render_request_body(asset, page, disable_images)
             rsp = requests.post(self.render_url,
                                 files=post_files)
             rsp.raise_for_status()
-            return rsp.json()['location']
+            json_response = rsp.json()
+            logger.info('IRON DEBUG -1')
+            logger.info('IRON DEBUG Media.LENGth = {} '.format(asset.get_attr('media.length')))
+            logger.info('IRON DEBUG PageCount = {} '.format(json_response['page-count']))
+            logger.info('IRON DEBUG One Or Another = {} '.format(asset.get_attr('media.length')
+                                                                 or json_response['page-count']))
+
+            asset.set_attr('media.length', asset.get_attr('media.length') or json_response['page-count'])
+            asset.set_attr('tmp.request.id', json_response['request-id'])
+            return json_response['location']
 
         except requests.RequestException as e:
             logger.warning('RequestException: %s' % e)
@@ -94,10 +103,63 @@ class OfficerClient(object):
                             headers={'Content-Type': 'application/json'})
         if rsp.status_code == 200:
             return rsp.json().get('location')
-        elif rsp.status_code == 404:
+        elif rsp.status_code == 404 or rsp.status_code == 410:
             return None
         else:
             rsp.raise_for_status()
+
+    def get_render_status(self, asset, page):
+        """
+        Return the render status of the cached page or None if one is not cached.
+
+        Args:
+            asset (Asset): The asset to check
+            page (int): The page number.
+
+        Returns:
+            bool: True if the both the metadata and proxy file exist for the page.
+        """
+
+        logger.info("IRON DEBUG RENDER STATUS {}".format(asset.get_attr('tmp.request.id')))
+        body = {
+            'outputPath': self.get_full_storage_prefix(asset),
+            'page': page,
+            'requestId': asset.get_attr('tmp.request.id')
+        }
+        rsp = requests.post(self.exists_url, json=body,
+                            headers={'Content-Type': 'application/json'})
+        return rsp
+
+    @backoff.on_exception(backoff.expo, requests.exceptions.HTTPError, max_time=5 * 60)
+    def wait_for_rendering(self, asset, page):
+        """
+        Loop and wait until the asset page rendering accomplish
+        or raise an exception if an error occurred in officer server
+        :param asset: The asset
+        :param page: Asset page
+        :return: Waits until assets rendering finish or raise an exception if exceed accepted time
+        """
+        number_of_retries = 20
+        retry_number = 0
+        while True:
+            logger.info("IRON DEBUG WAITING FOR RENDER")
+            rsp = self.get_render_status(asset, page)
+            if rsp.status_code == 200:
+                logger.info("Page: {} is ready".format(page))
+                break
+            if rsp.status_code == 410:
+                logger.error("An error occurred. Page {} will not be rendered by officer".format(page))
+                raise ZmlpFatalProcessorException(
+                    'Rendering failure, Asset: {} Page: {} will not render'.format(asset.id, page))
+
+            logger.info("IRON DEBUG WAIT FOR RENDERING")
+            rsp.raise_for_status()
+            logger.info('Waiting page : {} of asset: {} try number: {}'.format(page, asset.id, retry_number))
+            time.sleep(1)
+            retry_number += 1
+            if retry_number > number_of_retries:
+                raise ZmlpFatalProcessorException(
+                    'Unable to obtain officer metadata, {} {}'.format(asset, page))
 
     def _get_render_request_body(self, asset, page, disable_images):
         """

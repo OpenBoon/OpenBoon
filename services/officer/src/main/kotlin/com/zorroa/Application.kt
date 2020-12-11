@@ -31,7 +31,8 @@ class RenderRequest(
  */
 class ExistsRequest(
     val page: Int,
-    val outputPath: String
+    val outputPath: String,
+    val requestId: String?
 )
 
 /**
@@ -99,8 +100,12 @@ fun runServer(port: Int) {
         logger.info("checking output path: {}", options.outputPath)
         if (ioHandler.exists(options.page)) {
             this.response.status(200)
-        } else {
+        } else if(WorkQueue.existsResquest(options)) {
+            // Waiting for rendering
             this.response.status(404)
+        } else {
+            // Don't exists and is not in rendering queue
+            this.response.status(410)
         }
         Json.mapper.writeValueAsString(mapOf("location" to ioHandler.getOutputPath()))
     }
@@ -126,7 +131,9 @@ fun runServer(port: Int) {
                 this.response.status(201)
                 Json.mapper.writeValueAsString(
                     mapOf(
-                        "location" to doc.ioHandler.getOutputPath()
+                        "location" to doc.ioHandler.getOutputPath(),
+                        "page-count" to doc.pageCount(),
+                        "request-id" to req.requestId
                     )
                 )
             }

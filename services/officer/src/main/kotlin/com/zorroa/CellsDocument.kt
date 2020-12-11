@@ -32,6 +32,10 @@ class CellsDocument(options: RenderRequest, inputStream: InputStream) : Document
         return workbook.worksheets.count
     }
 
+    override fun pageCount(): Int {
+        return workbook.worksheets.count
+    }
+
     override fun renderAllMetadata(): Int {
         for (page in 0 until workbook.worksheets.count) {
             renderMetadata(page + 1)
