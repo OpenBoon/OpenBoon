@@ -5,5 +5,5 @@ from .exception import *
 from .job import *
 from .project import *
 from .model import *
-from .pmod import *
+from .analysis import *
 from .clip import *
