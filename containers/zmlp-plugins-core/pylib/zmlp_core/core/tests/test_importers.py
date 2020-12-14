@@ -12,7 +12,6 @@ from zmlp.app import ProjectApp
 class FileImportProcessorTests(PluginUnitTestCase):
 
     @patch.object(ProjectApp, 'get_project')
-
     def test_process_image(self, _):
         frame = Frame(TestAsset(zorroa_test_data("images/set01/toucan.jpg")))
         ih = self.init_processor(FileImportProcessor())
