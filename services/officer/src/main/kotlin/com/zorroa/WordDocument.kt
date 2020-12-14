@@ -46,7 +46,6 @@ class WordDocument(options: RenderRequest, inputStream: InputStream) : Document(
             imageSaveOptions.horizontalResolution = 96f
             imageSaveOptions.verticalResolution = 96f
             imageSaveOptions.pageCount = 1
-            logger.info("IRON DEBUG PAGE INDEX: ${imageSaveOptions.pageIndex} and Page Count: ${imageSaveOptions.pageCount}")
             imageSaveOptions.pageIndex = (page - 1).coerceAtLeast(0)
 
             val output = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)

@@ -93,9 +93,7 @@ class WorkQueueEntry(
             try {
                 it.render()
             } finally {
-                logger.info("IRON DEBUG UNRESGISTERING")
                 WorkQueue.unregisterRequest(request)
-                logger.info("IRON DEBUG UNREGISTERED")
             }
         }
     }

@@ -73,24 +73,15 @@ class OfficeImporter(AssetProcessor):
         asset = frame.asset
         page = max(int(asset.get_attr('media.pageNumber') or 1), 1)
 
-        self.logger.info("IRON DEBUG Extracting DOC PAGES : {}"
-                         .format(self.arg_value('extract_doc_pages')))
-        self.logger.info("IRON DEBUG Media Length : {}".format(asset.get_attr('media.length')))
-        self.logger.info("IRON DEBUG Media page Number : {}"
-                         .format(asset.get_attr('media.pageNumber')))
-        self.logger.info("IRON DEBUG AssetExtension : {}".format(asset.extension))
-
         self.render_pages(asset, page, page == 1)
 
         # If we're on page 1 and extract_doc_pages is true.
         if page == 1 and self.arg_value('extract_doc_pages'):
             # Iterate the pages and expand
             num_pages = int(asset.get_attr('media.length') or 1)
-            self.logger.info("IRON DEBUG NUMBER OF PAGES : {}".format(num_pages))
             if num_pages > 1:
                 # Start on page 2 since we just processed page 1
                 for page_num in range(2, num_pages + 1):
-                    self.logger.info("IRON DEBUG Wait for Rendering page : {}".format(page_num))
                     self.oclient.wait_for_rendering(asset, page_num)
                     file_import = FileImport("asset:{}".format(asset.id), page=page_num)
                     expand = ExpandFrame(file_import)

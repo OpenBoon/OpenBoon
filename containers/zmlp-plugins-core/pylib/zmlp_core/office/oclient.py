@@ -62,11 +62,6 @@ class OfficerClient(object):
                                 files=post_files)
             rsp.raise_for_status()
             json_response = rsp.json()
-            logger.info('IRON DEBUG -1')
-            logger.info('IRON DEBUG Media.LENGth = {} '.format(asset.get_attr('media.length')))
-            logger.info('IRON DEBUG PageCount = {} '.format(json_response['page-count']))
-            logger.info('IRON DEBUG One Or Another = {} '.format(asset.get_attr('media.length')
-                                                                 or json_response['page-count']))
 
             asset.set_attr('media.length', asset.get_attr('media.length')
                            or json_response['page-count'])
@@ -121,7 +116,6 @@ class OfficerClient(object):
             bool: True if the both the metadata and proxy file exist for the page.
         """
 
-        logger.info("IRON DEBUG RENDER STATUS {}".format(asset.get_attr('tmp.request.id')))
         body = {
             'outputPath': self.get_full_storage_prefix(asset),
             'page': page,
@@ -143,7 +137,6 @@ class OfficerClient(object):
         number_of_retries = 20
         retry_number = 0
         while True:
-            logger.info("IRON DEBUG WAITING FOR RENDER")
             rsp = self.get_render_status(asset, page)
             if rsp.status_code == 200:
                 logger.info("Page: {} is ready".format(page))
@@ -154,7 +147,6 @@ class OfficerClient(object):
                 raise ZmlpFatalProcessorException(
                     'Rendering failure, Asset: {} Page: {} will not render'.format(asset.id, page))
 
-            logger.info("IRON DEBUG WAIT FOR RENDERING")
             rsp.raise_for_status()
             logger.info('Waiting page : {} of asset: {} try number: {}'
                         .format(page, asset.id, retry_number))
