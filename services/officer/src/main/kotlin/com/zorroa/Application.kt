@@ -32,7 +32,7 @@ class RenderRequest(
 class ExistsRequest(
     val page: Int,
     val outputPath: String,
-    val requestId: String?
+    val requestId: String? = null,
 )
 
 /**
@@ -124,18 +124,20 @@ fun runServer(port: Int) {
                 this.response.status(429)
                 Json.mapper.writeValueAsString(backoff)
             } else {
-                val req = Json.mapper.readValue<RenderRequest>(body.inputStream)
-                val doc = extract(req, file.inputStream)
-                WorkQueue.execute(WorkQueueEntry(doc, req))
+                val req = Json.mapper.readValue<RenderRequest>(body.inputStream.buffered())
+                val doc = extract(req, file.inputStream.buffered())
 
                 this.response.status(201)
-                Json.mapper.writeValueAsString(
+                val response = Json.mapper.writeValueAsString(
                     mapOf(
                         "location" to doc.ioHandler.getOutputPath(),
                         "page-count" to doc.pageCount(),
                         "request-id" to req.requestId
                     )
                 )
+
+                WorkQueue.execute(WorkQueueEntry(doc, req))
+                response
             }
         } catch (e: Exception) {
             logger.warn("failed to process", e)
