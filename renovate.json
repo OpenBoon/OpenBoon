@@ -1,10 +1,14 @@
 {
   "extends": ["config:base"],
   "unpublishSafe": true,
-  "pipenv": {
-    "enabled": true
+  "timezone": "America/Los_Angeles",
+  "js": {
+    "schedule": ["before 5am on Monday"]
   },
-  "maven": {
-    "enabled": true
+  "python": {
+    "schedule": ["before 5am on Tuesday"]
+  },
+  "java": {
+    "schedule": ["before 5am on Wednesday"]
   }
 }
