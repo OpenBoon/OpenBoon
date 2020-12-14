@@ -1,6 +1,6 @@
 scikit-learn
 numpy
-opencv-python >= 4.1
+opencv-python==4.4.0.46
 matplotlib
 pycocotools
 tqdm
