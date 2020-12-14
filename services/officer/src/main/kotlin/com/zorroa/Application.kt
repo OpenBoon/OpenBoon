@@ -98,7 +98,7 @@ fun runServer(port: Int) {
         val options = Json.mapper.readValue<ExistsRequest>(this.request.body())
         val ioHandler = IOHandler(RenderRequest("none", options.page, options.outputPath))
         logger.info("checking output path: {}", options.outputPath)
-        if (ioHandler.exists(options.page)) {
+        if (ioHandler.exists(options.page) && !WorkQueue.existsResquest(options)) {
             this.response.status(200)
         } else if (WorkQueue.existsResquest(options)) {
             // Waiting for rendering

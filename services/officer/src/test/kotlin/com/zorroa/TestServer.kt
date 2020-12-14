@@ -57,7 +57,7 @@ class TestServer {
 
         val rsp = HttpRequest.post("http://localhost:9876/exists")
             .send(Json.mapper.writeValueAsString(opts))
-        assertEquals(404, rsp.code())
+        assertEquals(410, rsp.code())
     }
 
     @Test
@@ -65,6 +65,7 @@ class TestServer {
         val opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
         opts.page = 1
         opts.outputPath = "render_test"
+
         val rsp = HttpRequest.post("http://localhost:9876/render")
             .part("file", "CPB7_WEB.pdf", File("src/test/resources/CPB7_WEB.pdf"))
             .part("body", Json.mapper.writeValueAsString(opts))
@@ -75,17 +76,20 @@ class TestServer {
         assertEquals("render_test", content["location"])
 
         var exists: HttpRequest? = null
-        for (i in 0..5) {
+        while (true) {
             // Wait Assync rendering
             exists = HttpRequest.post("http://localhost:9876/exists")
                 .send(Json.mapper.writeValueAsString(opts))
-            if (exists.code() == 201)
+            if (exists.code() != 404)
                 break
             Thread.sleep(2000)
         }
 
+        val existsRequest =
+            ExistsRequest(page = opts.page, outputPath = opts.outputPath, requestId = content["request-id"].toString())
+
         assertEquals(200, exists?.code())
-        assertEquals(false, WorkQueue.unregisterRequest(opts))
+        assertEquals(false, WorkQueue.existsResquest(existsRequest))
     }
 
     @Test
