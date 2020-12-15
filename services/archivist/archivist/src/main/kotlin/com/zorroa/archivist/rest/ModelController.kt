@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
+import javax.servlet.http.HttpServletRequest
 
 @RestController
 class ModelController(
@@ -107,6 +108,12 @@ class ModelController(
     @GetMapping(value = ["/api/v3/models/{id}/_label_counts"])
     fun getLabels(@ApiParam("ModelId") @PathVariable id: UUID): Map<String, Long> {
         return modelService.getLabelCounts(modelService.getModel(id))
+    }
+
+    @ApiOperation("Upload the model zip file.")
+    @PostMapping(value = ["/api/v3/models/{id}/_upload"])
+    fun upload(@ApiParam("ModelId") @PathVariable id: UUID, req: HttpServletRequest): Any {
+        return modelService.acceptModelFileUpload(modelService.getModel(id), req.inputStream)
     }
 
     @ApiOperation("Rename label")

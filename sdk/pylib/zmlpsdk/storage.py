@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 
 import requests
 
-from zmlp import app_from_env, Asset, StoredFile, PipelineMod, \
+from zmlp import app_from_env, Asset, StoredFile, AnalysisModule, \
     ZmlpException, util
 from .base import ZmlpEnv
 from .cloud import get_cached_google_storage_client, \
@@ -169,7 +169,7 @@ class ModelStorage:
             model (Model): The Model instance.
             deploy (bool): Launch an expand task to deploy the model using the deploy search.
         Returns:
-            PipelineModule: A PipelineModule for utilizing the model.
+            AnalysisModuleule: A AnalysisModuleule for utilizing the model.
         """
         file_id = self.get_model_file_id(model)
         version_file = src_dir + self.model_ver_file
@@ -187,16 +187,16 @@ class ModelStorage:
     def publish_model(self, model):
         """
         Publish the given model.  The model must have been trained before.  This
-        will make the model available for execution using a PipelineModel
+        will make the model available for execution using a AnalysisModuleel
 
         Args:
             model (Model): The Model instance or a unique Model id.
 
         Returns:
-            PipelineMod: A PipelineMod which can be used to execute the model on Data.
+            AnalysisModule: A AnalysisModule which can be used to execute the model on Data.
         """
         mid = util.as_id(model)
-        return PipelineMod(self.app.client.post(f'/api/v3/models/{mid}/_publish'))
+        return AnalysisModule(self.app.client.post(f'/api/v3/models/{mid}/_publish'))
 
 
 class AssetStorage(object):

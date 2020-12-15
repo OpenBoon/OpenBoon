@@ -4,6 +4,8 @@ import Link from 'next/link'
 
 import { spacing } from '../Styles'
 
+import { getQueryString } from '../Fetch/helpers'
+
 import Button, { VARIANTS } from '../Button'
 
 const PaginationNext = ({ currentPage, totalPages }) => {
@@ -11,7 +13,10 @@ const PaginationNext = ({ currentPage, totalPages }) => {
 
   if (currentPage === totalPages) return null
 
-  const queryParam = `?page=${currentPage + 1}`
+  const queryParam = getQueryString({
+    query: query.query,
+    page: currentPage + 1,
+  })
   const href = `${pathname}${queryParam}`
   const as = href
     .split('/')

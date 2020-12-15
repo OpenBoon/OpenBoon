@@ -90,6 +90,10 @@ resource "kubernetes_deployment" "officer" {
             name  = "REDIS_HOST"
             value = var.redis-host
           }
+          env {
+            name = "ZMLP_STORAGE_CLIENT"
+            value = "gcs"
+          }
           liveness_probe {
             initial_delay_seconds = 120
             period_seconds        = 5

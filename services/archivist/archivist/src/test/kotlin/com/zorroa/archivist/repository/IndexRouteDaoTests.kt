@@ -92,6 +92,22 @@ class IndexRouteDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testGetOpen() {
+        val routes = indexRouteDao.getOpen()
+        assertEquals(1, routes.size)
+    }
+
+    @Test
+    fun testGetOpenByCluster() {
+        val cluster = indexClusterService.getNextAutoPoolCluster()
+        val routes = indexRouteDao.getOpen(cluster)
+        assertEquals(1, routes.size)
+
+        indexRouteDao.setState(routes[0], IndexRouteState.CLOSED)
+        assertTrue(indexRouteDao.getOpen(cluster).isEmpty())
+    }
+
+    @Test
     fun testGetAllByFilter() {
         val route = indexRouteDao.getProjectRoute()
 

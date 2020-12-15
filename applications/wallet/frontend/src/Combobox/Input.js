@@ -10,10 +10,13 @@ const ComboboxInput = ({ value, hasError, onChange }) => {
       autoComplete="off"
       css={{
         width: '100%',
-        padding: spacing.base,
+        padding: `${spacing.moderate - constants.borderWidths.medium}px ${
+          spacing.base
+        }px`,
         outline: constants.borders.regular.transparent,
         backgroundColor: colors.structure.smoke,
         color: colors.structure.white,
+        lineHeight: typography.height.medium,
         fontWeight: typography.weight.medium,
         border: hasError
           ? constants.borders.error

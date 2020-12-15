@@ -14,7 +14,7 @@ class DataSourceApp(object):
         Args:
             name (str): The name of the data source.
             uri (str): The URI where the data can be found.
-            modules (list): A list of PipelineMods names to apply to the data.
+            modules (list): A list of AnalysisModules names to apply to the data.
             file_types (list of str): a list of file extensions or general types like
                 'images', 'videos', 'documents'. Defaults to all file types.
             credentials (list of str): A list of pre-created credentials blob names.

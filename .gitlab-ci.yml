@@ -331,26 +331,6 @@ plugin-container-tests:
       changes:
         - "**/*"
 
-sdk-java-unit-tests:
-  image: maven:3.6-jdk-11
-  stage: test
-  allow_failure: true
-  script:
-    - mvn test verify -f client/java -q
-  rules:
-    # Scheduled Pipelines
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    # MR to any branch that is not master with ZMLP changes
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
-      changes:
-        - "client/java/**/*"
-        - "containers/zmlp-plugins-base/**/*"
-    # MR to QA with any change
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
-      changes:
-        - "**/*"
-
 zmlp-dockerhub-build-push-latest:
   image: zmlp/docker-buildx
   stage: push
