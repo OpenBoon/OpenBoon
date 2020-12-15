@@ -10,5 +10,8 @@
   },
   "java": {
     "schedule": ["before 5am on Wednesday"]
+  },
+  "docker": {
+    "schedule": ["before 5am on Thursday"]
   }
 }
