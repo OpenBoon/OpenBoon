@@ -49,7 +49,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     @patch('zmlp_core.office.importers.OfficeImporter.get_metadata', return_value={})
     @patch.object(OfficerClient, 'render', return_value='/fake')
     @patch.object(OfficerClient, 'get_cache_location', return_value=None)
-    def test_render_pagesno_clip_page_1(self, _, __, ___):
+    @patch.object(OfficerClient, 'wait_for_rendering', return_value=None)
+    def test_render_pagesno_clip_page_1(self, _, __, ___, ____):
         processor = self.init_processor(OfficeImporter(), {})
         processor.render_pages(self.asset, 1, False)
         assert self.asset.get_attr('tmp.proxy_source_image') \
@@ -58,7 +59,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     @patch('zmlp_core.office.importers.OfficeImporter.get_metadata', return_value={})
     @patch.object(OfficerClient, 'get_cache_location', return_value=None)
     @patch.object(OfficerClient, 'render', return_value='/fake')
-    def test_render_page_clip_page_2_not_exist(self, _, __, ___):
+    @patch.object(OfficerClient, 'wait_for_rendering', return_value=None)
+    def test_render_page_clip_page_2_not_exist(self, _, __, ___, ____):
         processor = self.init_processor(OfficeImporter(), {})
         processor.render_pages(self.asset, 2, False)
         assert self.asset.get_attr('tmp.proxy_source_image') \
@@ -66,7 +68,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
 
     @patch('zmlp_core.office.importers.OfficeImporter.get_metadata', return_value={})
     @patch.object(OfficerClient, 'get_cache_location', return_value="/cached")
-    def test_render_page_clip_cached(self, _, __):
+    @patch.object(OfficerClient, 'wait_for_rendering', return_value=None)
+    def test_render_page_clip_cached(self, _, __, ___):
         processor = self.init_processor(OfficeImporter(), {})
         processor.render_pages(self.asset, 3, False)
         assert self.asset.get_attr('tmp.proxy_source_image') == \
@@ -76,7 +79,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
                   return_value={'author': 'Zach', 'content': 'temp'})
     @patch.object(OfficerClient, 'render', return_value='/fake')
     @patch.object(OfficerClient, 'get_cache_location', return_value=None)
-    def test_process_loads_metadata_to_asset(self, _, __, ___):
+    @patch.object(OfficerClient, 'wait_for_rendering', return_value=None)
+    def test_process_loads_metadata_to_asset(self, _, __, ___, ____):
         processor = self.init_processor(OfficeImporter())
         processor.process(Frame(self.asset))
         assert self.asset.get_attr('media.author') == 'Zach'
@@ -86,7 +90,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
                   return_value={'author': 'Zach'})
     @patch.object(OfficerClient, 'render', return_value='/fake')
     @patch.object(OfficerClient, 'get_cache_location', return_value=None)
-    def test_process_loads_metadata(self, _, __, ___):
+    @patch.object(OfficerClient, 'wait_for_rendering', return_value=None)
+    def test_process_loads_metadata(self, _, __, ___, ____):
         processor = self.init_processor(OfficeImporter())
         processor.process(Frame(self.asset))
         assert self.asset.get_attr('media.author') == 'Zach'
@@ -97,7 +102,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     @patch.object(OfficeImporter, 'expand')
     @patch.object(OfficeImporter, 'get_metadata', return_value={'length': 3})
     @patch.object(OfficerClient, 'render', return_value='/fake')
-    def test_process_expands_children(self, _, __, expand_patch, ___):
+    @patch.object(OfficerClient, 'wait_for_rendering', return_value=None)
+    def test_process_expands_children(self, _, __, expand_patch, ___, ____):
         processor = self.init_processor(OfficeImporter(), {"extract_doc_pages": True})
         processor.process(Frame(self.asset))
         assert expand_patch.call_count == 2
@@ -115,7 +121,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     @patch.object(OfficerClient, '_get_render_request_body', return_value={})
     @patch.object(OfficerClient, 'render')
     @patch.object(OfficerClient, 'get_cache_location', return_value=None)
-    def test_render_outputs_exception(self, _, __, ___):
+    @patch.object(OfficerClient, 'wait_for_rendering', return_value=None)
+    def test_render_outputs_exception(self, _, __, ___, ____):
         processor = self.init_processor(OfficeImporter(), {})
         with pytest.raises(ZmlpFatalProcessorException):
             processor.process(Frame(self.asset))
@@ -124,7 +131,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     @patch.object(OfficerClient, '_get_render_request_body', return_value={})
     @patch.object(OfficerClient, 'render', return_value='zmlp://foo/bar')
     @patch.object(OfficerClient, 'get_cache_location', return_value=None)
-    def test_render_pages(self, _, __, ___, ____):
+    @patch.object(OfficerClient, 'wait_for_rendering', return_value=None)
+    def test_render_pages(self, _, __, ___, ____, _____):
         processor = self.init_processor(OfficeImporter(), {})
         output_uri = processor.render_pages(self.asset, 1, True)
         assert 'zmlp://foo/bar' == output_uri
@@ -135,7 +143,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     @patch.object(OfficeImporter, 'expand')
     @patch.object(OfficeImporter, 'get_metadata', return_value={'length': 3})
     @patch.object(OfficerClient, 'render', return_value='/fake')
-    def test_render_pdf(self, _, __, ___, ____):
+    @patch.object(OfficerClient, 'wait_for_rendering', return_value=None)
+    def test_render_pdf(self, _, __, ___, ____, _____):
         path = Path(zorroa_test_path('office/simple.pdf'))
         asset = TestAsset(str(path), id="12345")
         asset.set_attr('media.width', 612)
@@ -148,7 +157,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     @patch.object(OfficeImporter, 'expand')
     @patch.object(OfficeImporter, 'get_metadata', return_value={'length': 3})
     @patch.object(OfficerClient, 'render', return_value='/fake')
-    def test_render_big_pdf(self, _, __, ___, ____):
+    @patch.object(OfficerClient, 'wait_for_rendering', return_value=None)
+    def test_render_big_pdf(self, _, __, ___, ____, _____):
         path = Path(zorroa_test_path('office/big.pdf'))
         asset = TestAsset(str(path), id="12345")
         asset.set_attr('media.width', 6696)
