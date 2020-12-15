@@ -19,7 +19,7 @@ const RadioIcon = ({ value, isChecked, onClick }) => {
         id={value}
         value={value}
         defaultChecked={isChecked}
-        onClick={() => onClick(value)}
+        onClick={() => onClick({ value })}
         css={{
           padding: 0,
           WebkitAppearance: 'none',

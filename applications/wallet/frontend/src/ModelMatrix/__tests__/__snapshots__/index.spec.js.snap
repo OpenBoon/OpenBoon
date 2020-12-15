@@ -88,7 +88,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-7 {
-  padding-left: 8px;
+  padding-left: 32px;
 }
 
 .emotion-8 {
@@ -107,6 +107,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   padding: 0;
+  padding-right: 16px;
   float: left;
   font-size: 17px;
   line-height: 20px;
@@ -114,7 +115,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-10 {
-  padding-left: 8px;
+  padding-right: 24px;
 }
 
 .emotion-11 {
@@ -159,7 +160,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 
 .emotion-15 {
   padding-left: 8px;
-  font-weight: 700;
+  font-weight: 400;
   color: #ffffff;
 }
 
@@ -187,7 +188,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 
 .emotion-22 {
   padding-left: 8px;
-  font-weight: 700;
+  font-weight: 400;
   color: #808080;
 }
 
@@ -3347,7 +3348,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-7 {
-  padding-left: 8px;
+  padding-left: 32px;
 }
 
 .emotion-8 {
@@ -3366,6 +3367,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   display: -ms-flexbox;
   display: flex;
   padding: 0;
+  padding-right: 16px;
   float: left;
   font-size: 17px;
   line-height: 20px;
@@ -3373,7 +3375,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-10 {
-  padding-left: 8px;
+  padding-right: 24px;
 }
 
 .emotion-11 {
@@ -3418,7 +3420,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 
 .emotion-15 {
   padding-left: 8px;
-  font-weight: 700;
+  font-weight: 400;
   color: #ffffff;
 }
 
@@ -3446,7 +3448,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 
 .emotion-22 {
   padding-left: 8px;
-  font-weight: 700;
+  font-weight: 400;
   color: #808080;
 }
 

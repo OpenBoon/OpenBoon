@@ -4,8 +4,6 @@ import { colors, spacing, typography } from '../Styles'
 
 import RadioIcon from './Icon'
 
-export const noop = () => () => {}
-
 const Radio = ({ option: { value, label, legend, initialValue }, onClick }) => {
   return (
     <div>
@@ -14,7 +12,9 @@ const Radio = ({ option: { value, label, legend, initialValue }, onClick }) => {
         <div
           css={{
             paddingLeft: spacing.base,
-            fontWeight: typography.weight.bold,
+            fontWeight: legend
+              ? typography.weight.bold
+              : typography.weight.regular,
             color: initialValue
               ? colors.structure.white
               : colors.structure.steel,
@@ -28,10 +28,6 @@ const Radio = ({ option: { value, label, legend, initialValue }, onClick }) => {
   )
 }
 
-Radio.defaultProps = {
-  onClick: noop,
-}
-
 Radio.propTypes = {
   option: PropTypes.shape({
     value: PropTypes.string.isRequired,
@@ -39,7 +35,7 @@ Radio.propTypes = {
     legend: PropTypes.string.isRequired,
     initialValue: PropTypes.bool.isRequired,
   }).isRequired,
-  onClick: PropTypes.func,
+  onClick: PropTypes.func.isRequired,
 }
 
 export default Radio

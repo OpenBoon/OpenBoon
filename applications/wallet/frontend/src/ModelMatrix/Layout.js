@@ -52,7 +52,7 @@ const ModelMatrixLayout = () => {
         <form
           method="post"
           onSubmit={(event) => event.preventDefault()}
-          css={{ paddingLeft: spacing.base }}
+          css={{ paddingLeft: spacing.spacious }}
         >
           <RadioGroup
             legend="View"
@@ -70,7 +70,7 @@ const ModelMatrixLayout = () => {
                 initialValue: !settings.isNormalized,
               },
             ]}
-            onClick={(value) =>
+            onClick={({ value }) =>
               dispatch({ isNormalized: value === 'normalized' })
             }
           />

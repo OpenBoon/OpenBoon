@@ -9,6 +9,8 @@ import Radio from '../Radio'
 
 import AssetDeleteConfirm from './Confirm'
 
+export const noop = () => () => {}
+
 const AssetDeleteContent = ({
   projectId,
   assetId,
@@ -42,6 +44,7 @@ const AssetDeleteContent = ({
           legend: 'Delete the selected asset',
           initialValue: true,
         }}
+        onClick={noop}
       />
 
       <div css={{ height: spacing.normal }} />
