@@ -82,10 +82,10 @@ class OfficeImporter(AssetProcessor):
             if num_pages > 1:
                 # Start on page 2 since we just processed page 1
                 for page_num in range(2, num_pages + 1):
-                    self.oclient.wait_for_rendering(asset, page_num)
                     file_import = FileImport("asset:{}".format(asset.id), page=page_num)
                     expand = ExpandFrame(file_import)
                     self.expand(frame, expand)
+                    self.oclient.wait_for_rendering(asset, page_num)
 
     def render_pages(self, asset, page, all_pages):
         """
