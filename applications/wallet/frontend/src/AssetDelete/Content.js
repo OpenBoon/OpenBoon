@@ -9,7 +9,7 @@ import Radio from '../Radio'
 
 import AssetDeleteConfirm from './Confirm'
 
-export const noop = () => () => {}
+const noop = () => () => {}
 
 const AssetDeleteContent = ({
   projectId,
