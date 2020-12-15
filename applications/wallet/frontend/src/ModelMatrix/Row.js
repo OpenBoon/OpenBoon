@@ -110,7 +110,7 @@ const ModelMatrixRow = ({ matrix, settings, label, index }) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  {Math.round(percent)}%
+                  {settings.isNormalized ? `${Math.round(percent)}%` : value}
                 </div>
               </div>
             </div>
@@ -133,6 +133,7 @@ ModelMatrixRow.propTypes = {
     labelsWidth: PropTypes.number.isRequired,
     zoom: PropTypes.number.isRequired,
     isMinimapOpen: PropTypes.bool.isRequired,
+    isNormalized: PropTypes.bool.isRequired,
   }).isRequired,
   label: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,

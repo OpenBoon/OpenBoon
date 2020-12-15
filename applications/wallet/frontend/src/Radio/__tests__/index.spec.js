@@ -1,6 +1,6 @@
 import TestRenderer from 'react-test-renderer'
 
-import Radio from '..'
+import Radio, { noop } from '..'
 
 describe('<Radio />', () => {
   it('should render properly unchecked', () => {
@@ -31,5 +31,9 @@ describe('<Radio />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('noop should do nothing', () => {
+    expect(noop()()).toBe(undefined)
   })
 })
