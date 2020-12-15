@@ -29,7 +29,7 @@ class ModelType(Enum):
     GCP_LABEL_DETECTION = 4
     """Train a Google AutoML vision model."""
 
-    CUSTOM_TENSORFLOW = 5
+    TF2_IMAGE_CLASSIFIER = 5
     """Provide your own custom tensorflow model"""
 
 

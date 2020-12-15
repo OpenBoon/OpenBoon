@@ -22,38 +22,10 @@ from .cloud import get_cached_google_storage_client, \
 
 __all__ = [
     'file_storage',
-    'zip_directory',
     'ZmlpStorageException'
 ]
 
 logger = logging.getLogger(__name__)
-
-
-def zip_directory(src_dir, dst_file, zip_root_name=""):
-    """
-    A utility function for ziping a directory of files.
-
-    Args:
-        src_dir (str): The source directory.
-        dst_file (str): The destination file.s
-        zip_root_name (str): A optional root directory to place files in the zip.
-    Returns:
-        str: The dst file.
-
-    """
-
-    def zipdir(path, ziph, root_name):
-        for root, dirs, files in os.walk(path):
-            for file in files:
-                zip_entry = os.path.join(root_name, root.replace(path, ""), file)
-                logger.info(f'Adding file to zip: {zip_entry}')
-                ziph.write(os.path.join(root, file), zip_entry)
-
-    src_dir = os.path.abspath(src_dir)
-    zipf = zipfile.ZipFile(dst_file, 'w', zipfile.ZIP_DEFLATED)
-    zipdir(src_dir + '/', zipf, zip_root_name)
-    zipf.close()
-    return dst_file
 
 
 class ModelStorage:
@@ -176,7 +148,8 @@ class ModelStorage:
         with open(version_file, 'w') as fp:
             fp.write("{}-{}\n".format(time.time(), str(uuid.uuid4())))
 
-        zip_file_path = zip_directory(src_dir, tempfile.mkstemp(prefix="model_", suffix=".zip")[1])
+        zip_file_path = util.zip_directory(
+            src_dir, tempfile.mkstemp(prefix="model_", suffix=".zip")[1])
         self.projects.store_file_by_id(version_file, os.path.dirname(file_id) + self.model_ver_file)
         self.projects.store_file_by_id(zip_file_path, file_id, precache=False)
         mod = self.publish_model(model)

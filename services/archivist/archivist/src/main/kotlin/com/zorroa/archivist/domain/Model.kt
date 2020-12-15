@@ -112,14 +112,14 @@ enum class ModelType(
         true,
         false
     ),
-    CUSTOM_TENSORFLOW(
-        "Custom Tensorflow Image Classifier",
+    TF2_IMAGE_CLASSIFIER(
+        "Tensorflow Image Classifier",
         "zmlp_train.automl.AutoMLModelTrainer",
         mapOf(),
         "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
         mapOf(),
         null,
-        "Utilize Google AutoML to train an image classifier.",
+        "Upload a tensorflow model use for image classification.",
         ModelObjective.LABEL_DETECTION,
         Provider.GOOGLE,
         true,
