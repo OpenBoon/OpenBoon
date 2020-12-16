@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory
 import java.io.Serializable
 import java.lang.management.ManagementFactory
 import java.util.concurrent.BlockingQueue
+import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -148,7 +149,7 @@ class RedisConfig {
         val threads = os.availableProcessors * 2
 
         logger.info("Creating thread pool threads=$threads burst=${threads + 1}")
-        val pool = ThreadPoolExecutor(threads, threads + 1, 5, TimeUnit.MINUTES, queue)
+        val pool = Executors.newFixedThreadPool(threads) as ThreadPoolExecutor
         ExecutorServiceMetrics.monitor(Metrics.meters, pool, "app_queue", listOf())
         return pool
     }
