@@ -90,6 +90,22 @@ class ZmlpClient(object):
         except requests.exceptions.ConnectionError as e:
             raise ZmlpConnectionException(e)
 
+    def send_file(self, path, file_path):
+        """
+        Sends a file via request body
+
+        Args:
+            path (path): The URI fragment for the request.
+            file_path (str): The path to the file to send.
+
+        Returns:
+            dict: A dictionary which can be used to fetch the file.
+        """
+        with open(file_path, 'rb') as f:
+            return self.__handle_rsp(requests.post(
+                self.get_url(path), headers=self.headers(content_type=""),
+                data=f), True)
+
     def upload_file(self, path, file, body={}, json_rsp=True):
         """
         Upload a single file and a request to the given endpoint path.

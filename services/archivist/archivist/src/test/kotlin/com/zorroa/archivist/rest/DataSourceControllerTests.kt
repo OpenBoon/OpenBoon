@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.domain.DataSourceDelete
 import com.zorroa.archivist.domain.DataSourceFilter
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
@@ -65,10 +66,12 @@ class DataSourceControllerTests : MockMvcTest() {
     @Test
     fun testDelete() {
         val ds = dataSourceService.create(testSpec)
+        val delete = DataSourceDelete(deleteAssets = true)
         mvc.perform(
             MockMvcRequestBuilders.delete("/api/v1/data-sources/${ds.id}")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(delete))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()

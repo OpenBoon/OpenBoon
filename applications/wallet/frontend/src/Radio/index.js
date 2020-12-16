@@ -1,18 +1,23 @@
 import PropTypes from 'prop-types'
 
-import { spacing, typography } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 
 import RadioIcon from './Icon'
 
-const Radio = ({ option: { value, label, legend, initialValue } }) => {
+const Radio = ({ option: { value, label, legend, initialValue }, onClick }) => {
   return (
     <div>
       <label css={{ display: 'flex' }}>
-        <RadioIcon value={value} isChecked={initialValue} />
+        <RadioIcon value={value} isChecked={initialValue} onClick={onClick} />
         <div
           css={{
             paddingLeft: spacing.base,
-            fontWeight: typography.weight.bold,
+            fontWeight: legend
+              ? typography.weight.bold
+              : typography.weight.regular,
+            color: initialValue
+              ? colors.structure.white
+              : colors.structure.steel,
           }}
         >
           {label}
@@ -30,6 +35,7 @@ Radio.propTypes = {
     legend: PropTypes.string.isRequired,
     initialValue: PropTypes.bool.isRequired,
   }).isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 export default Radio

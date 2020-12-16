@@ -1,41 +1,43 @@
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { cleanup, encode } from '../Filters/helpers'
+import { decode, encode } from '../Filters/helpers'
+import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
 import ModelAssetsContent from './Content'
 
-const ModelAssets = ({ projectId, modelId, moduleName }) => {
+const ModelAssets = ({ moduleName }) => {
   const {
-    data: { results: labels },
+    query: { projectId, modelId, query: q },
+  } = useRouter()
+
+  const { scope, label } = decode({ query: q })
+
+  const {
+    data: { results: labels = [] },
   } = useSWR(`/api/v1/projects/${projectId}/models/${modelId}/get_labels/`)
 
-  const labelsAggregate = labels.reduce((acc, { label }) => {
-    return [...acc, label]
-  }, [])
+  const labelValue = label || (labels[0] && labels[0].label) || ''
 
-  const encodedFilter = encode({
+  const filter = encode({
     filters: [
       {
         type: 'label',
         attribute: `labels.${moduleName}`,
         modelId,
         values: {
-          scope: 'all',
-          labels: labelsAggregate,
+          scope: scope || SCOPE_OPTIONS[0].label,
+          labels: [labelValue],
         },
       },
     ],
   })
 
-  const query = cleanup({ query: encodedFilter })
-
-  return <ModelAssetsContent projectId={projectId} query={query} />
+  return <ModelAssetsContent filter={filter} label={labelValue} />
 }
 
 ModelAssets.propTypes = {
-  projectId: PropTypes.string.isRequired,
-  modelId: PropTypes.string.isRequired,
   moduleName: PropTypes.string.isRequired,
 }
 

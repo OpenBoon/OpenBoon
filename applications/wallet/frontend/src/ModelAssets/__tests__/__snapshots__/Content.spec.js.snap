@@ -7,6 +7,7 @@ Array [
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
+  padding-top: 8px;
   padding-bottom: 16px;
 }
 
@@ -17,40 +18,38 @@ Array [
     574
   </h3>,
   .emotion-0 {
-  display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-  gap: 1px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
 }
 
 .emotion-1 {
   position: relative;
   border: 4px solid transparent;
-  width: 100%;
-  height: 100%;
+  width: 150px;
+  height: 150px;
 }
 
 .emotion-1:hover {
   border: 4px solid #ffffff;
 }
 
+.emotion-1:hover button {
+  opacity: 1;
+}
+
 .emotion-2 {
-  width: 100%;
-  height: 100%;
-  min-width: 100%;
   padding-bottom: 100%;
   position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
   background: #2e2e2e;
 }
 
@@ -60,6 +59,51 @@ Array [
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  color: white;
+  opacity: 0;
+  padding: 8px;
+  background-color: #3b3b3b80;
+  border-radius: 2px;
+}
+
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
 }
 
 <div
@@ -75,6 +119,18 @@ Array [
           className="emotion-3"
           src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
         />
+        <button
+          aria-label="Remove from set"
+          className="emotion-4"
+          onClick={[Function]}
+          title="Remove from set"
+          type="button"
+        >
+          <svg
+            data-file-name="cross.svg"
+            height={20}
+          />
+        </button>
       </div>
     </div>
     <div
@@ -87,6 +143,18 @@ Array [
           className="emotion-3"
           src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
         />
+        <button
+          aria-label="Remove from set"
+          className="emotion-4"
+          onClick={[Function]}
+          title="Remove from set"
+          type="button"
+        >
+          <svg
+            data-file-name="cross.svg"
+            height={20}
+          />
+        </button>
       </div>
     </div>
     <div
@@ -99,6 +167,18 @@ Array [
           className="emotion-3"
           src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
         />
+        <button
+          aria-label="Remove from set"
+          className="emotion-4"
+          onClick={[Function]}
+          title="Remove from set"
+          type="button"
+        >
+          <svg
+            data-file-name="cross.svg"
+            height={20}
+          />
+        </button>
       </div>
     </div>
     <div
@@ -111,6 +191,18 @@ Array [
           className="emotion-3"
           src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
         />
+        <button
+          aria-label="Remove from set"
+          className="emotion-4"
+          onClick={[Function]}
+          title="Remove from set"
+          type="button"
+        >
+          <svg
+            data-file-name="cross.svg"
+            height={20}
+          />
+        </button>
       </div>
     </div>
     <div
@@ -123,7 +215,517 @@ Array [
           className="emotion-3"
           src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
         />
+        <button
+          aria-label="Remove from set"
+          className="emotion-4"
+          onClick={[Function]}
+          title="Remove from set"
+          type="button"
+        >
+          <svg
+            data-file-name="cross.svg"
+            height={20}
+          />
+        </button>
       </div>
+    </div>
+  </div>,
+  <div>
+     
+  </div>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-left: 64px;
+  padding-right: 64px;
+}
+
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited,
+.emotion-3 .noop {
+  background-color: #808080;
+}
+
+.emotion-3:hover,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  margin-right: 8px;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
+  background-color: #808080;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-6 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
+  background-color: #808080;
+}
+
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-8 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-10 {
+  padding: 8px;
+  margin-left: 8px;
+  text-align: center;
+  width: 2.5ch;
+  box-sizing: content-box;
+  border-radius: 2px;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 2px solid transparent;
+  -moz-appearance: textfield;
+}
+
+.emotion-10:hover {
+  border: 2px solid #ffffff;
+}
+
+.emotion-10:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-10::-webkit-outer-spin-button,
+.emotion-10::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 8px;
+  padding-right: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-12 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited,
+.emotion-12 .noop {
+  background-color: #808080;
+}
+
+.emotion-12:hover,
+.emotion-12 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-12[aria-disabled=true],
+.emotion-12 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-13 {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.emotion-14 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-left: 8px;
+}
+
+.emotion-14,
+.emotion-14:hover,
+.emotion-14:visited,
+.emotion-14 .noop {
+  background-color: #808080;
+}
+
+.emotion-14:hover,
+.emotion-14 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-14[aria-disabled=true],
+.emotion-14 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-15 {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    />
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-3"
+        href="/undefined?page=2"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        rel="next"
+      >
+        Next
+      </a>
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <button
+        aria-disabled={true}
+        aria-label="First page"
+        className="emotion-5"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        rel="prev"
+        title="First page"
+        type="button"
+      >
+        <svg
+          className="emotion-6"
+          data-file-name="doubleChevron.svg"
+          height={16}
+        />
+      </button>
+      <button
+        aria-disabled={true}
+        aria-label="Previous page"
+        className="emotion-7"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        rel="prev"
+        title="Previous page"
+        type="button"
+      >
+        <svg
+          className="emotion-8"
+          data-file-name="chevron.svg"
+          height={16}
+        />
+      </button>
+      <form
+        action=""
+        className="emotion-9"
+        method="get"
+        onSubmit={[Function]}
+      >
+        <input
+          aria-label="Go to page"
+          className="emotion-10"
+          max={18}
+          min="1"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          type="number"
+          value="1"
+        />
+      </form>
+      <div
+        className="emotion-11"
+      >
+        of 
+        18
+      </div>
+      <a
+        aria-label="Next page"
+        className="emotion-12"
+        href="/undefined?page=2"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        rel="next"
+        title="Next page"
+      >
+        <svg
+          className="emotion-13"
+          data-file-name="chevron.svg"
+          height={16}
+        />
+      </a>
+      <a
+        aria-label="Last page"
+        className="emotion-14"
+        href="/undefined?page=18"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        rel="next"
+        title="Last page"
+      >
+        <svg
+          className="emotion-15"
+          data-file-name="doubleChevron.svg"
+          height={16}
+        />
+      </a>
     </div>
   </div>,
 ]
@@ -136,6 +738,7 @@ Array [
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
+  padding-top: 8px;
   padding-bottom: 16px;
 }
 
@@ -145,9 +748,18 @@ Array [
     Number of Assets: 
   </h3>,
   .emotion-0 {
-  display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-  gap: 1px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
 }
 
 <div

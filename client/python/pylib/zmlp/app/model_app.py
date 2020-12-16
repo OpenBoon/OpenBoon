@@ -1,7 +1,7 @@
 import os
 import logging
 
-from ..entity import Model, Job, ModelTypeInfo
+from ..entity import Model, Job, ModelTypeInfo, StoredFile
 from ..util import as_collection, as_id
 from ..training import TrainingSetDownloader
 
@@ -129,6 +129,23 @@ class ModelApp:
             "jobId": os.environ.get("ZMLP_JOB_ID")
         }
         return Job(self.app.client.post(f'/api/v3/models/{mid}/_deploy', body))
+
+    def upload_custom_model(self, model, zip_file_path):
+        """
+        Uploads a directory containing a Pytorch or Tensorflow model.   The zip file
+        must contain the model binary files and a labels.txt file.  See the docs
+        on prepping the model zip file for upload.
+
+        Args:
+            model (Model): The Model or te unique Model ID.
+            zip_file_path (str): The path to the zip file.
+
+        Returns:
+            StoredFile: The StoredFile record of the model.
+        """
+        mid = as_id(model)
+        return StoredFile(
+            self.app.client.send_file(f'/api/v3/models/{mid}/_upload', zip_file_path))
 
     def get_label_counts(self, model):
         """

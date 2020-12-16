@@ -16,7 +16,7 @@
         <java.version>1.8</java.version>
         <elasticsearch.version>7.6.2</elasticsearch.version>
         <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
-        <kotlin.version>1.4.10</kotlin.version>
+        <kotlin.version>1.4.20</kotlin.version>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
     </properties>
 
@@ -67,13 +67,13 @@
             <dependency>
                 <groupId>com.google.cloud</groupId>
                 <artifactId>google-cloud-storage</artifactId>
-                <version>1.107.0</version>
+                <version>1.113.6</version>
             </dependency>
 
             <dependency>
                 <groupId>com.google.cloud</groupId>
                 <artifactId>google-cloud-pubsub</artifactId>
-                <version>1.105.0</version>
+                <version>1.110.1</version>
             </dependency>
 
             <dependency>
@@ -103,7 +103,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.9</version>
+                <version>3.11</version>
             </dependency>
 
             <dependency>

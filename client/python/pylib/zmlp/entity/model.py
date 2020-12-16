@@ -29,6 +29,9 @@ class ModelType(Enum):
     GCP_LABEL_DETECTION = 4
     """Train a Google AutoML vision model."""
 
+    CUSTOM_TENSORFLOW = 5
+    """Provide your own custom tensorflow model"""
+
 
 class LabelScope(Enum):
     """

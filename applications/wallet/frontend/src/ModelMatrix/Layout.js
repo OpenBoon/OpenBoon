@@ -6,6 +6,8 @@ import matrix from './__mocks__/matrix'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import RadioGroup from '../Radio/Group'
+
 import Button, { VARIANTS } from '../Button'
 
 import PreviewSvg from '../Icons/preview.svg'
@@ -30,6 +32,7 @@ const ModelMatrixLayout = () => {
       <div
         css={{
           display: 'flex',
+          alignItems: 'center',
           padding: spacing.normal,
           borderBottom: constants.borders.regular.coal,
           fontSize: typography.size.medium,
@@ -46,6 +49,32 @@ const ModelMatrixLayout = () => {
           Overall Accuracy:
         </span>
         98%
+        <form
+          method="post"
+          onSubmit={(event) => event.preventDefault()}
+          css={{ paddingLeft: spacing.spacious }}
+        >
+          <RadioGroup
+            legend="View"
+            options={[
+              {
+                value: 'normalized',
+                label: 'Normalized',
+                legend: '',
+                initialValue: settings.isNormalized,
+              },
+              {
+                value: 'absolute',
+                label: 'Absolute',
+                legend: '',
+                initialValue: !settings.isNormalized,
+              },
+            ]}
+            onClick={({ value }) =>
+              dispatch({ isNormalized: value === 'normalized' })
+            }
+          />
+        </form>
       </div>
 
       <div

@@ -43,6 +43,16 @@ interface IndexRouteDao {
     fun getAll(): List<IndexRoute>
 
     /**
+     * Return a list of all [IndexRoute]s, which are open.
+     */
+    fun getOpen(): List<IndexRoute>
+
+    /**
+     * Return a list of all [IndexRoute]s, which are open by cluster.
+     */
+    fun getOpen(cluster: IndexCluster): List<IndexRoute>
+
+    /**
      * Return a list of all [IndexRoute]s by cluster.
      */
     fun getAll(cluster: IndexCluster): List<IndexRoute>
@@ -124,6 +134,14 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
 
     override fun getAll(): List<IndexRoute> {
         return jdbc.query(GET, MAPPER)
+    }
+
+    override fun getOpen(): List<IndexRoute> {
+        return jdbc.query(GET_OPEN, MAPPER)
+    }
+
+    override fun getOpen(cluster: IndexCluster): List<IndexRoute> {
+        return jdbc.query("$GET_OPEN AND index_cluster.pk_index_cluster=?", MAPPER, cluster.id)
     }
 
     override fun getAll(cluster: IndexCluster): List<IndexRoute> {
@@ -237,6 +255,14 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             "index_route " +
             "JOIN " +
             "index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster)"
+
+        const val GET_OPEN = "SELECT index_cluster.str_url, index_route.* " +
+            "FROM " +
+            "index_route " +
+            "JOIN " +
+            "index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster) " +
+            "AND " +
+            "index_route.int_state=0"
 
         const val GET_PROJECT_DEFAULT = "SELECT index_cluster.str_url, index_route.* " +
             "FROM " +

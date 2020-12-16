@@ -1,7 +1,0 @@
-{
-  "query": {
-    "terms": {
-      "source.filename": "bob.jpg"
-    }
-  }
-}

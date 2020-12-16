@@ -59,3 +59,13 @@ class ZmlpDataSourceAppTests(unittest.TestCase):
         job = self.app.datasource.import_files(DataSource({'id': '123'}))
         assert value['id'] == job.id
         assert value['name'] == job.name
+
+    @patch.object(ZmlpClient, 'delete')
+    def test_delete_ds(self, post_patch):
+        value = {'type': 'DataSource',
+                 'id': 'bfdb2d1c-597f-16a9-b0a9-0242ac15000a',
+                 'op': 'delete', 'success': True}
+        post_patch.return_value = value
+        rsp = self.app.datasource.delete_datasource(DataSource({'id': '123'}))
+        assert value['id'] == rsp['id']
+        assert value['type'] == 'DataSource'
