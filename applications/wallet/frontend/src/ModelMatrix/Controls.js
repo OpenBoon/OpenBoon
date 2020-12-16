@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import { formatValue, parseValue } from '../FilterRange/helpers'
+import { parseValue } from '../FilterRange/helpers'
 
 import RadioGroup from '../Radio/Group'
 
