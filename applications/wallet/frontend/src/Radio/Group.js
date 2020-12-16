@@ -9,6 +9,7 @@ const RadioGroup = ({ legend, options, onClick }) => {
     <fieldset
       css={{
         display: 'flex',
+        alignItems: 'center',
         border: 'none',
         padding: 0,
         margin: 0,

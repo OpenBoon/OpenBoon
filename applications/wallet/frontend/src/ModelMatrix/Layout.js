@@ -6,14 +6,13 @@ import matrix from './__mocks__/matrix'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import RadioGroup from '../Radio/Group'
-
 import Button, { VARIANTS } from '../Button'
 
 import PreviewSvg from '../Icons/preview.svg'
 
 import { INITIAL_STATE, reducer } from './reducer'
 
+import ModelMatrixControls from './Controls'
 import ModelMatrixTable from './Table'
 import ModelMatrixLabels from './Labels'
 
@@ -49,32 +48,11 @@ const ModelMatrixLayout = () => {
           Overall Accuracy:
         </span>
         98%
-        <form
-          method="post"
-          onSubmit={(event) => event.preventDefault()}
-          css={{ paddingLeft: spacing.spacious }}
-        >
-          <RadioGroup
-            legend="View"
-            options={[
-              {
-                value: 'normalized',
-                label: 'Normalized',
-                legend: '',
-                initialValue: settings.isNormalized,
-              },
-              {
-                value: 'absolute',
-                label: 'Absolute',
-                legend: '',
-                initialValue: !settings.isNormalized,
-              },
-            ]}
-            onClick={({ value }) =>
-              dispatch({ isNormalized: value === 'normalized' })
-            }
-          />
-        </form>
+        <ModelMatrixControls
+          matrix={matrix}
+          settings={settings}
+          dispatch={dispatch}
+        />
       </div>
 
       <div
