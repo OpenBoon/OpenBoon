@@ -34,13 +34,13 @@ describe('Visualizer', function () {
 
       cy.get('label').contains('Model').children().children().select('console')
 
+      cy.get('label').contains('Scope').children().children().select('Test')
+
       cy.get('label')
         .contains('Label')
         .children()
         .type(`Cypress-${now}`)
         .type('{enter}')
-
-      cy.get('label').contains('Scope').children().children().select('Test')
 
       /**
        * Update
@@ -57,6 +57,21 @@ describe('Visualizer', function () {
       /**
        * Delete
        */
+      cy.get('td').contains(`Cypress-${now}-again`).next().next().click()
+
+      cy.contains('Delete Label').click()
+
+      cy.contains('Delete Permanently').click()
+
+      cy.contains(`Cypress-${now}-again`).should('not.exist')
+
+      /*
+       * Keyboard shortcut
+       */
+      cy.contains('Save Label').type('{rightarrow}')
+
+      cy.contains('Save Label').type('s')
+
       cy.get('td').contains(`Cypress-${now}-again`).next().next().click()
 
       cy.contains('Delete Label').click()
