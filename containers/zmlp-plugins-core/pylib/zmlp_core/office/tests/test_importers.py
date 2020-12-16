@@ -103,7 +103,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     @patch.object(OfficeImporter, 'get_metadata', return_value={'length': 3})
     @patch.object(OfficerClient, 'render', return_value='/fake')
     @patch.object(OfficerClient, 'wait_for_rendering', return_value=None)
-    def test_process_expands_children(self, _, __, expand_patch, ___, ____):
+    def test_process_expands_children(self, _, __, ___, expand_patch, ____):
         processor = self.init_processor(OfficeImporter(), {"extract_doc_pages": True})
         processor.process(Frame(self.asset))
         assert expand_patch.call_count == 2
