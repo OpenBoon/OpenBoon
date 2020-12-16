@@ -36,8 +36,6 @@ exports[`<Radio /> should render properly checked 1`] = `
   position: absolute;
   width: 8px;
   height: 8px;
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
   opacity: 100;
   border-radius: 16px;
   background-color: #73b61c;
@@ -46,6 +44,7 @@ exports[`<Radio /> should render properly checked 1`] = `
 .emotion-4 {
   padding-left: 8px;
   font-weight: 700;
+  color: #ffffff;
 }
 
 .emotion-5 {
@@ -63,6 +62,7 @@ exports[`<Radio /> should render properly checked 1`] = `
         className="emotion-2"
         defaultChecked={true}
         id="radio"
+        onClick={[Function]}
         type="radio"
         value="radio"
       />
@@ -113,15 +113,13 @@ exports[`<Radio /> should render properly unchecked 1`] = `
   border-radius: 16px;
   width: 16px;
   height: 16px;
-  border: 1px solid #ffffff;
+  border: 1px solid #808080;
 }
 
 .emotion-3 {
   position: absolute;
   width: 8px;
   height: 8px;
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
   opacity: 100;
   border-radius: 16px;
   background-color: none;
@@ -130,6 +128,7 @@ exports[`<Radio /> should render properly unchecked 1`] = `
 .emotion-4 {
   padding-left: 8px;
   font-weight: 700;
+  color: #808080;
 }
 
 .emotion-5 {
@@ -147,6 +146,7 @@ exports[`<Radio /> should render properly unchecked 1`] = `
         className="emotion-2"
         defaultChecked={false}
         id="radio"
+        onClick={[Function]}
         type="radio"
         value="radio"
       />

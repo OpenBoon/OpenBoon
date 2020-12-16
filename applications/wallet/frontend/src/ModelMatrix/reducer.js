@@ -5,6 +5,7 @@ export const INITIAL_STATE = {
   zoom: 1,
   isMinimapOpen: true,
   isPreviewOpen: false,
+  isNormalized: true,
 }
 
 export const reducer = (state, action) => ({ ...state, ...action })
