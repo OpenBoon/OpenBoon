@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 
 import sentry_sdk
+from django.http import JsonResponse
+from rest_framework import status
 from sentry_sdk.integrations.django import DjangoIntegration
 
 VERSION = '0.1.0'
@@ -151,7 +153,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Add the django-axes authentication backend and configure.
+def axes_lockout_callable(request, credentials):
+    message = ('This account has been locked due to too many failed login attempts. '
+               'Please contact support to unlock your account.')
+    return JsonResponse(data={'detail': [message]}, status=status.HTTP_423_LOCKED)
+
+
+AXES_LOCKOUT_CALLABLE = axes_lockout_callable
 AXES_META_PRECEDENCE_ORDER = ['HTTP_X_FORWARDED_FOR']
 AXES_FAILURE_LIMIT = 5
 AUTHENTICATION_BACKENDS = [
