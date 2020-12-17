@@ -557,7 +557,7 @@ zmlp-deploy-prod:
 
 # Kotlin services - Unit tests - Step 1
 zmlp-services-build-artifacts:
-  image: maven:3.6.2-jdk-11-slim
+  image: maven:3.6.3-jdk-11-slim
   stage: build
   script:
     - cd services/elasticsearch
