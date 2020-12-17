@@ -25,15 +25,13 @@ class RekognitionFaceDetectionProcessorTests(PluginUnitTestCase):
         processor.process(frame)
 
         analysis = frame.asset.get_analysis('aws-ppe-detection')
-        assert 'person0' in get_prediction_labels(analysis)
+        assert 'FACE_COVER' in get_prediction_labels(analysis)
         assert analysis['predictions'][0]['bbox'] == [
             0.5334620475769043,
             0.18087884783744812,
             0.5812848322093487,
             0.24308180063962936
         ]
-        assert analysis['predictions'][0]['body_part'] == 'FACE'
-        assert analysis['predictions'][0]['type'] == 'FACE_COVER'
 
 
 class MockAWSClient:

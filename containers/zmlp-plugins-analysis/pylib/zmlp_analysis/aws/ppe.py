@@ -29,10 +29,11 @@ class RekognitionPPEDetection(AssetProcessor):
         """
         asset = frame.asset
         proxy_path = get_proxy_level_path(asset, 0)
-        analysis = LabelDetectionAnalysis(min_score=0.01, collapse_labels=True)
+        # If we were doing video we would collapse labels.
+        analysis = LabelDetectionAnalysis(min_score=0.01, collapse_labels=False)
 
         for ls in self.predict(proxy_path):
-            analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2], body_part=ls[3], type=ls[4])
+            analysis.add_label_and_score(ls[4], ls[1], bbox=ls[2])
 
         asset.add_analysis(self.namespace, analysis)
 
