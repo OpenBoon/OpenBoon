@@ -2,6 +2,8 @@ import TestRenderer from 'react-test-renderer'
 
 import Radio from '..'
 
+const noop = () => () => {}
+
 describe('<Radio />', () => {
   it('should render properly unchecked', () => {
     const component = TestRenderer.create(
@@ -12,6 +14,7 @@ describe('<Radio />', () => {
           legend: 'radioLegend',
           initialValue: false,
         }}
+        onClick={noop}
       />,
     )
 
@@ -27,6 +30,7 @@ describe('<Radio />', () => {
           legend: 'radioLegend',
           initialValue: true,
         }}
+        onClick={noop}
       />,
     )
 

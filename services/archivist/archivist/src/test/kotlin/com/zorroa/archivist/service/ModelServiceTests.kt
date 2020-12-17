@@ -20,6 +20,8 @@ import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
+import java.io.FileInputStream
+import java.nio.file.Paths
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
@@ -329,6 +331,32 @@ class ModelServiceTests : AbstractTest() {
         val counts = modelService.getLabelCounts(model)
         assertTrue(counts.isEmpty())
         assertNull(pipelineModService.findByName(model.moduleName, false))
+    }
+
+    @Test
+    fun testValidateTensorflowModelUpload() {
+        modelService.validateTensorflowModel(
+            Paths.get(
+                "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
+            )
+        )
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testValidateTensorflowModelUploadFail() {
+        modelService.validateTensorflowModel(Paths.get("../../../test-data/training/pets.zip"))
+    }
+
+    @Test
+    fun testAcceptModelFileUpload() {
+        val model = create(type = ModelType.KERAS_IMAGE_CLASSIFIER)
+        val mfp = Paths.get(
+            "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
+        )
+
+        val locator = modelService.acceptModelFileUpload(model, FileInputStream(mfp.toFile()))
+        assertEquals("model", locator.category)
+        assertEquals("model.zip", locator.name)
     }
 
     fun assertModel(model: Model) {

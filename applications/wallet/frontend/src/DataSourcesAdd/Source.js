@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { spacing } from '../Styles'
 
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
-import Select from '../Select'
+import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
 
 export const SOURCES = {
   AWS: {
@@ -80,6 +80,7 @@ const DataSourcesAddSource = ({
             errors: { ...stateErrors, uri: '' },
           })
         }}
+        variant={SELECT_VARIANTS.COLUMN}
         isRequired
       />
       &nbsp;

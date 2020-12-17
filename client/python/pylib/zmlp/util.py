@@ -2,6 +2,8 @@ import functools
 import re
 import uuid
 import decimal
+import zipfile
+import os
 
 
 def is_valid_uuid(val):
@@ -142,3 +144,31 @@ def round_all(items, precision=3):
         list: A rounded list.
     """
     return [round(i, precision) for i in items]
+
+
+def zip_directory(src_dir, dst_file, zip_root_name=""):
+    """
+    A utility function for ziping a directory of files.
+
+    Args:
+        src_dir (str): The source directory.
+        dst_file (str): The destination file.s
+        zip_root_name (str): A optional root directory to place files in the zip.
+    Returns:
+        str: The dst file.
+
+    """
+
+    def zipdir(path, ziph, root_name):
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                if file == ".DS_Store":
+                    continue
+                zip_entry = os.path.join(root_name, root.replace(path, ""), file)
+                ziph.write(os.path.join(root, file), zip_entry)
+
+    src_dir = os.path.abspath(src_dir)
+    zipf = zipfile.ZipFile(dst_file, 'w', zipfile.ZIP_DEFLATED)
+    zipdir(src_dir + '/', zipf, zip_root_name)
+    zipf.close()
+    return dst_file
