@@ -86,7 +86,7 @@ describe('<ModelMatrixControls', () => {
     expect(mockDispatch).toHaveBeenCalledWith({ minScore: 0.1 })
   })
 
-  it('should let a use input a max', () => {
+  it('should let a user input a max', () => {
     const mockDispatch = jest.fn()
 
     const component = TestRenderer.create(
