@@ -112,7 +112,7 @@ enum class ModelType(
         true,
         false
     ),
-    TF2_IMAGE_CLASSIFIER(
+    KERAS_IMAGE_CLASSIFIER(
         "Tensorflow Image Classifier",
         "zmlp_train.automl.AutoMLModelTrainer",
         mapOf(),

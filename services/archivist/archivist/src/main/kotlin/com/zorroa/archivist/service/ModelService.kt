@@ -462,7 +462,7 @@ class ModelServiceImpl(
         Files.copy(inputStream, tmpFile, StandardCopyOption.REPLACE_EXISTING)
 
         try {
-            if (model.type == ModelType.TF2_IMAGE_CLASSIFIER) {
+            if (model.type == ModelType.KERAS_IMAGE_CLASSIFIER) {
                 validateTensorflowModel(tmpFile)
             }
 

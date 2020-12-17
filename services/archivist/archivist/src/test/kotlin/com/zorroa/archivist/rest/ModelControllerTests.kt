@@ -258,7 +258,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testUploadModel() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.CUSTOM_TENSORFLOW)
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.KERAS_IMAGE_CLASSIFIER)
         val model = modelService.createModel(modelSpec)
 
         val mfp = Paths.get(
