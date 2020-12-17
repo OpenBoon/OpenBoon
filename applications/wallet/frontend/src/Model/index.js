@@ -6,6 +6,7 @@ import { spacing } from '../Styles'
 import Breadcrumbs from '../Breadcrumbs'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
+
 import LabelEdit from '../LabelEdit'
 
 import ModelDetails from './Details'
@@ -34,6 +35,8 @@ const Model = () => {
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
             {action === 'edit-label-success' && 'Label updated.'}
             {action === 'delete-label-success' && 'Label deleted.'}
+            {action === 'remove-asset-success' &&
+              'Asset has been removed from set.'}
           </FlashMessage>
         </div>
       )}
@@ -41,7 +44,7 @@ const Model = () => {
       <SuspenseBoundary role={ROLES.ML_Tools}>
         <ModelDetails key={pathname} />
 
-        {edit && (
+        {pathname === '/[projectId]/models/[modelId]' && edit && (
           <LabelEdit projectId={projectId} modelId={modelId} label={edit} />
         )}
       </SuspenseBoundary>

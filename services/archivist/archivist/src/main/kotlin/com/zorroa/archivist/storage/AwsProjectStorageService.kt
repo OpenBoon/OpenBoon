@@ -91,13 +91,13 @@ class AwsProjectStorageService constructor(
         val path = spec.locator.getPath()
         val metadata = ObjectMetadata()
         metadata.contentType = spec.mimetype
-        metadata.contentLength = spec.data.size.toLong()
+        metadata.contentLength = spec.size.toLong()
         metadata.userMetadata = mapOf("attrs" to Json.serializeToString(spec.attrs))
 
         s3Client.putObject(
             PutObjectRequest(
                 properties.bucket, path,
-                spec.data.inputStream(), metadata
+                spec.stream, metadata
             )
         )
 
@@ -108,7 +108,7 @@ class AwsProjectStorageService constructor(
             spec.locator.name,
             spec.locator.category,
             spec.mimetype,
-            spec.data.size.toLong(),
+            spec.size.toLong(),
             spec.attrs
         )
     }
@@ -142,6 +142,10 @@ class AwsProjectStorageService constructor(
     }
 
     override fun getNativeUri(locator: ProjectStorageLocator): String {
+        return "s3://${properties.bucket}/${locator.getPath()}"
+    }
+
+    override fun getNativeUri(locator: ProjectDirLocator): String {
         return "s3://${properties.bucket}/${locator.getPath()}"
     }
 

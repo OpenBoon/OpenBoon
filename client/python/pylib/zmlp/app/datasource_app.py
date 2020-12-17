@@ -14,7 +14,7 @@ class DataSourceApp(object):
         Args:
             name (str): The name of the data source.
             uri (str): The URI where the data can be found.
-            modules (list): A list of PipelineMods names to apply to the data.
+            modules (list): A list of AnalysisModules names to apply to the data.
             file_types (list of str): a list of file extensions or general types like
                 'images', 'videos', 'documents'. Defaults to all file types.
             credentials (list of str): A list of pre-created credentials blob names.
@@ -70,3 +70,21 @@ class DataSourceApp(object):
         }
         url = '/api/v1/data-sources/{}/_import'.format(ds.id)
         return Job(self.app.client.post(url, body))
+
+    def delete_datasource(self, ds, remove_assets=False):
+        """
+        Delete the given datasource.  If remove_assets is true, then all
+        assets that were imported with a datasource are removed as well.  This
+        cannot be undone.
+
+        Args:
+            ds (DataSource): A DataSource object or the name of a data source.
+            remove_assets (bool): Set to true if Assets should be deleted as well.
+        Returns:
+            dict: Status object
+        """
+        body = {
+            'deleteAssets': remove_assets
+        }
+        url = '/api/v1/data-sources/{}'.format(ds.id)
+        return self.app.client.delete(url, body)

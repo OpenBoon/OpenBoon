@@ -18,7 +18,11 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
 
     def setUp(self):
         self.path = Path(zorroa_test_path('office/test_document.docx'))
-        self.asset = TestAsset(str(self.path))
+        self.asset = TestAsset(str(self.path), id="qwerty1")
+        os.environ['ZMLP_JOB_ID'] = "abc123"
+
+    def tearDown(self):
+        del os.environ['ZMLP_JOB_ID']
 
     @patch.object(OfficerClient, 'get_cache_location', return_value=None)
     def test_bad_extension(self, _):
@@ -48,7 +52,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     def test_render_pagesno_clip_page_1(self, _, __, ___):
         processor = self.init_processor(OfficeImporter(), {})
         processor.render_pages(self.asset, 1, False)
-        assert self.asset.get_attr('tmp.proxy_source_image') == '/fake/proxy.1.jpg'
+        assert self.asset.get_attr('tmp.proxy_source_image') \
+               == 'zmlp://job/abc123/officer/qwerty1_proxy.1.jpg'
 
     @patch('zmlp_core.office.importers.OfficeImporter.get_metadata', return_value={})
     @patch.object(OfficerClient, 'get_cache_location', return_value=None)
@@ -56,14 +61,16 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     def test_render_page_clip_page_2_not_exist(self, _, __, ___):
         processor = self.init_processor(OfficeImporter(), {})
         processor.render_pages(self.asset, 2, False)
-        assert self.asset.get_attr('tmp.proxy_source_image') == '/fake/proxy.2.jpg'
+        assert self.asset.get_attr('tmp.proxy_source_image') \
+               == 'zmlp://job/abc123/officer/qwerty1_proxy.2.jpg'
 
     @patch('zmlp_core.office.importers.OfficeImporter.get_metadata', return_value={})
     @patch.object(OfficerClient, 'get_cache_location', return_value="/cached")
     def test_render_page_clip_cached(self, _, __):
         processor = self.init_processor(OfficeImporter(), {})
         processor.render_pages(self.asset, 3, False)
-        assert self.asset.get_attr('tmp.proxy_source_image') == '/cached/proxy.3.jpg'
+        assert self.asset.get_attr('tmp.proxy_source_image') == \
+               'zmlp://job/abc123/officer/qwerty1_proxy.3.jpg'
 
     @patch.object(OfficeImporter, 'get_metadata',
                   return_value={'author': 'Zach', 'content': 'temp'})
@@ -105,12 +112,6 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         assert md['type'] == 'document'
         assert md['length'] == 6
 
-    def test_get_image_uri(self):
-        processor = self.init_processor(OfficeImporter())
-        md = processor.get_image_uri("zmlp://ml-storage/tmp-files/officer/foo/bar", 1)
-        assert md.startswith("zmlp://")
-        assert md.endswith('proxy.1.jpg')
-
     @patch.object(OfficerClient, '_get_render_request_body', return_value={})
     @patch.object(OfficerClient, 'render')
     @patch.object(OfficerClient, 'get_cache_location', return_value=None)
@@ -127,7 +128,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         processor = self.init_processor(OfficeImporter(), {})
         output_uri = processor.render_pages(self.asset, 1, True)
         assert 'zmlp://foo/bar' == output_uri
-        assert self.asset["tmp.proxy_source_image"] == 'zmlp://foo/bar/proxy.1.jpg'
+        assert self.asset["tmp.proxy_source_image"] == \
+               'zmlp://job/abc123/officer/qwerty1_proxy.1.jpg'
 
     @patch.object(OfficerClient, 'get_cache_location', return_value=None)
     @patch.object(OfficeImporter, 'expand')

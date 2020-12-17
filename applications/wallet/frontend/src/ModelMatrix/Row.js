@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import { colors, constants, spacing, typography } from '../Styles'
@@ -6,20 +7,29 @@ import { useScroller } from '../Scroll/helpers'
 
 import { getColor } from './helpers'
 
-export const LABELS_WIDTH = 100
 const CONTRAST_THRESHOLD = 69
 
-const ModelMatrixRow = ({ matrix, cellDimension, label, index }) => {
+const ModelMatrixRow = ({ matrix, settings, label, index }) => {
   const rowRef = useScroller({
     namespace: 'ModelMatrixHorizontal',
     isWheelEmitter: true,
     isWheelListener: true,
+    isScrollEmitter: true,
   })
+
+  /* istanbul ignore next */
+  useEffect(() => {
+    setTimeout(() => {
+      rowRef.current.dispatchEvent(new Event('scroll'))
+    }, 0)
+  }, [settings.zoom, rowRef])
 
   const rowTotal = matrix.matrix[index].reduce(
     (previous, current) => previous + current,
     0,
   )
+
+  const cellDimension = (settings.height / matrix.labels.length) * settings.zoom
 
   return (
     <div
@@ -31,7 +41,7 @@ const ModelMatrixRow = ({ matrix, cellDimension, label, index }) => {
     >
       <div
         css={{
-          width: LABELS_WIDTH,
+          width: settings.labelsWidth,
           paddingLeft: spacing.normal,
           paddingRight: spacing.normal,
           display: 'flex',
@@ -100,7 +110,7 @@ const ModelMatrixRow = ({ matrix, cellDimension, label, index }) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  {Math.round(percent)}%
+                  {settings.isNormalized ? `${Math.round(percent)}%` : value}
                 </div>
               </div>
             </div>
@@ -118,7 +128,13 @@ ModelMatrixRow.propTypes = {
     labels: PropTypes.arrayOf(PropTypes.string).isRequired,
     matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   }).isRequired,
-  cellDimension: PropTypes.number.isRequired,
+  settings: PropTypes.shape({
+    height: PropTypes.number.isRequired,
+    labelsWidth: PropTypes.number.isRequired,
+    zoom: PropTypes.number.isRequired,
+    isMinimapOpen: PropTypes.bool.isRequired,
+    isNormalized: PropTypes.bool.isRequired,
+  }).isRequired,
   label: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
 }

@@ -99,10 +99,10 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
         Publish the model.
 
         Args:
-            classifier (KNeighborsClassifier): The Kmeans classificer instance.
+            classifier (KNeighborsClassifier): The Kmeans classifier instance.
 
         Returns:
-            PipelineMod: The published Pipeline Module.
+            AnalysisModule: The published Pipeline Module.
         """
         self.logger.info('publishing model')
         model_dir = os.path.join(tempfile.mkdtemp(), "model")

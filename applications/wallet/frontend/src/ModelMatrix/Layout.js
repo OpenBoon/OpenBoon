@@ -6,13 +6,15 @@ import matrix from './__mocks__/matrix'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import RadioGroup from '../Radio/Group'
+
 import Button, { VARIANTS } from '../Button'
 
 import PreviewSvg from '../Icons/preview.svg'
 
 import { INITIAL_STATE, reducer } from './reducer'
 
-import ModelMatrixTable, { LABELS_WIDTH } from './Table'
+import ModelMatrixTable from './Table'
 import ModelMatrixLabels from './Labels'
 
 const ModelMatrixLayout = () => {
@@ -30,6 +32,7 @@ const ModelMatrixLayout = () => {
       <div
         css={{
           display: 'flex',
+          alignItems: 'center',
           padding: spacing.normal,
           borderBottom: constants.borders.regular.coal,
           fontSize: typography.size.medium,
@@ -46,6 +49,32 @@ const ModelMatrixLayout = () => {
           Overall Accuracy:
         </span>
         98%
+        <form
+          method="post"
+          onSubmit={(event) => event.preventDefault()}
+          css={{ paddingLeft: spacing.spacious }}
+        >
+          <RadioGroup
+            legend="View"
+            options={[
+              {
+                value: 'normalized',
+                label: 'Normalized',
+                legend: '',
+                initialValue: settings.isNormalized,
+              },
+              {
+                value: 'absolute',
+                label: 'Absolute',
+                legend: '',
+                initialValue: !settings.isNormalized,
+              },
+            ]}
+            onClick={({ value }) =>
+              dispatch({ isNormalized: value === 'normalized' })
+            }
+          />
+        </form>
       </div>
 
       <div
@@ -107,7 +136,7 @@ const ModelMatrixLayout = () => {
                     matrix={matrix}
                     width={width}
                     height={height}
-                    zoom={settings.zoom}
+                    settings={settings}
                     dispatch={dispatch}
                   />
                 )}
@@ -148,8 +177,8 @@ const ModelMatrixLayout = () => {
               <div
                 css={{
                   paddingLeft: spacing.normal,
-                  width: LABELS_WIDTH,
-                  minWidth: LABELS_WIDTH,
+                  width: settings.labelsWidth,
+                  minWidth: settings.labelsWidth,
                   borderRight: constants.borders.regular.coal,
                 }}
               >

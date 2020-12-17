@@ -1,24 +1,54 @@
 package com.zorroa
 
+import com.google.cloud.storage.BlobId
+import com.google.cloud.storage.BlobInfo
+import com.google.cloud.storage.Storage
+import com.google.cloud.storage.StorageException
+import com.google.cloud.storage.StorageOptions
 import io.minio.MinioClient
 import io.minio.errors.ErrorResponseException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.BufferedInputStream
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
 object StorageManager {
 
-    val logger: Logger = LoggerFactory.getLogger(StorageManager::class.java)
+    private var storageClient: StorageClient = when (Config.storageClient) {
+        "minio" -> MinioStorageClient()
+        "gcs" -> GcsStorageClient()
+        else -> MinioStorageClient()
+    }
+
+    fun storageClient(): StorageClient {
+        return storageClient
+    }
+}
+
+interface StorageClient {
+
+    fun store(path: String, inputStream: InputStream, size: Long, fileType: String)
+
+    fun fetch(path: String): InputStream
+
+    fun bucketExists(path: String): Boolean
+
+    fun exists(path: String): Boolean
+
+    fun delete(path: String)
+
+    fun bucket(): String
+}
+
+open class MinioStorageClient : StorageClient {
+
+    val logger: Logger = LoggerFactory.getLogger(MinioStorageClient::class.java)
 
     val minioClient = MinioClient(
         Config.bucket.url,
         Config.bucket.accessKey,
         Config.bucket.secretKey
     )
-    val bucket = Config.bucket.name
+    private val bucket = Config.bucket.name
 
     init {
         logger.info("Initializing ML Storage: {}", Config.bucket.url)
@@ -37,87 +67,96 @@ object StorageManager {
             }
         }
     }
-}
 
-/**
- * A ByteArrayOutputStream which provides an efficient way to
- * obtain a BufferedInputStream without copying the internal byte buffer.
- */
-class ReversibleByteArrayOutputStream(size: Int = 2048) : ByteArrayOutputStream(size) {
-
-    fun toInputStream(): InputStream {
-        return BufferedInputStream(ByteArrayInputStream(buf, 0, count))
-    }
-}
-
-/**
- * Manages render inputs and outputs.
- */
-class IOHandler(val options: RenderRequest) {
-
-    fun writeImage(page: Int, outputStream: ReversibleByteArrayOutputStream) {
-        StorageManager.minioClient.putObject(
-            StorageManager.bucket, getImagePath(page),
-            outputStream.toInputStream(), outputStream.size().toLong(), null, null,
-            "image/jpeg"
+    override fun store(path: String, inputStream: InputStream, size: Long, fileType: String) {
+        logger.info("Storing: {} {}", bucket, path.removePrefix("/"))
+        minioClient.putObject(
+            bucket, path.removePrefix("/"),
+            inputStream,
+            size,
+            null,
+            null,
+            fileType
         )
     }
 
-    fun writeMetadata(page: Int, outputStream: ReversibleByteArrayOutputStream) {
-        StorageManager.minioClient.putObject(
-            StorageManager.bucket, getMetadataPath(page),
-            outputStream.toInputStream(), outputStream.size().toLong(), null, null,
-            "application/json"
-        )
+    override fun fetch(path: String): InputStream {
+        return minioClient.getObject(Config.bucket.name, path)
     }
 
-    fun getImagePath(page: Int): String {
-        return "$PREFIX/${options.outputDir}/proxy.$page.jpg"
+    override fun bucketExists(path: String): Boolean {
+        return minioClient.bucketExists(bucket)
     }
 
-    fun getMetadataPath(page: Int): String {
-        return "$PREFIX/${options.outputDir}/metadata.$page.json"
-    }
-
-    fun getOutputUri(): String {
-        return "zmlp://${Config.bucket.name}/$PREFIX/${options.outputDir}"
-    }
-
-    fun getMetadata(page: Int = 1): InputStream {
-        return StorageManager.minioClient.getObject(Config.bucket.name, getMetadataPath(page))
-    }
-
-    fun getImage(page: Int = 1): InputStream {
-        return StorageManager.minioClient.getObject(Config.bucket.name, getImagePath(page))
-    }
-
-    fun exists(page: Int = 1): Boolean {
-        val path = getMetadataPath(page)
-        logger.info("Checking path: {}", path)
+    override fun exists(path: String): Boolean {
         return try {
-            StorageManager.minioClient.statObject(Config.bucket.name, path)
+            minioClient.statObject(Config.bucket.name, path.removePrefix("/"))
             true
         } catch (e: ErrorResponseException) {
-            logger.warn("Object does not exist: {}", path)
+            IOHandler.logger.warn("Object does not exist: {} / {}", Config.bucket.name, path)
             false
         }
     }
 
-    fun removeImage(page: Int = 1) {
-        StorageManager.minioClient.removeObject(Config.bucket.name, getImagePath(page))
+    override fun delete(path: String) {
+        minioClient.removeObject(Config.bucket.name, path)
     }
 
-    fun removeMetadata(page: Int = 1) {
-        StorageManager.minioClient.removeObject(Config.bucket.name, getMetadataPath(page))
+    override fun bucket(): String {
+        return bucket
+    }
+}
+
+open class GcsStorageClient(bucketName: String? = null) : StorageClient {
+
+    val gcs: Storage = StorageOptions.getDefaultInstance().service
+    private val bucket = bucketName ?: Config.bucket.name
+
+    override fun store(path: String, inputStream: InputStream, size: Long, fileType: String) {
+        val blobId = getBlobId(path.removePrefix("/"))
+        val info = BlobInfo.newBuilder(blobId)
+        info.setContentType(fileType)
+        gcs.create(info.build(), inputStream.readBytes())
+    }
+
+    override fun fetch(path: String): InputStream {
+        val blobId = getBlobId(path.removePrefix("/"))
+        val blob = gcs.get(blobId)
+        return blob.getContent().inputStream()
+    }
+
+    override fun bucketExists(path: String): Boolean {
+        try {
+            return gcs.get(path).exists()
+        } catch (ex: StorageException) {
+            logger.warn("Bucket $path does not exists")
+        }
+        return false
+    }
+
+    override fun exists(path: String): Boolean {
+        return try {
+            val blob = gcs.get(getBlobId(path))
+            blob?.exists() ?: false
+        } catch (e: StorageException) {
+            logger.warn("Failed to access $path to check exists", e)
+            false
+        }
+    }
+
+    override fun delete(path: String) {
+        gcs.delete(getBlobId(path))
+    }
+
+    override fun bucket(): String {
+        return bucket
+    }
+
+    fun getBlobId(path: String): BlobId {
+        return BlobId.of(bucket, path.removePrefix("/"))
     }
 
     companion object {
-        val logger: Logger = LoggerFactory.getLogger(IOHandler::class.java)
-
-        // The size of the pre-allocated by array for images.
-        val IMG_BUFFER_SIZE = 65536
-
-        // The object path prefix
-        val PREFIX = "tmp-files/officer"
+        val logger = LoggerFactory.getLogger(GcsStorageClient::class.java)
     }
 }

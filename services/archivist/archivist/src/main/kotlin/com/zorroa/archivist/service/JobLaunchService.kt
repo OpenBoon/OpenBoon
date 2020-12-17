@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.DataSource
+import com.zorroa.archivist.domain.DataSourceDelete
 import com.zorroa.archivist.domain.DataSourceImportOptions
 import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.Job
@@ -33,6 +34,11 @@ interface JobLaunchService {
      * Launch a process/reprocess of a DataSource.
      */
     fun launchJob(dataSource: DataSource, options: DataSourceImportOptions): Job
+
+    /**
+     * Delete Datasource assets job.
+     */
+    fun launchJob(dataSource: DataSource, options: DataSourceDelete): Job
 
     /**
      * Launch a job with a generator.
@@ -75,6 +81,31 @@ class JobLaunchServiceImpl(
     val jobService: JobService,
     val assetSearchService: AssetSearchService
 ) : JobLaunchService {
+
+    override fun launchJob(dataSource: DataSource, options: DataSourceDelete): Job {
+        val name = "Deleting assets from: ${dataSource.name}"
+
+        val script = ZpsScript(
+            name = name,
+            generate = null,
+            execute = listOf(
+                ProcessorRef(
+                    className = "zmlp_core.core.processors.DeleteBySearchProcessor",
+                    image = StandardContainers.CORE,
+                    args = mapOf("dataSourceId" to dataSource.id)
+                )
+            ),
+            assets = listOf(Asset())
+        )
+
+        // Disable indexing result
+        script.setSettting("index", false)
+        val spec = JobSpec(
+            name,
+            listOf(script)
+        )
+        return launchJob(spec)
+    }
 
     override fun launchJob(dataSource: DataSource, options: DataSourceImportOptions): Job {
         val gen = getGenerator(dataSource.uri)

@@ -8511,11 +8511,13 @@ Array [
   border-radius: 2px;
   border: none;
   width: 100%;
-  height: auto;
   color: #ffffff;
   font-size: 15px;
-  line-height: 19px;
+  line-height: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   padding-left: 12px;
+  padding-right: 32px;
   -moz-appearance: none;
   -webkit-appearance: none;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
@@ -8524,8 +8526,7 @@ Array [
   background-position: right 8px top 50%;
   -webkit-background-size: 20px;
   background-size: 20px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  height: auto;
 }
 
 .emotion-19 {

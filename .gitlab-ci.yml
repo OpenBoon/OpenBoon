@@ -331,26 +331,6 @@ plugin-container-tests:
       changes:
         - "**/*"
 
-sdk-java-unit-tests:
-  image: maven:3.6-jdk-11
-  stage: test
-  allow_failure: true
-  script:
-    - mvn test verify -f client/java -q
-  rules:
-    # Scheduled Pipelines
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    # MR to any branch that is not master with ZMLP changes
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
-      changes:
-        - "client/java/**/*"
-        - "containers/zmlp-plugins-base/**/*"
-    # MR to QA with any change
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
-      changes:
-        - "**/*"
-
 zmlp-dockerhub-build-push-latest:
   image: zmlp/docker-buildx
   stage: push
@@ -577,7 +557,7 @@ zmlp-deploy-prod:
 
 # Kotlin services - Unit tests - Step 1
 zmlp-services-build-artifacts:
-  image: maven:3.6.2-jdk-11-slim
+  image: maven:3.6.3-jdk-11-slim
   stage: build
   script:
     - cd services/elasticsearch
@@ -651,12 +631,10 @@ zmlp-services-unit-tests:
     ZMLP_STORAGE_PROJECT_ACCESSKEY: "qwerty123"
     ZMLP_STORAGE_PROJECT_SECRETKEY: "123qwerty"
     ZMLP_STORAGE_PROJECT_URL: "http://localhost:9000"
-    ZMLP_STORAGE_PIPELINE_ACCESSKEY: "qwerty123"
-    ZMLP_STORAGE_PIPELINE_SECRETKEY: "123qwerty"
-    ZMLP_STORAGE_PIPELINE_URL: "http://localhost:9000"
     ZMLP_STORAGE_SYSTEM_ACCESSKEY: "qwerty123"
     ZMLP_STORAGE_SYSTEM_SECRETKEY: "123qwerty"
     ZMLP_STORAGE_SYSTEM_URL: "http://localhost:9000"
+    ZMLP_STORAGE_CLIENT: "minio"
     MINIO_ACCESS_KEY: "qwerty123"
     MINIO_SECRET_KEY: "123qwerty"
     MXNET_OS: "linux"
@@ -667,16 +645,15 @@ zmlp-services-unit-tests:
     - export
     - IP="$(cat /etc/hosts |grep $HOSTNAME|cut -d$'\t' -f1)"
     - ARCHIVIST_ES_URL="http://${IP}:9200"
-    - ZMLP_STORAGE_PIPELINE_URL="http://${IP}:9000"
     - ZMLP_STORAGE_PROJECT_URL="http://${IP}:9000"
     - ZMLP_STORAGE_SYSTEM_URL="http://${IP}:9000"
     - mvn clean install -f lib/jvm-common -q -Dmaven.test.skip=true
     - mvn test verify -f lib/jvm-common -q
     - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true
+    - mvn test verify -f services/officer -q
     - mvn test verify -f services/archivist -q
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
     - mvn test verify -f services/auth-server -q
-    - mvn test verify -f services/officer -q
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'

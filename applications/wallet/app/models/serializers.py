@@ -3,8 +3,8 @@ from rest_framework import serializers
 
 class ModelSerializer(serializers.Serializer):
     id = serializers.UUIDField(required=False)
-    name = serializers.CharField(required=True)
-    type = serializers.CharField(required=True)
+    name = serializers.CharField()
+    type = serializers.CharField()
     moduleName = serializers.CharField(required=False)
     fileId = serializers.CharField(required=False)
     trainingJobName = serializers.CharField(required=False)
@@ -40,8 +40,8 @@ class ModelTypeSerializer(serializers.Serializer):
 
 
 class LabelSerializer(serializers.Serializer):
-    assetId = serializers.CharField(required=True)
-    label = serializers.CharField(required=True)
+    assetId = serializers.CharField()
+    label = serializers.CharField()
     bbox = serializers.ListField(default=None)
     simhash = serializers.CharField(default=None)
     scope = serializers.ChoiceField(choices=['TRAIN', 'TEST'], default='TRAIN')
@@ -61,9 +61,19 @@ class RemoveLabelsSerializer(serializers.Serializer):
 
 
 class RenameLabelSerializer(serializers.Serializer):
-    label = serializers.CharField(required=True)
-    newLabel = serializers.CharField(required=True)
+    label = serializers.CharField()
+    newLabel = serializers.CharField()
 
 
 class DestroyLabelSerializer(serializers.Serializer):
-    label = serializers.CharField(required=True)
+    label = serializers.CharField()
+
+
+class ConfusionMatrixSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    labels = serializers.ListField(child=serializers.CharField())
+    matrix = serializers.ListField(child=serializers.ListField(child=serializers.IntegerField()))
+    maxScore = serializers.FloatField()
+    minScore = serializers.FloatField()
+    overallAccuracy = serializers.FloatField()
+    testSetOnly = serializers.BooleanField()

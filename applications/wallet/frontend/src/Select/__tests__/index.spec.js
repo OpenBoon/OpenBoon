@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import Select from '..'
+import Select, { VARIANTS as SELECT_VARIANTS } from '..'
 
 const options = [
   {
@@ -22,6 +22,7 @@ describe('<Select />', () => {
         label="Test"
         options={options}
         onChange={mockOnChange}
+        variant={SELECT_VARIANTS.ROW}
         isRequired
       />,
     )

@@ -13,47 +13,19 @@ from urllib.parse import urlparse
 
 import requests
 
-from zmlp import app_from_env, Asset, StoredFile, PipelineMod, \
+from zmlp import app_from_env, Asset, StoredFile, AnalysisModule, \
     ZmlpException, util
 from .base import ZmlpEnv
-from .cloud import get_cached_google_storage_client, get_pipeline_storage_client, \
+from .cloud import get_cached_google_storage_client, \
     get_cached_aws_client, get_cached_azure_storage_client
 
 
 __all__ = [
     'file_storage',
-    'zip_directory',
     'ZmlpStorageException'
 ]
 
 logger = logging.getLogger(__name__)
-
-
-def zip_directory(src_dir, dst_file, zip_root_name=""):
-    """
-    A utility function for ziping a directory of files.
-
-    Args:
-        src_dir (str): The source directory.
-        dst_file (str): The destination file.s
-        zip_root_name (str): A optional root directory to place files in the zip.
-    Returns:
-        str: The dst file.
-
-    """
-
-    def zipdir(path, ziph, root_name):
-        for root, dirs, files in os.walk(path):
-            for file in files:
-                zip_entry = os.path.join(root_name, root.replace(path, ""), file)
-                logger.info(f'Adding file to zip: {zip_entry}')
-                ziph.write(os.path.join(root, file), zip_entry)
-
-    src_dir = os.path.abspath(src_dir)
-    zipf = zipfile.ZipFile(dst_file, 'w', zipfile.ZIP_DEFLATED)
-    zipdir(src_dir + '/', zipf, zip_root_name)
-    zipf.close()
-    return dst_file
 
 
 class ModelStorage:
@@ -169,14 +141,15 @@ class ModelStorage:
             model (Model): The Model instance.
             deploy (bool): Launch an expand task to deploy the model using the deploy search.
         Returns:
-            PipelineModule: A PipelineModule for utilizing the model.
+            AnalysisModuleule: A AnalysisModuleule for utilizing the model.
         """
         file_id = self.get_model_file_id(model)
         version_file = src_dir + self.model_ver_file
         with open(version_file, 'w') as fp:
             fp.write("{}-{}\n".format(time.time(), str(uuid.uuid4())))
 
-        zip_file_path = zip_directory(src_dir, tempfile.mkstemp(prefix="model_", suffix=".zip")[1])
+        zip_file_path = util.zip_directory(
+            src_dir, tempfile.mkstemp(prefix="model_", suffix=".zip")[1])
         self.projects.store_file_by_id(version_file, os.path.dirname(file_id) + self.model_ver_file)
         self.projects.store_file_by_id(zip_file_path, file_id, precache=False)
         mod = self.publish_model(model)
@@ -187,16 +160,16 @@ class ModelStorage:
     def publish_model(self, model):
         """
         Publish the given model.  The model must have been trained before.  This
-        will make the model available for execution using a PipelineModel
+        will make the model available for execution using a AnalysisModuleel
 
         Args:
             model (Model): The Model instance or a unique Model id.
 
         Returns:
-            PipelineMod: A PipelineMod which can be used to execute the model on Data.
+            AnalysisModule: A AnalysisModule which can be used to execute the model on Data.
         """
         mid = util.as_id(model)
-        return PipelineMod(self.app.client.post(f'/api/v3/models/{mid}/_publish'))
+        return AnalysisModule(self.app.client.post(f'/api/v3/models/{mid}/_publish'))
 
 
 class AssetStorage(object):
@@ -539,10 +512,8 @@ class FileCache(object):
 
         # ZMLP ML storage
         elif parsed_uri.scheme == 'zmlp':
-            data = get_pipeline_storage_client().get_object(parsed_uri.netloc, parsed_uri.path[1:])
-            with open(path, 'wb') as fpw:
-                for d in data.stream(32 * 1024):
-                    fpw.write(d)
+            file_id = parsed_uri.netloc + parsed_uri.path
+            self.app.assets.download_file(file_id, path)
 
         # GCS buckets
         elif parsed_uri.scheme == 'gs':

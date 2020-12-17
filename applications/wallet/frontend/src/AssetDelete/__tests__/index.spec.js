@@ -39,6 +39,10 @@ describe('<AssetDelete />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
+      component.root.findByProps({ type: 'radio' }).props.onClick()()
+    })
+
+    act(() => {
       component.root.findByProps({ children: 'Delete Asset' }).props.onClick()
     })
 

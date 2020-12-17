@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.nio.file.Files
+import java.nio.file.Paths
 import kotlin.test.assertEquals
 
 class ModelControllerTests : MockMvcTest() {
@@ -251,6 +253,25 @@ class ModelControllerTests : MockMvcTest() {
                     CoreMatchers.equalTo(true)
                 )
             )
+            .andReturn()
+    }
+
+    @Test
+    fun testUploadModel() {
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.KERAS_IMAGE_CLASSIFIER)
+        val model = modelService.createModel(modelSpec)
+
+        val mfp = Paths.get(
+            "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_upload")
+                .headers(admin())
+                .content(Files.readAllBytes(mfp))
+                .contentType(MediaType.parseMediaType("application/zip"))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
     }
 

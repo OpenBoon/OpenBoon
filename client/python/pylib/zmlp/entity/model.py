@@ -29,6 +29,9 @@ class ModelType(Enum):
     GCP_LABEL_DETECTION = 4
     """Train a Google AutoML vision model."""
 
+    KERAS_IMAGE_CLASSIFIER = 5
+    """Provide your own custom Tensorflow2/Keras model"""
+
 
 class LabelScope(Enum):
     """
@@ -148,6 +151,84 @@ class Model(BaseEntity):
             must.append({'term': {'labels.scope': scope.name}})
 
         return search
+
+    def get_confusion_matrix_search(self, min_score=0.0, max_score=1.0, test_set_only=True):
+        """
+        Returns a search query with aggregations that can be used to create a confusion
+        matrix.
+
+        Args:
+            min_score (float): Minimum confidence score to return results for.
+            max_score (float): Maximum confidence score to return results for.
+            test_set_only (bool): If True only assets with TEST labels will be evaluated.
+
+        Returns:
+            dict: A search to pass to an asset search.
+
+        """
+        prediction_term_map = {
+            ModelType.ZVI_KNN_CLASSIFIER: f'{self.namespace}.label',
+            ModelType.ZVI_FACE_RECOGNITION: f'{self.namespace}.predictions.label'
+        }
+        score_map = {ModelType.ZVI_KNN_CLASSIFIER: f'{self.namespace}.score',
+                     ModelType.ZVI_FACE_RECOGNITION: f'{self.namespace}.predictions.score'}
+        if self.type not in prediction_term_map:
+            raise TypeError(f'Cannot create a confusion matrix search for {self.type} models.')
+        search_query = {
+            "size": 0,
+            "query": {
+                "bool": {
+                    "filter": [
+                        {"range": {score_map[self.type]: {"gte": min_score, "lte": max_score}}}
+                    ]
+                }
+            },
+            "aggs": {
+                "nested_labels": {
+                    "nested": {
+                        "path": "labels"
+                    },
+                    "aggs": {
+                        "model_train_labels": {
+                            "filter": {
+                                "bool": {
+                                    "must": [
+                                        {"term": {"labels.modelId": self.id}}
+                                    ]
+                                }
+                            },
+                            "aggs": {
+                                "labels": {
+                                    "terms": {"field": "labels.label"},
+                                    "aggs": {
+                                        "predictions_by_label": {
+                                            "reverse_nested": {},
+                                            "aggs": {
+                                                "predictions": {
+                                                    "terms": {
+                                                        "field": prediction_term_map[self.type]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if test_set_only:
+            (search_query
+             ['aggs']
+             ['nested_labels']
+             ['aggs']
+             ['model_train_labels']
+             ['filter']
+             ['bool']
+             ['must'].append({"term": {"labels.scope": "TEST"}}))
+        return search_query
 
 
 class ModelTypeInfo:

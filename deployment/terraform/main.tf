@@ -159,6 +159,10 @@ resource "google_storage_bucket_object" "task_env" {
   "ZORROA_AWS_SECRET": "${var.aws-secret}",
   "ZORROA_AWS_REGION": "${var.aws-region}",
   "ZORROA_AWS_BUCKET": "${module.aws-ml.bucket}",
+  "ZORROA_AWS_ML_USER_ROLE_ARN": "${module.aws-ml.ml-user-role-arn}",
+  "ZORROA_AWS_ML_USER_SQS_URL": "${module.aws-ml.ml-user-sqs-url}",
+  "ZORROA_AWS_ML_USER_SQS_ARN": "${module.aws-ml.ml-user-sqs-arn}",
+  "ZORROA_AWS_ML_USER_SNS_TOPIC_ARN": "${module.aws-ml.ml-user-sns-topic-arn}",
   "ZORROA_AZURE_VISION_REGION": "${module.azure-ml.vision-region}",
   "ZORROA_AZURE_VISION_ENDPOINT": "${module.azure-ml.vision-endpoint}",
   "ZORROA_AZURE_VISION_KEY": "${module.azure-ml.vision-key}"
@@ -239,8 +243,6 @@ module "archivist" {
   sql-connection-name     = module.postgres.connection-name
   sql-instance-name       = module.postgres.instance-name
   inception-key-b64       = local.inception-key-b64
-  minio-access-key        = module.minio.access-key
-  minio-secret-key        = module.minio.secret-key
   system-bucket           = google_storage_bucket.system.name
   container-cluster-name  = module.gke-cluster.name
   analyst-shared-key      = module.analyst.shared-key
@@ -277,10 +279,9 @@ module "officer" {
   zone                   = var.zone
   container-cluster-name = module.gke-cluster.name
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
-  minio-url              = "http://${module.minio.ip-address}:9000"
-  minio-access-key       = module.minio.access-key
-  minio-secret-key       = module.minio.secret-key
   container-tag          = var.container-tag
+  redis-host             = "${module.redis.ip-address}:6379"
+  data-bucket-name       = module.archivist.data-bucket-name
 }
 
 module "analyst" {

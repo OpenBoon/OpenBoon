@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.DataSource
+import com.zorroa.archivist.domain.DataSourceDelete
 import com.zorroa.archivist.domain.DataSourceFilter
 import com.zorroa.archivist.domain.DataSourceImportOptions
 import com.zorroa.archivist.domain.DataSourceSpec
@@ -50,8 +51,14 @@ class DataSourceController(
     }
 
     @DeleteMapping("/api/v1/data-sources/{id}")
-    fun delete(@ApiParam("The DataSource unique Id.") @PathVariable id: UUID): Any {
-        dataSourceService.delete(id)
+    fun delete(
+        @ApiParam("The DataSource unique Id.") @PathVariable id: UUID,
+        @RequestBody(required = false) dataSourceDelete: DataSourceDelete?
+    ): Any {
+        dataSourceService.delete(
+            id,
+            dataSourceDelete ?: DataSourceDelete()
+        )
         return HttpUtils.deleted("DataSource", id, true)
     }
 

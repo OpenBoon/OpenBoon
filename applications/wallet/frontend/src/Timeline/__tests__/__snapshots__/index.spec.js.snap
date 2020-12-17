@@ -562,108 +562,6 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   width: 100%;
 }
 
-.emotion-15 {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border: 1px solid #4a4a4a;
-  border-radius: 2px;
-  background-color: #252525;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  z-index: 30;
-  opacity: 0.8;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.emotion-16 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 0;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  opacity: 1;
-}
-
-.emotion-16:hover {
-  color: #73b61c;
-}
-
-.emotion-16[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-17 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 0;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  opacity: 1;
-}
-
-.emotion-17:hover {
-  color: #73b61c;
-}
-
-.emotion-17[aria-disabled=true] {
-  color: #808080;
-}
-
 <div
   style={
     Object {
@@ -910,33 +808,28 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
             }
           }
         />
-        <div
-          className="emotion-15"
-        >
-          <button
-            aria-disabled={true}
-            aria-label="Zoom Out"
-            className="emotion-16"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              data-file-name="circleMinus.svg"
-              height={20}
-            />
-          </button>
-          <button
-            aria-label="Zoom In"
-            className="emotion-17"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              data-file-name="circlePlus.svg"
-              height={20}
-            />
-          </button>
-        </div>
+        <TimelineResize
+          dispatch={[Function]}
+          rulerRef={
+            Object {
+              "current": null,
+            }
+          }
+          videoRef={
+            Object {
+              "current": Object {
+                "addEventListener": [Function],
+                "currentTime": 0,
+                "duration": 18,
+                "pause": [Function],
+                "paused": true,
+                "play": [Function],
+                "removeEventListener": [Function],
+              },
+            }
+          }
+          zoom={100}
+        />
       </div>
     </div>
   </div>
@@ -1273,108 +1166,6 @@ exports[`<Timeline /> should render properly 1`] = `
 
 .emotion-19 {
   width: 100%;
-}
-
-.emotion-20 {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border: 1px solid #4a4a4a;
-  border-radius: 2px;
-  background-color: #252525;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  z-index: 30;
-  opacity: 0.8;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.emotion-21 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 0;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  opacity: 1;
-}
-
-.emotion-21:hover {
-  color: #73b61c;
-}
-
-.emotion-21[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-22 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 0;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  opacity: 1;
-}
-
-.emotion-22:hover {
-  color: #73b61c;
-}
-
-.emotion-22[aria-disabled=true] {
-  color: #808080;
 }
 
 <div
@@ -2691,33 +2482,20 @@ exports[`<Timeline /> should render properly 1`] = `
             }
           }
         />
-        <div
-          className="emotion-20"
-        >
-          <button
-            aria-disabled={true}
-            aria-label="Zoom Out"
-            className="emotion-21"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              data-file-name="circleMinus.svg"
-              height={20}
-            />
-          </button>
-          <button
-            aria-label="Zoom In"
-            className="emotion-22"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              data-file-name="circlePlus.svg"
-              height={20}
-            />
-          </button>
-        </div>
+        <TimelineResize
+          dispatch={[Function]}
+          rulerRef={
+            Object {
+              "current": null,
+            }
+          }
+          videoRef={
+            Object {
+              "current": undefined,
+            }
+          }
+          zoom={100}
+        />
       </div>
     </div>
   </div>
@@ -3054,108 +2832,6 @@ exports[`<Timeline /> should render properly 2`] = `
 
 .emotion-19 {
   width: 100%;
-}
-
-.emotion-20 {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border: 1px solid #4a4a4a;
-  border-radius: 2px;
-  background-color: #252525;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  z-index: 30;
-  opacity: 0.8;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.emotion-21 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 0;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  opacity: 1;
-}
-
-.emotion-21:hover {
-  color: #73b61c;
-}
-
-.emotion-21[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-22 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 0;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  opacity: 1;
-}
-
-.emotion-22:hover {
-  color: #73b61c;
-}
-
-.emotion-22[aria-disabled=true] {
-  color: #808080;
 }
 
 <div
@@ -4472,33 +4148,20 @@ exports[`<Timeline /> should render properly 2`] = `
             }
           }
         />
-        <div
-          className="emotion-20"
-        >
-          <button
-            aria-disabled={true}
-            aria-label="Zoom Out"
-            className="emotion-21"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              data-file-name="circleMinus.svg"
-              height={20}
-            />
-          </button>
-          <button
-            aria-label="Zoom In"
-            className="emotion-22"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              data-file-name="circlePlus.svg"
-              height={20}
-            />
-          </button>
-        </div>
+        <TimelineResize
+          dispatch={[Function]}
+          rulerRef={
+            Object {
+              "current": null,
+            }
+          }
+          videoRef={
+            Object {
+              "current": undefined,
+            }
+          }
+          zoom={100}
+        />
       </div>
     </div>
   </div>

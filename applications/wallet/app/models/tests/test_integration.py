@@ -1,14 +1,16 @@
-import pytest
-from django.urls import reverse
-from django.test import override_settings
-from rest_framework import status
 from unittest.mock import patch, Mock
-from zmlp import ZmlpClient
-from zmlp.app import ModelApp, AssetApp
-from zmlp.entity import LabelScope
 
+import pytest
+from django.test import override_settings
+from django.urls import reverse
+from rest_framework import status
+
+from models.utils import ConfusionMatrix
 from models.views import ModelViewSet, get_model_type_restrictions
 from wallet.tests.utils import check_response
+from zmlp import ZmlpClient, Model
+from zmlp.app import ModelApp, AssetApp
+from zmlp.entity import LabelScope
 
 pytestmark = pytest.mark.django_db
 
@@ -263,6 +265,50 @@ class TestModelViewSetActions:
         response = api_client.delete(path, {'label': 'Dog'})
         content = check_response(response)
         assert content == {'updated': 1}
+
+    def test_confusion_matrix_actions(self, login, project, api_client, monkeypatch):
+        mock_aggs = lambda self : {'nested#nested_labels': {'doc_count': 1744, 'filter#model_train_labels': {'doc_count': 838, 'sterms#labels': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'bird', 'doc_count': 90, 'reverse_nested#predictions_by_label': {'doc_count': 90, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'Unrecognized', 'doc_count': 60}, {'key': 'bird', 'doc_count': 28}, {'key': 'frog', 'doc_count': 2}]}}}, {'key': 'deer', 'doc_count': 90, 'reverse_nested#predictions_by_label': {'doc_count': 90, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'deer', 'doc_count': 88}, {'key': 'Unrecognized', 'doc_count': 2}]}}}, {'key': 'dog', 'doc_count': 90, 'reverse_nested#predictions_by_label': {'doc_count': 90, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'dog', 'doc_count': 64}, {'key': 'Unrecognized', 'doc_count': 20}, {'key': 'cat', 'doc_count': 3}, {'key': 'horse', 'doc_count': 2}, {'key': 'deer', 'doc_count': 1}]}}}, {'key': 'frog', 'doc_count': 87, 'reverse_nested#predictions_by_label': {'doc_count': 87, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'frog', 'doc_count': 83}, {'key': 'Unrecognized', 'doc_count': 4}]}}}, {'key': 'cat', 'doc_count': 86, 'reverse_nested#predictions_by_label': {'doc_count': 86, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'cat', 'doc_count': 83}, {'key': 'Unrecognized', 'doc_count': 3}]}}}, {'key': 'ship', 'doc_count': 84, 'reverse_nested#predictions_by_label': {'doc_count': 84, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'ship', 'doc_count': 70}, {'key': 'Unrecognized', 'doc_count': 14}]}}}, {'key': 'horse', 'doc_count': 82, 'reverse_nested#predictions_by_label': {'doc_count': 82, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'horse', 'doc_count': 75}, {'key': 'Unrecognized', 'doc_count': 7}]}}}, {'key': 'truck', 'doc_count': 82, 'reverse_nested#predictions_by_label': {'doc_count': 82, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'truck', 'doc_count': 63}, {'key': 'Unrecognized', 'doc_count': 19}]}}}, {'key': 'airplane', 'doc_count': 75, 'reverse_nested#predictions_by_label': {'doc_count': 75, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'airplane', 'doc_count': 61}, {'key': 'Unrecognized', 'doc_count': 14}]}}}, {'key': 'automobile', 'doc_count': 72, 'reverse_nested#predictions_by_label': {'doc_count': 72, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'Unrecognized', 'doc_count': 38}, {'key': 'truck', 'doc_count': 24}, {'key': 'automobile', 'doc_count': 9}, {'key': 'frog', 'doc_count': 1}]}}}]}}}}  # noqa
+        monkeypatch.setattr(ConfusionMatrix, '_ConfusionMatrix__get_confusion_matrix_aggregations',
+                            mock_aggs)
+        monkeypatch.setattr(ModelApp, 'get_model', lambda self, pk: Model({'name': 'test'}))
+        model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+
+        # Get the confusion matrix data for a model.
+        path = reverse('model-confusion-matrix', kwargs={'project_pk': project.id, 'pk': model_id})
+        response = check_response(api_client.get(path))
+        assert response == {'labels': ['Unrecognized',
+                                       'airplane',
+                                       'automobile',
+                                       'bird',
+                                       'cat',
+                                       'deer',
+                                       'dog',
+                                       'frog',
+                                       'horse',
+                                       'ship',
+                                       'truck'],
+                            'matrix': [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                       [14, 61, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                       [38, 0, 9, 0, 0, 0, 0, 1, 0, 0, 24],
+                                       [60, 0, 0, 28, 0, 0, 0, 2, 0, 0, 0],
+                                       [3, 0, 0, 0, 83, 0, 0, 0, 0, 0, 0],
+                                       [2, 0, 0, 0, 0, 88, 0, 0, 0, 0, 0],
+                                       [20, 0, 0, 0, 3, 1, 64, 0, 2, 0, 0],
+                                       [4, 0, 0, 0, 0, 0, 0, 83, 0, 0, 0],
+                                       [7, 0, 0, 0, 0, 0, 0, 0, 75, 0, 0],
+                                       [14, 0, 0, 0, 0, 0, 0, 0, 0, 70, 0],
+                                       [19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63]],
+                            'maxScore': 1.0,
+                            'minScore': 0.0,
+                            'name': 'test',
+                            'overallAccuracy': 0.7446300715990454,
+                            'testSetOnly': True}
+
+        # Get the confusion matrix thumbnail.
+        path = reverse('model-confusion-matrix-thumbnail',
+                       kwargs={'project_pk': project.id, 'pk': model_id})
+        response = api_client.get(path)
+        assert response.get('Content-Type') == 'image/png'
 
 
 class TestLabelingEndpoints:
