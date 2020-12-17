@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from zmlp.app import ModelApp
 from zmlp.entity import Model
-from zmlp_analysis.custom.keras import TensorflowImageClassifier
+from zmlp_analysis.custom.tf2 import TensorflowImageClassifier
 from zmlpsdk.base import Frame
 from zmlpsdk.storage import file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
@@ -22,7 +22,7 @@ class KerasModelImageClassifierTests(PluginUnitTestCase):
 
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
-    @patch("zmlp_analysis.custom.keras.get_proxy_level_path")
+    @patch("zmlp_analysis.custom.tf2.get_proxy_level_path")
     def test_predict(self, proxy_patch, file_patch, model_patch):
         name = "disease_model"
 
