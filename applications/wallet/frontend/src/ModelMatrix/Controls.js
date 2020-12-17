@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 
 import { parseValue } from '../FilterRange/helpers'
 
 import RadioGroup from '../Radio/Group'
 
-const INPUT_WIDTH = 52
+import InputRange, { VARIANTS } from '../Input/Range'
 
 const ModelMatrixControls = ({
   settings,
@@ -103,41 +103,9 @@ const ModelMatrixControls = ({
         >
           Confidence:
         </span>
-        <label
-          css={{
-            display: 'flex',
-            alignItems: 'center',
-            paddingRight: spacing.comfy,
-          }}
-        >
-          MIN &nbsp;
-          <input
-            type="text"
-            css={{
-              textAlign: 'center',
-              padding: 0,
-              paddingLeft: spacing.small,
-              paddingRight: spacing.small,
-              paddingTop: spacing.small,
-              paddingBottom: spacing.small,
-              border: constants.borders.regular.iron,
-              borderRadius: constants.borderRadius.small,
-              backgroundColor: colors.structure.lead,
-              color: colors.structure.white,
-              width: INPUT_WIDTH,
-              ':hover': {
-                border: constants.borders.regular.white,
-              },
-              ':focus': {
-                outline: constants.borders.regular.transparent,
-                border: constants.borders.keyOneRegular,
-                color: colors.structure.coal,
-                backgroundColor: colors.structure.white,
-              },
-              '::placeholder': {
-                fontStyle: typography.style.italic,
-              },
-            }}
+        <div css={{ paddingRight: spacing.comfy }}>
+          <InputRange
+            label="MIN"
             value={inputMin}
             onChange={({ target: { value } }) => setInputMin(value)}
             onKeyPress={({ target: { value }, key }) => {
@@ -147,48 +115,23 @@ const ModelMatrixControls = ({
             onBlur={({ target: { value } }) => {
               saveMinValue({ value })
             }}
+            variant={VARIANTS.SECONDARY}
+            style={{ label: { paddingRight: spacing.comfy } }}
           />
-        </label>
-        <label css={{ display: 'flex', alignItems: 'center' }}>
-          MAX &nbsp;
-          <input
-            type="text"
-            css={{
-              textAlign: 'center',
-              padding: 0,
-              paddingLeft: spacing.small,
-              paddingRight: spacing.small,
-              paddingTop: spacing.small,
-              paddingBottom: spacing.small,
-              border: constants.borders.regular.iron,
-              borderRadius: constants.borderRadius.small,
-              backgroundColor: colors.structure.lead,
-              color: colors.structure.white,
-              width: INPUT_WIDTH,
-              ':hover': {
-                border: constants.borders.regular.white,
-              },
-              ':focus': {
-                outline: constants.borders.regular.transparent,
-                border: constants.borders.keyOneRegular,
-                color: colors.structure.coal,
-                backgroundColor: colors.structure.white,
-              },
-              '::placeholder': {
-                fontStyle: typography.style.italic,
-              },
-            }}
-            value={inputMax}
-            onChange={({ target: { value } }) => setInputMax(value)}
-            onKeyPress={({ target: { value }, key }) => {
-              if (key !== 'Enter') return
-              saveMaxValue({ value })
-            }}
-            onBlur={({ target: { value } }) => {
-              saveMaxValue({ value })
-            }}
-          />
-        </label>
+        </div>
+        <InputRange
+          label="MAX"
+          value={inputMax}
+          onChange={({ target: { value } }) => setInputMax(value)}
+          onKeyPress={({ target: { value }, key }) => {
+            if (key !== 'Enter') return
+            saveMaxValue({ value })
+          }}
+          onBlur={({ target: { value } }) => {
+            saveMaxValue({ value })
+          }}
+          variant={VARIANTS.SECONDARY}
+        />
       </div>
     </form>
   )

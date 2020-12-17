@@ -134,6 +134,10 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
 }
 
 .emotion-19 {
+  padding-right: 24px;
+}
+
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -142,59 +146,27 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding-right: 24px;
 }
 
-.emotion-20 {
+.emotion-21 {
   text-align: center;
-  padding: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  border: 1px solid #4a4a4a;
   border-radius: 2px;
   background-color: #252525;
   color: #ffffff;
+  padding: 4px;
+  border: 1px solid #4a4a4a;
   width: 52px;
 }
 
-.emotion-20:hover {
-  border: 1px solid #ffffff;
-}
-
-.emotion-20:focus {
+.emotion-21:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-20::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-20::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-20:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-20::placeholder {
-  font-style: italic;
-}
-
-.emotion-21 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+.emotion-21:hover {
+  border: 1px solid #ffffff;
 }
 
 <form
@@ -289,25 +261,31 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
     >
       Confidence:
     </span>
-    <label
+    <div
       className="emotion-19"
     >
-      MIN  
-      <input
+      <label
         className="emotion-20"
-        onBlur={[Function]}
-        onChange={[Function]}
-        onKeyPress={[Function]}
-        type="text"
-        value={0}
-      />
-    </label>
+      >
+        MIN
+          
+        <input
+          className="emotion-21"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={0}
+        />
+      </label>
+    </div>
     <label
-      className="emotion-21"
+      className="emotion-20"
     >
-      MAX  
+      MAX
+        
       <input
-        className="emotion-20"
+        className="emotion-21"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyPress={[Function]}
@@ -453,6 +431,10 @@ exports[`<ModelMatrixControls should render properly 1`] = `
 }
 
 .emotion-19 {
+  padding-right: 24px;
+}
+
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -461,59 +443,27 @@ exports[`<ModelMatrixControls should render properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding-right: 24px;
 }
 
-.emotion-20 {
+.emotion-21 {
   text-align: center;
-  padding: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  border: 1px solid #4a4a4a;
   border-radius: 2px;
   background-color: #252525;
   color: #ffffff;
+  padding: 4px;
+  border: 1px solid #4a4a4a;
   width: 52px;
 }
 
-.emotion-20:hover {
-  border: 1px solid #ffffff;
-}
-
-.emotion-20:focus {
+.emotion-21:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-20::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-20::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-20:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-20::placeholder {
-  font-style: italic;
-}
-
-.emotion-21 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+.emotion-21:hover {
+  border: 1px solid #ffffff;
 }
 
 <form
@@ -608,25 +558,31 @@ exports[`<ModelMatrixControls should render properly 1`] = `
     >
       Confidence:
     </span>
-    <label
+    <div
       className="emotion-19"
     >
-      MIN  
-      <input
+      <label
         className="emotion-20"
-        onBlur={[Function]}
-        onChange={[Function]}
-        onKeyPress={[Function]}
-        type="text"
-        value={0}
-      />
-    </label>
+      >
+        MIN
+          
+        <input
+          className="emotion-21"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={0}
+        />
+      </label>
+    </div>
     <label
-      className="emotion-21"
+      className="emotion-20"
     >
-      MAX  
+      MAX
+        
       <input
-        className="emotion-20"
+        className="emotion-21"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyPress={[Function]}
