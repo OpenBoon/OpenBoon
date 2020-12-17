@@ -349,7 +349,7 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testAcceptModelFileUpload() {
-        val model = create(type = ModelType.CUSTOM_TENSORFLOW)
+        val model = create(type = ModelType.KERAS_IMAGE_CLASSIFIER)
         val mfp = Paths.get(
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
         )

@@ -462,7 +462,7 @@ class ModelServiceImpl(
         Files.copy(inputStream, tmpFile, StandardCopyOption.REPLACE_EXISTING)
 
         try {
-            if (model.type == ModelType.CUSTOM_TENSORFLOW) {
+            if (model.type == ModelType.KERAS_IMAGE_CLASSIFIER) {
                 validateTensorflowModel(tmpFile)
             }
 
@@ -471,7 +471,11 @@ class ModelServiceImpl(
                 model.getModelStorageLocator(), mapOf(),
                 FileInputStream(tmpFile.toFile()), Files.size(tmpFile)
             )
-            return fileStorageService.store(storage)
+            val modelFile = fileStorageService.store(storage)
+
+            // Now we can publish the model.
+            publishModel(model, mapOf("version" to System.currentTimeMillis()))
+            return modelFile
         } finally {
             Files.delete(tmpFile)
         }

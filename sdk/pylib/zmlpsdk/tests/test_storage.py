@@ -1,7 +1,6 @@
 import logging
 import os
 import tempfile
-import zipfile
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -392,27 +391,6 @@ class ModelStorageTests(TestCase):
         mod = self.fs.models.save_model(cur_dir, "foo/bar/bing/model.zip", deploy=True)
 
         assert '12345' == mod.id
-
-
-class ZipDirectoryTexts(TestCase):
-
-    def test_zip_directory_no_base(self):
-        output_zip = '/tmp/test-zip1.zip'
-        cur_dir = os.path.dirname(__file__)
-        storage.zip_directory(cur_dir, output_zip)
-
-        with zipfile.ZipFile(output_zip) as zip:
-            assert 'test_storage.py' in zip.namelist()
-            assert 'model.zip' in zip.namelist()
-
-    def test_zip_directory_with_base(self):
-        output_zip = '/tmp/test-zip1.zip'
-        cur_dir = os.path.dirname(__file__)
-        storage.zip_directory(cur_dir, output_zip, 'base')
-
-        with zipfile.ZipFile(output_zip) as zip:
-            assert 'base/test_storage.py' in zip.namelist()
-            assert 'base/model.zip' in zip.namelist()
 
 
 class MockResponse:

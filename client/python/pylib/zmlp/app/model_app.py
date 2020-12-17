@@ -1,9 +1,10 @@
-import os
 import logging
+import os
+import tempfile
 
 from ..entity import Model, Job, ModelTypeInfo, StoredFile
-from ..util import as_collection, as_id
 from ..training import TrainingSetDownloader
+from ..util import as_collection, as_id, zip_directory
 
 logger = logging.getLogger(__name__)
 
@@ -130,7 +131,7 @@ class ModelApp:
         }
         return Job(self.app.client.post(f'/api/v3/models/{mid}/_deploy', body))
 
-    def upload_custom_model(self, model, zip_file_path):
+    def upload_custom_model(self, model, dir_path, labels=None):
         """
         Uploads a directory containing a Pytorch or Tensorflow model.   The zip file
         must contain the model binary files and a labels.txt file.  See the docs
@@ -138,14 +139,22 @@ class ModelApp:
 
         Args:
             model (Model): The Model or te unique Model ID.
-            zip_file_path (str): The path to the zip file.
+            dir_path (str): The path to the zip file.
+            labels (list): The list of labels.  You can also pre-copy the labels in manually.
 
         Returns:
             StoredFile: The StoredFile record of the model.
         """
+        if labels:
+            with open(dir_path + '/labels.txt', 'w') as fp:
+                for label in labels:
+                    fp.write(f'{label}\n')
+
+        model_file = tempfile.mkstemp(prefix="model_", suffix=".zip")[1]
+        zip_file_path = zip_directory(dir_path, model_file)
         mid = as_id(model)
-        return StoredFile(
-            self.app.client.send_file(f'/api/v3/models/{mid}/_upload', zip_file_path))
+        return StoredFile(self.app.client.send_file(
+            f'/api/v3/models/{mid}/_upload', zip_file_path))
 
     def get_label_counts(self, model):
         """
