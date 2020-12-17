@@ -354,9 +354,8 @@ class ModelServiceTests : AbstractTest() {
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
         )
 
-        val locator = modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
-        assertEquals("model", locator.category)
-        assertEquals("model.zip", locator.name)
+        val module = modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
+        assertEquals("Custom Models", module.category)
     }
 
     @Test
