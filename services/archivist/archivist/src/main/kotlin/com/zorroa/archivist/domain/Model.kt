@@ -112,19 +112,19 @@ enum class ModelType(
         true,
         false
     ),
-    KERAS_IMAGE_CLASSIFIER(
-        "Tensorflow Image Classifier",
-        "zmlp_train.automl.AutoMLModelTrainer",
+    TF2_IMAGE_CLASSIFIER(
+        "Tensorflow2 Keras Image Classifier",
+        "None",
         mapOf(),
-        "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
+        "zmlp_analysis.custom.TensorflowImageClassifier",
         mapOf(),
         null,
-        "Upload a tensorflow model use for image classification.",
+        "Upload a Tensorflow model to use for image classification.",
         ModelObjective.LABEL_DETECTION,
         Provider.GOOGLE,
         true,
-        2,
-        10,
+        0,
+        0,
         listOf(),
         false,
         true

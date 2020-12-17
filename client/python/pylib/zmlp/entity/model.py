@@ -29,7 +29,7 @@ class ModelType(Enum):
     GCP_LABEL_DETECTION = 4
     """Train a Google AutoML vision model."""
 
-    KERAS_IMAGE_CLASSIFIER = 5
+    TF2_IMAGE_CLASSIFIER = 5
     """Provide your own custom Tensorflow2/Keras model"""
 
 
