@@ -706,7 +706,14 @@ zmlp-services-build-artifacts:
     # MR to any branch that is not master with ZMLP changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
-        - "services/**/*"
+        - "services/analyst/**/*"
+        - "services/api-gateway/**/*"
+        - "services/archivist/**/*"
+        - "services/auth-server/**/*"
+        - "services/elasticsearch/**/*"
+        - "services/mlbbq/**/*"
+        - "services/officer/**/*"
+        - "services/reporter/**/*"
         - "lib/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
@@ -732,7 +739,14 @@ elasticsearch-push-to-local-registry:
     # MR to any branch that is not master with ZMLP changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
-        - "services/**/*"
+        - "services/analyst/**/*"
+        - "services/api-gateway/**/*"
+        - "services/archivist/**/*"
+        - "services/auth-server/**/*"
+        - "services/elasticsearch/**/*"
+        - "services/mlbbq/**/*"
+        - "services/officer/**/*"
+        - "services/reporter/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
@@ -795,7 +809,14 @@ zmlp-services-unit-tests:
     # MR to any branch that is not master with ZMLP changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
-        - "services/**/*"
+        - "services/analyst/**/*"
+        - "services/api-gateway/**/*"
+        - "services/archivist/**/*"
+        - "services/auth-server/**/*"
+        - "services/elasticsearch/**/*"
+        - "services/mlbbq/**/*"
+        - "services/officer/**/*"
+        - "services/reporter/**/*"
         - "lib/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
