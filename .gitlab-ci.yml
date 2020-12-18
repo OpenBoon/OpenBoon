@@ -524,7 +524,14 @@ zmlp-dockerhub-build-push-latest:
         - "dev/**/*"
         - "lib/**/*"
         - "sdk/**/*"
-        - "services/**/*"
+        - "services/analyst/**/*"
+        - "services/api-gateway/**/*"
+        - "services/archivist/**/*"
+        - "services/auth-server/**/*"
+        - "services/elasticsearch/**/*"
+        - "services/mlbbq/**/*"
+        - "services/officer/**/*"
+        - "services/reporter/**/*"
 
 zmlp-dockerhub-build-push-qa:
   extends:
