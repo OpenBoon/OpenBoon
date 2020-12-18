@@ -236,7 +236,8 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZMLP_PROJECT_ID"] = task.projectId.toString()
             task.dataSourceId?.let { task.env["ZMLP_DATASOURCE_ID"] = it.toString() }
             task.env["ZMLP_ARCHIVIST_MAX_RETRIES"] = "0"
-            task.env["ZMLP_BILLING_METRICS_SERVICE"] = System.getenv("ZMLP_BILLING_METRICS_SERVICE") ?: "http://metrics"
+            val metrics_url = System.getenv("ZMLP_BILLING_METRICS_SERVICE") ?: "http://metrics"
+            task.env["ZMLP_BILLING_METRICS_SERVICE"] = metrics_url
 
             // So the container can make API calls as the JobRunner
             // This call is made with inception key
