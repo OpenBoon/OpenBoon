@@ -691,11 +691,11 @@ zmlp-deploy-prod:
 
 # Kotlin services - Unit tests - Step 1
 zmlp-services-build-artifacts:
-  image: maven:3.6.3-jdk-11-slim
+  image: maven:3.6-jdk-11-slim
   stage: build
   script:
     - cd services/elasticsearch
-    - mvn clean install -Dmaven.test.skip=true
+    - mvn clean install -Dmaven.test.skip=true -Dhttp.keepAlive=false
   artifacts:
     paths:
       - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
@@ -795,9 +795,9 @@ zmlp-services-unit-tests:
     - ARCHIVIST_ES_URL="http://${IP}:9200"
     - ZMLP_STORAGE_PROJECT_URL="http://${IP}:9000"
     - ZMLP_STORAGE_SYSTEM_URL="http://${IP}:9000"
-    - mvn clean install -f lib/jvm-common -q -Dmaven.test.skip=true
+    - mvn clean install -f lib/jvm-common -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
     - mvn test verify -f lib/jvm-common -q
-    - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true
+    - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
     - mvn test verify -f services/officer -q
     - mvn test verify -f services/archivist -q
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
