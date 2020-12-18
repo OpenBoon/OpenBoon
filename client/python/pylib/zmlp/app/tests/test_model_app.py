@@ -30,13 +30,22 @@ class ModelAppTests(unittest.TestCase):
         self.assert_model(model)
 
     @patch.object(ZmlpClient, 'send_file')
-    def test_upload_custom_model(self, post_patch):
-        post_patch.return_value = {'category': 'model'}
+    def test_upload_trained_model_directory(self, post_patch):
+        post_patch.return_value = {'category': 'LabelDetection'}
 
         tmp_dir = tempfile.mkdtemp()
-        model_file = self.app.models.upload_custom_model('12345', tmp_dir,
-                                                         ["dog", "cat"])
-        assert model_file.category == 'model'
+        module = self.app.models.upload_trained_model('12345', tmp_dir, ["dog", "cat"])
+        assert module.category == 'LabelDetection'
+
+    @patch.object(ZmlpClient, 'send_file')
+    def test_upload_trained_model_keras_inst(self, post_patch):
+        class MockKerasModel:
+            def save(self, path):
+                pass
+
+        post_patch.return_value = {'category': 'LabelDetection'}
+        module = self.app.models.upload_trained_model('12345', MockKerasModel(), ["dog", "cat"])
+        assert module.category == 'LabelDetection'
 
     @patch.object(ZmlpClient, 'post')
     def test_find_one_model(self, post_patch):

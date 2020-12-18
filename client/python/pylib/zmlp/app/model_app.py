@@ -2,7 +2,7 @@ import logging
 import os
 import tempfile
 
-from ..entity import Model, Job, ModelTypeInfo, StoredFile
+from ..entity import Model, Job, ModelTypeInfo, AnalysisModule
 from ..training import TrainingSetDownloader
 from ..util import as_collection, as_id, zip_directory
 
@@ -131,29 +131,37 @@ class ModelApp:
         }
         return Job(self.app.client.post(f'/api/v3/models/{mid}/_deploy', body))
 
-    def upload_custom_model(self, model, dir_path, labels=None):
+    def upload_trained_model(self, model, model_path, labels):
         """
-        Uploads a directory containing a Pytorch or Tensorflow model.   The zip file
-        must contain the model binary files and a labels.txt file.  See the docs
-        on prepping the model zip file for upload.
+        Uploads a Tensorflow2/Keras model.  For the 'model_path' arg you can either
+        pass the path to a Tensorflow saved model or a trained model instance itself.
 
         Args:
             model (Model): The Model or te unique Model ID.
-            dir_path (str): The path to the zip file.
-            labels (list): The list of labels.  You can also pre-copy the labels in manually.
-
+            model_path (mixed): The path to the model directory or a Tensorflow model instance.
+            labels (list): The list of labels,.
         Returns:
-            StoredFile: The StoredFile record of the model.
+            AnalysisModule: The AnalysisModule configured to use the model.
         """
-        if labels:
-            with open(dir_path + '/labels.txt', 'w') as fp:
-                for label in labels:
-                    fp.write(f'{label}\n')
+
+        if not labels:
+            raise ValueError("Uploading a model requires an array of labels")
+
+        # check to see if its a keras model and save to a temp dir.
+        if getattr(model_path, 'save', None):
+            tmp_path = tempfile.mkdtemp()
+            model_path.save(tmp_path)
+            model_path = tmp_path
+
+        with open(model_path + '/labels.txt', 'w') as fp:
+            for label in labels:
+                fp.write(f'{label}\n')
 
         model_file = tempfile.mkstemp(prefix="model_", suffix=".zip")[1]
-        zip_file_path = zip_directory(dir_path, model_file)
+        zip_file_path = zip_directory(model_path, model_file)
+
         mid = as_id(model)
-        return StoredFile(self.app.client.send_file(
+        return AnalysisModule(self.app.client.send_file(
             f'/api/v3/models/{mid}/_upload', zip_file_path))
 
     def get_label_counts(self, model):
