@@ -18,6 +18,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth.models import User
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework_nested.routers import NestedSimpleRouter
@@ -34,6 +35,7 @@ from models.views import ModelViewSet
 from modules.views import ModuleViewSet, ProviderViewSet
 from permissions.views import PermissionViewSet
 from projects.views import ProjectViewSet, ProjectUserViewSet
+from registration.admin import UserAdmin
 from registration.views import UserRegistrationView, UserConfirmationView, \
     ApiPasswordChangeView, LogoutView, MeView, LoginView, ApiPasswordResetView, \
     ApiPasswordResetConfirmView
@@ -98,6 +100,8 @@ BROWSABLE_API_URLS = [
                                             name='api-user-confirm'))
 ]
 
+admin.site.enable_nav_sidebar = False
+support_admin_site.enable_nav_sidebar = False
 
 urlpatterns = [
     path('admin/', support_admin_site.urls),

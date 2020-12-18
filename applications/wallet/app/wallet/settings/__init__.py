@@ -54,15 +54,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'agreements',
-    'gcpmarketplace',
-    'jobs',
-    'modules',
-    'projects',
-    'registration',
-    'searches',
-    'subscriptions',
-    'wallet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,7 +68,16 @@ INSTALLED_APPS = [
     'health_check.db',
     'health_check.cache',
     'health_check.storage',
-    'rest_auth'
+    'rest_auth',
+    'agreements',
+    'gcpmarketplace',
+    'jobs',
+    'modules',
+    'projects',
+    'registration',
+    'searches',
+    'subscriptions',
+    'wallet'
 ]
 
 MIDDLEWARE = [
@@ -119,7 +119,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'wallet.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
