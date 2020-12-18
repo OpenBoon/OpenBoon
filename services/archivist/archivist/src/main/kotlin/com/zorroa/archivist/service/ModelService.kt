@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.Category
-import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileType
 import com.zorroa.archivist.domain.GenericBatchUpdateResponse
 import com.zorroa.archivist.domain.Job
@@ -73,6 +72,7 @@ interface ModelService {
     fun find(filter: ModelFilter): KPagedList<Model>
     fun findOne(filter: ModelFilter): Model
     fun publishModel(model: Model, args: Map<String, Any>? = null): PipelineMod
+    fun setModelArgs(model: Model, args: Map<String, Any>): PipelineMod
     fun deployModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun deleteModel(model: Model)
     fun getLabelCounts(model: Model): Map<String, Long>
@@ -84,7 +84,7 @@ interface ModelService {
      */
     fun updateLabel(model: Model, label: String, newLabel: String?): GenericBatchUpdateResponse
 
-    fun acceptModelFileUpload(model: Model, inputStream: InputStream): FileStorage
+    fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod
 
     fun validateTensorflowModel(path: Path)
 }
@@ -247,6 +247,21 @@ class ModelServiceImpl(
             modelJdbcDao.markAsReady(model.id, true)
             return pipelineModService.create(modspec)
         }
+    }
+
+    override fun setModelArgs(model: Model, args: Map<String, Any>): PipelineMod {
+        val mod = pipelineModService.findByName(model.moduleName, false)
+            ?: throw EmptyResultDataAccessException("Module not found, must be trained or published first", 1)
+
+        val ops = buildModuleOps(model, args)
+        val update = PipelineModUpdate(
+            mod.name, mod.description, model.type.provider,
+            mod.category, mod.type,
+            listOf(FileType.Documents, FileType.Images),
+            ops
+        )
+        pipelineModService.update(mod.id, update)
+        return pipelineModService.get(mod.id)
     }
 
     override fun deleteModel(model: Model) {
@@ -453,7 +468,7 @@ class ModelServiceImpl(
         return GenericBatchUpdateResponse(response.updated)
     }
 
-    override fun acceptModelFileUpload(model: Model, inputStream: InputStream): FileStorage {
+    override fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod {
         if (!model.type.uploadable) {
             throw IllegalArgumentException("The model type ${model.type} does not support uploads")
         }
@@ -462,7 +477,7 @@ class ModelServiceImpl(
         Files.copy(inputStream, tmpFile, StandardCopyOption.REPLACE_EXISTING)
 
         try {
-            if (model.type == ModelType.CUSTOM_TENSORFLOW) {
+            if (model.type == ModelType.TF2_IMAGE_CLASSIFIER) {
                 validateTensorflowModel(tmpFile)
             }
 
@@ -471,7 +486,10 @@ class ModelServiceImpl(
                 model.getModelStorageLocator(), mapOf(),
                 FileInputStream(tmpFile.toFile()), Files.size(tmpFile)
             )
-            return fileStorageService.store(storage)
+            val modelFile = fileStorageService.store(storage)
+
+            // Now we can publish the model.
+            return publishModel(model, mapOf("version" to System.currentTimeMillis()))
         } finally {
             Files.delete(tmpFile)
         }

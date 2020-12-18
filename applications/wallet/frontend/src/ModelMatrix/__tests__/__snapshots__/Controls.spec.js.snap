@@ -1,0 +1,595 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 32px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0;
+  padding-right: 16px;
+  float: left;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.emotion-3 {
+  padding-right: 24px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-6 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ffffff;
+}
+
+.emotion-7 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: #73b61c;
+}
+
+.emotion-8 {
+  padding-left: 8px;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.emotion-9 {
+  padding-left: 24px;
+}
+
+.emotion-13 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #808080;
+}
+
+.emotion-14 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: none;
+}
+
+.emotion-15 {
+  padding-left: 8px;
+  font-weight: 400;
+  color: #808080;
+}
+
+.emotion-17 {
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 32px;
+}
+
+.emotion-18 {
+  color: #ffffff;
+  font-weight: 700;
+  padding-right: 16px;
+}
+
+.emotion-19 {
+  padding-right: 24px;
+}
+
+.emotion-20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-21 {
+  text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  padding: 4px;
+  border: 1px solid #4a4a4a;
+  width: 52px;
+}
+
+.emotion-21:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-21:hover {
+  border: 1px solid #ffffff;
+}
+
+<form
+  className="emotion-0"
+  method="post"
+  onSubmit={[Function]}
+>
+  <fieldset
+    className="emotion-1"
+  >
+    <legend
+      className="emotion-2"
+    >
+      View:
+    </legend>
+    <div
+      className="emotion-3"
+    >
+      <div>
+        <label
+          className="emotion-4"
+        >
+          <div
+            className="emotion-5"
+          >
+            <input
+              className="emotion-6"
+              defaultChecked={true}
+              id="normalized"
+              onClick={[Function]}
+              type="radio"
+              value="normalized"
+            />
+            <div
+              className="emotion-7"
+            />
+          </div>
+          <div
+            className="emotion-8"
+          >
+            Normalized
+          </div>
+        </label>
+        <div
+          className="emotion-9"
+        >
+          
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <div>
+        <label
+          className="emotion-4"
+        >
+          <div
+            className="emotion-5"
+          >
+            <input
+              className="emotion-13"
+              defaultChecked={false}
+              id="absolute"
+              onClick={[Function]}
+              type="radio"
+              value="absolute"
+            />
+            <div
+              className="emotion-14"
+            />
+          </div>
+          <div
+            className="emotion-15"
+          >
+            Absolute
+          </div>
+        </label>
+        <div
+          className="emotion-9"
+        >
+          
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <div
+    className="emotion-17"
+  >
+    <span
+      className="emotion-18"
+    >
+      Confidence:
+    </span>
+    <div
+      className="emotion-19"
+    >
+      <label
+        className="emotion-20"
+      >
+        MIN
+          
+        <input
+          className="emotion-21"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={0}
+        />
+      </label>
+    </div>
+    <label
+      className="emotion-20"
+    >
+      MAX
+        
+      <input
+        className="emotion-21"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyPress={[Function]}
+        type="text"
+        value={0}
+      />
+    </label>
+  </div>
+</form>
+`;
+
+exports[`<ModelMatrixControls should render properly 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 32px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0;
+  padding-right: 16px;
+  float: left;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.emotion-3 {
+  padding-right: 24px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-6 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ffffff;
+}
+
+.emotion-7 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: #73b61c;
+}
+
+.emotion-8 {
+  padding-left: 8px;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.emotion-9 {
+  padding-left: 24px;
+}
+
+.emotion-13 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #808080;
+}
+
+.emotion-14 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: none;
+}
+
+.emotion-15 {
+  padding-left: 8px;
+  font-weight: 400;
+  color: #808080;
+}
+
+.emotion-17 {
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 32px;
+}
+
+.emotion-18 {
+  color: #ffffff;
+  font-weight: 700;
+  padding-right: 16px;
+}
+
+.emotion-19 {
+  padding-right: 24px;
+}
+
+.emotion-20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-21 {
+  text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  padding: 4px;
+  border: 1px solid #4a4a4a;
+  width: 52px;
+}
+
+.emotion-21:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-21:hover {
+  border: 1px solid #ffffff;
+}
+
+<form
+  className="emotion-0"
+  method="post"
+  onSubmit={[Function]}
+>
+  <fieldset
+    className="emotion-1"
+  >
+    <legend
+      className="emotion-2"
+    >
+      View:
+    </legend>
+    <div
+      className="emotion-3"
+    >
+      <div>
+        <label
+          className="emotion-4"
+        >
+          <div
+            className="emotion-5"
+          >
+            <input
+              className="emotion-6"
+              defaultChecked={true}
+              id="normalized"
+              onClick={[Function]}
+              type="radio"
+              value="normalized"
+            />
+            <div
+              className="emotion-7"
+            />
+          </div>
+          <div
+            className="emotion-8"
+          >
+            Normalized
+          </div>
+        </label>
+        <div
+          className="emotion-9"
+        >
+          
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <div>
+        <label
+          className="emotion-4"
+        >
+          <div
+            className="emotion-5"
+          >
+            <input
+              className="emotion-13"
+              defaultChecked={false}
+              id="absolute"
+              onClick={[Function]}
+              type="radio"
+              value="absolute"
+            />
+            <div
+              className="emotion-14"
+            />
+          </div>
+          <div
+            className="emotion-15"
+          >
+            Absolute
+          </div>
+        </label>
+        <div
+          className="emotion-9"
+        >
+          
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <div
+    className="emotion-17"
+  >
+    <span
+      className="emotion-18"
+    >
+      Confidence:
+    </span>
+    <div
+      className="emotion-19"
+    >
+      <label
+        className="emotion-20"
+      >
+        MIN
+          
+        <input
+          className="emotion-21"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={0}
+        />
+      </label>
+    </div>
+    <label
+      className="emotion-20"
+    >
+      MAX
+        
+      <input
+        className="emotion-21"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyPress={[Function]}
+        type="text"
+        value={1}
+      />
+    </label>
+  </div>
+</form>
+`;

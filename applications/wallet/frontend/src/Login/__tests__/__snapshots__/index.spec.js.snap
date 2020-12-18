@@ -233,20 +233,28 @@ exports[`<Login /> should render error 1`] = `
 }
 
 .emotion-15 {
-  padding-top: 8px;
+  height: 8px;
 }
 
 .emotion-16 {
+  margin-left: 0;
+}
+
+.emotion-17 {
+  padding-top: 8px;
+}
+
+.emotion-18 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-17 {
+.emotion-19 {
   position: relative;
 }
 
-.emotion-18 {
+.emotion-20 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -259,28 +267,28 @@ exports[`<Login /> should render error 1`] = `
   border-width: 2px;
 }
 
-.emotion-18:focus,
-.emotion-18 .noop {
+.emotion-20:focus,
+.emotion-20 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-18:hover,
-.emotion-18 .noop {
+.emotion-20:hover,
+.emotion-20 .noop {
   border: 2px solid #ffffff;
 }
 
-.emotion-19 {
+.emotion-21 {
   padding-top: 8px;
 }
 
-.emotion-20 {
+.emotion-22 {
   color: #c92300;
   font-style: italic;
   white-space: pre-line;
 }
 
-.emotion-25 {
+.emotion-27 {
   position: absolute;
   right: 0;
   top: 0;
@@ -295,7 +303,7 @@ exports[`<Login /> should render error 1`] = `
   justify-content: center;
 }
 
-.emotion-26 {
+.emotion-28 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -327,11 +335,11 @@ exports[`<Login /> should render error 1`] = `
   outline-offset: -2px;
 }
 
-.emotion-26:hover {
+.emotion-28:hover {
   color: #73b61c;
 }
 
-.emotion-29 {
+.emotion-31 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -343,7 +351,7 @@ exports[`<Login /> should render error 1`] = `
   justify-content: center;
 }
 
-.emotion-30 {
+.emotion-32 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -374,32 +382,32 @@ exports[`<Login /> should render error 1`] = `
   background-color: transparent;
 }
 
-.emotion-30,
-.emotion-30:hover,
-.emotion-30:visited,
-.emotion-30 .noop {
+.emotion-32,
+.emotion-32:hover,
+.emotion-32:visited,
+.emotion-32 .noop {
   background-color: #73b61c;
 }
 
-.emotion-30:hover,
-.emotion-30 .noop {
+.emotion-32:hover,
+.emotion-32 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-30[aria-disabled=true],
-.emotion-30 .noop {
+.emotion-32[aria-disabled=true],
+.emotion-32 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-31 {
+.emotion-33 {
   padding-top: 32px;
   text-align: center;
 }
 
-.emotion-31 a {
+.emotion-33 a {
   color: #808080;
 }
 
@@ -484,8 +492,11 @@ exports[`<Login /> should render error 1`] = `
           role="alert"
         >
           Something went wrong
-          <br />
+          <div
+            className="emotion-15"
+          />
           <a
+            className="emotion-16"
             href="mailto:support@zorroa.com?subject=ZVI Console Login Trouble"
             rel="noopener noreferrer"
             target="_blank"
@@ -496,20 +507,20 @@ exports[`<Login /> should render error 1`] = `
       </div>
     </div>
     <div
-      className="emotion-15"
+      className="emotion-17"
     >
       <label
-        className="emotion-16"
+        className="emotion-18"
         htmlFor="username"
       >
         Email
       </label>
       <div
-        className="emotion-17"
+        className="emotion-19"
       >
         <input
           autoFocus={true}
-          className="emotion-18"
+          className="emotion-20"
           disabled={false}
           id="username"
           name="username"
@@ -519,10 +530,10 @@ exports[`<Login /> should render error 1`] = `
         />
       </div>
       <div
-        className="emotion-19"
+        className="emotion-21"
       >
         <span
-          className="emotion-20"
+          className="emotion-22"
         >
           
         </span>
@@ -530,19 +541,19 @@ exports[`<Login /> should render error 1`] = `
       </div>
     </div>
     <div
-      className="emotion-15"
+      className="emotion-17"
     >
       <label
-        className="emotion-16"
+        className="emotion-18"
         htmlFor="password"
       >
         Password
       </label>
       <div
-        className="emotion-17"
+        className="emotion-19"
       >
         <input
-          className="emotion-18"
+          className="emotion-20"
           disabled={false}
           id="password"
           name="password"
@@ -551,11 +562,11 @@ exports[`<Login /> should render error 1`] = `
           value=""
         />
         <div
-          className="emotion-25"
+          className="emotion-27"
         >
           <button
             aria-label="Show password"
-            className="emotion-26"
+            className="emotion-28"
             onClick={[Function]}
             type="button"
           >
@@ -567,10 +578,10 @@ exports[`<Login /> should render error 1`] = `
         </div>
       </div>
       <div
-        className="emotion-19"
+        className="emotion-21"
       >
         <span
-          className="emotion-20"
+          className="emotion-22"
         >
           
         </span>
@@ -578,11 +589,11 @@ exports[`<Login /> should render error 1`] = `
       </div>
     </div>
     <div
-      className="emotion-29"
+      className="emotion-31"
     >
       <button
         aria-disabled={true}
-        className="emotion-30"
+        className="emotion-32"
         onClick={[Function]}
         type="submit"
       >
@@ -590,7 +601,7 @@ exports[`<Login /> should render error 1`] = `
       </button>
     </div>
     <div
-      className="emotion-31"
+      className="emotion-33"
     >
       <a
         href="/create-account"

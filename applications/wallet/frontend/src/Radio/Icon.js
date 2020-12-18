@@ -5,7 +5,7 @@ import { colors, constants } from '../Styles'
 const RADIO_BUTTON_SIZE = 16
 const RADIO_BUTTION_FILL_SIZE = 8
 
-const RadioIcon = ({ value, isChecked }) => {
+const RadioIcon = ({ value, isChecked, onClick }) => {
   return (
     <div
       css={{
@@ -19,13 +19,16 @@ const RadioIcon = ({ value, isChecked }) => {
         id={value}
         value={value}
         defaultChecked={isChecked}
+        onClick={() => onClick({ value })}
         css={{
           padding: 0,
           WebkitAppearance: 'none',
           borderRadius: RADIO_BUTTON_SIZE,
           width: RADIO_BUTTON_SIZE,
           height: RADIO_BUTTON_SIZE,
-          border: constants.borders.regular.white,
+          border: isChecked
+            ? constants.borders.regular.white
+            : constants.borders.regular.steel,
         }}
       />
       <div
@@ -33,7 +36,6 @@ const RadioIcon = ({ value, isChecked }) => {
           position: 'absolute',
           width: RADIO_BUTTION_FILL_SIZE,
           height: RADIO_BUTTION_FILL_SIZE,
-          transition: 'all .3s ease',
           opacity: 100,
           borderRadius: RADIO_BUTTON_SIZE,
           backgroundColor: isChecked ? colors.key.one : 'none',
@@ -46,6 +48,7 @@ const RadioIcon = ({ value, isChecked }) => {
 RadioIcon.propTypes = {
   value: PropTypes.string.isRequired,
   isChecked: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 export default RadioIcon

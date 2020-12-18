@@ -55,4 +55,3 @@ variable "namespace" {
 variable "node-pool-name" {
   default = "analyst"
 }
-
