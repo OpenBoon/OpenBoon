@@ -472,7 +472,7 @@ class AssetProcessor(Processor):
             module_name (:obj:`str`): The module namespace to record on the billing metric.
 
         """
-        billing_service = os.environ.get('ZMLP_BILLING_METRICS_SERVICE', 'http://metrics')
+        billing_service = os.environ.get('ZMLP_BILLING_METRICS_SERVICE', 'http://10.3.240.109')
         url = f'{billing_service}/api/v1/apicalls'
         # Abbreviate the string path
         source_path = asset.get_attr('source.path', default='')
