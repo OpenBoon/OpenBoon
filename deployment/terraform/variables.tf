@@ -152,6 +152,51 @@ variable "wallet-use-model-ids-for-label-filters" {
   default     = "false"
 }
 
+variable "metrics-secret-key" {
+  description = "Django Secret Key to use for Metrics Service."
+  default     = "(tlfxocw^*nvb=y8+a7jfxp=1u#n*t@22cxf9=yxt)#kt0_4-f"
+}
+
+variable "metrics-browsable" {
+  description = "Enables Browsable API for the Metrics Service."
+  default     = "false"
+}
+
+variable "metrics-debug" {
+  description = "Enables debug mode for Metrics Service."
+  default     = "false"
+}
+
+variable "metrics-superuser-email" {
+  description = "Sets Superuser email for Metrics Service."
+  default     = "admin@example.com"
+}
+
+variable "metrics-superuser-password" {
+  description = "Sets Superuser password for Metrics Service."
+  default     = "admin"
+}
+
+variable "metrics-superuser-first-name" {
+  description = "Set Superuser first name for Metrics Service."
+  default     = "Admin"
+}
+
+variable "metrics-superuser-last-name" {
+  description = "Set Superuser last name for Metrics Service."
+  default     = "Adminson"
+}
+
+variable "metrics-django-log-level" {
+  description = "Sets the log level the Metrics service should use."
+  default     = "INFO"
+}
+
+variable "metrics-log-requests" {
+  description = "Whether or not to log all requests to the Metrics service."
+  default     = "false"
+}
+
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"

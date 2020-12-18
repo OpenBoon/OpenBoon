@@ -193,6 +193,24 @@ services:
       - postgres
       - api-gateway
 
+  # Metric Collection Service.
+  metrics:
+    image: zmlp/metrics:latest
+    ports:
+      - 8585:80
+    build:
+      context: .
+      dockerfile: services/metrics/Dockerfile
+    environment:
+      DJANGO_SETTINGS_MODULE: metrics.settings
+      DEBUG: "true"
+      DB_BACKEND: postgres
+      PG_DB_HOST: postgres
+      PG_DB_PASSWORD: 2mAPDWhuiYdIW69u
+      BROWSABLE: "true"
+    depends_on:
+      - postgres
+
   # These services are only here because their images need to be built.
   zmlp-jvm-common:
     image: zmlp/jvm-common:latest

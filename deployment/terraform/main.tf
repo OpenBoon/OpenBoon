@@ -292,6 +292,7 @@ module "analyst" {
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
   archivist-url          = "http://${module.archivist.ip-address}"
   officer-url            = "http://${module.officer.ip-address}:7078"
+  metrics-url            = "http://${module.metrics.ip-address}"
   container-tag          = var.container-tag
   memory-request         = var.analyst-memory-request
   memory-limit           = var.analyst-memory-limit
@@ -366,4 +367,22 @@ module "reporter" {
   image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
   zmlp-api-url      = "http://${module.api-gateway.ip-address}"
   monitor-password  = module.archivist.monitor-password
+}
+
+module "metrics" {
+  source                = "./modules/metrics"
+  sql-instance-name     = module.postgres.instance-name
+  sql-connection-name   = module.postgres.connection-name
+  image-pull-secret     = kubernetes_secret.dockerhub.metadata[0].name
+  environment           = var.environment
+  secret-key            = var.metrics-secret-key
+  container-tag         = var.container-tag
+  browsable             = var.metrics-browsable
+  debug                 = var.metrics-debug
+  superuser-email       = var.metrics-superuser-email
+  superuser-password    = var.metrics-superuser-password
+  superuser-first-name  = var.metrics-superuser-first-name
+  superuser-last-name   = var.metrics-superuser-last-name
+  django-log-level      = var.metrics-django-log-level
+  log-requests          = var.metrics-log-requests
 }

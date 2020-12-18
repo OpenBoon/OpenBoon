@@ -1,5 +1,6 @@
 import logging
 import os
+import requests
 
 from zmlp import app_from_env, ZmlpException
 
@@ -443,6 +444,74 @@ class AssetProcessor(Processor):
             raise ZmlpException("No reactor set on processor")
         return self.reactor.add_expand_frame(parent_frame, expand_frame,
                                              batch_size, force)
+
+    def add_analysis(self, asset, module_name, analysis):
+        """Adds the nalysis to the asset and records the api call in the billing metric service.
+
+        Uses the client library to add the analysis to the asset. Records the call to the
+        metric service for billing purposes.
+
+        Args:
+            asset (:obj:`Asset`): The asset to add analysis to.
+            module_name (:obj:`str`): The module namespace to record the analysis to.
+            analysis: (:obj:`dict`): The analysis data to add to the asset.
+
+        """
+        asset.add_analysis(module_name, analysis)
+        self._record_analysis_metric(asset, module_name)
+
+    def _record_analysis_metric(self, asset, module_name):
+        """Helper to make the call to record billing metrics.
+
+        Builds the required body to track asset, project, module, and image/video data
+        for billing purposes. If the request fails for any reason, the failure is logged
+        and execution continues
+
+        Args:
+            asset (:obj:`Asset`): The asset to register a billing metric for.
+            module_name (:obj:`str`): The module namespace to record on the billing metric.
+
+        """
+        billing_service = os.environ.get('ZMLP_BILLING_METRICS_SERVICE', 'http://metrics')
+        url = f'{billing_service}/api/v1/apicalls'
+        # Abbreviate the string path
+        source_path = asset.get_attr('source.path', default='')
+        if len(source_path) > 255:
+            # Include starting ellipses as an indicator, favor end of path
+            source_path = '...' + source_path[len(source_path)-252:]
+        image_count, video_minutes = self._get_count_and_minutes(asset)
+        body = {
+            'project': ZmlpEnv.get_project_id(),
+            'service': module_name,
+            'asset_id': asset.id,
+            'asset_path': source_path,
+            'image_count': image_count,
+            'video_minutes': video_minutes,
+        }
+        response = requests.post(url, json=body)
+        if not response.ok:
+            msg = f'Unable to register billing metrics. {response.status_code}: {response.reason}'
+            logger.warning(msg)
+
+    def _get_count_and_minutes(self, asset):
+        """Helper to return total images and number of video minutes for an asset.
+
+        Determines if the asset is a picture or video, and returns the image count or
+        the total number of video minutes for the asset.
+
+        Args:
+            asset (:obj:`Asset`): The asset to find it's count or video minutes.
+
+        Returns:
+            (:obj:`tuple`): A two tuple of the number of images, and the number of video
+                minutes.
+        """
+        media_type = asset.get_attr('media.type')
+        if media_type == 'video':
+            return (0, asset.get_attr('media.length'))
+
+        # Assume it's an image or document then
+        return (1, 0.0)
 
 
 class ZmlpEnv:
