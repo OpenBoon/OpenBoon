@@ -23,11 +23,11 @@ variable "namespace" {
 }
 
 variable "database-name" {
-  default = "wallet"
+  default = "metrics"
 }
 
 variable "database-user" {
-  default = "wallet"
+  default = "metrics"
 }
 
 variable "browsable" {
