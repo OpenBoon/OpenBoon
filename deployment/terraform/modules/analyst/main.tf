@@ -138,10 +138,6 @@ resource "kubernetes_deployment" "analyst" {
             name  = "ANALYST_TEMP"
             value = "/mnt/stateful_partition/var/tmp"
           }
-          env {
-            name  = "ZMLP_BILLING_METRICS_SERVICE"
-            value = var.metrics-url
-          }
           liveness_probe {
             initial_delay_seconds = 120
             period_seconds        = 5
