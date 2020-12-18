@@ -86,7 +86,7 @@ BROWSABLE_API_URLS = [
     ('password-change', path('api/v1/password/change/', ApiPasswordChangeView.as_view(),
                              name='api-password-change')),
     ('password-reset', path('api/v1/password/reset/', ApiPasswordResetView.as_view(),
-                            name='api-password-butts')),
+                            name='api-password-reset')),
     ('password-reset-confirmation', path('api/v1/password/reset/confirm/',
                                          ApiPasswordResetConfirmView.as_view(),
                                          name='api-password-reset-confirm')),
