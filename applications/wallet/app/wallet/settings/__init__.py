@@ -54,6 +54,15 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'agreements',
+    'gcpmarketplace',
+    'jobs',
+    'modules',
+    'projects',
+    'registration',
+    'searches',
+    'subscriptions',
+    'wallet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -68,16 +77,7 @@ INSTALLED_APPS = [
     'health_check.db',
     'health_check.cache',
     'health_check.storage',
-    'rest_auth',
-    'agreements',
-    'gcpmarketplace',
-    'jobs',
-    'modules',
-    'projects',
-    'registration',
-    'searches',
-    'subscriptions',
-    'wallet'
+    'rest_auth'
 ]
 
 MIDDLEWARE = [

@@ -175,7 +175,7 @@ def test_password_change(api_client, user):
 def test_reset_password(api_client, user, mailoutbox):
     api_client.logout()
     assert not user.check_password('7BMQv5Pb(KpdS+!z')
-    response = api_client.post(reverse('api-password-reset'), {'email': user.email})
+    response = api_client.post(reverse('api-password-butts'), {'email': user.email})
     assert response.status_code == 200
     message = mailoutbox[0]
     assert message.subject == 'Zorroa ZVI Password Reset'
