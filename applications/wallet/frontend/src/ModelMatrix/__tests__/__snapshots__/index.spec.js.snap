@@ -410,6 +410,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #191919;
 }
 
+.emotion-45:hover {
+  border: 4px solid #73b61c;
+}
+
 .emotion-46 {
   margin: auto;
   overflow: hidden;
@@ -436,6 +440,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #ffffff;
 }
 
+.emotion-47:hover {
+  border: 4px solid #73b61c;
+}
+
 .emotion-72 {
   width: 0;
   height: 100%;
@@ -453,6 +461,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   justify-content: center;
   background-color: rgb(215,238,255);
   color: #191919;
+}
+
+.emotion-72:hover {
+  border: 4px solid #73b61c;
 }
 
 .emotion-74 {
@@ -474,6 +486,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #ffffff;
 }
 
+.emotion-74:hover {
+  border: 4px solid #73b61c;
+}
+
 .emotion-99 {
   width: 0;
   height: 100%;
@@ -491,6 +507,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   justify-content: center;
   background-color: rgb(174,221,255);
   color: #191919;
+}
+
+.emotion-99:hover {
+  border: 4px solid #73b61c;
 }
 
 .emotion-101 {
@@ -512,6 +532,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #ffffff;
 }
 
+.emotion-101:hover {
+  border: 4px solid #73b61c;
+}
+
 .emotion-126 {
   width: 0;
   height: 100%;
@@ -529,6 +553,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   justify-content: center;
   background-color: rgb(134,205,255);
   color: #191919;
+}
+
+.emotion-126:hover {
+  border: 4px solid #73b61c;
 }
 
 .emotion-128 {
@@ -550,6 +578,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #ffffff;
 }
 
+.emotion-128:hover {
+  border: 4px solid #73b61c;
+}
+
 .emotion-153 {
   width: 0;
   height: 100%;
@@ -567,6 +599,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   justify-content: center;
   background-color: rgb(93,188,255);
   color: #191919;
+}
+
+.emotion-153:hover {
+  border: 4px solid #73b61c;
 }
 
 .emotion-155 {
@@ -588,6 +624,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #191919;
 }
 
+.emotion-155:hover {
+  border: 4px solid #73b61c;
+}
+
 .emotion-180 {
   width: 0;
   height: 100%;
@@ -605,6 +645,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   justify-content: center;
   background-color: rgb(53,171,255);
   color: #191919;
+}
+
+.emotion-180:hover {
+  border: 4px solid #73b61c;
 }
 
 .emotion-311 {
@@ -3774,6 +3818,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #191919;
 }
 
+.emotion-45:hover {
+  border: 4px solid #73b61c;
+}
+
 .emotion-46 {
   margin: auto;
   overflow: hidden;
@@ -3800,6 +3848,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #ffffff;
 }
 
+.emotion-47:hover {
+  border: 4px solid #73b61c;
+}
+
 .emotion-72 {
   width: 109.0909090909091px;
   height: 100%;
@@ -3817,6 +3869,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   justify-content: center;
   background-color: rgb(215,238,255);
   color: #191919;
+}
+
+.emotion-72:hover {
+  border: 4px solid #73b61c;
 }
 
 .emotion-74 {
@@ -3838,6 +3894,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #ffffff;
 }
 
+.emotion-74:hover {
+  border: 4px solid #73b61c;
+}
+
 .emotion-99 {
   width: 109.0909090909091px;
   height: 100%;
@@ -3855,6 +3915,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   justify-content: center;
   background-color: rgb(174,221,255);
   color: #191919;
+}
+
+.emotion-99:hover {
+  border: 4px solid #73b61c;
 }
 
 .emotion-101 {
@@ -3876,6 +3940,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #ffffff;
 }
 
+.emotion-101:hover {
+  border: 4px solid #73b61c;
+}
+
 .emotion-126 {
   width: 109.0909090909091px;
   height: 100%;
@@ -3893,6 +3961,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   justify-content: center;
   background-color: rgb(134,205,255);
   color: #191919;
+}
+
+.emotion-126:hover {
+  border: 4px solid #73b61c;
 }
 
 .emotion-128 {
@@ -3914,6 +3986,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #ffffff;
 }
 
+.emotion-128:hover {
+  border: 4px solid #73b61c;
+}
+
 .emotion-153 {
   width: 109.0909090909091px;
   height: 100%;
@@ -3931,6 +4007,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   justify-content: center;
   background-color: rgb(93,188,255);
   color: #191919;
+}
+
+.emotion-153:hover {
+  border: 4px solid #73b61c;
 }
 
 .emotion-155 {
@@ -3952,6 +4032,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #191919;
 }
 
+.emotion-155:hover {
+  border: 4px solid #73b61c;
+}
+
 .emotion-180 {
   width: 109.0909090909091px;
   height: 100%;
@@ -3969,6 +4053,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   justify-content: center;
   background-color: rgb(53,171,255);
   color: #191919;
+}
+
+.emotion-180:hover {
+  border: 4px solid #73b61c;
 }
 
 .emotion-311 {
