@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp_analysis.aws import RekognitionCelebrityDetection
+from zmlp_analysis.aws import RekognitionCelebrityDetection, RekognitionPPEDetection
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
 
@@ -35,3 +35,21 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
 
         analysis = frame.asset.get_analysis('aws-celebrity-detection')
         assert 'Ryan Gosling' in get_prediction_labels(analysis)
+
+    @patch('zmlp_analysis.aws.ppe.get_proxy_level_path')
+    def test_ppe_detection(self, proxy_patch):
+        path = zorroa_test_path('images/set11/ppe.jpg')
+        proxy_patch.return_value = path
+
+        processor = self.init_processor(RekognitionPPEDetection(), {})
+        frame = Frame(TestAsset(path))
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis('aws-ppe-detection')
+        assert 'FACE_COVER' in get_prediction_labels(analysis)
+        assert analysis['predictions'][0]['bbox'] == [
+            0.5334620475769043,
+            0.18087884783744812,
+            0.5812848322093487,
+            0.24308180063962936
+        ]
