@@ -55,8 +55,3 @@ variable "namespace" {
 variable "node-pool-name" {
   default = "analyst"
 }
-
-variable "metrics-url" {
-  default = "http://metrics"
-}
-
