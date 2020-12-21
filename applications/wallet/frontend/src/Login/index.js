@@ -107,11 +107,12 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
           >
             <FlashMessage variant={FLASH_VARIANTS.ERROR}>
               {errorMessage}
-              <br />
+              <div css={{ height: spacing.base }} />
               <a
                 href="mailto:support@zorroa.com?subject=ZVI Console Login Trouble"
                 target="_blank"
                 rel="noopener noreferrer"
+                css={{ marginLeft: 0 }}
               >
                 Contact Support
               </a>

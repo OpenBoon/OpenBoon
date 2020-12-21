@@ -52,8 +52,6 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
   position: absolute;
   width: 8px;
   height: 8px;
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
   opacity: 100;
   border-radius: 16px;
   background-color: #73b61c;
@@ -62,6 +60,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
 .emotion-5 {
   padding-left: 8px;
   font-weight: 700;
+  color: #ffffff;
 }
 
 .emotion-6 {
@@ -143,6 +142,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
           className="emotion-3"
           defaultChecked={true}
           id="deleteSelected"
+          onClick={[Function]}
           type="radio"
           value="deleteSelected"
         />

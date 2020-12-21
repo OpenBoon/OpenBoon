@@ -326,13 +326,13 @@ constructor(
     }
 
     override fun syncAllIndexRoutes() {
-        val routes = indexRouteDao.getAll()
+        val routes = indexRouteDao.getOpen()
         logger.info("Syncing all ${routes.size} index routes.")
         routes.forEach { syncIndexRouteVersion(it) }
     }
 
     override fun syncAllIndexRoutes(cluster: IndexCluster) {
-        val routes = indexRouteDao.getAll(cluster)
+        val routes = indexRouteDao.getOpen(cluster)
         logger.info("Syncing ${routes.size} index routes for ${cluster.url}")
         routes.forEach { syncIndexRouteVersion(it) }
     }

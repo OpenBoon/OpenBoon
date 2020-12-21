@@ -16,10 +16,11 @@ exports[`Combobox should render properly with a options function 1`] = `
 
 .emotion-2 {
   width: 100%;
-  padding: 8px;
+  padding: 10px 8px;
   outline: 1px solid transparent;
   background-color: #3b3b3b;
   color: #ffffff;
+  line-height: 20px;
   font-weight: 500;
   border: 2px solid transparent;
   border-radius: 2px;
@@ -81,10 +82,11 @@ exports[`Combobox should render properly with an options array 1`] = `
 
 .emotion-2 {
   width: 100%;
-  padding: 8px;
+  padding: 10px 8px;
   outline: 1px solid transparent;
   background-color: #3b3b3b;
   color: #ffffff;
+  line-height: 20px;
   font-weight: 500;
   border: 2px solid transparent;
   border-radius: 2px;
@@ -146,10 +148,11 @@ exports[`Combobox should render properly with error 1`] = `
 
 .emotion-2 {
   width: 100%;
-  padding: 8px;
+  padding: 10px 8px;
   outline: 1px solid transparent;
   background-color: #3b3b3b;
   color: #ffffff;
+  line-height: 20px;
   font-weight: 500;
   border: 1px solid #c92300;
   border-radius: 2px;

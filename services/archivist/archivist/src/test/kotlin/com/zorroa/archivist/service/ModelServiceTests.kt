@@ -20,6 +20,8 @@ import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
+import java.io.FileInputStream
+import java.nio.file.Paths
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
@@ -329,6 +331,41 @@ class ModelServiceTests : AbstractTest() {
         val counts = modelService.getLabelCounts(model)
         assertTrue(counts.isEmpty())
         assertNull(pipelineModService.findByName(model.moduleName, false))
+    }
+
+    @Test
+    fun testValidateTensorflowModelUpload() {
+        modelService.validateTensorflowModel(
+            Paths.get(
+                "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
+            )
+        )
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testValidateTensorflowModelUploadFail() {
+        modelService.validateTensorflowModel(Paths.get("../../../test-data/training/pets.zip"))
+    }
+
+    @Test
+    fun testAcceptModelFileUpload() {
+        val model = create(type = ModelType.TF2_IMAGE_CLASSIFIER)
+        val mfp = Paths.get(
+            "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
+        )
+
+        val module = modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
+        assertEquals("Custom Models", module.category)
+    }
+
+    @Test
+    fun testSetModelArgs() {
+        val model = create(type = ModelType.ZVI_LABEL_DETECTION)
+        modelService.publishModel(model)
+
+        val module = modelService.setModelArgs(model, mapOf("input_size" to listOf(321, 321)))
+        val str = Json.prettyString(module)
+        assertTrue(str.contains("\"input_size\" : [ 321, 321 ]"))
     }
 
     fun assertModel(model: Model) {

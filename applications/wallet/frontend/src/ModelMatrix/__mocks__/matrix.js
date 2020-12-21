@@ -27,6 +27,8 @@ const matrix = {
     [9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ],
+  maxScore: 1,
+  minScore: 0,
 }
 
 export default matrix

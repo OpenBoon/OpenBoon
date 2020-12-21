@@ -1,6 +1,5 @@
 from datetime import timedelta
 
-from axes.handlers.proxy import AxesProxyHandler
 from django.conf import settings
 from django.contrib.auth import get_user_model, logout, login, authenticate
 from django.contrib.auth.password_validation import validate_password
@@ -240,12 +239,6 @@ class LoginView(CamelCaseRendererMixin, APIView):
             if user:
                 login(request, user)
             else:
-                credentials = {'username': username}
-                if not AxesProxyHandler().is_allowed(request, credentials=credentials):
-                    message = ('This account has been locked due to too many failed login '
-                               'attempts. Please contact support to unlock your account.')
-                    return Response(data={'detail': [message]}, status=status.HTTP_423_LOCKED)
-                else:
-                    message = 'Invalid email and password combination.'
-                    return Response(data={'detail': [message]}, status=status.HTTP_401_UNAUTHORIZED)
+                message = 'Invalid email and password combination.'
+                return Response(data={'detail': [message]}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(UserSerializer(user, context={'request': request}).data)

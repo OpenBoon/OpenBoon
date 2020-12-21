@@ -8,8 +8,14 @@ import User from '../../User'
 
 import ModelMatrix from '..'
 
+jest.mock('react-tippy', () => ({
+  Tooltip: jest.fn(({ children }) => <div>{children}</div>),
+}))
+
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const MODEL_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
+
+const noop = () => () => {}
 
 describe('<ModelMatrix />', () => {
   it('should render properly', () => {
@@ -51,6 +57,17 @@ describe('<ModelMatrix />', () => {
     // Back to zoom 1x
     act(() => {
       component.root.findByProps({ 'aria-label': 'Zoom Out' }).props.onClick()
+    })
+
+    // Change view to Absolute
+    act(() => {
+      component.root
+        .findByProps({ type: 'radio', value: 'absolute' })
+        .props.onClick()
+    })
+
+    act(() => {
+      component.root.findByType('form').props.onSubmit({ preventDefault: noop })
     })
   })
 })

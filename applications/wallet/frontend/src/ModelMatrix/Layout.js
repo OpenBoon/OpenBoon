@@ -12,6 +12,7 @@ import PreviewSvg from '../Icons/preview.svg'
 
 import { INITIAL_STATE, reducer } from './reducer'
 
+import ModelMatrixControls from './Controls'
 import ModelMatrixTable from './Table'
 import ModelMatrixLabels from './Labels'
 
@@ -30,6 +31,7 @@ const ModelMatrixLayout = () => {
       <div
         css={{
           display: 'flex',
+          alignItems: 'center',
           padding: spacing.normal,
           borderBottom: constants.borders.regular.coal,
           fontSize: typography.size.medium,
@@ -46,6 +48,11 @@ const ModelMatrixLayout = () => {
           Overall Accuracy:
         </span>
         98%
+        <ModelMatrixControls
+          matrix={matrix}
+          settings={settings}
+          dispatch={dispatch}
+        />
       </div>
 
       <div

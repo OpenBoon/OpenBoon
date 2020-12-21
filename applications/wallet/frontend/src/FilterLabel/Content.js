@@ -6,7 +6,7 @@ import filterShape from '../Filter/shape'
 
 import { colors, spacing } from '../Styles'
 
-import Select from '../Select'
+import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
 import FilterReset from '../Filter/Reset'
 import FilterSearch from '../Filter/Search'
 import FilterBuckets from '../FilterBuckets'
@@ -85,6 +85,7 @@ const FilterLabel = ({
         }}
         isRequired={false}
         isDisabled={labels.length === 0}
+        variant={SELECT_VARIANTS.COLUMN}
         style={{
           width: '100%',
           height: 'auto',

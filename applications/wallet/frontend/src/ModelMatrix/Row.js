@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { Tooltip } from 'react-tippy'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
@@ -87,7 +88,59 @@ const ModelMatrixRow = ({ matrix, settings, label, index }) => {
           const percent = (value / rowTotal) * 100
 
           return (
-            <div key={matrix.labels[col]}>
+            <Tooltip
+              key={matrix.labels[col]}
+              position="left"
+              trigger="mouseenter"
+              html={
+                <div
+                  css={{
+                    color: colors.structure.coal,
+                    backgroundColor: colors.structure.white,
+                    borderRadius: constants.borderRadius.small,
+                    boxShadow: constants.boxShadows.default,
+                    padding: spacing.moderate,
+                  }}
+                >
+                  <h3>
+                    <span
+                      css={{
+                        fontFamily: typography.family.condensed,
+                        fontWeight: typography.weight.regular,
+                        color: colors.structure.iron,
+                      }}
+                    >
+                      Predictions:
+                    </span>{' '}
+                    {value}/{rowTotal}({Math.round(percent)}%)
+                  </h3>
+                  <h3>
+                    <span
+                      css={{
+                        fontFamily: typography.family.condensed,
+                        fontWeight: typography.weight.regular,
+                        color: colors.structure.iron,
+                      }}
+                    >
+                      Label True:
+                    </span>{' '}
+                    {matrix.labels[index]}
+                  </h3>
+                  <h3>
+                    <span
+                      css={{
+                        fontFamily: typography.family.condensed,
+                        fontWeight: typography.weight.regular,
+                        color: colors.structure.iron,
+                      }}
+                    >
+                      Label Pred:
+                    </span>{' '}
+                    {matrix.labels[col]}
+                  </h3>
+                </div>
+              }
+            >
               <div
                 css={{
                   width: cellDimension,
@@ -100,6 +153,9 @@ const ModelMatrixRow = ({ matrix, settings, label, index }) => {
                     percent > CONTRAST_THRESHOLD
                       ? colors.structure.white
                       : colors.structure.coal,
+                  ':hover': {
+                    border: constants.borders.keyOneLarge,
+                  },
                 }}
               >
                 <div
@@ -110,10 +166,10 @@ const ModelMatrixRow = ({ matrix, settings, label, index }) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  {Math.round(percent)}%
+                  {settings.isNormalized ? `${Math.round(percent)}%` : value}
                 </div>
               </div>
-            </div>
+            </Tooltip>
           )
         })}
       </div>
@@ -133,6 +189,7 @@ ModelMatrixRow.propTypes = {
     labelsWidth: PropTypes.number.isRequired,
     zoom: PropTypes.number.isRequired,
     isMinimapOpen: PropTypes.bool.isRequired,
+    isNormalized: PropTypes.bool.isRequired,
   }).isRequired,
   label: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,

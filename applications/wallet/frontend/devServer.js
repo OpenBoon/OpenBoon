@@ -105,7 +105,7 @@ app.prepare().then(() => {
     server.get(`${PID_API_BASE}/searches/fields/`, mock(fields))
     server.get(`${PID_API_BASE}/searches/aggregate/`, mock(dateAggregate))
 
-    server.get(`${PID_API_BASE}/models/`, mock(models))
+    server.get(`${PID_API_BASE}/models/all/`, mock(models))
     server.get(`${PID_API_BASE}/models/model_types/`, mock(modelTypes))
   }
 

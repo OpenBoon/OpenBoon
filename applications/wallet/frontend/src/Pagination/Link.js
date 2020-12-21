@@ -6,6 +6,8 @@ import { spacing, constants } from '../Styles'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
+import { getQueryString } from '../Fetch/helpers'
+
 import Button, { VARIANTS } from '../Button'
 
 const PaginationLink = ({ currentPage, totalPages, direction }) => {
@@ -16,7 +18,10 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
   const isDisabled = isPrev ? currentPage - 1 <= 0 : currentPage === totalPages
 
   const queryParamPage = isPrev ? currentPage - 1 : currentPage + 1
-  const queryParam = queryParamPage === 1 ? '' : `?page=${queryParamPage}`
+  const queryParam = getQueryString({
+    query: query.query,
+    page: queryParamPage === 1 ? '' : queryParamPage,
+  })
   const href = `${pathname}${queryParam}`
   const as = href
     .split('/')

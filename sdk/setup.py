@@ -21,7 +21,8 @@ requirements = [
     "opencv-python-headless",
     "opencv-contrib-python-headless",
     "Pillow",
-    "pdoc3"
+    "pdoc3",
+    "requests"
 ]
 
 setup(

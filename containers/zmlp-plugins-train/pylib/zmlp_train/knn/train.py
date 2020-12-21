@@ -167,7 +167,7 @@ class KnnLabelDetectionTrainer(AssetProcessor):
             classifier (KNeighborsClassifier): The Kmeans classificer instance.
 
         Returns:
-            PipelineMod: The published Pipeline Module.
+            AnalysisModule: The published Pipeline Module.
         """
         self.reactor.emit_status('Saving model: {}'.format(self.app_model.name))
         model_dir = os.path.join(tempfile.mkdtemp(), "/" + self.app_model.name)

@@ -8,7 +8,9 @@ import { getQueryString } from '../Fetch/helpers'
 import { decode, encode } from '../Filters/helpers'
 import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
-import Select from '../Select'
+import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
+
+const SCOPE_WIDTH = 150
 
 const ModelAssetsDropdown = ({ projectId, modelId }) => {
   const {
@@ -20,6 +22,10 @@ const ModelAssetsDropdown = ({ projectId, modelId }) => {
   const {
     data: { results },
   } = useSWR(`/api/v1/projects/${projectId}/models/${modelId}/get_labels/`)
+
+  if (!results.length) {
+    return null
+  }
 
   const labels = results.reduce(
     (acc, { label: l }) => [...acc, { label: l, value: l }],
@@ -44,7 +50,10 @@ const ModelAssetsDropdown = ({ projectId, modelId }) => {
           )
         }}
         isRequired={false}
-        style={{ width: '100%' }}
+        variant={SELECT_VARIANTS.ROW}
+        style={{
+          width: SCOPE_WIDTH,
+        }}
       />
 
       <div css={{ width: spacing.normal }} />
@@ -65,7 +74,7 @@ const ModelAssetsDropdown = ({ projectId, modelId }) => {
           )
         }}
         isRequired={false}
-        style={{ width: '100%' }}
+        variant={SELECT_VARIANTS.ROW}
       />
     </div>
   )
