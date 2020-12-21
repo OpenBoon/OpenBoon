@@ -13,24 +13,6 @@ stages:
   - push
   - deploy
 
-########  Scrounger  ########
-
-## Scrounger Frontend CI Tests
-scrounger-frontend-test-suite:
-  stage: test
-  image: node:12
-  before_script:
-    - cd applications/scrounger/react_frontend
-    - npm ci
-  script:
-    - npm run lint
-  rules:
-    # MR to development with Frontend changes
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development"
-      changes:
-        - "applications/scrounger/react_frontend/**/*"
-    - when: never
-
 ########  Wallet  ########
 
 ## Wallet Integration CI Tests
