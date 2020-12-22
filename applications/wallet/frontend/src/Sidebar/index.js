@@ -34,6 +34,8 @@ const Sidebar = forwardRef(
       }
     }, [setSidebarOpen])
 
+    if (!projectId) return null
+
     return (
       <div>
         <nav

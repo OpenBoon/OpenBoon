@@ -30,7 +30,7 @@ class FileTypesControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(jsonPath("$[0]", CoreMatchers.equalTo("m4v")))
+            .andExpect(jsonPath("$[0]", CoreMatchers.equalTo("avi")))
             .andReturn()
     }
 

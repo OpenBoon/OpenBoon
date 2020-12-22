@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
-.emotion-5 {
+.emotion-0 {
   background-color: #252525;
   color: #808080;
   margin: 1px;
@@ -12,7 +12,6 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -20,14 +19,14 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-3 a {
+.emotion-1 a {
   text-transform: uppercase;
   font-weight: 500;
   padding: 8px;
@@ -39,7 +38,6 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -47,34 +45,34 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
   align-items: center;
 }
 
-.emotion-3 a:hover {
+.emotion-1 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
   background-color: #2e2e2e;
 }
 
-.emotion-3 svg {
+.emotion-1 svg {
   margin-right: 8px;
 }
 
-.emotion-0 {
+.emotion-2 {
   white-space: nowrap;
   color: #73b61c;
 }
 
-.emotion-1 {
+.emotion-3 {
   margin-top: 8px;
   margin-bottom: 8px;
   border-left: 2px solid #191919;
 }
 
-.emotion-2 {
+.emotion-4 {
   white-space: nowrap;
   color: #808080;
 }
 
-.emotion-4 {
+.emotion-5 {
   white-space: nowrap;
   padding: 8px;
   padding-left: 12px;
@@ -83,13 +81,13 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
 }
 
 <div
-  className="emotion-5"
+  className="emotion-0"
 >
   <div
-    className="emotion-3"
+    className="emotion-1"
   >
     <a
-      className="emotion-0"
+      className="emotion-2"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -101,10 +99,10 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
        Assets
     </a>
     <div
-      className="emotion-1"
+      className="emotion-3"
     />
     <a
-      className="emotion-2"
+      className="emotion-4"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/data-visualization"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -117,7 +115,7 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
     </a>
   </div>
   <div
-    className="emotion-4"
+    className="emotion-5"
   >
     42
      Assets
@@ -126,7 +124,7 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
 `;
 
 exports[`<VisualizerNavigation /> should render properly for the Data Visualization 1`] = `
-.emotion-5 {
+.emotion-0 {
   background-color: #252525;
   color: #808080;
   margin: 1px;
@@ -137,7 +135,6 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -145,14 +142,14 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-3 a {
+.emotion-1 a {
   text-transform: uppercase;
   font-weight: 500;
   padding: 8px;
@@ -164,7 +161,6 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -172,34 +168,34 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
   align-items: center;
 }
 
-.emotion-3 a:hover {
+.emotion-1 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
   background-color: #2e2e2e;
 }
 
-.emotion-3 svg {
+.emotion-1 svg {
   margin-right: 8px;
 }
 
 .emotion-2 {
   white-space: nowrap;
-  color: #73b61c;
+  color: #808080;
 }
 
-.emotion-1 {
+.emotion-3 {
   margin-top: 8px;
   margin-bottom: 8px;
   border-left: 2px solid #191919;
 }
 
-.emotion-0 {
+.emotion-4 {
   white-space: nowrap;
-  color: #808080;
+  color: #73b61c;
 }
 
-.emotion-4 {
+.emotion-5 {
   white-space: nowrap;
   padding: 8px;
   padding-left: 12px;
@@ -208,13 +204,13 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
 }
 
 <div
-  className="emotion-5"
+  className="emotion-0"
 >
   <div
-    className="emotion-3"
+    className="emotion-1"
   >
     <a
-      className="emotion-0"
+      className="emotion-2"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -226,10 +222,10 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
        Assets
     </a>
     <div
-      className="emotion-1"
+      className="emotion-3"
     />
     <a
-      className="emotion-2"
+      className="emotion-4"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/data-visualization"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -242,7 +238,7 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
     </a>
   </div>
   <div
-    className="emotion-4"
+    className="emotion-5"
   >
     42
      Assets
@@ -251,7 +247,7 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
 `;
 
 exports[`<VisualizerNavigation /> should render properly without a count 1`] = `
-.emotion-4 {
+.emotion-0 {
   background-color: #252525;
   color: #808080;
   margin: 1px;
@@ -262,7 +258,6 @@ exports[`<VisualizerNavigation /> should render properly without a count 1`] = `
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -270,14 +265,14 @@ exports[`<VisualizerNavigation /> should render properly without a count 1`] = `
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-3 a {
+.emotion-1 a {
   text-transform: uppercase;
   font-weight: 500;
   padding: 8px;
@@ -289,7 +284,6 @@ exports[`<VisualizerNavigation /> should render properly without a count 1`] = `
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -297,41 +291,41 @@ exports[`<VisualizerNavigation /> should render properly without a count 1`] = `
   align-items: center;
 }
 
-.emotion-3 a:hover {
+.emotion-1 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
   background-color: #2e2e2e;
 }
 
-.emotion-3 svg {
+.emotion-1 svg {
   margin-right: 8px;
 }
 
-.emotion-0 {
+.emotion-2 {
   white-space: nowrap;
   color: #73b61c;
 }
 
-.emotion-1 {
+.emotion-3 {
   margin-top: 8px;
   margin-bottom: 8px;
   border-left: 2px solid #191919;
 }
 
-.emotion-2 {
+.emotion-4 {
   white-space: nowrap;
   color: #808080;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <div
-    className="emotion-3"
+    className="emotion-1"
   >
     <a
-      className="emotion-0"
+      className="emotion-2"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -343,10 +337,10 @@ exports[`<VisualizerNavigation /> should render properly without a count 1`] = `
        Assets
     </a>
     <div
-      className="emotion-1"
+      className="emotion-3"
     />
     <a
-      className="emotion-2"
+      className="emotion-4"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/data-visualization"
       onClick={[Function]}
       onMouseEnter={[Function]}

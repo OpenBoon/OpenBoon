@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
 import com.zorroa.archivist.domain.ClipSpec
+import com.zorroa.archivist.domain.FieldSpec
 import com.zorroa.archivist.domain.Label
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelType
@@ -14,6 +15,7 @@ import com.zorroa.archivist.domain.TrackSpec
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.service.AssetSearchService
 import com.zorroa.archivist.service.ClipService
+import com.zorroa.archivist.service.FieldService
 import com.zorroa.archivist.service.ModelService
 import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.archivist.util.bbox
@@ -44,6 +46,9 @@ class AssetControllerTests : MockMvcTest() {
     @Autowired
     lateinit var clipService: ClipService
 
+    @Autowired
+    lateinit var fieldService: FieldService
+
     @Test
     fun testBatchCreate() {
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
@@ -54,6 +59,25 @@ class AssetControllerTests : MockMvcTest() {
                 .content(Json.serialize(mapOf("assets" to listOf(spec))))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
+
+    @Test
+    fun testBatchUpdateCustomFields() {
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val createRsp = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed))
+        fieldService.createField(FieldSpec("shoe", "keyword"))
+
+        val req = mapOf("update" to mapOf(createRsp.created[0] to mapOf("shoe" to "nike")))
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/assets/_batch_update_custom_fields")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(req))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
             .andReturn()
     }
 
@@ -91,173 +115,6 @@ class AssetControllerTests : MockMvcTest() {
 
         // For co-routing logs
         Thread.sleep(1000)
-    }
-
-    @Test
-    fun testBatchIndex_withError() {
-        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        val batch = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
-        val id = batch.created[0]
-
-        val brokenPayload =
-            """
-            {
-                "$id": {
-                    "doc": {
-                        "source": {
-                            "filename": "cats.png"
-                        }
-                    },
-                    "media": {
-                        "type": "image"
-                    }
-                }
-            }
-            """
-
-        mvc.perform(
-            MockMvcRequestBuilders.post("/api/v3/assets/_batch_index")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(brokenPayload)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.failed.length()", CoreMatchers.equalTo(1)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.failed[0].assetId", CoreMatchers.equalTo(id)))
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$.failed[0].message",
-                    CoreMatchers.containsString("strict_dynamic_mapping_exception")
-                )
-            )
-            .andReturn()
-    }
-
-    @Test
-    fun testBatchIndex() {
-        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        val batch = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
-        val id = batch.created[0]
-        val asset = assetService.getAsset(id)
-        asset.setAttr("aux.captain", "kirk")
-        val payload = mapOf(asset.id to asset.document)
-
-        mvc.perform(
-            MockMvcRequestBuilders.post("/api/v3/assets/_batch_index")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(payload))
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.failed.length()", CoreMatchers.equalTo(0)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.indexed.length()", CoreMatchers.equalTo(1)))
-    }
-
-    @Test
-    fun testIndex() {
-        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
-        val id = created.created[0]
-        val asset = assetService.getAsset(id)
-
-        val rsp = mvc.perform(
-            MockMvcRequestBuilders.put("/api/v3/assets/$id/_index")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(asset.document))
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$._id", CoreMatchers.equalTo(id)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.result", CoreMatchers.equalTo("updated")))
-            .andReturn()
-    }
-
-    @Test
-    fun testUpdate() {
-        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
-        val id = created.created[0]
-
-        val update =
-            """
-            {
-                "doc": {
-                    "source": {
-                        "filename": "cats.png"
-                    }
-                }
-            }
-            """
-
-        val res = mvc.perform(
-            MockMvcRequestBuilders.post("/api/v3/assets/$id/_update")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(update)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.result", CoreMatchers.equalTo("updated")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$._id", CoreMatchers.equalTo(id)))
-            .andReturn()
-    }
-
-    @Test
-    fun testUpdateByQuery() {
-        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
-
-        val update =
-            """
-            {
-                "query": {
-                    "match_all": { }
-                },
-                "script": {
-                    "source": "ctx._source['source']['filename'] = 'test.png'"
-                }
-            }
-            """.trimIndent()
-
-        mvc.perform(
-            MockMvcRequestBuilders.post("/api/v3/assets/_update_by_query")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(update)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.updated", CoreMatchers.equalTo(1)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.batches", CoreMatchers.equalTo(1)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.version_conflicts", CoreMatchers.equalTo(0)))
-            .andReturn()
-    }
-
-    @Test
-    fun testBatchUpdateWithDoc() {
-        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
-        val id = created.created[0]
-
-        val update =
-            """
-            {
-                "$id": {
-                    "doc": {
-                        "source": {
-                            "filename": "dogs.png"
-                        }
-                    }
-                }
-            }
-            """
-
-        mvc.perform(
-            MockMvcRequestBuilders.post("/api/v3/assets/_batch_update")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(update)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
     }
 
     @Test

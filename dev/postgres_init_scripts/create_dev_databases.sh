@@ -16,3 +16,4 @@ EOSQL
 
 create_user_and_database zorroa zorroa
 create_user_and_database wallet a8fnnbe934j
+create_user_and_database metrics 2mAPDWhuiYdIW69u

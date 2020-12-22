@@ -42,7 +42,7 @@ export const getScroller = ({ namespace }) => {
   return scroller
 }
 
-export const getOnEvent = ({ scroller }) => {
+export const getOnEvent = ({ node, scroller }) => {
   return (event) => {
     event.preventDefault()
 
@@ -51,12 +51,12 @@ export const getOnEvent = ({ scroller }) => {
     const scrollY =
       event.type === 'wheel' ? event.deltaY : event.target.scrollTop
 
-    scroller.emit({ eventName: event.type, data: { scrollX, scrollY } })
+    scroller.emit({ eventName: event.type, data: { node, scrollX, scrollY } })
   }
 }
 
 export const handleEventListener = ({ eventName, node, scroller }) => {
-  const onEvent = getOnEvent({ scroller })
+  const onEvent = getOnEvent({ node, scroller })
 
   node.addEventListener(eventName, onEvent)
 
@@ -121,12 +121,12 @@ export const initializeScroller = ({
 
   /* istanbul ignore else */
   if (isScrollEmitter) {
-    const deregiter = handleEventListener({
+    const deregister = handleEventListener({
       eventName: 'scroll',
       node,
       scroller,
     })
-    deregisterCallbacks.push(deregiter)
+    deregisterCallbacks.push(deregister)
   }
 
   /* istanbul ignore else */

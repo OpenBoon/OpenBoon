@@ -38,14 +38,19 @@ export const formatPaddedSeconds = ({ seconds: s }) => {
   return `00:0${ISOString.substr(15, 4)}`
 }
 
-export const updatePlayheadPosition = ({ video, playhead, zoom }) => {
+export const updatePlayheadPosition = ({
+  video,
+  playhead,
+  zoom,
+  scrollLeft,
+}) => {
   if (!video || !playhead) return null
 
   return playhead.style.setProperty(
     'left',
     `calc(${(video.currentTime / video.duration) * zoom}% - ${
       GUIDE_WIDTH / 2
-    }px)`,
+    }px - ${scrollLeft}px)`,
   )
 }
 
@@ -155,4 +160,18 @@ export const gotoNextHit = ({ videoRef, timelines, settings }) => () => {
 
   // eslint-disable-next-line no-param-reassign
   videoRef.current.currentTime = nextHit || duration
+}
+
+export const getNextScrollLeft = ({ videoRef, rulerRef, zoom, nextZoom }) => {
+  const { currentTime = 0, duration = 0 } = videoRef.current || {}
+  const { scrollWidth = 0, scrollLeft = 0 } = rulerRef.current || {}
+
+  const playheadLeftOffset = (currentTime / duration) * scrollWidth - scrollLeft
+
+  const nextScrollWidth = (scrollWidth / zoom) * nextZoom + GUIDE_WIDTH / 2
+
+  const nextScrollLeft =
+    (currentTime / duration) * nextScrollWidth - playheadLeftOffset
+
+  return nextScrollLeft
 }

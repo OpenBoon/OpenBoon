@@ -2,6 +2,11 @@ import { mutate } from 'swr'
 
 import { fetcher, revalidate, parseResponse } from '../Fetch/helpers'
 
+export const SCOPE_OPTIONS = [
+  { value: 'TRAIN', label: 'Train' },
+  { value: 'TEST', label: 'Test' },
+]
+
 export const getOptions = async ({ projectId, modelId }) => {
   if (!modelId) {
     return []
@@ -14,8 +19,8 @@ export const getOptions = async ({ projectId, modelId }) => {
   return results
 }
 
-export const getSubmitText = ({ state, existingLabel }) => {
-  const { success, isLoading } = state
+export const getSubmitText = ({ localState, existingLabel }) => {
+  const { success, isLoading } = localState
 
   if ((success && !isLoading) || existingLabel) {
     return 'Label Saved'
@@ -42,12 +47,13 @@ const getLabelAction = ({ body }) => {
 
 export const onSubmit = async ({
   dispatch,
-  state: { modelId, label, reloadKey },
+  localDispatch,
+  localState: { modelId, label, scope, reloadKey },
   labels,
   projectId,
   assetId,
 }) => {
-  dispatch({ isLoading: true, errors: {} })
+  localDispatch({ isLoading: true, errors: {} })
 
   const existingModel = labels.find(
     ({ modelId: labelModel }) => labelModel === modelId,
@@ -60,7 +66,7 @@ export const onSubmit = async ({
   }
 
   if (label !== '') {
-    body.addLabels = [{ assetId, label }]
+    body.addLabels = [{ assetId, label, scope }]
   }
 
   const labelAction = getLabelAction({ body })
@@ -76,15 +82,17 @@ export const onSubmit = async ({
 
     mutate(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
-    dispatch({
+    localDispatch({
       reloadKey: reloadKey + 1,
       success: true,
       isLoading: false,
       errors: {},
     })
+
+    dispatch({ modelId, label, scope, assetId })
   } catch (response) {
     const errors = await parseResponse({ response })
 
-    dispatch({ success: false, isLoading: false, errors })
+    localDispatch({ success: false, isLoading: false, errors })
   }
 }

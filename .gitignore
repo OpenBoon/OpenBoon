@@ -42,3 +42,4 @@ docker-compose.override.yml*
 *.ipynb_checkpoints/
 *.egg-info/
 *search.pickle
+**/.pytest_cache/

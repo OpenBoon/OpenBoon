@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import Router, { useRouter } from 'next/router'
 import useSWR from 'swr'
+import Router, { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
 import { useLocalStorage } from '../LocalStorage/helpers'
+import SuspenseBoundary from '../SuspenseBoundary'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 import FilterSvg from '../Icons/filter.svg'
@@ -19,7 +20,10 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import Modal from '../Modal'
 import Tabs from '../Tabs'
+import ModelAssets from '../ModelAssets'
+import ModelAssetsDropdown from '../ModelAssets/Dropdown'
 import ModelLabels from '../ModelLabels'
+import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
 import { onTrain } from './helpers'
 
@@ -27,6 +31,7 @@ const LINE_HEIGHT = '23px'
 
 const ModelDetails = () => {
   const {
+    pathname,
     query: { projectId, modelId, edit = '' },
   } = useRouter()
 
@@ -39,12 +44,14 @@ const ModelDetails = () => {
     key: 'leftOpeningPanel',
   })
 
-  const [, setModelId] = useLocalStorage({
-    key: `AssetLabelingAdd.${projectId}.modelId`,
-  })
-
-  const [, setLabel] = useLocalStorage({
-    key: `AssetLabelingAdd.${projectId}.label`,
+  const [, setModelFields] = useLocalStorage({
+    key: `AssetLabelingAdd.${projectId}`,
+    reducer: (state, action) => ({ ...state, ...action }),
+    initialState: {
+      modelId,
+      label: '',
+      scope: '',
+    },
   })
 
   const { data: model } = useSWR(
@@ -248,6 +255,11 @@ const ModelDetails = () => {
             href: '/[projectId]/models/[modelId]',
             isSelected: edit ? false : undefined,
           },
+          {
+            title: 'Labeled Assets',
+            href: '/[projectId]/models/[modelId]/assets',
+            isSelected: edit ? false : undefined,
+          },
           edit
             ? {
                 title: 'Edit Label',
@@ -258,75 +270,100 @@ const ModelDetails = () => {
         ]}
       />
 
-      {!edit && (
-        <div
-          css={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            marginBottom: -spacing.normal,
-          }}
-        >
-          <Link
-            href={`/[projectId]/visualizer?query=${encodedFilter}`}
-            as={`/${projectId}/visualizer?query=${encodedFilter}`}
-            passHref
+      <SuspenseBoundary>
+        {!edit && (
+          <div
+            css={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              paddingBottom: spacing.base,
+            }}
           >
-            <Button
-              aria-label="Add Filter in Visualizer"
-              variant={BUTTON_VARIANTS.SECONDARY_SMALL}
-              onClick={() => {
-                localStorage.setItem('rightOpeningPanel', '"filters"')
-              }}
-              style={{
+            {pathname === '/[projectId]/models/[modelId]/assets' && (
+              <ModelAssetsDropdown projectId={projectId} modelId={modelId} />
+            )}
+
+            <div
+              css={{
                 display: 'flex',
-                paddingTop: spacing.moderate,
-                paddingBottom: spacing.moderate,
+                flex: 1,
+                justifyContent: 'flex-end',
               }}
             >
-              <div css={{ display: 'flex', alignItems: 'center' }}>
-                <FilterSvg
-                  height={constants.icons.regular}
-                  css={{ paddingRight: spacing.base }}
-                />
-                Add Filter in Visualizer
-              </div>
-            </Button>
-          </Link>
+              <Link
+                href={`/[projectId]/visualizer?query=${encodedFilter}`}
+                as={`/${projectId}/visualizer?query=${encodedFilter}`}
+                passHref
+              >
+                <Button
+                  aria-label="Add Filter in Visualizer"
+                  variant={BUTTON_VARIANTS.SECONDARY_SMALL}
+                  onClick={() => {
+                    localStorage.setItem('rightOpeningPanel', '"filters"')
+                  }}
+                  style={{
+                    display: 'flex',
+                    paddingTop: spacing.moderate,
+                    paddingBottom: spacing.moderate,
+                  }}
+                >
+                  <div css={{ display: 'flex', alignItems: 'center' }}>
+                    <FilterSvg
+                      height={constants.icons.regular}
+                      css={{ paddingRight: spacing.base }}
+                    />
+                    Add Filter in Visualizer
+                  </div>
+                </Button>
+              </Link>
 
-          <div css={{ width: spacing.normal }} />
+              <div css={{ width: spacing.normal }} />
 
-          <Link
-            href="/[projectId]/visualizer"
-            as={`/${projectId}/visualizer`}
-            passHref
-          >
-            <Button
-              aria-label="Add More Labels"
-              variant={BUTTON_VARIANTS.SECONDARY_SMALL}
-              onClick={() => {
-                setPanel({ value: 'assetLabeling' })
-                setModelId({ value: modelId })
-                setLabel({ value: '' })
-              }}
-              style={{
-                display: 'flex',
-                paddingTop: spacing.moderate,
-                paddingBottom: spacing.moderate,
-              }}
-            >
-              <div css={{ display: 'flex', alignItems: 'center' }}>
-                <PenSvg
-                  height={constants.icons.regular}
-                  css={{ paddingRight: spacing.base }}
-                />
-                Add More Labels
-              </div>
-            </Button>
-          </Link>
-        </div>
-      )}
+              <Link
+                href="/[projectId]/visualizer"
+                as={`/${projectId}/visualizer`}
+                passHref
+              >
+                <Button
+                  aria-label="Add More Labels"
+                  variant={BUTTON_VARIANTS.SECONDARY_SMALL}
+                  onClick={() => {
+                    setPanel({ value: 'assetLabeling' })
 
-      {!edit && <ModelLabels requiredAssetsPerLabel={requiredAssetsPerLabel} />}
+                    setModelFields({
+                      modelId,
+                      scope: SCOPE_OPTIONS[0].value,
+                      label: '',
+                    })
+                  }}
+                  style={{
+                    display: 'flex',
+                    paddingTop: spacing.moderate,
+                    paddingBottom: spacing.moderate,
+                  }}
+                >
+                  <div css={{ display: 'flex', alignItems: 'center' }}>
+                    <PenSvg
+                      height={constants.icons.regular}
+                      css={{ paddingRight: spacing.base }}
+                    />
+                    Add More Labels
+                  </div>
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {pathname === '/[projectId]/models/[modelId]' && !edit && (
+          <ModelLabels requiredAssetsPerLabel={requiredAssetsPerLabel} />
+        )}
+
+        {pathname === '/[projectId]/models/[modelId]/assets' && (
+          <ModelAssets moduleName={moduleName} />
+        )}
+      </SuspenseBoundary>
     </>
   )
 }

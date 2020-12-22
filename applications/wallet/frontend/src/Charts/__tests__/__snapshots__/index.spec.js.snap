@@ -127,13 +127,13 @@ exports[`<Charts /> should render properly for "Facet" 1`] = `
 `;
 
 exports[`<Charts /> should render properly for "Histogram" 1`] = `
-.emotion-25 {
+.emotion-0 {
   height: 100%;
   overflow: hidden;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-24 {
+.emotion-1 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -148,14 +148,14 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   padding-top: 8px;
 }
 
-.emotion-23 {
+.emotion-2 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-22 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -171,22 +171,22 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   padding: 0;
 }
 
-.emotion-0 {
+.emotion-4 {
   padding-top: 8px;
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
 }
 
-.emotion-1 {
+.emotion-5 {
   height: 24px;
 }
 
-.emotion-11 [data-reach-listbox-input][data-state="expanded"] {
+.emotion-6 [data-reach-listbox-input][data-state="expanded"] {
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-2 {
+.emotion-7 {
   padding-bottom: 8px;
   color: #ffffff;
   font-size: 15px;
@@ -194,7 +194,7 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   font-weight: 500;
 }
 
-.emotion-10 {
+.emotion-8 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -207,7 +207,7 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   border-radius: 2px;
 }
 
-.emotion-3 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -222,23 +222,22 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   align-items: center;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
 }
 
-.emotion-9 {
+.emotion-10 {
   background-color: transparent;
   border: none;
   padding: 0;
 }
 
-.emotion-9:focus-within {
+.emotion-10:focus-within {
   outline: none;
   box-shadow: none;
 }
 
-.emotion-8 {
+.emotion-11 {
   overflow-y: hidden;
   padding: 8px;
   padding-top: 0;
@@ -246,18 +245,18 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   margin-bottom: 0;
 }
 
-.emotion-7 {
+.emotion-12 {
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
   background-color: #808080;
   box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-5 {
+.emotion-13 {
   padding: 4px;
 }
 
-.emotion-4 {
+.emotion-14 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -268,33 +267,35 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   border-radius: 2px;
   color: #e0e0e0;
   background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
   background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
   background-size: 20px;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-4::-webkit-input-placeholder {
+.emotion-14::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-4::-moz-placeholder {
+.emotion-14::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-4:-ms-input-placeholder {
+.emotion-14:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-4::placeholder {
+.emotion-14::placeholder {
   font-style: italic;
 }
 
-.emotion-4:hover {
+.emotion-14:hover {
   border: 1px solid #808080;
 }
 
-.emotion-4:focus {
+.emotion-14:focus {
   outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
@@ -302,62 +303,66 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-6 {
+.emotion-15 {
   padding: 8px;
 }
 
-.emotion-12 {
+.emotion-16 {
   height: 16px;
 }
 
-.emotion-16 {
+.emotion-17 {
   padding-top: 8px;
 }
 
-.emotion-13 {
+.emotion-18 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-15 {
+.emotion-19 {
   position: relative;
 }
 
-.emotion-14 {
+.emotion-20 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #ffffff;
   background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-14:focus {
+.emotion-20:focus,
+.emotion-20 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
-}
-
-.emotion-14:hover {
-  border: 2px solid #ffffff;
-}
-
-.emotion-14:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
+.emotion-20:hover,
+.emotion-20 .noop {
+  border: 2px solid #ffffff;
+}
+
 .emotion-21 {
+  padding-top: 8px;
+}
+
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-18 {
+.emotion-23 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -373,8 +378,8 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -391,34 +396,31 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   flex: 1;
 }
 
-.emotion-18:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-18[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-18,
-.emotion-18:hover,
-.emotion-18:visited {
+.emotion-23,
+.emotion-23:hover,
+.emotion-23:visited,
+.emotion-23 .noop {
   background-color: #808080;
 }
 
-.emotion-18:hover {
+.emotion-23:hover,
+.emotion-23 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-18[aria-disabled=true] {
+.emotion-23[aria-disabled=true],
+.emotion-23 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-19 {
+.emotion-24 {
   width: 8px;
 }
 
-.emotion-20 {
+.emotion-25 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -434,8 +436,8 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -452,26 +454,23 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   flex: 1;
 }
 
-.emotion-20:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-20[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-20,
-.emotion-20:hover,
-.emotion-20:visited {
+.emotion-25,
+.emotion-25:hover,
+.emotion-25:visited,
+.emotion-25 .noop {
   background-color: #73b61c;
 }
 
-.emotion-20:hover {
+.emotion-25:hover,
+.emotion-25 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-20[aria-disabled=true] {
+.emotion-25[aria-disabled=true],
+.emotion-25 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -586,39 +585,39 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   >
     <div>
       <div
-        className="emotion-25"
+        className="emotion-0"
       >
         <div
-          className="emotion-24"
+          className="emotion-1"
         >
           <div
-            className="emotion-23"
+            className="emotion-2"
           >
             <form
               action=""
-              className="emotion-22"
+              className="emotion-3"
               method="post"
               onSubmit={[Function]}
             >
               <h2
-                className="emotion-0"
+                className="emotion-4"
               >
                 Histogram
                  Visualization
               </h2>
               <div
-                className="emotion-1"
+                className="emotion-5"
               />
               <label
-                className="emotion-11"
+                className="emotion-6"
               >
                 <div
-                  className="emotion-2"
+                  className="emotion-7"
                 >
                   Metadata Type
                 </div>
                 <ListboxInput
-                  className="emotion-10"
+                  className="emotion-8"
                   defaultValue=""
                   onChange={[Function]}
                 >
@@ -629,25 +628,25 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
                         height={20}
                       />
                     }
-                    className="emotion-3"
+                    className="emotion-9"
                   >
                     Select Type
                   </ListboxButton>
                   <ListboxPopover
-                    className="emotion-9"
+                    className="emotion-10"
                   >
                     <div
-                      className="emotion-8"
+                      className="emotion-11"
                     >
                       <div
-                        className="emotion-7"
+                        className="emotion-12"
                       >
                         <div
-                          className="emotion-5"
+                          className="emotion-13"
                         >
                           <input
                             aria-label="Filter Types"
-                            className="emotion-4"
+                            className="emotion-14"
                             onChange={[Function]}
                             placeholder="Filter types"
                             type="search"
@@ -655,7 +654,7 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
                           />
                         </div>
                         <div
-                          className="emotion-6"
+                          className="emotion-15"
                         >
                           No Results
                         </div>
@@ -665,22 +664,22 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
                 </ListboxInput>
               </label>
               <div
-                className="emotion-12"
+                className="emotion-16"
               />
               <div
-                className="emotion-16"
+                className="emotion-17"
               >
                 <label
-                  className="emotion-13"
+                  className="emotion-18"
                   htmlFor="values"
                 >
                   Number of Values Shown
                 </label>
                 <div
-                  className="emotion-15"
+                  className="emotion-19"
                 >
                   <input
-                    className="emotion-14"
+                    className="emotion-20"
                     disabled={false}
                     id="values"
                     name="values"
@@ -690,27 +689,27 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
                   />
                 </div>
                 <div
-                  className="emotion-16"
+                  className="emotion-21"
                 >
                    
                 </div>
               </div>
               <div
-                className="emotion-21"
+                className="emotion-22"
               >
                 <button
-                  className="emotion-18"
+                  className="emotion-23"
                   onClick={[Function]}
                   type="button"
                 >
                   Cancel
                 </button>
                 <div
-                  className="emotion-19"
+                  className="emotion-24"
                 />
                 <button
                   aria-disabled={true}
-                  className="emotion-20"
+                  className="emotion-25"
                   onClick={[Function]}
                   type="submit"
                 >

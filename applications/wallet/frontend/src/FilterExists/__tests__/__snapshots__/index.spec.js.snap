@@ -1,32 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FilterExists /> should select "Exists" 1`] = `
-.emotion-21 {
+.emotion-0 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-21:hover summary svg {
+.emotion-0:hover summary svg {
   opacity: 1;
 }
 
-.emotion-9 {
+.emotion-1 {
   list-style-type: none;
   padding: 8px;
   background-color: #252525;
 }
 
-.emotion-9::-webkit-details-marker {
+.emotion-1::-webkit-details-marker {
   display: none;
 }
 
-.emotion-9:hover {
+.emotion-1:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -37,14 +37,15 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-3 {
   color: #808080;
   -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-1 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -52,7 +53,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   padding-left: 8px;
 }
 
-.emotion-2 {
+.emotion-5 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -67,7 +68,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   padding-right: 4px;
 }
 
-.emotion-7 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -78,7 +79,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   align-items: center;
 }
 
-.emotion-4 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -94,29 +95,27 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   padding: 4px;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -125,59 +124,59 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   border-radius: 2px;
 }
 
-.emotion-4:hover {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4:hover,
-.emotion-4.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-4:hover svg,
-.emotion-4.focus-visible:focus svg {
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg,
+.emotion-7 .noop svg {
   opacity: 1;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #808080;
 }
 
-.emotion-4:hover,
-.emotion-4.focus-visible:focus {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-4:hover svg,
-.emotion-4.focus-visible:focus svg {
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
 }
 
-.emotion-3 {
+.emotion-8 {
   opacity: 0;
 }
 
-.emotion-20 {
+.emotion-10 {
+  opacity: 0;
+}
+
+.emotion-11 {
   max-height: 500px;
   overflow-y: auto;
 }
 
-.emotion-19 {
+.emotion-12 {
   padding: 16px;
 }
 
-.emotion-18 {
+.emotion-13 {
   padding-top: 8px;
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.emotion-16 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -187,9 +186,9 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 }
 
 .emotion-15 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -202,54 +201,41 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 12px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  border-radius: 0;
-  padding: 12px;
-  background-color: #808080;
-  color: #ffffff;
-}
-
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: transparent;
 }
 
 .emotion-15:hover,
-.emotion-15.focus-visible:focus {
+.emotion-15.focus-visible:focus,
+.emotion-15 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-15:hover svg,
-.emotion-15.focus-visible:focus svg {
+.emotion-15.focus-visible:focus svg,
+.emotion-15 .noop svg {
   opacity: 1;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-15[aria-disabled=true],
+.emotion-15 .noop {
   color: #808080;
 }
 
-.emotion-11 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -260,14 +246,14 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   align-items: center;
 }
 
-.emotion-10 {
+.emotion-17 {
   padding-left: 4px;
 }
 
-.emotion-12 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-18 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -280,11 +266,11 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 12px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -292,66 +278,53 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  border-radius: 0;
-  padding: 12px;
-  background-color: transparent;
-  color: #808080;
+  background-color: #808080;
 }
 
-.emotion-12:hover {
+.emotion-18:hover,
+.emotion-18.focus-visible:focus,
+.emotion-18 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-12[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-12:hover,
-.emotion-12.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-12:hover svg,
-.emotion-12.focus-visible:focus svg {
+.emotion-18:hover svg,
+.emotion-18.focus-visible:focus svg,
+.emotion-18 .noop svg {
   opacity: 1;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
   color: #808080;
 }
 
-.emotion-17 {
+.emotion-21 {
   color: #808080;
   text-align: center;
   padding-top: 8px;
 }
 
 <details
-  className="emotion-21"
+  className="emotion-0"
   onToggle={[Function]}
   open={true}
 >
   <summary
     aria-label="location.point"
-    className="emotion-9"
+    className="emotion-1"
   >
     <div
-      className="emotion-8"
+      className="emotion-2"
     >
       <svg
-        className="emotion-0"
+        className="emotion-3"
         data-file-name="chevron.svg"
         height={20}
       />
       <span
-        className="emotion-1"
+        className="emotion-4"
       >
         <svg
           color="#73b61c"
@@ -360,22 +333,22 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
         />
       </span>
       <span
-        className="emotion-2"
+        className="emotion-5"
       >
         location.point
       </span>
       <div
-        className="emotion-7"
+        className="emotion-6"
       >
         <button
           aria-label="Disable Filter"
-          className="emotion-4"
+          className="emotion-7"
           onClick={[Function]}
           title="Disable Filter"
           type="button"
         >
           <svg
-            className="emotion-3"
+            className="emotion-8"
             color="#808080"
             data-file-name="hidden.svg"
             height={20}
@@ -383,13 +356,13 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
         </button>
         <button
           aria-label="Delete Filter"
-          className="emotion-4"
+          className="emotion-7"
           onClick={[Function]}
           title="Delete Filter"
           type="button"
         >
           <svg
-            className="emotion-3"
+            className="emotion-10"
             color="#808080"
             data-file-name="cross.svg"
             height={20}
@@ -399,10 +372,10 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
     </div>
   </summary>
   <div
-    className="emotion-20"
+    className="emotion-11"
   >
     <div
-      className="emotion-19"
+      className="emotion-12"
     >
       <FilterReset
         assetId=""
@@ -432,26 +405,26 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
         projectId="76917058-b147-4556-987a-0a0f11e46d9b"
       />
       <div
-        className="emotion-18"
+        className="emotion-13"
       >
         <div
-          className="emotion-16"
+          className="emotion-14"
         >
           <button
             aria-label="Exists"
-            className="emotion-12"
+            className="emotion-15"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-11"
+              className="emotion-16"
             >
               <svg
                 data-file-name="exists.svg"
                 height={20}
               />
               <div
-                className="emotion-10"
+                className="emotion-17"
               >
                 Exists
               </div>
@@ -459,19 +432,19 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
           </button>
           <button
             aria-label="Missing"
-            className="emotion-15"
+            className="emotion-18"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-11"
+              className="emotion-16"
             >
               <svg
                 data-file-name="missing.svg"
                 height={20}
               />
               <div
-                className="emotion-10"
+                className="emotion-17"
               >
                 Missing
               </div>
@@ -479,7 +452,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
           </button>
         </div>
         <div
-          className="emotion-17"
+          className="emotion-21"
         >
           <span>
             Show assets 
@@ -498,32 +471,32 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 `;
 
 exports[`<FilterExists /> should select "Missing" 1`] = `
-.emotion-21 {
+.emotion-0 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-21:hover summary svg {
+.emotion-0:hover summary svg {
   opacity: 1;
 }
 
-.emotion-9 {
+.emotion-1 {
   list-style-type: none;
   padding: 8px;
   background-color: #252525;
 }
 
-.emotion-9::-webkit-details-marker {
+.emotion-1::-webkit-details-marker {
   display: none;
 }
 
-.emotion-9:hover {
+.emotion-1:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -534,14 +507,15 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-3 {
   color: #808080;
   -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-1 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -549,7 +523,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   padding-left: 8px;
 }
 
-.emotion-2 {
+.emotion-5 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -564,7 +538,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   padding-right: 4px;
 }
 
-.emotion-7 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -575,7 +549,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   align-items: center;
 }
 
-.emotion-4 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -591,29 +565,27 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   padding: 4px;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -622,59 +594,59 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   border-radius: 2px;
 }
 
-.emotion-4:hover {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4:hover,
-.emotion-4.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-4:hover svg,
-.emotion-4.focus-visible:focus svg {
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg,
+.emotion-7 .noop svg {
   opacity: 1;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #808080;
 }
 
-.emotion-4:hover,
-.emotion-4.focus-visible:focus {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-4:hover svg,
-.emotion-4.focus-visible:focus svg {
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
 }
 
-.emotion-3 {
+.emotion-8 {
   opacity: 0;
 }
 
-.emotion-20 {
+.emotion-10 {
+  opacity: 0;
+}
+
+.emotion-11 {
   max-height: 500px;
   overflow-y: auto;
 }
 
-.emotion-19 {
+.emotion-12 {
   padding: 16px;
 }
 
-.emotion-18 {
+.emotion-13 {
   padding-top: 8px;
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.emotion-16 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -683,88 +655,10 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   border-radius: 2px;
 }
 
-.emotion-12 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  border-radius: 0;
-  padding: 12px;
-  background-color: #808080;
-  color: #ffffff;
-}
-
-.emotion-12:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-12[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-12:hover,
-.emotion-12.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-12:hover svg,
-.emotion-12.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-12[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-10 {
-  padding-left: 4px;
-}
-
 .emotion-15 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -777,11 +671,11 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 12px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -789,66 +683,118 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  border-radius: 0;
-  padding: 12px;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-15:hover,
-.emotion-15.focus-visible:focus {
+.emotion-15.focus-visible:focus,
+.emotion-15 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
 .emotion-15:hover svg,
-.emotion-15.focus-visible:focus svg {
+.emotion-15.focus-visible:focus svg,
+.emotion-15 .noop svg {
   opacity: 1;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-15[aria-disabled=true],
+.emotion-15 .noop {
   color: #808080;
 }
 
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
 .emotion-17 {
+  padding-left: 4px;
+}
+
+.emotion-18 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-18:hover,
+.emotion-18.focus-visible:focus,
+.emotion-18 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-18:hover svg,
+.emotion-18.focus-visible:focus svg,
+.emotion-18 .noop svg {
+  opacity: 1;
+}
+
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
+  color: #808080;
+}
+
+.emotion-21 {
   color: #808080;
   text-align: center;
   padding-top: 8px;
 }
 
 <details
-  className="emotion-21"
+  className="emotion-0"
   onToggle={[Function]}
   open={true}
 >
   <summary
     aria-label="location.point"
-    className="emotion-9"
+    className="emotion-1"
   >
     <div
-      className="emotion-8"
+      className="emotion-2"
     >
       <svg
-        className="emotion-0"
+        className="emotion-3"
         data-file-name="chevron.svg"
         height={20}
       />
       <span
-        className="emotion-1"
+        className="emotion-4"
       >
         <svg
           color="#73b61c"
@@ -857,22 +803,22 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
         />
       </span>
       <span
-        className="emotion-2"
+        className="emotion-5"
       >
         location.point
       </span>
       <div
-        className="emotion-7"
+        className="emotion-6"
       >
         <button
           aria-label="Disable Filter"
-          className="emotion-4"
+          className="emotion-7"
           onClick={[Function]}
           title="Disable Filter"
           type="button"
         >
           <svg
-            className="emotion-3"
+            className="emotion-8"
             color="#808080"
             data-file-name="hidden.svg"
             height={20}
@@ -880,13 +826,13 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
         </button>
         <button
           aria-label="Delete Filter"
-          className="emotion-4"
+          className="emotion-7"
           onClick={[Function]}
           title="Delete Filter"
           type="button"
         >
           <svg
-            className="emotion-3"
+            className="emotion-10"
             color="#808080"
             data-file-name="cross.svg"
             height={20}
@@ -896,10 +842,10 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
     </div>
   </summary>
   <div
-    className="emotion-20"
+    className="emotion-11"
   >
     <div
-      className="emotion-19"
+      className="emotion-12"
     >
       <FilterReset
         assetId=""
@@ -929,26 +875,26 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
         projectId="76917058-b147-4556-987a-0a0f11e46d9b"
       />
       <div
-        className="emotion-18"
+        className="emotion-13"
       >
         <div
-          className="emotion-16"
+          className="emotion-14"
         >
           <button
             aria-label="Exists"
-            className="emotion-12"
+            className="emotion-15"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-11"
+              className="emotion-16"
             >
               <svg
                 data-file-name="exists.svg"
                 height={20}
               />
               <div
-                className="emotion-10"
+                className="emotion-17"
               >
                 Exists
               </div>
@@ -956,19 +902,19 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
           </button>
           <button
             aria-label="Missing"
-            className="emotion-15"
+            className="emotion-18"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-11"
+              className="emotion-16"
             >
               <svg
                 data-file-name="missing.svg"
                 height={20}
               />
               <div
-                className="emotion-10"
+                className="emotion-17"
               >
                 Missing
               </div>
@@ -976,7 +922,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
           </button>
         </div>
         <div
-          className="emotion-17"
+          className="emotion-21"
         >
           <span>
             Show assets with the field "

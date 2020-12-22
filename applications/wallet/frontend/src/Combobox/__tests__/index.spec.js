@@ -78,4 +78,24 @@ describe('Combobox', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should unmount properly with an options function', () => {
+    const mockFn = jest.fn()
+    const options = [{ label: 'label0', count: 1 }]
+    const value = options[0].label
+
+    const component = TestRenderer.create(
+      <Combobox
+        label="inputLabel"
+        options={async () => Promise.resolve(options)}
+        value={value}
+        onChange={mockFn}
+        hasError={false}
+      />,
+    )
+
+    act(() => {
+      component.unmount()
+    })
+  })
 })

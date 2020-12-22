@@ -233,23 +233,24 @@ class FileImport(object):
     An FileImport is used to import a new file and metadata into ZMLP.
     """
 
-    def __init__(self, uri, attrs=None, page=None, label=None):
+    def __init__(self, uri, custom=None, page=None, label=None, tmp=None):
         """
         Construct an FileImport instance which can point to a remote URI.
 
         Args:
             uri (str): a URI locator to the file asset.
-            attrs (dict): A shallow key/value pair dictionary of starting point
-                attributes to set on the asset.
+            custom (dict): Values for custom metadata fields.
             page (int): The specific page to import if any.
             label (Label): An optional Label which will add the file to
                 a Model training set.
+            tmp: (dict): A dict of temp attrs that are removed after procssing.
         """
         super(FileImport, self).__init__()
         self.uri = uri
-        self.attrs = attrs or {}
+        self.custom = custom or {}
         self.page = page
         self.label = label
+        self.tmp = tmp
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
@@ -262,16 +263,17 @@ class FileImport(object):
         """
         return {
             "uri": self.uri,
-            "attrs": self.attrs,
+            "custom": self.custom,
             "page": self.page,
-            "label": self.label
+            "label": self.label,
+            "tmp": self.tmp
         }
 
     def __setitem__(self, field, value):
-        self.attrs[field] = value
+        self.custom[field] = value
 
     def __getitem__(self, field):
-        return self.attrs[field]
+        return self.custom[field]
 
 
 class FileUpload(FileImport):
@@ -279,20 +281,19 @@ class FileUpload(FileImport):
     FileUpload instances point to a local file that will be uploaded for analysis.
     """
 
-    def __init__(self, path, attrs=None, page=None, label=None):
+    def __init__(self, path, custom=None, page=None, label=None):
         """
         Create a new FileUpload instance.
 
         Args:
             path (str): A path to a file, the file must exist.
-            attrs (dict): A shallow key/value pair dictionary of starting point
-                attributes to set on the asset.
+            custom (dict): Values for pre-created custom metadata fields.
             page (int): The specific page to import if any.
             label (Label): An optional Label which will add the file to
                 a Model training set.
         """
         super(FileUpload, self).__init__(
-            os.path.normpath(os.path.abspath(path)), attrs, page, label)
+            os.path.normpath(os.path.abspath(path)), custom, page, label)
 
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))
@@ -309,7 +310,8 @@ class FileUpload(FileImport):
         return {
             "uri": self.uri,
             "page": self.page,
-            "label": self.label
+            "label": self.label,
+            "custom": self.custom
         }
 
 
@@ -599,11 +601,12 @@ class FileTypes:
     A class for storing the supported file types.
     """
 
-    videos = frozenset(['mov', 'mp4', 'mpg', 'mpeg', 'm4v', 'webm', 'ogv', 'ogg', 'mxf'])
+    videos = frozenset(['mov', 'mp4', 'mpg', 'mpeg', 'm4v', 'webm', 'ogv', 'ogg', 'mxf', 'avi'])
     """A set of supported video file formats."""
 
     images = frozenset(["bmp", "cin", "dpx", "gif", "jpg",
-                        "jpeg", "exr", "png", "psd", "rla", "tif", "tiff"])
+                        "jpeg", "exr", "png", "psd", "rla", "tif", "tiff",
+                        "dcm", "rla"])
     """A set of supported image file formats."""
 
     documents = frozenset(['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'vsd', 'vsdx'])

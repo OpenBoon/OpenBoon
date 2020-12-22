@@ -1,31 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] = `
-.emotion-8 {
+.emotion-0 {
   margin-left: 32px;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-8:first-of-type {
+.emotion-0:first-of-type {
   border-top: none;
 }
 
-.emotion-7 {
+.emotion-1 {
   color: #b3b3b3;
   padding: 8px;
   margin-left: -32px;
 }
 
-.emotion-7:hover {
+.emotion-1:hover {
   background-color: #0074f538;
   color: #ffffff;
 }
 
-.emotion-7:hover svg {
+.emotion-1:hover svg {
   color: #ffffff;
 }
 
-.emotion-6 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -47,7 +47,7 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
   position: relative;
 }
 
-.emotion-0 {
+.emotion-4 {
   padding: 0;
   width: 16px;
   height: 16px;
@@ -58,7 +58,7 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
   cursor: pointer;
 }
 
-.emotion-2 {
+.emotion-5 {
   position: absolute;
   top: 0;
   left: 0;
@@ -69,8 +69,8 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -79,59 +79,59 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
   cursor: pointer;
 }
 
-.emotion-1 path {
+.emotion-6 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-5 {
+.emotion-7 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   padding-left: 8px;
 }
 
-.emotion-4 {
+.emotion-8 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
 }
 
 <div
-  className="emotion-8"
+  className="emotion-0"
 >
   <div
-    className="emotion-7"
+    className="emotion-1"
   >
     <label
-      className="emotion-6"
+      className="emotion-2"
     >
       <div
         className="emotion-3"
       >
         <input
-          className="emotion-0"
+          className="emotion-4"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
           value="labels.zvi-console_face_recognition-face-recognition"
         />
         <div
-          className="emotion-2"
+          className="emotion-5"
         >
           <svg
-            className="emotion-1"
+            className="emotion-6"
             data-file-name="checkmark.svg"
             height={20}
           />
         </div>
       </div>
       <div
-        className="emotion-5"
+        className="emotion-7"
       >
         <span
-          className="emotion-4"
+          className="emotion-8"
         >
           zvi-console_face_recognition-face-recognition
         </span>
@@ -142,31 +142,54 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
 `;
 
 exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
-.emotion-9 {
+.emotion-0 {
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-top: 4px solid #3b3b3b;
+}
+
+.emotion-0:first-of-type {
+  padding-top: 0;
+  border-top: none;
+}
+
+.emotion-0:last-of-type {
+  padding-bottom: 0;
+}
+
+.emotion-1 {
+  font-family: Roboto Mono;
+  font-weight: 400;
+}
+
+.emotion-2 {
   margin-left: 32px;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-9:first-of-type {
+.emotion-2:first-of-type {
   border-top: none;
 }
 
-.emotion-8 {
+.emotion-3 {
   color: #b3b3b3;
   padding: 8px;
   margin-left: -32px;
 }
 
-.emotion-8:hover {
+.emotion-3:hover {
   background-color: #0074f538;
   color: #ffffff;
 }
 
-.emotion-8:hover svg {
+.emotion-3:hover svg {
   color: #ffffff;
 }
 
-.emotion-7 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -180,7 +203,7 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
   padding-bottom: 0;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -188,7 +211,7 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
   position: relative;
 }
 
-.emotion-1 {
+.emotion-6 {
   padding: 0;
   width: 16px;
   height: 16px;
@@ -199,7 +222,7 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
   cursor: pointer;
 }
 
-.emotion-3 {
+.emotion-7 {
   position: absolute;
   top: 0;
   left: 0;
@@ -210,8 +233,8 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -220,90 +243,67 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
   cursor: pointer;
 }
 
-.emotion-2 path {
+.emotion-8 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-6 {
+.emotion-9 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   padding-left: 8px;
 }
 
-.emotion-5 {
+.emotion-10 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
 }
 
-.emotion-10 {
-  margin-left: -16px;
-  margin-right: -16px;
-  padding: 12px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  border-top: 4px solid #3b3b3b;
-}
-
-.emotion-10:first-of-type {
-  padding-top: 0;
-  border-top: none;
-}
-
-.emotion-10:last-of-type {
-  padding-bottom: 0;
-}
-
-.emotion-0 {
-  font-family: Roboto Mono;
-  font-weight: 400;
-}
-
 <div
-  className="emotion-10"
+  className="emotion-0"
 >
   <h4
-    className="emotion-0"
+    className="emotion-1"
   >
     zvi
   </h4>
   <div
-    className="emotion-9"
+    className="emotion-2"
   >
     <div
-      className="emotion-8"
+      className="emotion-3"
     >
       <label
-        className="emotion-7"
+        className="emotion-4"
       >
         <div
-          className="emotion-4"
+          className="emotion-5"
         >
           <input
-            className="emotion-1"
+            className="emotion-6"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="analysis.zvi.tinyProxy"
           />
           <div
-            className="emotion-3"
+            className="emotion-7"
           >
             <svg
-              className="emotion-2"
+              className="emotion-8"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-6"
+          className="emotion-9"
         >
           <span
-            className="emotion-5"
+            className="emotion-10"
           >
             tinyProxy
           </span>
@@ -315,31 +315,31 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
 `;
 
 exports[`<FiltersMenuSection /> should render properly for an "exists" filter 1`] = `
-.emotion-8 {
+.emotion-0 {
   margin-left: 32px;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-8:first-of-type {
+.emotion-0:first-of-type {
   border-top: none;
 }
 
-.emotion-7 {
+.emotion-1 {
   color: #b3b3b3;
   padding: 8px;
   margin-left: -32px;
 }
 
-.emotion-7:hover {
+.emotion-1:hover {
   background-color: #0074f538;
   color: #ffffff;
 }
 
-.emotion-7:hover svg {
+.emotion-1:hover svg {
   color: #ffffff;
 }
 
-.emotion-6 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -361,7 +361,7 @@ exports[`<FiltersMenuSection /> should render properly for an "exists" filter 1`
   position: relative;
 }
 
-.emotion-0 {
+.emotion-4 {
   padding: 0;
   width: 16px;
   height: 16px;
@@ -372,7 +372,7 @@ exports[`<FiltersMenuSection /> should render properly for an "exists" filter 1`
   cursor: pointer;
 }
 
-.emotion-2 {
+.emotion-5 {
   position: absolute;
   top: 0;
   left: 0;
@@ -383,8 +383,8 @@ exports[`<FiltersMenuSection /> should render properly for an "exists" filter 1`
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -393,59 +393,59 @@ exports[`<FiltersMenuSection /> should render properly for an "exists" filter 1`
   cursor: pointer;
 }
 
-.emotion-1 path {
+.emotion-6 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-5 {
+.emotion-7 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   padding-left: 8px;
 }
 
-.emotion-4 {
+.emotion-8 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
 }
 
 <div
-  className="emotion-8"
+  className="emotion-0"
 >
   <div
-    className="emotion-7"
+    className="emotion-1"
   >
     <label
-      className="emotion-6"
+      className="emotion-2"
     >
       <div
         className="emotion-3"
       >
         <input
-          className="emotion-0"
+          className="emotion-4"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
           value="location.point"
         />
         <div
-          className="emotion-2"
+          className="emotion-5"
         >
           <svg
-            className="emotion-1"
+            className="emotion-6"
             data-file-name="checkmark.svg"
             height={20}
           />
         </div>
       </div>
       <div
-        className="emotion-5"
+        className="emotion-7"
       >
         <span
-          className="emotion-4"
+          className="emotion-8"
         >
           point
         </span>

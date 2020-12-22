@@ -16,11 +16,11 @@ Array [
   >
     Enter New Password
   </h3>,
-  .emotion-3 {
+  .emotion-0 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
@@ -30,32 +30,39 @@ Array [
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-3:focus,
+.emotion-3 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
   border: 2px solid #ffffff;
 }
 
+.emotion-4 {
+  padding-top: 8px;
+}
+
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <label
-      className="emotion-0"
+      className="emotion-1"
       htmlFor="newPassword1"
     >
       Password
@@ -65,7 +72,7 @@ Array [
     >
       <input
         autoFocus={true}
-        className="emotion-1"
+        className="emotion-3"
         disabled={false}
         id="newPassword1"
         name="newPassword1"
@@ -75,16 +82,16 @@ Array [
       />
     </div>
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
        
     </div>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
@@ -94,32 +101,39 @@ Array [
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-3:focus,
+.emotion-3 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
   border: 2px solid #ffffff;
 }
 
+.emotion-4 {
+  padding-top: 8px;
+}
+
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <label
-      className="emotion-0"
+      className="emotion-1"
       htmlFor="newPassword2"
     >
       Confirm Password
@@ -128,7 +142,7 @@ Array [
       className="emotion-2"
     >
       <input
-        className="emotion-1"
+        className="emotion-3"
         disabled={false}
         id="newPassword2"
         name="newPassword2"
@@ -138,24 +152,24 @@ Array [
       />
     </div>
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
        
     </div>
   </div>,
-  .emotion-1 {
+  .emotion-0 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
 }
 
-.emotion-0 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -171,8 +185,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -186,35 +200,32 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited,
+.emotion-1 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-1:hover,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <button
       aria-disabled={true}
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="submit"
     >
@@ -240,11 +251,11 @@ Array [
   >
     Enter New Password
   </h3>,
-  .emotion-3 {
+  .emotion-0 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
@@ -254,32 +265,39 @@ Array [
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-3:focus,
+.emotion-3 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
   border: 2px solid #ffffff;
 }
 
+.emotion-4 {
+  padding-top: 8px;
+}
+
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <label
-      className="emotion-0"
+      className="emotion-1"
       htmlFor="newPassword1"
     >
       Password
@@ -289,7 +307,7 @@ Array [
     >
       <input
         autoFocus={true}
-        className="emotion-1"
+        className="emotion-3"
         disabled={false}
         id="newPassword1"
         name="newPassword1"
@@ -299,16 +317,16 @@ Array [
       />
     </div>
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
        
     </div>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
@@ -318,32 +336,39 @@ Array [
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-3:focus,
+.emotion-3 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
   border: 2px solid #ffffff;
 }
 
+.emotion-4 {
+  padding-top: 8px;
+}
+
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <label
-      className="emotion-0"
+      className="emotion-1"
       htmlFor="newPassword2"
     >
       Confirm Password
@@ -352,7 +377,7 @@ Array [
       className="emotion-2"
     >
       <input
-        className="emotion-1"
+        className="emotion-3"
         disabled={false}
         id="newPassword2"
         name="newPassword2"
@@ -362,24 +387,24 @@ Array [
       />
     </div>
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
        
     </div>
   </div>,
-  .emotion-1 {
+  .emotion-0 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
 }
 
-.emotion-0 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -395,8 +420,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -410,34 +435,31 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited,
+.emotion-1 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-1:hover,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <button
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="submit"
     >
@@ -463,11 +485,11 @@ Array [
   >
     Enter New Password
   </h3>,
-  .emotion-3 {
+  .emotion-0 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
@@ -477,32 +499,39 @@ Array [
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-3:focus,
+.emotion-3 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
   border: 2px solid #ffffff;
 }
 
+.emotion-4 {
+  padding-top: 8px;
+}
+
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <label
-      className="emotion-0"
+      className="emotion-1"
       htmlFor="newPassword1"
     >
       Password
@@ -512,7 +541,7 @@ Array [
     >
       <input
         autoFocus={true}
-        className="emotion-1"
+        className="emotion-3"
         disabled={false}
         id="newPassword1"
         name="newPassword1"
@@ -522,16 +551,16 @@ Array [
       />
     </div>
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
        
     </div>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
@@ -541,32 +570,39 @@ Array [
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-3:focus,
+.emotion-3 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
   border: 2px solid #ffffff;
 }
 
+.emotion-4 {
+  padding-top: 8px;
+}
+
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <label
-      className="emotion-0"
+      className="emotion-1"
       htmlFor="newPassword2"
     >
       Confirm Password
@@ -575,7 +611,7 @@ Array [
       className="emotion-2"
     >
       <input
-        className="emotion-1"
+        className="emotion-3"
         disabled={false}
         id="newPassword2"
         name="newPassword2"
@@ -585,24 +621,24 @@ Array [
       />
     </div>
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
        
     </div>
   </div>,
-  .emotion-1 {
+  .emotion-0 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
 }
 
-.emotion-0 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -618,8 +654,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -633,34 +669,31 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited,
+.emotion-1 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-1:hover,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <button
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="submit"
     >
@@ -686,11 +719,11 @@ Array [
   >
     Enter New Password
   </h3>,
-  .emotion-4 {
+  .emotion-0 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
@@ -700,38 +733,45 @@ Array [
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid #c92300;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-3:focus,
+.emotion-3 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
   border: 2px solid #ffffff;
 }
 
-.emotion-3 {
+.emotion-4 {
+  padding-top: 8px;
+}
+
+.emotion-5 {
   color: #c92300;
   font-style: italic;
   white-space: pre-line;
 }
 
 <div
-    className="emotion-4"
+    className="emotion-0"
   >
     <label
-      className="emotion-0"
+      className="emotion-1"
       htmlFor="newPassword1"
     >
       Password
@@ -741,7 +781,7 @@ Array [
     >
       <input
         autoFocus={true}
-        className="emotion-1"
+        className="emotion-3"
         disabled={false}
         id="newPassword1"
         name="newPassword1"
@@ -754,18 +794,18 @@ Array [
       className="emotion-4"
     >
       <span
-        className="emotion-3"
+        className="emotion-5"
       >
         Error
       </span>
        
     </div>
   </div>,
-  .emotion-4 {
+  .emotion-0 {
   padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
@@ -775,38 +815,45 @@ Array [
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid #c92300;
   border-width: 2px;
 }
 
-.emotion-1:focus {
+.emotion-3:focus,
+.emotion-3 .noop {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
   border: 2px solid #ffffff;
 }
 
-.emotion-3 {
+.emotion-4 {
+  padding-top: 8px;
+}
+
+.emotion-5 {
   color: #c92300;
   font-style: italic;
   white-space: pre-line;
 }
 
 <div
-    className="emotion-4"
+    className="emotion-0"
   >
     <label
-      className="emotion-0"
+      className="emotion-1"
       htmlFor="newPassword2"
     >
       Confirm Password
@@ -815,7 +862,7 @@ Array [
       className="emotion-2"
     >
       <input
-        className="emotion-1"
+        className="emotion-3"
         disabled={false}
         id="newPassword2"
         name="newPassword2"
@@ -828,26 +875,26 @@ Array [
       className="emotion-4"
     >
       <span
-        className="emotion-3"
+        className="emotion-5"
       >
         Error
       </span>
        
     </div>
   </div>,
-  .emotion-1 {
+  .emotion-0 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
 }
 
-.emotion-0 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -863,8 +910,8 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -878,34 +925,31 @@ Array [
   background-color: transparent;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited,
+.emotion-1 .noop {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-1:hover,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <button
-      className="emotion-0"
+      className="emotion-1"
       onClick={[Function]}
       type="submit"
     >

@@ -17,6 +17,11 @@ const noop = () => () => {}
 
 describe('<AssetLabelingAdd />', () => {
   it('should add a label', async () => {
+    localStorage.setItem(
+      `AssetLabelingAdd.${PROJECT_ID}`,
+      `{"modelId":"","scope":"","label":""}`,
+    )
+
     const component = TestRenderer.create(
       <AssetLabelingAdd
         projectId={PROJECT_ID}
@@ -44,6 +49,13 @@ describe('<AssetLabelingAdd />', () => {
       component.root
         .findByType('Combobox')
         .props.onChange({ value: 'Flimflarm' })
+    })
+
+    // Select Scope
+    act(() => {
+      component.root
+        .findByProps({ label: 'Scope' })
+        .props.onChange({ value: 'TEST' })
     })
 
     // Mock Failure
@@ -104,6 +116,7 @@ describe('<AssetLabelingAdd />', () => {
           {
             assetId: ASSET_ID,
             label: 'Flimflarm',
+            scope: 'TEST',
           },
         ],
       }),
@@ -112,12 +125,8 @@ describe('<AssetLabelingAdd />', () => {
 
   it('should render with localStorage and update a label', async () => {
     localStorage.setItem(
-      `AssetLabelingAdd.${PROJECT_ID}.modelId`,
-      `"${MODEL_ID}"`,
-    )
-    localStorage.setItem(
-      `AssetLabelingAdd.${PROJECT_ID}.label`,
-      `"Existing localStorage"`,
+      `AssetLabelingAdd.${PROJECT_ID}`,
+      `{"modelId":"${MODEL_ID}","scope":"TRAIN","label":"Existing localStorage"}`,
     )
 
     const component = TestRenderer.create(
@@ -184,6 +193,7 @@ describe('<AssetLabelingAdd />', () => {
           {
             assetId: ASSET_ID,
             label: 'Other Flimflarm',
+            scope: 'TRAIN',
           },
         ],
       }),

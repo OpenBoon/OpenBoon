@@ -1,7 +1,7 @@
 import subprocess
 import tempfile
 
-from zmlpsdk import AssetProcessor, StopWatch
+from zmlpsdk import AssetProcessor, StopWatch, FileTypes
 from zmlpsdk.storage import file_storage
 from ..util.media import store_media_proxy, MediaInfo
 
@@ -11,10 +11,10 @@ class VideoProxyProcessor(AssetProcessor):
     Makes a proxy video for a full video file.  Clip assets will reference
     this video file.
     """
-    file_types = ['mov', 'mp4', 'mpg', 'mpeg', 'm4v', 'webm', 'ogv', 'ogg', 'mxf']
+    file_types = FileTypes.videos
 
     # Always transcode this media
-    always_transcode = ['webm', 'ogv', 'ogg', 'mxf']
+    always_transcode = ['webm', 'ogv', 'ogg', 'mxf', 'avi']
 
     # The higher this is, the slower and more costly ML processing will be.
     # We're not a dam solution for reviewing media, and there is not a single

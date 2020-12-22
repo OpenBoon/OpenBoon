@@ -1,15 +1,13 @@
 import logging
 import os
 import tempfile
-import zipfile
 from unittest import TestCase
 from unittest.mock import patch
 
 import pytest
-from minio.api import Minio
 
 import zmlp
-from zmlp import StoredFile, ZmlpClient, PipelineMod, Job, Model
+from zmlp import StoredFile, ZmlpClient, AnalysisModule, Job, Model
 from zmlp.app import ModelApp
 from zmlpsdk import storage
 from zmlpsdk.testing import zorroa_test_data, TestAsset
@@ -138,11 +136,12 @@ class FileStorageTests(TestCase):
         path = self.fs.localize_file('https://i.imgur.com/WkomVeG.jpg')
         assert os.path.exists(path)
 
-    @patch.object(Minio, 'get_object')
+    @patch.object(ZmlpClient, 'get')
     def test_localize_internal_uri(self, get_object_patch):
         class MockStream:
-            def stream(self, _):
-                return [b'ninja turles']
+            @property
+            def content(self):
+                return b'ninja turles'
 
         get_object_patch.return_value = MockStream()
         path = self.fs.localize_file('zmlp://internal/officer/pdf/proxy.1.jpg')
@@ -383,7 +382,7 @@ class ModelStorageTests(TestCase):
             'category': 'fake',
             'size': 100
         }
-        publish_patch.return_value = PipelineMod({
+        publish_patch.return_value = AnalysisModule({
             'id': '12345'
         })
         deploy_patch.return_value = Job({"id": "abcde"})
@@ -392,27 +391,6 @@ class ModelStorageTests(TestCase):
         mod = self.fs.models.save_model(cur_dir, "foo/bar/bing/model.zip", deploy=True)
 
         assert '12345' == mod.id
-
-
-class ZipDirectoryTexts(TestCase):
-
-    def test_zip_directory_no_base(self):
-        output_zip = '/tmp/test-zip1.zip'
-        cur_dir = os.path.dirname(__file__)
-        storage.zip_directory(cur_dir, output_zip)
-
-        with zipfile.ZipFile(output_zip) as zip:
-            assert 'test_storage.py' in zip.namelist()
-            assert 'model.zip' in zip.namelist()
-
-    def test_zip_directory_with_base(self):
-        output_zip = '/tmp/test-zip1.zip'
-        cur_dir = os.path.dirname(__file__)
-        storage.zip_directory(cur_dir, output_zip, 'base')
-
-        with zipfile.ZipFile(output_zip) as zip:
-            assert 'base/test_storage.py' in zip.namelist()
-            assert 'base/model.zip' in zip.namelist()
 
 
 class MockResponse:

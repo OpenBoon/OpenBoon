@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TaskErrorAsset /> should render properly when asset has no proxies 1`] = `
-.emotion-4 {
+.emotion-0 {
   font-family: Roboto Mono;
   padding-bottom: 32px;
   height: auto;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -20,31 +20,32 @@ exports[`<TaskErrorAsset /> should render properly when asset has no proxies 1`]
   padding: 16px;
 }
 
-.emotion-1 {
-  padding-left: 24px;
-}
-
-.emotion-3 {
-  background-color: #191919;
-}
-
-.emotion-3 pre {
-  padding: 16px;
-}
-
-.emotion-0 {
+.emotion-2 {
   color: #808080;
   border: 1px solid #808080;
 }
 
+.emotion-3 {
+  padding-left: 24px;
+}
+
+.emotion-4 {
+  background-color: #191919;
+}
+
+.emotion-4 pre {
+  padding: 16px;
+  margin: 0;
+}
+
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
     <div
-      className="emotion-0"
+      className="emotion-2"
     >
       <svg
         data-file-name="fallback.svg"
@@ -52,13 +53,13 @@ exports[`<TaskErrorAsset /> should render properly when asset has no proxies 1`]
       />
     </div>
     <div
-      className="emotion-1"
+      className="emotion-3"
     >
       TIFF_1MB.tiff
     </div>
   </div>
   <div
-    className="emotion-3"
+    className="emotion-4"
   >
     <div
       dangerouslySetInnerHTML={
@@ -180,13 +181,13 @@ exports[`<TaskErrorAsset /> should render properly when asset has no proxies 1`]
 `;
 
 exports[`<TaskErrorAsset /> should render properly when asset has proxies 1`] = `
-.emotion-4 {
+.emotion-0 {
   font-family: Roboto Mono;
   padding-bottom: 32px;
   height: auto;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -199,43 +200,44 @@ exports[`<TaskErrorAsset /> should render properly when asset has proxies 1`] = 
   padding: 16px;
 }
 
-.emotion-0 {
+.emotion-2 {
   width: 48px;
   height: 48px;
   object-fit: cover;
 }
 
-.emotion-1 {
+.emotion-3 {
   padding-left: 24px;
 }
 
-.emotion-3 {
+.emotion-4 {
   background-color: #191919;
 }
 
-.emotion-3 pre {
+.emotion-4 pre {
   padding: 16px;
+  margin: 0;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
     <img
       alt="TIFF_1MB.tiff"
-      className="emotion-0"
+      className="emotion-2"
       src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg"
     />
     <div
-      className="emotion-1"
+      className="emotion-3"
     >
       TIFF_1MB.tiff
     </div>
   </div>
   <div
-    className="emotion-3"
+    className="emotion-4"
   >
     <div
       dangerouslySetInnerHTML={

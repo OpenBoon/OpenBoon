@@ -5,13 +5,12 @@ import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
-import com.zorroa.archivist.domain.BatchIndexResponse
+import com.zorroa.archivist.domain.BatchUpdateCustomFieldsRequest
+import com.zorroa.archivist.domain.BatchUpdateCustomFieldsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchResponse
-import com.zorroa.archivist.domain.UpdateAssetRequest
-import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.service.AssetSearchService
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.ClipService
@@ -23,8 +22,6 @@ import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
-import org.apache.http.util.EntityUtils
-import org.elasticsearch.common.Strings
 import org.elasticsearch.common.xcontent.ToXContent
 import org.elasticsearch.common.xcontent.XContentFactory
 import org.slf4j.LoggerFactory
@@ -99,18 +96,20 @@ class AssetController @Autowired constructor(
 
     @PreAuthorize("hasAuthority('AssetsRead')")
     @DeleteMapping("/api/v3/assets/_search/scroll")
-    fun clearScroll(@RequestBody(required = false) scroll: Map<String, String>, output: ServletOutputStream):
-        ResponseEntity<Resource> {
+    fun clearScroll(@RequestBody(required = false) scroll: Map<String, String>): Any {
+        return try {
             val rsp = assetSearchService.clearScroll(scroll)
-            val output = RawByteArrayOutputStream(1024 * 1)
-            XContentFactory.jsonBuilder(output).use {
-                rsp.toXContent(it, ToXContent.EMPTY_PARAMS)
-            }
-
-            return ResponseEntity.ok()
-                .contentLength(output.size().toLong())
-                .body(InputStreamResource(output.toInputStream()))
+            mapOf(
+                "succeeded" to rsp.isSucceeded,
+                "num_freed" to rsp.numFreed
+            )
+        } catch (e: Exception) {
+            mapOf(
+                "succeeded" to false,
+                "num_freed" to 0
+            )
         }
+    }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
     @PostMapping("/api/v3/assets/_search/reprocess")
@@ -125,41 +124,6 @@ class AssetController @Autowired constructor(
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
-    @PostMapping("/api/v3/assets/{id}/_update")
-    fun update(
-        @ApiParam("Unique ID of the Asset") @PathVariable id: String,
-        @RequestBody(required = true) update: UpdateAssetRequest
-    ): ResponseEntity<Resource> {
-        val bytes = EntityUtils.toByteArray(assetService.update(id, update).entity)
-        return ResponseEntity.ok()
-            .contentLength(bytes.size.toLong())
-            .body(InputStreamResource(bytes.inputStream()))
-    }
-
-    @PreAuthorize("hasAuthority('AssetsImport')")
-    @PostMapping("/api/v3/assets/_update_by_query")
-    fun updateByQuery(
-        @RequestBody(required = true) update: UpdateAssetsByQueryRequest
-    ): ResponseEntity<Resource> {
-        val bytes = EntityUtils.toByteArray(assetService.updateByQuery(update).entity)
-        return ResponseEntity.ok()
-            .contentLength(bytes.size.toLong())
-            .body(InputStreamResource(bytes.inputStream()))
-    }
-
-    @PreAuthorize("hasAuthority('AssetsImport')")
-    @PostMapping("/api/v3/assets/_batch_update")
-    fun batchUpdate(
-        @RequestBody(required = true) batch: Map<String, UpdateAssetRequest>
-    ): ResponseEntity<Resource> {
-        val rsp = assetService.batchUpdate(batch)
-        val content = Strings.toString(rsp)
-        return ResponseEntity.ok()
-            .contentLength(content.length.toLong())
-            .body(InputStreamResource(content.byteInputStream()))
-    }
-
-    @PreAuthorize("hasAuthority('AssetsImport')")
     @PostMapping("/api/v3/assets/_batch_create")
     fun batchCreate(@RequestBody request: BatchCreateAssetsRequest):
         BatchCreateAssetsResponse {
@@ -167,22 +131,11 @@ class AssetController @Autowired constructor(
         }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
-    @PutMapping("/api/v3/assets/{id}/_index")
-    fun index(
-        @ApiParam("Unique ID of the Asset.") @PathVariable id: String,
-        @RequestBody doc: MutableMap<String, Any>
-    ): Any {
-        val bytes = EntityUtils.toByteArray(assetService.index(id, doc).entity)
-        return ResponseEntity.ok()
-            .contentLength(bytes.size.toLong())
-            .body(InputStreamResource(bytes.inputStream()))
-    }
-
-    @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
-    @PostMapping("/api/v3/assets/_batch_index")
-    fun batchIndex(@RequestBody req: Map<String, MutableMap<String, Any>>): BatchIndexResponse {
-        return assetService.batchIndex(req)
-    }
+    @PutMapping("/api/v3/assets/_batch_update_custom_fields")
+    fun batchUpdateCustomFields(@RequestBody request: BatchUpdateCustomFieldsRequest):
+        BatchUpdateCustomFieldsResponse {
+            return assetService.batchUpdateCustomFields(request)
+        }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
     @ApiOperation("Create or reprocess assets via a file upload.")

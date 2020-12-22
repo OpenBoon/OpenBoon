@@ -32,14 +32,20 @@ describe('Visualizer', function () {
 
       cy.get('summary[aria-label*="Asset Labels"]').click()
 
-      cy.contains('Model').get('select').select('console')
+      cy.get('label').contains('Model').children().children().select('console')
 
-      cy.contains('Label').get('input').type(`Cypress-${now}`).type('{enter}')
+      cy.get('label').contains('Scope').children().children().select('Test')
+
+      cy.get('label')
+        .contains('Label')
+        .children()
+        .type(`Cypress-${now}`)
+        .type('{enter}')
 
       /**
        * Update
        */
-      cy.get('td').contains(`Cypress-${now}`).next().click()
+      cy.get('td').contains(`Cypress-${now}`).next().next().click()
 
       cy.contains('Edit Label').click()
 
@@ -51,7 +57,22 @@ describe('Visualizer', function () {
       /**
        * Delete
        */
-      cy.get('td').contains(`Cypress-${now}-again`).next().click()
+      cy.get('td').contains(`Cypress-${now}-again`).next().next().click()
+
+      cy.contains('Delete Label').click()
+
+      cy.contains('Delete Permanently').click()
+
+      cy.contains(`Cypress-${now}-again`).should('not.exist')
+
+      /*
+       * Keyboard shortcut
+       */
+      cy.contains('Save Label').type('{rightarrow}')
+
+      cy.contains('Save Label').type('s')
+
+      cy.get('td').contains(`Cypress-${now}-again`).next().next().click()
 
       cy.contains('Delete Label').click()
 

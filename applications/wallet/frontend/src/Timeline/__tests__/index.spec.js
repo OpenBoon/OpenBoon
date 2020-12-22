@@ -17,6 +17,7 @@ jest.mock('../Ruler', () => 'TimelineRuler')
 jest.mock('../Aggregate', () => 'TimelineAggregate')
 jest.mock('../SearchHits', () => 'TimelineSearchHits')
 jest.mock('../Timelines', () => 'TimelineTimelines')
+jest.mock('../Resize', () => 'TimelineResize')
 
 describe('<Timeline />', () => {
   it('should render properly', () => {
@@ -47,6 +48,11 @@ describe('<Timeline />', () => {
     // Filter Search Highlights Only
     act(() => {
       component.root.findByProps({ value: 'highlights' }).props.onClick()
+    })
+
+    // Scroll timeline with mousewheel
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Timeline' }).props.onWheel()
     })
 
     expect(component.toJSON()).toMatchSnapshot()

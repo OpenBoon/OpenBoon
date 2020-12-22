@@ -274,7 +274,7 @@ class FileImportTests(unittest.TestCase):
 
         d = json.loads(to_json(imp))
         assert 'gs://zorroa-dev-data/image/pluto.png' == d['uri']
-        assert {} == d['attrs']
+        assert {} == d['custom']
         assert '12345' == d['label']['modelId']
         assert 'dog' == d['label']['label']
 

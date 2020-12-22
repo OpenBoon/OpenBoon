@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Policies /> should render properly 1`] = `
-.emotion-18 {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -10,8 +10,8 @@ exports[`<Policies /> should render properly 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -20,7 +20,7 @@ exports[`<Policies /> should render properly 1`] = `
   height: 100vh;
 }
 
-.emotion-17 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -32,23 +32,71 @@ exports[`<Policies /> should render properly 1`] = `
   width: 446px;
   background-color: #2e2e2e;
   border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.emotion-1 {
+.emotion-3 {
   text-align: center;
   font-size: 18px;
   line-height: 21px;
   padding-top: 32px;
 }
 
-.emotion-14 {
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 32px;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-6 a {
+  color: #ffffff;
+  background-color: #3b3b3b;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-6 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #2e2e2e;
+}
+
+.emotion-7 {
   text-align: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -63,21 +111,21 @@ exports[`<Policies /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-5 {
+.emotion-8 {
   margin: 0;
   padding-top: 32px;
   color: #b3b3b3;
 }
 
-.emotion-5 a {
+.emotion-8 a {
   color: #73b61c;
 }
 
-.emotion-13 {
+.emotion-9 {
   padding-top: 16px;
 }
 
-.emotion-12 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -91,7 +139,7 @@ exports[`<Policies /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -99,58 +147,7 @@ exports[`<Policies /> should render properly 1`] = `
   position: relative;
 }
 
-.emotion-8 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: pointer;
-}
-
-.emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-left: 12px;
-}
-
-.emotion-10 {
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 700;
-}
-
-.emotion-16 {
-  padding-top: 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.emotion-6 {
+.emotion-12 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -161,13 +158,64 @@ exports[`<Policies /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-7 path {
+.emotion-13 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+}
+
+.emotion-14 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
 }
 
 .emotion-15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 12px;
+}
+
+.emotion-16 {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 700;
+}
+
+.emotion-17 {
+  padding-top: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -183,8 +231,8 @@ exports[`<Policies /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -198,92 +246,41 @@ exports[`<Policies /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-15,
-.emotion-15:hover,
-.emotion-15:visited {
+.emotion-18,
+.emotion-18:hover,
+.emotion-18:visited,
+.emotion-18 .noop {
   background-color: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-18:hover,
+.emotion-18 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 32px;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #ffb6b2;
-  border-radius: 2px;
-  padding: 12px;
-}
-
-.emotion-2 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
-}
-
-.emotion-2 a {
-  color: #ffffff;
-  background-color: #3b3b3b;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
-}
-
-.emotion-2 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #2e2e2e;
-}
-
 <div
-  className="emotion-18"
+  className="emotion-0"
 >
   <form
-    className="emotion-17"
+    className="emotion-1"
     method="post"
     onSubmit={[Function]}
   >
     <svg
-      className="emotion-0"
+      className="emotion-2"
       data-file-name="largeLogo.svg"
       width={180}
     />
     <h3
-      className="emotion-1"
+      className="emotion-3"
     >
       Terms of Use and Privacy Policy
     </h3>
@@ -291,7 +288,7 @@ exports[`<Policies /> should render properly 1`] = `
       className="emotion-4"
     >
       <div
-        className="emotion-3"
+        className="emotion-5"
       >
         <svg
           color="#c92300"
@@ -299,7 +296,7 @@ exports[`<Policies /> should render properly 1`] = `
           height={20}
         />
         <div
-          className="emotion-2"
+          className="emotion-6"
           role="alert"
         >
           Something went wrong. Please try again.
@@ -307,15 +304,15 @@ exports[`<Policies /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-7"
     >
       <p
-        className="emotion-5"
+        className="emotion-8"
       >
         By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
          
         <a
-          href="/policies/20200414/terms-of-use.pdf"
+          href="/policies/20201208/terms-of-use.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -325,7 +322,7 @@ exports[`<Policies /> should render properly 1`] = `
         and
          
         <a
-          href="/policies/20200414/privacy-policy.pdf"
+          href="/policies/20201208/privacy-policy.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -334,36 +331,36 @@ exports[`<Policies /> should render properly 1`] = `
         .
       </p>
       <div
-        className="emotion-13"
+        className="emotion-9"
       >
         <label
-          className="emotion-12"
+          className="emotion-10"
         >
           <div
-            className="emotion-9"
+            className="emotion-11"
           >
             <input
-              className="emotion-6"
+              className="emotion-12"
               defaultChecked={true}
               onClick={[Function]}
               type="checkbox"
               value="isChecked"
             />
             <div
-              className="emotion-8"
+              className="emotion-13"
             >
               <svg
-                className="emotion-7"
+                className="emotion-14"
                 data-file-name="checkmark.svg"
                 height={20}
               />
             </div>
           </div>
           <div
-            className="emotion-11"
+            className="emotion-15"
           >
             <span
-              className="emotion-10"
+              className="emotion-16"
             >
               Accept
             </span>
@@ -372,10 +369,10 @@ exports[`<Policies /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-16"
+      className="emotion-17"
     >
       <button
-        className="emotion-15"
+        className="emotion-18"
         onClick={[Function]}
         type="submit"
       >

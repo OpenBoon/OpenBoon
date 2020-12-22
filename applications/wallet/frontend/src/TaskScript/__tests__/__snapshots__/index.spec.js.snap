@@ -1,23 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TaskScript /> should render properly 1`] = `
-.emotion-1 {
-  padding-bottom: 32px;
+.emotion-0 {
+  height: 100%;
+  overflow: auto;
+  background-color: #191919;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
-.emotion-0 {
+.emotion-1 {
   background-color: #191919;
 }
 
-.emotion-0 pre {
+.emotion-1 pre {
   padding: 16px;
+  margin: 0;
 }
 
 <div
-  className="emotion-1"
+  className="emotion-0"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   >
     <div
       dangerouslySetInnerHTML={

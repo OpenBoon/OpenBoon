@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Sidebar /> should render properly closed 1`] = `
-.emotion-21 {
+.emotion-0 {
   width: 240px;
   position: fixed;
   height: calc(100% - 44px);
@@ -22,11 +22,10 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   flex-direction: column;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
-.emotion-15 {
+.emotion-1 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -34,11 +33,11 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   padding-bottom: 12px;
 }
 
-.emotion-1 {
+.emotion-2 {
   border-bottom: 1px solid transparent;
 }
 
-.emotion-0 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -54,18 +53,18 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-0 svg {
+.emotion-3 svg {
   margin-right: 12px;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
   background-color: #2e2e2e;
 }
 
-.emotion-4 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -80,18 +79,18 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-4 svg {
+.emotion-7 svg {
   margin-right: 12px;
 }
 
-.emotion-4:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
   background-color: #2e2e2e;
 }
 
-.emotion-6 {
+.emotion-10 {
   color: #ffffff;
   background-color: #0074f5;
   border-radius: 8px;
@@ -99,9 +98,6 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   line-height: 15.399999999999999px;
   font-weight: 500;
   text-transform: uppercase;
-  -webkit-letter-spacing: 0.2px;
-  -moz-letter-spacing: 0.2px;
-  -ms-letter-spacing: 0.2px;
   letter-spacing: 0.2px;
   padding: 2px;
   padding-left: 6px;
@@ -109,7 +105,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   margin-left: 8px;
 }
 
-.emotion-20 {
+.emotion-17 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -133,16 +129,16 @@ exports[`<Sidebar /> should render properly closed 1`] = `
 
 <div>
   <nav
-    className="emotion-21"
+    className="emotion-0"
   >
     <ul
-      className="emotion-15"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -155,10 +151,10 @@ exports[`<Sidebar /> should render properly closed 1`] = `
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -171,10 +167,10 @@ exports[`<Sidebar /> should render properly closed 1`] = `
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-4"
+          className="emotion-7"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -187,10 +183,10 @@ exports[`<Sidebar /> should render properly closed 1`] = `
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/models"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -201,17 +197,17 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           />
           Custom Models
           <span
-            className="emotion-6"
+            className="emotion-10"
           >
             beta
           </span>
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -224,10 +220,10 @@ exports[`<Sidebar /> should render properly closed 1`] = `
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -240,10 +236,10 @@ exports[`<Sidebar /> should render properly closed 1`] = `
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -257,13 +253,13 @@ exports[`<Sidebar /> should render properly closed 1`] = `
       </li>
     </ul>
     <ul
-      className="emotion-20"
+      className="emotion-17"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -276,10 +272,10 @@ exports[`<Sidebar /> should render properly closed 1`] = `
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/account"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -305,99 +301,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
 `;
 
 exports[`<Sidebar /> should render properly opened 1`] = `
-.emotion-15 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-.emotion-1 {
-  border-bottom: 1px solid transparent;
-}
-
 .emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 12px;
-  font-size: 15px;
-  line-height: 19px;
-  background-color: none;
-  color: #b3b3b3;
-}
-
-.emotion-0 svg {
-  margin-right: 12px;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #73b61c;
-  background-color: #2e2e2e;
-}
-
-.emotion-4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 12px;
-  font-size: 15px;
-  line-height: 19px;
-  background-color: #2e2e2e;
-}
-
-.emotion-4 svg {
-  margin-right: 12px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #ffffff;
-  background-color: #2e2e2e;
-}
-
-.emotion-6 {
-  color: #ffffff;
-  background-color: #0074f5;
-  border-radius: 8px;
-  font-size: 11px;
-  line-height: 15.399999999999999px;
-  font-weight: 500;
-  text-transform: uppercase;
-  -webkit-letter-spacing: 0.2px;
-  -moz-letter-spacing: 0.2px;
-  -ms-letter-spacing: 0.2px;
-  letter-spacing: 0.2px;
-  padding: 2px;
-  padding-left: 6px;
-  padding-right: 6px;
-  margin-left: 8px;
-}
-
-.emotion-20 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  background-color: #3b3b3b;
-}
-
-.emotion-21 {
   width: 240px;
   position: fixed;
   height: calc(100% - 44px);
@@ -418,8 +322,96 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   flex-direction: column;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-2 {
+  border-bottom: 1px solid transparent;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12px;
+  font-size: 15px;
+  line-height: 19px;
+  background-color: none;
+  color: #b3b3b3;
+}
+
+.emotion-3 svg {
+  margin-right: 12px;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+  background-color: #2e2e2e;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12px;
+  font-size: 15px;
+  line-height: 19px;
+  background-color: #2e2e2e;
+}
+
+.emotion-7 svg {
+  margin-right: 12px;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #2e2e2e;
+}
+
+.emotion-10 {
+  color: #ffffff;
+  background-color: #0074f5;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 15.399999999999999px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-left: 8px;
+}
+
+.emotion-17 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #3b3b3b;
 }
 
 .emotion-22 {
@@ -437,16 +429,16 @@ exports[`<Sidebar /> should render properly opened 1`] = `
 
 <div>
   <nav
-    className="emotion-21"
+    className="emotion-0"
   >
     <ul
-      className="emotion-15"
+      className="emotion-1"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -459,10 +451,10 @@ exports[`<Sidebar /> should render properly opened 1`] = `
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -475,10 +467,10 @@ exports[`<Sidebar /> should render properly opened 1`] = `
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-4"
+          className="emotion-7"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -491,10 +483,10 @@ exports[`<Sidebar /> should render properly opened 1`] = `
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/models"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -505,17 +497,17 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           />
           Custom Models
           <span
-            className="emotion-6"
+            className="emotion-10"
           >
             beta
           </span>
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -528,10 +520,10 @@ exports[`<Sidebar /> should render properly opened 1`] = `
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -544,10 +536,10 @@ exports[`<Sidebar /> should render properly opened 1`] = `
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -561,13 +553,13 @@ exports[`<Sidebar /> should render properly opened 1`] = `
       </li>
     </ul>
     <ul
-      className="emotion-20"
+      className="emotion-17"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -580,10 +572,10 @@ exports[`<Sidebar /> should render properly opened 1`] = `
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-3"
           href="/account"
           onClick={[Function]}
           onMouseEnter={[Function]}

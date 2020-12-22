@@ -4,9 +4,10 @@ import useSWR from 'swr'
 
 import filterShape from '../Filter/shape'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 
 import Slider from '../Slider'
+import InputRange, { VARIANTS } from '../Input/Range'
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 import FilterReset from '../Filter/Reset'
 
@@ -37,9 +38,10 @@ const FilterRangeContent = ({
     },
   )
 
-  const { results } = data || {}
+  const { results = {} } = data || {}
 
-  const { min: resultsMin = 0, max: resultsMax = 1 } = results || {}
+  const resultsMin = results?.min || 0
+  const resultsMax = results?.max || 1
 
   const minMaxFix = resultsMin === resultsMax ? 0.001 : 0
 
@@ -182,84 +184,32 @@ const FilterRangeContent = ({
             justifyContent: 'space-around',
           }}
         >
-          <label css={{ display: 'flex', alignItems: 'center' }}>
-            MIN &nbsp;
-            <input
-              type="text"
-              css={{
-                textAlign: 'center',
-                paddingLeft: spacing.moderate,
-                paddingRight: spacing.moderate,
-                paddingTop: spacing.normal,
-                paddingBottom: spacing.normal,
-                border: constants.borders.regular.transparent,
-                borderRadius: constants.borderRadius.small,
-                backgroundColor: colors.structure.lead,
-                color: colors.structure.white,
-                width: '60%',
-                ':hover': {
-                  border: constants.borders.regular.steel,
-                },
-                ':focus': {
-                  outline: constants.borders.regular.transparent,
-                  border: constants.borders.keyOneRegular,
-                  color: colors.structure.coal,
-                  backgroundColor: colors.structure.white,
-                },
-                '::placeholder': {
-                  fontStyle: typography.style.italic,
-                },
-              }}
-              value={inputMin}
-              onChange={({ target: { value } }) => setInputMin(value)}
-              onKeyPress={({ target: { value }, key }) => {
-                if (key !== 'Enter') return
-                saveMinValue({ value })
-              }}
-              onBlur={({ target: { value } }) => {
-                saveMinValue({ value })
-              }}
-            />
-          </label>
-          <label css={{ display: 'flex', alignItems: 'center' }}>
-            MAX &nbsp;
-            <input
-              type="text"
-              css={{
-                textAlign: 'center',
-                paddingLeft: spacing.moderate,
-                paddingRight: spacing.moderate,
-                paddingTop: spacing.normal,
-                paddingBottom: spacing.normal,
-                border: constants.borders.regular.transparent,
-                borderRadius: constants.borderRadius.small,
-                backgroundColor: colors.structure.lead,
-                color: colors.structure.white,
-                width: '60%',
-                ':hover': {
-                  border: constants.borders.regular.steel,
-                },
-                ':focus': {
-                  outline: constants.borders.regular.transparent,
-                  border: constants.borders.keyOneRegular,
-                  color: colors.structure.coal,
-                  backgroundColor: colors.structure.white,
-                },
-                '::placeholder': {
-                  fontStyle: typography.style.italic,
-                },
-              }}
-              value={inputMax}
-              onChange={({ target: { value } }) => setInputMax(value)}
-              onKeyPress={({ target: { value }, key }) => {
-                if (key !== 'Enter') return
-                saveMaxValue({ value })
-              }}
-              onBlur={({ target: { value } }) => {
-                saveMaxValue({ value })
-              }}
-            />
-          </label>
+          <InputRange
+            label="MIN"
+            value={inputMin}
+            onChange={({ target: { value } }) => setInputMin(value)}
+            onKeyPress={({ target: { value }, key }) => {
+              if (key !== 'Enter') return
+              saveMinValue({ value })
+            }}
+            onBlur={({ target: { value } }) => {
+              saveMinValue({ value })
+            }}
+            variant={VARIANTS.PRIMARY}
+          />
+          <InputRange
+            label="MAX"
+            value={inputMax}
+            onChange={({ target: { value } }) => setInputMax(value)}
+            onKeyPress={({ target: { value }, key }) => {
+              if (key !== 'Enter') return
+              saveMaxValue({ value })
+            }}
+            onBlur={({ target: { value } }) => {
+              saveMaxValue({ value })
+            }}
+            variant={VARIANTS.PRIMARY}
+          />
         </div>
       </div>
     </div>

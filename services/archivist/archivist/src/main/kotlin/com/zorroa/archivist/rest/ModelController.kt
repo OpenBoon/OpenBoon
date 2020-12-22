@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
+import javax.servlet.http.HttpServletRequest
 
 @RestController
 class ModelController(
@@ -88,6 +89,13 @@ class ModelController(
         return modelService.publishModel(model)
     }
 
+    @ApiOperation("Set model arguments")
+    @PutMapping("/api/v3/models/{id}/_set_args")
+    fun setModelArguments(@PathVariable id: UUID, @RequestBody args: Map<String, Any>): PipelineMod {
+        val model = modelService.getModel(id)
+        return modelService.setModelArgs(model, args)
+    }
+
     @ApiOperation("Delete a model")
     @DeleteMapping("/api/v3/models/{id}")
     fun delete(@PathVariable id: UUID): Any {
@@ -107,6 +115,12 @@ class ModelController(
     @GetMapping(value = ["/api/v3/models/{id}/_label_counts"])
     fun getLabels(@ApiParam("ModelId") @PathVariable id: UUID): Map<String, Long> {
         return modelService.getLabelCounts(modelService.getModel(id))
+    }
+
+    @ApiOperation("Upload the model zip file.")
+    @PostMapping(value = ["/api/v3/models/{id}/_upload"])
+    fun upload(@ApiParam("ModelId") @PathVariable id: UUID, req: HttpServletRequest): Any {
+        return modelService.publishModelFileUpload(modelService.getModel(id), req.inputStream)
     }
 
     @ApiOperation("Rename label")

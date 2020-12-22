@@ -2,7 +2,7 @@ version: "3.6"
 services:
   # Postgres instance used for local development servers.
   postgres:
-    image: "postgres:9.6.9"
+    image: "postgres:9.6.20"
     ports:
       - "5432:5432"
     volumes:
@@ -117,9 +117,6 @@ services:
       ZMLP_STORAGE_SYSTEM_ACCESSKEY: qwerty123
       ZMLP_STORAGE_SYSTEM_SECRETKEY: 123qwerty
       ZMLP_STORAGE_PROJECT_URL: http://minio:9000
-      ZMLP_STORAGE_PIPELINE_ACCESSKEY: qwerty123
-      ZMLP_STORAGE_PIPELINE_SECRETKEY: 123qwerty
-      ZMLP_STORAGE_PIPELINE_URL: http://minio:9000
       ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
       ZMLP_SECURITY_AUTHSERVER_SERVICEKEY: ewogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiCn0KCg==
       JAVA_OPTS: "-Xms1g -Xmx1g -XX:+UseG1GC -XX:InitiatingHeapOccupancyPercent=70 -XX:G1HeapRegionSize=16m"
@@ -140,9 +137,10 @@ services:
     ports:
       - 7078:7078
     environment:
-      ZMLP_STORAGE_PIPELINE_URL: http://minio:9000
-      ZMLP_STORAGE_PIPELINE_ACCESSKEY: qwerty123
-      ZMLP_STORAGE_PIPELINE_SECRETKEY: 123qwerty
+      ZMLP_STORAGE_PROJECT_URL: http://minio:9000
+      ZMLP_STORAGE_PROJECT_ACCESSKEY: qwerty123
+      ZMLP_STORAGE_PROJECT_SECRETKEY: 123qwerty
+      ZMLP_STORAGE_CLIENT: minio
       REDIS_HOST: redis:6379
 
   analyst:
@@ -194,6 +192,24 @@ services:
     depends_on:
       - postgres
       - api-gateway
+
+  # Metric Collection Service.
+  metrics:
+    image: zmlp/metrics:latest
+    ports:
+      - 8585:80
+    build:
+      context: .
+      dockerfile: services/metrics/Dockerfile
+    environment:
+      DJANGO_SETTINGS_MODULE: metrics.settings
+      DEBUG: "true"
+      DB_BACKEND: postgres
+      PG_DB_HOST: postgres
+      PG_DB_PASSWORD: 2mAPDWhuiYdIW69u
+      BROWSABLE: "true"
+    depends_on:
+      - postgres
 
   # These services are only here because their images need to be built.
   zmlp-jvm-common:

@@ -14,7 +14,7 @@ class TestWordDocument {
     fun setup() {
         opts = RenderRequest("src/test/resources/word_test.docx")
         opts.page = 1
-        opts.outputDir = "docx"
+        opts.outputPath = "docx"
     }
 
     @Test

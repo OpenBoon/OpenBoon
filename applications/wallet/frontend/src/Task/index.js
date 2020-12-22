@@ -7,6 +7,7 @@ import Tabs from '../Tabs'
 import TaskScript from '../TaskScript'
 import TaskAssets from '../TaskAssets'
 import TaskErrors from '../TaskErrors'
+import TaskLogs from '../TaskLogs'
 
 import TaskDetails from './Details'
 
@@ -37,15 +38,14 @@ const Task = () => {
 
         <Tabs
           tabs={[
-            { title: 'Script', href: `${TASK_URL}/script` },
+            { title: 'Script', href: `${TASK_URL}` },
             { title: 'Assets', href: `${TASK_URL}/assets` },
             { title: 'Errors', href: `${TASK_URL}/errors` },
+            { title: 'Logs', href: `${TASK_URL}/logs` },
           ]}
         />
 
-        {pathname === TASK_URL && 'Log'}
-
-        {pathname === `${TASK_URL}/script` && (
+        {pathname === `${TASK_URL}` && (
           <SuspenseBoundary>
             <TaskScript />
           </SuspenseBoundary>
@@ -62,6 +62,12 @@ const Task = () => {
             key={refreshParam}
             parentUrl={`/api/v1/projects/${projectId}/tasks/${taskId}/`}
           />
+        )}
+
+        {pathname === `${TASK_URL}/logs` && (
+          <SuspenseBoundary>
+            <TaskLogs />
+          </SuspenseBoundary>
         )}
       </SuspenseBoundary>
     </>

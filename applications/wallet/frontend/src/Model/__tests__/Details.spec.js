@@ -1,6 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import model from '../__mocks__/model'
+import labels from '../../ModelLabels/__mocks__/modelLabels'
 
 import ModelDetails from '../Details'
 
@@ -11,6 +12,7 @@ const JOB_ID = '223fd17d-7028-1519-94a8-d2f0132bc0c8'
 const noop = () => () => {}
 
 jest.mock('next/link', () => 'Link')
+jest.mock('../../ModelAssets', () => 'ModelAssets')
 
 describe('<ModelDetails />', () => {
   it('should handle train errors properly', async () => {
@@ -80,7 +82,9 @@ describe('<ModelDetails />', () => {
     const component = TestRenderer.create(<ModelDetails />)
 
     // Mock Success
-    fetch.mockResponseOnce(JSON.stringify({ jobId: JOB_ID }))
+    fetch.mockResponseOnce(JSON.stringify({ jobId: JOB_ID }), {
+      headers: { 'content-type': 'application/json' },
+    })
 
     await act(async () => {
       component.root
@@ -156,6 +160,95 @@ describe('<ModelDetails />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render Labeled Assets properly', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]/assets',
+      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...model,
+        ...labels,
+        runningJobId: '',
+        modelTypeRestrictions: {
+          requiredLabels: 2,
+          missingLabels: 2,
+          requiredAssetsPerLabel: 10,
+          missingLabelsOnAssets: 1,
+        },
+      },
+    })
+
+    const component = TestRenderer.create(<ModelDetails />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Select Scope
+    act(() => {
+      component.root
+        .findByProps({ label: 'Scope' })
+        .props.onChange({ value: 'TEST' })
+    })
+
+    // Select Label
+    act(() => {
+      component.root
+        .findByProps({ label: 'Label' })
+        .props.onChange({ value: 'Test Label' })
+    })
+
+    const scopeQuery = btoa(
+      JSON.stringify({
+        scope: 'TEST',
+      }),
+    )
+
+    const labelQuery = btoa(
+      JSON.stringify({
+        label: 'Test Label',
+      }),
+    )
+
+    expect(mockRouterPush.mock.calls[0][1]).toBe(
+      `/${PROJECT_ID}/models/${MODEL_ID}/assets?query=${scopeQuery}`,
+    )
+
+    expect(mockRouterPush.mock.calls[1][1]).toBe(
+      `/${PROJECT_ID}/models/${MODEL_ID}/assets?query=${labelQuery}`,
+    )
+  })
+
+  it('should render Labeled Assets without assets properly', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]/assets',
+      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...model,
+        results: [],
+        count: 0,
+        runningJobId: '',
+        modelTypeRestrictions: {
+          requiredLabels: 2,
+          missingLabels: 2,
+          requiredAssetsPerLabel: 10,
+          missingLabelsOnAssets: 1,
+        },
+      },
+    })
+
+    const component = TestRenderer.create(<ModelDetails />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should handle filter properly', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]',
@@ -207,13 +300,8 @@ describe('<ModelDetails />', () => {
     expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
 
     expect(spy).toHaveBeenCalledWith(
-      `AssetLabelingAdd.${PROJECT_ID}.modelId`,
-      `"${MODEL_ID}"`,
-    )
-
-    expect(spy).toHaveBeenCalledWith(
-      `AssetLabelingAdd.${PROJECT_ID}.label`,
-      `""`,
+      `AssetLabelingAdd.${PROJECT_ID}`,
+      `{"modelId":"${MODEL_ID}","label":"","scope":""}`,
     )
   })
 

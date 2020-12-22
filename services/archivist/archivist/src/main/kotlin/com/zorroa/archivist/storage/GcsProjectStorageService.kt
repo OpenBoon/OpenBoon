@@ -1,5 +1,6 @@
 package com.zorroa.archivist.storage
 
+import com.google.api.client.util.ByteStreams
 import com.google.auth.oauth2.ComputeEngineCredentials
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
@@ -54,7 +55,13 @@ class GcsProjectStorageService constructor(
 
         info.setMetadata(mapOf("attrs" to Json.serializeToString(spec.attrs)))
         info.setContentType(spec.mimetype)
-        gcs.create(info.build(), spec.data)
+
+        gcs.writer(info.build()).use {
+            ByteStreams.copy(
+                spec.stream,
+                Channels.newOutputStream(it)
+            )
+        }
 
         logStoreEvent(spec)
 
@@ -63,7 +70,7 @@ class GcsProjectStorageService constructor(
             spec.locator.name,
             spec.locator.category,
             spec.mimetype,
-            spec.data.size.toLong(),
+            spec.size.toLong(),
             spec.attrs
         )
     }
@@ -90,6 +97,10 @@ class GcsProjectStorageService constructor(
     }
 
     override fun getNativeUri(locator: ProjectStorageLocator): String {
+        val path = locator.getPath()
+        return "gs://${properties.bucket}/$path"
+    }
+    override fun getNativeUri(locator: ProjectDirLocator): String {
         val path = locator.getPath()
         return "gs://${properties.bucket}/$path"
     }

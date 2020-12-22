@@ -98,7 +98,9 @@ const FilterBuckets = ({
 
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
         {buckets.map(({ key, docCount = 0 }) => {
-          if (!key.toLowerCase().includes(searchString)) return null
+          if (!key.toLowerCase().includes(searchString.toLowerCase())) {
+            return null
+          }
 
           const offset = Math.ceil((docCount * 100) / largestCount)
           const labelIndex = labels.findIndex((label) => label === key)
@@ -113,7 +115,7 @@ const FilterBuckets = ({
                   flexDirection: 'row',
                   backgroundColor: isSelected
                     ? `${colors.signal.sky.base}${constants.opacity.hex22Pct}`
-                    : '',
+                    : colors.structure.transparent,
                   color: isSelected
                     ? colors.structure.white
                     : colors.structure.zinc,

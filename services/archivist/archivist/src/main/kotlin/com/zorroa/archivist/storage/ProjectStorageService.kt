@@ -59,6 +59,11 @@ interface ProjectStorageService {
     fun getNativeUri(locator: ProjectStorageLocator): String
 
     /**
+     * Get he native storage URL for a given directory
+     */
+    fun getNativeUri(locator: ProjectDirLocator): String
+
+    /**
      * Get a signed URL for the given [ProjectStorageLocator].
      */
     fun getSignedUrl(
@@ -91,7 +96,7 @@ interface ProjectStorageService {
             LogObject.PROJECT_STORAGE, LogAction.CREATE,
             mapOf(
                 "newFilePath" to spec.locator.getPath(),
-                "size" to spec.data.size.toLong(),
+                "size" to spec.size.toLong(),
                 "mediaType" to spec.mimetype
             )
         )

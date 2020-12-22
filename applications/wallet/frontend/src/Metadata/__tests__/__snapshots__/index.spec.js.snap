@@ -27,7 +27,7 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
-  .emotion-4 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -38,26 +38,26 @@ Array [
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-4:hover {
+.emotion-0:hover {
   background-color: #0074f538;
 }
 
-.emotion-4:hover div {
+.emotion-0:hover div {
   color: #ffffff;
 }
 
-.emotion-4:hover div svg {
+.emotion-0:hover div svg {
   opacity: 1;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-family: Roboto Condensed;
   color: #808080;
   padding: 16px;
   padding-right: 8px;
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -76,7 +76,7 @@ Array [
   padding-left: 8px;
 }
 
-.emotion-2 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -92,61 +92,55 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
-.emotion-2:hover {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-2:hover svg,
-.emotion-2.focus-visible:focus svg {
+.emotion-4:hover svg,
+.emotion-4.focus-visible:focus svg,
+.emotion-4 .noop svg {
   opacity: 1;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #808080;
 }
 
-.emotion-2 svg {
+.emotion-4 svg {
   opacity: 0;
 }
 
 <div
-    className="emotion-4"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       ID
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
       title="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
     >
       vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C
@@ -155,7 +149,7 @@ Array [
       className="emotion-3"
     >
       <button
-        className="emotion-2"
+        className="emotion-4"
         onClick={[Function]}
         title="Copy to Clipboard"
         type="button"
@@ -167,12 +161,12 @@ Array [
       </button>
     </div>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   padding: 8px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -184,7 +178,7 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -200,11 +194,11 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -212,32 +206,19 @@ Array [
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  border-radius: 0;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
   background-color: #808080;
-  color: #ffffff;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
   text-transform: uppercase;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0:hover {
+.emotion-2:hover {
   color: #ffffff;
 }
 
-.emotion-1 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -253,58 +234,45 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #808080;
   background-color: transparent;
-  padding: 0;
-  border-radius: 0;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 12px;
   padding-right: 12px;
-  background-color: transparent;
-  color: #808080;
   text-transform: uppercase;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover {
+.emotion-3:hover {
   color: #ffffff;
 }
 
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <button
-        className="emotion-0"
+        className="emotion-2"
         onClick={[Function]}
         type="button"
       >
         pretty
       </button>
       <button
-        className="emotion-1"
+        className="emotion-3"
         onClick={[Function]}
         type="button"
       >
@@ -312,36 +280,36 @@ Array [
       </button>
     </div>
   </div>,
-  .emotion-108 {
+  .emotion-0 {
   overflow: auto;
 }
 
-.emotion-18 {
+.emotion-1 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-18:hover summary svg {
+.emotion-1:hover summary svg {
   opacity: 1;
 }
 
-.emotion-3 {
+.emotion-2 {
   list-style-type: none;
   padding: 12px;
   background-color: #252525;
 }
 
-.emotion-3::-webkit-details-marker {
+.emotion-2::-webkit-details-marker {
   display: none;
 }
 
-.emotion-3:hover {
+.emotion-2:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-2 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -352,11 +320,15 @@ Array [
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-4 {
   color: #808080;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
 }
 
-.emotion-1 {
+.emotion-5 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -367,11 +339,11 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-5 {
+.emotion-8 {
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-4 {
+.emotion-9 {
   font-family: Roboto Condensed;
   color: #808080;
   padding: 16px;
@@ -381,28 +353,28 @@ Array [
   flex: 1;
 }
 
-.emotion-15 {
+.emotion-10 {
   padding-left: 16px;
 }
 
-.emotion-6 {
+.emotion-11 {
   width: 100%;
 }
 
-.emotion-6:not(:first-of-type) {
+.emotion-11:not(:first-of-type) {
   border-top: 4px solid #4a4a4a;
 }
 
-.emotion-69 {
+.emotion-64 {
   padding: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-61 {
+.emotion-65 {
   padding-bottom: 12px;
 }
 
-.emotion-68 {
+.emotion-66 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -419,7 +391,7 @@ Array [
   width: 100%;
 }
 
-.emotion-62 {
+.emotion-68 {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -430,8 +402,8 @@ Array [
   border: 2px solid transparent;
 }
 
-.emotion-62:hover,
-.emotion-62.focus-visible:focus {
+.emotion-68:hover,
+.emotion-68.focus-visible:focus {
   position: relative;
   height: 13px;
   top: -2px;
@@ -439,17 +411,17 @@ Array [
   outline: 1px solid transparent;
 }
 
-.emotion-62:first-of-type {
+.emotion-68:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-62:last-of-type {
+.emotion-68:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-63 {
+.emotion-69 {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -460,8 +432,8 @@ Array [
   border: 2px solid transparent;
 }
 
-.emotion-63:hover,
-.emotion-63.focus-visible:focus {
+.emotion-69:hover,
+.emotion-69.focus-visible:focus {
   position: relative;
   height: 13px;
   top: -2px;
@@ -469,17 +441,17 @@ Array [
   outline: 1px solid transparent;
 }
 
-.emotion-63:first-of-type {
+.emotion-69:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-63:last-of-type {
+.emotion-69:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-64 {
+.emotion-70 {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -490,8 +462,8 @@ Array [
   border: 2px solid transparent;
 }
 
-.emotion-64:hover,
-.emotion-64.focus-visible:focus {
+.emotion-70:hover,
+.emotion-70.focus-visible:focus {
   position: relative;
   height: 13px;
   top: -2px;
@@ -499,17 +471,17 @@ Array [
   outline: 1px solid transparent;
 }
 
-.emotion-64:first-of-type {
+.emotion-70:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-64:last-of-type {
+.emotion-70:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-65 {
+.emotion-71 {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -520,8 +492,8 @@ Array [
   border: 2px solid transparent;
 }
 
-.emotion-65:hover,
-.emotion-65.focus-visible:focus {
+.emotion-71:hover,
+.emotion-71.focus-visible:focus {
   position: relative;
   height: 13px;
   top: -2px;
@@ -529,17 +501,17 @@ Array [
   outline: 1px solid transparent;
 }
 
-.emotion-65:first-of-type {
+.emotion-71:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-65:last-of-type {
+.emotion-71:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-66 {
+.emotion-72 {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -550,8 +522,8 @@ Array [
   border: 2px solid transparent;
 }
 
-.emotion-66:hover,
-.emotion-66.focus-visible:focus {
+.emotion-72:hover,
+.emotion-72.focus-visible:focus {
   position: relative;
   height: 13px;
   top: -2px;
@@ -559,30 +531,30 @@ Array [
   outline: 1px solid transparent;
 }
 
-.emotion-66:first-of-type {
+.emotion-72:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-66:last-of-type {
+.emotion-72:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-72 {
+.emotion-73 {
   width: 100%;
 }
 
-.emotion-72:not(:first-of-type) {
+.emotion-73:not(:first-of-type) {
   border-top: 4px solid #4a4a4a;
 }
 
-.emotion-71 {
+.emotion-74 {
   font-family: Roboto Condensed;
   padding: 16px;
 }
 
-.emotion-70 {
+.emotion-75 {
   padding-top: 8px;
   font-family: Roboto Mono;
   font-size: 14px;
@@ -592,43 +564,43 @@ Array [
 }
 
 <div
-    className="emotion-108"
+    className="emotion-0"
   >
     <details
-      className="emotion-18"
+      className="emotion-1"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="Analysis"
-        className="emotion-3"
+        className="emotion-2"
       >
         <div
-          className="emotion-2"
+          className="emotion-3"
         >
           <svg
-            className="emotion-0"
+            className="emotion-4"
             data-file-name="chevron.svg"
             height={20}
           />
           <span
-            className="emotion-1"
+            className="emotion-5"
           >
             Analysis
           </span>
         </div>
       </summary>
       <div
-        className="emotion-17"
+        className="emotion-6"
       >
         <div
-          className="emotion-16"
+          className="emotion-7"
         >
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <span
                 title="analysis..zvi"
@@ -639,10 +611,10 @@ Array [
             <div />
           </div>
           <div
-            className="emotion-15"
+            className="emotion-10"
           >
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               <MetadataPrettyRow
                 name="0"
@@ -681,7 +653,7 @@ Array [
               />
             </div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               <MetadataPrettyRow
                 name="0"
@@ -720,7 +692,7 @@ Array [
               />
             </div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               <MetadataPrettyRow
                 name="0"
@@ -759,7 +731,7 @@ Array [
               />
             </div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               <MetadataPrettyRow
                 name="0"
@@ -798,7 +770,7 @@ Array [
               />
             </div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               <MetadataPrettyRow
                 name="0"
@@ -837,7 +809,7 @@ Array [
               />
             </div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               <MetadataPrettyRow
                 name="0"
@@ -876,7 +848,7 @@ Array [
               />
             </div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               <MetadataPrettyRow
                 name="0"
@@ -915,7 +887,7 @@ Array [
               />
             </div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               <MetadataPrettyRow
                 name="0"
@@ -954,7 +926,7 @@ Array [
               />
             </div>
             <div
-              className="emotion-6"
+              className="emotion-11"
             >
               <MetadataPrettyRow
                 name="0"
@@ -997,34 +969,34 @@ Array [
       </div>
     </details>
     <details
-      className="emotion-18"
+      className="emotion-1"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="Clip"
-        className="emotion-3"
+        className="emotion-2"
       >
         <div
-          className="emotion-2"
+          className="emotion-3"
         >
           <svg
-            className="emotion-0"
+            className="emotion-4"
             data-file-name="chevron.svg"
             height={20}
           />
           <span
-            className="emotion-1"
+            className="emotion-5"
           >
             Clip
           </span>
         </div>
       </summary>
       <div
-        className="emotion-17"
+        className="emotion-6"
       >
         <div
-          className="emotion-16"
+          className="emotion-7"
         >
           <MetadataPrettyRow
             name="type"
@@ -1060,34 +1032,34 @@ Array [
       </div>
     </details>
     <details
-      className="emotion-18"
+      className="emotion-1"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="Files"
-        className="emotion-3"
+        className="emotion-2"
       >
         <div
-          className="emotion-2"
+          className="emotion-3"
         >
           <svg
-            className="emotion-0"
+            className="emotion-4"
             data-file-name="chevron.svg"
             height={20}
           />
           <span
-            className="emotion-1"
+            className="emotion-5"
           >
             Files
           </span>
         </div>
       </summary>
       <div
-        className="emotion-17"
+        className="emotion-6"
       >
         <div
-          className="emotion-6"
+          className="emotion-11"
         >
           <MetadataPrettyRow
             name="name"
@@ -1110,10 +1082,10 @@ Array [
             value={89643}
           />
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <span
                 title="files.attrs"
@@ -1124,7 +1096,7 @@ Array [
             <div />
           </div>
           <div
-            className="emotion-15"
+            className="emotion-10"
           >
             <MetadataPrettyRow
               name="width"
@@ -1144,7 +1116,7 @@ Array [
           />
         </div>
         <div
-          className="emotion-6"
+          className="emotion-11"
         >
           <MetadataPrettyRow
             name="name"
@@ -1167,10 +1139,10 @@ Array [
             value={60713}
           />
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <span
                 title="files.attrs"
@@ -1181,7 +1153,7 @@ Array [
             <div />
           </div>
           <div
-            className="emotion-15"
+            className="emotion-10"
           >
             <MetadataPrettyRow
               name="width"
@@ -1201,7 +1173,7 @@ Array [
           />
         </div>
         <div
-          className="emotion-6"
+          className="emotion-11"
         >
           <MetadataPrettyRow
             name="name"
@@ -1224,10 +1196,10 @@ Array [
             value={30882}
           />
           <div
-            className="emotion-5"
+            className="emotion-8"
           >
             <div
-              className="emotion-4"
+              className="emotion-9"
             >
               <span
                 title="files.attrs"
@@ -1238,7 +1210,7 @@ Array [
             <div />
           </div>
           <div
-            className="emotion-15"
+            className="emotion-10"
           >
             <MetadataPrettyRow
               name="width"
@@ -1260,64 +1232,64 @@ Array [
       </div>
     </details>
     <details
-      className="emotion-18"
+      className="emotion-1"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="Labels"
-        className="emotion-3"
+        className="emotion-2"
       >
         <div
-          className="emotion-2"
+          className="emotion-3"
         >
           <svg
-            className="emotion-0"
+            className="emotion-4"
             data-file-name="chevron.svg"
             height={20}
           />
           <span
-            className="emotion-1"
+            className="emotion-5"
           >
             Labels
           </span>
         </div>
       </summary>
       <div
-        className="emotion-17"
+        className="emotion-6"
       >
         <MetadataPrettyLabels />
       </div>
     </details>
     <details
-      className="emotion-18"
+      className="emotion-1"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="Media"
-        className="emotion-3"
+        className="emotion-2"
       >
         <div
-          className="emotion-2"
+          className="emotion-3"
         >
           <svg
-            className="emotion-0"
+            className="emotion-4"
             data-file-name="chevron.svg"
             height={20}
           />
           <span
-            className="emotion-1"
+            className="emotion-5"
           >
             Media
           </span>
         </div>
       </summary>
       <div
-        className="emotion-17"
+        className="emotion-6"
       >
         <div
-          className="emotion-16"
+          className="emotion-7"
         >
           <MetadataPrettyRow
             name="width"
@@ -1353,50 +1325,50 @@ Array [
       </div>
     </details>
     <details
-      className="emotion-18"
+      className="emotion-1"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="Metrics"
-        className="emotion-3"
+        className="emotion-2"
       >
         <div
-          className="emotion-2"
+          className="emotion-3"
         >
           <svg
-            className="emotion-0"
+            className="emotion-4"
             data-file-name="chevron.svg"
             height={20}
           />
           <span
-            className="emotion-1"
+            className="emotion-5"
           >
             Metrics
           </span>
         </div>
       </summary>
       <div
-        className="emotion-17"
+        className="emotion-6"
       >
         <div
-          className="emotion-69"
+          className="emotion-64"
         >
           <div
-            className="emotion-61"
+            className="emotion-65"
           >
             Processors: 
             5
           </div>
           <div
-            className="emotion-68"
+            className="emotion-66"
           >
             <div
               className="emotion-67"
             >
               <button
                 aria-label="zmlp_core.core.processors.PreCacheSourceFileProcessor"
-                className="emotion-62"
+                className="emotion-68"
                 onBlur={[Function]}
                 onFocus={[Function]}
                 onMouseDown={[Function]}
@@ -1406,7 +1378,7 @@ Array [
               />
               <button
                 aria-label="zmlp_core.image.importers.ImageImporter"
-                className="emotion-63"
+                className="emotion-69"
                 onBlur={[Function]}
                 onFocus={[Function]}
                 onMouseDown={[Function]}
@@ -1416,7 +1388,7 @@ Array [
               />
               <button
                 aria-label="zmlp_core.office.importers.OfficeImporter"
-                className="emotion-64"
+                className="emotion-70"
                 onBlur={[Function]}
                 onFocus={[Function]}
                 onMouseDown={[Function]}
@@ -1426,7 +1398,7 @@ Array [
               />
               <button
                 aria-label="zmlp_core.video.VideoImporter"
-                className="emotion-65"
+                className="emotion-71"
                 onBlur={[Function]}
                 onFocus={[Function]}
                 onMouseDown={[Function]}
@@ -1436,7 +1408,7 @@ Array [
               />
               <button
                 aria-label="zmlp_core.core.processors.AssertAttributesProcessor"
-                className="emotion-66"
+                className="emotion-72"
                 onBlur={[Function]}
                 onFocus={[Function]}
                 onMouseDown={[Function]}
@@ -1448,14 +1420,14 @@ Array [
           </div>
         </div>
         <div
-          className="emotion-72"
+          className="emotion-73"
         >
           <div
-            className="emotion-71"
+            className="emotion-74"
           >
             PROCESSOR
             <div
-              className="emotion-70"
+              className="emotion-75"
               title="zmlp_core.core.processors.PreCacheSourceFileProcessor"
             >
               zmlp_core.core.processors.PreCacheSourceFileProcessor
@@ -1483,14 +1455,14 @@ Array [
           />
         </div>
         <div
-          className="emotion-72"
+          className="emotion-73"
         >
           <div
-            className="emotion-71"
+            className="emotion-74"
           >
             PROCESSOR
             <div
-              className="emotion-70"
+              className="emotion-75"
               title="zmlp_core.image.importers.ImageImporter"
             >
               zmlp_core.image.importers.ImageImporter
@@ -1518,14 +1490,14 @@ Array [
           />
         </div>
         <div
-          className="emotion-72"
+          className="emotion-73"
         >
           <div
-            className="emotion-71"
+            className="emotion-74"
           >
             PROCESSOR
             <div
-              className="emotion-70"
+              className="emotion-75"
               title="zmlp_core.office.importers.OfficeImporter"
             >
               zmlp_core.office.importers.OfficeImporter
@@ -1548,14 +1520,14 @@ Array [
           />
         </div>
         <div
-          className="emotion-72"
+          className="emotion-73"
         >
           <div
-            className="emotion-71"
+            className="emotion-74"
           >
             PROCESSOR
             <div
-              className="emotion-70"
+              className="emotion-75"
               title="zmlp_core.video.VideoImporter"
             >
               zmlp_core.video.VideoImporter
@@ -1578,14 +1550,14 @@ Array [
           />
         </div>
         <div
-          className="emotion-72"
+          className="emotion-73"
         >
           <div
-            className="emotion-71"
+            className="emotion-74"
           >
             PROCESSOR
             <div
-              className="emotion-70"
+              className="emotion-75"
               title="zmlp_core.core.processors.AssertAttributesProcessor"
             >
               zmlp_core.core.processors.AssertAttributesProcessor
@@ -1615,34 +1587,34 @@ Array [
       </div>
     </details>
     <details
-      className="emotion-18"
+      className="emotion-1"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="Similarity"
-        className="emotion-3"
+        className="emotion-2"
       >
         <div
-          className="emotion-2"
+          className="emotion-3"
         >
           <svg
-            className="emotion-0"
+            className="emotion-4"
             data-file-name="chevron.svg"
             height={20}
           />
           <span
-            className="emotion-1"
+            className="emotion-5"
           >
             Similarity
           </span>
         </div>
       </summary>
       <div
-        className="emotion-17"
+        className="emotion-6"
       >
         <div
-          className="emotion-16"
+          className="emotion-7"
         >
           <MetadataPrettyRow
             name="simhash"
@@ -1653,34 +1625,34 @@ Array [
       </div>
     </details>
     <details
-      className="emotion-18"
+      className="emotion-1"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="Source"
-        className="emotion-3"
+        className="emotion-2"
       >
         <div
-          className="emotion-2"
+          className="emotion-3"
         >
           <svg
-            className="emotion-0"
+            className="emotion-4"
             data-file-name="chevron.svg"
             height={20}
           />
           <span
-            className="emotion-1"
+            className="emotion-5"
           >
             Source
           </span>
         </div>
       </summary>
       <div
-        className="emotion-17"
+        className="emotion-6"
       >
         <div
-          className="emotion-16"
+          className="emotion-7"
         >
           <MetadataPrettyRow
             name="path"
@@ -1721,34 +1693,34 @@ Array [
       </div>
     </details>
     <details
-      className="emotion-18"
+      className="emotion-1"
       onToggle={[Function]}
       open={false}
     >
       <summary
         aria-label="System"
-        className="emotion-3"
+        className="emotion-2"
       >
         <div
-          className="emotion-2"
+          className="emotion-3"
         >
           <svg
-            className="emotion-0"
+            className="emotion-4"
             data-file-name="chevron.svg"
             height={20}
           />
           <span
-            className="emotion-1"
+            className="emotion-5"
           >
             System
           </span>
         </div>
       </summary>
       <div
-        className="emotion-17"
+        className="emotion-6"
       >
         <div
-          className="emotion-16"
+          className="emotion-7"
         >
           <MetadataPrettyRow
             name="jobId"
@@ -1805,7 +1777,7 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
-  .emotion-4 {
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1816,26 +1788,26 @@ Array [
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-4:hover {
+.emotion-0:hover {
   background-color: #0074f538;
 }
 
-.emotion-4:hover div {
+.emotion-0:hover div {
   color: #ffffff;
 }
 
-.emotion-4:hover div svg {
+.emotion-0:hover div svg {
   opacity: 1;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-family: Roboto Condensed;
   color: #808080;
   padding: 16px;
   padding-right: 8px;
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1854,7 +1826,7 @@ Array [
   padding-left: 8px;
 }
 
-.emotion-2 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1870,61 +1842,55 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
   color: #808080;
+  background-color: transparent;
   padding: 0;
 }
 
-.emotion-2:hover {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-2:hover svg,
-.emotion-2.focus-visible:focus svg {
+.emotion-4:hover svg,
+.emotion-4.focus-visible:focus svg,
+.emotion-4 .noop svg {
   opacity: 1;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #808080;
 }
 
-.emotion-2 svg {
+.emotion-4 svg {
   opacity: 0;
 }
 
 <div
-    className="emotion-4"
+    className="emotion-0"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       ID
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
       title="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
     >
       vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C
@@ -1933,7 +1899,7 @@ Array [
       className="emotion-3"
     >
       <button
-        className="emotion-2"
+        className="emotion-4"
         onClick={[Function]}
         title="Copy to Clipboard"
         type="button"
@@ -1945,12 +1911,12 @@ Array [
       </button>
     </div>
   </div>,
-  .emotion-3 {
+  .emotion-0 {
   padding: 8px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1962,7 +1928,7 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-1 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1978,111 +1944,85 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
+  border-radius: 0;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  border-radius: 0;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  background-color: #808080;
-  color: #ffffff;
-  text-transform: uppercase;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover {
-  color: #ffffff;
-}
-
-.emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  border-radius: 0;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  background-color: transparent;
   color: #808080;
+  background-color: transparent;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
   text-transform: uppercase;
 }
 
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
+.emotion-2:hover {
+  color: #ffffff;
 }
 
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #808080;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  text-transform: uppercase;
 }
 
-.emotion-0:hover {
+.emotion-3:hover {
   color: #ffffff;
 }
 
 <div
-    className="emotion-3"
+    className="emotion-0"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <button
-        className="emotion-0"
+        className="emotion-2"
         onClick={[Function]}
         type="button"
       >
         pretty
       </button>
       <button
-        className="emotion-1"
+        className="emotion-3"
         onClick={[Function]}
         type="button"
       >

@@ -12,6 +12,7 @@ import com.zorroa.archivist.domain.ModelApplyResponse
 import com.zorroa.archivist.domain.ModelFilter
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
+import com.zorroa.archivist.domain.ModelType
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
@@ -19,6 +20,7 @@ import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageEntity
+import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.StandardContainers
 import com.zorroa.archivist.repository.KPagedList
@@ -28,6 +30,7 @@ import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.storage.ProjectStorageService
+import com.zorroa.archivist.util.randomString
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
@@ -52,7 +55,15 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import java.io.FileInputStream
+import java.io.InputStream
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardCopyOption
 import java.util.UUID
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+import kotlin.streams.toList
 
 interface ModelService {
     fun createModel(spec: ModelSpec): Model
@@ -61,6 +72,7 @@ interface ModelService {
     fun find(filter: ModelFilter): KPagedList<Model>
     fun findOne(filter: ModelFilter): Model
     fun publishModel(model: Model, args: Map<String, Any>? = null): PipelineMod
+    fun setModelArgs(model: Model, args: Map<String, Any>): PipelineMod
     fun deployModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun deleteModel(model: Model)
     fun getLabelCounts(model: Model): Map<String, Long>
@@ -71,6 +83,10 @@ interface ModelService {
      * empty then remove the label.
      */
     fun updateLabel(model: Model, label: String, newLabel: String?): GenericBatchUpdateResponse
+
+    fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod
+
+    fun validateTensorflowModel(path: Path)
 }
 
 @Service
@@ -231,6 +247,21 @@ class ModelServiceImpl(
             modelJdbcDao.markAsReady(model.id, true)
             return pipelineModService.create(modspec)
         }
+    }
+
+    override fun setModelArgs(model: Model, args: Map<String, Any>): PipelineMod {
+        val mod = pipelineModService.findByName(model.moduleName, false)
+            ?: throw EmptyResultDataAccessException("Module not found, must be trained or published first", 1)
+
+        val ops = buildModuleOps(model, args)
+        val update = PipelineModUpdate(
+            mod.name, mod.description, model.type.provider,
+            mod.category, mod.type,
+            listOf(FileType.Documents, FileType.Images),
+            ops
+        )
+        pipelineModService.update(mod.id, update)
+        return pipelineModService.get(mod.id)
     }
 
     override fun deleteModel(model: Model) {
@@ -437,8 +468,67 @@ class ModelServiceImpl(
         return GenericBatchUpdateResponse(response.updated)
     }
 
+    override fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod {
+        if (!model.type.uploadable) {
+            throw IllegalArgumentException("The model type ${model.type} does not support uploads")
+        }
+
+        val tmpFile = Files.createTempFile(randomString(32), "model.zip")
+        Files.copy(inputStream, tmpFile, StandardCopyOption.REPLACE_EXISTING)
+
+        try {
+            if (model.type == ModelType.TF2_IMAGE_CLASSIFIER) {
+                validateTensorflowModel(tmpFile)
+            }
+
+            // Now store the file locally.
+            val storage = ProjectStorageSpec(
+                model.getModelStorageLocator(), mapOf(),
+                FileInputStream(tmpFile.toFile()), Files.size(tmpFile)
+            )
+            val modelFile = fileStorageService.store(storage)
+
+            // Now we can publish the model.
+            return publishModel(model, mapOf("version" to System.currentTimeMillis()))
+        } finally {
+            Files.delete(tmpFile)
+        }
+    }
+
+    override fun validateTensorflowModel(path: Path) {
+
+        val zipFile = ZipFile(path.toFile())
+        val files = zipFile.stream()
+            .map(ZipEntry::getName)
+            .map { it }.toList()
+
+        if (!files.contains("labels.txt")) {
+            throw IllegalArgumentException("The model zip must contain a labels.txt file")
+        }
+
+        files.forEach {
+            if (it !in validTensorflowFiles) {
+                throw IllegalArgumentException("'$it' is not an expected Tensorflow model file.")
+            }
+        }
+    }
+
     companion object {
+
         private val logger = LoggerFactory.getLogger(ModelServiceImpl::class.java)
+
+        /**
+         * The valid files in a tensorflow zip file.
+         */
+        val validTensorflowFiles = setOf(
+            "labels.txt",
+            "saved_model.pb",
+            "tfhub_module.pb",
+            "assets/",
+            "variables/",
+            "variables/variables.data-00000-of-00001",
+            "variables/variables.index"
+        )
 
         private val modelNameRegex = Regex("^[a-z0-9_\\-\\s]{2,}$", RegexOption.IGNORE_CASE)
 

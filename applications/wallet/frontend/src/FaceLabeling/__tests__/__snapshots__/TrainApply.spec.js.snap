@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FaceLabelingTrainApply /> should render properly when unapplied changes is false and there is a training job 1`] = `
-.emotion-7 {
+.emotion-0 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-1 {
   height: 16px;
 }
 
-.emotion-6 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -22,75 +22,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   position: relative;
 }
 
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-  margin-left: 8px;
-}
-
-.emotion-5:hover div,
-.emotion-5:focus-within div {
-  visibility: visible;
-  opacity: 1;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-}
-
-.emotion-5:hover button,
-.emotion-5:focus-within button {
-  color: #ffffff;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-4 {
-  position: absolute;
-  right: -10px;
-  top: 28px;
-  color: #191919;
-  background-color: #ffffff;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  padding: 12px;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
-  max-width: 400px;
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-  z-index: 1;
-}
-
-.emotion-4:hover {
-  visibility: visible;
-  opacity: 1;
-}
-
-.emotion-3:before {
-  content: ' ';
-  position: absolute;
-  top: -6px;
-  right: 14px;
-  border-bottom: 6px solid #ffffff;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-}
-
-.emotion-1 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -106,8 +38,8 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -121,31 +53,96 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   background-color: transparent;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1,
-.emotion-1:hover,
-.emotion-1:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited,
+.emotion-3 .noop {
   background-color: #73b61c;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  margin-left: 8px;
+}
+
+.emotion-4:hover div,
+.emotion-4:focus-within div {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-4:hover button,
+.emotion-4:focus-within button {
+  color: #ffffff;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-6 {
+  position: absolute;
+  right: -10px;
+  top: 28px;
+  color: #191919;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 12px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 400px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+  z-index: 1;
+}
+
+.emotion-6:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.emotion-7:before {
+  content: ' ';
+  position: absolute;
+  top: -6px;
+  right: 14px;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
 <div
-  className="emotion-7"
+  className="emotion-0"
 >
   <FaceLebalingMessage
     error=""
@@ -158,25 +155,25 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
     Once a name has been added to a face, training can begin. Names can continue to be edited as needed.
   </span>
   <div
-    className="emotion-0"
+    className="emotion-1"
   />
   <div
-    className="emotion-6"
+    className="emotion-2"
   >
     <button
-      className="emotion-1"
+      className="emotion-3"
       onClick={[Function]}
       type="button"
     >
       Override Current Training & Re-apply
     </button>
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       <button
         aria-details="TrainingHelp"
         aria-label="Training Help"
-        className="emotion-2"
+        className="emotion-5"
         type="button"
       >
         <svg
@@ -185,12 +182,12 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
         />
       </button>
       <div
-        className="emotion-4"
+        className="emotion-6"
         id="TrainingHelp"
         role="tooltip"
       >
         <div
-          className="emotion-3"
+          className="emotion-7"
         />
         There are new labels that have not been used for training. Restart training with the latest labels.
       </div>
@@ -200,16 +197,16 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 `;
 
 exports[`<FaceLabelingTrainApply /> should render properly when unapplied changes is true and there is no training job 1`] = `
-.emotion-7 {
+.emotion-0 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-1 {
   height: 16px;
 }
 
-.emotion-6 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -221,7 +218,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -237,8 +234,8 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -252,30 +249,27 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   background-color: transparent;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1,
-.emotion-1:hover,
-.emotion-1:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited,
+.emotion-3 .noop {
   background-color: #73b61c;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-5 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -284,20 +278,20 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   margin-left: 8px;
 }
 
-.emotion-5:hover div,
-.emotion-5:focus-within div {
+.emotion-4:hover div,
+.emotion-4:focus-within div {
   visibility: visible;
   opacity: 1;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
 }
 
-.emotion-5:hover button,
-.emotion-5:focus-within button {
+.emotion-4:hover button,
+.emotion-4:focus-within button {
   color: #ffffff;
 }
 
-.emotion-2 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -308,14 +302,14 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   color: #808080;
 }
 
-.emotion-4 {
+.emotion-6 {
   position: absolute;
   right: -10px;
   top: 28px;
   color: #191919;
   background-color: #ffffff;
   border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   padding: 12px;
   width: -webkit-max-content;
   width: -moz-max-content;
@@ -328,12 +322,12 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   z-index: 1;
 }
 
-.emotion-4:hover {
+.emotion-6:hover {
   visibility: visible;
   opacity: 1;
 }
 
-.emotion-3:before {
+.emotion-7:before {
   content: ' ';
   position: absolute;
   top: -6px;
@@ -344,7 +338,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 }
 
 <div
-  className="emotion-7"
+  className="emotion-0"
 >
   <FaceLebalingMessage
     error=""
@@ -357,26 +351,26 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
     Once a name has been added to a face, training can begin. Names can continue to be edited as needed.
   </span>
   <div
-    className="emotion-0"
+    className="emotion-1"
   />
   <div
-    className="emotion-6"
+    className="emotion-2"
   >
     <button
       aria-disabled={true}
-      className="emotion-1"
+      className="emotion-3"
       onClick={[Function]}
       type="button"
     >
       Train & Apply
     </button>
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       <button
         aria-details="TrainingHelp"
         aria-label="Training Help"
-        className="emotion-2"
+        className="emotion-5"
         type="button"
       >
         <svg
@@ -385,12 +379,12 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
         />
       </button>
       <div
-        className="emotion-4"
+        className="emotion-6"
         id="TrainingHelp"
         role="tooltip"
       >
         <div
-          className="emotion-3"
+          className="emotion-7"
         />
         There are new labels. Click to train and apply.
       </div>
@@ -400,16 +394,16 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 `;
 
 exports[`<FaceLabelingTrainApply /> should render properly when unapplied changes is true and there is no training job 2`] = `
-.emotion-7 {
+.emotion-0 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-1 {
   height: 16px;
 }
 
-.emotion-6 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -421,7 +415,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -437,8 +431,8 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
   padding: 12px 32px;
@@ -452,30 +446,27 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   background-color: transparent;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1,
-.emotion-1:hover,
-.emotion-1:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited,
+.emotion-3 .noop {
   background-color: #73b61c;
 }
 
-.emotion-1:hover {
+.emotion-3:hover,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-5 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -484,20 +475,20 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   margin-left: 8px;
 }
 
-.emotion-5:hover div,
-.emotion-5:focus-within div {
+.emotion-4:hover div,
+.emotion-4:focus-within div {
   visibility: visible;
   opacity: 1;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
 }
 
-.emotion-5:hover button,
-.emotion-5:focus-within button {
+.emotion-4:hover button,
+.emotion-4:focus-within button {
   color: #ffffff;
 }
 
-.emotion-2 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -508,14 +499,14 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   color: #808080;
 }
 
-.emotion-4 {
+.emotion-6 {
   position: absolute;
   right: -10px;
   top: 28px;
   color: #191919;
   background-color: #ffffff;
   border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   padding: 12px;
   width: -webkit-max-content;
   width: -moz-max-content;
@@ -528,12 +519,12 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   z-index: 1;
 }
 
-.emotion-4:hover {
+.emotion-6:hover {
   visibility: visible;
   opacity: 1;
 }
 
-.emotion-3:before {
+.emotion-7:before {
   content: ' ';
   position: absolute;
   top: -6px;
@@ -544,7 +535,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 }
 
 <div
-  className="emotion-7"
+  className="emotion-0"
 >
   <FaceLebalingMessage
     error=""
@@ -557,26 +548,26 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
     Once a name has been added to a face, training can begin. Names can continue to be edited as needed.
   </span>
   <div
-    className="emotion-0"
+    className="emotion-1"
   />
   <div
-    className="emotion-6"
+    className="emotion-2"
   >
     <button
       aria-disabled={true}
-      className="emotion-1"
+      className="emotion-3"
       onClick={[Function]}
       type="button"
     >
       Train & Apply
     </button>
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       <button
         aria-details="TrainingHelp"
         aria-label="Training Help"
-        className="emotion-2"
+        className="emotion-5"
         type="button"
       >
         <svg
@@ -585,12 +576,12 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
         />
       </button>
       <div
-        className="emotion-4"
+        className="emotion-6"
         id="TrainingHelp"
         role="tooltip"
       >
         <div
-          className="emotion-3"
+          className="emotion-7"
         />
         There are new labels. Click to train and apply.
       </div>

@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
-.emotion-4 {
+.emotion-0 {
   position: relative;
   border: 4px solid transparent;
   width: 100%;
   height: 100%;
 }
 
-.emotion-4:hover {
+.emotion-0:hover {
   border: 4px solid #ffffff;
 }
 
-.emotion-4:hover a,
-.emotion-4:hover button {
+.emotion-0:hover a,
+.emotion-0:hover button {
   opacity: 1;
 }
 
@@ -33,11 +33,11 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -46,7 +46,6 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 100%;
   height: 100%;
   display: -webkit-box;
@@ -54,8 +53,8 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -66,72 +65,10 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   border-radius: 0;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0 {
+.emotion-2 {
   width: 100%;
   height: 100%;
   object-fit: contain;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  opacity: 0;
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
-  opacity: 1;
-  background-color: #3b3b3b;
 }
 
 .emotion-3 {
@@ -150,11 +87,11 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -162,23 +99,11 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
+  background-color: #3b3b3b80;
   opacity: 0;
   position: absolute;
-  bottom: 4px;
+  top: 4px;
   right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-3:hover,
@@ -187,8 +112,49 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   background-color: #3b3b3b;
 }
 
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #3b3b3b80;
+  opacity: 0;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+}
+
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
+}
+
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <a
     aria-label="Select asset test_document.docx"
@@ -200,13 +166,13 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   >
     <img
       alt="test_document.docx"
-      className="emotion-0"
+      className="emotion-2"
       src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
     />
   </a>
   <button
     aria-label="Find similar images to test_document.docx"
-    className="emotion-2"
+    className="emotion-3"
     onClick={[Function]}
     title="Find similar images"
     type="button"
@@ -219,7 +185,7 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   </button>
   <a
     aria-label="Asset details test_document.docx"
-    className="emotion-3"
+    className="emotion-4"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL?query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d"
     onClick={[Function]}
     onMouseEnter={[Function]}
@@ -235,6 +201,22 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
 `;
 
 exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] = `
+.emotion-0 {
+  position: relative;
+  border: 4px solid #0074f5;
+  width: 100%;
+  height: 100%;
+}
+
+.emotion-0:hover {
+  border: 4px solid #0074f5;
+}
+
+.emotion-0:hover a,
+.emotion-0:hover button {
+  opacity: 1;
+}
+
 .emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -251,11 +233,11 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -264,7 +246,6 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 100%;
   height: 100%;
   display: -webkit-box;
@@ -272,8 +253,8 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -284,72 +265,10 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   border-radius: 0;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0 {
+.emotion-2 {
   width: 100%;
   height: 100%;
   object-fit: contain;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  opacity: 0;
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
-  opacity: 1;
-  background-color: #3b3b3b;
 }
 
 .emotion-3 {
@@ -368,11 +287,11 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -380,23 +299,11 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
+  background-color: #3b3b3b80;
   opacity: 0;
   position: absolute;
-  bottom: 4px;
+  top: 4px;
   right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-3:hover,
@@ -406,23 +313,48 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
 }
 
 .emotion-4 {
-  position: relative;
-  border: 4px solid #0074f5;
-  width: 100%;
-  height: 100%;
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #3b3b3b80;
+  opacity: 0;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
 }
 
-.emotion-4:hover {
-  border: 4px solid #0074f5;
-}
-
-.emotion-4:hover a,
-.emotion-4:hover button {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
   opacity: 1;
+  background-color: #3b3b3b;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <a
     aria-label="Select asset test_document.docx"
@@ -434,13 +366,13 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   >
     <img
       alt="test_document.docx"
-      className="emotion-0"
+      className="emotion-2"
       src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
     />
   </a>
   <button
     aria-label="Find similar images to test_document.docx"
-    className="emotion-2"
+    className="emotion-3"
     onClick={[Function]}
     title="Find similar images"
     type="button"
@@ -453,7 +385,7 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   </button>
   <a
     aria-label="Asset details test_document.docx"
-    className="emotion-3"
+    className="emotion-4"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL"
     onClick={[Function]}
     onMouseEnter={[Function]}
@@ -469,19 +401,19 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
 `;
 
 exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
-.emotion-5 {
+.emotion-0 {
   position: relative;
   border: 4px solid transparent;
   width: 100%;
   height: 100%;
 }
 
-.emotion-5:hover {
+.emotion-0:hover {
   border: 4px solid #ffffff;
 }
 
-.emotion-5:hover a,
-.emotion-5:hover button {
+.emotion-0:hover a,
+.emotion-0:hover button {
   opacity: 1;
 }
 
@@ -501,11 +433,11 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -514,7 +446,6 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 100%;
   height: 100%;
   display: -webkit-box;
@@ -522,8 +453,8 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -534,72 +465,10 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   border-radius: 0;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0 {
+.emotion-2 {
   width: 100%;
   height: 100%;
   object-fit: contain;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  opacity: 0;
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
-  opacity: 1;
-  background-color: #3b3b3b;
 }
 
 .emotion-3 {
@@ -618,11 +487,11 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -630,23 +499,11 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
+  background-color: #3b3b3b80;
   opacity: 0;
   position: absolute;
-  bottom: 4px;
+  top: 4px;
   right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-3:hover,
@@ -656,6 +513,47 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
 }
 
 .emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #3b3b3b80;
+  opacity: 0;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+}
+
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
+}
+
+.emotion-5 {
   position: absolute;
   bottom: 4px;
   left: 4px;
@@ -665,7 +563,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
 }
 
 <div
-  className="emotion-5"
+  className="emotion-0"
 >
   <a
     aria-label="Select asset FatManOnABike1914.mp4"
@@ -677,13 +575,13 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   >
     <img
       alt="FatManOnABike1914.mp4"
-      className="emotion-0"
+      className="emotion-2"
       src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
     />
   </a>
   <button
     aria-label="Find similar images to FatManOnABike1914.mp4"
-    className="emotion-2"
+    className="emotion-3"
     onClick={[Function]}
     title="Find similar images"
     type="button"
@@ -696,7 +594,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   </button>
   <a
     aria-label="Asset details FatManOnABike1914.mp4"
-    className="emotion-3"
+    className="emotion-4"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
     onClick={[Function]}
     onMouseEnter={[Function]}
@@ -709,7 +607,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
     />
   </a>
   <div
-    className="emotion-4"
+    className="emotion-5"
   >
     2:24
   </div>
@@ -717,19 +615,19 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
 `;
 
 exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 1`] = `
-.emotion-4 {
+.emotion-0 {
   position: relative;
   border: 4px solid transparent;
   width: 100%;
   height: 100%;
 }
 
-.emotion-4:hover {
+.emotion-0:hover {
   border: 4px solid #ffffff;
 }
 
-.emotion-4:hover a,
-.emotion-4:hover button {
+.emotion-0:hover a,
+.emotion-0:hover button {
   opacity: 1;
 }
 
@@ -749,11 +647,11 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -762,7 +660,6 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 100%;
   height: 100%;
   display: -webkit-box;
@@ -770,8 +667,8 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -782,72 +679,10 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   border-radius: 0;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0 {
+.emotion-2 {
   width: 100%;
   height: 100%;
   object-fit: contain;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  opacity: 0;
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
-  opacity: 1;
-  background-color: #3b3b3b;
 }
 
 .emotion-3 {
@@ -866,11 +701,11 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -878,23 +713,11 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
+  background-color: #3b3b3b80;
   opacity: 0;
   position: absolute;
-  bottom: 4px;
+  top: 4px;
   right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-3:hover,
@@ -903,8 +726,49 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   background-color: #3b3b3b;
 }
 
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #3b3b3b80;
+  opacity: 0;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+}
+
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
+}
+
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <a
     aria-label="Select asset irr.pdf"
@@ -916,13 +780,13 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   >
     <img
       alt="irr.pdf"
-      className="emotion-0"
+      className="emotion-2"
       src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
     />
   </a>
   <button
     aria-label="Find similar images to irr.pdf"
-    className="emotion-2"
+    className="emotion-3"
     onClick={[Function]}
     title="Find similar images"
     type="button"
@@ -935,7 +799,7 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   </button>
   <a
     aria-label="Asset details irr.pdf"
-    className="emotion-3"
+    className="emotion-4"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
     onClick={[Function]}
     onMouseEnter={[Function]}
@@ -951,19 +815,19 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
 `;
 
 exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
-.emotion-4 {
+.emotion-0 {
   position: relative;
   border: 4px solid transparent;
   width: 100%;
   height: 100%;
 }
 
-.emotion-4:hover {
+.emotion-0:hover {
   border: 4px solid #ffffff;
 }
 
-.emotion-4:hover a,
-.emotion-4:hover button {
+.emotion-0:hover a,
+.emotion-0:hover button {
   opacity: 1;
 }
 
@@ -983,11 +847,11 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 0;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -996,7 +860,6 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   width: 100%;
   height: 100%;
   display: -webkit-box;
@@ -1004,8 +867,8 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -1016,72 +879,10 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   border-radius: 0;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0 {
+.emotion-2 {
   width: 100%;
   height: 100%;
   object-fit: contain;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  opacity: 0;
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
-  opacity: 1;
-  background-color: #3b3b3b;
 }
 
 .emotion-3 {
@@ -1100,11 +901,11 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 4px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -1112,23 +913,11 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   border: none;
   cursor: pointer;
   color: #ffffff;
-  background-color: transparent;
-  padding: 0;
+  background-color: #3b3b3b80;
   opacity: 0;
   position: absolute;
-  bottom: 4px;
+  top: 4px;
   right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-3:hover,
@@ -1137,8 +926,49 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   background-color: #3b3b3b;
 }
 
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #3b3b3b80;
+  opacity: 0;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+}
+
+.emotion-4:hover,
+.emotion-4.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
+}
+
 <div
-  className="emotion-4"
+  className="emotion-0"
 >
   <a
     aria-label="Select asset undefined"
@@ -1148,13 +978,13 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
     onMouseEnter={[Function]}
   >
     <img
-      className="emotion-0"
+      className="emotion-2"
       src="/web-proxy.jpg/"
     />
   </a>
   <button
     aria-label="Find similar images to undefined"
-    className="emotion-2"
+    className="emotion-3"
     onClick={[Function]}
     title="Find similar images"
     type="button"
@@ -1167,7 +997,7 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   </button>
   <a
     aria-label="Asset details undefined"
-    className="emotion-3"
+    className="emotion-4"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/zs5GXqqMapHkZpKYewLVNPppddQfaCK-"
     onClick={[Function]}
     onMouseEnter={[Function]}

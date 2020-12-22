@@ -23,7 +23,7 @@ const STYLES = {
   SECONDARY: {
     color: colors.structure.white,
     backgroundColor: colors.structure.smoke,
-    '&:focus': {
+    '&:focus, .noop': {
       border: constants.borders.keyOneMedium,
       backgroundColor: colors.structure.white,
       outline: colors.key.one,
@@ -72,7 +72,7 @@ const Textarea = ({
         name={id}
         value={value}
         onChange={onChange}
-        css={[BASE, STYLES[variant], BORDER_STYLES({ hasError })]}
+        css={{ ...BASE, ...STYLES[variant], ...BORDER_STYLES({ hasError }) }}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...props}
       />

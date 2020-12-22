@@ -42,6 +42,7 @@ describe('<Timeline /> helpers', () => {
           video: undefined,
           playhead: undefined,
           zoom: 100,
+          offset: 0,
         }),
       ).toBe(null)
     })
@@ -60,9 +61,12 @@ describe('<Timeline /> helpers', () => {
         },
       }
 
-      updatePlayheadPosition({ video, playhead, zoom: 100 })
+      updatePlayheadPosition({ video, playhead, zoom: 100, scrollLeft: 0 })
 
-      expect(mockSetProperty).toHaveBeenCalledWith('left', 'calc(50% - 1px)')
+      expect(mockSetProperty).toHaveBeenCalledWith(
+        'left',
+        'calc(50% - 1px - 0px)',
+      )
     })
   })
 

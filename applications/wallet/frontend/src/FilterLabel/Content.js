@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
@@ -5,8 +6,9 @@ import filterShape from '../Filter/shape'
 
 import { colors, spacing } from '../Styles'
 
-import Select from '../Select'
+import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
 import FilterReset from '../Filter/Reset'
+import FilterSearch from '../Filter/Search'
 import FilterBuckets from '../FilterBuckets'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
@@ -26,6 +28,8 @@ const FilterLabel = ({
   },
   filterIndex,
 }) => {
+  const [searchString, setSearchString] = useState('')
+
   const encodedFilter = encode({ filters: { type, modelId } })
 
   const { data } = useSWR(
@@ -52,7 +56,7 @@ const FilterLabel = ({
         onReset={noop}
       />
 
-      <div css={{ height: spacing.moderate }} />
+      <div css={{ height: spacing.base }} />
 
       <Select
         key={scope}
@@ -81,6 +85,7 @@ const FilterLabel = ({
         }}
         isRequired={false}
         isDisabled={labels.length === 0}
+        variant={SELECT_VARIANTS.COLUMN}
         style={{
           width: '100%',
           height: 'auto',
@@ -90,7 +95,15 @@ const FilterLabel = ({
         }}
       />
 
-      <div css={{ height: spacing.moderate }} />
+      <div css={{ height: spacing.base }} />
+
+      <FilterSearch
+        placeholder="Filter labels"
+        searchString={searchString}
+        onChange={({ value }) => {
+          setSearchString(value)
+        }}
+      />
 
       <FilterBuckets
         pathname={pathname}
@@ -100,7 +113,7 @@ const FilterLabel = ({
         filter={filter}
         filterIndex={filterIndex}
         buckets={buckets}
-        searchString=""
+        searchString={searchString}
       />
     </>
   )

@@ -11,7 +11,7 @@ const TASK_ID = '5262c1ef-91ad-1d33-82b6-d6edb1b855c4'
 describe('<TaskScript />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/jobs/[jobId]/tasks/[taskId]/script',
+      pathname: '/[projectId]/jobs/[jobId]/tasks/[taskId]',
       query: { projectId: PROJECT_ID, jobId: JOB_ID, taskId: TASK_ID },
     })
 

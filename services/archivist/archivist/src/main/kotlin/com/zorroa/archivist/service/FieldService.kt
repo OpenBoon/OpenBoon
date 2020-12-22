@@ -34,8 +34,12 @@ class FieldServiceImpl(
 ) : FieldService {
 
     override fun createField(spec: FieldSpec): Field {
-        if (spec.type !in ALLOWED_TYPES) {
+        if (spec.type !in Field.ALLOWED_TYPES) {
             throw IllegalArgumentException("The field type ${spec.type} is not currently supported.")
+        }
+
+        if (!Field.isValidFieldName(spec.name)) {
+            throw IllegalArgumentException("Field names must be alpha-numeric, underscores/dashes are allowed.")
         }
 
         val time = System.currentTimeMillis()
@@ -45,7 +49,7 @@ class FieldServiceImpl(
         val field = Field(
             id,
             getProjectId(),
-            "custom.${spec.name}",
+            spec.name,
             spec.type,
             time, time,
             actor, actor
@@ -71,27 +75,6 @@ class FieldServiceImpl(
     }
 
     companion object {
-
-        val ALLOWED_TYPES = setOf(
-            "binary",
-            "boolean",
-            "keyword",
-            "constant_keyword",
-            "wildcard",
-            "long",
-            "integer",
-            "short",
-            "byte",
-            "double",
-            "float",
-            "half_float",
-            "date",
-            "text",
-            "geo_point",
-            "geo_shape",
-            "point",
-            "shape"
-        )
 
         private val logger = LoggerFactory.getLogger(FieldServiceImpl::class.java)
     }

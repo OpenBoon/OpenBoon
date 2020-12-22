@@ -1,20 +1,17 @@
 {
   "extends": ["config:base"],
-  "includePaths": [
-    "applications/wallet/frontend/*",
-    "applications/wallet/cypress/*"
-  ],
   "unpublishSafe": true,
-  "prCreation": "not-pending",
-  "schedule": "before 5am on Monday",
   "timezone": "America/Los_Angeles",
-  "rebaseStalePrs": true,
-  "hostRules": [
-    {
-      "domainName": "github.com",
-      "encrypted": {
-        "token": "ujchuQiqKmXTSDYXGMdjrvKzeaurgdgJNkTbGRpTrw6kMTEnKYLf1Cs/DxNehIZgV4yCOYaGMJR2vhFsr0AK9B4IcNLxMjpsjuD4yk0zKzOTrgKaa2xmar+YnAHeOwjcLxOKIxaztqdI3PI8dt5r30kNRKDEqKkP8J+DjpTfsm04ATww9XYBsAmJDFZ4jOWuo/zED6hgN7kffEkGAVm2MzfgSLGgAAxcIIKp64aKgeMTRqlbNVBhLPoVJG1a1HZyS1uFFyCp3zwOSzc2i/bnLaXaqyOFZ83/7aOtTMpUlIBpNItzeyuAPo9vk2NXJ6E3gWMrVm3+F1aPfl9szKlCug=="
-      }
-    }
-  ]
+  "js": {
+    "schedule": ["before 5am on Monday"]
+  },
+  "python": {
+    "schedule": ["before 5am on Tuesday"]
+  },
+  "java": {
+    "schedule": ["before 5am on Wednesday"]
+  },
+  "docker": {
+    "schedule": ["before 5am on Thursday"]
+  }
 }
