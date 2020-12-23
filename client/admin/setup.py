@@ -11,7 +11,7 @@ from setuptools import setup
 requirements = [
     "requests",
     "pyOpenSSL",
-    "PyJWT",
+    "PyJWT>=2.0",
     "backoff",
     "pytest"
 ]

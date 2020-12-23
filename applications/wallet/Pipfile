@@ -40,7 +40,7 @@ scikit-learn = "*"
 matplotlib = "*"
 pandas = "*"
 opencv-python = "==4.3.0.36"
-pyjwt = "*"
+pyjwt = ">=2.0"
 
 [requires]
 python_version = "3.7"

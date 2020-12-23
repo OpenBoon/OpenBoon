@@ -399,7 +399,7 @@ class ZmlpClient(object):
 
         if self.project_id:
             claims["projectId"] = self.project_id
-        return jwt.encode(claims, self.apikey['secretKey'], algorithm='HS512').decode("utf-8")
+        return jwt.encode(claims, self.apikey['secretKey'], algorithm='HS512')
 
 
 class SearchResult(object):
