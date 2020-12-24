@@ -7,16 +7,15 @@ import Link from 'next/link'
 import { spacing } from '../Styles'
 
 import { useLocalStorage } from '../LocalStorage/helpers'
+import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
 import PageTitle from '../PageTitle'
 import BetaBadge from '../BetaBadge'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
-import Table, { ROLES } from '../Table'
-import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
+import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 
-import ModelsEmpty from './Empty'
-import ModelsRow from './Row'
+import ModelsContent from './Content'
 
 const Models = () => {
   const {
@@ -60,13 +59,12 @@ const Models = () => {
               <a
                 onClick={() => {
                   setPanel({ value: 'assetLabeling' })
-                  if (modelId) {
-                    setModelFields({
-                      modelId,
-                      scope: SCOPE_OPTIONS[0].value,
-                      label: '',
-                    })
-                  }
+
+                  setModelFields({
+                    modelId,
+                    scope: SCOPE_OPTIONS[0].value,
+                    label: '',
+                  })
                 }}
               >
                 Start Labeling
@@ -91,19 +89,9 @@ const Models = () => {
         ]}
       />
 
-      <Table
-        role={ROLES.ML_Tools}
-        legend="Models"
-        url={`/api/v1/projects/${projectId}/models/`}
-        refreshKeys={[]}
-        refreshButton={false}
-        columns={['Name', 'Type', 'Module']}
-        expandColumn={0}
-        renderEmpty={<ModelsEmpty />}
-        renderRow={({ result }) => (
-          <ModelsRow key={result.id} projectId={projectId} model={result} />
-        )}
-      />
+      <SuspenseBoundary role={ROLES.ML_Tools}>
+        <ModelsContent projectId={projectId} />
+      </SuspenseBoundary>
     </>
   )
 }
