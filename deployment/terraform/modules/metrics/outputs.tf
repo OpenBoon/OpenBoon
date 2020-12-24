@@ -3,6 +3,6 @@ output "ip-address" {
 }
 
 output "pg_password" {
-  value = random_string.sql-password.result
+  value = random_password.sql-password.result
 }
 

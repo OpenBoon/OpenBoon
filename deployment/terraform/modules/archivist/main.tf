@@ -19,7 +19,7 @@ resource "google_storage_bucket" "data" {
 }
 
 ## SQL Instance
-resource "random_string" "sql-password" {
+resource "random_password" "sql-password" {
   length  = 16
   special = false
 }
@@ -35,7 +35,7 @@ resource "google_sql_database" "archivist" {
 resource "google_sql_user" "zorroa" {
   name     = var.database-user
   instance = var.sql-instance-name
-  password = random_string.sql-password.result
+  password = random_password.sql-password.result
 }
 
 ## Service Account For Blob Signing
@@ -85,7 +85,7 @@ resource "kubernetes_secret" "archivist-sa-key" {
 }
 
 ## K8S Deployment
-resource "random_string" "monitor-password" {
+resource "random_password" "monitor-password" {
   length  = 16
   special = false
 }
@@ -207,7 +207,7 @@ resource "kubernetes_deployment" "archivist" {
           }
           env {
             name  = "SPRING_DATASOURCE_URL"
-            value = "jdbc:postgresql://localhost/${var.database-name}?currentSchema=zorroa&useSSL=false&cloudSqlInstance=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${var.database-user}&password=${random_string.sql-password.result}"
+            value = "jdbc:postgresql://localhost/${var.database-name}?currentSchema=zorroa&useSSL=false&cloudSqlInstance=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${var.database-user}&password=${random_password.sql-password.result}"
           }
           env {
             name  = "ZMLP_STORAGE_PROJECT_BUCKET"
@@ -239,7 +239,7 @@ resource "kubernetes_deployment" "archivist" {
           }
           env {
             name  = "MANAGEMENT_ENDPOINTS_PASSWORD"
-            value = random_string.monitor-password.result
+            value = random_password.monitor-password.result
           }
         }
       }

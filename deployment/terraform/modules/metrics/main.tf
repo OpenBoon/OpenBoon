@@ -1,5 +1,10 @@
-resource "random_string" "sql-password" {
+resource "random_password" "sql-password" {
   length  = 16
+  special = false
+}
+
+resource "random_password" "django-key" {
+  length  = 50
   special = false
 }
 
@@ -15,7 +20,7 @@ resource "google_sql_database" "metrics" {
 resource "google_sql_user" "metrics" {
   name     = var.database-user
   instance = var.sql-instance-name
-  password = random_string.sql-password.result
+  password = random_password.sql-password.result
 }
 
 resource "kubernetes_deployment" "metrics" {
@@ -99,7 +104,7 @@ resource "kubernetes_deployment" "metrics" {
           readiness_probe {
             initial_delay_seconds = 5
             period_seconds        = 5
-            failure_threshold = 10
+            failure_threshold     = 10
             http_get {
               scheme = "HTTP"
               path   = "/api/v1/health/"
@@ -129,7 +134,7 @@ resource "kubernetes_deployment" "metrics" {
           }
           env {
             name  = "PG_DB_PASSWORD"
-            value = random_string.sql-password.result
+            value = random_password.sql-password.result
           }
           env {
             name  = "PG_DB_PORT"
@@ -137,7 +142,7 @@ resource "kubernetes_deployment" "metrics" {
           }
           env {
             name  = "SECRET_KEY"
-            value = var.secret-key
+            value = random_password.django-key.result
           }
           env {
             name  = "DEBUG"

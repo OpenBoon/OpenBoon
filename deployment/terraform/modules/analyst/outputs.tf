@@ -3,5 +3,5 @@ output "ip-address" {
 }
 
 output "shared-key" {
-  value = random_string.analyst-shared-key.result
+  value = random_password.analyst-shared-key.result
 }

@@ -1,8 +1,8 @@
 resource "google_compute_global_address" "wallet-external" {
-  name         = var.external-ip-name
+  name = var.external-ip-name
 }
 
-resource "random_string" "sql-password" {
+resource "random_password" "sql-password" {
   length  = 16
   special = false
 }
@@ -19,7 +19,7 @@ resource "google_sql_database" "wallet" {
 resource "google_sql_user" "wallet" {
   name     = var.database-user
   instance = var.sql-instance-name
-  password = random_string.sql-password.result
+  password = random_password.sql-password.result
 }
 
 resource "kubernetes_deployment" "wallet" {
@@ -103,7 +103,7 @@ resource "kubernetes_deployment" "wallet" {
           readiness_probe {
             initial_delay_seconds = 5
             period_seconds        = 5
-            failure_threshold = 10
+            failure_threshold     = 10
             http_get {
               scheme = "HTTP"
               path   = "/api/v1/health/"
@@ -129,7 +129,7 @@ resource "kubernetes_deployment" "wallet" {
           }
           env {
             name  = "PG_PASSWORD"
-            value = random_string.sql-password.result
+            value = random_password.sql-password.result
           }
           env {
             name  = "ZMLP_API_URL"
@@ -164,19 +164,19 @@ resource "kubernetes_deployment" "wallet" {
             value = var.browsable
           }
           env {
-            name = "MARKETPLACE_PROJECT_ID"
+            name  = "MARKETPLACE_PROJECT_ID"
             value = var.marketplace-project
           }
           env {
-            name = "MARKETPLACE_CREDENTIALS"
+            name  = "MARKETPLACE_CREDENTIALS"
             value = var.marketplace-credentials
           }
           env {
-            name = "SUPERADMIN"
+            name  = "SUPERADMIN"
             value = var.superadmin
           }
           env {
-            name = "USE_MODEL_IDS_FOR_LABEL_FILTERS"
+            name  = "USE_MODEL_IDS_FOR_LABEL_FILTERS"
             value = var.use-model-ids-for-label-filters
           }
         }

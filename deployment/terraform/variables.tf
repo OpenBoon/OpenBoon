@@ -152,11 +152,6 @@ variable "wallet-use-model-ids-for-label-filters" {
   default     = "false"
 }
 
-variable "metrics-secret-key" {
-  description = "Django Secret Key to use for Metrics Service."
-  default     = "(tlfxocw^*nvb=y8+a7jfxp=1u#n*t@22cxf9=yxt)#kt0_4-f"
-}
-
 variable "metrics-browsable" {
   description = "Enables Browsable API for the Metrics Service."
   default     = "false"

@@ -101,12 +101,12 @@ resource "google_storage_bucket" "system" {
 
 
 ## Secrets ###############################################################################
-resource "random_string" "access-key" {
+resource "random_password" "access-key" {
   length  = 50
   special = false
 }
 
-resource "random_string" "secret-key" {
+resource "random_password" "secret-key" {
   length  = 64
   special = false
 }
@@ -117,8 +117,8 @@ locals {
     "name": "admin-key",
     "projectId": "00000000-0000-0000-0000-000000000000",
     "id": "f3bd2541-428d-442b-8a17-e401e5e76d06",
-    "accessKey": "${random_string.access-key.result}",
-    "secretKey": "${random_string.secret-key.result}",
+    "accessKey": "${random_password.access-key.result}",
+    "secretKey": "${random_password.secret-key.result}",
     "permissions": [
         "ProjectFilesWrite", "SystemProjectDecrypt", "SystemManage", "SystemProjectOverride", "AssetsImport", "SystemMonitor", "ProjectManage", "ProjectFilesRead", "AssetsRead", "AssetsDelete"
     ]
@@ -374,7 +374,6 @@ module "metrics" {
   sql-connection-name  = module.postgres.connection-name
   image-pull-secret    = kubernetes_secret.dockerhub.metadata[0].name
   environment          = var.environment
-  secret-key           = var.metrics-secret-key
   container-tag        = var.container-tag
   browsable            = var.metrics-browsable
   debug                = var.metrics-debug

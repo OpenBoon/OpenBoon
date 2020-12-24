@@ -11,9 +11,6 @@ variable "image-pull-secret" {
 variable "environment" {
 }
 
-variable "secret-key" {
-}
-
 variable "container-tag" {
   default = "latest"
 }

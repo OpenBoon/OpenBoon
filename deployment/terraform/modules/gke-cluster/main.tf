@@ -21,7 +21,7 @@ resource "google_project_service" "cloudresourcemanager" {
   depends_on         = [google_project_service.service-usage]
 }
 
-resource "random_string" "cluster-password" {
+resource "random_password" "cluster-password" {
   length  = 16
   special = true
 }
@@ -49,7 +49,7 @@ resource "google_container_cluster" "primary" {
 
   master_auth {
     username = "zorroa"
-    password = random_string.cluster-password.result
+    password = random_password.cluster-password.result
   }
 
   depends_on = [

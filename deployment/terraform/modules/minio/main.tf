@@ -21,7 +21,7 @@ resource "random_string" "access_key" {
   special = false
 }
 
-resource "random_string" "secret_key" {
+resource "random_password" "secret_key" {
   length  = 16
   special = false
 }
@@ -70,7 +70,7 @@ resource "kubernetes_deployment" "minio" {
           }
           env {
             name  = "MINIO_SECRET_KEY"
-            value = random_string.secret_key.result
+            value = random_password.secret_key.result
           }
           port {
             container_port = 9000

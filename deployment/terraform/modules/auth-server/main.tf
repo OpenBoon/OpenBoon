@@ -1,5 +1,5 @@
 ## SQl Instance
-resource "random_string" "sql-password" {
+resource "random_password" "sql-password" {
   length  = 16
   special = false
 }
@@ -7,7 +7,7 @@ resource "random_string" "sql-password" {
 resource "google_sql_user" "auth-server" {
   name     = "zorroa-auth-server"
   instance = var.sql-instance-name
-  password = random_string.sql-password.result
+  password = random_password.sql-password.result
 }
 
 resource "google_sql_database" "auth" {
@@ -89,21 +89,21 @@ resource "kubernetes_deployment" "auth-server" {
           image_pull_policy = "Always"
           liveness_probe {
             initial_delay_seconds = 120
-            period_seconds = 30
+            period_seconds        = 30
             http_get {
               scheme = "HTTP"
-              path = "/monitor/health"
-              port = "9090"
+              path   = "/monitor/health"
+              port   = "9090"
             }
           }
           readiness_probe {
-            failure_threshold = 6
+            failure_threshold     = 6
             initial_delay_seconds = 90
-            period_seconds = 30
+            period_seconds        = 30
             http_get {
               scheme = "HTTP"
-              path = "/monitor/health"
-              port = "9090"
+              path   = "/monitor/health"
+              port   = "9090"
             }
           }
           port {
@@ -121,7 +121,7 @@ resource "kubernetes_deployment" "auth-server" {
           }
           env {
             name  = "SPRING_DATASOURCE_URL"
-            value = "jdbc:postgresql://localhost/${google_sql_database.auth.name}?currentSchema=auth&useSSL=false&cloudSqlInstance=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${google_sql_user.auth-server.name}&password=${random_string.sql-password.result}"
+            value = "jdbc:postgresql://localhost/${google_sql_database.auth.name}?currentSchema=auth&useSSL=false&cloudSqlInstance=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${google_sql_user.auth-server.name}&password=${random_password.sql-password.result}"
           }
           env {
             name  = "ZMLP_SECURITY_INCEPTIONKEY"

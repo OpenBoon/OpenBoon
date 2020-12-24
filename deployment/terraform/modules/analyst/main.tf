@@ -40,7 +40,7 @@ resource "google_container_node_pool" "analyst" {
   }
 }
 
-resource "random_string" "analyst-shared-key" {
+resource "random_password" "analyst-shared-key" {
   length  = 50
   special = false
 }
@@ -128,7 +128,7 @@ resource "kubernetes_deployment" "analyst" {
           }
           env {
             name  = "ANALYST_SHAREDKEY"
-            value = random_string.analyst-shared-key.result
+            value = random_password.analyst-shared-key.result
           }
           env {
             name  = "OFFICER_URL"
