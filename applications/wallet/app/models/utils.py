@@ -46,7 +46,10 @@ class ConfusionMatrix(object):
     @property
     def accuracy(self):
         matrix = self.get_matrix()
-        return np.sum(np.diag(matrix)) / np.sum(matrix)
+        accuracy = np.sum(np.diag(matrix)) / np.sum(matrix)
+        if np.isnan(accuracy):
+            accuracy = 0.0
+        return float(accuracy)
 
     def get_matrix(self, normalize=False):
         if normalize:
