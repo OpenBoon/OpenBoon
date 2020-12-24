@@ -18,7 +18,8 @@ terraform {
       source = "hashicorp/kubernetes"
     }
     random = {
-      source = "hashicorp/random"
+      source = "random"
     }
+
   }
 }
