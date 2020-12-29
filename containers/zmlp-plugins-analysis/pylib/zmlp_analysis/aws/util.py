@@ -111,7 +111,7 @@ class CustomModelTrainer:
         """
         response = self.rek_client.describe_project_versions(
             ProjectArn=project_arn,
-            version_names=[version_names]
+            VersionNames=[version_names]
         )
 
         return response['ProjectVersionDescriptions'][0]['Status']
@@ -157,42 +157,42 @@ class CustomModelTrainer:
             (dict) Trained model ARN as 'ProjectVersionArn'
         """
         output_config = json.loads(
-            """{
+            """{{
                 "S3Bucket": "{}", 
                 "S3KeyPrefix": "{}"
-            }""".format(output_s3bucket, output_s3_key_prefix)
+            }}""".format(output_s3bucket, output_s3_key_prefix)
         )
 
         training_dataset = json.loads(
-            """{
+            """{{
                 "Assets": [
-                    { 
-                        "GroundTruthManifest": { 
-                            "S3Object": { 
+                    {{ 
+                        "GroundTruthManifest": {{ 
+                            "S3Object": {{ 
                                 "Bucket": "{}", 
                                 "Name": "{}" 
-                            } 
-                        } 
-                    } 
+                            }} 
+                        }} 
+                    }} 
                 ] 
-            }""".format(training_dataset_bucket, training_dataset_name)
+            }}""".format(training_dataset_bucket, training_dataset_name)
         )
 
         if testing_dataset_bucket:
             testing_dataset = json.loads(
-                """{
+                """{{
                     "Assets": [
-                        { 
+                        {{ 
                             "GroundTruthManifest": 
-                                { 
-                                    "S3Object": { 
+                                {{ 
+                                    "S3Object": {{ 
                                         "Bucket": "{}", 
                                         "Name": "{}" 
-                                    } 
-                                } 
-                        } 
+                                    }} 
+                                }} 
+                        }} 
                     ]
-                }""".format(testing_dataset_bucket, testing_dataset_name)
+                }}""".format(testing_dataset_bucket, testing_dataset_name)
             )
         else:
             testing_dataset = json.loads('{"AutoCreate":true}')
@@ -213,8 +213,10 @@ class CustomModelTrainer:
                                                            VersionNames=[version_name])
 
             # Get the completion status
-            describe_response = self.rek_client.describe_project_versions(ProjectArn=project_arn,
-                                                                     VersionNames=[version_name])
+            describe_response = self.rek_client.describe_project_versions(
+                ProjectArn=project_arn,
+                VersionNames=[version_name]
+            )
             for model in describe_response['ProjectVersionDescriptions']:
                 logging.info("Status: " + model['Status'])
                 logging.info("Message: " + model['StatusMessage'])
