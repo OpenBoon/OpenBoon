@@ -74,4 +74,4 @@ class ZviSimilarityProcessor(AssetProcessor):
             'simhash': mxhash
         }
 
-        asset.add_analysis(self.namespace, struct)
+        self.add_analysis(asset, self.namespace, struct)

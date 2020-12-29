@@ -13,24 +13,6 @@ stages:
   - push
   - deploy
 
-########  Scrounger  ########
-
-## Scrounger Frontend CI Tests
-scrounger-frontend-test-suite:
-  stage: test
-  image: node:12
-  before_script:
-    - cd applications/scrounger/react_frontend
-    - npm ci
-  script:
-    - npm run lint
-  rules:
-    # MR to development with Frontend changes
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development"
-      changes:
-        - "applications/scrounger/react_frontend/**/*"
-    - when: never
-
 ########  Wallet  ########
 
 ## Wallet Integration CI Tests
@@ -215,6 +197,133 @@ wallet-deploy-qa:
 
 ########  ZMLP Services & Plugins  ########
 
+## Metrics Backend Tests
+metrics-backend-test-suite:
+  stage: test
+  image: mc706/pipenv-3.7
+  services:
+      - name: postgres:9.6.9
+        alias: postgres
+  variables:
+    DJANGO_SETTINGS_MODULE: metrics.settings
+    DEBUG: "true"
+    DB_BACKEND: postgres
+    PG_DB_HOST: postgres
+    PG_DB_PASSWORD: 2mAPDWhuiYdIW69u
+    POSTGRES_DB: metrics
+    POSTGRES_USER: metrics
+    POSTGRES_PASSWORD: 2mAPDWhuiYdIW69u
+  script:
+    - cd services/metrics
+    - pipenv sync
+    - cd app
+    - pipenv run flake8
+    - pipenv run pytest --cov=.
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # MR to any branch that is not master with Backend changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "services/metrics/app/**/*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
+    # Merged to Development with Backend changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "services/metrics/app/**/*"
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
+
+## Metrics Build & Push Latest on changes to Development
+metrics-dockerhub-build-push-latest:
+  image: zmlp/docker-buildx
+  stage: push
+  services:
+    - docker:19-dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+    DOCKER_TAG: latest
+  retry: 2
+  before_script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+  script:
+    - ./buildx metrics
+    - docker tag zmlp/metrics:latest zmlp/metrics:${DOCKER_TAG}
+    - docker push zmlp/metrics:${DOCKER_TAG}
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # Merged to Development with Metrics changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "services/metrics/**/*"
+
+## Metrics Build & Push QA on changes to QA branch
+metrics-dockerhub-build-push-qa:
+  extends:
+    - metrics-dockerhub-build-push-latest
+  variables:
+    DOCKER_TAG: qa
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
+
+## Metrics Deploy Latest on any changes to Development
+metrics-deploy-development:
+  image: google/cloud-sdk
+  retry: 1
+  variables:
+    PROJECT: zvi-dev
+  stage: deploy
+  environment:
+    name: dev
+    url: https://dev.console.zvi.zorroa.com/
+  before_script:
+    - echo $DEV_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
+  script:
+    - kubectl --namespace default rollout restart deployment metrics
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # Merged to development with Metrics changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "services/metrics/**/*"
+
+## Metrics Deploy Latest on any changes to QA
+metrics-deploy-qa:
+  extends:
+    - metrics-deploy-development
+  variables:
+    PROJECT: zvi-qa
+  environment:
+    name: qa
+    url: https://qa.console.zvi.zorroa.com/
+  before_script:
+    - echo $QA_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
+
 ## Backend Python Lint
 backend-py-lint:
   image: python:3.7.5
@@ -397,7 +506,14 @@ zmlp-dockerhub-build-push-latest:
         - "dev/**/*"
         - "lib/**/*"
         - "sdk/**/*"
-        - "services/**/*"
+        - "services/analyst/**/*"
+        - "services/api-gateway/**/*"
+        - "services/archivist/**/*"
+        - "services/auth-server/**/*"
+        - "services/elasticsearch/**/*"
+        - "services/mlbbq/**/*"
+        - "services/officer/**/*"
+        - "services/reporter/**/*"
 
 zmlp-dockerhub-build-push-qa:
   extends:
@@ -557,11 +673,11 @@ zmlp-deploy-prod:
 
 # Kotlin services - Unit tests - Step 1
 zmlp-services-build-artifacts:
-  image: maven:3.6.2-jdk-11-slim
+  image: maven:3.6-jdk-11-slim
   stage: build
   script:
     - cd services/elasticsearch
-    - mvn clean install -Dmaven.test.skip=true
+    - mvn clean install -Dmaven.test.skip=true -Dhttp.keepAlive=false
   artifacts:
     paths:
       - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
@@ -572,7 +688,14 @@ zmlp-services-build-artifacts:
     # MR to any branch that is not master with ZMLP changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
-        - "services/**/*"
+        - "services/analyst/**/*"
+        - "services/api-gateway/**/*"
+        - "services/archivist/**/*"
+        - "services/auth-server/**/*"
+        - "services/elasticsearch/**/*"
+        - "services/mlbbq/**/*"
+        - "services/officer/**/*"
+        - "services/reporter/**/*"
         - "lib/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
@@ -598,7 +721,14 @@ elasticsearch-push-to-local-registry:
     # MR to any branch that is not master with ZMLP changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
-        - "services/**/*"
+        - "services/analyst/**/*"
+        - "services/api-gateway/**/*"
+        - "services/archivist/**/*"
+        - "services/auth-server/**/*"
+        - "services/elasticsearch/**/*"
+        - "services/mlbbq/**/*"
+        - "services/officer/**/*"
+        - "services/reporter/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
@@ -648,9 +778,9 @@ zmlp-services-unit-tests:
     - ARCHIVIST_ES_URL="http://${IP}:9200"
     - ZMLP_STORAGE_PROJECT_URL="http://${IP}:9000"
     - ZMLP_STORAGE_SYSTEM_URL="http://${IP}:9000"
-    - mvn clean install -f lib/jvm-common -q -Dmaven.test.skip=true
+    - mvn clean install -f lib/jvm-common -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
     - mvn test verify -f lib/jvm-common -q
-    - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true
+    - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
     - mvn test verify -f services/officer -q
     - mvn test verify -f services/archivist -q
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
@@ -662,7 +792,14 @@ zmlp-services-unit-tests:
     # MR to any branch that is not master with ZMLP changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
-        - "services/**/*"
+        - "services/analyst/**/*"
+        - "services/api-gateway/**/*"
+        - "services/archivist/**/*"
+        - "services/auth-server/**/*"
+        - "services/elasticsearch/**/*"
+        - "services/mlbbq/**/*"
+        - "services/officer/**/*"
+        - "services/reporter/**/*"
         - "lib/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"

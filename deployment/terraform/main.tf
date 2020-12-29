@@ -16,7 +16,6 @@ provider "google" {
   project     = var.project
   region      = "${var.country}-${var.region}"
   zone        = "${var.country}-${var.region}-${var.zone}"
-  version     = ">= 3.33.0"
 }
 
 provider "google-beta" {
@@ -165,7 +164,8 @@ resource "google_storage_bucket_object" "task_env" {
   "ZORROA_AWS_ML_USER_SNS_TOPIC_ARN": "${module.aws-ml.ml-user-sns-topic-arn}",
   "ZORROA_AZURE_VISION_REGION": "${module.azure-ml.vision-region}",
   "ZORROA_AZURE_VISION_ENDPOINT": "${module.azure-ml.vision-endpoint}",
-  "ZORROA_AZURE_VISION_KEY": "${module.azure-ml.vision-key}"
+  "ZORROA_AZURE_VISION_KEY": "${module.azure-ml.vision-key}",
+  "ZMLP_BILLING_METRICS_SERVICE": "http://${module.metrics.ip-address}"
 }
 EOF
 
@@ -366,4 +366,22 @@ module "reporter" {
   image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
   zmlp-api-url      = "http://${module.api-gateway.ip-address}"
   monitor-password  = module.archivist.monitor-password
+}
+
+module "metrics" {
+  source               = "./modules/metrics"
+  sql-instance-name    = module.postgres.instance-name
+  sql-connection-name  = module.postgres.connection-name
+  image-pull-secret    = kubernetes_secret.dockerhub.metadata[0].name
+  environment          = var.environment
+  secret-key           = var.metrics-secret-key
+  container-tag        = var.container-tag
+  browsable            = var.metrics-browsable
+  debug                = var.metrics-debug
+  superuser-email      = var.metrics-superuser-email
+  superuser-password   = var.metrics-superuser-password
+  superuser-first-name = var.metrics-superuser-first-name
+  superuser-last-name  = var.metrics-superuser-last-name
+  django-log-level     = var.metrics-django-log-level
+  log-requests         = var.metrics-log-requests
 }

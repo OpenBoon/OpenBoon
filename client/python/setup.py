@@ -11,14 +11,14 @@ from setuptools import setup
 requirements = [
     "requests",
     "pyOpenSSL",
-    "PyJWT",
+    "PyJWT>=2.0",
     "backoff",
     "pytest"
 ]
 
 setup(
     name='zvi-client',
-    version="1.1.1",
+    version="1.1.2",
     description='Zorroa Visual Intelligence Python Client',
     url='http://www.zorroa.com',
     license='Apache2',

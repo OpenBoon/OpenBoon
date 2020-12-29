@@ -30,7 +30,7 @@ class ZviOcrProcessor(AssetProcessor):
         analysis = ContentDetectionAnalysis()
         analysis.add_content(data)
 
-        frame.asset.add_analysis(self.namespace, analysis)
+        self.add_analysis(frame.asset, self.namespace, analysis)
 
     def get_proxy_image(self, asset):
         """

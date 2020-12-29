@@ -47,19 +47,15 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
 
 .emotion-5 {
   text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
   padding-left: 12px;
   padding-right: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
   border: 1px solid transparent;
-  border-radius: 2px;
-  background-color: #252525;
-  color: #ffffff;
   width: 60%;
-}
-
-.emotion-5:hover {
-  border: 1px solid #808080;
 }
 
 .emotion-5:focus {
@@ -69,20 +65,8 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
   background-color: #ffffff;
 }
 
-.emotion-5::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-5::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-5:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-5::placeholder {
-  font-style: italic;
+.emotion-5:hover {
+  border: 1px solid #808080;
 }
 
 <div>
@@ -151,7 +135,8 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
       <label
         className="emotion-4"
       >
-        MIN  
+        MIN
+          
         <input
           className="emotion-5"
           onBlur={[Function]}
@@ -164,7 +149,8 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
       <label
         className="emotion-4"
       >
-        MAX  
+        MAX
+          
         <input
           className="emotion-5"
           onBlur={[Function]}
@@ -226,19 +212,15 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
 
 .emotion-5 {
   text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
   padding-left: 12px;
   padding-right: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
   border: 1px solid transparent;
-  border-radius: 2px;
-  background-color: #252525;
-  color: #ffffff;
   width: 60%;
-}
-
-.emotion-5:hover {
-  border: 1px solid #808080;
 }
 
 .emotion-5:focus {
@@ -248,20 +230,8 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
   background-color: #ffffff;
 }
 
-.emotion-5::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-5::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-5:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-5::placeholder {
-  font-style: italic;
+.emotion-5:hover {
+  border: 1px solid #808080;
 }
 
 <div>
@@ -336,7 +306,8 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
       <label
         className="emotion-4"
       >
-        MIN  
+        MIN
+          
         <input
           className="emotion-5"
           onBlur={[Function]}
@@ -349,7 +320,8 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
       <label
         className="emotion-4"
       >
-        MAX  
+        MAX
+          
         <input
           className="emotion-5"
           onBlur={[Function]}
@@ -411,19 +383,15 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
 
 .emotion-5 {
   text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
   padding-left: 12px;
   padding-right: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
   border: 1px solid transparent;
-  border-radius: 2px;
-  background-color: #252525;
-  color: #ffffff;
   width: 60%;
-}
-
-.emotion-5:hover {
-  border: 1px solid #808080;
 }
 
 .emotion-5:focus {
@@ -433,20 +401,8 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
   background-color: #ffffff;
 }
 
-.emotion-5::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-5::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-5:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-5::placeholder {
-  font-style: italic;
+.emotion-5:hover {
+  border: 1px solid #808080;
 }
 
 <div>
@@ -521,7 +477,8 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
       <label
         className="emotion-4"
       >
-        MIN  
+        MIN
+          
         <input
           className="emotion-5"
           onBlur={[Function]}
@@ -534,7 +491,8 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
       <label
         className="emotion-4"
       >
-        MAX  
+        MAX
+          
         <input
           className="emotion-5"
           onBlur={[Function]}
@@ -596,19 +554,15 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
 
 .emotion-5 {
   text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
   padding-left: 12px;
   padding-right: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
   border: 1px solid transparent;
-  border-radius: 2px;
-  background-color: #252525;
-  color: #ffffff;
   width: 60%;
-}
-
-.emotion-5:hover {
-  border: 1px solid #808080;
 }
 
 .emotion-5:focus {
@@ -618,20 +572,8 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
   background-color: #ffffff;
 }
 
-.emotion-5::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-5::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-5:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-5::placeholder {
-  font-style: italic;
+.emotion-5:hover {
+  border: 1px solid #808080;
 }
 
 <div>
@@ -706,7 +648,8 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
       <label
         className="emotion-4"
       >
-        MIN  
+        MIN
+          
         <input
           className="emotion-5"
           onBlur={[Function]}
@@ -719,7 +662,8 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
       <label
         className="emotion-4"
       >
-        MAX  
+        MAX
+          
         <input
           className="emotion-5"
           onBlur={[Function]}
@@ -781,19 +725,15 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
 
 .emotion-5 {
   text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
   padding-left: 12px;
   padding-right: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
   border: 1px solid transparent;
-  border-radius: 2px;
-  background-color: #252525;
-  color: #ffffff;
   width: 60%;
-}
-
-.emotion-5:hover {
-  border: 1px solid #808080;
 }
 
 .emotion-5:focus {
@@ -803,20 +743,8 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
   background-color: #ffffff;
 }
 
-.emotion-5::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-5::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-5:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-5::placeholder {
-  font-style: italic;
+.emotion-5:hover {
+  border: 1px solid #808080;
 }
 
 <div>
@@ -891,7 +819,8 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
       <label
         className="emotion-4"
       >
-        MIN  
+        MIN
+          
         <input
           className="emotion-5"
           onBlur={[Function]}
@@ -904,7 +833,8 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
       <label
         className="emotion-4"
       >
-        MAX  
+        MAX
+          
         <input
           className="emotion-5"
           onBlur={[Function]}
@@ -966,19 +896,15 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
 
 .emotion-5 {
   text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
   padding-left: 12px;
   padding-right: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
   border: 1px solid transparent;
-  border-radius: 2px;
-  background-color: #252525;
-  color: #ffffff;
   width: 60%;
-}
-
-.emotion-5:hover {
-  border: 1px solid #808080;
 }
 
 .emotion-5:focus {
@@ -988,20 +914,8 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
   background-color: #ffffff;
 }
 
-.emotion-5::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-5::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-5:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-5::placeholder {
-  font-style: italic;
+.emotion-5:hover {
+  border: 1px solid #808080;
 }
 
 <div>
@@ -1070,7 +984,8 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
       <label
         className="emotion-4"
       >
-        MIN  
+        MIN
+          
         <input
           className="emotion-5"
           onBlur={[Function]}
@@ -1083,7 +998,8 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
       <label
         className="emotion-4"
       >
-        MAX  
+        MAX
+          
         <input
           className="emotion-5"
           onBlur={[Function]}
