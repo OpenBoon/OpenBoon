@@ -1,5 +1,7 @@
-#Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-#PDX-License-Identifier: MIT-0 (For details, see https://github.com/awsdocs/amazon-rekognition-custom-labels-developer-guide/blob/master/LICENSE-SAMPLECODE.)
+# Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# PDX-License-Identifier: MIT-0 (For details,
+# see https://github.com/awsdocs/amazon-rekognition-custom-labels-developer-guide/blob/master/
+# LICENSE-SAMPLECODE.)
 
 import logging
 import os
@@ -158,7 +160,7 @@ class CustomModelTrainer:
         """
         output_config = json.loads(
             """{{
-                "S3Bucket": "{}", 
+                "S3Bucket": "{}",
                 "S3KeyPrefix": "{}"
             }}""".format(output_s3bucket, output_s3_key_prefix)
         )
@@ -166,15 +168,15 @@ class CustomModelTrainer:
         training_dataset = json.loads(
             """{{
                 "Assets": [
-                    {{ 
-                        "GroundTruthManifest": {{ 
-                            "S3Object": {{ 
-                                "Bucket": "{}", 
-                                "Name": "{}" 
-                            }} 
-                        }} 
-                    }} 
-                ] 
+                    {{
+                        "GroundTruthManifest": {{
+                            "S3Object": {{
+                                "Bucket": "{}",
+                                "Name": "{}"
+                            }}
+                        }}
+                    }}
+                ]
             }}""".format(training_dataset_bucket, training_dataset_name)
         )
 
@@ -182,15 +184,15 @@ class CustomModelTrainer:
             testing_dataset = json.loads(
                 """{{
                     "Assets": [
-                        {{ 
-                            "GroundTruthManifest": 
-                                {{ 
-                                    "S3Object": {{ 
-                                        "Bucket": "{}", 
-                                        "Name": "{}" 
-                                    }} 
-                                }} 
-                        }} 
+                        {{
+                            "GroundTruthManifest":
+                                {{
+                                    "S3Object": {{
+                                        "Bucket": "{}",
+                                        "Name": "{}"
+                                    }}
+                                }}
+                        }}
                     ]
                 }}""".format(testing_dataset_bucket, testing_dataset_name)
             )
