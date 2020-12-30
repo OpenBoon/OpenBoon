@@ -26,7 +26,6 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     def setUp(self, s3_patch):
         os.environ['ZMLP_PROJECT_ID'] = '00000000-0000-0000-0000-000000000001'
         os.environ['ZORROA_AWS_BUCKET'] = 'zorroa-unit-tests'
-        os.environ['PATH'] += ':usr/local/bin'
 
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)
