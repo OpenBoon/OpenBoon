@@ -21,11 +21,9 @@ class CustomLabelDetectionProcessorTests(PluginUnitTestCase):
     def setUp(self, s3_patch):
         os.environ['ZMLP_PROJECT_ID'] = '00000000-0000-0000-0000-000000000001'
         os.environ['ZORROA_AWS_BUCKET'] = 'zorroa-unit-tests'
-        os.environ['ZORROA_AWS_ML_USER_PROJECT_ARN'] = \
-            'arn:aws:rekognition:us-east-2:018430816410:project/custom-project/1609151123847'
+        os.environ['ZORROA_AWS_ML_USER_PROJECT_ARN'] = 'project/test-project/1609151123847'
         os.environ['ZORROA_AWS_ML_USER_PROJECT_VERSION_ARN'] = \
-            'arn:aws:rekognition:us-east-2:018430816410:project/custom-project/version/' \
-            'custom-project.2020-12-29T00.15.44/1609154144206'
+            'project/test-project/version/test-version/1609154144206'
 
     @patch(s3_patch_path, side_effect=MockS3Client)
     @patch(rek_patch_path, side_effect=MockRekClient)
