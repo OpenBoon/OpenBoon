@@ -40,6 +40,8 @@ class UtilTests(PluginUnitTestCase):
 
 
 class CustomModelTrainerTests(PluginUnitTestCase):
+    test_arn = 'abc123'
+    version = 'v1.0.0'
 
     @patch(rek_patch_path, side_effect=MockRekClient)
     def setUp(self, _):
@@ -47,39 +49,28 @@ class CustomModelTrainerTests(PluginUnitTestCase):
         self.cmt.init()
 
     def test_create_project(self):
-        project_name = 'abc123'
-        response = self.cmt.create_project(project_name)
-
+        response = self.cmt.create_project(self.test_arn)
         assert response['ProjectArn'] == 'testArn'
 
     def test_start_model(self):
-        pva = 'abc123'
-        miu = 1
-        response = self.cmt.start_model(pva, miu)
-
+        response = self.cmt.start_model(self.test_arn, 1)
         assert response['Status'] == 'STARTING'
 
     def test_stop_model(self):
-        pva = 'abc123'
-        response = self.cmt.stop_model(pva)
-
+        response = self.cmt.stop_model(self.test_arn)
         assert response['Status'] == 'STOPPED'
 
     def test_get_model_status(self):
-        parn = 'abc123'
-        version_names = 'v1.0.0'
-        response = self.cmt.get_model_status(parn, version_names)
-
+        response = self.cmt.get_model_status(self.test_arn, self.version)
         assert response == 'RUNNING'
 
     def test_train_model(self):
         response = self.cmt.train_model(
-            project_arn='abc123',
-            version_name='v1.0.0',
+            project_arn=self.test_arn,
+            version_name=self.version,
             output_s3bucket='rgz-test',
             output_s3_key_prefix='eval',
             training_dataset_bucket='training_bucket',
             training_dataset_name='manifest'
         )
-
         assert response['ProjectVersionArn'] == 'test_projectVersionArn'
