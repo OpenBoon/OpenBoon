@@ -55,14 +55,35 @@ class AwsEnv:
             raise RuntimeError('AWS support is not setup for this environment.')
         return bucket
 
+    @staticmethod
+    def get_project_arn():
+        """
+        Get Rekognition Project Version ARN (custom model ARN)
+
+        Returns:
+            (str): ARN name
+        """
+        return os.environ.get('ZORROA_AWS_ML_USER_PROJECT_ARN')
+
+    @staticmethod
+    def get_project_version_arn():
+        """
+        Get Rekognition Project Version ARN (custom model ARN)
+
+        Returns:
+            (str): ARN name
+        """
+        return os.environ.get('ZORROA_AWS_ML_USER_PROJECT_VERSION_ARN')
+
 
 class CustomModelTrainer:
     """ Methods for custom label models """
-    def __init__(self):
-        self.rek_client = None
+    def __init__(self, rek_client):
+        self.rek_client = rek_client or None
 
     def init(self):
-        self.rek_client = AwsEnv.rekognition()
+        if not self.rek_client:
+            self.rek_client = AwsEnv.rekognition()
 
     def create_project(self, project_name=None):
         """ Create an Amazon Rekognition project
@@ -75,20 +96,30 @@ class CustomModelTrainer:
         """
         return self.rek_client.create_project(ProjectName=project_name)
 
-    def start_model(self, project_version_arn, min_inference_units=1):
+    def start_model(self, project_arn, version_name, project_version_arn, min_inference_units=1):
         """ Start the running version of a model (can take a while to complete)
 
         Args:
+            project_arn: (str) Custom Labels Project ARN for the model to train
+            version_name: (str) unique name for the version of the model
             project_version_arn: (str) model ARN to start
             min_inference_units: (int) minimum number of inference units to use (1-5)
 
         Returns:
             (dict) response
         """
-        return self.rek_client.start_project_version(
+        response = self.rek_client.start_project_version(
             ProjectVersionArn=project_version_arn,
             MinInferenceUnits=min_inference_units
         )
+
+        # Wait for the project version training to complete
+        project_version_starting_completed_waiter = self.rek_client.get_waiter(
+            'project_version_running')
+        project_version_starting_completed_waiter.wait(ProjectArn=project_arn,
+                                                       VersionNames=[version_name])
+
+        return response
 
     def stop_model(self, project_version_arn):
         """ Stop the running version of a model (can take a while to complete)

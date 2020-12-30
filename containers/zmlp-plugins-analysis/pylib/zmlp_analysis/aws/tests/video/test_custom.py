@@ -15,7 +15,7 @@ rek_patch_path = 'zmlp_analysis.aws.util.AwsEnv.rekognition'
 s3_patch_path = 'zmlp_analysis.aws.util.AwsEnv.s3'
 
 
-class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
+class CustomLabelDetectionProcessorTests(PluginUnitTestCase):
 
     @patch(s3_patch_path, side_effect=MockS3Client)
     def setUp(self, s3_patch):

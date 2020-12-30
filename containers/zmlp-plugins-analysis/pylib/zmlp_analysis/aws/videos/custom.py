@@ -3,7 +3,7 @@ import os
 
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlp_analysis.utils.prechecks import Prechecks
-from zmlp_analysis.aws.util import AwsEnv
+from zmlp_analysis.aws.util import AwsEnv, CustomModelTrainer
 from zmlpsdk import AssetProcessor, Argument, FileTypes, ZmlpEnv, file_storage, proxy, clips, video
 
 
@@ -20,12 +20,14 @@ class CustomLabelVideoDetectProcessor(AssetProcessor):
 
         self.rek_client = None
         self.s3_client = None
+        self.project_arn = None
         self.project_version_arn = None
 
     def init(self):
         self.rek_client = AwsEnv.rekognition()
         self.s3_client = AwsEnv.s3()
-        self.project_version_arn = ''
+        self.project_arn = AwsEnv.get_project_arn()
+        self.project_version_arn = AwsEnv.get_project_version_arn()
 
     def process(self, frame):
         asset = frame.asset
@@ -73,19 +75,28 @@ class CustomLabelVideoDetectProcessor(AssetProcessor):
         Returns:
             (tuple): asset detection analysis, clip_tracker
         """
+        version_name = self.project_version_arn.split('/')[-2]
+        cmt = CustomModelTrainer(self.rek_client)
         analysis = LabelDetectionAnalysis(collapse_labels=True)
 
+        # start model if stopped
+        if cmt.get_model_status(self.project_arn, version_name) == 'STOPPED':
+            cmt.start_model(self.project_arn, version_name, self.project_version_arn)
+
         for time_ms, path in extractor:
+            with open(path, 'rb') as f:
+                source_bytes = f.read()
             predictions = self.rek_client.detect_custom_labels(
                     Image={
-                        'Bytes': path,
+                        'Bytes': source_bytes,
                     },
                     ProjectVersionArn=self.project_version_arn
                 )
             labels = [pred['Name'] for pred in predictions['CustomLabels']]
             clip_tracker.append(time_ms, labels)
-            for ls in predictions['CustomLabels']:
-                start_time = ls['Timestamp'] / 1000  # ms to s
-                analysis.add_label_and_score(ls['Name'], ls['Confidence'], timestamp=start_time)
+            for pred in predictions['CustomLabels']:
+                analysis.add_label_and_score(pred['Name'], pred['Confidence'])
 
+        if cmt.get_model_status(self.project_arn, version_name) == 'RUNNING':
+            cmt.stop_model(self.project_version_arn)
         return analysis, clip_tracker

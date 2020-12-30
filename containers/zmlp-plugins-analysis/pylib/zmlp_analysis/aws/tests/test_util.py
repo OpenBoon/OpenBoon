@@ -45,7 +45,7 @@ class CustomModelTrainerTests(PluginUnitTestCase):
 
     @patch(rek_patch_path, side_effect=MockRekClient)
     def setUp(self, _):
-        self.cmt = CustomModelTrainer()
+        self.cmt = CustomModelTrainer(MockRekClient())
         self.cmt.init()
 
     def test_create_project(self):
@@ -53,7 +53,7 @@ class CustomModelTrainerTests(PluginUnitTestCase):
         assert response['ProjectArn'] == 'testArn'
 
     def test_start_model(self):
-        response = self.cmt.start_model(self.test_arn, 1)
+        response = self.cmt.start_model(self.test_arn, self.version, self.test_arn, 1)
         assert response['Status'] == 'STARTING'
 
     def test_stop_model(self):
