@@ -38,7 +38,7 @@ class CustomLabelDetectionProcessorTestCase(PluginUnitTestCase):
 
         os.environ['ZORROA_AWS_KEY'] = access_key_id
         os.environ['ZORROA_AWS_SECRET'] = secret_access_key
-        os.environ['ZORROA_AWS_BUCKET'] = 'rgz-test'  # 'zorroa-integration-tests'
+        os.environ['ZORROA_AWS_BUCKET'] = 'zorroa-integration-tests'
         os.environ['ZORROA_AWS_REGION'] = 'us-east-2'
         os.environ['ZMLP_PROJECT_ID'] = '00000000-0000-0000-0000-000000000001'
 
