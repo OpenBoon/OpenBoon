@@ -77,27 +77,24 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         # upload to s3
         self.s3_client.upload_file(local_path, bucket_name, bucket_file)
 
-        analysis = LabelDetectionAnalysis()
+        analysis = LabelDetectionAnalysis(collapse_labels=True)
         attribs = set()
-        try:
-            start_job_id = self.start_detection_analysis(
-                role_arn=self.roleArn,
-                bucket=bucket_name,
-                video=bucket_file,
-                sns_topic_arn=self.sns_topic_arn,
-                sqs_queue_url=self.sqs_queue_url,
-                func=self.detector_func
+
+        start_job_id = self.start_detection_analysis(
+            role_arn=self.roleArn,
+            bucket=bucket_name,
+            video=bucket_file,
+            sns_topic_arn=self.sns_topic_arn,
+            sqs_queue_url=self.sqs_queue_url,
+            func=self.detector_func
+        )
+        if util.get_sqs_message_success(self.sqs_client, self.sqs_queue_url, start_job_id):
+            clip_tracker, attribs = self.get_detection_results(
+                clip_tracker=clip_tracker,
+                rek_client=self.rek_client,
+                start_job_id=start_job_id,
+                local_video_path=local_path,
             )
-            if util.get_sqs_message_success(self.sqs_client, self.sqs_queue_url, start_job_id):
-                clip_tracker, attribs = self.get_detection_results(
-                    clip_tracker=clip_tracker,
-                    rek_client=self.rek_client,
-                    start_job_id=start_job_id,
-                    local_video_path=local_path,
-                )
-        finally:
-            self.sqs_client.delete_queue(QueueUrl=self.sqs_queue_url)
-            self.sns_client.delete_topic(TopicArn=self.sns_topic_arn)
 
         if attribs:
             [analysis.add_label_and_score(ls[0], ls[1]) for ls in attribs]

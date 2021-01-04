@@ -133,7 +133,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         analysis = frame.asset.get_analysis('aws-unsafe-detection')
         preds = get_prediction_labels(analysis)
         assert 'Suggestive' in preds
-        assert analysis['count'] == 4
+        assert analysis['count'] == 2
 
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)
