@@ -69,7 +69,7 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-pdf</artifactId>
-            <version>20.11.1</version>
+            <version>20.12</version>
         </dependency>
 
         <dependency>
