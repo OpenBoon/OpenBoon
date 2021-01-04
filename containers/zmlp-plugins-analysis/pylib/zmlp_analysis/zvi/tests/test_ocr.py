@@ -7,7 +7,6 @@ from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_data
 
 class OcrProcessorTests(PluginUnitTestCase):
 
-    @patch.object(ZviOcrProcessor, '_record_analysis_metric')
     @patch('zmlp_analysis.zvi.ocr.get_proxy_level_path')
     def test_process(self, proxy_patch, _):
         image_path = zorroa_test_data('images/set09/nvidia_manual_page.jpg', uri=False)
@@ -15,9 +14,9 @@ class OcrProcessorTests(PluginUnitTestCase):
         frame = Frame(TestAsset(image_path))
         processor = self.init_processor(ZviOcrProcessor(), {})
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
         assert 'NVIDIA' in frame.asset.get_attr('analysis.zvi-text-detection.content')
 
-    @patch.object(ZviOcrProcessor, '_record_analysis_metric')
     @patch.object(TestAsset, 'get_files')
     @patch('zmlp_analysis.zvi.ocr.file_storage.localize_file')
     def test_process_ocr_proxy(self, storage_patch, get_files_patch, _):
@@ -33,6 +32,7 @@ class OcrProcessorTests(PluginUnitTestCase):
         ])
         processor = self.init_processor(ZviOcrProcessor(), {})
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
         assert 'NVIDIA' in frame.asset.get_attr('analysis.zvi-text-detection.content')
 
         get_files_patch.assert_called_with(category='ocr-proxy')

@@ -18,6 +18,7 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
     base_dir = os.path.dirname(__file__)
 
     def setUp(self):
+        super(TensorflowTransferLearningClassifierTests, self).setUp()
         try:
             shutil.rmtree("/tmp/model-cache/models_model-id-12345_foo_bar")
         except FileNotFoundError:
@@ -56,3 +57,4 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
                 TensorflowTransferLearningClassifier(), args
             )
             processor.process(frame)
+        self.mock_record_analysis_metric.assert_called()

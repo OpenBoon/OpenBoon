@@ -93,3 +93,4 @@ class LabelDetectionClassifiersUnitTests(PluginUnitTestCase):
             # since all hashes are random, prediction could be either dog or
             # cat so just need to check that it made a prediction at all
             assert asset.get_attr("analysis")["zvi-pets"]["pred0"]
+        self.mock_record_analysis_metric.assert_called()

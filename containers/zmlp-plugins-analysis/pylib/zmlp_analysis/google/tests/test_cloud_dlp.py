@@ -51,6 +51,7 @@ class CloudDLPDetectEntitiesTests(PluginUnitTestCase):
 
         # run processor with declared frame and assert asset attributes
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-dlp-date')
 

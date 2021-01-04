@@ -56,9 +56,11 @@ class MockACVClient:
 class AzureVisionProcessorTests(PluginUnitTestCase):
 
     def setUp(self):
+        super(AzureVisionProcessorTests, self).setUp()
         os.environ["ZORROA_AZURE_VISION_KEY"] = "abc123"
 
     def tearDown(self):
+        super(AzureVisionProcessorTests, self).tearDown()
         del os.environ["ZORROA_AZURE_VISION_KEY"]
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")

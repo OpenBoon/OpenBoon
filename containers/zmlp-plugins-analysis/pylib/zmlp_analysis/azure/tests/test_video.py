@@ -22,9 +22,11 @@ MUSTANG = "video/ford.mp4"
 class AzureVisionProcessorTests(PluginUnitTestCase):
 
     def setUp(self):
+        super(AzureVisionProcessorTests, self).setUp()
         os.environ["ZORROA_AZURE_VISION_KEY"] = "abc123"
 
     def tearDown(self):
+        super(AzureVisionProcessorTests, self).tearDown()
         del os.environ["ZORROA_AZURE_VISION_KEY"]
 
     @patch(cred_path, side_effect=test_vision.MockCognitiveServicesCredentials)
@@ -47,6 +49,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -72,6 +75,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -96,6 +100,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -121,6 +126,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -146,6 +152,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -171,6 +178,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -196,6 +204,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -221,6 +230,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -246,6 +256,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -271,6 +282,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -296,6 +308,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(namespace)
         assert '6050 6400 F N NIRVANA NO OUTLET PASEO PL STOP TAMAYO' in analysis['content']

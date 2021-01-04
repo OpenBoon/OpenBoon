@@ -8,7 +8,6 @@ from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
 
 class ZviLabelDetectionProcessorTests(PluginUnitTestCase):
 
-    @patch.object(ZviLabelDetectionProcessor, '_record_analysis_metric')
     @patch('zmlp_analysis.zvi.labels.get_proxy_level_path')
     def test_process(self, proxy_patch, _):
         toucan_path = zorroa_test_path('images/set01/toucan.jpg')
@@ -17,6 +16,7 @@ class ZviLabelDetectionProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(ZviLabelDetectionProcessor())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.zvi-label-detection')
         assert 'toucan' in get_prediction_labels(analysis)

@@ -38,6 +38,7 @@ class AutoMLModelClassifierTests(PluginUnitTestCase):
 
         processor = self.init_processor(AutoMLModelClassifier(), args)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         for result in processor.predictions.payload:
             assert result.display_name == "daisy"

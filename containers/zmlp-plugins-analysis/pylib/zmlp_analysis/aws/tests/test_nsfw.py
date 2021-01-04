@@ -22,6 +22,7 @@ class RekognitionUnsafeDetectionProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(RekognitionUnsafeDetection(), args)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis('aws-unsafe-detection')
         assert 'Suggestive' in get_prediction_labels(analysis)

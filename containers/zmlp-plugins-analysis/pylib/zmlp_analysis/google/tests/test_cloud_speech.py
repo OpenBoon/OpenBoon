@@ -34,6 +34,7 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.google.cloud_speech.initialize_gcp_client',
            side_effect=MockSpeechToTextClient)
     def setUp(self, client_patch):
+        super(AsyncSpeechToTextProcessorTestCase, self).setUp()
         self.processor = self.init_processor(
             AsyncSpeechToTextProcessor(), {'language': 'en-US'})
 
@@ -57,6 +58,7 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         self.processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
         assert 'poop' in asset.get_attr('analysis.gcp-speech-to-text.content')
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
@@ -89,6 +91,7 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
 
         frame = Frame(asset)
         self.processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
         assert 'poop' in asset.get_attr('analysis.gcp-speech-to-text.content')
 
     @patch.object(file_storage.assets, 'store_blob')
@@ -108,3 +111,4 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         self.processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()

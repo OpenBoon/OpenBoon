@@ -15,6 +15,7 @@ class KerasModelImageClassifierTests(PluginUnitTestCase):
     base_dir = os.path.dirname(__file__)
 
     def setUp(self):
+        super(KerasModelImageClassifierTests, self).setUp()
         try:
             shutil.rmtree("/tmp/model-cache/models_model-id-34567_foo_bar")
         except FileNotFoundError:
@@ -59,3 +60,4 @@ class KerasModelImageClassifierTests(PluginUnitTestCase):
             assert 'Cabbage Healthy' in get_prediction_labels(analysis)
             assert analysis['count'] >= 4
             assert 'labels' == analysis['type']
+        self.mock_record_analysis_metric.assert_called()

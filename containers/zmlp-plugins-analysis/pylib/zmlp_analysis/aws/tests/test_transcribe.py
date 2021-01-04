@@ -88,6 +88,7 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.util.AwsEnv.s3',
            side_effect=MockS3Client)
     def setUp(self, client_patch, s3_patch):
+        super(AmazonTranscribeProcessorTestCase, self).setUp()
         os.environ['ZMLP_PROJECT_ID'] = '00000000-0000-0000-0000-000000000001'
         os.environ['ZORROA_AWS_BUCKET'] = 'zorroa-unit-tests'
 
@@ -109,6 +110,7 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
 
         frame = Frame(self.asset)
         self.processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
         assert 'poop' in self.asset.get_attr('analysis.aws-transcribe.content')
 
     @patch('zmlp_analysis.aws.transcribe.get_audio_proxy')
@@ -119,6 +121,7 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         self.processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         assert not self.asset.get_attr('analysis.aws-transcribe.content')
 
@@ -135,5 +138,6 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         self.processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         assert not self.asset.get_attr('analysis.aws-transcribe.content')

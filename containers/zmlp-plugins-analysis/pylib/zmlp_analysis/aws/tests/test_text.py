@@ -23,6 +23,7 @@ class RekognitionLabelDetectionProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(RekognitionTextDetection(), args)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis('aws-text-detection')
         assert 'HEY' in get_prediction_labels(analysis)

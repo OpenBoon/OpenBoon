@@ -42,6 +42,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('clip.track', 'full')
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-video-logo-detection')
         assert 'labels' == analysis['type']
@@ -73,6 +74,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('clip.track', 'full')
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-video-label-detection')
         assert 'labels' == analysis['type']
@@ -103,6 +105,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('clip.track', 'full')
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-video-text-detection')
         assert 'content' == analysis['type']
@@ -135,6 +138,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-video-speech-transcription')
 
@@ -166,6 +170,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('clip.track', 'full')
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-video-object-detection')
         assert 'labels' == analysis['type']
@@ -196,6 +201,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('clip.track', 'full')
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-video-explicit-detection')
         assert 'labels' == analysis['type']

@@ -366,6 +366,7 @@ class CloudVisionDetectLabelsTests(PluginUnitTestCase):
 
         # run processor with declared frame and assert asset attributes
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-label-detection')
         assert 'Toucan' in get_prediction_labels(analysis)
@@ -389,6 +390,7 @@ class CloudVisionDetectLandmarkTests(PluginUnitTestCase):
         frame = Frame(asset)
         processor = self.init_processor(CloudVisionDetectLandmarks())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-landmark-detection')
         assert 'labels' == analysis['type']
@@ -413,6 +415,7 @@ class CloudVisionDetectExplicitTests(PluginUnitTestCase):
         frame = Frame(asset)
         processor = self.init_processor(CloudVisionDetectExplicit())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-content-moderation')
         assert 'labels' == analysis['type']
@@ -438,6 +441,7 @@ class CloudVisionDetectFacesTests(PluginUnitTestCase):
         frame = Frame(asset)
         processor = self.init_processor(CloudVisionDetectFaces())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-face-detection')
         assert 1 == analysis['count']
@@ -460,6 +464,7 @@ class CloudVisionDetectImageTextTests(PluginUnitTestCase):
         frame = Frame(asset)
         processor = self.init_processor(CloudVisionDetectImageText())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-image-text-detection')
         assert 'content' == analysis['type']
@@ -488,6 +493,7 @@ class CloudVisionDetectImageTextTests(PluginUnitTestCase):
         frame = Frame(asset)
         processor = self.init_processor(CloudVisionDetectImageText())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         image = processor.get_ocr_image(asset, None)
         assert image.source.image_uri == native_patch.return_value
@@ -514,6 +520,7 @@ class TestCloudVisionDetectObjects(PluginUnitTestCase):
         frame = Frame(asset)
         processor = self.init_processor(CloudVisionDetectObjects())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-object-detection')
         assert 'Tire' in get_prediction_labels(analysis)
@@ -538,6 +545,7 @@ class CloudVisionDetectDocumentTextTests(PluginUnitTestCase):
         frame = Frame(asset)
         processor = self.init_processor(CloudVisionDetectDocumentText())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-doc-text-detection')
         assert 'Notice The information' in analysis['content']
@@ -566,6 +574,7 @@ class CloudVisionDetectDocumentTextTests(PluginUnitTestCase):
         ])
         processor = self.init_processor(CloudVisionDetectDocumentText())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
         image = processor.get_ocr_image(asset, None)
         assert image.source.image_uri == native_patch.return_value
 

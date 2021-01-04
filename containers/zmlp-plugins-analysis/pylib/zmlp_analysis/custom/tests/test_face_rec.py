@@ -40,6 +40,7 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
         frame = Frame(asset)
         processor = self.init_processor(KnnFaceRecognitionClassifier(), {"sensitivity": 100})
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_attr('analysis.foo')
         print(analysis)
