@@ -169,7 +169,7 @@ class ClusterClient(object):
             "host": self.hostname,
             "version": self.version
         }
-        token = jwt.encode(claims, self.shared_key, algorithm='HS256').decode("utf-8")
+        token = jwt.encode(claims, self.shared_key, algorithm='HS256')
 
         headers = {
             "Content-Type": "application/json",
@@ -357,8 +357,8 @@ class Executor(object):
             try:
                 self.send_ping()
                 self.first_ping = False
-            except Exception as e:
-                logger.warning("Failed to send ping %s" % e)
+            except Exception:
+                logger.exception("Failed to send ping.")
 
     def ___poll_timer_func(self):
         """

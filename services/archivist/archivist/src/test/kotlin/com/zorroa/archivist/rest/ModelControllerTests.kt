@@ -341,6 +341,29 @@ class ModelControllerTests : MockMvcTest() {
             .andReturn()
     }
 
+    @Test
+    fun testGetType() {
+        val module = ModelType.ZVI_LABEL_DETECTION
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/models/_types/${module.name}")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.name",
+                    CoreMatchers.equalTo(module.name)
+                )
+            ).andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.label",
+                    CoreMatchers.equalTo(module.label)
+                )
+            )
+            .andReturn()
+    }
+
     fun dataSet(model: Model): List<AssetSpec> {
         return listOf(
             AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("beaver")),
