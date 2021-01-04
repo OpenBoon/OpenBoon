@@ -109,8 +109,8 @@ class CloudDLPDetectEntities(AssetProcessor):
             )
 
         for info_type in analysis_dict:
-            asset.add_analysis('gcp-dlp-' + info_type.lower().replace('_', '-'),
-                               analysis_dict[info_type])
+            self.add_analysis(asset, 'gcp-dlp-' + info_type.lower().replace('_', '-'),
+                              analysis_dict[info_type])
 
         # This stores the raw google result in case we need it later.
         file_storage.assets.store_blob(rsp.SerializeToString(),

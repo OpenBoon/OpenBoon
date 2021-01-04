@@ -34,7 +34,7 @@ class RekognitionUnsafeDetection(AssetProcessor):
         for ls in self.predict(proxy_path, int(analysis.min_score)):
             analysis.add_label_and_score(ls[0], ls[1])
 
-        asset.add_analysis(self.namespace, analysis)
+        self.add_analysis(asset, self.namespace, analysis)
 
     def predict(self, path, min_score):
         """ Make a prediction for an image path.

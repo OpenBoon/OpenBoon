@@ -58,7 +58,7 @@ class AzureVideoAbstract(AssetProcessor):
         clip_tracker = ClipTracker(asset, self.namespace)
 
         analysis, clip_tracker = self.set_analysis(extractor, clip_tracker, self.vision_proc)
-        asset.add_analysis(self.namespace, analysis)
+        self.add_analysis(asset, self.namespace, analysis)
 
         # If we have text detection the tracks are combined
         # into a single Detected Text track.

@@ -71,7 +71,7 @@ class AssetTests(unittest.TestCase):
                 return {"predictions": [{"cat": 12345}]}
 
         asset = Asset({"id": "123"})
-        asset.add_analysis("zvi-foo", Labels())
+        asset._add_analysis("zvi-foo", Labels())
         analysis = asset.get_analysis("zvi-foo")
         assert len(analysis['predictions']) == 1
         assert analysis['predictions'][0]['cat'] == 12345

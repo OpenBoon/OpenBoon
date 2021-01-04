@@ -118,7 +118,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                 analysis.add_prediction(Prediction(
                     annotation.entity.description,
                     track.confidence))
-        asset.add_analysis('gcp-video-logo-detection', analysis)
+        self.add_analysis(asset, 'gcp-video-logo-detection', analysis)
         cloud_timeline.save_logo_detection_timeline(asset, results)
 
     def handle_detect_objects(self, asset, annotation_result):
@@ -136,7 +136,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                               annotation.confidence)
             analysis.add_prediction(pred)
 
-        asset.add_analysis('gcp-video-object-detection', analysis)
+        self.add_analysis(asset, 'gcp-video-object-detection', analysis)
         cloud_timeline.save_object_detection_timeline(asset, annotation_result)
 
     def handle_detect_labels(self, asset, annotation_result):
@@ -164,7 +164,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         process_label_annotations(annotation_result.segment_label_annotations)
         process_label_annotations(annotation_result.shot_label_annotations)
         process_label_annotations(annotation_result.shot_presence_label_annotations)
-        asset.add_analysis('gcp-video-label-detection', analysis)
+        self.add_analysis(asset, 'gcp-video-label-detection', analysis)
 
         cloud_timeline.save_label_detection_timeline(asset, annotation_result)
 
@@ -181,7 +181,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             ' '.join(t.text for t in annotation_result.text_annotations))
 
         if analysis.content:
-            asset.add_analysis('gcp-video-text-detection', analysis)
+            self.add_analysis(asset, 'gcp-video-text-detection', analysis)
             cloud_timeline.save_text_detection_timeline(asset, annotation_result)
 
     def handle_detect_speech(self, asset, annotation_result):
@@ -201,7 +201,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                     analysis.add_content(alternative.transcript.strip())
                     break
 
-        asset.add_analysis('gcp-video-speech-transcription', analysis)
+        self.add_analysis(asset, 'gcp-video-speech-transcription', analysis)
         cloud_timeline.save_speech_transcription_timeline(asset, annotation_result)
         cloud_timeline.save_video_speech_transcription_webvtt(asset, annotation_result)
 
@@ -225,7 +225,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             if frame.pornography_likelihood >= 4:
                 analysis.set_attr('explicit', True)
 
-        asset.add_analysis('gcp-video-explicit-detection', analysis)
+        self.add_analysis(asset, 'gcp-video-explicit-detection', analysis)
         cloud_timeline.save_content_moderation_timeline(asset, annotation_result)
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_tries=3, max_time=3600)

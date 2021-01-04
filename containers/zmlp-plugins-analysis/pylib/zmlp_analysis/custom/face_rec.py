@@ -48,7 +48,7 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
 
             analysis.add_label_and_score(label, score, bbox=face["bbox"])
 
-        asset.add_analysis(self.app_model.module_name, analysis)
+        self.add_analysis(asset, self.app_model.module_name, analysis)
 
     def load_model(self):
         """

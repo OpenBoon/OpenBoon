@@ -42,7 +42,7 @@ class AutoMLModelClassifier(AssetProcessor):
         for result in self.predictions.payload:
             self.analysis.add_label_and_score(result.display_name, result.classification.score)
 
-        asset.add_analysis(self.app_model.module_name, self.analysis)
+        self.add_analysis(asset, self.app_model.module_name, self.analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path

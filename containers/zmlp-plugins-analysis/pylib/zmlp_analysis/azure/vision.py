@@ -78,7 +78,7 @@ class AbstractAzureVisionProcessor(AssetProcessor):
             analysis.add_label_and_score(ls[0], ls[1])
 
         try:
-            asset.add_analysis(self.namespace, analysis)
+            self.add_analysis(asset, self.namespace, analysis)
         except NameError:
             self.reactor.emit_status("self.namespace not defined")
 
@@ -131,7 +131,7 @@ class AzureVisionObjectDetection(AbstractAzureVisionProcessor):
         for ls in predictions:
             analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
 
-        asset.add_analysis(self.namespace, analysis)
+        self.add_analysis(asset, self.namespace, analysis)
 
     @backoff.on_exception(backoff.expo,
                           ComputerVisionErrorException,
@@ -286,7 +286,7 @@ class AzureVisionCelebrityDetection(AbstractAzureVisionProcessor):
         for ls in predictions:
             analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
 
-        asset.add_analysis(self.namespace, analysis)
+        self.add_analysis(asset, self.namespace, analysis)
 
     @backoff.on_exception(backoff.expo,
                           ComputerVisionErrorException,
@@ -380,7 +380,7 @@ class AzureVisionLogoDetection(AbstractAzureVisionProcessor):
         for ls in predictions:
             analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
 
-        asset.add_analysis(self.namespace, analysis)
+        self.add_analysis(asset, self.namespace, analysis)
 
     @backoff.on_exception(backoff.expo,
                           ComputerVisionErrorException,
@@ -517,7 +517,7 @@ class AzureVisionFaceDetection(AbstractAzureVisionProcessor):
         for ls in predictions:
             analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2], age=ls[3])
 
-        asset.add_analysis(self.namespace, analysis)
+        self.add_analysis(asset, self.namespace, analysis)
 
     @backoff.on_exception(backoff.expo,
                           ComputerVisionErrorException,
@@ -580,7 +580,7 @@ class AzureVisionTextDetection(AbstractAzureVisionProcessor):
         text = self.predict(proxy_path)
         analysis.add_content(text)
 
-        asset.add_analysis(self.namespace, analysis)
+        self.add_analysis(asset, self.namespace, analysis)
 
     @backoff.on_exception(backoff.expo,
                           ComputerVisionErrorException,

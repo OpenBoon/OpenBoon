@@ -79,7 +79,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
             languages.add(r.language_code)
 
         analysis.set_attr('language', languages)
-        asset.add_analysis(self.namespace, analysis)
+        self.add_analysis(asset, self.namespace, analysis)
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_tries=3, max_time=3600)
     def recognize_speech(self, audio_uri):

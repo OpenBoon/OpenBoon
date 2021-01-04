@@ -44,7 +44,7 @@ class RekognitionCelebrityDetection(AssetProcessor):
             analysis.add_label_and_score(name, confidence,
                                          bbox=round_all([left, top, left+width, top+height]))
 
-        asset.add_analysis(self.namespace, analysis)
+        self.add_analysis(asset, self.namespace, analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path.

@@ -34,7 +34,7 @@ class RekognitionFaceDetection(AssetProcessor):
         for ls in self.predict(proxy_path):
             analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
 
-        asset.add_analysis(self.namespace, analysis)
+        self.add_analysis(asset, self.namespace, analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path.

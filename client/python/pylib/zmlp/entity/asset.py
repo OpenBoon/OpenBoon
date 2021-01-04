@@ -101,7 +101,7 @@ class DocumentMixin(object):
             doc = doc.get(k)
         return parts[-1] in doc
 
-    def add_analysis(self, name, val):
+    def _add_analysis(self, name, val):
         """Add an analysis structure to the document.
 
         Args:

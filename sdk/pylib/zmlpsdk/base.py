@@ -446,7 +446,7 @@ class AssetProcessor(Processor):
                                              batch_size, force)
 
     def add_analysis(self, asset, module_name, analysis):
-        """Adds the nalysis to the asset and records the api call in the billing metric service.
+        """Adds the analysis to the asset and records the api call in the billing metric service.
 
         Uses the client library to add the analysis to the asset. Records the call to the
         metric service for billing purposes.
@@ -457,7 +457,7 @@ class AssetProcessor(Processor):
             analysis: (:obj:`dict`): The analysis data to add to the asset.
 
         """
-        asset.add_analysis(module_name, analysis)
+        asset._add_analysis(module_name, analysis)
         self._record_analysis_metric(asset, module_name)
 
     def _record_analysis_metric(self, asset, module_name):

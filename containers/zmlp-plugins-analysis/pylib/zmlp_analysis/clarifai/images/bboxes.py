@@ -50,7 +50,7 @@ class AbstractClarifaiProcessor(AssetProcessor):
             concepts = label['data'].get('concepts')[0]
             analysis.add_label_and_score(concepts['name'], concepts['value'], bbox=bbox)
 
-        asset.add_analysis(self.attribute, analysis)
+        self.add_analysis(asset, self.attribute, analysis)
 
     @backoff.on_exception(backoff.expo,
                           ApiClientError,

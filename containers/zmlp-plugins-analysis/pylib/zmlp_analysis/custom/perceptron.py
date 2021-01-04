@@ -71,7 +71,7 @@ class LabelDetectionPerceptionClassifier(AssetProcessor):
         image_classify_metadata["model"] = self.arg_value("model")
         image_classify_metadata["keywords"] = kw
         image_classify_metadata["confidence"] = scores[0]
-        asset.add_analysis(self.app_model.module_name, image_classify_metadata)
+        self.add_analysis(asset, self.app_model.module_name, image_classify_metadata)
 
     def get_labels(*args):
         """Retrieve labels from labels txt file

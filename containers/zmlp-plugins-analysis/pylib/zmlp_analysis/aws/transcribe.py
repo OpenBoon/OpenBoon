@@ -113,7 +113,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
             content.append(trans['transcript'].strip())
 
         analysis.add_content(' '.join(content))
-        asset.add_analysis(self.namespace, analysis)
+        self.add_analysis(asset, self.namespace, analysis)
 
     def recognize_speech(self, audio_uri):
         """

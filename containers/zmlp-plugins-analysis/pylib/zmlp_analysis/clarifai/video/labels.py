@@ -54,7 +54,7 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
         model = getattr(self.image_client.clarifai.public_models, self.model)
 
         analysis, clip_tracker = self.set_analysis(extractor, clip_tracker, model)
-        asset.add_analysis(self.attribute, analysis)
+        self.add_analysis(asset, self.attribute, analysis)
         timeline = clip_tracker.build_timeline(final_time)
         video.save_timeline(timeline)
 

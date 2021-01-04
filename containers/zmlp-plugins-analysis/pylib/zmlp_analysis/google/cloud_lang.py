@@ -66,7 +66,7 @@ class CloudNaturalLanguageProcessor(AssetProcessor):
             self.logger.info('Bailing, no entities found')
             return
         self.logger.info('Entities: {}'.format(entities))
-        asset.add_analysis('google.languageEntities.keywords', entities)
+        self.add_analysis(asset, 'google.languageEntities.keywords', entities)
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
     def _analyze_entities(self, document):

@@ -45,7 +45,7 @@ class TensorflowImageClassifier(AssetProcessor):
         for label in predictions:
             analysis.add_label_and_score(label[0], label[1])
 
-        asset.add_analysis(self.app_model.module_name, analysis)
+        self.add_analysis(asset, self.app_model.module_name, analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path
