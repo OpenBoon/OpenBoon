@@ -31,6 +31,7 @@ class ModelDetailSerializer(ModelSerializer):
 
 class ModelTypeSerializer(serializers.Serializer):
     name = serializers.CharField()
+    label = serializers.CharField()
     description = serializers.CharField()
     objective = serializers.CharField()
     provider = serializers.CharField()
