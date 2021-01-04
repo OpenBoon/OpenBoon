@@ -198,6 +198,7 @@ class TestModelViewSetActions:
         results = content['results']
         assert len(results) == 3
         assert results[0]['name'] == 'ZVI_KNN_CLASSIFIER'
+        assert results[0]['label'] == 'Sci-kit Learn KNN Classifier'
         assert 'ZVI_FACE_RECOGNITION' not in [x['name'] for x in results]
 
     def test_train(self, login, project, api_client):
