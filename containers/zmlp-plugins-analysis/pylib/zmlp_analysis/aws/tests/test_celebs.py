@@ -24,6 +24,7 @@ class RekognitionCelebritiesDetectionProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(RekognitionCelebrityDetection(), args)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis('aws-celebrity-detection')
         assert 'Ryan Gosling' in get_prediction_labels(analysis)

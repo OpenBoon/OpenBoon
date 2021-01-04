@@ -6,6 +6,7 @@ import tempfile
 import time
 import unittest
 import uuid
+from unittest.mock import patch
 from urllib.parse import urlparse
 
 import requests
@@ -110,6 +111,15 @@ class PluginUnitTestCase(unittest.TestCase):
 
         """
         shutil.rmtree(cls.tmp_dir)
+
+    def setUp(self):
+        super(PluginUnitTestCase, self).setUp()
+        self.metric_patcher = patch.object(AssetProcessor, '_record_analysis_metric')
+        self.mock_record_analysis_metric = self.metric_patcher.start()
+
+    def tearDown(self):
+        super(PluginUnitTestCase, self).tearDown()
+        self.metric_patcher.stop()
 
     def init_processor(self, processor, args=None, global_args=None):
         """
