@@ -139,7 +139,8 @@ enum class ModelType(
             "deployOnTrainingSet" to deployOnTrainingSet,
             "minConcepts" to minConcepts,
             "minExamples" to minExamples,
-            "dependencies" to dependencies
+            "dependencies" to dependencies,
+            "label" to label
         )
     }
 }

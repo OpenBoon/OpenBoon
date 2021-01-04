@@ -1,0 +1,520 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModelsTable /> should render properly with models 1`] = `
+.emotion-0 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-2 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-5 {
+  height: auto;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+.emotion-5 tr {
+  background-color: #252525;
+}
+
+.emotion-5 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-5 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.emotion-5 tr:hover .actions {
+  color: #b3b3b3;
+}
+
+.emotion-5 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-5 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-5 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-5 td {
+  max-width: calc(100vw / 2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-5 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-5 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-6 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-6:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-6:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-9 {
+  cursor: pointer;
+}
+
+.emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <h3
+      className="emotion-2"
+    >
+      Number of 
+      Models
+      : 
+      2
+    </h3>
+  </div>
+  <div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-4"
+    >
+      <table
+        className="emotion-5"
+      >
+        <thead>
+          <tr>
+            <th
+              className="emotion-6"
+            >
+              Name
+            </th>
+            <th
+              className="emotion-6"
+            >
+              Type
+            </th>
+            <th
+              className="emotion-6"
+            >
+              Module
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            className="emotion-9"
+            onClick={[Function]}
+          >
+            <td>
+              <a
+                className="emotion-10"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf774-89d9-1244-9596-d6df43f1ede5"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+              >
+                console_face_recognition
+              </a>
+            </td>
+            <td>
+              ZVI_FACE_RECOGNITION
+            </td>
+            <td>
+              zvi-console_face_recognition-face-recognition
+            </td>
+          </tr>
+          <tr
+            className="emotion-9"
+            onClick={[Function]}
+          >
+            <td>
+              <a
+                className="emotion-10"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf774-89d9-9596-1244-d6df43f1ede5"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+              >
+                console_cat_recognition
+              </a>
+            </td>
+            <td>
+              ZVI_CAT_RECOGNITION
+            </td>
+            <td>
+              zvi-console_cat_recognition-cat-recognition
+            </td>
+          </tr>
+          <tr
+            className="emotion-9"
+            onClick={[Function]}
+          >
+            <td>
+              <a
+                className="emotion-10"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/models/c0e83460-6a25-1238-86fa-0242ac150002"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+              >
+                Gundam
+              </a>
+            </td>
+            <td>
+              Tensorflow CNN Classifier
+            </td>
+            <td>
+              Gundam
+            </td>
+          </tr>
+          <tr
+            className="emotion-9"
+            onClick={[Function]}
+          >
+            <td>
+              <a
+                className="emotion-10"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/models/c0e83462-6a25-1238-86fa-0242ac150002"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+              >
+                Location
+              </a>
+            </td>
+            <td>
+              Tensorflow CNN Classifier
+            </td>
+            <td>
+              Location
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+       
+    </div>
+    <div>
+       
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ModelsTable /> should render properly without models 1`] = `
+.emotion-0 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-2 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.emotion-5 {
+  height: 100%;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+.emotion-5 tr {
+  background-color: #252525;
+}
+
+.emotion-5 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-5 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.emotion-5 tr:hover .actions {
+  color: #b3b3b3;
+}
+
+.emotion-5 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-5 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-5 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-5 td {
+  max-width: calc(100vw / 2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-5 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-5 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-6 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-6:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-6:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-9 {
+  height: 100%;
+  pointer-events: none;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <h3
+      className="emotion-2"
+    >
+      Number of 
+      Models
+      : 
+      0
+    </h3>
+  </div>
+  <div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-4"
+    >
+      <table
+        className="emotion-5"
+      >
+        <thead>
+          <tr>
+            <th
+              className="emotion-6"
+            >
+              Name
+            </th>
+            <th
+              className="emotion-6"
+            >
+              Type
+            </th>
+            <th
+              className="emotion-6"
+            >
+              Module
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            className="emotion-9"
+          >
+            <td
+              colSpan={3}
+            >
+              <div
+                className="emotion-10"
+              >
+                <div
+                  className="emotion-11"
+                >
+                  <svg
+                    data-file-name="noJobs.svg"
+                    width={200}
+                  />
+                  <div>
+                    There are currently no custom models.
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+`;
