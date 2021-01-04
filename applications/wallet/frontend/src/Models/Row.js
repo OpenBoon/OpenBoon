@@ -6,7 +6,12 @@ import { onRowClickRouterPush } from '../Table/helpers'
 const ModelsRow = ({
   projectId,
   model: { id: modelId, name, type, moduleName },
+  modelTypes,
 }) => {
+  const { label } = modelTypes.find(({ name: n }) => n === type) || {
+    label: type,
+  }
+
   return (
     <tr
       css={{ cursor: 'pointer' }}
@@ -25,7 +30,7 @@ const ModelsRow = ({
         </Link>
       </td>
 
-      <td>{type}</td>
+      <td>{label}</td>
 
       <td>{moduleName}</td>
     </tr>
@@ -40,6 +45,12 @@ ModelsRow.propTypes = {
     type: PropTypes.string.isRequired,
     moduleName: PropTypes.string.isRequired,
   }).isRequired,
+  modelTypes: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    }).isRequired,
+  ).isRequired,
 }
 
 export default ModelsRow
