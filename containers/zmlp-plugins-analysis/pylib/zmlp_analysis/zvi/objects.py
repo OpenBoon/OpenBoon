@@ -27,4 +27,4 @@ class ZviObjectDetectionProcessor(AssetProcessor):
             rect = calculate_normalized_bbox(im.shape[1], im.shape[0], elem[0])
             analysis.add_label_and_score(elem[1], elem[2], bbox=rect)
 
-        self.add_analysis(asset, self.namespace, analysis)
+        asset.add_analysis(self.namespace, analysis)

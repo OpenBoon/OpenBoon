@@ -35,12 +35,12 @@ google-cloud = "*"
 google-cloud-pubsub = "*"
 namegenerator = "*"
 zvi-client = {path = "./../../client/python"}
-django-axes = "==5.9.1"
+django-axes = "==5.10.0"
 scikit-learn = "*"
 matplotlib = "*"
 pandas = "*"
 opencv-python = "==4.3.0.36"
-pyjwt = "*"
+pyjwt = ">=2.0"
 
 [requires]
 python_version = "3.7"

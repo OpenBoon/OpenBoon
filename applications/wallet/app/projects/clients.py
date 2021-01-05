@@ -16,7 +16,7 @@ class ZviClient(object):
 
     def _get_token(self):
         claims = {'aud': self.root_url, 'userId': self.user_id}
-        return jwt.encode(claims, self.key, algorithm='HS256').decode('utf-8')
+        return jwt.encode(claims, self.key, algorithm='HS256')
 
     def _get_headers(self) -> dict:
         """Returns request headers needed to make requests to the REST API."""
