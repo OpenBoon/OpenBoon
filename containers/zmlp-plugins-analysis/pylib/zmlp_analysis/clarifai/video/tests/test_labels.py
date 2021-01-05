@@ -21,6 +21,7 @@ class MockClarifaiApp:
 class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
     def setUp(self):
+        super(ClarifaiPublicModelsProcessorTests, self).setUp()
         self.video_path = zorroa_test_path('video/ted_talk.mp4')
         asset = TestAsset(self.video_path)
         asset.set_attr('media.length', 15.0)
@@ -34,6 +35,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(labels.ClarifaiVideoLabelDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = self.frame.asset.get_analysis('clarifai-label-detection')
         assert 'wheel' in get_prediction_labels(analysis)
@@ -48,6 +50,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(labels.ClarifaiVideoTravelDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = self.frame.asset.get_analysis('clarifai-travel-detection')
         assert 'labels' in analysis['type']
@@ -61,6 +64,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(labels.ClarifaiVideoApparelDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = self.frame.asset.get_analysis('clarifai-apparel-detection')
         assert 'Earring' in get_prediction_labels(analysis)
@@ -75,6 +79,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(labels.ClarifaiVideoWeddingDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = self.frame.asset.get_analysis('clarifai-wedding-detection')
         assert 'bride' in get_prediction_labels(analysis)
@@ -89,6 +94,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(labels.ClarifaiVideoExplicitDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = self.frame.asset.get_analysis('clarifai-nsfw-detection')
         assert 'nsfw' in get_prediction_labels(analysis)
@@ -103,6 +109,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(labels.ClarifaiVideoModerationDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = self.frame.asset.get_analysis('clarifai-unsafe-detection')
         assert 'suggestive' in get_prediction_labels(analysis)
@@ -117,6 +124,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(labels.ClarifaiVideoTexturesDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = self.frame.asset.get_analysis('clarifai-texture-detection')
         assert 'labels' in analysis['type']
@@ -130,6 +138,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(labels.ClarifaiVideoFoodDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = self.frame.asset.get_analysis('clarifai-food-detection')
         assert 'coffee' in get_prediction_labels(analysis)

@@ -20,6 +20,7 @@ class MockClarifaiApp:
 class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
     def setUp(self):
+        super(ClarifaiPublicModelsProcessorTests, self).setUp()
         self.image_path = zorroa_test_path('images/detect/dogbike.jpg')
         self.frame = Frame(TestAsset(self.image_path))
 
@@ -30,6 +31,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(bboxes.ClarifaiFaceDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         print(self.frame.asset.get_attr('analysis'))
         analysis = self.frame.asset.get_analysis('clarifai-face-detection')
@@ -44,6 +46,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(bboxes.ClarifaiLogoDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = self.frame.asset.get_analysis('clarifai-logo-detection')
         assert 'Shell' in get_prediction_labels(analysis)

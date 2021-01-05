@@ -20,6 +20,7 @@ class MockClarifaiApp:
 class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
     def setUp(self):
+        super(ClarifaiPublicModelsProcessorTests, self).setUp()
         self.image_path = zorroa_test_path('images/detect/dogbike.jpg')
         self.frame = Frame(TestAsset(self.image_path))
 
@@ -30,6 +31,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(regions.ClarifaiCelebrityDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = self.frame.asset.get_analysis('clarifai-celebrity-detection')
         assert 'ryan gosling' in get_prediction_labels(analysis)
@@ -43,6 +45,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(regions.ClarifaiDemographicsDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = self.frame.asset.get_analysis('clarifai-demographics-detection')
         assert 'feminine' in get_prediction_labels(analysis)

@@ -21,6 +21,7 @@ class MockClarifaiApp:
 class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
     def setUp(self):
+        super(ClarifaiPublicModelsProcessorTests, self).setUp()
         self.video_path = zorroa_test_path('video/ted_talk.mp4')
         asset = TestAsset(self.video_path)
         asset.set_attr('media.length', 15.0)
@@ -34,6 +35,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(regions.ClarifaiVideoCelebrityDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = self.frame.asset.get_analysis('clarifai-celebrity-detection')
         assert 'ryan gosling' in get_prediction_labels(analysis)
@@ -48,6 +50,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
         processor = self.init_processor(regions.ClarifaiVideoDemographicsDetectionProcessor())
         processor.process(self.frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = self.frame.asset.get_analysis('clarifai-demographics-detection')
         assert 'feminine' in get_prediction_labels(analysis)

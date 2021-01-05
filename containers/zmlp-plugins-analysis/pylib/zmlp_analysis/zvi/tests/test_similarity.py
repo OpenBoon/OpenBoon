@@ -19,7 +19,7 @@ class MxUnitTests(PluginUnitTestCase):
             ZviSimilarityProcessor.model_path = zorroa_test_path("models/resnet-152")
 
     @patch('zmlp_analysis.zvi.similarity.get_proxy_level_path')
-    def test_ResNetSimilarity_defaults(self, proxy_patch, _):
+    def test_ResNetSimilarity_defaults(self, proxy_patch):
         proxy_patch.return_value = self.toucan_path
         processor = ZviSimilarityProcessor()
         processor = self.init_processor(processor, {'debug': True})
