@@ -458,26 +458,6 @@ class AssetProcessor(Processor):
         """
         asset.add_analysis(module_name, analysis)
 
-    def _get_count_and_minutes(self, asset):
-        """Helper to return total images and number of video minutes for an asset.
-
-        Determines if the asset is a picture or video, and returns the image count or
-        the total number of video minutes for the asset.
-
-        Args:
-            asset (:obj:`Asset`): The asset to find it's count or video minutes.
-
-        Returns:
-            (:obj:`tuple`): A two tuple of the number of images, and the number of video
-                minutes.
-        """
-        media_type = asset.get_attr('media.type')
-        if media_type == 'video':
-            return (0, asset.get_attr('media.length'))
-
-        # Assume it's an image or document then
-        return (1, 0.0)
-
 
 class ZmlpEnv:
     """
