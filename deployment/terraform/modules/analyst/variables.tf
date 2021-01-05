@@ -8,6 +8,7 @@ variable "container-cluster-name" {
 }
 
 variable "image-pull-secret" {
+  sensitive = true
 }
 
 variable "archivist-url" {

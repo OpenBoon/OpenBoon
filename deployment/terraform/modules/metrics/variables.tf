@@ -6,12 +6,10 @@ variable "sql-connection-name" {
 }
 
 variable "image-pull-secret" {
+  sensitive = true
 }
 
 variable "environment" {
-}
-
-variable "secret-key" {
 }
 
 variable "container-tag" {
@@ -47,7 +45,8 @@ variable "superuser-email" {
 }
 
 variable "superuser-password" {
-  default = "admin"
+  default   = "admin"
+  sensitive = true
 }
 
 variable "superuser-first-name" {

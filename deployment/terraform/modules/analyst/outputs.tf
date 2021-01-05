@@ -3,5 +3,6 @@ output "ip-address" {
 }
 
 output "shared-key" {
-  value = random_string.analyst-shared-key.result
+  value     = random_string.analyst-shared-key.result
+  sensitive = true
 }

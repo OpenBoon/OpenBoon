@@ -1,4 +1,5 @@
 variable "image-pull-secret" {
+  sensitive = true
 }
 
 variable "archivist_host" {
