@@ -3,9 +3,12 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.ClipSpec
+import com.zorroa.archivist.domain.TimelineClipSpec
 import com.zorroa.archivist.domain.CreateTimelineResponse
 import com.zorroa.archivist.domain.TimelineSpec
 import com.zorroa.archivist.domain.TrackSpec
+import com.zorroa.archivist.domain.WebVTTFilter
+import com.zorroa.archivist.util.bd
 import com.zorroa.zmlp.util.Json
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.index.query.QueryBuilders
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import java.io.ByteArrayOutputStream
 import java.math.BigDecimal
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class ClipServiceTests : AbstractTest() {
@@ -37,14 +41,36 @@ class ClipServiceTests : AbstractTest() {
 
         asset = getSample(1, "video")[0]
         val clips = listOf(
-            ClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
-            ClipSpec(BigDecimal(11.2), BigDecimal(12.5), listOf("cat"), 0.5),
-            ClipSpec(BigDecimal(11.684), BigDecimal(14.231), listOf("cat"), 0.2)
+            TimelineClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
+            TimelineClipSpec(BigDecimal(11.2), BigDecimal(12.5), listOf("cat"), 0.5),
+            TimelineClipSpec(BigDecimal(11.684), BigDecimal(14.231), listOf("cat"), 0.2)
         )
         val track = TrackSpec("cats", clips)
         timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
         rsp = clipService.createClips(timeline)
         refreshElastic()
+    }
+
+    @Test
+    fun createClip() {
+        val parent = getSample(1, "video")[0]
+        val clipSpec = ClipSpec(parent.id, "test", "test", 1.0.bd(), 5.0.bd(), listOf("cat"))
+        val clip = clipService.createClip(clipSpec)
+
+        assertEquals(parent.id, clip.assetId)
+        assertEquals("test", clip.timeline)
+        assertEquals("test", clip.track)
+        assertEquals(1.0.bd(), clip.start)
+        assertEquals(5.0.bd(), clip.stop)
+    }
+
+    @Test
+    fun deleteClip() {
+        val parent = getSample(1, "video")[0]
+        val clipSpec = ClipSpec(parent.id, "test", "test", 1.0.bd(), 5.0.bd(), listOf("cat"))
+        val clip = clipService.createClip(clipSpec)
+        assertTrue(clipService.deleteClip(clip.id))
+        assertFalse(clipService.deleteClip(clip.id))
     }
 
     @Test
@@ -58,12 +84,12 @@ class ClipServiceTests : AbstractTest() {
     fun createDuplicateClips() {
         val asset = getSample(2, "video")[1]
         val clips = listOf(
-            ClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.9),
+            TimelineClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.9),
             // All these should be skipped.
-            ClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.1),
-            ClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.4),
-            ClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.6),
-            ClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.11)
+            TimelineClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.1),
+            TimelineClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.4),
+            TimelineClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.6),
+            TimelineClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.11)
         )
         val track = TrackSpec("dogs", clips)
         val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
@@ -95,9 +121,22 @@ class ClipServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testGetWebVttByWebVTTFilter() {
+        val output = ByteArrayOutputStream()
+        val filter = WebVTTFilter(asset.id)
+        clipService.streamWebvtt(filter, output)
+        val webvtt = String(output.toByteArray())
+
+        // Check the times.
+        assertTrue("00:00:11.684 --> 00:00:14.231" in webvtt)
+        assertTrue("00:00:11.200 --> 00:00:12.500" in webvtt)
+        assertTrue("00:00:11.684 --> 00:00:14.231" in webvtt)
+    }
+
+    @Test
     fun testGetWebVttBySearch() {
         val output = ByteArrayOutputStream()
-        clipService.getWebvtt(asset, mapOf(), output)
+        clipService.streamWebvtt(asset, mapOf(), output)
 
         val webvtt = String(output.toByteArray())
 

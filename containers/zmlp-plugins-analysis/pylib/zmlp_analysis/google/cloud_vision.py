@@ -125,7 +125,7 @@ class CloudVisionDetectImageText(AbstractCloudVisionProcessor):
 
         analysis = ContentDetectionAnalysis()
         analysis.add_content(text)
-        self.add_analysis(asset, self.analysis_name, analysis)
+        asset.add_analysis(self.analysis_name, analysis)
 
 
 class CloudVisionDetectDocumentText(AbstractCloudVisionProcessor):
@@ -146,7 +146,7 @@ class CloudVisionDetectDocumentText(AbstractCloudVisionProcessor):
 
         analysis = ContentDetectionAnalysis()
         analysis.add_content(text)
-        self.add_analysis(asset, self.analysis_name, analysis)
+        asset.add_analysis(self.analysis_name, analysis)
 
 
 class CloudVisionDetectLandmarks(AbstractCloudVisionProcessor):
@@ -176,7 +176,7 @@ class CloudVisionDetectLandmarks(AbstractCloudVisionProcessor):
                 }
             ))
 
-        self.add_analysis(asset, self.analysis_name, analysis)
+        asset.add_analysis(self.analysis_name, analysis)
 
 
 class CloudVisionDetectExplicit(AbstractCloudVisionProcessor):
@@ -206,7 +206,7 @@ class CloudVisionDetectExplicit(AbstractCloudVisionProcessor):
             analysis.add_prediction(Prediction(category, score))
 
         if analysis:
-            self.add_analysis(asset, self.analysis_name, analysis)
+            asset.add_analysis(self.analysis_name, analysis)
 
 
 class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
@@ -257,7 +257,7 @@ class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
                 bbox=calculate_normalized_bbox(pwidth, pheight, rect),
                 tags=self.get_face_emotions(face)))
 
-        self.add_analysis(asset, self.analysis_name, analysis)
+        asset.add_analysis(self.analysis_name, analysis)
 
     def get_face_emotions(self, face):
         labels = []
@@ -289,7 +289,7 @@ class CloudVisionDetectLabels(AbstractCloudVisionProcessor):
                 label.score
             ))
 
-        self.add_analysis(asset, self.analysis_name, analysis)
+        asset.add_analysis(self.analysis_name, analysis)
 
 
 class CloudVisionDetectLogos(AbstractCloudVisionProcessor):
@@ -325,7 +325,7 @@ class CloudVisionDetectLogos(AbstractCloudVisionProcessor):
             bbox = calculate_normalized_bbox(pwidth, pheight, rect)
             analysis.add_prediction(Prediction(logo.description, logo.score, bbox=bbox))
 
-        self.add_analysis(asset, self.analysis_name, analysis)
+        asset.add_analysis(self.analysis_name, analysis)
 
 
 class CloudVisionDetectObjects(AbstractCloudVisionProcessor):
@@ -360,4 +360,4 @@ class CloudVisionDetectObjects(AbstractCloudVisionProcessor):
                 )
             )
 
-        self.add_analysis(asset, self.analysis_name, analysis)
+        asset.add_analysis(self.analysis_name, analysis)
