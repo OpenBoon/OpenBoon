@@ -121,14 +121,13 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         self.processor.process(frame)
-        self.mock_record_analysis_metric.assert_called_once()
 
         assert not self.asset.get_attr('analysis.aws-transcribe.content')
 
     @patch.object(file_storage, 'localize_file')
     @patch('zmlp_analysis.aws.transcribe.get_video_proxy')
     @patch('zmlp_analysis.aws.transcribe.get_audio_proxy')
-    def test_speech_detection_video_has_no_auido(self, audio_prx_patch,
+    def test_speech_detection_video_has_no_audio(self, audio_prx_patch,
                                                  video_prx_patch, localize_patch):
         audio_prx_patch.return_value = 0
         video_prx_patch.return_value = 1
@@ -138,6 +137,5 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         self.processor.process(frame)
-        self.mock_record_analysis_metric.assert_called_once()
 
         assert not self.asset.get_attr('analysis.aws-transcribe.content')
