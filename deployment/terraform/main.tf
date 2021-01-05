@@ -5,7 +5,7 @@ terraform {
     organization = "zorroa"
 
     workspaces {
-      name = "zvi-dev"
+      name = "01-Development"
     }
   }
 }
@@ -23,7 +23,6 @@ provider "google-beta" {
   project     = var.project
   region      = "${var.country}-${var.region}"
   zone        = "${var.country}-${var.region}-${var.zone}"
-  version     = ">= 3.33.0"
 }
 
 provider "azurerm" {
@@ -384,4 +383,8 @@ module "metrics" {
   superuser-last-name  = var.metrics-superuser-last-name
   django-log-level     = var.metrics-django-log-level
   log-requests         = var.metrics-log-requests
+}
+
+resource "random_string" "force-apply" {
+  length = 1
 }
