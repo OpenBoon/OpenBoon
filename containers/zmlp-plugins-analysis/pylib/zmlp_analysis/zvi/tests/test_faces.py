@@ -8,9 +8,8 @@ from zmlp_analysis.zvi.faces import ZviFaceDetectionProcessor
 
 class ZviFaceDetectionProcessorTests(PluginUnitTestCase):
 
-    @patch.object(ZviFaceDetectionProcessor, '_record_analysis_metric')
     @patch('zmlp_analysis.zvi.faces.get_proxy_level_path')
-    def test_process_detection(self, proxy_patch, _):
+    def test_process_detection(self, proxy_patch):
         image_path = zorroa_test_path('images/face-recognition/face1.jpg')
         proxy_patch.return_value = image_path
         frame = Frame(TestAsset(image_path))

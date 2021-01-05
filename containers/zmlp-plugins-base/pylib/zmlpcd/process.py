@@ -8,8 +8,10 @@ import threading
 import time
 from queue import Queue
 
+import requests
+
 from zmlp import Asset
-from zmlpsdk import Frame, Context, ZmlpFatalProcessorException
+from zmlpsdk import Frame, Context, ZmlpFatalProcessorException, ZmlpEnv
 from .logs import AssetLogger
 
 logger = logging.getLogger(__name__)
@@ -317,6 +319,8 @@ class ProcessorWrapper(object):
             retval = self.instance.process(frame)
             # a -1 means the processor was skipped internally.
             processed = retval != -1
+            if processed:
+                self._record_analysis_metric(frame.asset, self.ref['className'])
 
             total_time = round(time.monotonic() - start_time, 2)
             self.increment_stat("process_count")
@@ -459,6 +463,39 @@ class ProcessorWrapper(object):
                       and m["checksum"] == self.ref.get("checksum"))
                      and not m.get("error") for m in metrics)
             return any(value)
+
+    def _record_analysis_metric(self, asset, module_name):
+        """Helper to make the call to record billing metrics.
+
+        Builds the required body to track asset, project, module, and image/video data
+        for billing purposes. If the request fails for any reason, the failure is logged
+        and execution continues
+
+        Args:
+            asset (:obj:`Asset`): The asset to register a billing metric for.
+            module_name (:obj:`str`): The module namespace to record on the billing metric.
+
+        """
+        billing_service = os.environ.get('ZMLP_BILLING_METRICS_SERVICE', 'http://10.3.240.109')
+        url = f'{billing_service}/api/v1/apicalls'
+        # Abbreviate the string path
+        source_path = asset.get_attr('source.path', default='')
+        if len(source_path) > 255:
+            # Include starting ellipses as an indicator, favor end of path
+            source_path = '...' + source_path[len(source_path)-252:]
+        image_count, video_minutes = self._get_count_and_minutes(asset)
+        body = {
+            'project': ZmlpEnv.get_project_id(),
+            'service': module_name,
+            'asset_id': asset.id,
+            'asset_path': source_path,
+            'image_count': image_count,
+            'video_minutes': video_minutes,
+        }
+        response = requests.post(url, json=body)
+        if not response.ok:
+            msg = f'Unable to register billing metrics. {response.status_code}: {response.reason}'
+            logger.warning(msg)
 
 
 class AssetConsumer(object):

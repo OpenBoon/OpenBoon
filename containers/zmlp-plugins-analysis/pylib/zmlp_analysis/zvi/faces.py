@@ -45,4 +45,4 @@ class ZviFaceDetectionProcessor(AssetProcessor):
             rect = calculate_normalized_bbox(img.shape[1], img.shape[0], elem[0])
             analysis.add_label_and_score('face{}'.format(i), elem[1], bbox=rect, simhash=f_hash)
 
-        self.add_analysis(asset, self.namespace, analysis)
+        asset.add_analysis(self.namespace, analysis)

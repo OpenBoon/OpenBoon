@@ -8,9 +8,8 @@ from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, \
 
 class ZmlpObjectDetectionProcessorTests(PluginUnitTestCase):
 
-    @patch.object(ZviObjectDetectionProcessor, '_record_analysis_metric')
     @patch('zmlp_analysis.zvi.objects.get_proxy_level_path')
-    def test_process_single_detections(self, proxy_patch, _):
+    def test_process_single_detections(self, proxy_patch):
         image_path = zorroa_test_path('images/detect/dogbike.jpg')
         proxy_patch.return_value = image_path
         frame = Frame(TestAsset(image_path))
@@ -25,9 +24,8 @@ class ZmlpObjectDetectionProcessorTests(PluginUnitTestCase):
         assert 'bicycle' in grouped
         assert 'labels' == analysis['type']
 
-    @patch.object(ZviObjectDetectionProcessor, '_record_analysis_metric')
     @patch('zmlp_analysis.zvi.objects.get_proxy_level_path')
-    def test_process_multi_detections(self, proxy_patch, _):
+    def test_process_multi_detections(self, proxy_patch):
         image_path = zorroa_test_path('images/detect/cats.jpg')
         proxy_patch.return_value = image_path
         frame = Frame(TestAsset(image_path))
