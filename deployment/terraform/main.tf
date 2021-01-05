@@ -372,7 +372,6 @@ module "metrics" {
   sql-connection-name  = module.postgres.connection-name
   image-pull-secret    = kubernetes_secret.dockerhub.metadata[0].name
   environment          = var.environment
-  secret-key           = var.metrics-secret-key
   container-tag        = var.container-tag
   browsable            = var.metrics-browsable
   debug                = var.metrics-debug

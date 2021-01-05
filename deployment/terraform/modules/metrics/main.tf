@@ -230,5 +230,3 @@ resource "kubernetes_horizontal_pod_autoscaler" "metrics" {
     ignore_changes = [spec[0].max_replicas, spec[0].min_replicas]
   }
 }
-
-
