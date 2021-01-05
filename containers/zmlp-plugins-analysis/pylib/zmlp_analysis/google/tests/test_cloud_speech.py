@@ -111,4 +111,3 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         self.processor.process(frame)
-        self.mock_record_analysis_metric.assert_called_once()
