@@ -20,6 +20,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 class ProxyIngestorUnitTestCase(PluginUnitTestCase):
     def setUp(self):
+        super(ProxyIngestorUnitTestCase, self).setUp()
         self.source_path = TOUCAN
         self.frame = Frame(TestAsset(self.source_path))
         self.frame.asset.set_attr("media.type", "image")

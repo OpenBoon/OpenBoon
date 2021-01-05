@@ -13,6 +13,7 @@ class VideoImporterUnitTestCase(PluginUnitTestCase):
 
     @patch.object(ProjectApp, 'get_project')
     def setUp(self, get_project_patch):
+        super(VideoImporterUnitTestCase, self).setUp()
         get_project_patch.return_value = Project(
             {"id": "1234", "name": "foo", "tier": "PREMIER"})
         self.movie_path = zorroa_test_data('video/sample_ipad.m4v')

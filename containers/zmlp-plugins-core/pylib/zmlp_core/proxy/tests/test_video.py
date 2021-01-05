@@ -12,6 +12,7 @@ logging.basicConfig(level=logging.INFO)
 class VideoProxyProcessorTests(PluginUnitTestCase):
 
     def setUp(self):
+        super(VideoProxyProcessorTests, self).setUp()
         self.processor = self.init_processor(VideoProxyProcessor(), {})
 
     def test_get_transcode_op_transcode(self):
