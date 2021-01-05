@@ -1,4 +1,5 @@
 variable "image-pull-secret" {
+  sensitive = true
 }
 
 variable "sql-instance-name" {
@@ -8,6 +9,7 @@ variable "sql-connection-name" {
 }
 
 variable "inception-key-b64" {
+  sensitive = true
 }
 
 variable "system-bucket" {

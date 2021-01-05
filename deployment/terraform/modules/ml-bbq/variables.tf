@@ -1,4 +1,5 @@
 variable "image-pull-secret" {
+  sensitive = true
 }
 
 variable "auth-server-url" {

@@ -7,5 +7,6 @@ output "vision-endpoint" {
 }
 
 output "vision-key" {
-  value = azurerm_cognitive_account.vision.primary_access_key
+  value     = azurerm_cognitive_account.vision.primary_access_key
+  sensitive = true
 }
