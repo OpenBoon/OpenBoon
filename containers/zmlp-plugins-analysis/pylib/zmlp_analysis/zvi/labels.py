@@ -30,7 +30,7 @@ class ZviLabelDetectionProcessor(AssetProcessor):
         for label in predictions:
             analysis.add_label_and_score(label[1], label[2])
 
-        self.add_analysis(asset, self.namespace, analysis)
+        asset.add_analysis(self.namespace, analysis)
 
 
 class EfficientNetImageClassifier:
