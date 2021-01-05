@@ -374,6 +374,7 @@ class VideoClipSearchResult(SearchResult):
     def clips(self):
         return self.items
 
+
 class LabelConfidenceTermsAggregation(object):
     """
     Convenience class for making a simple terms aggregation on an array of predictions
