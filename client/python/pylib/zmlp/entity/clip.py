@@ -5,17 +5,21 @@ from ..util import as_id, as_collection
 
 __all__ = [
     'TimelineBuilder',
-    'Clip'
+    'VideoClip'
 ]
 
 
-class Clip:
+class VideoClip:
     """
     Clips represent a prediction for a section of video.
     """
     def __init__(self, data):
-        self._data = data['document']['clip']
-        self.id = data['id']
+        self._data = data
+
+    @property
+    def id(self):
+        """The Asset id the clip is associated with."""
+        return self._data['id']
 
     @property
     def asset_id(self):
@@ -57,17 +61,34 @@ class Clip:
         """The prediction score"""
         return self.data['score']
 
+    @staticmethod
+    def from_hit(hit):
+        """
+        Converts an ElasticSearch hit into an VideoClip.
+
+        Args:
+            hit (dict): An raw ES document
+
+        Returns:
+            Asset: The Clip.
+        """
+        data = {
+            'id': hit['_id'],
+        }
+        data.update(hit.get('_source', {}).get('clip', {}))
+        return VideoClip(data)
+
     def __len__(self):
         return self.length
 
     def __str__(self):
-        return "<Clip id='{}'/>".format(self.id)
+        return "<VideoClip id='{}'/>".format(self.id)
 
     def __repr__(self):
-        return "<Clip id='{}' at {}/>".format(self.id, hex(id(self)))
+        return "<VideoClip id='{}' at {}/>".format(self.id, hex(id(self)))
 
     def __eq__(self, other):
-        return other.id
+        return other.id == self.id
 
     def __hash__(self):
         return hash(self.id)
