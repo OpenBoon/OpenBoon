@@ -18,6 +18,7 @@ class LabelDetectionPerceptronTrainerTests(PluginUnitTestCase):
     class_names = ["Gandalf", "Glion"]
 
     def setUp(self):
+        super(LabelDetectionPerceptronTrainerTests, self).setUp()
         self.mock_search_result = [
             Asset.from_hit({
                 '_id': 'dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',
@@ -68,3 +69,4 @@ class LabelDetectionPerceptronTrainerTests(PluginUnitTestCase):
 
         processor = self.init_processor(LabelDetectionPerceptronTrainer(), args)
         processor.process(Frame(TestAsset()))
+        self.mock_record_analysis_metric.assert_called_once()

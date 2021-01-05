@@ -12,6 +12,7 @@ logging.basicConfig(level=logging.INFO)
 class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
 
     def setUp(self):
+        super(AutomlLabelDetectionSessionTests, self).setUp()
         self.model = Model({
             'id': '00000000-0000-0000-0000-000000000000',
             'name': 'unittest-test'
