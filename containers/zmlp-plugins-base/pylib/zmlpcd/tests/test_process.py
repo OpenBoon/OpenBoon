@@ -301,7 +301,6 @@ class ProcessorExecutorTests(unittest.TestCase):
         metric_mock.asset_called_once()
 
 
-
 class TestAssetConsumer(unittest.TestCase):
 
     def setUp(self):

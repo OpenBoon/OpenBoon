@@ -1,6 +1,5 @@
 import logging
 import os
-import requests
 
 from zmlp import app_from_env, ZmlpException
 
