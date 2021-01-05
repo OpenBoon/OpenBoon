@@ -47,7 +47,6 @@ provider "kubernetes" {
   client_certificate     = module.gke-cluster.client_certificate
   client_key             = module.gke-cluster.client_key
   cluster_ca_certificate = module.gke-cluster.cluster_ca_certificate
-  version                = ">= 1.12.0"
 }
 
 ## GCP Infrastructure ###################################################################
@@ -383,8 +382,4 @@ module "metrics" {
   superuser-last-name  = var.metrics-superuser-last-name
   django-log-level     = var.metrics-django-log-level
   log-requests         = var.metrics-log-requests
-}
-
-resource "random_string" "force-apply" {
-  length = 1
 }

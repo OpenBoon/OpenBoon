@@ -3,7 +3,8 @@ output "access-key" {
 }
 
 output "secret-key" {
-  value = random_string.secret_key.result
+  value     = random_string.secret_key.result
+  sensitive = true
 }
 
 output "ip-address" {
