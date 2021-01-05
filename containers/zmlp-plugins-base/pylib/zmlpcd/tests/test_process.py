@@ -2,7 +2,8 @@ import unittest
 from unittest.mock import patch
 
 from zmlpcd.logs import setup_logging
-from zmlpcd.process import ProcessorExecutor, AssetConsumer, is_file_type_allowed
+from zmlpcd.process import ProcessorExecutor, AssetConsumer, is_file_type_allowed, \
+    ProcessorWrapper
 from zmlpcd.reactor import Reactor
 from zmlpsdk import Frame
 from zmlpsdk.testing import TestEventEmitter, TestAsset, TestProcessor
@@ -286,6 +287,18 @@ class ProcessorExecutorTests(unittest.TestCase):
         wrapper.apply_metrics(frame.asset, True, 10, "warning")
         # errors are always not processed.
         assert not wrapper.is_already_processed(frame.asset)
+
+    @patch.object(ProcessorWrapper, '_record_analysis_metric')
+    def test_record_analysis_metric(self, metric_mock):
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": TEST_IMAGE
+        }
+        frame = Frame(TestAsset(path='fake.jpg'))
+        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper.process(frame)
+        metric_mock.asset_called_once()
 
 
 class TestAssetConsumer(unittest.TestCase):
