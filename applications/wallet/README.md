@@ -11,7 +11,8 @@ _NOTE_: Zorroa issues Macbooks to developers so all instructions are for MacOS.
 First off we will use docker-compose to start a local deployment of ZMLP. This will pull all of the 
 latest deployed container images and start them up locally. Once you have a complete ZMLP
 deployment running based off the main code branch, `development`. Once the deployment is up you 
-can access wallet at http://localhost.
+can access wallet at http://localhost. There is a migration that creates a default superuser the first
+time you start up the dev env, software@zorroa.com:admin.
 
 ### Steps
 
@@ -21,36 +22,20 @@ can access wallet at http://localhost.
 ## Building & Running your local code.
 Once you have made changes to the Wallet code you can build and run those changes in the local 
 deployment. This will build all the local wallet code, package it in a docker container and then
-run it. Once it's up and running you can test that were changes are working as you expect.
+run it. Once it's up and running you can test that your changes are working as you expect.
 
 ### Steps
-
+1. Run `docker-compose pull` - You can skip this if you've done it recently. It's only needed when 
+   code for other services has changed.
 1. Run `docker-compose build wallet`
-1. Run `docker-compose up`
+1. Run `docker-compose up` or `docker-compose up wallet` if you do not require the job processing queue.
+This will reduce the load on your machine but you won't be able to import any assets.
+
+--- 
 
 # Advanced Development Options
 There are multiple ways to run this application which may be better suited to the type of development
-you are doing. 
-
-1. _Frontend Development_ - Use the Frontend development server. For the
-   Backend, you can either use the runserver or the Docker Compose.
-1. _Backend Development_ - Use the Backend Development server.
-1. _Using Development Server_ - Run a local django runserver against the Google Cloud Dev 
-   environment.
-
----
-
-## Frontend Development
-The frontend for wallet is written using React and can be found in `wallet/frontend`
-
-### Prerequisites
-- Node.js 12.14.0 or greater installed.
-
-See the [frontend README](frontend/README.md) for more info.
-
----
-
-## Backend Development
+you are doing.
 
 ### Prerequisites
 - [Python](https://www.python.org/downloads/) 3.8.0 or greater installed.
@@ -63,7 +48,7 @@ See the [frontend README](frontend/README.md) for more info.
 Pipenv is used to manage package dependencies and the python version. Install it
 with homebrew.
 
-1. `brew install pipenv`
+1. `pip install pipenv`
 2. (Optional) Run `echo 'eval "$(pipenv --completion)"' >> ~/.bash_profile` to
    add pipenv completion to your shell.
 3. Restart your shell to pickup the changes: `exec "$SHELL"`
@@ -71,7 +56,7 @@ with homebrew.
 #### Install Python dependencies
 
 1. `cd` into the `wallet` base directory (`zmlp/applications/wallet`).
-2. Run `pipenv sync`
+2. Run `pipenv install`
 
 #### Use your Pipenv
 
@@ -84,39 +69,66 @@ To open a shell with your pipenv activated, run:
 - Install a new python package and add it to your pipenv:
   `pipenv install $PACKAGE`
 
-#### Start Backend Development Server
+### 1. Using a runserver with the docker compose environment.
+This configuration assumes that the docker-compose environment is up and running. The steps
+below will start a Django runserver that points to all of the docker-compose services
+running on your machine. Using a runserver prevents you from having to rebuild the wallet
+container on every code change.
 
-The Django runserver will serve out the frontend, assuming that a build is
-present. More info on the Django runserver can be found
+More info on the Django runserver can be found
 [here](https://docs.djangoproject.com/en/2.2/intro/tutorial01/#the-development-server).
 
+1. Verify that you are in a pipenv shell. Instructions are above.
 1. CD into the project directory: `cd app`
-1. Make sure you've built the Frontend if you expect the backend to serve it
-   (instructions above).
-1. Make sure your database is up to date:
-   `./manage.py migrate --settings=wallet.settings.local`
-   - If you receive an error about a Role, User, or DB not existing when running
-     migrate, check the "Postgres Setup" section below.
-1. `./manage.py runserver --settings=wallet.settings.local`
+1. `./manage.py runserver --settings=wallet.settings.docker-compose`
 1. Your server will now be running on `http://localhost:8000`
 
-- _Note:_ You can drop the `--settings=wallet.settings.local` from the previous
+- _Note:_ You can drop the `--settings=wallet.settings.docker-compose` from the previous
   commands if you specify this in the `DJANGO_SETTINGS_MODULE` env variable. For
-  example: `export DJANGO_SETTINGS_MODULE=wallet.settings.local`
+  example: `export DJANGO_SETTINGS_MODULE=wallet.settings.docker-compose`
 
-##### Postgres Setup
+### 2. Using Development Server
 
-The development server has been setup to use Postgres for it's DB rather than
-SQLite, due to us using some Postgres specific fields. The first time setting up
-Postgres, you'll need to create the wallet DB and User/Role.
+When you need to test against large datasets, importing them locally can take too
+much time. The Development Server running in GCP has a number of example projects already
+setup and it's possible to run your local Django code in a runserver that talks to the Dev
+Server databases. The steps below assume that you're using PyCharm and have access to the
+"zvi-dev" GCP project.
 
-1. Make sure the `wallet` db has been created: `$ createdb wallet`
-2. Start the PG Console: `$ psql -h localhost`
-3. Create Role in the console (replace `$password` with password from settings
-   file): `# CREATE ROLE wallet WITH LOGIN PASSWORD '$password';`
-4. Set permissions in the console:
-   `# GRANT ALL PRIVILEGES ON DATABASE wallet TO wallet;`
-5. Give last permission to user in the console: `# ALTER USER wallet CREATEDB;`
+#### Setup a Pycharm Configuration
+
+1. Add a new Pycharm Configuration - if you already have a Runserver configuration setup then
+copying that is a quick way to get started. Make sure the following settings are set:
+    * Script path: `Absolute path to your manage.py file`
+    * Paramaters: `runserver`
+    * Environment Variables:
+        * `DJANGO_SETTINGS_MODULE: wallet.settings`
+        * `ZMLP_API_URL: https://dev.api.zvi.zorroa.com`
+        * `DEBUG: true`
+        * `BROWSABLE: true`
+        * `SUPERADMIN: true`
+        * `INCEPTION_KEY_B64`: `Pull from the Dev Server's Wallet Service Yaml`
+        * `PG_HOST: localhost`
+        * `PG_PASSWORD`: `Pull from the Dev Server's Wallet Service Yaml`
+        * `SMTP_PASSWORD`: `Pull from the Dev Server's Wallet Service Yaml`
+        * `ENVIRONMENT: zvi-dev`
+        * `FQDN: https://dev.console.zvi.zorroa.com`
+    * Python Interpreter: `Your local environments Project Interpreter`
+    * Working Directory: `path to wallet/app`
+
+#### Setup a Google Cloud SQL Proxy
+
+1. Follow the [Quickstart](https://cloud.google.com/sql/docs/postgres/quickstart-proxy-test#macos-64-bit) for setting up a local Cloud SQL Proxy.
+
+#### Run/Debug a Development Server
+
+1. The Cloud SQL Proxy will forward all requests to `localhost:5432` to the Dev Server's Postgres
+    Database. *NOTE*: Make sure you don't have anything already running and listening on that port,
+    such as a local instance of Postgres, or a local Docker Compose setup.
+1. Start the Cloud Sql Proxy.
+1. Start the new Pycharm Runserver Configuration.
+1. Navigate to `localhost:8000` in your browser, and login using the Dev Server Credentials
+   at the `api/v1/login` endpoint.
 
 ---
 
@@ -154,6 +166,8 @@ _Exceptions and Extension to the Rules:_
 - Any block of code that needs to be separated by newlines is preceded by a
   comment.
 
+---
+
 ### Testing
 
 - Unit tests are located in each of the app directories in a file named
@@ -163,48 +177,7 @@ _Exceptions and Extension to the Rules:_
   These tests are located in `wallet.tests`.
 - Code coverage must meet or exceed 98% in order to pass CI.
 
-## Using Development Server
-
-When you need to test against large datasets, importing them locally can take too
-much time. The Development Server running in GCP has a number of example projects already
-setup and it's possible to run your local Django code in a runserver that talks to the Dev
-Server databases. The steps below assume that you're using PyCharm and have access to the
-"zvi-dev" GCP project.
-
-### Setup a Pycharm Configuration
-
-1. Add a new Pycharm Configuration - if you already have a Runserver configuration setup then
-copying that is a quick way to get started. Make sure the following settings are set:
-    * Script path: `Absolute path to your manage.py file`
-    * Paramaters: `runserver`
-    * Environment Variables:
-        * `DJANGO_SETTINGS_MODULE: wallet.settings`
-        * `ZMLP_API_URL: https://dev.api.zvi.zorroa.com`
-        * `DEBUG: true`
-        * `BROWSABLE: true`
-        * `SUPERADMIN: true`
-        * `INCEPTION_KEY_B64`: `Pull from the Dev Server's Wallet Service Yaml`
-        * `PG_HOST: localhost`
-        * `PG_PASSWORD`: `Pull from the Dev Server's Wallet Service Yaml`
-        * `SMTP_PASSWORD`: `Pull from the Dev Server's Wallet Service Yaml`
-        * `ENVIRONMENT: zvi-dev`
-        * `FQDN: https://dev.console.zvi.zorroa.com`
-    * Python Interpreter: `Your local environments Project Interpreter`
-    * Working Directory: `path to wallet/app`
-
-### Setup a Google Cloud SQL Proxy
-
-1. Follow the [Quickstart](https://cloud.google.com/sql/docs/postgres/quickstart-proxy-test#macos-64-bit) for setting up a local Cloud SQL Proxy.
-
-### Run/Debug a Development Server
-
-1. The Cloud SQL Proxy will forward all requests to `localhost:5432` to the Dev Server's Postgres
-    Database. *NOTE*: Make sure you don't have anything already running and listening on that port,
-    such as a local instance of Postgres, or a local Docker Compose setup.
-1. Start the Cloud Sql Proxy.
-1. Start the new Pycharm Runserver Configuration.
-1. Navigate to `localhost:8000` in your browser, and login using the Dev Server Credentials
-   at the `api/v1/login` endpoint.
+---
 
 ## Building and Running the Docker Container
 

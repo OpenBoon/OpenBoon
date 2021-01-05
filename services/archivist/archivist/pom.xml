@@ -165,7 +165,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>3.3.0</version>
+            <version>3.4.1</version>
         </dependency>
 
          <dependency>
@@ -181,7 +181,7 @@
         <dependency>
             <groupId>com.fasterxml.uuid</groupId>
             <artifactId>java-uuid-generator</artifactId>
-            <version>3.3.0</version>
+            <version>4.0.1</version>
         </dependency>
 
         <dependency>
@@ -199,7 +199,7 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.11.921</version>
+            <version>1.11.930</version>
         </dependency>
 
         <dependency>
@@ -277,6 +277,12 @@
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-automl</artifactId>
             <version>1.3.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>5.7.0</version>
         </dependency>
     </dependencies>
 

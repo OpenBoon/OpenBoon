@@ -218,7 +218,8 @@ REST_FRAMEWORK = {
     }
 }
 
-if os.environ.get('BROWSABLE') == 'true':
+BROWSABLE = os.environ.get('BROWSABLE')
+if BROWSABLE == 'true':
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append(
         'rest_framework.renderers.BrowsableAPIRenderer')
 
