@@ -3,7 +3,7 @@ import logging
 import os
 
 from . import AssetApp, DataSourceApp, ProjectApp, \
-    JobApp, ModelApp, AnalysisModuleApp, ClipApp, CustomFieldApp
+    JobApp, ModelApp, AnalysisModuleApp, VideoClipApp, CustomFieldApp
 from ..client import ZmlpClient, DEFAULT_SERVER
 
 logger = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ class ZmlpApp(object):
         self.jobs = JobApp(self)
         self.models = ModelApp(self)
         self.analysis = AnalysisModuleApp(self)
-        self.clips = ClipApp(self)
+        self.clips = VideoClipApp(self)
         self.fields = CustomFieldApp(self)
 
 

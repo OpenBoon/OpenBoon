@@ -1,10 +1,14 @@
 package com.zorroa.archivist.service
 
+import com.zorroa.archivist.clients.EsRestClient
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.ClipIdBuilder
+import com.zorroa.archivist.domain.ClipSpec
 import com.zorroa.archivist.domain.CreateTimelineResponse
 import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.TimelineSpec
+import com.zorroa.archivist.domain.WebVTTFilter
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.bd
 import com.zorroa.archivist.util.formatDuration
@@ -14,6 +18,7 @@ import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.service.logging.warnEvent
 import com.zorroa.zmlp.util.Json
 import org.elasticsearch.action.bulk.BulkRequest
+import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.client.RequestOptions
@@ -36,17 +41,51 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 interface ClipService {
+
+    /**
+     * Bulk create a bunch of clips using a TimelineSpec.
+     */
     fun createClips(timeline: TimelineSpec): CreateTimelineResponse
 
-    fun searchClips(asset: Asset, search: Map<String, Any>, params: Map<String, Array<String>>): SearchResponse
+    /**
+     * Search for clips using an ES REST DSL query. An Asset can be optionally provided.
+     */
+    fun searchClips(asset: Asset?, search: Map<String, Any>, params: Map<String, Array<String>>): SearchResponse
 
-    fun getWebvtt(asset: Asset, search: Map<String, Any>, outputStream: OutputStream)
+    /**
+     * Stream a WebVTT file that matches the search.
+     */
+    fun streamWebvtt(asset: Asset, search: Map<String, Any>, outputStream: OutputStream)
 
-    fun getWebvttByTimeline(asset: Asset, timeline: String, outputStream: OutputStream)
+    /**
+     * Stream a WebVTT file that matchess the WebVTTFilter.
+     */
+    fun streamWebvtt(filter: WebVTTFilter, outputStream: OutputStream)
 
-    fun mapToSearchSourceBuilder(asset: Asset, search: Map<String, Any>): SearchSourceBuilder
+    /**
+     * Stream a WebVTT file that matches a particular timeline.
+     */
+    fun streamWebvttByTimeline(asset: Asset, timeline: String, outputStream: OutputStream)
 
-    fun deleteClips(assetIdList: List<String>)
+    /**
+     * Converts a ES search DSL request into a SearchSourceBuilder
+     */
+    fun mapToSearchSourceBuilder(asset: Asset?, search: Map<String, Any>): SearchSourceBuilder
+
+    /**
+     * Bulk delete the given clips.
+     */
+    fun deleteClips(ids: List<String>)
+
+    /**
+     * Create a singel clip.
+     */
+    fun createClip(spec: ClipSpec): Clip
+
+    /**
+     * Delete a single clip.
+     */
+    fun deleteClip(id: String): Boolean
 }
 
 @Service
@@ -56,6 +95,39 @@ class ClipServiceImpl(
 
     @Autowired
     private lateinit var assetService: AssetService
+
+    override fun createClip(spec: ClipSpec): Clip {
+        val rest = indexRoutingService.getProjectRestClient()
+        val asset = assetService.getAsset(spec.assetId)
+
+        val start = spec.start.setScale(3, RoundingMode.HALF_UP)
+        val stop = spec.stop.setScale(3, RoundingMode.HALF_UP)
+        val length = stop.subtract(start)
+        val score = spec.score.bd()
+
+        // Make the document.
+        val doc = mapOf(
+            "clip" to mapOf(
+                "assetId" to asset.id,
+                "timeline" to spec.timeline,
+                "track" to spec.track,
+                "content" to spec.content,
+                "score" to score,
+                "start" to start,
+                "stop" to stop,
+                "length" to length
+            ),
+            "deepSearch" to mapOf("name" to "clip", "parent" to asset.id)
+        )
+
+        val id = ClipIdBuilder(asset, spec.timeline, spec.track, start, stop).buildId()
+        val req = rest.newIndexRequest(id)
+        req.routing(asset.id)
+        req.source(doc)
+
+        rest.client.index(req, RequestOptions.DEFAULT)
+        return Clip(id, asset.id, spec.timeline, spec.track, start, stop, spec.content, score.toDouble())
+    }
 
     override fun createClips(timeline: TimelineSpec): CreateTimelineResponse {
         val asset = assetService.getAsset(timeline.assetId)
@@ -73,9 +145,9 @@ class ClipServiceImpl(
             val scoreCache = mutableMapOf<String, BigDecimal>()
 
             for (clip in track.clips) {
-                val id = ClipIdBuilder(asset, timeline.name, track.name, clip).buildId()
                 val start = clip.start.setScale(3, RoundingMode.HALF_UP)
                 val stop = clip.stop.setScale(3, RoundingMode.HALF_UP)
+                val id = ClipIdBuilder(asset, timeline.name, track.name, start, stop).buildId()
                 val length = stop.subtract(start)
                 val score = clip.score.bd()
 
@@ -123,7 +195,7 @@ class ClipServiceImpl(
     }
 
     override fun searchClips(
-        asset: Asset,
+        asset: Asset?,
         search: Map<String, Any>,
         params: Map<String, Array<String>>
     ): SearchResponse {
@@ -138,12 +210,30 @@ class ClipServiceImpl(
         return rest.client.search(req, RequestOptions.DEFAULT)
     }
 
-    override fun getWebvttByTimeline(asset: Asset, timeline: String, outputStream: OutputStream) {
+    override fun streamWebvttByTimeline(asset: Asset, timeline: String, outputStream: OutputStream) {
         val search = mapOf("query" to mapOf("term" to mapOf("clip.timeline" to timeline)))
-        return getWebvtt(asset, search, outputStream)
+        return streamWebvtt(asset, search, outputStream)
     }
 
-    override fun getWebvtt(asset: Asset, search: Map<String, Any>, outputStream: OutputStream) {
+    override fun streamWebvtt(filter: WebVTTFilter, outputStream: OutputStream) {
+
+        val rest = indexRoutingService.getProjectRestClient()
+        val ssb = SearchSourceBuilder()
+        ssb.query(filter.getQuery())
+        val req = rest.newSearchRequest()
+        ssb.size(100)
+        ssb.sort("_doc")
+        req.source(ssb)
+        req.preference(getProjectId().toString())
+        req.scroll("5s")
+
+        val buffer = StringBuilder(512)
+        buffer.append("WEBVTT\n\n")
+
+        outputWebvtt(rest, req, buffer, outputStream)
+    }
+
+    override fun streamWebvtt(asset: Asset, search: Map<String, Any>, outputStream: OutputStream) {
 
         val rest = indexRoutingService.getProjectRestClient()
         val ssb = mapToSearchSourceBuilder(asset, search)
@@ -152,11 +242,20 @@ class ClipServiceImpl(
         ssb.sort("_doc")
         req.source(ssb)
         req.preference(getProjectId().toString())
-        req.scroll("10s")
+        req.scroll("5s")
 
         val buffer = StringBuilder(512)
         buffer.append("WEBVTT\n\n")
 
+        outputWebvtt(rest, req, buffer, outputStream)
+    }
+
+    private fun outputWebvtt(
+        rest: EsRestClient,
+        req: SearchRequest,
+        buffer: StringBuilder,
+        outputStream: OutputStream
+    ) {
         var rsp = rest.client.search(req, RequestOptions.DEFAULT)
         do {
 
@@ -186,7 +285,7 @@ class ClipServiceImpl(
         } while (rsp.hits.hits.isNotEmpty())
     }
 
-    override fun mapToSearchSourceBuilder(asset: Asset, search: Map<String, Any>): SearchSourceBuilder {
+    override fun mapToSearchSourceBuilder(asset: Asset?, search: Map<String, Any>): SearchSourceBuilder {
 
         // Filters out search options that are not supported.
         val searchSource = search.filterKeys { it in allowedSearchProperties }
@@ -197,7 +296,9 @@ class ClipServiceImpl(
 
         val outerQuery = QueryBuilders.boolQuery()
         outerQuery.filter(QueryBuilders.existsQuery("clip.timeline"))
-        outerQuery.filter(QueryBuilders.termQuery("clip.assetId", asset.id))
+        asset?.let {
+            outerQuery.filter(QueryBuilders.termQuery("clip.assetId", it.id))
+        }
 
         val ssb = SearchSourceBuilder.fromXContent(parser)
         if (ssb.query() != null) {
@@ -213,11 +314,23 @@ class ClipServiceImpl(
         return ssb
     }
 
-    override fun deleteClips(assetIdList: List<String>) {
+    override fun deleteClip(id: String): Boolean {
+        val rest = indexRoutingService.getProjectRestClient()
+        val req = rest.newDeleteRequest(id)
+        val rsp = rest.client.delete(req, RequestOptions.DEFAULT).result
+        val deleted = rsp.name == "DELETED"
+
+        if (deleted) {
+            logger.event(LogObject.CLIP, LogAction.DELETE, mapOf("clipId" to rsp))
+        }
+        return rsp.name == "DELETED"
+    }
+
+    override fun deleteClips(ids: List<String>) {
         val rest = indexRoutingService.getProjectRestClient()
 
         val query = QueryBuilders.termsQuery(
-            "clip.assetId", assetIdList
+            "clip.assetId", ids
         )
 
         val rsp = rest.client.deleteByQuery(

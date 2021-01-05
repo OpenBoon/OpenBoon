@@ -3,9 +3,8 @@ import os
 import requests
 from collections import namedtuple
 
-from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job
-from ..search import AssetSearchResult, \
-    AssetSearchScroller, SimilarityQuery, AssetClipSearchScroller
+from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job, VideoClip
+from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery, SearchScroller
 from ..util import as_collection, as_id_collection, as_id
 
 
@@ -224,6 +223,7 @@ class AssetApp(object):
 
         Args:
             search (dict): The ElasticSearch search to execute.
+            fetch_source: (bool): If true, the full JSON document for each asset is returned.
         Returns:
             AssetSearchResult - an AssetSearchResult instance.
         """
@@ -249,21 +249,6 @@ class AssetApp(object):
         """
         return AssetSearchScroller(self.app, search, timeout)
 
-    def scroll_search_clips(self, asset, search=None, timeout="1m"):
-        """
-        Scroll through clips for given asset using the ElasticSearch query DSL.
-
-        Args:
-            asset (Asset): The asset or unique AssetId.
-            search (dict): The ElasticSearch search to execute
-            timeout (str): The scroll timeout.  Defaults to 1 minute.
-
-        Returns:
-            AssetClipSearchScroller - a clip scroller instance for generating clips.
-
-        """
-        return AssetClipSearchScroller(as_id(asset), self.app, search, timeout)
-
     def reprocess_search(self, search, modules):
         """
         Reprocess the given search with the supplied modules.
@@ -281,6 +266,24 @@ class AssetApp(object):
         }
         rsp = self.app.client.post("/api/v3/assets/_search/reprocess", body)
         return ReprocessSearchResponse(rsp["assetCount"], Job(rsp["job"]))
+
+    def scroll_search_clips(self, asset, search=None, timeout="1m"):
+        """
+        Scroll through clips for given asset using the ElasticSearch query DSL.
+
+        Args:
+            asset (Asset): The asset or unique AssetId.
+            search (dict): The ElasticSearch search to execute
+            timeout (str): The scroll timeout.  Defaults to 1 minute.
+
+        Returns:
+            SearchScroller  a clip scroller instance for generating VideoClips.
+
+        """
+        asset_id = as_id(asset)
+        return SearchScroller(
+            VideoClip, f'/api/v3/assets/{asset_id}/clips/_search', self.app, search, timeout
+        )
 
     def reprocess_assets(self, assets, modules):
         """

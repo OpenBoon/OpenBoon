@@ -213,7 +213,7 @@ class AssetController @Autowired constructor(
         response.setHeader("Content-Disposition", "attachment; filename=\"all.vtt\"")
 
         val asset = assetService.getAsset(id)
-        clipService.getWebvtt(asset, mapOf(), response.outputStream)
+        clipService.streamWebvtt(asset, mapOf(), response.outputStream)
         response.flushBuffer()
     }
 
@@ -229,7 +229,7 @@ class AssetController @Autowired constructor(
         response.setHeader("Content-Disposition", "attachment; filename=\"$timeline.vtt\"")
 
         val asset = assetService.getAsset(id)
-        clipService.getWebvttByTimeline(asset, timeline, response.outputStream)
+        clipService.streamWebvttByTimeline(asset, timeline, response.outputStream)
         response.flushBuffer()
     }
 
