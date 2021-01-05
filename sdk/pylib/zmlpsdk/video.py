@@ -276,4 +276,4 @@ def save_timeline(timeline):
 
     """
     app = zmlp.app_from_env()
-    return app.clips.create_clips_from_timeline(timeline)
+    return app.clips.create_clips(timeline)
