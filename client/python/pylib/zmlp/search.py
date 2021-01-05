@@ -356,6 +356,10 @@ class AssetSearchResult(SearchResult):
             Asset, 'api/v1/assets/_search', app, search
         )
 
+    @property
+    def assets(self):
+        return self.items
+
 
 class VideoClipSearchResult(SearchResult):
     """
@@ -366,6 +370,9 @@ class VideoClipSearchResult(SearchResult):
             VideoClip, 'api/v1/clips/_search', app, search
         )
 
+    @property
+    def clips(self):
+        return self.items
 
 class LabelConfidenceTermsAggregation(object):
     """
