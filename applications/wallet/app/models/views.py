@@ -1,3 +1,4 @@
+import json
 import os
 
 from django.http import Http404, HttpResponse
@@ -306,11 +307,13 @@ class ModelViewSet(BaseProjectViewSet):
 
         """
         model = request.app.models.get_model(pk)
+        test_set_only = json.loads(request.query_params.get('testSetOnly', 'true'))
         matrix = ConfusionMatrix(model, request.app,
                                  min_score=request.query_params.get('minScore', 0.0),
                                  max_score=request.query_params.get('maxScore', 1.0),
-                                 test_set_only=request.query_params.get('testSetOnly', True))
-        response_data = matrix.to_dict(normalize_matrix=request.query_params.get('normalize', False))
+                                 test_set_only=test_set_only)
+        normalize = json.loads(request.query_params.get('normalize', 'false'))
+        response_data = matrix.to_dict(normalize_matrix=normalize)
         serializer = ConfusionMatrixSerializer(data=response_data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data)
@@ -319,10 +322,11 @@ class ModelViewSet(BaseProjectViewSet):
     def confusion_matrix_thumbnail(self, request, project_pk, pk):
         """Returns a thumbnail image of the confusion matrix for this model."""
         model = request.app.models.get_model(pk)
+        test_set_only = json.loads(request.query_params.get('testSetOnly', 'true'))
         matrix = ConfusionMatrix(model, request.app,
-                                 min_score=request.data.get('minScore', 0.0),
-                                 max_score=request.data.get('maxScore', 1.0),
-                                 test_set_only=request.data.get('testSetOnly', True))
+                                 min_score=request.query_params.get('minScore', 0.0),
+                                 max_score=request.query_params.get('maxScore', 1.0),
+                                 test_set_only=test_set_only)
         thumbnail = matrix.create_thumbnail_image()
         return HttpResponse(thumbnail.read(), content_type='image/png')
 
