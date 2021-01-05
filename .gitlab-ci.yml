@@ -106,6 +106,7 @@ wallet-backend-test-suite:
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
         - "applications/wallet/app/**/*"
+        - "applications/wallet/Pipfile*"
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
       changes:
