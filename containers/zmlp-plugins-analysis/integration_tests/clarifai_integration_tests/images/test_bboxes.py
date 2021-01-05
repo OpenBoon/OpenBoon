@@ -11,12 +11,14 @@ from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get
 class ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestCase):
 
     def setUp(self):
+        super(ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests, self).setUp()
         cred_location = os.path.join(os.path.dirname(__file__), '..', 'clarifai-creds')
         with open(cred_location, 'rb') as f:
             key = f.read().decode()
         os.environ['CLARIFAI_KEY'] = key
 
     def tearDown(self):
+        super(ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests, self).tearDown()
         del os.environ['CLARIFAI_KEY']
 
     @patch('zmlp_analysis.clarifai.images.bboxes.get_proxy_level_path')
@@ -26,6 +28,7 @@ class ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestC
 
         processor = self.init_processor(detector)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(attr)
         for label in assertions['labels']:

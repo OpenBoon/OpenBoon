@@ -11,12 +11,14 @@ from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get
 class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestCase):
 
     def setUp(self):
+        super(ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests, self).setUp()
         cred_location = os.path.join(os.path.dirname(__file__), '..', 'clarifai-creds')
         with open(cred_location, 'rb') as f:
             key = f.read().decode()
         os.environ['CLARIFAI_KEY'] = key
 
     def tearDown(self):
+        super(ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests, self).tearDown()
         del os.environ['CLARIFAI_KEY']
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
@@ -28,8 +30,8 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
-
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(attr)
         predictions = get_prediction_labels(analysis)

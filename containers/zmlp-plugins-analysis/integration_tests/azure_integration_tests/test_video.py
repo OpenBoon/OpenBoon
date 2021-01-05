@@ -18,6 +18,7 @@ MUSTANG = "video/ford.mp4"
 class AzureVideoDetectorTestCase(PluginUnitTestCase):
 
     def setUp(self):
+        super(AzureVideoDetectorTestCase, self).setUp()
         cred_location = os.path.dirname(__file__) + '/azure-creds'
         with open(cred_location, 'rb') as f:
             key = f.read().decode()
@@ -25,6 +26,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         os.environ['ZORROA_AZURE_VISION_ENDPOINT'] = "https://zvi-dev.cognitiveservices.azure.com/"
 
     def tearDown(self):
+        super(AzureVideoDetectorTestCase, self).tearDown()
         del os.environ['ZORROA_AZURE_VISION_KEY']
 
     @patch("zmlp_analysis.azure.video.save_timeline", return_value={})
@@ -44,6 +46,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -66,6 +69,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -88,6 +92,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -110,6 +115,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -132,6 +138,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -154,6 +161,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -176,6 +184,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -198,6 +207,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -220,6 +230,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -242,6 +253,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_attr(namespace)
         predictions = get_prediction_labels(analysis)
@@ -265,6 +277,7 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = asset.get_analysis(namespace)
         assert 9 == analysis['words']

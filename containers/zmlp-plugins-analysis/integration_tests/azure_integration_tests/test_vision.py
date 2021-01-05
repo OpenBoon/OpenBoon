@@ -20,12 +20,14 @@ FACES = zorroa_test_path('images/set01/faces.jpg')
 class ComputerVisionProcessorTestCase(PluginUnitTestCase):
 
     def setUp(self):
+        super(ComputerVisionProcessorTestCase, self).setUp()
         cred_location = os.path.dirname(__file__) + '/azure-creds'
         with open(cred_location, 'rb') as f:
             key = f.read().decode()
         os.environ['ZORROA_AZURE_VISION_KEY'] = key
 
     def tearDown(self):
+        super(ComputerVisionProcessorTestCase, self).tearDown()
         del os.environ['ZORROA_AZURE_VISION_KEY']
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
@@ -36,6 +38,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
 
         processor = self.init_processor(vision.AzureVisionObjectDetection())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(namespace)
         assert 'dog' in get_prediction_labels(analysis)
@@ -48,6 +51,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
 
         processor = self.init_processor(vision.AzureVisionLabelDetection())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(namespace)
         assert 'bicycle' in get_prediction_labels(analysis)
@@ -60,6 +64,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
 
         processor = self.init_processor(vision.AzureVisionImageDescription())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(namespace)
         description = 'a dog sitting in front of a mirror posing for the camera'
@@ -73,6 +78,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
 
         processor = self.init_processor(vision.AzureVisionImageTagsDetection())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(namespace)
         assert 'bicycle' in get_prediction_labels(analysis)
@@ -85,6 +91,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
 
         processor = self.init_processor(vision.AzureVisionCelebrityDetection())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(namespace)
         assert 'Ryan Gosling' in get_prediction_labels(analysis)
@@ -97,6 +104,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
 
         processor = self.init_processor(vision.AzureVisionLandmarkDetection())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(namespace)
         assert 'Eiffel Tower' in get_prediction_labels(analysis)
@@ -109,6 +117,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
 
         processor = self.init_processor(vision.AzureVisionLogoDetection())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(namespace)
         assert 'Shell' in get_prediction_labels(analysis)
@@ -121,6 +130,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
 
         processor = self.init_processor(vision.AzureVisionCategoryDetection())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(namespace)
         assert 'building_' in get_prediction_labels(analysis)
@@ -133,6 +143,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
 
         processor = self.init_processor(vision.AzureVisionExplicitContentDetection())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(namespace)
         assert 'racy' in get_prediction_labels(analysis)
@@ -145,6 +156,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
 
         processor = self.init_processor(vision.AzureVisionFaceDetection())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(namespace)
         assert 'Male' in get_prediction_labels(analysis)
@@ -159,6 +171,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
 
         processor = self.init_processor(vision.AzureVisionTextDetection())
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis(namespace)
         assert 'content' in analysis['type']

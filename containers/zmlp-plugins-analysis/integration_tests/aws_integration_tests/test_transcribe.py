@@ -16,6 +16,7 @@ logging.basicConfig()
 class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
 
     def setUp(self):
+        super(AmazonTranscribeProcessorTestCase, self).setUp()
         self.path = zorroa_test_path('fallback/ted_talk.mp4')
         self.asset = TestAsset(self.path)
         self.asset.set_attr('media.length', 15.0)
@@ -34,6 +35,7 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         os.environ['ZMLP_PROJECT_ID'] = '00000000-0000-0000-0000-000000000001'
 
     def tearDown(self):
+        super(AmazonTranscribeProcessorTestCase, self).tearDown()
         del os.environ['ZORROA_AWS_KEY']
         del os.environ['ZORROA_AWS_SECRET']
         del os.environ['ZORROA_AWS_BUCKET']
@@ -49,6 +51,7 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         processor = self.init_processor(AmazonTranscribeProcessor(), {'language': 'en-US'})
         frame = Frame(self.asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         assert 'poop' in self.asset.get_attr('analysis.aws-transcribe.content')
 
@@ -64,5 +67,6 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         processor = self.init_processor(AmazonTranscribeProcessor(), {'language': 'en-US'})
         frame = Frame(self.asset)
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         assert 'poop' in self.asset.get_attr('analysis.aws-transcribe.content')

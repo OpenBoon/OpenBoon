@@ -17,10 +17,12 @@ logging.basicConfig()
 class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
 
     def setUp(self):
+        super(AsyncSpeechToTextProcessorTestCase, self).setUp()
         os.environ["ZORROA_AWS_KEY"] = "AKIAXAKJCGYIACN6NXPF"
         os.environ["ZORROA_AWS_SECRET"] = "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"
 
     def tearDown(self):
+        super(AsyncSpeechToTextProcessorTestCase, self).tearDown()
         del os.environ['ZORROA_AWS_KEY']
         del os.environ['ZORROA_AWS_SECRET']
 
@@ -32,6 +34,7 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         processor = self.init_processor(RekognitionCelebrityDetection(), {})
         frame = Frame(TestAsset(path))
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis('aws-celebrity-detection')
         assert 'Ryan Gosling' in get_prediction_labels(analysis)
@@ -44,6 +47,7 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         processor = self.init_processor(RekognitionPPEDetection(), {})
         frame = Frame(TestAsset(path))
         processor.process(frame)
+        self.mock_record_analysis_metric.assert_called_once()
 
         analysis = frame.asset.get_analysis('aws-ppe-detection')
         assert 'FACE_COVER' in get_prediction_labels(analysis)
