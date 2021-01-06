@@ -93,6 +93,8 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
           return (
             <Tooltip
               key={matrix.labels[col]}
+              position="left"
+              trigger="mouseenter"
               html={
                 <div
                   css={{
@@ -141,8 +143,6 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
                   </h3>
                 </div>
               }
-              position="left"
-              trigger="mouseenter"
             >
               <button
                 type="button"
