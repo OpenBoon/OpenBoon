@@ -84,7 +84,6 @@ const ModelMatrixLayout = () => {
             <ModelMatrixPreview
               selectedCell={settings.selectedCell}
               matrix={matrix}
-              dispatch={dispatch}
             />
           </div>
         )}
