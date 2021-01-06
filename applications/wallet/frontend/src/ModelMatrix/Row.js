@@ -10,7 +10,7 @@ import { getColor } from './helpers'
 
 const CONTRAST_THRESHOLD = 69
 
-const ModelMatrixRow = ({ matrix, settings, label, index }) => {
+const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
   const rowRef = useScroller({
     namespace: 'ModelMatrixHorizontal',
     isWheelEmitter: true,
@@ -86,12 +86,13 @@ const ModelMatrixRow = ({ matrix, settings, label, index }) => {
       >
         {matrix.matrix[index].map((value, col) => {
           const percent = (value / rowTotal) * 100
+          const isSelected =
+            settings.selectedCell[0] === index &&
+            settings.selectedCell[1] === col
 
           return (
             <Tooltip
               key={matrix.labels[col]}
-              position="left"
-              trigger="mouseenter"
               html={
                 <div
                   css={{
@@ -140,8 +141,11 @@ const ModelMatrixRow = ({ matrix, settings, label, index }) => {
                   </h3>
                 </div>
               }
+              position="left"
+              trigger="mouseenter"
             >
-              <div
+              <button
+                type="button"
                 css={{
                   width: cellDimension,
                   height: '100%',
@@ -149,14 +153,21 @@ const ModelMatrixRow = ({ matrix, settings, label, index }) => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   backgroundColor: getColor({ percent }),
+                  border: isSelected ? constants.borders.keyOneLarge : 'none',
                   color:
                     percent > CONTRAST_THRESHOLD
                       ? colors.structure.white
                       : colors.structure.coal,
                   ':hover': {
-                    border: constants.borders.keyOneLarge,
+                    border: constants.borders.keyTwoLarge,
                   },
                 }}
+                onClick={() =>
+                  dispatch({
+                    selectedCell: isSelected ? [] : [index, col],
+                    isPreviewOpen: !isSelected,
+                  })
+                }
               >
                 <div
                   css={{
@@ -168,7 +179,7 @@ const ModelMatrixRow = ({ matrix, settings, label, index }) => {
                 >
                   {settings.isNormalized ? `${Math.round(percent)}%` : value}
                 </div>
-              </div>
+              </button>
             </Tooltip>
           )
         })}
@@ -190,9 +201,12 @@ ModelMatrixRow.propTypes = {
     zoom: PropTypes.number.isRequired,
     isMinimapOpen: PropTypes.bool.isRequired,
     isNormalized: PropTypes.bool.isRequired,
+    isPreviewOpen: PropTypes.bool.isRequired,
+    selectedCell: PropTypes.arrayOf(PropTypes.number).isRequired,
   }).isRequired,
   label: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default ModelMatrixRow

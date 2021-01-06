@@ -5,6 +5,7 @@ export const INITIAL_STATE = {
   zoom: 1,
   isMinimapOpen: true,
   isPreviewOpen: false,
+  selectedCell: [],
   isNormalized: true,
 }
 
