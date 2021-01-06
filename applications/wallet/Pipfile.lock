@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "76b776f942b17585e239e9edf4b79a330daa959a4ed534ef1e32dfdd51262611"
+            "sha256": "37ba1af781f333e5922dfdda4534c6bab4ac1b1136dd05c649bf620852b3054d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -203,11 +203,11 @@
         },
         "django-axes": {
             "hashes": [
-                "sha256:3c81ddca8a9d7fd0019cb440f711cc873c3039546f7eacb3f2ec616bf0ec1b32",
-                "sha256:8a62cd4cc78ef08007e8102def34be83832995eb6e3e0c814d605741b82a2796"
+                "sha256:4754b89a8c11b2d8d955059a195653b1d7e8e3296d38b263c3994a1b40813fd1",
+                "sha256:fc4ad68b62bc2fb21ca7d27f8971f17fc32d120fb13b632491b935a010fee112"
             ],
             "index": "pypi",
-            "version": "==5.10.0"
+            "version": "==5.10.1"
         },
         "django-cors-headers": {
             "hashes": [
@@ -1110,7 +1110,7 @@
         },
         "zvi-client": {
             "path": "./../../client/python",
-            "version": "==1.1.2"
+            "version": "==1.0.0"
         }
     },
     "develop": {}
