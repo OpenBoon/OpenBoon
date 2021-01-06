@@ -98,6 +98,7 @@ wallet-backend-test-suite:
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
         - "applications/wallet/app/**/*"
+        - "applications/wallet/Pipfile*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
@@ -106,7 +107,6 @@ wallet-backend-test-suite:
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
         - "applications/wallet/app/**/*"
-        - "applications/wallet/Pipfile*"
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
       changes:
