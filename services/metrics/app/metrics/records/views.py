@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from dateparser import parse as parse_date
 from django.db.models import Sum, Q
 from rest_framework import viewsets
@@ -6,7 +8,8 @@ from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
 from metrics.records.models import ApiCall
-from metrics.records.serializers import ApiCallSerializer, ReportSerializer
+from metrics.records.serializers import (ApiCallSerializer, ReportSerializer,
+                                         UsageThisMonthSerializer)
 from .renderers import ReportCSVRenderer
 from .mixins import CSVFileMixin
 
@@ -124,3 +127,18 @@ class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
 
         serializer = ReportSerializer(data, many=True, context=self.get_serializer_context())
         return Response(serializer.data)
+
+    @action(methods=['get'], detail=False)
+    def usage_this_month(self, request):
+        today = datetime.today()
+        first_of_the_month = datetime(today.year, today.month, 1)
+        project = request.query_params['project_id']
+        records = self.get_queryset().filter(created_date__gte=first_of_the_month,
+                                             project=project)
+        totals = records.aggregate(image_count=Sum('image_count'),
+                                   video_minutes=Sum('video_minutes'))
+        totals['project'] = project
+        serializer = UsageThisMonthSerializer(data=totals)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data)
+

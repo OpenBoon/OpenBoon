@@ -79,3 +79,11 @@ class TestAPICallsViewSet:
                                   HTTP_ACCEPT='text/csv')
         assert response['content-disposition'] == ('attachment; filename=billing_report_'
                                                    '2020-12-01_to_2020-12-25.csv')
+
+    def test_usage_this_month(self, api_client, test_set):
+        path = reverse('apicalls-usage-this-month')
+        response = api_client.get(path, {'project_id': '00000000-0000-0000-0000-000000000000'})
+        assert response.status_code == 200
+        assert response.json() == {'image_count': 16,
+                                   'project': '00000000-0000-0000-0000-000000000000',
+                                   'video_minutes': 80.3}

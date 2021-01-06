@@ -14,3 +14,9 @@ class ReportSerializer(serializers.Serializer):
     service = serializers.CharField()
     image_count = serializers.IntegerField()
     video_minutes = serializers.FloatField()
+
+
+class UsageThisMonthSerializer(serializers.Serializer):
+    project = serializers.UUIDField()
+    image_count = serializers.IntegerField()
+    video_minutes = serializers.FloatField()
