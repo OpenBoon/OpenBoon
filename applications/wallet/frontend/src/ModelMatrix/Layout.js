@@ -5,11 +5,11 @@ import matrix from './__mocks__/matrix'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import { INITIAL_STATE, reducer } from './reducer'
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import PreviewSvg from '../Icons/preview.svg'
 
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import { INITIAL_STATE, reducer } from './reducer'
 
 import ModelMatrixControls from './Controls'
 import ModelMatrixMatrix from './Matrix'
