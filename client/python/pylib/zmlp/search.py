@@ -353,7 +353,7 @@ class AssetSearchResult(SearchResult):
     """
     def __init__(self, app, search):
         super(AssetSearchResult, self).__init__(
-            Asset, 'api/v1/assets/_search', app, search
+            Asset, 'api/v3/assets/_search', app, search
         )
 
     @property

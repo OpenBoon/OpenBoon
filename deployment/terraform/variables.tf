@@ -9,6 +9,7 @@ variable "environment" {
 
 variable "terraform-credentials" {
   description = "Contents of a GCP credential json file to use for creating resources."
+  sensitive   = true
 }
 
 variable "azure-subscription-id" {
@@ -25,6 +26,7 @@ variable "azure-tenant-id" {
 
 variable "azure-client-secret" {
   description = "Secret key generated for the Azure service principal to be used with the Azure provider."
+  sensitive   = true
 }
 
 variable "docker-username" {
@@ -33,6 +35,7 @@ variable "docker-username" {
 
 variable "docker-password" {
   description = "Password for Docker Hub user."
+  sensitive   = true
 }
 
 variable "docker-email" {
@@ -41,6 +44,7 @@ variable "docker-email" {
 
 variable "smtp-password" {
   description = "Password for the SMTP server wallet uses to send mail."
+  sensitive   = true
 }
 
 variable "google-oauth-client-id" {
@@ -57,6 +61,7 @@ variable "zmlp-domain" {
 
 variable "clarifai-key" {
   description = "Secret key to allow access to the Clarifai API."
+  sensitive   = true
 }
 
 variable "aws-key" {
@@ -65,6 +70,7 @@ variable "aws-key" {
 
 variable "aws-secret" {
   description = "Secret to allow access to the AWS ML API."
+  sensitive   = true
 }
 
 variable "aws-region" {
@@ -152,11 +158,6 @@ variable "wallet-use-model-ids-for-label-filters" {
   default     = "false"
 }
 
-variable "metrics-secret-key" {
-  description = "Django Secret Key to use for Metrics Service."
-  default     = "(tlfxocw^*nvb=y8+a7jfxp=1u#n*t@22cxf9=yxt)#kt0_4-f"
-}
-
 variable "metrics-browsable" {
   description = "Enables Browsable API for the Metrics Service."
   default     = "false"
@@ -175,6 +176,7 @@ variable "metrics-superuser-email" {
 variable "metrics-superuser-password" {
   description = "Sets Superuser password for Metrics Service."
   default     = "admin"
+  sensitive   = true
 }
 
 variable "metrics-superuser-first-name" {

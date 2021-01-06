@@ -3,6 +3,10 @@ resource "random_string" "sql-password" {
   special = false
 }
 
+resource "random_password" "django-secret-key" {
+  length = 50
+}
+
 resource "google_sql_database" "metrics" {
   lifecycle {
     prevent_destroy = true
@@ -99,7 +103,7 @@ resource "kubernetes_deployment" "metrics" {
           readiness_probe {
             initial_delay_seconds = 5
             period_seconds        = 5
-            failure_threshold = 10
+            failure_threshold     = 10
             http_get {
               scheme = "HTTP"
               path   = "/api/v1/health/"
@@ -137,7 +141,7 @@ resource "kubernetes_deployment" "metrics" {
           }
           env {
             name  = "SECRET_KEY"
-            value = var.secret-key
+            value = random_password.django-secret-key.result
           }
           env {
             name  = "DEBUG"
@@ -226,5 +230,3 @@ resource "kubernetes_horizontal_pod_autoscaler" "metrics" {
     ignore_changes = [spec[0].max_replicas, spec[0].min_replicas]
   }
 }
-
-
