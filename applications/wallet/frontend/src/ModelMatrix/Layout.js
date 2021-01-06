@@ -5,7 +5,7 @@ import matrix from './__mocks__/matrix'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import Button, { VARIANTS } from '../Button'
 
 import PreviewSvg from '../Icons/preview.svg'
 
@@ -100,7 +100,7 @@ const ModelMatrixLayout = () => {
           <Button
             aria-label="Preview"
             title="Preview"
-            variant={BUTTON_VARIANTS.ICON}
+            variant={VARIANTS.ICON}
             onClick={() =>
               dispatch({
                 isPreviewOpen: !settings.isPreviewOpen,
