@@ -42,6 +42,11 @@ describe('<ModelMatrix />', () => {
       component.root.findByProps({ 'aria-label': 'Mini map' }).props.onClick()
     })
 
+    // Open panel
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Preview' }).props.onClick()
+    })
+
     // Does nothing since zoom = 1 = min
     act(() => {
       component.root.findByProps({ 'aria-label': 'Zoom Out' }).props.onClick()
@@ -69,5 +74,26 @@ describe('<ModelMatrix />', () => {
     act(() => {
       component.root.findByType('form').props.onSubmit({ preventDefault: noop })
     })
+
+    // Select a cell
+    act(() => {
+      component.root.findAllByProps({ type: 'button' })[0].props.onClick()
+    })
+
+    // Select a cell
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'View Filter Panel' })
+        .props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Deselect a cell
+    act(() => {
+      component.root.findAllByProps({ type: 'button' })[0].props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })
