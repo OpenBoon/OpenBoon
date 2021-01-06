@@ -41,6 +41,7 @@ matplotlib = "*"
 pandas = "==1.1.5"
 opencv-python = "==4.3.0.36"
 pyjwt = ">=2.0"
+importlib-metadata = "*"
 
 [requires]
 python_version = "3.7"
