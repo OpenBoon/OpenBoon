@@ -1,5 +1,4 @@
 import { useReducer } from 'react'
-import AutoSizer from 'react-virtualized-auto-sizer'
 
 // TODO: fetch data
 import matrix from './__mocks__/matrix'
@@ -13,8 +12,10 @@ import PreviewSvg from '../Icons/preview.svg'
 import { INITIAL_STATE, reducer } from './reducer'
 
 import ModelMatrixControls from './Controls'
-import ModelMatrixTable from './Table'
-import ModelMatrixLabels from './Labels'
+import ModelMatrixMatrix from './Matrix'
+import ModelMatrixPreview from './Preview'
+
+const PANEL_WIDTH = 200
 
 const ModelMatrixLayout = () => {
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
@@ -63,132 +64,29 @@ const ModelMatrixLayout = () => {
           backgroundColor: colors.structure.lead,
         }}
       >
-        <div
-          css={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            width: '0%',
-          }}
-        >
-          <div
-            css={{
-              flex: 1,
-              display: 'flex',
-              width: '100%',
-            }}
-          >
-            <div
-              css={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: spacing.normal,
-                borderRight: constants.borders.regular.coal,
-              }}
-            >
-              <div
-                css={{
-                  writingMode: 'vertical-lr',
-                  transform: 'rotate(180deg)',
-                }}
-              >
-                <span
-                  css={{
-                    fontWeight: typography.weight.bold,
-                    fontSize: typography.size.medium,
-                    lineHeight: typography.height.medium,
-                  }}
-                >
-                  True Label
-                </span>{' '}
-                <span css={{ color: colors.structure.zinc }}>
-                  (Number in Set)
-                </span>
-              </div>
-            </div>
+        <ModelMatrixMatrix
+          matrix={matrix}
+          settings={settings}
+          dispatch={dispatch}
+        />
 
-            <div css={{ width: '100%' }}>
-              <AutoSizer defaultWidth={800} defaultHeight={600}>
-                {({ width, height }) => (
-                  <ModelMatrixTable
-                    matrix={matrix}
-                    width={width}
-                    height={height}
-                    settings={settings}
-                    dispatch={dispatch}
-                  />
-                )}
-              </AutoSizer>
-            </div>
-          </div>
-
+        {settings.isPreviewOpen && (
           <div
             css={{
               display: 'flex',
-              borderTop: constants.borders.regular.coal,
-              width: '100%',
+              flexDirection: 'column',
+              width: PANEL_WIDTH,
+              height: '100%',
+              borderLeft: constants.borders.regular.coal,
+              overflow: 'auto',
             }}
           >
-            {/* begin placeholder for "True Label" column width */}
-            <div
-              css={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: spacing.normal,
-                borderRight: constants.borders.regular.transparent,
-              }}
-            >
-              <div
-                css={{
-                  writingMode: 'vertical-lr',
-                  transform: 'rotate(180deg)',
-                  lineHeight: typography.height.medium,
-                }}
-              >
-                &nbsp;
-              </div>
-            </div>
-            {/* end placeholder for "True Label" column width */}
-
-            <div css={{ display: 'flex', width: settings.width }}>
-              {/* begin placeholde for row labels */}
-              <div
-                css={{
-                  paddingLeft: spacing.normal,
-                  width: settings.labelsWidth,
-                  minWidth: settings.labelsWidth,
-                  borderRight: constants.borders.regular.coal,
-                }}
-              >
-                &nbsp;
-              </div>
-              {/* end placeholde for row labels */}
-
-              <div css={{ flex: 1, width: '0%' }}>
-                <div
-                  css={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <ModelMatrixLabels matrix={matrix} settings={settings} />
-
-                  <div
-                    css={{
-                      padding: spacing.normal,
-                      textAlign: 'center',
-                      fontWeight: typography.weight.bold,
-                      fontSize: typography.size.medium,
-                      lineHeight: typography.height.medium,
-                    }}
-                  >
-                    Predictions
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ModelMatrixPreview
+              selectedCell={settings.selectedCell}
+              matrix={matrix}
+            />
           </div>
-        </div>
+        )}
 
         <div
           css={{
@@ -202,13 +100,17 @@ const ModelMatrixLayout = () => {
             aria-label="Preview"
             title="Preview"
             variant={VARIANTS.ICON}
-            href="#"
+            onClick={() =>
+              dispatch({
+                isPreviewOpen: !settings.isPreviewOpen,
+              })
+            }
             style={{
               flex: 'none',
               paddingTop: spacing.normal,
               paddingBottom: spacing.normal,
               borderBottom: constants.borders.regular.coal,
-              color: /* istanbul ignore next */ settings.isPreviewOpen
+              color: settings.isPreviewOpen
                 ? colors.key.one
                 : colors.structure.steel,
               ':hover': {
