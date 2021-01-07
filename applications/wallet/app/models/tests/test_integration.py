@@ -276,7 +276,7 @@ class TestModelViewSetActions:
 
         # Get the confusion matrix data for a model.
         path = reverse('model-confusion-matrix', kwargs={'project_pk': project.id, 'pk': model_id})
-        path = f'{path}?testSetOnly=false&normalize=false'
+        path = f'{path}?testSetOnly=false'
         response = check_response(api_client.get(path))
         assert response == {'labels': ['Unrecognized',
                                        'airplane',
