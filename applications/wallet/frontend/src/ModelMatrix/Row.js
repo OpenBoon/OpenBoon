@@ -85,7 +85,8 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
         }}
       >
         {matrix.matrix[index].map((value, col) => {
-          const percent = (value / rowTotal) * 100
+          const percent = rowTotal === 0 ? 0 : (value / rowTotal) * 100
+
           const isSelected =
             settings.selectedCell[0] === index &&
             settings.selectedCell[1] === col

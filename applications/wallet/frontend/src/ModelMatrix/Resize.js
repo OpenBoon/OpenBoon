@@ -70,7 +70,6 @@ const ModelMatrixResize = ({ matrix, settings, dispatch }) => {
         <Button
           aria-label="Zoom Out"
           onClick={() => {
-            if (settings.zoom === 1) return
             dispatch({ zoom: settings.zoom - 1 })
           }}
           isDisabled={settings.zoom === 1}

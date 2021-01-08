@@ -1,7 +1,6 @@
+import PropTypes from 'prop-types'
 import { useReducer } from 'react'
-
-// TODO: fetch data
-import matrix from './__mocks__/matrix'
+import useSWR from 'swr'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
@@ -13,12 +12,21 @@ import { INITIAL_STATE, reducer } from './reducer'
 
 import ModelMatrixControls from './Controls'
 import ModelMatrixMatrix from './Matrix'
-import ModelMatrixPreview from './Preview'
 
-const PANEL_WIDTH = 200
+const ModelMatrixLayout = ({ projectId, modelId }) => {
+  const {
+    data: { minScore: defaultMin, maxScore: defaultMax },
+  } = useSWR(
+    `/api/v1/projects/${projectId}/models/${modelId}/confusion_matrix/`,
+  )
 
-const ModelMatrixLayout = () => {
-  const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
+  const [settings, dispatch] = useReducer(reducer, {
+    ...INITIAL_STATE,
+    defaultMin,
+    defaultMax,
+    minScore: defaultMin,
+    maxScore: defaultMax,
+  })
 
   return (
     <div
@@ -49,11 +57,7 @@ const ModelMatrixLayout = () => {
           Overall Accuracy:
         </span>
         98%
-        <ModelMatrixControls
-          matrix={matrix}
-          settings={settings}
-          dispatch={dispatch}
-        />
+        <ModelMatrixControls settings={settings} dispatch={dispatch} />
       </div>
 
       <div
@@ -64,29 +68,7 @@ const ModelMatrixLayout = () => {
           backgroundColor: colors.structure.lead,
         }}
       >
-        <ModelMatrixMatrix
-          matrix={matrix}
-          settings={settings}
-          dispatch={dispatch}
-        />
-
-        {settings.isPreviewOpen && (
-          <div
-            css={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: PANEL_WIDTH,
-              height: '100%',
-              borderLeft: constants.borders.regular.coal,
-              overflow: 'auto',
-            }}
-          >
-            <ModelMatrixPreview
-              selectedCell={settings.selectedCell}
-              matrix={matrix}
-            />
-          </div>
-        )}
+        <ModelMatrixMatrix settings={settings} dispatch={dispatch} />
 
         <div
           css={{
@@ -125,6 +107,11 @@ const ModelMatrixLayout = () => {
       </div>
     </div>
   )
+}
+
+ModelMatrixLayout.propTypes = {
+  projectId: PropTypes.string.isRequired,
+  modelId: PropTypes.string.isRequired,
 }
 
 export default ModelMatrixLayout
