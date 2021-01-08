@@ -12,3 +12,8 @@ class ApiCall(models.Model):
     video_minutes = models.FloatField(blank=True, default=0.0)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = (
+            ('service', 'asset_id')
+        )

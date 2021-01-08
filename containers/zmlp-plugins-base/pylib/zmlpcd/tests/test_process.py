@@ -1,6 +1,8 @@
 import unittest
 from unittest.mock import patch
 
+from requests import Response
+
 from zmlpcd.logs import setup_logging
 from zmlpcd.process import ProcessorExecutor, AssetConsumer, is_file_type_allowed
 from zmlpcd.reactor import Reactor
@@ -288,7 +290,23 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert not wrapper.is_already_processed(frame.asset)
 
     @patch('requests.post')
-    def test_record_analysis_metric(self, metric_post_mock):
+    def test_record_analysis_metric_success(self, metric_post_mock):
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": TEST_IMAGE
+        }
+        frame = Frame(TestAsset(path='fake.jpg'))
+        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper.process(frame)
+        metric_post_mock.asset_called_once()
+
+    @patch('requests.post')
+    def test_record_analysis_metric_duplicate(self, metric_post_mock):
+        response = Response()
+        response._content = '{"non_field_errors": ["The fields service, asset_id must make a unique set."]}'
+        response.status_code == 400
+        metric_post_mock.return_value = response
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
             "args": {},

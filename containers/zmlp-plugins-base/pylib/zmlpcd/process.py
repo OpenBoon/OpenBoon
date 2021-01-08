@@ -320,7 +320,7 @@ class ProcessorWrapper(object):
             # a -1 means the processor was skipped internally.
             processed = retval != -1
             if processed:
-                self._record_analysis_metric(frame.asset, self.ref['className'])
+                self._record_analysis_metric(frame.asset)
 
             total_time = round(time.monotonic() - start_time, 2)
             self.increment_stat("process_count")
@@ -464,7 +464,7 @@ class ProcessorWrapper(object):
                      and not m.get("error") for m in metrics)
             return any(value)
 
-    def _record_analysis_metric(self, asset, module_name):
+    def _record_analysis_metric(self, asset):
         """Helper to make the call to record billing metrics.
 
         Builds the required body to track asset, project, module, and image/video data
@@ -484,9 +484,10 @@ class ProcessorWrapper(object):
             # Include starting ellipses as an indicator, favor end of path
             source_path = '...' + source_path[len(source_path)-252:]
         image_count, video_minutes = self._get_count_and_minutes(asset)
+        service = self.ref['module']
         body = {
             'project': ZmlpEnv.get_project_id(),
-            'service': module_name,
+            'service': service,
             'asset_id': asset.id,
             'asset_path': source_path,
             'image_count': image_count,
@@ -494,8 +495,13 @@ class ProcessorWrapper(object):
         }
         response = requests.post(url, json=body)
         if not response.ok:
-            msg = f'Unable to register billing metrics. {response.status_code}: {response.reason}'
-            logger.warning(msg)
+            if 'The fields service, asset_id must make a unique set.' in response.json().get(
+                    'non_field_errors'):
+                logger.info(f'Duplicate metric skipped for {asset.id}: {service}')
+            else:
+                msg = (f'Unable to register billing metrics. {response.status_code}: '
+                       f'{response.reason}')
+                logger.warning(msg)
 
     def _get_count_and_minutes(self, asset):
         """Helper to return total images and number of video minutes for an asset.
