@@ -1,0 +1,376 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModelMatrixResize /> should render properly 1`] = `
+.emotion-0 {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  z-index: 10;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 1px solid #4a4a4a;
+  border-radius: 2px;
+  background-color: #252525;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  opacity: 0.8;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  color: #ffffff;
+  padding: 8px;
+  opacity: 1;
+}
+
+.emotion-2:hover {
+  color: #73b61c;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-3 {
+  background-color: #808080;
+  width: 1px;
+  margin: 8px;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  opacity: 1;
+}
+
+.emotion-4:hover {
+  color: #73b61c;
+}
+
+.emotion-4[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  opacity: 1;
+}
+
+.emotion-5:hover {
+  color: #73b61c;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <ModelMatrixMinimap
+    matrix={
+      Object {
+        "labels": Array [
+          "Dahlia",
+          "Cherry Blossom",
+          "Sacred Lotus",
+          "Rose",
+          "Hydrangea",
+          "Orchids",
+          "Chrysanthemum",
+          "Peony",
+          "Lily 'Stargazer'",
+          "Irises",
+          "Bird of Paradise Flower",
+        ],
+        "matrix": Array [
+          Array [
+            0,
+            10,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+          ],
+          Array [
+            1,
+            9,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+          ],
+          Array [
+            2,
+            8,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+          ],
+          Array [
+            3,
+            7,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+          ],
+          Array [
+            4,
+            6,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+          ],
+          Array [
+            5,
+            5,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+          ],
+          Array [
+            6,
+            4,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+          ],
+          Array [
+            7,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+          ],
+          Array [
+            8,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+          ],
+          Array [
+            9,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+          ],
+          Array [
+            10,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+          ],
+        ],
+        "maxScore": 1,
+        "minScore": 0,
+        "name": "flowers",
+        "overallAccuracy": 0.7,
+      }
+    }
+    settings={
+      Object {
+        "isMinimapOpen": false,
+        "zoom": 1,
+      }
+    }
+  />
+  <div
+    className="emotion-1"
+  >
+    <button
+      aria-label="Mini map"
+      className="emotion-2"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        data-file-name="minimap.svg"
+        height={20}
+      />
+    </button>
+    <div
+      className="emotion-3"
+    />
+    <button
+      aria-disabled={true}
+      aria-label="Zoom Out"
+      className="emotion-4"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        data-file-name="circleMinus.svg"
+        height={20}
+      />
+    </button>
+    <button
+      aria-label="Zoom In"
+      className="emotion-5"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        data-file-name="circlePlus.svg"
+        height={20}
+      />
+    </button>
+  </div>
+</div>
+`;

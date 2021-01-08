@@ -147,10 +147,6 @@ ModelMatrixControls.propTypes = {
     minScore: PropTypes.number.isRequired,
     maxScore: PropTypes.number.isRequired,
   }).isRequired,
-  matrix: PropTypes.shape({
-    minScore: PropTypes.number.isRequired,
-    maxScore: PropTypes.number.isRequired,
-  }).isRequired,
   dispatch: PropTypes.func.isRequired,
 }
 

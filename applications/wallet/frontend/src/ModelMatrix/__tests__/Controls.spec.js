@@ -8,8 +8,13 @@ describe('<ModelMatrixControls', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
       <ModelMatrixControls
-        settings={{ isNormalized: true }}
-        matrix={{ minScore: 0, maxScore: 1 }}
+        settings={{
+          isNormalized: true,
+          defaultMin: 0,
+          defaultMax: 1,
+          minScore: 0,
+          maxScore: 1,
+        }}
         dispatch={noop}
       />,
     )
@@ -20,8 +25,13 @@ describe('<ModelMatrixControls', () => {
   it('should not crash when min equals max', () => {
     const component = TestRenderer.create(
       <ModelMatrixControls
-        settings={{ isNormalized: true }}
-        matrix={{ minScore: 0, maxScore: 0 }}
+        settings={{
+          isNormalized: true,
+          defaultMin: 0,
+          defaultMax: 0,
+          minScore: 0,
+          maxScore: 0,
+        }}
         dispatch={noop}
       />,
     )
@@ -34,8 +44,13 @@ describe('<ModelMatrixControls', () => {
 
     const component = TestRenderer.create(
       <ModelMatrixControls
-        settings={{ isNormalized: true }}
-        matrix={{ minScore: 0, maxScore: 1 }}
+        settings={{
+          isNormalized: true,
+          defaultMin: 0,
+          defaultMax: 1,
+          minScore: 0,
+          maxScore: 1,
+        }}
         dispatch={mockDispatch}
       />,
     )
@@ -91,8 +106,13 @@ describe('<ModelMatrixControls', () => {
 
     const component = TestRenderer.create(
       <ModelMatrixControls
-        settings={{ isNormalized: true }}
-        matrix={{ minScore: 0, maxScore: 1 }}
+        settings={{
+          isNormalized: true,
+          defaultMin: 0,
+          defaultMax: 1,
+          minScore: 0,
+          maxScore: 1,
+        }}
         dispatch={mockDispatch}
       />,
     )
@@ -141,5 +161,35 @@ describe('<ModelMatrixControls', () => {
     })
 
     expect(mockDispatch).toHaveBeenCalledWith({ maxScore: 0.9 })
+  })
+
+  it('should let a user change view', () => {
+    const mockDispatch = jest.fn()
+
+    const component = TestRenderer.create(
+      <ModelMatrixControls
+        settings={{
+          isNormalized: true,
+          defaultMin: 0,
+          defaultMax: 1,
+          minScore: 0,
+          maxScore: 1,
+        }}
+        dispatch={mockDispatch}
+      />,
+    )
+
+    // Change view to Absolute
+    act(() => {
+      component.root
+        .findByProps({ type: 'radio', value: 'absolute' })
+        .props.onClick()
+    })
+
+    act(() => {
+      component.root.findByType('form').props.onSubmit({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

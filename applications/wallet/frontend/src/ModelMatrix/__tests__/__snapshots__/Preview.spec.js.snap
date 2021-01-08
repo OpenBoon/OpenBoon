@@ -1,0 +1,155 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModelMatrixPreview /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  padding: 16px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited,
+.emotion-1 .noop {
+  background-color: #808080;
+}
+
+.emotion-1:hover,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-3 {
+  padding-right: 8px;
+}
+
+.emotion-4 {
+  height: 16px;
+}
+
+.emotion-5 {
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  color: #b3b3b3;
+}
+
+<div
+    className="emotion-0"
+  >
+    <button
+      aria-label="View Filter Panel"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
+    >
+      <div
+        className="emotion-2"
+      >
+        <svg
+          className="emotion-3"
+          data-file-name="filter.svg"
+          height={20}
+        />
+        View Filter Panel
+      </div>
+    </button>
+    <div
+      className="emotion-4"
+    />
+    <h3>
+      <span
+        className="emotion-5"
+      >
+        True:
+      </span>
+       
+      Dahlia
+    </h3>
+    <h3>
+      <span
+        className="emotion-5"
+      >
+        Pred:
+      </span>
+       
+      Cherry Blossom
+    </h3>
+  </div>,
+  .emotion-0 {
+  background-color: #191919;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+<div
+    className="emotion-0"
+  />,
+]
+`;
+
+exports[`<ModelMatrixPreview /> should render properly with no selected cells 1`] = `
+.emotion-0 {
+  padding: 16px;
+  font-style: italic;
+}
+
+<div
+  className="emotion-0"
+>
+  Select a cell of the matrix to view the labeled assets.
+</div>
+`;

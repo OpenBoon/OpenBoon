@@ -21,6 +21,7 @@ const ModelMatrixMatrix = ({ settings, dispatch }) => {
     minScore: settings.minScore,
     maxScore: settings.maxScore,
   })
+
   const { data: matrix } = useSWR(
     `/api/v1/projects/${projectId}/models/${modelId}/confusion_matrix/${queryParams}`,
   )
@@ -93,7 +94,6 @@ const ModelMatrixMatrix = ({ settings, dispatch }) => {
             width: '100%',
           }}
         >
-          {/* begin placeholder for "True Label" column width */}
           <div
             css={{
               display: 'flex',
@@ -112,10 +112,8 @@ const ModelMatrixMatrix = ({ settings, dispatch }) => {
               &nbsp;
             </div>
           </div>
-          {/* end placeholder for "True Label" column width */}
 
           <div css={{ display: 'flex', width: settings.width }}>
-            {/* begin placeholde for row labels */}
             <div
               css={{
                 paddingLeft: spacing.normal,
@@ -126,7 +124,6 @@ const ModelMatrixMatrix = ({ settings, dispatch }) => {
             >
               &nbsp;
             </div>
-            {/* end placeholde for row labels */}
 
             <div css={{ flex: 1, width: '0%' }}>
               <div
@@ -176,12 +173,6 @@ const ModelMatrixMatrix = ({ settings, dispatch }) => {
 }
 
 ModelMatrixMatrix.propTypes = {
-  matrix: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    overallAccuracy: PropTypes.number.isRequired,
-    labels: PropTypes.arrayOf(PropTypes.string).isRequired,
-    matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  }).isRequired,
   settings: PropTypes.shape({
     minScore: PropTypes.number.isRequired,
     maxScore: PropTypes.number.isRequired,
