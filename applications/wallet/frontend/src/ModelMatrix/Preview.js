@@ -20,7 +20,12 @@ const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
   if (!selectedCell.length)
     return (
       <div
-        css={{ padding: spacing.normal, fontStyle: typography.style.italic }}
+        css={{
+          padding: spacing.normal,
+          fontStyle: typography.style.italic,
+          height: '100%',
+          borderLeft: constants.borders.regular.coal,
+        }}
       >
         Select a cell of the matrix to view the labeled assets.
       </div>
@@ -38,7 +43,15 @@ const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
   })
 
   return (
-    <>
+    <div
+      css={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        borderLeft: constants.borders.regular.coal,
+        overflow: 'auto',
+      }}
+    >
       <div
         css={{
           padding: spacing.normal,
@@ -115,7 +128,7 @@ const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
           flex: 1,
         }}
       />
-    </>
+    </div>
   )
 }
 

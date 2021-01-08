@@ -101,9 +101,14 @@ describe('<ModelMatrix />', () => {
       }),
     )
 
+    // Select a different cell
+    act(() => {
+      component.root.findAllByProps({ type: 'button' })[1].props.onClick()
+    })
+
     // Deselect a cell
     act(() => {
-      component.root.findAllByProps({ type: 'button' })[0].props.onClick()
+      component.root.findAllByProps({ type: 'button' })[1].props.onClick()
     })
   })
 })

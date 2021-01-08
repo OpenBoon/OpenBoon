@@ -4,7 +4,9 @@ import { Tooltip } from 'react-tippy'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import { useLocalStorage } from '../LocalStorage/helpers'
 import { useScroller } from '../Scroll/helpers'
+import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
 import { getColor } from './helpers'
 
@@ -12,12 +14,24 @@ import settingsShape from './settingsShape'
 
 const CONTRAST_THRESHOLD = 69
 
+const PANEL_WIDTH = 200
+
 const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
   const rowRef = useScroller({
     namespace: 'ModelMatrixHorizontal',
     isWheelEmitter: true,
     isWheelListener: true,
     isScrollEmitter: true,
+  })
+
+  const [{ isOpen }, setPreviewSettings] = useLocalStorage({
+    key: `matrixPreviewSettings`,
+    reducer: resizeableReducer,
+    initialState: {
+      size: PANEL_WIDTH,
+      originSize: 0,
+      isOpen: false,
+    },
   })
 
   /* istanbul ignore next */
@@ -95,7 +109,7 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
           return (
             <Tooltip
               key={matrix.labels[col]}
-              position="left"
+              position="top"
               trigger="mouseenter"
               html={
                 <div
@@ -164,12 +178,26 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
                     border: constants.borders.keyTwoLarge,
                   },
                 }}
-                onClick={() =>
+                onClick={() => {
                   dispatch({
                     selectedCell: isSelected ? [] : [index, col],
-                    isPreviewOpen: !isSelected,
                   })
-                }
+
+                  if (!isOpen && !isSelected) {
+                    setPreviewSettings({
+                      type: ACTIONS.OPEN,
+                      payload: {
+                        minSize: PANEL_WIDTH,
+                      },
+                    })
+                  }
+
+                  if (isOpen && isSelected) {
+                    setPreviewSettings({
+                      type: ACTIONS.CLOSE,
+                    })
+                  }
+                }}
               >
                 <div
                   css={{

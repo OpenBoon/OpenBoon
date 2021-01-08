@@ -5,7 +5,11 @@ import SuspenseBoundary from '../SuspenseBoundary'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import { useLocalStorage } from '../LocalStorage/helpers'
+
 import Button, { VARIANTS } from '../Button'
+import Resizeable from '../Resizeable'
+import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
 import PreviewSvg from '../Icons/preview.svg'
 
@@ -25,6 +29,16 @@ const ModelMatrixLayout = ({
   setMatrixDetails,
 }) => {
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
+
+  const [{ isOpen }, setPreviewSettings] = useLocalStorage({
+    key: `matrixPreviewSettings`,
+    reducer: resizeableReducer,
+    initialState: {
+      size: PANEL_WIDTH,
+      originSize: 0,
+      isOpen: false,
+    },
+  })
 
   return (
     <div
@@ -84,24 +98,19 @@ const ModelMatrixLayout = ({
           />
         </SuspenseBoundary>
 
-        {settings.isPreviewOpen && (
-          <div
-            css={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: PANEL_WIDTH,
-              height: '100%',
-              borderLeft: constants.borders.regular.coal,
-              overflow: 'auto',
-            }}
-          >
-            <ModelMatrixPreview
-              selectedCell={settings.selectedCell}
-              labels={labels}
-              moduleName={moduleName}
-            />
-          </div>
-        )}
+        <Resizeable
+          storageName="matrixPreviewSettings"
+          minSize={PANEL_WIDTH}
+          openToThe="left"
+          isInitiallyOpen={false}
+          isDisabled={!isOpen}
+        >
+          <ModelMatrixPreview
+            selectedCell={settings.selectedCell}
+            labels={labels}
+            moduleName={moduleName}
+          />
+        </Resizeable>
 
         <div
           css={{
@@ -116,8 +125,11 @@ const ModelMatrixLayout = ({
             title="Preview"
             variant={VARIANTS.ICON}
             onClick={() =>
-              dispatch({
-                isPreviewOpen: !settings.isPreviewOpen,
+              setPreviewSettings({
+                type: ACTIONS.TOGGLE_OPEN,
+                payload: {
+                  minSize: PANEL_WIDTH,
+                },
               })
             }
             style={{
@@ -125,9 +137,7 @@ const ModelMatrixLayout = ({
               paddingTop: spacing.normal,
               paddingBottom: spacing.normal,
               borderBottom: constants.borders.regular.coal,
-              color: settings.isPreviewOpen
-                ? colors.key.one
-                : colors.structure.steel,
+              color: isOpen ? colors.key.one : colors.structure.steel,
               ':hover': {
                 backgroundColor: colors.structure.mattGrey,
               },
