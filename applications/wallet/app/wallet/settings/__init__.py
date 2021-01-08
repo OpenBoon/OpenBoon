@@ -231,6 +231,7 @@ REST_AUTH_SERIALIZERS = {
 ZMLP_API_URL = os.environ.get('ZMLP_API_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
 INCEPTION_KEY_B64 = os.environ.get('INCEPTION_KEY_B64')
+METRICS_API_URL = os.environ.get('METRICS_API_URL', 'http://metrics')
 
 # Google OAUTH2
 GOOGLE_OAUTH_CLIENT_ID = os.environ.get(

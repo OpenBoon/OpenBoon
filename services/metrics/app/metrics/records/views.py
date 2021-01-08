@@ -124,3 +124,37 @@ class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
 
         serializer = ReportSerializer(data, many=True, context=self.get_serializer_context())
         return Response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def tiered_usage(self, request):
+        after = self.request.query_params.get('after')
+        before = self.request.query_params.get('before')
+        project = self.request.query_params.get('project')
+        queryset = self.get_queryset().filter(project=project)
+        if after:
+            after_date = parse_date(after)
+            queryset = queryset.filter(created_date__gte=after_date)
+        if before:
+            before_date = parse_date(before)
+            queryset = queryset.filter(created_date__lt=before_date)
+        tier_1_agg = queryset.exclude(
+            service__in=ApiCall.tier_2_modules
+        ).exclude(
+            service__in=ApiCall.free_modules
+        ).aggregate(
+            tier_1_image_count=Sum('image_count'),
+            tier_1_video_minutes=Sum('video_minutes')
+        )
+        tier_2_agg = queryset.filter(
+            __in=ApiCall.tier_2_modules
+        ).aggregate(
+            tier_2_image_count=Sum('image_count'),
+            tier_2_video_minutes=Sum('video_minutes')
+        )
+        tiered_usage = {}
+        tiered_usage.update(tier_1_agg)
+        tiered_usage.update(tier_2_agg)
+        return Response(tiered_usage)
+
+
+

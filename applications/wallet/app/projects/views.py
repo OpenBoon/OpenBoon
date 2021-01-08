@@ -1,7 +1,10 @@
 import logging
 import os
+from datetime import datetime
 
 import requests
+from rest_framework.decorators import action
+
 import zmlp
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -488,6 +491,16 @@ class ProjectViewSet(ListModelMixin,
 
     def get_queryset(self):
         return self.request.user.projects.filter(isActive=True)
+
+    @action(methods=['get'], detail=True)
+    def ml_usage_this_month(self, request, pk):
+        """Returns the ml module usage for the current month."""
+        today = datetime.today()
+        first_of_the_month = f'{today.year:04d}-{today.month:02d}-01'
+        path = os.path.join(settings.METRICS_API_URL, 'apicalls/tiered_usage')
+        response = requests.get(path, {'after': first_of_the_month, 'project': pk})
+        response.raise_for_status()
+        return Response(response.json())
 
 
 class ProjectUserViewSet(BaseProjectViewSet):

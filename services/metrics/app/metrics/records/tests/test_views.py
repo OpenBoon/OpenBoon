@@ -28,7 +28,6 @@ class TestAPICallsViewSet:
         response = api_client.post(reverse('apicalls-list'), body)
         assert response.json() == {'non_field_errors': ['The fields service, asset_id must make a unique set.']}  # noqa
 
-
     def test_get_single_record(self, api_client, single_record):
         url = reverse('apicalls-detail', kwargs={'pk': single_record.id})
         response = api_client.get(url)
@@ -82,3 +81,10 @@ class TestAPICallsViewSet:
                                   HTTP_ACCEPT='text/csv')
         assert response['content-disposition'] == ('attachment; filename=billing_report_'
                                                    '2020-12-01_to_2020-12-25.csv')
+
+    def test_tiered_usage(self, api_client, test_set):
+        response = api_client.get(reverse('apicalls-tiered-usage'),
+                                  {'project': '00000000-0000-0000-0000-000000000000'})
+        assert response.status_code == 200
+        assert response.json() == {'tier_1_image_count': 16, 'tier_1_video_minutes': 80.3, 'tier_2_image_count': None, 'tier_2_video_minutes': None}  # noqa
+
