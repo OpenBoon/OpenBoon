@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import { useReducer } from 'react'
-import useSWR from 'swr'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
@@ -16,12 +15,8 @@ import ModelMatrixPreview from './Preview'
 
 const PANEL_WIDTH = 200
 
-const ModelMatrixLayout = ({ projectId, modelId }) => {
+const ModelMatrixLayout = ({ matrix }) => {
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
-
-  const { data: matrix } = useSWR(
-    `/api/v1/projects/${projectId}/models/${modelId}/confusion_matrix/`,
-  )
 
   return (
     <div
@@ -51,7 +46,7 @@ const ModelMatrixLayout = ({ projectId, modelId }) => {
         >
           Overall Accuracy:
         </span>
-        98%
+        {`${Math.round(matrix.overallAccuracy * 100)}%`}
         <ModelMatrixControls
           matrix={matrix}
           settings={settings}
@@ -131,8 +126,9 @@ const ModelMatrixLayout = ({ projectId, modelId }) => {
 }
 
 ModelMatrixLayout.propTypes = {
-  projectId: PropTypes.string.isRequired,
-  modelId: PropTypes.string.isRequired,
+  matrix: PropTypes.shape({
+    overallAccuracy: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 export default ModelMatrixLayout

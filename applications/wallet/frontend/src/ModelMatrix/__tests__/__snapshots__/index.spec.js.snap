@@ -1113,7 +1113,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
       >
         Overall Accuracy:
       </span>
-      98%
+      70%
       <form
         className="emotion-7"
         method="post"
@@ -4758,7 +4758,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
       >
         Overall Accuracy:
       </span>
-      98%
+      70%
       <form
         className="emotion-7"
         method="post"
@@ -8562,7 +8562,7 @@ exports[`<ModelMatrix /> should render properly 3`] = `
       >
         Overall Accuracy:
       </span>
-      98%
+      70%
       <form
         className="emotion-7"
         method="post"
@@ -12278,7 +12278,7 @@ exports[`<ModelMatrix /> should render properly 4`] = `
       >
         Overall Accuracy:
       </span>
-      98%
+      70%
       <form
         className="emotion-7"
         method="post"

@@ -11,9 +11,9 @@ const ModelMatrixContent = () => {
     query: { projectId, modelId },
   } = useRouter()
 
-  const {
-    data: { name },
-  } = useSWR(`/api/v1/projects/${projectId}/models/${modelId}/`)
+  const { data: matrix } = useSWR(
+    `/api/v1/projects/${projectId}/models/${modelId}/confusion_matrix/`,
+  )
 
   return (
     <div
@@ -31,10 +31,10 @@ const ModelMatrixContent = () => {
       <ModelMatrixNavigation
         projectId={projectId}
         modelId={modelId}
-        name={name}
+        name={matrix.name}
       />
 
-      <ModelMatrixLayout projectId={projectId} modelId={modelId} />
+      <ModelMatrixLayout matrix={matrix} />
     </div>
   )
 }
