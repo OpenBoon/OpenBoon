@@ -6,7 +6,7 @@ import FilterSvg from '../Icons/filter.svg'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
-const ModelMatrixPreview = ({ selectedCell, matrix }) => {
+const ModelMatrixPreview = ({ matrix, selectedCell }) => {
   if (!selectedCell.length)
     return (
       <div
