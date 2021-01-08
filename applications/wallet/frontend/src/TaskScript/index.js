@@ -10,7 +10,9 @@ const TaskScript = () => {
     query: { projectId, taskId },
   } = useRouter()
 
-  const { data } = useSWR(`/api/v1/projects/${projectId}/tasks/${taskId}/`)
+  const { data } = useSWR(
+    `/api/v1/projects/${projectId}/tasks/${taskId}/script/`,
+  )
 
   return (
     <div
