@@ -1,12 +1,22 @@
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 import PropTypes from 'prop-types'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
 import FilterSvg from '../Icons/filter.svg'
 
+import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../Panel'
+
+import { encode } from '../Filters/helpers'
+
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
-const ModelMatrixPreview = ({ selectedCell, labels }) => {
+const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
+  const {
+    query: { projectId, modelId },
+  } = useRouter()
+
   if (!selectedCell.length)
     return (
       <div
@@ -15,6 +25,17 @@ const ModelMatrixPreview = ({ selectedCell, labels }) => {
         Select a cell of the matrix to view the labeled assets.
       </div>
     )
+
+  const encodedFilter = encode({
+    filters: [
+      {
+        type: 'label',
+        attribute: `labels.${moduleName}`,
+        modelId,
+        values: {},
+      },
+    ],
+  })
 
   return (
     <>
@@ -25,26 +46,40 @@ const ModelMatrixPreview = ({ selectedCell, labels }) => {
           lineHeight: typography.height.regular,
         }}
       >
-        <Button
-          aria-label="View Filter Panel"
-          variant={BUTTON_VARIANTS.SECONDARY_SMALL}
-          onClick={() => {
-            localStorage.setItem('rightOpeningPanel', '"filters"')
-          }}
-          style={{
-            display: 'flex',
-            paddingTop: spacing.moderate,
-            paddingBottom: spacing.moderate,
-          }}
+        <Link
+          href={`/[projectId]/visualizer?query=${encodedFilter}`}
+          as={`/${projectId}/visualizer?query=${encodedFilter}`}
+          passHref
         >
-          <div css={{ display: 'flex', alignItems: 'center' }}>
-            <FilterSvg
-              height={constants.icons.regular}
-              css={{ paddingRight: spacing.base }}
-            />
-            View Filter Panel
-          </div>
-        </Button>
+          <Button
+            aria-label="View Filter Panel"
+            variant={BUTTON_VARIANTS.SECONDARY_SMALL}
+            onClick={() => {
+              localStorage.setItem(
+                'rightOpeningPanelSettings',
+                JSON.stringify({
+                  isOpen: true,
+                  openPanel: 'filters',
+                  originSize: PANEL_MIN_WIDTH,
+                  size: PANEL_MIN_WIDTH,
+                }),
+              )
+            }}
+            style={{
+              display: 'flex',
+              paddingTop: spacing.moderate,
+              paddingBottom: spacing.moderate,
+            }}
+          >
+            <div css={{ display: 'flex', alignItems: 'center' }}>
+              <FilterSvg
+                height={constants.icons.regular}
+                css={{ paddingRight: spacing.base }}
+              />
+              View Filter Panel
+            </div>
+          </Button>
+        </Link>
 
         <div css={{ height: spacing.normal }} />
 
@@ -87,6 +122,7 @@ const ModelMatrixPreview = ({ selectedCell, labels }) => {
 ModelMatrixPreview.propTypes = {
   selectedCell: PropTypes.arrayOf(PropTypes.number).isRequired,
   labels: PropTypes.arrayOf(PropTypes.string).isRequired,
+  moduleName: PropTypes.string.isRequired,
 }
 
 export default ModelMatrixPreview

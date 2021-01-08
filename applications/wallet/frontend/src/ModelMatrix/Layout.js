@@ -21,7 +21,7 @@ const ACCURACY_WIDTH = 40
 const ModelMatrixLayout = ({
   projectId,
   modelId,
-  matrixDetails: { name, overallAccuracy, labels },
+  matrixDetails: { name, overallAccuracy, labels, moduleName },
   setMatrixDetails,
 }) => {
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
@@ -98,6 +98,7 @@ const ModelMatrixLayout = ({
             <ModelMatrixPreview
               selectedCell={settings.selectedCell}
               labels={labels}
+              moduleName={moduleName}
             />
           </div>
         )}
@@ -148,6 +149,7 @@ ModelMatrixLayout.propTypes = {
     name: PropTypes.string.isRequired,
     overallAccuracy: PropTypes.number.isRequired,
     labels: PropTypes.arrayOf(PropTypes.number),
+    moduleName: PropTypes.string.isRequired,
   }).isRequired,
   setMatrixDetails: PropTypes.func.isRequired,
 }

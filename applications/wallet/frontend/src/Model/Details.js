@@ -15,6 +15,7 @@ import PenSvg from '../Icons/pen.svg'
 import { encode } from '../Filters/helpers'
 import { fetcher, revalidate } from '../Fetch/helpers'
 
+import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../Panel'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
@@ -300,7 +301,15 @@ const ModelDetails = () => {
                   aria-label="Add Filter in Visualizer"
                   variant={BUTTON_VARIANTS.SECONDARY_SMALL}
                   onClick={() => {
-                    localStorage.setItem('rightOpeningPanel', '"filters"')
+                    localStorage.setItem(
+                      'rightOpeningPanelSettings',
+                      JSON.stringify({
+                        isOpen: true,
+                        openPanel: 'filters',
+                        originSize: PANEL_MIN_WIDTH,
+                        size: PANEL_MIN_WIDTH,
+                      }),
+                    )
                   }}
                   style={{
                     display: 'flex',

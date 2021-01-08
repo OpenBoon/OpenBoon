@@ -6,6 +6,8 @@ import mockUser from '../../User/__mocks__/user'
 
 import User from '../../User'
 
+import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../../Panel'
+
 import ModelMatrix from '..'
 
 jest.mock('react-tippy', () => ({
@@ -57,6 +59,11 @@ describe('<ModelMatrix />', () => {
       component.root.findByProps({ 'aria-label': 'Zoom In' }).props.onClick()
     })
 
+    // Select a cell
+    act(() => {
+      component.root.findAllByProps({ type: 'button' })[0].props.onClick()
+    })
+
     expect(component.toJSON()).toMatchSnapshot()
 
     // Back to zoom 1x
@@ -75,25 +82,28 @@ describe('<ModelMatrix />', () => {
       component.root.findByType('form').props.onSubmit({ preventDefault: noop })
     })
 
-    // Select a cell
-    act(() => {
-      component.root.findAllByProps({ type: 'button' })[0].props.onClick()
-    })
+    // eslint-disable-next-line no-proto
+    const spy = jest.spyOn(localStorage.__proto__, 'setItem')
 
-    // Select a cell
     act(() => {
       component.root
         .findByProps({ 'aria-label': 'View Filter Panel' })
-        .props.onClick()
+        .props.onClick({ defaultPrevented: noop })
     })
 
-    expect(component.toJSON()).toMatchSnapshot()
+    expect(spy).toHaveBeenCalledWith(
+      'rightOpeningPanelSettings',
+      JSON.stringify({
+        isOpen: true,
+        openPanel: 'filters',
+        originSize: PANEL_MIN_WIDTH,
+        size: PANEL_MIN_WIDTH,
+      }),
+    )
 
     // Deselect a cell
     act(() => {
       component.root.findAllByProps({ type: 'button' })[0].props.onClick()
     })
-
-    expect(component.toJSON()).toMatchSnapshot()
   })
 })
