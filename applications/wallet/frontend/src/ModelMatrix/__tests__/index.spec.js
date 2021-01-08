@@ -1,6 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import model from '../../Model/__mocks__/model'
+import matrix from '../__mocks__/matrix'
 
 import mockUser from '../../User/__mocks__/user'
 
@@ -27,7 +28,7 @@ describe('<ModelMatrix />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: model })
+    require('swr').__setMockUseSWRResponse({ data: { ...model, ...matrix } })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>

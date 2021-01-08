@@ -34,7 +34,7 @@ const ModelMatrixContent = () => {
         name={name}
       />
 
-      <ModelMatrixLayout />
+      <ModelMatrixLayout projectId={projectId} modelId={modelId} />
     </div>
   )
 }

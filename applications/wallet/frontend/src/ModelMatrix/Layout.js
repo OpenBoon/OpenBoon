@@ -1,7 +1,6 @@
+import PropTypes from 'prop-types'
 import { useReducer } from 'react'
-
-// TODO: fetch data
-import matrix from './__mocks__/matrix'
+import useSWR from 'swr'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
@@ -17,8 +16,12 @@ import ModelMatrixPreview from './Preview'
 
 const PANEL_WIDTH = 200
 
-const ModelMatrixLayout = () => {
+const ModelMatrixLayout = ({ projectId, modelId }) => {
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
+
+  const { data: matrix } = useSWR(
+    `/api/v1/projects/${projectId}/models/${modelId}/confusion_matrix/`,
+  )
 
   return (
     <div
@@ -125,6 +128,11 @@ const ModelMatrixLayout = () => {
       </div>
     </div>
   )
+}
+
+ModelMatrixLayout.propTypes = {
+  projectId: PropTypes.string.isRequired,
+  modelId: PropTypes.string.isRequired,
 }
 
 export default ModelMatrixLayout
