@@ -33,7 +33,7 @@ const AccountContent = () => {
 
   return (
     <>
-      <div css={{ maxWidth: MIN_WIDTH + spacing.spacious * 4 }}>
+      <div css={{ maxWidth: MIN_WIDTH }}>
         <InputSearch
           aria-label="Filter Projects"
           placeholder="Filter Projects"
