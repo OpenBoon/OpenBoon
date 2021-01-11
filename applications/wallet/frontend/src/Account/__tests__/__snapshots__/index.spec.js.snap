@@ -24,6 +24,69 @@ Array [
     Account Overview
   </h2>,
   .emotion-0 {
+  max-width: 528px;
+}
+
+.emotion-1 {
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
+  background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+  background-color: #2e2e2e;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-1::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-1::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-1:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-1::placeholder {
+  font-style: italic;
+}
+
+.emotion-1:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-1:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+<div
+    className="emotion-0"
+  >
+    <input
+      aria-label="Filter Projects"
+      className="emotion-1"
+      onChange={[Function]}
+      placeholder="Filter Projects"
+      type="search"
+      value="erty"
+    />
+  </div>,
+  .emotion-0 {
   padding-top: 16px;
   padding-bottom: 16px;
 }
@@ -38,18 +101,19 @@ Array [
   display: grid;
   gap: 32px;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  padding-bottom: 32px;
 }
 
 <div
     className="emotion-0"
   >
     <AccountCard
-      name="qwerty"
-      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
-    />
-    <AccountCard
       name="azerty"
       projectId="e93cbadb-e5ae-4598-8395-4cf5b30c0e94"
+    />
+    <AccountCard
+      name="qwerty"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
     />
   </div>,
 ]
