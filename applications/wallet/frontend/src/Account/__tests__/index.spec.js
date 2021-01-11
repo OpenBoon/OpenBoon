@@ -7,8 +7,6 @@ import User from '../../User'
 
 import Account from '..'
 
-jest.mock('../Card', () => 'AccountCard')
-
 describe('<Account />', () => {
   it('should render properly', () => {
     require('swr').__setMockUseSWRResponse({ data: projects })
