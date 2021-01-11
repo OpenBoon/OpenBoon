@@ -73,7 +73,6 @@ const AccountCard = ({ projectId, name }) => {
         css={{
           color: colors.structure.zinc,
           paddingBottom: spacing.base,
-
           fontFamily: typography.family.condensed,
           fontWeight: typography.weight.regular,
           textTransform: 'uppercase',
