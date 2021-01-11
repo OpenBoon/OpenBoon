@@ -28,21 +28,28 @@ Array [
   padding-bottom: 16px;
 }
 
-<h3
+<div
     className="emotion-0"
   >
     Number of Projects: 
     2
-  </h3>,
+  </div>,
   .emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+@media screen and (min-width: 1500px) {
+  .emotion-0 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media screen and (min-width: 2000px) {
+  .emotion-0 {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
 }
 
 <div

@@ -17,10 +17,23 @@ const AccountContent = () => {
 
   return (
     <>
-      <h3 css={{ paddingTop: spacing.normal, paddingBottom: spacing.normal }}>
+      <div css={{ paddingTop: spacing.normal, paddingBottom: spacing.normal }}>
         Number of Projects: {count}
-      </h3>
-      <div css={{ display: 'flex', flexWrap: 'wrap' }}>
+      </div>
+
+      <div
+        css={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: spacing.spacious,
+          '@media screen and (min-width: 1500px)': {
+            gridTemplateColumns: '1fr 1fr 1fr',
+          },
+          '@media screen and (min-width: 2000px)': {
+            gridTemplateColumns: '1fr 1fr 1fr 1fr',
+          },
+        }}
+      >
         {projects.map(({ id: projectId, name }) => (
           <AccountCard key={projectId} projectId={projectId} name={name} />
         ))}

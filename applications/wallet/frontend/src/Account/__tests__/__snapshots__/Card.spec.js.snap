@@ -2,12 +2,6 @@
 
 exports[`<AccountCard /> should not render without subscriptions 1`] = `
 .emotion-0 {
-  padding-right: 32px;
-  padding-bottom: 32px;
-  width: 470px;
-}
-
-.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -18,50 +12,32 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
   background-color: #3b3b3b;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   border-radius: 2px;
+  padding: 24px;
 }
 
-.emotion-2 {
-  padding: 16px;
-  border-bottom: 1px solid #4a4a4a;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 svg {
-  margin-right: 8px;
-}
-
-.emotion-3 {
-  padding: 16px;
-  width: 100%;
-}
-
-.emotion-4 {
+.emotion-1 {
   padding-bottom: 8px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.emotion-5 {
+.emotion-2 {
   color: #b3b3b3;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  text-transform: uppercase;
 }
 
-.emotion-6 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -92,77 +68,224 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
   background-color: transparent;
 }
 
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited,
-.emotion-7 .noop {
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
   background-color: #73b61c;
 }
 
-.emotion-7:hover,
-.emotion-7 .noop {
+.emotion-4:hover,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true],
-.emotion-7 .noop {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #2e2e2e;
   background-color: #808080;
+}
+
+.emotion-5 {
+  color: #b3b3b3;
+  padding-top: 24px;
+  padding-bottom: 8px;
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 16px;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  color: #ffffff;
+}
+
+.emotion-7:hover,
+.emotion-7.focus-visible:focus,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg,
+.emotion-7 .noop svg {
+  opacity: 1;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #808080;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
+  background-color: #808080;
+}
+
+.emotion-7:hover {
+  background-color: #b3b3b3;
 }
 
 <div
   className="emotion-0"
 >
-  <div
+  <h3
     className="emotion-1"
+    title="Project Zero"
   >
-    <div
-      className="emotion-2"
+    Project: 
+    Project Zero
+  </h3>
+  <div
+    className="emotion-2"
+  >
+    ID: 
+    00000000-0000-0000-0000-000000000000
+  </div>
+  <div
+    className="emotion-3"
+  >
+    <a
+      className="emotion-4"
+      href="/00000000-0000-0000-0000-000000000000"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
     >
-      <div
-        className="emotion-3"
-      >
-        <h3
-          className="emotion-4"
-          title="Project Zero"
-        >
-          Project: 
-          Project Zero
-        </h3>
-        <div
-          className="emotion-5"
-        >
-          Project ID: 
-          00000000-0000-0000-0000-000000000000
-        </div>
-        <div
-          className="emotion-6"
-        >
-          <a
-            className="emotion-7"
-            href="/00000000-0000-0000-0000-000000000000"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-          >
-            Go To Project
-          </a>
-        </div>
-      </div>
-    </div>
+      Go To Project Dashboard
+    </a>
+  </div>
+  <div
+    className="emotion-5"
+  >
+    Quick Links
+  </div>
+  <div
+    className="emotion-6"
+  >
+    <a
+      aria-label="Data Sources"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/data-sources"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Data Sources"
+    >
+      <svg
+        data-file-name="datasources.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="Job Queue"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/jobs"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Job Queue"
+    >
+      <svg
+        data-file-name="jobQueue.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="Custom Models"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/models"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Custom Models"
+    >
+      <svg
+        data-file-name="models.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="Visualizer"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/visualizer"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Visualizer"
+    >
+      <svg
+        data-file-name="visualizer.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="API Keys"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/api-keys"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="API Keys"
+    >
+      <svg
+        data-file-name="key.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="User Admin"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/users"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="User Admin"
+    >
+      <svg
+        data-file-name="users.svg"
+        height={20}
+      />
+    </a>
   </div>
 </div>
 `;
 
 exports[`<AccountCard /> should render properly 1`] = `
 .emotion-0 {
-  padding-right: 32px;
-  padding-bottom: 32px;
-  width: 470px;
-}
-
-.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -173,50 +296,32 @@ exports[`<AccountCard /> should render properly 1`] = `
   background-color: #3b3b3b;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   border-radius: 2px;
+  padding: 24px;
 }
 
-.emotion-2 {
-  padding: 16px;
-  border-bottom: 1px solid #4a4a4a;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 svg {
-  margin-right: 8px;
-}
-
-.emotion-3 {
-  padding: 16px;
-  width: 100%;
-}
-
-.emotion-4 {
+.emotion-1 {
   padding-bottom: 8px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.emotion-5 {
+.emotion-2 {
   color: #b3b3b3;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  text-transform: uppercase;
 }
 
-.emotion-6 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -247,165 +352,224 @@ exports[`<AccountCard /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited,
-.emotion-7 .noop {
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
   background-color: #73b61c;
 }
 
-.emotion-7:hover,
-.emotion-7 .noop {
+.emotion-4:hover,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true],
-.emotion-7 .noop {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-8 {
-  padding: 32px;
+.emotion-5 {
+  color: #b3b3b3;
+  padding-top: 24px;
+  padding-bottom: 8px;
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  text-transform: uppercase;
 }
 
-.emotion-9 {
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 500;
-  padding-bottom: 12px;
-}
-
-.emotion-10 {
-  padding-bottom: 24px;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-11 {
-  padding-bottom: 16px;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-12 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  gap: 16px;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  color: #ffffff;
 }
 
-.emotion-12 img {
-  margin-right: 12px;
+.emotion-7:hover,
+.emotion-7.focus-visible:focus,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.emotion-13 {
-  padding-top: 16px;
-  padding-bottom: 16px;
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg,
+.emotion-7 .noop svg {
+  opacity: 1;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #808080;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
+  background-color: #808080;
+}
+
+.emotion-7:hover {
+  background-color: #b3b3b3;
 }
 
 <div
   className="emotion-0"
 >
-  <div
+  <h3
     className="emotion-1"
+    title="Project Zero"
   >
-    <div
-      className="emotion-2"
+    Project: 
+    Project Zero
+  </h3>
+  <div
+    className="emotion-2"
+  >
+    ID: 
+    00000000-0000-0000-0000-000000000000
+  </div>
+  <div
+    className="emotion-3"
+  >
+    <a
+      className="emotion-4"
+      href="/00000000-0000-0000-0000-000000000000"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
     >
-      <div
-        className="emotion-3"
-      >
-        <h3
-          className="emotion-4"
-          title="Project Zero"
-        >
-          Project: 
-          Project Zero
-        </h3>
-        <div
-          className="emotion-5"
-        >
-          Project ID: 
-          00000000-0000-0000-0000-000000000000
-        </div>
-        <div
-          className="emotion-6"
-        >
-          <a
-            className="emotion-7"
-            href="/00000000-0000-0000-0000-000000000000"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-          >
-            Go To Project
-          </a>
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-8"
+      Go To Project Dashboard
+    </a>
+  </div>
+  <div
+    className="emotion-5"
+  >
+    Quick Links
+  </div>
+  <div
+    className="emotion-6"
+  >
+    <a
+      aria-label="Data Sources"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/data-sources"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Data Sources"
     >
-      <div
-        className="emotion-9"
-      >
-        Project Tier: 
-        Premier
-      </div>
-      <h3
-        className="emotion-10"
-      >
-        Usage:
-      </h3>
-      <div
-        className="emotion-11"
-      >
-        <h4
-          className="emotion-12"
-        >
-          <img
-            alt=""
-            src="/icons/videos.png"
-            width={32}
-          />
-           Video Hours:
-           
-          0
-        </h4>
-      </div>
-      <div
-        className="emotion-13"
-      >
-        <h4
-          className="emotion-12"
-        >
-          <img
-            alt=""
-            src="/icons/images.png"
-            width={32}
-          />
-           Images / Documents: 
-          97
-        </h4>
-      </div>
-    </div>
+      <svg
+        data-file-name="datasources.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="Job Queue"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/jobs"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Job Queue"
+    >
+      <svg
+        data-file-name="jobQueue.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="Custom Models"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/models"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Custom Models"
+    >
+      <svg
+        data-file-name="models.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="Visualizer"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/visualizer"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Visualizer"
+    >
+      <svg
+        data-file-name="visualizer.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="API Keys"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/api-keys"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="API Keys"
+    >
+      <svg
+        data-file-name="key.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="User Admin"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/users"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="User Admin"
+    >
+      <svg
+        data-file-name="users.svg"
+        height={20}
+      />
+    </a>
   </div>
 </div>
 `;
 
 exports[`<AccountCard /> should render properly with no modules 1`] = `
 .emotion-0 {
-  padding-right: 32px;
-  padding-bottom: 32px;
-  width: 470px;
-}
-
-.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -416,50 +580,32 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
   background-color: #3b3b3b;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   border-radius: 2px;
+  padding: 24px;
 }
 
-.emotion-2 {
-  padding: 16px;
-  border-bottom: 1px solid #4a4a4a;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 svg {
-  margin-right: 8px;
-}
-
-.emotion-3 {
-  padding: 16px;
-  width: 100%;
-}
-
-.emotion-4 {
+.emotion-1 {
   padding-bottom: 8px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.emotion-5 {
+.emotion-2 {
   color: #b3b3b3;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  text-transform: uppercase;
 }
 
-.emotion-6 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -490,165 +636,224 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
   background-color: transparent;
 }
 
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited,
-.emotion-7 .noop {
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
   background-color: #73b61c;
 }
 
-.emotion-7:hover,
-.emotion-7 .noop {
+.emotion-4:hover,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true],
-.emotion-7 .noop {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-8 {
-  padding: 32px;
+.emotion-5 {
+  color: #b3b3b3;
+  padding-top: 24px;
+  padding-bottom: 8px;
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  text-transform: uppercase;
 }
 
-.emotion-9 {
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 500;
-  padding-bottom: 12px;
-}
-
-.emotion-10 {
-  padding-bottom: 24px;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-11 {
-  padding-bottom: 16px;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-12 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  gap: 16px;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  color: #ffffff;
 }
 
-.emotion-12 img {
-  margin-right: 12px;
+.emotion-7:hover,
+.emotion-7.focus-visible:focus,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.emotion-13 {
-  padding-top: 16px;
-  padding-bottom: 16px;
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg,
+.emotion-7 .noop svg {
+  opacity: 1;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #808080;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
+  background-color: #808080;
+}
+
+.emotion-7:hover {
+  background-color: #b3b3b3;
 }
 
 <div
   className="emotion-0"
 >
-  <div
+  <h3
     className="emotion-1"
+    title="Project Zero"
   >
-    <div
-      className="emotion-2"
+    Project: 
+    Project Zero
+  </h3>
+  <div
+    className="emotion-2"
+  >
+    ID: 
+    00000000-0000-0000-0000-000000000000
+  </div>
+  <div
+    className="emotion-3"
+  >
+    <a
+      className="emotion-4"
+      href="/00000000-0000-0000-0000-000000000000"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
     >
-      <div
-        className="emotion-3"
-      >
-        <h3
-          className="emotion-4"
-          title="Project Zero"
-        >
-          Project: 
-          Project Zero
-        </h3>
-        <div
-          className="emotion-5"
-        >
-          Project ID: 
-          00000000-0000-0000-0000-000000000000
-        </div>
-        <div
-          className="emotion-6"
-        >
-          <a
-            className="emotion-7"
-            href="/00000000-0000-0000-0000-000000000000"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-          >
-            Go To Project
-          </a>
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-8"
+      Go To Project Dashboard
+    </a>
+  </div>
+  <div
+    className="emotion-5"
+  >
+    Quick Links
+  </div>
+  <div
+    className="emotion-6"
+  >
+    <a
+      aria-label="Data Sources"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/data-sources"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Data Sources"
     >
-      <div
-        className="emotion-9"
-      >
-        Project Tier: 
-        Premier
-      </div>
-      <h3
-        className="emotion-10"
-      >
-        Usage:
-      </h3>
-      <div
-        className="emotion-11"
-      >
-        <h4
-          className="emotion-12"
-        >
-          <img
-            alt=""
-            src="/icons/videos.png"
-            width={32}
-          />
-           Video Hours:
-           
-          0
-        </h4>
-      </div>
-      <div
-        className="emotion-13"
-      >
-        <h4
-          className="emotion-12"
-        >
-          <img
-            alt=""
-            src="/icons/images.png"
-            width={32}
-          />
-           Images / Documents: 
-          97
-        </h4>
-      </div>
-    </div>
+      <svg
+        data-file-name="datasources.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="Job Queue"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/jobs"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Job Queue"
+    >
+      <svg
+        data-file-name="jobQueue.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="Custom Models"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/models"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Custom Models"
+    >
+      <svg
+        data-file-name="models.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="Visualizer"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/visualizer"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Visualizer"
+    >
+      <svg
+        data-file-name="visualizer.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="API Keys"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/api-keys"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="API Keys"
+    >
+      <svg
+        data-file-name="key.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="User Admin"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/users"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="User Admin"
+    >
+      <svg
+        data-file-name="users.svg"
+        height={20}
+      />
+    </a>
   </div>
 </div>
 `;
 
 exports[`<AccountCard /> should render properly with over usage 1`] = `
 .emotion-0 {
-  padding-right: 32px;
-  padding-bottom: 32px;
-  width: 470px;
-}
-
-.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -659,50 +864,32 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   background-color: #3b3b3b;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   border-radius: 2px;
+  padding: 24px;
 }
 
-.emotion-2 {
-  padding: 16px;
-  border-bottom: 1px solid #4a4a4a;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 svg {
-  margin-right: 8px;
-}
-
-.emotion-3 {
-  padding: 16px;
-  width: 100%;
-}
-
-.emotion-4 {
+.emotion-1 {
   padding-bottom: 8px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.emotion-5 {
+.emotion-2 {
   color: #b3b3b3;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  text-transform: uppercase;
 }
 
-.emotion-6 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -733,153 +920,218 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   background-color: transparent;
 }
 
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited,
-.emotion-7 .noop {
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
   background-color: #73b61c;
 }
 
-.emotion-7:hover,
-.emotion-7 .noop {
+.emotion-4:hover,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true],
-.emotion-7 .noop {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-8 {
-  padding: 32px;
+.emotion-5 {
+  color: #b3b3b3;
+  padding-top: 24px;
+  padding-bottom: 8px;
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  text-transform: uppercase;
 }
 
-.emotion-9 {
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 500;
-  padding-bottom: 12px;
-}
-
-.emotion-10 {
-  padding-bottom: 24px;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-11 {
-  padding-bottom: 16px;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-12 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  gap: 16px;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  color: #ffffff;
 }
 
-.emotion-12 img {
-  margin-right: 12px;
+.emotion-7:hover,
+.emotion-7.focus-visible:focus,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.emotion-13 {
-  padding-top: 16px;
-  padding-bottom: 16px;
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg,
+.emotion-7 .noop svg {
+  opacity: 1;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #808080;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
+  background-color: #808080;
+}
+
+.emotion-7:hover {
+  background-color: #b3b3b3;
 }
 
 <div
   className="emotion-0"
 >
-  <div
+  <h3
     className="emotion-1"
+    title="Project Zero"
   >
-    <div
-      className="emotion-2"
+    Project: 
+    Project Zero
+  </h3>
+  <div
+    className="emotion-2"
+  >
+    ID: 
+    00000000-0000-0000-0000-000000000000
+  </div>
+  <div
+    className="emotion-3"
+  >
+    <a
+      className="emotion-4"
+      href="/00000000-0000-0000-0000-000000000000"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
     >
-      <div
-        className="emotion-3"
-      >
-        <h3
-          className="emotion-4"
-          title="Project Zero"
-        >
-          Project: 
-          Project Zero
-        </h3>
-        <div
-          className="emotion-5"
-        >
-          Project ID: 
-          00000000-0000-0000-0000-000000000000
-        </div>
-        <div
-          className="emotion-6"
-        >
-          <a
-            className="emotion-7"
-            href="/00000000-0000-0000-0000-000000000000"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-          >
-            Go To Project
-          </a>
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-8"
+      Go To Project Dashboard
+    </a>
+  </div>
+  <div
+    className="emotion-5"
+  >
+    Quick Links
+  </div>
+  <div
+    className="emotion-6"
+  >
+    <a
+      aria-label="Data Sources"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/data-sources"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Data Sources"
     >
-      <div
-        className="emotion-9"
-      >
-        Project Tier: 
-        Premier
-      </div>
-      <h3
-        className="emotion-10"
-      >
-        Usage:
-      </h3>
-      <div
-        className="emotion-11"
-      >
-        <h4
-          className="emotion-12"
-        >
-          <img
-            alt=""
-            src="/icons/videos.png"
-            width={32}
-          />
-           Video Hours:
-           
-          320
-        </h4>
-      </div>
-      <div
-        className="emotion-13"
-      >
-        <h4
-          className="emotion-12"
-        >
-          <img
-            alt=""
-            src="/icons/images.png"
-            width={32}
-          />
-           Images / Documents: 
-          30,040
-        </h4>
-      </div>
-    </div>
+      <svg
+        data-file-name="datasources.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="Job Queue"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/jobs"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Job Queue"
+    >
+      <svg
+        data-file-name="jobQueue.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="Custom Models"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/models"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Custom Models"
+    >
+      <svg
+        data-file-name="models.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="Visualizer"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/visualizer"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="Visualizer"
+    >
+      <svg
+        data-file-name="visualizer.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="API Keys"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/api-keys"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="API Keys"
+    >
+      <svg
+        data-file-name="key.svg"
+        height={20}
+      />
+    </a>
+    <a
+      aria-label="User Admin"
+      className="emotion-7"
+      href="/00000000-0000-0000-0000-000000000000/users"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      title="User Admin"
+    >
+      <svg
+        data-file-name="users.svg"
+        height={20}
+      />
+    </a>
   </div>
 </div>
 `;
