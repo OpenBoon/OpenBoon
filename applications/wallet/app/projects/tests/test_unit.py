@@ -10,7 +10,9 @@ User = get_user_model()
 
 @pytest.fixture
 def project():
-    return Project(id=uuid4(), name='butts')
+    return Project(id=uuid4(), name='butts',
+                   createdDate="2021-01-11T22:31:37.594984Z",
+                   modifiedDate="2021-01-11T22:31:37.755033Z")
 
 
 @pytest.fixture
