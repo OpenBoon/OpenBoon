@@ -276,6 +276,28 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
           azerty
         </a>
       </li>
+      <li>
+        <a
+          className="emotion-5"
+          href="/e8372289-f6d3-4248-91e7-f3f958867a45/jobs"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          dvorak
+        </a>
+      </li>
+      <li>
+        <a
+          className="emotion-5"
+          href="/a36195cc-19d7-4358-b0f8-0685b6d04ce5/jobs"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          dvorak
+        </a>
+      </li>
     </ul>
   </div>
 </div>
