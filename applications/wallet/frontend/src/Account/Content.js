@@ -12,7 +12,7 @@ const MIN_WIDTH = 400
 
 const AccountContent = () => {
   const {
-    data: { results: projects, count },
+    data: { results: projects },
   } = useSWR('/api/v1/projects/')
 
   const [searchString, setSearchString] = useState('')
@@ -20,6 +20,16 @@ const AccountContent = () => {
   if (projects.length === 0) {
     return <NoProject />
   }
+
+  const sortedFilteredProjects = projects
+    .filter(({ name }) =>
+      name.toLowerCase().includes(searchString.toLowerCase()),
+    )
+    .sort((a, b) => {
+      if (a.name < b.name) return -1
+      if (a.name > b.name) return 1
+      return 0
+    })
 
   return (
     <>
@@ -36,7 +46,7 @@ const AccountContent = () => {
       </div>
 
       <div css={{ paddingTop: spacing.normal, paddingBottom: spacing.normal }}>
-        Number of Projects: {count}
+        Number of Projects: {sortedFilteredProjects.length}
       </div>
 
       <div
@@ -47,18 +57,9 @@ const AccountContent = () => {
           paddingBottom: spacing.spacious,
         }}
       >
-        {projects
-          .filter(({ name }) =>
-            name.toLowerCase().includes(searchString.toLowerCase()),
-          )
-          .sort((a, b) => {
-            if (a.name < b.name) return -1
-            if (a.name > b.name) return 1
-            return 0
-          })
-          .map(({ id: projectId, name }) => (
-            <AccountCard key={projectId} projectId={projectId} name={name} />
-          ))}
+        {sortedFilteredProjects.map(({ id: projectId, name }) => (
+          <AccountCard key={projectId} projectId={projectId} name={name} />
+        ))}
       </div>
     </>
   )
