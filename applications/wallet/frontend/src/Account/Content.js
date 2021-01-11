@@ -6,6 +6,8 @@ import NoProject from '../NoProject'
 
 import AccountCard from './Card'
 
+const MIN_WIDTH = 400
+
 const AccountContent = () => {
   const {
     data: { results: projects, count },
@@ -24,13 +26,18 @@ const AccountContent = () => {
       <div
         css={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
           gap: spacing.spacious,
-          '@media screen and (min-width: 1500px)': {
+          [`@media screen and (min-width: ${MIN_WIDTH * 2}px)`]: {
+            gridTemplateColumns: '1fr 1fr',
+          },
+          [`@media screen and (min-width: ${MIN_WIDTH * 3}px)`]: {
             gridTemplateColumns: '1fr 1fr 1fr',
           },
-          '@media screen and (min-width: 2000px)': {
+          [`@media screen and (min-width: ${MIN_WIDTH * 4}px)`]: {
             gridTemplateColumns: '1fr 1fr 1fr 1fr',
+          },
+          [`@media screen and (min-width: ${MIN_WIDTH * 5}px)`]: {
+            gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
           },
         }}
       >

@@ -36,19 +36,30 @@ Array [
   </div>,
   .emotion-0 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 32px;
 }
 
-@media screen and (min-width: 1500px) {
+@media screen and (min-width: 800px) {
+  .emotion-0 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (min-width: 1200px) {
   .emotion-0 {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
-@media screen and (min-width: 2000px) {
+@media screen and (min-width: 1600px) {
   .emotion-0 {
     grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+@media screen and (min-width: 2000px) {
+  .emotion-0 {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
 }
 
