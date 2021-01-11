@@ -49,7 +49,6 @@ const AccountCard = ({ projectId, name }) => {
   return (
     <div
       css={{
-        // width: constants.form.maxWidth,
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: colors.structure.smoke,
