@@ -1,7 +1,5 @@
+import PropTypes from 'prop-types'
 import { useReducer } from 'react'
-
-// TODO: fetch data
-import matrix from './__mocks__/matrix'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
@@ -17,7 +15,7 @@ import ModelMatrixPreview from './Preview'
 
 const PANEL_WIDTH = 200
 
-const ModelMatrixLayout = () => {
+const ModelMatrixLayout = ({ matrix }) => {
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   return (
@@ -48,7 +46,7 @@ const ModelMatrixLayout = () => {
         >
           Overall Accuracy:
         </span>
-        98%
+        {`${Math.round(matrix.overallAccuracy * 100)}%`}
         <ModelMatrixControls
           matrix={matrix}
           settings={settings}
@@ -125,6 +123,12 @@ const ModelMatrixLayout = () => {
       </div>
     </div>
   )
+}
+
+ModelMatrixLayout.propTypes = {
+  matrix: PropTypes.shape({
+    overallAccuracy: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 export default ModelMatrixLayout
