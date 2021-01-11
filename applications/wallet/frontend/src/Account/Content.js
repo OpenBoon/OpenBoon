@@ -27,18 +27,7 @@ const AccountContent = () => {
         css={{
           display: 'grid',
           gap: spacing.spacious,
-          [`@media screen and (min-width: ${MIN_WIDTH * 2}px)`]: {
-            gridTemplateColumns: '1fr 1fr',
-          },
-          [`@media screen and (min-width: ${MIN_WIDTH * 3}px)`]: {
-            gridTemplateColumns: '1fr 1fr 1fr',
-          },
-          [`@media screen and (min-width: ${MIN_WIDTH * 4}px)`]: {
-            gridTemplateColumns: '1fr 1fr 1fr 1fr',
-          },
-          [`@media screen and (min-width: ${MIN_WIDTH * 5}px)`]: {
-            gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
-          },
+          gridTemplateColumns: `repeat(auto-fill, minmax(${MIN_WIDTH}px, 1fr))`,
         }}
       >
         {projects.map(({ id: projectId, name }) => (
