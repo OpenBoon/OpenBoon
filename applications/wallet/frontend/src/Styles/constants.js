@@ -76,6 +76,7 @@ const constants = {
     small: 18,
     regular: 20,
     moderate: 22,
+    large: 32,
   },
   overlay: `${colors.structure.black}e6`,
   navbar: {

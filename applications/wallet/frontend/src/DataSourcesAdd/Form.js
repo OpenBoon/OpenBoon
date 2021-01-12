@@ -79,7 +79,7 @@ const DataSourcesAddForm = () => {
             field
           </span>
 
-          <SectionTitle>Data Source Name </SectionTitle>
+          <SectionTitle>STEP 1: Data Source Name </SectionTitle>
 
           <Input
             autoFocus
@@ -101,7 +101,7 @@ const DataSourcesAddForm = () => {
             isRequired
           />
 
-          <SectionTitle>Connect to Source</SectionTitle>
+          <SectionTitle>STEP 2: Connect to Source</SectionTitle>
 
           <DataSourcesAddSource dispatch={dispatch} state={state} />
         </div>
@@ -109,7 +109,7 @@ const DataSourcesAddForm = () => {
         <CheckboxGroup
           legend={
             <div css={{ display: 'flex' }}>
-              Select File Types to Import
+              STEP 3: Determine Import File Type(s)
               <Toggletip openToThe="right" label="Supported File Types">
                 <div
                   css={{
@@ -138,7 +138,9 @@ const DataSourcesAddForm = () => {
           }
           description={
             <div>
-              A minimum of one file type must be selected{' '}
+              You can import all supported file types or limit them by editing
+              the selection below.
+              <br />A minimum of one file type must be selected. *{' '}
               <span css={{ color: colors.signal.warning.base }}>*</span>
             </div>
           }
@@ -148,7 +150,7 @@ const DataSourcesAddForm = () => {
           options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
             value,
             label,
-            icon: <img src={icon} alt={label} width="40px" />,
+            icon,
             legend,
             initialValue: false,
             isDisabled: false,
@@ -158,7 +160,7 @@ const DataSourcesAddForm = () => {
 
         <div css={{ height: spacing.base }} />
 
-        <SectionTitle>Select Analysis</SectionTitle>
+        <SectionTitle>STEP 4: Select Analysis</SectionTitle>
 
         <SectionSubTitle>
           Choose the type of analysis you would like performed on your data set:
