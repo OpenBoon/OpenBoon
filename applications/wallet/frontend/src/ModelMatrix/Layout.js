@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types'
 import { useReducer } from 'react'
+import useSWR from 'swr'
+
+import { getQueryString } from '../Fetch/helpers'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
@@ -15,8 +18,16 @@ import ModelMatrixPreview from './Preview'
 
 const PANEL_WIDTH = 200
 
-const ModelMatrixLayout = ({ matrix }) => {
+const ModelMatrixLayout = ({ projectId, modelId, defaultMin, defaultMax }) => {
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
+
+  const { minScore = defaultMin, maxScore = defaultMax } = settings
+
+  const queryString = getQueryString({ minScore, maxScore })
+
+  const { data: matrix } = useSWR(
+    `/api/v1/projects/${projectId}/models/${modelId}/confusion_matrix/${queryString}`,
+  )
 
   return (
     <div
@@ -48,7 +59,8 @@ const ModelMatrixLayout = ({ matrix }) => {
         </span>
         {`${Math.round(matrix.overallAccuracy * 100)}%`}
         <ModelMatrixControls
-          matrix={matrix}
+          defaultMin={defaultMin}
+          defaultMax={defaultMax}
           settings={settings}
           dispatch={dispatch}
         />
@@ -126,9 +138,10 @@ const ModelMatrixLayout = ({ matrix }) => {
 }
 
 ModelMatrixLayout.propTypes = {
-  matrix: PropTypes.shape({
-    overallAccuracy: PropTypes.number.isRequired,
-  }).isRequired,
+  projectId: PropTypes.string.isRequired,
+  modelId: PropTypes.string.isRequired,
+  defaultMin: PropTypes.number.isRequired,
+  defaultMax: PropTypes.number.isRequired,
 }
 
 export default ModelMatrixLayout

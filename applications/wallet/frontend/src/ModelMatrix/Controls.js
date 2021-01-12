@@ -11,14 +11,15 @@ import InputRange, { VARIANTS } from '../Input/Range'
 
 const ModelMatrixControls = ({
   settings,
-  matrix: { minScore, maxScore },
+  defaultMin,
+  defaultMax,
   dispatch,
 }) => {
-  const minMaxFix = minScore === maxScore ? 0.001 : 0
+  const minMaxFix = defaultMin === defaultMax ? 0.001 : 0
 
-  const domain = [minScore, maxScore + minMaxFix]
+  const domain = [defaultMin, defaultMax + minMaxFix]
 
-  const [rangeValues, setRangeValues] = useState([minScore, maxScore])
+  const [rangeValues, setRangeValues] = useState([defaultMin, defaultMax])
   const [inputMin, setInputMin] = useState(rangeValues[0])
   const [inputMax, setInputMax] = useState(rangeValues[1])
 
@@ -140,10 +141,8 @@ const ModelMatrixControls = ({
 ModelMatrixControls.propTypes = {
   settings: PropTypes.shape({ isNormalized: PropTypes.bool.isRequired })
     .isRequired,
-  matrix: PropTypes.shape({
-    minScore: PropTypes.number.isRequired,
-    maxScore: PropTypes.number.isRequired,
-  }).isRequired,
+  defaultMin: PropTypes.number.isRequired,
+  defaultMax: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired,
 }
 
