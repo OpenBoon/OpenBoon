@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.BatchUpdateClipProxyRequest
 import com.zorroa.archivist.domain.UpdateClipProxyRequest
 import com.zorroa.archivist.domain.ClipSpec
 import com.zorroa.archivist.domain.TimelineClipSpec
@@ -64,6 +65,17 @@ class ClipServiceTests : AbstractTest() {
         assertEquals("test", clip.track)
         assertEquals(1.0.bd(), clip.start)
         assertEquals(5.0.bd(), clip.stop)
+    }
+
+    @Test
+    fun testGetClip() {
+        val parent = getSample(1, "video")[0]
+        val clipSpec = ClipSpec(parent.id, "test", "test", 1.0.bd(), 5.0.bd(), listOf("cat"))
+        val clip1 = clipService.createClip(clipSpec)
+        val clip2 = clipService.getClip(clip1.id)
+        assertEquals(clip1.id, clip2.id)
+        assertEquals(clip1.timeline, clip2.timeline)
+        assertEquals(clip1.track, clip2.track)
     }
 
     @Test
@@ -194,7 +206,12 @@ class ClipServiceTests : AbstractTest() {
         val clipSpec2 = ClipSpec(asset.id, "test2", "test2", 5.0.bd(), 10.0.bd(), listOf("dog"))
         val clip2 = clipService.createClip(clipSpec2)
 
-        val rsp = clipService.batchSetProxy(mapOf(clip1.id to proxy, clip2.id to proxy))
+        val req = BatchUpdateClipProxyRequest(
+            asset.id,
+            mapOf(clip1.id to proxy, clip2.id to proxy)
+        )
+
+        val rsp = clipService.batchSetProxy(req)
         assertTrue(rsp.success)
 
         refreshElastic()

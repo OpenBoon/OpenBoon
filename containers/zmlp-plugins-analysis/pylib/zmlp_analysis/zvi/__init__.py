@@ -4,4 +4,4 @@ from .objects import ZviObjectDetectionProcessor
 from .ocr import ZviOcrProcessor
 from .similarity import ZviSimilarityProcessor
 from .faces import ZviFaceDetectionProcessor
-from .clips import TimelineAnalysisProcessor
+from .clips import TimelineAnalysisProcessor, ClipAnalysisProcessor

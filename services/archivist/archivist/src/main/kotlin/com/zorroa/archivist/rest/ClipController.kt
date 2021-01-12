@@ -1,5 +1,6 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.BatchUpdateClipProxyRequest
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.UpdateClipProxyRequest
 import com.zorroa.archivist.domain.ClipSpec
@@ -93,9 +94,9 @@ class ClipController @Autowired constructor(
     @PreAuthorize("hasAuthority('AssetsImport')")
     @PutMapping("/api/v1/clips/_batch_update_proxy")
     fun batchUpdateProxy(
-        @RequestBody(required = true) proxies: Map<String, UpdateClipProxyRequest>
+        @RequestBody(required = true) req: BatchUpdateClipProxyRequest
     ): Any {
-        return clipService.batchSetProxy(proxies)
+        return clipService.batchSetProxy(req)
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")

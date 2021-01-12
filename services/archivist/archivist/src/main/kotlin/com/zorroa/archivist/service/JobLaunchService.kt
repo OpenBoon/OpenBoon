@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceDelete
 import com.zorroa.archivist.domain.DataSourceImportOptions
@@ -20,6 +21,11 @@ import org.springframework.stereotype.Component
 import java.util.UUID
 
 interface JobLaunchService {
+
+    /**
+     * Launches a job to analyze a single Clip.
+     */
+    fun launchCipAnalysisJob(clip: Clip): Job
 
     /**
      * Launch a job to analyze clips in a timeline
@@ -229,6 +235,15 @@ class JobLaunchServiceImpl(
         return jobService.create(spec)
     }
 
+    override fun launchCipAnalysisJob(clip: Clip): Job {
+        val script = getClipAnalysisScript(clip.id)
+        val spec = JobSpec(
+            "VideoClip Analysis for Clip: ${clip.id}",
+            listOf(script), replace = false, priority = JobPriority.Interactive
+        )
+        return jobService.create(spec)
+    }
+
     fun getTimelineAnalysisScript(assetId: String, timeline: String): ZpsScript {
         val execute = ProcessorRef(
             "zmlp_analysis.zvi.TimelineAnalysisProcessor",
@@ -237,7 +252,20 @@ class JobLaunchServiceImpl(
 
         )
         return ZpsScript(
-            "Video Timeline Analysis", null, listOf(Asset("clips")), listOf(execute),
+            "Video Timeline Analysis $timeline", null, listOf(Asset("clips")), listOf(execute),
+            settings = getDefaultJobSettings(), globalArgs = mutableMapOf()
+        )
+    }
+
+    fun getClipAnalysisScript(clipId: String): ZpsScript {
+        val execute = ProcessorRef(
+            "zmlp_analysis.zvi.ClipAnalysisProcessor",
+            StandardContainers.ANALYSIS,
+            args = mapOf("clip_id" to clipId)
+
+        )
+        return ZpsScript(
+            "Clip Analysis", null, listOf(Asset("clips")), listOf(execute),
             settings = getDefaultJobSettings(), globalArgs = mutableMapOf()
         )
     }

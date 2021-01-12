@@ -130,6 +130,19 @@ class UpdateClipProxyRequest(
     @ApiModelProperty("An array of registered files for the clip.")
     val files: List<FileStorage>,
 
-    @ApiModelProperty("The clips simhash.")
+    @ApiModelProperty("The clip proxy data")
     val simhash: String
+)
+
+@ApiModel(
+    "BatchUpdateClipProxyRequest",
+    description = "Describes a batch update to clip proxies."
+)
+class BatchUpdateClipProxyRequest(
+
+    @ApiModelProperty("The Asset the clips belong to.")
+    val assetId: String,
+
+    @ApiModelProperty("The clip proxy data")
+    val updates: Map<String, UpdateClipProxyRequest>
 )

@@ -8,6 +8,39 @@ from zmlpsdk.media import media_size, get_output_dimension
 from zmlp_analysis.utils import simengine
 
 
+class ClipAnalysisProcessor(AssetProcessor):
+    """
+    Creates simhashes and thumbnails for a given array of clips.
+    """
+    file_types = None
+
+    def __init__(self):
+        super(ClipAnalysisProcessor, self).__init__()
+        self.add_arg(Argument('clip_id', 'str', required=True))
+        self.sim = None
+
+    def init(self):
+        self.sim = simengine.SimilarityEngine()
+
+    def process(self, frame):
+        clip = self.app.clips.get_clip(self.arg_value('clip_id'))
+        asset = self.app.assets.get_asset(clip.asset_id)
+
+        video_path = file_storage.localize_file(proxy.get_video_proxy(asset))
+        size = media_size(video_path)
+        psize = get_output_dimension(768, size[0], size[1])
+
+        jpg_file = tempfile.mkstemp(".jpg")[1]
+        extract_thumbnail_from_video(video_path, jpg_file, clip.start, psize)
+        simhash = self.sim.calculate_hash(jpg_file)
+
+        prx = file_storage.projects.store_file(jpg_file, clip, "proxy", "proxy.jpg",
+                                               {"width": psize[0], "height": psize[1]})
+
+        req = {'files': [prx], 'simhash': simhash}
+        self.app.client.put(f'/api/v1/clips/{clip.id}/_proxy', req)
+
+
 class TimelineAnalysisProcessor(AssetProcessor):
     """
     Creates simhashes and thumbnails for the given timeline.
@@ -55,7 +88,7 @@ class TimelineAnalysisProcessor(AssetProcessor):
             if clip.start != current_time:
                 current_time = clip.start
 
-                extract_thumbnail_from_video(video_path, jpg_file, current_time, psize)
+                extract_thumbnail_from_video(video_path, jpg_file, clip.start, psize)
                 simhash = self.sim.calculate_hash(jpg_file)
 
             # Always store the file
@@ -71,5 +104,10 @@ class TimelineAnalysisProcessor(AssetProcessor):
 
     def add_clips(self, batch):
         if batch:
-            self.app.client.put("/api/v1/clips/_batch_update_proxy", batch)
+            asset_id = self.arg_value('asset_id')
+            req = {
+                "assetId": asset_id,
+                "updates": batch
+            }
+            self.app.client.put("/api/v1/clips/_batch_update_proxy", req)
             batch.clear()
