@@ -19,6 +19,7 @@ ROLES = [(role['name'], role['name'].replace('_', ' ')) for role in settings.ROL
 
 class ActiveProjectManager(models.Manager):
     """Model manager that only returns projects that are active."""
+
     def get_queryset(self):
         return super(ActiveProjectManager, self).get_queryset().filter(isActive=True)
 
@@ -33,6 +34,8 @@ class Project(models.Model):
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='projects.Membership',
                                    related_name='projects')
     isActive = models.BooleanField(default=True)
+    createdDate = models.DateTimeField(auto_now_add=True)
+    modifiedDate = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
