@@ -5,8 +5,10 @@ import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.ClipSpec
 import com.zorroa.archivist.domain.TimelineClipSpec
 import com.zorroa.archivist.domain.CreateTimelineResponse
+import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.TimelineSpec
 import com.zorroa.archivist.domain.TrackSpec
+import com.zorroa.archivist.domain.UpdateClipProxyRequest
 import com.zorroa.archivist.service.ClipService
 import com.zorroa.archivist.util.bd
 import com.zorroa.zmlp.util.Json
@@ -75,6 +77,21 @@ class ClipControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testGet() {
+        val clipSpec = ClipSpec(asset.id, "test", "test", 1.0.bd(), 5.0.bd(), listOf("cat"))
+        val clip = clipService.createClip(clipSpec)
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/clips/${clip.id}")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.equalTo(clip.id)))
+            .andReturn()
+    }
+
+    @Test
     fun testDeleteClip() {
         val clipSpec = ClipSpec(asset.id, "test", "test", 1.0.bd(), 5.0.bd(), listOf("cat"))
         val clip = clipService.createClip(clipSpec)
@@ -83,6 +100,64 @@ class ClipControllerTests : MockMvcTest() {
             MockMvcRequestBuilders.delete("/api/v1/clips/${clip.id}")
                 .headers(admin())
                 .content(Json.serialize(clipSpec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.success",
+                    CoreMatchers.equalTo(true)
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testUpdateClipPrpoxy() {
+        val clipSpec = ClipSpec(asset.id, "test", "test", 1.0.bd(), 5.0.bd(), listOf("cat"))
+        val clip = clipService.createClip(clipSpec)
+
+        val req = UpdateClipProxyRequest(
+            listOf(
+                FileStorage("12345", "foo", "foo", "image/jpeg", 1000L, mapOf())
+            ),
+            "ABC123"
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/clips/${clip.id}/_proxy")
+                .headers(admin())
+                .content(Json.serialize(req))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.success",
+                    CoreMatchers.equalTo(true)
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testBatchUpdateClipPrpoxy() {
+        val clipSpec = ClipSpec(asset.id, "test", "test", 1.0.bd(), 5.0.bd(), listOf("cat"))
+        val clip = clipService.createClip(clipSpec)
+
+        val update = UpdateClipProxyRequest(
+            listOf(
+                FileStorage("12345", "foo", "foo", "image/jpeg", 1000L, mapOf())
+            ),
+            "ABC123"
+        )
+
+        val req = mapOf(clip.id to update)
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/clips/_batch_update_proxy")
+                .headers(admin())
+                .content(Json.serialize(req))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)

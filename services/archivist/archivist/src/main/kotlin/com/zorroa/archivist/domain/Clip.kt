@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain
 
+import com.zorroa.zmlp.util.Json
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.elasticsearch.index.query.QueryBuilder
@@ -34,8 +35,32 @@ class Clip(
     val content: List<String>,
 
     @ApiModelProperty("The confidence score that the content is correct.")
-    val score: Double
-)
+    val score: Double,
+
+    @ApiModelProperty("A simhash for the visual content of the clip")
+    val simhash: String? = null,
+
+    @ApiModelProperty("A simhash for the visual content of the clip")
+    val files: List<FileStorage>? = null
+) {
+    companion object {
+
+        fun fromMap(id: String, map: Map<String, Any>): Clip {
+            return Clip(
+                id,
+                map["assetId"] as String,
+                map["timeline"] as String,
+                map["track"] as String,
+                BigDecimal(map["start"] as Double),
+                BigDecimal(map["stop"] as Double),
+                map["content"] as List<String>,
+                map["score"] as Double,
+                map["simhash"] as String?,
+                Json.Mapper.convertValue(map["files"], FileStorage.JSON_LIST_OF)
+            )
+        }
+    }
+}
 
 class ClipSpec(
 
@@ -95,3 +120,16 @@ class WebVTTFilter(
         return query
     }
 }
+
+@ApiModel(
+    "UpdateClipProxyRequest",
+    description = "Describes a request to update a Clip's proxy"
+)
+class UpdateClipProxyRequest(
+
+    @ApiModelProperty("An array of registered files for the clip.")
+    val files: List<FileStorage>,
+
+    @ApiModelProperty("The clips simhash.")
+    val simhash: String
+)

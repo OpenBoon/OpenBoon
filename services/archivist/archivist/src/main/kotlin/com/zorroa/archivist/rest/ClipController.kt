@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.Clip
+import com.zorroa.archivist.domain.UpdateClipProxyRequest
 import com.zorroa.archivist.domain.ClipSpec
 import com.zorroa.archivist.domain.CreateTimelineResponse
 import com.zorroa.archivist.domain.TimelineSpec
@@ -19,7 +20,10 @@ import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -52,16 +56,8 @@ class ClipController @Autowired constructor(
         return clipService.createClip(spec)
     }
 
-    @PreAuthorize("hasAuthority('AssetsImport')")
-    @DeleteMapping("/api/v1/clips/{id}")
-    fun delete(
-        @PathVariable id: String
-    ): Any {
-        return HttpUtils.deleted("clip", id, clipService.deleteClip(id))
-    }
-
     @PreAuthorize("hasAuthority('AssetsRead')")
-    @RequestMapping("/api/v1/clips/_search", method = [RequestMethod.GET, RequestMethod.POST])
+    @PostMapping("/api/v1/clips/_search")
     fun search(
         @RequestBody(required = false) search: Map<String, Any>?,
         request: WebRequest,
@@ -92,5 +88,38 @@ class ClipController @Autowired constructor(
         response.setHeader("Content-Disposition", "attachment; filename=\"zvi-dynamic.vtt\"")
         clipService.streamWebvtt(filter, response.outputStream)
         response.flushBuffer()
+    }
+
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @PutMapping("/api/v1/clips/_batch_update_proxy")
+    fun batchUpdateProxy(
+        @RequestBody(required = true) proxies: Map<String, UpdateClipProxyRequest>
+    ): Any {
+        return clipService.batchSetProxy(proxies)
+    }
+
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @PutMapping("/api/v1/clips/{id}/_proxy")
+    fun setProxy(
+        @PathVariable id: String,
+        @RequestBody(required = true) proxy: UpdateClipProxyRequest
+    ): Any {
+        return HttpUtils.updated("clip", id, clipService.setProxy(id, proxy))
+    }
+
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @DeleteMapping("/api/v1/clips/{id}")
+    fun deleteClip(
+        @PathVariable id: String
+    ): Any {
+        return HttpUtils.deleted("clip", id, clipService.deleteClip(id))
+    }
+
+    @PreAuthorize("hasAuthority('AssetsRead')")
+    @GetMapping("/api/v1/clips/{id}")
+    fun getClip(
+        @PathVariable id: String
+    ): Clip {
+        return clipService.getClip(id)
     }
 }

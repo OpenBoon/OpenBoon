@@ -2,9 +2,11 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.UpdateClipProxyRequest
 import com.zorroa.archivist.domain.ClipSpec
 import com.zorroa.archivist.domain.TimelineClipSpec
 import com.zorroa.archivist.domain.CreateTimelineResponse
+import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.TimelineSpec
 import com.zorroa.archivist.domain.TrackSpec
 import com.zorroa.archivist.domain.WebVTTFilter
@@ -163,5 +165,46 @@ class ClipServiceTests : AbstractTest() {
 
         val search = clipService.searchClips(asset, mapOf(), mapOf())
         assertEquals(0, search.hits.hits.size)
+    }
+
+    @Test
+    fun testSetProxy() {
+        val file = FileStorage("abc123", "proxy.jpg", "proxy", "image/jpeg", 100, mapOf())
+        val proxy = UpdateClipProxyRequest(listOf(file), "abc123")
+
+        val clipSpec = ClipSpec(asset.id, "test", "test", 1.0.bd(), 5.0.bd(), listOf("cat"))
+        val clip = clipService.createClip(clipSpec)
+        assertTrue(clipService.setProxy(clip.id, proxy))
+
+        refreshElastic()
+
+        val uclip = clipService.getClip(clip.id)
+        assertEquals(1, uclip.files?.size)
+        assertEquals("abc123", uclip.simhash)
+    }
+
+    @Test
+    fun testBatchSetProxy() {
+        val file = FileStorage("abc123", "proxy.jpg", "proxy", "image/jpeg", 100, mapOf())
+        val proxy = UpdateClipProxyRequest(listOf(file), "abc123")
+
+        val clipSpec1 = ClipSpec(asset.id, "test1", "test1", 1.0.bd(), 5.0.bd(), listOf("cat"))
+        val clip1 = clipService.createClip(clipSpec1)
+
+        val clipSpec2 = ClipSpec(asset.id, "test2", "test2", 5.0.bd(), 10.0.bd(), listOf("dog"))
+        val clip2 = clipService.createClip(clipSpec2)
+
+        val rsp = clipService.batchSetProxy(mapOf(clip1.id to proxy, clip2.id to proxy))
+        assertTrue(rsp.success)
+
+        refreshElastic()
+
+        val uclip1 = clipService.getClip(clip1.id)
+        assertEquals(1, uclip1.files?.size)
+        assertEquals("abc123", uclip1.simhash)
+
+        val uclip2 = clipService.getClip(clip1.id)
+        assertEquals(1, uclip2.files?.size)
+        assertEquals("abc123", uclip2.simhash)
     }
 }

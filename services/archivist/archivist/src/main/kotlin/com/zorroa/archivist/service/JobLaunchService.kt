@@ -13,12 +13,23 @@ import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchResponse
 import com.zorroa.archivist.domain.ResolvedPipeline
 import com.zorroa.archivist.domain.StandardContainers
+import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.ZpsScript
 import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.stereotype.Component
 import java.util.UUID
 
 interface JobLaunchService {
+
+    /**
+     * Launch a job to analyze clips in a timeline
+     */
+    fun launchTimelineAnalysisJob(assetId: String, timeline: String): Job
+
+    /**
+     * Add a task to an existing job to analyze a timeline.
+     */
+    fun addTimelineAnalysisTask(jobId: UUID, assetId: String, timeline: String): Task
 
     /**
      * Get a task for reprocessing assets.
@@ -207,6 +218,33 @@ class JobLaunchServiceImpl(
 
         val spec = JobSpec(name, listOf(script), replace = true, priority = JobPriority.Interactive)
         return launchJob(spec)
+    }
+
+    override fun launchTimelineAnalysisJob(assetId: String, timeline: String): Job {
+        val script = getTimelineAnalysisScript(assetId, timeline)
+        val spec = JobSpec(
+            "VideoClip Analysis for Asset: $assetId",
+            listOf(script), replace = false, priority = JobPriority.Interactive
+        )
+        return jobService.create(spec)
+    }
+
+    fun getTimelineAnalysisScript(assetId: String, timeline: String): ZpsScript {
+        val execute = ProcessorRef(
+            "zmlp_analysis.zvi.TimelineAnalysisProcessor",
+            StandardContainers.ANALYSIS,
+            args = mapOf("asset_id" to assetId, "timeline" to timeline)
+
+        )
+        return ZpsScript(
+            "Video Timeline Analysis", null, listOf(Asset("clips")), listOf(execute),
+            settings = getDefaultJobSettings(), globalArgs = mutableMapOf()
+        )
+    }
+
+    override fun addTimelineAnalysisTask(jobId: UUID, assetId: String, timeline: String): Task {
+        val job = jobService.get(jobId, false)
+        return jobService.createTask(job, getTimelineAnalysisScript(assetId, timeline))
     }
 
     override fun getReprocessTask(req: ReprocessAssetSearchRequest, count: Long?): ZpsScript {
