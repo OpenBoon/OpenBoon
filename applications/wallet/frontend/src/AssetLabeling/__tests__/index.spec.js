@@ -14,6 +14,14 @@ jest.mock('../Add', () => 'AssetLabelingAdd')
 const noop = () => () => {}
 
 describe('<AssetLabeling />', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
+  afterAll(() => {
+    jest.useRealTimers()
+  })
+
   it('should render properly with no selected asset', () => {
     const component = TestRenderer.create(<AssetLabeling />)
 
