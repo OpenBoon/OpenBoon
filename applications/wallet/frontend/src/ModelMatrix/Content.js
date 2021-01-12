@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
+import SuspenseBoundary from '../SuspenseBoundary'
+
 import { spacing } from '../Styles'
 
 import ModelMatrixNavigation from './Navigation'
@@ -11,7 +13,9 @@ const ModelMatrixContent = () => {
     query: { projectId, modelId },
   } = useRouter()
 
-  const { data: matrix } = useSWR(
+  const {
+    data: { name, minScore, maxScore },
+  } = useSWR(
     `/api/v1/projects/${projectId}/models/${modelId}/confusion_matrix/`,
   )
 
@@ -31,10 +35,17 @@ const ModelMatrixContent = () => {
       <ModelMatrixNavigation
         projectId={projectId}
         modelId={modelId}
-        name={matrix.name}
+        name={name}
       />
 
-      <ModelMatrixLayout matrix={matrix} />
+      <SuspenseBoundary>
+        <ModelMatrixLayout
+          projectId={projectId}
+          modelId={modelId}
+          defaultMin={minScore}
+          defaultMax={maxScore}
+        />
+      </SuspenseBoundary>
     </div>
   )
 }

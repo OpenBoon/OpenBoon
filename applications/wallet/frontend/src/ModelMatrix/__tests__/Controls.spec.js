@@ -9,7 +9,8 @@ describe('<ModelMatrixControls', () => {
     const component = TestRenderer.create(
       <ModelMatrixControls
         settings={{ isNormalized: true }}
-        matrix={{ minScore: 0, maxScore: 1 }}
+        defaultMin={0}
+        defaultMax={1}
         dispatch={noop}
       />,
     )
@@ -21,7 +22,8 @@ describe('<ModelMatrixControls', () => {
     const component = TestRenderer.create(
       <ModelMatrixControls
         settings={{ isNormalized: true }}
-        matrix={{ minScore: 0, maxScore: 0 }}
+        defaultMin={0}
+        defaultMax={0}
         dispatch={noop}
       />,
     )
@@ -35,7 +37,8 @@ describe('<ModelMatrixControls', () => {
     const component = TestRenderer.create(
       <ModelMatrixControls
         settings={{ isNormalized: true }}
-        matrix={{ minScore: 0, maxScore: 1 }}
+        defaultMin={0}
+        defaultMax={1}
         dispatch={mockDispatch}
       />,
     )
@@ -92,7 +95,8 @@ describe('<ModelMatrixControls', () => {
     const component = TestRenderer.create(
       <ModelMatrixControls
         settings={{ isNormalized: true }}
-        matrix={{ minScore: 0, maxScore: 1 }}
+        defaultMin={0}
+        defaultMax={1}
         dispatch={mockDispatch}
       />,
     )
