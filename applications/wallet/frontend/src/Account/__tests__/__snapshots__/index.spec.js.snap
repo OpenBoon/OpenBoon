@@ -24,38 +24,486 @@ Array [
     Account Overview
   </h2>,
   .emotion-0 {
-  padding-top: 16px;
-  padding-bottom: 16px;
+  max-width: 400px;
 }
 
-<h3
-    className="emotion-0"
-  >
-    Number of Projects: 
-    2
-  </h3>,
-  .emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+.emotion-1 {
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
+  background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+  background-color: #2e2e2e;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-1::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-1::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-1:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-1::placeholder {
+  font-style: italic;
+}
+
+.emotion-1:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-1:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
 <div
     className="emotion-0"
   >
-    <AccountCard
-      name="qwerty"
-      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    <input
+      aria-label="Filter Projects"
+      className="emotion-1"
+      onChange={[Function]}
+      placeholder="Filter Projects"
+      type="search"
+      value="erty"
     />
-    <AccountCard
-      name="azerty"
-      projectId="e93cbadb-e5ae-4598-8395-4cf5b30c0e94"
-    />
+  </div>,
+  .emotion-0 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+<div
+    className="emotion-0"
+  >
+    Number of Projects: 
+    2
+  </div>,
+  .emotion-0 {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  padding-bottom: 32px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #3b3b3b;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 2px;
+  padding: 24px;
+}
+
+.emotion-2 {
+  padding-bottom: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-3 {
+  color: #b3b3b3;
+  padding-bottom: 8px;
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
+  background-color: #73b61c;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #96c955;
+}
+
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-6 {
+  color: #b3b3b3;
+  padding-top: 24px;
+  padding-bottom: 8px;
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 16px;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  color: #ffffff;
+}
+
+.emotion-8:hover,
+.emotion-8.focus-visible:focus,
+.emotion-8 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-8:hover svg,
+.emotion-8.focus-visible:focus svg,
+.emotion-8 .noop svg {
+  opacity: 1;
+}
+
+.emotion-8[aria-disabled=true],
+.emotion-8 .noop {
+  color: #808080;
+}
+
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
+  background-color: #808080;
+}
+
+.emotion-8:hover {
+  background-color: #b3b3b3;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <h3
+        className="emotion-2"
+        title="azerty"
+      >
+        Project: 
+        azerty
+      </h3>
+      <div
+        className="emotion-3"
+      >
+        ID: 
+        e93cbadb-e5ae-4598-8395-4cf5b30c0e94
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <a
+          className="emotion-5"
+          href="/e93cbadb-e5ae-4598-8395-4cf5b30c0e94"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Go To Project Dashboard
+        </a>
+      </div>
+      <div
+        className="emotion-6"
+      >
+        Quick Links
+      </div>
+      <div
+        className="emotion-7"
+      >
+        <a
+          aria-label="Data Sources"
+          className="emotion-8"
+          href="/e93cbadb-e5ae-4598-8395-4cf5b30c0e94/data-sources"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          title="Data Sources"
+        >
+          <svg
+            data-file-name="datasources.svg"
+            height={20}
+          />
+        </a>
+        <a
+          aria-label="Job Queue"
+          className="emotion-8"
+          href="/e93cbadb-e5ae-4598-8395-4cf5b30c0e94/jobs"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          title="Job Queue"
+        >
+          <svg
+            data-file-name="jobQueue.svg"
+            height={20}
+          />
+        </a>
+        <a
+          aria-label="Custom Models"
+          className="emotion-8"
+          href="/e93cbadb-e5ae-4598-8395-4cf5b30c0e94/models"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          title="Custom Models"
+        >
+          <svg
+            data-file-name="models.svg"
+            height={20}
+          />
+        </a>
+        <a
+          aria-label="Visualizer"
+          className="emotion-8"
+          href="/e93cbadb-e5ae-4598-8395-4cf5b30c0e94/visualizer"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          title="Visualizer"
+        >
+          <svg
+            data-file-name="visualizer.svg"
+            height={20}
+          />
+        </a>
+        <a
+          aria-label="API Keys"
+          className="emotion-8"
+          href="/e93cbadb-e5ae-4598-8395-4cf5b30c0e94/api-keys"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          title="API Keys"
+        >
+          <svg
+            data-file-name="key.svg"
+            height={20}
+          />
+        </a>
+        <a
+          aria-label="User Admin"
+          className="emotion-8"
+          href="/e93cbadb-e5ae-4598-8395-4cf5b30c0e94/users"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          title="User Admin"
+        >
+          <svg
+            data-file-name="users.svg"
+            height={20}
+          />
+        </a>
+      </div>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <h3
+        className="emotion-2"
+        title="qwerty"
+      >
+        Project: 
+        qwerty
+      </h3>
+      <div
+        className="emotion-3"
+      >
+        ID: 
+        76917058-b147-4556-987a-0a0f11e46d9b
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <a
+          className="emotion-5"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Go To Project Dashboard
+        </a>
+      </div>
+      <div
+        className="emotion-6"
+      >
+        Quick Links
+      </div>
+      <div
+        className="emotion-7"
+      >
+        <a
+          aria-label="Data Sources"
+          className="emotion-8"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          title="Data Sources"
+        >
+          <svg
+            data-file-name="datasources.svg"
+            height={20}
+          />
+        </a>
+        <a
+          aria-label="Job Queue"
+          className="emotion-8"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          title="Job Queue"
+        >
+          <svg
+            data-file-name="jobQueue.svg"
+            height={20}
+          />
+        </a>
+        <a
+          aria-label="Custom Models"
+          className="emotion-8"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          title="Custom Models"
+        >
+          <svg
+            data-file-name="models.svg"
+            height={20}
+          />
+        </a>
+        <a
+          aria-label="Visualizer"
+          className="emotion-8"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          title="Visualizer"
+        >
+          <svg
+            data-file-name="visualizer.svg"
+            height={20}
+          />
+        </a>
+        <a
+          aria-label="API Keys"
+          className="emotion-8"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          title="API Keys"
+        >
+          <svg
+            data-file-name="key.svg"
+            height={20}
+          />
+        </a>
+        <a
+          aria-label="User Admin"
+          className="emotion-8"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          title="User Admin"
+        >
+          <svg
+            data-file-name="users.svg"
+            height={20}
+          />
+        </a>
+      </div>
+    </div>
   </div>,
 ]
 `;
