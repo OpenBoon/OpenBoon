@@ -8,13 +8,11 @@ import { useLocalStorage } from '../LocalStorage/helpers'
 import { useScroller } from '../Scroll/helpers'
 import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
-import { getColor } from './helpers'
+import { getColor, PANEL_WIDTH } from './helpers'
 
 import settingsShape from './settingsShape'
 
 const CONTRAST_THRESHOLD = 69
-
-const PANEL_WIDTH = 200
 
 const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
   const rowRef = useScroller({
@@ -182,7 +180,6 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
                   },
                 }}
                 onClick={() => {
-                  console.log({ isOpen, isSelected })
                   dispatch({
                     selectedCell: isSelected ? [] : [index, col],
                   })

@@ -18,8 +18,8 @@ import { INITIAL_STATE, reducer } from './reducer'
 import ModelMatrixControls from './Controls'
 import ModelMatrixMatrix from './Matrix'
 import ModelMatrixPreview from './Preview'
+import { PANEL_WIDTH } from './helpers'
 
-const PANEL_WIDTH = 200
 const ACCURACY_WIDTH = 40
 
 const ModelMatrixLayout = ({
