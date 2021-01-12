@@ -162,6 +162,9 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
             >
               <button
                 type="button"
+                aria-label={`${matrix.labels[index]} / ${
+                  matrix.labels[col]
+                }: ${value}${settings.isNormalized ? '%' : ''}`}
                 css={{
                   width: cellDimension,
                   height: '100%',
@@ -179,6 +182,7 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
                   },
                 }}
                 onClick={() => {
+                  console.log({ isOpen, isSelected })
                   dispatch({
                     selectedCell: isSelected ? [] : [index, col],
                   })
