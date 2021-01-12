@@ -92,10 +92,9 @@ describe('<ModelMatrix />', () => {
     expect(spy).toHaveBeenCalledWith(
       'rightOpeningPanelSettings',
       JSON.stringify({
+        size: PANEL_MIN_WIDTH,
         isOpen: true,
         openPanel: 'filters',
-        originSize: PANEL_MIN_WIDTH,
-        size: PANEL_MIN_WIDTH,
       }),
     )
 

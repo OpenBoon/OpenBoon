@@ -4,9 +4,12 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import { useLocalStorage } from '../LocalStorage/helpers'
+
 import FilterSvg from '../Icons/filter.svg'
 
 import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../Panel'
+import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
 import { encode } from '../Filters/helpers'
 
@@ -16,6 +19,16 @@ const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
   const {
     query: { projectId, modelId },
   } = useRouter()
+
+  const [, setRightOpeningPanel] = useLocalStorage({
+    key: 'rightOpeningPanelSettings',
+    reducer: resizeableReducer,
+    initialState: {
+      size: PANEL_MIN_WIDTH,
+      originSize: 0,
+      isOpen: false,
+    },
+  })
 
   if (!selectedCell.length)
     return (
@@ -68,15 +81,10 @@ const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
             aria-label="View Filter Panel"
             variant={BUTTON_VARIANTS.SECONDARY_SMALL}
             onClick={() => {
-              localStorage.setItem(
-                'rightOpeningPanelSettings',
-                JSON.stringify({
-                  isOpen: true,
-                  openPanel: 'filters',
-                  originSize: PANEL_MIN_WIDTH,
-                  size: PANEL_MIN_WIDTH,
-                }),
-              )
+              setRightOpeningPanel({
+                type: ACTIONS.OPEN,
+                payload: { openPanel: 'filters' },
+              })
             }}
             style={{
               display: 'flex',

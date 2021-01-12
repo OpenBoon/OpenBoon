@@ -275,10 +275,9 @@ describe('<ModelDetails />', () => {
     expect(spy).toHaveBeenCalledWith(
       'rightOpeningPanelSettings',
       JSON.stringify({
+        size: PANEL_MIN_WIDTH,
         isOpen: true,
         openPanel: 'filters',
-        originSize: PANEL_MIN_WIDTH,
-        size: PANEL_MIN_WIDTH,
       }),
     )
   })
@@ -307,7 +306,14 @@ describe('<ModelDetails />', () => {
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
-    expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
+    expect(spy).toHaveBeenCalledWith(
+      'leftOpeningPanelSettings',
+      JSON.stringify({
+        size: PANEL_MIN_WIDTH,
+        isOpen: true,
+        openPanel: 'assetLabeling',
+      }),
+    )
 
     expect(spy).toHaveBeenCalledWith(
       `AssetLabelingAdd.${PROJECT_ID}`,
