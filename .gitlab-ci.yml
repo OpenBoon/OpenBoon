@@ -378,6 +378,7 @@ sdk-unit-tests:
   stage: test
   allow_failure: false
   script:
+    - apt-get -y install openimageio-tools mediainfo
     - python -m pip install pipenv pytest cmake
     - pip install --upgrade pip
     - cd client/python
