@@ -140,7 +140,7 @@ const DataSourcesAddForm = () => {
             <div>
               You can import all supported file types or limit them by editing
               the selection below.
-              <br />A minimum of one file type must be selected. *{' '}
+              <br />A minimum of one file type must be selected.{' '}
               <span css={{ color: colors.signal.warning.base }}>*</span>
             </div>
           }
