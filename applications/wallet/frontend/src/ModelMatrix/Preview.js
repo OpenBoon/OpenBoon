@@ -30,7 +30,7 @@ const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
     },
   })
 
-  if (!selectedCell.length)
+  if (!selectedCell.length) {
     return (
       <div
         css={{
@@ -43,6 +43,7 @@ const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
         Select a cell of the matrix to view the labeled assets.
       </div>
     )
+  }
 
   const encodedFilter = encode({
     filters: [
@@ -72,11 +73,7 @@ const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
           lineHeight: typography.height.regular,
         }}
       >
-        <Link
-          href={`/[projectId]/visualizer?query=${encodedFilter}`}
-          as={`/${projectId}/visualizer?query=${encodedFilter}`}
-          passHref
-        >
+        <Link href={`/${projectId}/visualizer?query=${encodedFilter}`} passHref>
           <Button
             aria-label="View Filter Panel"
             variant={BUTTON_VARIANTS.SECONDARY_SMALL}

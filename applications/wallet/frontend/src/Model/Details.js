@@ -310,8 +310,7 @@ const ModelDetails = () => {
               }}
             >
               <Link
-                href={`/[projectId]/visualizer?query=${encodedFilter}`}
-                as={`/${projectId}/visualizer?query=${encodedFilter}`}
+                href={`/${projectId}/visualizer?query=${encodedFilter}`}
                 passHref
               >
                 <Button

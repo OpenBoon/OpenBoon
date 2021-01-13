@@ -31,7 +31,7 @@ const ModelMatrixLayout = ({
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   const [{ isOpen }, setPreviewSettings] = useLocalStorage({
-    key: `matrixPreviewSettings`,
+    key: `Resizeable.ModelMatrixPreview`,
     reducer: resizeableReducer,
     initialState: {
       size: PANEL_WIDTH,
@@ -99,7 +99,7 @@ const ModelMatrixLayout = ({
         </SuspenseBoundary>
 
         <Resizeable
-          storageName="matrixPreviewSettings"
+          storageName="Resizeable.ModelMatrixPreview"
           minSize={PANEL_WIDTH}
           openToThe="left"
           isInitiallyOpen={false}

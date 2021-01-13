@@ -23,7 +23,7 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
   })
 
   const [{ isOpen }, setPreviewSettings] = useLocalStorage({
-    key: `matrixPreviewSettings`,
+    key: `Resizeable.ModelMatrixPreview`,
     reducer: resizeableReducer,
     initialState: {
       size: PANEL_WIDTH,
