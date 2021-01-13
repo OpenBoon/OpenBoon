@@ -9,6 +9,14 @@ const MODEL_ID = '621bf774-89d9-1244-9596-d6df43f1ede5'
 const noop = () => () => {}
 
 describe('<AssetLabelingMenu />', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
+  afterAll(() => {
+    jest.useRealTimers()
+  })
+
   it('should add a model/label filter', () => {
     const mockRouterPush = jest.fn()
 
