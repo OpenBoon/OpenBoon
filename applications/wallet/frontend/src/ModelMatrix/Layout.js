@@ -35,7 +35,7 @@ const ModelMatrixLayout = ({
         flexDirection: 'column',
       }}
     >
-      {!name ? null : (
+      {name && (
         <div
           css={{
             display: 'flex',

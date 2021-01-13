@@ -12,8 +12,6 @@ import InputRange, { VARIANTS } from '../Input/Range'
 import { DEFAULT_MIN, DEFAULT_MAX } from './reducer'
 
 const ModelMatrixControls = ({ isNormalized, dispatch }) => {
-  const domain = [DEFAULT_MIN, DEFAULT_MAX]
-
   const [rangeValues, setRangeValues] = useState([DEFAULT_MIN, DEFAULT_MAX])
   const [inputMin, setInputMin] = useState(rangeValues[0])
   const [inputMax, setInputMax] = useState(rangeValues[1])
@@ -23,7 +21,7 @@ const ModelMatrixControls = ({ isNormalized, dispatch }) => {
 
     if (newMin === rangeValues[0]) return
 
-    if (newMin < domain[0] || newMin > rangeValues[1]) {
+    if (newMin < DEFAULT_MIN || newMin > rangeValues[1]) {
       setInputMin(rangeValues[0])
       return
     }
@@ -40,7 +38,7 @@ const ModelMatrixControls = ({ isNormalized, dispatch }) => {
 
     if (newMax === rangeValues[1]) return
 
-    if (newMax < rangeValues[0] || newMax > domain[1]) {
+    if (newMax < rangeValues[0] || newMax > DEFAULT_MAX) {
       setInputMax(rangeValues[1])
       return
     }

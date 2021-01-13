@@ -1,9 +1,9 @@
 import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 
-import { reducer } from './reducer'
-
 import { spacing } from '../Styles'
+
+import { reducer } from './reducer'
 
 import ModelMatrixNavigation from './Navigation'
 import ModelMatrixLayout from './Layout'
@@ -32,7 +32,7 @@ const ModelMatrixContent = () => {
         flexDirection: 'column',
       }}
     >
-      {!matrixDetails.name ? null : (
+      {matrixDetails.name && (
         <ModelMatrixNavigation
           projectId={projectId}
           modelId={modelId}
