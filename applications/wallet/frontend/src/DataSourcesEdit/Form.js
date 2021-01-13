@@ -65,7 +65,7 @@ const DataSourcesEditForm = ({ initialState }) => {
             paddingBottom: spacing.comfy,
           }}
         >
-          <SectionTitle>Data Source Name </SectionTitle>
+          <SectionTitle>STEP 1: Data Source Name </SectionTitle>
 
           <Input
             autoFocus
@@ -89,7 +89,7 @@ const DataSourcesEditForm = ({ initialState }) => {
         <CheckboxGroup
           legend={
             <>
-              Add Additional File Types
+              STEP 2: Add Additional File Types
               <Toggletip openToThe="right" label="Supported File Types">
                 <div
                   css={{
@@ -128,7 +128,7 @@ const DataSourcesEditForm = ({ initialState }) => {
           options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
             value,
             label,
-            icon: <img src={icon} alt={label} width="40px" />,
+            icon,
             legend,
             initialValue: !!fileTypes[value],
             isDisabled: !!initialState.fileTypes[value],
@@ -138,7 +138,7 @@ const DataSourcesEditForm = ({ initialState }) => {
 
         <div css={{ height: spacing.base }} />
 
-        <SectionTitle>Add Additional Analysis</SectionTitle>
+        <SectionTitle>STEP 3: Add Additional Analysis</SectionTitle>
 
         <SectionSubTitle>
           Additional analysis can be added to this data source. Previous

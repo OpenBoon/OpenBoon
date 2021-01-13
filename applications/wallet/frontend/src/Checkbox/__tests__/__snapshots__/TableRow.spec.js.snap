@@ -61,6 +61,16 @@ exports[`<CheckboxTableRow /> should render properly 1`] = `
   fill: #73b61c;
 }
 
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
 <tr
   className="emotion-0"
   onClick={[Function]}
@@ -103,6 +113,27 @@ exports[`<CheckboxTableRow /> should render properly 1`] = `
   </td>
   <td>
     API
+  </td>
+  <td>
+    <div
+      className="emotion-6"
+    >
+      <svg
+        color="transparent"
+        data-file-name="images.svg"
+        height={24}
+      />
+      <svg
+        color="transparent"
+        data-file-name="documents.svg"
+        height={24}
+      />
+      <svg
+        color="transparent"
+        data-file-name="videos.svg"
+        height={24}
+      />
+    </div>
   </td>
 </tr>
 `;
@@ -168,6 +199,16 @@ exports[`<CheckboxTableRow /> should render properly 2`] = `
   fill: #73b61c;
 }
 
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
 <tr
   className="emotion-0"
   onClick={[Function]}
@@ -210,6 +251,27 @@ exports[`<CheckboxTableRow /> should render properly 2`] = `
   </td>
   <td>
     API
+  </td>
+  <td>
+    <div
+      className="emotion-6"
+    >
+      <svg
+        color="transparent"
+        data-file-name="images.svg"
+        height={24}
+      />
+      <svg
+        color="transparent"
+        data-file-name="documents.svg"
+        height={24}
+      />
+      <svg
+        color="transparent"
+        data-file-name="videos.svg"
+        height={24}
+      />
+    </div>
   </td>
 </tr>
 `;
