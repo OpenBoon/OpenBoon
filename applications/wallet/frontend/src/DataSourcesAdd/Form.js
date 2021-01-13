@@ -28,7 +28,7 @@ const INITIAL_STATE = {
   source: '',
   uri: '',
   credentials: {},
-  fileTypes: {},
+  fileTypes: { Documents: true, Images: true, Videos: true },
   modules: {},
   isLoading: false,
   errors: {},
@@ -152,7 +152,7 @@ const DataSourcesAddForm = () => {
             label,
             icon,
             legend,
-            initialValue: false,
+            initialValue: state.fileTypes[value],
             isDisabled: false,
           }))}
           variant={CHECKBOX_VARIANTS.SECONDARY}
@@ -163,10 +163,14 @@ const DataSourcesAddForm = () => {
         <SectionTitle>STEP 4: Select Analysis</SectionTitle>
 
         <SectionSubTitle>
-          Choose the type of analysis you would like performed on your data set:
+          Choose the type of analysis you’d like performed on your dataset.
+          <br />
+          (Only modules that can be applied to the file type selected above will
+          be shown.)
         </SectionSubTitle>
 
         <DataSourcesAddAutomaticAnalysis />
+
         {providers.map((provider) => (
           <DataSourcesAddProvider
             key={provider.name}
