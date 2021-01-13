@@ -47,6 +47,7 @@ const DataSourcesEditProvider = ({
                     label: module.description,
                     initialValue: !!modules[module.name],
                     isDisabled: !!initialModules[module.name],
+                    supportedMedia: module.supportedMedia,
                   }
                 }),
               }}

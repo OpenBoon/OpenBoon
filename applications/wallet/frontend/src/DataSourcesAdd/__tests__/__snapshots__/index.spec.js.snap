@@ -409,8 +409,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #808080;
+  background-color: #73b61c;
+  border: 2px solid #73b61c;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -439,7 +439,7 @@ Array [
 .emotion-38 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 0;
+  opacity: 100;
 }
 
 .emotion-39 {
@@ -462,7 +462,7 @@ Array [
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-left: 24px;
+  padding-left: 16px;
 }
 
 .emotion-41 {
@@ -668,6 +668,11 @@ Array [
 .emotion-82 th {
   color: #b3b3b3;
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.emotion-82 th:last-of-type {
+  padding-right: 0;
 }
 
 .emotion-82 td {
@@ -681,6 +686,10 @@ Array [
 
 .emotion-82 td:nth-of-type(2) {
   font-family: Roboto Mono;
+}
+
+.emotion-82 td:last-of-type {
+  padding-right: 0;
 }
 
 .emotion-82 tr:hover td {
@@ -712,7 +721,34 @@ Array [
   -moz-user-select: none;
 }
 
-.emotion-139 {
+.emotion-86 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-88 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-89 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-147 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -721,12 +757,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-139 button,
-.emotion-139 a {
+.emotion-147 button,
+.emotion-147 a {
   margin-right: 16px;
 }
 
-.emotion-140 {
+.emotion-148 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -757,27 +793,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-140,
-.emotion-140:hover,
-.emotion-140:visited,
-.emotion-140 .noop {
+.emotion-148,
+.emotion-148:hover,
+.emotion-148:visited,
+.emotion-148 .noop {
   background-color: #808080;
 }
 
-.emotion-140:hover,
-.emotion-140 .noop {
+.emotion-148:hover,
+.emotion-148 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-140[aria-disabled=true],
-.emotion-140 .noop {
+.emotion-148[aria-disabled=true],
+.emotion-148 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-141 {
+.emotion-149 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -808,22 +844,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-141,
-.emotion-141:hover,
-.emotion-141:visited,
-.emotion-141 .noop {
+.emotion-149,
+.emotion-149:hover,
+.emotion-149:visited,
+.emotion-149 .noop {
   background-color: #73b61c;
 }
 
-.emotion-141:hover,
-.emotion-141 .noop {
+.emotion-149:hover,
+.emotion-149 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-141[aria-disabled=true],
-.emotion-141 .noop {
+.emotion-149[aria-disabled=true],
+.emotion-149 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -864,7 +900,7 @@ Array [
       <h3
         className="emotion-6"
       >
-        Data Source Name 
+        STEP 1: Data Source Name 
       </h3>
       <div
         className="emotion-7"
@@ -903,7 +939,7 @@ Array [
       <h3
         className="emotion-6"
       >
-        Connect to Source
+        STEP 2: Connect to Source
       </h3>
       <div
         className="emotion-14"
@@ -963,7 +999,7 @@ Array [
         <div
           className="emotion-21"
         >
-          Select File Types to Import
+          STEP 3: Determine Import File Type(s)
           <div
             className="emotion-22"
           >
@@ -1030,7 +1066,9 @@ Array [
         className="emotion-31"
       >
         <div>
-          A minimum of one file type must be selected
+          You can import all supported file types or limit them by editing the selection below.
+          <br />
+          A minimum of one file type must be selected.
            
           <span
             className="emotion-5"
@@ -1050,7 +1088,7 @@ Array [
         >
           <input
             className="emotion-36"
-            defaultChecked={false}
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="Images"
@@ -1068,10 +1106,10 @@ Array [
         <div
           className="emotion-39"
         >
-          <img
-            alt="Image Files"
-            src="/icons/images.png"
-            width="40px"
+          <svg
+            color="#ebb52e"
+            data-file-name="images.svg"
+            height={32}
           />
         </div>
         <div
@@ -1092,7 +1130,7 @@ Array [
         >
           <input
             className="emotion-36"
-            defaultChecked={false}
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="Documents"
@@ -1110,10 +1148,10 @@ Array [
         <div
           className="emotion-39"
         >
-          <img
-            alt="Documents (PDF & MS Office)"
-            src="/icons/documents.png"
-            width="40px"
+          <svg
+            color="#00bdc1"
+            data-file-name="documents.svg"
+            height={32}
           />
         </div>
         <div
@@ -1139,7 +1177,7 @@ Array [
         >
           <input
             className="emotion-36"
-            defaultChecked={false}
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="Videos"
@@ -1157,10 +1195,10 @@ Array [
         <div
           className="emotion-39"
         >
-          <img
-            alt="Video Files"
-            src="/icons/videos.png"
-            width="40px"
+          <svg
+            color="#8f89e7"
+            data-file-name="videos.svg"
+            height={32}
           />
         </div>
         <div
@@ -1180,12 +1218,14 @@ Array [
     <h3
       className="emotion-6"
     >
-      Select Analysis
+      STEP 4: Select Analysis
     </h3>
     <p
       className="emotion-61"
     >
-      Choose the type of analysis you would like performed on your data set:
+      Choose the type of analysis you’d like performed on your dataset.
+      <br />
+      (Only modules that can be applied to the file type selected above will be shown.)
     </p>
     <div
       className="emotion-62"
@@ -1329,6 +1369,9 @@ Array [
                   <th>
                     Description
                   </th>
+                  <th>
+                    Application Type
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -1344,7 +1387,7 @@ Array [
                         className="emotion-35"
                       >
                         <input
-                          className="emotion-36"
+                          className="emotion-86"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -1354,7 +1397,7 @@ Array [
                           className="emotion-37"
                         >
                           <svg
-                            className="emotion-38"
+                            className="emotion-88"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1375,6 +1418,27 @@ Array [
                   <td>
                     Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-89"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-83"
@@ -1388,7 +1452,7 @@ Array [
                         className="emotion-35"
                       >
                         <input
-                          className="emotion-36"
+                          className="emotion-86"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -1398,7 +1462,7 @@ Array [
                           className="emotion-37"
                         >
                           <svg
-                            className="emotion-38"
+                            className="emotion-88"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1419,6 +1483,27 @@ Array [
                   <td>
                     Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-89"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-83"
@@ -1432,7 +1517,7 @@ Array [
                         className="emotion-35"
                       >
                         <input
-                          className="emotion-36"
+                          className="emotion-86"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -1442,7 +1527,7 @@ Array [
                           className="emotion-37"
                         >
                           <svg
-                            className="emotion-38"
+                            className="emotion-88"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1463,6 +1548,27 @@ Array [
                   <td>
                     Generate keyword labels for image, video, and documents.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-89"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-83"
@@ -1476,7 +1582,7 @@ Array [
                         className="emotion-35"
                       >
                         <input
-                          className="emotion-36"
+                          className="emotion-86"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -1486,7 +1592,7 @@ Array [
                           className="emotion-37"
                         >
                           <svg
-                            className="emotion-38"
+                            className="emotion-88"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1506,6 +1612,27 @@ Array [
                   </td>
                   <td>
                     Detect everyday objects in images, video, and documents.
+                  </td>
+                  <td>
+                    <div
+                      className="emotion-89"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -1536,6 +1663,9 @@ Array [
                   <th>
                     Description
                   </th>
+                  <th>
+                    Application Type
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -1551,7 +1681,7 @@ Array [
                         className="emotion-35"
                       >
                         <input
-                          className="emotion-36"
+                          className="emotion-86"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -1561,7 +1691,7 @@ Array [
                           className="emotion-37"
                         >
                           <svg
-                            className="emotion-38"
+                            className="emotion-88"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1582,6 +1712,27 @@ Array [
                   <td>
                     Extract all pages in MS Office/PDF documents into separate assets.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-89"
+                    >
+                      <svg
+                        color="transparent"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-83"
@@ -1595,7 +1746,7 @@ Array [
                         className="emotion-35"
                       >
                         <input
-                          className="emotion-36"
+                          className="emotion-86"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -1605,7 +1756,7 @@ Array [
                           className="emotion-37"
                         >
                           <svg
-                            className="emotion-38"
+                            className="emotion-88"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1626,6 +1777,27 @@ Array [
                   <td>
                     Extract all layers in multi page image formats such as tiff and psd as as separate assets
                   </td>
+                  <td>
+                    <div
+                      className="emotion-89"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-83"
@@ -1639,7 +1811,7 @@ Array [
                         className="emotion-35"
                       >
                         <input
-                          className="emotion-36"
+                          className="emotion-86"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -1649,7 +1821,7 @@ Array [
                           className="emotion-37"
                         >
                           <svg
-                            className="emotion-38"
+                            className="emotion-88"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1669,6 +1841,27 @@ Array [
                   </td>
                   <td>
                     Break video files into individual assets based on a shot detection algorithm.
+                  </td>
+                  <td>
+                    <div
+                      className="emotion-89"
+                    >
+                      <svg
+                        color="transparent"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -1699,6 +1892,9 @@ Array [
                   <th>
                     Description
                   </th>
+                  <th>
+                    Application Type
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -1714,7 +1910,7 @@ Array [
                         className="emotion-35"
                       >
                         <input
-                          className="emotion-36"
+                          className="emotion-86"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -1724,7 +1920,7 @@ Array [
                           className="emotion-37"
                         >
                           <svg
-                            className="emotion-38"
+                            className="emotion-88"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1745,6 +1941,27 @@ Array [
                   <td>
                     Utilize OCR technology to detect text on an image.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-89"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -1753,10 +1970,10 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-139"
+      className="emotion-147"
     >
       <a
-        className="emotion-140"
+        className="emotion-148"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -1765,7 +1982,7 @@ Array [
       </a>
       <button
         aria-disabled={true}
-        className="emotion-141"
+        className="emotion-149"
         onClick={[Function]}
         type="submit"
       >
@@ -2190,8 +2407,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #808080;
+  background-color: #73b61c;
+  border: 2px solid #73b61c;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -2220,7 +2437,7 @@ Array [
 .emotion-56 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 0;
+  opacity: 100;
 }
 
 .emotion-57 {
@@ -2243,7 +2460,7 @@ Array [
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-left: 24px;
+  padding-left: 16px;
 }
 
 .emotion-59 {
@@ -2449,6 +2666,11 @@ Array [
 .emotion-100 th {
   color: #b3b3b3;
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.emotion-100 th:last-of-type {
+  padding-right: 0;
 }
 
 .emotion-100 td {
@@ -2462,6 +2684,10 @@ Array [
 
 .emotion-100 td:nth-of-type(2) {
   font-family: Roboto Mono;
+}
+
+.emotion-100 td:last-of-type {
+  padding-right: 0;
 }
 
 .emotion-100 tr:hover td {
@@ -2493,7 +2719,34 @@ Array [
   -moz-user-select: none;
 }
 
-.emotion-157 {
+.emotion-104 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-106 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-107 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-165 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2502,12 +2755,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-157 button,
-.emotion-157 a {
+.emotion-165 button,
+.emotion-165 a {
   margin-right: 16px;
 }
 
-.emotion-158 {
+.emotion-166 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2538,27 +2791,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-158,
-.emotion-158:hover,
-.emotion-158:visited,
-.emotion-158 .noop {
+.emotion-166,
+.emotion-166:hover,
+.emotion-166:visited,
+.emotion-166 .noop {
   background-color: #808080;
 }
 
-.emotion-158:hover,
-.emotion-158 .noop {
+.emotion-166:hover,
+.emotion-166 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-158[aria-disabled=true],
-.emotion-158 .noop {
+.emotion-166[aria-disabled=true],
+.emotion-166 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-159 {
+.emotion-167 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2589,22 +2842,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-159,
-.emotion-159:hover,
-.emotion-159:visited,
-.emotion-159 .noop {
+.emotion-167,
+.emotion-167:hover,
+.emotion-167:visited,
+.emotion-167 .noop {
   background-color: #73b61c;
 }
 
-.emotion-159:hover,
-.emotion-159 .noop {
+.emotion-167:hover,
+.emotion-167 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-159[aria-disabled=true],
-.emotion-159 .noop {
+.emotion-167[aria-disabled=true],
+.emotion-167 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -2645,7 +2898,7 @@ Array [
       <h3
         className="emotion-6"
       >
-        Data Source Name 
+        STEP 1: Data Source Name 
       </h3>
       <div
         className="emotion-7"
@@ -2684,7 +2937,7 @@ Array [
       <h3
         className="emotion-6"
       >
-        Connect to Source
+        STEP 2: Connect to Source
       </h3>
       <div
         className="emotion-14"
@@ -2842,7 +3095,7 @@ Array [
         <div
           className="emotion-39"
         >
-          Select File Types to Import
+          STEP 3: Determine Import File Type(s)
           <div
             className="emotion-40"
           >
@@ -2909,7 +3162,9 @@ Array [
         className="emotion-49"
       >
         <div>
-          A minimum of one file type must be selected
+          You can import all supported file types or limit them by editing the selection below.
+          <br />
+          A minimum of one file type must be selected.
            
           <span
             className="emotion-5"
@@ -2929,7 +3184,7 @@ Array [
         >
           <input
             className="emotion-54"
-            defaultChecked={false}
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="Images"
@@ -2947,10 +3202,10 @@ Array [
         <div
           className="emotion-57"
         >
-          <img
-            alt="Image Files"
-            src="/icons/images.png"
-            width="40px"
+          <svg
+            color="#ebb52e"
+            data-file-name="images.svg"
+            height={32}
           />
         </div>
         <div
@@ -2971,7 +3226,7 @@ Array [
         >
           <input
             className="emotion-54"
-            defaultChecked={false}
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="Documents"
@@ -2989,10 +3244,10 @@ Array [
         <div
           className="emotion-57"
         >
-          <img
-            alt="Documents (PDF & MS Office)"
-            src="/icons/documents.png"
-            width="40px"
+          <svg
+            color="#00bdc1"
+            data-file-name="documents.svg"
+            height={32}
           />
         </div>
         <div
@@ -3018,7 +3273,7 @@ Array [
         >
           <input
             className="emotion-54"
-            defaultChecked={false}
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="Videos"
@@ -3036,10 +3291,10 @@ Array [
         <div
           className="emotion-57"
         >
-          <img
-            alt="Video Files"
-            src="/icons/videos.png"
-            width="40px"
+          <svg
+            color="#8f89e7"
+            data-file-name="videos.svg"
+            height={32}
           />
         </div>
         <div
@@ -3059,12 +3314,14 @@ Array [
     <h3
       className="emotion-6"
     >
-      Select Analysis
+      STEP 4: Select Analysis
     </h3>
     <p
       className="emotion-79"
     >
-      Choose the type of analysis you would like performed on your data set:
+      Choose the type of analysis you’d like performed on your dataset.
+      <br />
+      (Only modules that can be applied to the file type selected above will be shown.)
     </p>
     <div
       className="emotion-80"
@@ -3208,6 +3465,9 @@ Array [
                   <th>
                     Description
                   </th>
+                  <th>
+                    Application Type
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -3223,7 +3483,7 @@ Array [
                         className="emotion-53"
                       >
                         <input
-                          className="emotion-54"
+                          className="emotion-104"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -3233,7 +3493,7 @@ Array [
                           className="emotion-55"
                         >
                           <svg
-                            className="emotion-56"
+                            className="emotion-106"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3254,6 +3514,27 @@ Array [
                   <td>
                     Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-107"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-101"
@@ -3267,7 +3548,7 @@ Array [
                         className="emotion-53"
                       >
                         <input
-                          className="emotion-54"
+                          className="emotion-104"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -3277,7 +3558,7 @@ Array [
                           className="emotion-55"
                         >
                           <svg
-                            className="emotion-56"
+                            className="emotion-106"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3298,6 +3579,27 @@ Array [
                   <td>
                     Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-107"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-101"
@@ -3311,7 +3613,7 @@ Array [
                         className="emotion-53"
                       >
                         <input
-                          className="emotion-54"
+                          className="emotion-104"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -3321,7 +3623,7 @@ Array [
                           className="emotion-55"
                         >
                           <svg
-                            className="emotion-56"
+                            className="emotion-106"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3342,6 +3644,27 @@ Array [
                   <td>
                     Generate keyword labels for image, video, and documents.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-107"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-101"
@@ -3355,7 +3678,7 @@ Array [
                         className="emotion-53"
                       >
                         <input
-                          className="emotion-54"
+                          className="emotion-104"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -3365,7 +3688,7 @@ Array [
                           className="emotion-55"
                         >
                           <svg
-                            className="emotion-56"
+                            className="emotion-106"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3385,6 +3708,27 @@ Array [
                   </td>
                   <td>
                     Detect everyday objects in images, video, and documents.
+                  </td>
+                  <td>
+                    <div
+                      className="emotion-107"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -3415,6 +3759,9 @@ Array [
                   <th>
                     Description
                   </th>
+                  <th>
+                    Application Type
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -3430,7 +3777,7 @@ Array [
                         className="emotion-53"
                       >
                         <input
-                          className="emotion-54"
+                          className="emotion-104"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -3440,7 +3787,7 @@ Array [
                           className="emotion-55"
                         >
                           <svg
-                            className="emotion-56"
+                            className="emotion-106"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3461,6 +3808,27 @@ Array [
                   <td>
                     Extract all pages in MS Office/PDF documents into separate assets.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-107"
+                    >
+                      <svg
+                        color="transparent"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-101"
@@ -3474,7 +3842,7 @@ Array [
                         className="emotion-53"
                       >
                         <input
-                          className="emotion-54"
+                          className="emotion-104"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -3484,7 +3852,7 @@ Array [
                           className="emotion-55"
                         >
                           <svg
-                            className="emotion-56"
+                            className="emotion-106"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3505,6 +3873,27 @@ Array [
                   <td>
                     Extract all layers in multi page image formats such as tiff and psd as as separate assets
                   </td>
+                  <td>
+                    <div
+                      className="emotion-107"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-101"
@@ -3518,7 +3907,7 @@ Array [
                         className="emotion-53"
                       >
                         <input
-                          className="emotion-54"
+                          className="emotion-104"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -3528,7 +3917,7 @@ Array [
                           className="emotion-55"
                         >
                           <svg
-                            className="emotion-56"
+                            className="emotion-106"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3548,6 +3937,27 @@ Array [
                   </td>
                   <td>
                     Break video files into individual assets based on a shot detection algorithm.
+                  </td>
+                  <td>
+                    <div
+                      className="emotion-107"
+                    >
+                      <svg
+                        color="transparent"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -3578,6 +3988,9 @@ Array [
                   <th>
                     Description
                   </th>
+                  <th>
+                    Application Type
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -3593,7 +4006,7 @@ Array [
                         className="emotion-53"
                       >
                         <input
-                          className="emotion-54"
+                          className="emotion-104"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -3603,7 +4016,7 @@ Array [
                           className="emotion-55"
                         >
                           <svg
-                            className="emotion-56"
+                            className="emotion-106"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3624,6 +4037,27 @@ Array [
                   <td>
                     Utilize OCR technology to detect text on an image.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-107"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -3632,10 +4066,10 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-157"
+      className="emotion-165"
     >
       <a
-        className="emotion-158"
+        className="emotion-166"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -3644,7 +4078,7 @@ Array [
       </a>
       <button
         aria-disabled={true}
-        className="emotion-159"
+        className="emotion-167"
         onClick={[Function]}
         type="submit"
       >
@@ -4069,8 +4503,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #808080;
+  background-color: #73b61c;
+  border: 2px solid #73b61c;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -4099,7 +4533,7 @@ Array [
 .emotion-50 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 0;
+  opacity: 100;
 }
 
 .emotion-51 {
@@ -4122,7 +4556,7 @@ Array [
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-left: 24px;
+  padding-left: 16px;
 }
 
 .emotion-53 {
@@ -4328,6 +4762,11 @@ Array [
 .emotion-94 th {
   color: #b3b3b3;
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.emotion-94 th:last-of-type {
+  padding-right: 0;
 }
 
 .emotion-94 td {
@@ -4341,6 +4780,10 @@ Array [
 
 .emotion-94 td:nth-of-type(2) {
   font-family: Roboto Mono;
+}
+
+.emotion-94 td:last-of-type {
+  padding-right: 0;
 }
 
 .emotion-94 tr:hover td {
@@ -4372,7 +4815,34 @@ Array [
   -moz-user-select: none;
 }
 
-.emotion-151 {
+.emotion-98 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-100 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-101 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-159 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4381,12 +4851,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-151 button,
-.emotion-151 a {
+.emotion-159 button,
+.emotion-159 a {
   margin-right: 16px;
 }
 
-.emotion-152 {
+.emotion-160 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -4417,27 +4887,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-152,
-.emotion-152:hover,
-.emotion-152:visited,
-.emotion-152 .noop {
+.emotion-160,
+.emotion-160:hover,
+.emotion-160:visited,
+.emotion-160 .noop {
   background-color: #808080;
 }
 
-.emotion-152:hover,
-.emotion-152 .noop {
+.emotion-160:hover,
+.emotion-160 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-152[aria-disabled=true],
-.emotion-152 .noop {
+.emotion-160[aria-disabled=true],
+.emotion-160 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-153 {
+.emotion-161 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -4468,22 +4938,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-153,
-.emotion-153:hover,
-.emotion-153:visited,
-.emotion-153 .noop {
+.emotion-161,
+.emotion-161:hover,
+.emotion-161:visited,
+.emotion-161 .noop {
   background-color: #73b61c;
 }
 
-.emotion-153:hover,
-.emotion-153 .noop {
+.emotion-161:hover,
+.emotion-161 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-153[aria-disabled=true],
-.emotion-153 .noop {
+.emotion-161[aria-disabled=true],
+.emotion-161 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -4524,7 +4994,7 @@ Array [
       <h3
         className="emotion-6"
       >
-        Data Source Name 
+        STEP 1: Data Source Name 
       </h3>
       <div
         className="emotion-7"
@@ -4563,7 +5033,7 @@ Array [
       <h3
         className="emotion-6"
       >
-        Connect to Source
+        STEP 2: Connect to Source
       </h3>
       <div
         className="emotion-14"
@@ -4688,7 +5158,7 @@ Array [
         <div
           className="emotion-33"
         >
-          Select File Types to Import
+          STEP 3: Determine Import File Type(s)
           <div
             className="emotion-34"
           >
@@ -4755,7 +5225,9 @@ Array [
         className="emotion-43"
       >
         <div>
-          A minimum of one file type must be selected
+          You can import all supported file types or limit them by editing the selection below.
+          <br />
+          A minimum of one file type must be selected.
            
           <span
             className="emotion-5"
@@ -4775,7 +5247,7 @@ Array [
         >
           <input
             className="emotion-48"
-            defaultChecked={false}
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="Images"
@@ -4793,10 +5265,10 @@ Array [
         <div
           className="emotion-51"
         >
-          <img
-            alt="Image Files"
-            src="/icons/images.png"
-            width="40px"
+          <svg
+            color="#ebb52e"
+            data-file-name="images.svg"
+            height={32}
           />
         </div>
         <div
@@ -4817,7 +5289,7 @@ Array [
         >
           <input
             className="emotion-48"
-            defaultChecked={false}
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="Documents"
@@ -4835,10 +5307,10 @@ Array [
         <div
           className="emotion-51"
         >
-          <img
-            alt="Documents (PDF & MS Office)"
-            src="/icons/documents.png"
-            width="40px"
+          <svg
+            color="#00bdc1"
+            data-file-name="documents.svg"
+            height={32}
           />
         </div>
         <div
@@ -4864,7 +5336,7 @@ Array [
         >
           <input
             className="emotion-48"
-            defaultChecked={false}
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="Videos"
@@ -4882,10 +5354,10 @@ Array [
         <div
           className="emotion-51"
         >
-          <img
-            alt="Video Files"
-            src="/icons/videos.png"
-            width="40px"
+          <svg
+            color="#8f89e7"
+            data-file-name="videos.svg"
+            height={32}
           />
         </div>
         <div
@@ -4905,12 +5377,14 @@ Array [
     <h3
       className="emotion-6"
     >
-      Select Analysis
+      STEP 4: Select Analysis
     </h3>
     <p
       className="emotion-73"
     >
-      Choose the type of analysis you would like performed on your data set:
+      Choose the type of analysis you’d like performed on your dataset.
+      <br />
+      (Only modules that can be applied to the file type selected above will be shown.)
     </p>
     <div
       className="emotion-74"
@@ -5054,6 +5528,9 @@ Array [
                   <th>
                     Description
                   </th>
+                  <th>
+                    Application Type
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -5069,7 +5546,7 @@ Array [
                         className="emotion-47"
                       >
                         <input
-                          className="emotion-48"
+                          className="emotion-98"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -5079,7 +5556,7 @@ Array [
                           className="emotion-49"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-100"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -5100,6 +5577,27 @@ Array [
                   <td>
                     Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-101"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-95"
@@ -5113,7 +5611,7 @@ Array [
                         className="emotion-47"
                       >
                         <input
-                          className="emotion-48"
+                          className="emotion-98"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -5123,7 +5621,7 @@ Array [
                           className="emotion-49"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-100"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -5144,6 +5642,27 @@ Array [
                   <td>
                     Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-101"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-95"
@@ -5157,7 +5676,7 @@ Array [
                         className="emotion-47"
                       >
                         <input
-                          className="emotion-48"
+                          className="emotion-98"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -5167,7 +5686,7 @@ Array [
                           className="emotion-49"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-100"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -5188,6 +5707,27 @@ Array [
                   <td>
                     Generate keyword labels for image, video, and documents.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-101"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-95"
@@ -5201,7 +5741,7 @@ Array [
                         className="emotion-47"
                       >
                         <input
-                          className="emotion-48"
+                          className="emotion-98"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -5211,7 +5751,7 @@ Array [
                           className="emotion-49"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-100"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -5231,6 +5771,27 @@ Array [
                   </td>
                   <td>
                     Detect everyday objects in images, video, and documents.
+                  </td>
+                  <td>
+                    <div
+                      className="emotion-101"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -5261,6 +5822,9 @@ Array [
                   <th>
                     Description
                   </th>
+                  <th>
+                    Application Type
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -5276,7 +5840,7 @@ Array [
                         className="emotion-47"
                       >
                         <input
-                          className="emotion-48"
+                          className="emotion-98"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -5286,7 +5850,7 @@ Array [
                           className="emotion-49"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-100"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -5307,6 +5871,27 @@ Array [
                   <td>
                     Extract all pages in MS Office/PDF documents into separate assets.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-101"
+                    >
+                      <svg
+                        color="transparent"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-95"
@@ -5320,7 +5905,7 @@ Array [
                         className="emotion-47"
                       >
                         <input
-                          className="emotion-48"
+                          className="emotion-98"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -5330,7 +5915,7 @@ Array [
                           className="emotion-49"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-100"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -5351,6 +5936,27 @@ Array [
                   <td>
                     Extract all layers in multi page image formats such as tiff and psd as as separate assets
                   </td>
+                  <td>
+                    <div
+                      className="emotion-101"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-95"
@@ -5364,7 +5970,7 @@ Array [
                         className="emotion-47"
                       >
                         <input
-                          className="emotion-48"
+                          className="emotion-98"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -5374,7 +5980,7 @@ Array [
                           className="emotion-49"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-100"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -5394,6 +6000,27 @@ Array [
                   </td>
                   <td>
                     Break video files into individual assets based on a shot detection algorithm.
+                  </td>
+                  <td>
+                    <div
+                      className="emotion-101"
+                    >
+                      <svg
+                        color="transparent"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -5424,6 +6051,9 @@ Array [
                   <th>
                     Description
                   </th>
+                  <th>
+                    Application Type
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -5439,7 +6069,7 @@ Array [
                         className="emotion-47"
                       >
                         <input
-                          className="emotion-48"
+                          className="emotion-98"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -5449,7 +6079,7 @@ Array [
                           className="emotion-49"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-100"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -5470,6 +6100,27 @@ Array [
                   <td>
                     Utilize OCR technology to detect text on an image.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-101"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -5478,10 +6129,10 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-151"
+      className="emotion-159"
     >
       <a
-        className="emotion-152"
+        className="emotion-160"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -5490,7 +6141,7 @@ Array [
       </a>
       <button
         aria-disabled={true}
-        className="emotion-153"
+        className="emotion-161"
         onClick={[Function]}
         type="submit"
       >
@@ -5915,8 +6566,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #808080;
+  background-color: #73b61c;
+  border: 2px solid #73b61c;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -5945,7 +6596,7 @@ Array [
 .emotion-49 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 0;
+  opacity: 100;
 }
 
 .emotion-50 {
@@ -5968,7 +6619,7 @@ Array [
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-left: 24px;
+  padding-left: 16px;
 }
 
 .emotion-52 {
@@ -6174,6 +6825,11 @@ Array [
 .emotion-93 th {
   color: #b3b3b3;
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.emotion-93 th:last-of-type {
+  padding-right: 0;
 }
 
 .emotion-93 td {
@@ -6187,6 +6843,10 @@ Array [
 
 .emotion-93 td:nth-of-type(2) {
   font-family: Roboto Mono;
+}
+
+.emotion-93 td:last-of-type {
+  padding-right: 0;
 }
 
 .emotion-93 tr:hover td {
@@ -6218,7 +6878,34 @@ Array [
   -moz-user-select: none;
 }
 
-.emotion-150 {
+.emotion-97 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-99 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-100 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-158 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -6227,12 +6914,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-150 button,
-.emotion-150 a {
+.emotion-158 button,
+.emotion-158 a {
   margin-right: 16px;
 }
 
-.emotion-151 {
+.emotion-159 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -6263,27 +6950,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-151,
-.emotion-151:hover,
-.emotion-151:visited,
-.emotion-151 .noop {
+.emotion-159,
+.emotion-159:hover,
+.emotion-159:visited,
+.emotion-159 .noop {
   background-color: #808080;
 }
 
-.emotion-151:hover,
-.emotion-151 .noop {
+.emotion-159:hover,
+.emotion-159 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-151[aria-disabled=true],
-.emotion-151 .noop {
+.emotion-159[aria-disabled=true],
+.emotion-159 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-152 {
+.emotion-160 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -6314,22 +7001,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-152,
-.emotion-152:hover,
-.emotion-152:visited,
-.emotion-152 .noop {
+.emotion-160,
+.emotion-160:hover,
+.emotion-160:visited,
+.emotion-160 .noop {
   background-color: #73b61c;
 }
 
-.emotion-152:hover,
-.emotion-152 .noop {
+.emotion-160:hover,
+.emotion-160 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-152[aria-disabled=true],
-.emotion-152 .noop {
+.emotion-160[aria-disabled=true],
+.emotion-160 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -6370,7 +7057,7 @@ Array [
       <h3
         className="emotion-6"
       >
-        Data Source Name 
+        STEP 1: Data Source Name 
       </h3>
       <div
         className="emotion-7"
@@ -6409,7 +7096,7 @@ Array [
       <h3
         className="emotion-6"
       >
-        Connect to Source
+        STEP 2: Connect to Source
       </h3>
       <div
         className="emotion-14"
@@ -6529,7 +7216,7 @@ Array [
         <div
           className="emotion-32"
         >
-          Select File Types to Import
+          STEP 3: Determine Import File Type(s)
           <div
             className="emotion-33"
           >
@@ -6596,7 +7283,9 @@ Array [
         className="emotion-42"
       >
         <div>
-          A minimum of one file type must be selected
+          You can import all supported file types or limit them by editing the selection below.
+          <br />
+          A minimum of one file type must be selected.
            
           <span
             className="emotion-5"
@@ -6616,7 +7305,7 @@ Array [
         >
           <input
             className="emotion-47"
-            defaultChecked={false}
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="Images"
@@ -6634,10 +7323,10 @@ Array [
         <div
           className="emotion-50"
         >
-          <img
-            alt="Image Files"
-            src="/icons/images.png"
-            width="40px"
+          <svg
+            color="#ebb52e"
+            data-file-name="images.svg"
+            height={32}
           />
         </div>
         <div
@@ -6658,7 +7347,7 @@ Array [
         >
           <input
             className="emotion-47"
-            defaultChecked={false}
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="Documents"
@@ -6676,10 +7365,10 @@ Array [
         <div
           className="emotion-50"
         >
-          <img
-            alt="Documents (PDF & MS Office)"
-            src="/icons/documents.png"
-            width="40px"
+          <svg
+            color="#00bdc1"
+            data-file-name="documents.svg"
+            height={32}
           />
         </div>
         <div
@@ -6705,7 +7394,7 @@ Array [
         >
           <input
             className="emotion-47"
-            defaultChecked={false}
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="Videos"
@@ -6723,10 +7412,10 @@ Array [
         <div
           className="emotion-50"
         >
-          <img
-            alt="Video Files"
-            src="/icons/videos.png"
-            width="40px"
+          <svg
+            color="#8f89e7"
+            data-file-name="videos.svg"
+            height={32}
           />
         </div>
         <div
@@ -6746,12 +7435,14 @@ Array [
     <h3
       className="emotion-6"
     >
-      Select Analysis
+      STEP 4: Select Analysis
     </h3>
     <p
       className="emotion-72"
     >
-      Choose the type of analysis you would like performed on your data set:
+      Choose the type of analysis you’d like performed on your dataset.
+      <br />
+      (Only modules that can be applied to the file type selected above will be shown.)
     </p>
     <div
       className="emotion-73"
@@ -6895,6 +7586,9 @@ Array [
                   <th>
                     Description
                   </th>
+                  <th>
+                    Application Type
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -6910,7 +7604,7 @@ Array [
                         className="emotion-46"
                       >
                         <input
-                          className="emotion-47"
+                          className="emotion-97"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -6920,7 +7614,7 @@ Array [
                           className="emotion-48"
                         >
                           <svg
-                            className="emotion-49"
+                            className="emotion-99"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -6941,6 +7635,27 @@ Array [
                   <td>
                     Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-100"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-94"
@@ -6954,7 +7669,7 @@ Array [
                         className="emotion-46"
                       >
                         <input
-                          className="emotion-47"
+                          className="emotion-97"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -6964,7 +7679,7 @@ Array [
                           className="emotion-48"
                         >
                           <svg
-                            className="emotion-49"
+                            className="emotion-99"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -6985,6 +7700,27 @@ Array [
                   <td>
                     Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-100"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-94"
@@ -6998,7 +7734,7 @@ Array [
                         className="emotion-46"
                       >
                         <input
-                          className="emotion-47"
+                          className="emotion-97"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -7008,7 +7744,7 @@ Array [
                           className="emotion-48"
                         >
                           <svg
-                            className="emotion-49"
+                            className="emotion-99"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -7029,6 +7765,27 @@ Array [
                   <td>
                     Generate keyword labels for image, video, and documents.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-100"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-94"
@@ -7042,7 +7799,7 @@ Array [
                         className="emotion-46"
                       >
                         <input
-                          className="emotion-47"
+                          className="emotion-97"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -7052,7 +7809,7 @@ Array [
                           className="emotion-48"
                         >
                           <svg
-                            className="emotion-49"
+                            className="emotion-99"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -7072,6 +7829,27 @@ Array [
                   </td>
                   <td>
                     Detect everyday objects in images, video, and documents.
+                  </td>
+                  <td>
+                    <div
+                      className="emotion-100"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -7102,6 +7880,9 @@ Array [
                   <th>
                     Description
                   </th>
+                  <th>
+                    Application Type
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -7117,7 +7898,7 @@ Array [
                         className="emotion-46"
                       >
                         <input
-                          className="emotion-47"
+                          className="emotion-97"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -7127,7 +7908,7 @@ Array [
                           className="emotion-48"
                         >
                           <svg
-                            className="emotion-49"
+                            className="emotion-99"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -7148,6 +7929,27 @@ Array [
                   <td>
                     Extract all pages in MS Office/PDF documents into separate assets.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-100"
+                    >
+                      <svg
+                        color="transparent"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#00bdc1"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-94"
@@ -7161,7 +7963,7 @@ Array [
                         className="emotion-46"
                       >
                         <input
-                          className="emotion-47"
+                          className="emotion-97"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -7171,7 +7973,7 @@ Array [
                           className="emotion-48"
                         >
                           <svg
-                            className="emotion-49"
+                            className="emotion-99"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -7192,6 +7994,27 @@ Array [
                   <td>
                     Extract all layers in multi page image formats such as tiff and psd as as separate assets
                   </td>
+                  <td>
+                    <div
+                      className="emotion-100"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   className="emotion-94"
@@ -7205,7 +8028,7 @@ Array [
                         className="emotion-46"
                       >
                         <input
-                          className="emotion-47"
+                          className="emotion-97"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -7215,7 +8038,7 @@ Array [
                           className="emotion-48"
                         >
                           <svg
-                            className="emotion-49"
+                            className="emotion-99"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -7235,6 +8058,27 @@ Array [
                   </td>
                   <td>
                     Break video files into individual assets based on a shot detection algorithm.
+                  </td>
+                  <td>
+                    <div
+                      className="emotion-100"
+                    >
+                      <svg
+                        color="transparent"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="#8f89e7"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -7265,6 +8109,9 @@ Array [
                   <th>
                     Description
                   </th>
+                  <th>
+                    Application Type
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -7280,7 +8127,7 @@ Array [
                         className="emotion-46"
                       >
                         <input
-                          className="emotion-47"
+                          className="emotion-97"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
@@ -7290,7 +8137,7 @@ Array [
                           className="emotion-48"
                         >
                           <svg
-                            className="emotion-49"
+                            className="emotion-99"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -7311,6 +8158,27 @@ Array [
                   <td>
                     Utilize OCR technology to detect text on an image.
                   </td>
+                  <td>
+                    <div
+                      className="emotion-100"
+                    >
+                      <svg
+                        color="#ebb52e"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      <svg
+                        color="transparent"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -7319,10 +8187,10 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-150"
+      className="emotion-158"
     >
       <a
-        className="emotion-151"
+        className="emotion-159"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -7331,7 +8199,7 @@ Array [
       </a>
       <button
         aria-disabled={true}
-        className="emotion-152"
+        className="emotion-160"
         onClick={[Function]}
         type="submit"
       >
