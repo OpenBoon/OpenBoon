@@ -115,6 +115,9 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
 }
 
 .emotion-17 {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
   color: #b3b3b3;
   display: -webkit-box;
   display: -webkit-flex;
@@ -290,7 +293,7 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
         onChange={[Function]}
         onKeyPress={[Function]}
         type="text"
-        value={0}
+        value={1}
       />
     </label>
   </div>
@@ -412,6 +415,9 @@ exports[`<ModelMatrixControls should render properly 1`] = `
 }
 
 .emotion-17 {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
   color: #b3b3b3;
   display: -webkit-box;
   display: -webkit-flex;

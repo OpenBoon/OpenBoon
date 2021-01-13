@@ -8,6 +8,8 @@ import { useScroller } from '../Scroll/helpers'
 
 import { getColor } from './helpers'
 
+import settingsShape from './settingsShape'
+
 const CONTRAST_THRESHOLD = 69
 
 const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
@@ -195,15 +197,7 @@ ModelMatrixRow.propTypes = {
     labels: PropTypes.arrayOf(PropTypes.string).isRequired,
     matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   }).isRequired,
-  settings: PropTypes.shape({
-    height: PropTypes.number.isRequired,
-    labelsWidth: PropTypes.number.isRequired,
-    zoom: PropTypes.number.isRequired,
-    isMinimapOpen: PropTypes.bool.isRequired,
-    isNormalized: PropTypes.bool.isRequired,
-    isPreviewOpen: PropTypes.bool.isRequired,
-    selectedCell: PropTypes.arrayOf(PropTypes.number).isRequired,
-  }).isRequired,
+  settings: PropTypes.shape(settingsShape).isRequired,
   label: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired,
