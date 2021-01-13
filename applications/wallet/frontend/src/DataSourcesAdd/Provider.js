@@ -44,6 +44,7 @@ const DataSourcesAddProvider = ({
                   label: module.description,
                   initialValue: false,
                   isDisabled: false,
+                  supportedMedia: module.supportedMedia,
                 })),
               }}
               onClick={onClick}
