@@ -16,12 +16,12 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 import Toggletip from '../Toggletip'
+import Providers from '../Providers'
 
 import { FILE_TYPES } from '../DataSourcesAdd/helpers'
 
 import DataSourcesAddAutomaticAnalysis from '../DataSourcesAdd/AutomaticAnalysis'
 
-import DataSourcesEditProvider from './Provider'
 import DataSourcesEditCopy from './Copy'
 
 import { getInitialModules, onSubmit } from './helpers'
@@ -147,17 +147,12 @@ const DataSourcesEditForm = ({ initialState }) => {
 
         <DataSourcesAddAutomaticAnalysis />
 
-        {providers.map((provider) => (
-          <DataSourcesEditProvider
-            key={provider.name}
-            provider={provider}
-            initialModules={initialModules}
-            modules={state.modules}
-            onClick={(module) =>
-              dispatch({ modules: { ...state.modules, ...module } })
-            }
-          />
-        ))}
+        <Providers
+          providers={providers}
+          initialModules={initialModules}
+          modules={state.modules}
+          dispatch={dispatch}
+        />
 
         <ButtonGroup>
           <Link
