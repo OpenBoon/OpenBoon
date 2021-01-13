@@ -84,6 +84,7 @@ const ModelMatrixControls = ({ isNormalized, dispatch }) => {
 
       <div
         css={{
+          width: 'max-content',
           color: colors.structure.zinc,
           display: 'flex',
           alignItems: 'center',

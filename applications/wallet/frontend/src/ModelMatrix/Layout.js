@@ -21,7 +21,7 @@ const ACCURACY_WIDTH = 40
 const ModelMatrixLayout = ({
   projectId,
   modelId,
-  matrixDetails: { overallAccuracy, labels },
+  matrixDetails: { name, overallAccuracy, labels },
   setMatrixDetails,
 }) => {
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
@@ -35,33 +35,36 @@ const ModelMatrixLayout = ({
         flexDirection: 'column',
       }}
     >
-      <div
-        css={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: spacing.normal,
-          borderBottom: constants.borders.regular.coal,
-          fontSize: typography.size.medium,
-          lineHeight: typography.height.medium,
-          backgroundColor: colors.structure.lead,
-        }}
-      >
-        <span
+      {!name ? null : (
+        <div
           css={{
-            fontWeight: typography.weight.bold,
-            paddingRight: spacing.small,
+            display: 'flex',
+            alignItems: 'center',
+            padding: spacing.normal,
+            borderBottom: constants.borders.regular.coal,
+            fontSize: typography.size.medium,
+            lineHeight: typography.height.medium,
+            backgroundColor: colors.structure.lead,
           }}
         >
-          Overall Accuracy:
-        </span>
-        <div css={{ width: ACCURACY_WIDTH }}>{`${Math.round(
-          overallAccuracy * 100,
-        )}%`}</div>
-        <ModelMatrixControls
-          isNormalized={settings.isNormalized}
-          dispatch={dispatch}
-        />
-      </div>
+          <span
+            css={{
+              fontWeight: typography.weight.bold,
+              paddingRight: spacing.small,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Overall Accuracy:
+          </span>
+          <div css={{ width: ACCURACY_WIDTH }}>{`${Math.round(
+            overallAccuracy * 100,
+          )}%`}</div>
+          <ModelMatrixControls
+            isNormalized={settings.isNormalized}
+            dispatch={dispatch}
+          />
+        </div>
+      )}
 
       <div
         css={{
@@ -142,6 +145,7 @@ ModelMatrixLayout.propTypes = {
   projectId: PropTypes.string.isRequired,
   modelId: PropTypes.string.isRequired,
   matrixDetails: PropTypes.shape({
+    name: PropTypes.string.isRequired,
     overallAccuracy: PropTypes.number.isRequired,
     labels: PropTypes.arrayOf(PropTypes.number),
   }).isRequired,

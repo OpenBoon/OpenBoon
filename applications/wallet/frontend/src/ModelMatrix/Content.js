@@ -32,11 +32,13 @@ const ModelMatrixContent = () => {
         flexDirection: 'column',
       }}
     >
-      <ModelMatrixNavigation
-        projectId={projectId}
-        modelId={modelId}
-        name={matrixDetails.name}
-      />
+      {!matrixDetails.name ? null : (
+        <ModelMatrixNavigation
+          projectId={projectId}
+          modelId={modelId}
+          name={matrixDetails.name}
+        />
+      )}
 
       <ModelMatrixLayout
         projectId={projectId}
