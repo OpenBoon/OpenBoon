@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.BatchUpdateClipProxyRequest
 import com.zorroa.archivist.domain.ClipSpec
 import com.zorroa.archivist.domain.TimelineClipSpec
 import com.zorroa.archivist.domain.CreateTimelineResponse
@@ -80,6 +81,7 @@ class ClipControllerTests : MockMvcTest() {
     fun testGet() {
         val clipSpec = ClipSpec(asset.id, "test", "test", 1.0.bd(), 5.0.bd(), listOf("cat"))
         val clip = clipService.createClip(clipSpec)
+        refreshElastic()
 
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/clips/${clip.id}")
@@ -116,6 +118,7 @@ class ClipControllerTests : MockMvcTest() {
     fun testUpdateClipPrpoxy() {
         val clipSpec = ClipSpec(asset.id, "test", "test", 1.0.bd(), 5.0.bd(), listOf("cat"))
         val clip = clipService.createClip(clipSpec)
+        refreshElastic()
 
         val req = UpdateClipProxyRequest(
             listOf(
@@ -144,6 +147,7 @@ class ClipControllerTests : MockMvcTest() {
     fun testBatchUpdateClipPrpoxy() {
         val clipSpec = ClipSpec(asset.id, "test", "test", 1.0.bd(), 5.0.bd(), listOf("cat"))
         val clip = clipService.createClip(clipSpec)
+        refreshElastic()
 
         val update = UpdateClipProxyRequest(
             listOf(
@@ -152,7 +156,7 @@ class ClipControllerTests : MockMvcTest() {
             "ABC123"
         )
 
-        val req = mapOf(clip.id to update)
+        val req = BatchUpdateClipProxyRequest(asset.id, mapOf(clip.id to update))
 
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/clips/_batch_update_proxy")

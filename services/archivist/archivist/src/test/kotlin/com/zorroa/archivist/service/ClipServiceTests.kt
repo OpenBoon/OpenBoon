@@ -72,6 +72,7 @@ class ClipServiceTests : AbstractTest() {
         val parent = getSample(1, "video")[0]
         val clipSpec = ClipSpec(parent.id, "test", "test", 1.0.bd(), 5.0.bd(), listOf("cat"))
         val clip1 = clipService.createClip(clipSpec)
+        refreshElastic()
         val clip2 = clipService.getClip(clip1.id)
         assertEquals(clip1.id, clip2.id)
         assertEquals(clip1.timeline, clip2.timeline)
@@ -186,8 +187,9 @@ class ClipServiceTests : AbstractTest() {
 
         val clipSpec = ClipSpec(asset.id, "test", "test", 1.0.bd(), 5.0.bd(), listOf("cat"))
         val clip = clipService.createClip(clipSpec)
-        assertTrue(clipService.setProxy(clip.id, proxy))
 
+        refreshElastic()
+        assertTrue(clipService.setProxy(clip.id, proxy))
         refreshElastic()
 
         val uclip = clipService.getClip(clip.id)
