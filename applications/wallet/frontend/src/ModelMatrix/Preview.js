@@ -6,7 +6,7 @@ import FilterSvg from '../Icons/filter.svg'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
-const ModelMatrixPreview = ({ selectedCell, matrix }) => {
+const ModelMatrixPreview = ({ selectedCell, labels }) => {
   if (!selectedCell.length)
     return (
       <div
@@ -58,7 +58,7 @@ const ModelMatrixPreview = ({ selectedCell, matrix }) => {
           >
             True:
           </span>{' '}
-          {matrix.labels[selectedCell[0]]}
+          {labels[selectedCell[0]]}
         </h3>
         <h3>
           <span
@@ -70,7 +70,7 @@ const ModelMatrixPreview = ({ selectedCell, matrix }) => {
           >
             Pred:
           </span>{' '}
-          {matrix.labels[selectedCell[1]]}
+          {labels[selectedCell[1]]}
         </h3>
       </div>
 
@@ -86,12 +86,7 @@ const ModelMatrixPreview = ({ selectedCell, matrix }) => {
 
 ModelMatrixPreview.propTypes = {
   selectedCell: PropTypes.arrayOf(PropTypes.number).isRequired,
-  matrix: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    overallAccuracy: PropTypes.number.isRequired,
-    labels: PropTypes.arrayOf(PropTypes.string).isRequired,
-    matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  }).isRequired,
+  labels: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 export default ModelMatrixPreview
