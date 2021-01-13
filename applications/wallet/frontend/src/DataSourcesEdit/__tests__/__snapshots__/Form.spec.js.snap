@@ -539,10 +539,6 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   white-space: nowrap;
 }
 
-.emotion-72 th:last-of-type {
-  padding-right: 0;
-}
-
 .emotion-72 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
@@ -554,10 +550,6 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 
 .emotion-72 td:nth-of-type(2) {
   font-family: Roboto Mono;
-}
-
-.emotion-72 td:last-of-type {
-  padding-right: 0;
 }
 
 .emotion-72 tr:hover td {
@@ -2070,10 +2062,6 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   white-space: nowrap;
 }
 
-.emotion-71 th:last-of-type {
-  padding-right: 0;
-}
-
 .emotion-71 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
@@ -2085,10 +2073,6 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 
 .emotion-71 td:nth-of-type(2) {
   font-family: Roboto Mono;
-}
-
-.emotion-71 td:last-of-type {
-  padding-right: 0;
 }
 
 .emotion-71 tr:hover td {
