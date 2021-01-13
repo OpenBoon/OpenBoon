@@ -9,16 +9,12 @@ import RadioGroup from '../Radio/Group'
 
 import InputRange, { VARIANTS } from '../Input/Range'
 
-const ModelMatrixControls = ({
-  settings,
-  matrix: { minScore, maxScore },
-  dispatch,
-}) => {
-  const minMaxFix = minScore === maxScore ? 0.001 : 0
+import { DEFAULT_MIN, DEFAULT_MAX } from './reducer'
 
-  const domain = [minScore, maxScore + minMaxFix]
+const ModelMatrixControls = ({ isNormalized, dispatch }) => {
+  const domain = [DEFAULT_MIN, DEFAULT_MAX]
 
-  const [rangeValues, setRangeValues] = useState([minScore, maxScore])
+  const [rangeValues, setRangeValues] = useState([DEFAULT_MIN, DEFAULT_MAX])
   const [inputMin, setInputMin] = useState(rangeValues[0])
   const [inputMax, setInputMax] = useState(rangeValues[1])
 
@@ -72,13 +68,13 @@ const ModelMatrixControls = ({
             value: 'normalized',
             label: 'Normalized',
             legend: '',
-            initialValue: settings.isNormalized,
+            initialValue: isNormalized,
           },
           {
             value: 'absolute',
             label: 'Absolute',
             legend: '',
-            initialValue: !settings.isNormalized,
+            initialValue: !isNormalized,
           },
         ]}
         onClick={({ value }) =>
@@ -138,12 +134,7 @@ const ModelMatrixControls = ({
 }
 
 ModelMatrixControls.propTypes = {
-  settings: PropTypes.shape({ isNormalized: PropTypes.bool.isRequired })
-    .isRequired,
-  matrix: PropTypes.shape({
-    minScore: PropTypes.number.isRequired,
-    maxScore: PropTypes.number.isRequired,
-  }).isRequired,
+  isNormalized: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
 }
 

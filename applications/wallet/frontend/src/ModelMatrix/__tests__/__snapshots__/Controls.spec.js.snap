@@ -290,7 +290,7 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
         onChange={[Function]}
         onKeyPress={[Function]}
         type="text"
-        value={0}
+        value={1}
       />
     </label>
   </div>

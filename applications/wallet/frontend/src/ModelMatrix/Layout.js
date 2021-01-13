@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import { useReducer } from 'react'
 
+import SuspenseBoundary from '../SuspenseBoundary'
+
 import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
@@ -14,8 +16,14 @@ import ModelMatrixMatrix from './Matrix'
 import ModelMatrixPreview from './Preview'
 
 const PANEL_WIDTH = 200
+const ACCURACY_WIDTH = 40
 
-const ModelMatrixLayout = ({ matrix }) => {
+const ModelMatrixLayout = ({
+  projectId,
+  modelId,
+  matrixDetails: { overallAccuracy, labels },
+  setMatrixDetails,
+}) => {
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   return (
@@ -46,10 +54,11 @@ const ModelMatrixLayout = ({ matrix }) => {
         >
           Overall Accuracy:
         </span>
-        {`${Math.round(matrix.overallAccuracy * 100)}%`}
+        <div css={{ width: ACCURACY_WIDTH }}>{`${Math.round(
+          overallAccuracy * 100,
+        )}%`}</div>
         <ModelMatrixControls
-          matrix={matrix}
-          settings={settings}
+          isNormalized={settings.isNormalized}
           dispatch={dispatch}
         />
       </div>
@@ -62,11 +71,15 @@ const ModelMatrixLayout = ({ matrix }) => {
           backgroundColor: colors.structure.lead,
         }}
       >
-        <ModelMatrixMatrix
-          matrix={matrix}
-          settings={settings}
-          dispatch={dispatch}
-        />
+        <SuspenseBoundary>
+          <ModelMatrixMatrix
+            projectId={projectId}
+            modelId={modelId}
+            settings={settings}
+            dispatch={dispatch}
+            setMatrixDetails={setMatrixDetails}
+          />
+        </SuspenseBoundary>
 
         {settings.isPreviewOpen && (
           <div
@@ -81,7 +94,7 @@ const ModelMatrixLayout = ({ matrix }) => {
           >
             <ModelMatrixPreview
               selectedCell={settings.selectedCell}
-              matrix={matrix}
+              labels={labels}
             />
           </div>
         )}
@@ -126,9 +139,13 @@ const ModelMatrixLayout = ({ matrix }) => {
 }
 
 ModelMatrixLayout.propTypes = {
-  matrix: PropTypes.shape({
+  projectId: PropTypes.string.isRequired,
+  modelId: PropTypes.string.isRequired,
+  matrixDetails: PropTypes.shape({
     overallAccuracy: PropTypes.number.isRequired,
+    labels: PropTypes.arrayOf(PropTypes.number),
   }).isRequired,
+  setMatrixDetails: PropTypes.func.isRequired,
 }
 
 export default ModelMatrixLayout

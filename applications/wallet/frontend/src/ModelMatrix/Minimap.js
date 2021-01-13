@@ -7,6 +7,8 @@ import { getScroller } from '../Scroll/helpers'
 
 import { getColor } from './helpers'
 
+import settingsShape from './settingsShape'
+
 const ModelMatrixMinimap = ({ matrix, settings }) => {
   const verticalScroller = getScroller({ namespace: 'ModelMatrixVertical' })
   const horizontalScroller = getScroller({ namespace: 'ModelMatrixHorizontal' })
@@ -107,13 +109,7 @@ ModelMatrixMinimap.propTypes = {
     labels: PropTypes.arrayOf(PropTypes.string).isRequired,
     matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   }).isRequired,
-  settings: PropTypes.shape({
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-    labelsWidth: PropTypes.number.isRequired,
-    zoom: PropTypes.number.isRequired,
-    isMinimapOpen: PropTypes.bool.isRequired,
-  }).isRequired,
+  settings: PropTypes.shape(settingsShape).isRequired,
 }
 
 export default ModelMatrixMinimap

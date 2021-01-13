@@ -1,5 +1,7 @@
+import { useReducer } from 'react'
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
+
+import { reducer } from './reducer'
 
 import { spacing } from '../Styles'
 
@@ -11,9 +13,11 @@ const ModelMatrixContent = () => {
     query: { projectId, modelId },
   } = useRouter()
 
-  const { data: matrix } = useSWR(
-    `/api/v1/projects/${projectId}/models/${modelId}/confusion_matrix/`,
-  )
+  const [matrixDetails, setMatrixDetails] = useReducer(reducer, {
+    name: '',
+    overallAccuracy: 0,
+    labels: [],
+  })
 
   return (
     <div
@@ -31,10 +35,15 @@ const ModelMatrixContent = () => {
       <ModelMatrixNavigation
         projectId={projectId}
         modelId={modelId}
-        name={matrix.name}
+        name={matrixDetails.name}
       />
 
-      <ModelMatrixLayout matrix={matrix} />
+      <ModelMatrixLayout
+        projectId={projectId}
+        modelId={modelId}
+        matrixDetails={matrixDetails}
+        setMatrixDetails={setMatrixDetails}
+      />
     </div>
   )
 }
