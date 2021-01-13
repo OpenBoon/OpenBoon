@@ -44,22 +44,22 @@ class VideoClip:
     @property
     def length(self):
         """The length of the clip"""
-        return self.data['length']
+        return self._data['length']
 
     @property
     def start(self):
         """The start time of the clip"""
-        return self.data['start']
+        return self._data['start']
 
     @property
     def stop(self):
         """The stop time of the clip"""
-        return self.data['stop']
+        return self._data['stop']
 
     @property
     def score(self):
         """The prediction score"""
-        return self.data['score']
+        return self._data['score']
 
     @staticmethod
     def from_hit(hit):

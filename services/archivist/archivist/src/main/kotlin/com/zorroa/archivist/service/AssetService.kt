@@ -15,7 +15,7 @@ import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchIndexFailure
 import com.zorroa.archivist.domain.BatchIndexResponse
 import com.zorroa.archivist.domain.BatchUpdateCustomFieldsRequest
-import com.zorroa.archivist.domain.BatchUpdateCustomFieldsResponse
+import com.zorroa.archivist.domain.BatchUpdateResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Field
 import com.zorroa.archivist.domain.FileExtResolver
@@ -159,7 +159,7 @@ interface AssetService {
      */
     fun batchUpdate(batch: Map<String, UpdateAssetRequest>): BulkResponse
 
-    fun batchUpdateCustomFields(batch: BatchUpdateCustomFieldsRequest): BatchUpdateCustomFieldsResponse
+    fun batchUpdateCustomFields(batch: BatchUpdateCustomFieldsRequest): BatchUpdateResponse
 
     /**
      * Update the the given assets.  The [UpdateAssetRequest] can
@@ -431,7 +431,7 @@ class AssetServiceImpl : AssetService {
         return rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
     }
 
-    override fun batchUpdateCustomFields(batch: BatchUpdateCustomFieldsRequest): BatchUpdateCustomFieldsResponse {
+    override fun batchUpdateCustomFields(batch: BatchUpdateCustomFieldsRequest): BatchUpdateResponse {
         if (batch.size() > 1000) {
             throw IllegalArgumentException("Batch size must be under 1000")
         }
@@ -454,7 +454,7 @@ class AssetServiceImpl : AssetService {
             bulkRequest.add(rest.newUpdateRequest(id).doc(new_data).retryOnConflict(10))
         }
 
-        return BatchUpdateCustomFieldsResponse(
+        return BatchUpdateResponse(
             rest.client.bulk(bulkRequest, RequestOptions.DEFAULT).filter {
                 it.isFailed
             }.map {
