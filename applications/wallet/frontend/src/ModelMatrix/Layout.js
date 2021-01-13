@@ -158,7 +158,7 @@ ModelMatrixLayout.propTypes = {
   matrixDetails: PropTypes.shape({
     name: PropTypes.string.isRequired,
     overallAccuracy: PropTypes.number.isRequired,
-    labels: PropTypes.arrayOf(PropTypes.number),
+    labels: PropTypes.arrayOf(PropTypes.string),
     moduleName: PropTypes.string.isRequired,
   }).isRequired,
   setMatrixDetails: PropTypes.func.isRequired,
