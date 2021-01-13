@@ -7,56 +7,87 @@ import CheckboxTable from '../Checkbox/Table'
 
 const IMG_HEIGHT = 32
 
-const Providers = ({ providers, initialModules, modules, dispatch }) => {
-  return providers.map(({ name, logo, description, categories }) => {
-    return (
-      <div key={name} css={{ paddingTop: spacing.normal }}>
-        <Accordion
-          variant={ACCORDION_VARIANTS.PRIMARY}
-          icon={<img src={logo} alt={name} height={IMG_HEIGHT} />}
-          title={name}
-          hideTitle
-          cacheKey={`ProvidersProvider.${name}`}
-          isInitiallyOpen
-          isResizeable={false}
-        >
-          <>
-            <p
-              css={{
-                color: colors.structure.zinc,
-                margin: 0,
-                paddingTop: spacing.base,
-                paddingBottom: spacing.normal,
-                maxWidth: constants.paragraph.maxWidth,
-              }}
-            >
-              {description}
-            </p>
-            {categories.map((category) => (
-              <CheckboxTable
-                key={category.name}
-                category={{
-                  name: category.name,
-                  options: category.modules.map((module) => ({
-                    value: module.name,
-                    label: module.description,
-                    initialValue: (modules && !!modules[module.name]) || false,
-                    isDisabled:
-                      (initialModules && !!initialModules[module.name]) ||
-                      false,
-                    supportedMedia: module.supportedMedia,
-                  })),
+const Providers = ({
+  providers,
+  initialModules,
+  modules,
+  fileTypes,
+  dispatch,
+}) => {
+  const providersFilterModules = providers.map((p) => ({
+    ...p,
+    categories: p.categories.map((c) => ({
+      ...c,
+      modules: c.modules.filter((m) => {
+        const intersection = m.supportedMedia.filter((sM) =>
+          fileTypes.includes(sM),
+        )
+        return intersection.length > 0
+      }),
+    })),
+  }))
+
+  const providersFilerCategories = providersFilterModules.map((p) => ({
+    ...p,
+    categories: p.categories.filter((c) => c.modules.length > 0),
+  }))
+
+  const providersFilterProviders = providersFilerCategories.filter(
+    (p) => p.categories.length > 0,
+  )
+
+  return providersFilterProviders.map(
+    ({ name, logo, description, categories }) => {
+      return (
+        <div key={name} css={{ paddingTop: spacing.normal }}>
+          <Accordion
+            variant={ACCORDION_VARIANTS.PRIMARY}
+            icon={<img src={logo} alt={name} height={IMG_HEIGHT} />}
+            title={name}
+            hideTitle
+            cacheKey={`ProvidersProvider.${name}`}
+            isInitiallyOpen
+            isResizeable={false}
+          >
+            <>
+              <p
+                css={{
+                  color: colors.structure.zinc,
+                  margin: 0,
+                  paddingTop: spacing.base,
+                  paddingBottom: spacing.normal,
+                  maxWidth: constants.paragraph.maxWidth,
                 }}
-                onClick={(module) => {
-                  dispatch({ modules: { ...modules, ...module } })
-                }}
-              />
-            ))}
-          </>
-        </Accordion>
-      </div>
-    )
-  })
+              >
+                {description}
+              </p>
+              {categories.map((category) => (
+                <CheckboxTable
+                  key={category.name}
+                  category={{
+                    name: category.name,
+                    options: category.modules.map((module) => ({
+                      value: module.name,
+                      label: module.description,
+                      initialValue:
+                        (modules && !!modules[module.name]) || false,
+                      isDisabled:
+                        (initialModules && !!initialModules[module.name]) ||
+                        false,
+                      supportedMedia: module.supportedMedia,
+                    })),
+                  }}
+                  onClick={(module) => {
+                    dispatch({ modules: { ...modules, ...module } })
+                  }}
+                />
+              ))}
+            </>
+          </Accordion>
+        </div>
+      )
+    },
+  )
 }
 
 Providers.propTypes = {
@@ -75,6 +106,7 @@ Providers.propTypes = {
   ).isRequired,
   initialModules: PropTypes.shape({}).isRequired,
   modules: PropTypes.shape({}).isRequired,
+  fileTypes: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   dispatch: PropTypes.func.isRequired,
 }
 

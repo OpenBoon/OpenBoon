@@ -151,6 +151,7 @@ const DataSourcesEditForm = ({ initialState }) => {
           providers={providers}
           initialModules={initialModules}
           modules={state.modules}
+          fileTypes={Object.keys(state.fileTypes).filter((f) => fileTypes[f])}
           dispatch={dispatch}
         />
 

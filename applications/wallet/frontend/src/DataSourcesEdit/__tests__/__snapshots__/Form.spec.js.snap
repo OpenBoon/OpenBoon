@@ -603,7 +603,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   cursor: pointer;
 }
 
-.emotion-137 {
+.emotion-112 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -612,12 +612,12 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   padding-bottom: 16px;
 }
 
-.emotion-137 button,
-.emotion-137 a {
+.emotion-112 button,
+.emotion-112 a {
   margin-right: 16px;
 }
 
-.emotion-138 {
+.emotion-113 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -648,27 +648,27 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   background-color: transparent;
 }
 
-.emotion-138,
-.emotion-138:hover,
-.emotion-138:visited,
-.emotion-138 .noop {
+.emotion-113,
+.emotion-113:hover,
+.emotion-113:visited,
+.emotion-113 .noop {
   background-color: #808080;
 }
 
-.emotion-138:hover,
-.emotion-138 .noop {
+.emotion-113:hover,
+.emotion-113 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-138[aria-disabled=true],
-.emotion-138 .noop {
+.emotion-113[aria-disabled=true],
+.emotion-113 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-139 {
+.emotion-114 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -699,22 +699,22 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   background-color: transparent;
 }
 
-.emotion-139,
-.emotion-139:hover,
-.emotion-139:visited,
-.emotion-139 .noop {
+.emotion-114,
+.emotion-114:hover,
+.emotion-114:visited,
+.emotion-114 .noop {
   background-color: #73b61c;
 }
 
-.emotion-139:hover,
-.emotion-139 .noop {
+.emotion-114:hover,
+.emotion-114 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-139[aria-disabled=true],
-.emotion-139 .noop {
+.emotion-114[aria-disabled=true],
+.emotion-114 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1459,136 +1459,6 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-document-page-clips"
-                      />
-                      <div
-                        className="emotion-27"
-                      >
-                        <svg
-                          className="emotion-28"
-                          data-file-name="checkmark.svg"
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      zvi-document-page-clips
-                      : 
-                      Extract all pages in MS Office/PDF documents into separate assets.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  zvi-document-page-clips
-                </td>
-                <td>
-                  Extract all pages in MS Office/PDF documents into separate assets.
-                </td>
-                <td>
-                  <div
-                    className="emotion-79"
-                  >
-                    <svg
-                      color="transparent"
-                      data-file-name="images.svg"
-                      height={24}
-                    />
-                    <svg
-                      color="#00bdc1"
-                      data-file-name="documents.svg"
-                      height={24}
-                    />
-                    <svg
-                      color="transparent"
-                      data-file-name="videos.svg"
-                      height={24}
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr
-                className="emotion-80"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-74"
-                  >
-                    <div
-                      className="emotion-25"
-                    >
-                      <input
-                        className="emotion-26"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="zvi-image-page-clips"
-                      />
-                      <div
-                        className="emotion-27"
-                      >
-                        <svg
-                          className="emotion-28"
-                          data-file-name="checkmark.svg"
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      zvi-image-page-clips
-                      : 
-                      Extract all layers in multi page image formats such as tiff and psd as as separate assets
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  zvi-image-page-clips
-                </td>
-                <td>
-                  Extract all layers in multi page image formats such as tiff and psd as as separate assets
-                </td>
-                <td>
-                  <div
-                    className="emotion-79"
-                  >
-                    <svg
-                      color="#ebb52e"
-                      data-file-name="images.svg"
-                      height={24}
-                    />
-                    <svg
-                      color="transparent"
-                      data-file-name="documents.svg"
-                      height={24}
-                    />
-                    <svg
-                      color="transparent"
-                      data-file-name="videos.svg"
-                      height={24}
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr
-                className="emotion-80"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-74"
-                  >
-                    <div
-                      className="emotion-25"
-                    >
-                      <input
-                        className="emotion-26"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
                         value="zvi-video-shot-clips"
                       />
                       <div
@@ -1641,113 +1511,14 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
             </tbody>
           </table>
         </fieldset>
-        <fieldset
-          className="emotion-69"
-        >
-          <legend
-            className="emotion-70"
-          >
-            Zorroa Visual Intelligence
-          </legend>
-          <div
-            className="emotion-71"
-          />
-          <table
-            className="emotion-72"
-          >
-            <thead>
-              <tr>
-                <th>
-                   
-                </th>
-                <th>
-                  Module Name
-                </th>
-                <th>
-                  Description
-                </th>
-                <th>
-                  Application Type
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                className="emotion-80"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-74"
-                  >
-                    <div
-                      className="emotion-25"
-                    >
-                      <input
-                        className="emotion-26"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="zvi-text-detection"
-                      />
-                      <div
-                        className="emotion-27"
-                      >
-                        <svg
-                          className="emotion-28"
-                          data-file-name="checkmark.svg"
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      zvi-text-detection
-                      : 
-                      Utilize OCR technology to detect text on an image.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  zvi-text-detection
-                </td>
-                <td>
-                  Utilize OCR technology to detect text on an image.
-                </td>
-                <td>
-                  <div
-                    className="emotion-79"
-                  >
-                    <svg
-                      color="#ebb52e"
-                      data-file-name="images.svg"
-                      height={24}
-                    />
-                    <svg
-                      color="transparent"
-                      data-file-name="documents.svg"
-                      height={24}
-                    />
-                    <svg
-                      color="transparent"
-                      data-file-name="videos.svg"
-                      height={24}
-                    />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </fieldset>
       </div>
     </details>
   </div>
   <div
-    className="emotion-137"
+    className="emotion-112"
   >
     <a
-      className="emotion-138"
+      className="emotion-113"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -1756,7 +1527,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     </a>
     <button
       aria-disabled={true}
-      className="emotion-139"
+      className="emotion-114"
       onClick={[Function]}
       type="submit"
     >
@@ -2363,7 +2134,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-136 {
+.emotion-111 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2372,12 +2143,12 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-136 button,
-.emotion-136 a {
+.emotion-111 button,
+.emotion-111 a {
   margin-right: 16px;
 }
 
-.emotion-137 {
+.emotion-112 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2408,27 +2179,27 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-137,
-.emotion-137:hover,
-.emotion-137:visited,
-.emotion-137 .noop {
+.emotion-112,
+.emotion-112:hover,
+.emotion-112:visited,
+.emotion-112 .noop {
   background-color: #808080;
 }
 
-.emotion-137:hover,
-.emotion-137 .noop {
+.emotion-112:hover,
+.emotion-112 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-137[aria-disabled=true],
-.emotion-137 .noop {
+.emotion-112[aria-disabled=true],
+.emotion-112 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-138 {
+.emotion-113 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2459,22 +2230,22 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-138,
-.emotion-138:hover,
-.emotion-138:visited,
-.emotion-138 .noop {
+.emotion-113,
+.emotion-113:hover,
+.emotion-113:visited,
+.emotion-113 .noop {
   background-color: #73b61c;
 }
 
-.emotion-138:hover,
-.emotion-138 .noop {
+.emotion-113:hover,
+.emotion-113 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-138[aria-disabled=true],
-.emotion-138 .noop {
+.emotion-113[aria-disabled=true],
+.emotion-113 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -3214,136 +2985,6 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-document-page-clips"
-                      />
-                      <div
-                        className="emotion-26"
-                      >
-                        <svg
-                          className="emotion-27"
-                          data-file-name="checkmark.svg"
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      zvi-document-page-clips
-                      : 
-                      Extract all pages in MS Office/PDF documents into separate assets.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  zvi-document-page-clips
-                </td>
-                <td>
-                  Extract all pages in MS Office/PDF documents into separate assets.
-                </td>
-                <td>
-                  <div
-                    className="emotion-78"
-                  >
-                    <svg
-                      color="transparent"
-                      data-file-name="images.svg"
-                      height={24}
-                    />
-                    <svg
-                      color="#00bdc1"
-                      data-file-name="documents.svg"
-                      height={24}
-                    />
-                    <svg
-                      color="transparent"
-                      data-file-name="videos.svg"
-                      height={24}
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr
-                className="emotion-79"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-73"
-                  >
-                    <div
-                      className="emotion-24"
-                    >
-                      <input
-                        className="emotion-25"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="zvi-image-page-clips"
-                      />
-                      <div
-                        className="emotion-26"
-                      >
-                        <svg
-                          className="emotion-27"
-                          data-file-name="checkmark.svg"
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      zvi-image-page-clips
-                      : 
-                      Extract all layers in multi page image formats such as tiff and psd as as separate assets
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  zvi-image-page-clips
-                </td>
-                <td>
-                  Extract all layers in multi page image formats such as tiff and psd as as separate assets
-                </td>
-                <td>
-                  <div
-                    className="emotion-78"
-                  >
-                    <svg
-                      color="#ebb52e"
-                      data-file-name="images.svg"
-                      height={24}
-                    />
-                    <svg
-                      color="transparent"
-                      data-file-name="documents.svg"
-                      height={24}
-                    />
-                    <svg
-                      color="transparent"
-                      data-file-name="videos.svg"
-                      height={24}
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr
-                className="emotion-79"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-73"
-                  >
-                    <div
-                      className="emotion-24"
-                    >
-                      <input
-                        className="emotion-25"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
                         value="zvi-video-shot-clips"
                       />
                       <div
@@ -3396,113 +3037,14 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
             </tbody>
           </table>
         </fieldset>
-        <fieldset
-          className="emotion-68"
-        >
-          <legend
-            className="emotion-69"
-          >
-            Zorroa Visual Intelligence
-          </legend>
-          <div
-            className="emotion-70"
-          />
-          <table
-            className="emotion-71"
-          >
-            <thead>
-              <tr>
-                <th>
-                   
-                </th>
-                <th>
-                  Module Name
-                </th>
-                <th>
-                  Description
-                </th>
-                <th>
-                  Application Type
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                className="emotion-79"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-73"
-                  >
-                    <div
-                      className="emotion-24"
-                    >
-                      <input
-                        className="emotion-25"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="zvi-text-detection"
-                      />
-                      <div
-                        className="emotion-26"
-                      >
-                        <svg
-                          className="emotion-27"
-                          data-file-name="checkmark.svg"
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      zvi-text-detection
-                      : 
-                      Utilize OCR technology to detect text on an image.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  zvi-text-detection
-                </td>
-                <td>
-                  Utilize OCR technology to detect text on an image.
-                </td>
-                <td>
-                  <div
-                    className="emotion-78"
-                  >
-                    <svg
-                      color="#ebb52e"
-                      data-file-name="images.svg"
-                      height={24}
-                    />
-                    <svg
-                      color="transparent"
-                      data-file-name="documents.svg"
-                      height={24}
-                    />
-                    <svg
-                      color="transparent"
-                      data-file-name="videos.svg"
-                      height={24}
-                    />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </fieldset>
       </div>
     </details>
   </div>
   <div
-    className="emotion-136"
+    className="emotion-111"
   >
     <a
-      className="emotion-137"
+      className="emotion-112"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -3510,7 +3052,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
       Cancel
     </a>
     <button
-      className="emotion-138"
+      className="emotion-113"
       onClick={[Function]}
       type="submit"
     >
