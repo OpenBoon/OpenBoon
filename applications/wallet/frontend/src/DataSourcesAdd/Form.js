@@ -169,7 +169,9 @@ const DataSourcesAddForm = () => {
           be shown.)
         </SectionSubTitle>
 
-        <DataSourcesAddAutomaticAnalysis />
+        <DataSourcesAddAutomaticAnalysis
+          fileTypes={Object.keys(state.fileTypes).filter((f) => fileTypes[f])}
+        />
 
         <Providers
           providers={providers}

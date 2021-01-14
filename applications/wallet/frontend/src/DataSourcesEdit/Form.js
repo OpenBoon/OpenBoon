@@ -145,7 +145,9 @@ const DataSourcesEditForm = ({ initialState }) => {
           selections cannot be removed.
         </SectionSubTitle>
 
-        <DataSourcesAddAutomaticAnalysis />
+        <DataSourcesAddAutomaticAnalysis
+          fileTypes={Object.keys(state.fileTypes).filter((f) => fileTypes[f])}
+        />
 
         <Providers
           providers={providers}
