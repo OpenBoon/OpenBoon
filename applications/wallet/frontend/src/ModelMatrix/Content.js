@@ -17,6 +17,7 @@ const ModelMatrixContent = () => {
     name: '',
     overallAccuracy: 0,
     labels: [],
+    moduleName: '',
   })
 
   return (
