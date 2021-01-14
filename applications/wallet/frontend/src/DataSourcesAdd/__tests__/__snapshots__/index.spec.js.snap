@@ -671,10 +671,6 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-82 th:last-of-type {
-  padding-right: 0;
-}
-
 .emotion-82 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
@@ -686,10 +682,6 @@ Array [
 
 .emotion-82 td:nth-of-type(2) {
   font-family: Roboto Mono;
-}
-
-.emotion-82 td:last-of-type {
-  padding-right: 0;
 }
 
 .emotion-82 tr:hover td {
@@ -2669,10 +2661,6 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-100 th:last-of-type {
-  padding-right: 0;
-}
-
 .emotion-100 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
@@ -2684,10 +2672,6 @@ Array [
 
 .emotion-100 td:nth-of-type(2) {
   font-family: Roboto Mono;
-}
-
-.emotion-100 td:last-of-type {
-  padding-right: 0;
 }
 
 .emotion-100 tr:hover td {
@@ -4765,10 +4749,6 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-94 th:last-of-type {
-  padding-right: 0;
-}
-
 .emotion-94 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
@@ -4780,10 +4760,6 @@ Array [
 
 .emotion-94 td:nth-of-type(2) {
   font-family: Roboto Mono;
-}
-
-.emotion-94 td:last-of-type {
-  padding-right: 0;
 }
 
 .emotion-94 tr:hover td {
@@ -6828,10 +6804,6 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-93 th:last-of-type {
-  padding-right: 0;
-}
-
 .emotion-93 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
@@ -6843,10 +6815,6 @@ Array [
 
 .emotion-93 td:nth-of-type(2) {
   font-family: Roboto Mono;
-}
-
-.emotion-93 td:last-of-type {
-  padding-right: 0;
 }
 
 .emotion-93 tr:hover td {
