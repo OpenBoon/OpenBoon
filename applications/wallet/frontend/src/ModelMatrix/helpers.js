@@ -1,3 +1,5 @@
+export const PANEL_WIDTH = 200
+
 const GRADIENT = [
   [100, [0, 39, 107]],
   [63, [0, 149, 255]],
