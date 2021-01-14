@@ -15,11 +15,11 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 import Toggletip from '../Toggletip'
+import Providers from '../Providers'
 
 import { FILE_TYPES, onSubmit } from './helpers'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
-import DataSourcesAddProvider from './Provider'
 import DataSourcesAddCopy from './Copy'
 import DataSourcesAddSource, { SOURCES } from './Source'
 
@@ -169,17 +169,17 @@ const DataSourcesAddForm = () => {
           be shown.)
         </SectionSubTitle>
 
-        <DataSourcesAddAutomaticAnalysis />
+        <DataSourcesAddAutomaticAnalysis
+          fileTypes={Object.keys(state.fileTypes).filter((f) => fileTypes[f])}
+        />
 
-        {providers.map((provider) => (
-          <DataSourcesAddProvider
-            key={provider.name}
-            provider={provider}
-            onClick={(module) =>
-              dispatch({ modules: { ...state.modules, ...module } })
-            }
-          />
-        ))}
+        <Providers
+          providers={providers}
+          initialModules={{}}
+          modules={state.modules}
+          fileTypes={Object.keys(state.fileTypes).filter((f) => fileTypes[f])}
+          dispatch={dispatch}
+        />
 
         <ButtonGroup>
           <Link
