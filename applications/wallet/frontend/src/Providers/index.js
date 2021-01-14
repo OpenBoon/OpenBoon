@@ -27,12 +27,12 @@ const Providers = ({
     })),
   }))
 
-  const providersFilerCategories = providersFilterModules.map((p) => ({
+  const providersFilterCategories = providersFilterModules.map((p) => ({
     ...p,
     categories: p.categories.filter((c) => c.modules.length > 0),
   }))
 
-  const providersFilterProviders = providersFilerCategories.filter(
+  const providersFilterProviders = providersFilterCategories.filter(
     (p) => p.categories.length > 0,
   )
 
@@ -99,7 +99,18 @@ Providers.propTypes = {
       categories: PropTypes.arrayOf(
         PropTypes.shape({
           name: PropTypes.string.isRequired,
-          modules: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+          modules: PropTypes.arrayOf(
+            PropTypes.shape({
+              id: PropTypes.string.isRequired,
+              name: PropTypes.string.isRequired,
+              description: PropTypes.string.isRequired,
+              provider: PropTypes.string.isRequired,
+              category: PropTypes.string.isRequired,
+              supportedMedia: PropTypes.arrayOf(
+                PropTypes.oneOf(['Images', 'Documents', 'Videos']).isRequired,
+              ).isRequired,
+            }),
+          ).isRequired,
         }).isRequired,
       ).isRequired,
     }).isRequired,
