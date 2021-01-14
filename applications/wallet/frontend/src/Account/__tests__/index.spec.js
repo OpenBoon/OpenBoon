@@ -19,6 +19,14 @@ describe('<Account />', () => {
 
     act(() => {
       component.root
+        .findByProps({ label: 'Sort by' })
+        .props.onChange({ value: 'date' })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
         .findByProps({ type: 'search' })
         .props.onChange({ target: { value: 'erty' } })
     })

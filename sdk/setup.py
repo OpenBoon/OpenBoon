@@ -22,7 +22,8 @@ requirements = [
     "opencv-contrib-python-headless",
     "Pillow",
     "pdoc3",
-    "requests"
+    "requests",
+    "xmltodict"
 ]
 
 setup(

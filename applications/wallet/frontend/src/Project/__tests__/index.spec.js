@@ -7,8 +7,6 @@ import User from '../../User'
 
 import Project from '..'
 
-jest.mock('../UsagePlan', () => 'ProjectUsagePlan')
-
 describe('<Project />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({

@@ -160,6 +160,7 @@ services:
       ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
       ZMLP_SERVER: http://archivist:8080
       OFFICER_URL: http://officer:7078
+      ZMLP_BILLING_METRICS_SERVICE: http://metrics
 
   # Console web application.
   wallet:
