@@ -117,4 +117,3 @@ class TimelineAnalysisProcessor(AssetProcessor):
                 "updates": batch
             }
             self.app.client.put("/api/v1/clips/_batch_update_proxy", req)
-
