@@ -9,10 +9,6 @@ from zmlp_train.pytorch import PytorchTransferLearningTrainer
 from zmlpsdk import file_storage, Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset
 
-#import tensorflow
-#tensorflow.config.set_visible_devices([], 'GPU')
-
-#print("Num GPUs Available: ", len(tensorflow.config.experimental.list_physical_devices('GPU')))
 
 logging.basicConfig()
 

@@ -4,8 +4,6 @@ Keras specific utilities.
 import logging
 import os
 
-import numpy as np
-
 from zmlpsdk import file_storage
 
 from PIL import Image

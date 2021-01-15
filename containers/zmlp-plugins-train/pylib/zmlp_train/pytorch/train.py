@@ -1,5 +1,4 @@
 import os
-import shutil
 import tempfile
 
 import matplotlib.pyplot as plt
@@ -8,8 +7,6 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.optim import lr_scheduler
-import numpy as np
-import torchvision
 from torchvision import datasets, models, transforms
 import copy
 import time
@@ -127,8 +124,8 @@ class PytorchTransferLearningTrainer(AssetProcessor):
                 fp.write('{}\n'.format(label))
 
         # We don't do this for now, this script is a courtesy to a user who might download the classifier
-        #pth_dir = os.path.dirname(os.path.realpath(__file__))
-        #shutil.copy2(os.path.join(pth_dir, "predict.py"), model_dir)
+        # pth_dir = os.path.dirname(os.path.realpath(__file__))
+        # shutil.copy2(os.path.join(pth_dir, "predict.py"), model_dir)
 
         mod = file_storage.models.save_model(model_dir,  self.app_model, self.arg_value('deploy'))
         self.reactor.emit_status('Published model: {}'.format(self.app_model.name))
