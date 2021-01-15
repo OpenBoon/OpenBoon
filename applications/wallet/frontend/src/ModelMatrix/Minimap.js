@@ -9,7 +9,7 @@ import { getColor } from './helpers'
 
 import settingsShape from './settingsShape'
 
-const ModelMatrixMinimap = ({ matrix, settings }) => {
+const ModelMatrixMinimap = ({ matrix, settings, isStatic }) => {
   const verticalScroller = getScroller({ namespace: 'ModelMatrixVertical' })
   const horizontalScroller = getScroller({ namespace: 'ModelMatrixHorizontal' })
 
@@ -85,19 +85,21 @@ const ModelMatrixMinimap = ({ matrix, settings }) => {
         })
       })}
 
-      <div
-        ref={minimapRef}
-        css={{
-          position: 'absolute',
-          borderStyle: 'solid',
-          borderWidth: constants.borderWidths.medium,
-          borderColor: colors.signal.warning.base,
-          top: 0,
-          left: 0,
-          width: `${width}%`,
-          height: `${height}%`,
-        }}
-      />
+      {!isStatic && (
+        <div
+          ref={minimapRef}
+          css={{
+            position: 'absolute',
+            borderStyle: 'solid',
+            borderWidth: constants.borderWidths.medium,
+            borderColor: colors.signal.warning.base,
+            top: 0,
+            left: 0,
+            width: `${width}%`,
+            height: `${height}%`,
+          }}
+        />
+      )}
     </div>
   )
 }
@@ -110,6 +112,7 @@ ModelMatrixMinimap.propTypes = {
     matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   }).isRequired,
   settings: PropTypes.shape(settingsShape).isRequired,
+  isStatic: PropTypes.bool.isRequired,
 }
 
 export default ModelMatrixMinimap
