@@ -626,6 +626,9 @@ class SimilarityQuery:
         for simhash in as_collection(hashes) or []:
             if isinstance(simhash, Asset):
                 self.hashes.append(simhash.get_attr(self.field))
+            elif isinstance(simhash, VideoClip):
+                if simhash.simhash:
+                    self.hashes.append(simhash.simhash)
             else:
                 self.hashes.append(simhash)
         return self
@@ -659,6 +662,12 @@ class SimilarityQuery:
     def __add__(self, simhash):
         self.add_hash(simhash)
         return self
+
+
+class VideoClipSimilarityQuery(SimilarityQuery):
+    def __init__(self, hashes, min_score=0.75, boost=1.0):
+        super(VideoClipSimilarityQuery, self).__init__(
+            hashes, min_score, boost, 'clip.simhash')
 
 
 class FaceSimilarityQuery:
