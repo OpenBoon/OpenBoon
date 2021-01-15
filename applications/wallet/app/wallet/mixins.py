@@ -1,3 +1,4 @@
+from django.db import models
 from djangorestframework_camel_case.render import CamelCaseBrowsableAPIRenderer, \
     CamelCaseJSONRenderer
 
@@ -11,3 +12,11 @@ class CamelCaseRendererMixin(object):
 
     """
     renderer_classes = [CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer]
+
+
+class TimeStampMixin(models.Model):
+    createdDate = models.DateTimeField(auto_now_add=True)
+    modifiedDate = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
