@@ -1,9 +1,15 @@
 import PropTypes from 'prop-types'
 import { useReducer } from 'react'
 
+import SuspenseBoundary from '../SuspenseBoundary'
+
 import { colors, constants, spacing, typography } from '../Styles'
 
+import { useLocalStorage } from '../LocalStorage/helpers'
+
 import Button, { VARIANTS } from '../Button'
+import Resizeable from '../Resizeable'
+import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
 import PreviewSvg from '../Icons/preview.svg'
 
@@ -12,11 +18,27 @@ import { INITIAL_STATE, reducer } from './reducer'
 import ModelMatrixControls from './Controls'
 import ModelMatrixMatrix from './Matrix'
 import ModelMatrixPreview from './Preview'
+import { PANEL_WIDTH } from './helpers'
 
-const PANEL_WIDTH = 200
+const ACCURACY_WIDTH = 40
 
-const ModelMatrixLayout = ({ matrix }) => {
+const ModelMatrixLayout = ({
+  projectId,
+  modelId,
+  matrixDetails: { name, overallAccuracy, labels, moduleName },
+  setMatrixDetails,
+}) => {
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
+
+  const [{ isOpen }, setPreviewSettings] = useLocalStorage({
+    key: `Resizeable.ModelMatrixPreview`,
+    reducer: resizeableReducer,
+    initialState: {
+      size: PANEL_WIDTH,
+      originSize: 0,
+      isOpen: false,
+    },
+  })
 
   return (
     <div
@@ -27,32 +49,36 @@ const ModelMatrixLayout = ({ matrix }) => {
         flexDirection: 'column',
       }}
     >
-      <div
-        css={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: spacing.normal,
-          borderBottom: constants.borders.regular.coal,
-          fontSize: typography.size.medium,
-          lineHeight: typography.height.medium,
-          backgroundColor: colors.structure.lead,
-        }}
-      >
-        <span
+      {name && (
+        <div
           css={{
-            fontWeight: typography.weight.bold,
-            paddingRight: spacing.small,
+            display: 'flex',
+            alignItems: 'center',
+            padding: spacing.normal,
+            borderBottom: constants.borders.regular.coal,
+            fontSize: typography.size.medium,
+            lineHeight: typography.height.medium,
+            backgroundColor: colors.structure.lead,
           }}
         >
-          Overall Accuracy:
-        </span>
-        {`${Math.round(matrix.overallAccuracy * 100)}%`}
-        <ModelMatrixControls
-          matrix={matrix}
-          settings={settings}
-          dispatch={dispatch}
-        />
-      </div>
+          <span
+            css={{
+              fontWeight: typography.weight.bold,
+              paddingRight: spacing.small,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Overall Accuracy:
+          </span>
+          <div css={{ width: ACCURACY_WIDTH }}>{`${Math.round(
+            overallAccuracy * 100,
+          )}%`}</div>
+          <ModelMatrixControls
+            isNormalized={settings.isNormalized}
+            dispatch={dispatch}
+          />
+        </div>
+      )}
 
       <div
         css={{
@@ -62,29 +88,29 @@ const ModelMatrixLayout = ({ matrix }) => {
           backgroundColor: colors.structure.lead,
         }}
       >
-        <ModelMatrixMatrix
-          matrix={matrix}
-          settings={settings}
-          dispatch={dispatch}
-        />
+        <SuspenseBoundary>
+          <ModelMatrixMatrix
+            projectId={projectId}
+            modelId={modelId}
+            settings={settings}
+            dispatch={dispatch}
+            setMatrixDetails={setMatrixDetails}
+          />
+        </SuspenseBoundary>
 
-        {settings.isPreviewOpen && (
-          <div
-            css={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: PANEL_WIDTH,
-              height: '100%',
-              borderLeft: constants.borders.regular.coal,
-              overflow: 'auto',
-            }}
-          >
-            <ModelMatrixPreview
-              selectedCell={settings.selectedCell}
-              matrix={matrix}
-            />
-          </div>
-        )}
+        <Resizeable
+          storageName="Resizeable.ModelMatrixPreview"
+          minSize={PANEL_WIDTH}
+          openToThe="left"
+          isInitiallyOpen={false}
+          isDisabled={!isOpen}
+        >
+          <ModelMatrixPreview
+            selectedCell={settings.selectedCell}
+            labels={labels}
+            moduleName={moduleName}
+          />
+        </Resizeable>
 
         <div
           css={{
@@ -99,8 +125,11 @@ const ModelMatrixLayout = ({ matrix }) => {
             title="Preview"
             variant={VARIANTS.ICON}
             onClick={() =>
-              dispatch({
-                isPreviewOpen: !settings.isPreviewOpen,
+              setPreviewSettings({
+                type: ACTIONS.TOGGLE_OPEN,
+                payload: {
+                  minSize: PANEL_WIDTH,
+                },
               })
             }
             style={{
@@ -108,9 +137,7 @@ const ModelMatrixLayout = ({ matrix }) => {
               paddingTop: spacing.normal,
               paddingBottom: spacing.normal,
               borderBottom: constants.borders.regular.coal,
-              color: settings.isPreviewOpen
-                ? colors.key.one
-                : colors.structure.steel,
+              color: isOpen ? colors.key.one : colors.structure.steel,
               ':hover': {
                 backgroundColor: colors.structure.mattGrey,
               },
@@ -126,9 +153,15 @@ const ModelMatrixLayout = ({ matrix }) => {
 }
 
 ModelMatrixLayout.propTypes = {
-  matrix: PropTypes.shape({
+  projectId: PropTypes.string.isRequired,
+  modelId: PropTypes.string.isRequired,
+  matrixDetails: PropTypes.shape({
+    name: PropTypes.string.isRequired,
     overallAccuracy: PropTypes.number.isRequired,
+    labels: PropTypes.arrayOf(PropTypes.string),
+    moduleName: PropTypes.string.isRequired,
   }).isRequired,
+  setMatrixDetails: PropTypes.func.isRequired,
 }
 
 export default ModelMatrixLayout

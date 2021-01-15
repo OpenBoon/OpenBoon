@@ -14,7 +14,9 @@ import PenSvg from '../Icons/pen.svg'
 
 import { encode } from '../Filters/helpers'
 import { fetcher, revalidate } from '../Fetch/helpers'
+import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
+import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../Panel'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
@@ -40,8 +42,24 @@ const ModelDetails = () => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const [, setPanel] = useLocalStorage({
-    key: 'leftOpeningPanel',
+  const [, setLeftOpeningPanel] = useLocalStorage({
+    key: 'leftOpeningPanelSettings',
+    reducer: resizeableReducer,
+    initialState: {
+      size: PANEL_MIN_WIDTH,
+      originSize: 0,
+      isOpen: false,
+    },
+  })
+
+  const [, setRightOpeningPanel] = useLocalStorage({
+    key: 'rightOpeningPanelSettings',
+    reducer: resizeableReducer,
+    initialState: {
+      size: PANEL_MIN_WIDTH,
+      originSize: 0,
+      isOpen: false,
+    },
   })
 
   const [, setModelFields] = useLocalStorage({
@@ -292,15 +310,17 @@ const ModelDetails = () => {
               }}
             >
               <Link
-                href={`/[projectId]/visualizer?query=${encodedFilter}`}
-                as={`/${projectId}/visualizer?query=${encodedFilter}`}
+                href={`/${projectId}/visualizer?query=${encodedFilter}`}
                 passHref
               >
                 <Button
                   aria-label="Add Filter in Visualizer"
                   variant={BUTTON_VARIANTS.SECONDARY_SMALL}
                   onClick={() => {
-                    localStorage.setItem('rightOpeningPanel', '"filters"')
+                    setRightOpeningPanel({
+                      type: ACTIONS.OPEN,
+                      payload: { openPanel: 'filters' },
+                    })
                   }}
                   style={{
                     display: 'flex',
@@ -329,7 +349,10 @@ const ModelDetails = () => {
                   aria-label="Add More Labels"
                   variant={BUTTON_VARIANTS.SECONDARY_SMALL}
                   onClick={() => {
-                    setPanel({ value: 'assetLabeling' })
+                    setLeftOpeningPanel({
+                      type: ACTIONS.OPEN,
+                      payload: { openPanel: 'assetLabeling' },
+                    })
 
                     setModelFields({
                       modelId,

@@ -1,12 +1,40 @@
 import PropTypes from 'prop-types'
+import { useEffect } from 'react'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import useSWR from 'swr'
+
+import { getQueryString } from '../Fetch/helpers'
 
 import { colors, constants, spacing, typography } from '../Styles'
+
+import settingsShape from './settingsShape'
 
 import ModelMatrixTable from './Table'
 import ModelMatrixLabels from './Labels'
 
-const ModelMatrixMatrix = ({ matrix, settings, dispatch }) => {
+const ModelMatrixMatrix = ({
+  projectId,
+  modelId,
+  settings,
+  dispatch,
+  setMatrixDetails,
+}) => {
+  const queryString = getQueryString({
+    minScore: settings.minScore,
+    maxScore: settings.maxScore,
+  })
+
+  const {
+    data: matrix,
+    data: { name, overallAccuracy, labels, moduleName },
+  } = useSWR(
+    `/api/v1/projects/${projectId}/models/${modelId}/confusion_matrix/${queryString}`,
+  )
+
+  useEffect(() => {
+    setMatrixDetails({ name, overallAccuracy, labels, moduleName })
+  }, [setMatrixDetails, name, overallAccuracy, labels, moduleName])
+
   return (
     <div
       css={{
@@ -94,7 +122,7 @@ const ModelMatrixMatrix = ({ matrix, settings, dispatch }) => {
         {/* end placeholder for "True Label" column width */}
 
         <div css={{ display: 'flex', width: settings.width }}>
-          {/* begin placeholde for row labels */}
+          {/* begin placeholder for row labels */}
           <div
             css={{
               paddingLeft: spacing.normal,
@@ -105,7 +133,7 @@ const ModelMatrixMatrix = ({ matrix, settings, dispatch }) => {
           >
             &nbsp;
           </div>
-          {/* end placeholde for row labels */}
+          {/* end placeholder for row labels */}
 
           <div css={{ flex: 1, width: '0%' }}>
             <div
@@ -136,21 +164,11 @@ const ModelMatrixMatrix = ({ matrix, settings, dispatch }) => {
 }
 
 ModelMatrixMatrix.propTypes = {
-  matrix: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    overallAccuracy: PropTypes.number.isRequired,
-    labels: PropTypes.arrayOf(PropTypes.string).isRequired,
-    matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  }).isRequired,
-  settings: PropTypes.shape({
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-    labelsWidth: PropTypes.number.isRequired,
-    zoom: PropTypes.number.isRequired,
-    isMinimapOpen: PropTypes.bool.isRequired,
-    isNormalized: PropTypes.bool.isRequired,
-  }).isRequired,
+  projectId: PropTypes.string.isRequired,
+  modelId: PropTypes.string.isRequired,
+  settings: PropTypes.shape(settingsShape).isRequired,
   dispatch: PropTypes.func.isRequired,
+  setMatrixDetails: PropTypes.func.isRequired,
 }
 
 export default ModelMatrixMatrix

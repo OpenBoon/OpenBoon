@@ -42,7 +42,7 @@ const STYLES = {
     main: {
       display: 'flex',
       flexDirection: 'column',
-      paddingLeft: spacing.comfy,
+      paddingLeft: spacing.normal,
     },
     value: {
       color: colors.structure.white,
