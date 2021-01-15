@@ -1,6 +1,7 @@
 """
 Classes and functions for building timelines.
 """
+from ..entity.asset import StoredFile
 from ..util import as_id, as_collection
 
 __all__ = [
@@ -60,6 +61,16 @@ class VideoClip:
     def score(self):
         """The prediction score"""
         return self._data['score']
+
+    @property
+    def simhash(self):
+        """A similarity hash, if any"""
+        return self._data.get('simhash')
+
+    @property
+    def files(self):
+        """The array of associated files."""
+        return [StoredFile(f) for f in self._data.get('files', [])]
 
     @staticmethod
     def from_hit(hit):
