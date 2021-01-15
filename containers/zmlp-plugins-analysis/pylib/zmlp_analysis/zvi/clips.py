@@ -97,8 +97,8 @@ class TimelineAnalysisProcessor(AssetProcessor):
                 simhash = self.sim.calculate_hash(jpg_file)
 
             # Always store the file
-            file_storage.projects.store_file(jpg_file, clip, "proxy", "proxy.jpg",
-                                             {"width": psize[0], "height": psize[1]})
+            prx = file_storage.projects.store_file(jpg_file, clip, "proxy", "proxy.jpg",
+                                                   {"width": psize[0], "height": psize[1]})
             if prx:
                 batch[clip.id] = {'files': [prx], 'simhash': simhash}
 
