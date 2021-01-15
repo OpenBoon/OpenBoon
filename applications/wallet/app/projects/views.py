@@ -1,5 +1,6 @@
 import logging
 import os
+import math
 from datetime import datetime
 
 import requests
@@ -501,6 +502,18 @@ class ProjectViewSet(ListModelMixin,
         response = requests.get(path, {'after': first_of_the_month, 'project': pk})
         response.raise_for_status()
         return Response(response.json())
+
+    @action(methods=['get'], detail=True)
+    def total_storage_usage(self, request, pk):
+        """Returns the all time usage information for the project."""
+        quotas = request.client.get('api/v1/project/_quotas')
+        video_hours = self._get_usage_hours_from_seconds(quotas['videoSecondsCount'])
+        image_count = quotas['pageCount']
+        return Response({'image_count': image_count, 'video_hours': video_hours})
+
+    def _get_usage_hours_from_seconds(self, seconds):
+        """Converts seconds to hours and always rounds up."""
+        return math.ceil(seconds / 60 / 60)
 
 
 class ProjectUserViewSet(BaseProjectViewSet):

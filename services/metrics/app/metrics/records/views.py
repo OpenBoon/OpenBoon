@@ -1,12 +1,13 @@
 from dateparser import parse as parse_date
-from django.db.models import Sum, Q
+from django.db.models import Sum, Q, Value as V
+from django.db.models.functions import Coalesce
 from rest_framework import viewsets
 from rest_framework.decorators import action, renderer_classes
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
 from metrics.records.models import ApiCall
-from metrics.records.serializers import ApiCallSerializer, ReportSerializer
+from metrics.records.serializers import ApiCallSerializer, ReportSerializer, TieredUsageSerializer
 from .renderers import ReportCSVRenderer
 from .mixins import CSVFileMixin
 
@@ -142,19 +143,19 @@ class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
         ).exclude(
             service__in=ApiCall.free_modules
         ).aggregate(
-            tier_1_image_count=Sum('image_count'),
-            tier_1_video_minutes=Sum('video_minutes')
+            image_count=Coalesce(Sum('image_count'), V(0)),
+            video_minutes=Coalesce(Sum('video_minutes'), V(0))
         )
         tier_2_agg = queryset.filter(
-            __in=ApiCall.tier_2_modules
+            service__in=ApiCall.tier_2_modules
         ).aggregate(
-            tier_2_image_count=Sum('image_count'),
-            tier_2_video_minutes=Sum('video_minutes')
+            image_count=Coalesce(Sum('image_count'), V(0)),
+            video_minutes=Coalesce(Sum('video_minutes'), V(0))
         )
-        tiered_usage = {}
-        tiered_usage.update(tier_1_agg)
-        tiered_usage.update(tier_2_agg)
-        return Response(tiered_usage)
+        tiered_usage = {'tier_1': tier_1_agg,
+                        'tier_2': tier_2_agg}
+        serializer = TieredUsageSerializer(tiered_usage, context=self.get_serializer_context())
+        return Response(serializer.data)
 
 
 

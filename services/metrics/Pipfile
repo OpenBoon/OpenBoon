@@ -18,6 +18,7 @@ djangorestframework-csv = "*"
 django-health-check = "*"
 flake8 = "*"
 pytest-cov = "*"
+zvi-client = {path = "./../../client/python"}
 
 [requires]
 python_version = "3.7"

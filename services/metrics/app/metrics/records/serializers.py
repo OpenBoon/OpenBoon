@@ -14,3 +14,13 @@ class ReportSerializer(serializers.Serializer):
     service = serializers.CharField()
     image_count = serializers.IntegerField()
     video_minutes = serializers.FloatField()
+
+
+class TierSerializer(serializers.Serializer):
+    image_count = serializers.IntegerField()
+    video_minutes = serializers.FloatField()
+
+
+class TieredUsageSerializer(serializers.Serializer):
+    tier_1 = TierSerializer()
+    tier_2 = TierSerializer()

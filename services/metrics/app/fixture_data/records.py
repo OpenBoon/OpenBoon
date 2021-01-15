@@ -548,5 +548,115 @@ RECORDS = [
     "video_minutes": 2.5,
     "created_date": "2020-12-14T22:37:58.942287Z",
     "modified_date": "2020-12-14T22:37:58.942439Z"
+  },
+{
+    "id": 51,
+    "project": "00000000-0000-0000-0000-000000000000",
+    "service": "gcp-label-detection",
+    "asset_id": "V-agLC2UeIpKCZOW8A6afpsoRudYPsaU",
+    "asset_path": "gs://zvi-dev-temp-images/people/IMG_0154.jpg",
+    "image_count": 1,
+    "video_minutes": 4.9,
+    "created_date": "2020-12-14T22:36:44.062838Z",
+    "modified_date": "2020-12-14T22:36:44.064400Z"
+  },
+  {
+    "id": 52,
+    "project": "00000000-0000-0000-0000-000000000000",
+    "service": "gcp-label-detection",
+    "asset_id": "Qzt74QVOGizB1UUtTHgEUplCo-sFe7B-",
+    "asset_path": "gs://zvi-dev-temp-images/people/IMG_2518.jpg",
+    "image_count": 1,
+    "video_minutes": 1.25,
+    "created_date": "2020-12-14T22:36:44.995198Z",
+    "modified_date": "2020-12-14T22:36:44.995691Z"
+  },
+  {
+    "id": 53,
+    "project": "00000000-0000-0000-0000-000000000000",
+    "service": "gcp-label-detection",
+    "asset_id": "nzncnwNanVzvI8J0lUlxXtpYE4_207os",
+    "asset_path": "gs://zvi-dev-temp-images/people/IMG_0872.jpg",
+    "image_count": 1,
+    "video_minutes": 13.2,
+    "created_date": "2020-12-14T22:36:45.785403Z",
+    "modified_date": "2020-12-14T22:36:45.786339Z"
+  },
+  {
+    "id": 54,
+    "project": "00000000-0000-0000-0000-000000000000",
+    "service": "gcp-label-detection",
+    "asset_id": "HmKSnwlTRj4Dl0XnSuXxnpUUpS2vQh5H",
+    "asset_path": "gs://zvi-dev-temp-images/people/IMG_2913.jpg",
+    "image_count": 1,
+    "video_minutes": 2.5,
+    "created_date": "2020-12-14T22:36:46.426731Z",
+    "modified_date": "2020-12-14T22:36:46.426760Z"
+  },
+  {
+    "id": 55,
+    "project": "00000000-0000-0000-0000-000000000000",
+    "service": "gcp-label-detection",
+    "asset_id": "4i8iZkhawUFOP6jhPGXf-kC2nKwibUat",
+    "asset_path": "gs://zvi-dev-temp-images/people/IMG_4132.jpg",
+    "image_count": 1,
+    "video_minutes": 0.27,
+    "created_date": "2020-12-14T22:36:47.161892Z",
+    "modified_date": "2020-12-14T22:36:47.161967Z"
+  },
+  {
+    "id": 56,
+    "project": "00000000-0000-0000-0000-000000000000",
+    "service": "gcp-label-detection",
+    "asset_id": "hZGxkfwka_zLCsDWkGCtWM1_QeXuFtpb",
+    "asset_path": "gs://zvi-dev-temp-images/P1101679.jpg",
+    "image_count": 1,
+    "video_minutes": 7.17,
+    "created_date": "2020-12-14T22:36:48.276781Z",
+    "modified_date": "2020-12-14T22:36:48.278261Z"
+  },
+  {
+    "id": 57,
+    "project": "00000000-0000-0000-0000-000000000000",
+    "service": "gcp-label-detection",
+    "asset_id": "G1j7csKuzlo6R5AWmnlB3CumxARF39pt",
+    "asset_path": "gs://zvi-dev-temp-images/P1114514-Edit.jpg",
+    "image_count": 1,
+    "video_minutes": 1.25,
+    "created_date": "2020-12-14T22:36:48.944714Z",
+    "modified_date": "2020-12-14T22:36:48.944737Z"
+  },
+  {
+    "id": 58,
+    "project": "00000000-0000-0000-0000-000000000000",
+    "service": "gcp-label-detection",
+    "asset_id": "ExLWoFyhukG8BPstdoKaKPAGK5TsCwGi",
+    "asset_path": "gs://zvi-dev-temp-images/P1102027.jpg",
+    "image_count": 1,
+    "video_minutes": 13.2,
+    "created_date": "2020-12-14T22:36:49.656809Z",
+    "modified_date": "2020-12-14T22:36:49.656848Z"
+  },
+  {
+    "id": 59,
+    "project": "00000000-0000-0000-0000-000000000000",
+    "service": "gcp-label-detection",
+    "asset_id": "R4BnaqP1CGE0eehYX6hPYNWAN2OuL2sK",
+    "asset_path": "gs://zvi-dev-temp-images/P1067188-Edit.jpg",
+    "image_count": 1,
+    "video_minutes": 2.5,
+    "created_date": "2020-12-14T22:36:50.756261Z",
+    "modified_date": "2020-12-14T22:36:50.757593Z"
+  },
+  {
+    "id": 60,
+    "project": "00000000-0000-0000-0000-000000000000",
+    "service": "gcp-label-detection",
+    "asset_id": "makR6-0L8jaYkCwgOlLi-Wmr0n43EfDw",
+    "asset_path": "gs://zvi-dev-temp-images/P1101297.jpg",
+    "image_count": 1,
+    "video_minutes": 0.27,
+    "created_date": "2020-12-14T22:36:51.337138Z",
+    "modified_date": "2020-12-14T22:36:51.337179Z"
   }
 ]

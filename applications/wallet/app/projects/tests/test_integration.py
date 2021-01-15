@@ -1,6 +1,8 @@
 import base64
 import copy
+from datetime import datetime
 from uuid import uuid4
+from unittest.mock import Mock, patch
 
 import pytest
 from django.core.exceptions import ValidationError
@@ -245,6 +247,30 @@ def make_users_for_project(project, count, user_model, apikey):
                                   apikey=base64.b64encode(apikey).decode('utf-8'))
         users.append(user)
     return users
+
+
+class TestMlUsageThisMonth:
+
+    @patch('requests.get')
+    def test_get(self, requests_mock, project, api_client, login):
+        requests_mock.return_value = Mock(json=Mock(return_value={'key': 'value'}))
+        url = reverse('project-ml-usage-this-month', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {'key': 'value'}
+        assert requests_mock.called
+
+
+class TestTotalStorageUsage:
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get(self, client_mock, project, api_client, login):
+        client_mock.return_value = {'videoSecondsCount': 3601,
+                                    'pageCount': 1000}
+        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {'image_count': 1000, 'video_hours': 1}
 
 
 class TestProjectUserGet:
