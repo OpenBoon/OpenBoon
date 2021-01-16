@@ -1,4 +1,4 @@
-from wallet.settings import *
+from wallet.settings import *  # noqa
 
 # Points to the Live Development Servers ZMLP API
 ZMLP_API_URL = 'https://dev.api.zvi.zorroa.com'
@@ -33,6 +33,8 @@ ENVIRONMENT = 'zvi-dev'
 FQDN = 'https://dev.console.zvi.zorroa.com'
 
 # Turn off Migrations for the runserver
+
+
 class DisableMigrations():
     def __contains__(self, item):
         return True
