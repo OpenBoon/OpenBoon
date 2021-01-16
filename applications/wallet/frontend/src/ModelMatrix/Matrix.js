@@ -36,14 +36,7 @@ const ModelMatrixMatrix = ({
   }, [setMatrixDetails, name, overallAccuracy, labels, moduleName])
 
   return (
-    <div
-      css={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        width: '0%',
-      }}
-    >
+    <>
       <div
         css={{
           flex: 1,
@@ -159,7 +152,7 @@ const ModelMatrixMatrix = ({
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
