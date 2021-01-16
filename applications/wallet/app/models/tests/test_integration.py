@@ -305,7 +305,8 @@ class TestModelViewSetActions:
                             'name': 'test',
                             'moduleName': 'also-test',
                             'overallAccuracy': 0.7446300715990454,
-                            'testSetOnly': False}
+                            'testSetOnly': False,
+                            'isMatrixApplicable': True}
 
         # Get the confusion matrix thumbnail.
         path = reverse('model-confusion-matrix-thumbnail',
