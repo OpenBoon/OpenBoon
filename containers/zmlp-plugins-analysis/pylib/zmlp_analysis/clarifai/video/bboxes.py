@@ -75,7 +75,8 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
             for concept in concepts:
                 c = concept['data'].get('concepts')[0]
                 labels = [c['name']]
-                clip_tracker.append(time_ms, labels)
+                score = [c['value']]
+                clip_tracker.append(time_ms, labels, score)
                 analysis.add_label_and_score(c['name'], c['value'])
 
         return analysis, clip_tracker

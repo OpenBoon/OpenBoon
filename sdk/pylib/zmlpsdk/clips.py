@@ -16,20 +16,22 @@ class ClipTracker:
         self.clips = {}
         self.timeline = TimelineBuilder(asset, timeline_name)
 
-    def append(self, time, labels):
+    def append(self, time, labels, scores):
         """
         Append the given labels and time to the ClipTracker
         Args:
             time (float): The video timecode time.
             labels (list): A list of strings.
+            scores (list): A list of floats.
 
         """
-        for label in labels:
+        for label, score in zip(labels, scores):
             current = self.clips.get(label)
             if not current:
                 self.clips[label] = {
                     'start': time,
-                    'stop': time
+                    'stop': time,
+                    'score': score
                 }
             else:
                 current['stop'] = time
@@ -37,7 +39,7 @@ class ClipTracker:
         to_remove = []
         for label, clip in self.clips.items():
             if clip['stop'] != time:
-                self.timeline.add_clip(label, clip['start'], time, label)
+                self.timeline.add_clip(label, clip['start'], time, label, clip['score'])
                 to_remove.append(label)
 
         for label in to_remove:
@@ -54,5 +56,5 @@ class ClipTracker:
             TimelineBuilder
 
         """
-        self.append(final_time, [])
+        self.append(final_time, [], [])
         return self.timeline

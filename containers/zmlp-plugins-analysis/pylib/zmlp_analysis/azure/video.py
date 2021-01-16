@@ -92,7 +92,8 @@ class AzureVideoAbstract(AssetProcessor):
         for time_ms, path in extractor:
             predictions = proc.predict(path)
             labels = [pred[0] for pred in predictions]
-            clip_tracker.append(time_ms, labels)
+            scores = [pred[1] for pred in predictions]
+            clip_tracker.append(time_ms, labels, scores)
             for ls in predictions:
                 analysis.add_label_and_score(ls[0], ls[1])
 
@@ -246,7 +247,7 @@ class AzureVideoTextDetection(AzureVideoAbstract):
         for time_ms, path in extractor:
             predictions = proc.predict(path)
             labels = [predictions]
-            clip_tracker.append(time_ms, labels)
+            clip_tracker.append(time_ms, labels, [1])
             analysis.add_content(predictions)
 
         return analysis, clip_tracker

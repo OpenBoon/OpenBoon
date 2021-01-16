@@ -39,6 +39,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'wheel' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
+        assert 0.986 == analysis['predictions'][0]['score']
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
@@ -52,6 +53,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         analysis = self.frame.asset.get_analysis('clarifai-travel-detection')
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
+        assert 0.831 == analysis['predictions'][0]['score']
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
@@ -66,6 +68,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'Earring' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
+        assert 0.813 == analysis['predictions'][0]['score']
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
@@ -80,6 +83,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'bride' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
+        assert 0.948 == analysis['predictions'][0]['score']
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
@@ -94,6 +98,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'nsfw' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 2 == analysis['count']
+        assert 0.724 == analysis['predictions'][0]['score']
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
@@ -108,6 +113,8 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'suggestive' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 5 == analysis['count']
+        assert 0.925 == analysis['predictions'][0]['score']
+
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
@@ -121,6 +128,8 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         analysis = self.frame.asset.get_analysis('clarifai-texture-detection')
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
+        assert 0.637 == analysis['predictions'][0]['score']
+
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
@@ -135,6 +144,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'coffee' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
+        assert 0.997 == analysis['predictions'][0]['score']
 
 
 class PublicModels:
