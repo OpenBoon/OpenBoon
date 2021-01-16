@@ -115,7 +115,6 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 5 == analysis['count']
         assert 0.925 == analysis['predictions'][0]['score']
 
-
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
     @patch(client_patch, side_effect=MockClarifaiApp)
@@ -129,7 +128,6 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
         assert 0.637 == analysis['predictions'][0]['score']
-
 
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
