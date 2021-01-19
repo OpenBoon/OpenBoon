@@ -313,7 +313,7 @@ class TestModelViewSetActions:
                        kwargs={'project_pk': project.id, 'pk': model_id})
         response = api_client.get(path)
         assert response.get('Content-Type') == 'image/png'
-    
+
     def test_confusion_matrix_error(self, login, project, api_client, monkeypatch):
         monkeypatch.setattr(Model, 'get_confusion_matrix_search', TypeError)
         monkeypatch.setattr(ModelApp, 'get_model', lambda self, pk: Model({'name': 'test', 'moduleName': 'also-test'}))
