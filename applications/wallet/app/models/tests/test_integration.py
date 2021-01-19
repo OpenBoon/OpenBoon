@@ -319,9 +319,8 @@ class TestModelViewSetActions:
         monkeypatch.setattr(ModelApp, 'get_model', lambda self, pk: Model({'name': 'test', 'moduleName': 'also-test'}))
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
 
-        # Get the confusion matrix data for a model.
+        # Try to get the confusion matrix data for a model that does not support matrices.
         path = reverse('model-confusion-matrix', kwargs={'project_pk': project.id, 'pk': model_id})
-        path = f'{path}?testSetOnly=false'
         response = check_response(api_client.get(path))
         assert response == {'labels': [],
                             'matrix': [],
@@ -330,7 +329,7 @@ class TestModelViewSetActions:
                             'name': 'test',
                             'moduleName': 'also-test',
                             'overallAccuracy': 0,
-                            'testSetOnly': False,
+                            'testSetOnly': True,
                             'isMatrixApplicable': False}
 
 
