@@ -12,20 +12,25 @@ class ClipTracker:
     to close all open clips.
 
     """
+
     def __init__(self, asset, timeline_name):
         self.clips = {}
         self.timeline = TimelineBuilder(asset, timeline_name)
 
-    def append(self, time, labels, scores):
+    def append(self, time, predictions):
         """
         Append the given labels and time to the ClipTracker
         Args:
             time (float): The video timecode time.
-            labels (list): A list of strings.
-            scores (list): A list of floats.
+            predictions: A dictionary (label, score) or a list containing predictions info
 
         """
-        for label, score in zip(labels, scores):
+
+        if isinstance(predictions, list):
+            # Setting default score in case of list
+            predictions = {pred: 1 for pred in predictions}
+
+        for label, score in predictions.items():
             current = self.clips.get(label)
             if not current:
                 self.clips[label] = {
@@ -35,6 +40,7 @@ class ClipTracker:
                 }
             else:
                 current['stop'] = time
+                current['score'] = score
 
         to_remove = []
         for label, clip in self.clips.items():
@@ -56,5 +62,5 @@ class ClipTracker:
             TimelineBuilder
 
         """
-        self.append(final_time, [], [])
+        self.append(final_time, {})
         return self.timeline
