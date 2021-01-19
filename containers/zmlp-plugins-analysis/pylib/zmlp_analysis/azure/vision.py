@@ -1,17 +1,16 @@
-import time
 import logging
-from PIL import Image
+import time
 
 import backoff
-
+from PIL import Image
 from azure.cognitiveservices.vision.computervision.models import \
     VisualFeatureTypes, OperationStatusCodes, ComputerVisionErrorException
 
+from zmlp_analysis.utils.logs import log_backoff_exception
 from zmlpsdk import Argument, AssetProcessor, FileTypes
+from zmlpsdk import file_storage
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path, get_proxy_level, calculate_normalized_bbox
-from zmlpsdk import file_storage
-
 from .util import get_zvi_azure_cv_client
 
 logger = logging.getLogger(__name__)
@@ -32,12 +31,6 @@ __all__ = [
 
 QUOTA_TIMEOUT = 7200
 """Number of seconds to wait before allowing a quota exception to propagate up."""
-
-
-def log_quota_exception(details):
-    """Log a quota exception"""
-    logger.warning(
-        'Waiting on Azure quota {wait:0.1f} seconds afters {tries} tries'.format(**details))
 
 
 def not_a_quota_exception(exp):
@@ -98,7 +91,7 @@ class AbstractAzureVisionProcessor(AssetProcessor):
                           ComputerVisionErrorException,
                           max_time=QUOTA_TIMEOUT,
                           giveup=not_a_quota_exception,
-                          on_backoff=log_quota_exception)
+                          on_backoff=log_backoff_exception)
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
