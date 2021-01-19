@@ -20,9 +20,9 @@ class TestClipTracker(TestCase):
 
     def test_build_timeline(self):
         c = ClipTracker(TestAsset(), "pets")
-        c.append(1, {"dog": 1.0, "cat": 1.0, "cow": 0.76})
+        c.append(1, {"dog": 1.0, "cat": 0.80, "cow": 0.76})
         c.append(3, {"dog": 1.0, "cat": 0.86, "cow": 1.0})
-        c.append(4, {"dog": 1.0, "cow": 1.0})
+        c.append(4, {"dog": 1.0, "cow": 0.85})
 
         tl = c.build_timeline(5)
         assert 1 == len(tl.tracks['dog']['clips'])
