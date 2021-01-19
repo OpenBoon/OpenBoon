@@ -137,6 +137,19 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
         alg.verify(jwt)
 
         /**
+         * If the key is running in our env then we accept some allowed attrs.
+         */
+        val attrs = if (apiKey.permissions.contains(Permission.SystemProjectDecrypt.name)) {
+            jwt.claims?.filter {
+                it.key in ALLOWED_ATTRS
+            }?.map {
+                it.key to it.value.asString()
+            }?.toMap() ?: mapOf<String, String>()
+        } else {
+            mapOf()
+        }
+
+        /**
          * Allow SystemProjectOverride keys to override the project.
          */
         val actor = if (apiKey.permissions.contains(Permission.SystemProjectOverride.name)) {
@@ -149,15 +162,18 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
             } else {
                 projectIdOverride ?: apiKey.projectId
             }
-            apiKey.getZmlpActor(projectId)
+            apiKey.getZmlpActor(projectId, attrs)
         } else {
-            apiKey.getZmlpActor()
+            apiKey.getZmlpActor(null, attrs)
         }
 
         return JwtAuthenticationToken(actor, apiKey.getGrantedAuthorities())
     }
 
     companion object {
+
+        val ALLOWED_ATTRS = setOf("taskId", "jobId")
+
         /**
          * The inception permissions is everything except ability to
          * decrypt encrypted project data.
