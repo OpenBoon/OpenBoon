@@ -13,4 +13,3 @@ def log_backoff_exception(details):
     """
     logger.warning(
         'Waiting on quota {wait:0.1f} seconds afters {tries} tries'.format(**details))
-
