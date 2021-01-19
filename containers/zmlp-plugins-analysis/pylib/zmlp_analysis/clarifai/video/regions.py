@@ -75,8 +75,8 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
                 continue
             if not concepts:
                 continue
-            labels = [c['name'] for c in concepts]
-            clip_tracker.append(time_ms, labels)
+            predictions = {c['name']: c['value'] for c in concepts}
+            clip_tracker.append(time_ms, predictions)
             [analysis.add_label_and_score(c['name'], c['value']) for c in concepts]
 
         return analysis, clip_tracker
