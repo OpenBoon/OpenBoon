@@ -313,6 +313,25 @@ class TestModelViewSetActions:
                        kwargs={'project_pk': project.id, 'pk': model_id})
         response = api_client.get(path)
         assert response.get('Content-Type') == 'image/png'
+    
+    def test_confusion_matrix_error(self, login, project, api_client, monkeypatch):
+        monkeypatch.setattr(Model, 'get_confusion_matrix_search', TypeError)
+        monkeypatch.setattr(ModelApp, 'get_model', lambda self, pk: Model({'name': 'test', 'moduleName': 'also-test'}))
+        model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+
+        # Get the confusion matrix data for a model.
+        path = reverse('model-confusion-matrix', kwargs={'project_pk': project.id, 'pk': model_id})
+        path = f'{path}?testSetOnly=false'
+        response = check_response(api_client.get(path))
+        assert response == {'labels': [],
+                            'matrix': [],
+                            'maxScore': 1.0,
+                            'minScore': 0.0,
+                            'name': 'test',
+                            'moduleName': 'also-test',
+                            'overallAccuracy': 0,
+                            'testSetOnly': False,
+                            'isMatrixApplicable': False}
 
 
 class TestLabelingEndpoints:
