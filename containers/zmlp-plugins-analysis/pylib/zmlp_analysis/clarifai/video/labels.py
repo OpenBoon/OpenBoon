@@ -1,8 +1,9 @@
 import backoff
-from clarifai.errors import ApiClientError
+from clarifai.errors import ApiError
 
 from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
+from zmlp_analysis.utils.logs import log_backoff_exception
 from zmlp_analysis.utils.prechecks import Prechecks
 from zmlp_analysis.clarifai.images import labels as labels_images
 from zmlp_analysis.clarifai.util import not_a_quota_exception, model_map
@@ -83,9 +84,10 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
         return analysis, clip_tracker
 
     @backoff.on_exception(backoff.expo,
-                          ApiClientError,
+                          ApiError,
                           max_time=3600,
-                          giveup=not_a_quota_exception)
+                          giveup=not_a_quota_exception,
+                          on_backoff=log_backoff_exception)
     def predict(self, model, p_path):
         """
         Make a prediction from the filename for a given model

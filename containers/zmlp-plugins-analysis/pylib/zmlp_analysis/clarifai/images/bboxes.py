@@ -1,9 +1,10 @@
 import cv2
 import backoff
-from clarifai.errors import ApiClientError
+from clarifai.errors import ApiError
 
 from zmlpsdk import AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
+from zmlp_analysis.utils.logs import log_backoff_exception
 from zmlpsdk.proxy import get_proxy_level_path
 
 from zmlp_analysis.clarifai.util import get_clarifai_app, not_a_quota_exception, model_map
@@ -53,9 +54,10 @@ class AbstractClarifaiProcessor(AssetProcessor):
         asset.add_analysis(self.attribute, analysis)
 
     @backoff.on_exception(backoff.expo,
-                          ApiClientError,
+                          ApiError,
                           max_time=3600,
-                          giveup=not_a_quota_exception)
+                          giveup=not_a_quota_exception,
+                          on_backoff=log_backoff_exception)
     def predict(self, model, p_path):
         """
         Make a prediction from the filename for a given model
