@@ -586,16 +586,17 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
 }
 
 .emotion-80 {
+  margin-right: 16px;
+}
+
+.emotion-82 {
   cursor: pointer;
 }
 
-.emotion-112 {
+.emotion-122 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -604,12 +605,12 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   padding-bottom: 16px;
 }
 
-.emotion-112 button,
-.emotion-112 a {
+.emotion-122 button,
+.emotion-122 a {
   margin-right: 16px;
 }
 
-.emotion-113 {
+.emotion-123 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -640,27 +641,27 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   background-color: transparent;
 }
 
-.emotion-113,
-.emotion-113:hover,
-.emotion-113:visited,
-.emotion-113 .noop {
+.emotion-123,
+.emotion-123:hover,
+.emotion-123:visited,
+.emotion-123 .noop {
   background-color: #808080;
 }
 
-.emotion-113:hover,
-.emotion-113 .noop {
+.emotion-123:hover,
+.emotion-123 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-113[aria-disabled=true],
-.emotion-113 .noop {
+.emotion-123[aria-disabled=true],
+.emotion-123 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-114 {
+.emotion-124 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -691,22 +692,22 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   background-color: transparent;
 }
 
-.emotion-114,
-.emotion-114:hover,
-.emotion-114:visited,
-.emotion-114 .noop {
+.emotion-124,
+.emotion-124:hover,
+.emotion-124:visited,
+.emotion-124 .noop {
   background-color: #73b61c;
 }
 
-.emotion-114:hover,
-.emotion-114 .noop {
+.emotion-124:hover,
+.emotion-124 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-114[aria-disabled=true],
-.emotion-114 .noop {
+.emotion-124[aria-disabled=true],
+.emotion-124 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1136,7 +1137,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                   Description
                 </th>
                 <th>
-                  Application Type
+                  File Types
                 </th>
               </tr>
             </thead>
@@ -1189,11 +1190,13 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                     className="emotion-79"
                   >
                     <svg
+                      className="emotion-80"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
+                      className="emotion-80"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -1207,7 +1210,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
               </tr>
               <tr
-                className="emotion-80"
+                className="emotion-82"
                 onClick={[Function]}
               >
                 <td>
@@ -1254,11 +1257,13 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                     className="emotion-79"
                   >
                     <svg
+                      className="emotion-80"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
+                      className="emotion-80"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -1272,7 +1277,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
               </tr>
               <tr
-                className="emotion-80"
+                className="emotion-82"
                 onClick={[Function]}
               >
                 <td>
@@ -1319,11 +1324,13 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                     className="emotion-79"
                   >
                     <svg
+                      className="emotion-80"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
+                      className="emotion-80"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -1337,7 +1344,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
               </tr>
               <tr
-                className="emotion-80"
+                className="emotion-82"
                 onClick={[Function]}
               >
                 <td>
@@ -1384,11 +1391,13 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                     className="emotion-79"
                   >
                     <svg
+                      className="emotion-80"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
+                      className="emotion-80"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -1430,13 +1439,13 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                   Description
                 </th>
                 <th>
-                  Application Type
+                  File Types
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr
-                className="emotion-80"
+                className="emotion-82"
                 onClick={[Function]}
               >
                 <td>
@@ -1483,11 +1492,13 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                     className="emotion-79"
                   >
                     <svg
+                      className="emotion-80"
                       color="transparent"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
+                      className="emotion-80"
                       color="transparent"
                       data-file-name="documents.svg"
                       height={24}
@@ -1507,10 +1518,10 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     </details>
   </div>
   <div
-    className="emotion-112"
+    className="emotion-122"
   >
     <a
-      className="emotion-113"
+      className="emotion-123"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -1519,7 +1530,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     </a>
     <button
       aria-disabled={true}
-      className="emotion-114"
+      className="emotion-124"
       onClick={[Function]}
       type="submit"
     >
@@ -2109,16 +2120,17 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
 }
 
 .emotion-79 {
+  margin-right: 16px;
+}
+
+.emotion-81 {
   cursor: pointer;
 }
 
-.emotion-111 {
+.emotion-121 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2127,12 +2139,12 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-111 button,
-.emotion-111 a {
+.emotion-121 button,
+.emotion-121 a {
   margin-right: 16px;
 }
 
-.emotion-112 {
+.emotion-122 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2163,27 +2175,27 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-112,
-.emotion-112:hover,
-.emotion-112:visited,
-.emotion-112 .noop {
+.emotion-122,
+.emotion-122:hover,
+.emotion-122:visited,
+.emotion-122 .noop {
   background-color: #808080;
 }
 
-.emotion-112:hover,
-.emotion-112 .noop {
+.emotion-122:hover,
+.emotion-122 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-112[aria-disabled=true],
-.emotion-112 .noop {
+.emotion-122[aria-disabled=true],
+.emotion-122 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-113 {
+.emotion-123 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2214,22 +2226,22 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-113,
-.emotion-113:hover,
-.emotion-113:visited,
-.emotion-113 .noop {
+.emotion-123,
+.emotion-123:hover,
+.emotion-123:visited,
+.emotion-123 .noop {
   background-color: #73b61c;
 }
 
-.emotion-113:hover,
-.emotion-113 .noop {
+.emotion-123:hover,
+.emotion-123 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-113[aria-disabled=true],
-.emotion-113 .noop {
+.emotion-123[aria-disabled=true],
+.emotion-123 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -2654,7 +2666,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                   Description
                 </th>
                 <th>
-                  Application Type
+                  File Types
                 </th>
               </tr>
             </thead>
@@ -2707,11 +2719,13 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                     className="emotion-78"
                   >
                     <svg
+                      className="emotion-79"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
+                      className="emotion-79"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -2725,7 +2739,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-79"
+                className="emotion-81"
                 onClick={[Function]}
               >
                 <td>
@@ -2772,11 +2786,13 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                     className="emotion-78"
                   >
                     <svg
+                      className="emotion-79"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
+                      className="emotion-79"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -2790,7 +2806,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-79"
+                className="emotion-81"
                 onClick={[Function]}
               >
                 <td>
@@ -2837,11 +2853,13 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                     className="emotion-78"
                   >
                     <svg
+                      className="emotion-79"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
+                      className="emotion-79"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -2855,7 +2873,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-79"
+                className="emotion-81"
                 onClick={[Function]}
               >
                 <td>
@@ -2902,11 +2920,13 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                     className="emotion-78"
                   >
                     <svg
+                      className="emotion-79"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
+                      className="emotion-79"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -2948,13 +2968,13 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                   Description
                 </th>
                 <th>
-                  Application Type
+                  File Types
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr
-                className="emotion-79"
+                className="emotion-81"
                 onClick={[Function]}
               >
                 <td>
@@ -3001,11 +3021,13 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                     className="emotion-78"
                   >
                     <svg
+                      className="emotion-79"
                       color="transparent"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
+                      className="emotion-79"
                       color="transparent"
                       data-file-name="documents.svg"
                       height={24}
@@ -3025,10 +3047,10 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
     </details>
   </div>
   <div
-    className="emotion-111"
+    className="emotion-121"
   >
     <a
-      className="emotion-112"
+      className="emotion-122"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -3036,7 +3058,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
       Cancel
     </a>
     <button
-      className="emotion-113"
+      className="emotion-123"
       onClick={[Function]}
       type="submit"
     >
