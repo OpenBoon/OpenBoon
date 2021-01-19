@@ -40,7 +40,7 @@ class ClipTracker:
                 }
             else:
                 current['stop'] = time
-                current['score'] = score
+                current['score'] = max(current['score'], score)
 
         to_remove = []
         for label, clip in self.clips.items():
