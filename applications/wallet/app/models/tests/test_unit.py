@@ -44,7 +44,8 @@ def test_get_confusion_matrix(monkeypatch):
                                 'name': 'test',
                                 'moduleName': 'also-test',
                                 'overallAccuracy': 0.7446300715990454,
-                                'testSetOnly': True}
+                                'testSetOnly': True,
+                                'isMatrixApplicable': True}
     assert matrix.to_dict(normalize_matrix=True) == {'labels': ['Unrecognized',
                                                                 'airplane',
                                                                 'automobile',
@@ -167,7 +168,8 @@ def test_get_confusion_matrix(monkeypatch):
                                                      'name': 'test',
                                                      'moduleName': 'also-test',
                                                      'overallAccuracy': 0.7446300715990454,
-                                                     'testSetOnly': True}
+                                                     'testSetOnly': True,
+                                                     'isMatrixApplicable': True}
     thumbnail = ConfusionMatrix(Model({'name': 'test'}), None).create_thumbnail_image()
     npimg = numpy.fromstring(thumbnail.read(), numpy.uint8)
     image = cv2.imdecode(npimg, cv2.IMREAD_UNCHANGED)
