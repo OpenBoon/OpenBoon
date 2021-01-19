@@ -62,16 +62,18 @@ class TimelineAnalysisProcessor(AssetProcessor):
         timeline = self.arg_value('timeline')
 
         query = {
-            "bool": {
-                "filter": [
-                    {"term": {"clip.asset_id": asset_id}},
-                    {"term": {"clip.timeline": timeline}}
-                ]
+            "query": {
+                "bool": {
+                    "must": [
+                        {"term": {"clip.assetId": asset_id}},
+                        {"term": {"clip.timeline": timeline}}
+                    ]
+                }
             },
             "sort": [
                 {"clip.start": "asc"}
             ],
-            "size": "20"
+            "size": 40
         }
 
         asset = self.app.assets.get_asset(asset_id)
@@ -79,25 +81,30 @@ class TimelineAnalysisProcessor(AssetProcessor):
 
         size = media_size(video_path)
         psize = get_output_dimension(768, size[0], size[1])
-
-        current_time = None
         jpg_file = tempfile.mkstemp(".jpg")[1]
+
         simhash = None
+        current_time = None
+        prx = None
         batch = {}
-        for clip in self.app.clips.scroll_search(query, timeout="5m"):
+
+        for clip in self.app.clips.scroll_search(query, timeout="2m"):
+
             if clip.start != current_time:
                 current_time = clip.start
 
-                extract_thumbnail_from_video(video_path, jpg_file, clip.start, psize)
+                extract_thumbnail_from_video(video_path, jpg_file, current_time, psize)
                 simhash = self.sim.calculate_hash(jpg_file)
 
             # Always store the file
             prx = file_storage.projects.store_file(jpg_file, clip, "proxy", "proxy.jpg",
                                                    {"width": psize[0], "height": psize[1]})
+            if prx:
+                batch[clip.id] = {'files': [prx], 'simhash': simhash}
 
-            batch[clip.id] = {'files': [prx], 'simhash': simhash}
             if len(batch) >= 50:
                 self.add_clips(batch)
+                batch = {}
 
         # Add final batch
         self.add_clips(batch)
@@ -110,4 +117,3 @@ class TimelineAnalysisProcessor(AssetProcessor):
                 "updates": batch
             }
             self.app.client.put("/api/v1/clips/_batch_update_proxy", req)
-            batch.clear()
