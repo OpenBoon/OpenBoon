@@ -588,13 +588,13 @@ Array [
                 >
                   <svg
                     className="emotion-17"
-                    color="#ebb52e"
+                    color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
                     className="emotion-17"
-                    color="transparent"
+                    color="#00bdc1"
                     data-file-name="documents.svg"
                     height={24}
                   />
@@ -656,7 +656,7 @@ Array [
                 >
                   <svg
                     className="emotion-17"
-                    color="#ebb52e"
+                    color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
@@ -667,7 +667,7 @@ Array [
                     height={24}
                   />
                   <svg
-                    color="transparent"
+                    color="#8f89e7"
                     data-file-name="videos.svg"
                     height={24}
                   />
@@ -730,12 +730,12 @@ Array [
                   />
                   <svg
                     className="emotion-17"
-                    color="transparent"
+                    color="#00bdc1"
                     data-file-name="documents.svg"
                     height={24}
                   />
                   <svg
-                    color="transparent"
+                    color="#8f89e7"
                     data-file-name="videos.svg"
                     height={24}
                   />
@@ -803,7 +803,7 @@ Array [
                     height={24}
                   />
                   <svg
-                    color="transparent"
+                    color="#8f89e7"
                     data-file-name="videos.svg"
                     height={24}
                   />
@@ -1423,13 +1423,13 @@ Array [
                 >
                   <svg
                     className="emotion-17"
-                    color="#ebb52e"
+                    color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
                     className="emotion-17"
-                    color="transparent"
+                    color="#00bdc1"
                     data-file-name="documents.svg"
                     height={24}
                   />
@@ -1491,7 +1491,7 @@ Array [
                 >
                   <svg
                     className="emotion-17"
-                    color="#ebb52e"
+                    color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
@@ -1502,7 +1502,7 @@ Array [
                     height={24}
                   />
                   <svg
-                    color="transparent"
+                    color="#8f89e7"
                     data-file-name="videos.svg"
                     height={24}
                   />
@@ -1565,12 +1565,12 @@ Array [
                   />
                   <svg
                     className="emotion-17"
-                    color="transparent"
+                    color="#00bdc1"
                     data-file-name="documents.svg"
                     height={24}
                   />
                   <svg
-                    color="transparent"
+                    color="#8f89e7"
                     data-file-name="videos.svg"
                     height={24}
                   />
@@ -1638,7 +1638,7 @@ Array [
                     height={24}
                   />
                   <svg
-                    color="transparent"
+                    color="#8f89e7"
                     data-file-name="videos.svg"
                     height={24}
                   />
@@ -2740,13 +2740,13 @@ Array [
                 >
                   <svg
                     className="emotion-17"
-                    color="#ebb52e"
+                    color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
                     className="emotion-17"
-                    color="transparent"
+                    color="#00bdc1"
                     data-file-name="documents.svg"
                     height={24}
                   />
@@ -2808,7 +2808,7 @@ Array [
                 >
                   <svg
                     className="emotion-17"
-                    color="#ebb52e"
+                    color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
@@ -2819,7 +2819,7 @@ Array [
                     height={24}
                   />
                   <svg
-                    color="transparent"
+                    color="#8f89e7"
                     data-file-name="videos.svg"
                     height={24}
                   />
@@ -2882,12 +2882,12 @@ Array [
                   />
                   <svg
                     className="emotion-17"
-                    color="transparent"
+                    color="#00bdc1"
                     data-file-name="documents.svg"
                     height={24}
                   />
                   <svg
-                    color="transparent"
+                    color="#8f89e7"
                     data-file-name="videos.svg"
                     height={24}
                   />
@@ -2955,7 +2955,7 @@ Array [
                     height={24}
                   />
                   <svg
-                    color="transparent"
+                    color="#8f89e7"
                     data-file-name="videos.svg"
                     height={24}
                   />
