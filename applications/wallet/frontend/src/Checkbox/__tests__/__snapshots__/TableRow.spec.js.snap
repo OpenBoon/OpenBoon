@@ -66,9 +66,10 @@ exports[`<CheckboxTableRow /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
+}
+
+.emotion-7 {
+  margin-right: 16px;
 }
 
 <tr
@@ -119,11 +120,13 @@ exports[`<CheckboxTableRow /> should render properly 1`] = `
       className="emotion-6"
     >
       <svg
+        className="emotion-7"
         color="transparent"
         data-file-name="images.svg"
         height={24}
       />
       <svg
+        className="emotion-7"
         color="transparent"
         data-file-name="documents.svg"
         height={24}
@@ -204,9 +207,10 @@ exports[`<CheckboxTableRow /> should render properly 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
+}
+
+.emotion-7 {
+  margin-right: 16px;
 }
 
 <tr
@@ -257,11 +261,13 @@ exports[`<CheckboxTableRow /> should render properly 2`] = `
       className="emotion-6"
     >
       <svg
+        className="emotion-7"
         color="transparent"
         data-file-name="images.svg"
         height={24}
       />
       <svg
+        className="emotion-7"
         color="transparent"
         data-file-name="documents.svg"
         height={24}
