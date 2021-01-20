@@ -19,6 +19,7 @@ django-health-check = "*"
 flake8 = "*"
 pytest-cov = "*"
 zvi-client = {path = "./../../client/python"}
+pyjwt = "*"
 
 [requires]
 python_version = "3.7"
