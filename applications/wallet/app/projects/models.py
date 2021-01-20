@@ -1,10 +1,6 @@
 import logging
-import os
 import uuid
-from datetime import datetime
-from enum import Enum
 
-import requests
 from django.conf import settings
 from django.db import models
 from django_cryptography.fields import encrypt

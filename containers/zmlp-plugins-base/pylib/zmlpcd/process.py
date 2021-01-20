@@ -493,7 +493,15 @@ class ProcessorWrapper(object):
             'image_count': image_count,
             'video_minutes': video_minutes,
         }
-        response = requests.post(url, json=body)
+        try:
+            response = requests.post(url, json=body)
+        except requests.exceptions.ConnectionError:
+            msg = (f'Unable to register billing metrics. {response.status_code}: '
+                   f'{response.reason}')
+            logger.warning(msg)
+            msg = f'Metric missed: {body}'
+            logger.warning(msg)
+
         if not response.ok:
             if 'The fields service, asset_id must make a unique set.' in response.json().get(
                     'non_field_errors'):
@@ -501,6 +509,8 @@ class ProcessorWrapper(object):
             else:
                 msg = (f'Unable to register billing metrics. {response.status_code}: '
                        f'{response.reason}')
+                logger.warning(msg)
+                msg = f'Metric missed: {body}'
                 logger.warning(msg)
 
     def _get_count_and_minutes(self, asset):
