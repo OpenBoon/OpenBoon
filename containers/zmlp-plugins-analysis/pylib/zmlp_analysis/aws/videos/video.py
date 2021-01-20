@@ -6,6 +6,7 @@ import os
 import tempfile
 import logging
 
+from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlp_analysis.utils.prechecks import Prechecks
 from zmlp_analysis.aws.util import AwsEnv
 from zmlp_analysis.aws.videos import util
@@ -76,26 +77,28 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         # upload to s3
         self.s3_client.upload_file(local_path, bucket_name, bucket_file)
 
-        try:
-            start_job_id = self.start_detection_analysis(
-                role_arn=self.roleArn,
-                bucket=bucket_name,
-                video=bucket_file,
-                sns_topic_arn=self.sns_topic_arn,
-                sqs_queue_url=self.sqs_queue_url,
-                func=self.detector_func
-            )
-            if util.get_sqs_message_success(self.sqs_client, self.sqs_queue_url, start_job_id):
-                clip_tracker = self.get_detection_results(
-                    clip_tracker=clip_tracker,
-                    rek_client=self.rek_client,
-                    start_job_id=start_job_id,
-                    local_video_path=local_path,
-                )
-        finally:
-            self.sqs_client.delete_queue(QueueUrl=self.sqs_queue_url)
-            self.sns_client.delete_topic(TopicArn=self.sns_topic_arn)
+        analysis = LabelDetectionAnalysis(collapse_labels=True)
+        attribs = set()
 
+        start_job_id = self.start_detection_analysis(
+            role_arn=self.roleArn,
+            bucket=bucket_name,
+            video=bucket_file,
+            sns_topic_arn=self.sns_topic_arn,
+            sqs_queue_url=self.sqs_queue_url,
+            func=self.detector_func
+        )
+        if util.get_sqs_message_success(self.sqs_client, self.sqs_queue_url, start_job_id):
+            clip_tracker, attribs = self.get_detection_results(
+                clip_tracker=clip_tracker,
+                rek_client=self.rek_client,
+                start_job_id=start_job_id,
+                local_video_path=local_path,
+            )
+
+        if attribs:
+            [analysis.add_label_and_score(ls[0], ls[1]) for ls in attribs]
+            asset.add_analysis(self.namespace, analysis)
         timeline = clip_tracker.build_timeline(final_time)
         video.save_timeline(timeline)
 
@@ -182,6 +185,7 @@ class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
         Returns:
             (ClipTracker) built clip tracker clips for timeline building
         """
+        attribs = set()
         pagination_token = ''
         finished = False
 
@@ -200,6 +204,7 @@ class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
                 logger.debug(f'\tLabel: {name}')
                 logger.debug(f'\tConfidence: {confidence}')
 
+                attribs.add((name, confidence))
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [name])
 
@@ -208,7 +213,7 @@ class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
             else:
                 finished = True
 
-        return clip_tracker
+        return clip_tracker, attribs
 
 
 class TextVideoDetectProcessor(AbstractVideoDetectProcessor):
@@ -233,6 +238,7 @@ class TextVideoDetectProcessor(AbstractVideoDetectProcessor):
         Returns:
             (ClipTracker) built clip tracker clips for timeline building
         """
+        attribs = set()
         pagination_token = ''
         finished = False
 
@@ -253,6 +259,7 @@ class TextVideoDetectProcessor(AbstractVideoDetectProcessor):
                 logger.debug(f'\tText Detected: {detected_text}')
                 logger.debug(f'\tConfidence: {confidence}')
 
+                attribs.add((detected_text, confidence))
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [detected_text])
 
@@ -261,7 +268,7 @@ class TextVideoDetectProcessor(AbstractVideoDetectProcessor):
             else:
                 finished = True
 
-        return clip_tracker
+        return clip_tracker, attribs
 
 
 class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
@@ -286,6 +293,7 @@ class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
         Returns:
             (ClipTracker) built clip tracker clips for timeline building
         """
+        attribs = set()
         pagination_token = ''
         finished = False
         counter = 0
@@ -306,6 +314,7 @@ class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
                 logger.debug(f'\tFace Detected: {face}')
                 logger.debug(f'\tConfidence: {confidence}')
 
+                attribs.add((f"face{i}", confidence))
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [f"face{i}"])
             counter = i
@@ -315,7 +324,7 @@ class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
             else:
                 finished = True
 
-        return clip_tracker
+        return clip_tracker, attribs
 
 
 class UnsafeVideoDetectProcessor(AbstractVideoDetectProcessor):
@@ -340,6 +349,7 @@ class UnsafeVideoDetectProcessor(AbstractVideoDetectProcessor):
         Returns:
             (ClipTracker) built clip tracker clips for timeline building
         """
+        attribs = set()
         pagination_token = ''
         finished = False
 
@@ -360,6 +370,7 @@ class UnsafeVideoDetectProcessor(AbstractVideoDetectProcessor):
                 logger.debug(f'\tLabel: {name}')
                 logger.debug(f'\tConfidence: {confidence}')
 
+                attribs.add((name, confidence))
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [name])
 
@@ -368,7 +379,7 @@ class UnsafeVideoDetectProcessor(AbstractVideoDetectProcessor):
             else:
                 finished = True
 
-        return clip_tracker
+        return clip_tracker, attribs
 
 
 class CelebrityVideoDetectProcessor(AbstractVideoDetectProcessor):
@@ -394,6 +405,7 @@ class CelebrityVideoDetectProcessor(AbstractVideoDetectProcessor):
         Returns:
             (ClipTracker) built clip tracker clips for timeline building
         """
+        attribs = set()
         pagination_token = ''
         finished = False
 
@@ -414,6 +426,7 @@ class CelebrityVideoDetectProcessor(AbstractVideoDetectProcessor):
                 logger.debug(f'\tCelebrity: {name}')
                 logger.debug(f'\tConfidence: {confidence}')
 
+                attribs.add((name, confidence))
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [name])
 
@@ -422,7 +435,7 @@ class CelebrityVideoDetectProcessor(AbstractVideoDetectProcessor):
             else:
                 finished = True
 
-        return clip_tracker
+        return clip_tracker, attribs
 
 
 class PeoplePathingVideoDetectProcessor(AbstractVideoDetectProcessor):
@@ -448,6 +461,7 @@ class PeoplePathingVideoDetectProcessor(AbstractVideoDetectProcessor):
         Returns:
             (ClipTracker) built clip tracker clips for timeline building
         """
+        attribs = set()
         pagination_token = ''
         finished = False
         counter = 0
@@ -462,10 +476,12 @@ class PeoplePathingVideoDetectProcessor(AbstractVideoDetectProcessor):
 
             for i, personDetection in enumerate(response['Persons'], counter):
                 person = personDetection['Person']
+                confidence = person['Face']['Confidence']
                 start_time = personDetection['Timestamp'] / 1000  # ms to s
 
                 logger.debug(f'\tPerson Detected: {person}')
 
+                attribs.add((f"person{i}", confidence))
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [f"person{i}"])
             counter = i
@@ -475,7 +491,7 @@ class PeoplePathingVideoDetectProcessor(AbstractVideoDetectProcessor):
             else:
                 finished = True
 
-        return clip_tracker
+        return clip_tracker, attribs
 
 
 class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
@@ -537,6 +553,7 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
         Returns:
             (ClipTracker) built clip tracker clips for timeline building
         """
+        attribs = set()
         pagination_token = ''
         finished = False
 
@@ -556,6 +573,7 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
                         logger.debug(f'\tConfidence: {confidence}')
                         logger.debug(f'\tType: {segment_type}')
 
+                        attribs.add((segment_type, confidence))
                         video.extract_thumbnail_from_video(local_video_path, output_path,
                                                            start_time)
                         clip_tracker.append(start_time, [segment_type])
@@ -565,7 +583,7 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
             else:
                 finished = True
 
-        return clip_tracker
+        return clip_tracker, attribs
 
 
 class BlackFramesVideoDetectProcessor(SegmentVideoDetectProcessor):

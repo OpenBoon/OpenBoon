@@ -6,7 +6,8 @@ from .conftest import MockS3Client, MockRekClient, mock_clients
 
 from zmlp_analysis.aws import videos
 from zmlpsdk import Frame, file_storage
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_mock_stored_file
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, \
+    get_mock_stored_file, get_prediction_labels
 
 logging.basicConfig()
 
@@ -25,7 +26,6 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     def setUp(self, s3_patch):
         os.environ['ZMLP_PROJECT_ID'] = '00000000-0000-0000-0000-000000000001'
         os.environ['ZORROA_AWS_BUCKET'] = 'zorroa-unit-tests'
-        os.environ['PATH'] += ':usr/local/bin'
 
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)
@@ -49,6 +49,11 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         frame = Frame(asset)
         processor.process(frame)
 
+        analysis = frame.asset.get_analysis('aws-label-detection')
+        preds = get_prediction_labels(analysis)
+        assert 'Word' in preds
+        assert analysis['count'] == 1
+
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)
     @patch(rek_patch_path, side_effect=MockRekClient)
@@ -70,6 +75,11 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(asset)
         processor.process(frame)
+
+        analysis = frame.asset.get_analysis('aws-text-detection')
+        preds = get_prediction_labels(analysis)
+        assert 'emerge.' in preds
+        assert analysis['count'] == 2
 
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)
@@ -93,6 +103,11 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         frame = Frame(asset)
         processor.process(frame)
 
+        analysis = frame.asset.get_analysis('aws-face-detection')
+        preds = get_prediction_labels(analysis)
+        assert 'face0' in preds
+        assert analysis['count'] == 9
+
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)
     @patch(rek_patch_path, side_effect=MockRekClient)
@@ -114,6 +129,11 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(asset)
         processor.process(frame)
+
+        analysis = frame.asset.get_analysis('aws-unsafe-detection')
+        preds = get_prediction_labels(analysis)
+        assert 'Suggestive' in preds
+        assert analysis['count'] == 2
 
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)
@@ -137,6 +157,11 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         frame = Frame(asset)
         processor.process(frame)
 
+        analysis = frame.asset.get_analysis('aws-celebrity-detection')
+        preds = get_prediction_labels(analysis)
+        assert 'Boris Johnson' in preds
+        assert analysis['count'] == 1
+
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)
     @patch(rek_patch_path, side_effect=MockRekClient)
@@ -158,6 +183,11 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(asset)
         processor.process(frame)
+
+        analysis = frame.asset.get_analysis('aws-person-tracking-detection')
+        preds = get_prediction_labels(analysis)
+        assert 'person0' in preds
+        assert analysis['count'] == 1
 
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)
@@ -181,6 +211,11 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         frame = Frame(asset)
         processor.process(frame)
 
+        analysis = frame.asset.get_analysis('aws-black-frames-detection')
+        preds = get_prediction_labels(analysis)
+        assert 'BlackFrames' in preds
+        assert analysis['count'] == 1
+
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)
     @patch(rek_patch_path, side_effect=MockRekClient)
@@ -202,3 +237,8 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(asset)
         processor.process(frame)
+
+        analysis = frame.asset.get_analysis('aws-credits-detection')
+        preds = get_prediction_labels(analysis)
+        assert 'EndCredits' in preds
+        assert analysis['count'] == 1
