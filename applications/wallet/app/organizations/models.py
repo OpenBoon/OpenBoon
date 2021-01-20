@@ -14,3 +14,6 @@ class Organization(UUIDMixin, TimeStampMixin):
 
     def __str__(self):
         return self.name
+
+    def __repr__(self):
+        return f"Organization(name='{self.name}', owner_id={self.owner_id})"
