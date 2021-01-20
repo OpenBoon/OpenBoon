@@ -208,7 +208,6 @@ metrics-backend-test-suite:
   variables:
     DJANGO_SETTINGS_MODULE: metrics.settings.testing
     DEBUG: "true"
-    DB_BACKEND: postgres
     PG_DB_HOST: postgres
     PG_DB_USER: metrics
     PG_DB_PASSWORD: 2mAPDWhuiYdIW69u
