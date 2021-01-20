@@ -16,7 +16,6 @@ from zmlp.client import (ZmlpDuplicateException, ZmlpInvalidRequestException,
 
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
-from projects.utils import random_project_name
 from projects.views import BaseProjectViewSet
 from subscriptions.models import Tier
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
@@ -30,15 +29,6 @@ def mock_put_disable_project(*args, **kwargs):
 
 def mock_put_enable_project(*args, **kwargs):
     return {'type': 'project', 'id': '00000000-0000-0000-0000-000000000000', 'op': 'enable', 'success': True}  # noqa
-
-
-def test_random_name():
-    assert random_project_name()
-
-
-def test_project_with_random_name():
-    project = Project.objects.create()
-    assert project.name
 
 
 def test_project_view_user_does_not_belong_to_project(user, project):
@@ -296,7 +286,7 @@ class TestProjectUserGet:
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         new_project = Project.objects.create(id='0820a307-c3dd-460e-a9c4-0e5f582e09c3',
-                                             name='Test Project')
+                                             name='New Test Project')
         response = api_client.get(reverse('projectuser-list', kwargs={'project_pk': new_project.id}))  # noqa
         assert response.status_code == status.HTTP_403_FORBIDDEN
 

@@ -36,7 +36,7 @@ class UsageReporter():
     def _get_usage(self, entitlement):
         """Returns usage info for the project linked to the entitlement given."""
         entitlement = MarketplaceEntitlement.objects.get(name=entitlement['name'])
-        return entitlement.project.subscription.usage_last_hour()
+        return entitlement.organization.get_ml_usage_last_hour()
 
     def _report_usage(self, entitlement):
         """Sends usage information to marketplace for the given entitlement."""
@@ -57,10 +57,19 @@ class UsageReporter():
             'startTime': start_time.strftime(time_format),
             'endTime': end_time.strftime(time_format),
             'metricValueSets': [
-                {'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_video',
-                 'metricValues': [{'int64Value': int(usage['video_hours'])}]},
-                {'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_image',
-                 'metricValues': [{'int64Value': int(usage['image_count'])}]}
+                # TODO: Get the real metric names.
+                {
+                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_tier_1_video',
+                    'metricValues': [{'int64Value': int(usage['tier_1_image_count'])}]},
+                {
+                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_tier_1_image',
+                    'metricValues': [{'int64Value': int(usage['tier_1_video_hours'])}]},
+                {
+                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_tier_2_video',
+                    'metricValues': [{'int64Value': int(usage['tier_2_image_count'])}]},
+                {
+                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_tier_2_image',
+                    'metricValues': [{'int64Value': int(usage['tier_2_video_hours'])}]}
             ]
         }
         check = ServiceControlApi.services().check(
