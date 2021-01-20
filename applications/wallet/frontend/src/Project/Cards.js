@@ -1,14 +1,14 @@
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 
-import { colors, spacing, constants } from '../Styles'
+import { colors, spacing, constants, typography } from '../Styles'
 
-import Button, { VARIANTS } from '../Button'
+import SuspenseBoundary from '../SuspenseBoundary'
 import Bouncer, { ROLES } from '../Bouncer'
 
-import ProjectGettingStarted from './GettingStarted'
+import ProjectMetrics from './Metrics'
 import ProjectQuickLinks from './QuickLinks'
+import ProjectGettingStarted from './GettingStarted'
 
 const MAX_WIDTH = 880
 
@@ -50,6 +50,7 @@ const ProjectCards = () => {
           }}
         >
           <h3 css={{ paddingBottom: spacing.base }}>Project: {name}</h3>
+
           <div
             css={{
               color: colors.structure.zinc,
@@ -58,19 +59,22 @@ const ProjectCards = () => {
           >
             Project ID: {id}
           </div>
-          <Bouncer role={ROLES.User_Admin}>
-            <div css={{ display: 'flex' }}>
-              <Link
-                href="/[projectId]/users/add"
-                as={`/${projectId}/users/add`}
-                passHref
-              >
-                <Button variant={VARIANTS.PRIMARY_SMALL}>
-                  + Add Users To Project
-                </Button>
-              </Link>
-            </div>
-          </Bouncer>
+
+          <SuspenseBoundary isTransparent>
+            <ProjectMetrics projectId={projectId} />
+          </SuspenseBoundary>
+
+          <div
+            css={{
+              fontSize: typography.size.small,
+              lineHeight: typography.height.small,
+              color: colors.structure.zinc,
+              paddingTop: spacing.comfy,
+              paddingBottom: spacing.base,
+            }}
+          >
+            *pages are processed &amp; counted as individual assets
+          </div>
         </div>
 
         <ProjectQuickLinks projectId={projectId} />

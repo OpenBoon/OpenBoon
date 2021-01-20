@@ -79,60 +79,119 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  gap: 32px;
 }
 
 .emotion-6 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
+}
+
+.emotion-7 {
+  min-width: 400px;
+}
+
+.emotion-7 th {
+  text-align: left;
+  vertical-align: bottom;
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  padding: 8px;
+  padding-left: 0;
+}
+
+.emotion-7 td {
+  padding: 16px;
+  padding-left: 0;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-8 {
+  color: #ebb52e;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 8px 16px;
-  white-space: nowrap;
+  padding-bottom: 8px;
+}
+
+.emotion-9 {
+  padding-right: 8px;
+}
+
+.emotion-10 {
+  color: #00bdc1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-12 {
+  color: #8f89e7;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-14 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-15 {
+  min-width: 300px;
+}
+
+.emotion-15 th {
+  text-align: left;
+  vertical-align: bottom;
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
+  font-weight: 400;
+  padding: 8px;
+  padding-left: 0;
 }
 
-.emotion-6,
-.emotion-6:hover,
-.emotion-6:visited,
-.emotion-6 .noop {
-  background-color: #73b61c;
+.emotion-15 td {
+  padding: 16px;
+  padding-left: 0;
+  border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-6:hover,
-.emotion-6 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #96c955;
+.emotion-22 {
+  font-size: 14px;
+  line-height: 18px;
+  color: #b3b3b3;
+  padding-top: 24px;
+  padding-bottom: 8px;
 }
 
-.emotion-6[aria-disabled=true],
-.emotion-6 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-7 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -146,17 +205,17 @@ Array [
   padding: 24px;
 }
 
-.emotion-8 {
+.emotion-24 {
   padding-bottom: 8px;
 }
 
-.emotion-9 {
+.emotion-25 {
   display: grid;
   gap: 32px;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
-.emotion-10 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -166,7 +225,7 @@ Array [
   flex-direction: column;
 }
 
-.emotion-11 {
+.emotion-27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -174,7 +233,7 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-12 {
+.emotion-28 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -205,27 +264,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-12,
-.emotion-12:hover,
-.emotion-12:visited,
-.emotion-12 .noop {
+.emotion-28,
+.emotion-28:hover,
+.emotion-28:visited,
+.emotion-28 .noop {
   background-color: #808080;
 }
 
-.emotion-12:hover,
-.emotion-12 .noop {
+.emotion-28:hover,
+.emotion-28 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-12[aria-disabled=true],
-.emotion-12 .noop {
+.emotion-28[aria-disabled=true],
+.emotion-28 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-13 {
+.emotion-29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -236,7 +295,7 @@ Array [
   align-items: center;
 }
 
-.emotion-14 {
+.emotion-30 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -244,7 +303,7 @@ Array [
   padding-right: 4px;
 }
 
-.emotion-40 {
+.emotion-56 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -259,30 +318,30 @@ Array [
   max-width: 440px;
 }
 
-.emotion-41 {
+.emotion-57 {
   padding-bottom: 8px;
 }
 
-.emotion-42 {
+.emotion-58 {
   padding-bottom: 24px;
 }
 
-.emotion-43 {
+.emotion-59 {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-44 {
+.emotion-60 {
   font-weight: 400;
   font-size: 17px;
   line-height: 20px;
   color: #73b61c;
 }
 
-.emotion-45 {
+.emotion-61 {
   font-weight: 700;
 }
 
-.emotion-46 {
+.emotion-62 {
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
@@ -298,18 +357,18 @@ Array [
   align-items: center;
 }
 
-.emotion-46 svg {
+.emotion-62 svg {
   margin-right: 8px;
 }
 
-.emotion-47 {
+.emotion-63 {
   margin: 0;
   padding-top: 16px;
   padding-bottom: 16px;
   color: #b3b3b3;
 }
 
-.emotion-48 {
+.emotion-64 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -317,15 +376,15 @@ Array [
   padding-bottom: 24px;
 }
 
-.emotion-58 {
+.emotion-74 {
   padding-bottom: 0;
 }
 
-.emotion-59 {
+.emotion-75 {
   border-bottom: 0;
 }
 
-.emotion-64 {
+.emotion-80 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -357,44 +416,195 @@ Array [
         <div
           className="emotion-5"
         >
-          <a
+          <div
             className="emotion-6"
-            href="/00000000-0000-0000-0000-000000000000/users/add"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
           >
-            + Add Users To Project
-          </a>
+            <h4>
+              Usage
+            </h4>
+            <table
+              className="emotion-7"
+            >
+              <thead>
+                <tr>
+                  <th>
+                    File Type
+                  </th>
+                  <th>
+                    ML Usage
+                    <br />
+                    External Modules
+                  </th>
+                  <th>
+                    ML Usage
+                    <br />
+                    Internal Modules
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div
+                      className="emotion-8"
+                    >
+                      <svg
+                        className="emotion-9"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      Images /
+                    </div>
+                    <div
+                      className="emotion-10"
+                    >
+                      <svg
+                        className="emotion-9"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      Documents*
+                    </div>
+                  </td>
+                  <td>
+                    <br />
+                    <br />
+                    --
+                  </td>
+                  <td>
+                    <br />
+                    <br />
+                    --
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div
+                      className="emotion-12"
+                    >
+                      <svg
+                        className="emotion-9"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                      Video Hours
+                    </div>
+                  </td>
+                  <td>
+                    --
+                  </td>
+                  <td>
+                    --
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            className="emotion-14"
+          >
+            <h4>
+              Total Asset Storage
+            </h4>
+            <table
+              className="emotion-15"
+            >
+              <thead>
+                <tr>
+                  <th>
+                    <br />
+                    File Type
+                  </th>
+                  <th>
+                    Total 
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div
+                      className="emotion-8"
+                    >
+                      <svg
+                        className="emotion-9"
+                        data-file-name="images.svg"
+                        height={24}
+                      />
+                      Images /
+                    </div>
+                    <div
+                      className="emotion-10"
+                    >
+                      <svg
+                        className="emotion-9"
+                        data-file-name="documents.svg"
+                        height={24}
+                      />
+                      Documents*
+                    </div>
+                  </td>
+                  <td>
+                    <br />
+                    <br />
+                    --
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div
+                      className="emotion-12"
+                    >
+                      <svg
+                        className="emotion-9"
+                        data-file-name="videos.svg"
+                        height={24}
+                      />
+                      Video Hours
+                    </div>
+                  </td>
+                  <td>
+                    --
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div
+          className="emotion-22"
+        >
+          *pages are processed & counted as individual assets
         </div>
       </div>
       <div
-        className="emotion-7"
+        className="emotion-23"
       >
         <h3
-          className="emotion-8"
+          className="emotion-24"
         >
           Quick Links
         </h3>
         <div
-          className="emotion-9"
+          className="emotion-25"
         >
           <div
-            className="emotion-10"
+            className="emotion-26"
           >
             <div
-              className="emotion-11"
+              className="emotion-27"
             >
               <a
-                className="emotion-12"
+                className="emotion-28"
                 href="/00000000-0000-0000-0000-000000000000/data-sources"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
               >
                 <div
-                  className="emotion-13"
+                  className="emotion-29"
                 >
                   <div
-                    className="emotion-14"
+                    className="emotion-30"
                   >
                     <svg
                       data-file-name="datasources.svg"
@@ -408,22 +618,22 @@ Array [
             Connect to your data source, choose which modules to run, and begin to ingest.
           </div>
           <div
-            className="emotion-10"
+            className="emotion-26"
           >
             <div
-              className="emotion-11"
+              className="emotion-27"
             >
               <a
-                className="emotion-12"
+                className="emotion-28"
                 href="/00000000-0000-0000-0000-000000000000/jobs"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
               >
                 <div
-                  className="emotion-13"
+                  className="emotion-29"
                 >
                   <div
-                    className="emotion-14"
+                    className="emotion-30"
                   >
                     <svg
                       data-file-name="jobQueue.svg"
@@ -437,22 +647,22 @@ Array [
             View your project jobs progress and troubleshoot any issues.
           </div>
           <div
-            className="emotion-10"
+            className="emotion-26"
           >
             <div
-              className="emotion-11"
+              className="emotion-27"
             >
               <a
-                className="emotion-12"
+                className="emotion-28"
                 href="/00000000-0000-0000-0000-000000000000/models"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
               >
                 <div
-                  className="emotion-13"
+                  className="emotion-29"
                 >
                   <div
-                    className="emotion-14"
+                    className="emotion-30"
                   >
                     <svg
                       data-file-name="models.svg"
@@ -466,22 +676,22 @@ Array [
             Create, manage, and view the  accuracy of your custom models.
           </div>
           <div
-            className="emotion-10"
+            className="emotion-26"
           >
             <div
-              className="emotion-11"
+              className="emotion-27"
             >
               <a
-                className="emotion-12"
+                className="emotion-28"
                 href="/00000000-0000-0000-0000-000000000000/visualizer"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
               >
                 <div
-                  className="emotion-13"
+                  className="emotion-29"
                 >
                   <div
-                    className="emotion-14"
+                    className="emotion-30"
                   >
                     <svg
                       data-file-name="visualizer.svg"
@@ -495,22 +705,22 @@ Array [
             View and search the module results, and label assets to train on.
           </div>
           <div
-            className="emotion-10"
+            className="emotion-26"
           >
             <div
-              className="emotion-11"
+              className="emotion-27"
             >
               <a
-                className="emotion-12"
+                className="emotion-28"
                 href="/00000000-0000-0000-0000-000000000000/api-keys"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
               >
                 <div
-                  className="emotion-13"
+                  className="emotion-29"
                 >
                   <div
-                    className="emotion-14"
+                    className="emotion-30"
                   >
                     <svg
                       data-file-name="key.svg"
@@ -524,22 +734,22 @@ Array [
             Create a ZMLP API key for use with external applications and tools.
           </div>
           <div
-            className="emotion-10"
+            className="emotion-26"
           >
             <div
-              className="emotion-11"
+              className="emotion-27"
             >
               <a
-                className="emotion-12"
+                className="emotion-28"
                 href="/00000000-0000-0000-0000-000000000000/users"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
               >
                 <div
-                  className="emotion-13"
+                  className="emotion-29"
                 >
                   <div
-                    className="emotion-14"
+                    className="emotion-30"
                   >
                     <svg
                       data-file-name="users.svg"
@@ -556,24 +766,24 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-40"
+      className="emotion-56"
     >
       <h3
-        className="emotion-41"
+        className="emotion-57"
       >
         Getting Started
       </h3>
       <div
-        className="emotion-42"
+        className="emotion-58"
       >
         <div
-          className="emotion-43"
+          className="emotion-59"
         >
           <h4
-            className="emotion-44"
+            className="emotion-60"
           >
             <span
-              className="emotion-45"
+              className="emotion-61"
             >
               Step 
               1
@@ -582,7 +792,7 @@ Array [
             Create a Data Source
           </h4>
           <h5
-            className="emotion-46"
+            className="emotion-62"
           >
             <svg
               data-file-name="datasources.svg"
@@ -591,66 +801,20 @@ Array [
             Data Sources
           </h5>
           <p
-            className="emotion-47"
+            className="emotion-63"
           >
             Data Sources define the source location of files and the types of Machine Learning analysis to be performed on them. Source files can be located in any of the major cloud provider object stores (GCS, S3, Azure Blob).
           </p>
           <div
-            className="emotion-48"
+            className="emotion-64"
           >
             <a
-              className="emotion-12"
+              className="emotion-28"
               href="/00000000-0000-0000-0000-000000000000/data-sources/add"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               + Create Data Source
-            </a>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-42"
-      >
-        <div
-          className="emotion-43"
-        >
-          <h4
-            className="emotion-44"
-          >
-            <span
-              className="emotion-45"
-            >
-              Step 
-              2
-              : 
-            </span>
-            Review Job Progress
-          </h4>
-          <h5
-            className="emotion-46"
-          >
-            <svg
-              data-file-name="jobQueue.svg"
-              height={20}
-            />
-            Job Queue
-          </h5>
-          <p
-            className="emotion-47"
-          >
-            After a Data Source is created a processing job is launched that performs the Machine Learning analysis and stores the resulting metadata. The Job Queue is where you will monitor the progress of these jobs and manage them.
-          </p>
-          <div
-            className="emotion-48"
-          >
-            <a
-              className="emotion-12"
-              href="/00000000-0000-0000-0000-000000000000/jobs"
-              onClick={[Function]}
-              onMouseEnter={[Function]}
-            >
-              Go To Job Queue
             </a>
           </div>
         </div>
@@ -662,10 +826,56 @@ Array [
           className="emotion-59"
         >
           <h4
-            className="emotion-44"
+            className="emotion-60"
           >
             <span
-              className="emotion-45"
+              className="emotion-61"
+            >
+              Step 
+              2
+              : 
+            </span>
+            Review Job Progress
+          </h4>
+          <h5
+            className="emotion-62"
+          >
+            <svg
+              data-file-name="jobQueue.svg"
+              height={20}
+            />
+            Job Queue
+          </h5>
+          <p
+            className="emotion-63"
+          >
+            After a Data Source is created a processing job is launched that performs the Machine Learning analysis and stores the resulting metadata. The Job Queue is where you will monitor the progress of these jobs and manage them.
+          </p>
+          <div
+            className="emotion-64"
+          >
+            <a
+              className="emotion-28"
+              href="/00000000-0000-0000-0000-000000000000/jobs"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+            >
+              Go To Job Queue
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-74"
+      >
+        <div
+          className="emotion-75"
+        >
+          <h4
+            className="emotion-60"
+          >
+            <span
+              className="emotion-61"
             >
               Step 
               3
@@ -674,7 +884,7 @@ Array [
             Inspect Your Dataset
           </h4>
           <h5
-            className="emotion-46"
+            className="emotion-62"
           >
             <svg
               data-file-name="visualizer.svg"
@@ -683,15 +893,15 @@ Array [
             Visualizer
           </h5>
           <p
-            className="emotion-47"
+            className="emotion-63"
           >
             Once the processing job has successfully completed you can view the results in the Visualizer. The Visualizer is a unified visual tool for inspecting and tuning the metadata output of the Machine Learning analysis.
           </p>
           <div
-            className="emotion-64"
+            className="emotion-80"
           >
             <a
-              className="emotion-12"
+              className="emotion-28"
               href="/00000000-0000-0000-0000-000000000000/visualizer"
               onClick={[Function]}
               onMouseEnter={[Function]}
