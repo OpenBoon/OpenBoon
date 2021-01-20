@@ -46,6 +46,8 @@ class FileCache:
 
         """
         path = self.get_cache_path(task)
+        if not os.path.exists(path):
+            return
         logger.info(f"removing cache {path}")
         try:
             shutil.rmtree(path)

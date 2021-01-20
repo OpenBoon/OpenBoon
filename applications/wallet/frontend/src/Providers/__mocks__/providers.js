@@ -17,23 +17,7 @@ const providers = {
                 'Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.',
               provider: 'Zorroa',
               category: 'Visual Intelligence',
-              supportedMedia: ['Images', 'Video', 'Documents'],
-              ops: [
-                {
-                  type: 'APPEND',
-                  apply: [
-                    {
-                      args: {},
-                      image: 'zmlp/plugins-analysis',
-                      module: 'standard',
-                      checksum: 2975666803,
-                      className: 'zmlp_analysis.google.CloudVisionDetectLabels',
-                    },
-                  ],
-                  opFilter: { type: '', processor: '' },
-                  maxApplyCount: 1,
-                },
-              ],
+              supportedMedia: ['Images', 'Videos', 'Documents'],
               timeCreated: 1584378384472,
               timeModified: 1585594803896,
               actorCreated:
@@ -48,23 +32,7 @@ const providers = {
                 'Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.',
               provider: 'Zorroa',
               category: 'Visual Intelligence',
-              supportedMedia: ['Images', 'Video', 'Documents'],
-              ops: [
-                {
-                  type: 'APPEND',
-                  apply: [
-                    {
-                      args: {},
-                      image: 'zmlp/plugins-analysis',
-                      module: 'standard',
-                      checksum: 2975666803,
-                      className: 'zmlp_analysis.google.CloudVisionDetectLabels',
-                    },
-                  ],
-                  opFilter: { type: '', processor: '' },
-                  maxApplyCount: 1,
-                },
-              ],
+              supportedMedia: ['Images', 'Videos', 'Documents'],
               timeCreated: 1584717585694,
               timeModified: 1585594803975,
               actorCreated:
@@ -79,24 +47,7 @@ const providers = {
                 'Generate keyword labels for image, video, and documents.',
               provider: 'Zorroa',
               category: 'Visual Intelligence',
-              supportedMedia: ['Images', 'Video', 'Documents'],
-              ops: [
-                {
-                  type: 'APPEND',
-                  apply: [
-                    {
-                      args: {},
-                      image: 'zmlp/plugins-analysis',
-                      module: 'standard',
-                      checksum: 3580760744,
-                      className:
-                        'zmlp_analysis.mxnet.ZviLabelDetectionResNet152',
-                    },
-                  ],
-                  opFilter: { type: '', processor: '' },
-                  maxApplyCount: 1,
-                },
-              ],
+              supportedMedia: ['Images', 'Videos', 'Documents'],
               timeCreated: 1583176293058,
               timeModified: 1585594803772,
               actorCreated:
@@ -111,24 +62,7 @@ const providers = {
                 'Detect everyday objects in images, video, and documents.',
               provider: 'Zorroa',
               category: 'Visual Intelligence',
-              supportedMedia: ['Images', 'Video', 'Documents'],
-              ops: [
-                {
-                  type: 'APPEND',
-                  apply: [
-                    {
-                      args: {},
-                      image: 'zmlp/plugins-analysis',
-                      module: 'standard',
-                      checksum: 332797101,
-                      className:
-                        'zmlp_analysis.detect.ZmlpObjectDetectionProcessor',
-                    },
-                  ],
-                  opFilter: { type: '', processor: '' },
-                  maxApplyCount: 1,
-                },
-              ],
+              supportedMedia: ['Images', 'Videos', 'Documents'],
               timeCreated: 1583176293039,
               timeModified: 1585594803696,
               actorCreated:
@@ -149,14 +83,6 @@ const providers = {
               provider: 'Zorroa',
               category: 'Zorroa Timeline Extraction',
               supportedMedia: ['Documents'],
-              ops: [
-                {
-                  type: 'SET_ARGS',
-                  apply: { extractDocPages: true },
-                  opFilter: { type: '', processor: '' },
-                  maxApplyCount: 1,
-                },
-              ],
               timeCreated: 1585355679147,
               timeModified: 1585594803394,
               actorCreated:
@@ -172,14 +98,6 @@ const providers = {
               provider: 'Zorroa',
               category: 'Zorroa Timeline Extraction',
               supportedMedia: ['Images'],
-              ops: [
-                {
-                  type: 'SET_ARGS',
-                  apply: { extractImagePages: true },
-                  opFilter: { type: '', processor: '' },
-                  maxApplyCount: 1,
-                },
-              ],
               timeCreated: 1585355679820,
               timeModified: 1585594803589,
               actorCreated:
@@ -194,24 +112,7 @@ const providers = {
                 'Break video files into individual assets based on a shot detection algorithm.',
               provider: 'Zorroa',
               category: 'Zorroa Timeline Extraction',
-              supportedMedia: ['Video'],
-              ops: [
-                {
-                  type: 'APPEND',
-                  apply: [
-                    {
-                      args: {},
-                      image: 'zmlp/plugins-core',
-                      module: 'standard',
-                      checksum: 3227521755,
-                      className:
-                        'zmlp_core.clipify.ShotDetectionVideoClipifier',
-                    },
-                  ],
-                  opFilter: { type: '', processor: '' },
-                  maxApplyCount: 1,
-                },
-              ],
+              supportedMedia: ['Videos'],
               timeCreated: 1585355679835,
               timeModified: 1585594803678,
               actorCreated:
@@ -231,22 +132,6 @@ const providers = {
               provider: 'Zorroa',
               category: 'Zorroa Visual Intelligence',
               supportedMedia: ['Images'],
-              ops: [
-                {
-                  type: 'APPEND',
-                  apply: [
-                    {
-                      args: {},
-                      image: 'zmlp/plugins-analysis',
-                      module: 'standard',
-                      checksum: 2130317700,
-                      className: 'zmlp_analysis.ocr.processors.OcrProcessor',
-                    },
-                  ],
-                  opFilter: { type: '', processor: '' },
-                  maxApplyCount: 1,
-                },
-              ],
               timeCreated: 1585355680037,
               timeModified: 1585594803787,
               actorCreated:

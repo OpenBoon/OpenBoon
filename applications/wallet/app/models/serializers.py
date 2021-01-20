@@ -72,9 +72,11 @@ class DestroyLabelSerializer(serializers.Serializer):
 
 class ConfusionMatrixSerializer(serializers.Serializer):
     name = serializers.CharField()
+    moduleName = serializers.CharField()
     labels = serializers.ListField(child=serializers.CharField())
     matrix = serializers.ListField(child=serializers.ListField(child=serializers.IntegerField()))
     maxScore = serializers.FloatField()
     minScore = serializers.FloatField()
     overallAccuracy = serializers.FloatField()
     testSetOnly = serializers.BooleanField()
+    isMatrixApplicable = serializers.BooleanField()

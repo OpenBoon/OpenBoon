@@ -110,6 +110,18 @@ class VideoClipApp:
         """
         return VideoClipSearchResult(self.app, search)
 
+    def get_clip(self, id):
+        """
+        Get a VideoClip by unique Id.
+
+        Args:
+            id (str): The VideoClip or its unique Id.
+
+        Returns:
+            VideoClip: The clip with the given Id.
+        """
+        return VideoClip(self.app.client.get(f'api/v1/clips/{id}'))
+
     def __handle_webvtt(self, rsp, dst_file):
         """
         Handle a webvtt file response.

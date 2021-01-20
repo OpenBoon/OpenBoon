@@ -11,7 +11,7 @@ import PanelContent from './Content'
 
 import { onMouseUp } from './helpers'
 
-const MIN_WIDTH = 400
+export const MIN_WIDTH = 400
 
 const Panel = ({ openToThe, children }) => {
   const [{ openPanel, isOpen }, dispatch] = useLocalStorage({

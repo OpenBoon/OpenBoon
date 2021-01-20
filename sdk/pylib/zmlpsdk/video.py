@@ -32,7 +32,7 @@ def get_video_duration(video_path):
     return round(float(duration), 3)
 
 
-def extract_thumbnail_from_video(video_path, thumbnail_path, seconds):
+def extract_thumbnail_from_video(video_path, thumbnail_path, seconds, size=None):
     """Creates a thumbnail image from the video at the specified seconds.
 
     Args:
@@ -41,7 +41,7 @@ def extract_thumbnail_from_video(video_path, thumbnail_path, seconds):
             created.
         seconds (float): The time in the video where the thumbnail should be
             taken from.
-
+        size (tuple): The size the frame should be resized to, if any.
     Raises:
         (IOError): If the thumbnail could not be created.
 
@@ -58,6 +58,10 @@ def extract_thumbnail_from_video(video_path, thumbnail_path, seconds):
            "-vframes",
            "1",
            str(thumbnail_path)]
+
+    if size:
+        cmd.insert(8, "-s")
+        cmd.insert(9, "%dx%d" % size)
 
     logger.info("running command: %s" % cmd)
     try:

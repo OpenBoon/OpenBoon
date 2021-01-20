@@ -39,6 +39,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'ryan gosling' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
+        assert 0.829 == analysis['predictions'][0]['score']
 
     @patch("zmlp_analysis.clarifai.video.regions.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.regions.proxy.get_video_proxy')
@@ -53,6 +54,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'feminine' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 29 == analysis['count']
+        assert 0.784 == analysis['predictions'][0]['score']
 
 
 class PublicModels:

@@ -6,6 +6,7 @@ import org.elasticsearch.action.bulk.BulkResponse
 import java.math.BigDecimal
 import java.security.MessageDigest
 import java.util.Base64
+import java.util.UUID
 
 @ApiModel("ClipSpec", description = "Properties for defining a video clip.")
 class TimelineClipSpec(
@@ -68,7 +69,14 @@ class CreateTimelineResponse(
     var created: Long = 0,
 
     @ApiModelProperty("The number of clips that failed to be created")
-    var failed: MutableList<CreateClipFailure> = mutableListOf()
+    var failed: MutableList<CreateClipFailure> = mutableListOf(),
+
+    @ApiModelProperty("The jobId for the analysis job if created.")
+    var jobId: UUID? = null,
+
+    @ApiModelProperty("The taskId for the analysis task if created.")
+    var taskId: UUID? = null
+
 ) {
     fun handleBulkResponse(rsp: BulkResponse) {
         if (rsp.hasFailures()) {

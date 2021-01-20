@@ -1,6 +1,7 @@
 """
 Classes and functions for building timelines.
 """
+from ..entity.asset import StoredFile
 from ..util import as_id, as_collection
 
 __all__ = [
@@ -44,22 +45,32 @@ class VideoClip:
     @property
     def length(self):
         """The length of the clip"""
-        return self.data['length']
+        return self._data['length']
 
     @property
     def start(self):
         """The start time of the clip"""
-        return self.data['start']
+        return self._data['start']
 
     @property
     def stop(self):
         """The stop time of the clip"""
-        return self.data['stop']
+        return self._data['stop']
 
     @property
     def score(self):
         """The prediction score"""
-        return self.data['score']
+        return self._data['score']
+
+    @property
+    def simhash(self):
+        """A similarity hash, if any"""
+        return self._data.get('simhash')
+
+    @property
+    def files(self):
+        """The array of associated files."""
+        return [StoredFile(f) for f in self._data.get('files', [])]
 
     @staticmethod
     def from_hit(hit):

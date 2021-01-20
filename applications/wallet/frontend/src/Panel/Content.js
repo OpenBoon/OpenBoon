@@ -74,7 +74,7 @@ const PanelContent = ({
           display: 'flex',
           flexDirection: 'column',
           flex: 1,
-          // hack to make content scroll without hiding overflow (overflow needed for Toggltip visibility)
+          // hack to make content scroll without hiding overflow (overflow needed for Toggletip visibility)
           height: '0%',
         }}
       >

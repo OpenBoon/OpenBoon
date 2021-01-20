@@ -512,10 +512,6 @@ class AssetServiceTests : AbstractTest() {
             it.setAttr("aux.field", 1)
             it.setAttr("media.type", FileExtResolver.getType(ext))
             it.setAttr("media.length", 10.732)
-            it.setAttr("clip.timeline", "full")
-            it.setAttr("clip.type", "scene")
-            it.setAttr("clip.start", 0)
-            it.setAttr("clip.stop", 10.732)
             map[it.id] = it.document
         }
 
