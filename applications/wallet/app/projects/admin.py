@@ -17,8 +17,8 @@ def sync_project_with_zmlp(modeladmin, request, queryset):
 @admin.register(Project)
 class ProjectAdmin(ModelAdmin):
     actions = [sync_project_with_zmlp]
-    list_display = ('name', 'id', 'tier', 'usage', 'isActive')
-    list_filter = ('isActive',)
+    list_display = ('name', 'id', 'organization', 'tier', 'usage', 'isActive')
+    list_filter = ('isActive', 'organization')
     search_fields = ('name', 'id')
 
     def tier(self, project):

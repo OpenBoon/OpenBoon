@@ -1,10 +1,10 @@
 import math
-import uuid
 
 from django.contrib.auth import get_user_model
 from django.db import models
 
 from projects.models import Project
+from wallet.mixins import UUIDMixin, TimeStampMixin
 
 User = get_user_model()
 
@@ -15,13 +15,10 @@ class Tier(models.TextChoices):
     PREMIER = 'premier'
 
 
-class Subscription(models.Model):
+class Subscription(UUIDMixin, TimeStampMixin):
     """Represents the purchased plan for a given Project"""
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     project = models.OneToOneField(Project, on_delete=models.CASCADE)
     tier = models.CharField(max_length=20, choices=Tier.choices, default=Tier.ESSENTIALS)
-    createdDate = models.DateTimeField(auto_now_add=True)
-    modifiedDate = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.project}'
