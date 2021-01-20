@@ -87,7 +87,7 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
             <th>&nbsp;</th>
             <th>Module Name</th>
             <th>Description</th>
-            <th>Application Type</th>
+            <th>File Types</th>
           </tr>
         </thead>
 

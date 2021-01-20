@@ -165,7 +165,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>3.4.1</version>
+            <version>3.5.0</version>
         </dependency>
 
          <dependency>
@@ -199,7 +199,7 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.11.936</version>
+            <version>1.11.940</version>
         </dependency>
 
         <dependency>
