@@ -9,7 +9,7 @@ from multiselectfield import MultiSelectField
 from apikeys.utils import create_zmlp_api_key
 from projects.utils import random_project_name
 from roles.utils import get_permissions_for_roles
-from wallet.mixins import TimeStampMixin
+from wallet.mixins import TimeStampMixin, UUIDMixin
 from wallet.utils import get_zmlp_superuser_client, convert_base64_to_json
 from zmlp.client import ZmlpClient, ZmlpNotFoundException
 
@@ -25,12 +25,11 @@ class ActiveProjectManager(models.Manager):
         return super(ActiveProjectManager, self).get_queryset().filter(isActive=True)
 
 
-class Project(TimeStampMixin):
+class Project(UUIDMixin, TimeStampMixin):
     """Represents a ZMLP project."""
     all_objects = models.Manager()
     objects = ActiveProjectManager()
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=144, default=random_project_name)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='projects.Membership',
                                    related_name='projects')

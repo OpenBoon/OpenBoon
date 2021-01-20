@@ -1,12 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from wallet.mixins import TimeStampMixin
+from wallet.mixins import TimeStampMixin, UUIDMixin
 
 User = get_user_model()
 
 
-class Organization(TimeStampMixin):
+class Organization(UUIDMixin, TimeStampMixin):
     """An organization is a collection of projects with an owner. Currently this is only
     used for billing purposes."""
     name = models.CharField(max_length=64)
