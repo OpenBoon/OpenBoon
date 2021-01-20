@@ -3,10 +3,10 @@ from clarifai.errors import ApiError
 
 from zmlpsdk import AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
-from zmlp_analysis.utils.logs import log_backoff_exception
 from zmlpsdk.proxy import get_proxy_level_path
 
-from zmlp_analysis.clarifai.util import get_clarifai_app, not_a_quota_exception, model_map
+from zmlp_analysis.clarifai.util import get_clarifai_app, \
+    not_a_quota_exception, model_map, log_backoff_exception
 
 __all__ = [
     'ClarifaiLabelDetectionProcessor',
