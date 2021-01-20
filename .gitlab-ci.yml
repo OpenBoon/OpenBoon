@@ -211,6 +211,10 @@ metrics-backend-test-suite:
     PG_DB_HOST: postgres
     PG_DB_USER: metrics
     PG_DB_PASSWORD: 2mAPDWhuiYdIW69u
+    POSTGRES_DB: metrics
+    POSTGRES_USER: metrics
+    POSTGRES_PASSWORD: 2mAPDWhuiYdIW69u
+
   script:
     - cd services/metrics
     - pipenv sync
