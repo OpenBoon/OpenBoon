@@ -5,6 +5,8 @@ from django.http import Http404, HttpResponse
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from zmlp.client import ZmlpNotFoundException
+from zmlp.entity.model import LabelScope
 
 from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 AddLabelsSerializer, UpdateLabelsSerializer,
@@ -15,8 +17,6 @@ from models.utils import ConfusionMatrix
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 from wallet.utils import validate_zmlp_data
-from zmlp.client import ZmlpNotFoundException
-from zmlp.entity.model import LabelScope
 
 
 def get_model_type_restrictions(label_counts, min_concepts, min_examples):
@@ -312,8 +312,7 @@ class ModelViewSet(BaseProjectViewSet):
                                  min_score=request.query_params.get('minScore', 0.0),
                                  max_score=request.query_params.get('maxScore', 1.0),
                                  test_set_only=test_set_only)
-        normalize = json.loads(request.query_params.get('normalize', 'false'))
-        response_data = matrix.to_dict(normalize_matrix=normalize)
+        response_data = matrix.to_dict()
         serializer = ConfusionMatrixSerializer(data=response_data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data)

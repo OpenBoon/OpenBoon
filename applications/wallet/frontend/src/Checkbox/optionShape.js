@@ -7,6 +7,9 @@ const optionShape = {
   legend: PropTypes.string,
   initialValue: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool.isRequired,
+  supportedMedia: PropTypes.arrayOf(
+    PropTypes.oneOf(['Images', 'Documents', 'Videos']).isRequired,
+  ),
 }
 
 export default optionShape

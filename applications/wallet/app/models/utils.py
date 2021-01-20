@@ -112,6 +112,7 @@ class ConfusionMatrix(object):
     def to_dict(self, normalize_matrix=False):
         """Returns a dictionary representation suitable for json."""
         return {"name": self.model.name,
+                "moduleName": self.model.module_name,
                 "overallAccuracy": self.accuracy,
                 "labels": self.labels,
                 'minScore': self.min_score,

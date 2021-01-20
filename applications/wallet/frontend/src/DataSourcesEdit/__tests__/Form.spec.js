@@ -1,4 +1,4 @@
-import TestRenderer, { act } from 'react-test-renderer'
+import TestRenderer, {act} from 'react-test-renderer'
 
 import providers from '../../Providers/__mocks__/providers'
 import dataSource from '../../DataSource/__mocks__/dataSource'
@@ -98,7 +98,7 @@ describe('<DataSourcesEditForm />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(fetch.mock.calls.length).toEqual(4)
+    expect(fetch.mock.calls.length).toEqual(5)
 
     expect(fetch.mock.calls[0][0]).toEqual(
       `/api/v1/projects/${PROJECT_ID}/data_sources/${DATA_SOURCE_ID}/`,

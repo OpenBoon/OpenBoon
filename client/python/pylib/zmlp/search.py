@@ -134,7 +134,7 @@ class VideoClipSearchScroller(SearchScroller):
 
     def __init__(self, app, search, timeout="1m", raw_response=False):
         super(VideoClipSearchScroller, self).__init__(
-            VideoClip, 'api/v3/clips/_search', app, search, timeout, raw_response
+            VideoClip, 'api/v1/clips/_search', app, search, timeout, raw_response
         )
 
 
@@ -375,7 +375,7 @@ class VideoClipSearchResult(SearchResult):
         return self.items
 
 
-class LabelConfidenceTermsAggregation(object):
+class LabelConfidenceTermsAggregation:
     """
     Convenience class for making a simple terms aggregation on an array of predictions
     """

@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
+import {useEffect} from 'react'
 import PropTypes from 'prop-types'
 
-import { useScroller } from '../Scroll/helpers'
+import {useScroller} from '../Scroll/helpers'
 import ModelMatrixResize from './Resize'
 
 import ModelMatrixRow from './Row'
@@ -44,6 +44,7 @@ const ModelMatrixTable = ({ matrix, width, height, settings, dispatch }) => {
             settings={settings}
             label={label}
             index={index}
+            dispatch={dispatch}
           />
         )
       })}

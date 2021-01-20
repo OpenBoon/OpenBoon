@@ -1,10 +1,23 @@
-import { colors, constants, spacing, typography } from '../Styles'
+import PropTypes from 'prop-types'
+
+import {colors, constants, spacing, typography} from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 
-import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
+import Accordion, {VARIANTS as ACCORDION_VARIANTS} from '../Accordion'
+import FlashMessage, {VARIANTS as FLASH_VARIANTS} from '../FlashMessage'
 
-const DataSourcesAddAutomaticAnalysis = () => {
+const DataSourcesAddAutomaticAnalysis = ({ fileTypes }) => {
+  if (fileTypes.length === 0) {
+    return (
+      <div css={{ display: 'flex', padding: spacing.normal, paddingLeft: 0 }}>
+        <FlashMessage variant={FLASH_VARIANTS.INFO}>
+          Select a file type above to view available modules
+        </FlashMessage>
+      </div>
+    )
+  }
+
   return (
     <div css={{ paddingTop: spacing.normal }}>
       <Accordion
@@ -81,6 +94,10 @@ const DataSourcesAddAutomaticAnalysis = () => {
       </Accordion>
     </div>
   )
+}
+
+DataSourcesAddAutomaticAnalysis.propTypes = {
+  fileTypes: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 }
 
 export default DataSourcesAddAutomaticAnalysis

@@ -1,11 +1,17 @@
-import TestRenderer, { act } from 'react-test-renderer'
+import TestRenderer, {act} from 'react-test-renderer'
 
 import Refresh from '../Refresh'
 
 describe('<Refresh />', () => {
-  it('should render properly', async () => {
+  beforeAll(() => {
     jest.useFakeTimers()
+  })
 
+  afterAll(() => {
+    jest.useRealTimers()
+  })
+
+  it('should render properly', async () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(

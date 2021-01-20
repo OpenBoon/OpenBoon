@@ -247,7 +247,7 @@ class BatchUpdateCustomFieldsRequest(
     "Batch Update Custom Field Response",
     description = "Update custom fields on the given assets."
 )
-class BatchUpdateCustomFieldsResponse(
+class BatchUpdateResponse(
 
     val failed: Map<String, String>
 

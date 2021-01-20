@@ -1,8 +1,9 @@
+import logging
 import os
 import tempfile
 import unittest
-import logging
 
+import zmlpsdk.media as media
 import zmlpsdk.video as video
 from zmlpsdk.testing import zorroa_test_path
 
@@ -22,6 +23,14 @@ def test_extract_thumbnail_from_video_single():
     dst = tempfile.gettempdir() + "/something.jpg"
     video.extract_thumbnail_from_video(VIDEO_MOV, tempfile.gettempdir() + "/something.jpg", 0)
     assert os.path.exists(dst)
+
+
+def test_extract_thumbnail_from_video_with_size():
+    dst = tempfile.gettempdir() + '/100x100.jpg'
+    video.extract_thumbnail_from_video(
+        VIDEO_M4V, tempfile.gettempdir() + '/100x100.jpg', 1, size=(100, 100))
+    assert os.path.exists(dst)
+    assert media.media_size(dst) == (100, 100)
 
 
 def test_webvtt_builder():

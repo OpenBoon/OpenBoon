@@ -1,8 +1,8 @@
 import cv2
 import numpy
+from zmlp import Model
 
 from models.utils import ConfusionMatrix
-from zmlp import Model
 
 mock_aggs = lambda self : {'nested#nested_labels': {'doc_count': 1744, 'filter#model_train_labels': {'doc_count': 838, 'sterms#labels': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'bird', 'doc_count': 90, 'reverse_nested#predictions_by_label': {'doc_count': 90, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'Unrecognized', 'doc_count': 60}, {'key': 'bird', 'doc_count': 28}, {'key': 'frog', 'doc_count': 2}]}}}, {'key': 'deer', 'doc_count': 90, 'reverse_nested#predictions_by_label': {'doc_count': 90, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'deer', 'doc_count': 88}, {'key': 'Unrecognized', 'doc_count': 2}]}}}, {'key': 'dog', 'doc_count': 90, 'reverse_nested#predictions_by_label': {'doc_count': 90, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'dog', 'doc_count': 64}, {'key': 'Unrecognized', 'doc_count': 20}, {'key': 'cat', 'doc_count': 3}, {'key': 'horse', 'doc_count': 2}, {'key': 'deer', 'doc_count': 1}]}}}, {'key': 'frog', 'doc_count': 87, 'reverse_nested#predictions_by_label': {'doc_count': 87, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'frog', 'doc_count': 83}, {'key': 'Unrecognized', 'doc_count': 4}]}}}, {'key': 'cat', 'doc_count': 86, 'reverse_nested#predictions_by_label': {'doc_count': 86, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'cat', 'doc_count': 83}, {'key': 'Unrecognized', 'doc_count': 3}]}}}, {'key': 'ship', 'doc_count': 84, 'reverse_nested#predictions_by_label': {'doc_count': 84, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'ship', 'doc_count': 70}, {'key': 'Unrecognized', 'doc_count': 14}]}}}, {'key': 'horse', 'doc_count': 82, 'reverse_nested#predictions_by_label': {'doc_count': 82, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'horse', 'doc_count': 75}, {'key': 'Unrecognized', 'doc_count': 7}]}}}, {'key': 'truck', 'doc_count': 82, 'reverse_nested#predictions_by_label': {'doc_count': 82, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'truck', 'doc_count': 63}, {'key': 'Unrecognized', 'doc_count': 19}]}}}, {'key': 'airplane', 'doc_count': 75, 'reverse_nested#predictions_by_label': {'doc_count': 75, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'airplane', 'doc_count': 61}, {'key': 'Unrecognized', 'doc_count': 14}]}}}, {'key': 'automobile', 'doc_count': 72, 'reverse_nested#predictions_by_label': {'doc_count': 72, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'Unrecognized', 'doc_count': 38}, {'key': 'truck', 'doc_count': 24}, {'key': 'automobile', 'doc_count': 9}, {'key': 'frog', 'doc_count': 1}]}}}]}}}}  # noqa
 
@@ -10,7 +10,7 @@ mock_aggs = lambda self : {'nested#nested_labels': {'doc_count': 1744, 'filter#m
 def test_get_confusion_matrix(monkeypatch):
     monkeypatch.setattr(ConfusionMatrix, '_ConfusionMatrix__get_confusion_matrix_aggregations',
                         mock_aggs)
-    matrix = ConfusionMatrix(Model({'name': 'test'}), None)
+    matrix = ConfusionMatrix(Model({'name': 'test', 'moduleName': 'also-test'}), None)
     assert matrix.labels == ['Unrecognized', 'airplane', 'automobile', 'bird', 'cat',
                              'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
     assert matrix.accuracy == 0.7446300715990454
@@ -42,6 +42,7 @@ def test_get_confusion_matrix(monkeypatch):
                                 'maxScore': 1.0,
                                 'minScore': 0.0,
                                 'name': 'test',
+                                'moduleName': 'also-test',
                                 'overallAccuracy': 0.7446300715990454,
                                 'testSetOnly': True}
     assert matrix.to_dict(normalize_matrix=True) == {'labels': ['Unrecognized',
@@ -164,6 +165,7 @@ def test_get_confusion_matrix(monkeypatch):
                                                      'maxScore': 1.0,
                                                      'minScore': 0.0,
                                                      'name': 'test',
+                                                     'moduleName': 'also-test',
                                                      'overallAccuracy': 0.7446300715990454,
                                                      'testSetOnly': True}
     thumbnail = ConfusionMatrix(Model({'name': 'test'}), None).create_thumbnail_image()

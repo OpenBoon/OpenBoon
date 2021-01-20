@@ -1,24 +1,18 @@
-import { useState } from 'react'
+import {useState} from 'react'
 import PropTypes from 'prop-types'
 
-import { colors, spacing, typography } from '../Styles'
+import {colors, spacing, typography} from '../Styles'
 
-import { parseValue } from '../FilterRange/helpers'
+import {parseValue} from '../FilterRange/helpers'
 
 import RadioGroup from '../Radio/Group'
 
-import InputRange, { VARIANTS } from '../Input/Range'
+import InputRange, {VARIANTS} from '../Input/Range'
 
-const ModelMatrixControls = ({
-  settings,
-  matrix: { minScore, maxScore },
-  dispatch,
-}) => {
-  const minMaxFix = minScore === maxScore ? 0.001 : 0
+import {DEFAULT_MAX, DEFAULT_MIN} from './reducer'
 
-  const domain = [minScore, maxScore + minMaxFix]
-
-  const [rangeValues, setRangeValues] = useState([minScore, maxScore])
+const ModelMatrixControls = ({ isNormalized, dispatch }) => {
+  const [rangeValues, setRangeValues] = useState([DEFAULT_MIN, DEFAULT_MAX])
   const [inputMin, setInputMin] = useState(rangeValues[0])
   const [inputMax, setInputMax] = useState(rangeValues[1])
 
@@ -27,7 +21,7 @@ const ModelMatrixControls = ({
 
     if (newMin === rangeValues[0]) return
 
-    if (newMin < domain[0] || newMin > rangeValues[1]) {
+    if (newMin < DEFAULT_MIN || newMin > rangeValues[1]) {
       setInputMin(rangeValues[0])
       return
     }
@@ -44,7 +38,7 @@ const ModelMatrixControls = ({
 
     if (newMax === rangeValues[1]) return
 
-    if (newMax < rangeValues[0] || newMax > domain[1]) {
+    if (newMax < rangeValues[0] || newMax > DEFAULT_MAX) {
       setInputMax(rangeValues[1])
       return
     }
@@ -72,13 +66,13 @@ const ModelMatrixControls = ({
             value: 'normalized',
             label: 'Normalized',
             legend: '',
-            initialValue: settings.isNormalized,
+            initialValue: isNormalized,
           },
           {
             value: 'absolute',
             label: 'Absolute',
             legend: '',
-            initialValue: !settings.isNormalized,
+            initialValue: !isNormalized,
           },
         ]}
         onClick={({ value }) =>
@@ -88,6 +82,7 @@ const ModelMatrixControls = ({
 
       <div
         css={{
+          width: 'max-content',
           color: colors.structure.zinc,
           display: 'flex',
           alignItems: 'center',
@@ -138,12 +133,7 @@ const ModelMatrixControls = ({
 }
 
 ModelMatrixControls.propTypes = {
-  settings: PropTypes.shape({ isNormalized: PropTypes.bool.isRequired })
-    .isRequired,
-  matrix: PropTypes.shape({
-    minScore: PropTypes.number.isRequired,
-    maxScore: PropTypes.number.isRequired,
-  }).isRequired,
+  isNormalized: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
 }
 

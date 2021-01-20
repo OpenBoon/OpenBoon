@@ -1,16 +1,15 @@
 import useSWR from 'swr'
-import { useRouter } from 'next/router'
+import {useRouter} from 'next/router'
 import Link from 'next/link'
 
-import { colors, constants, spacing } from '../Styles'
+import {colors, constants, spacing} from '../Styles'
 
-import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
-import Button, { VARIANTS } from '../Button'
-import Bouncer, { ROLES } from '../Bouncer'
+import Card, {VARIANTS as CARD_VARIANTS} from '../Card'
+import Button, {VARIANTS} from '../Button'
+import Bouncer, {ROLES} from '../Bouncer'
 
 import KeySvg from '../Icons/key.svg'
 
-import ProjectUsagePlan from './UsagePlan'
 import ProjectGettingStarted from './GettingStarted'
 
 const ProjectCards = () => {
@@ -62,8 +61,6 @@ const ProjectCards = () => {
           </>
         }
       />
-
-      <ProjectUsagePlan />
 
       <Bouncer role={ROLES.ML_Tools}>
         <ProjectGettingStarted projectId={projectId} />
