@@ -16,6 +16,10 @@ class ApiCall(models.Model):
     free_modules = ['zvi-extract-layers',
                     'zvi-extract-pages',
                     'standard']
+    tier_1 = ['zvi-label-detection',
+              'zvi-object-detection',
+              'zvi-text-detection',
+              'zvi-face-detection']
     tier_2_modules = ['gcp-dlp',
                       'gcp-document-text-detection',
                       'gcp-image-text-detection',

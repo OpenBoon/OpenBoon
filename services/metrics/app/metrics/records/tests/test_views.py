@@ -109,13 +109,6 @@ class TestAPICallsViewSet:
 
 class TestTiers:
 
-    free_tier = ApiCall.free_modules
-    tier_1 = ['zvi-label-detection',
-              'zvi-object-detection',
-              'zvi-text-detection',
-              'zvi-face-detection']
-    tier_2 = ApiCall.tier_2_modules
-
     def test_all_tiers_covered(self):
         app = zmlp.ZmlpApp(settings.DEV_PIPELINES_KEY, server=settings.DEV_DOMAIN)
         # Get all current modules on Dev
@@ -134,6 +127,6 @@ class TestTiers:
         assert len(module_names) == response['page']['totalCount']
         # Make sure they're all accounted for in our tiers
         for module_name in module_names:
-            assert (module_name in self.free_tier or
-                    module_name in self.tier_1 or
-                    module_name in self.tier_2)
+            assert (module_name in ApiCall.free_modules or
+                    module_name in ApiCall.tier_1 or
+                    module_name in ApiCall.tier_2)
