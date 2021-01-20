@@ -1,4 +1,4 @@
-import TestRenderer, { act } from 'react-test-renderer'
+import TestRenderer, {act} from 'react-test-renderer'
 
 import providers from '../../Providers/__mocks__/providers'
 import mockUser from '../../User/__mocks__/user'

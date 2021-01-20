@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
-import { typography, colors, spacing, constants } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
-import Button, { VARIANTS } from '../Button'
+import Button, {VARIANTS} from '../Button'
 
 import DataSourcesSvg from '../Icons/datasources.svg'
 import JobQueueSvg from '../Icons/jobQueue.svg'

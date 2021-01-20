@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import checkboxOptionShape from './optionShape'
 
-import { spacing, colors, constants, typography } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
 import CheckboxTableRow from './TableRow'
 

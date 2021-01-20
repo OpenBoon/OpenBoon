@@ -4,8 +4,8 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.relations import HyperlinkedIdentityField
 
-from wallet.utils import convert_base64_to_json
 from projects.models import Project
+from wallet.utils import convert_base64_to_json
 
 logger = logging.getLogger(__name__)
 

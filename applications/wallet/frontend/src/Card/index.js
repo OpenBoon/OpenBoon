@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { spacing, colors, constants, typography } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
 const STYLES = {
   DARK: {

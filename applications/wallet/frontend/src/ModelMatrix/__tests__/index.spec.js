@@ -1,4 +1,4 @@
-import TestRenderer, { act } from 'react-test-renderer'
+import TestRenderer, {act} from 'react-test-renderer'
 
 import matrix from '../__mocks__/matrix'
 
@@ -6,7 +6,7 @@ import mockUser from '../../User/__mocks__/user'
 
 import User from '../../User'
 
-import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../../Panel'
+import {MIN_WIDTH as PANEL_MIN_WIDTH} from '../../Panel'
 
 import ModelMatrix from '..'
 

@@ -1,13 +1,8 @@
 import Router from 'next/router'
 
-import { colors, constants } from '../Styles'
+import {colors, constants} from '../Styles'
 
-import {
-  fetcher,
-  revalidate,
-  getQueryString,
-  parseResponse,
-} from '../Fetch/helpers'
+import {fetcher, getQueryString, parseResponse, revalidate,} from '../Fetch/helpers'
 
 import ImagesSvg from '../Icons/images.svg'
 import DocumentsSvg from '../Icons/documents.svg'

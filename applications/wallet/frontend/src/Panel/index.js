@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types'
 
-import { useLocalStorage } from '../LocalStorage/helpers'
+import {useLocalStorage} from '../LocalStorage/helpers'
 
-import { reducer } from '../Resizeable/reducer'
+import {reducer} from '../Resizeable/reducer'
 
 import Resizeable from '../Resizeable'
 
 import PanelHeader from './Header'
 import PanelContent from './Content'
 
-import { onMouseUp } from './helpers'
+import {onMouseUp} from './helpers'
 
 export const MIN_WIDTH = 400
 

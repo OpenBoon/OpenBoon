@@ -1,15 +1,15 @@
-import { useState } from 'react'
+import {useState} from 'react'
 import PropTypes from 'prop-types'
 
-import { colors, spacing, typography } from '../Styles'
+import {colors, spacing, typography} from '../Styles'
 
-import { parseValue } from '../FilterRange/helpers'
+import {parseValue} from '../FilterRange/helpers'
 
 import RadioGroup from '../Radio/Group'
 
-import InputRange, { VARIANTS } from '../Input/Range'
+import InputRange, {VARIANTS} from '../Input/Range'
 
-import { DEFAULT_MIN, DEFAULT_MAX } from './reducer'
+import {DEFAULT_MAX, DEFAULT_MIN} from './reducer'
 
 const ModelMatrixControls = ({ isNormalized, dispatch }) => {
   const [rangeValues, setRangeValues] = useState([DEFAULT_MIN, DEFAULT_MAX])

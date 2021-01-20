@@ -4,13 +4,13 @@ import pytest
 from django.test import override_settings
 from django.urls import reverse
 from rest_framework import status
+from zmlp import ZmlpClient, Model
+from zmlp.app import ModelApp, AssetApp
+from zmlp.entity import LabelScope
 
 from models.utils import ConfusionMatrix
 from models.views import ModelViewSet, get_model_type_restrictions
 from wallet.tests.utils import check_response
-from zmlp import ZmlpClient, Model
-from zmlp.app import ModelApp, AssetApp
-from zmlp.entity import LabelScope
 
 pytestmark = pytest.mark.django_db
 

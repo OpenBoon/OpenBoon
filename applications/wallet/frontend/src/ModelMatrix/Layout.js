@@ -1,24 +1,24 @@
 import PropTypes from 'prop-types'
-import { useReducer } from 'react'
+import {useReducer} from 'react'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
-import { useLocalStorage } from '../LocalStorage/helpers'
+import {useLocalStorage} from '../LocalStorage/helpers'
 
-import Button, { VARIANTS } from '../Button'
+import Button, {VARIANTS} from '../Button'
 import Resizeable from '../Resizeable'
-import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
+import {ACTIONS, reducer as resizeableReducer} from '../Resizeable/reducer'
 
 import PreviewSvg from '../Icons/preview.svg'
 
-import { INITIAL_STATE, reducer } from './reducer'
+import {INITIAL_STATE, reducer} from './reducer'
 
 import ModelMatrixControls from './Controls'
 import ModelMatrixMatrix from './Matrix'
 import ModelMatrixPreview from './Preview'
-import { PANEL_WIDTH } from './helpers'
+import {PANEL_WIDTH} from './helpers'
 
 const ACCURACY_WIDTH = 40
 

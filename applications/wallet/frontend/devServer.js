@@ -1,6 +1,6 @@
 import express from 'express'
 import nextjs from 'next'
-import { createProxyMiddleware } from 'http-proxy-middleware'
+import {createProxyMiddleware} from 'http-proxy-middleware'
 import morgan from 'morgan'
 
 import user from './src/User/__mocks__/user'

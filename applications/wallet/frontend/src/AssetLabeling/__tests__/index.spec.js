@@ -1,4 +1,4 @@
-import TestRenderer, { act } from 'react-test-renderer'
+import TestRenderer, {act} from 'react-test-renderer'
 
 import asset from '../../Asset/__mocks__/asset'
 import models from '../../Models/__mocks__/models'

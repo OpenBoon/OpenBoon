@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 
-import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import Accordion, {VARIANTS as ACCORDION_VARIANTS} from '../Accordion'
+import FlashMessage, {VARIANTS as FLASH_VARIANTS} from '../FlashMessage'
 
 const DataSourcesAddAutomaticAnalysis = ({ fileTypes }) => {
   if (fileTypes.length === 0) {
