@@ -1,3 +1,4 @@
+import os
 from metrics.settings import *  # noqa
 
 
@@ -6,10 +7,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'metrics',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'USER': os.environ.get('PG_DB_USER', 'admin'),
+        'PASSWORD': os.environ.get('PG_DB_PASSWORD', 'admin'),
+        'HOST': os.environ.get('PG_DB_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('PG_DB_PORT', '5432'),
     }
 }
 
