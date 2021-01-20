@@ -365,23 +365,22 @@ Array [
 }
 
 .emotion-16 {
-  display: inline-block;
-  color: #191919;
-  background-color: #ebb52e;
-  padding: 12px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  margin-right: 8px;
-  border-radius: 14px;
-  font-family: Roboto Condensed;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-17 {
+  margin-right: 16px;
+}
+
+.emotion-19 {
   position: relative;
   height: 100%;
 }
 
-.emotion-18 {
+.emotion-20 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -413,21 +412,9 @@ Array [
   margin: -6px;
 }
 
-.emotion-18:hover,
-.emotion-18.focus-visible:focus {
+.emotion-20:hover,
+.emotion-20.focus-visible:focus {
   color: #ffffff!important;
-}
-
-.emotion-36 {
-  display: inline-block;
-  color: #191919;
-  background-color: #b3b3b3;
-  padding: 12px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  margin-right: 8px;
-  border-radius: 14px;
-  font-family: Roboto Condensed;
 }
 
 <div
@@ -528,19 +515,35 @@ Array [
                 2020-02-10 01:37:47
               </td>
               <td>
-                <span
+                <div
                   className="emotion-16"
                 >
-                  Images
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="#ebb52e"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="transparent"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -580,19 +583,35 @@ Array [
                 2020-02-10 01:40:26
               </td>
               <td>
-                <span
+                <div
                   className="emotion-16"
                 >
-                  Images
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="#00bdc1"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="transparent"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -632,19 +651,35 @@ Array [
                 2020-02-10 01:42:23
               </td>
               <td>
-                <span
+                <div
                   className="emotion-16"
                 >
-                  Images
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="#8f89e7"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -684,19 +719,35 @@ Array [
                 2020-02-10 16:21:18
               </td>
               <td>
-                <span
+                <div
                   className="emotion-16"
                 >
-                  Images
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="#ebb52e"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="#00bdc1"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="#8f89e7"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -736,19 +787,35 @@ Array [
                 2020-02-10 16:47:39
               </td>
               <td>
-                <span
-                  className="emotion-36"
+                <div
+                  className="emotion-16"
                 >
-                  Movies
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="#8f89e7"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1133,23 +1200,22 @@ Array [
 }
 
 .emotion-16 {
-  display: inline-block;
-  color: #191919;
-  background-color: #ebb52e;
-  padding: 12px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  margin-right: 8px;
-  border-radius: 14px;
-  font-family: Roboto Condensed;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-17 {
+  margin-right: 16px;
+}
+
+.emotion-19 {
   position: relative;
   height: 100%;
 }
 
-.emotion-18 {
+.emotion-20 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1181,21 +1247,9 @@ Array [
   margin: -6px;
 }
 
-.emotion-18:hover,
-.emotion-18.focus-visible:focus {
+.emotion-20:hover,
+.emotion-20.focus-visible:focus {
   color: #ffffff!important;
-}
-
-.emotion-36 {
-  display: inline-block;
-  color: #191919;
-  background-color: #b3b3b3;
-  padding: 12px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  margin-right: 8px;
-  border-radius: 14px;
-  font-family: Roboto Condensed;
 }
 
 <div
@@ -1296,19 +1350,35 @@ Array [
                 2020-02-10 01:37:47
               </td>
               <td>
-                <span
+                <div
                   className="emotion-16"
                 >
-                  Images
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="#ebb52e"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="transparent"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1348,19 +1418,35 @@ Array [
                 2020-02-10 01:40:26
               </td>
               <td>
-                <span
+                <div
                   className="emotion-16"
                 >
-                  Images
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="#00bdc1"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="transparent"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1400,19 +1486,35 @@ Array [
                 2020-02-10 01:42:23
               </td>
               <td>
-                <span
+                <div
                   className="emotion-16"
                 >
-                  Images
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="#8f89e7"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1452,19 +1554,35 @@ Array [
                 2020-02-10 16:21:18
               </td>
               <td>
-                <span
+                <div
                   className="emotion-16"
                 >
-                  Images
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="#ebb52e"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="#00bdc1"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="#8f89e7"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1504,19 +1622,35 @@ Array [
                 2020-02-10 16:47:39
               </td>
               <td>
-                <span
-                  className="emotion-36"
+                <div
+                  className="emotion-16"
                 >
-                  Movies
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="#8f89e7"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2383,23 +2517,22 @@ Array [
 }
 
 .emotion-16 {
-  display: inline-block;
-  color: #191919;
-  background-color: #ebb52e;
-  padding: 12px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  margin-right: 8px;
-  border-radius: 14px;
-  font-family: Roboto Condensed;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-17 {
+  margin-right: 16px;
+}
+
+.emotion-19 {
   position: relative;
   height: 100%;
 }
 
-.emotion-18 {
+.emotion-20 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2431,21 +2564,9 @@ Array [
   margin: -6px;
 }
 
-.emotion-18:hover,
-.emotion-18.focus-visible:focus {
+.emotion-20:hover,
+.emotion-20.focus-visible:focus {
   color: #ffffff!important;
-}
-
-.emotion-36 {
-  display: inline-block;
-  color: #191919;
-  background-color: #b3b3b3;
-  padding: 12px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  margin-right: 8px;
-  border-radius: 14px;
-  font-family: Roboto Condensed;
 }
 
 <div
@@ -2546,19 +2667,35 @@ Array [
                 2020-02-10 01:37:47
               </td>
               <td>
-                <span
+                <div
                   className="emotion-16"
                 >
-                  Images
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="#ebb52e"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="transparent"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2598,19 +2735,35 @@ Array [
                 2020-02-10 01:40:26
               </td>
               <td>
-                <span
+                <div
                   className="emotion-16"
                 >
-                  Images
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="#00bdc1"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="transparent"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2650,19 +2803,35 @@ Array [
                 2020-02-10 01:42:23
               </td>
               <td>
-                <span
+                <div
                   className="emotion-16"
                 >
-                  Images
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="#8f89e7"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2702,19 +2871,35 @@ Array [
                 2020-02-10 16:21:18
               </td>
               <td>
-                <span
+                <div
                   className="emotion-16"
                 >
-                  Images
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="#ebb52e"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="#00bdc1"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="#8f89e7"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2754,19 +2939,35 @@ Array [
                 2020-02-10 16:47:39
               </td>
               <td>
-                <span
-                  className="emotion-36"
+                <div
+                  className="emotion-16"
                 >
-                  Movies
-                </span>
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="images.svg"
+                    height={24}
+                  />
+                  <svg
+                    className="emotion-17"
+                    color="transparent"
+                    data-file-name="documents.svg"
+                    height={24}
+                  />
+                  <svg
+                    color="#8f89e7"
+                    data-file-name="videos.svg"
+                    height={24}
+                  />
+                </div>
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
