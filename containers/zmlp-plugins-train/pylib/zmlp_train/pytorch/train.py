@@ -41,10 +41,6 @@ class PytorchTransferLearningTrainer(AssetProcessor):
                               toolTip="The number of training epochs"))
         self.add_arg(Argument("validation_split", "int", required=True, default=0.2,
                               toolTip="The number of training images vs test images"))
-        self.add_arg(Argument("fine_tune_at_layer", "int", required=True, default=100,
-                              toolTip="The layer to start find-tuning at."))
-        self.add_arg(Argument("fine_tune_epochs", "int", required=True, default=10,
-                              toolTip="The number of fine-tuning epochs."))
 
         self.app = zmlp.app_from_env()
 
@@ -61,10 +57,8 @@ class PytorchTransferLearningTrainer(AssetProcessor):
     def process(self, frame):
         download_labeled_images(self.app_model,
                                 "labels-standard",
-                                self.base_dir)
-
-        # 911: This is a hack because the dataset-dl script doesn't make a val folder
-        os.symlink(self.base_dir + '/train', self.base_dir + '/val')
+                                self.base_dir,
+                                ratio=self.arg_value('validation_split'))
 
         self.reactor.emit_status("Training model: {}".format(self.app_model.name))
         image_datasets, data_loaders = self.build_data_loaders()
@@ -77,11 +71,11 @@ class PytorchTransferLearningTrainer(AssetProcessor):
 
     def plot_history(self, history, name):
         self.logger.info('Saving history plot.')
-        acc = history.history['accuracy']
-        val_acc = history.history['val_accuracy']
+        acc = history['train_acc']
+        val_acc = history['val_acc']
 
-        loss = history.history['loss']
-        val_loss = history.history['val_loss']
+        loss = history['train_loss']
+        val_loss = history['val_loss']
 
         plt.figure(figsize=(8, 8))
         plt.subplot(2, 1, 1)
@@ -179,9 +173,12 @@ class PytorchTransferLearningTrainer(AssetProcessor):
         best_acc = 0.0
         num_epochs = self.arg_value('epochs')
 
+        # We build a history dict that kind of resembles the Tensorflow one
+        # so we can plot later
+        history = {'train_acc': [], 'train_loss': [], 'val_acc': [], 'val_loss': []}
         for epoch in range(num_epochs):
-            print('Epoch {}/{}'.format(epoch, num_epochs - 1))
-            print('-' * 10)
+            self.reactor.emit_status('Epoch {}/{}'.format(epoch, num_epochs - 1))
+            self.reactor.emit_status('-' * 10)
 
             # Each epoch has a training and validation phase
             for phase in ['train', 'val']:
@@ -222,7 +219,14 @@ class PytorchTransferLearningTrainer(AssetProcessor):
                 epoch_loss = running_loss / dataset_sizes[phase]
                 epoch_acc = running_corrects.double() / dataset_sizes[phase]
 
-                print('{} Loss: {:.4f} Acc: {:.4f}'.format(
+                if phase == 'train':
+                    history['train_acc'].append(epoch_acc)
+                    history['train_loss'].append(epoch_loss)
+                else:
+                    history['val_acc'].append(epoch_acc)
+                    history['val_loss'].append(epoch_loss)
+
+                self.reactor.emit_status('{} Loss: {:.4f} Acc: {:.4f}'.format(
                     phase, epoch_loss, epoch_acc))
 
                 # deep copy the model
@@ -230,12 +234,12 @@ class PytorchTransferLearningTrainer(AssetProcessor):
                     best_acc = epoch_acc
                     best_model_wts = copy.deepcopy(self.model.state_dict())
 
-            print()
-
         time_elapsed = time.time() - since
-        print('Training complete in {:.0f}m {:.0f}s'.format(
+        self.reactor.emit_status('Training complete in {:.0f}m {:.0f}s'.format(
             time_elapsed // 60, time_elapsed % 60))
-        print('Best val Acc: {:4f}'.format(best_acc))
+        self.reactor.emit_status('Best val Acc: {:4f}'.format(best_acc))
+
+        self.plot_history(history, "history")
 
         # load best model weights
         self.model.load_state_dict(best_model_wts)
