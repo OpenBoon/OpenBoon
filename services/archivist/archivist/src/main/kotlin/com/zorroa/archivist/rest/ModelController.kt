@@ -89,6 +89,13 @@ class ModelController(
         return modelService.publishModel(model)
     }
 
+    @ApiOperation("Set model arguments")
+    @PutMapping("/api/v3/models/{id}/_set_args")
+    fun setModelArguments(@PathVariable id: UUID, @RequestBody args: Map<String, Any>): PipelineMod {
+        val model = modelService.getModel(id)
+        return modelService.setModelArgs(model, args)
+    }
+
     @ApiOperation("Delete a model")
     @DeleteMapping("/api/v3/models/{id}")
     fun delete(@PathVariable id: UUID): Any {
@@ -113,7 +120,7 @@ class ModelController(
     @ApiOperation("Upload the model zip file.")
     @PostMapping(value = ["/api/v3/models/{id}/_upload"])
     fun upload(@ApiParam("ModelId") @PathVariable id: UUID, req: HttpServletRequest): Any {
-        return modelService.acceptModelFileUpload(modelService.getModel(id), req.inputStream)
+        return modelService.publishModelFileUpload(modelService.getModel(id), req.inputStream)
     }
 
     @ApiOperation("Rename label")

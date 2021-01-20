@@ -1,24 +1,44 @@
+import PropTypes from 'prop-types'
 import { useReducer } from 'react'
-import AutoSizer from 'react-virtualized-auto-sizer'
 
-// TODO: fetch data
-import matrix from './__mocks__/matrix'
+import SuspenseBoundary from '../SuspenseBoundary'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import RadioGroup from '../Radio/Group'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import Button, { VARIANTS } from '../Button'
+import Resizeable from '../Resizeable'
+import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
 import PreviewSvg from '../Icons/preview.svg'
 
 import { INITIAL_STATE, reducer } from './reducer'
 
-import ModelMatrixTable from './Table'
-import ModelMatrixLabels from './Labels'
+import ModelMatrixControls from './Controls'
+import ModelMatrixMatrix from './Matrix'
+import ModelMatrixPreview from './Preview'
+import { PANEL_WIDTH } from './helpers'
 
-const ModelMatrixLayout = () => {
+const ACCURACY_WIDTH = 40
+
+const ModelMatrixLayout = ({
+  projectId,
+  modelId,
+  matrixDetails: { name, overallAccuracy, labels, moduleName },
+  setMatrixDetails,
+}) => {
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
+
+  const [{ isOpen }, setPreviewSettings] = useLocalStorage({
+    key: `Resizeable.ModelMatrixPreview`,
+    reducer: resizeableReducer,
+    initialState: {
+      size: PANEL_WIDTH,
+      originSize: 0,
+      isOpen: false,
+    },
+  })
 
   return (
     <div
@@ -29,53 +49,36 @@ const ModelMatrixLayout = () => {
         flexDirection: 'column',
       }}
     >
-      <div
-        css={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: spacing.normal,
-          borderBottom: constants.borders.regular.coal,
-          fontSize: typography.size.medium,
-          lineHeight: typography.height.medium,
-          backgroundColor: colors.structure.lead,
-        }}
-      >
-        <span
+      {name && (
+        <div
           css={{
-            fontWeight: typography.weight.bold,
-            paddingRight: spacing.small,
+            display: 'flex',
+            alignItems: 'center',
+            padding: spacing.normal,
+            borderBottom: constants.borders.regular.coal,
+            fontSize: typography.size.medium,
+            lineHeight: typography.height.medium,
+            backgroundColor: colors.structure.lead,
           }}
         >
-          Overall Accuracy:
-        </span>
-        98%
-        <form
-          method="post"
-          onSubmit={(event) => event.preventDefault()}
-          css={{ paddingLeft: spacing.spacious }}
-        >
-          <RadioGroup
-            legend="View"
-            options={[
-              {
-                value: 'normalized',
-                label: 'Normalized',
-                legend: '',
-                initialValue: settings.isNormalized,
-              },
-              {
-                value: 'absolute',
-                label: 'Absolute',
-                legend: '',
-                initialValue: !settings.isNormalized,
-              },
-            ]}
-            onClick={({ value }) =>
-              dispatch({ isNormalized: value === 'normalized' })
-            }
+          <span
+            css={{
+              fontWeight: typography.weight.bold,
+              paddingRight: spacing.small,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Overall Accuracy:
+          </span>
+          <div css={{ width: ACCURACY_WIDTH }}>{`${Math.round(
+            overallAccuracy * 100,
+          )}%`}</div>
+          <ModelMatrixControls
+            isNormalized={settings.isNormalized}
+            dispatch={dispatch}
           />
-        </form>
-      </div>
+        </div>
+      )}
 
       <div
         css={{
@@ -85,132 +88,29 @@ const ModelMatrixLayout = () => {
           backgroundColor: colors.structure.lead,
         }}
       >
-        <div
-          css={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            width: '0%',
-          }}
+        <SuspenseBoundary>
+          <ModelMatrixMatrix
+            projectId={projectId}
+            modelId={modelId}
+            settings={settings}
+            dispatch={dispatch}
+            setMatrixDetails={setMatrixDetails}
+          />
+        </SuspenseBoundary>
+
+        <Resizeable
+          storageName="Resizeable.ModelMatrixPreview"
+          minSize={PANEL_WIDTH}
+          openToThe="left"
+          isInitiallyOpen={false}
+          isDisabled={!isOpen}
         >
-          <div
-            css={{
-              flex: 1,
-              display: 'flex',
-              width: '100%',
-            }}
-          >
-            <div
-              css={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: spacing.normal,
-                borderRight: constants.borders.regular.coal,
-              }}
-            >
-              <div
-                css={{
-                  writingMode: 'vertical-lr',
-                  transform: 'rotate(180deg)',
-                }}
-              >
-                <span
-                  css={{
-                    fontWeight: typography.weight.bold,
-                    fontSize: typography.size.medium,
-                    lineHeight: typography.height.medium,
-                  }}
-                >
-                  True Label
-                </span>{' '}
-                <span css={{ color: colors.structure.zinc }}>
-                  (Number in Set)
-                </span>
-              </div>
-            </div>
-
-            <div css={{ width: '100%' }}>
-              <AutoSizer defaultWidth={800} defaultHeight={600}>
-                {({ width, height }) => (
-                  <ModelMatrixTable
-                    matrix={matrix}
-                    width={width}
-                    height={height}
-                    settings={settings}
-                    dispatch={dispatch}
-                  />
-                )}
-              </AutoSizer>
-            </div>
-          </div>
-
-          <div
-            css={{
-              display: 'flex',
-              borderTop: constants.borders.regular.coal,
-              width: '100%',
-            }}
-          >
-            {/* begin placeholder for "True Label" column width */}
-            <div
-              css={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: spacing.normal,
-                borderRight: constants.borders.regular.transparent,
-              }}
-            >
-              <div
-                css={{
-                  writingMode: 'vertical-lr',
-                  transform: 'rotate(180deg)',
-                  lineHeight: typography.height.medium,
-                }}
-              >
-                &nbsp;
-              </div>
-            </div>
-            {/* end placeholder for "True Label" column width */}
-
-            <div css={{ display: 'flex', width: settings.width }}>
-              {/* begin placeholde for row labels */}
-              <div
-                css={{
-                  paddingLeft: spacing.normal,
-                  width: settings.labelsWidth,
-                  minWidth: settings.labelsWidth,
-                  borderRight: constants.borders.regular.coal,
-                }}
-              >
-                &nbsp;
-              </div>
-              {/* end placeholde for row labels */}
-
-              <div css={{ flex: 1, width: '0%' }}>
-                <div
-                  css={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <ModelMatrixLabels matrix={matrix} settings={settings} />
-
-                  <div
-                    css={{
-                      padding: spacing.normal,
-                      textAlign: 'center',
-                      fontWeight: typography.weight.bold,
-                      fontSize: typography.size.medium,
-                      lineHeight: typography.height.medium,
-                    }}
-                  >
-                    Predictions
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+          <ModelMatrixPreview
+            selectedCell={settings.selectedCell}
+            labels={labels}
+            moduleName={moduleName}
+          />
+        </Resizeable>
 
         <div
           css={{
@@ -224,15 +124,20 @@ const ModelMatrixLayout = () => {
             aria-label="Preview"
             title="Preview"
             variant={VARIANTS.ICON}
-            href="#"
+            onClick={() =>
+              setPreviewSettings({
+                type: ACTIONS.TOGGLE_OPEN,
+                payload: {
+                  minSize: PANEL_WIDTH,
+                },
+              })
+            }
             style={{
               flex: 'none',
               paddingTop: spacing.normal,
               paddingBottom: spacing.normal,
               borderBottom: constants.borders.regular.coal,
-              color: /* istanbul ignore next */ settings.isPreviewOpen
-                ? colors.key.one
-                : colors.structure.steel,
+              color: isOpen ? colors.key.one : colors.structure.steel,
               ':hover': {
                 backgroundColor: colors.structure.mattGrey,
               },
@@ -245,6 +150,18 @@ const ModelMatrixLayout = () => {
       </div>
     </div>
   )
+}
+
+ModelMatrixLayout.propTypes = {
+  projectId: PropTypes.string.isRequired,
+  modelId: PropTypes.string.isRequired,
+  matrixDetails: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    overallAccuracy: PropTypes.number.isRequired,
+    labels: PropTypes.arrayOf(PropTypes.string),
+    moduleName: PropTypes.string.isRequired,
+  }).isRequired,
+  setMatrixDetails: PropTypes.func.isRequired,
 }
 
 export default ModelMatrixLayout

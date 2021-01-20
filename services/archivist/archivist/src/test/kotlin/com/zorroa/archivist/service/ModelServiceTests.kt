@@ -349,14 +349,23 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testAcceptModelFileUpload() {
-        val model = create(type = ModelType.KERAS_IMAGE_CLASSIFIER)
+        val model = create(type = ModelType.TF2_IMAGE_CLASSIFIER)
         val mfp = Paths.get(
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
         )
 
-        val locator = modelService.acceptModelFileUpload(model, FileInputStream(mfp.toFile()))
-        assertEquals("model", locator.category)
-        assertEquals("model.zip", locator.name)
+        val module = modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
+        assertEquals("Custom Models", module.category)
+    }
+
+    @Test
+    fun testSetModelArgs() {
+        val model = create(type = ModelType.ZVI_LABEL_DETECTION)
+        modelService.publishModel(model)
+
+        val module = modelService.setModelArgs(model, mapOf("input_size" to listOf(321, 321)))
+        val str = Json.prettyString(module)
+        assertTrue(str.contains("\"input_size\" : [ 321, 321 ]"))
     }
 
     fun assertModel(model: Model) {

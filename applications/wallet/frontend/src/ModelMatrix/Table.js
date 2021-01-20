@@ -44,6 +44,7 @@ const ModelMatrixTable = ({ matrix, width, height, settings, dispatch }) => {
             settings={settings}
             label={label}
             index={index}
+            dispatch={dispatch}
           />
         )
       })}

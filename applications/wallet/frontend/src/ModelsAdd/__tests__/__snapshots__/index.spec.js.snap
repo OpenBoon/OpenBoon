@@ -312,22 +312,22 @@ Array [
           <option
             value="ZVI_KNN_CLASSIFIER"
           >
-            ZVI_KNN_CLASSIFIER
+            Sci-kit Learn KNN Classifier
           </option>
           <option
             value="ZVI_LABEL_DETECTION"
           >
-            ZVI_LABEL_DETECTION
+            Tensorflow CNN Classifier
           </option>
           <option
-            value="ZVI_FACE_RECOGNITION"
+            value="TF2_IMAGE_CLASSIFIER"
           >
-            ZVI_FACE_RECOGNITION
+            Tensorflow2 Keras Image Classifier
           </option>
           <option
             value="GCP_LABEL_DETECTION"
           >
-            GCP_LABEL_DETECTION
+            Google AutoML Classifier
           </option>
         </select>
       </div>
@@ -717,22 +717,22 @@ Array [
           <option
             value="ZVI_KNN_CLASSIFIER"
           >
-            ZVI_KNN_CLASSIFIER
+            Sci-kit Learn KNN Classifier
           </option>
           <option
             value="ZVI_LABEL_DETECTION"
           >
-            ZVI_LABEL_DETECTION
+            Tensorflow CNN Classifier
           </option>
           <option
-            value="ZVI_FACE_RECOGNITION"
+            value="TF2_IMAGE_CLASSIFIER"
           >
-            ZVI_FACE_RECOGNITION
+            Tensorflow2 Keras Image Classifier
           </option>
           <option
             value="GCP_LABEL_DETECTION"
           >
-            GCP_LABEL_DETECTION
+            Google AutoML Classifier
           </option>
         </select>
       </div>

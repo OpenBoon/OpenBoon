@@ -29,6 +29,7 @@ class AbstractCloudVisionProcessor(AssetProcessor):
     """
 
     file_types = FileTypes.images | FileTypes.documents
+    analysis_name = None
 
     def __init__(self):
         super(AbstractCloudVisionProcessor, self).__init__()
@@ -105,6 +106,8 @@ class AbstractCloudVisionProcessor(AssetProcessor):
 class CloudVisionDetectImageText(AbstractCloudVisionProcessor):
     """Executes Image Text Detection the Cloud Vision API."""
 
+    analysis_name = 'gcp-vision-image-text-detection'
+
     def __init__(self):
         super(CloudVisionDetectImageText, self).__init__()
         self.image_level = 3
@@ -122,11 +125,14 @@ class CloudVisionDetectImageText(AbstractCloudVisionProcessor):
 
         analysis = ContentDetectionAnalysis()
         analysis.add_content(text)
-        asset.add_analysis('gcp-vision-image-text-detection', analysis)
+        asset.add_analysis(self.analysis_name, analysis)
 
 
 class CloudVisionDetectDocumentText(AbstractCloudVisionProcessor):
     """Executes Document Text Detection the Cloud Vision API."""
+
+    analysis_name = 'gcp-vision-doc-text-detection'
+
     def __init__(self):
         super(CloudVisionDetectDocumentText, self).__init__()
         self.image_level = 3
@@ -140,11 +146,13 @@ class CloudVisionDetectDocumentText(AbstractCloudVisionProcessor):
 
         analysis = ContentDetectionAnalysis()
         analysis.add_content(text)
-        asset.add_analysis('gcp-vision-doc-text-detection', analysis)
+        asset.add_analysis(self.analysis_name, analysis)
 
 
 class CloudVisionDetectLandmarks(AbstractCloudVisionProcessor):
     """Executes landmark detection using the Cloud Vision API."""
+
+    analysis_name = 'gcp-vision-landmark-detection'
 
     def __init__(self):
         super(CloudVisionDetectLandmarks, self).__init__()
@@ -168,11 +176,13 @@ class CloudVisionDetectLandmarks(AbstractCloudVisionProcessor):
                 }
             ))
 
-        asset.add_analysis('gcp-vision-landmark-detection', analysis)
+        asset.add_analysis(self.analysis_name, analysis)
 
 
 class CloudVisionDetectExplicit(AbstractCloudVisionProcessor):
     """Executes Safe Search using the Cloud Vision API."""
+
+    analysis_name = 'gcp-vision-content-moderation'
 
     def __init__(self):
         super(CloudVisionDetectExplicit, self).__init__()
@@ -196,12 +206,13 @@ class CloudVisionDetectExplicit(AbstractCloudVisionProcessor):
             analysis.add_prediction(Prediction(category, score))
 
         if analysis:
-            asset.add_analysis('gcp-vision-content-moderation', analysis)
+            asset.add_analysis(self.analysis_name, analysis)
 
 
 class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
     """Executes face detection using the Cloud Vision API."""
 
+    analysis_name = 'gcp-vision-face-detection'
     label_keys = [
         'joy',
         'sorrow',
@@ -246,7 +257,7 @@ class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
                 bbox=calculate_normalized_bbox(pwidth, pheight, rect),
                 tags=self.get_face_emotions(face)))
 
-        asset.add_analysis("gcp-vision-face-detection", analysis)
+        asset.add_analysis(self.analysis_name, analysis)
 
     def get_face_emotions(self, face):
         labels = []
@@ -258,6 +269,8 @@ class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
 
 class CloudVisionDetectLabels(AbstractCloudVisionProcessor):
     """Executes Label Detection the Cloud Vision API."""
+
+    analysis_name = 'gcp-vision-label-detection'
 
     def __init__(self):
         super(CloudVisionDetectLabels, self).__init__()
@@ -276,11 +289,13 @@ class CloudVisionDetectLabels(AbstractCloudVisionProcessor):
                 label.score
             ))
 
-        asset.add_analysis('gcp-vision-label-detection', analysis)
+        asset.add_analysis(self.analysis_name, analysis)
 
 
 class CloudVisionDetectLogos(AbstractCloudVisionProcessor):
     """Executes Logo Detection the Cloud Vision API."""
+
+    analysis_name = 'gcp-vision-logo-detection'
 
     def __init__(self):
         super(CloudVisionDetectLogos, self).__init__()
@@ -310,11 +325,13 @@ class CloudVisionDetectLogos(AbstractCloudVisionProcessor):
             bbox = calculate_normalized_bbox(pwidth, pheight, rect)
             analysis.add_prediction(Prediction(logo.description, logo.score, bbox=bbox))
 
-        asset.add_analysis('gcp-vision-logo-detection', analysis)
+        asset.add_analysis(self.analysis_name, analysis)
 
 
 class CloudVisionDetectObjects(AbstractCloudVisionProcessor):
     """Executes Object Detection the Cloud Vision API."""
+
+    analysis_name = 'gcp-vision-object-detection'
 
     def __init__(self):
         super(CloudVisionDetectObjects, self).__init__()
@@ -343,4 +360,4 @@ class CloudVisionDetectObjects(AbstractCloudVisionProcessor):
                 )
             )
 
-        asset.add_analysis('gcp-vision-object-detection', analysis)
+        asset.add_analysis(self.analysis_name, analysis)

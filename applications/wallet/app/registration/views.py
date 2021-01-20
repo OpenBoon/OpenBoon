@@ -242,10 +242,13 @@ class LoginView(CamelCaseRendererMixin, APIView):
             else:
                 credentials = {'username': username}
                 if not AxesProxyHandler().is_allowed(request, credentials=credentials):
-                    message = ('This account has been locked due to too many failed login '
-                               'attempts. Please contact support to unlock your account.')
-                    return Response(data={'detail': [message]}, status=status.HTTP_423_LOCKED)
+                    message = (
+                        'This account has been locked due to too many failed login '
+                        'attempts. Please contact support to unlock your account.')
+                    return Response(data={'detail': [message]},
+                                    status=status.HTTP_423_LOCKED)
                 else:
                     message = 'Invalid email and password combination.'
-                    return Response(data={'detail': [message]}, status=status.HTTP_401_UNAUTHORIZED)
+                    return Response(data={'detail': [message]},
+                                    status=status.HTTP_401_UNAUTHORIZED)
         return Response(UserSerializer(user, context={'request': request}).data)

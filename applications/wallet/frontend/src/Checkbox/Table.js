@@ -48,6 +48,7 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
           th: {
             color: colors.structure.zinc,
             fontWeight: typography.weight.medium,
+            whiteSpace: 'nowrap',
           },
           td: {
             borderTop: constants.borders.regular.iron,
@@ -86,8 +87,10 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
             <th>&nbsp;</th>
             <th>Module Name</th>
             <th>Description</th>
+            <th>Application Type</th>
           </tr>
         </thead>
+
         <tbody>
           {options.map((option) => (
             <CheckboxTableRow

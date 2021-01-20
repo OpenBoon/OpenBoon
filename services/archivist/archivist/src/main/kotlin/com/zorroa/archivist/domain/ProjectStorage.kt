@@ -37,7 +37,13 @@ enum class ProjectStorageEntity {
     /**
      * The stored file is associated with a job.
      */
-    JOB;
+    JOB,
+
+    /**
+     * A file associated with a video clip.
+     */
+    VIDEOCLIPS;
+
     /**
      * The name of the entity used in file paths or unique Ids.  Note the trailing 's'.
      */

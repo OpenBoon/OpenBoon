@@ -15,6 +15,8 @@ class ZviLabelDetectionProcessor(AssetProcessor):
     Performs image classification using Resnet152 and imagenet weights.
     """
 
+    namespace = 'zvi-label-detection'
+
     def init(self):
         tensorflow.config.set_visible_devices([], 'GPU')
         self.model = EfficientNetImageClassifier()
@@ -28,7 +30,7 @@ class ZviLabelDetectionProcessor(AssetProcessor):
         for label in predictions:
             analysis.add_label_and_score(label[1], label[2])
 
-        asset.add_analysis('zvi-label-detection', analysis)
+        asset.add_analysis(self.namespace, analysis)
 
 
 class EfficientNetImageClassifier:

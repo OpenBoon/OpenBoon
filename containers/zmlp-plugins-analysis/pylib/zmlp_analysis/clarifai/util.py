@@ -40,4 +40,4 @@ def not_a_quota_exception(exp):
     Returns:
         bool: True if not a quota exception.
     """
-    return 'Too Many Requests' not in str(exp)
+    return getattr(exp, 'status_code', 999) != 429

@@ -1,14 +1,16 @@
 FROM nginx:mainline
-RUN apt-get -y update && apt-get -y upgrade && apt-get -y install python3 python3-pip npm postgresql libsm6 libxrender-dev libxext6
+RUN apt-get -y update && apt-get -y upgrade \
+    && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+    && apt-get -y install nodejs python3 python3-pip postgresql libsm6 libxrender-dev libxext6
 
 # Set up Node.js
 COPY applications/wallet/frontend /applications/wallet/frontend
 WORKDIR /applications/wallet/frontend
 ARG CI_COMMIT_SHA
 
-RUN npm install -g npm@latest
-RUN npm cache verify
-RUN npm ci && CI_COMMIT_SHA=$CI_COMMIT_SHA npm run build
+RUN npm cache verify \
+    && npm ci \
+    && CI_COMMIT_SHA=$CI_COMMIT_SHA npm run build
 
 # Install python dependencies.
 COPY applications/wallet/Pipfile /applications/wallet/Pipfile

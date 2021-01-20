@@ -1,0 +1,27 @@
+{
+  "description": "Add files array and simhash to clips",
+  "patch": {
+    "properties": {
+      "clip": {
+        "dynamic": "strict",
+        "properties": {
+          "simhash": {
+            "type": "keyword",
+            "index": false
+          },
+          "files": {
+            "type": "object",
+            "enabled": false
+          },
+          "asset_id": {
+            "type": "alias",
+            "path": "clip.assetId"
+          },
+          "bbox": {
+            "type": "float"
+          }
+        }
+      }
+    }
+  }
+}

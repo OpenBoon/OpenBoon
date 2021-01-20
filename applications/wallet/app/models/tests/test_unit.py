@@ -10,7 +10,7 @@ mock_aggs = lambda self : {'nested#nested_labels': {'doc_count': 1744, 'filter#m
 def test_get_confusion_matrix(monkeypatch):
     monkeypatch.setattr(ConfusionMatrix, '_ConfusionMatrix__get_confusion_matrix_aggregations',
                         mock_aggs)
-    matrix = ConfusionMatrix(Model({'name': 'test'}), None)
+    matrix = ConfusionMatrix(Model({'name': 'test', 'moduleName': 'also-test'}), None)
     assert matrix.labels == ['Unrecognized', 'airplane', 'automobile', 'bird', 'cat',
                              'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
     assert matrix.accuracy == 0.7446300715990454
@@ -42,6 +42,7 @@ def test_get_confusion_matrix(monkeypatch):
                                 'maxScore': 1.0,
                                 'minScore': 0.0,
                                 'name': 'test',
+                                'moduleName': 'also-test',
                                 'overallAccuracy': 0.7446300715990454,
                                 'testSetOnly': True}
     assert matrix.to_dict(normalize_matrix=True) == {'labels': ['Unrecognized',
@@ -164,9 +165,19 @@ def test_get_confusion_matrix(monkeypatch):
                                                      'maxScore': 1.0,
                                                      'minScore': 0.0,
                                                      'name': 'test',
+                                                     'moduleName': 'also-test',
                                                      'overallAccuracy': 0.7446300715990454,
                                                      'testSetOnly': True}
     thumbnail = ConfusionMatrix(Model({'name': 'test'}), None).create_thumbnail_image()
     npimg = numpy.fromstring(thumbnail.read(), numpy.uint8)
     image = cv2.imdecode(npimg, cv2.IMREAD_UNCHANGED)
     assert image.shape == (500, 500, 3)
+
+
+def test_empty_confusion_matrix(monkeypatch):
+    mock_aggs = lambda self: {'nested#nested_labels': {'doc_count': 0, 'filter#model_train_labels': {'doc_count': 0, 'sterms#labels': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': []}}}}  # noqa
+    monkeypatch.setattr(ConfusionMatrix,
+                        '_ConfusionMatrix__get_confusion_matrix_aggregations',
+                        mock_aggs)
+    matrix = ConfusionMatrix(Model({'name': 'test'}), None)
+    assert matrix.accuracy == 0.0

@@ -1,20 +1,35 @@
 import { useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { Tooltip } from 'react-tippy'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import { useLocalStorage } from '../LocalStorage/helpers'
 import { useScroller } from '../Scroll/helpers'
+import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
-import { getColor } from './helpers'
+import { getColor, PANEL_WIDTH } from './helpers'
+
+import settingsShape from './settingsShape'
 
 const CONTRAST_THRESHOLD = 69
 
-const ModelMatrixRow = ({ matrix, settings, label, index }) => {
+const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
   const rowRef = useScroller({
     namespace: 'ModelMatrixHorizontal',
     isWheelEmitter: true,
     isWheelListener: true,
     isScrollEmitter: true,
+  })
+
+  const [{ isOpen }, setPreviewSettings] = useLocalStorage({
+    key: `Resizeable.ModelMatrixPreview`,
+    reducer: resizeableReducer,
+    initialState: {
+      size: PANEL_WIDTH,
+      originSize: 0,
+      isOpen: false,
+    },
   })
 
   /* istanbul ignore next */
@@ -84,11 +99,70 @@ const ModelMatrixRow = ({ matrix, settings, label, index }) => {
         }}
       >
         {matrix.matrix[index].map((value, col) => {
-          const percent = (value / rowTotal) * 100
+          const percent = rowTotal === 0 ? 0 : (value / rowTotal) * 100
+          const isSelected =
+            settings.selectedCell[0] === index &&
+            settings.selectedCell[1] === col
 
           return (
-            <div key={matrix.labels[col]}>
-              <div
+            <Tooltip
+              key={matrix.labels[col]}
+              position="top"
+              trigger="mouseenter"
+              html={
+                <div
+                  css={{
+                    color: colors.structure.coal,
+                    backgroundColor: colors.structure.white,
+                    borderRadius: constants.borderRadius.small,
+                    boxShadow: constants.boxShadows.default,
+                    padding: spacing.moderate,
+                  }}
+                >
+                  <h3>
+                    <span
+                      css={{
+                        fontFamily: typography.family.condensed,
+                        fontWeight: typography.weight.regular,
+                        color: colors.structure.iron,
+                      }}
+                    >
+                      Predictions:
+                    </span>{' '}
+                    {value}/{rowTotal}({Math.round(percent)}%)
+                  </h3>
+                  <h3>
+                    <span
+                      css={{
+                        fontFamily: typography.family.condensed,
+                        fontWeight: typography.weight.regular,
+                        color: colors.structure.iron,
+                      }}
+                    >
+                      Label True:
+                    </span>{' '}
+                    {matrix.labels[index]}
+                  </h3>
+                  <h3>
+                    <span
+                      css={{
+                        fontFamily: typography.family.condensed,
+                        fontWeight: typography.weight.regular,
+                        color: colors.structure.iron,
+                      }}
+                    >
+                      Label Pred:
+                    </span>{' '}
+                    {matrix.labels[col]}
+                  </h3>
+                </div>
+              }
+            >
+              <button
+                type="button"
+                aria-label={`${matrix.labels[index]} / ${
+                  matrix.labels[col]
+                }: ${value}${settings.isNormalized ? '%' : ''}`}
                 css={{
                   width: cellDimension,
                   height: '100%',
@@ -96,10 +170,34 @@ const ModelMatrixRow = ({ matrix, settings, label, index }) => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   backgroundColor: getColor({ percent }),
+                  border: isSelected ? constants.borders.keyOneLarge : 'none',
                   color:
                     percent > CONTRAST_THRESHOLD
                       ? colors.structure.white
                       : colors.structure.coal,
+                  ':hover': {
+                    border: constants.borders.keyTwoLarge,
+                  },
+                }}
+                onClick={() => {
+                  dispatch({
+                    selectedCell: isSelected ? [] : [index, col],
+                  })
+
+                  if (!isOpen && !isSelected) {
+                    setPreviewSettings({
+                      type: ACTIONS.OPEN,
+                      payload: {
+                        minSize: PANEL_WIDTH,
+                      },
+                    })
+                  }
+
+                  if (isOpen && isSelected) {
+                    setPreviewSettings({
+                      type: ACTIONS.CLOSE,
+                    })
+                  }
                 }}
               >
                 <div
@@ -112,8 +210,8 @@ const ModelMatrixRow = ({ matrix, settings, label, index }) => {
                 >
                   {settings.isNormalized ? `${Math.round(percent)}%` : value}
                 </div>
-              </div>
-            </div>
+              </button>
+            </Tooltip>
           )
         })}
       </div>
@@ -128,15 +226,10 @@ ModelMatrixRow.propTypes = {
     labels: PropTypes.arrayOf(PropTypes.string).isRequired,
     matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   }).isRequired,
-  settings: PropTypes.shape({
-    height: PropTypes.number.isRequired,
-    labelsWidth: PropTypes.number.isRequired,
-    zoom: PropTypes.number.isRequired,
-    isMinimapOpen: PropTypes.bool.isRequired,
-    isNormalized: PropTypes.bool.isRequired,
-  }).isRequired,
+  settings: PropTypes.shape(settingsShape).isRequired,
   label: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default ModelMatrixRow

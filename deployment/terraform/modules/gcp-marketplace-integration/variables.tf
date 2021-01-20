@@ -8,6 +8,7 @@ variable "pg_host" {
 }
 
 variable "pg_password" {
+  sensitive = true
 }
 
 variable "marketplace-project" {
@@ -17,6 +18,7 @@ variable "marketplace-subscription" {
 }
 
 variable "marketplace-credentials" {
+  sensitive = true
 }
 
 variable "marketplace-service-name" {
@@ -26,18 +28,21 @@ variable "sql-instance-name" {
 }
 
 variable "sql-service-account-key" {
+  sensitive = true
 }
 
 variable "sql-connection-name" {
 }
 
 variable "image-pull-secret" {
+  sensitive = true
 }
 
 variable "zmlp-api-url" {
 }
 
 variable "smtp-password" {
+  sensitive = true
 }
 
 variable "google-oauth-client-id" {
@@ -70,5 +75,6 @@ variable "database-user" {
 }
 
 variable "inception-key-b64" {
+  sensitive = true
 }
 

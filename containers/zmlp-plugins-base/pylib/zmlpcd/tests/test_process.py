@@ -287,6 +287,18 @@ class ProcessorExecutorTests(unittest.TestCase):
         # errors are always not processed.
         assert not wrapper.is_already_processed(frame.asset)
 
+    @patch('requests.post')
+    def test_record_analysis_metric(self, metric_post_mock):
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": TEST_IMAGE
+        }
+        frame = Frame(TestAsset(path='fake.jpg'))
+        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper.process(frame)
+        metric_post_mock.asset_called_once()
+
 
 class TestAssetConsumer(unittest.TestCase):
 

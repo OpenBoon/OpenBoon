@@ -217,4 +217,33 @@ class JobLauncherServiceTests : AbstractTest() {
         assertEquals("zmlp_core.core.processors.DeleteBySearchProcessor", script.execute!![0]!!.className)
         assertEquals(ds.id.toString(), script.execute?.get(0)?.args?.get("dataSourceId"))
     }
+
+    @Test
+    fun testLaunchTimelineAnalysisJob() {
+        val job = jobLaunchService.launchTimelineAnalysisJob("abc123", "test")
+        val tasks = jobService.getTasks(job.id)
+        val script = jobService.getZpsScript(tasks.first().id)
+
+        assertEquals("zmlp_analysis.zvi.TimelineAnalysisProcessor", script.execute!![0]!!.className)
+        assertEquals("abc123", script.execute?.get(0)?.args?.get("asset_id"))
+        assertEquals("test", script.execute?.get(0)?.args?.get("timeline"))
+    }
+
+    @Test
+    fun testAddTimelineAnalysisTask() {
+        val assets = listOf(
+            Asset("abc123", mutableMapOf("foo" to "bar")),
+            Asset("abc234", mutableMapOf("bing" to "bong"))
+        )
+
+        val pipeline = pipelineResolverService.resolve()
+        val job = jobLaunchService.launchJob("test", assets.map { it.id }, pipeline)
+
+        val task = jobLaunchService.addTimelineAnalysisTask(job.id, "abc123", "test")
+        val script = jobService.getZpsScript(task.id)
+
+        assertEquals("zmlp_analysis.zvi.TimelineAnalysisProcessor", script.execute!![0]!!.className)
+        assertEquals("abc123", script.execute?.get(0)?.args?.get("asset_id"))
+        assertEquals("test", script.execute?.get(0)?.args?.get("timeline"))
+    }
 }
