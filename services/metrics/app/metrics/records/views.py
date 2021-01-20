@@ -156,6 +156,3 @@ class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
                         'tier_2': tier_2_agg}
         serializer = TieredUsageSerializer(tiered_usage, context=self.get_serializer_context())
         return Response(serializer.data)
-
-
-

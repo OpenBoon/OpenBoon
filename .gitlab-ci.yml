@@ -206,7 +206,7 @@ metrics-backend-test-suite:
       - name: postgres:9.6.9
         alias: postgres
   variables:
-    DJANGO_SETTINGS_MODULE: metrics.settings
+    DJANGO_SETTINGS_MODULE: metrics.settings.testing
     DEBUG: "true"
     DB_BACKEND: postgres
     PG_DB_HOST: postgres

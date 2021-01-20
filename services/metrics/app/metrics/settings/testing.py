@@ -1,4 +1,4 @@
-from metrics.settings import *
+from metrics.settings import *  # noqa
 
 
 # Uses the postgres database run by the zmlp docker compose env.

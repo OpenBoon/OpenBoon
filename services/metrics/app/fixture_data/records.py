@@ -549,7 +549,7 @@ RECORDS = [
     "created_date": "2020-12-14T22:37:58.942287Z",
     "modified_date": "2020-12-14T22:37:58.942439Z"
   },
-{
+  {
     "id": 51,
     "project": "00000000-0000-0000-0000-000000000000",
     "service": "gcp-label-detection",
