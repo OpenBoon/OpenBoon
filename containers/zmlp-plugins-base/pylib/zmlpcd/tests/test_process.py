@@ -1,4 +1,5 @@
 import unittest
+import requests
 from unittest.mock import patch
 
 from requests import Response
@@ -304,9 +305,23 @@ class ProcessorExecutorTests(unittest.TestCase):
     @patch('requests.post')
     def test_record_analysis_metric_duplicate(self, metric_post_mock):
         response = Response()
-        response._content = '{"non_field_errors": ["The fields service, asset_id must make a unique set."]}'
+        response._content = ('{"non_field_errors": ["The fields service, '
+                             'asset_id must make a unique set."]}')
         response.status_code == 400
         metric_post_mock.return_value = response
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": TEST_IMAGE
+        }
+        frame = Frame(TestAsset(path='fake.jpg'))
+        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper.process(frame)
+        metric_post_mock.asset_called_once()
+
+    @patch('requests.post')
+    def test_record_analysis_metric_connection_error(self, metric_post_mock):
+        metric_post_mock.side_effect = requests.exceptions.ConnectionError()
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
             "args": {},
