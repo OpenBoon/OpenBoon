@@ -2,13 +2,12 @@ import json
 import logging
 import os
 import re
+from pathlib import Path
 from subprocess import check_output, CalledProcessError, DEVNULL
 
 import xmltodict
-from pathlib import Path
-
-from zmlpsdk.base import FileTypes
 from zmlpsdk import file_storage
+from zmlpsdk.base import FileTypes
 
 logger = logging.getLogger(__name__)
 

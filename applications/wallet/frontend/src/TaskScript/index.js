@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router'
+import {useRouter} from 'next/router'
 import useSWR from 'swr'
 
-import { colors } from '../Styles'
+import {colors} from '../Styles'
 
 import JsonDisplay from '../JsonDisplay'
 

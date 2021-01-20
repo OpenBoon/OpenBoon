@@ -1,10 +1,10 @@
+import logging
 import os
 import tempfile
 import unittest
-import logging
 
-import zmlpsdk.video as video
 import zmlpsdk.media as media
+import zmlpsdk.video as video
 from zmlpsdk.testing import zorroa_test_path
 
 logging.basicConfig(level=logging.NOTSET)

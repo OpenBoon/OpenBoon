@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 
-import { colors, spacing, typography, constants } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
 import DoubleChevronSvg from '../Icons/doubleChevron.svg'
 
-import { ACTIONS } from '../Resizeable/reducer'
+import {ACTIONS} from '../Resizeable/reducer'
 
-import Button, { VARIANTS } from '../Button'
+import Button, {VARIANTS} from '../Button'
 import BetaBadge from '../BetaBadge'
 
 const PanelContent = ({

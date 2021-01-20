@@ -1,6 +1,6 @@
-from ..util import as_id, as_id_collection
-from ..search import VideoClipSearchResult, VideoClipSearchScroller
 from ..entity import VideoClip
+from ..search import VideoClipSearchResult, VideoClipSearchScroller
+from ..util import as_id, as_id_collection
 
 
 class VideoClipApp:

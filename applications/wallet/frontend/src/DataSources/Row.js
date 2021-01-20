@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
-import { colors, constants, spacing } from '../Styles'
+import {colors, constants, spacing} from '../Styles'
 
 import ImagesSvg from '../Icons/images.svg'
 import DocumentsSvg from '../Icons/documents.svg'
 import VideosSvg from '../Icons/videos.svg'
 
-import { onRowClickRouterPush } from '../Table/helpers'
-import { formatFullDate } from '../Date/helpers'
+import {onRowClickRouterPush} from '../Table/helpers'
+import {formatFullDate} from '../Date/helpers'
 
 import DataSourcesMenu from './Menu'
 

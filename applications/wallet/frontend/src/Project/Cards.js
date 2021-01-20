@@ -1,11 +1,11 @@
 import useSWR from 'swr'
-import { useRouter } from 'next/router'
+import {useRouter} from 'next/router'
 import Link from 'next/link'
 
-import { colors, spacing, constants } from '../Styles'
+import {colors, constants, spacing} from '../Styles'
 
-import Button, { VARIANTS } from '../Button'
-import Bouncer, { ROLES } from '../Bouncer'
+import Button, {VARIANTS} from '../Button'
+import Bouncer, {ROLES} from '../Bouncer'
 
 import ProjectGettingStarted from './GettingStarted'
 import ProjectQuickLinks from './QuickLinks'

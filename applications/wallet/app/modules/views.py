@@ -1,9 +1,9 @@
 from rest_framework.response import Response
 
 from modules.models import Provider
+from modules.serializers import ModuleSerializer, ProviderSerializer
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
-from modules.serializers import ModuleSerializer, ProviderSerializer
 from wallet.utils import validate_zmlp_data
 
 

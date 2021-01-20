@@ -1,27 +1,27 @@
-import { useReducer } from 'react'
-import { useRouter } from 'next/router'
+import {useReducer} from 'react'
+import {useRouter} from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
 
-import { colors, constants, typography, spacing } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import SectionSubTitle from '../SectionSubTitle'
-import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import Input, {VARIANTS as INPUT_VARIANTS} from '../Input'
+import Button, {VARIANTS as BUTTON_VARIANTS} from '../Button'
 import FlashMessageErrors from '../FlashMessage/Errors'
-import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
+import {VARIANTS as CHECKBOX_VARIANTS} from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 import Toggletip from '../Toggletip'
 import Providers from '../Providers'
 
-import { FILE_TYPES, onSubmit } from './helpers'
+import {FILE_TYPES, onSubmit} from './helpers'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
 import DataSourcesAddCopy from './Copy'
-import DataSourcesAddSource, { SOURCES } from './Source'
+import DataSourcesAddSource, {SOURCES} from './Source'
 
 const INITIAL_STATE = {
   name: '',

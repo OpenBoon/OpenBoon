@@ -1,4 +1,4 @@
-import TestRenderer, { act } from 'react-test-renderer'
+import TestRenderer, {act} from 'react-test-renderer'
 
 import providers from '../../Providers/__mocks__/providers'
 import dataSource from '../../DataSource/__mocks__/dataSource'

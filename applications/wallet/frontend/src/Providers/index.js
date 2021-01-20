@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 
-import { colors, spacing, constants } from '../Styles'
+import {colors, constants, spacing} from '../Styles'
 
-import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
+import Accordion, {VARIANTS as ACCORDION_VARIANTS} from '../Accordion'
 import CheckboxTable from '../Checkbox/Table'
 
 const IMG_HEIGHT = 32

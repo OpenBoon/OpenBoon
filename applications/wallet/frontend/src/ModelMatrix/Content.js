@@ -1,9 +1,9 @@
-import { useReducer } from 'react'
-import { useRouter } from 'next/router'
+import {useReducer} from 'react'
+import {useRouter} from 'next/router'
 
-import { spacing } from '../Styles'
+import {spacing} from '../Styles'
 
-import { reducer } from './reducer'
+import {reducer} from './reducer'
 
 import ModelMatrixNavigation from './Navigation'
 import ModelMatrixLayout from './Layout'

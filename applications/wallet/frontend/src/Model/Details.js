@@ -1,33 +1,33 @@
-import { useState } from 'react'
+import {useState} from 'react'
 import useSWR from 'swr'
-import Router, { useRouter } from 'next/router'
+import Router, {useRouter} from 'next/router'
 import Link from 'next/link'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
-import { useLocalStorage } from '../LocalStorage/helpers'
+import {useLocalStorage} from '../LocalStorage/helpers'
 import SuspenseBoundary from '../SuspenseBoundary'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 import FilterSvg from '../Icons/filter.svg'
 import PenSvg from '../Icons/pen.svg'
 
-import { encode } from '../Filters/helpers'
-import { fetcher, revalidate } from '../Fetch/helpers'
-import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
+import {encode} from '../Filters/helpers'
+import {fetcher, revalidate} from '../Fetch/helpers'
+import {ACTIONS, reducer as resizeableReducer} from '../Resizeable/reducer'
 
-import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../Panel'
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import {MIN_WIDTH as PANEL_MIN_WIDTH} from '../Panel'
+import FlashMessage, {VARIANTS as FLASH_VARIANTS} from '../FlashMessage'
+import Button, {VARIANTS as BUTTON_VARIANTS} from '../Button'
 import ButtonGroup from '../Button/Group'
 import Modal from '../Modal'
 import Tabs from '../Tabs'
 import ModelAssets from '../ModelAssets'
 import ModelAssetsDropdown from '../ModelAssets/Dropdown'
 import ModelLabels from '../ModelLabels'
-import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
+import {SCOPE_OPTIONS} from '../AssetLabeling/helpers'
 
-import { onTrain } from './helpers'
+import {onTrain} from './helpers'
 
 const LINE_HEIGHT = '23px'
 

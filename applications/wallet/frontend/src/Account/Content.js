@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import {useState} from 'react'
 import useSWR from 'swr'
 
-import { colors, spacing } from '../Styles'
+import {colors, spacing} from '../Styles'
 
-import { useLocalStorage } from '../LocalStorage/helpers'
+import {useLocalStorage} from '../LocalStorage/helpers'
 
 import NoProject from '../NoProject'
-import InputSearch, { VARIANTS as INPUT_SEARCH_VARIANTS } from '../Input/Search'
-import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
+import InputSearch, {VARIANTS as INPUT_SEARCH_VARIANTS} from '../Input/Search'
+import Select, {VARIANTS as SELECT_VARIANTS} from '../Select'
 
 import AccountCard from './Card'
 

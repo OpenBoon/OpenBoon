@@ -1,14 +1,14 @@
-import { useEffect } from 'react'
+import {useEffect} from 'react'
 import PropTypes from 'prop-types'
-import { Tooltip } from 'react-tippy'
+import {Tooltip} from 'react-tippy'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
-import { useLocalStorage } from '../LocalStorage/helpers'
-import { useScroller } from '../Scroll/helpers'
-import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
+import {useLocalStorage} from '../LocalStorage/helpers'
+import {useScroller} from '../Scroll/helpers'
+import {ACTIONS, reducer as resizeableReducer} from '../Resizeable/reducer'
 
-import { getColor, PANEL_WIDTH } from './helpers'
+import {getColor, PANEL_WIDTH} from './helpers'
 
 import settingsShape from './settingsShape'
 

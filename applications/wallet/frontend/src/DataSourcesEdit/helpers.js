@@ -1,11 +1,6 @@
 import Router from 'next/router'
 
-import {
-  fetcher,
-  revalidate,
-  getQueryString,
-  parseResponse,
-} from '../Fetch/helpers'
+import {fetcher, getQueryString, parseResponse, revalidate,} from '../Fetch/helpers'
 
 export const getInitialModules = ({
   initialState: { modules: existingModules },

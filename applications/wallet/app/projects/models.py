@@ -4,13 +4,13 @@ from django.conf import settings
 from django.db import models
 from django_cryptography.fields import encrypt
 from multiselectfield import MultiSelectField
+from zmlp.client import ZmlpClient, ZmlpNotFoundException
 
 from apikeys.utils import create_zmlp_api_key
 from projects.utils import random_project_name
 from roles.utils import get_permissions_for_roles
 from wallet.mixins import TimeStampMixin, UUIDMixin
 from wallet.utils import get_zmlp_superuser_client, convert_base64_to_json
-from zmlp.client import ZmlpClient, ZmlpNotFoundException
 
 logger = logging.getLogger(__name__)
 

@@ -179,15 +179,8 @@ class ValidationKey(
     /**
      * Return the [ZmlpActor] for this key.  Optionally override the project Id.
      */
-    fun getZmlpActor(projectId: UUID? = null, attrs: Map<String, String>? = null): ZmlpActor {
-
-        return ZmlpActor(
-            id,
-            projectId ?: this.projectId,
-            name,
-            permissions.map { Permission.valueOf(it) }.toSet(),
-            attrs
-        )
+    fun getZmlpActor(projectId: UUID? = null): ZmlpActor {
+        return ZmlpActor(id, projectId ?: this.projectId, name, permissions.map { Permission.valueOf(it) }.toSet())
     }
 
     /**

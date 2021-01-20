@@ -22,8 +22,7 @@ class AuthController {
             "name" to user.name,
             "projectId" to user.projectId,
             "id" to user.id,
-            "permissions" to auth.authorities.map { it.toString() },
-            "attrs" to (user.attrs ?: emptyMap())
+            "permissions" to auth.authorities.map { it.toString() }
         )
     }
 }

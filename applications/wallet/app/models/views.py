@@ -5,6 +5,8 @@ from django.http import Http404, HttpResponse
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from zmlp.client import ZmlpNotFoundException
+from zmlp.entity.model import LabelScope
 
 from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 AddLabelsSerializer, UpdateLabelsSerializer,
@@ -15,8 +17,6 @@ from models.utils import ConfusionMatrix
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 from wallet.utils import validate_zmlp_data
-from zmlp.client import ZmlpNotFoundException
-from zmlp.entity.model import LabelScope
 
 
 def get_model_type_restrictions(label_counts, min_concepts, min_examples):

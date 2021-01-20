@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react'
+import {useEffect, useRef} from 'react'
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import {colors, constants, spacing} from '../Styles'
 
-import { getScroller } from '../Scroll/helpers'
+import {getScroller} from '../Scroll/helpers'
 
-import { getColor } from './helpers'
+import {getColor} from './helpers'
 
 import settingsShape from './settingsShape'
 

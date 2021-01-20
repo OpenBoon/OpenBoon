@@ -1,30 +1,30 @@
-import { useReducer } from 'react'
-import { useRouter } from 'next/router'
+import {useReducer} from 'react'
+import {useRouter} from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 
-import { constants, spacing, typography } from '../Styles'
+import {constants, spacing, typography} from '../Styles'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import SectionSubTitle from '../SectionSubTitle'
-import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import Input, {VARIANTS as INPUT_VARIANTS} from '../Input'
+import Button, {VARIANTS as BUTTON_VARIANTS} from '../Button'
 import FlashMessageErrors from '../FlashMessage/Errors'
-import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
+import {VARIANTS as CHECKBOX_VARIANTS} from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 import Toggletip from '../Toggletip'
 import Providers from '../Providers'
 
-import { FILE_TYPES } from '../DataSourcesAdd/helpers'
+import {FILE_TYPES} from '../DataSourcesAdd/helpers'
 
 import DataSourcesAddAutomaticAnalysis from '../DataSourcesAdd/AutomaticAnalysis'
 
 import DataSourcesEditCopy from './Copy'
 
-import { getInitialModules, onSubmit } from './helpers'
+import {getInitialModules, onSubmit} from './helpers'
 
 const reducer = (state, action) => ({ ...state, ...action })
 

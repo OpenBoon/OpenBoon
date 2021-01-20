@@ -1,4 +1,4 @@
-import TestRenderer, { act } from 'react-test-renderer'
+import TestRenderer, {act} from 'react-test-renderer'
 
 import Refresh from '../Refresh'
 

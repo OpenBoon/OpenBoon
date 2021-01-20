@@ -1,19 +1,19 @@
-import { useRouter } from 'next/router'
+import {useRouter} from 'next/router'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
-import { useLocalStorage } from '../LocalStorage/helpers'
+import {useLocalStorage} from '../LocalStorage/helpers'
 
 import FilterSvg from '../Icons/filter.svg'
 
-import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../Panel'
-import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
+import {MIN_WIDTH as PANEL_MIN_WIDTH} from '../Panel'
+import {ACTIONS, reducer as resizeableReducer} from '../Resizeable/reducer'
 
-import { encode } from '../Filters/helpers'
+import {encode} from '../Filters/helpers'
 
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import Button, {VARIANTS as BUTTON_VARIANTS} from '../Button'
 
 const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
   const {

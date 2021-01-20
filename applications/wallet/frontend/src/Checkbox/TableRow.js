@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from 'react'
+import {useState} from 'react'
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import {colors, constants, spacing} from '../Styles'
 
 import ImagesSvg from '../Icons/images.svg'
 import DocumentsSvg from '../Icons/documents.svg'

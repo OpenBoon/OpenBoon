@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
-import { useEffect } from 'react'
+import {useEffect} from 'react'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import useSWR from 'swr'
 
-import { getQueryString } from '../Fetch/helpers'
+import {getQueryString} from '../Fetch/helpers'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
 import settingsShape from './settingsShape'
 
