@@ -1,11 +1,13 @@
-import { useEffect, useRef } from 'react'
+import {useEffect, useRef} from 'react'
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import {colors, constants, spacing} from '../Styles'
 
-import { getScroller } from '../Scroll/helpers'
+import {getScroller} from '../Scroll/helpers'
 
-import { getColor } from './helpers'
+import {getColor} from './helpers'
+
+import settingsShape from './settingsShape'
 
 const ModelMatrixMinimap = ({ matrix, settings }) => {
   const verticalScroller = getScroller({ namespace: 'ModelMatrixVertical' })
@@ -107,13 +109,7 @@ ModelMatrixMinimap.propTypes = {
     labels: PropTypes.arrayOf(PropTypes.string).isRequired,
     matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   }).isRequired,
-  settings: PropTypes.shape({
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-    labelsWidth: PropTypes.number.isRequired,
-    zoom: PropTypes.number.isRequired,
-    isMinimapOpen: PropTypes.bool.isRequired,
-  }).isRequired,
+  settings: PropTypes.shape(settingsShape).isRequired,
 }
 
 export default ModelMatrixMinimap

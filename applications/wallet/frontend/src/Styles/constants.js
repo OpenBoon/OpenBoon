@@ -1,4 +1,4 @@
-import { keyframes } from '@emotion/react'
+import {keyframes} from '@emotion/react'
 
 import colors from './colors'
 
@@ -36,6 +36,7 @@ const borders = {
   keyOneRegular: `1px solid ${colors.key.one}`,
   keyOneMedium: `2px solid ${colors.key.one}`,
   keyOneLarge: `4px solid ${colors.key.one}`,
+  keyTwoLarge: `4px solid ${colors.key.two}`,
   error: `1px solid ${colors.signal.warning.base}`,
   assetSelected: `4px solid ${colors.signal.sky.base}`,
   ...newBorders,
@@ -75,6 +76,8 @@ const constants = {
     small: 18,
     regular: 20,
     moderate: 22,
+    comfy: 24,
+    large: 32,
   },
   overlay: `${colors.structure.black}e6`,
   navbar: {

@@ -1,30 +1,8 @@
 import PropTypes from 'prop-types'
 
-import { spacing, colors, constants, typography } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
 const STYLES = {
-  LIGHT: {
-    spacer: {
-      paddingRight: spacing.spacious,
-      paddingBottom: spacing.spacious,
-      width: constants.form.maxWidth,
-    },
-    container: {
-      display: 'flex',
-      flexDirection: 'column',
-      backgroundColor: colors.structure.smoke,
-      boxShadow: constants.boxShadows.tableRow,
-      borderRadius: constants.borderRadius.small,
-    },
-    header: {
-      padding: spacing.normal,
-      borderBottom: constants.borders.regular.iron,
-      display: 'flex',
-      alignItems: 'center',
-      svg: { marginRight: spacing.base },
-    },
-    content: { padding: spacing.spacious },
-  },
   DARK: {
     spacer: {
       height: '100%',

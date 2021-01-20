@@ -4,8 +4,8 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.relations import HyperlinkedIdentityField
 
-from wallet.utils import convert_base64_to_json
 from projects.models import Project
+from wallet.utils import convert_base64_to_json
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                   'permissions', 'tasks', 'taskerrors', 'datasources', 'subscriptions',
                   'modules', 'providers', 'searches', 'faces', 'visualizations',
-                  'models')
+                  'models', 'createdDate', 'modifiedDate')
 
     jobs = HyperlinkedIdentityField(
         view_name='job-list',

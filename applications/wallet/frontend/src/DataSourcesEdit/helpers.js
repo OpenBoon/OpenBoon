@@ -1,11 +1,6 @@
 import Router from 'next/router'
 
-import {
-  fetcher,
-  revalidate,
-  getQueryString,
-  parseResponse,
-} from '../Fetch/helpers'
+import {fetcher, getQueryString, parseResponse, revalidate,} from '../Fetch/helpers'
 
 export const getInitialModules = ({
   initialState: { modules: existingModules },
@@ -48,6 +43,11 @@ export const onSubmit = async ({
         }),
       },
     )
+
+    revalidate({
+      key: `/api/v1/projects/${projectId}/data_sources/${dataSourceId}/`,
+      paginated: false,
+    })
 
     await revalidate({
       key: `/api/v1/projects/${projectId}/data_sources/`,

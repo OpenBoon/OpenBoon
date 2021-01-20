@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
-import { colors, spacing, constants, typography } from '../Styles'
+import {colors, constants, spacing} from '../Styles'
 
-import { onRowClickRouterPush } from '../Table/helpers'
-import { formatFullDate } from '../Date/helpers'
-import { FILE_TYPES } from '../DataSourcesAdd/helpers'
+import ImagesSvg from '../Icons/images.svg'
+import DocumentsSvg from '../Icons/documents.svg'
+import VideosSvg from '../Icons/videos.svg'
+
+import {onRowClickRouterPush} from '../Table/helpers'
+import {formatFullDate} from '../Date/helpers'
 
 import DataSourcesMenu from './Menu'
 
@@ -58,28 +61,34 @@ const DataSourcesRow = ({
       <td>{formatFullDate({ timestamp: timeModified })}</td>
 
       <td>
-        {fileTypes.map((fileType) => {
-          const { color } =
-            FILE_TYPES.find(({ value }) => value === fileType) || {}
-          return (
-            <span
-              key={fileType}
-              css={{
-                display: 'inline-block',
-                color: colors.structure.coal,
-                backgroundColor: color || colors.structure.zinc,
-                padding: spacing.moderate,
-                paddingTop: spacing.small,
-                paddingBottom: spacing.small,
-                marginRight: spacing.base,
-                borderRadius: constants.borderRadius.large,
-                fontFamily: typography.family.condensed,
-              }}
-            >
-              {fileType}
-            </span>
-          )
-        })}
+        <div css={{ display: 'flex' }}>
+          <ImagesSvg
+            height={constants.icons.comfy}
+            css={{ marginRight: spacing.normal }}
+            color={
+              fileTypes?.includes('Images')
+                ? colors.signal.canary.base
+                : colors.structure.transparent
+            }
+          />
+          <DocumentsSvg
+            height={constants.icons.comfy}
+            css={{ marginRight: spacing.normal }}
+            color={
+              fileTypes?.includes('Documents')
+                ? colors.graph.seafoam
+                : colors.structure.transparent
+            }
+          />
+          <VideosSvg
+            height={constants.icons.comfy}
+            color={
+              fileTypes?.includes('Videos')
+                ? colors.graph.iris
+                : colors.structure.transparent
+            }
+          />
+        </div>
       </td>
 
       <td>

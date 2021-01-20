@@ -1,9 +1,11 @@
-import TestRenderer, { act } from 'react-test-renderer'
+import TestRenderer, {act} from 'react-test-renderer'
 
 import model from '../__mocks__/model'
 import labels from '../../ModelLabels/__mocks__/modelLabels'
 
 import ModelDetails from '../Details'
+
+import {MIN_WIDTH as PANEL_MIN_WIDTH} from '../../Panel'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const MODEL_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
@@ -270,7 +272,14 @@ describe('<ModelDetails />', () => {
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
-    expect(spy).toHaveBeenCalledWith('rightOpeningPanel', '"filters"')
+    expect(spy).toHaveBeenCalledWith(
+      'rightOpeningPanelSettings',
+      JSON.stringify({
+        size: PANEL_MIN_WIDTH,
+        isOpen: true,
+        openPanel: 'filters',
+      }),
+    )
   })
 
   it('should handle Add More Labels properly', async () => {
@@ -297,7 +306,14 @@ describe('<ModelDetails />', () => {
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
-    expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
+    expect(spy).toHaveBeenCalledWith(
+      'leftOpeningPanelSettings',
+      JSON.stringify({
+        size: PANEL_MIN_WIDTH,
+        isOpen: true,
+        openPanel: 'assetLabeling',
+      }),
+    )
 
     expect(spy).toHaveBeenCalledWith(
       `AssetLabelingAdd.${PROJECT_ID}`,

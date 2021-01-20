@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router'
+import {useRouter} from 'next/router'
 import useSWR from 'swr'
 
-import { colors } from '../Styles'
+import {colors} from '../Styles'
 
 import JsonDisplay from '../JsonDisplay'
 
@@ -10,7 +10,9 @@ const TaskScript = () => {
     query: { projectId, taskId },
   } = useRouter()
 
-  const { data } = useSWR(`/api/v1/projects/${projectId}/tasks/${taskId}/`)
+  const { data } = useSWR(
+    `/api/v1/projects/${projectId}/tasks/${taskId}/script/`,
+  )
 
   return (
     <div

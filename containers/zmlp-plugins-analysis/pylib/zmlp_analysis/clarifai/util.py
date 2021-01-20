@@ -1,6 +1,9 @@
 import os
+import logging
 
 from clarifai.rest import ClarifaiApp
+
+logger = logging.getLogger('clarifai')
 
 """Used to male the clarifai model to a namespace"""
 model_map = {
@@ -40,4 +43,16 @@ def not_a_quota_exception(exp):
     Returns:
         bool: True if not a quota exception.
     """
-    return 'Too Many Requests' not in str(exp)
+    return getattr(exp, 'status_code', 999) != 429
+
+
+def log_backoff_exception(details):
+    """
+    Log an exception from the backoff library.
+
+    Args:
+        details (dict): The details of the backoff call.
+
+    """
+    logger.warning(
+        'Waiting on quota {wait:0.1f} seconds afters {tries} tries'.format(**details))

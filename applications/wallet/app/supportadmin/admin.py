@@ -6,6 +6,8 @@ from django.contrib.auth import get_user_model
 from django.forms import ModelForm
 
 from modules.models import Provider
+from organizations.admin import OrganizationAdmin
+from organizations.models import Organization
 from projects.admin import ProjectAdmin
 from projects.models import Project, Membership
 from subscriptions.models import Subscription
@@ -48,6 +50,9 @@ class SupportUserAdmin(NoDeleteMixin, ModelAdmin):
     list_filter = ('is_active', 'is_superuser', 'is_staff')
     exclude = ('permissions',)
     inlines = [MembershipInline]
+
+    def has_add_permission(self, request):
+        False
 
     def save_related(self, request, form, formsets, change):
         user = form.instance
@@ -107,3 +112,4 @@ support_admin_site.register(get_user_model(), SupportUserAdmin)
 support_admin_site.register(Provider)
 support_admin_site.register(AccessAttempt, AccessAttemptAdmin)
 support_admin_site.register(AccessLog, AccessLogAdmin)
+support_admin_site.register(Organization, OrganizationAdmin)

@@ -1,9 +1,9 @@
 from rest_framework.response import Response
 
 from modules.models import Provider
+from modules.serializers import ModuleSerializer, ProviderSerializer
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
-from modules.serializers import ModuleSerializer, ProviderSerializer
 from wallet.utils import validate_zmlp_data
 
 
@@ -28,7 +28,7 @@ class ProviderViewSet(BaseProjectViewSet):
     def list(self, request, project_pk):
         provider_map = {}
         results = []
-        for module in self._zmlp_list_from_search(request).data['results']:
+        for module in self._zmlp_list_from_search_all_pages(request).data['results']:
             provider = provider_map.setdefault(module['provider'].lower(), {})
             category = provider.setdefault(module['category'], [])
             category.append(module)

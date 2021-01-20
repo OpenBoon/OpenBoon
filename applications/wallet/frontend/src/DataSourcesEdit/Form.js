@@ -1,30 +1,30 @@
-import { useReducer } from 'react'
-import { useRouter } from 'next/router'
+import {useReducer} from 'react'
+import {useRouter} from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 
-import { constants, spacing, typography } from '../Styles'
+import {constants, spacing, typography} from '../Styles'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import SectionSubTitle from '../SectionSubTitle'
-import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import Input, {VARIANTS as INPUT_VARIANTS} from '../Input'
+import Button, {VARIANTS as BUTTON_VARIANTS} from '../Button'
 import FlashMessageErrors from '../FlashMessage/Errors'
-import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
+import {VARIANTS as CHECKBOX_VARIANTS} from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 import Toggletip from '../Toggletip'
+import Providers from '../Providers'
 
-import { FILE_TYPES } from '../DataSourcesAdd/helpers'
+import {FILE_TYPES} from '../DataSourcesAdd/helpers'
 
 import DataSourcesAddAutomaticAnalysis from '../DataSourcesAdd/AutomaticAnalysis'
 
-import DataSourcesEditProvider from './Provider'
 import DataSourcesEditCopy from './Copy'
 
-import { getInitialModules, onSubmit } from './helpers'
+import {getInitialModules, onSubmit} from './helpers'
 
 const reducer = (state, action) => ({ ...state, ...action })
 
@@ -65,7 +65,7 @@ const DataSourcesEditForm = ({ initialState }) => {
             paddingBottom: spacing.comfy,
           }}
         >
-          <SectionTitle>Data Source Name </SectionTitle>
+          <SectionTitle>STEP 1: Data Source Name </SectionTitle>
 
           <Input
             autoFocus
@@ -89,7 +89,7 @@ const DataSourcesEditForm = ({ initialState }) => {
         <CheckboxGroup
           legend={
             <>
-              Add Additional File Types
+              STEP 2: Add Additional File Types
               <Toggletip openToThe="right" label="Supported File Types">
                 <div
                   css={{
@@ -128,7 +128,7 @@ const DataSourcesEditForm = ({ initialState }) => {
           options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
             value,
             label,
-            icon: <img src={icon} alt={label} width="40px" />,
+            icon,
             legend,
             initialValue: !!fileTypes[value],
             isDisabled: !!initialState.fileTypes[value],
@@ -138,26 +138,24 @@ const DataSourcesEditForm = ({ initialState }) => {
 
         <div css={{ height: spacing.base }} />
 
-        <SectionTitle>Add Additional Analysis</SectionTitle>
+        <SectionTitle>STEP 3: Add Additional Analysis</SectionTitle>
 
         <SectionSubTitle>
           Additional analysis can be added to this data source. Previous
           selections cannot be removed.
         </SectionSubTitle>
 
-        <DataSourcesAddAutomaticAnalysis />
+        <DataSourcesAddAutomaticAnalysis
+          fileTypes={Object.keys(state.fileTypes).filter((f) => fileTypes[f])}
+        />
 
-        {providers.map((provider) => (
-          <DataSourcesEditProvider
-            key={provider.name}
-            provider={provider}
-            initialModules={initialModules}
-            modules={state.modules}
-            onClick={(module) =>
-              dispatch({ modules: { ...state.modules, ...module } })
-            }
-          />
-        ))}
+        <Providers
+          providers={providers}
+          initialModules={initialModules}
+          modules={state.modules}
+          fileTypes={Object.keys(state.fileTypes).filter((f) => fileTypes[f])}
+          dispatch={dispatch}
+        />
 
         <ButtonGroup>
           <Link

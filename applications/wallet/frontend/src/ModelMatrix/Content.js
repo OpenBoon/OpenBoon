@@ -1,7 +1,9 @@
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
+import {useReducer} from 'react'
+import {useRouter} from 'next/router'
 
-import { spacing } from '../Styles'
+import {spacing} from '../Styles'
+
+import {reducer} from './reducer'
 
 import ModelMatrixNavigation from './Navigation'
 import ModelMatrixLayout from './Layout'
@@ -11,9 +13,12 @@ const ModelMatrixContent = () => {
     query: { projectId, modelId },
   } = useRouter()
 
-  const {
-    data: { name },
-  } = useSWR(`/api/v1/projects/${projectId}/models/${modelId}/`)
+  const [matrixDetails, setMatrixDetails] = useReducer(reducer, {
+    name: '',
+    overallAccuracy: 0,
+    labels: [],
+    moduleName: '',
+  })
 
   return (
     <div
@@ -28,13 +33,20 @@ const ModelMatrixContent = () => {
         flexDirection: 'column',
       }}
     >
-      <ModelMatrixNavigation
+      {matrixDetails.name && (
+        <ModelMatrixNavigation
+          projectId={projectId}
+          modelId={modelId}
+          name={matrixDetails.name}
+        />
+      )}
+
+      <ModelMatrixLayout
         projectId={projectId}
         modelId={modelId}
-        name={name}
+        matrixDetails={matrixDetails}
+        setMatrixDetails={setMatrixDetails}
       />
-
-      <ModelMatrixLayout />
     </div>
   )
 }

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import checkboxOptionShape from './optionShape'
 
-import { spacing, colors, constants, typography } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
 import CheckboxTableRow from './TableRow'
 
@@ -48,6 +48,7 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
           th: {
             color: colors.structure.zinc,
             fontWeight: typography.weight.medium,
+            whiteSpace: 'nowrap',
           },
           td: {
             borderTop: constants.borders.regular.iron,
@@ -86,8 +87,10 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
             <th>&nbsp;</th>
             <th>Module Name</th>
             <th>Description</th>
+            <th>File Types</th>
           </tr>
         </thead>
+
         <tbody>
           {options.map((option) => (
             <CheckboxTableRow

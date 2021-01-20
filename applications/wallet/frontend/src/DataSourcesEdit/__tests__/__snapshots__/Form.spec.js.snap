@@ -277,7 +277,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-left: 24px;
+  padding-left: 16px;
 }
 
 .emotion-31 {
@@ -536,6 +536,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 .emotion-72 th {
   color: #b3b3b3;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .emotion-72 td {
@@ -581,10 +582,21 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 }
 
 .emotion-79 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-80 {
+  margin-right: 16px;
+}
+
+.emotion-82 {
   cursor: pointer;
 }
 
-.emotion-129 {
+.emotion-122 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -593,12 +605,12 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   padding-bottom: 16px;
 }
 
-.emotion-129 button,
-.emotion-129 a {
+.emotion-122 button,
+.emotion-122 a {
   margin-right: 16px;
 }
 
-.emotion-130 {
+.emotion-123 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -629,27 +641,27 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   background-color: transparent;
 }
 
-.emotion-130,
-.emotion-130:hover,
-.emotion-130:visited,
-.emotion-130 .noop {
+.emotion-123,
+.emotion-123:hover,
+.emotion-123:visited,
+.emotion-123 .noop {
   background-color: #808080;
 }
 
-.emotion-130:hover,
-.emotion-130 .noop {
+.emotion-123:hover,
+.emotion-123 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-130[aria-disabled=true],
-.emotion-130 .noop {
+.emotion-123[aria-disabled=true],
+.emotion-123 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-131 {
+.emotion-124 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -680,22 +692,22 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   background-color: transparent;
 }
 
-.emotion-131,
-.emotion-131:hover,
-.emotion-131:visited,
-.emotion-131 .noop {
+.emotion-124,
+.emotion-124:hover,
+.emotion-124:visited,
+.emotion-124 .noop {
   background-color: #73b61c;
 }
 
-.emotion-131:hover,
-.emotion-131 .noop {
+.emotion-124:hover,
+.emotion-124 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-131[aria-disabled=true],
-.emotion-131 .noop {
+.emotion-124[aria-disabled=true],
+.emotion-124 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -717,7 +729,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     <h3
       className="emotion-3"
     >
-      Data Source Name 
+      STEP 1: Data Source Name 
     </h3>
     <div
       className="emotion-4"
@@ -765,7 +777,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     <legend
       className="emotion-12"
     >
-      Add Additional File Types
+      STEP 2: Add Additional File Types
       <div
         className="emotion-13"
       >
@@ -863,10 +875,10 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
       <div
         className="emotion-29"
       >
-        <img
-          alt="Image Files"
-          src="/icons/images.png"
-          width="40px"
+        <svg
+          color="#ebb52e"
+          data-file-name="images.svg"
+          height={32}
         />
       </div>
       <div
@@ -905,10 +917,10 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
       <div
         className="emotion-29"
       >
-        <img
-          alt="Documents (PDF & MS Office)"
-          src="/icons/documents.png"
-          width="40px"
+        <svg
+          color="#00bdc1"
+          data-file-name="documents.svg"
+          height={32}
         />
       </div>
       <div
@@ -952,10 +964,10 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
       <div
         className="emotion-29"
       >
-        <img
-          alt="Video Files"
-          src="/icons/videos.png"
-          width="40px"
+        <svg
+          color="#8f89e7"
+          data-file-name="videos.svg"
+          height={32}
         />
       </div>
       <div
@@ -975,7 +987,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   <h3
     className="emotion-3"
   >
-    Add Additional Analysis
+    STEP 3: Add Additional Analysis
   </h3>
   <p
     className="emotion-51"
@@ -1124,6 +1136,9 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 <th>
                   Description
                 </th>
+                <th>
+                  File Types
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -1170,9 +1185,32 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 <td>
                   Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                 </td>
+                <td>
+                  <div
+                    className="emotion-79"
+                  >
+                    <svg
+                      className="emotion-80"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
+                    />
+                    <svg
+                      className="emotion-80"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
               </tr>
               <tr
-                className="emotion-79"
+                className="emotion-82"
                 onClick={[Function]}
               >
                 <td>
@@ -1214,9 +1252,32 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 <td>
                   Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                 </td>
+                <td>
+                  <div
+                    className="emotion-79"
+                  >
+                    <svg
+                      className="emotion-80"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
+                    />
+                    <svg
+                      className="emotion-80"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
               </tr>
               <tr
-                className="emotion-79"
+                className="emotion-82"
                 onClick={[Function]}
               >
                 <td>
@@ -1258,9 +1319,32 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 <td>
                   Generate keyword labels for image, video, and documents.
                 </td>
+                <td>
+                  <div
+                    className="emotion-79"
+                  >
+                    <svg
+                      className="emotion-80"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
+                    />
+                    <svg
+                      className="emotion-80"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
               </tr>
               <tr
-                className="emotion-79"
+                className="emotion-82"
                 onClick={[Function]}
               >
                 <td>
@@ -1302,6 +1386,29 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 <td>
                   Detect everyday objects in images, video, and documents.
                 </td>
+                <td>
+                  <div
+                    className="emotion-79"
+                  >
+                    <svg
+                      className="emotion-80"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
+                    />
+                    <svg
+                      className="emotion-80"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -1331,99 +1438,14 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 <th>
                   Description
                 </th>
+                <th>
+                  File Types
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr
-                className="emotion-79"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-74"
-                  >
-                    <div
-                      className="emotion-25"
-                    >
-                      <input
-                        className="emotion-26"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="zvi-document-page-clips"
-                      />
-                      <div
-                        className="emotion-27"
-                      >
-                        <svg
-                          className="emotion-28"
-                          data-file-name="checkmark.svg"
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      zvi-document-page-clips
-                      : 
-                      Extract all pages in MS Office/PDF documents into separate assets.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  zvi-document-page-clips
-                </td>
-                <td>
-                  Extract all pages in MS Office/PDF documents into separate assets.
-                </td>
-              </tr>
-              <tr
-                className="emotion-79"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-74"
-                  >
-                    <div
-                      className="emotion-25"
-                    >
-                      <input
-                        className="emotion-26"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="zvi-image-page-clips"
-                      />
-                      <div
-                        className="emotion-27"
-                      >
-                        <svg
-                          className="emotion-28"
-                          data-file-name="checkmark.svg"
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      zvi-image-page-clips
-                      : 
-                      Extract all layers in multi page image formats such as tiff and psd as as separate assets
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  zvi-image-page-clips
-                </td>
-                <td>
-                  Extract all layers in multi page image formats such as tiff and psd as as separate assets
-                </td>
-              </tr>
-              <tr
-                className="emotion-79"
+                className="emotion-82"
                 onClick={[Function]}
               >
                 <td>
@@ -1465,80 +1487,28 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 <td>
                   Break video files into individual assets based on a shot detection algorithm.
                 </td>
-              </tr>
-            </tbody>
-          </table>
-        </fieldset>
-        <fieldset
-          className="emotion-69"
-        >
-          <legend
-            className="emotion-70"
-          >
-            Zorroa Visual Intelligence
-          </legend>
-          <div
-            className="emotion-71"
-          />
-          <table
-            className="emotion-72"
-          >
-            <thead>
-              <tr>
-                <th>
-                   
-                </th>
-                <th>
-                  Module Name
-                </th>
-                <th>
-                  Description
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                className="emotion-79"
-                onClick={[Function]}
-              >
                 <td>
-                  <label
-                    className="emotion-74"
+                  <div
+                    className="emotion-79"
                   >
-                    <div
-                      className="emotion-25"
-                    >
-                      <input
-                        className="emotion-26"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="zvi-text-detection"
-                      />
-                      <div
-                        className="emotion-27"
-                      >
-                        <svg
-                          className="emotion-28"
-                          data-file-name="checkmark.svg"
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      zvi-text-detection
-                      : 
-                      Utilize OCR technology to detect text on an image.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  zvi-text-detection
-                </td>
-                <td>
-                  Utilize OCR technology to detect text on an image.
+                    <svg
+                      className="emotion-80"
+                      color="transparent"
+                      data-file-name="images.svg"
+                      height={24}
+                    />
+                    <svg
+                      className="emotion-80"
+                      color="transparent"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -1548,10 +1518,10 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     </details>
   </div>
   <div
-    className="emotion-129"
+    className="emotion-122"
   >
     <a
-      className="emotion-130"
+      className="emotion-123"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -1560,7 +1530,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     </a>
     <button
       aria-disabled={true}
-      className="emotion-131"
+      className="emotion-124"
       onClick={[Function]}
       type="submit"
     >
@@ -1841,7 +1811,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-left: 24px;
+  padding-left: 16px;
 }
 
 .emotion-30 {
@@ -2100,6 +2070,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 .emotion-71 th {
   color: #b3b3b3;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .emotion-71 td {
@@ -2145,10 +2116,21 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 }
 
 .emotion-78 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-79 {
+  margin-right: 16px;
+}
+
+.emotion-81 {
   cursor: pointer;
 }
 
-.emotion-128 {
+.emotion-121 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2157,12 +2139,12 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-128 button,
-.emotion-128 a {
+.emotion-121 button,
+.emotion-121 a {
   margin-right: 16px;
 }
 
-.emotion-129 {
+.emotion-122 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2193,27 +2175,27 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-129,
-.emotion-129:hover,
-.emotion-129:visited,
-.emotion-129 .noop {
+.emotion-122,
+.emotion-122:hover,
+.emotion-122:visited,
+.emotion-122 .noop {
   background-color: #808080;
 }
 
-.emotion-129:hover,
-.emotion-129 .noop {
+.emotion-122:hover,
+.emotion-122 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-129[aria-disabled=true],
-.emotion-129 .noop {
+.emotion-122[aria-disabled=true],
+.emotion-122 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-130 {
+.emotion-123 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2244,22 +2226,22 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-130,
-.emotion-130:hover,
-.emotion-130:visited,
-.emotion-130 .noop {
+.emotion-123,
+.emotion-123:hover,
+.emotion-123:visited,
+.emotion-123 .noop {
   background-color: #73b61c;
 }
 
-.emotion-130:hover,
-.emotion-130 .noop {
+.emotion-123:hover,
+.emotion-123 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-130[aria-disabled=true],
-.emotion-130 .noop {
+.emotion-123[aria-disabled=true],
+.emotion-123 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -2281,7 +2263,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
     <h3
       className="emotion-3"
     >
-      Data Source Name 
+      STEP 1: Data Source Name 
     </h3>
     <div
       className="emotion-4"
@@ -2324,7 +2306,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
     <legend
       className="emotion-11"
     >
-      Add Additional File Types
+      STEP 2: Add Additional File Types
       <div
         className="emotion-12"
       >
@@ -2422,10 +2404,10 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
       <div
         className="emotion-28"
       >
-        <img
-          alt="Image Files"
-          src="/icons/images.png"
-          width="40px"
+        <svg
+          color="#ebb52e"
+          data-file-name="images.svg"
+          height={32}
         />
       </div>
       <div
@@ -2464,10 +2446,10 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
       <div
         className="emotion-28"
       >
-        <img
-          alt="Documents (PDF & MS Office)"
-          src="/icons/documents.png"
-          width="40px"
+        <svg
+          color="#00bdc1"
+          data-file-name="documents.svg"
+          height={32}
         />
       </div>
       <div
@@ -2511,10 +2493,10 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
       <div
         className="emotion-28"
       >
-        <img
-          alt="Video Files"
-          src="/icons/videos.png"
-          width="40px"
+        <svg
+          color="#8f89e7"
+          data-file-name="videos.svg"
+          height={32}
         />
       </div>
       <div
@@ -2534,7 +2516,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   <h3
     className="emotion-3"
   >
-    Add Additional Analysis
+    STEP 3: Add Additional Analysis
   </h3>
   <p
     className="emotion-50"
@@ -2683,6 +2665,9 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 <th>
                   Description
                 </th>
+                <th>
+                  File Types
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -2729,9 +2714,32 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 <td>
                   Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                 </td>
+                <td>
+                  <div
+                    className="emotion-78"
+                  >
+                    <svg
+                      className="emotion-79"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
+                    />
+                    <svg
+                      className="emotion-79"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
               </tr>
               <tr
-                className="emotion-78"
+                className="emotion-81"
                 onClick={[Function]}
               >
                 <td>
@@ -2773,9 +2781,32 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 <td>
                   Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                 </td>
+                <td>
+                  <div
+                    className="emotion-78"
+                  >
+                    <svg
+                      className="emotion-79"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
+                    />
+                    <svg
+                      className="emotion-79"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
               </tr>
               <tr
-                className="emotion-78"
+                className="emotion-81"
                 onClick={[Function]}
               >
                 <td>
@@ -2817,9 +2848,32 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 <td>
                   Generate keyword labels for image, video, and documents.
                 </td>
+                <td>
+                  <div
+                    className="emotion-78"
+                  >
+                    <svg
+                      className="emotion-79"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
+                    />
+                    <svg
+                      className="emotion-79"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
               </tr>
               <tr
-                className="emotion-78"
+                className="emotion-81"
                 onClick={[Function]}
               >
                 <td>
@@ -2861,6 +2915,29 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 <td>
                   Detect everyday objects in images, video, and documents.
                 </td>
+                <td>
+                  <div
+                    className="emotion-78"
+                  >
+                    <svg
+                      className="emotion-79"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
+                    />
+                    <svg
+                      className="emotion-79"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -2890,99 +2967,14 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 <th>
                   Description
                 </th>
+                <th>
+                  File Types
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr
-                className="emotion-78"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-73"
-                  >
-                    <div
-                      className="emotion-24"
-                    >
-                      <input
-                        className="emotion-25"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="zvi-document-page-clips"
-                      />
-                      <div
-                        className="emotion-26"
-                      >
-                        <svg
-                          className="emotion-27"
-                          data-file-name="checkmark.svg"
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      zvi-document-page-clips
-                      : 
-                      Extract all pages in MS Office/PDF documents into separate assets.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  zvi-document-page-clips
-                </td>
-                <td>
-                  Extract all pages in MS Office/PDF documents into separate assets.
-                </td>
-              </tr>
-              <tr
-                className="emotion-78"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-73"
-                  >
-                    <div
-                      className="emotion-24"
-                    >
-                      <input
-                        className="emotion-25"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="zvi-image-page-clips"
-                      />
-                      <div
-                        className="emotion-26"
-                      >
-                        <svg
-                          className="emotion-27"
-                          data-file-name="checkmark.svg"
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      zvi-image-page-clips
-                      : 
-                      Extract all layers in multi page image formats such as tiff and psd as as separate assets
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  zvi-image-page-clips
-                </td>
-                <td>
-                  Extract all layers in multi page image formats such as tiff and psd as as separate assets
-                </td>
-              </tr>
-              <tr
-                className="emotion-78"
+                className="emotion-81"
                 onClick={[Function]}
               >
                 <td>
@@ -3024,80 +3016,28 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 <td>
                   Break video files into individual assets based on a shot detection algorithm.
                 </td>
-              </tr>
-            </tbody>
-          </table>
-        </fieldset>
-        <fieldset
-          className="emotion-68"
-        >
-          <legend
-            className="emotion-69"
-          >
-            Zorroa Visual Intelligence
-          </legend>
-          <div
-            className="emotion-70"
-          />
-          <table
-            className="emotion-71"
-          >
-            <thead>
-              <tr>
-                <th>
-                   
-                </th>
-                <th>
-                  Module Name
-                </th>
-                <th>
-                  Description
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                className="emotion-78"
-                onClick={[Function]}
-              >
                 <td>
-                  <label
-                    className="emotion-73"
+                  <div
+                    className="emotion-78"
                   >
-                    <div
-                      className="emotion-24"
-                    >
-                      <input
-                        className="emotion-25"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="zvi-text-detection"
-                      />
-                      <div
-                        className="emotion-26"
-                      >
-                        <svg
-                          className="emotion-27"
-                          data-file-name="checkmark.svg"
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      zvi-text-detection
-                      : 
-                      Utilize OCR technology to detect text on an image.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  zvi-text-detection
-                </td>
-                <td>
-                  Utilize OCR technology to detect text on an image.
+                    <svg
+                      className="emotion-79"
+                      color="transparent"
+                      data-file-name="images.svg"
+                      height={24}
+                    />
+                    <svg
+                      className="emotion-79"
+                      color="transparent"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -3107,10 +3047,10 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
     </details>
   </div>
   <div
-    className="emotion-128"
+    className="emotion-121"
   >
     <a
-      className="emotion-129"
+      className="emotion-122"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -3118,7 +3058,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
       Cancel
     </a>
     <button
-      className="emotion-130"
+      className="emotion-123"
       onClick={[Function]}
       type="submit"
     >

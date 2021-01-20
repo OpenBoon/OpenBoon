@@ -1,4 +1,4 @@
-import TestRenderer, { act } from 'react-test-renderer'
+import TestRenderer, {act} from 'react-test-renderer'
 
 import asset from '../../Asset/__mocks__/asset'
 import models from '../../Models/__mocks__/models'
@@ -14,6 +14,14 @@ jest.mock('../Add', () => 'AssetLabelingAdd')
 const noop = () => () => {}
 
 describe('<AssetLabeling />', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
+  afterAll(() => {
+    jest.useRealTimers()
+  })
+
   it('should render properly with no selected asset', () => {
     const component = TestRenderer.create(<AssetLabeling />)
 

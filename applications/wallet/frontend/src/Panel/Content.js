@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 
-import { colors, spacing, typography, constants } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
 import DoubleChevronSvg from '../Icons/doubleChevron.svg'
 
-import { ACTIONS } from '../Resizeable/reducer'
+import {ACTIONS} from '../Resizeable/reducer'
 
-import Button, { VARIANTS } from '../Button'
+import Button, {VARIANTS} from '../Button'
 import BetaBadge from '../BetaBadge'
 
 const PanelContent = ({
@@ -74,7 +74,7 @@ const PanelContent = ({
           display: 'flex',
           flexDirection: 'column',
           flex: 1,
-          // hack to make content scroll without hiding overflow (overflow needed for Toggltip visibility)
+          // hack to make content scroll without hiding overflow (overflow needed for Toggletip visibility)
           height: '0%',
         }}
       >

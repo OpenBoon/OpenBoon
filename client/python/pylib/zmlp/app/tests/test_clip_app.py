@@ -92,6 +92,23 @@ class VideoClipAppTests(unittest.TestCase):
             assert clip.timeline == 'foo'
             assert clip.track == 'bar'
 
+    @patch.object(ZmlpClient, 'get')
+    def test_get_clip(self, get_patch):
+        get_patch.return_value = {
+            'id': 'dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',
+            'assetId': '12345',
+            'timeline': 'foo',
+            'track': 'bar',
+            'start': 0.5,
+            'stop': 1.5,
+            'content': ['everybody dance now']
+        }
+        clip = self.app.clips.get_clip('abc123')
+        assert clip.id == 'dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg'
+        assert clip.asset_id == '12345'
+        assert clip.timeline == 'foo'
+        assert clip.track == 'bar'
+
 
 mock_clip_search_result = {
     'took': 4,

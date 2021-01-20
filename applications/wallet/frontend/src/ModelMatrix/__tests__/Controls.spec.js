@@ -1,4 +1,4 @@
-import TestRenderer, { act } from 'react-test-renderer'
+import TestRenderer, {act} from 'react-test-renderer'
 
 import ModelMatrixControls from '../Controls'
 
@@ -7,11 +7,7 @@ const noop = () => () => {}
 describe('<ModelMatrixControls', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
-      <ModelMatrixControls
-        settings={{ isNormalized: true }}
-        matrix={{ minScore: 0, maxScore: 1 }}
-        dispatch={noop}
-      />,
+      <ModelMatrixControls isNormalized dispatch={noop} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -19,11 +15,7 @@ describe('<ModelMatrixControls', () => {
 
   it('should not crash when min equals max', () => {
     const component = TestRenderer.create(
-      <ModelMatrixControls
-        settings={{ isNormalized: true }}
-        matrix={{ minScore: 0, maxScore: 0 }}
-        dispatch={noop}
-      />,
+      <ModelMatrixControls isNormalized dispatch={noop} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -33,11 +25,7 @@ describe('<ModelMatrixControls', () => {
     const mockDispatch = jest.fn()
 
     const component = TestRenderer.create(
-      <ModelMatrixControls
-        settings={{ isNormalized: true }}
-        matrix={{ minScore: 0, maxScore: 1 }}
-        dispatch={mockDispatch}
-      />,
+      <ModelMatrixControls isNormalized dispatch={mockDispatch} />,
     )
 
     // do nothing when value is unchanged
@@ -90,11 +78,7 @@ describe('<ModelMatrixControls', () => {
     const mockDispatch = jest.fn()
 
     const component = TestRenderer.create(
-      <ModelMatrixControls
-        settings={{ isNormalized: true }}
-        matrix={{ minScore: 0, maxScore: 1 }}
-        dispatch={mockDispatch}
-      />,
+      <ModelMatrixControls isNormalized dispatch={mockDispatch} />,
     )
 
     // do nothing when value is unchanged

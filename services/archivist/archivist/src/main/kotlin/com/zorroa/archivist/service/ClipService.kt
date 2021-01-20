@@ -2,14 +2,18 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.clients.EsRestClient
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.BatchUpdateClipProxyRequest
+import com.zorroa.archivist.domain.BatchUpdateResponse
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.ClipIdBuilder
+import com.zorroa.archivist.domain.UpdateClipProxyRequest
 import com.zorroa.archivist.domain.ClipSpec
 import com.zorroa.archivist.domain.CreateTimelineResponse
 import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.TimelineSpec
 import com.zorroa.archivist.domain.WebVTTFilter
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.util.bd
 import com.zorroa.archivist.util.formatDuration
 import com.zorroa.zmlp.service.logging.LogAction
@@ -17,6 +21,7 @@ import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.service.logging.warnEvent
 import com.zorroa.zmlp.util.Json
+import org.elasticsearch.action.DocWriteResponse
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
@@ -35,10 +40,12 @@ import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import java.io.OutputStream
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.util.UUID
 
 interface ClipService {
 
@@ -86,6 +93,21 @@ interface ClipService {
      * Delete a single clip.
      */
     fun deleteClip(id: String): Boolean
+
+    /**
+     * Set the proxy info ont the clip which contains the simhash and file data
+     */
+    fun setProxy(id: String, proxy: UpdateClipProxyRequest): Boolean
+
+    /**
+     * Set proxy data for multiple clips at one time.
+     */
+    fun batchSetProxy(req: BatchUpdateClipProxyRequest): BatchUpdateResponse
+
+    /**
+     * Get a clip by ID
+     */
+    fun getClip(id: String): Clip
 }
 
 @Service
@@ -95,6 +117,9 @@ class ClipServiceImpl(
 
     @Autowired
     private lateinit var assetService: AssetService
+
+    @Autowired
+    private lateinit var jobLaunchService: JobLaunchService
 
     override fun createClip(spec: ClipSpec): Clip {
         val rest = indexRoutingService.getProjectRestClient()
@@ -126,7 +151,9 @@ class ClipServiceImpl(
         req.source(doc)
 
         rest.client.index(req, RequestOptions.DEFAULT)
-        return Clip(id, asset.id, spec.timeline, spec.track, start, stop, spec.content, score.toDouble())
+        val clip = Clip(id, asset.id, spec.timeline, spec.track, start, stop, spec.content, score.toDouble())
+        jobLaunchService.launchCipAnalysisJob(clip)
+        return clip
     }
 
     override fun createClips(timeline: TimelineSpec): CreateTimelineResponse {
@@ -189,6 +216,15 @@ class ClipServiceImpl(
         if (bulkRequest.numberOfActions() > 0) {
             val rsp = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
             response.handleBulkResponse(rsp)
+        }
+
+        val jobId = getZmlpActor().getAttr("jobId")
+        if (jobId != null) {
+            val task = jobLaunchService.addTimelineAnalysisTask(UUID.fromString(jobId), timeline.assetId, timeline.name)
+            response.taskId = task.id
+        } else {
+            val job = jobLaunchService.launchTimelineAnalysisJob(timeline.assetId, timeline.name)
+            response.jobId = job.id
         }
 
         return response
@@ -347,6 +383,60 @@ class ClipServiceImpl(
         }
 
         logger.event(LogObject.CLIP, LogAction.DELETE, mapOf("total" to rsp.deleted))
+    }
+
+    override fun setProxy(id: String, proxy: UpdateClipProxyRequest): Boolean {
+        val clip = getClip(id)
+        val rest = indexRoutingService.getProjectRestClient()
+
+        val req = rest.newUpdateRequest(id)
+        req.doc(Json.serializeToString(mapOf("clip" to proxy)), XContentType.JSON)
+        req.routing(clip.assetId)
+
+        return rest.client.update(
+            req,
+            RequestOptions.DEFAULT
+        ).result == DocWriteResponse.Result.UPDATED
+    }
+
+    override fun batchSetProxy(req: BatchUpdateClipProxyRequest): BatchUpdateResponse {
+        val rest = indexRoutingService.getProjectRestClient()
+        if (req.updates.size > 1000) {
+            throw IllegalArgumentException("Batch size too large (1001+)")
+        }
+        val asset = assetService.getAsset(req.assetId)
+        val bulk = BulkRequest()
+        for ((id, prx) in req.updates) {
+            val req = rest.newUpdateRequest(id)
+            req.routing(asset.id)
+            req.doc(Json.serializeToString(mapOf("clip" to prx)), XContentType.JSON)
+            bulk.add(req)
+        }
+
+        val rsp = rest.client.bulk(bulk, RequestOptions.DEFAULT)
+
+        return if (rsp.hasFailures()) {
+            BatchUpdateResponse(rsp.filter { it.isFailed }.map { it.id to it.failureMessage }.toMap())
+        } else {
+            BatchUpdateResponse(mapOf())
+        }
+    }
+
+    override fun getClip(id: String): Clip {
+        // We have to use a search here because the clip is routed to the asset.
+        val rest = indexRoutingService.getProjectRestClient()
+        val ssb = SearchSourceBuilder()
+        ssb.query(QueryBuilders.termQuery("_id", id))
+        val req = rest.newSearchRequest()
+        ssb.size(1)
+        req.source(ssb)
+
+        val rsp = rest.client.search(req, RequestOptions.DEFAULT)
+        if (rsp.hits.hits.isEmpty()) {
+            throw EmptyResultDataAccessException("The Clip '$id' does not exist.", 1)
+        }
+
+        return Clip.fromMap(id, rsp.hits.hits[0].sourceAsMap["clip"] as Map<String, Any>)
     }
 
     companion object {

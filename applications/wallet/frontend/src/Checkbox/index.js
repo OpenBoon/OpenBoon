@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from 'react'
+import {useState} from 'react'
 import PropTypes from 'prop-types'
 
 import checkboxOptionShape from './optionShape'
 
-import { colors, spacing, typography, constants } from '../Styles'
+import {colors, constants, spacing, typography} from '../Styles'
 
 import CheckboxIcon from './Icon'
 
@@ -42,7 +42,7 @@ const STYLES = {
     main: {
       display: 'flex',
       flexDirection: 'column',
-      paddingLeft: spacing.comfy,
+      paddingLeft: spacing.normal,
     },
     value: {
       color: colors.structure.white,
