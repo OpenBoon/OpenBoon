@@ -113,47 +113,178 @@ const ModelDetails = () => {
 
   return (
     <>
-      {runningJobId && (
-        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
-          <FlashMessage variant={FLASH_VARIANTS.PROCESSING}>
-            &quot;{name}&quot; training in progress.{' '}
-            <Link
-              href="/[projectId]/jobs/[jobId]"
-              as={`/${projectId}/jobs/${runningJobId}`}
-              passHref
-            >
-              <a>Check Status</a>
-            </Link>
-          </FlashMessage>
-        </div>
-      )}
-
-      {error && (
-        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
-          <FlashMessage variant={FLASH_VARIANTS.ERROR}>{error}</FlashMessage>
-        </div>
-      )}
-
       <div css={{ display: 'flex', justifyContent: 'space-between' }}>
-        <ul
-          css={{
-            margin: 0,
-            padding: 0,
-            listStyle: 'none',
-            fontSize: typography.size.medium,
-            lineHeight: LINE_HEIGHT,
-          }}
-        >
-          <li>
-            <strong>Model Name:</strong> {name}
-          </li>
-          <li>
-            <strong>Model Type:</strong> {type}
-          </li>
-          <li>
-            <strong>Module Name:</strong> {moduleName}
-          </li>
-        </ul>
+        <div css={{ flexDirection: 'column' }}>
+          {runningJobId && (
+            <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
+              <FlashMessage variant={FLASH_VARIANTS.PROCESSING}>
+                &quot;{name}&quot; training in progress.{' '}
+                <Link
+                  href="/[projectId]/jobs/[jobId]"
+                  as={`/${projectId}/jobs/${runningJobId}`}
+                  passHref
+                >
+                  <a>Check Status</a>
+                </Link>
+              </FlashMessage>
+            </div>
+          )}
+
+          {error && (
+            <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
+              <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+                {error}
+              </FlashMessage>
+            </div>
+          )}
+
+          <div css={{ display: 'flex' }}>
+            <ul
+              css={{
+                margin: 0,
+                padding: 0,
+                listStyle: 'none',
+                fontSize: typography.size.medium,
+                lineHeight: LINE_HEIGHT,
+              }}
+            >
+              <li>
+                <strong>Model Name:</strong> {name}
+              </li>
+              <li>
+                <strong>Model Type:</strong> {type}
+              </li>
+              <li>
+                <strong>Module Name:</strong> {moduleName}
+              </li>
+            </ul>
+          </div>
+
+          <div
+            css={{
+              paddingTop: spacing.base,
+              fontStyle: typography.style.italic,
+              display: 'flex',
+              flexDirection: 'column',
+              span: {
+                paddingTop: spacing.small,
+              },
+            }}
+          >
+            {!!missingLabels && (
+              <span
+                css={{
+                  color: colors.signal.canary.base,
+                }}
+              >
+                {missingLabels} more{' '}
+                {missingLabels === 1 ? 'label is' : 'labels are'} required (min.
+                = {requiredLabels} unique)
+              </span>
+            )}
+
+            {!!missingLabelsOnAssets && (
+              <span
+                css={{
+                  color: colors.signal.canary.base,
+                }}
+              >
+                {missingLabelsOnAssets} more assets need to be labeled (min. ={' '}
+                {requiredAssetsPerLabel} of each label)
+              </span>
+            )}
+
+            {!missingLabels && !missingLabelsOnAssets && (
+              <span
+                css={{
+                  display: 'flex',
+                  color: colors.signal.grass.base,
+                }}
+              >
+                <CheckmarkSvg
+                  height={constants.icons.regular}
+                  color={colors.signal.grass.base}
+                />{' '}
+                Ready to train
+              </span>
+            )}
+          </div>
+
+          <ButtonGroup>
+            <Button
+              variant={BUTTON_VARIANTS.SECONDARY}
+              onClick={() =>
+                onTrain({
+                  model,
+                  deploy: false,
+                  projectId,
+                  modelId,
+                  setError,
+                })
+              }
+              isDisabled={
+                !unappliedChanges || !!missingLabels || !!missingLabelsOnAssets
+              }
+            >
+              Train
+            </Button>
+
+            <Button
+              variant={BUTTON_VARIANTS.SECONDARY}
+              onClick={() =>
+                onTrain({ model, deploy: true, projectId, modelId, setError })
+              }
+              isDisabled={
+                !unappliedChanges || !!missingLabels || !!missingLabelsOnAssets
+              }
+            >
+              Train &amp; Apply
+            </Button>
+
+            <Button
+              variant={BUTTON_VARIANTS.SECONDARY}
+              onClick={() => {
+                setDeleteModalOpen(true)
+              }}
+            >
+              Delete
+            </Button>
+
+            {isDeleteModalOpen && (
+              <Modal
+                title="Delete Model"
+                message="Deleting this model cannot be undone."
+                action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
+                onCancel={() => {
+                  setDeleteModalOpen(false)
+                }}
+                onConfirm={async () => {
+                  setIsDeleting(true)
+
+                  await fetcher(
+                    `/api/v1/projects/${projectId}/models/${modelId}/`,
+                    { method: 'DELETE' },
+                  )
+
+                  await revalidate({
+                    key: `/api/v1/projects/${projectId}/models/`,
+                    paginated: true,
+                  })
+
+                  await revalidate({
+                    key: `/api/v1/projects/${projectId}/models/all/`,
+                    paginated: false,
+                  })
+
+                  Router.push(
+                    '/[projectId]/models?action=delete-model-success',
+                    `/${projectId}/models`,
+                  )
+                }}
+              />
+            )}
+          </ButtonGroup>
+        </div>
 
         <Feature flag="ModelMatrixShortcut" envs={[]}>
           <ModelMatrixShortcut
@@ -163,125 +294,6 @@ const ModelDetails = () => {
           />
         </Feature>
       </div>
-
-      <div
-        css={{
-          paddingTop: spacing.base,
-          fontStyle: typography.style.italic,
-          display: 'flex',
-          flexDirection: 'column',
-          span: {
-            paddingTop: spacing.small,
-          },
-        }}
-      >
-        {!!missingLabels && (
-          <span
-            css={{
-              color: colors.signal.canary.base,
-            }}
-          >
-            {missingLabels} more{' '}
-            {missingLabels === 1 ? 'label is' : 'labels are'} required (min. ={' '}
-            {requiredLabels} unique)
-          </span>
-        )}
-
-        {!!missingLabelsOnAssets && (
-          <span
-            css={{
-              color: colors.signal.canary.base,
-            }}
-          >
-            {missingLabelsOnAssets} more assets need to be labeled (min. ={' '}
-            {requiredAssetsPerLabel} of each label)
-          </span>
-        )}
-
-        {!missingLabels && !missingLabelsOnAssets && (
-          <span
-            css={{
-              display: 'flex',
-              color: colors.signal.grass.base,
-            }}
-          >
-            <CheckmarkSvg
-              height={constants.icons.regular}
-              color={colors.signal.grass.base}
-            />{' '}
-            Ready to train
-          </span>
-        )}
-      </div>
-
-      <ButtonGroup>
-        <Button
-          variant={BUTTON_VARIANTS.SECONDARY}
-          onClick={() =>
-            onTrain({ model, deploy: false, projectId, modelId, setError })
-          }
-          isDisabled={
-            !unappliedChanges || !!missingLabels || !!missingLabelsOnAssets
-          }
-        >
-          Train
-        </Button>
-
-        <Button
-          variant={BUTTON_VARIANTS.SECONDARY}
-          onClick={() =>
-            onTrain({ model, deploy: true, projectId, modelId, setError })
-          }
-          isDisabled={
-            !unappliedChanges || !!missingLabels || !!missingLabelsOnAssets
-          }
-        >
-          Train &amp; Apply
-        </Button>
-
-        <Button
-          variant={BUTTON_VARIANTS.SECONDARY}
-          onClick={() => {
-            setDeleteModalOpen(true)
-          }}
-        >
-          Delete
-        </Button>
-
-        {isDeleteModalOpen && (
-          <Modal
-            title="Delete Model"
-            message="Deleting this model cannot be undone."
-            action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
-            onCancel={() => {
-              setDeleteModalOpen(false)
-            }}
-            onConfirm={async () => {
-              setIsDeleting(true)
-
-              await fetcher(
-                `/api/v1/projects/${projectId}/models/${modelId}/`,
-                { method: 'DELETE' },
-              )
-
-              await revalidate({
-                key: `/api/v1/projects/${projectId}/models/`,
-                paginated: true,
-              })
-
-              await revalidate({
-                key: `/api/v1/projects/${projectId}/models/all/`,
-                paginated: false,
-              })
-
-              Router.push(
-                '/[projectId]/models?action=delete-model-success',
-                `/${projectId}/models`,
-              )
-            }}
-          />
-        )}
-      </ButtonGroup>
 
       <Tabs
         tabs={[
