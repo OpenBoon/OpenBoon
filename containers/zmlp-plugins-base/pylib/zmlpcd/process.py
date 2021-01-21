@@ -9,11 +9,14 @@ import time
 from queue import Queue
 
 import requests
+import sentry_sdk
 
 from zmlp import Asset
 from zmlpsdk import Frame, Context, ZmlpFatalProcessorException, ZmlpEnv
 from .logs import AssetLogger
 
+sentry_sdk.init('https://8d2c5bb15a2241349c05f8915e10a888@o280392.ingest.sentry.io/5600983',
+                environment=os.environ.get('ENVIRONMENT', 'local-dev'))
 logger = logging.getLogger(__name__)
 
 
@@ -493,12 +496,15 @@ class ProcessorWrapper(object):
             'image_count': image_count,
             'video_minutes': video_minutes,
         }
+        sentry_sdk.set_context('billing_metric', body)
         try:
             response = requests.post(url, json=body)
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError as e:
             msg = (f'Unable to register billing metrics. {response.status_code}: '
                    f'{response.reason}')
             logger.warning(msg)
+            sentry_sdk.capture_message(msg)
+            sentry_sdk.capture_exception(e)
             msg = f'Metric missed: {body}'
             logger.warning(msg)
 
@@ -510,6 +516,7 @@ class ProcessorWrapper(object):
                 msg = (f'Unable to register billing metrics. {response.status_code}: '
                        f'{response.reason}')
                 logger.warning(msg)
+                sentry_sdk.capture_message(msg)
                 msg = f'Metric missed: {body}'
                 logger.warning(msg)
 
