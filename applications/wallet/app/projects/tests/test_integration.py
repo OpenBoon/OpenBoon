@@ -1,7 +1,9 @@
 import base64
 import copy
+import requests
 from datetime import datetime
 from uuid import uuid4
+from unittest.mock import Mock, patch
 
 import pytest
 from django.core.exceptions import ValidationError
@@ -12,7 +14,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from zmlp import ZmlpClient
 from zmlp.client import (ZmlpDuplicateException, ZmlpInvalidRequestException,
-                         ZmlpNotFoundException)
+                         ZmlpNotFoundException, ZmlpConnectionException)
 
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
@@ -250,6 +252,64 @@ def make_users_for_project(project, count, user_model, apikey):
                                   apikey=base64.b64encode(apikey).decode('utf-8'))
         users.append(user)
     return users
+
+
+class TestMlUsageThisMonth:
+
+    @patch('requests.get')
+    def test_get(self, requests_mock, project, api_client, login):
+        requests_mock.return_value = Mock(json=Mock(return_value={'key': 'value'}))
+        url = reverse('project-ml-usage-this-month', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {'key': 'value'}
+        assert requests_mock.called
+
+    @patch('requests.get')
+    def test_get_connection_error(self, requests_mock, project, api_client, login):
+        requests_mock.side_effect = requests.exceptions.ConnectionError()
+        url = reverse('project-ml-usage-this-month', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {}
+
+    @patch('requests.get')
+    def test_get_bad_status(self, requests_mock, project, api_client, login):
+        response = requests.models.Response()
+        response.status_code = 400
+        requests_mock.return_value = response
+        url = reverse('project-ml-usage-this-month', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {}
+
+
+class TestTotalStorageUsage:
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get(self, client_mock, project, api_client, login):
+        client_mock.return_value = {'videoSecondsCount': 3601,
+                                    'pageCount': 1000}
+        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {'image_count': 1000, 'video_hours': 2}
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get_connection_error(self, client_mock, project, api_client, login):
+        client_mock.side_effect = requests.exceptions.ConnectionError()
+        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {}
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get_zmlp_connection_exception(self, client_mock, project, api_client, login):
+        client_mock.side_effect = ZmlpConnectionException()
+        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {}
 
 
 class TestProjectUserGet:
