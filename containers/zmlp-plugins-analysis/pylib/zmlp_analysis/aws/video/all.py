@@ -25,6 +25,7 @@ __all__ = [
     'BlackFramesVideoDetectProcessor'
 ]
 
+
 class AbstractVideoDetectProcessor(AssetProcessor):
     """ AWS Rekognition for Video Detection"""
     namespace = 'aws-video-detection'
