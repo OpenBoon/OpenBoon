@@ -20,7 +20,7 @@ cvlib
 matplotlib
 clarifai
 pytesseract
-pytorch
+torch
 torchvision
 facenet-pytorch
 boto3
