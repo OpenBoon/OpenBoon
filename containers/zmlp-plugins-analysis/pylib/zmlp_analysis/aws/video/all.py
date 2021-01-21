@@ -3,8 +3,6 @@
 # see https://github.com/awsdocs/amazon-rekognition-developer-guide/blob/master/LICENSE-SAMPLECODE.)
 
 import os
-import tempfile
-import logging
 
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlp_analysis.utils.prechecks import Prechecks
