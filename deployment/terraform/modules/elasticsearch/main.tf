@@ -26,14 +26,10 @@ resource "google_project_iam_member" "elasticsearch" {
   member  = "serviceAccount:${google_service_account.elasticsearch.email}"
 }
 
-resource "time_rotating" "es-sa-key-rotation" {
-  rotation_days = 7
-}
-
 resource "google_service_account_key" "elasticsearch" {
   service_account_id = google_service_account.elasticsearch.name
   keepers = {
-    rotation_time = time_rotating.es-sa-key-rotation.rotation_rfc3339
+    "created_date" : timestamp()
   }
 }
 

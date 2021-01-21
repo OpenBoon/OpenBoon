@@ -46,14 +46,10 @@ resource "google_project_iam_member" "cloud-sql-proxy-iam" {
   member  = "serviceAccount:${google_service_account.cloud-sql-proxy.email}"
 }
 
-resource "time_rotating" "cloud-sql-sa-key-rotation" {
-  rotation_days = 7
-}
-
 resource "google_service_account_key" "cloud-sql-account-key" {
   service_account_id = google_service_account.cloud-sql-proxy.name
   keepers = {
-    rotation_time = time_rotating.cloud-sql-sa-key-rotation.rotation_rfc3339
+    "created_date" : timestamp()
   }
 }
 
