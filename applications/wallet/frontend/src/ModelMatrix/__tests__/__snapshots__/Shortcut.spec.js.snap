@@ -1,0 +1,688 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModelMatrixShortcut /> should render properly when a matrix does not yet exist 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  width: 130px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  opacity: 1;
+  position: relative;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  display: grid;
+  grid-template: repeat(4, 1fr)/repeat(4, 1fr);
+}
+
+.emotion-3 {
+  padding-bottom: 100%;
+  background-color: #252525;
+}
+
+.emotion-3:not(:nth-of-type(4n)) {
+  border-right: 1px solid #3b3b3b;
+}
+
+.emotion-3:not(:nth-of-type(n + 13)) {
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-19 {
+  width: 200px;
+}
+
+.emotion-20 {
+  font-style: italic;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+    </div>
+  </div>
+  <div
+    className="emotion-19"
+  >
+    <div
+      className="emotion-20"
+    >
+      Train the model to view the confusion matrix.
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ModelMatrixShortcut /> should render properly when a matrix exists 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  width: 130px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  opacity: 1;
+  position: relative;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  display: grid;
+  grid-template: repeat(11, 1fr)/repeat(11, 1fr);
+}
+
+.emotion-3 {
+  padding-bottom: 100%;
+  background-color: rgb(NaN,NaN,NaN);
+}
+
+.emotion-14 {
+  padding-bottom: 100%;
+  background-color: rgb(215,238,255);
+}
+
+.emotion-15 {
+  padding-bottom: 100%;
+  background-color: rgb(0,69,147);
+}
+
+.emotion-16 {
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+}
+
+.emotion-25 {
+  padding-bottom: 100%;
+  background-color: rgb(174,221,255);
+}
+
+.emotion-26 {
+  padding-bottom: 100%;
+  background-color: rgb(0,98,187);
+}
+
+.emotion-36 {
+  padding-bottom: 100%;
+  background-color: rgb(134,205,255);
+}
+
+.emotion-37 {
+  padding-bottom: 100%;
+  background-color: rgb(0,128,227);
+}
+
+.emotion-47 {
+  padding-bottom: 100%;
+  background-color: rgb(93,188,255);
+}
+
+.emotion-48 {
+  padding-bottom: 100%;
+  background-color: rgb(12,154,255);
+}
+
+.emotion-58 {
+  padding-bottom: 100%;
+  background-color: rgb(53,171,255);
+}
+
+.emotion-113 {
+  padding-bottom: 100%;
+  background-color: rgb(0,39,107);
+}
+
+.emotion-124 {
+  width: 200px;
+}
+
+.emotion-125 {
+  font-weight: 700;
+  padding-bottom: 16px;
+}
+
+.emotion-126 {
+  font-weight: 400;
+}
+
+.emotion-127 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+}
+
+.emotion-127,
+.emotion-127:hover,
+.emotion-127:visited,
+.emotion-127 .noop {
+  background-color: #808080;
+}
+
+.emotion-127:hover,
+.emotion-127 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-127[aria-disabled=true],
+.emotion-127 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-14"
+      />
+      <div
+        className="emotion-15"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-25"
+      />
+      <div
+        className="emotion-26"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-36"
+      />
+      <div
+        className="emotion-37"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-47"
+      />
+      <div
+        className="emotion-48"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-58"
+      />
+      <div
+        className="emotion-58"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-48"
+      />
+      <div
+        className="emotion-47"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-37"
+      />
+      <div
+        className="emotion-36"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-26"
+      />
+      <div
+        className="emotion-25"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-15"
+      />
+      <div
+        className="emotion-14"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-113"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+      <div
+        className="emotion-16"
+      />
+    </div>
+  </div>
+  <div
+    className="emotion-124"
+  >
+    <div
+      className="emotion-125"
+    >
+      Confusion Matrix 
+      <br />
+      Overall Accuracy:
+       
+      <span
+        className="emotion-126"
+      >
+        70
+        %
+      </span>
+    </div>
+    <Link
+      as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/matrix"
+      href="/[projectId]/models/[modelId]/matrix"
+      passHref={true}
+    >
+      <button
+        className="emotion-127"
+        onClick={[Function]}
+        type="button"
+      >
+        View Matrix
+      </button>
+    </Link>
+  </div>
+</div>
+`;
+
+exports[`<ModelMatrixShortcut /> should render properly when a matrix will never exist 1`] = `
+.emotion-0 {
+  width: 200px;
+  color: #808080;
+  font-style: italic;
+}
+
+<div
+  className="emotion-0"
+>
+  A confusion matrix is not available for this model type.
+</div>
+`;

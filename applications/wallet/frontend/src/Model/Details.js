@@ -25,7 +25,7 @@ import Tabs from '../Tabs'
 import ModelAssets from '../ModelAssets'
 import ModelAssetsDropdown from '../ModelAssets/Dropdown'
 import ModelLabels from '../ModelLabels'
-import ModelMatrixMinimap from '../ModelMatrix/Minimap'
+import ModelMatrixShortcut from '../ModelMatrix/Shortcut'
 import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
 import Feature from '../Feature'
@@ -33,8 +33,6 @@ import Feature from '../Feature'
 import { onTrain } from './helpers'
 
 const LINE_HEIGHT = '23px'
-
-const noop = () => () => {}
 
 const ModelDetails = () => {
   const {
@@ -157,51 +155,12 @@ const ModelDetails = () => {
           </li>
         </ul>
 
-        <Feature flag="ViewModelMatrix" envs={[]}>
-          {matrix.isMatrixApplicable && (
-            <div css={{ display: 'flex' }}>
-              <div css={{ width: 130, paddingRight: spacing.normal }}>
-                <ModelMatrixMinimap
-                  matrix={matrix}
-                  settings={{
-                    width: 0,
-                    height: 0,
-                    labelsWidth: 0,
-                    isMinimapOpen: true,
-                    zoom: 1,
-                  }}
-                  isStatic
-                />
-              </div>
-              <div>
-                <div
-                  css={{
-                    fontWeight: typography.weight.bold,
-                    paddingBottom: spacing.normal,
-                  }}
-                >
-                  Confusion Matrix <br />
-                  Overall Accuracy:{' '}
-                  <span css={{ fontWeight: typography.weight.regular }}>
-                    {Math.round(matrix.overallAccuracy * 100)}%
-                  </span>
-                </div>
-                <Link
-                  href="/[projectId]/models/[modelId]/matrix"
-                  as={`/${projectId}/models/${modelId}/matrix`}
-                  passHref
-                >
-                  <Button
-                    variant={BUTTON_VARIANTS.SECONDARY}
-                    // style={{ width: 'min-content', padding: spacing.moderate }}
-                    onClick={noop}
-                  >
-                    View Matrix
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          )}
+        <Feature flag="ModelMatrixShortcut" envs={[]}>
+          <ModelMatrixShortcut
+            projectId={projectId}
+            modelId={modelId}
+            matrix={matrix}
+          />
         </Feature>
       </div>
 

@@ -15,6 +15,7 @@ const noop = () => () => {}
 
 jest.mock('next/link', () => 'Link')
 jest.mock('../../ModelAssets', () => 'ModelAssets')
+jest.mock('../../ModelMatrix/Shortcut', () => 'ModelMatrixShortcut')
 
 describe('<ModelDetails />', () => {
   it('should handle train errors properly', async () => {
