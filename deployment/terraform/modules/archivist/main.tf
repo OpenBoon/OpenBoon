@@ -69,14 +69,10 @@ resource "google_project_iam_member" "archivist" {
   depends_on = [google_project_iam_custom_role.archivist, google_service_account.archivist]
 }
 
-resource "time_rotating" "archivist-sa-key-rotation" {
-  rotation_days = 7
-}
-
 resource "google_service_account_key" "archivist" {
   service_account_id = google_service_account.archivist.name
   keepers = {
-    rotation_time = time_rotating.archivist-sa-key-rotation.rotation_rfc3339
+    "created_date" : timestamp()
   }
 }
 
