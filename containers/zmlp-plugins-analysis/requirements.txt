@@ -20,6 +20,8 @@ cvlib
 matplotlib
 clarifai
 pytesseract
+pytorch
+torchvision
 facenet-pytorch
 boto3
 nameparser
