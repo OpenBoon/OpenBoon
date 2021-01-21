@@ -9,7 +9,7 @@ import logging
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlp_analysis.utils.prechecks import Prechecks
 from zmlp_analysis.aws.util import AwsEnv
-from zmlp_analysis.aws.videos import util
+from zmlp_analysis.aws.video import util
 from zmlpsdk import AssetProcessor, Argument, FileTypes, ZmlpEnv, file_storage, proxy, clips, video
 
 logger = logging.getLogger(__name__)

@@ -1,6 +1,6 @@
 from .conftest import MockSNSClient, MockSQSClient, MockRekClient
 
-from zmlp_analysis.aws.videos import util
+from zmlp_analysis.aws.video import util
 from zmlpsdk.testing import PluginUnitTestCase
 
 sns_client = MockSNSClient()
