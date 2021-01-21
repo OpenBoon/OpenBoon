@@ -48,7 +48,7 @@ class TestSearchViewSetList:
         assert results[0]['name'] == 'Test Search'
         assert results[0]['project'] == project.id
         assert results[0]['search']['query']['prefix']['files.name']['value'] == 'image'
-        assert results[0]['createdBy'] == zmlp_project_membership.id
+        assert results[0]['createdBy'] == zmlp_project_membership.user.id
 
     def test_list_filters_by_project(self, zmlp_project_membership, login, api_client, project,
                                      project2, search, query):
@@ -70,7 +70,7 @@ class TestSearchViewSetRetrieve:
         assert result['name'] == 'Test Search'
         assert result['project'] == project.id
         assert result['search']['query']['prefix']['files.name']['value'] == 'image'
-        assert result['createdBy'] == zmlp_project_membership.id
+        assert result['createdBy'] == zmlp_project_membership.user.id
 
 
 class TestSearchViewSetCreate:
