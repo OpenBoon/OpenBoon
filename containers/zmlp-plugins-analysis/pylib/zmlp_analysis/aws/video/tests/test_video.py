@@ -35,7 +35,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.video.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
-    @patch('zmlp_analysis.aws.video.proxy.get_video_proxy')
+    @patch('zmlp_analysis.aws.video.all.proxy.get_video_proxy')
     def test_process_label_detection(self, get_prx_patch, store_patch, store_blob_patch,
                                      _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
@@ -43,7 +43,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(video.LabelVideoDetectProcessor())
+        processor = self.init_processor(video.RekognitionLabelDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(asset)
@@ -62,7 +62,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.video.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
-    @patch('zmlp_analysis.aws.video.proxy.get_video_proxy')
+    @patch('zmlp_analysis.aws.video.all.proxy.get_video_proxy')
     def test_process_text_detection(self, get_prx_patch, store_patch, store_blob_patch,
                                     _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
@@ -70,7 +70,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(video.TextVideoDetectProcessor())
+        processor = self.init_processor(video.RekognitionTextDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(asset)
@@ -89,7 +89,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.video.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
-    @patch('zmlp_analysis.aws.video.proxy.get_video_proxy')
+    @patch('zmlp_analysis.aws.video.all.proxy.get_video_proxy')
     def test_process_face_detection(self, get_prx_patch, store_patch, store_blob_patch,
                                     _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
@@ -97,7 +97,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(video.FaceVideoDetectProcessor())
+        processor = self.init_processor(video.RekognitionFaceDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(asset)
@@ -116,7 +116,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.video.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
-    @patch('zmlp_analysis.aws.video.proxy.get_video_proxy')
+    @patch('zmlp_analysis.aws.video.all.proxy.get_video_proxy')
     def test_process_unsafe_detection(self, get_prx_patch, store_patch, store_blob_patch,
                                       _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
@@ -124,7 +124,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(video.UnsafeVideoDetectProcessor())
+        processor = self.init_processor(video.RekognitionUnsafeDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(asset)
@@ -143,7 +143,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.video.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
-    @patch('zmlp_analysis.aws.video.proxy.get_video_proxy')
+    @patch('zmlp_analysis.aws.video.all.proxy.get_video_proxy')
     def test_process_celebrity_detection(self, get_prx_patch, store_patch, store_blob_patch,
                                          _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
@@ -151,7 +151,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(video.CelebrityVideoDetectProcessor())
+        processor = self.init_processor(video.RekognitionCelebrityDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(asset)
@@ -170,7 +170,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.video.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
-    @patch('zmlp_analysis.aws.video.proxy.get_video_proxy')
+    @patch('zmlp_analysis.aws.video.all.proxy.get_video_proxy')
     def test_process_person_tracking(self, get_prx_patch, store_patch, store_blob_patch,
                                      _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
@@ -178,7 +178,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(video.PeoplePathingVideoDetectProcessor())
+        processor = self.init_processor(video.RekognitionPeoplePathingDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(asset)
@@ -197,7 +197,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.video.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
-    @patch('zmlp_analysis.aws.video.proxy.get_video_proxy')
+    @patch('zmlp_analysis.aws.video.all.proxy.get_video_proxy')
     def test_process_black_frame_detection(self, get_prx_patch, store_patch, store_blob_patch,
                                            _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)
@@ -224,7 +224,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.video.util.get_sqs_message_success', return_value=True)
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
-    @patch('zmlp_analysis.aws.video.proxy.get_video_proxy')
+    @patch('zmlp_analysis.aws.video.all.proxy.get_video_proxy')
     def test_process_end_credits_detection(self, get_prx_patch, store_patch, store_blob_patch,
                                            _, __, ___, ____, _____, ______):
         video_path = zorroa_test_path(VID_MP4)

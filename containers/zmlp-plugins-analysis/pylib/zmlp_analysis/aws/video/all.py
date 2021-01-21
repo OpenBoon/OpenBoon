@@ -14,6 +14,16 @@ from zmlpsdk import AssetProcessor, Argument, FileTypes, ZmlpEnv, file_storage, 
 
 logger = logging.getLogger(__name__)
 
+__all__ = [
+    'RekognitionLabelDetection',
+    'RekognitionTextDetection',
+    'RekognitionFaceDetection',
+    'RekognitionCelebrityDetection',
+    'RekognitionUnsafeDetection',
+    'RekognitionPeoplePathingDetection',
+    'EndCreditsVideoDetectProcessor',
+    'BlackFramesVideoDetectProcessor'
+]
 
 class AbstractVideoDetectProcessor(AssetProcessor):
     """ AWS Rekognition for Video Detection"""
@@ -163,12 +173,12 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         raise NotImplementedError
 
 
-class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
+class RekognitionLabelDetection(AbstractVideoDetectProcessor):
     """ Label Detection for Videos using AWS Rekognition """
     namespace = 'aws-label-detection'
 
     def __init__(self):
-        super(LabelVideoDetectProcessor, self).__init__(detector_func='start_label_detection')
+        super(RekognitionLabelDetection, self).__init__(detector_func='start_label_detection')
 
     def get_detection_results(self, clip_tracker, rek_client, start_job_id, local_video_path,
                               max_results=10):
@@ -216,12 +226,12 @@ class LabelVideoDetectProcessor(AbstractVideoDetectProcessor):
         return clip_tracker, attribs
 
 
-class TextVideoDetectProcessor(AbstractVideoDetectProcessor):
+class RekognitionTextDetection(AbstractVideoDetectProcessor):
     """ Text Detection for Videos using AWS Rekognition """
     namespace = 'aws-text-detection'
 
     def __init__(self):
-        super(TextVideoDetectProcessor, self).__init__(detector_func='start_text_detection')
+        super(RekognitionTextDetection, self).__init__(detector_func='start_text_detection')
 
     def get_detection_results(self, clip_tracker, rek_client, start_job_id, local_video_path,
                               max_results=10):
@@ -271,12 +281,12 @@ class TextVideoDetectProcessor(AbstractVideoDetectProcessor):
         return clip_tracker, attribs
 
 
-class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
+class RekognitionFaceDetection(AbstractVideoDetectProcessor):
     """ Face Detection for Videos using AWS Rekognition """
     namespace = 'aws-face-detection'
 
     def __init__(self):
-        super(FaceVideoDetectProcessor, self).__init__(detector_func='start_face_detection')
+        super(RekognitionFaceDetection, self).__init__(detector_func='start_face_detection')
 
     def get_detection_results(self, clip_tracker, rek_client, start_job_id, local_video_path,
                               max_results=10):
@@ -327,12 +337,12 @@ class FaceVideoDetectProcessor(AbstractVideoDetectProcessor):
         return clip_tracker, attribs
 
 
-class UnsafeVideoDetectProcessor(AbstractVideoDetectProcessor):
+class RekognitionUnsafeDetection(AbstractVideoDetectProcessor):
     """ Content Moderation Detection for Videos using AWS Rekognition """
     namespace = 'aws-unsafe-detection'
 
     def __init__(self):
-        super(UnsafeVideoDetectProcessor, self).__init__(detector_func='start_content_moderation')
+        super(RekognitionUnsafeDetection, self).__init__(detector_func='start_content_moderation')
 
     def get_detection_results(self, clip_tracker, rek_client, start_job_id, local_video_path,
                               max_results=10):
@@ -382,12 +392,12 @@ class UnsafeVideoDetectProcessor(AbstractVideoDetectProcessor):
         return clip_tracker, attribs
 
 
-class CelebrityVideoDetectProcessor(AbstractVideoDetectProcessor):
+class RekognitionCelebrityDetection(AbstractVideoDetectProcessor):
     """ Celebrity Detection for Videos using AWS Rekognition """
     namespace = 'aws-celebrity-detection'
 
     def __init__(self):
-        super(CelebrityVideoDetectProcessor, self).__init__(
+        super(RekognitionCelebrityDetection, self).__init__(
             detector_func='start_celebrity_recognition')
 
     def get_detection_results(self, clip_tracker, rek_client, start_job_id, local_video_path,
@@ -438,12 +448,12 @@ class CelebrityVideoDetectProcessor(AbstractVideoDetectProcessor):
         return clip_tracker, attribs
 
 
-class PeoplePathingVideoDetectProcessor(AbstractVideoDetectProcessor):
+class RekognitionPeoplePathingDetection(AbstractVideoDetectProcessor):
     """ People Tracking for Videos using AWS Rekognition """
     namespace = 'aws-person-tracking-detection'
 
     def __init__(self):
-        super(PeoplePathingVideoDetectProcessor, self).__init__(
+        super(RekognitionPeoplePathingDetection, self).__init__(
             detector_func='start_person_tracking')
 
     def get_detection_results(self, clip_tracker, rek_client, start_job_id, local_video_path,

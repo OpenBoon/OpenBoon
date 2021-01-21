@@ -60,7 +60,7 @@ class AmazonVideoProcessorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(videos.LabelVideoDetectProcessor())
+        processor = self.init_processor(videos.RekognitionLabelDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(self.asset)
@@ -76,7 +76,7 @@ class AmazonVideoProcessorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(videos.TextVideoDetectProcessor())
+        processor = self.init_processor(videos.RekognitionTextDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(self.asset)
@@ -92,7 +92,7 @@ class AmazonVideoProcessorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(videos.FaceVideoDetectProcessor())
+        processor = self.init_processor(videos.RekognitionFaceDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(self.asset)
@@ -108,7 +108,7 @@ class AmazonVideoProcessorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(videos.UnsafeVideoDetectProcessor())
+        processor = self.init_processor(videos.RekognitionUnsafeDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(self.asset)
@@ -124,7 +124,7 @@ class AmazonVideoProcessorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(videos.CelebrityVideoDetectProcessor())
+        processor = self.init_processor(videos.RekognitionCelebrityDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(self.asset)
@@ -140,7 +140,7 @@ class AmazonVideoProcessorTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(videos.PeoplePathingVideoDetectProcessor())
+        processor = self.init_processor(videos.RekognitionPeoplePathingDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', MEDIA_LENGTH)
         frame = Frame(self.asset)
