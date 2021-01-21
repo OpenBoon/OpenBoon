@@ -199,7 +199,6 @@ class RekognitionLabelDetection(AbstractVideoDetectProcessor):
         pagination_token = ''
         finished = False
 
-        output_path = tempfile.mkstemp(".jpg")[1]
         while not finished:
             response = rek_client.get_label_detection(JobId=start_job_id,
                                                       MaxResults=max_results,
@@ -212,7 +211,6 @@ class RekognitionLabelDetection(AbstractVideoDetectProcessor):
                 start_time = labelDetection['Timestamp'] / 1000  # ms to s
 
                 attribs.add((name, confidence))
-                video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [name])
 
             if 'NextToken' in response:
@@ -249,7 +247,6 @@ class RekognitionTextDetection(AbstractVideoDetectProcessor):
         pagination_token = ''
         finished = False
 
-        output_path = tempfile.mkstemp(".jpg")[1]
         while not finished:
             response = rek_client.get_text_detection(
                 JobId=start_job_id,
@@ -264,7 +261,6 @@ class RekognitionTextDetection(AbstractVideoDetectProcessor):
                 start_time = textDetection['Timestamp'] / 1000  # ms to s
 
                 attribs.add((detected_text, confidence))
-                video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [detected_text])
 
             if 'NextToken' in response:
@@ -302,7 +298,6 @@ class RekognitionFaceDetection(AbstractVideoDetectProcessor):
         finished = False
         counter = 0
 
-        output_path = tempfile.mkstemp(".jpg")[1]
         while not finished:
             response = rek_client.get_face_detection(
                 JobId=start_job_id,
@@ -316,7 +311,6 @@ class RekognitionFaceDetection(AbstractVideoDetectProcessor):
                 start_time = faceDetection['Timestamp'] / 1000  # ms to s
 
                 attribs.add((f"face{i}", confidence))
-                video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [f"face{i}"])
             counter = i
 
@@ -354,7 +348,6 @@ class RekognitionUnsafeDetection(AbstractVideoDetectProcessor):
         pagination_token = ''
         finished = False
 
-        output_path = tempfile.mkstemp(".jpg")[1]
         while not finished:
             response = rek_client.get_content_moderation(
                 JobId=start_job_id,
@@ -369,7 +362,6 @@ class RekognitionUnsafeDetection(AbstractVideoDetectProcessor):
                 start_time = contentModerationDetection['Timestamp'] / 1000  # ms to s
 
                 attribs.add((name, confidence))
-                video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [name])
 
             if 'NextToken' in response:
@@ -407,7 +399,6 @@ class RekognitionCelebrityDetection(AbstractVideoDetectProcessor):
         pagination_token = ''
         finished = False
 
-        output_path = tempfile.mkstemp(".jpg")[1]
         while not finished:
             response = rek_client.get_celebrity_recognition(
                 JobId=start_job_id,
@@ -422,7 +413,6 @@ class RekognitionCelebrityDetection(AbstractVideoDetectProcessor):
                 start_time = celebrityRecognition['Timestamp'] / 1000  # ms to s
 
                 attribs.add((name, confidence))
-                video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [name])
 
             if 'NextToken' in response:
@@ -461,7 +451,6 @@ class RekognitionPeoplePathingDetection(AbstractVideoDetectProcessor):
         finished = False
         counter = 0
 
-        output_path = tempfile.mkstemp(".jpg")[1]
         while not finished:
             response = rek_client.get_person_tracking(
                 JobId=start_job_id,
@@ -475,7 +464,6 @@ class RekognitionPeoplePathingDetection(AbstractVideoDetectProcessor):
                 start_time = personDetection['Timestamp'] / 1000  # ms to s
 
                 attribs.add((f"person{i}", confidence))
-                video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [f"person{i}"])
             counter = i
 
@@ -550,7 +538,6 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
         pagination_token = ''
         finished = False
 
-        output_path = tempfile.mkstemp(".jpg")[1]
         while not finished:
             response = rek_client.get_segment_detection(JobId=start_job_id,
                                                         MaxResults=max_results,
@@ -563,8 +550,6 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
                         start_time = segment['StartTimestampMillis'] / 1000  # ms to s
 
                         attribs.add((segment_type, confidence))
-                        video.extract_thumbnail_from_video(local_video_path, output_path,
-                                                           start_time)
                         clip_tracker.append(start_time, [segment_type])
 
             if 'NextToken' in response:
