@@ -11,12 +11,12 @@ from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get
 
 
 class PytorchModelImageClassifierTests(PluginUnitTestCase):
-    model_id = "model-id-34567"
+    model_id = "model-id-34568"
     base_dir = os.path.dirname(__file__)
 
     def setUp(self):
         try:
-            shutil.rmtree("/tmp/model-cache/models_model-id-34567_foo_bar")
+            shutil.rmtree("/tmp/model-cache/models_model-id-34568_foo_bar")
         except FileNotFoundError:
             print("Didn't clear out model cache, this is ok.")
 
