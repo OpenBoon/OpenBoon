@@ -4,12 +4,11 @@
 
 import os
 
-from zmlpsdk.analysis import LabelDetectionAnalysis
-from zmlp_analysis.utils.prechecks import Prechecks
 from zmlp_analysis.aws.util import AwsEnv
 from zmlp_analysis.aws.video import util
+from zmlp_analysis.utils.prechecks import Prechecks
 from zmlpsdk import AssetProcessor, Argument, FileTypes, ZmlpEnv, file_storage, proxy, clips, video
-
+from zmlpsdk.analysis import LabelDetectionAnalysis
 
 __all__ = [
     'RekognitionLabelDetection',
@@ -459,10 +458,9 @@ class RekognitionPeoplePathingDetection(AbstractVideoDetectProcessor):
 
             for i, personDetection in enumerate(response['Persons'], counter):
                 person = personDetection['Person']
-                # confidence = person['Face']['Confidence']
+                confidence = person['Face']['Confidence']
                 start_time = personDetection['Timestamp'] / 1000.0  # ms to s
-
-                clip_tracker.append(start_time, [f"person{i}"])
+                clip_tracker.append(start_time, {"person": confidence})
             counter = i
 
             if 'NextToken' in response:
