@@ -107,10 +107,8 @@ def test_project_serializer_detail(project):
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
-    assert datetime.fromisoformat(
-        data['createdDate'].replace('Z', '+00:00')) == project.createdDate
-    assert datetime.fromisoformat(
-        data['modifiedDate'].replace('Z', '+00:00')) == project.modifiedDate
+    assert datetime.fromisoformat(data['createdDate'].replace('Z', '+00:00')) == project.createdDate
+    assert datetime.fromisoformat(data['modifiedDate'].replace('Z', '+00:00')) == project.modifiedDate
     assert data['url'] == f'/api/v1/projects/{project.id}/'
     assert data['jobs'] == f'/api/v1/projects/{project.id}/jobs/'
     assert data['users'] == f'/api/v1/projects/{project.id}/users/'
@@ -286,16 +284,37 @@ class TestMlUsageThisMonth:
 
 class TestTotalStorageUsage:
 
-    @patch.object(ZmlpClient, 'get')
+    @patch.object(ZmlpClient, 'post')
     def test_get(self, client_mock, project, api_client, login):
-        client_mock.return_value = {'videoSecondsCount': 3601,
-                                    'pageCount': 1000}
+        mock_responses = [{'hits': {'total': {'value': 1000}}},
+                          {'aggregations': {'sum#video_seconds': {'value': 3601}}}]
+        client_mock.side_effect = mock_responses
         url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
         response = api_client.get(url)
         assert response.status_code == 200
         assert response.json() == {'image_count': 1000, 'video_hours': 2}
 
-    @patch.object(ZmlpClient, 'get')
+    @patch.object(ZmlpClient, 'post')
+    def test_get_image_error(self, client_mock, project, api_client, login):
+        mock_responses = [requests.exceptions.ConnectionError(),
+                          {'aggregations': {'sum#video_seconds': {'value': 3601}}}]
+        client_mock.side_effect = mock_responses
+        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {'video_hours': 2}
+
+    @patch.object(ZmlpClient, 'post')
+    def test_get_video_error(self, client_mock, project, api_client, login):
+        mock_responses = [{'hits': {'total': {'value': 1000}}},
+                          requests.exceptions.ConnectionError()]
+        client_mock.side_effect = mock_responses
+        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {'image_count': 1000}
+
+    @patch.object(ZmlpClient, 'post')
     def test_get_connection_error(self, client_mock, project, api_client, login):
         client_mock.side_effect = requests.exceptions.ConnectionError()
         url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
@@ -303,7 +322,7 @@ class TestTotalStorageUsage:
         assert response.status_code == 200
         assert response.json() == {}
 
-    @patch.object(ZmlpClient, 'get')
+    @patch.object(ZmlpClient, 'post')
     def test_get_zmlp_connection_exception(self, client_mock, project, api_client, login):
         client_mock.side_effect = ZmlpConnectionException()
         url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
