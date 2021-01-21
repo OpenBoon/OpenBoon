@@ -41,6 +41,7 @@ resource "kubernetes_secret" "elasticsearch" {
   data = {
     "credentials.json" = base64decode(google_service_account_key.elasticsearch.private_key)
   }
+  depends_on = [google_service_account_key.elasticsearch]
 }
 
 resource "google_container_node_pool" "elasticsearch" {

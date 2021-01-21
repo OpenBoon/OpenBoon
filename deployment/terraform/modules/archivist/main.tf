@@ -84,6 +84,7 @@ resource "kubernetes_secret" "archivist-sa-key" {
   data = {
     "credentials.json" = base64decode(google_service_account_key.archivist.private_key)
   }
+  depends_on = [google_service_account_key.archivist]
 }
 
 ## K8S Deployment
