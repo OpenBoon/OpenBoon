@@ -208,7 +208,7 @@ class RekognitionLabelDetection(AbstractVideoDetectProcessor):
                 label = labelDetection['Label']
                 name = label['Name']
                 confidence = label['Confidence']
-                start_time = labelDetection['Timestamp'] / 1000  # ms to s
+                start_time = labelDetection['Timestamp'] / 1000.0  # ms to s
 
                 attribs.add((name, confidence))
                 clip_tracker.append(start_time, [name])
@@ -258,7 +258,7 @@ class RekognitionTextDetection(AbstractVideoDetectProcessor):
                 text = textDetection['TextDetection']
                 detected_text = text['DetectedText']
                 confidence = text['Confidence']
-                start_time = textDetection['Timestamp'] / 1000  # ms to s
+                start_time = textDetection['Timestamp'] / 1000.0  # ms to s
 
                 attribs.add((detected_text, confidence))
                 clip_tracker.append(start_time, [detected_text])
@@ -308,7 +308,7 @@ class RekognitionFaceDetection(AbstractVideoDetectProcessor):
             for i, faceDetection in enumerate(response['Faces'], counter):
                 face = faceDetection['Face']
                 confidence = face['Confidence']
-                start_time = faceDetection['Timestamp'] / 1000  # ms to s
+                start_time = faceDetection['Timestamp'] / 1000.0  # ms to s
 
                 attribs.add((f"face{i}", confidence))
                 clip_tracker.append(start_time, [f"face{i}"])
@@ -359,7 +359,7 @@ class RekognitionUnsafeDetection(AbstractVideoDetectProcessor):
                 content = contentModerationDetection['ModerationLabel']
                 name = content['Name']
                 confidence = content['Confidence']
-                start_time = contentModerationDetection['Timestamp'] / 1000  # ms to s
+                start_time = contentModerationDetection['Timestamp'] / 1000.0  # ms to s
 
                 attribs.add((name, confidence))
                 clip_tracker.append(start_time, [name])
@@ -410,7 +410,7 @@ class RekognitionCelebrityDetection(AbstractVideoDetectProcessor):
                 content = celebrityRecognition['Celebrity']
                 name = content['Name']
                 confidence = content['Confidence']
-                start_time = celebrityRecognition['Timestamp'] / 1000  # ms to s
+                start_time = celebrityRecognition['Timestamp'] / 1000.0  # ms to s
 
                 attribs.add((name, confidence))
                 clip_tracker.append(start_time, [name])
@@ -461,7 +461,7 @@ class RekognitionPeoplePathingDetection(AbstractVideoDetectProcessor):
             for i, personDetection in enumerate(response['Persons'], counter):
                 person = personDetection['Person']
                 confidence = person['Face']['Confidence']
-                start_time = personDetection['Timestamp'] / 1000  # ms to s
+                start_time = personDetection['Timestamp'] / 1000.0  # ms to s
 
                 attribs.add((f"person{i}", confidence))
                 clip_tracker.append(start_time, [f"person{i}"])
@@ -547,7 +547,7 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
                     segment_type = segment['TechnicalCueSegment']['Type']
                     if segment_type == self.cue:
                         confidence = segment['TechnicalCueSegment']['Confidence']
-                        start_time = segment['StartTimestampMillis'] / 1000  # ms to s
+                        start_time = segment['StartTimestampMillis'] / 1000.0  # ms to s
 
                         attribs.add((segment_type, confidence))
                         clip_tracker.append(start_time, [segment_type])
