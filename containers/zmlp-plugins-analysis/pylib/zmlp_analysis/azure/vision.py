@@ -611,6 +611,6 @@ class AzureVisionTextDetection(AbstractAzureVisionProcessor):
         """
         ocr_proxy = asset.get_files(category='ocr-proxy')
         if ocr_proxy:
-            return file_storage.localize_file(ocr_proxy)
+            return file_storage.localize_file(ocr_proxy[0])
         else:
             return file_storage.localize_file(get_proxy_level(asset, 0))
