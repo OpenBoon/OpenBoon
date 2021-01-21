@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8e045bee03d1ac2b5cf77b76810bfc77579a4c1c2b8bdfd43e3950e643383afa"
+            "sha256": "e2ee5b0b58ed24cad5b8fda7ba1a42451e2a7470340b716887cd066ec0450797"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -510,8 +510,12 @@
             "version": "==3.4.0"
         },
         "zvi-client": {
-            "editable": true,
-            "path": "./../../client/python"
+            "hashes": [
+                "sha256:449b9e70f100d8152521275a59edee3a51bd4e9ec6bc0b4cbb1ff07a1254f3c8",
+                "sha256:766fd8e6b030f1f0aee14be4e600b937a88e98020126aa0030bba1518dd26dce"
+            ],
+            "index": "pypi",
+            "version": "==1.1.2"
         }
     },
     "develop": {}
