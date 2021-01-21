@@ -40,7 +40,6 @@ provider "aws" {
 }
 
 provider "kubernetes" {
-  load_config_file       = "false"
   host                   = module.gke-cluster.endpoint
   username               = module.gke-cluster.username
   password               = module.gke-cluster.password
