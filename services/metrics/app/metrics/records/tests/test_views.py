@@ -128,5 +128,5 @@ class TestTiers:
         # Make sure they're all accounted for in our tiers
         for module_name in module_names:
             assert (module_name in ApiCall.free_modules or
-                    module_name in ApiCall.tier_1 or
-                    module_name in ApiCall.tier_2)
+                    module_name in ApiCall.tier_1_modules or
+                    module_name in ApiCall.tier_2_modules)
