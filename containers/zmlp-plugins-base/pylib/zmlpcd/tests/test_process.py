@@ -295,7 +295,8 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
             "args": {},
-            "image": TEST_IMAGE
+            "image": TEST_IMAGE,
+            "module": "Test Module"
         }
         frame = Frame(TestAsset(path='fake.jpg'))
         wrapper = self.pe.get_processor_wrapper(ref)
@@ -312,7 +313,8 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
             "args": {},
-            "image": TEST_IMAGE
+            "image": TEST_IMAGE,
+            "module": "Test Module"
         }
         frame = Frame(TestAsset(path='fake.jpg'))
         wrapper = self.pe.get_processor_wrapper(ref)
@@ -325,7 +327,8 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
             "args": {},
-            "image": TEST_IMAGE
+            "image": TEST_IMAGE,
+            "module": "Test Module"
         }
         frame = Frame(TestAsset(path='fake.jpg'))
         wrapper = self.pe.get_processor_wrapper(ref)
