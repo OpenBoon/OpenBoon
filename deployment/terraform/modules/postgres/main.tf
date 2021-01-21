@@ -61,4 +61,5 @@ resource "kubernetes_secret" "cloud-sql-sa-key" {
   data = {
     "credentials.json" = base64decode(google_service_account_key.cloud-sql-account-key.private_key)
   }
+  depends_on = [google_service_account_key.cloud-sql-account-key]
 }
