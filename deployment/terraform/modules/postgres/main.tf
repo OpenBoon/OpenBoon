@@ -47,7 +47,7 @@ resource "google_project_iam_member" "cloud-sql-proxy-iam" {
 }
 
 resource "time_rotating" "cloud-sql-sa-key-rotation" {
-  rotate_days = 7
+  rotation_days = 7
 }
 
 resource "google_service_account_key" "cloud-sql-account-key" {

@@ -27,7 +27,7 @@ resource "google_project_iam_member" "elasticsearch" {
 }
 
 resource "time_rotating" "es-sa-key-rotation" {
-  rotate_days = 7
+  rotation_days = 7
 }
 
 resource "google_service_account_key" "elasticsearch" {
