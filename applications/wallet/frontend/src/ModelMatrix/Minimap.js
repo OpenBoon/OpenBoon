@@ -7,7 +7,7 @@ import { getScroller } from '../Scroll/helpers'
 
 import { getColor } from './helpers'
 
-const DEFAULT_EMPTY_MATRIX = [0, 1, 2, 3]
+const EMPTY_MATRIX = [0, 1, 2, 3]
 
 const ModelMatrixMinimap = ({ matrix, settings, isStatic }) => {
   const verticalScroller = getScroller({ namespace: 'ModelMatrixVertical' })
@@ -53,9 +53,7 @@ const ModelMatrixMinimap = ({ matrix, settings, isStatic }) => {
   }, [horizontalScroller, verticalScroller, width, height])
 
   const gridSize =
-    matrix.matrix.length > 0
-      ? matrix.labels.length
-      : DEFAULT_EMPTY_MATRIX.length
+    matrix.matrix.length > 0 ? matrix.labels.length : EMPTY_MATRIX.length
 
   return (
     <div
@@ -92,8 +90,8 @@ const ModelMatrixMinimap = ({ matrix, settings, isStatic }) => {
         })}
 
       {matrix.matrix.length === 0 &&
-        DEFAULT_EMPTY_MATRIX.map((row) => {
-          return DEFAULT_EMPTY_MATRIX.map((col) => {
+        EMPTY_MATRIX.map((row) => {
+          return EMPTY_MATRIX.map((col) => {
             return (
               <div
                 key={`${row}${col}`}

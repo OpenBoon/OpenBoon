@@ -9,12 +9,15 @@ import ModelMatrixMinimap from './Minimap'
 
 export const noop = () => () => {}
 
+const MINIMAP_WIDTH = 130
+const TEXT_WIDTH = 200
+
 const ModelMatrixShortcut = ({ projectId, modelId, matrix }) => {
   return (
     <>
       {matrix.isMatrixApplicable && (
         <div css={{ display: 'flex' }}>
-          <div css={{ width: 130, paddingRight: spacing.normal }}>
+          <div css={{ width: MINIMAP_WIDTH, paddingRight: spacing.normal }}>
             <ModelMatrixMinimap
               matrix={matrix}
               settings={{
@@ -27,7 +30,7 @@ const ModelMatrixShortcut = ({ projectId, modelId, matrix }) => {
               isStatic
             />
           </div>
-          <div css={{ width: 200 }}>
+          <div css={{ width: TEXT_WIDTH }}>
             {matrix.matrix.length === 0 && (
               <div css={{ fontStyle: typography.style.italic }}>
                 Train the model to view the confusion matrix.
@@ -74,7 +77,7 @@ const ModelMatrixShortcut = ({ projectId, modelId, matrix }) => {
       {!matrix.isMatrixApplicable && (
         <div
           css={{
-            width: 200,
+            width: TEXT_WIDTH,
             color: colors.structure.steel,
             fontStyle: typography.style.italic,
           }}
