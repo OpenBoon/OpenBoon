@@ -12,7 +12,6 @@ from zmlp_analysis.aws.util import AwsEnv
 from zmlp_analysis.aws.video import util
 from zmlpsdk import AssetProcessor, Argument, FileTypes, ZmlpEnv, file_storage, proxy, clips, video
 
-logger = logging.getLogger(__name__)
 
 __all__ = [
     'RekognitionLabelDetection',
@@ -212,9 +211,6 @@ class RekognitionLabelDetection(AbstractVideoDetectProcessor):
                 confidence = label['Confidence']
                 start_time = labelDetection['Timestamp'] / 1000  # ms to s
 
-                logger.debug(f'\tLabel: {name}')
-                logger.debug(f'\tConfidence: {confidence}')
-
                 attribs.add((name, confidence))
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [name])
@@ -267,9 +263,6 @@ class RekognitionTextDetection(AbstractVideoDetectProcessor):
                 confidence = text['Confidence']
                 start_time = textDetection['Timestamp'] / 1000  # ms to s
 
-                logger.debug(f'\tText Detected: {detected_text}')
-                logger.debug(f'\tConfidence: {confidence}')
-
                 attribs.add((detected_text, confidence))
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [detected_text])
@@ -321,9 +314,6 @@ class RekognitionFaceDetection(AbstractVideoDetectProcessor):
                 face = faceDetection['Face']
                 confidence = face['Confidence']
                 start_time = faceDetection['Timestamp'] / 1000  # ms to s
-
-                logger.debug(f'\tFace Detected: {face}')
-                logger.debug(f'\tConfidence: {confidence}')
 
                 attribs.add((f"face{i}", confidence))
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
@@ -378,9 +368,6 @@ class RekognitionUnsafeDetection(AbstractVideoDetectProcessor):
                 confidence = content['Confidence']
                 start_time = contentModerationDetection['Timestamp'] / 1000  # ms to s
 
-                logger.debug(f'\tLabel: {name}')
-                logger.debug(f'\tConfidence: {confidence}')
-
                 attribs.add((name, confidence))
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [name])
@@ -434,9 +421,6 @@ class RekognitionCelebrityDetection(AbstractVideoDetectProcessor):
                 confidence = content['Confidence']
                 start_time = celebrityRecognition['Timestamp'] / 1000  # ms to s
 
-                logger.debug(f'\tCelebrity: {name}')
-                logger.debug(f'\tConfidence: {confidence}')
-
                 attribs.add((name, confidence))
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
                 clip_tracker.append(start_time, [name])
@@ -489,8 +473,6 @@ class RekognitionPeoplePathingDetection(AbstractVideoDetectProcessor):
                 person = personDetection['Person']
                 confidence = person['Face']['Confidence']
                 start_time = personDetection['Timestamp'] / 1000  # ms to s
-
-                logger.debug(f'\tPerson Detected: {person}')
 
                 attribs.add((f"person{i}", confidence))
                 video.extract_thumbnail_from_video(local_video_path, output_path, start_time)
@@ -579,10 +561,6 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
                     if segment_type == self.cue:
                         confidence = segment['TechnicalCueSegment']['Confidence']
                         start_time = segment['StartTimestampMillis'] / 1000  # ms to s
-
-                        logger.debug('Technical Cue')
-                        logger.debug(f'\tConfidence: {confidence}')
-                        logger.debug(f'\tType: {segment_type}')
 
                         attribs.add((segment_type, confidence))
                         video.extract_thumbnail_from_video(local_video_path, output_path,
