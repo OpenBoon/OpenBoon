@@ -13,13 +13,14 @@ from zmlpsdk import AssetProcessor, Argument, FileTypes, ZmlpEnv, file_storage, 
 
 __all__ = [
     'RekognitionLabelDetection',
-    'RekognitionTextDetection',
-    'RekognitionFaceDetection',
     'RekognitionCelebrityDetection',
     'RekognitionUnsafeDetection',
     'RekognitionPeoplePathingDetection',
     'EndCreditsVideoDetectProcessor',
-    'BlackFramesVideoDetectProcessor'
+    'BlackFramesVideoDetectProcessor',
+    # Need changes to these.
+    'RekognitionTextDetection',
+    'RekognitionFaceDetection',
 ]
 
 
@@ -360,7 +361,7 @@ class RekognitionUnsafeDetection(AbstractVideoDetectProcessor):
                 start_time = contentModerationDetection['Timestamp'] / 1000.0  # ms to s
 
                 attribs.add((name, confidence))
-                clip_tracker.append(start_time, [name])
+                clip_tracker.append(start_time, {name: confidence})
 
             if 'NextToken' in response:
                 pagination_token = response['NextToken']
@@ -411,7 +412,7 @@ class RekognitionCelebrityDetection(AbstractVideoDetectProcessor):
                 start_time = celebrityRecognition['Timestamp'] / 1000.0  # ms to s
 
                 attribs.add((name, confidence))
-                clip_tracker.append(start_time, [name])
+                clip_tracker.append(start_time, {name: confidence})
 
             if 'NextToken' in response:
                 pagination_token = response['NextToken']
@@ -461,7 +462,6 @@ class RekognitionPeoplePathingDetection(AbstractVideoDetectProcessor):
                 confidence = person['Face']['Confidence']
                 start_time = personDetection['Timestamp'] / 1000.0  # ms to s
 
-                attribs.add((f"person{i}", confidence))
                 clip_tracker.append(start_time, [f"person{i}"])
             counter = i
 
@@ -546,9 +546,7 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
                     if segment_type == self.cue:
                         confidence = segment['TechnicalCueSegment']['Confidence']
                         start_time = segment['StartTimestampMillis'] / 1000.0  # ms to s
-
-                        attribs.add((segment_type, confidence))
-                        clip_tracker.append(start_time, [segment_type])
+                        clip_tracker.append(start_time, {segment_type: confidence})
 
             if 'NextToken' in response:
                 pagination_token = response['NextToken']
@@ -559,7 +557,7 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
 
 
 class BlackFramesVideoDetectProcessor(SegmentVideoDetectProcessor):
-    """ Black Frames Detector in a video using AWS Rekognition """
+    """Black Frames Detector in a video using AWS Rekognition """
     namespace = 'aws-black-frames-detection'
 
     def __init__(self):
@@ -567,7 +565,7 @@ class BlackFramesVideoDetectProcessor(SegmentVideoDetectProcessor):
 
 
 class EndCreditsVideoDetectProcessor(SegmentVideoDetectProcessor):
-    """ Rolling Credits Detector in a video using AWS Rekognition """
+    """Rolling Credits Detector in a video using AWS Rekognition """
     namespace = 'aws-credits-detection'
 
     def __init__(self):
