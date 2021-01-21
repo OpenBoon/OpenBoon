@@ -48,7 +48,9 @@ resource "google_project_iam_member" "cloud-sql-proxy-iam" {
 
 resource "google_service_account_key" "cloud-sql-account-key" {
   service_account_id = google_service_account.cloud-sql-proxy.name
-  valid_after        = timestamp()
+  keepers = {
+    "created_date" : timestamp()
+  }
 }
 
 resource "kubernetes_secret" "cloud-sql-sa-key" {
@@ -60,4 +62,3 @@ resource "kubernetes_secret" "cloud-sql-sa-key" {
     "credentials.json" = base64decode(google_service_account_key.cloud-sql-account-key.private_key)
   }
 }
-
