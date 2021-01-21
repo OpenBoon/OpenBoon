@@ -184,7 +184,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         frame = Frame(asset)
         processor.process(frame)
 
-        #TODO: Need to check clips.
+        # TODO: Need to check clips.
 
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)

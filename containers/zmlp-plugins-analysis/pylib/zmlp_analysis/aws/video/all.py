@@ -459,7 +459,7 @@ class RekognitionPeoplePathingDetection(AbstractVideoDetectProcessor):
 
             for i, personDetection in enumerate(response['Persons'], counter):
                 person = personDetection['Person']
-                confidence = person['Face']['Confidence']
+                # confidence = person['Face']['Confidence']
                 start_time = personDetection['Timestamp'] / 1000.0  # ms to s
 
                 clip_tracker.append(start_time, [f"person{i}"])
