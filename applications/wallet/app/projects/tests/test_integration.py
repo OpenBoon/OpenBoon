@@ -1,6 +1,7 @@
 import base64
 import copy
 import requests
+from datetime import datetime
 from uuid import uuid4
 from unittest.mock import Mock, patch
 
@@ -102,10 +103,14 @@ def test_project_serializer_detail(project):
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                        'permissions', 'tasks', 'datasources', 'taskerrors', 'subscriptions',
                        'modules', 'providers', 'searches', 'faces', 'visualizations',
-                       'models']
+                       'models', 'createdDate', 'modifiedDate']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
+    assert datetime.fromisoformat(
+        data['createdDate'].replace('Z', '+00:00')) == project.createdDate
+    assert datetime.fromisoformat(
+        data['modifiedDate'].replace('Z', '+00:00')) == project.modifiedDate
     assert data['url'] == f'/api/v1/projects/{project.id}/'
     assert data['jobs'] == f'/api/v1/projects/{project.id}/jobs/'
     assert data['users'] == f'/api/v1/projects/{project.id}/users/'
@@ -831,7 +836,6 @@ class TestProjectUserPut:
         monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
         monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
         monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
-
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)

@@ -1,6 +1,6 @@
 import Router from 'next/router'
 
-import { colors } from '../Styles'
+import { colors, constants } from '../Styles'
 
 import {
   fetcher,
@@ -9,12 +9,21 @@ import {
   parseResponse,
 } from '../Fetch/helpers'
 
+import ImagesSvg from '../Icons/images.svg'
+import DocumentsSvg from '../Icons/documents.svg'
+import VideosSvg from '../Icons/videos.svg'
+
 export const FILE_TYPES = [
   {
     value: 'Images',
     label: 'Image Files',
     extensions: 'GIF, PNG, JPG, JPEG, TIF, TIFF, PSD',
-    icon: '/icons/images.png',
+    icon: (
+      <ImagesSvg
+        height={constants.icons.large}
+        color={colors.signal.canary.base}
+      />
+    ),
     color: colors.signal.canary.base,
   },
   {
@@ -22,14 +31,21 @@ export const FILE_TYPES = [
     label: 'Documents (PDF & MS Office)',
     legend: 'Pages will be processed and counted as individual assets',
     extensions: 'PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX',
-    icon: '/icons/documents.png',
+    icon: (
+      <DocumentsSvg
+        height={constants.icons.large}
+        color={colors.graph.seafoam}
+      />
+    ),
     color: colors.graph.seafoam,
   },
   {
     value: 'Videos',
     label: 'Video Files',
     extensions: 'MP4, M4V, MOV, MPG, MPEG, OGG',
-    icon: '/icons/videos.png',
+    icon: (
+      <VideosSvg height={constants.icons.large} color={colors.graph.iris} />
+    ),
     color: colors.graph.lilac,
   },
 ]

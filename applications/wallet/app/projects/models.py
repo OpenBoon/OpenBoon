@@ -1,16 +1,16 @@
 import logging
-import uuid
 
 from django.conf import settings
 from django.db import models
 from django_cryptography.fields import encrypt
 from multiselectfield import MultiSelectField
-from zmlp.client import ZmlpClient, ZmlpNotFoundException
 
 from apikeys.utils import create_zmlp_api_key
 from projects.utils import random_project_name
 from roles.utils import get_permissions_for_roles
+from wallet.mixins import TimeStampMixin, UUIDMixin
 from wallet.utils import get_zmlp_superuser_client, convert_base64_to_json
+from zmlp.client import ZmlpClient, ZmlpNotFoundException
 
 logger = logging.getLogger(__name__)
 
@@ -19,20 +19,22 @@ ROLES = [(role['name'], role['name'].replace('_', ' ')) for role in settings.ROL
 
 class ActiveProjectManager(models.Manager):
     """Model manager that only returns projects that are active."""
+
     def get_queryset(self):
         return super(ActiveProjectManager, self).get_queryset().filter(isActive=True)
 
 
-class Project(models.Model):
+class Project(UUIDMixin, TimeStampMixin):
     """Represents a ZMLP project."""
     all_objects = models.Manager()
     objects = ActiveProjectManager()
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=144, default=random_project_name)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='projects.Membership',
                                    related_name='projects')
     isActive = models.BooleanField(default=True)
+    organization = models.ForeignKey('organizations.Organization', on_delete=models.SET_NULL,
+                                     null=True, blank=True, related_name='projects')
 
     def __str__(self):
         return self.name

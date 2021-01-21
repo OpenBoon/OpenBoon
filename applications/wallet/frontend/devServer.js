@@ -23,7 +23,6 @@ import projectUsersAdd from './src/ProjectUsersAdd/__mocks__/projectUsersAdd'
 import assets from './src/Assets/__mocks__/assets'
 import asset from './src/Asset/__mocks__/asset'
 import providers from './src/Providers/__mocks__/providers'
-import subscriptions from './src/Subscriptions/__mocks__/subscriptions'
 import roles from './src/Roles/__mocks__/roles'
 import fields from './src/Filters/__mocks__/fields'
 import dateAggregate from './src/FilterDateRange/__mocks__/aggregate'
@@ -100,7 +99,6 @@ app.prepare().then(() => {
     server.get(`${PID_API_BASE}/assets/:assetId/`, mock(asset))
 
     server.get(`${PID_API_BASE}/providers/`, mock(providers))
-    server.get(`${PID_API_BASE}/subscriptions/`, mock(subscriptions))
     server.get(`${PID_API_BASE}/roles/`, mock(roles))
     server.get(`${PID_API_BASE}/searches/fields/`, mock(fields))
     server.get(`${PID_API_BASE}/searches/aggregate/`, mock(dateAggregate))
