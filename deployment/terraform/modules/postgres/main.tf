@@ -25,7 +25,7 @@ resource "google_sql_database_instance" "zmlp" {
     tier = var.sql-tier
     ip_configuration {
       ipv4_enabled = true
-      require_ssl = true
+      require_ssl  = true
     }
     backup_configuration {
       enabled = true
@@ -48,6 +48,7 @@ resource "google_project_iam_member" "cloud-sql-proxy-iam" {
 
 resource "google_service_account_key" "cloud-sql-account-key" {
   service_account_id = google_service_account.cloud-sql-proxy.name
+  valid_after        = timestamp()
 }
 
 resource "kubernetes_secret" "cloud-sql-sa-key" {
