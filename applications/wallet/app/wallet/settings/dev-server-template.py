@@ -7,7 +7,7 @@ ZMLP_API_URL = 'https://dev.api.zvi.zorroa.com'
 DEBUG = True
 
 # Turns on the browsable API for your local runserver
-BROWSABLE = True
+REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.BrowsableAPIRenderer')  # noqa
 
 SUPERADMIN = True
 

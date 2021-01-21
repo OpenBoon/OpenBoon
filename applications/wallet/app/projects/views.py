@@ -538,14 +538,61 @@ class ProjectViewSet(ListModelMixin,
 
     @action(methods=['get'], detail=True)
     def total_storage_usage(self, request, pk):
-        """Returns the all time usage information for the project."""
+        """Returns the video and image/document usage of currently live assets."""
+        path = 'api/v3/assets/_search'
+        response_body = {}
+
+        # Get Image/Document count
+        query = {
+            'track_total_hits': True,
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'terms': {
+                            'media.type': ['image', 'document']
+                        }}
+                    ]
+                }
+            }
+        }
         try:
-            quotas = request.client.get('api/v1/project/_quotas')
+            response = request.client.post(path, query)
         except (requests.exceptions.ConnectionError, ZmlpConnectionException):
-            return Response({})
-        video_hours = self._get_usage_hours_from_seconds(quotas['videoSecondsCount'])
-        image_count = quotas['pageCount']
-        return Response({'image_count': image_count, 'video_hours': video_hours})
+            msg = (f'Unable to retrieve image/document count query for project {pk}.')
+            logger.warning(msg)
+        else:
+            response_body['image_count'] = response['hits']['total']['value']
+
+        # Get Aggregation for video minutes
+        query = {
+            'track_total_hits': True,
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'terms': {
+                            'media.type': ['video']
+                        }}
+                    ]
+                }
+            },
+            'aggs': {
+                'video_seconds': {
+                    'sum': {
+                        'field': 'media.length'
+                    }
+                }
+            }
+        }
+        try:
+            response = request.client.post(path, query)
+        except (requests.exceptions.ConnectionError, ZmlpConnectionException):
+            msg = (f'Unable to retrieve video seconds sum for project {pk}.')
+            logger.warning(msg)
+        else:
+            video_seconds = response['aggregations']['sum#video_seconds']['value']
+            response_body['video_hours'] = self._get_usage_hours_from_seconds(video_seconds)
+
+        return Response(response_body)
 
     def _get_usage_hours_from_seconds(self, seconds):
         """Converts seconds to hours and always rounds up."""
