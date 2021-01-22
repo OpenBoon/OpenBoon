@@ -83,4 +83,3 @@ variable "use-model-ids-for-label-filters" {
 variable "metrics-ip-address" {
   default = "metrics"
 }
-
