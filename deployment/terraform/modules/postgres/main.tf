@@ -42,7 +42,7 @@ resource "google_service_account" "cloud-sql-proxy" {
 
 resource "google_project_iam_member" "cloud-sql-proxy-iam" {
   project = var.project
-  role    = "roles/editor"
+  role    = "roles/cloudsql.admin"
   member  = "serviceAccount:${google_service_account.cloud-sql-proxy.email}"
 }
 
