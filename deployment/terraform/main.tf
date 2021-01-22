@@ -320,6 +320,7 @@ module "wallet" {
   marketplace-credentials         = var.marketplace-credentials
   superadmin                      = var.wallet-superadmin
   use-model-ids-for-label-filters = var.wallet-use-model-ids-for-label-filters
+  metrics-ip-address              = module.metrics.ip-address
 }
 
 module "ml-bbq" {
