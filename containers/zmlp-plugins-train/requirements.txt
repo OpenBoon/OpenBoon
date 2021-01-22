@@ -7,3 +7,4 @@ tqdm
 pillow
 pandas
 torch
+torchvision
