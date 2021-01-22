@@ -1,7 +1,11 @@
 import logging
 import os
+import math
+from datetime import datetime
 
 import requests
+from rest_framework.decorators import action
+
 import zmlp
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -13,6 +17,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet, GenericViewSet
 from zmlp import ZmlpClient
+from zmlp.client import ZmlpConnectionException
 
 from projects.clients import ZviClient
 from projects.models import Membership, Project
@@ -486,8 +491,112 @@ class ProjectViewSet(ListModelMixin,
     """
     serializer_class = ProjectSerializer
 
+    def dispatch(self, request, *args, **kwargs):
+        """Overrides the dispatch method to include an instance of an archivist client
+        to the view.
+
+        Since this ProjectViewSet cannot inherit from the BaseProjectViewSet, this
+        replicates the often used functionality around the ZMLP App and Client.
+
+        """
+        if 'pk' in kwargs:
+            project = kwargs["pk"]
+
+            try:
+                apikey = Membership.objects.get(user=request.user, project=project).apikey
+            except Membership.DoesNotExist:
+                return JsonResponse(data={'detail': [f'{request.user.username} is not a member of '
+                                                     f'the project {project}']}, status=403)
+            except TypeError:
+                return JsonResponse(data={'detail': ['Unauthorized.']}, status=403)
+
+            # Attach some useful objects for interacting with ZMLP/ZVI to the request.
+            if settings.PLATFORM == 'zmlp':
+                request.app = zmlp.ZmlpApp(apikey, settings.ZMLP_API_URL)
+                request.client = ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL,
+                                            project_id=project)
+            else:
+                request.client = ZviClient(apikey=apikey, server=settings.ZMLP_API_URL)
+
+        return super().dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
         return self.request.user.projects.filter(isActive=True)
+
+    @action(methods=['get'], detail=True)
+    def ml_usage_this_month(self, request, pk):
+        """Returns the ml module usage for the current month."""
+        today = datetime.today()
+        first_of_the_month = f'{today.year:04d}-{today.month:02d}-01'
+        path = os.path.join(settings.METRICS_API_URL, 'apicalls/tiered_usage')
+        try:
+            response = requests.get(path, {'after': first_of_the_month, 'project': pk})
+            response.raise_for_status()
+        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
+            return Response({})
+        return Response(response.json())
+
+    @action(methods=['get'], detail=True)
+    def total_storage_usage(self, request, pk):
+        """Returns the video and image/document usage of currently live assets."""
+        path = 'api/v3/assets/_search'
+        response_body = {}
+
+        # Get Image/Document count
+        query = {
+            'track_total_hits': True,
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'terms': {
+                            'media.type': ['image', 'document']
+                        }}
+                    ]
+                }
+            }
+        }
+        try:
+            response = request.client.post(path, query)
+        except (requests.exceptions.ConnectionError, ZmlpConnectionException):
+            msg = (f'Unable to retrieve image/document count query for project {pk}.')
+            logger.warning(msg)
+        else:
+            response_body['image_count'] = response['hits']['total']['value']
+
+        # Get Aggregation for video minutes
+        query = {
+            'track_total_hits': True,
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'terms': {
+                            'media.type': ['video']
+                        }}
+                    ]
+                }
+            },
+            'aggs': {
+                'video_seconds': {
+                    'sum': {
+                        'field': 'media.length'
+                    }
+                }
+            }
+        }
+        try:
+            response = request.client.post(path, query)
+        except (requests.exceptions.ConnectionError, ZmlpConnectionException):
+            msg = (f'Unable to retrieve video seconds sum for project {pk}.')
+            logger.warning(msg)
+        else:
+            video_seconds = response['aggregations']['sum#video_seconds']['value']
+            response_body['video_hours'] = self._get_usage_hours_from_seconds(video_seconds)
+
+        return Response(response_body)
+
+    def _get_usage_hours_from_seconds(self, seconds):
+        """Converts seconds to hours and always rounds up."""
+        return math.ceil(seconds / 60 / 60)
 
 
 class ProjectUserViewSet(BaseProjectViewSet):

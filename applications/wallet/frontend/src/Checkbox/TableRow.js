@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { colors, constants } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import ImagesSvg from '../Icons/images.svg'
 import DocumentsSvg from '../Icons/documents.svg'
@@ -54,9 +54,10 @@ const CheckboxTableRow = ({
       <td>{value}</td>
       <td>{label}</td>
       <td>
-        <div css={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div css={{ display: 'flex' }}>
           <ImagesSvg
             height={constants.icons.comfy}
+            css={{ marginRight: spacing.normal }}
             color={
               supportedMedia?.includes('Images')
                 ? colors.signal.canary.base
@@ -65,6 +66,7 @@ const CheckboxTableRow = ({
           />
           <DocumentsSvg
             height={constants.icons.comfy}
+            css={{ marginRight: spacing.normal }}
             color={
               supportedMedia?.includes('Documents')
                 ? colors.graph.seafoam

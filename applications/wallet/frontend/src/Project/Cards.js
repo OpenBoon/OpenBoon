@@ -1,16 +1,16 @@
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, spacing, constants, typography } from '../Styles'
 
-import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
-import Button, { VARIANTS } from '../Button'
+import SuspenseBoundary from '../SuspenseBoundary'
 import Bouncer, { ROLES } from '../Bouncer'
 
-import KeySvg from '../Icons/key.svg'
-
+import ProjectMetrics from './Metrics'
+import ProjectQuickLinks from './QuickLinks'
 import ProjectGettingStarted from './GettingStarted'
+
+const MAX_WIDTH = 880
 
 const ProjectCards = () => {
   const {
@@ -25,85 +25,63 @@ const ProjectCards = () => {
     <div
       css={{
         display: 'flex',
-        flexDirection: 'column',
+        gap: spacing.comfy,
         flexWrap: 'wrap',
-        maxHeight: '100vh',
-        alignContent: 'flex-start',
+        paddingBottom: spacing.spacious,
       }}
     >
-      <Card
-        variant={CARD_VARIANTS.LIGHT}
-        header=""
-        content={
-          <>
-            <h3 css={{ paddingBottom: spacing.base }}>Project: {name}</h3>
-            <div
-              css={{
-                color: colors.structure.zinc,
-                paddingBottom: spacing.normal,
-              }}
-            >
-              Project ID: {id}
-            </div>
-            <Bouncer role={ROLES.User_Admin}>
-              <div css={{ display: 'flex' }}>
-                <Link
-                  href="/[projectId]/users/add"
-                  as={`/${projectId}/users/add`}
-                  passHref
-                >
-                  <Button variant={VARIANTS.PRIMARY_SMALL}>
-                    + Add Users To Project
-                  </Button>
-                </Link>
-              </div>
-            </Bouncer>
-          </>
-        }
-      />
+      <div
+        css={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: spacing.comfy,
+          maxWidth: MAX_WIDTH,
+        }}
+      >
+        <div
+          css={{
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: colors.structure.smoke,
+            boxShadow: constants.boxShadows.tableRow,
+            borderRadius: constants.borderRadius.small,
+            padding: spacing.comfy,
+          }}
+        >
+          <h3 css={{ paddingBottom: spacing.base }}>Project: {name}</h3>
+
+          <div
+            css={{
+              color: colors.structure.zinc,
+              paddingBottom: spacing.normal,
+            }}
+          >
+            Project ID: {id}
+          </div>
+
+          <SuspenseBoundary isTransparent>
+            <ProjectMetrics projectId={projectId} />
+          </SuspenseBoundary>
+
+          <div
+            css={{
+              fontSize: typography.size.small,
+              lineHeight: typography.height.small,
+              color: colors.structure.zinc,
+              paddingTop: spacing.comfy,
+              paddingBottom: spacing.base,
+            }}
+          >
+            *pages are processed &amp; counted as individual assets
+          </div>
+        </div>
+
+        <ProjectQuickLinks projectId={projectId} />
+      </div>
 
       <Bouncer role={ROLES.ML_Tools}>
         <ProjectGettingStarted projectId={projectId} />
-      </Bouncer>
-
-      <Bouncer role={ROLES.API_Keys}>
-        <Card
-          variant={CARD_VARIANTS.LIGHT}
-          header={
-            <h3 css={{ display: 'flex' }}>
-              <KeySvg
-                height={constants.icons.regular}
-                color={colors.structure.zinc}
-              />
-              Project API Keys
-            </h3>
-          }
-          content={
-            <>
-              <p
-                css={{
-                  margin: 0,
-                  paddingBottom: spacing.normal,
-                  color: colors.structure.zinc,
-                }}
-              >
-                Create a ZMLP API key for use with external applications and
-                tools.
-              </p>
-              <div css={{ display: 'flex' }}>
-                <Link
-                  href="/[projectId]/api-keys/add"
-                  as={`/${projectId}/api-keys/add`}
-                  passHref
-                >
-                  <Button variant={VARIANTS.SECONDARY_SMALL}>
-                    + Create API Key
-                  </Button>
-                </Link>
-              </div>
-            </>
-          }
-        />
       </Bouncer>
     </div>
   )

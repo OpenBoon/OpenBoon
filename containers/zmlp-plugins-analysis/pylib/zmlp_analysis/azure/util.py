@@ -1,6 +1,10 @@
 import os
+import logging
+
 from azure.cognitiveservices.vision.computervision import ComputerVisionClient
 from msrest.authentication import CognitiveServicesCredentials
+
+logger = logging.getLogger('azure')
 
 
 def get_zvi_azure_cv_client():
@@ -23,3 +27,15 @@ def get_zvi_azure_cv_client():
         endpoint=endpoint,
         credentials=credentials
     )
+
+
+def log_backoff_exception(details):
+    """
+    Log an exception from the backoff library.
+
+    Args:
+        details (dict): The details of the backoff call.
+
+    """
+    logger.warning(
+        'Waiting on quota {wait:0.1f} seconds afters {tries} tries'.format(**details))

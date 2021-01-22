@@ -13,6 +13,7 @@ import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.TimelineSpec
 import com.zorroa.archivist.domain.WebVTTFilter
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.util.bd
 import com.zorroa.archivist.util.formatDuration
 import com.zorroa.zmlp.service.logging.LogAction
@@ -51,7 +52,7 @@ interface ClipService {
     /**
      * Bulk create a bunch of clips using a TimelineSpec.
      */
-    fun createClips(timeline: TimelineSpec, jobId: UUID? = null): CreateTimelineResponse
+    fun createClips(timeline: TimelineSpec): CreateTimelineResponse
 
     /**
      * Search for clips using an ES REST DSL query. An Asset can be optionally provided.
@@ -155,7 +156,7 @@ class ClipServiceImpl(
         return clip
     }
 
-    override fun createClips(timeline: TimelineSpec, jobId: UUID?): CreateTimelineResponse {
+    override fun createClips(timeline: TimelineSpec): CreateTimelineResponse {
         val asset = assetService.getAsset(timeline.assetId)
 
         if (FileExtResolver.getType(asset) != "video") {
@@ -217,8 +218,9 @@ class ClipServiceImpl(
             response.handleBulkResponse(rsp)
         }
 
+        val jobId = getZmlpActor().getAttr("jobId")
         if (jobId != null) {
-            val task = jobLaunchService.addTimelineAnalysisTask(jobId, timeline.assetId, timeline.name)
+            val task = jobLaunchService.addTimelineAnalysisTask(UUID.fromString(jobId), timeline.assetId, timeline.name)
             response.taskId = task.id
         } else {
             val job = jobLaunchService.launchTimelineAnalysisJob(timeline.assetId, timeline.name)

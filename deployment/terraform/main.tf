@@ -151,6 +151,7 @@ resource "google_storage_bucket_object" "task_env" {
   name    = "environments/task_env.json"
   content = <<EOF
 {
+  "ENVIRONMENT": "${var.environment}",
   "CLARIFAI_KEY":  "${var.clarifai-key}",
   "ZORROA_AWS_KEY": "${var.aws-key}",
   "ZORROA_AWS_SECRET": "${var.aws-secret}",

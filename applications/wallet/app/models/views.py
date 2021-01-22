@@ -312,7 +312,19 @@ class ModelViewSet(BaseProjectViewSet):
                                  min_score=request.query_params.get('minScore', 0.0),
                                  max_score=request.query_params.get('maxScore', 1.0),
                                  test_set_only=test_set_only)
-        response_data = matrix.to_dict()
+        try:
+            response_data = matrix.to_dict()
+        except TypeError:
+            response_data = {
+                "name": model.name,
+                "moduleName": model.module_name,
+                "overallAccuracy": 0,
+                "labels": [],
+                'minScore': 0.0,
+                'maxScore': 1.0,
+                'testSetOnly': True,
+                "matrix": [],
+                "isMatrixApplicable": False}
         serializer = ConfusionMatrixSerializer(data=response_data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data)
