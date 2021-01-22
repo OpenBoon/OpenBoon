@@ -192,15 +192,20 @@ class JobServiceImpl @Autowired constructor(
             )
         )
 
-        projectStorageService.recursiveDelete(
-            ProjectDirLocator(
-                ProjectStorageEntity.JOB,
-                job.jobId.toString(),
-                getProjectId()
-            )
-        )
+        val xjob = jobDao.get(job.jobId, false)
+        val deleted = jobDao.delete(job)
 
-        return jobDao.delete(job)
+        if (deleted) {
+            projectStorageService.recursiveDelete(
+                ProjectDirLocator(
+                    ProjectStorageEntity.JOB,
+                    xjob.id.toString(),
+                    xjob.projectId
+                )
+            )
+        }
+
+        return deleted
     }
 
     @Transactional(readOnly = true)
