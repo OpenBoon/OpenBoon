@@ -14,6 +14,10 @@ def recreate_user_memberships(apps, schema_editor):
     return
 
 
+def fake_reverse(apps, schema_editor):
+    pass
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -21,5 +25,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(recreate_user_memberships)
+        migrations.RunPython(recreate_user_memberships, fake_reverse)
     ]

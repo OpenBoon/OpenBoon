@@ -48,6 +48,10 @@ def sync_project(project_zero, membership):
         raise requests.exceptions.ConnectionError()
 
 
+def fake_reverse(apps, schema_editor):
+    pass
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -57,6 +61,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(create_project_zero),
+        migrations.RunPython(create_project_zero, fake_reverse),
     ]
 
