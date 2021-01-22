@@ -7,9 +7,7 @@ import { getScroller } from '../Scroll/helpers'
 
 import { getColor } from './helpers'
 
-const EMPTY_MATRIX = [0, 1, 2, 3]
-
-const ModelMatrixMinimap = ({ matrix, settings, isStatic }) => {
+const ModelMatrixMinimap = ({ matrix, settings, isInteractive }) => {
   const verticalScroller = getScroller({ namespace: 'ModelMatrixVertical' })
   const horizontalScroller = getScroller({ namespace: 'ModelMatrixHorizontal' })
 
@@ -52,9 +50,6 @@ const ModelMatrixMinimap = ({ matrix, settings, isStatic }) => {
     }
   }, [horizontalScroller, verticalScroller, width, height])
 
-  const gridSize =
-    matrix.matrix.length > 0 ? matrix.labels.length : EMPTY_MATRIX.length
-
   return (
     <div
       css={{
@@ -64,53 +59,31 @@ const ModelMatrixMinimap = ({ matrix, settings, isStatic }) => {
         borderRadius: constants.borderRadius.small,
         marginBottom: spacing.base,
         display: 'grid',
-        gridTemplate: `repeat(${gridSize}, 1fr) / repeat(${gridSize}, 1fr)`,
+        gridTemplate: `repeat(${matrix.labels.length}, 1fr) / repeat(${matrix.labels.length}, 1fr)`,
       }}
     >
-      {matrix.matrix.length > 0 &&
-        matrix.labels.map((label, index) => {
-          const rowTotal = matrix.matrix[index].reduce(
-            (previous, current) => previous + current,
-            0,
+      {matrix.labels.map((label, index) => {
+        const rowTotal = matrix.matrix[index].reduce(
+          (previous, current) => previous + current,
+          0,
+        )
+
+        return matrix.matrix[index].map((value, col) => {
+          const percent = (value / rowTotal) * 100
+
+          return (
+            <div
+              key={matrix.labels[col]}
+              css={{
+                paddingBottom: '100%',
+                backgroundColor: getColor({ percent }),
+              }}
+            />
           )
+        })
+      })}
 
-          return matrix.matrix[index].map((value, col) => {
-            const percent = (value / rowTotal) * 100
-
-            return (
-              <div
-                key={matrix.labels[col]}
-                css={{
-                  paddingBottom: '100%',
-                  backgroundColor: getColor({ percent }),
-                }}
-              />
-            )
-          })
-        })}
-
-      {matrix.matrix.length === 0 &&
-        EMPTY_MATRIX.map((row) => {
-          return EMPTY_MATRIX.map((col) => {
-            return (
-              <div
-                key={`${row}${col}`}
-                css={{
-                  [`:not(:nth-of-type(4n))`]: {
-                    borderRight: constants.borders.regular.smoke,
-                  },
-                  [`:not(:nth-of-type(n + 13))`]: {
-                    borderBottom: constants.borders.regular.smoke,
-                  },
-                  paddingBottom: '100%',
-                  backgroundColor: colors.structure.lead,
-                }}
-              />
-            )
-          })
-        })}
-
-      {!isStatic && (
+      {isInteractive && (
         <div
           ref={minimapRef}
           css={{
@@ -143,7 +116,7 @@ ModelMatrixMinimap.propTypes = {
     zoom: PropTypes.number.isRequired,
     isMinimapOpen: PropTypes.bool.isRequired,
   }).isRequired,
-  isStatic: PropTypes.bool.isRequired,
+  isInteractive: PropTypes.bool.isRequired,
 }
 
 export default ModelMatrixMinimap

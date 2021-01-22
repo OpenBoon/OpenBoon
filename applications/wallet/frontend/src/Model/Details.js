@@ -25,10 +25,11 @@ import Tabs from '../Tabs'
 import ModelAssets from '../ModelAssets'
 import ModelAssetsDropdown from '../ModelAssets/Dropdown'
 import ModelLabels from '../ModelLabels'
-import ModelMatrixShortcut from '../ModelMatrix/Shortcut'
 import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
 import Feature from '../Feature'
+
+import ModelMatrixLink from './MatrixLink'
 
 import { onTrain } from './helpers'
 
@@ -80,10 +81,6 @@ const ModelDetails = () => {
     {
       refreshInterval: 3000,
     },
-  )
-
-  const { data: matrix } = useSWR(
-    `/api/v1/projects/${projectId}/models/${modelId}/confusion_matrix/`,
   )
 
   const {
@@ -287,11 +284,7 @@ const ModelDetails = () => {
         </div>
 
         <Feature flag="ModelMatrixShortcut" envs={[]}>
-          <ModelMatrixShortcut
-            projectId={projectId}
-            modelId={modelId}
-            matrix={matrix}
-          />
+          <ModelMatrixLink projectId={projectId} modelId={modelId} />
         </Feature>
       </div>
 

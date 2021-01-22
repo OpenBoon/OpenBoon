@@ -9,7 +9,7 @@ import Model from '..'
 
 jest.mock('../../Breadcrumbs', () => 'Breadcrumbs')
 jest.mock('../../ModelLabels', () => 'ModelLabels')
-jest.mock('../../ModelMatrix/Shortcut', () => 'ModelMatrixShortcut')
+jest.mock('../../Model/MatrixLink', () => 'ModelMatrixLink')
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const MODEL_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
