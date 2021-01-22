@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e2ee5b0b58ed24cad5b8fda7ba1a42451e2a7470340b716887cd066ec0450797"
+            "sha256": "1686e7a10968f8ac2ffe2633d284a5f21d59b053a9ccb657fc5dddfe000e9c01"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -511,11 +511,11 @@
         },
         "zvi-client": {
             "hashes": [
-                "sha256:449b9e70f100d8152521275a59edee3a51bd4e9ec6bc0b4cbb1ff07a1254f3c8",
-                "sha256:766fd8e6b030f1f0aee14be4e600b937a88e98020126aa0030bba1518dd26dce"
+                "sha256:39103b03cf300b6ec3d4d54018a89bb575c94fd292d0dd4834c5893bd3123d60",
+                "sha256:838e899aa757b988c68ea0ae625bbfce46dde1cc1cf11f1c11a3be93dcaf5d72"
             ],
             "index": "pypi",
-            "version": "==1.1.2"
+            "version": "==1.1.3"
         }
     },
     "develop": {}
