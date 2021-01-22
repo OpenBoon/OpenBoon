@@ -648,19 +648,14 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
         %
       </span>
     </div>
-    <Link
-      as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/matrix"
-      href="/[projectId]/models/[modelId]/matrix"
-      passHref={true}
+    <a
+      className="emotion-127"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/matrix"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
     >
-      <button
-        className="emotion-127"
-        onClick={[Function]}
-        type="button"
-      >
-        View Matrix
-      </button>
-    </Link>
+      View Matrix
+    </a>
   </div>
 </div>
 `;

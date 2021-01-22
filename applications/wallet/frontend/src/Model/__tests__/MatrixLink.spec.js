@@ -7,13 +7,8 @@ import ModelMatrixLink from '../MatrixLink'
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const MODEL_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
 
-jest.mock('next/link', () => 'Link')
-
 describe('<ModelMatrixLink />', () => {
   it('should render properly when a matrix exists', () => {
-    const mockRouterPush = jest.fn()
-
-    require('next/router').__setMockPushFunction(mockRouterPush)
     require('swr').__setMockUseSWRResponse({
       data: matrix,
     })
