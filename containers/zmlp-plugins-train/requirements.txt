@@ -6,3 +6,4 @@ pycocotools
 tqdm
 pillow
 pandas
+torch
