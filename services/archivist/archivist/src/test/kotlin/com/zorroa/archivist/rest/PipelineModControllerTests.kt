@@ -86,7 +86,7 @@ class PipelineModControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("cats")))
             .andExpect(MockMvcResultMatchers.jsonPath("$.description", CoreMatchers.equalTo("dogs")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.type", CoreMatchers.equalTo("Asset Clipifier")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.type", CoreMatchers.equalTo("Video Clip Generator")))
             .andExpect(MockMvcResultMatchers.jsonPath("$.ops[0].type", CoreMatchers.equalTo("APPEND")))
             .andReturn()
     }

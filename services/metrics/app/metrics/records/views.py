@@ -1,12 +1,13 @@
 from dateparser import parse as parse_date
-from django.db.models import Sum, Q
+from django.db.models import Sum, Q, Value as V
+from django.db.models.functions import Coalesce
 from rest_framework import viewsets
 from rest_framework.decorators import action, renderer_classes
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
 from metrics.records.models import ApiCall
-from metrics.records.serializers import ApiCallSerializer, ReportSerializer
+from metrics.records.serializers import ApiCallSerializer, ReportSerializer, TieredUsageSerializer
 from .renderers import ReportCSVRenderer
 from .mixins import CSVFileMixin
 
@@ -123,4 +124,35 @@ class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
             })
 
         serializer = ReportSerializer(data, many=True, context=self.get_serializer_context())
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def tiered_usage(self, request):
+        after = self.request.query_params.get('after')
+        before = self.request.query_params.get('before')
+        project = self.request.query_params.get('project')
+        queryset = self.get_queryset().filter(project=project)
+        if after:
+            after_date = parse_date(after)
+            queryset = queryset.filter(created_date__gte=after_date)
+        if before:
+            before_date = parse_date(before)
+            queryset = queryset.filter(created_date__lt=before_date)
+        tier_1_agg = queryset.exclude(
+            service__in=ApiCall.tier_2_modules
+        ).exclude(
+            service__in=ApiCall.free_modules
+        ).aggregate(
+            image_count=Coalesce(Sum('image_count'), V(0)),
+            video_minutes=Coalesce(Sum('video_minutes'), V(0))
+        )
+        tier_2_agg = queryset.filter(
+            service__in=ApiCall.tier_2_modules
+        ).aggregate(
+            image_count=Coalesce(Sum('image_count'), V(0)),
+            video_minutes=Coalesce(Sum('video_minutes'), V(0))
+        )
+        tiered_usage = {'tier_1': tier_1_agg,
+                        'tier_2': tier_2_agg}
+        serializer = TieredUsageSerializer(tiered_usage, context=self.get_serializer_context())
         return Response(serializer.data)

@@ -20,7 +20,9 @@ class ZmlpActor(
     val name: String,
 
     @ApiModelProperty("A list of permissions associated with key.")
-    val permissions: Set<Permission>
+    val permissions: Set<Permission>,
+
+    val attrs: Map<String, String>? = null
 ) {
     fun hasAnyPermission(vararg perm: Permission): Boolean {
         return perm.any { it in permissions }
@@ -28,5 +30,9 @@ class ZmlpActor(
 
     override fun toString(): String {
         return "$id/$name"
+    }
+
+    fun getAttr(key: String): String? {
+        return attrs?.get(key)
     }
 }
