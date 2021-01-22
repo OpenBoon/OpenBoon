@@ -179,6 +179,10 @@ resource "kubernetes_deployment" "wallet" {
             name = "USE_MODEL_IDS_FOR_LABEL_FILTERS"
             value = var.use-model-ids-for-label-filters
           }
+          env {
+            name = "METRICS_API_URL"
+            value = "http://${var.metrics-ip-address}"
+          }
         }
       }
     }
