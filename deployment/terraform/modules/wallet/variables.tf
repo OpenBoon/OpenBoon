@@ -80,3 +80,6 @@ variable "use-model-ids-for-label-filters" {
   default = "false"
 }
 
+variable "metrics-ip-address" {
+  default = "metrics"
+}
