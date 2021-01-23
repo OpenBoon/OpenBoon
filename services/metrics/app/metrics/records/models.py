@@ -66,7 +66,7 @@ class ApiCall(models.Model):
 
     class Meta:
         unique_together = (
-            ('service', 'asset_id')
+            ('service', 'asset_id', 'project')
         )
 
     def save(self, *args, **kwargs):

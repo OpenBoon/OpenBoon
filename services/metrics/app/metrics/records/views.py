@@ -25,12 +25,12 @@ class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = ApiCall.objects.all()
-        project_id = self.request.query_params.get('project_id')
+        project = self.request.query_params.get('project')
         asset_id = self.request.query_params.get('asset_id')
         service = self.request.query_params.get('service')
 
-        if project_id is not None:
-            queryset = queryset.filter(project=project_id)
+        if project is not None:
+            queryset = queryset.filter(project=project)
         if asset_id is not None:
             queryset = queryset.filter(asset_id=asset_id)
         if service is not None:
@@ -130,8 +130,7 @@ class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
     def tiered_usage(self, request):
         after = self.request.query_params.get('after')
         before = self.request.query_params.get('before')
-        project = self.request.query_params.get('project')
-        queryset = self.get_queryset().filter(project=project)
+        queryset = self.get_queryset()
         if after:
             after_date = parse_date(after)
             queryset = queryset.filter(created_date__gte=after_date)
