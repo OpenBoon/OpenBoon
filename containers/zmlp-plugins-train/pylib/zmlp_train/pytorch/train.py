@@ -230,7 +230,7 @@ class PytorchTransferLearningTrainer(AssetProcessor):
                     phase, epoch_loss, epoch_acc))
 
                 # deep copy the model
-                if phase == 'val' and epoch_acc > best_acc:
+                if phase == 'validate' and epoch_acc > best_acc:
                     best_acc = epoch_acc
                     best_model_wts = copy.deepcopy(self.model.state_dict())
 

@@ -1,5 +1,5 @@
 """
-Keras specific utilities.
+Pytorch specific utilities.
 """
 import logging
 import os
