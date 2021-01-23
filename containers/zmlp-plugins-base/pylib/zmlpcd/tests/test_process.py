@@ -307,7 +307,7 @@ class ProcessorExecutorTests(unittest.TestCase):
     def test_record_analysis_metric_duplicate(self, metric_post_mock):
         response = Response()
         response._content = ('{"non_field_errors": ["The fields service, '
-                             'asset_id must make a unique set."]}')
+                             'asset_id, project must make a unique set."]}')
         response.status_code == 400
         metric_post_mock.return_value = response
         ref = {
