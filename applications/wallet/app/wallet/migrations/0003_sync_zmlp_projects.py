@@ -13,11 +13,15 @@ def sync_project_with_zmlp(apps, schema_editor):
         project.sync_with_zmlp()
 
 
+def fake_reverse(apps, schema_editor):
+    pass
+
+
 class Migration(migrations.Migration):
     dependencies = [
         ('wallet', '0002_data_migration_add_project_zero'),
     ]
 
     operations = [
-        migrations.RunPython(sync_project_with_zmlp)
+        migrations.RunPython(sync_project_with_zmlp, fake_reverse)
     ]

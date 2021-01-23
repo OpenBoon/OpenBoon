@@ -23,6 +23,10 @@ def upgrade_subscription(apps, schema_editor):
         logger.debug('Project Zero already has a subscription. No action taken.')
 
 
+def fake_reverse(apps, schema_editor):
+    pass
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -30,5 +34,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(upgrade_subscription)
+        migrations.RunPython(upgrade_subscription, fake_reverse)
     ]
