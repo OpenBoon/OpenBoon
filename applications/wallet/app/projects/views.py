@@ -528,7 +528,7 @@ class ProjectViewSet(ListModelMixin,
         """Returns the ml module usage for the current month."""
         today = datetime.today()
         first_of_the_month = f'{today.year:04d}-{today.month:02d}-01'
-        path = os.path.join(settings.METRICS_API_URL, 'apicalls/tiered_usage')
+        path = os.path.join(settings.METRICS_API_URL, 'api/v1/apicalls/tiered_usage')
         try:
             response = requests.get(path, {'after': first_of_the_month, 'project': pk})
             response.raise_for_status()
