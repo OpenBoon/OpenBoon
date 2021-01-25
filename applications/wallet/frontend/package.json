@@ -98,7 +98,7 @@
     {
       "//": "chunks",
       "path": ".next/static/chunks/!(commons|framework|main|polyfill|webpack)*.js",
-      "maxSize": "28 kB"
+      "maxSize": "29 kB"
     },
     {
       "//": "app.js",
