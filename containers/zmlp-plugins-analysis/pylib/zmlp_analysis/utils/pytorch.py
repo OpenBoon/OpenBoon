@@ -1,5 +1,5 @@
 """
-Keras specific utilities.
+Pytorch specific utilities.
 """
 import logging
 import os
@@ -27,7 +27,7 @@ def load_pytorch_image(path, size=(224, 224)):
     """
 
     transform_test = transforms.Compose([
-        transforms.Resize(size, Image.BILINEAR),
+        transforms.Resize(256),
         transforms.CenterCrop(size),
         transforms.ToTensor(),
         transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),

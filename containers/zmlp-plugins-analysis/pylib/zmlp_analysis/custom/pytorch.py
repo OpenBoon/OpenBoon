@@ -6,11 +6,11 @@ from zmlpsdk.proxy import get_proxy_level_path
 from ..utils.pytorch import load_pytorch_image, load_pytorch_model
 
 
-class PytorchImageClassifier(AssetProcessor):
+class PytorchTransferLearningClassifier(AssetProcessor):
     """A processor for loading and executing a uploaded Tensorflow image classifier"""
 
     def __init__(self):
-        super(PytorchImageClassifier, self).__init__()
+        super(PytorchTransferLearningClassifier, self).__init__()
 
         self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
         self.add_arg(Argument("input_size", "list", required=True,

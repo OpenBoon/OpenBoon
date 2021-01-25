@@ -62,10 +62,10 @@ class PytorchTransferLearningTrainer(AssetProcessor):
 
         self.reactor.emit_status("Training model: {}".format(self.app_model.name))
         image_datasets, data_loaders = self.build_data_loaders()
-        self.train_model(image_datasets, data_loaders)
 
         # Build the label list
         labels = image_datasets['train'].classes
+        self.train_model(image_datasets, data_loaders)
 
         self.publish_model(labels)
 
@@ -147,14 +147,14 @@ class PytorchTransferLearningTrainer(AssetProcessor):
         Build and train Pytorch model using the base model specified in the args.
 
         """
-        dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
+        dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'validate']}
 
         # Make a new model from the base ResNet18 model.
         self.model = self.get_base_model()
         num_ftrs = self.model.fc.in_features
         # Here the size of each output sample is set to 2.
         # Alternatively, it can be generalized to nn.Linear(num_ftrs, len(class_names)).
-        self.model.fc = nn.Linear(num_ftrs, 2)
+        self.model.fc = nn.Linear(num_ftrs, len(image_datasets['train'].classes))
 
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.model = self.model.to(device)
@@ -181,7 +181,7 @@ class PytorchTransferLearningTrainer(AssetProcessor):
             self.reactor.emit_status('-' * 10)
 
             # Each epoch has a training and validation phase
-            for phase in ['train', 'val']:
+            for phase in ['train', 'validate']:
                 if phase == 'train':
                     self.model.train()  # Set model to training mode
                 else:
@@ -230,7 +230,7 @@ class PytorchTransferLearningTrainer(AssetProcessor):
                     phase, epoch_loss, epoch_acc))
 
                 # deep copy the model
-                if phase == 'val' and epoch_acc > best_acc:
+                if phase == 'validate' and epoch_acc > best_acc:
                     best_acc = epoch_acc
                     best_model_wts = copy.deepcopy(self.model.state_dict())
 
@@ -260,7 +260,7 @@ class PytorchTransferLearningTrainer(AssetProcessor):
                 transforms.ToTensor(),
                 transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
             ]),
-            'val': transforms.Compose([
+            'validate': transforms.Compose([
                 transforms.Resize(256),
                 transforms.CenterCrop(224),
                 transforms.ToTensor(),
@@ -270,12 +270,12 @@ class PytorchTransferLearningTrainer(AssetProcessor):
 
         image_datasets = {x: datasets.ImageFolder(os.path.join(self.base_dir, x),
                                                   data_transforms[x])
-                          for x in ['train', 'val']}
+                          for x in ['train', 'validate']}
         data_loaders = {x: torch.utils.data.DataLoader(image_datasets[x],
                                                        batch_size=4,
                                                        shuffle=True,
                                                        num_workers=4)
-                        for x in ['train', 'val']}
+                        for x in ['train', 'validate']}
 
         return image_datasets, data_loaders
 
