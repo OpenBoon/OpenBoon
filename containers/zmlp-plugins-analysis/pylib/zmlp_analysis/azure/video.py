@@ -74,7 +74,7 @@ class AzureVideoAbstract(AssetProcessor):
         else:
             timeline = clip_tracker.build_timeline(final_time)
 
-        save_timeline(timeline)
+        save_timeline(asset, timeline)
 
     def set_analysis(self, extractor, clip_tracker, proc):
         """ Set up ClipTracker and Asset Detection Analysis

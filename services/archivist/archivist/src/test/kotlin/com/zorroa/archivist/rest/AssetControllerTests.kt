@@ -398,7 +398,7 @@ class AssetControllerTests : MockMvcTest() {
             TimelineClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
         )
         val track = TrackSpec("cats", clips)
-        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
+        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track), false)
 
         clipService.createClips(timeline)
         refreshElastic()
@@ -425,7 +425,7 @@ class AssetControllerTests : MockMvcTest() {
             TimelineClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
         )
         val track = TrackSpec("cats", clips)
-        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
+        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track), false)
 
         clipService.createClips(timeline)
         refreshElastic()
@@ -449,7 +449,7 @@ class AssetControllerTests : MockMvcTest() {
             TimelineClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
         )
         val track = TrackSpec("cats", clips)
-        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
+        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track), false)
 
         clipService.createClips(timeline)
         refreshElastic()
