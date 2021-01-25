@@ -1,13 +1,37 @@
+import PropTypes from 'prop-types'
+import useSWR from 'swr'
+
 import { colors, spacing, typography, constants } from '../Styles'
 
 import ImagesSvg from '../Icons/images.svg'
 import DocumentsSvg from '../Icons/documents.svg'
 import VideosSvg from '../Icons/videos.svg'
+import { formatUsage } from './helpers'
 
 const LARGE = 400
 const SMALL = 300
 
-const ProjectMetrics = () => {
+const ProjectMetrics = ({ projectId }) => {
+  const {
+    data: {
+      tier_1: {
+        image_count: internalImageCount = -1,
+        video_minutes: internalVideoMinutes = -1,
+      } = {},
+      tier_2: {
+        image_count: externalImageCount = -1,
+        video_minutes: externalVideoMinutes = -1,
+      } = {},
+    } = {},
+  } = useSWR(`/api/v1/projects/${projectId}/ml_usage_this_month/`)
+
+  const {
+    data: {
+      image_count: totalImageCount = -1,
+      video_hours: totalVideoHours = -1,
+    } = {},
+  } = useSWR(`/api/v1/projects/${projectId}/total_storage_usage/`)
+
   return (
     <div css={{ display: 'flex', flexWrap: 'wrap', gap: spacing.spacious }}>
       <div css={{ flex: 2 }}>
@@ -83,12 +107,12 @@ const ProjectMetrics = () => {
               <td>
                 <br />
                 <br />
-                --
+                {formatUsage({ number: internalImageCount })}
               </td>
               <td>
                 <br />
                 <br />
-                --
+                {formatUsage({ number: externalImageCount })}
               </td>
             </tr>
             <tr>
@@ -107,8 +131,8 @@ const ProjectMetrics = () => {
                   Video Hours
                 </div>
               </td>
-              <td>--</td>
-              <td>--</td>
+              <td>{formatUsage({ number: internalVideoMinutes / 60 })}</td>
+              <td>{formatUsage({ number: externalVideoMinutes / 60 })}</td>
             </tr>
           </tbody>
         </table>
@@ -181,7 +205,7 @@ const ProjectMetrics = () => {
               <td>
                 <br />
                 <br />
-                --
+                {formatUsage({ number: totalImageCount })}
               </td>
             </tr>
             <tr>
@@ -200,13 +224,35 @@ const ProjectMetrics = () => {
                   Video Hours
                 </div>
               </td>
-              <td>--</td>
+              <td>{formatUsage({ number: totalVideoHours })}</td>
             </tr>
           </tbody>
         </table>
       </div>
+      <div
+        css={{
+          fontSize: typography.size.small,
+          lineHeight: typography.height.small,
+          color: colors.structure.zinc,
+          paddingBottom: spacing.base,
+        }}
+      >
+        *pages are processed &amp; counted as individual assets
+        {[internalImageCount || externalImageCount || totalImageCount].includes(
+          -1,
+        ) && (
+          <>
+            <br />
+            **usage is being calculated and is currently unavailable
+          </>
+        )}
+      </div>
     </div>
   )
+}
+
+ProjectMetrics.propTypes = {
+  projectId: PropTypes.string.isRequired,
 }
 
 export default ProjectMetrics
