@@ -30,6 +30,7 @@ const matrix = {
   maxScore: 1,
   minScore: 0,
   moduleName: 'flower-types',
+  isMatrixApplicable: true,
 }
 
 export default matrix
