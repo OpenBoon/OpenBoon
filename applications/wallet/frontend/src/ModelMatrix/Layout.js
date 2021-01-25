@@ -88,15 +88,24 @@ const ModelMatrixLayout = ({
           backgroundColor: colors.structure.lead,
         }}
       >
-        <SuspenseBoundary>
-          <ModelMatrixMatrix
-            projectId={projectId}
-            modelId={modelId}
-            settings={settings}
-            dispatch={dispatch}
-            setMatrixDetails={setMatrixDetails}
-          />
-        </SuspenseBoundary>
+        <div
+          css={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            width: '0%',
+          }}
+        >
+          <SuspenseBoundary>
+            <ModelMatrixMatrix
+              projectId={projectId}
+              modelId={modelId}
+              settings={settings}
+              dispatch={dispatch}
+              setMatrixDetails={setMatrixDetails}
+            />
+          </SuspenseBoundary>
+        </div>
 
         <Resizeable
           storageName="Resizeable.ModelMatrixPreview"

@@ -10,8 +10,6 @@ import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
 import { getColor, PANEL_WIDTH } from './helpers'
 
-import settingsShape from './settingsShape'
-
 const CONTRAST_THRESHOLD = 69
 
 const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
@@ -226,7 +224,13 @@ ModelMatrixRow.propTypes = {
     labels: PropTypes.arrayOf(PropTypes.string).isRequired,
     matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   }).isRequired,
-  settings: PropTypes.shape(settingsShape).isRequired,
+  settings: PropTypes.shape({
+    height: PropTypes.number.isRequired,
+    labelsWidth: PropTypes.number.isRequired,
+    zoom: PropTypes.number.isRequired,
+    selectedCell: PropTypes.arrayOf(PropTypes.number.isRequired),
+    isNormalized: PropTypes.bool.isRequired,
+  }).isRequired,
   label: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired,
