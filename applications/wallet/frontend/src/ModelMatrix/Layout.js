@@ -15,9 +15,10 @@ import PreviewSvg from '../Icons/preview.svg'
 
 import { INITIAL_STATE, reducer } from './reducer'
 
+import ModelMatrixPreview from '../ModelMatrixPreview'
+
 import ModelMatrixControls from './Controls'
 import ModelMatrixMatrix from './Matrix'
-import ModelMatrixPreview from './Preview'
 import { PANEL_WIDTH } from './helpers'
 
 const ACCURACY_WIDTH = 40
@@ -44,6 +45,7 @@ const ModelMatrixLayout = ({
     <div
       css={{
         width: '100%',
+        // height: 'calc(100% - 106px)',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -84,6 +86,7 @@ const ModelMatrixLayout = ({
         css={{
           flex: 1,
           width: '100%',
+          height: '100%',
           display: 'flex',
           backgroundColor: colors.structure.lead,
         }}
@@ -115,7 +118,7 @@ const ModelMatrixLayout = ({
           isDisabled={!isOpen}
         >
           <ModelMatrixPreview
-            selectedCell={settings.selectedCell}
+            settings={settings}
             labels={labels}
             moduleName={moduleName}
           />
