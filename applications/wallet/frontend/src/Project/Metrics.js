@@ -238,7 +238,7 @@ const ProjectMetrics = ({ projectId }) => {
         }}
       >
         *pages are processed &amp; counted as individual assets
-        {[internalImageCount || externalImageCount || totalImageCount].includes(
+        {[internalImageCount, externalImageCount, totalImageCount].includes(
           -1,
         ) && (
           <>
