@@ -22,7 +22,7 @@ class ZmlpActor(
     @ApiModelProperty("A list of permissions associated with key.")
     val permissions: Set<Permission>,
 
-    val attrs: Map<String, String>? = null
+    var attrs: MutableMap<String, String> = mutableMapOf()
 ) {
     fun hasAnyPermission(vararg perm: Permission): Boolean {
         return perm.any { it in permissions }
@@ -33,6 +33,10 @@ class ZmlpActor(
     }
 
     fun getAttr(key: String): String? {
-        return attrs?.get(key)
+        return attrs[key]
+    }
+
+    fun setAttr(key: String, value: String) {
+        attrs[key] = value
     }
 }

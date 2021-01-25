@@ -51,7 +51,7 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
         analysis, clip_tracker = self.set_analysis(extractor, clip_tracker, model)
         asset.add_analysis(self.attribute, analysis)
         timeline = clip_tracker.build_timeline(final_time)
-        video.save_timeline(timeline)
+        video.save_timeline(asset, timeline)
 
     def set_analysis(self, extractor, clip_tracker, model):
         """ Set up ClipTracker and Asset Detection Analysis
