@@ -108,7 +108,7 @@ class AbstractVideoDetectProcessor(AssetProcessor):
             [analysis.add_label_and_score(ls[0], ls[1]) for ls in attribs]
             asset.add_analysis(self.namespace, analysis)
         timeline = clip_tracker.build_timeline(final_time)
-        video.save_timeline(timeline)
+        video.save_timeline(asset, timeline)
 
     def create_topic_queue(self, name):
         """

@@ -38,6 +38,10 @@ interface JobLaunchService {
     fun addTimelineAnalysisTask(jobId: UUID, assetId: String, timeline: String): Task
 
     /**
+     * Process multiple timelines.
+     */
+    fun addMultipleTimelineAnalysisTask(jobId: UUID, timelimes: Map<String, List<String>>): Task
+    /**
      * Get a task for reprocessing assets.
      */
     fun getReprocessTask(req: ReprocessAssetSearchRequest, count: Long? = null): ZpsScript
@@ -257,6 +261,20 @@ class JobLaunchServiceImpl(
         )
     }
 
+    fun getMultipleTimelineAnalysisScript(timelines: Map<String, List<String>>): ZpsScript {
+        val execute = ProcessorRef(
+            "zmlp_analysis.zvi.MultipleTimelineAnalysisProcessor",
+            StandardContainers.ANALYSIS,
+            args = mapOf("timelines" to timelines)
+        )
+
+        return ZpsScript(
+            "Deep Video Timeline Analysis for ${timelines.size} asset(s).",
+            null, listOf(Asset("timelines")), listOf(execute),
+            settings = getDefaultJobSettings(), globalArgs = mutableMapOf()
+        )
+    }
+
     fun getClipAnalysisScript(clipId: String): ZpsScript {
         val execute = ProcessorRef(
             "zmlp_analysis.zvi.ClipAnalysisProcessor",
@@ -268,6 +286,11 @@ class JobLaunchServiceImpl(
             "Clip Analysis", null, listOf(Asset("clips")), listOf(execute),
             settings = getDefaultJobSettings(), globalArgs = mutableMapOf()
         )
+    }
+
+    override fun addMultipleTimelineAnalysisTask(jobId: UUID, timelimes: Map<String, List<String>>): Task {
+        val job = jobService.get(jobId, false)
+        return jobService.createTask(job, getMultipleTimelineAnalysisScript(timelimes))
     }
 
     override fun addTimelineAnalysisTask(jobId: UUID, assetId: String, timeline: String): Task {

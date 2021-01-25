@@ -2,10 +2,13 @@ import os
 import tempfile
 import unittest
 import logging
+from unittest.mock import patch
 
 import zmlpsdk.video as video
 import zmlpsdk.media as media
-from zmlpsdk.testing import zorroa_test_path
+from zmlpsdk.testing import zorroa_test_path, TestAsset
+from zmlp import TimelineBuilder, ZmlpClient
+
 
 logging.basicConfig(level=logging.NOTSET)
 
@@ -39,6 +42,18 @@ def test_webvtt_builder():
     data = open(vtt.path, "r").read()
     assert "00:00:00.000 --> 00:00:10.000" in data
     assert "hello, you bastard" in data
+
+
+@patch.object(ZmlpClient, 'post')
+def test_save_timeline(post_patch):
+    post_patch.return_value = {}
+    asset = TestAsset('12345')
+    tl = TimelineBuilder(asset, 'zvi-timeline')
+    video.save_timeline(asset, tl)
+
+    # Make sure the TL list is added to tmp.
+    tmp_tl = asset.get_attr('tmp.timelines')
+    assert tmp_tl == ['zvi-timeline']
 
 
 class FrameExtractors(unittest.TestCase):

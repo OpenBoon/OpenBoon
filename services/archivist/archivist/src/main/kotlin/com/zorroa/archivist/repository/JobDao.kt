@@ -14,6 +14,7 @@ import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStateCounts
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.archivist.security.getZmlpActorOrNull
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.archivist.util.JdbcUtils.insert
 import com.zorroa.zmlp.util.Json
@@ -116,7 +117,12 @@ class JobDaoImpl : AbstractDao(), JobDao {
         return if (forClient) {
             jdbc.queryForObject("$GET WHERE job.pk_job=?", MAPPER_FOR_CLIENT, id)
         } else {
-            jdbc.queryForObject("$GET WHERE job.pk_job=?", MAPPER, id)
+            val pid = getZmlpActorOrNull()
+            if (pid != null) {
+                jdbc.queryForObject("$GET WHERE job.pk_job=? AND job.pk_project=?", MAPPER, id, pid.projectId)
+            } else {
+                jdbc.queryForObject("$GET WHERE job.pk_job=?", MAPPER, id)
+            }
         }
     }
 
