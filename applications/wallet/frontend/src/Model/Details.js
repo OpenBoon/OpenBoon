@@ -170,7 +170,7 @@ const ModelDetails = () => {
 
                 {!!missingLabelsOnAssets && (
                   <>
-                    {missingLabelsOnAssets} more assets need to be labeled (min.
+                    {missingLabelsOnAssets} more {missingLabelsOnAssets === 1 ? 'asset needs' : 'assets need'} to be labeled (min.
                     = {requiredAssetsPerLabel} of each label)
                   </>
                 )}
