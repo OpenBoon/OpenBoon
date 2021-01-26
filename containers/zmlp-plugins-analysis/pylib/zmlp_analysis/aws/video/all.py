@@ -96,6 +96,8 @@ class AbstractVideoDetectProcessor(AssetProcessor):
             sqs_queue_url=self.sqs_queue_url,
             func=self.detector_func
         )
+
+        self.logger.info(f'Waiting on sqs for job {start_job_id} asset "{asset_id}"')
         if util.get_sqs_message_success(self.sqs_client, self.sqs_queue_url, start_job_id):
             clip_tracker, attribs = self.get_detection_results(
                 clip_tracker=clip_tracker,
@@ -109,25 +111,6 @@ class AbstractVideoDetectProcessor(AssetProcessor):
             asset.add_analysis(self.namespace, analysis)
         timeline = clip_tracker.build_timeline(final_time)
         video.save_timeline(asset, timeline)
-
-    def create_topic_queue(self, name):
-        """
-        Create AWS SNS Topic and SQS Queue
-
-        Args:
-            name: (str) the name that will be prepended to the topic and queue
-
-        Returns:
-            tuple(str, str) (SNS Topic ARN, SQS Queue URL)
-        """
-        prepend_name = "AmazonRekognition"
-
-        return util.create_topic_and_queue(
-            self.sns_client,
-            self.sqs_client,
-            topic_name=f"{prepend_name}-{name}-topic",
-            queue_name=f"{prepend_name}-{name}-queue"
-        )
 
     def start_detection_analysis(self, role_arn, bucket, video, sns_topic_arn, sqs_queue_url, func):
         """
