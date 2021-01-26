@@ -49,7 +49,6 @@ class AmazonVideoProcessorTestCase(PluginUnitTestCase):
         os.environ['ZORROA_AWS_ML_USER_SQS_ARN'] = sqs_arn.strip()
         os.environ['ZORROA_AWS_ML_USER_SQS_URL'] = sqs_url.strip()
         os.environ['ZORROA_AWS_ML_USER_SNS_TOPIC_ARN'] = topic_arn.strip()
-        os.environ['PATH'] += ':/usr/local/bin'
 
     def tearDown(self):
         del os.environ['ZORROA_AWS_KEY']
