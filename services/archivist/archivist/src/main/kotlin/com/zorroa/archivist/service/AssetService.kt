@@ -574,8 +574,7 @@ class AssetServiceImpl : AssetService {
                 val jobId = getZmlpActor().getAttr("jobId")
                 if (jobId == null) {
                     logger.warn("There was post timelines to process but not jobId was found.")
-                }
-                else {
+                } else {
                     logger.info("Launching deep video analysis on ${postTimelines.size} assets.")
                     jobLaunchService.addMultipleTimelineAnalysisTask(
                         UUID.fromString(jobId), postTimelines
