@@ -1,9 +1,8 @@
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
-import { colors, spacing, constants, typography } from '../Styles'
+import { colors, spacing, constants } from '../Styles'
 
-import SuspenseBoundary from '../SuspenseBoundary'
 import Bouncer, { ROLES } from '../Bouncer'
 
 import ProjectMetrics from './Metrics'
@@ -60,21 +59,7 @@ const ProjectCards = () => {
             Project ID: {id}
           </div>
 
-          <SuspenseBoundary isTransparent>
-            <ProjectMetrics projectId={projectId} />
-          </SuspenseBoundary>
-
-          <div
-            css={{
-              fontSize: typography.size.small,
-              lineHeight: typography.height.small,
-              color: colors.structure.zinc,
-              paddingTop: spacing.comfy,
-              paddingBottom: spacing.base,
-            }}
-          >
-            *pages are processed &amp; counted as individual assets
-          </div>
+          <ProjectMetrics projectId={projectId} />
         </div>
 
         <ProjectQuickLinks projectId={projectId} />
