@@ -65,7 +65,7 @@ class ClusterClient(object):
         self.my_port = int(my_port)
 
         try:
-            self.hostname = socket.gethostname()
+            self.hostname = get_local_ip()
         except socket.gaierror as e:
             logger.warning("Unable to determine his machines hostname, %s" % e)
 
@@ -401,3 +401,15 @@ def get_sdk_version():
             return fp.read().strip()
     except IOError:
         return "unknown"
+
+
+def get_local_ip():
+    """
+    Return the routable IP address.
+
+    Returns:
+        str: The IP address.
+    """
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(('8.8.8.8', 1))  # connect() for UDP doesn't send packets
+    return s.getsockname()[0]

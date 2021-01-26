@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from zmlp.app import ModelApp
 from zmlp.entity import Model
-from zmlp_analysis.custom.pytorch import PytorchImageClassifier
+from zmlp_analysis.custom.pytorch import PytorchTransferLearningClassifier
 from zmlpsdk.base import Frame
 from zmlpsdk.storage import file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
@@ -52,7 +52,7 @@ class PytorchModelImageClassifierTests(PluginUnitTestCase):
             frame = Frame(TestAsset(paths))
 
             processor = self.init_processor(
-                PytorchImageClassifier(), args
+                PytorchTransferLearningClassifier(), args
             )
             processor.process(frame)
             analysis = frame.asset.get_analysis(name)

@@ -12,7 +12,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
  */
 class InternalThreadAuthentication constructor(
     projectId: UUID,
-    perms: Set<Permission> = setOf()
+    perms: Set<Permission> = setOf(),
+    attrs: Map<String, String> = mapOf()
 ) :
     AbstractAuthenticationToken(perms.map { SimpleGrantedAuthority(it.name) }) {
 
@@ -20,7 +21,8 @@ class InternalThreadAuthentication constructor(
         KnownKeys.SUKEY,
         projectId,
         KnownKeys.BACKGROUND_THREAD,
-        perms
+        perms,
+        attrs = attrs.toMutableMap()
     )
 
     init {

@@ -1,0 +1,567 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProjectMetrics /> should render properly when data is available 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+.emotion-1 {
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
+}
+
+.emotion-2 {
+  min-width: 400px;
+}
+
+.emotion-2 th {
+  text-align: left;
+  vertical-align: bottom;
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  padding: 8px;
+  padding-left: 0;
+}
+
+.emotion-2 td {
+  padding: 16px;
+  padding-left: 0;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-3 {
+  color: #ebb52e;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+.emotion-4 {
+  padding-right: 8px;
+}
+
+.emotion-5 {
+  color: #00bdc1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-7 {
+  color: #8f89e7;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-9 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-10 {
+  min-width: 300px;
+}
+
+.emotion-10 th {
+  text-align: left;
+  vertical-align: bottom;
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  padding: 8px;
+  padding-left: 0;
+}
+
+.emotion-10 td {
+  padding: 16px;
+  padding-left: 0;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-17 {
+  font-size: 14px;
+  line-height: 18px;
+  color: #b3b3b3;
+  padding-bottom: 8px;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <h4>
+      Usage
+    </h4>
+    <table
+      className="emotion-2"
+    >
+      <thead>
+        <tr>
+          <th>
+            File Type
+          </th>
+          <th>
+            ML Usage
+            <br />
+            External Modules
+          </th>
+          <th>
+            ML Usage
+            <br />
+            Internal Modules
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div
+              className="emotion-3"
+            >
+              <svg
+                className="emotion-4"
+                data-file-name="images.svg"
+                height={24}
+              />
+              Images /
+            </div>
+            <div
+              className="emotion-5"
+            >
+              <svg
+                className="emotion-4"
+                data-file-name="documents.svg"
+                height={24}
+              />
+              Documents*
+            </div>
+          </td>
+          <td>
+            <br />
+            <br />
+            2
+          </td>
+          <td>
+            <br />
+            <br />
+            8
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div
+              className="emotion-7"
+            >
+              <svg
+                className="emotion-4"
+                data-file-name="videos.svg"
+                height={24}
+              />
+              Video Hours
+            </div>
+          </td>
+          <td>
+            1
+          </td>
+          <td>
+            1
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div
+    className="emotion-9"
+  >
+    <h4>
+      Total Asset Storage
+    </h4>
+    <table
+      className="emotion-10"
+    >
+      <thead>
+        <tr>
+          <th>
+            <br />
+            File Type
+          </th>
+          <th>
+            Total 
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div
+              className="emotion-3"
+            >
+              <svg
+                className="emotion-4"
+                data-file-name="images.svg"
+                height={24}
+              />
+              Images /
+            </div>
+            <div
+              className="emotion-5"
+            >
+              <svg
+                className="emotion-4"
+                data-file-name="documents.svg"
+                height={24}
+              />
+              Documents*
+            </div>
+          </td>
+          <td>
+            <br />
+            <br />
+            64
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div
+              className="emotion-7"
+            >
+              <svg
+                className="emotion-4"
+                data-file-name="videos.svg"
+                height={24}
+              />
+              Video Hours
+            </div>
+          </td>
+          <td>
+            128
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div
+    className="emotion-17"
+  >
+    *pages are processed & counted as individual assets
+  </div>
+</div>
+`;
+
+exports[`<ProjectMetrics /> should render properly when data is unavailable 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+.emotion-1 {
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
+}
+
+.emotion-2 {
+  min-width: 400px;
+}
+
+.emotion-2 th {
+  text-align: left;
+  vertical-align: bottom;
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  padding: 8px;
+  padding-left: 0;
+}
+
+.emotion-2 td {
+  padding: 16px;
+  padding-left: 0;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-3 {
+  color: #ebb52e;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+.emotion-4 {
+  padding-right: 8px;
+}
+
+.emotion-5 {
+  color: #00bdc1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-7 {
+  color: #8f89e7;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-9 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-10 {
+  min-width: 300px;
+}
+
+.emotion-10 th {
+  text-align: left;
+  vertical-align: bottom;
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  padding: 8px;
+  padding-left: 0;
+}
+
+.emotion-10 td {
+  padding: 16px;
+  padding-left: 0;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-17 {
+  font-size: 14px;
+  line-height: 18px;
+  color: #b3b3b3;
+  padding-bottom: 8px;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <h4>
+      Usage
+    </h4>
+    <table
+      className="emotion-2"
+    >
+      <thead>
+        <tr>
+          <th>
+            File Type
+          </th>
+          <th>
+            ML Usage
+            <br />
+            External Modules
+          </th>
+          <th>
+            ML Usage
+            <br />
+            Internal Modules
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div
+              className="emotion-3"
+            >
+              <svg
+                className="emotion-4"
+                data-file-name="images.svg"
+                height={24}
+              />
+              Images /
+            </div>
+            <div
+              className="emotion-5"
+            >
+              <svg
+                className="emotion-4"
+                data-file-name="documents.svg"
+                height={24}
+              />
+              Documents*
+            </div>
+          </td>
+          <td>
+            <br />
+            <br />
+            unavailable**
+          </td>
+          <td>
+            <br />
+            <br />
+            unavailable**
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div
+              className="emotion-7"
+            >
+              <svg
+                className="emotion-4"
+                data-file-name="videos.svg"
+                height={24}
+              />
+              Video Hours
+            </div>
+          </td>
+          <td>
+            unavailable**
+          </td>
+          <td>
+            unavailable**
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div
+    className="emotion-9"
+  >
+    <h4>
+      Total Asset Storage
+    </h4>
+    <table
+      className="emotion-10"
+    >
+      <thead>
+        <tr>
+          <th>
+            <br />
+            File Type
+          </th>
+          <th>
+            Total 
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div
+              className="emotion-3"
+            >
+              <svg
+                className="emotion-4"
+                data-file-name="images.svg"
+                height={24}
+              />
+              Images /
+            </div>
+            <div
+              className="emotion-5"
+            >
+              <svg
+                className="emotion-4"
+                data-file-name="documents.svg"
+                height={24}
+              />
+              Documents*
+            </div>
+          </td>
+          <td>
+            <br />
+            <br />
+            unavailable**
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div
+              className="emotion-7"
+            >
+              <svg
+                className="emotion-4"
+                data-file-name="videos.svg"
+                height={24}
+              />
+              Video Hours
+            </div>
+          </td>
+          <td>
+            unavailable**
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div
+    className="emotion-17"
+  >
+    *pages are processed & counted as individual assets
+    <br />
+    **usage is being calculated and is currently unavailable
+  </div>
+</div>
+`;

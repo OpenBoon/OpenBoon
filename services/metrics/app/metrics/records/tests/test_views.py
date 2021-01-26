@@ -29,7 +29,7 @@ class TestAPICallsViewSet:
         assert 'created_date' in content
         assert 'modified_date' in content
         response = api_client.post(reverse('apicalls-list'), body)
-        assert response.json() == {'non_field_errors': ['The fields service, asset_id must make a unique set.']}  # noqa
+        assert response.json() == {'non_field_errors': ['The fields service, asset_id, project must make a unique set.']}  # noqa
 
     def test_get_single_record(self, api_client, single_record):
         url = reverse('apicalls-detail', kwargs={'pk': single_record.id})
