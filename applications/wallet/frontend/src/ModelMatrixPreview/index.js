@@ -12,8 +12,6 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../Panel'
 import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
-import settingsShape from '../ModelMatrix/settingsShape'
-
 import SuspenseBoundary from '../SuspenseBoundary'
 
 import { encode } from '../Filters/helpers'
@@ -83,6 +81,7 @@ const ModelMatrixPreview = ({
       css={{
         flex: 1,
         display: 'flex',
+        height: '0%',
         flexDirection: 'column',
         borderLeft: constants.borders.regular.coal,
       }}
@@ -159,7 +158,11 @@ const ModelMatrixPreview = ({
 }
 
 ModelMatrixPreview.propTypes = {
-  settings: PropTypes.shape(settingsShape).isRequired,
+  settings: PropTypes.shape({
+    selectedCell: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+    minScore: PropTypes.number.isRequired,
+    maxScore: PropTypes.number.isRequired,
+  }).isRequired,
   labels: PropTypes.arrayOf(PropTypes.string).isRequired,
   moduleName: PropTypes.string.isRequired,
 }

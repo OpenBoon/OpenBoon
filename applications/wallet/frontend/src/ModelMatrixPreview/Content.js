@@ -13,7 +13,7 @@ const SIZE = 28
 
 const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
   const {
-    data: { results, count },
+    data: { results },
   } = useSWR(
     `/api/v1/projects/${projectId}/searches/query/?query=${encodedFilter}&from=${FROM}&size=${SIZE}`,
   )
@@ -32,20 +32,15 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
     <div
       css={{
         flex: 1,
-        // height: '100%',
-        height: '0%',
         backgroundColor: colors.structure.coal,
-        padding: spacing.small,
+        padding: spacing.base,
         overflow: 'auto',
       }}
     >
       <div
         css={{
-          display: 'grid',
-          gridTemplateColumns: `repeat(${Math.floor(
-            size / 200,
-          )}, minmax(200px, 1fr))`,
-          gap: spacing.small,
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         {results.map(({ thumbnailUrl, metadata, id }) => {
@@ -54,20 +49,20 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
           return (
             <div
               key={id}
+              title={metadata?.source?.filename}
               css={{
                 position: 'relative',
                 backgroundColor: colors.structure.mattGrey,
-                aspectRatio: '1 / 1',
+                width: size - spacing.base * 2,
+                height: size - spacing.base * 2,
+                ':not(:last-of-type)': { marginBottom: spacing.base },
               }}
             >
               <img
                 css={{
-                  position: 'absolute',
-                  maxWidth: '100%',
-                  maxHeight: '100%',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
                 }}
                 src={thumbnailSrc}
                 alt={metadata?.source?.filename}

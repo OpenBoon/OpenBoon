@@ -89,6 +89,7 @@ const ModelMatrixLayout = ({
           height: '100%',
           display: 'flex',
           backgroundColor: colors.structure.lead,
+          overflow: 'hidden',
         }}
       >
         <div
