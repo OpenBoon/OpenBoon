@@ -3,12 +3,13 @@ import Link from 'next/link'
 
 import { typography, colors, spacing, constants } from '../Styles'
 
-import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
 import Button, { VARIANTS } from '../Button'
 
 import DataSourcesSvg from '../Icons/datasources.svg'
 import JobQueueSvg from '../Icons/jobQueue.svg'
 import VisualizerSvg from '../Icons/visualizer.svg'
+
+const MAX_WIDTH = 440
 
 const STEPS = [
   {
@@ -63,10 +64,19 @@ const STEPS = [
 
 const ProjectGettingStarted = ({ projectId }) => {
   return (
-    <Card
-      variant={CARD_VARIANTS.LIGHT}
-      header="Getting Started"
-      content={STEPS.map(({ step, title, module, content, cta, link }) => (
+    <div
+      css={{
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: colors.structure.smoke,
+        boxShadow: constants.boxShadows.tableRow,
+        borderRadius: constants.borderRadius.small,
+        padding: spacing.comfy,
+        maxWidth: MAX_WIDTH,
+      }}
+    >
+      <h3 css={{ paddingBottom: spacing.base }}>Getting Started</h3>
+      {STEPS.map(({ step, title, module, content, cta, link }) => (
         <div
           key={step}
           css={{ paddingBottom: step === STEPS.length ? 0 : spacing.comfy }}
@@ -131,7 +141,7 @@ const ProjectGettingStarted = ({ projectId }) => {
           </div>
         </div>
       ))}
-    />
+    </div>
   )
 }
 

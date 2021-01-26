@@ -26,7 +26,7 @@ def save_text_detection_timeline(asset, annotations):
             end_time = convert_offset(segment.segment.end_time_offset)
             timeline.add_clip('Detected Text',
                               start_time, end_time, annotation.text, segment.confidence)
-    save_timeline(timeline)
+    save_timeline(asset, timeline)
     return timeline
 
 
@@ -58,7 +58,7 @@ def save_speech_transcription_timeline(asset, annotations):
                                   alternative.confidence)
                 break
 
-    save_timeline(timeline)
+    save_timeline(asset, timeline)
     return timeline
 
 
@@ -84,7 +84,7 @@ def save_object_detection_timeline(asset, annotations):
         timeline.add_clip(label, clip_start, clip_stop,
                           annotation.entity.description, annotation.confidence)
 
-    save_timeline(timeline)
+    save_timeline(asset, timeline)
     return timeline
 
 
@@ -114,7 +114,7 @@ def save_logo_detection_timeline(asset, annotations):
             timeline.add_clip(label, clip_start, clip_stop,
                               annotation.entity.description, confidence)
 
-    save_timeline(timeline)
+    save_timeline(asset, timeline)
     return timeline
 
 
@@ -160,7 +160,7 @@ def save_content_moderation_timeline(asset, annotations):
 
         previous_frame = frame
 
-    save_timeline(timeline)
+    save_timeline(asset, timeline)
     return timeline
 
 
@@ -195,7 +195,7 @@ def save_label_detection_timeline(asset, annotations):
     process_label_annotations(annotations.shot_label_annotations)
     process_label_annotations(annotations.shot_presence_label_annotations)
 
-    save_timeline(timeline)
+    save_timeline(asset, timeline)
     return timeline
 
 
@@ -231,7 +231,7 @@ def save_speech_to_text_timeline(asset, audio_result):
 
                 break
 
-    save_timeline(timeline)
+    save_timeline(asset, timeline)
     return timeline
 
 

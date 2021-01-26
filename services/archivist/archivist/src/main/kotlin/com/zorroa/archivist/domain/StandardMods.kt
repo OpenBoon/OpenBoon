@@ -39,7 +39,7 @@ object ModelObjective {
     const val LOGO_DETECTION = "Logo Detection"
     const val FACE_RECOGNITION = "Face Recognition"
     const val FACE_DETECTION = "Face Detection"
-    const val CLIPIFIER = "Asset Clipifier"
+    const val CLIPIFIER = "Video Clip Generator"
     const val EXPLICIT_DETECTION = "Explicit Detection"
     const val TEXT_DETECTION = "Text Detection (OCR)"
     const val IMAGE_TEXT_DETECTION = "Image Text Detection"
@@ -744,13 +744,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.aws.RekognitionLabelDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.aws.video.RekognitionLabelDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -784,13 +788,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.EXPLICIT_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.aws.RekognitionUnsafeDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.aws.video.RekognitionUnsafeDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -804,13 +812,13 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.IMAGE_TEXT_DETECTION,
-            listOf(FileType.Images),
+            listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.aws.RekognitionUnsafeDetection",
+                            "zmlp_analysis.aws.RekognitionTextDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -824,13 +832,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.FACE_RECOGNITION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.aws.RekognitionCelebrityDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.aws.video.RekognitionCelebrityDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -852,6 +864,46 @@ fun getStandardModules(): List<PipelineModSpec> {
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.aws.AmazonTranscribeProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-black-frames-detection",
+            "Detect positions of black frames of video.",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.CLIPIFIER,
+            listOf(FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.video.BlackFramesVideoDetectProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-credits-detection",
+            "Detect positions of rolling credits.",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.CLIPIFIER,
+            listOf(FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.video.EndCreditsVideoDetectProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )

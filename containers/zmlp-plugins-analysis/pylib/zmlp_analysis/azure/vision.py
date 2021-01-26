@@ -6,12 +6,11 @@ from PIL import Image
 from azure.cognitiveservices.vision.computervision.models import \
     VisualFeatureTypes, OperationStatusCodes, ComputerVisionErrorException
 
-from zmlp_analysis.utils.logs import log_backoff_exception
 from zmlpsdk import Argument, AssetProcessor, FileTypes
 from zmlpsdk import file_storage
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path, get_proxy_level, calculate_normalized_bbox
-from .util import get_zvi_azure_cv_client
+from .util import get_zvi_azure_cv_client, log_backoff_exception
 
 logger = logging.getLogger(__name__)
 
@@ -612,6 +611,6 @@ class AzureVisionTextDetection(AbstractAzureVisionProcessor):
         """
         ocr_proxy = asset.get_files(category='ocr-proxy')
         if ocr_proxy:
-            return file_storage.localize_file(ocr_proxy)
+            return file_storage.localize_file(ocr_proxy[0])
         else:
             return file_storage.localize_file(get_proxy_level(asset, 0))

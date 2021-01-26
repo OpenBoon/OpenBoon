@@ -268,16 +268,27 @@ class ShotBasedFrameExtractor(VideoFrameExtractor):
         return shot_times
 
 
-def save_timeline(timeline):
+def save_timeline(asset, timeline):
     """
     Save the given timeline as Clips.
 
     Args:
+        asset (Asset): The asset to save the timeline for.
         timeline (TimelineBuilder): The timeline
 
     Returns:
         dict: A status object.
 
     """
+    # Disable thumbs when creating timelines from processing
+    # These are processed later.
+    timeline.deep_analysis = False
+
+    new_timelines = asset.get_attr('tmp.timelines')
+    if not new_timelines:
+        new_timelines = []
+    new_timelines.append(timeline.name)
+    asset.set_attr('tmp.timelines', new_timelines)
+
     app = zmlp.app_from_env()
     return app.clips.create_clips(timeline)

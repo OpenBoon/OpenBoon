@@ -486,7 +486,8 @@ class DispatcherServiceImpl @Autowired constructor(
         val result = withAuth(
             InternalThreadAuthentication(
                 task.projectId,
-                setOf(Permission.AssetsImport)
+                setOf(Permission.AssetsImport),
+                mapOf("jobId" to task.jobId.toString())
             )
         ) {
             val result = assetService.batchIndex(event.assets, true)

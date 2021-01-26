@@ -151,6 +151,7 @@ resource "google_storage_bucket_object" "task_env" {
   name    = "environments/task_env.json"
   content = <<EOF
 {
+  "ENVIRONMENT": "${var.environment}",
   "CLARIFAI_KEY":  "${var.clarifai-key}",
   "ZORROA_AWS_KEY": "${var.aws-key}",
   "ZORROA_AWS_SECRET": "${var.aws-secret}",
@@ -319,6 +320,7 @@ module "wallet" {
   marketplace-credentials         = var.marketplace-credentials
   superadmin                      = var.wallet-superadmin
   use-model-ids-for-label-filters = var.wallet-use-model-ids-for-label-filters
+  metrics-ip-address              = module.metrics.ip-address
 }
 
 module "ml-bbq" {

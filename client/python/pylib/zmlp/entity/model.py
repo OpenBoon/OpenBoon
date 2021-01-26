@@ -32,6 +32,9 @@ class ModelType(Enum):
     TF2_IMAGE_CLASSIFIER = 5
     """Provide your own custom Tensorflow2/Keras model"""
 
+    PYTORCH_IMAGE_CLASSIFIER = 5
+    """Provide your own custom Pytorch model"""
+
 
 class LabelScope(Enum):
     """

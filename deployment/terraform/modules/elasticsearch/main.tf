@@ -28,6 +28,9 @@ resource "google_project_iam_member" "elasticsearch" {
 
 resource "google_service_account_key" "elasticsearch" {
   service_account_id = google_service_account.elasticsearch.name
+  keepers = {
+    "created_date" : timestamp()
+  }
 }
 
 resource "kubernetes_secret" "elasticsearch" {

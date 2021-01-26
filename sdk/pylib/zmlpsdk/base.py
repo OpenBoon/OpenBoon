@@ -444,20 +444,6 @@ class AssetProcessor(Processor):
         return self.reactor.add_expand_frame(parent_frame, expand_frame,
                                              batch_size, force)
 
-    def add_analysis(self, asset, module_name, analysis):
-        """Adds the nalysis to the asset and records the api call in the billing metric service.
-
-        Uses the client library to add the analysis to the asset. Records the call to the
-        metric service for billing purposes.
-
-        Args:
-            asset (:obj:`Asset`): The asset to add analysis to.
-            module_name (:obj:`str`): The module namespace to record the analysis to.
-            analysis: (:obj:`dict`): The analysis data to add to the asset.
-
-        """
-        asset.add_analysis(module_name, analysis)
-
 
 class ZmlpEnv:
     """
