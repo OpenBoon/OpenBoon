@@ -185,22 +185,6 @@ Array [
 
 .emotion-8 {
   padding-top: 8px;
-  font-style: italic;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-8 span {
-  padding-top: 4px;
-}
-
-.emotion-9 {
-  color: #ebb52e;
 }
 
 .emotion-11 {
@@ -388,26 +372,34 @@ Array [
       <div
         className="emotion-8"
       >
-        <span
-          className="emotion-9"
+        <div
+          className="emotion-3"
         >
-          1
-           more
-           
-          label is
-           required (min. = 
-          2
-           unique)
-        </span>
-        <span
-          className="emotion-9"
-        >
-          15
-           more assets need to be labeled (min. =
-           
-          10
-           of each label)
-        </span>
+          <svg
+            color="#0074f5"
+            data-file-name="information.svg"
+            height={20}
+          />
+          <div
+            className="emotion-5"
+            role="alert"
+          >
+            1
+             more
+             
+            label is
+             required (min. = 
+            2
+             unique)
+            <br />
+            15
+             more
+             assets need 
+            to be labeled (min. = 
+            10
+             of each label)
+          </div>
+        </div>
       </div>
       <div
         className="emotion-11"
@@ -889,22 +881,6 @@ Array [
 
 .emotion-8 {
   padding-top: 8px;
-  font-style: italic;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-8 span {
-  padding-top: 4px;
-}
-
-.emotion-9 {
-  color: #ebb52e;
 }
 
 .emotion-11 {
@@ -1092,26 +1068,34 @@ Array [
       <div
         className="emotion-8"
       >
-        <span
-          className="emotion-9"
+        <div
+          className="emotion-3"
         >
-          1
-           more
-           
-          label is
-           required (min. = 
-          2
-           unique)
-        </span>
-        <span
-          className="emotion-9"
-        >
-          15
-           more assets need to be labeled (min. =
-           
-          10
-           of each label)
-        </span>
+          <svg
+            color="#0074f5"
+            data-file-name="information.svg"
+            height={20}
+          />
+          <div
+            className="emotion-5"
+            role="alert"
+          >
+            1
+             more
+             
+            label is
+             required (min. = 
+            2
+             unique)
+            <br />
+            15
+             more
+             assets need 
+            to be labeled (min. = 
+            10
+             of each label)
+          </div>
+        </div>
       </div>
       <div
         className="emotion-11"
@@ -1682,22 +1666,6 @@ Array [
 
 .emotion-8 {
   padding-top: 8px;
-  font-style: italic;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-8 span {
-  padding-top: 4px;
-}
-
-.emotion-9 {
-  color: #ebb52e;
 }
 
 .emotion-11 {
@@ -1885,26 +1853,34 @@ Array [
       <div
         className="emotion-8"
       >
-        <span
-          className="emotion-9"
+        <div
+          className="emotion-3"
         >
-          1
-           more
-           
-          label is
-           required (min. = 
-          2
-           unique)
-        </span>
-        <span
-          className="emotion-9"
-        >
-          15
-           more assets need to be labeled (min. =
-           
-          10
-           of each label)
-        </span>
+          <svg
+            color="#0074f5"
+            data-file-name="information.svg"
+            height={20}
+          />
+          <div
+            className="emotion-5"
+            role="alert"
+          >
+            1
+             more
+             
+            label is
+             required (min. = 
+            2
+             unique)
+            <br />
+            15
+             more
+             assets need 
+            to be labeled (min. = 
+            10
+             of each label)
+          </div>
+        </div>
       </div>
       <div
         className="emotion-11"
