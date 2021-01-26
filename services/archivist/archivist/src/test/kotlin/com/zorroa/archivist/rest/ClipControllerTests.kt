@@ -41,7 +41,7 @@ class ClipControllerTests : MockMvcTest() {
             TimelineClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
         )
         val track = TrackSpec("cats", clips)
-        timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
+        timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track), false)
     }
 
     @Test

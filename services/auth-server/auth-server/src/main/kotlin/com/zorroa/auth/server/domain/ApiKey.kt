@@ -186,7 +186,7 @@ class ValidationKey(
             projectId ?: this.projectId,
             name,
             permissions.map { Permission.valueOf(it) }.toSet(),
-            attrs
+            attrs?.toMutableMap() ?: mutableMapOf()
         )
     }
 

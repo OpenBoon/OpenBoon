@@ -509,8 +509,8 @@ class ProcessorWrapper(object):
             logger.warning(msg)
 
         if not response.ok:
-            if 'The fields service, asset_id must make a unique set.' in response.json().get(
-                    'non_field_errors'):
+            duplicate_msg = 'The fields service, asset_id, project must make a unique set.'
+            if duplicate_msg in response.json().get('non_field_errors'):
                 logger.info(f'Duplicate metric skipped for {asset.id}: {service}')
             else:
                 msg = (f'Unable to register billing metrics. {response.status_code}: '

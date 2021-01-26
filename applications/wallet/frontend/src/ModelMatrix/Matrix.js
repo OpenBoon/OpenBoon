@@ -7,8 +7,6 @@ import { getQueryString } from '../Fetch/helpers'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import settingsShape from './settingsShape'
-
 import ModelMatrixTable from './Table'
 import ModelMatrixLabels from './Labels'
 
@@ -36,14 +34,7 @@ const ModelMatrixMatrix = ({
   }, [setMatrixDetails, name, overallAccuracy, labels, moduleName])
 
   return (
-    <div
-      css={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        width: '0%',
-      }}
-    >
+    <>
       <div
         css={{
           flex: 1,
@@ -159,14 +150,19 @@ const ModelMatrixMatrix = ({
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
 ModelMatrixMatrix.propTypes = {
   projectId: PropTypes.string.isRequired,
   modelId: PropTypes.string.isRequired,
-  settings: PropTypes.shape(settingsShape).isRequired,
+  settings: PropTypes.shape({
+    width: PropTypes.number.isRequired,
+    labelsWidth: PropTypes.number.isRequired,
+    minScore: PropTypes.number.isRequired,
+    maxScore: PropTypes.number.isRequired,
+  }).isRequired,
   dispatch: PropTypes.func.isRequired,
   setMatrixDetails: PropTypes.func.isRequired,
 }

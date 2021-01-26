@@ -262,6 +262,7 @@ class TestMlUsageThisMonth:
         assert response.status_code == 200
         assert response.json() == {'key': 'value'}
         assert requests_mock.called
+        assert requests_mock.call_args[0][0] == 'http://metrics/api/v1/apicalls/tiered_usage'
 
     @patch('requests.get')
     def test_get_connection_error(self, requests_mock, project, api_client, login):

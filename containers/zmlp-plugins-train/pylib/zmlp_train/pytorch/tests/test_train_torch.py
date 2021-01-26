@@ -36,8 +36,8 @@ assets = daisy + rose
 def download_images(ds_id, style, dst_dir, ratio=0.2):
     os.makedirs(dst_dir + '/train/daisy/', exist_ok=True)
     os.makedirs(dst_dir + '/train/roses/', exist_ok=True)
-    os.makedirs(dst_dir + '/val/daisy/', exist_ok=True)
-    os.makedirs(dst_dir + '/val/roses/', exist_ok=True)
+    os.makedirs(dst_dir + '/validate/daisy/', exist_ok=True)
+    os.makedirs(dst_dir + '/validate/roses/', exist_ok=True)
 
     for asset in daisy:
         print(asset.get_attr('source.path'))
@@ -52,12 +52,12 @@ def download_images(ds_id, style, dst_dir, ratio=0.2):
     for asset in daisy:
         print(asset.get_attr('source.path'))
         shutil.copy(os.path.dirname(__file__) + "/" + asset.get_attr('source.path'),
-                    dst_dir + '/val/daisy/')
+                    dst_dir + '/validate/daisy/')
 
     for asset in rose:
         print(asset.get_attr('source.path'))
         shutil.copy(os.path.dirname(__file__) + "/" + asset.get_attr('source.path'),
-                    dst_dir + '/val/roses/')
+                    dst_dir + '/validate/roses/')
 
 
 class PytorchTransferLearningTrainerTests(PluginUnitTestCase):

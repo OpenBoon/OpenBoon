@@ -1,4 +1,5 @@
 import tempfile
+import logging
 
 import zmlpsdk.proxy as proxy
 from zmlpsdk import AssetProcessor, Argument, file_storage
@@ -6,6 +7,8 @@ from zmlpsdk.video import extract_thumbnail_from_video
 from zmlpsdk.media import media_size, get_output_dimension
 
 from zmlp_analysis.utils import simengine
+
+logger = logging.getLogger(__name__)
 
 
 class ClipAnalysisProcessor(AssetProcessor):
@@ -41,6 +44,26 @@ class ClipAnalysisProcessor(AssetProcessor):
         self.app.client.put(f'/api/v1/clips/{clip.id}/_proxy', req)
 
 
+class MultipleTimelineAnalysisProcessor(AssetProcessor):
+    """
+    Creates simhashes and thumbnails for all the timelines.
+    """
+    file_types = None
+
+    def __init__(self):
+        super(MultipleTimelineAnalysisProcessor, self).__init__()
+        self.add_arg(Argument('timelines', 'dict', required=True))
+        self.sim = None
+
+    def init(self):
+        self.sim = simengine.SimilarityEngine()
+
+    def process(self, frame):
+        timelines = self.arg_value('timelines')
+        for asset_id, tls in timelines.items():
+            analyze_timelines(self.app, self.sim, asset_id, tls)
+
+
 class TimelineAnalysisProcessor(AssetProcessor):
     """
     Creates simhashes and thumbnails for the given timeline.
@@ -61,59 +84,82 @@ class TimelineAnalysisProcessor(AssetProcessor):
         asset_id = self.arg_value('asset_id')
         timeline = self.arg_value('timeline')
 
-        query = {
-            "query": {
-                "bool": {
-                    "must": [
-                        {"term": {"clip.assetId": asset_id}},
-                        {"term": {"clip.timeline": timeline}}
-                    ]
-                }
-            },
-            "sort": [
-                {"clip.start": "asc"}
-            ],
-            "size": 40
+        analyze_timelines(self.app, self.sim, asset_id, [timeline])
+
+
+def submit_clip_batch(app, asset_id, batch):
+    """
+    Submit a batch of clips.
+
+    Args:
+        app (ZmlpApp): An app instance.
+        asset_id (str): The asset Id.
+        batch (list): A batch of timeline data.
+
+    """
+    if batch:
+        req = {
+            "assetId": asset_id,
+            "updates": batch
         }
+        app.client.put("/api/v1/clips/_batch_update_proxy", req)
 
-        asset = self.app.assets.get_asset(asset_id)
-        video_path = file_storage.localize_file(proxy.get_video_proxy(asset))
 
-        size = media_size(video_path)
-        psize = get_output_dimension(768, size[0], size[1])
-        jpg_file = tempfile.mkstemp(".jpg")[1]
+def analyze_timelines(app, sim, asset_id, timelines):
+    """
+    Analyze all the timelines for the given asset.
 
-        simhash = None
-        current_time = None
-        prx = None
-        batch = {}
-
-        for clip in self.app.clips.scroll_search(query, timeout="2m"):
-
-            if clip.start != current_time:
-                current_time = clip.start
-
-                extract_thumbnail_from_video(video_path, jpg_file, current_time, psize)
-                simhash = self.sim.calculate_hash(jpg_file)
-
-            # Always store the file
-            prx = file_storage.projects.store_file(jpg_file, clip, "proxy", "proxy.jpg",
-                                                   {"width": psize[0], "height": psize[1]})
-            if prx:
-                batch[clip.id] = {'files': [prx], 'simhash': simhash}
-
-            if len(batch) >= 50:
-                self.add_clips(batch)
-                batch = {}
-
-        # Add final batch
-        self.add_clips(batch)
-
-    def add_clips(self, batch):
-        if batch:
-            asset_id = self.arg_value('asset_id')
-            req = {
-                "assetId": asset_id,
-                "updates": batch
+    Args:
+        app (ZmlpApp): An App instance.
+        sim (SimilarityEngine): The similarity engine for hashes.
+        asset_id (str): The asset Id.
+        timelines (list): A list of timelines
+    """
+    query = {
+        "query": {
+            "bool": {
+                "must": [
+                    {"term": {"clip.assetId": asset_id}},
+                    {"terms": {"clip.timeline": timelines}}
+                ]
             }
-            self.app.client.put("/api/v1/clips/_batch_update_proxy", req)
+        },
+        "sort": [
+            {"clip.start": "asc"}
+        ],
+        "size": 50
+    }
+
+    asset = app.assets.get_asset(asset_id)
+    video_path = file_storage.localize_file(proxy.get_video_proxy(asset))
+
+    size = media_size(video_path)
+    psize = get_output_dimension(768, size[0], size[1])
+    jpg_file = tempfile.mkstemp(".jpg")[1]
+
+    simhash = None
+    current_time = None
+    batch = {}
+
+    logger.info('Performing deep analysis "{}" for asset "{}"'.format(timelines, asset_id))
+
+    for clip in app.clips.scroll_search(query, timeout="5m"):
+
+        if clip.start != current_time:
+            current_time = clip.start
+
+            extract_thumbnail_from_video(video_path, jpg_file, current_time, psize)
+            simhash = sim.calculate_hash(jpg_file)
+
+        # Always store the file
+        prx = file_storage.projects.store_file(jpg_file, clip, "proxy", "proxy.jpg",
+                                               {"width": psize[0], "height": psize[1]})
+        if prx:
+            batch[clip.id] = {'files': [prx], 'simhash': simhash}
+
+        if len(batch) >= 20:
+            submit_clip_batch(batch)
+            batch = {}
+
+    # Add final batch
+    submit_clip_batch(batch)

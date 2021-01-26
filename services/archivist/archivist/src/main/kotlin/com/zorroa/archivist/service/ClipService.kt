@@ -218,13 +218,16 @@ class ClipServiceImpl(
             response.handleBulkResponse(rsp)
         }
 
-        val jobId = getZmlpActor().getAttr("jobId")
-        if (jobId != null) {
-            val task = jobLaunchService.addTimelineAnalysisTask(UUID.fromString(jobId), timeline.assetId, timeline.name)
-            response.taskId = task.id
-        } else {
-            val job = jobLaunchService.launchTimelineAnalysisJob(timeline.assetId, timeline.name)
-            response.jobId = job.id
+        if (timeline.deepAnalysis) {
+            val jobId = getZmlpActor().getAttr("jobId")
+            if (jobId != null) {
+                val task =
+                    jobLaunchService.addTimelineAnalysisTask(UUID.fromString(jobId), timeline.assetId, timeline.name)
+                response.taskId = task.id
+            } else {
+                val job = jobLaunchService.launchTimelineAnalysisJob(timeline.assetId, timeline.name)
+                response.jobId = job.id
+            }
         }
 
         return response

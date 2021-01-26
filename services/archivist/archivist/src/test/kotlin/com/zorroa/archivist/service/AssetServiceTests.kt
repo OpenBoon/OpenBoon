@@ -27,6 +27,7 @@ import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.repository.ProjectQuotasDao
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.zmlp.util.Json
@@ -618,6 +619,27 @@ class AssetServiceTests : AbstractTest() {
         asset = assetService.getAsset(createRsp.created[0])
         assertFalse(asset.attrExists("tmp.field"))
         assertFalse(asset.attrExists("tmp"))
+    }
+
+    @Test
+    fun testBatchIndexAssetsWithTimelines() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
+        )
+
+        val job = jobService.create(JobSpec("foo", listOf()))
+        val actor = getZmlpActor()
+        actor.setAttr("jobId", job.id.toString())
+
+        val createRsp = assetService.batchCreate(batchCreate)
+        var asset = assetService.getAll(createRsp.created)[0]
+        asset.setAttr("tmp.timelines", listOf("zvi-video-stuff"))
+
+        val batchIndex = mapOf(asset.id to asset.document)
+        assetService.batchIndex(batchIndex)
+
+        val task = jobService.getTasks(job.jobId)[0]
+        assertEquals("Deep Video Timeline Analysis for 1 asset(s).", task.name)
     }
 
     @Test
