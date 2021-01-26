@@ -64,12 +64,12 @@ const ProjectMetrics = ({ projectId }) => {
               <th>
                 ML Usage
                 <br />
-                External Modules
+                Internal Modules
               </th>
               <th>
                 ML Usage
                 <br />
-                Internal Modules
+                External Modules
               </th>
             </tr>
           </thead>

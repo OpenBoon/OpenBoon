@@ -89,6 +89,7 @@ def get_sqs_message_success(sqs_client, sqs_queue_url, start_job_id):
                                                   MessageAttributeNames=['ALL'],
                                                   MaxNumberOfMessages=10)
         if sqs_response:
+            logger.info(f'SQS: {sqs_response}')
             if 'Messages' not in sqs_response:
                 time.sleep(5)
                 continue

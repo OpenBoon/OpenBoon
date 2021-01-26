@@ -137,12 +137,12 @@ exports[`<ProjectMetrics /> should render properly when data is available 1`] = 
           <th>
             ML Usage
             <br />
-            External Modules
+            Internal Modules
           </th>
           <th>
             ML Usage
             <br />
-            Internal Modules
+            External Modules
           </th>
         </tr>
       </thead>
@@ -419,12 +419,12 @@ exports[`<ProjectMetrics /> should render properly when data is unavailable 1`] 
           <th>
             ML Usage
             <br />
-            External Modules
+            Internal Modules
           </th>
           <th>
             ML Usage
             <br />
-            Internal Modules
+            External Modules
           </th>
         </tr>
       </thead>

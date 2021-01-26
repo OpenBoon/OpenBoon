@@ -3,12 +3,11 @@ import useSWR from 'swr'
 import Router, { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import { constants, spacing, typography } from '../Styles'
 
 import { useLocalStorage } from '../LocalStorage/helpers'
 import SuspenseBoundary from '../SuspenseBoundary'
 
-import CheckmarkSvg from '../Icons/checkmark.svg'
 import FilterSvg from '../Icons/filter.svg'
 import PenSvg from '../Icons/pen.svg'
 
@@ -157,53 +156,35 @@ const ModelDetails = () => {
             </ul>
           </div>
 
-          <div
-            css={{
-              paddingTop: spacing.base,
-              fontStyle: typography.style.italic,
-              display: 'flex',
-              flexDirection: 'column',
-              span: {
-                paddingTop: spacing.small,
-              },
-            }}
-          >
-            {!!missingLabels && (
-              <span
-                css={{
-                  color: colors.signal.canary.base,
-                }}
-              >
-                {missingLabels} more{' '}
-                {missingLabels === 1 ? 'label is' : 'labels are'} required (min.
-                = {requiredLabels} unique)
-              </span>
-            )}
+          <div css={{ paddingTop: spacing.base }}>
+            {(!!missingLabels || !!missingLabelsOnAssets) && (
+              <FlashMessage variant={FLASH_VARIANTS.INFO}>
+                {!!missingLabels && (
+                  <>
+                    {missingLabels} more{' '}
+                    {missingLabels === 1 ? 'label is' : 'labels are'} required
+                    (min. = {requiredLabels} unique)
+                    <br />
+                  </>
+                )}
 
-            {!!missingLabelsOnAssets && (
-              <span
-                css={{
-                  color: colors.signal.canary.base,
-                }}
-              >
-                {missingLabelsOnAssets} more assets need to be labeled (min. ={' '}
-                {requiredAssetsPerLabel} of each label)
-              </span>
+                {!!missingLabelsOnAssets && (
+                  <>
+                    {missingLabelsOnAssets} more
+                    {missingLabelsOnAssets === 1
+                      ? ' asset needs '
+                      : ' assets need '}
+                    to be labeled (min. = {requiredAssetsPerLabel} of each
+                    label)
+                  </>
+                )}
+              </FlashMessage>
             )}
 
             {!missingLabels && !missingLabelsOnAssets && (
-              <span
-                css={{
-                  display: 'flex',
-                  color: colors.signal.grass.base,
-                }}
-              >
-                <CheckmarkSvg
-                  height={constants.icons.regular}
-                  color={colors.signal.grass.base}
-                />{' '}
+              <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
                 Ready to train
-              </span>
+              </FlashMessage>
             )}
           </div>
 

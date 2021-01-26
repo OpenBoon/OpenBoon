@@ -20,38 +20,40 @@ const LINKS = [
     title: 'Data Sources',
     icon: <DataSourcesSvg height={constants.icons.regular} />,
     legend:
-      'Connect to your data source, choose which modules to run, and begin to ingest.',
+      'Connect to the remote repository that contains the files to be imported and specify the types of analyses to be applied to them.',
   },
   {
     url: 'jobs',
     title: 'Job Queue',
     icon: <JobQueueSvg height={constants.icons.regular} />,
-    legend: 'View your project jobs progress and troubleshoot any issues.',
+    legend:
+      'Monitor and manage the processing import and module application jobs, and review and troubleshoot any issues.',
   },
   {
     url: 'models',
     title: 'Custom Models',
     icon: <ModelsSvg height={constants.icons.regular} />,
-    legend: 'Create, manage, and view the  accuracy of your custom models.',
+    legend: 'Create, manage, and view the performance of your custom models. ',
   },
   {
     url: 'visualizer',
     title: 'Visualizer',
     icon: <VisualizerSvg height={constants.icons.regular} />,
-    legend: 'View and search the module results, and label assets to train on.',
+    legend:
+      'View the results of the analysis and inspect and tune the metadata output.',
   },
   {
     url: 'api-keys',
     title: 'API Keys',
     icon: <KeySvg height={constants.icons.regular} />,
     legend:
-      'Create a ZMLP API key for use with external applications and tools.',
+      'Create a ZMLP API key, which allows you to obtain access to ZVI API resources.',
   },
   {
     url: 'users',
     title: 'User Admin',
     icon: <UsersSvg height={constants.icons.regular} />,
-    legend: 'Add users and manage permissions.',
+    legend: 'Add users to your project and manage their permissions.',
   },
 ]
 
