@@ -55,8 +55,8 @@ class TestClipAnalysisProcessors(PluginUnitTestCase):
         processor.process(Frame(asset))
 
         args, kwargs = store_clips_patch.call_args
-        assert args[1]['56789']['files'][0]['id'] == 'jonsnow'
-        assert args[1]['56789']['simhash'].startswith('OKOPPPN')
+        assert args[2]['56789']['files'][0]['id'] == 'jonsnow'
+        assert args[2]['56789']['simhash'].startswith('OKOPPPN')
 
     @patch('zmlp_analysis.zvi.clips.submit_clip_batch')
     @patch.object(file_storage.projects, 'store_file')
@@ -79,5 +79,5 @@ class TestClipAnalysisProcessors(PluginUnitTestCase):
         processor.process(Frame(asset))
 
         args, kwargs = store_clips_patch.call_args
-        assert args[1]['56789']['files'][0]['id'] == 'jonsnow'
-        assert args[1]['56789']['simhash'].startswith('OKOPPPN')
+        assert args[2]['56789']['files'][0]['id'] == 'jonsnow'
+        assert args[2]['56789']['simhash'].startswith('OKOPPPN')
