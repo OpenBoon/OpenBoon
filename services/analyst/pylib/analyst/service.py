@@ -193,7 +193,8 @@ class Executor(object):
 
     """
 
-    def __init__(self, client, ping_timer_seconds=0, poll_timer_seconds=0, not_running_grace_seconds=180):
+    def __init__(self, client, ping_timer_seconds=0, poll_timer_seconds=0,
+                 not_running_grace_seconds=180):
         """
         Create a new Executor.
 
