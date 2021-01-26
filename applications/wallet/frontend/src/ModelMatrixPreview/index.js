@@ -81,9 +81,9 @@ const ModelMatrixPreview = ({
       css={{
         flex: 1,
         display: 'flex',
-        height: '0%',
         flexDirection: 'column',
         borderLeft: constants.borders.regular.coal,
+        overflow: 'hidden',
       }}
     >
       <div

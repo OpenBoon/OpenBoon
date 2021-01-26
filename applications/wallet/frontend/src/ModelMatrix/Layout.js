@@ -48,6 +48,7 @@ const ModelMatrixLayout = ({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
+        overflow: 'hidden',
       }}
     >
       {name && (
