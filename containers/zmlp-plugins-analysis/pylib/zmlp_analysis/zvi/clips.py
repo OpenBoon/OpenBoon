@@ -158,8 +158,8 @@ def analyze_timelines(app, sim, asset_id, timelines):
             batch[clip.id] = {'files': [prx], 'simhash': simhash}
 
         if len(batch) >= 20:
-            submit_clip_batch(batch)
+            submit_clip_batch(app, asset_id, batch)
             batch = {}
 
     # Add final batch
-    submit_clip_batch(batch)
+    submit_clip_batch(app, asset_id, batch)
