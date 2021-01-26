@@ -1,0 +1,263 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModelMatrixPreview should render properly with selection 1`] = `
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  border-left: 1px solid #191919;
+  overflow: hidden;
+}
+
+.emotion-1 {
+  padding: 16px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited,
+.emotion-2 .noop {
+  background-color: #808080;
+}
+
+.emotion-2:hover,
+.emotion-2 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-2[aria-disabled=true],
+.emotion-2 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  padding-right: 8px;
+}
+
+.emotion-5 {
+  height: 16px;
+}
+
+.emotion-6 {
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  color: #b3b3b3;
+}
+
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #191919;
+  padding: 8px;
+  overflow: auto;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-10 {
+  position: relative;
+  background-color: #2e2e2e;
+  width: 184px;
+  height: 184px;
+}
+
+.emotion-10:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.emotion-11 {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <Link
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmZsb3dlci10eXBlcyIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnsibGFiZWxzIjpbIkRhaGxpYSJdLCJzY29wZSI6InRlc3QifX0seyJhdHRyaWJ1dGUiOiJhbmFseXNpcy5mbG93ZXItdHlwZXMiLCJpc0Rpc2FibGVkIjpmYWxzZSwidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsInZhbHVlcyI6eyJsYWJlbHMiOlsiQ2hlcnJ5IEJsb3Nzb20iXSwibWluIjowLCJtYXgiOjF9fV0="
+      passHref={true}
+    >
+      <button
+        aria-label="View Filter Panel"
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-3"
+        >
+          <svg
+            className="emotion-4"
+            data-file-name="filter.svg"
+            height={20}
+          />
+          View Filter Panel
+        </div>
+      </button>
+    </Link>
+    <div
+      className="emotion-5"
+    />
+    <h3>
+      <span
+        className="emotion-6"
+      >
+        True:
+      </span>
+       
+      Dahlia
+    </h3>
+    <h3>
+      <span
+        className="emotion-6"
+      >
+        Pred:
+      </span>
+       
+      Cherry Blossom
+    </h3>
+  </div>
+  <div
+    className="emotion-8"
+  >
+    <div
+      className="emotion-9"
+    >
+      <div
+        className="emotion-10"
+        title="test_document.docx"
+      >
+        <img
+          alt="test_document.docx"
+          className="emotion-11"
+          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
+        />
+      </div>
+      <div
+        className="emotion-10"
+        title="irr.pdf"
+      >
+        <img
+          alt="irr.pdf"
+          className="emotion-11"
+          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
+        />
+      </div>
+      <div
+        className="emotion-10"
+        title="irr.pdf"
+      >
+        <img
+          alt="irr.pdf"
+          className="emotion-11"
+          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
+        />
+      </div>
+      <div
+        className="emotion-10"
+        title="irr.pdf"
+      >
+        <img
+          alt="irr.pdf"
+          className="emotion-11"
+          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
+        />
+      </div>
+      <div
+        className="emotion-10"
+        title="FatManOnABike1914.mp4"
+      >
+        <img
+          alt="FatManOnABike1914.mp4"
+          className="emotion-11"
+          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ModelMatrixPreview should render properly without selection 1`] = `
+.emotion-0 {
+  padding: 16px;
+  font-style: italic;
+  height: 100%;
+  border-left: 1px solid #191919;
+}
+
+<div
+  className="emotion-0"
+>
+  Select a cell of the matrix to view the labeled assets.
+</div>
+`;

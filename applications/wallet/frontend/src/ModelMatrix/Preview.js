@@ -16,7 +16,7 @@ import SuspenseBoundary from '../SuspenseBoundary'
 
 import { encode } from '../Filters/helpers'
 
-import ModelMatrixPreviewContent from './Content'
+import ModelMatrixPreviewContent from './PreviewContent'
 
 const ModelMatrixPreview = ({
   settings: { selectedCell, minScore, maxScore },

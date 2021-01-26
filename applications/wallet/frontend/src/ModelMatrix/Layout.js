@@ -15,10 +15,9 @@ import PreviewSvg from '../Icons/preview.svg'
 
 import { INITIAL_STATE, reducer } from './reducer'
 
-import ModelMatrixPreview from '../ModelMatrixPreview'
-
 import ModelMatrixControls from './Controls'
 import ModelMatrixMatrix from './Matrix'
+import ModelMatrixPreview from './Preview'
 import { PANEL_WIDTH } from './helpers'
 
 const ACCURACY_WIDTH = 40

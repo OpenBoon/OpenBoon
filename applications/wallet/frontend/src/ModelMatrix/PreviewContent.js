@@ -6,7 +6,7 @@ import { colors, spacing } from '../Styles'
 import { useLocalStorage } from '../LocalStorage/helpers'
 import { reducer } from '../Resizeable/reducer'
 
-import { PANEL_WIDTH } from '../ModelMatrix/helpers'
+import { PANEL_WIDTH } from './helpers'
 
 const FROM = 0
 const SIZE = 28
