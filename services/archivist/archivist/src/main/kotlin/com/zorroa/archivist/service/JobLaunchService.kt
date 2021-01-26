@@ -271,7 +271,7 @@ class JobLaunchServiceImpl(
         return ZpsScript(
             "Deep Video Timeline Analysis for ${timelines.size} asset(s).",
             null, listOf(Asset("timelines")), listOf(execute),
-            settings = getDefaultJobSettings(), globalArgs = mutableMapOf()
+            settings = getDefaultJobSettings(index = false), globalArgs = mutableMapOf()
         )
     }
 
@@ -340,8 +340,8 @@ class JobLaunchServiceImpl(
     /**
      * Return a map of default job settings.
      */
-    fun getDefaultJobSettings(): MutableMap<String, Any?> {
-        return mutableMapOf("batchSize" to defaultBatchSize)
+    fun getDefaultJobSettings(index: Boolean = true): MutableMap<String, Any?> {
+        return mutableMapOf("batchSize" to defaultBatchSize, "index" to index)
     }
 
     /**
