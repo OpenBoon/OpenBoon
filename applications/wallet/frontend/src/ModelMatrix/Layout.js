@@ -45,7 +45,6 @@ const ModelMatrixLayout = ({
     <div
       css={{
         width: '100%',
-        // height: 'calc(100% - 106px)',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',

@@ -4,6 +4,8 @@ import matrix from '../__mocks__/matrix'
 
 import mockUser from '../../User/__mocks__/user'
 
+import previewAssets from '../../ModelMatrixPreview/__mocks__/previewAssets'
+
 import User from '../../User'
 
 import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../../Panel'
@@ -30,7 +32,9 @@ describe('<ModelMatrix />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: matrix })
+    require('swr').__setMockUseSWRResponse({
+      data: { ...matrix, ...previewAssets },
+    })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>

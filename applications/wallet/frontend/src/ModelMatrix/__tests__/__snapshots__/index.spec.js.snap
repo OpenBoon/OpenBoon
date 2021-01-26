@@ -36,11 +36,13 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   -ms-flex: 1;
   flex: 1;
   width: 100%;
+  height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   background-color: #252525;
+  overflow: hidden;
 }
 
 .emotion-3 {
@@ -3691,11 +3693,13 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   -ms-flex: 1;
   flex: 1;
   width: 100%;
+  height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   background-color: #252525;
+  overflow: hidden;
 }
 
 .emotion-33 {
@@ -4447,16 +4451,18 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-489 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  height: 0%;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  height: 100%;
   border-left: 1px solid #191919;
-  overflow: auto;
 }
 
 .emotion-490 {
@@ -4544,13 +4550,42 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-497 {
-  background-color: #191919;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  background-color: #191919;
+  padding: 8px;
+  overflow: auto;
 }
 
 .emotion-498 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-499 {
+  position: relative;
+  background-color: #2e2e2e;
+  width: 184px;
+  height: 184px;
+}
+
+.emotion-499:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.emotion-500 {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.emotion-503 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4565,7 +4600,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-left: 1px solid #191919;
 }
 
-.emotion-499 {
+.emotion-504 {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
@@ -4599,26 +4634,26 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-499:hover,
-.emotion-499.focus-visible:focus,
-.emotion-499 .noop {
+.emotion-504:hover,
+.emotion-504.focus-visible:focus,
+.emotion-504 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-499:hover svg,
-.emotion-499.focus-visible:focus svg,
-.emotion-499 .noop svg {
+.emotion-504:hover svg,
+.emotion-504.focus-visible:focus svg,
+.emotion-504 .noop svg {
   opacity: 1;
 }
 
-.emotion-499[aria-disabled=true],
-.emotion-499 .noop {
+.emotion-504[aria-disabled=true],
+.emotion-504 .noop {
   color: #808080;
 }
 
-.emotion-499:hover {
+.emotion-504:hover {
   background-color: #2e2e2e;
 }
 
@@ -7339,7 +7374,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
               className="emotion-490"
             >
               <Link
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmZsb3dlci10eXBlcyIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmZsb3dlci10eXBlcyIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnsibGFiZWxzIjpbIkRhaGxpYSJdLCJzY29wZSI6InRlc3QifX0seyJhdHRyaWJ1dGUiOiJhbmFseXNpcy5mbG93ZXItdHlwZXMiLCJpc0Rpc2FibGVkIjpmYWxzZSwidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsInZhbHVlcyI6eyJsYWJlbHMiOlsiRGFobGlhIl0sIm1pbiI6MCwibWF4IjoxfX1d"
                 passHref={true}
               >
                 <button
@@ -7384,16 +7419,41 @@ exports[`<ModelMatrix /> should render properly 2`] = `
             </div>
             <div
               className="emotion-497"
-            />
+            >
+              <div
+                className="emotion-498"
+              >
+                <div
+                  className="emotion-499"
+                  title="37.330px-Points_of_a_horse.jpg"
+                >
+                  <img
+                    alt="37.330px-Points_of_a_horse.jpg"
+                    className="emotion-500"
+                    src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/M6keUy9TS2ZmPrqtpyLk-RaZjN0X5H1r/files/category/web-proxy/name/web-proxy.jpg/"
+                  />
+                </div>
+                <div
+                  className="emotion-499"
+                  title="77.chernobyl-horse-3.jpg"
+                >
+                  <img
+                    alt="77.chernobyl-horse-3.jpg"
+                    className="emotion-500"
+                    src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/E1Efo3_Pli6Dp6zZ4Q_KCoQ8hVoRg-mW/files/category/web-proxy/name/web-proxy.jpg/"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div
-        className="emotion-498"
+        className="emotion-503"
       >
         <button
           aria-label="Preview"
-          className="emotion-499"
+          className="emotion-504"
           onClick={[Function]}
           title="Preview"
           type="button"
