@@ -83,18 +83,6 @@ Array [
 
 .emotion-7 {
   padding-top: 8px;
-  font-style: italic;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-7 span {
-  padding-top: 4px;
 }
 
 .emotion-8 {
@@ -102,10 +90,42 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  color: #009f22;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
 }
 
 .emotion-9 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-9 a {
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-9 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
+}
+
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -114,12 +134,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-9 button,
-.emotion-9 a {
+.emotion-10 button,
+.emotion-10 a {
   margin-right: 16px;
 }
 
-.emotion-10 {
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -150,22 +170,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited,
-.emotion-10 .noop {
+.emotion-11,
+.emotion-11:hover,
+.emotion-11:visited,
+.emotion-11 .noop {
   background-color: #808080;
 }
 
-.emotion-10:hover,
-.emotion-10 .noop {
+.emotion-11:hover,
+.emotion-11 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-10[aria-disabled=true],
-.emotion-10 .noop {
+.emotion-11[aria-disabled=true],
+.emotion-11 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -228,7 +248,7 @@ Array [
       <div
         className="emotion-7"
       >
-        <span
+        <div
           className="emotion-8"
         >
           <svg
@@ -236,29 +256,33 @@ Array [
             data-file-name="checkmark.svg"
             height={20}
           />
-           
-          Ready to train
-        </span>
+          <div
+            className="emotion-9"
+            role="alert"
+          >
+            Ready to train
+          </div>
+        </div>
       </div>
       <div
-        className="emotion-9"
+        className="emotion-10"
       >
         <button
-          className="emotion-10"
+          className="emotion-11"
           onClick={[Function]}
           type="button"
         >
           Train
         </button>
         <button
-          className="emotion-10"
+          className="emotion-11"
           onClick={[Function]}
           type="button"
         >
           Train & Apply
         </button>
         <button
-          className="emotion-10"
+          className="emotion-11"
           onClick={[Function]}
           type="button"
         >
@@ -881,22 +905,46 @@ Array [
 
 .emotion-4 {
   padding-top: 8px;
-  font-style: italic;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #dbecff;
+  border-radius: 2px;
+  padding: 12px;
 }
 
-.emotion-4 span {
-  padding-top: 4px;
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
 }
 
-.emotion-5 {
-  color: #ebb52e;
+.emotion-6 a {
+  color: #ffffff;
+  background-color: #0074f5;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-6 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #005dc4;
 }
 
 .emotion-7 {
@@ -1055,26 +1103,32 @@ Array [
       <div
         className="emotion-4"
       >
-        <span
+        <div
           className="emotion-5"
         >
-          2
-           more
-           
-          labels are
-           required (min. = 
-          2
-           unique)
-        </span>
-        <span
-          className="emotion-5"
-        >
-          1
-           more assets need to be labeled (min. =
-           
-          10
-           of each label)
-        </span>
+          <svg
+            color="#0074f5"
+            data-file-name="information.svg"
+            height={20}
+          />
+          <div
+            className="emotion-6"
+            role="alert"
+          >
+            2
+             more
+             
+            labels are
+             required (min. = 
+            2
+             unique)
+            <br />
+            1
+             more assets need to be labeled (min. = 
+            10
+             of each label)
+          </div>
+        </div>
       </div>
       <div
         className="emotion-7"
@@ -1564,22 +1618,46 @@ Array [
 
 .emotion-4 {
   padding-top: 8px;
-  font-style: italic;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #dbecff;
+  border-radius: 2px;
+  padding: 12px;
 }
 
-.emotion-4 span {
-  padding-top: 4px;
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
 }
 
-.emotion-5 {
-  color: #ebb52e;
+.emotion-6 a {
+  color: #ffffff;
+  background-color: #0074f5;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-6 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #005dc4;
 }
 
 .emotion-7 {
@@ -1738,26 +1816,32 @@ Array [
       <div
         className="emotion-4"
       >
-        <span
+        <div
           className="emotion-5"
         >
-          2
-           more
-           
-          labels are
-           required (min. = 
-          2
-           unique)
-        </span>
-        <span
-          className="emotion-5"
-        >
-          1
-           more assets need to be labeled (min. =
-           
-          10
-           of each label)
-        </span>
+          <svg
+            color="#0074f5"
+            data-file-name="information.svg"
+            height={20}
+          />
+          <div
+            className="emotion-6"
+            role="alert"
+          >
+            2
+             more
+             
+            labels are
+             required (min. = 
+            2
+             unique)
+            <br />
+            1
+             more assets need to be labeled (min. = 
+            10
+             of each label)
+          </div>
+        </div>
       </div>
       <div
         className="emotion-7"
@@ -2105,22 +2189,46 @@ Array [
 
 .emotion-4 {
   padding-top: 8px;
-  font-style: italic;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #dbecff;
+  border-radius: 2px;
+  padding: 12px;
 }
 
-.emotion-4 span {
-  padding-top: 4px;
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
 }
 
-.emotion-5 {
-  color: #ebb52e;
+.emotion-6 a {
+  color: #ffffff;
+  background-color: #0074f5;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-6 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #005dc4;
 }
 
 .emotion-7 {
@@ -2279,26 +2387,32 @@ Array [
       <div
         className="emotion-4"
       >
-        <span
+        <div
           className="emotion-5"
         >
-          1
-           more
-           
-          label is
-           required (min. = 
-          2
-           unique)
-        </span>
-        <span
-          className="emotion-5"
-        >
-          1
-           more assets need to be labeled (min. =
-           
-          10
-           of each label)
-        </span>
+          <svg
+            color="#0074f5"
+            data-file-name="information.svg"
+            height={20}
+          />
+          <div
+            className="emotion-6"
+            role="alert"
+          >
+            1
+             more
+             
+            label is
+             required (min. = 
+            2
+             unique)
+            <br />
+            1
+             more assets need to be labeled (min. = 
+            10
+             of each label)
+          </div>
+        </div>
       </div>
       <div
         className="emotion-7"
@@ -2943,22 +3057,46 @@ Array [
 
 .emotion-4 {
   padding-top: 8px;
-  font-style: italic;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #dbecff;
+  border-radius: 2px;
+  padding: 12px;
 }
 
-.emotion-4 span {
-  padding-top: 4px;
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
 }
 
-.emotion-5 {
-  color: #ebb52e;
+.emotion-6 a {
+  color: #ffffff;
+  background-color: #0074f5;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-6 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #005dc4;
 }
 
 .emotion-7 {
@@ -3117,26 +3255,32 @@ Array [
       <div
         className="emotion-4"
       >
-        <span
+        <div
           className="emotion-5"
         >
-          2
-           more
-           
-          labels are
-           required (min. = 
-          2
-           unique)
-        </span>
-        <span
-          className="emotion-5"
-        >
-          1
-           more assets need to be labeled (min. =
-           
-          10
-           of each label)
-        </span>
+          <svg
+            color="#0074f5"
+            data-file-name="information.svg"
+            height={20}
+          />
+          <div
+            className="emotion-6"
+            role="alert"
+          >
+            2
+             more
+             
+            labels are
+             required (min. = 
+            2
+             unique)
+            <br />
+            1
+             more assets need to be labeled (min. = 
+            10
+             of each label)
+          </div>
+        </div>
       </div>
       <div
         className="emotion-7"
