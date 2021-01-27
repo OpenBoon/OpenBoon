@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import PropTypes from 'prop-types'
 
-import { colors, spacing } from '../Styles'
+import { colors } from '../Styles'
 
 import { useLocalStorage } from '../LocalStorage/helpers'
 import { reducer } from '../Resizeable/reducer'
@@ -10,6 +10,9 @@ import { PANEL_WIDTH } from './helpers'
 
 const FROM = 0
 const SIZE = 28
+const PANEL_BORDER_WIDTH = 1
+const PANEL_PADDING = 8
+const GRID_GAP = 8
 
 const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
   const {
@@ -28,19 +31,29 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
     },
   })
 
+  const numColumns = Math.floor((size - PANEL_BORDER_WIDTH) / 200)
+
   return (
     <div
       css={{
         flex: 1,
         backgroundColor: colors.structure.coal,
-        padding: spacing.base,
+        padding: PANEL_PADDING,
         overflow: 'auto',
       }}
     >
       <div
         css={{
-          display: 'flex',
-          flexDirection: 'column',
+          display: 'grid',
+          gridTemplateColumns: `repeat(${numColumns}, 1fr)`,
+          // make row height match column width
+          gridAutoRows:
+            (size -
+              PANEL_BORDER_WIDTH -
+              PANEL_PADDING * 2 -
+              GRID_GAP * (numColumns - 1)) /
+            numColumns,
+          gap: GRID_GAP,
         }}
       >
         {results.map(({ thumbnailUrl, metadata, id }) => {
@@ -53,9 +66,6 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
               css={{
                 position: 'relative',
                 backgroundColor: colors.structure.mattGrey,
-                width: size - spacing.base * 2,
-                height: size - spacing.base * 2,
-                ':not(:last-of-type)': { marginBottom: spacing.base },
               }}
             >
               <img

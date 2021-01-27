@@ -64,9 +64,9 @@ const ModelMatrixPreview = ({
         },
       },
       {
+        type: 'labelConfidence',
         attribute: `analysis.${moduleName}`,
         isDisabled: false,
-        type: 'labelConfidence',
         values: {
           labels: [labels[selectedCell[1]]],
           min: minScore,
