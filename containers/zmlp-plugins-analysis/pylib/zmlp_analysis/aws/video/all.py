@@ -441,9 +441,15 @@ class RekognitionPeoplePathingDetection(AbstractVideoDetectProcessor):
 
             for i, personDetection in enumerate(response['Persons'], counter):
                 person = personDetection['Person']
-                confidence = person['Face']['Confidence']
+                try:
+                    face = person['Face']
+                except KeyError:  # no person detected
+                    continue
+                confidence = face['Confidence']
                 start_time = personDetection['Timestamp'] / 1000.0  # ms to s
-                clip_tracker.append(start_time, {"person": confidence})
+
+                attribs.add((f"person{i}", confidence))
+                clip_tracker.append(start_time, {f"person{i}": confidence})
             counter = i
 
             if 'NextToken' in response:
@@ -527,6 +533,8 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
                     if segment_type == self.cue:
                         confidence = segment['TechnicalCueSegment']['Confidence']
                         start_time = segment['StartTimestampMillis'] / 1000.0  # ms to s
+
+                        attribs.add((segment_type, confidence))
                         clip_tracker.append(start_time, {segment_type: confidence})
 
             if 'NextToken' in response:
