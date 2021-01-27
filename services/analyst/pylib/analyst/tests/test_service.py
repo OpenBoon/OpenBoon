@@ -201,8 +201,8 @@ class TestExecutor(unittest.TestCase):
     @patch("requests.post")
     @patch("requests.get")
     def test_kill_not_running_task(self, get_patch, post_patch):
-        get_patch.return_value = type('', (dict,), {'json': lambda it: it})\
-            ({"state": "Not Running"})
+        get_patch.return_value = type('', (dict,), {'json': lambda it: it})(
+            {"state": "Not Running"})
 
         arg = test_task(sleep=20)
         thread = threading.Thread(target=self.api.executor.run_task, args=(arg,))
