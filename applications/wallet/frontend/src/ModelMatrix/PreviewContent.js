@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import PropTypes from 'prop-types'
 
-import { colors } from '../Styles'
+import { colors, spacing } from '../Styles'
 
 import { useLocalStorage } from '../LocalStorage/helpers'
 import { reducer } from '../Resizeable/reducer'
@@ -11,8 +11,6 @@ import { PANEL_WIDTH } from './helpers'
 const FROM = 0
 const SIZE = 28
 const PANEL_BORDER_WIDTH = 1
-const PANEL_PADDING = 8
-const GRID_GAP = 8
 
 const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
   const {
@@ -21,7 +19,7 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
     `/api/v1/projects/${projectId}/searches/query/?query=${encodedFilter}&from=${FROM}&size=${SIZE}`,
   )
 
-  const [{ size }] = useLocalStorage({
+  useLocalStorage({
     key: `Resizeable.ModelMatrixPreview`,
     reducer,
     initialState: {
@@ -31,29 +29,22 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
     },
   })
 
-  const numColumns = Math.floor((size - PANEL_BORDER_WIDTH) / 200)
-
   return (
     <div
       css={{
         flex: 1,
         backgroundColor: colors.structure.coal,
-        padding: PANEL_PADDING,
+        padding: spacing.base,
         overflow: 'auto',
       }}
     >
       <div
         css={{
           display: 'grid',
-          gridTemplateColumns: `repeat(${numColumns}, 1fr)`,
-          // make row height match column width
-          gridAutoRows:
-            (size -
-              PANEL_BORDER_WIDTH -
-              PANEL_PADDING * 2 -
-              GRID_GAP * (numColumns - 1)) /
-            (numColumns || 1),
-          gap: GRID_GAP,
+          gridTemplateColumns: `repeat(auto-fit, minmax(${
+            PANEL_WIDTH - PANEL_BORDER_WIDTH - spacing.base * 2
+          }px, 1fr))`,
+          gap: spacing.base,
         }}
       >
         {results.map(({ thumbnailUrl, metadata, id }) => {
@@ -68,15 +59,19 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
                 backgroundColor: colors.structure.mattGrey,
               }}
             >
-              <img
-                css={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                }}
-                src={thumbnailSrc}
-                alt={metadata?.source?.filename}
-              />
+              <div css={{ paddingBottom: '100%' }}>
+                <img
+                  css={{
+                    position: 'absolute',
+                    top: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                  }}
+                  src={thumbnailSrc}
+                  alt={metadata?.source?.filename}
+                />
+              </div>
             </div>
           )
         })}

@@ -111,8 +111,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
 
 .emotion-9 {
   display: grid;
-  grid-template-columns: repeat(0, 1fr);
-  grid-auto-rows: 191px;
+  grid-template-columns: repeat(auto-fit, minmax(183px, 1fr));
   gap: 8px;
 }
 
@@ -122,6 +121,12 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
 }
 
 .emotion-11 {
+  padding-bottom: 100%;
+}
+
+.emotion-12 {
+  position: absolute;
+  top: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -187,51 +192,71 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
         className="emotion-10"
         title="test_document.docx"
       >
-        <img
-          alt="test_document.docx"
+        <div
           className="emotion-11"
-          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
-        />
+        >
+          <img
+            alt="test_document.docx"
+            className="emotion-12"
+            src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
+          />
+        </div>
       </div>
       <div
         className="emotion-10"
         title="irr.pdf"
       >
-        <img
-          alt="irr.pdf"
+        <div
           className="emotion-11"
-          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
-        />
+        >
+          <img
+            alt="irr.pdf"
+            className="emotion-12"
+            src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
+          />
+        </div>
       </div>
       <div
         className="emotion-10"
         title="irr.pdf"
       >
-        <img
-          alt="irr.pdf"
+        <div
           className="emotion-11"
-          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
-        />
+        >
+          <img
+            alt="irr.pdf"
+            className="emotion-12"
+            src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
+          />
+        </div>
       </div>
       <div
         className="emotion-10"
         title="irr.pdf"
       >
-        <img
-          alt="irr.pdf"
+        <div
           className="emotion-11"
-          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
-        />
+        >
+          <img
+            alt="irr.pdf"
+            className="emotion-12"
+            src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
+          />
+        </div>
       </div>
       <div
         className="emotion-10"
         title="FatManOnABike1914.mp4"
       >
-        <img
-          alt="FatManOnABike1914.mp4"
+        <div
           className="emotion-11"
-          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
-        />
+        >
+          <img
+            alt="FatManOnABike1914.mp4"
+            className="emotion-12"
+            src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
+          />
+        </div>
       </div>
     </div>
   </div>
