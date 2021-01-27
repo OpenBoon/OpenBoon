@@ -52,7 +52,7 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
               PANEL_BORDER_WIDTH -
               PANEL_PADDING * 2 -
               GRID_GAP * (numColumns - 1)) /
-            numColumns,
+            (numColumns || 1),
           gap: GRID_GAP,
         }}
       >

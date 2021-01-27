@@ -112,7 +112,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
 .emotion-9 {
   display: grid;
   grid-template-columns: repeat(0, 1fr);
-  grid-auto-rows: Infinitypx;
+  grid-auto-rows: 191px;
   gap: 8px;
 }
 
