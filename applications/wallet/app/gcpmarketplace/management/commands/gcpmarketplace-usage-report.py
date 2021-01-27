@@ -33,21 +33,23 @@ class UsageReporter():
             filter='state=active')
         return request.execute().get('entitlements')
 
-    def _get_usage(self, entitlement):
-        """Returns usage info for the project linked to the entitlement given."""
+    def _get_usage(self, entitlement, start_time, end_time):
+        """Gives usage info by tiers on all projects associated with this entitlement."""
         entitlement = MarketplaceEntitlement.objects.get(name=entitlement['name'])
-        return entitlement.organization.get_ml_usage_last_hour()
+        return entitlement.organization.get_ml_usage_last_hour(start_time, end_time)
 
     def _report_usage(self, entitlement):
         """Sends usage information to marketplace for the given entitlement."""
         ServiceControlApi = get_service_control_api()
         time_format = '%Y-%m-%dT%H:%M:%SZ'
-        usage = self._get_usage(entitlement)
+        end_time = datetime.datetime.utcnow()
+        start_time = end_time - datetime.timedelta(hours=1)
+        usage = self._get_usage(entitlement, start_time, end_time)
         if not usage:
             print(f'No usage data. Skipping report for entitlement {entitlement["name"]}.')
             return
-        end_time = datetime.datetime.fromtimestamp(usage['end_time'],
-                                                   datetime.timezone.utc)
+        # How is this putting the end time from the usage? Shouldn't it just be from now?
+        end_time = datetime.datetime.utcnow()
         start_time = end_time - datetime.timedelta(hours=1)
 
         operation = {
@@ -60,16 +62,16 @@ class UsageReporter():
                 # TODO: Get the real metric names.
                 {
                     'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_tier_1_video',
-                    'metricValues': [{'int64Value': int(usage['tier_1_image_count'])}]},
-                {
-                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_tier_1_image',
                     'metricValues': [{'int64Value': int(usage['tier_1_video_hours'])}]},
                 {
+                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_tier_1_image',
+                    'metricValues': [{'int64Value': int(usage['tier_1_image_count'])}]},
+                {
                     'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_tier_2_video',
-                    'metricValues': [{'int64Value': int(usage['tier_2_image_count'])}]},
+                    'metricValues': [{'int64Value': int(usage['tier_2_video_hours'])}]},
                 {
                     'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_tier_2_image',
-                    'metricValues': [{'int64Value': int(usage['tier_2_video_hours'])}]}
+                    'metricValues': [{'int64Value': int(usage['tier_2_image_count'])}]}
             ]
         }
         check = ServiceControlApi.services().check(

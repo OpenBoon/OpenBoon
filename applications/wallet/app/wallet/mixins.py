@@ -1,7 +1,6 @@
 import uuid
 
-import namegenerator
-from django.db import models, IntegrityError
+from django.db import models
 from djangorestframework_camel_case.render import CamelCaseBrowsableAPIRenderer, \
     CamelCaseJSONRenderer
 

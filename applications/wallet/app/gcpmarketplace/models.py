@@ -2,7 +2,6 @@ from django.conf import settings
 from django.db import models
 
 from organizations.models import Organization
-from projects.models import Project
 
 
 class MarketplaceEntitlement(models.Model):
