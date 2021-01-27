@@ -371,11 +371,10 @@ class Executor(object):
 
     def check_task_status(self, task_id):
         if task_id:
-            if task_id not in self.not_running_timer_seconds:
-                self.not_running_timer_seconds[task_id] = 0
-
             response = self.client.get_task_status(task_id)
             if response['state'] != 'Running':
+                if task_id not in self.not_running_timer_seconds:
+                    self.not_running_timer_seconds[task_id] = 0
                 self.not_running_timer_seconds[task_id] += self.ping_timer_seconds
                 if self.not_running_timer_seconds[task_id] >= self.not_running_grace_seconds:
                     del self.not_running_timer_seconds[task_id]

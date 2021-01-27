@@ -200,25 +200,50 @@ class TestExecutor(unittest.TestCase):
 
     @patch("requests.post")
     @patch("requests.get")
-    def test_kill_not_running_task(self, post_patch, get_patch):
-        api = self.api
+    def test_kill_not_running_task(self, get_patch, post_patch):
+        get_patch.return_value = type('', (dict,), {'json': lambda it: it})({"state": "Not Running"})
+
         arg = test_task(sleep=20)
-        thread = threading.Thread(target=api.executor.run_task, args=(arg,))
+        thread = threading.Thread(target=self.api.executor.run_task, args=(arg,))
         thread.daemon = True
         thread.start()
 
         task_id = "71C54046-6452-4669-BD71-719E9D5C2BBF"
 
         time.sleep(5)
-        resp_exist = api.executor.send_ping()
+        resp_exist = self.api.executor.send_ping()
         assert resp_exist['taskId'] == task_id
-        status = api.executor.check_task_status(task_id)
+        status = self.api.executor.check_task_status(task_id)
 
         time.sleep(5)
-        resp_not_exist = api.executor.send_ping()
+        resp_not_exist = self.api.executor.send_ping()
 
         assert "taskId" not in resp_not_exist
         assert status is True
+        thread.join()
+
+    @patch("requests.post")
+    @patch("requests.get")
+    def test_not_kill_running_task(self, get_patch, post_patch):
+        get_patch.return_value = type('', (dict,), {'json': lambda it: it})({"state": "Running"})
+
+        arg = test_task(sleep=20)
+        thread = threading.Thread(target=self.api.executor.run_task, args=(arg,))
+        thread.daemon = True
+        thread.start()
+
+        task_id = "71C54046-6452-4669-BD71-719E9D5C2BBF"
+
+        time.sleep(5)
+        resp_exist = self.api.executor.send_ping()
+        assert resp_exist['taskId'] == task_id
+        status = self.api.executor.check_task_status(task_id)
+
+        time.sleep(5)
+        resp_not_exist = self.api.executor.send_ping()
+
+        assert "taskId" in resp_not_exist
+        assert status is None
         thread.join()
 
     @patch("requests.post")
