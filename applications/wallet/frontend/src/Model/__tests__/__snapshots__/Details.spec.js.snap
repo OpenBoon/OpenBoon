@@ -2,8 +2,23 @@
 
 exports[`<ModelDetails /> should handle train errors properly 1`] = `
 Array [
-  "",
   .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-1 {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11,7 +26,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-1 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -25,7 +40,7 @@ Array [
   padding: 12px;
 }
 
-.emotion-2 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -35,7 +50,7 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-2 a {
+.emotion-4 a {
   color: #ffffff;
   background-color: #3b3b3b;
   padding: 6px;
@@ -45,32 +60,20 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-2 a:hover {
+.emotion-4 a:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #2e2e2e;
 }
 
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <svg
-        color="#c92300"
-        data-file-name="warning.svg"
-        height={20}
-      />
-      <div
-        className="emotion-2"
-        role="alert"
-      >
-        Something went wrong. Please try again.
-      </div>
-    </div>
-  </div>,
-  .emotion-0 {
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-6 {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -78,32 +81,7 @@ Array [
   line-height: 23px;
 }
 
-<ul
-    className="emotion-0"
-  >
-    <li>
-      <strong>
-        Model Name:
-      </strong>
-       
-      console_face_recognition
-    </li>
-    <li>
-      <strong>
-        Model Type:
-      </strong>
-       
-      ZVI_FACE_RECOGNITION
-    </li>
-    <li>
-      <strong>
-        Module Name:
-      </strong>
-       
-      zvi-console_face_recognition-face-recognition
-    </li>
-  </ul>,
-  .emotion-0 {
+.emotion-7 {
   padding-top: 8px;
   font-style: italic;
   display: -webkit-box;
@@ -115,11 +93,11 @@ Array [
   flex-direction: column;
 }
 
-.emotion-0 span {
+.emotion-7 span {
   padding-top: 4px;
 }
 
-.emotion-1 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -127,22 +105,7 @@ Array [
   color: #009f22;
 }
 
-<div
-    className="emotion-0"
-  >
-    <span
-      className="emotion-1"
-    >
-      <svg
-        color="#009f22"
-        data-file-name="checkmark.svg"
-        height={20}
-      />
-       
-      Ready to train
-    </span>
-  </div>,
-  .emotion-0 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -151,12 +114,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-0 button,
-.emotion-0 a {
+.emotion-9 button,
+.emotion-9 a {
   margin-right: 16px;
 }
 
-.emotion-1 {
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -187,22 +150,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-1,
-.emotion-1:hover,
-.emotion-1:visited,
-.emotion-1 .noop {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited,
+.emotion-10 .noop {
   background-color: #808080;
 }
 
-.emotion-1:hover,
-.emotion-1 .noop {
+.emotion-10:hover,
+.emotion-10 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-1[aria-disabled=true],
-.emotion-1 .noop {
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -210,27 +173,103 @@ Array [
 <div
     className="emotion-0"
   >
-    <button
+    <div
       className="emotion-1"
-      onClick={[Function]}
-      type="button"
     >
-      Train
-    </button>
-    <button
-      className="emotion-1"
-      onClick={[Function]}
-      type="button"
-    >
-      Train & Apply
-    </button>
-    <button
-      className="emotion-1"
-      onClick={[Function]}
-      type="button"
-    >
-      Delete
-    </button>
+      
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-3"
+        >
+          <svg
+            color="#c92300"
+            data-file-name="warning.svg"
+            height={20}
+          />
+          <div
+            className="emotion-4"
+            role="alert"
+          >
+            Something went wrong. Please try again.
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <ul
+          className="emotion-6"
+        >
+          <li>
+            <strong>
+              Model Name:
+            </strong>
+             
+            console_face_recognition
+          </li>
+          <li>
+            <strong>
+              Model Type:
+            </strong>
+             
+            ZVI_FACE_RECOGNITION
+          </li>
+          <li>
+            <strong>
+              Module Name:
+            </strong>
+             
+            zvi-console_face_recognition-face-recognition
+          </li>
+        </ul>
+      </div>
+      <div
+        className="emotion-7"
+      >
+        <span
+          className="emotion-8"
+        >
+          <svg
+            color="#009f22"
+            data-file-name="checkmark.svg"
+            height={20}
+          />
+           
+          Ready to train
+        </span>
+      </div>
+      <div
+        className="emotion-9"
+      >
+        <button
+          className="emotion-10"
+          onClick={[Function]}
+          type="button"
+        >
+          Train
+        </button>
+        <button
+          className="emotion-10"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Apply
+        </button>
+        <button
+          className="emotion-10"
+          onClick={[Function]}
+          type="button"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+    <ModelMatrixLink
+      modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   padding: 16px;
@@ -455,8 +494,7 @@ Array [
       className="emotion-1"
     >
       <Link
-        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-        href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
         passHref={true}
       >
         <button
@@ -810,9 +848,30 @@ Array [
 
 exports[`<ModelDetails /> should render Labeled Assets properly 1`] = `
 Array [
-  "",
-  "",
   .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-1 {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -820,32 +879,7 @@ Array [
   line-height: 23px;
 }
 
-<ul
-    className="emotion-0"
-  >
-    <li>
-      <strong>
-        Model Name:
-      </strong>
-       
-      console_face_recognition
-    </li>
-    <li>
-      <strong>
-        Model Type:
-      </strong>
-       
-      ZVI_FACE_RECOGNITION
-    </li>
-    <li>
-      <strong>
-        Module Name:
-      </strong>
-       
-      zvi-console_face_recognition-face-recognition
-    </li>
-  </ul>,
-  .emotion-0 {
+.emotion-4 {
   padding-top: 8px;
   font-style: italic;
   display: -webkit-box;
@@ -857,40 +891,15 @@ Array [
   flex-direction: column;
 }
 
-.emotion-0 span {
+.emotion-4 span {
   padding-top: 4px;
 }
 
-.emotion-1 {
+.emotion-5 {
   color: #ebb52e;
 }
 
-<div
-    className="emotion-0"
-  >
-    <span
-      className="emotion-1"
-    >
-      2
-       more
-       
-      labels are
-       required (min. =
-       
-      2
-       unique)
-    </span>
-    <span
-      className="emotion-1"
-    >
-      1
-       more assets need to be labeled (min. =
-       
-      10
-       of each label)
-    </span>
-  </div>,
-  .emotion-0 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -899,12 +908,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-0 button,
-.emotion-0 a {
+.emotion-7 button,
+.emotion-7 a {
   margin-right: 16px;
 }
 
-.emotion-1 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -935,27 +944,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-1,
-.emotion-1:hover,
-.emotion-1:visited,
-.emotion-1 .noop {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited,
+.emotion-8 .noop {
   background-color: #808080;
 }
 
-.emotion-1:hover,
-.emotion-1 .noop {
+.emotion-8:hover,
+.emotion-8 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-1[aria-disabled=true],
-.emotion-1 .noop {
+.emotion-8[aria-disabled=true],
+.emotion-8 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-3 {
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -986,22 +995,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-3,
-.emotion-3:hover,
-.emotion-3:visited,
-.emotion-3 .noop {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited,
+.emotion-10 .noop {
   background-color: #808080;
 }
 
-.emotion-3:hover,
-.emotion-3 .noop {
+.emotion-10:hover,
+.emotion-10 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-3[aria-disabled=true],
-.emotion-3 .noop {
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1009,29 +1018,96 @@ Array [
 <div
     className="emotion-0"
   >
-    <button
-      aria-disabled={true}
+    <div
       className="emotion-1"
-      onClick={[Function]}
-      type="button"
     >
-      Train
-    </button>
-    <button
-      aria-disabled={true}
-      className="emotion-1"
-      onClick={[Function]}
-      type="button"
-    >
-      Train & Apply
-    </button>
-    <button
-      className="emotion-3"
-      onClick={[Function]}
-      type="button"
-    >
-      Delete
-    </button>
+      
+      
+      <div
+        className="emotion-2"
+      >
+        <ul
+          className="emotion-3"
+        >
+          <li>
+            <strong>
+              Model Name:
+            </strong>
+             
+            console_face_recognition
+          </li>
+          <li>
+            <strong>
+              Model Type:
+            </strong>
+             
+            ZVI_FACE_RECOGNITION
+          </li>
+          <li>
+            <strong>
+              Module Name:
+            </strong>
+             
+            zvi-console_face_recognition-face-recognition
+          </li>
+        </ul>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <span
+          className="emotion-5"
+        >
+          2
+           more
+           
+          labels are
+           required (min. = 
+          2
+           unique)
+        </span>
+        <span
+          className="emotion-5"
+        >
+          1
+           more assets need to be labeled (min. =
+           
+          10
+           of each label)
+        </span>
+      </div>
+      <div
+        className="emotion-7"
+      >
+        <button
+          aria-disabled={true}
+          className="emotion-8"
+          onClick={[Function]}
+          type="button"
+        >
+          Train
+        </button>
+        <button
+          aria-disabled={true}
+          className="emotion-8"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Apply
+        </button>
+        <button
+          className="emotion-10"
+          onClick={[Function]}
+          type="button"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+    <ModelMatrixLink
+      modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   padding: 16px;
@@ -1171,14 +1247,31 @@ Array [
 }
 
 .emotion-2 {
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-3 {
+  padding-left: 8px;
+}
+
+.emotion-4 {
   background-color: #808080;
   border-radius: 2px;
   border: none;
-  width: 100%;
-  height: 40px;
+  width: 150px;
   color: #ffffff;
   font-size: 15px;
-  line-height: 19px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   padding-left: 12px;
   padding-right: 32px;
   -moz-appearance: none;
@@ -1191,11 +1284,33 @@ Array [
   background-size: 20px;
 }
 
-.emotion-3 {
+.emotion-5 {
   width: 16px;
 }
 
-.emotion-5 {
+.emotion-8 {
+  background-color: #808080;
+  border-radius: 2px;
+  border: none;
+  width: 300px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1209,7 +1324,7 @@ Array [
   justify-content: flex-end;
 }
 
-.emotion-6 {
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1242,27 +1357,27 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-6,
-.emotion-6:hover,
-.emotion-6:visited,
-.emotion-6 .noop {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited,
+.emotion-10 .noop {
   background-color: #808080;
 }
 
-.emotion-6:hover,
-.emotion-6 .noop {
+.emotion-10:hover,
+.emotion-10 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-6[aria-disabled=true],
-.emotion-6 .noop {
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-7 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1273,11 +1388,11 @@ Array [
   align-items: center;
 }
 
-.emotion-8 {
+.emotion-12 {
   padding-right: 8px;
 }
 
-.emotion-9 {
+.emotion-13 {
   width: 16px;
 }
 
@@ -1287,77 +1402,92 @@ Array [
     <div
       className="emotion-1"
     >
-      <select
-        aria-label="Scope"
+      <label
         className="emotion-2"
-        defaultValue="Train"
-        disabled={false}
-        onChange={[Function]}
       >
-        <option
-          disabled={true}
-          value=""
+        Scope
+        <div
+          className="emotion-3"
         >
-          Select an option...
-        </option>
-        <option
-          value="TRAIN"
-        >
-          Train
-        </option>
-        <option
-          value="TEST"
-        >
-          Test
-        </option>
-      </select>
+          <select
+            className="emotion-4"
+            defaultValue="Train"
+            disabled={false}
+            onChange={[Function]}
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select an option...
+            </option>
+            <option
+              value="TRAIN"
+            >
+              Train
+            </option>
+            <option
+              value="TEST"
+            >
+              Test
+            </option>
+          </select>
+        </div>
+      </label>
       <div
-        className="emotion-3"
+        className="emotion-5"
       />
-      <select
-        aria-label="Label"
+      <label
         className="emotion-2"
-        defaultValue="cat"
-        disabled={false}
-        onChange={[Function]}
       >
-        <option
-          disabled={true}
-          value=""
+        Label
+        <div
+          className="emotion-3"
         >
-          Select an option...
-        </option>
-        <option
-          value="cat"
-        >
-          cat
-        </option>
-        <option
-          value="dog"
-        >
-          dog
-        </option>
-      </select>
+          <select
+            className="emotion-8"
+            defaultValue="cat"
+            disabled={false}
+            onChange={[Function]}
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select an option...
+            </option>
+            <option
+              value="cat"
+            >
+              cat
+            </option>
+            <option
+              value="dog"
+            >
+              dog
+            </option>
+          </select>
+        </div>
+      </label>
     </div>
     <div
-      className="emotion-5"
+      className="emotion-9"
     >
       <Link
-        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-        href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
         passHref={true}
       >
         <button
           aria-label="Add Filter in Visualizer"
-          className="emotion-6"
+          className="emotion-10"
           onClick={[Function]}
           type="button"
         >
           <div
-            className="emotion-7"
+            className="emotion-11"
           >
             <svg
-              className="emotion-8"
+              className="emotion-12"
               data-file-name="filter.svg"
               height={20}
             />
@@ -1366,7 +1496,7 @@ Array [
         </button>
       </Link>
       <div
-        className="emotion-9"
+        className="emotion-13"
       />
       <Link
         as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
@@ -1375,15 +1505,15 @@ Array [
       >
         <button
           aria-label="Add More Labels"
-          className="emotion-6"
+          className="emotion-10"
           onClick={[Function]}
           type="button"
         >
           <div
-            className="emotion-7"
+            className="emotion-11"
           >
             <svg
-              className="emotion-8"
+              className="emotion-12"
               data-file-name="pen.svg"
               height={20}
             />
@@ -1399,11 +1529,32 @@ Array [
 ]
 `;
 
-exports[`<ModelDetails /> should render properly with less than required labels for training 1`] = `
+exports[`<ModelDetails /> should render Labeled Assets without assets properly 1`] = `
 Array [
-  "",
-  "",
   .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-1 {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1411,32 +1562,7 @@ Array [
   line-height: 23px;
 }
 
-<ul
-    className="emotion-0"
-  >
-    <li>
-      <strong>
-        Model Name:
-      </strong>
-       
-      console_face_recognition
-    </li>
-    <li>
-      <strong>
-        Model Type:
-      </strong>
-       
-      ZVI_FACE_RECOGNITION
-    </li>
-    <li>
-      <strong>
-        Module Name:
-      </strong>
-       
-      zvi-console_face_recognition-face-recognition
-    </li>
-  </ul>,
-  .emotion-0 {
+.emotion-4 {
   padding-top: 8px;
   font-style: italic;
   display: -webkit-box;
@@ -1448,40 +1574,15 @@ Array [
   flex-direction: column;
 }
 
-.emotion-0 span {
+.emotion-4 span {
   padding-top: 4px;
 }
 
-.emotion-1 {
+.emotion-5 {
   color: #ebb52e;
 }
 
-<div
-    className="emotion-0"
-  >
-    <span
-      className="emotion-1"
-    >
-      1
-       more
-       
-      label is
-       required (min. =
-       
-      2
-       unique)
-    </span>
-    <span
-      className="emotion-1"
-    >
-      1
-       more assets need to be labeled (min. =
-       
-      10
-       of each label)
-    </span>
-  </div>,
-  .emotion-0 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1490,12 +1591,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-0 button,
-.emotion-0 a {
+.emotion-7 button,
+.emotion-7 a {
   margin-right: 16px;
 }
 
-.emotion-1 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1526,27 +1627,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-1,
-.emotion-1:hover,
-.emotion-1:visited,
-.emotion-1 .noop {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited,
+.emotion-8 .noop {
   background-color: #808080;
 }
 
-.emotion-1:hover,
-.emotion-1 .noop {
+.emotion-8:hover,
+.emotion-8 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-1[aria-disabled=true],
-.emotion-1 .noop {
+.emotion-8[aria-disabled=true],
+.emotion-8 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-3 {
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1577,22 +1678,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-3,
-.emotion-3:hover,
-.emotion-3:visited,
-.emotion-3 .noop {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited,
+.emotion-10 .noop {
   background-color: #808080;
 }
 
-.emotion-3:hover,
-.emotion-3 .noop {
+.emotion-10:hover,
+.emotion-10 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-3[aria-disabled=true],
-.emotion-3 .noop {
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1600,29 +1701,637 @@ Array [
 <div
     className="emotion-0"
   >
-    <button
-      aria-disabled={true}
+    <div
       className="emotion-1"
-      onClick={[Function]}
-      type="button"
     >
-      Train
-    </button>
-    <button
-      aria-disabled={true}
+      
+      
+      <div
+        className="emotion-2"
+      >
+        <ul
+          className="emotion-3"
+        >
+          <li>
+            <strong>
+              Model Name:
+            </strong>
+             
+            console_face_recognition
+          </li>
+          <li>
+            <strong>
+              Model Type:
+            </strong>
+             
+            ZVI_FACE_RECOGNITION
+          </li>
+          <li>
+            <strong>
+              Module Name:
+            </strong>
+             
+            zvi-console_face_recognition-face-recognition
+          </li>
+        </ul>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <span
+          className="emotion-5"
+        >
+          2
+           more
+           
+          labels are
+           required (min. = 
+          2
+           unique)
+        </span>
+        <span
+          className="emotion-5"
+        >
+          1
+           more assets need to be labeled (min. =
+           
+          10
+           of each label)
+        </span>
+      </div>
+      <div
+        className="emotion-7"
+      >
+        <button
+          aria-disabled={true}
+          className="emotion-8"
+          onClick={[Function]}
+          type="button"
+        >
+          Train
+        </button>
+        <button
+          aria-disabled={true}
+          className="emotion-8"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Apply
+        </button>
+        <button
+          className="emotion-10"
+          onClick={[Function]}
+          type="button"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+    <ModelMatrixLink
+      modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-3 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+.emotion-5 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-0"
+  >
+    <ul
       className="emotion-1"
-      onClick={[Function]}
-      type="button"
     >
-      Train & Apply
-    </button>
-    <button
-      className="emotion-3"
-      onClick={[Function]}
-      type="button"
+      <li
+        className="emotion-2"
+      >
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
+          href="/[projectId]/models/[modelId]"
+          passHref={true}
+        >
+          <a
+            className="emotion-3"
+            onClick={[Function]}
+          >
+            View Labels
+          </a>
+        </Link>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/assets"
+          href="/[projectId]/models/[modelId]/assets"
+          passHref={true}
+        >
+          <a
+            className="emotion-5"
+            onClick={[Function]}
+          >
+            Labeled Assets
+          </a>
+        </Link>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited,
+.emotion-2 .noop {
+  background-color: #808080;
+}
+
+.emotion-2:hover,
+.emotion-2 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-2[aria-disabled=true],
+.emotion-2 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  padding-right: 8px;
+}
+
+.emotion-5 {
+  width: 16px;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
     >
-      Delete
-    </button>
+      <Link
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+        passHref={true}
+      >
+        <button
+          aria-label="Add Filter in Visualizer"
+          className="emotion-2"
+          onClick={[Function]}
+          type="button"
+        >
+          <div
+            className="emotion-3"
+          >
+            <svg
+              className="emotion-4"
+              data-file-name="filter.svg"
+              height={20}
+            />
+            Add Filter in Visualizer
+          </div>
+        </button>
+      </Link>
+      <div
+        className="emotion-5"
+      />
+      <Link
+        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+        href="/[projectId]/visualizer"
+        passHref={true}
+      >
+        <button
+          aria-label="Add More Labels"
+          className="emotion-2"
+          onClick={[Function]}
+          type="button"
+        >
+          <div
+            className="emotion-3"
+          >
+            <svg
+              className="emotion-4"
+              data-file-name="pen.svg"
+              height={20}
+            />
+            Add More Labels
+          </div>
+        </button>
+      </Link>
+    </div>
+  </div>,
+  <ModelAssets
+    moduleName="zvi-console_face_recognition-face-recognition"
+  />,
+]
+`;
+
+exports[`<ModelDetails /> should render properly with less than required labels for training 1`] = `
+Array [
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-1 {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 17px;
+  line-height: 23px;
+}
+
+.emotion-4 {
+  padding-top: 8px;
+  font-style: italic;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-4 span {
+  padding-top: 4px;
+}
+
+.emotion-5 {
+  color: #ebb52e;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-7 button,
+.emotion-7 a {
+  margin-right: 16px;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited,
+.emotion-8 .noop {
+  background-color: #808080;
+}
+
+.emotion-8:hover,
+.emotion-8 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-8[aria-disabled=true],
+.emotion-8 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited,
+.emotion-10 .noop {
+  background-color: #808080;
+}
+
+.emotion-10:hover,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      
+      
+      <div
+        className="emotion-2"
+      >
+        <ul
+          className="emotion-3"
+        >
+          <li>
+            <strong>
+              Model Name:
+            </strong>
+             
+            console_face_recognition
+          </li>
+          <li>
+            <strong>
+              Model Type:
+            </strong>
+             
+            ZVI_FACE_RECOGNITION
+          </li>
+          <li>
+            <strong>
+              Module Name:
+            </strong>
+             
+            zvi-console_face_recognition-face-recognition
+          </li>
+        </ul>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <span
+          className="emotion-5"
+        >
+          1
+           more
+           
+          label is
+           required (min. = 
+          2
+           unique)
+        </span>
+        <span
+          className="emotion-5"
+        >
+          1
+           more assets need to be labeled (min. =
+           
+          10
+           of each label)
+        </span>
+      </div>
+      <div
+        className="emotion-7"
+      >
+        <button
+          aria-disabled={true}
+          className="emotion-8"
+          onClick={[Function]}
+          type="button"
+        >
+          Train
+        </button>
+        <button
+          aria-disabled={true}
+          className="emotion-8"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Apply
+        </button>
+        <button
+          className="emotion-10"
+          onClick={[Function]}
+          type="button"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+    <ModelMatrixLink
+      modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   padding: 16px;
@@ -1847,8 +2556,7 @@ Array [
       className="emotion-1"
     >
       <Link
-        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-        href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
         passHref={true}
       >
         <button
@@ -2202,9 +2910,30 @@ Array [
 
 exports[`<ModelDetails /> should render properly with less than required labels for training 2`] = `
 Array [
-  "",
-  "",
   .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-1 {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -2212,32 +2941,7 @@ Array [
   line-height: 23px;
 }
 
-<ul
-    className="emotion-0"
-  >
-    <li>
-      <strong>
-        Model Name:
-      </strong>
-       
-      console_face_recognition
-    </li>
-    <li>
-      <strong>
-        Model Type:
-      </strong>
-       
-      ZVI_FACE_RECOGNITION
-    </li>
-    <li>
-      <strong>
-        Module Name:
-      </strong>
-       
-      zvi-console_face_recognition-face-recognition
-    </li>
-  </ul>,
-  .emotion-0 {
+.emotion-4 {
   padding-top: 8px;
   font-style: italic;
   display: -webkit-box;
@@ -2249,40 +2953,15 @@ Array [
   flex-direction: column;
 }
 
-.emotion-0 span {
+.emotion-4 span {
   padding-top: 4px;
 }
 
-.emotion-1 {
+.emotion-5 {
   color: #ebb52e;
 }
 
-<div
-    className="emotion-0"
-  >
-    <span
-      className="emotion-1"
-    >
-      2
-       more
-       
-      labels are
-       required (min. =
-       
-      2
-       unique)
-    </span>
-    <span
-      className="emotion-1"
-    >
-      1
-       more assets need to be labeled (min. =
-       
-      10
-       of each label)
-    </span>
-  </div>,
-  .emotion-0 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2291,12 +2970,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-0 button,
-.emotion-0 a {
+.emotion-7 button,
+.emotion-7 a {
   margin-right: 16px;
 }
 
-.emotion-1 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2327,27 +3006,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-1,
-.emotion-1:hover,
-.emotion-1:visited,
-.emotion-1 .noop {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited,
+.emotion-8 .noop {
   background-color: #808080;
 }
 
-.emotion-1:hover,
-.emotion-1 .noop {
+.emotion-8:hover,
+.emotion-8 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-1[aria-disabled=true],
-.emotion-1 .noop {
+.emotion-8[aria-disabled=true],
+.emotion-8 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-3 {
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2378,22 +3057,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-3,
-.emotion-3:hover,
-.emotion-3:visited,
-.emotion-3 .noop {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited,
+.emotion-10 .noop {
   background-color: #808080;
 }
 
-.emotion-3:hover,
-.emotion-3 .noop {
+.emotion-10:hover,
+.emotion-10 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-3[aria-disabled=true],
-.emotion-3 .noop {
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -2401,29 +3080,96 @@ Array [
 <div
     className="emotion-0"
   >
-    <button
-      aria-disabled={true}
+    <div
       className="emotion-1"
-      onClick={[Function]}
-      type="button"
     >
-      Train
-    </button>
-    <button
-      aria-disabled={true}
-      className="emotion-1"
-      onClick={[Function]}
-      type="button"
-    >
-      Train & Apply
-    </button>
-    <button
-      className="emotion-3"
-      onClick={[Function]}
-      type="button"
-    >
-      Delete
-    </button>
+      
+      
+      <div
+        className="emotion-2"
+      >
+        <ul
+          className="emotion-3"
+        >
+          <li>
+            <strong>
+              Model Name:
+            </strong>
+             
+            console_face_recognition
+          </li>
+          <li>
+            <strong>
+              Model Type:
+            </strong>
+             
+            ZVI_FACE_RECOGNITION
+          </li>
+          <li>
+            <strong>
+              Module Name:
+            </strong>
+             
+            zvi-console_face_recognition-face-recognition
+          </li>
+        </ul>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <span
+          className="emotion-5"
+        >
+          2
+           more
+           
+          labels are
+           required (min. = 
+          2
+           unique)
+        </span>
+        <span
+          className="emotion-5"
+        >
+          1
+           more assets need to be labeled (min. =
+           
+          10
+           of each label)
+        </span>
+      </div>
+      <div
+        className="emotion-7"
+      >
+        <button
+          aria-disabled={true}
+          className="emotion-8"
+          onClick={[Function]}
+          type="button"
+        >
+          Train
+        </button>
+        <button
+          aria-disabled={true}
+          className="emotion-8"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Apply
+        </button>
+        <button
+          className="emotion-10"
+          onClick={[Function]}
+          type="button"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+    <ModelMatrixLink
+      modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   padding: 16px;
@@ -2648,8 +3394,7 @@ Array [
       className="emotion-1"
     >
       <Link
-        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-        href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
         passHref={true}
       >
         <button

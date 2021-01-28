@@ -111,3 +111,41 @@ class SetAttributesProcessor(AssetProcessor):
             self.logger.debug('removing attrs: %s' % self.arg_value('remove_attrs'))
             for k in self.arg_value('remove_attrs'):
                 frame.asset.del_attr(k)
+
+
+class DeleteBySearchProcessor(AssetProcessor):
+
+    file_types = None
+
+    def __init__(self):
+        super(DeleteBySearchProcessor, self).__init__()
+        self.add_arg(Argument('dataSourceId', 'str', default={}))
+
+    def process(self, frame):
+        ds_id = self.arg_value('dataSourceId')
+        self.assets_batch_delete(ds_id)
+
+    def assets_batch_delete(self, data_source_id):
+        batch_size = 100
+        query = {
+            '_source': False,
+            'size': 20,
+            'query': {
+                'term': {
+                    'system.dataSourceId': data_source_id
+                }
+            }
+        }
+
+        self.logger.info('Querying and Deleting assets. DataSource id: {}'.format(data_source_id))
+        batch = []
+
+        for a in self.app.assets.scroll_search(query):
+            batch.append(a.id)
+            if len(batch) >= batch_size:
+                self.logger.info(self.app.assets.batch_delete_assets(batch))
+                batch = []
+
+        # Handle left over batch
+        if batch:
+            self.logger.info(self.app.assets.batch_delete_assets(batch))

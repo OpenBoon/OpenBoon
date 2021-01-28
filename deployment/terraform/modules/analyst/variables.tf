@@ -8,6 +8,7 @@ variable "container-cluster-name" {
 }
 
 variable "image-pull-secret" {
+  sensitive = true
 }
 
 variable "archivist-url" {
@@ -55,4 +56,3 @@ variable "namespace" {
 variable "node-pool-name" {
   default = "analyst"
 }
-

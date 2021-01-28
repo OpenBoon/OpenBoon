@@ -27,4 +27,20 @@ describe('<ModelAssets />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render properly without labels', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]/assets',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: { ...model } })
+
+    const component = TestRenderer.create(<ModelAssets moduleName="Module" />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

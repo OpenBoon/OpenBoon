@@ -187,7 +187,7 @@ class LabelDetectionPerceptronTrainer(AssetProcessor):
             Classifier instance
 
         Returns:
-            PipelineMod: The published Pipeline Module.
+            AnalysisModule: The published Pipeline Module.
         """
         model_dir = os.path.join(tempfile.mkdtemp(), self.arg_value('folder'))
 

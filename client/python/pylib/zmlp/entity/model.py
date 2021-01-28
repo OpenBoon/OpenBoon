@@ -29,6 +29,12 @@ class ModelType(Enum):
     GCP_LABEL_DETECTION = 4
     """Train a Google AutoML vision model."""
 
+    TF2_IMAGE_CLASSIFIER = 5
+    """Provide your own custom Tensorflow2/Keras model"""
+
+    PYTORCH_IMAGE_CLASSIFIER = 5
+    """Provide your own custom Pytorch model"""
+
 
 class LabelScope(Enum):
     """
@@ -168,6 +174,7 @@ class Model(BaseEntity):
             ModelType.ZVI_FACE_RECOGNITION: f'{self.namespace}.predictions.label'
         }
         score_map = {ModelType.ZVI_KNN_CLASSIFIER: f'{self.namespace}.score',
+                     ModelType.ZVI_LABEL_DETECTION: f'{self.namespace}.score',
                      ModelType.ZVI_FACE_RECOGNITION: f'{self.namespace}.predictions.score'}
         if self.type not in prediction_term_map:
             raise TypeError(f'Cannot create a confusion matrix search for {self.type} models.')

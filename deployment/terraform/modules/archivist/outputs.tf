@@ -3,7 +3,8 @@ output "ip-address" {
 }
 
 output "monitor-password" {
-  value = random_string.monitor-password.result
+  value     = random_string.monitor-password.result
+  sensitive = true
 }
 
 output "data-bucket-name" {

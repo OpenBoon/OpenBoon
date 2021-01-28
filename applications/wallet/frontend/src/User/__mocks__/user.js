@@ -1,3 +1,5 @@
+import { CURRENT_POLICIES_DATE } from '../../Policies/helpers'
+
 const user = {
   id: 1,
   username: 'jane.doe',
@@ -19,7 +21,7 @@ const user = {
   lastLogin: '2020-03-20T18:17:02.472778Z',
   dateJoined: '2020-03-02T19:09:16Z',
   projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-  agreedToPoliciesDate: '20200414',
+  agreedToPoliciesDate: CURRENT_POLICIES_DATE,
 }
 
 export default user

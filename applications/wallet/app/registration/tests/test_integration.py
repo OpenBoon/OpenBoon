@@ -394,6 +394,7 @@ def test_api_login_lockout(api_client, user):
 
     # Third failed attempt.
     response = api_client.post(reverse('api-login'), credentials)
+    assert response.status_code == 423
     assert response.json()['detail'] == ['This account has been locked due to too many '
                                          'failed login attempts. Please contact support to '
                                          'unlock your account.']

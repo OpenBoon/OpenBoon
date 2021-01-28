@@ -8511,10 +8511,11 @@ Array [
   border-radius: 2px;
   border: none;
   width: 100%;
-  height: auto;
   color: #ffffff;
   font-size: 15px;
-  line-height: 19px;
+  line-height: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   padding-left: 12px;
   padding-right: 32px;
   -moz-appearance: none;
@@ -8525,8 +8526,7 @@ Array [
   background-position: right 8px top 50%;
   -webkit-background-size: 20px;
   background-size: 20px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  height: auto;
 }
 
 .emotion-19 {
@@ -9790,19 +9790,15 @@ Array [
 
 .emotion-23 {
   text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
   padding-left: 12px;
   padding-right: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
   border: 1px solid transparent;
-  border-radius: 2px;
-  background-color: #252525;
-  color: #ffffff;
   width: 60%;
-}
-
-.emotion-23:hover {
-  border: 1px solid #808080;
 }
 
 .emotion-23:focus {
@@ -9812,20 +9808,8 @@ Array [
   background-color: #ffffff;
 }
 
-.emotion-23::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-23::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-23:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-23::placeholder {
-  font-style: italic;
+.emotion-23:hover {
+  border: 1px solid #808080;
 }
 
 <div
@@ -10004,7 +9988,8 @@ Array [
                 <label
                   className="emotion-22"
                 >
-                  MIN  
+                  MIN
+                    
                   <input
                     className="emotion-23"
                     onBlur={[Function]}
@@ -10017,7 +10002,8 @@ Array [
                 <label
                   className="emotion-22"
                 >
-                  MAX  
+                  MAX
+                    
                   <input
                     className="emotion-23"
                     onBlur={[Function]}

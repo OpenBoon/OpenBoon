@@ -1,8 +1,20 @@
 {
-  "includePaths": [
-    "applications/wallet/frontend/*",
-    "applications/wallet/cypress/*"
-  ],
   "extends": ["config:base"],
-  "unpublishSafe": true
+  "unpublishSafe": true,
+  "timezone": "America/Los_Angeles",
+  "js": {
+    "schedule": ["before 5am on Monday"]
+  },
+  "python": {
+    "schedule": ["before 5am on Tuesday"],
+    "lockFileMaintenance": {
+      "enabled": true
+    }
+  },
+  "java": {
+    "schedule": ["before 5am on Wednesday"]
+  },
+  "docker": {
+    "schedule": ["before 5am on Thursday"]
+  }
 }

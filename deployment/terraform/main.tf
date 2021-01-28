@@ -5,7 +5,7 @@ terraform {
     organization = "zorroa"
 
     workspaces {
-      name = "zvi-dev"
+      name = "01-Development"
     }
   }
 }
@@ -16,7 +16,6 @@ provider "google" {
   project     = var.project
   region      = "${var.country}-${var.region}"
   zone        = "${var.country}-${var.region}-${var.zone}"
-  version     = ">= 3.33.0"
 }
 
 provider "google-beta" {
@@ -24,7 +23,6 @@ provider "google-beta" {
   project     = var.project
   region      = "${var.country}-${var.region}"
   zone        = "${var.country}-${var.region}-${var.zone}"
-  version     = ">= 3.33.0"
 }
 
 provider "azurerm" {
@@ -49,7 +47,6 @@ provider "kubernetes" {
   client_certificate     = module.gke-cluster.client_certificate
   client_key             = module.gke-cluster.client_key
   cluster_ca_certificate = module.gke-cluster.cluster_ca_certificate
-  version                = ">= 1.12.0"
 }
 
 ## GCP Infrastructure ###################################################################
@@ -154,15 +151,20 @@ resource "google_storage_bucket_object" "task_env" {
   name    = "environments/task_env.json"
   content = <<EOF
 {
+  "ENVIRONMENT": "${var.environment}",
   "CLARIFAI_KEY":  "${var.clarifai-key}",
   "ZORROA_AWS_KEY": "${var.aws-key}",
   "ZORROA_AWS_SECRET": "${var.aws-secret}",
   "ZORROA_AWS_REGION": "${var.aws-region}",
   "ZORROA_AWS_BUCKET": "${module.aws-ml.bucket}",
   "ZORROA_AWS_ML_USER_ROLE_ARN": "${module.aws-ml.ml-user-role-arn}",
+  "ZORROA_AWS_ML_USER_SQS_URL": "${module.aws-ml.ml-user-sqs-url}",
+  "ZORROA_AWS_ML_USER_SQS_ARN": "${module.aws-ml.ml-user-sqs-arn}",
+  "ZORROA_AWS_ML_USER_SNS_TOPIC_ARN": "${module.aws-ml.ml-user-sns-topic-arn}",
   "ZORROA_AZURE_VISION_REGION": "${module.azure-ml.vision-region}",
   "ZORROA_AZURE_VISION_ENDPOINT": "${module.azure-ml.vision-endpoint}",
-  "ZORROA_AZURE_VISION_KEY": "${module.azure-ml.vision-key}"
+  "ZORROA_AZURE_VISION_KEY": "${module.azure-ml.vision-key}",
+  "ZMLP_BILLING_METRICS_SERVICE": "http://${module.metrics.ip-address}"
 }
 EOF
 
@@ -318,6 +320,7 @@ module "wallet" {
   marketplace-credentials         = var.marketplace-credentials
   superadmin                      = var.wallet-superadmin
   use-model-ids-for-label-filters = var.wallet-use-model-ids-for-label-filters
+  metrics-ip-address              = module.metrics.ip-address
 }
 
 module "ml-bbq" {
@@ -363,4 +366,21 @@ module "reporter" {
   image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
   zmlp-api-url      = "http://${module.api-gateway.ip-address}"
   monitor-password  = module.archivist.monitor-password
+}
+
+module "metrics" {
+  source               = "./modules/metrics"
+  sql-instance-name    = module.postgres.instance-name
+  sql-connection-name  = module.postgres.connection-name
+  image-pull-secret    = kubernetes_secret.dockerhub.metadata[0].name
+  environment          = var.environment
+  container-tag        = var.container-tag
+  browsable            = var.metrics-browsable
+  debug                = var.metrics-debug
+  superuser-email      = var.metrics-superuser-email
+  superuser-password   = var.metrics-superuser-password
+  superuser-first-name = var.metrics-superuser-first-name
+  superuser-last-name  = var.metrics-superuser-last-name
+  django-log-level     = var.metrics-django-log-level
+  log-requests         = var.metrics-log-requests
 }

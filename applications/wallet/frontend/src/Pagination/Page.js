@@ -4,12 +4,17 @@ import Router, { useRouter } from 'next/router'
 
 import { spacing, colors, constants } from '../Styles'
 
+import { getQueryString } from '../Fetch/helpers'
+
 const PaginationPage = ({ currentPage, totalPages }) => {
   const { pathname, query } = useRouter()
 
   const [page, setPage] = useState(currentPage.toString())
 
-  const queryParam = page === '1' ? '' : `?page=${page}`
+  const queryParam = getQueryString({
+    query: query.query,
+    page: page === '1' ? '' : page,
+  })
   const href = `${pathname}${queryParam}`
   const as = href
     .split('/')

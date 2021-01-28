@@ -6,6 +6,7 @@ import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.FileUtils
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import java.io.InputStream
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -36,7 +37,13 @@ enum class ProjectStorageEntity {
     /**
      * The stored file is associated with a job.
      */
-    JOB;
+    JOB,
+
+    /**
+     * A file associated with a video clip.
+     */
+    VIDEOCLIPS;
+
     /**
      * The name of the entity used in file paths or unique Ids.  Note the trailing 's'.
      */
@@ -181,10 +188,14 @@ class ProjectFileLocator(
 class ProjectStorageSpec(
     val locator: ProjectStorageLocator,
     var attrs: Map<String, Any>,
-    val data: ByteArray
+    val stream: InputStream,
+    val size: Long
 
 ) {
     val mimetype = FileUtils.getMediaType(locator.getPath())
+
+    constructor(locator: ProjectStorageLocator, attrs: Map<String, Any>, data: ByteArray) :
+        this(locator, attrs, data.inputStream(), data.size.toLong())
 }
 
 @ApiModel("FileStorage", description = "Describes a file stored in ZMLP storage.")

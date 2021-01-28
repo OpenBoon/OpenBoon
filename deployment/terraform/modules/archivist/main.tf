@@ -71,7 +71,9 @@ resource "google_project_iam_member" "archivist" {
 
 resource "google_service_account_key" "archivist" {
   service_account_id = google_service_account.archivist.name
-  depends_on         = [google_service_account.archivist]
+  keepers = {
+    "created_date" : timestamp()
+  }
 }
 
 resource "kubernetes_secret" "archivist-sa-key" {

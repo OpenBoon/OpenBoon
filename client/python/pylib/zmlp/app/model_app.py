@@ -1,9 +1,10 @@
-import os
 import logging
+import os
+import tempfile
 
-from ..entity import Model, Job, ModelTypeInfo
-from ..util import as_collection, as_id
+from ..entity import Model, Job, ModelTypeInfo, AnalysisModule
 from ..training import TrainingSetDownloader
+from ..util import as_collection, as_id, zip_directory
 
 logger = logging.getLogger(__name__)
 
@@ -129,6 +130,39 @@ class ModelApp:
             "jobId": os.environ.get("ZMLP_JOB_ID")
         }
         return Job(self.app.client.post(f'/api/v3/models/{mid}/_deploy', body))
+
+    def upload_trained_model(self, model, model_path, labels):
+        """
+        Uploads a Tensorflow2/Keras model.  For the 'model_path' arg you can either
+        pass the path to a Tensorflow saved model or a trained model instance itself.
+
+        Args:
+            model (Model): The Model or te unique Model ID.
+            model_path (mixed): The path to the model directory or a Tensorflow model instance.
+            labels (list): The list of labels,.
+        Returns:
+            AnalysisModule: The AnalysisModule configured to use the model.
+        """
+
+        if not labels:
+            raise ValueError("Uploading a model requires an array of labels")
+
+        # check to see if its a keras model and save to a temp dir.
+        if getattr(model_path, 'save', None):
+            tmp_path = tempfile.mkdtemp()
+            model_path.save(tmp_path)
+            model_path = tmp_path
+
+        with open(model_path + '/labels.txt', 'w') as fp:
+            for label in labels:
+                fp.write(f'{label}\n')
+
+        model_file = tempfile.mkstemp(prefix="model_", suffix=".zip")[1]
+        zip_file_path = zip_directory(model_path, model_file)
+
+        mid = as_id(model)
+        return AnalysisModule(self.app.client.send_file(
+            f'/api/v3/models/{mid}/_upload', zip_file_path))
 
     def get_label_counts(self, model):
         """

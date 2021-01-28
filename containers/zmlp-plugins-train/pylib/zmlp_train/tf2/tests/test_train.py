@@ -4,7 +4,7 @@ import shutil
 from unittest.mock import patch
 
 from zmlp.app import ModelApp
-from zmlp.entity import Model, StoredFile, PipelineMod
+from zmlp.entity import Model, StoredFile, AnalysisModule
 from zmlp_train.tf2 import TensorflowTransferLearningTrainer
 from zmlpsdk import file_storage, Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset
@@ -90,7 +90,7 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
         self.prep_assets()
         name = 'zvi-flowers-label-detection'
         store_plot_patch.side_effect = [{}, {}]
-        pub_patch.return_value = PipelineMod({
+        pub_patch.return_value = AnalysisModule({
             'id': "12345",
             'name': name
         })

@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import projects from '../../Projects/__mocks__/projects'
 import mockUser from '../../User/__mocks__/user'
@@ -6,8 +6,6 @@ import mockUser from '../../User/__mocks__/user'
 import User from '../../User'
 
 import Account from '..'
-
-jest.mock('../Card', () => 'AccountCard')
 
 describe('<Account />', () => {
   it('should render properly', () => {
@@ -18,6 +16,20 @@ describe('<Account />', () => {
         <Account />
       </User>,
     )
+
+    act(() => {
+      component.root
+        .findByProps({ label: 'Sort by' })
+        .props.onChange({ value: 'date' })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ type: 'search' })
+        .props.onChange({ target: { value: 'erty' } })
+    })
 
     expect(component.toJSON()).toMatchSnapshot()
   })

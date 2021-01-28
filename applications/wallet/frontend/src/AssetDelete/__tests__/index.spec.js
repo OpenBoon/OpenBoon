@@ -7,9 +7,15 @@ import asset from '../../Asset/__mocks__/asset'
 const ASSET_ID = asset.id
 const PROJECT_ID = asset.metadata.system.projectId
 
-jest.useFakeTimers()
-
 describe('<AssetDelete />', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
+  afterAll(() => {
+    jest.useRealTimers()
+  })
+
   it('should render properly when no asset is selected', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
@@ -37,6 +43,10 @@ describe('<AssetDelete />', () => {
     const component = TestRenderer.create(<AssetDelete />)
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root.findByProps({ type: 'radio' }).props.onClick()()
+    })
 
     act(() => {
       component.root.findByProps({ children: 'Delete Asset' }).props.onClick()

@@ -1,6 +1,281 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Models /> should render properly with models 1`] = `
+exports[`<Models /> should let the user know a model was deleted 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-1 {
+  color: #ffffff;
+  background-color: #0074f5;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 15.399999999999999px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-left: 8px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Custom Models
+    <span
+      className="emotion-1"
+    >
+      beta
+    </span>
+  </h2>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-2 a {
+  color: #ffffff;
+  background-color: #009f22;
+  padding: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+}
+
+.emotion-2 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #00791a;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-2"
+        role="alert"
+      >
+        Model deleted.
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-3 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+<nav
+    className="emotion-0"
+  >
+    <ul
+      className="emotion-1"
+    >
+      <li
+        className="emotion-2"
+      >
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/models"
+          href="/[projectId]/models"
+          passHref={true}
+        >
+          <a
+            className="emotion-3"
+            onClick={[Function]}
+          >
+            View all
+          </a>
+        </Link>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
+          href="/[projectId]/models/add"
+          passHref={true}
+        >
+          <a
+            className="emotion-5"
+            onClick={[Function]}
+          >
+            Create New Model
+          </a>
+        </Link>
+      </li>
+    </ul>
+  </nav>,
+  <ModelsTable
+    modelTypes={
+      Array [
+        Object {
+          "deployOnTrainingSet": true,
+          "description": "Classify images or documents using a KNN classifier.  This type of model generates a single prediction which can be used to quickly organize assets into general groups.The KNN classifier works with just a single image and label.",
+          "label": "Sci-kit Learn KNN Classifier",
+          "minConcepts": 0,
+          "minExamples": 0,
+          "name": "ZVI_KNN_CLASSIFIER",
+          "objective": "Label Detection",
+          "provider": "Zorroa",
+        },
+        Object {
+          "deployOnTrainingSet": false,
+          "description": "Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each.",
+          "label": "Tensorflow CNN Classifier",
+          "minConcepts": 2,
+          "minExamples": 10,
+          "name": "ZVI_LABEL_DETECTION",
+          "objective": "Label Detection",
+          "provider": "Zorroa",
+        },
+        Object {
+          "deployOnTrainingSet": true,
+          "description": "Upload a Tensorflow model to use for image classification.",
+          "label": "Tensorflow2 Keras Image Classifier",
+          "minConcepts": 0,
+          "minExamples": 0,
+          "name": "TF2_IMAGE_CLASSIFIER",
+          "objective": "Label Detection",
+          "provider": "Google",
+        },
+        Object {
+          "deployOnTrainingSet": true,
+          "description": "Utilize Google AutoML to train an image classifier.",
+          "label": "Google AutoML Classifier",
+          "minConcepts": 2,
+          "minExamples": 10,
+          "name": "GCP_LABEL_DETECTION",
+          "objective": "Label Detection",
+          "provider": "Google",
+        },
+      ]
+    }
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+]
+`;
+
+exports[`<Models /> should let the user start labeling 1`] = `
 Array [
   .emotion-0 {
   font-size: 18px;
@@ -237,758 +512,52 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-0 {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-end;
-  -webkit-box-align: flex-end;
-  -ms-flex-align: flex-end;
-  align-items: flex-end;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-  padding-bottom: 16px;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-2 {
-  color: #b3b3b3;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 400;
-}
-
-.emotion-3 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  position: relative;
-}
-
-.emotion-5 {
-  height: auto;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  white-space: nowrap;
-}
-
-.emotion-5 tr {
-  background-color: #252525;
-}
-
-.emotion-5 tr:nth-of-type(2n) {
-  background-color: #2e2e2e;
-}
-
-.emotion-5 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-}
-
-.emotion-5 tr:hover .actions {
-  color: #b3b3b3;
-}
-
-.emotion-5 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-5 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-5 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
-.emotion-5 td {
-  max-width: calc(100vw / 2);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #e0e0e0;
-  padding: 8px 16px;
-  border: 1px solid transparent;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-5 td:first-of-type {
-  border-left: 1px solid transparent;
-}
-
-.emotion-5 td:last-of-type {
-  border-right: 1px solid transparent;
-  overflow: visible;
-}
-
-.emotion-6 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: auto;
-}
-
-.emotion-6:nth-of-type(0) {
-  width: 100%;
-}
-
-.emotion-6:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-9 {
-  cursor: pointer;
-}
-
-.emotion-10:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <h3
-        className="emotion-2"
-      >
-        Number of 
-        Models
-        : 
-        2
-      </h3>
-    </div>
-    <div
-      className="emotion-3"
-    >
-      <div
-        className="emotion-4"
-      >
-        <table
-          className="emotion-5"
-        >
-          <thead>
-            <tr>
-              <th
-                className="emotion-6"
-              >
-                Name
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Type
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Module
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              className="emotion-9"
-              onClick={[Function]}
-            >
-              <td>
-                <Link
-                  as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf774-89d9-1244-9596-d6df43f1ede5"
-                  href="/[projectId]/models/[modelId]"
-                  passHref={true}
-                >
-                  <a
-                    className="emotion-10"
-                  >
-                    console_face_recognition
-                  </a>
-                </Link>
-              </td>
-              <td>
-                ZVI_FACE_RECOGNITION
-              </td>
-              <td>
-                zvi-console_face_recognition-face-recognition
-              </td>
-            </tr>
-            <tr
-              className="emotion-9"
-              onClick={[Function]}
-            >
-              <td>
-                <Link
-                  as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf774-89d9-9596-1244-d6df43f1ede5"
-                  href="/[projectId]/models/[modelId]"
-                  passHref={true}
-                >
-                  <a
-                    className="emotion-10"
-                  >
-                    console_cat_recognition
-                  </a>
-                </Link>
-              </td>
-              <td>
-                ZVI_CAT_RECOGNITION
-              </td>
-              <td>
-                zvi-console_cat_recognition-cat-recognition
-              </td>
-            </tr>
-            <tr
-              className="emotion-9"
-              onClick={[Function]}
-            >
-              <td>
-                <Link
-                  as="/76917058-b147-4556-987a-0a0f11e46d9b/models/c0e83460-6a25-1238-86fa-0242ac150002"
-                  href="/[projectId]/models/[modelId]"
-                  passHref={true}
-                >
-                  <a
-                    className="emotion-10"
-                  >
-                    Gundam
-                  </a>
-                </Link>
-              </td>
-              <td>
-                ZVI_LABEL_DETECTION
-              </td>
-              <td>
-                Gundam
-              </td>
-            </tr>
-            <tr
-              className="emotion-9"
-              onClick={[Function]}
-            >
-              <td>
-                <Link
-                  as="/76917058-b147-4556-987a-0a0f11e46d9b/models/c0e83462-6a25-1238-86fa-0242ac150002"
-                  href="/[projectId]/models/[modelId]"
-                  passHref={true}
-                >
-                  <a
-                    className="emotion-10"
-                  >
-                    Location
-                  </a>
-                </Link>
-              </td>
-              <td>
-                ZVI_LABEL_DETECTION
-              </td>
-              <td>
-                Location
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div>
-         
-      </div>
-      <div>
-         
-      </div>
-    </div>
-  </div>,
-]
-`;
-
-exports[`<Models /> should render properly with no models 1`] = `
-Array [
-  .emotion-0 {
-  font-size: 18px;
-  line-height: 21px;
-  font-weight: 400;
-  padding-top: 24px;
-  padding-bottom: 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-1 {
-  color: #ffffff;
-  background-color: #0074f5;
-  border-radius: 8px;
-  font-size: 11px;
-  line-height: 15.399999999999999px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.2px;
-  padding: 2px;
-  padding-left: 6px;
-  padding-right: 6px;
-  margin-left: 8px;
-}
-
-<h2
-    className="emotion-0"
-  >
-    Custom Models
-    <span
-      className="emotion-1"
-    >
-      beta
-    </span>
-  </h2>,
-  .emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 8px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #e3f7e8;
-  border-radius: 2px;
-  padding: 12px;
-}
-
-.emotion-2 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
-}
-
-.emotion-2 a {
-  color: #ffffff;
-  background-color: #009f22;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
-}
-
-.emotion-2 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #00791a;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <svg
-        color="#009f22"
-        data-file-name="checkmark.svg"
-        height={20}
-      />
-      <div
-        className="emotion-2"
-        role="alert"
-      >
-        Model deleted.
-      </div>
-    </div>
-  </div>,
-  .emotion-0 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-1 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-2 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
-.emotion-3 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #73b61c;
-}
-
-<nav
-    className="emotion-0"
-  >
-    <ul
-      className="emotion-1"
-    >
-      <li
-        className="emotion-2"
-      >
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/models"
-          href="/[projectId]/models"
-          passHref={true}
-        >
-          <a
-            className="emotion-3"
-            onClick={[Function]}
-          >
-            View all
-          </a>
-        </Link>
-      </li>
-      <li
-        className="emotion-2"
-      >
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
-          href="/[projectId]/models/add"
-          passHref={true}
-        >
-          <a
-            className="emotion-5"
-            onClick={[Function]}
-          >
-            Create New Model
-          </a>
-        </Link>
-      </li>
-    </ul>
-  </nav>,
-  .emotion-0 {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-end;
-  -webkit-box-align: flex-end;
-  -ms-flex-align: flex-end;
-  align-items: flex-end;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-  padding-bottom: 16px;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-2 {
-  color: #b3b3b3;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 400;
-}
-
-.emotion-3 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  position: relative;
-}
-
-.emotion-4 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.emotion-5 {
-  height: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  white-space: nowrap;
-}
-
-.emotion-5 tr {
-  background-color: #252525;
-}
-
-.emotion-5 tr:nth-of-type(2n) {
-  background-color: #2e2e2e;
-}
-
-.emotion-5 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-}
-
-.emotion-5 tr:hover .actions {
-  color: #b3b3b3;
-}
-
-.emotion-5 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-5 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-5 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
-.emotion-5 td {
-  max-width: calc(100vw / 2);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #e0e0e0;
-  padding: 8px 16px;
-  border: 1px solid transparent;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-5 td:first-of-type {
-  border-left: 1px solid transparent;
-}
-
-.emotion-5 td:last-of-type {
-  border-right: 1px solid transparent;
-  overflow: visible;
-}
-
-.emotion-6 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-  width: auto;
-}
-
-.emotion-6:nth-of-type(0) {
-  width: 100%;
-}
-
-.emotion-6:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-9 {
-  height: 100%;
-  pointer-events: none;
-}
-
-.emotion-10 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  text-align: center;
-  color: #808080;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-size: 18px;
-  line-height: 21px;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <h3
-        className="emotion-2"
-      >
-        Number of 
-        Models
-        : 
-        0
-      </h3>
-    </div>
-    <div
-      className="emotion-3"
-    >
-      <div
-        className="emotion-4"
-      >
-        <table
-          className="emotion-5"
-        >
-          <thead>
-            <tr>
-              <th
-                className="emotion-6"
-              >
-                Name
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Type
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Module
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              className="emotion-9"
-            >
-              <td
-                colSpan={3}
-              >
-                <div
-                  className="emotion-10"
-                >
-                  <div
-                    className="emotion-11"
-                  >
-                    <svg
-                      data-file-name="noJobs.svg"
-                      width={200}
-                    />
-                    <div>
-                      There are currently no custom models.
-                    </div>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>,
+  <ModelsTable
+    modelTypes={
+      Array [
+        Object {
+          "deployOnTrainingSet": true,
+          "description": "Classify images or documents using a KNN classifier.  This type of model generates a single prediction which can be used to quickly organize assets into general groups.The KNN classifier works with just a single image and label.",
+          "label": "Sci-kit Learn KNN Classifier",
+          "minConcepts": 0,
+          "minExamples": 0,
+          "name": "ZVI_KNN_CLASSIFIER",
+          "objective": "Label Detection",
+          "provider": "Zorroa",
+        },
+        Object {
+          "deployOnTrainingSet": false,
+          "description": "Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each.",
+          "label": "Tensorflow CNN Classifier",
+          "minConcepts": 2,
+          "minExamples": 10,
+          "name": "ZVI_LABEL_DETECTION",
+          "objective": "Label Detection",
+          "provider": "Zorroa",
+        },
+        Object {
+          "deployOnTrainingSet": true,
+          "description": "Upload a Tensorflow model to use for image classification.",
+          "label": "Tensorflow2 Keras Image Classifier",
+          "minConcepts": 0,
+          "minExamples": 0,
+          "name": "TF2_IMAGE_CLASSIFIER",
+          "objective": "Label Detection",
+          "provider": "Google",
+        },
+        Object {
+          "deployOnTrainingSet": true,
+          "description": "Utilize Google AutoML to train an image classifier.",
+          "label": "Google AutoML Classifier",
+          "minConcepts": 2,
+          "minExamples": 10,
+          "name": "GCP_LABEL_DETECTION",
+          "objective": "Label Detection",
+          "provider": "Google",
+        },
+      ]
+    }
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
 ]
 `;

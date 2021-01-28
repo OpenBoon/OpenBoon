@@ -9,6 +9,7 @@ import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelType
 import com.zorroa.archivist.domain.UpdateLabelRequest
 import com.zorroa.archivist.service.ModelService
+import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Before
@@ -17,12 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.nio.file.Files
+import java.nio.file.Paths
 import kotlin.test.assertEquals
 
 class ModelControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var modelService: ModelService
+
+    @Autowired
+    lateinit var pipelineModService: PipelineModService
 
     val modelSpec = ModelSpec("Dog Breeds", ModelType.ZVI_LABEL_DETECTION)
 
@@ -255,6 +261,54 @@ class ModelControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testUploadModel() {
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF2_IMAGE_CLASSIFIER)
+        val model = modelService.createModel(modelSpec)
+
+        val mfp = Paths.get(
+            "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_upload")
+                .headers(admin())
+                .content(Files.readAllBytes(mfp))
+                .contentType(MediaType.parseMediaType("application/zip"))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
+
+    @Test
+    fun testSetModelArguments() {
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF2_IMAGE_CLASSIFIER)
+        val model = modelService.createModel(modelSpec)
+        modelService.publishModel(model)
+        val arg = mapOf("foo" to "bar")
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/models/${model.id}/_set_args")
+                .headers(admin())
+                .content(Json.serialize(arg))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.category",
+                    CoreMatchers.equalTo("Custom Models")
+                )
+            )
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.ops[0].apply[0].args.foo",
+                    CoreMatchers.equalTo("bar")
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
     fun testCreateAutomlSession() {
 
         val modelSpec = ModelSpec("Dog Breeds 2", ModelType.GCP_LABEL_DETECTION)
@@ -282,6 +336,29 @@ class ModelControllerTests : MockMvcTest() {
                 MockMvcResultMatchers.jsonPath(
                     "$.automlTrainingJob",
                     CoreMatchers.equalTo(automlSpec.automlTrainingJob)
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testGetType() {
+        val module = ModelType.ZVI_LABEL_DETECTION
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/models/_types/${module.name}")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.name",
+                    CoreMatchers.equalTo(module.name)
+                )
+            ).andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.label",
+                    CoreMatchers.equalTo(module.label)
                 )
             )
             .andReturn()

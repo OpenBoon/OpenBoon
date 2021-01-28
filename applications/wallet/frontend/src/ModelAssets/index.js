@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { cleanup, decode, encode } from '../Filters/helpers'
+import { decode, encode } from '../Filters/helpers'
 import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
 import ModelAssetsContent from './Content'
@@ -15,10 +15,12 @@ const ModelAssets = ({ moduleName }) => {
   const { scope, label } = decode({ query: q })
 
   const {
-    data: { results: labels },
+    data: { results: labels = [] },
   } = useSWR(`/api/v1/projects/${projectId}/models/${modelId}/get_labels/`)
 
-  const encodedFilter = encode({
+  const labelValue = label || (labels[0] && labels[0].label) || ''
+
+  const filter = encode({
     filters: [
       {
         type: 'label',
@@ -26,15 +28,13 @@ const ModelAssets = ({ moduleName }) => {
         modelId,
         values: {
           scope: scope || SCOPE_OPTIONS[0].label,
-          labels: [label || labels[0].label],
+          labels: [labelValue],
         },
       },
     ],
   })
 
-  const query = cleanup({ query: encodedFilter })
-
-  return <ModelAssetsContent projectId={projectId} query={query} />
+  return <ModelAssetsContent filter={filter} label={labelValue} />
 }
 
 ModelAssets.propTypes = {

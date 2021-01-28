@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 
 import sentry_sdk
+from django.http import JsonResponse
+from rest_framework import status
 from sentry_sdk.integrations.django import DjangoIntegration
 
 VERSION = '0.1.0'
@@ -56,6 +58,7 @@ INSTALLED_APPS = [
     'gcpmarketplace',
     'jobs',
     'modules',
+    'organizations',
     'projects',
     'registration',
     'searches',
@@ -118,7 +121,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wallet.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -151,7 +153,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Add the django-axes authentication backend and configure.
+def axes_lockout_callable(request, credentials):
+    message = ('This account has been locked due to too many failed login attempts. '
+               'Please contact support to unlock your account.')
+    return JsonResponse(data={'detail': [message]}, status=status.HTTP_423_LOCKED)
+
+
+AXES_LOCKOUT_CALLABLE = axes_lockout_callable
 AXES_META_PRECEDENCE_ORDER = ['HTTP_X_FORWARDED_FOR']
 AXES_FAILURE_LIMIT = 5
 AUTHENTICATION_BACKENDS = [
@@ -209,7 +219,8 @@ REST_FRAMEWORK = {
     }
 }
 
-if os.environ.get('BROWSABLE') == 'true':
+BROWSABLE = os.environ.get('BROWSABLE')
+if BROWSABLE == 'true':
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append(
         'rest_framework.renderers.BrowsableAPIRenderer')
 
@@ -221,6 +232,7 @@ REST_AUTH_SERIALIZERS = {
 ZMLP_API_URL = os.environ.get('ZMLP_API_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
 INCEPTION_KEY_B64 = os.environ.get('INCEPTION_KEY_B64')
+METRICS_API_URL = os.environ.get('METRICS_API_URL', 'http://metrics')
 
 # Google OAUTH2
 GOOGLE_OAUTH_CLIENT_ID = os.environ.get(

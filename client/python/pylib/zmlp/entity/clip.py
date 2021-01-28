@@ -1,21 +1,26 @@
 """
 Classes and functions for building timelines.
 """
+from ..entity.asset import StoredFile
 from ..util import as_id, as_collection
 
 __all__ = [
     'TimelineBuilder',
-    'Clip'
+    'VideoClip'
 ]
 
 
-class Clip:
+class VideoClip:
     """
     Clips represent a prediction for a section of video.
     """
     def __init__(self, data):
-        self._data = data['document']['clip']
-        self.id = data['id']
+        self._data = data
+
+    @property
+    def id(self):
+        """The Asset id the clip is associated with."""
+        return self._data['id']
 
     @property
     def asset_id(self):
@@ -40,34 +45,61 @@ class Clip:
     @property
     def length(self):
         """The length of the clip"""
-        return self.data['length']
+        return self._data['length']
 
     @property
     def start(self):
         """The start time of the clip"""
-        return self.data['start']
+        return self._data['start']
 
     @property
     def stop(self):
         """The stop time of the clip"""
-        return self.data['stop']
+        return self._data['stop']
 
     @property
     def score(self):
         """The prediction score"""
-        return self.data['score']
+        return self._data['score']
+
+    @property
+    def simhash(self):
+        """A similarity hash, if any"""
+        return self._data.get('simhash')
+
+    @property
+    def files(self):
+        """The array of associated files."""
+        return [StoredFile(f) for f in self._data.get('files', [])]
+
+    @staticmethod
+    def from_hit(hit):
+        """
+        Converts an ElasticSearch hit into an VideoClip.
+
+        Args:
+            hit (dict): An raw ES document
+
+        Returns:
+            Asset: The Clip.
+        """
+        data = {
+            'id': hit['_id'],
+        }
+        data.update(hit.get('_source', {}).get('clip', {}))
+        return VideoClip(data)
 
     def __len__(self):
         return self.length
 
     def __str__(self):
-        return "<Clip id='{}'/>".format(self.id)
+        return "<VideoClip id='{}'/>".format(self.id)
 
     def __repr__(self):
-        return "<Clip id='{}' at {}/>".format(self.id, hex(id(self)))
+        return "<VideoClip id='{}' at {}/>".format(self.id, hex(id(self)))
 
     def __eq__(self, other):
-        return other.id
+        return other.id == self.id
 
     def __hash__(self):
         return hash(self.id)
@@ -79,15 +111,18 @@ class TimelineBuilder:
     can be overlapping.  Duplicate clips are automatically compacted to the highest score.
     """
 
-    def __init__(self, asset, name):
+    def __init__(self, asset, name, deep_analysis=True):
         """
         Create a new timeline instance.
         Args:
+            asset (Asset): An Asset or its unqique Id.
             name (str): The name of the Timeline.
+            deep_analysis (bool): Launch a deep analysis job on timeline content.
         """
         self.asset = as_id(asset)
         self.name = name
         self.tracks = {}
+        self.deep_analysis = deep_analysis
 
     def add_clip(self, track_name, start, stop, content, score=1, tags=None):
         """
@@ -128,5 +163,6 @@ class TimelineBuilder:
         return {
             'name': self.name,
             'assetId': self.asset,
-            'tracks': [track for track in self.tracks.values() if track['clips']]
+            'tracks': [track for track in self.tracks.values() if track['clips']],
+            'deepAnalysis': self.deep_analysis
         }

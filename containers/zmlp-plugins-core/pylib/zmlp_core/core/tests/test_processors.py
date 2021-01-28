@@ -1,9 +1,13 @@
+from unittest.mock import patch
+
 import pytest
 
-from zmlpsdk import Frame, ZmlpFatalProcessorException
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_data
+from zmlp import ZmlpClient
+from zmlp.app import AssetApp
 from zmlp_core.core.processors import SetAttributesProcessor, AssertAttributesProcessor, \
-    PreCacheSourceFileProcessor
+    PreCacheSourceFileProcessor, DeleteBySearchProcessor
+from zmlpsdk import Frame, ZmlpFatalProcessorException
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_data, Context
 
 MOCK_PERMISSION = {
     'authority': 'string',
@@ -69,3 +73,17 @@ class PreCacheSourceFileProcessorTests(PluginUnitTestCase):
         ih.process(frame)
         assert frame.asset.get_attr("source.filesize") is None
         assert frame.asset.get_attr("source.checksum") is None
+
+
+class DeleteBySearchProcessorTests(PluginUnitTestCase):
+
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(AssetApp, 'scroll_search')
+    def test_generate(self, scroll_search_patch, del_patch):
+        scroll_search_patch.return_value = {}
+        del_patch.return_value = {}
+
+        proc = DeleteBySearchProcessor()
+        proc.set_context(Context(None,
+                                 {'dataSourceId': 'c13cf8ae-a009-4ff8-b8f0-6db7eec96cf1'}, {}))
+        proc.process(None)

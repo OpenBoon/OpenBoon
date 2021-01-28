@@ -96,7 +96,7 @@ interface ProjectStorageService {
             LogObject.PROJECT_STORAGE, LogAction.CREATE,
             mapOf(
                 "newFilePath" to spec.locator.getPath(),
-                "size" to spec.data.size.toLong(),
+                "size" to spec.size.toLong(),
                 "mediaType" to spec.mimetype
             )
         )

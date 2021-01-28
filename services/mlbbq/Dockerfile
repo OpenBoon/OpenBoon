@@ -4,6 +4,7 @@ USER root
 RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
     libglib2.0-dev \
     libgomp1 \
+    libquadmath0 \
      --no-install-recommends
 
 WORKDIR /models

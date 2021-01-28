@@ -18,6 +18,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import get_user_model
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework_nested.routers import NestedSimpleRouter
@@ -34,6 +35,7 @@ from models.views import ModelViewSet
 from modules.views import ModuleViewSet, ProviderViewSet
 from permissions.views import PermissionViewSet
 from projects.views import ProjectViewSet, ProjectUserViewSet
+from registration.admin import UserAdmin
 from registration.views import UserRegistrationView, UserConfirmationView, \
     ApiPasswordChangeView, LogoutView, MeView, LoginView, ApiPasswordResetView, \
     ApiPasswordResetConfirmView
@@ -98,6 +100,8 @@ BROWSABLE_API_URLS = [
                                             name='api-user-confirm'))
 ]
 
+admin.site.enable_nav_sidebar = False
+support_admin_site.enable_nav_sidebar = False
 
 urlpatterns = [
     path('admin/', support_admin_site.urls),
@@ -112,6 +116,10 @@ urlpatterns = [
     path('marketplace/signup_success/', signup_success, name='gcpmarketplace-signup-success'),
 ]
 if settings.SUPERADMIN:
+    # Registering the user model here because of the order in which the built-in user model
+    # is registered.
+    admin.site.unregister(get_user_model())
+    admin.site.register(get_user_model(), UserAdmin)
     urlpatterns.append(path('superadmin/', admin.site.urls))
 urlpatterns += [i[1] for i in BROWSABLE_API_URLS]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

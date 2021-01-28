@@ -9,6 +9,7 @@ variable "environment" {
 
 variable "terraform-credentials" {
   description = "Contents of a GCP credential json file to use for creating resources."
+  sensitive   = true
 }
 
 variable "azure-subscription-id" {
@@ -25,6 +26,7 @@ variable "azure-tenant-id" {
 
 variable "azure-client-secret" {
   description = "Secret key generated for the Azure service principal to be used with the Azure provider."
+  sensitive   = true
 }
 
 variable "docker-username" {
@@ -33,6 +35,7 @@ variable "docker-username" {
 
 variable "docker-password" {
   description = "Password for Docker Hub user."
+  sensitive   = true
 }
 
 variable "docker-email" {
@@ -41,6 +44,7 @@ variable "docker-email" {
 
 variable "smtp-password" {
   description = "Password for the SMTP server wallet uses to send mail."
+  sensitive   = true
 }
 
 variable "google-oauth-client-id" {
@@ -57,6 +61,7 @@ variable "zmlp-domain" {
 
 variable "clarifai-key" {
   description = "Secret key to allow access to the Clarifai API."
+  sensitive   = true
 }
 
 variable "aws-key" {
@@ -65,6 +70,7 @@ variable "aws-key" {
 
 variable "aws-secret" {
   description = "Secret to allow access to the AWS ML API."
+  sensitive   = true
 }
 
 variable "aws-region" {
@@ -149,6 +155,47 @@ variable "wallet-superadmin" {
 
 variable "wallet-use-model-ids-for-label-filters" {
   description = "Feature flag for label filters return in the Console"
+  default     = "false"
+}
+
+variable "metrics-browsable" {
+  description = "Enables Browsable API for the Metrics Service."
+  default     = "false"
+}
+
+variable "metrics-debug" {
+  description = "Enables debug mode for Metrics Service."
+  default     = "false"
+}
+
+variable "metrics-superuser-email" {
+  description = "Sets Superuser email for Metrics Service."
+  default     = "admin@example.com"
+}
+
+variable "metrics-superuser-password" {
+  description = "Sets Superuser password for Metrics Service."
+  default     = "admin"
+  sensitive   = true
+}
+
+variable "metrics-superuser-first-name" {
+  description = "Set Superuser first name for Metrics Service."
+  default     = "Admin"
+}
+
+variable "metrics-superuser-last-name" {
+  description = "Set Superuser last name for Metrics Service."
+  default     = "Adminson"
+}
+
+variable "metrics-django-log-level" {
+  description = "Sets the log level the Metrics service should use."
+  default     = "INFO"
+}
+
+variable "metrics-log-requests" {
+  description = "Whether or not to log all requests to the Metrics service."
   default     = "false"
 }
 

@@ -22,6 +22,7 @@ import javax.persistence.Table
  * Type of models that can be trained.
  */
 enum class ModelType(
+    val label: String,
     val trainProcessor: String,
     val trainArgs: Map<String, Any>,
     val classifyProcessor: String,
@@ -33,9 +34,12 @@ enum class ModelType(
     val deployOnTrainingSet: Boolean,
     val minConcepts: Int,
     val minExamples: Int,
-    val dependencies: List<String>
+    val dependencies: List<String>,
+    val trainable: Boolean,
+    val uploadable: Boolean
 ) {
     ZVI_KNN_CLASSIFIER(
+        "Sci-kit Learn KNN Classifier",
         "zmlp_train.knn.KnnLabelDetectionTrainer",
         mapOf(),
         "zmlp_analysis.custom.KnnLabelDetectionClassifier",
@@ -49,9 +53,12 @@ enum class ModelType(
         true,
         0,
         0,
-        listOf()
+        listOf(),
+        true,
+        false
     ),
     ZVI_LABEL_DETECTION(
+        "Tensorflow Transfer Learning Classifier",
         "zmlp_train.tf2.TensorflowTransferLearningTrainer",
         mapOf(
             "train-test-ratio" to 4
@@ -67,9 +74,33 @@ enum class ModelType(
         false,
         2,
         10,
-        listOf()
+        listOf(),
+        true,
+        false
+    ),
+    ZVI_PYTORCH_LABEL_DETECTION(
+        "Pytorch Transfer Learning Classifier",
+        "zmlp_train.pytorch.PytorchTransferLearningTrainer",
+        mapOf(
+            "train-test-ratio" to 4
+        ),
+        "zmlp_analysis.custom.PytorchTransferLearningClassifier",
+        mapOf(),
+        null,
+        "Classify images or documents using a custom trained CNN deep learning algorithm.  This type of model" +
+            "generates multiple predictions and can be trained to identify very specific features. " +
+            "The label detection classifier requires at least 2 concepts with 10 labeled images each. ",
+        ModelObjective.LABEL_DETECTION,
+        Provider.ZORROA,
+        false,
+        2,
+        10,
+        listOf(),
+        true,
+        false
     ),
     ZVI_FACE_RECOGNITION(
+        "Face Recognition Classifier",
         "zmlp_train.face_rec.KnnFaceRecognitionTrainer",
         mapOf(),
         "zmlp_analysis.custom.KnnFaceRecognitionClassifier",
@@ -81,9 +112,12 @@ enum class ModelType(
         true,
         1,
         1,
-        listOf("zvi-face-detection")
+        listOf("zvi-face-detection"),
+        true,
+        false
     ),
     GCP_LABEL_DETECTION(
+        "Google AutoML Classifier",
         "zmlp_train.automl.AutoMLModelTrainer",
         mapOf(),
         "zmlp_analysis.automl.AutoMLVisionClassifier",
@@ -95,7 +129,43 @@ enum class ModelType(
         true,
         2,
         10,
-        listOf()
+        listOf(),
+        true,
+        false
+    ),
+    TF2_IMAGE_CLASSIFIER(
+        "Tensorflow2 Keras Image Classifier",
+        "None",
+        mapOf(),
+        "zmlp_analysis.custom.TensorflowImageClassifier",
+        mapOf(),
+        null,
+        "Upload a Tensorflow model to use for image classification.",
+        ModelObjective.LABEL_DETECTION,
+        Provider.GOOGLE,
+        true,
+        0,
+        0,
+        listOf(),
+        false,
+        true
+    ),
+    PYTORCH_IMAGE_CLASSIFIER(
+        "Pytorch Image Classifier",
+        "None",
+        mapOf(),
+        "zmlp_analysis.custom.PytorchImageClassifier",
+        mapOf(),
+        null,
+        "Upload a Pytorch model to use for image classification.",
+        ModelObjective.LABEL_DETECTION,
+        Provider.ZORROA,
+        true,
+        0,
+        0,
+        listOf(),
+        false,
+        true
     );
 
     fun asMap(): Map<String, Any> {
@@ -107,7 +177,8 @@ enum class ModelType(
             "deployOnTrainingSet" to deployOnTrainingSet,
             "minConcepts" to minConcepts,
             "minExamples" to minExamples,
-            "dependencies" to dependencies
+            "dependencies" to dependencies,
+            "label" to label
         )
     }
 }
@@ -214,6 +285,12 @@ class Model(
     @JsonIgnore
     fun getLabel(label: String, bbox: List<BigDecimal>? = null): Label {
         return Label(id, label, bbox = bbox)
+    }
+
+    fun getModelStorageLocator(): ProjectFileLocator {
+        return ProjectFileLocator(
+            ProjectStorageEntity.MODELS, id.toString(), "model", "model.zip"
+        )
     }
 
     override fun equals(other: Any?): Boolean {

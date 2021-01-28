@@ -8,6 +8,7 @@ variable "sql-instance-name" {
 }
 
 variable "sql-service-account-key" {
+  sensitive = true
 }
 
 variable "sql-connection-name" {
@@ -17,12 +18,14 @@ variable "container-cluster-name" {
 }
 
 variable "image-pull-secret" {
+  sensitive = true
 }
 
 variable "zmlp-api-url" {
 }
 
 variable "smtp-password" {
+  sensitive = true
 }
 
 variable "google-oauth-client-id" {
@@ -38,6 +41,7 @@ variable "marketplace-project" {
 }
 
 variable "marketplace-credentials" {
+  sensitive = true
 }
 
 variable "container-tag" {
@@ -61,6 +65,7 @@ variable "database-user" {
 }
 
 variable "inception-key-b64" {
+  sensitive = true
 }
 
 variable "browsable" {
@@ -75,3 +80,6 @@ variable "use-model-ids-for-label-filters" {
   default = "false"
 }
 
+variable "metrics-ip-address" {
+  default = "metrics"
+}

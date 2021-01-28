@@ -1,11 +1,11 @@
 import backoff
-from clarifai.errors import ApiClientError
+from clarifai.errors import ApiError
 
 from zmlpsdk import AssetProcessor, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlp_analysis.clarifai.images import regions as regions_images
 from zmlp_analysis.utils.prechecks import Prechecks
-from zmlp_analysis.clarifai.util import not_a_quota_exception, model_map
+from zmlp_analysis.clarifai.util import not_a_quota_exception, model_map, log_backoff_exception
 
 __all__ = [
     'ClarifaiVideoCelebrityDetectionProcessor',
@@ -51,7 +51,7 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
         analysis, clip_tracker = self.set_analysis(extractor, clip_tracker, model)
         asset.add_analysis(self.attribute, analysis)
         timeline = clip_tracker.build_timeline(final_time)
-        video.save_timeline(timeline)
+        video.save_timeline(asset, timeline)
 
     def set_analysis(self, extractor, clip_tracker, model):
         """ Set up ClipTracker and Asset Detection Analysis
@@ -74,16 +74,17 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
                 continue
             if not concepts:
                 continue
-            labels = [c['name'] for c in concepts]
-            clip_tracker.append(time_ms, labels)
+            predictions = {c['name']: c['value'] for c in concepts}
+            clip_tracker.append(time_ms, predictions)
             [analysis.add_label_and_score(c['name'], c['value']) for c in concepts]
 
         return analysis, clip_tracker
 
     @backoff.on_exception(backoff.expo,
-                          ApiClientError,
+                          ApiError,
                           max_time=3600,
-                          giveup=not_a_quota_exception)
+                          giveup=not_a_quota_exception,
+                          on_backoff=log_backoff_exception)
     def predict(self, model, p_path):
         """
         Make a prediction from the filename for a given model

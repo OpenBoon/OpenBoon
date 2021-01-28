@@ -74,7 +74,7 @@ class AzureVideoAbstract(AssetProcessor):
         else:
             timeline = clip_tracker.build_timeline(final_time)
 
-        save_timeline(timeline)
+        save_timeline(asset, timeline)
 
     def set_analysis(self, extractor, clip_tracker, proc):
         """ Set up ClipTracker and Asset Detection Analysis
@@ -91,8 +91,8 @@ class AzureVideoAbstract(AssetProcessor):
 
         for time_ms, path in extractor:
             predictions = proc.predict(path)
-            labels = [pred[0] for pred in predictions]
-            clip_tracker.append(time_ms, labels)
+            pred_dict = {pred[0]: pred[1] for pred in predictions}
+            clip_tracker.append(time_ms, pred_dict)
             for ls in predictions:
                 analysis.add_label_and_score(ls[0], ls[1])
 
@@ -245,8 +245,8 @@ class AzureVideoTextDetection(AzureVideoAbstract):
 
         for time_ms, path in extractor:
             predictions = proc.predict(path)
-            labels = [predictions]
-            clip_tracker.append(time_ms, labels)
+            pred = {pred: 1 for pred in predictions}
+            clip_tracker.append(time_ms, pred)
             analysis.add_content(predictions)
 
         return analysis, clip_tracker

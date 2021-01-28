@@ -1,11 +1,14 @@
 import backoff
-from clarifai.errors import ApiClientError
+import logging
+from clarifai.errors import ApiError
 
 from zmlp_analysis.clarifai.images import bboxes as bboxes_images
-from zmlp_analysis.clarifai.util import not_a_quota_exception, model_map
+from zmlp_analysis.clarifai.util import not_a_quota_exception, model_map, log_backoff_exception
 from zmlp_analysis.utils.prechecks import Prechecks
 from zmlpsdk import AssetProcessor, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
+
+logger = logging.getLogger(__name__)
 
 __all__ = [
     'ClarifaiVideoFaceDetectionProcessor',
@@ -49,7 +52,7 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
         analysis, clip_tracker = self.set_analysis(extractor, clip_tracker, model)
         asset.add_analysis(self.attribiute, analysis)
         timeline = clip_tracker.build_timeline(final_time)
-        video.save_timeline(timeline)
+        video.save_timeline(asset, timeline)
 
     def set_analysis(self, extractor, clip_tracker, model):
         """ Set up ClipTracker and Asset Detection Analysis
@@ -74,16 +77,17 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
                 continue
             for concept in concepts:
                 c = concept['data'].get('concepts')[0]
-                labels = [c['name']]
-                clip_tracker.append(time_ms, labels)
+                pred = {c['name']: c['value']}
+                clip_tracker.append(time_ms, pred)
                 analysis.add_label_and_score(c['name'], c['value'])
 
         return analysis, clip_tracker
 
     @backoff.on_exception(backoff.expo,
-                          ApiClientError,
+                          ApiError,
                           max_time=3600,
-                          giveup=not_a_quota_exception)
+                          giveup=not_a_quota_exception,
+                          on_backoff=log_backoff_exception)
     def predict(self, model, p_path):
         """
         Make a prediction from the filename for a given model

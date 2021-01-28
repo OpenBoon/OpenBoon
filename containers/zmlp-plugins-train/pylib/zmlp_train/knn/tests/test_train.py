@@ -2,7 +2,7 @@ import logging
 from unittest.mock import patch
 
 from zmlp.app import ModelApp, AssetApp
-from zmlp.entity import Model, StoredFile, PipelineMod, Asset
+from zmlp.entity import Model, StoredFile, AnalysisModule, Asset
 from zmlp_train.knn import KnnLabelDetectionTrainer
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset
@@ -21,7 +21,7 @@ class KnnLabelDetectionTrainerTests(PluginUnitTestCase):
     def test_process(self, upload_patch, search_patch, model_patch, pub_patch):
 
         name = 'custom-knn-labels-detect'
-        pub_patch.return_value = PipelineMod({
+        pub_patch.return_value = AnalysisModule({
             'id': "12345",
             'name': name
         })

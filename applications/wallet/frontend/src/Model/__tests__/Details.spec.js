@@ -5,6 +5,8 @@ import labels from '../../ModelLabels/__mocks__/modelLabels'
 
 import ModelDetails from '../Details'
 
+import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../../Panel'
+
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const MODEL_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
 const JOB_ID = '223fd17d-7028-1519-94a8-d2f0132bc0c8'
@@ -13,6 +15,7 @@ const noop = () => () => {}
 
 jest.mock('next/link', () => 'Link')
 jest.mock('../../ModelAssets', () => 'ModelAssets')
+jest.mock('../MatrixLink', () => 'ModelMatrixLink')
 
 describe('<ModelDetails />', () => {
   it('should handle train errors properly', async () => {
@@ -191,15 +194,15 @@ describe('<ModelDetails />', () => {
     // Select Scope
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Scope' })
-        .props.onChange({ target: { value: 'TEST' } })
+        .findByProps({ label: 'Scope' })
+        .props.onChange({ value: 'TEST' })
     })
 
     // Select Label
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Label' })
-        .props.onChange({ target: { value: 'Test Label' } })
+        .findByProps({ label: 'Label' })
+        .props.onChange({ value: 'Test Label' })
     })
 
     const scopeQuery = btoa(
@@ -223,6 +226,32 @@ describe('<ModelDetails />', () => {
     )
   })
 
+  it('should render Labeled Assets without assets properly', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]/assets',
+      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...model,
+        results: [],
+        count: 0,
+        runningJobId: '',
+        modelTypeRestrictions: {
+          requiredLabels: 2,
+          missingLabels: 2,
+          requiredAssetsPerLabel: 10,
+          missingLabelsOnAssets: 1,
+        },
+      },
+    })
+
+    const component = TestRenderer.create(<ModelDetails />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should handle filter properly', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]',
@@ -244,7 +273,14 @@ describe('<ModelDetails />', () => {
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
-    expect(spy).toHaveBeenCalledWith('rightOpeningPanel', '"filters"')
+    expect(spy).toHaveBeenCalledWith(
+      'rightOpeningPanelSettings',
+      JSON.stringify({
+        size: PANEL_MIN_WIDTH,
+        isOpen: true,
+        openPanel: 'filters',
+      }),
+    )
   })
 
   it('should handle Add More Labels properly', async () => {
@@ -271,7 +307,14 @@ describe('<ModelDetails />', () => {
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
-    expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
+    expect(spy).toHaveBeenCalledWith(
+      'leftOpeningPanelSettings',
+      JSON.stringify({
+        size: PANEL_MIN_WIDTH,
+        isOpen: true,
+        openPanel: 'assetLabeling',
+      }),
+    )
 
     expect(spy).toHaveBeenCalledWith(
       `AssetLabelingAdd.${PROJECT_ID}`,

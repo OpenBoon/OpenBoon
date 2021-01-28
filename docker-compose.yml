@@ -2,7 +2,7 @@ version: "3.6"
 services:
   # Postgres instance used for local development servers.
   postgres:
-    image: "postgres:9.6.9"
+    image: "postgres:9.6.20"
     ports:
       - "5432:5432"
     volumes:
@@ -160,6 +160,7 @@ services:
       ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
       ZMLP_SERVER: http://archivist:8080
       OFFICER_URL: http://officer:7078
+      ZMLP_BILLING_METRICS_SERVICE: http://metrics
 
   # Console web application.
   wallet:
@@ -192,6 +193,24 @@ services:
     depends_on:
       - postgres
       - api-gateway
+
+  # Metric Collection Service.
+  metrics:
+    image: zmlp/metrics:latest
+    ports:
+      - 8585:80
+    build:
+      context: .
+      dockerfile: services/metrics/Dockerfile
+    environment:
+      DJANGO_SETTINGS_MODULE: metrics.settings
+      DEBUG: "true"
+      DB_BACKEND: postgres
+      PG_DB_HOST: postgres
+      PG_DB_PASSWORD: 2mAPDWhuiYdIW69u
+      BROWSABLE: "true"
+    depends_on:
+      - postgres
 
   # These services are only here because their images need to be built.
   zmlp-jvm-common:

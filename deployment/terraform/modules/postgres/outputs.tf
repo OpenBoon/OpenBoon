@@ -7,7 +7,8 @@ output "connection-name" {
 }
 
 output "sql-service-account-key" {
-  value = base64decode(google_service_account_key.cloud-sql-account-key.private_key)
+  value     = base64decode(google_service_account_key.cloud-sql-account-key.private_key)
+  sensitive = true
 }
 
 output "ip-address" {

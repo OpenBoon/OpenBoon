@@ -461,7 +461,6 @@ class CloudVisionDetectImageTextTests(PluginUnitTestCase):
         assert 'PASEO TAMAYO' in analysis['content']
         assert 8 == analysis['words']
 
-
     @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
@@ -542,7 +541,7 @@ class CloudVisionDetectDocumentTextTests(PluginUnitTestCase):
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_document_text_with_ocr_proxy(self, _,
-                                  native_patch, localize_patch, proxy_patch):
+                                                 native_patch, localize_patch, proxy_patch):
         native_patch.return_value = 'gs://foo/bar/ocr-proxy.png'
         localize_patch.return_value = MANUAL
         proxy_patch.return_value = get_mock_stored_file()
