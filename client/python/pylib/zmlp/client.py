@@ -8,13 +8,14 @@ import os
 import random
 import sys
 import time
-from io import IOBase
+from io import IOBase, BytesIO
 from urllib.parse import urljoin
 
 import jwt
 import requests
 
 from .entity.exception import ZmlpException
+from .entity.storage import StoredFile
 
 logger = logging.getLogger(__name__)
 
@@ -166,6 +167,38 @@ class ZmlpClient(object):
 
         except requests.exceptions.ConnectionError as e:
             raise ZmlpConnectionException(e)
+
+    def download_file(self, stored_file, dst_file=None):
+        """
+        Download given file and store results in memory, or optionally
+        a destination file.  The stored_file ID can be specified as
+        either a string like "assets/<id>/proxy/image_450x360.jpg"
+        or a StoredFile instance can be used.
+
+        Args:
+            stored_file (mixed): The StoredFile instance or its ID.
+            dst_file (str): An optional destination file path.
+
+        Returns:
+            io.BytesIO instance containing the binary data or if
+                a destination path was provided the size of the
+                file is returned.
+
+        """
+        if isinstance(stored_file, str):
+            path = stored_file
+        elif isinstance(stored_file, StoredFile):
+            path = stored_file.id
+        else:
+            raise ValueError("stored_file must be a string or StoredFile instance")
+
+        rsp = self.get("/api/v3/files/_stream/{}".format(path), is_json=False)
+        if dst_file:
+            with open(dst_file, 'wb') as fp:
+                fp.write(rsp.content)
+            return os.path.getsize(dst_file)
+        else:
+            return BytesIO(rsp.content)
 
     def get(self, path, body=None, is_json=True):
         """

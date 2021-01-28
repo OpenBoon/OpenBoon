@@ -1,7 +1,7 @@
 """
 Classes and functions for building timelines.
 """
-from ..entity.asset import StoredFile
+from ..entity.storage import StoredFile
 from ..util import as_id, as_collection
 
 __all__ = [
