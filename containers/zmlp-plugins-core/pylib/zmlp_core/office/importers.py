@@ -125,6 +125,7 @@ class OfficeImporter(AssetProcessor):
 
             # Need these set in order to render PDFs
             media = asset.get_attr('media') or {}
+            self.oclient.wait_for_rendering(asset, page)
             media.update(self.get_metadata(asset, page))
             asset.set_attr('media', media)
             asset.set_attr('media.type', 'document')
@@ -138,7 +139,6 @@ class OfficeImporter(AssetProcessor):
             else:
                 asset.set_attr('tmp.proxy_source_image',
                                self.oclient.get_image_file_id(asset, page))
-
             return cache_loc
 
         except Exception as e:

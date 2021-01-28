@@ -778,6 +778,7 @@ zmlp-services-unit-tests:
     MINIO_URL: "http://localhost:9000"
     MINIO_DEFAULT_PROTOCOL: "http"
     ARCHIVIST_ES_BACKUP_BUCKET_NAME: "project-storage-test"
+    REDIS_HOST: "localhost:6379"
   script:
     - export
     - IP="$(cat /etc/hosts |grep $HOSTNAME|cut -d$'\t' -f1)"

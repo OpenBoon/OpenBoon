@@ -17,6 +17,10 @@ class SlidesDocument(options: RenderRequest, inputStream: InputStream) : Documen
         return doc.slides.size()
     }
 
+    override fun pageCount(): Int {
+        return doc.slides.size()
+    }
+
     override fun renderAllMetadata(): Int {
         for (page in 0 until doc.slides.size()) {
             renderMetadata(page + 1)

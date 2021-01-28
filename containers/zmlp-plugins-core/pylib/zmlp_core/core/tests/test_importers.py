@@ -42,8 +42,9 @@ class FileImportProcessorTests(PluginUnitTestCase):
     @patch.object(OfficeImporter, 'get_metadata',
                   return_value={'author': 'Zach', 'content': 'temp'})
     @patch.object(OfficerClient, 'render', return_value='/fake')
+    @patch.object(OfficerClient, 'wait_for_rendering', return_value=None)
     @patch.object(OfficerClient, 'get_cache_location', return_value=None)
-    def test_process_document(self, _, __, ___, ____, _____):
+    def test_process_document(self, _, __, ___, ____, _____, ______):
         frame = Frame(TestAsset(zorroa_test_data('office/minimal.pdf')))
         frame.asset.set_attr("media.width", 220)
         frame.asset.set_attr("media.height", 170)
@@ -52,7 +53,7 @@ class FileImportProcessorTests(PluginUnitTestCase):
 
     @patch.object(ProjectApp, 'get_project')
     def test_process_unsupported(self, _):
-        frame = Frame(TestAsset(zorroa_test_data("offie/minimal.rar")))
+        frame = Frame(TestAsset(zorroa_test_data("office/minimal.rar")))
         ih = self.init_processor(FileImportProcessor())
         with pytest.raises(ZmlpFatalProcessorException):
             ih.process(frame)
