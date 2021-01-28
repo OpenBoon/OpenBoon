@@ -47,6 +47,7 @@ const ModelMatrixLayout = ({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
+        overflow: 'hidden',
       }}
     >
       {name && (
@@ -84,8 +85,10 @@ const ModelMatrixLayout = ({
         css={{
           flex: 1,
           width: '100%',
+          height: '100%',
           display: 'flex',
           backgroundColor: colors.structure.lead,
+          overflow: 'hidden',
         }}
       >
         <div
@@ -115,7 +118,7 @@ const ModelMatrixLayout = ({
           isDisabled={!isOpen}
         >
           <ModelMatrixPreview
-            selectedCell={settings.selectedCell}
+            settings={settings}
             labels={labels}
             moduleName={moduleName}
           />
