@@ -1,6 +1,12 @@
+# Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# PDX-License-Identifier: MIT-0 (For details,
+# see https://github.com/awsdocs/amazon-rekognition-custom-labels-developer-guide/blob/master/
+# LICENSE-SAMPLECODE.)
+
 import logging
 import os
 from enum import Enum
+import json
 
 import boto3
 import botocore.waiter
@@ -97,6 +103,210 @@ class AwsEnv:
         if not bucket:
             raise RuntimeError('AWS support is not setup for this environment.')
         return bucket
+
+    @staticmethod
+    def get_project_arn():
+        """
+        Get Rekognition Project Version ARN (custom model ARN)
+
+        Returns:
+            (str): ARN name
+        """
+        return os.environ.get('ZORROA_AWS_ML_USER_PROJECT_ARN')
+
+    @staticmethod
+    def get_project_version_arn():
+        """
+        Get Rekognition Project Version ARN (custom model ARN)
+
+        Returns:
+            (str): ARN name
+        """
+        return os.environ.get('ZORROA_AWS_ML_USER_PROJECT_VERSION_ARN')
+
+
+class CustomModelTrainer:
+    """ Methods for custom label models """
+    def __init__(self, rek_client):
+        self.rek_client = rek_client or None
+
+    def init(self):
+        if not self.rek_client:
+            self.rek_client = AwsEnv.rekognition()
+
+    def create_project(self, project_name=None):
+        """ Create an Amazon Rekognition project
+
+        Args:
+            project_name: (str) project name
+
+        Returns:
+            (dict) Project ARN as 'ProjectArn'
+        """
+        return self.rek_client.create_project(ProjectName=project_name)
+
+    def start_model(self, project_arn, version_name, project_version_arn, min_inference_units=1):
+        """ Start the running version of a model (can take a while to complete)
+
+        Args:
+            project_arn: (str) Custom Labels Project ARN for the model to train
+            version_name: (str) unique name for the version of the model
+            project_version_arn: (str) model ARN to start
+            min_inference_units: (int) minimum number of inference units to use (1-5)
+
+        Returns:
+            (dict) response
+        """
+        response = self.rek_client.start_project_version(
+            ProjectVersionArn=project_version_arn,
+            MinInferenceUnits=min_inference_units
+        )
+
+        # Wait for the project version training to complete
+        project_version_starting_completed_waiter = self.rek_client.get_waiter(
+            'project_version_running')
+        project_version_starting_completed_waiter.wait(ProjectArn=project_arn,
+                                                       VersionNames=[version_name])
+
+        return response
+
+    def stop_model(self, project_version_arn):
+        """ Stop the running version of a model (can take a while to complete)
+
+        Args:
+            project_version_arn: (str) model ARN to stop
+
+        Returns:
+            (dict) response
+        """
+        return self.rek_client.stop_project_version(ProjectVersionArn=project_version_arn)
+
+    def get_model_status(self, project_arn, version_names):
+        """
+
+        Args:
+            project_arn: (str) Custom Labels Project ARN for the model to train
+            version_names: (str) model version name to describe
+
+        Returns:
+            (str) Model Status
+        """
+        response = self.rek_client.describe_project_versions(
+            ProjectArn=project_arn,
+            VersionNames=[version_names]
+        )
+
+        return response['ProjectVersionDescriptions'][0]['Status']
+
+    def train_model(
+            self,
+            project_arn,
+            version_name,
+            output_s3bucket,
+            output_s3_key_prefix,
+            training_dataset_bucket,
+            training_dataset_name,
+            testing_dataset_bucket=None,
+            testing_dataset_name=None
+    ):
+        """ Create a new version of a model and begin training
+
+        Args:
+            project_arn: (str) Custom Labels Project ARN for the model to train
+            version_name: (str) unique name for the version of the model
+            output_s3bucket: (str) S3 bucket location to store the results of training
+            output_s3_key_prefix: (str) folder within output_s3bucket to store results of training
+            training_dataset_bucket: (str) S3 bucket for dataset to use for training
+            training_dataset_name: (str) S3 bucket location for manifest file to use for training
+            testing_dataset_bucket: (str, optional) S3 bucket for dataset to use for testing
+            testing_dataset_name: (str, optional) S3 bucket location for manifest file to use for
+                testing
+
+        Examples:
+            Given S3 bucket custom-model-bucket/evaluation
+            output_s3bucket = "custom-model-bucket"
+            output_s3_key_prefix = "evaluation"
+
+            Given S3 bucket custom-model-bucket/training/out.manifest
+            training_dataset_bucket="custom-model-bucket"
+            training_dataset_name = "training/out.manifest"
+
+            Given S3 bucket custom-model-bucket/testing/out.manifest
+            training_dataset_bucket="custom-model-bucket"
+            training_dataset_name = "testing/out.manifest"
+
+        Returns:
+            (dict) Trained model ARN as 'ProjectVersionArn'
+        """
+        output_config = json.loads(
+            """{{
+                "S3Bucket": "{}",
+                "S3KeyPrefix": "{}"
+            }}""".format(output_s3bucket, output_s3_key_prefix)
+        )
+
+        training_dataset = json.loads(
+            """{{
+                "Assets": [
+                    {{
+                        "GroundTruthManifest": {{
+                            "S3Object": {{
+                                "Bucket": "{}",
+                                "Name": "{}"
+                            }}
+                        }}
+                    }}
+                ]
+            }}""".format(training_dataset_bucket, training_dataset_name)
+        )
+
+        if testing_dataset_bucket:
+            testing_dataset = json.loads(
+                """{{
+                    "Assets": [
+                        {{
+                            "GroundTruthManifest":
+                                {{
+                                    "S3Object": {{
+                                        "Bucket": "{}",
+                                        "Name": "{}"
+                                    }}
+                                }}
+                        }}
+                    ]
+                }}""".format(testing_dataset_bucket, testing_dataset_name)
+            )
+        else:
+            testing_dataset = json.loads('{"AutoCreate":true}')
+
+        try:
+            response = self.rek_client.create_project_version(
+                ProjectArn=project_arn,
+                VersionName=version_name,
+                OutputConfig=output_config,
+                TrainingData=training_dataset,
+                TestingData=testing_dataset
+            )
+
+            # Wait for the project version training to complete
+            project_version_training_completed_waiter = self.rek_client.get_waiter(
+                'project_version_training_completed')
+            project_version_training_completed_waiter.wait(ProjectArn=project_arn,
+                                                           VersionNames=[version_name])
+
+            # Get the completion status
+            describe_response = self.rek_client.describe_project_versions(
+                ProjectArn=project_arn,
+                VersionNames=[version_name]
+            )
+            for model in describe_response['ProjectVersionDescriptions']:
+                logging.info("Status: " + model['Status'])
+                logging.info("Message: " + model['StatusMessage'])
+
+            return response
+
+        except Exception as e:
+            logging.error(e)
 
 
 class WaitState(Enum):
