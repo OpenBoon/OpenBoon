@@ -1,4 +1,3 @@
-import io
 import os
 import requests
 from collections import namedtuple
@@ -399,20 +398,7 @@ class AssetApp(object):
                 file is returned.
 
         """
-        if isinstance(stored_file, str):
-            path = stored_file
-        elif isinstance(stored_file, StoredFile):
-            path = stored_file.id
-        else:
-            raise ValueError("stored_file must be a string or StoredFile instance")
-
-        rsp = self.app.client.get("/api/v3/files/_stream/{}".format(path), is_json=False)
-        if dst_file:
-            with open(dst_file, 'wb') as fp:
-                fp.write(rsp.content)
-            return os.path.getsize(dst_file)
-        else:
-            return io.BytesIO(rsp.content)
+        return self.app.client.download_file(stored_file, dst_file)
 
     def stream_file(self, stored_file, chunk_size=1024):
         """
