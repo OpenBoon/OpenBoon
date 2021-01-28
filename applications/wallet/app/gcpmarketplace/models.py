@@ -1,17 +1,21 @@
 from django.conf import settings
 from django.db import models
 
-from projects.models import Project
+from organizations.models import Organization
 
 
 class MarketplaceEntitlement(models.Model):
-    """Represents a connection between a Wallet user and a Google Marketplace entitlement."""
+    """Represents a connection between a Wallet Organization and a Google Marketplace entitlement."""
     name = models.CharField(max_length=255, unique=True)
-    project = models.OneToOneField(Project, models.CASCADE,
-                                   related_name='marketplace_entitlement')
+    organization = models.OneToOneField(Organization, models.SET_NULL,
+                                        related_name='marketplace_entitlement',
+                                        null=True, blank=True)
 
     def __str__(self):
-        return f'{self.project.name} - {self.name}'
+        return f'{self.organization.name} - {self.name}'
+
+    def __repr__(self):
+        return f"MarketplaceEntitlement(name='{self.name}, organization_id='{self.organization_id}')"
 
 
 class MarketplaceAccount(models.Model):
@@ -22,3 +26,6 @@ class MarketplaceAccount(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.name}'
+
+    def __repr__(self):
+        return f"MarketplaceAccount(name='{self.name}, user_id='{self.user_id}')"
