@@ -56,22 +56,21 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
               title={metadata?.source?.filename}
               css={{
                 position: 'relative',
+                paddingBottom: '100%',
                 backgroundColor: colors.structure.mattGrey,
               }}
             >
-              <div css={{ paddingBottom: '100%' }}>
-                <img
-                  css={{
-                    position: 'absolute',
-                    top: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                  }}
-                  src={thumbnailSrc}
-                  alt={metadata?.source?.filename}
-                />
-              </div>
+              <img
+                css={{
+                  position: 'absolute',
+                  top: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                }}
+                src={thumbnailSrc}
+                alt={metadata?.source?.filename}
+              />
             </div>
           )
         })}
