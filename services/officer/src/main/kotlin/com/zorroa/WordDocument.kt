@@ -27,6 +27,10 @@ class WordDocument(options: RenderRequest, inputStream: InputStream) : Document(
         return doc.pageCount
     }
 
+    override fun pageCount(): Int {
+        return doc.pageCount
+    }
+
     override fun renderAllMetadata(): Int {
 
         val pageCount = doc.pageCount

@@ -9,7 +9,7 @@ object Config {
         val name: String,
         val accessKey: String?,
         val secretKey: String?,
-        val url: String?
+        val url: String?,
     )
 
     class MinioBucketConfiguration() : BucketConfiguration(
@@ -31,14 +31,14 @@ object Config {
 
     class OfficerConfiguration(
         val port: Int = (System.getenv("OFFICER_PORT") ?: "7078").toInt(),
-        val loadMultiplier: Int = (System.getenv("OFFICER_LOADMULTIPLIER") ?: "2").toInt()
+        val loadMultiplier: Int = (System.getenv("OFFICER_LOADMULTIPLIER") ?: "2").toInt(),
     )
 
     val logger: Logger = LoggerFactory.getLogger(Config::class.java)
 
     val officer: OfficerConfiguration
     val bucket: BucketConfiguration
-    var storageClient = System.getenv("ZMLP_STORAGE_CLIENT") ?: "minio"
+    val storageClient = System.getenv("ZMLP_STORAGE_CLIENT") ?: System.getProperty("ZMLP_STORAGE_CLIENT") ?: "gcs"
 
     init {
         officer = OfficerConfiguration()

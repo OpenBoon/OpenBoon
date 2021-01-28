@@ -153,7 +153,8 @@ def analyze_timelines(app, sim, asset_id, timelines):
 
         # Always store the file
         prx = file_storage.projects.store_file(jpg_file, clip, "proxy", "proxy.jpg",
-                                               {"width": psize[0], "height": psize[1]})
+                                               attrs={"width": psize[0], "height": psize[1]},
+                                               precache=False)
         if prx:
             batch[clip.id] = {'files': [prx], 'simhash': simhash}
 

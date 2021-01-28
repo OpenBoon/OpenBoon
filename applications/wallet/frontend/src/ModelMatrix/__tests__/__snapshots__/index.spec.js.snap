@@ -29,6 +29,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .emotion-2 {
@@ -36,11 +37,13 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   -ms-flex: 1;
   flex: 1;
   width: 100%;
+  height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   background-color: #252525;
+  overflow: hidden;
 }
 
 .emotion-3 {
@@ -3487,6 +3490,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .emotion-5 {
@@ -3691,11 +3695,13 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   -ms-flex: 1;
   flex: 1;
   width: 100%;
+  height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   background-color: #252525;
+  overflow: hidden;
 }
 
 .emotion-33 {
@@ -4451,110 +4457,6 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  height: 100%;
-  border-left: 1px solid #191919;
-  overflow: auto;
-}
-
-.emotion-490 {
-  padding: 16px;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-491 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 8px 16px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-.emotion-491,
-.emotion-491:hover,
-.emotion-491:visited,
-.emotion-491 .noop {
-  background-color: #808080;
-}
-
-.emotion-491:hover,
-.emotion-491 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-491[aria-disabled=true],
-.emotion-491 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-492 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-493 {
-  padding-right: 8px;
-}
-
-.emotion-494 {
-  height: 16px;
-}
-
-.emotion-495 {
-  font-family: Roboto Condensed;
-  font-weight: 400;
-  color: #b3b3b3;
-}
-
-.emotion-497 {
-  background-color: #191919;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-498 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -4565,7 +4467,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-left: 1px solid #191919;
 }
 
-.emotion-499 {
+.emotion-490 {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
@@ -4599,26 +4501,26 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-499:hover,
-.emotion-499.focus-visible:focus,
-.emotion-499 .noop {
+.emotion-490:hover,
+.emotion-490.focus-visible:focus,
+.emotion-490 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-499:hover svg,
-.emotion-499.focus-visible:focus svg,
-.emotion-499 .noop svg {
+.emotion-490:hover svg,
+.emotion-490.focus-visible:focus svg,
+.emotion-490 .noop svg {
   opacity: 1;
 }
 
-.emotion-499[aria-disabled=true],
-.emotion-499 .noop {
+.emotion-490[aria-disabled=true],
+.emotion-490 .noop {
   color: #808080;
 }
 
-.emotion-499:hover {
+.emotion-490:hover {
   background-color: #2e2e2e;
 }
 
@@ -4628,22 +4530,20 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   <div
     className="emotion-1"
   >
-    <Link
+    <a
+      className="emotion-2"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
-      passHref={true}
+      onClick={[Function]}
+      onMouseEnter={[Function]}
     >
-      <a
-        className="emotion-2"
-      >
-        <svg
-          className="emotion-3"
-          data-file-name="back.svg"
-          height={20}
-        />
-        Model Details: 
-        flowers
-      </a>
-    </Link>
+      <svg
+        className="emotion-3"
+        data-file-name="back.svg"
+        height={20}
+      />
+      Model Details: 
+      flowers
+    </a>
   </div>
   <div
     className="emotion-4"
@@ -7332,68 +7232,49 @@ exports[`<ModelMatrix /> should render properly 2`] = `
         <div
           className="emotion-488"
         >
-          <div
-            className="emotion-489"
-          >
-            <div
-              className="emotion-490"
-            >
-              <Link
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmZsb3dlci10eXBlcyIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-                passHref={true}
-              >
-                <button
-                  aria-label="View Filter Panel"
-                  className="emotion-491"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <div
-                    className="emotion-492"
-                  >
-                    <svg
-                      className="emotion-493"
-                      data-file-name="filter.svg"
-                      height={20}
-                    />
-                    View Filter Panel
-                  </div>
-                </button>
-              </Link>
-              <div
-                className="emotion-494"
-              />
-              <h3>
-                <span
-                  className="emotion-495"
-                >
-                  True:
-                </span>
-                 
-                Dahlia
-              </h3>
-              <h3>
-                <span
-                  className="emotion-495"
-                >
-                  Pred:
-                </span>
-                 
-                Dahlia
-              </h3>
-            </div>
-            <div
-              className="emotion-497"
-            />
-          </div>
+          <ModelMatrixPreview
+            labels={
+              Array [
+                "Dahlia",
+                "Cherry Blossom",
+                "Sacred Lotus",
+                "Rose",
+                "Hydrangea",
+                "Orchids",
+                "Chrysanthemum",
+                "Peony",
+                "Lily 'Stargazer'",
+                "Irises",
+                "Bird of Paradise Flower",
+              ]
+            }
+            moduleName="flower-types"
+            settings={
+              Object {
+                "height": 600,
+                "isMinimapOpen": false,
+                "isNormalized": true,
+                "isPreviewOpen": false,
+                "labelsWidth": 100,
+                "maxScore": 1,
+                "minScore": 0,
+                "selectedCell": Array [
+                  0,
+                  0,
+                ],
+                "width": 800,
+                "zoom": 2,
+              }
+            }
+          />
         </div>
       </div>
       <div
-        className="emotion-498"
+        className="emotion-489"
       >
         <button
           aria-label="Preview"
-          className="emotion-499"
+          className="emotion-490"
           onClick={[Function]}
           title="Preview"
           type="button"

@@ -303,7 +303,7 @@ class ProjectStorage(object):
             self.cache.precache_file(result, path)
         return result
 
-    def store_file(self, src_path, entity, category, rename=None, attrs=None):
+    def store_file(self, src_path, entity, category, rename=None, attrs=None, precache=True):
         """
         Store an arbitrary file against the project.
 
@@ -313,7 +313,7 @@ class ProjectStorage(object):
             category (str): The general category for the file. (proxy, model, etc)
             rename (str): An optional file name if it should not be based on the src_path name.
             attrs (dict): A dict of arbitrary attrs.
-
+            precache (bool): pre-cache the file into the storage cache.
         Returns:
             StoredFile: A record for the stored file.
 
@@ -324,7 +324,7 @@ class ProjectStorage(object):
             category,
             rename or Path(src_path).name
         ))
-        return self.store_file_by_id(src_path, fid, attrs)
+        return self.store_file_by_id(src_path, fid, attrs=attrs, precache=precache)
 
     def store_blob(self, src_blob, entity, category, name, attrs=None):
         """
@@ -481,9 +481,7 @@ class FileCache(object):
             symlinked = False
             shutil.copy(urlparse(precache_path).path, cache_path)
 
-        name = os.path.basename(src_path)
-        logger.info(f'Pre-caching {name}, linked: {symlinked}')
-
+        logger.debug(f'Pre-caching {src_path}, linked: {symlinked}')
         return cache_path
 
     def localize_uri(self, uri):

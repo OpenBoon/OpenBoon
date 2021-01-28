@@ -63,7 +63,8 @@ def extract_thumbnail_from_video(video_path, thumbnail_path, seconds, size=None)
         cmd.insert(8, "-s")
         cmd.insert(9, "%dx%d" % size)
 
-    logger.info("running command: %s" % cmd)
+    logger.info(f"Extracting thumbnail at time {seconds}")
+    logger.debug("running command: %s" % cmd)
     try:
         subprocess.check_call(cmd, shell=False)
     except subprocess.CalledProcessError:

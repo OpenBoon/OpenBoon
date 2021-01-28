@@ -75,7 +75,7 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-slides</artifactId>
-            <version>20.12</version>
+            <version>21.1</version>
             <classifier>jdk16</classifier>
         </dependency>
 
@@ -141,6 +141,25 @@
             <artifactId>mockito-kotlin</artifactId>
             <version>2.2.0</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.13.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <version>1.5.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-transport-native-epoll</artifactId>
+            <version>4.1.53.Final</version>
+            <classifier>linux-x86_64</classifier>
         </dependency>
 
     </dependencies>
