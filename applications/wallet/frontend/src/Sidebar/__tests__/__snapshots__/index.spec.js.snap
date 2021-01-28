@@ -268,7 +268,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
             data-file-name="dashboard.svg"
             height={20}
           />
-          Account Dashboard
+          Account Overview
         </a>
       </li>
       <li
@@ -568,7 +568,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
             data-file-name="dashboard.svg"
             height={20}
           />
-          Account Dashboard
+          Account Overview
         </a>
       </li>
       <li

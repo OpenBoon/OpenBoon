@@ -7,6 +7,8 @@ import { colors, constants, spacing } from '../Styles'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
+import { useLocalStorage } from '../LocalStorage/helpers'
+
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
 
@@ -18,6 +20,11 @@ const ProjectSwitcher = ({ projectId }) => {
   } = useRouter()
 
   const { data: { results: projects = [] } = {} } = useSWR('/api/v1/projects/')
+
+  const [sortBy] = useLocalStorage({
+    key: 'AccountContent.sortBy',
+    initialState: 'name',
+  })
 
   if (!routerProjectId) return null
 
@@ -69,35 +76,52 @@ const ProjectSwitcher = ({ projectId }) => {
     >
       {({ onBlur, onClick }) => (
         <ul>
-          {projects.map(({ id, name }) => (
-            <li key={id}>
-              <Link
-                href={
-                  id === projectId
-                    ? pathname
-                    : pathname.split('/').slice(0, 3).join('/')
+          {[...projects]
+            .sort((a, b) => {
+              switch (sortBy) {
+                case 'date': {
+                  if (a.createdDate > b.createdDate) return -1
+                  if (a.createdDate < b.createdDate) return 1
+                  return 0
                 }
-                as={
-                  id === projectId
-                    ? asPath
-                    : pathname
-                        .replace('[projectId]', id)
-                        .split('/')
-                        .slice(0, 3)
-                        .join('/')
+
+                case 'name':
+                default: {
+                  if (a.name < b.name) return -1
+                  if (a.name > b.name) return 1
+                  return 0
                 }
-                passHref
-              >
-                <Button
-                  variant={VARIANTS.MENU_ITEM}
-                  onBlur={onBlur}
-                  onClick={onClick}
+              }
+            })
+            .map(({ id, name }) => (
+              <li key={id}>
+                <Link
+                  href={
+                    id === projectId
+                      ? pathname
+                      : pathname.split('/').slice(0, 3).join('/')
+                  }
+                  as={
+                    id === projectId
+                      ? asPath
+                      : pathname
+                          .replace('[projectId]', id)
+                          .split('/')
+                          .slice(0, 3)
+                          .join('/')
+                  }
+                  passHref
                 >
-                  {name}
-                </Button>
-              </Link>
-            </li>
-          ))}
+                  <Button
+                    variant={VARIANTS.MENU_ITEM}
+                    onBlur={onBlur}
+                    onClick={onClick}
+                  >
+                    {name}
+                  </Button>
+                </Link>
+              </li>
+            ))}
         </ul>
       )}
     </Menu>
