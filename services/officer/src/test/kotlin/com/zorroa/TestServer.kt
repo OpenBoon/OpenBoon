@@ -11,6 +11,7 @@ import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
 import spark.kotlin.stop
+import kotlin.test.assertNotNull
 
 class TestServer {
 
@@ -20,6 +21,8 @@ class TestServer {
         @BeforeClass
         @JvmStatic
         fun beforeClass() {
+            System.setProperty("ZMLP_STORAGE_CLIENT", "minio")
+            System.setProperty("REDIS_HOST", "localhost:6379")
             runServer(9876)
             Thread.sleep(1000)
         }
@@ -54,7 +57,7 @@ class TestServer {
 
         val rsp = HttpRequest.post("http://localhost:9876/exists")
             .send(Json.mapper.writeValueAsString(opts))
-        assertEquals(404, rsp.code())
+        assertEquals(410, rsp.code())
     }
 
     @Test
@@ -62,6 +65,7 @@ class TestServer {
         val opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
         opts.page = 1
         opts.outputPath = "render_test"
+
         val rsp = HttpRequest.post("http://localhost:9876/render")
             .part("file", "CPB7_WEB.pdf", File("src/test/resources/CPB7_WEB.pdf"))
             .part("body", Json.mapper.writeValueAsString(opts))
@@ -71,9 +75,21 @@ class TestServer {
         val content = Json.mapper.readValue(rsp.body(), Map::class.java)
         assertEquals("render_test", content["location"])
 
-        val exists = HttpRequest.post("http://localhost:9876/exists")
-            .send(Json.mapper.writeValueAsString(opts))
-        assertEquals(200, exists.code())
+        var exists: HttpRequest? = null
+        while (true) {
+            // Wait Assync rendering
+            exists = HttpRequest.post("http://localhost:9876/exists")
+                .send(Json.mapper.writeValueAsString(opts))
+            if (exists.code() != 404)
+                break
+            Thread.sleep(2000)
+        }
+
+        val existsRequest =
+            ExistsRequest(page = opts.page, outputPath = opts.outputPath, requestId = content["request-id"].toString())
+
+        assertEquals(200, exists?.code())
+        assertEquals(false, WorkQueue.existsResquest(existsRequest))
     }
 
     @Test
@@ -83,5 +99,48 @@ class TestServer {
             .send(Json.mapper.writeValueAsString(opts))
             .code()
         assertEquals(rsp, 500)
+    }
+
+    @Test
+    fun testRepeatedRequest() {
+        WorkQueue.redis.pool.purge()
+
+        val opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
+        opts.page = 1
+        opts.outputPath = "render_test"
+        opts.requestId = "testId"
+
+        for (i in 0..10) {
+            postDocument(opts).code()
+        }
+
+        assert(WorkQueue.redis.pool.activeCount < 10)
+
+        WorkQueue.unregisterRequest(opts)
+        WorkQueue.redis.pool.purge()
+    }
+
+    @Test
+    fun testUnregister() {
+        val opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
+        opts.page = 1
+        opts.outputPath = "render_test"
+        opts.requestId = "testId"
+
+        val rsp = postDocument(opts).code()
+        assertNotNull(WorkQueue.redis.redisson?.getBucket<String>("testId"))
+        assertEquals(true, WorkQueue.unregisterRequest(opts))
+        assertEquals(false, WorkQueue.unregisterRequest(opts))
+        assertEquals(201, rsp)
+    }
+
+    private fun postDocument(opts: RenderRequest): HttpRequest {
+        return HttpRequest.post("http://localhost:9876/render")
+            .part(
+                "file",
+                "CPB7_WEB.pdf",
+                File("src/test/resources/CPB7_WEB.pdf")
+            )
+            .part("body", Json.mapper.writeValueAsString(opts))
     }
 }
