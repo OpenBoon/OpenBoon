@@ -32,7 +32,7 @@ def test_orgainzation_with_random_name():
     assert organization.name
 
 
-class TestGetMLUsageLastHour:
+class TestGetMLUsageForTimePeriod:
 
     fake_usage = {'tier_1_image_count': 100,
                   'tier_1_video_hours': 100,
@@ -45,7 +45,7 @@ class TestGetMLUsageLastHour:
         def side_effect(*args, **kwargs):
             return self.fake_usage
         get_mock.return_value = Mock(json=Mock(side_effect=side_effect))
-        usage = organization.get_ml_usage_last_hour()
+        usage = organization.get_ml_usage_for_time_period()
         assert usage == {'tier_1_image_count': 200,
                          'tier_1_video_hours': 200,
                          'tier_2_image_count': 200,
@@ -64,7 +64,7 @@ class TestGetMLUsageLastHour:
             return self.fake_usage
 
         get_mock.return_value = Mock(json=Mock(side_effect=side_effect))
-        usage = organization.get_ml_usage_last_hour()
+        usage = organization.get_ml_usage_for_time_period()
         assert usage == self.fake_usage
         assert get_mock.call_count == 1
         project_ids_called = [str(c[0][1]['project']) for c in get_mock.call_args_list]
@@ -81,7 +81,7 @@ class TestGetMLUsageLastHour:
         end_time = datetime.datetime.utcnow()
         start_time = end_time - datetime.timedelta(minutes=5)
 
-        usage = organization.get_ml_usage_last_hour(start_time=start_time, end_time=end_time)
+        usage = organization.get_ml_usage_for_time_period(start_time=start_time, end_time=end_time)
         assert usage
         assert get_mock.call_count == 2
         args = get_mock.call_args[0][1]

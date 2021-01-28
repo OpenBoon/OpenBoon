@@ -36,7 +36,7 @@ class UsageReporter():
     def _get_usage(self, entitlement, start_time, end_time):
         """Gives usage info by tiers on all projects associated with this entitlement."""
         entitlement = MarketplaceEntitlement.objects.get(name=entitlement['name'])
-        return entitlement.organization.get_ml_usage_last_hour(start_time, end_time)
+        return entitlement.organization.get_ml_usage_for_time_period(start_time, end_time)
 
     def _report_usage(self, entitlement):
         """Sends usage information to marketplace for the given entitlement."""
@@ -48,9 +48,6 @@ class UsageReporter():
         if not usage:
             print(f'No usage data. Skipping report for entitlement {entitlement["name"]}.')
             return
-        # How is this putting the end time from the usage? Shouldn't it just be from now?
-        end_time = datetime.datetime.utcnow()
-        start_time = end_time - datetime.timedelta(hours=1)
 
         operation = {
             'operationId': str(uuid.uuid4()),

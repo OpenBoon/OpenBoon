@@ -8,7 +8,8 @@ class MarketplaceEntitlement(models.Model):
     """Represents a connection between a Wallet Organization and a Google Marketplace entitlement."""
     name = models.CharField(max_length=255, unique=True)
     organization = models.OneToOneField(Organization, models.SET_NULL,
-                                        related_name='marketplace_entitlement')
+                                        related_name='marketplace_entitlement',
+                                        null=True, blank=True)
 
     def __str__(self):
         return f'{self.organization.name} - {self.name}'
