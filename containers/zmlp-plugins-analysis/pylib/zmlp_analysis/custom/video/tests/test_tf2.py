@@ -19,7 +19,6 @@ class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
     name = "custom-flowers-label-detection-tf2-xfer-mobilenet2"
 
     def setUp(self):
-        os.environ['PATH'] += ':/usr/local/bin'
         try:
             shutil.rmtree("/tmp/model-cache/models_model-id-12345_foo_bar")
         except FileNotFoundError:
