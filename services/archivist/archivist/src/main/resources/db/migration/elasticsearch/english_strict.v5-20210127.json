@@ -1,0 +1,28 @@
+{
+  "description": "Add collapse key field.",
+  "patch": {
+    "properties": {
+      "clip": {
+        "dynamic": "strict",
+        "properties": {
+          "collapseKey": {
+            "properties": {
+              "startTime": {
+                "type": "keyword"
+              },
+              "1secWindow": {
+                "type": "keyword"
+              },
+              "5secWindow": {
+                "type": "keyword"
+              },
+              "10secWindow": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
