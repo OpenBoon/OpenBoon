@@ -14,7 +14,8 @@ __all__ = [
     'SimilarityQuery',
     'FaceSimilarityQuery',
     'LabelConfidenceTermsAggregation',
-    'LabelConfidenceMetricsAggregation'
+    'LabelConfidenceMetricsAggregation',
+    'SearchScroller'
 ]
 
 

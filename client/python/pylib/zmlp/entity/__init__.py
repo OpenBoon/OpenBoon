@@ -7,3 +7,4 @@ from .project import *
 from .model import *
 from .analysis import *
 from .clip import *
+from .storage import StoredFile
