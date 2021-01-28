@@ -8,14 +8,21 @@ import { useLocalStorage } from '../LocalStorage/helpers'
 
 import FilterSvg from '../Icons/filter.svg'
 
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../Panel'
 import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
+import SuspenseBoundary from '../SuspenseBoundary'
+
 import { encode } from '../Filters/helpers'
 
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import ModelMatrixPreviewContent from './PreviewContent'
 
-const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
+const ModelMatrixPreview = ({
+  settings: { selectedCell, minScore, maxScore },
+  labels,
+  moduleName,
+}) => {
   const {
     query: { projectId, modelId },
   } = useRouter()
@@ -51,7 +58,19 @@ const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
         type: 'label',
         attribute: `labels.${moduleName}`,
         modelId,
-        values: {},
+        values: {
+          labels: [labels[selectedCell[0]]],
+          scope: 'test',
+        },
+      },
+      {
+        type: 'labelConfidence',
+        attribute: `analysis.${moduleName}`,
+        values: {
+          labels: [labels[selectedCell[1]]],
+          min: minScore,
+          max: maxScore,
+        },
       },
     ],
   })
@@ -59,11 +78,11 @@ const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
   return (
     <div
       css={{
+        flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        height: '100%',
         borderLeft: constants.borders.regular.coal,
-        overflow: 'auto',
+        overflow: 'hidden',
       }}
     >
       <div
@@ -127,18 +146,22 @@ const ModelMatrixPreview = ({ selectedCell, labels, moduleName }) => {
         </h3>
       </div>
 
-      <div
-        css={{
-          backgroundColor: colors.structure.coal,
-          flex: 1,
-        }}
-      />
+      <SuspenseBoundary>
+        <ModelMatrixPreviewContent
+          encodedFilter={encodedFilter}
+          projectId={projectId}
+        />
+      </SuspenseBoundary>
     </div>
   )
 }
 
 ModelMatrixPreview.propTypes = {
-  selectedCell: PropTypes.arrayOf(PropTypes.number).isRequired,
+  settings: PropTypes.shape({
+    selectedCell: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+    minScore: PropTypes.number.isRequired,
+    maxScore: PropTypes.number.isRequired,
+  }).isRequired,
   labels: PropTypes.arrayOf(PropTypes.string).isRequired,
   moduleName: PropTypes.string.isRequired,
 }

@@ -122,6 +122,25 @@ class VideoClipApp:
         """
         return VideoClip(self.app.client.get(f'api/v1/clips/{id}'))
 
+    def download_file(self, stored_file, dst_file=None):
+        """
+        Download given file and store results in memory, or optionally
+        a destination file.  The stored_file ID can be specified as
+        either a string like "assets/<id>/proxy/image_450x360.jpg"
+        or a StoredFile instance can be used.
+
+        Args:
+            stored_file (mixed): The StoredFile instance or its ID.
+            dst_file (str): An optional destination file path.
+
+        Returns:
+            io.BytesIO instance containing the binary data or if
+                a destination path was provided the size of the
+                file is returned.
+
+        """
+        return self.app.client.download_file(stored_file, dst_file)
+
     def __handle_webvtt(self, rsp, dst_file):
         """
         Handle a webvtt file response.

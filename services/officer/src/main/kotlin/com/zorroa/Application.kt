@@ -22,7 +22,8 @@ class RenderRequest(
     var page: Int = -1,
     var outputPath: String = "/projects/" + UUID.randomUUID().toString(),
     var dpi: Int = 100,
-    var disableImageRender: Boolean = false
+    var disableImageRender: Boolean = false,
+    var requestId: String = UUID.randomUUID().toString()
 )
 
 /**
@@ -30,7 +31,8 @@ class RenderRequest(
  */
 class ExistsRequest(
     val page: Int,
-    val outputPath: String
+    val outputPath: String,
+    val requestId: String? = null,
 )
 
 /**
@@ -55,10 +57,6 @@ fun extract(opts: RenderRequest, input: InputStream): Document {
             }
         }
 
-        // calls close automatically
-        doc.use {
-            it.render()
-        }
         return doc
     }
 }
@@ -88,6 +86,7 @@ fun runServer(port: Int) {
 
     // Init the storage manager
     StorageManager
+    WorkQueue
 
     val threads = (os.availableProcessors * 3).coerceAtLeast(8)
     logger.info("init web server: threads=$threads port=$port")
@@ -99,10 +98,14 @@ fun runServer(port: Int) {
         val options = Json.mapper.readValue<ExistsRequest>(this.request.body())
         val ioHandler = IOHandler(RenderRequest("none", options.page, options.outputPath))
         logger.info("checking output path: {}", options.outputPath)
-        if (ioHandler.exists(options.page)) {
+        if (ioHandler.exists(options.page) && !WorkQueue.existsResquest(options)) {
             this.response.status(200)
-        } else {
+        } else if (WorkQueue.existsResquest(options)) {
+            // Waiting for rendering
             this.response.status(404)
+        } else {
+            // Don't exists and is not in rendering queue
+            this.response.status(410)
         }
         Json.mapper.writeValueAsString(mapOf("location" to ioHandler.getOutputPath()))
     }
@@ -121,14 +124,20 @@ fun runServer(port: Int) {
                 this.response.status(429)
                 Json.mapper.writeValueAsString(backoff)
             } else {
-                val req = Json.mapper.readValue<RenderRequest>(body.inputStream)
-                val doc = extract(req, file.inputStream)
+                val req = Json.mapper.readValue<RenderRequest>(body.inputStream.buffered())
+                val doc = extract(req, file.inputStream.buffered())
+
                 this.response.status(201)
-                Json.mapper.writeValueAsString(
+                val response = Json.mapper.writeValueAsString(
                     mapOf(
-                        "location" to doc.ioHandler.getOutputPath()
+                        "location" to doc.ioHandler.getOutputPath(),
+                        "page-count" to doc.pageCount(),
+                        "request-id" to req.requestId
                     )
                 )
+
+                WorkQueue.execute(WorkQueueEntry(doc, req))
+                response
             }
         } catch (e: Exception) {
             logger.warn("failed to process", e)

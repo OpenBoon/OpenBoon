@@ -10,12 +10,9 @@ from django.db import transaction
 from google.cloud import pubsub_v1
 from googleapiclient.errors import HttpError
 
-from apikeys.utils import create_zmlp_api_key
 from gcpmarketplace.models import MarketplaceAccount, MarketplaceEntitlement
 from gcpmarketplace.utils import get_procurement_api, get_google_credentials
-from projects.models import Project, Membership
-from subscriptions.models import Subscription
-from wallet.utils import get_zmlp_superuser_client
+from organizations.models import Organization
 
 User = get_user_model()
 
@@ -149,29 +146,13 @@ class MessageHandler(object):
 
         with transaction.atomic():
 
-            # Create the Project, Subscription and MarketplaceEntitlement.
-            project = Project.objects.create()
-            client = get_zmlp_superuser_client(project_id=str(project.id))
-            project.sync_with_zmlp()
-            tier = entitlement_data['plan']
-            Subscription.objects.create(project=project, tier=tier)
-            entitlement_name = self._get_entitlement_name(entitlement_id)
-            MarketplaceEntitlement.objects.create(name=entitlement_name, project=project)
-
-            # Add the account user to the project.
+            # Create the Organization, Subscription and MarketplaceEntitlement.
             user = MarketplaceAccount.objects.get(name=entitlement_data['account']).user
-            permissions = []
-            for role in settings.ROLES:
-                permissions += role['permissions']
-            roles = [r['name'] for r in settings.ROLES]
-            if not Membership.objects.filter(project=project, user=user).exists():
-                membership = Membership(project=project, user=user, roles=roles)
-                membership.apikey = create_zmlp_api_key(client, 'new project admin',
-                                                        permissions,
-                                                        internal=True)
-                membership.save()
+            organization = Organization.objects.create(owner=user, plan=entitlement_data['plan'])
+            entitlement_name = self._get_entitlement_name(entitlement_id)
+            MarketplaceEntitlement.objects.create(name=entitlement_name, organization=organization)
 
-        print(f'Project {project.id} created for entitlement {entitlement_name}.')
+        print(f'Organization {organization.id} created for entitlement {entitlement_name}.')
 
     def _handle_entitlement_plan_changed_requested(self):
         """Handles the ENTITLEMENT_PLAN_CHANGED_REQUESTED event from google marketplace."""
@@ -192,22 +173,22 @@ class MessageHandler(object):
         entitlement_data = self.payload['entitlement']
         plan_name = entitlement_data['newPlan']
         entitlement_name = self._get_entitlement_name(entitlement_data['id'])
-        subscription = MarketplaceEntitlement.objects.get(name=entitlement_name).project.subscription  # noqa
-        subscription.tier = plan_name
-        subscription.save()
+        organization = MarketplaceEntitlement.objects.get(name=entitlement_name).organization
+        organization.plan = plan_name
+        organization.save()
         print(f'Plan changed to {plan_name} for entitlement {entitlement_name}')
 
     def _handle_entitlement_cancelled(self):
         """Handles the ENTITLEMENT_CANCELLED event from google marketplace."""
         entitlement_name = self._get_entitlement_name(self.payload['entitlement']['id'])
         try:
-            project = MarketplaceEntitlement.objects.get(name=entitlement_name).project
+            organization = MarketplaceEntitlement.objects.get(name=entitlement_name).organization
         except MarketplaceEntitlement.DoesNotExist:
             print(f'No record of entitlement {entitlement_name} existed. Cancellation complete.')
             return
-        project.isActive = False
-        project.save()
-        print(f'Deactivated project {project.id} for entitlement {entitlement_name}.')
+        organization.isActive = False
+        organization.save()
+        print(f'Deactivated organization {organization.id} for entitlement {entitlement_name}.')
 
     def _get_entitlement(self, entitlement_id):
         """Gets an entitlement from the Procurement Service.

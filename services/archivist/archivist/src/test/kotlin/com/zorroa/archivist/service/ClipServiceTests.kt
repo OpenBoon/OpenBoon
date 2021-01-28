@@ -22,6 +22,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.io.ByteArrayOutputStream
 import java.math.BigDecimal
+import java.math.RoundingMode
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -225,5 +226,15 @@ class ClipServiceTests : AbstractTest() {
         val uclip2 = clipService.getClip(clip1.id)
         assertEquals(1, uclip2.files?.size)
         assertEquals("abc123", uclip2.simhash)
+    }
+
+    @Test
+    fun testGetCollapseKeys() {
+        val time = BigDecimal(50.5).setScale(3, RoundingMode.HALF_UP)
+        val keys = clipService.getCollapseKeys("abc123", time)
+        assertEquals("abc123_50_500", keys["startTime"])
+        assertEquals("abc123_50", keys["1secWindow"])
+        assertEquals("abc123_10", keys["5secWindow"])
+        assertEquals("abc123_5", keys["10secWindow"])
     }
 }

@@ -6,9 +6,8 @@ from django_cryptography.fields import encrypt
 from multiselectfield import MultiSelectField
 
 from apikeys.utils import create_zmlp_api_key
-from projects.utils import random_project_name
 from roles.utils import get_permissions_for_roles
-from wallet.mixins import TimeStampMixin, UUIDMixin
+from wallet.mixins import TimeStampMixin, UUIDMixin, ActiveMixin
 from wallet.utils import get_zmlp_superuser_client, convert_base64_to_json
 from zmlp.client import ZmlpClient, ZmlpNotFoundException
 
@@ -24,15 +23,14 @@ class ActiveProjectManager(models.Manager):
         return super(ActiveProjectManager, self).get_queryset().filter(isActive=True)
 
 
-class Project(UUIDMixin, TimeStampMixin):
+class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
     """Represents a ZMLP project."""
     all_objects = models.Manager()
     objects = ActiveProjectManager()
 
-    name = models.CharField(max_length=144, default=random_project_name)
+    name = models.CharField(max_length=144, unique=True)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='projects.Membership',
                                    related_name='projects')
-    isActive = models.BooleanField(default=True)
     organization = models.ForeignKey('organizations.Organization', on_delete=models.SET_NULL,
                                      null=True, blank=True, related_name='projects')
 

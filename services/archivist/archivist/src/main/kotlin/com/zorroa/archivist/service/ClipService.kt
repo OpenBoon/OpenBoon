@@ -50,6 +50,11 @@ import java.util.UUID
 interface ClipService {
 
     /**
+     * Create a map of collapse keys used for searching.
+     */
+    fun getCollapseKeys(assetId: String, time: BigDecimal): Map<String, String>
+
+    /**
      * Bulk create a bunch of clips using a TimelineSpec.
      */
     fun createClips(timeline: TimelineSpec): CreateTimelineResponse
@@ -140,7 +145,8 @@ class ClipServiceImpl(
                 "score" to score,
                 "start" to start,
                 "stop" to stop,
-                "length" to length
+                "length" to length,
+                "collapseKey" to getCollapseKeys(asset.id, start)
             ),
             "deepSearch" to mapOf("name" to "clip", "parent" to asset.id)
         )
@@ -195,7 +201,8 @@ class ClipServiceImpl(
                         "score" to scoreCache[id],
                         "start" to start,
                         "stop" to stop,
-                        "length" to length
+                        "length" to length,
+                        "collapseKey" to getCollapseKeys(asset.id, start)
                     ),
                     "deepSearch" to mapOf("name" to "clip", "parent" to asset.id)
                 )
@@ -442,7 +449,25 @@ class ClipServiceImpl(
         return Clip.fromMap(id, rsp.hits.hits[0].sourceAsMap["clip"] as Map<String, Any>)
     }
 
+    override fun getCollapseKeys(assetId: String, time: BigDecimal): Map<String, String> {
+        return collapseKeyWindows.map {
+            val key = if (it.value == BigDecimal.ZERO) {
+                time.toString().replace('.', '_')
+            } else {
+                time.divide(it.value).setScale(0, RoundingMode.DOWN)
+            }
+            it.key to "${assetId}_$key"
+        }.toMap()
+    }
+
     companion object {
+
+        val collapseKeyWindows = mapOf(
+            "startTime" to BigDecimal.ZERO,
+            "1secWindow" to BigDecimal.valueOf(1),
+            "5secWindow" to BigDecimal.valueOf(5),
+            "10secWindow" to BigDecimal.valueOf(10)
+        )
 
         val logger: Logger = LoggerFactory.getLogger(AssetSearchServiceImpl::class.java)
 

@@ -2,6 +2,8 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import timelines from '../__mocks__/timelines'
 
+import { INITIAL_STATE } from '../reducer'
+
 import Timeline from '..'
 
 const noop = () => {}
@@ -59,6 +61,11 @@ describe('<Timeline />', () => {
   })
 
   it('should open the Timeline panel', () => {
+    localStorage.setItem(
+      `TimelineTimelines.${ASSET_ID}`,
+      JSON.stringify({ ...INITIAL_STATE, highlights: true }),
+    )
+
     require('next/router').__setUseRouter({
       query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
