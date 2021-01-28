@@ -31,3 +31,22 @@ class TimeStampMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class ActiveManager(models.Manager):
+    """Model manager that only returns objects that are active."""
+    def get_queryset(self):
+        return super(ActiveManager, self).get_queryset().filter(isActive=True)
+
+
+class ActiveMixin(models.Model):
+    """Model mixin that adds the isActive field. Also overrides the default model manager
+    to only show active objects.
+
+    """
+    all_objects = models.Manager()
+    objects = ActiveManager()
+    isActive = models.BooleanField(default=True)
+
+    class Meta:
+        abstract = True
