@@ -57,7 +57,8 @@ class TensorflowImageClassifier(AssetProcessor):
             List[tuple]: result is list of tuples in format [(label, score),
             (label, score)]
         """
-        img = load_keras_image(path, size=self.arg_value("input_size"))
+        size = self.arg_value("input_size") or (224, 224)
+        img = load_keras_image(path, size=size)
         proba = self.trained_model.predict(preprocess_input(img))[0]
         # create list of tuples for labels and prob scores
         result = [*zip(self.labels, proba)]
