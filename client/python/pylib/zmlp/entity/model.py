@@ -26,16 +26,16 @@ class ModelType(Enum):
     ZVI_FACE_RECOGNITION = 2
     """Face Recognition model using a KNN classifier."""
 
-    GCP_LABEL_DETECTION = 4
+    GCP_LABEL_DETECTION = 3
     """Train a Google AutoML vision model."""
 
-    TF2_IMAGE_CLASSIFIER = 5
+    TF2_IMAGE_CLASSIFIER = 4
     """Provide your own custom Tensorflow2/Keras model"""
 
-    ZVI_PYTORCH_LABEL_DETECTION = 6
+    ZVI_PYTORCH_LABEL_DETECTION = 5
     """Retrain ResNet50 with your own labels, using Pytorch."""
 
-    PYTORCH_IMAGE_CLASSIFIER = 7
+    PYTORCH_IMAGE_CLASSIFIER = 6
     """Provide your own custom Pytorch model"""
 
 
