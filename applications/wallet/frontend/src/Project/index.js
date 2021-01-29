@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-import PageTitle from '../PageTitle'
+import Breadcrumbs from '../Breadcrumbs'
 import SuspenseBoundary from '../SuspenseBoundary'
 
 import ProjectCards from './Cards'
@@ -12,7 +12,12 @@ const Project = () => {
         <title>Project Dashboard</title>
       </Head>
 
-      <PageTitle>Project Dashboard</PageTitle>
+      <Breadcrumbs
+        crumbs={[
+          { title: 'Account Overview', href: '/' },
+          { title: 'Project Dashboard', href: false },
+        ]}
+      />
 
       <SuspenseBoundary>
         <ProjectCards />

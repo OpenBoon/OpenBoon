@@ -1,99 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ProjectSwitcher /> should render properly with data 1`] = `
-.emotion-0 {
-  position: relative;
-  height: 100%;
-}
-
-.emotion-1 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 8px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 400;
-  border: none;
-  cursor: pointer;
-  color: #73b61c;
-  background-color: transparent;
-  padding-left: 16px;
-  height: 100%;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus,
-.emotion-1 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #3b3b3b;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-3 {
-  margin-left: 8px;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
-}
-
-<div
-  className="emotion-0"
->
-  <button
-    className="emotion-1"
-    onBlur={[Function]}
-    onClick={[Function]}
-    type="button"
-  >
-    <div
-      className="emotion-2"
-    >
-      qwerty
-      <svg
-        className="emotion-3"
-        data-file-name="chevron.svg"
-        height={20}
-      />
-    </div>
-  </button>
-</div>
-`;
-
-exports[`<ProjectSwitcher /> should render properly with data 2`] = `
+exports[`<ProjectSwitcher /> should render properly with multiple projects by date 1`] = `
 .emotion-0 {
   position: relative;
   height: 100%;
@@ -257,6 +164,17 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
       <li>
         <a
           className="emotion-5"
+          href="/e8372289-f6d3-4248-91e7-f3f958867a45/jobs"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          dvorak
+        </a>
+      </li>
+      <li>
+        <a
+          className="emotion-5"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
           onBlur={[Function]}
           onClick={[Function]}
@@ -265,6 +183,287 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
           qwerty
         </a>
       </li>
+      <li>
+        <a
+          className="emotion-5"
+          href="/a36195cc-19d7-4358-b0f8-0685b6d04ce5/jobs"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          dvorak
+        </a>
+      </li>
+      <li>
+        <a
+          className="emotion-5"
+          href="/e93cbadb-e5ae-4598-8395-4cf5b30c0e94/jobs"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          azerty
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`<ProjectSwitcher /> should render properly with multiple projects by name 1`] = `
+.emotion-0 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #73b61c;
+  background-color: transparent;
+  padding-left: 16px;
+  height: 100%;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #3b3b3b;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-3 {
+  margin-left: 8px;
+  -webkit-transform: ;
+  -moz-transform: ;
+  -ms-transform: ;
+  transform: ;
+}
+
+<div
+  className="emotion-0"
+>
+  <button
+    className="emotion-1"
+    onBlur={[Function]}
+    onClick={[Function]}
+    type="button"
+  >
+    <div
+      className="emotion-2"
+    >
+      qwerty
+      <svg
+        className="emotion-3"
+        data-file-name="chevron.svg"
+        height={20}
+      />
+    </div>
+  </button>
+</div>
+`;
+
+exports[`<ProjectSwitcher /> should render properly with multiple projects by name 2`] = `
+.emotion-0 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #73b61c;
+  background-color: transparent;
+  padding-left: 16px;
+  height: 100%;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #3b3b3b;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-3 {
+  margin-left: 8px;
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-4 {
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  right: auto;
+  left: 0;
+  background-color: #808080;
+  border-radius: 2px;
+  box-shadow: 0 4px 7px 0 #000000;
+  min-width: 200px;
+  font-family: Roboto,Avenir,"sans-serif";
+}
+
+.emotion-4 ul {
+  list-style-type: none;
+  padding: 0;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin: 0;
+}
+
+.emotion-4 li {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-5:hover,
+.emotion-5.focus-visible:focus,
+.emotion-5 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #4a4a4a;
+}
+
+<div
+  className="emotion-0"
+>
+  <button
+    className="emotion-1"
+    onBlur={[Function]}
+    onClick={[Function]}
+    type="button"
+  >
+    <div
+      className="emotion-2"
+    >
+      qwerty
+      <svg
+        className="emotion-3"
+        data-file-name="chevron.svg"
+        height={20}
+      />
+    </div>
+  </button>
+  <div
+    className="emotion-4"
+  >
+    <ul>
       <li>
         <a
           className="emotion-5"
@@ -296,6 +495,17 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
           onMouseEnter={[Function]}
         >
           dvorak
+        </a>
+      </li>
+      <li>
+        <a
+          className="emotion-5"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          qwerty
         </a>
       </li>
     </ul>
