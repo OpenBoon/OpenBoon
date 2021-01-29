@@ -40,7 +40,7 @@ class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "ZVI_LABEL_DETECTION",
+                "type": "TF2_IMAGE_CLASSIFIER",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": self.name,
                 "moduleName": self.name
