@@ -57,7 +57,8 @@ class PytorchTransferLearningClassifier(AssetProcessor):
             List[tuple]: result is list of tuples in format [(label, score),
             (label, score)]
         """
-        img = load_pytorch_image(path, size=self.arg_value("input_size"))
+        size = self.arg_value("input_size") or (224, 224)
+        img = load_pytorch_image(path, size=size)
         outputs = self.trained_model(img)
 
         probs = torch.nn.functional.softmax(outputs[0], dim=0)
