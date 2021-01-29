@@ -52,7 +52,13 @@ const AccountContent = () => {
 
   return (
     <>
-      <div css={{ display: 'flex' }}>
+      <div
+        css={{
+          display: 'flex',
+          paddingTop: spacing.comfy,
+          paddingBottom: spacing.normal,
+        }}
+      >
         <div css={{ flex: 1, maxWidth: MIN_WIDTH }}>
           <InputSearch
             aria-label="Filter Projects"
