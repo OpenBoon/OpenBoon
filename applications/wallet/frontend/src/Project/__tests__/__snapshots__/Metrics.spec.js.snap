@@ -42,24 +42,14 @@ exports[`<ProjectMetrics /> should render properly when data is available 1`] = 
 }
 
 .emotion-3 {
-  color: #ebb52e;
+  white-space: nowrap;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-bottom: 8px;
 }
 
 .emotion-4 {
-  padding-right: 8px;
-}
-
-.emotion-5 {
-  color: #00bdc1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -68,9 +58,45 @@ exports[`<ProjectMetrics /> should render properly when data is available 1`] = 
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  color: #00bdc1;
+  padding-right: 4px;
+}
+
+.emotion-5 {
+  padding-right: 8px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #808080;
+  font-size: 14px;
 }
 
 .emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #ebb52e;
+}
+
+.emotion-8 {
+  padding-left: 4px;
+  padding-right: 8px;
+}
+
+.emotion-9 {
   color: #8f89e7;
   display: -webkit-box;
   display: -webkit-flex;
@@ -82,17 +108,17 @@ exports[`<ProjectMetrics /> should render properly when data is available 1`] = 
   align-items: center;
 }
 
-.emotion-9 {
+.emotion-11 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-10 {
+.emotion-12 {
   min-width: 300px;
 }
 
-.emotion-10 th {
+.emotion-12 th {
   text-align: left;
   vertical-align: bottom;
   color: #b3b3b3;
@@ -104,13 +130,13 @@ exports[`<ProjectMetrics /> should render properly when data is available 1`] = 
   padding-left: 0;
 }
 
-.emotion-10 td {
+.emotion-12 td {
   padding: 16px;
   padding-left: 0;
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-17 {
+.emotion-21 {
   font-size: 14px;
   line-height: 18px;
   color: #b3b3b3;
@@ -148,46 +174,49 @@ exports[`<ProjectMetrics /> should render properly when data is available 1`] = 
       </thead>
       <tbody>
         <tr>
-          <td>
+          <td
+            className="emotion-3"
+          >
             <div
-              className="emotion-3"
+              className="emotion-4"
             >
               <svg
-                className="emotion-4"
-                data-file-name="images.svg"
-                height={24}
-              />
-              Images /
-            </div>
-            <div
-              className="emotion-5"
-            >
-              <svg
-                className="emotion-4"
+                className="emotion-5"
                 data-file-name="documents.svg"
                 height={24}
               />
               Documents*
             </div>
+            <div
+              className="emotion-6"
+            >
+              /
+            </div>
+            <div
+              className="emotion-7"
+            >
+              <svg
+                className="emotion-8"
+                data-file-name="images.svg"
+                height={24}
+              />
+              Images
+            </div>
           </td>
           <td>
-            <br />
-            <br />
             2
           </td>
           <td>
-            <br />
-            <br />
             8
           </td>
         </tr>
         <tr>
           <td>
             <div
-              className="emotion-7"
+              className="emotion-9"
             >
               <svg
-                className="emotion-4"
+                className="emotion-5"
                 data-file-name="videos.svg"
                 height={24}
               />
@@ -205,13 +234,13 @@ exports[`<ProjectMetrics /> should render properly when data is available 1`] = 
     </table>
   </div>
   <div
-    className="emotion-9"
+    className="emotion-11"
   >
     <h4>
       Total Asset Storage
     </h4>
     <table
-      className="emotion-10"
+      className="emotion-12"
     >
       <thead>
         <tr>
@@ -226,41 +255,46 @@ exports[`<ProjectMetrics /> should render properly when data is available 1`] = 
       </thead>
       <tbody>
         <tr>
-          <td>
+          <td
+            className="emotion-3"
+          >
             <div
-              className="emotion-3"
+              className="emotion-4"
             >
               <svg
-                className="emotion-4"
-                data-file-name="images.svg"
-                height={24}
-              />
-              Images /
-            </div>
-            <div
-              className="emotion-5"
-            >
-              <svg
-                className="emotion-4"
+                className="emotion-5"
                 data-file-name="documents.svg"
                 height={24}
               />
               Documents*
             </div>
+            <div
+              className="emotion-6"
+            >
+              /
+            </div>
+            <div
+              className="emotion-7"
+            >
+              <svg
+                className="emotion-8"
+                data-file-name="images.svg"
+                height={24}
+              />
+              Images
+            </div>
           </td>
           <td>
-            <br />
-            <br />
             64
           </td>
         </tr>
         <tr>
           <td>
             <div
-              className="emotion-7"
+              className="emotion-9"
             >
               <svg
-                className="emotion-4"
+                className="emotion-5"
                 data-file-name="videos.svg"
                 height={24}
               />
@@ -275,7 +309,7 @@ exports[`<ProjectMetrics /> should render properly when data is available 1`] = 
     </table>
   </div>
   <div
-    className="emotion-17"
+    className="emotion-21"
   >
     *pages are processed & counted as individual assets
   </div>
@@ -324,24 +358,14 @@ exports[`<ProjectMetrics /> should render properly when data is unavailable 1`] 
 }
 
 .emotion-3 {
-  color: #ebb52e;
+  white-space: nowrap;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-bottom: 8px;
 }
 
 .emotion-4 {
-  padding-right: 8px;
-}
-
-.emotion-5 {
-  color: #00bdc1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -350,9 +374,45 @@ exports[`<ProjectMetrics /> should render properly when data is unavailable 1`] 
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  color: #00bdc1;
+  padding-right: 4px;
+}
+
+.emotion-5 {
+  padding-right: 8px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #808080;
+  font-size: 14px;
 }
 
 .emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #ebb52e;
+}
+
+.emotion-8 {
+  padding-left: 4px;
+  padding-right: 8px;
+}
+
+.emotion-9 {
   color: #8f89e7;
   display: -webkit-box;
   display: -webkit-flex;
@@ -364,17 +424,17 @@ exports[`<ProjectMetrics /> should render properly when data is unavailable 1`] 
   align-items: center;
 }
 
-.emotion-9 {
+.emotion-11 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-10 {
+.emotion-12 {
   min-width: 300px;
 }
 
-.emotion-10 th {
+.emotion-12 th {
   text-align: left;
   vertical-align: bottom;
   color: #b3b3b3;
@@ -386,13 +446,13 @@ exports[`<ProjectMetrics /> should render properly when data is unavailable 1`] 
   padding-left: 0;
 }
 
-.emotion-10 td {
+.emotion-12 td {
   padding: 16px;
   padding-left: 0;
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-17 {
+.emotion-21 {
   font-size: 14px;
   line-height: 18px;
   color: #b3b3b3;
@@ -430,46 +490,49 @@ exports[`<ProjectMetrics /> should render properly when data is unavailable 1`] 
       </thead>
       <tbody>
         <tr>
-          <td>
+          <td
+            className="emotion-3"
+          >
             <div
-              className="emotion-3"
+              className="emotion-4"
             >
               <svg
-                className="emotion-4"
-                data-file-name="images.svg"
-                height={24}
-              />
-              Images /
-            </div>
-            <div
-              className="emotion-5"
-            >
-              <svg
-                className="emotion-4"
+                className="emotion-5"
                 data-file-name="documents.svg"
                 height={24}
               />
               Documents*
             </div>
+            <div
+              className="emotion-6"
+            >
+              /
+            </div>
+            <div
+              className="emotion-7"
+            >
+              <svg
+                className="emotion-8"
+                data-file-name="images.svg"
+                height={24}
+              />
+              Images
+            </div>
           </td>
           <td>
-            <br />
-            <br />
             unavailable**
           </td>
           <td>
-            <br />
-            <br />
             unavailable**
           </td>
         </tr>
         <tr>
           <td>
             <div
-              className="emotion-7"
+              className="emotion-9"
             >
               <svg
-                className="emotion-4"
+                className="emotion-5"
                 data-file-name="videos.svg"
                 height={24}
               />
@@ -487,13 +550,13 @@ exports[`<ProjectMetrics /> should render properly when data is unavailable 1`] 
     </table>
   </div>
   <div
-    className="emotion-9"
+    className="emotion-11"
   >
     <h4>
       Total Asset Storage
     </h4>
     <table
-      className="emotion-10"
+      className="emotion-12"
     >
       <thead>
         <tr>
@@ -508,41 +571,46 @@ exports[`<ProjectMetrics /> should render properly when data is unavailable 1`] 
       </thead>
       <tbody>
         <tr>
-          <td>
+          <td
+            className="emotion-3"
+          >
             <div
-              className="emotion-3"
+              className="emotion-4"
             >
               <svg
-                className="emotion-4"
-                data-file-name="images.svg"
-                height={24}
-              />
-              Images /
-            </div>
-            <div
-              className="emotion-5"
-            >
-              <svg
-                className="emotion-4"
+                className="emotion-5"
                 data-file-name="documents.svg"
                 height={24}
               />
               Documents*
             </div>
+            <div
+              className="emotion-6"
+            >
+              /
+            </div>
+            <div
+              className="emotion-7"
+            >
+              <svg
+                className="emotion-8"
+                data-file-name="images.svg"
+                height={24}
+              />
+              Images
+            </div>
           </td>
           <td>
-            <br />
-            <br />
             unavailable**
           </td>
         </tr>
         <tr>
           <td>
             <div
-              className="emotion-7"
+              className="emotion-9"
             >
               <svg
-                className="emotion-4"
+                className="emotion-5"
                 data-file-name="videos.svg"
                 height={24}
               />
@@ -557,7 +625,7 @@ exports[`<ProjectMetrics /> should render properly when data is unavailable 1`] 
     </table>
   </div>
   <div
-    className="emotion-17"
+    className="emotion-21"
   >
     *pages are processed & counted as individual assets
     <br />
