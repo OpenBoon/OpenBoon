@@ -21,7 +21,7 @@ class ModelType(Enum):
     """A KMeans clustering model for quickly clustering assets into general groups."""
 
     ZVI_LABEL_DETECTION = 1
-    """Retrain the ResNet50 convolutional neural network with your own labels."""
+    """Retrain the ResNet50 with your own labels, Using TensorFlow"""
 
     ZVI_FACE_RECOGNITION = 2
     """Face Recognition model using a KNN classifier."""
