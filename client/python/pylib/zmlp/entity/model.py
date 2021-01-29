@@ -32,7 +32,10 @@ class ModelType(Enum):
     TF2_IMAGE_CLASSIFIER = 5
     """Provide your own custom Tensorflow2/Keras model"""
 
-    PYTORCH_IMAGE_CLASSIFIER = 5
+    ZVI_PYTORCH_LABEL_DETECTION = 6
+    """Retrain ResNet50 with your own labels, using Pytorch."""
+
+    PYTORCH_IMAGE_CLASSIFIER = 7
     """Provide your own custom Pytorch model"""
 
 
