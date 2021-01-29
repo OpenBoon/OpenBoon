@@ -75,45 +75,57 @@ const ProjectMetrics = ({ projectId }) => {
           </thead>
           <tbody>
             <tr>
-              <td>
+              <td
+                css={{
+                  whiteSpace: 'nowrap',
+                  display: 'flex',
+                }}
+              >
                 <div
                   css={{
-                    color: colors.signal.canary.base,
                     display: 'flex',
                     alignItems: 'center',
-                    paddingBottom: spacing.base,
-                  }}
-                >
-                  <ImagesSvg
-                    height={constants.icons.comfy}
-                    css={{ paddingRight: spacing.base }}
-                  />
-                  Images /
-                </div>
-                <div
-                  css={{
                     color: colors.graph.seafoam,
-                    display: 'flex',
-                    alignItems: 'center',
+                    paddingRight: spacing.small,
                   }}
                 >
                   <DocumentsSvg
                     height={constants.icons.comfy}
-                    css={{ paddingRight: spacing.base }}
+                    css={{
+                      paddingRight: spacing.base,
+                    }}
                   />
                   Documents*
                 </div>
+                <div
+                  css={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: colors.structure.steel,
+                    fontSize: typography.size.small,
+                  }}
+                >
+                  /
+                </div>
+                <div
+                  css={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: colors.signal.canary.base,
+                  }}
+                >
+                  <ImagesSvg
+                    height={constants.icons.comfy}
+                    css={{
+                      paddingLeft: spacing.small,
+                      paddingRight: spacing.base,
+                    }}
+                  />
+                  Images
+                </div>
               </td>
-              <td>
-                <br />
-                <br />
-                {formatUsage({ number: internalImageCount })}
-              </td>
-              <td>
-                <br />
-                <br />
-                {formatUsage({ number: externalImageCount })}
-              </td>
+              <td>{formatUsage({ number: internalImageCount })}</td>
+              <td>{formatUsage({ number: externalImageCount })}</td>
             </tr>
             <tr>
               <td>
@@ -173,40 +185,56 @@ const ProjectMetrics = ({ projectId }) => {
           </thead>
           <tbody>
             <tr>
-              <td>
+              <td
+                css={{
+                  whiteSpace: 'nowrap',
+                  display: 'flex',
+                }}
+              >
                 <div
                   css={{
-                    color: colors.signal.canary.base,
                     display: 'flex',
                     alignItems: 'center',
-                    paddingBottom: spacing.base,
-                  }}
-                >
-                  <ImagesSvg
-                    height={constants.icons.comfy}
-                    css={{ paddingRight: spacing.base }}
-                  />
-                  Images /
-                </div>
-                <div
-                  css={{
                     color: colors.graph.seafoam,
-                    display: 'flex',
-                    alignItems: 'center',
+                    paddingRight: spacing.small,
                   }}
                 >
                   <DocumentsSvg
                     height={constants.icons.comfy}
-                    css={{ paddingRight: spacing.base }}
+                    css={{
+                      paddingRight: spacing.base,
+                    }}
                   />
                   Documents*
                 </div>
+                <div
+                  css={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: colors.structure.steel,
+                    fontSize: typography.size.small,
+                  }}
+                >
+                  /
+                </div>
+                <div
+                  css={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: colors.signal.canary.base,
+                  }}
+                >
+                  <ImagesSvg
+                    height={constants.icons.comfy}
+                    css={{
+                      paddingLeft: spacing.small,
+                      paddingRight: spacing.base,
+                    }}
+                  />
+                  Images
+                </div>
               </td>
-              <td>
-                <br />
-                <br />
-                {formatUsage({ number: totalImageCount })}
-              </td>
+              <td>{formatUsage({ number: totalImageCount })}</td>
             </tr>
             <tr>
               <td>

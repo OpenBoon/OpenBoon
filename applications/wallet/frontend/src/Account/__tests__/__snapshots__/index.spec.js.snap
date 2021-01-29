@@ -28,6 +28,8 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding-top: 24px;
+  padding-bottom: 16px;
 }
 
 .emotion-1 {
@@ -861,6 +863,8 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding-top: 24px;
+  padding-bottom: 16px;
 }
 
 .emotion-1 {
