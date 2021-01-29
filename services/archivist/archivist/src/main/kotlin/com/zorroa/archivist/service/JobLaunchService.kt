@@ -367,12 +367,12 @@ class JobLaunchServiceImpl(
         /**
          * The default number of assets to add to a task.
          */
-        const val defaultBatchSize = 25
+        const val defaultBatchSize = 5
 
         /**
          * Minimum batch size.
          */
-        const val minBatchSize = 10
+        const val minBatchSize = 5
 
         /**
          * Maximum batch size.
