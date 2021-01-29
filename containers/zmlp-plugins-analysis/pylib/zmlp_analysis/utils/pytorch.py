@@ -33,7 +33,7 @@ def load_pytorch_image(path, size=(224, 224)):
         transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
     ])
 
-    img = Image.open(path)
+    img = Image.open(path).convert('RGB')
     scaled_img = transform_test(img)
     torch_image = scaled_img.unsqueeze(0)
 

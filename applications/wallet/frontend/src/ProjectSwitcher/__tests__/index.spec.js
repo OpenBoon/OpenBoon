@@ -22,7 +22,7 @@ describe('<ProjectSwitcher />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly with data', () => {
+  it('should render properly with multiple projects by name', () => {
     require('next/router').__setUseRouter({
       asPath: `/${PROJECT_ID}/jobs`,
       pathname: '/[projectId]/jobs',
@@ -38,6 +38,30 @@ describe('<ProjectSwitcher />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByType('button')
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with multiple projects by date', () => {
+    localStorage.setItem('AccountContent.sortBy', `"date"`)
+
+    require('next/router').__setUseRouter({
+      asPath: `/${PROJECT_ID}/jobs`,
+      pathname: '/[projectId]/jobs',
+      query: { projectId: PROJECT_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: projects })
+
+    const component = TestRenderer.create(
+      <ProjectSwitcher projectId={PROJECT_ID} />,
+    )
 
     act(() => {
       component.root

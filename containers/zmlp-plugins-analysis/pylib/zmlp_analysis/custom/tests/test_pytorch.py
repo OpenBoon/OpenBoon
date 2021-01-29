@@ -44,7 +44,10 @@ class PytorchModelImageClassifierTests(PluginUnitTestCase):
         }
 
         flower_paths = [
-            zorroa_test_path("training/test_dsy.jpg"),
+            # Using a greyscale image from the test set to test grey->RGB
+            zorroa_test_path("images/channels/greyscale.jpg"),
+            # Also using a jpg with alpha because sometimes proxies are like that too
+            zorroa_test_path("images/channels/rgb_alpha.jpg"),
             zorroa_test_path("training/test_rose.png")
         ]
         for paths in flower_paths:

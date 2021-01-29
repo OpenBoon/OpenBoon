@@ -14,6 +14,7 @@ import java.nio.file.Paths
 import java.util.Base64
 import java.util.Date
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 /**
  * Exceptions thrown from [AuthServerClient]
@@ -46,7 +47,11 @@ interface AuthServerClient {
  */
 open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?) : AuthServerClient {
 
-    val client = OkHttpClient()
+    val client: OkHttpClient = OkHttpClient.Builder()
+        .connectTimeout(5000, TimeUnit.MILLISECONDS)
+        .readTimeout(5000, TimeUnit.MILLISECONDS)
+        .callTimeout(5000, TimeUnit.MILLISECONDS)
+        .build()
 
     val serviceKey: SigningKey? = loadSigningKey()
 
