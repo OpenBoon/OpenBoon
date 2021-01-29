@@ -3,6 +3,49 @@
 exports[`<Project /> should render properly 1`] = `
 Array [
   .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-3 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-4 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -18,11 +61,32 @@ Array [
   align-items: center;
 }
 
-<h2
+<div
     className="emotion-0"
   >
-    Project Dashboard
-  </h2>,
+    <div
+      className="emotion-1"
+    >
+      <a
+        className="emotion-2"
+        href="/"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Account Overview
+      </a>
+      <span
+        className="emotion-3"
+      >
+        /
+      </span>
+    </div>
+    <h2
+      className="emotion-4"
+    >
+      Project Dashboard
+    </h2>
+  </div>,
   .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
