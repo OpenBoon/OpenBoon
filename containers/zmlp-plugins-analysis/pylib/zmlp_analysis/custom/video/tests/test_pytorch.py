@@ -24,7 +24,7 @@ class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         except FileNotFoundError:
             print("Didn't clear out model cache, this is ok.")
 
-        self.video_path = zorroa_test_path('video/flower.mp4')
+        self.video_path = zorroa_test_path('video/bees.webm')
         asset = TestAsset(self.video_path)
         asset.set_attr('media.length', 15.0)
         self.frame = Frame(asset)
@@ -60,5 +60,5 @@ class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         analysis = self.frame.asset.get_analysis(self.name)
         predictions = get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 1 == analysis['count']
+        assert 2 == analysis['count']
         assert 'bees' in predictions
