@@ -67,9 +67,10 @@ const ProjectQuickLinks = ({ projectId }) => {
         boxShadow: constants.boxShadows.tableRow,
         borderRadius: constants.borderRadius.small,
         padding: spacing.comfy,
+        paddingBottom: spacing.spacious,
       }}
     >
-      <h3 css={{ paddingBottom: spacing.base }}>Quick Links</h3>
+      <h3 css={{ paddingBottom: spacing.comfy }}>Quick Links</h3>
       <div
         css={{
           display: 'grid',
@@ -81,9 +82,13 @@ const ProjectQuickLinks = ({ projectId }) => {
           return (
             <div
               key={link.url}
-              css={{ display: 'flex', flexDirection: 'column' }}
+              css={{
+                display: 'flex',
+                flexDirection: 'column',
+                color: colors.structure.zinc,
+              }}
             >
-              <div css={{ display: 'flex', paddingBottom: spacing.base }}>
+              <div css={{ display: 'flex', paddingBottom: spacing.comfy }}>
                 <Link href={`${projectId}/${link.url}`} passHref>
                   <Button variant={VARIANTS.SECONDARY_SMALL}>
                     <div css={{ display: 'flex', alignItems: 'center' }}>
