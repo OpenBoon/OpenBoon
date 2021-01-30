@@ -19,8 +19,8 @@ def download_proxy(entity, level=-1):
 
     if type(entity) == zmlp.entity.asset.Asset:
         proxies = entity.get_files(category="proxy",
-                                  mimetype="image/",
-                                  sort_func=lambda f: f.attrs["width"])
+                                   mimetype="image/",
+                                   sort_func=lambda f: f.attrs["width"])
 
         if not proxies:
             return None
