@@ -12,7 +12,7 @@ User = get_user_model()
 
 
 class Plan(models.TextChoices):
-    """Choices for the tier field in the Subscription model."""
+    """Choices for the plan field in the Organization model."""
     ACCESS = 'access'
     BUILD = 'build'
     CUSTOM_ENTERPRISE = 'custom_enterprise'
