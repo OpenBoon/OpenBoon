@@ -169,24 +169,6 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
         project.sync_with_zmlp()
 
 
-def test_project_sync_with_zmlp_with_subscription(monkeypatch, project_zero_user, project_zero):
-    def mock_get_project(*args, **kwargs):
-        return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'ESSENTIALS'}  # noqa
-
-    def mock_post_true(*args, **kwargs):
-        return True
-
-    def mock_put_tier(*args, **kwargs):
-        return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'PREMIER'}  # noqa
-
-    # Test a successful sync.
-    monkeypatch.setattr(ZmlpClient, 'get', mock_get_project)
-    monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
-    monkeypatch.setattr(ZmlpClient, 'put', mock_put_tier)
-    monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
-    project_zero.sync_with_zmlp()
-
-
 def test_project_managers(project):
     assert Project.objects.all().count() == 1
     assert str(project.id) == str(Project.objects.first().id)
