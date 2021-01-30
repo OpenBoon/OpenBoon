@@ -41,7 +41,6 @@ from registration.views import UserRegistrationView, UserConfirmationView, \
     ApiPasswordResetConfirmView
 from roles.views import RolesViewSet
 from searches.views import SearchViewSet
-from subscriptions.views import SubscriptionViewSet
 from supportadmin.admin import support_admin_site
 from visualizations.views import VisualizationViewSet
 from wallet.views import WalletAPIRootView
@@ -61,7 +60,6 @@ projects_router.register('api_keys', ApikeyViewSet, basename='apikey')
 projects_router.register('roles', RolesViewSet, basename='role')
 projects_router.register('permissions', PermissionViewSet, basename='permission')
 projects_router.register('data_sources', DataSourceViewSet, basename='datasource')
-projects_router.register('subscriptions', SubscriptionViewSet, basename='subscription')
 projects_router.register('modules', ModuleViewSet, basename='module')
 projects_router.register('providers', ProviderViewSet, basename='provider')
 projects_router.register('searches', SearchViewSet, basename='search')
