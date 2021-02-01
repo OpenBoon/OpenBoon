@@ -66,11 +66,6 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
         if self.name != project['name']:
             client.put('/api/v1/project/_rename', {'name': self.name})
 
-        # Sync the project tier.
-        if hasattr(self, 'subscription') and self.subscription.tier.upper() != project['tier']:
-            client.put(f'/api/v1/projects/{self.id}/_update_tier',
-                       {'tier': self.subscription.tier.upper()})
-
         # Sync the project status.
         if self.isActive != project['enabled']:
             if self.isActive:

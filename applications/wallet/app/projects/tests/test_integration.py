@@ -19,7 +19,6 @@ from zmlp.client import (ZmlpDuplicateException, ZmlpInvalidRequestException,
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
 from projects.views import BaseProjectViewSet
-from subscriptions.models import Tier
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
 
 pytestmark = pytest.mark.django_db
@@ -91,7 +90,7 @@ def test_project_serializer_detail(project):
     serializer = ProjectSerializer(project, context={'request': None})
     data = serializer.data
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
-                       'permissions', 'tasks', 'datasources', 'taskerrors', 'subscriptions',
+                       'permissions', 'tasks', 'datasources', 'taskerrors',
                        'modules', 'providers', 'searches', 'faces', 'visualizations',
                        'models', 'createdDate', 'modifiedDate']
     assert set(expected_fields) == set(data.keys())
@@ -109,7 +108,6 @@ def test_project_serializer_detail(project):
     assert data['permissions'] == f'/api/v1/projects/{project.id}/permissions/'
     assert data['tasks'] == f'/api/v1/projects/{project.id}/tasks/'
     assert data['taskerrors'] == f'/api/v1/projects/{project.id}/task_errors/'
-    assert data['subscriptions'] == f'/api/v1/projects/{project.id}/subscriptions/'
     assert data['modules'] == f'/api/v1/projects/{project.id}/modules/'
     assert data['providers'] == f'/api/v1/projects/{project.id}/providers/'
     assert data['searches'] == f'/api/v1/projects/{project.id}/searches/'
@@ -169,27 +167,6 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
     monkeypatch.setattr(ZmlpClient, 'put', mock_put_failed_enable)
     with pytest.raises(IOError):
         project.sync_with_zmlp()
-
-
-def test_project_sync_with_zmlp_with_subscription(monkeypatch, project_zero_user,
-                                                  project_zero_subscription, project_zero):
-    def mock_get_project(*args, **kwargs):
-        return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'ESSENTIALS'}  # noqa
-
-    def mock_post_true(*args, **kwargs):
-        return True
-
-    def mock_put_tier(*args, **kwargs):
-        return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'PREMIER'}  # noqa
-
-    # Test a successful sync.
-    monkeypatch.setattr(ZmlpClient, 'get', mock_get_project)
-    monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
-    monkeypatch.setattr(ZmlpClient, 'put', mock_put_tier)
-    project_zero_subscription.tier = Tier.PREMIER
-    project_zero_subscription.save()
-    monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
-    project_zero.sync_with_zmlp()
 
 
 def test_project_managers(project):

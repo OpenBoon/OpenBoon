@@ -10,7 +10,6 @@ from organizations.admin import OrganizationAdmin
 from organizations.models import Organization
 from projects.admin import ProjectAdmin
 from projects.models import Project, Membership
-from subscriptions.models import Subscription
 
 User = get_user_model()
 
@@ -31,11 +30,6 @@ class MembershipInline(admin.TabularInline):
 class AlwaysChangedModelForm(ModelForm):
     def has_changed(self):
         return True
-
-
-class SubscriptionInline(admin.StackedInline):
-    model = Subscription
-    form = AlwaysChangedModelForm
 
 
 class SupportUserAdmin(NoDeleteMixin, ModelAdmin):
@@ -77,7 +71,7 @@ class SupportUserAdmin(NoDeleteMixin, ModelAdmin):
 
 class SupportProjectAdmin(NoDeleteMixin, ProjectAdmin):
     readonly_fields = ['id']
-    inlines = [SubscriptionInline, MembershipInline]
+    inlines = [MembershipInline]
 
     def save_related(self, request, form, formsets, change):
         project = form.instance
