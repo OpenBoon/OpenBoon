@@ -23,7 +23,7 @@ class ProjectSpec(
     val name: String,
 
     @ApiModelProperty("The project tier unlocks extra capabilities.")
-    val tier: ProjectTier = ProjectTier.ESSENTIALS,
+    val tier: ProjectTier = ProjectTier.PREMIER,
 
     @ApiModelProperty("The projected size of a project.")
     val size: ProjectSize = ProjectSize.SMALL,

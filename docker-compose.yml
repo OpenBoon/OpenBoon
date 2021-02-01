@@ -204,6 +204,7 @@ services:
       dockerfile: services/metrics/Dockerfile
     environment:
       DJANGO_SETTINGS_MODULE: metrics.settings
+      LOG_REQUESTS: "true"
       DEBUG: "true"
       DB_BACKEND: postgres
       PG_DB_HOST: postgres
