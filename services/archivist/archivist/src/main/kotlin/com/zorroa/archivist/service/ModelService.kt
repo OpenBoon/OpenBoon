@@ -519,7 +519,6 @@ class ModelServiceImpl(
             "variables/variables.index"
         )
 
-
         files.forEach { fileName ->
             var matched = false
 
@@ -529,13 +528,11 @@ class ModelServiceImpl(
                         matched = true
                         break
                     }
-                }
-                else if (pattern is String) {
+                } else if (pattern is String) {
                     if (pattern.toString() == fileName) {
                         matched = true
                         break
                     }
-
                 }
             }
 

@@ -4,7 +4,7 @@ from zmlp_analysis.utils.prechecks import Prechecks
 from zmlpsdk import AssetProcessor, Argument, file_storage
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
-from zmlpsdk.video import ShotBasedFrameExtractor, TimeBasedFrameExtractor, save_timeline
+from zmlpsdk.video import ShotBasedFrameExtractor, save_timeline
 from zmlpsdk.clips import ClipTracker
 from zmlpsdk.proxy import get_video_proxy
 from ..utils.keras import load_keras_image, load_keras_model
