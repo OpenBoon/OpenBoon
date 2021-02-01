@@ -44,6 +44,7 @@ exports[`Combobox should render properly with a options function 1`] = `
   <div
     className="emotion-1"
     data-reach-combobox=""
+    data-state="idle"
   >
     <input
       aria-autocomplete="both"
@@ -53,6 +54,7 @@ exports[`Combobox should render properly with a options function 1`] = `
       autoComplete="off"
       className="emotion-2"
       data-reach-combobox-input=""
+      data-state="idle"
       onBlur={[Function]}
       onChange={[Function]}
       onClick={[Function]}
@@ -110,6 +112,7 @@ exports[`Combobox should render properly with an options array 1`] = `
   <div
     className="emotion-1"
     data-reach-combobox=""
+    data-state="idle"
   >
     <input
       aria-autocomplete="both"
@@ -119,6 +122,7 @@ exports[`Combobox should render properly with an options array 1`] = `
       autoComplete="off"
       className="emotion-2"
       data-reach-combobox-input=""
+      data-state="idle"
       onBlur={[Function]}
       onChange={[Function]}
       onClick={[Function]}
@@ -181,6 +185,7 @@ exports[`Combobox should render properly with error 1`] = `
   <div
     className="emotion-1"
     data-reach-combobox=""
+    data-state="idle"
   >
     <input
       aria-autocomplete="both"
@@ -190,6 +195,7 @@ exports[`Combobox should render properly with error 1`] = `
       autoComplete="off"
       className="emotion-2"
       data-reach-combobox-input=""
+      data-state="idle"
       onBlur={[Function]}
       onChange={[Function]}
       onClick={[Function]}
