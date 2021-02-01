@@ -9,9 +9,7 @@ const {
 } = process.env
 
 module.exports = {
-  experimental: {
-    productionBrowserSourceMaps: true,
-  },
+  productionBrowserSourceMaps: true,
   reactStrictMode: true,
   env: {
     CI_COMMIT_SHA,
