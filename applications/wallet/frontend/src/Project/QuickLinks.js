@@ -67,14 +67,14 @@ const ProjectQuickLinks = ({ projectId }) => {
         boxShadow: constants.boxShadows.tableRow,
         borderRadius: constants.borderRadius.small,
         padding: spacing.comfy,
-        paddingBottom: spacing.spacious,
+        paddingBottom: spacing.giant,
       }}
     >
       <h3 css={{ paddingBottom: spacing.comfy }}>Quick Links</h3>
       <div
         css={{
           display: 'grid',
-          gap: spacing.spacious,
+          gap: spacing.comfy,
           gridTemplateColumns: `repeat(auto-fill, minmax(${MAX_WIDTH}px, 1fr))`,
         }}
       >
