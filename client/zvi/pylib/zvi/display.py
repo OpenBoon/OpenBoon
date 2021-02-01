@@ -38,14 +38,10 @@ def show_thumbnails(search=None):
         search = app.assets.search({"size": 10})
 
     paths = []
-    for asset in search:
-        # Skip assets that are still being imported
-        if asset.document['system']['state'] != 'Analyzed':
-            continue
-
-        name = "tmp/{}.jpg".format(str(asset.id))
+    for entity in search:
+        name = 'tmp/' + str(entity.id) + '.jpg'
         paths.append(name)
-        img = download_proxy(asset, 0)
+        img = download_proxy(entity, 0)
         if img is None:
             continue
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
