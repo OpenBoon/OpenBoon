@@ -506,9 +506,41 @@ class ModelServiceImpl(
             throw IllegalArgumentException("The model zip must contain a labels.txt file")
         }
 
-        files.forEach {
-            if (it !in validTensorflowFiles) {
-                throw IllegalArgumentException("'$it' is not an expected Tensorflow model file.")
+        /**
+         * The valid files in a tensorflow zip file.
+         */
+        val validTensorflowFiles = listOf(
+            "labels.txt",
+            "saved_model.pb",
+            "tfhub_module.pb",
+            "assets/",
+            "variables/",
+            Regex("^variables/variables.data-[\\d]+-of-[\\d]+$"),
+            "variables/variables.index"
+        )
+
+
+        files.forEach { fileName ->
+            var matched = false
+
+            for (pattern in validTensorflowFiles) {
+                if (pattern is Regex) {
+                    if (pattern.matches(fileName)) {
+                        matched = true
+                        break
+                    }
+                }
+                else if (pattern is String) {
+                    if (pattern.toString() == fileName) {
+                        matched = true
+                        break
+                    }
+
+                }
+            }
+
+            if (!matched) {
+                throw IllegalArgumentException("'$fileName' is not an expected Tensorflow model file.")
             }
         }
     }
@@ -516,19 +548,6 @@ class ModelServiceImpl(
     companion object {
 
         private val logger = LoggerFactory.getLogger(ModelServiceImpl::class.java)
-
-        /**
-         * The valid files in a tensorflow zip file.
-         */
-        val validTensorflowFiles = setOf(
-            "labels.txt",
-            "saved_model.pb",
-            "tfhub_module.pb",
-            "assets/",
-            "variables/",
-            "variables/variables.data-00000-of-00001",
-            "variables/variables.index"
-        )
 
         private val modelNameRegex = Regex("^[a-z0-9_\\-\\s]{2,}$", RegexOption.IGNORE_CASE)
 
