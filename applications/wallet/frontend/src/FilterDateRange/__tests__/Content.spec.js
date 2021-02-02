@@ -86,17 +86,14 @@ describe('<FilterDateRangeContent />', () => {
     const filter = {
       type: 'date',
       attribute: 'system.timeCreated',
-      values: {
-        min: '2020-05-04T00:00:00.000Z',
-        max: '2020-05-04T00:00:00.000Z',
-      },
+      values: {},
     }
 
     require('swr').__setMockUseSWRResponse({
       data: {
         results: {
           minAsString: '2020-05-04',
-          maxAsString: '2020-06-10',
+          maxAsString: '2020-05-04',
         },
       },
     })
@@ -272,7 +269,7 @@ describe('<FilterDateRangeContent />', () => {
       values: {},
     }
 
-    require('swr').__setMockUseSWRResponse({})
+    require('swr').__setMockUseSWRResponse()
 
     const component = TestRenderer.create(
       <FilterDateRangeContent

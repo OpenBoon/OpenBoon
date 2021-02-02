@@ -73,7 +73,7 @@ const FilterDateRangeContent = ({
   const [inputMin, setInputMin] = useState(dateValues[0])
   const [inputMax, setInputMax] = useState(dateValues[1])
 
-  const minMaxFix = getMinMaxFix({ queryMin, queryMax })
+  const minMaxFix = getMinMaxFix({ domainMin, domainMax })
 
   const sliderValues = [
     dateValues[0].getTime(),
