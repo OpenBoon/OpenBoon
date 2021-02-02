@@ -52,8 +52,10 @@ const FilterDateRangeContent = ({
   const fallbackMin = formatISODate({ date: new Date(0) })
   const fallbackMax = formatISODate({ date: new Date() })
 
-  const { min: resultsMin = fallbackMin, max: resultsMax = fallbackMax } =
-    results || {}
+  const {
+    minAsString: resultsMin = fallbackMin,
+    maxAsString: resultsMax = fallbackMax,
+  } = results || {}
 
   const domainMin = parseDate({ date: resultsMin })
   const domainMax = parseDate({ date: resultsMax })
