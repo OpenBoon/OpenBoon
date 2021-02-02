@@ -34,11 +34,11 @@ export const parseDate = ({ date }) => {
   return new Date(year, month - 1, day)
 }
 
-export const getMinMaxFix = ({ queryMin, queryMax }) => {
+export const getMinMaxFix = ({ domainMin, domainMax }) => {
   if (
-    queryMin &&
-    queryMax &&
-    queryMin.toISOString() === queryMax.toISOString()
+    domainMin &&
+    domainMax &&
+    domainMin.toISOString() === domainMax.toISOString()
   ) {
     return 1
   }
