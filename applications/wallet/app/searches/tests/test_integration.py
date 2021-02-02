@@ -228,10 +228,12 @@ class TestFieldsAction:
         response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
         content = check_response(response)
         assert content['analysis']['zvi']['tinyProxy'] == ['exists']
-        assert content['clip']['start'] == ['range', 'exists']
         assert content['media']['type'] == ['facet', 'exists']
         assert content['aux'] == ['exists']
         assert content['tmp'] == ['exists']
+
+        # Assert that the clip field was removed since it is restricted.
+        assert 'clip' not in content
 
     def test_get_field_with_underscore(self, login, api_client, monkeypatch, mapping_response,
                                        project):
@@ -242,7 +244,6 @@ class TestFieldsAction:
         response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
         content = check_response(response)
         assert content['analysis']['analyis_underscore']['tinyProxy'] == ['exists']
-        assert content['clip']['start'] == ['range', 'exists']
         assert content['media']['type'] == ['facet', 'exists']
         assert content['aux'] == ['exists']
         assert content['tmp'] == ['exists']
