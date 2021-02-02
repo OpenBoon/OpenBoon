@@ -34,10 +34,10 @@ def test_orgainzation_with_random_name():
 
 class TestGetMLUsageForTimePeriod:
 
-    fake_usage = {'tier_1_image_count': 100,
-                  'tier_1_video_hours': 100,
-                  'tier_2_image_count': 100,
-                  'tier_2_video_hours': 100}
+    fake_usage = {'tier_1': {'video_minutes': 100,
+                             'image_count': 100},
+                  'tier_2': {'video_minutes': 100,
+                             'image_count': 100}}
 
     @patch.object(requests, 'get')
     def test_get_ml_usage_no_times(self, get_mock, organization, project, project2):
@@ -47,9 +47,9 @@ class TestGetMLUsageForTimePeriod:
         get_mock.return_value = Mock(json=Mock(side_effect=side_effect))
         usage = organization.get_ml_usage_for_time_period()
         assert usage == {'tier_1_image_count': 200,
-                         'tier_1_video_hours': 200,
+                         'tier_1_video_hours': 3,
                          'tier_2_image_count': 200,
-                         'tier_2_video_hours': 200}
+                         'tier_2_video_hours': 3}
         assert get_mock.call_count == 2
         project_ids_called = [str(c[0][1]['project']) for c in get_mock.call_args_list]
         assert project.id in project_ids_called
@@ -65,7 +65,10 @@ class TestGetMLUsageForTimePeriod:
 
         get_mock.return_value = Mock(json=Mock(side_effect=side_effect))
         usage = organization.get_ml_usage_for_time_period()
-        assert usage == self.fake_usage
+        assert usage == {'tier_1_image_count': 100,
+                         'tier_1_video_hours': 1,
+                         'tier_2_image_count': 100,
+                         'tier_2_video_hours': 1}
         assert get_mock.call_count == 1
         project_ids_called = [str(c[0][1]['project']) for c in get_mock.call_args_list]
         assert [project.id] == project_ids_called

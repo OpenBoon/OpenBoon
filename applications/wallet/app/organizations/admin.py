@@ -22,8 +22,8 @@ class ProjectInline(admin.TabularInline):
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ['name', 'owner']
-    list_filter = ['owner']
+    list_display = ['name', 'owner', 'plan', 'isActive']
+    list_filter = ['owner', 'plan', 'isActive']
     search_fields = ['name', 'id']
-    fields = ['name', 'owner']
+    fields = ['name', 'owner', 'plan', 'isActive']
     inlines = [ProjectInline]
