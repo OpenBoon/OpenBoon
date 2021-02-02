@@ -170,8 +170,8 @@ describe('<FiltersContent />', () => {
     require('swr').__setMockUseSWRResponse({
       data: {
         results: {
-          min: '2020-05-04',
-          max: '2020-06-10',
+          minAsString: '2020-05-04',
+          maxAsString: '2020-06-10',
         },
       },
     })
