@@ -22,7 +22,12 @@ class ConfusionMatrix(object):
         max_score(float): Maximum confidence score to filter by.
 
     """
-    def __init__(self, model, app, test_set_only=True, min_score=0.0, max_score=1.0):
+
+    default_min_score = 0.0
+    default_max_score = 1.0
+
+    def __init__(self, model, app, test_set_only=True, min_score=default_min_score,
+                 max_score=default_max_score):
         self.model = model
         self.app = app
         self.min_score = min_score
@@ -70,33 +75,61 @@ class ConfusionMatrix(object):
             aggs(dict): Aggregations from the ES confusion matrix query.
 
         """
-        aggs = self.__get_confusion_matrix_aggregations()
-        buckets = aggs['nested#nested_labels']['filter#model_train_labels']['sterms#labels']['buckets']
+        # Retrieve the full set of truth and predicted labels
+        aggs = self.__get_confusion_matrix_aggregations(full_matrix=True)
+
+        # If the results have been filtered, retrieve the filtered bucket values
+        if self.min_score != self.default_min_score or self.max_score != self.default_max_score:
+            filtered_aggs = self.__get_confusion_matrix_aggregations()
+        else:
+            # If the results were not filtered, continue using the full set of labels
+            filtered_aggs = aggs
+
+        buckets_dict = self.__get_dict_from_agg_results(aggs)
+        filtered_buckets_dict = self.__get_dict_from_agg_results(filtered_aggs)
         data = []
         labels = set()
-        for label_bucket in buckets:
-            truth = label_bucket['key']
-            for prediction_bucket in label_bucket['reverse_nested#predictions_by_label'][
-                        'sterms#predictions'][
-                        'buckets']:
-                prediction = prediction_bucket['key']
+        for truth in buckets_dict:
+            for prediction in buckets_dict[truth]:
                 labels.add(prediction)
-                count = prediction_bucket['doc_count']
+                try:
+                    count = filtered_buckets_dict[truth][prediction]
+                except KeyError:
+                    count = 0
                 data.append((truth, prediction, count))
+
         labels = list(labels)
         labels.sort()
         return pd.DataFrame(data, columns=['True', 'Predicted', 'Number']), labels
 
-    def __get_confusion_matrix_aggregations(self):
+    def __get_confusion_matrix_aggregations(self, full_matrix=False):
         """Testing seam to allow mocking calls to ZMLP. Performs an ES search with
         aggregations needed to build the confusion matrix.
 
         """
-        search = self.model.get_confusion_matrix_search(test_set_only=self.test_set_only,
-                                                        min_score=self.min_score,
-                                                        max_score=self.max_score)
+        if full_matrix:
+            search = self.model.get_confusion_matrix_search(test_set_only=self.test_set_only)
+        else:
+            search = self.model.get_confusion_matrix_search(test_set_only=self.test_set_only,
+                                                            min_score=self.min_score,
+                                                            max_score=self.max_score)
         search_results = self.app.assets.search(search)
         return search_results.aggregations()
+
+    def __get_dict_from_agg_results(self, aggs):
+        """Helper to simplify the ES agg return into nested dictionaries with labels as keys."""
+        buckets = aggs['nested#nested_labels']['filter#model_train_labels']['sterms#labels']['buckets']
+        results = {}
+        for label_bucket in buckets:
+            truth = label_bucket['key']
+            predictions = {}
+            for prediction_bucket in label_bucket['reverse_nested#predictions_by_label'][
+                    'sterms#predictions'][
+                    'buckets']:
+                predictions[prediction_bucket['key']] = prediction_bucket['doc_count']
+            results[truth] = predictions
+
+        return results
 
     def create_thumbnail_image(self):
         """Renders a thumbnail image of the confusion matrix and saves it to disk."""
