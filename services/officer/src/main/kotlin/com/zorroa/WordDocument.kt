@@ -1,6 +1,7 @@
 package com.zorroa
 
 import com.aspose.words.ImageSaveOptions
+import com.aspose.words.PageSet
 import com.aspose.words.PdfSaveOptions
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
@@ -45,8 +46,8 @@ class WordDocument(options: RenderRequest, inputStream: InputStream) : Document(
             val imageSaveOptions = ImageSaveOptions(com.aspose.words.SaveFormat.JPEG)
             imageSaveOptions.horizontalResolution = 96f
             imageSaveOptions.verticalResolution = 96f
-            imageSaveOptions.pageCount = 1
-            imageSaveOptions.pageIndex = (page - 1).coerceAtLeast(0)
+            imageSaveOptions.pageSet = PageSet(page-1)
+
 
             val output = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
             doc.save(output, imageSaveOptions)
@@ -85,8 +86,7 @@ class WordDocument(options: RenderRequest, inputStream: InputStream) : Document(
 
         val byteStream = ByteArrayOutputStream()
         val saveOptions = PdfSaveOptions()
-        saveOptions.pageIndex = page - 1
-        saveOptions.pageCount = 1
+        saveOptions.pageSet = PageSet(page-1)
         doc.save(byteStream, saveOptions)
 
         // save the page as pdf then extract content from 1 page pdf
