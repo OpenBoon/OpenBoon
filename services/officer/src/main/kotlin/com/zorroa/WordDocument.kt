@@ -46,8 +46,7 @@ class WordDocument(options: RenderRequest, inputStream: InputStream) : Document(
             val imageSaveOptions = ImageSaveOptions(com.aspose.words.SaveFormat.JPEG)
             imageSaveOptions.horizontalResolution = 96f
             imageSaveOptions.verticalResolution = 96f
-            imageSaveOptions.pageSet = PageSet(page-1)
-
+            imageSaveOptions.pageSet = PageSet(page - 1)
 
             val output = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
             doc.save(output, imageSaveOptions)
@@ -86,7 +85,7 @@ class WordDocument(options: RenderRequest, inputStream: InputStream) : Document(
 
         val byteStream = ByteArrayOutputStream()
         val saveOptions = PdfSaveOptions()
-        saveOptions.pageSet = PageSet(page-1)
+        saveOptions.pageSet = PageSet(page - 1)
         doc.save(byteStream, saveOptions)
 
         // save the page as pdf then extract content from 1 page pdf
