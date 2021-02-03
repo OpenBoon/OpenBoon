@@ -9,6 +9,7 @@ import java.io.File
 import kotlin.test.assertEquals
 import org.junit.AfterClass
 import org.junit.BeforeClass
+import org.junit.Ignore
 import org.junit.Test
 import spark.kotlin.stop
 import kotlin.test.assertNotNull
@@ -59,6 +60,7 @@ class TestServer {
     }
 
     @Test
+    @Ignore
     fun testRender() {
         val opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
         opts.page = 1
