@@ -38,8 +38,8 @@ object Config {
 
     val officer: OfficerConfiguration
     val bucket: BucketConfiguration
-    val storageClient = System.getenv("ZMLP_STORAGE_CLIENT") ?:
-        System.getProperty("ZMLP_STORAGE_CLIENT") ?: "minio"
+    val storageClient = System.getenv("ZMLP_STORAGE_CLIENT")
+        ?: System.getProperty("ZMLP_STORAGE_CLIENT") ?: "minio"
 
     init {
         officer = OfficerConfiguration()
