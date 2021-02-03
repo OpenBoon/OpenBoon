@@ -21,8 +21,6 @@ class TestServer {
         @BeforeClass
         @JvmStatic
         fun beforeClass() {
-            System.setProperty("ZMLP_STORAGE_CLIENT", "minio")
-            System.setProperty("REDIS_HOST", "localhost:6379")
             runServer(9876)
             Thread.sleep(1000)
         }

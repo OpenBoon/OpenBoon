@@ -115,7 +115,7 @@ class RedisConfig {
 
     init {
         // If the redis host is set then we use a Redis queue.
-        var host = System.getenv("REDIS_HOST") ?: System.getProperty("REDIS_HOST")
+        var host = System.getenv("REDIS_HOST") ?: "localhost:6379"
 
         if (host != null) {
             val config = org.redisson.config.Config()
