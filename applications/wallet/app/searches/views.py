@@ -101,6 +101,9 @@ class SearchViewSet(CreateModelMixin,
 
             [$filter1, $filter2, $filter3]
 
+        An additional, optional, querystring parameter is `fields`, which takes a
+        comma-seperated string of field names to include in the quary return
+
         The JSON Filter Objects you can run queries for are:
 
         Exists:
@@ -204,6 +207,11 @@ class SearchViewSet(CreateModelMixin,
                   'source*',
                   'files*',
                   'media*']
+
+        # Include additionally requested fields in query return
+        requested_fields = request.query_params.get('fields')
+        if requested_fields is not None:
+            fields.extend([f'{x}*' for x in requested_fields.split(',')])
 
         query = self._build_query_from_querystring(request)
 
