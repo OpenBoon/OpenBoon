@@ -56,13 +56,13 @@ class UsageReporter():
             'endTime': end_time.strftime(time_format),
             'metricValueSets': [
                 {
-                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_video_non_named',
+                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_video_non_named_processed',
                     'metricValues': [{'int64Value': int(usage['tier_1_video_hours'])}]},
                 {
                     'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_image_non_named',
                     'metricValues': [{'int64Value': int(usage['tier_1_image_count'])}]},
                 {
-                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_video_named',
+                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_video_named_processed',
                     'metricValues': [{'int64Value': int(usage['tier_2_video_hours'])}]},
                 {
                     'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_image_named',
