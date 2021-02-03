@@ -73,11 +73,18 @@ class SearchViewSet(CreateModelMixin,
     @action(detail=False, methods=['get'])
     def fields(self, request, project_pk):
         """Returns all available fields in the ES index and their type."""
+
+        # This is a temporary fix to remove fields that cause errors.
+        restricted_fields = ['clip']
+
         try:
             fields = self.field_utility.get_filter_map(request.client)
         except ValueError:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             data={'detail': ['ZMLP did not return field mappings as expected.']})
+        for field in restricted_fields:
+            if field in fields:
+                del fields[field]
         return Response(status=status.HTTP_200_OK, data=fields)
 
     @action(detail=False, methods=['get'])
