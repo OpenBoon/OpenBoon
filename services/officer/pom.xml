@@ -15,7 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.4.21-2</kotlin.version>
+        <kotlin.version>1.4.30</kotlin.version>
         <kotlin.comiler.jvmTarget>1.8</kotlin.comiler.jvmTarget>
     </properties>
 
