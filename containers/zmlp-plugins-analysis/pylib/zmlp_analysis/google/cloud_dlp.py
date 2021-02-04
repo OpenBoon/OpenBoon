@@ -55,11 +55,12 @@ class CloudDLPDetectEntities(AssetProcessor):
         p_path = self.get_proxy_image(frame.asset)
 
         img = cv2.imread(p_path)
-        item = {"byte_item": {"type": 1, "data": cv2.imencode('.jpg', img)[1].tobytes()}}
+        with open(p_path, mode="rb") as f:
+            item = {"byte_item": {"type_": 1, "data": f.read()}}
 
-        rsp = self.dlp_annotator.inspect_content(parent=parent,
-                                                 inspect_config=inspect_config,
-                                                 item=item)
+        rsp = self.dlp_annotator.inspect_content(request={"parent": parent,
+                                                          "inspect_config": inspect_config,
+                                                          "item": item})
 
         findings = rsp.result.findings
         if not findings:
