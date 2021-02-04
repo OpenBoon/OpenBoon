@@ -34,7 +34,6 @@ class CloudDLPDetectEntitiesTests(PluginUnitTestCase):
            side_effect=MockDlpServiceClient)
     @patch('zmlp_analysis.google.cloud_dlp.get_gcp_project_id')
     @patch('zmlp_analysis.google.cloud_dlp.get_proxy_level_path')
-
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch.object(file_storage, 'localize_file')
     def test_extract_entities(self, localize_patch, native_patch,
