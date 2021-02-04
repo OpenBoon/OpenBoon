@@ -203,10 +203,12 @@ fun runKtorServer(port: Int): ApplicationEngine {
     }
 }
 
-fun main(args: Array<String>) = try {
-    Config.logSystemConfiguration()
-    runKtorServer(Config.officer.port)
-} catch (e: Exception) {
-    println(e.message)
-    exitProcess(1)
+fun main() {
+    try {
+        Config.logSystemConfiguration()
+        runKtorServer(Config.officer.port)
+    } catch (e: Exception) {
+        println(e.message)
+        exitProcess(1)
+    }
 }
