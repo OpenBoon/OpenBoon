@@ -113,7 +113,7 @@ class CloudDLPDetectEntities(AssetProcessor):
                                analysis_dict[info_type])
 
         # This stores the raw google result in case we need it later.
-        file_storage.assets.store_blob(rsp.SerializeToString(),
+        file_storage.assets.store_blob(rsp._pb.SerializeToString(),
                                        asset,
                                        'gcp',
                                        'dlp.dat')
