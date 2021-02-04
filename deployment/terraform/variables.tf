@@ -199,9 +199,16 @@ variable "metrics-log-requests" {
   default     = "false"
 }
 
+variable "deep-video-analysis-enabled" {
+  description = "Feature flags deep video analysis"
+  default     = "false"
+}
+
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"
   zone   = "${var.country}-${var.region}-${var.zone}"
 }
+
+
 
