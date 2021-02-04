@@ -18,11 +18,11 @@ class CloudDLPDetectEntitiesTestCase(PluginUnitTestCase):
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch.object(file_storage.assets, 'store_blob')
-    def test_dlp_processor(self, store_patch, native_patch, localize_patch,
-                                  pid_patch, init_patch, proxy_patch):
+    def test_dlp_processor(self, store_patch, native_patch,
+                           localize_patch, pid_patch, init_patch, proxy_patch):
 
         CREDS = service_account.Credentials.from_service_account_file(os.path.dirname(__file__)
-                                                                       + '/gcp-creds.json')
+                                                                      + '/gcp-creds.json')
         path = zorroa_test_path('images/dlp/87497658.jpg')
         store_patch.return_value = None
         native_patch.return_value = path
