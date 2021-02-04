@@ -1,15 +1,26 @@
 package com.zorroa
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.CallLogging
+import io.ktor.http.cio.websocket.Frame
+import io.ktor.http.cio.websocket.readText
+import io.ktor.response.respond
+import io.ktor.routing.get
+import io.ktor.routing.routing
+import io.ktor.server.engine.ApplicationEngine
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+import io.ktor.websocket.WebSockets
+import io.ktor.websocket.webSocket
+import kotlinx.coroutines.channels.consumeEach
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import spark.kotlin.get
-import spark.kotlin.post
-import spark.kotlin.threadPool
 import java.io.InputStream
 import java.lang.management.ManagementFactory
+import java.util.Base64
 import java.util.UUID
-import javax.servlet.MultipartConfigElement
 import kotlin.system.exitProcess
 
 const val ASPOSE_LICENSE_FILE = "Aspose.Total.Java.lic"
@@ -23,7 +34,7 @@ class RenderRequest(
     var outputPath: String = "/projects/" + UUID.randomUUID().toString(),
     var dpi: Int = 100,
     var disableImageRender: Boolean = false,
-    var requestId: String = UUID.randomUUID().toString()
+    var requestId: String = UUID.randomUUID().toString(),
 )
 
 /**
@@ -61,11 +72,11 @@ fun extract(opts: RenderRequest, input: InputStream): Document {
     }
 }
 
-fun backoffResponse(): Map<String, Any>? {
+fun backoffResponse(): MutableMap<String, Any>? {
     val os = ManagementFactory.getOperatingSystemMXBean()
     val maxLoad = os.availableProcessors * Config.officer.loadMultiplier
     return if (os.systemLoadAverage > maxLoad) {
-        mapOf(
+        mutableMapOf(
             "load" to os.systemLoadAverage,
             "max" to os.availableProcessors * Config.officer.loadMultiplier
         )
@@ -77,89 +88,124 @@ fun backoffResponse(): Map<String, Any>? {
 /**
  * Start a server to handle multiple requests.
  */
-fun runServer(port: Int) {
+fun runKtorServer(port: Int): ApplicationEngine {
 
     val logger: Logger = LoggerFactory.getLogger("com.zorroa.officer")
-    val os = ManagementFactory.getOperatingSystemMXBean()
-
     logger.info("starting server!")
 
     // Init the storage manager
     StorageManager
     WorkQueue
 
-    val threads = (os.availableProcessors * 3).coerceAtLeast(8)
-    logger.info("init web server: threads=$threads port=$port")
+    return embeddedServer(
+        Netty,
+        port = port,
+    ) {
+        install(WebSockets)
+        install(CallLogging)
 
-    spark.kotlin.port(port)
-    threadPool(threads, threads, 600 * 1000)
+        logger.info("init web server: port=$port")
 
-    post("/exists", "application/json") {
-        val options = Json.mapper.readValue<ExistsRequest>(this.request.body())
-        val ioHandler = IOHandler(RenderRequest("none", options.page, options.outputPath))
-        logger.info("checking output path: {}", options.outputPath)
-        if (ioHandler.exists(options.page) && !WorkQueue.existsResquest(options)) {
-            this.response.status(200)
-        } else if (WorkQueue.existsResquest(options)) {
-            // Waiting for rendering
-            this.response.status(404)
-        } else {
-            // Don't exists and is not in rendering queue
-            this.response.status(410)
-        }
-        Json.mapper.writeValueAsString(mapOf("location" to ioHandler.getOutputPath()))
-    }
-
-    post("/render") {
-
-        // We have to set this but the location is never used.
-        request.attribute("org.eclipse.jetty.multipartConfig", MultipartConfigElement("/tmp"))
-
-        val file = this.request.raw().getPart("file")
-        val body = this.request.raw().getPart("body")
-
-        try {
-            val backoff = backoffResponse()
-            if (backoff != null) {
-                this.response.status(429)
-                Json.mapper.writeValueAsString(backoff)
-            } else {
-                val req = Json.mapper.readValue<RenderRequest>(body.inputStream.buffered())
-                val doc = extract(req, file.inputStream.buffered())
-
-                this.response.status(201)
-                val response = Json.mapper.writeValueAsString(
-                    mapOf(
-                        "location" to doc.ioHandler.getOutputPath(),
-                        "page-count" to doc.pageCount(),
-                        "request-id" to req.requestId
-                    )
-                )
-
-                WorkQueue.execute(WorkQueueEntry(doc, req))
-                response
+        routing {
+            get("/monitor/health") {
+                if (StorageManager.storageClient().bucketExists(Config.bucket.name)) {
+                    call.respond("""{"status": "UP"}""")
+                } else {
+                    call.respond("""{"status": "DOWN"}""")
+                }
             }
-        } catch (e: Exception) {
-            logger.warn("failed to process", e)
-            this.response.status(500)
-            Json.mapper.writeValueAsString(mapOf("status" to e.message))
-        }
-    }
 
-    get("/monitor/health") {
-        response.type("application/json")
-        if (StorageManager.storageClient().bucketExists(Config.bucket.name)) {
-            """{"status": "UP"}"""
-        } else {
-            response.status(400)
-            """{"status": "DOWN"}"""
+            webSocket("/exists") {
+                incoming.consumeEach {
+                    val frame = it as Frame.Text
+                    val response = mutableMapOf<String, Any>()
+                    val options = Json.mapper.readValue<ExistsRequest>(frame.readText())
+                    val ioHandler = IOHandler(RenderRequest("none", options.page, options.outputPath))
+
+                    logger.info("checking output path: {}", options.outputPath)
+
+                    if (ioHandler.exists(options.page) && !WorkQueue.existsResquest(options)) {
+                        response["status"] = ExistsStatus.EXISTS
+                    } else if (WorkQueue.existsResquest(options)) {
+                        // Waiting for rendering
+                        response["status"] = ExistsStatus.RENDERING
+                    } else {
+                        // Don't exists and is not in rendering queue
+                        response["status"] = ExistsStatus.NOT_EXISTS
+                    }
+                    response["location"] = ioHandler.getOutputPath()
+                    outgoing.send(Frame.Text(Json.mapper.writeValueAsString(response)))
+                }
+            }
+
+            webSocket("/render") {
+                incoming.receive().let {
+
+                    try {
+                        val request = it as Frame.Text
+                        val content = Json.mapper.readValue(request.readText(), Map::class.java)
+                        val base64File = content["file"].toString()
+
+                        val file = Base64.getDecoder().decode(base64File) as ByteArray
+                        val body = content["body"] as String
+
+                        val backoff = backoffResponse()
+
+                        if (backoff != null) {
+                            backoff["status"] = RenderStatus.TOO_MANY_REQUESTS
+                            outgoing.send(Frame.Text(Json.mapper.writeValueAsString(backoff)))
+                        } else {
+
+                            val req = Json.mapper.readValue<RenderRequest>(body)
+                            val doc = extract(req, file.inputStream())
+
+                            val response = Json.mapper.writeValueAsString(
+                                mapOf(
+                                    "location" to doc.ioHandler.getOutputPath(),
+                                    "page-count" to doc.pageCount(),
+                                    "request-id" to req.requestId,
+                                    "status" to RenderStatus.RENDER_QUEUE
+                                )
+                            )
+                            WorkQueue.execute(WorkQueueEntry(doc, req))
+                            send(Frame.Text(response))
+                        }
+                    } catch (eNull: NullPointerException) {
+                        logger.warn("Bad Request Exception")
+                        send(
+                            Frame.Text(
+                                Json.mapper.writeValueAsString(
+                                    mapOf(
+                                        "status" to RenderStatus.BAD_REQUEST,
+                                        "message" to eNull.message
+                                    )
+                                )
+                            )
+                        )
+                    } catch (e: Exception) {
+                        logger.warn("failed to process", e)
+                        send(
+                            Frame.Text(
+                                Json.mapper.writeValueAsString(
+                                    mapOf(
+                                        "status" to RenderStatus.FAIL,
+                                        "message" to e.message
+                                    )
+                                )
+                            )
+                        )
+                    }
+                }
+            }
         }
+    }.apply {
+        start(wait = false)
     }
 }
 
 fun main(args: Array<String>) = try {
     Config.logSystemConfiguration()
-    runServer(Config.officer.port)
+    runKtorServer(Config.officer.port)
 } catch (e: Exception) {
     println(e.message)
     exitProcess(1)

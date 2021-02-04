@@ -59,3 +59,17 @@ object Config {
         logger.info("Java max heap size: ${maxHeapSize}m")
     }
 }
+
+enum class ExistsStatus {
+    EXISTS,
+    RENDERING,
+    NOT_EXISTS
+}
+
+enum class RenderStatus {
+    TOO_MANY_REQUESTS,
+    FAIL,
+    RENDER_QUEUE,
+    BAD_REQUEST,
+    SUCCESS
+}
