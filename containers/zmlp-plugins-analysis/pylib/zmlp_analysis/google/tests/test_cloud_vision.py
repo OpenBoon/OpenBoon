@@ -1,7 +1,7 @@
 # flake8: noqa
 from unittest.mock import patch
 
-from google.cloud.vision import types
+from google.cloud.vision_v1 import types
 
 from zmlp_analysis.google.cloud_vision import *
 from zmlp_analysis.google.cloud_vision import file_storage
