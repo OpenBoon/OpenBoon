@@ -48,6 +48,7 @@ const ApiKeysAddForm = () => {
         )}
         apikey={apikey}
         onReset={() => dispatch(INITIAL_STATE)}
+        name={state.name}
       />
     )
   }

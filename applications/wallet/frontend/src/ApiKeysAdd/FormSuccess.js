@@ -11,7 +11,13 @@ import SectionTitle from '../SectionTitle'
 
 import { onCopy } from '../Copy/helpers'
 
-const ApiKeysAddFormSuccess = ({ projectId, permissions, apikey, onReset }) => {
+const ApiKeysAddFormSuccess = ({
+  projectId,
+  permissions,
+  apikey,
+  onReset,
+  name,
+}) => {
   const copyRef = useRef()
 
   useEffect(() => {
@@ -93,7 +99,7 @@ const ApiKeysAddFormSuccess = ({ projectId, permissions, apikey, onReset }) => {
           </span>
           <Button
             variant={VARIANTS.LINK}
-            download="api-key.json"
+            download={`${name.replace(/ /g, '_')}.json`}
             href={`data:application/octet-stream;charset=utf-8;base64,${window.btoa(
               JSON.stringify(apikey),
             )}`}
@@ -127,6 +133,7 @@ ApiKeysAddFormSuccess.propTypes = {
     secretKey: PropTypes.string.isRequired,
   }).isRequired,
   onReset: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
 }
 
 export default ApiKeysAddFormSuccess
