@@ -128,7 +128,7 @@ class ClipServiceImpl(
     private lateinit var jobLaunchService: JobLaunchService
 
     @Value("\${archivist.deep-video-analysis.enabled}")
-    private var enableDeepVideoAnalysis = true
+    private var enableDeepVideoAnalysis: Boolean
 
     override fun createClip(spec: ClipSpec): Clip {
         val rest = indexRoutingService.getProjectRestClient()
