@@ -322,6 +322,21 @@ class ProcessorExecutorTests(unittest.TestCase):
         metric_post_mock.asset_called_once()
 
     @patch('requests.post')
+    def test_record_analysis_metric_multiple_modules(self, post_mock):
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": TEST_IMAGE,
+            "module": "do not look at me"
+        }
+        frame = Frame(TestAsset(path='fake.jpg',
+                                attrs={'tmp.produced_analysis': ['module_1', 'module_2']}))
+        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper.process(frame)
+        post_mock.call_count == 2
+        assert ['module_1', 'module_2'] == [c[1]['service'] for c in post_mock.call_args_list]
+
+    @patch('requests.post')
     def test_record_analysis_metric_connection_error(self, metric_post_mock):
         metric_post_mock.side_effect = requests.exceptions.ConnectionError()
         ref = {
