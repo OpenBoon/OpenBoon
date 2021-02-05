@@ -14,6 +14,7 @@ import org.junit.Test
 import spark.kotlin.stop
 import kotlin.test.assertNotNull
 
+@Ignore
 class TestServer {
 
     val storageClient = MinioStorageClient()
