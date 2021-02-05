@@ -407,6 +407,18 @@ class AssetProcessor(Processor):
     which contains the Asset being processed.
     """
 
+    def preprocess(self, assets):
+        """
+        Run a pre-process on the assets. The assets can not be modified.
+
+        Args:
+            assets:
+
+        Returns:
+
+        """
+        pass
+
     def process(self, frame):
         """Process the given frame.
 
