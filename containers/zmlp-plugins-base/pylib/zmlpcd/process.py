@@ -355,6 +355,8 @@ class ProcessorWrapper(object):
                     # No need to log, this is normal.
                     return
 
+            # Remove the produced Analysis attribute.
+            frame.asset.del_attr('tmp.produced_analysis')
             self.instance.logger.info("started processor")
 
             retval = self.instance.process(frame)
@@ -525,6 +527,11 @@ class ProcessorWrapper(object):
             # Include starting ellipses as an indicator, favor end of path
             source_path = '...' + source_path[len(source_path)-252:]
         image_count, video_minutes = self._get_count_and_minutes(asset)
+
+        # Get a set of all new namespaces the processor wrote into
+        # If this set is False, then default to self.ref['module']
+        # asset.get_attr("tmp.produced_analysis")
+
         service = self.ref['module']
         body = {
             'project': ZmlpEnv.get_project_id(),
