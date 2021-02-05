@@ -148,9 +148,9 @@ class OfficerClient(object):
         """
         if isinstance(rsp, str):
             rsp = json.loads(rsp)
-        if rsp["status"] == ResponseStatus.FAIL:
+        if rsp["status"] == ResponseStatus.FAIL.value:
             raise ZmlpFatalProcessorException(rsp["message"])
-        if rsp["status"] == ResponseStatus.TOO_MANY_REQUESTS:
+        if rsp["status"] == ResponseStatus.TOO_MANY_REQUESTS.value:
             raise ZmlpFatalProcessorException(
                 "Officer server is overloaded: Load: {} - Max {}".format(rsp["load"], rsp["max"])
             )
@@ -168,10 +168,10 @@ class OfficerClient(object):
         conn = self._prepare_connection(self.exists_url)
         while True:
             rsp = self.get_render_status(asset, page, conn)
-            if rsp["status"] == ResponseStatus.EXISTS:
+            if rsp["status"] == ResponseStatus.EXISTS.value:
                 logger.info("Page: {} is ready".format(page))
                 break
-            if rsp["status"] == ResponseStatus.NOT_EXISTS:
+            if rsp["status"] == ResponseStatus.NOT_EXISTS.value:
                 logger.error("An error occurred. Page {} will not be rendered by officer"
                              .format(page))
                 raise ZmlpFatalProcessorException(
