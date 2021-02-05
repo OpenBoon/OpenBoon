@@ -1,16 +1,17 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.clients.EsRestClient
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.BatchUpdateClipProxyRequest
 import com.zorroa.archivist.domain.BatchUpdateResponse
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.ClipIdBuilder
-import com.zorroa.archivist.domain.UpdateClipProxyRequest
 import com.zorroa.archivist.domain.ClipSpec
 import com.zorroa.archivist.domain.CreateTimelineResponse
 import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.TimelineSpec
+import com.zorroa.archivist.domain.UpdateClipProxyRequest
 import com.zorroa.archivist.domain.WebVTTFilter
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
@@ -40,13 +41,13 @@ import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import java.io.OutputStream
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.UUID
+import javax.annotation.PostConstruct
 
 interface ClipService {
 
@@ -127,8 +128,15 @@ class ClipServiceImpl(
     @Autowired
     private lateinit var jobLaunchService: JobLaunchService
 
-    @Value("\${archivist.deep-video-analysis.enabled}")
-    private var enableDeepVideoAnalysis: Boolean = false
+    @Autowired
+    private lateinit var properties: ApplicationProperties
+
+    @PostConstruct
+    fun startup() {
+        logger.info("Deep video analysis enabled: {}",
+            properties.getBoolean("archivist.deep-video-analysis.enabled"))
+
+    }
 
     override fun createClip(spec: ClipSpec): Clip {
         val rest = indexRoutingService.getProjectRestClient()
@@ -163,7 +171,7 @@ class ClipServiceImpl(
         rest.client.index(req, RequestOptions.DEFAULT)
         val clip = Clip(id, asset.id, spec.timeline, spec.track, start, stop, spec.content, score.toDouble())
 
-        if (enableDeepVideoAnalysis) {
+        if (properties.getBoolean("archivist.deep-video-analysis.enabled")) {
             jobLaunchService.launchCipAnalysisJob(clip)
         }
 
@@ -233,7 +241,7 @@ class ClipServiceImpl(
             response.handleBulkResponse(rsp)
         }
 
-        if (enableDeepVideoAnalysis && timeline.deepAnalysis) {
+        if (properties.getBoolean("archivist.deep-video-analysis.enabled") && timeline.deepAnalysis) {
             val jobId = getZmlpActor().getAttr("jobId")
             if (jobId != null) {
                 val task =

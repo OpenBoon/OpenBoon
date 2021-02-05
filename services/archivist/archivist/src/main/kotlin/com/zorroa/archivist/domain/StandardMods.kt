@@ -744,7 +744,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -796,6 +796,10 @@ fun getStandardModules(): List<PipelineModSpec> {
                         ProcessorRef(
                             "zmlp_analysis.aws.RekognitionUnsafeDetection",
                             StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.aws.video.RekognitionUnsafeDetection",
+                            StandardContainers.ANALYSIS
                         )
                     )
                 )
@@ -828,13 +832,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.FACE_RECOGNITION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.aws.RekognitionCelebrityDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.aws.video.RekognitionCelebrityDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
