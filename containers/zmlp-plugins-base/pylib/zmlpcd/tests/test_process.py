@@ -334,7 +334,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         wrapper = self.pe.get_processor_wrapper(ref)
         wrapper.process(frame)
         post_mock.call_count == 2
-        assert ['module_1', 'module_2'] == [c[1]['service'] for c in post_mock.call_args_list]
+        assert ['module_1', 'module_2'] == [c[0][1]['service'] for c in post_mock.call_args_list]
 
     @patch('requests.post')
     def test_record_analysis_metric_connection_error(self, metric_post_mock):
