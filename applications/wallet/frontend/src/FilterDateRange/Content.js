@@ -52,8 +52,10 @@ const FilterDateRangeContent = ({
   const fallbackMin = formatISODate({ date: new Date(0) })
   const fallbackMax = formatISODate({ date: new Date() })
 
-  const { min: resultsMin = fallbackMin, max: resultsMax = fallbackMax } =
-    results || {}
+  const {
+    minAsString: resultsMin = fallbackMin,
+    maxAsString: resultsMax = fallbackMax,
+  } = results || {}
 
   const domainMin = parseDate({ date: resultsMin })
   const domainMax = parseDate({ date: resultsMax })
@@ -71,7 +73,7 @@ const FilterDateRangeContent = ({
   const [inputMin, setInputMin] = useState(dateValues[0])
   const [inputMax, setInputMax] = useState(dateValues[1])
 
-  const minMaxFix = getMinMaxFix({ queryMin, queryMax })
+  const minMaxFix = getMinMaxFix({ domainMin, domainMax })
 
   const sliderValues = [
     dateValues[0].getTime(),

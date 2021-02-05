@@ -79,7 +79,7 @@ class SupportProjectAdmin(NoDeleteMixin, ProjectAdmin):
 
         # If any of the Memberships are going to be deleted remove their API keys.
         if change:
-            membership_formset = formsets[1]
+            membership_formset = formsets[0]
             for membership_form in membership_formset:
                 if membership_form.cleaned_data['DELETE']:
                     membership = membership_form.instance

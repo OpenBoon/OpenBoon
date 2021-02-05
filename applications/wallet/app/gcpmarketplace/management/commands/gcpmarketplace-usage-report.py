@@ -48,7 +48,6 @@ class UsageReporter():
         if not usage:
             print(f'No usage data. Skipping report for entitlement {entitlement["name"]}.')
             return
-
         operation = {
             'operationId': str(uuid.uuid4()),
             'operationName': 'ZVI Usage Report',
@@ -56,18 +55,17 @@ class UsageReporter():
             'startTime': start_time.strftime(time_format),
             'endTime': end_time.strftime(time_format),
             'metricValueSets': [
-                # TODO: Get the real metric names.
                 {
-                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_tier_1_video',
+                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_video_non_named_processed',
                     'metricValues': [{'int64Value': int(usage['tier_1_video_hours'])}]},
                 {
-                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_tier_1_image',
+                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_image_non_named',
                     'metricValues': [{'int64Value': int(usage['tier_1_image_count'])}]},
                 {
-                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_tier_2_video',
+                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_video_named_processed',
                     'metricValues': [{'int64Value': int(usage['tier_2_video_hours'])}]},
                 {
-                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_tier_2_image',
+                    'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_image_named',
                     'metricValues': [{'int64Value': int(usage['tier_2_image_count'])}]}
             ]
         }
@@ -75,7 +73,6 @@ class UsageReporter():
             serviceName=settings.MARKETPLACE_SERVICE_NAME, body={
                 'operation': operation
             }).execute()
-
         if 'checkErrors' in check:
             print('Errors for user %s with product %s:' % (entitlement['account'],
                                                            entitlement['product']))

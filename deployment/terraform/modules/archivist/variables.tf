@@ -73,3 +73,6 @@ variable "elasticsearch-url" {
   default = "http://10.3.240.106"
 }
 
+variable "deep-video-analysis-enabled" {
+  default = "false"
+}

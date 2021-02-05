@@ -234,20 +234,21 @@ module "elasticsearch" {
 }
 
 module "archivist" {
-  source                  = "./modules/archivist"
-  project                 = var.project
-  country                 = var.country
-  image-pull-secret       = kubernetes_secret.dockerhub.metadata[0].name
-  sql-service-account-key = module.postgres.sql-service-account-key
-  sql-connection-name     = module.postgres.connection-name
-  sql-instance-name       = module.postgres.instance-name
-  inception-key-b64       = local.inception-key-b64
-  system-bucket           = google_storage_bucket.system.name
-  container-cluster-name  = module.gke-cluster.name
-  analyst-shared-key      = module.analyst.shared-key
-  container-tag           = var.container-tag
-  es-backup-bucket-name   = module.elasticsearch.backup-bucket-name
-  log-bucket-name         = google_storage_bucket.access-logs.name
+  source                      = "./modules/archivist"
+  project                     = var.project
+  country                     = var.country
+  image-pull-secret           = kubernetes_secret.dockerhub.metadata[0].name
+  sql-service-account-key     = module.postgres.sql-service-account-key
+  sql-connection-name         = module.postgres.connection-name
+  sql-instance-name           = module.postgres.instance-name
+  inception-key-b64           = local.inception-key-b64
+  system-bucket               = google_storage_bucket.system.name
+  container-cluster-name      = module.gke-cluster.name
+  analyst-shared-key          = module.analyst.shared-key
+  container-tag               = var.container-tag
+  es-backup-bucket-name       = module.elasticsearch.backup-bucket-name
+  log-bucket-name             = google_storage_bucket.access-logs.name
+  deep-video-analysis-enabled = var.deep-video-analysis-enabled
 }
 
 module "auth-server" {

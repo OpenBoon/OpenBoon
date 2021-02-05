@@ -40,6 +40,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import java.io.OutputStream
@@ -126,6 +127,9 @@ class ClipServiceImpl(
     @Autowired
     private lateinit var jobLaunchService: JobLaunchService
 
+    @Value("\${archivist.deep-video-analysis.enabled}")
+    private var enableDeepVideoAnalysis: Boolean = false
+
     override fun createClip(spec: ClipSpec): Clip {
         val rest = indexRoutingService.getProjectRestClient()
         val asset = assetService.getAsset(spec.assetId)
@@ -158,7 +162,11 @@ class ClipServiceImpl(
 
         rest.client.index(req, RequestOptions.DEFAULT)
         val clip = Clip(id, asset.id, spec.timeline, spec.track, start, stop, spec.content, score.toDouble())
-        jobLaunchService.launchCipAnalysisJob(clip)
+
+        if (enableDeepVideoAnalysis) {
+            jobLaunchService.launchCipAnalysisJob(clip)
+        }
+
         return clip
     }
 
@@ -225,7 +233,7 @@ class ClipServiceImpl(
             response.handleBulkResponse(rsp)
         }
 
-        if (timeline.deepAnalysis) {
+        if (enableDeepVideoAnalysis && timeline.deepAnalysis) {
             val jobId = getZmlpActor().getAttr("jobId")
             if (jobId != null) {
                 val task =
