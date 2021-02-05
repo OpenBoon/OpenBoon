@@ -1,7 +1,9 @@
 # flake8: noqa
 from unittest.mock import patch
 
+from google.cloud import vision
 from google.cloud.vision_v1 import types
+from google.type.latlng_pb2 import LatLng
 
 from zmlp_analysis.google.cloud_vision import *
 from zmlp_analysis.google.cloud_vision import file_storage
@@ -26,16 +28,16 @@ class MockImageAnnotatorClient:
         pass
 
     def object_localization(self, image):
-        poly = types.geometry_pb2.BoundingPoly(normalized_vertices=[
-            types.geometry_pb2.NormalizedVertex(x=0.14627186954021454, y=0.625028669834137),
-            types.geometry_pb2.NormalizedVertex(x=0.4326733350753784, y=0.17461903393268585),
-            types.geometry_pb2.NormalizedVertex(x=0.4326733350753784, y=0.4123673439025879),
-            types.geometry_pb2.NormalizedVertex(x=0.14627186954021454, y=0.4123673439025879)])
+        poly = types.geometry.BoundingPoly(normalized_vertices=[
+            types.geometry.NormalizedVertex(x=0.14627186954021454, y=0.625028669834137),
+            types.geometry.NormalizedVertex(x=0.4326733350753784, y=0.17461903393268585),
+            types.geometry.NormalizedVertex(x=0.4326733350753784, y=0.4123673439025879),
+            types.geometry.NormalizedVertex(x=0.14627186954021454, y=0.4123673439025879)])
 
         class ObjectDetectionResponse(object):
             def __init__(self):
                 self.localized_object_annotations = [
-                    types.image_annotator_pb2.LocalizedObjectAnnotation(mid="/m/0h9mv",
+                    types.image_annotator.LocalizedObjectAnnotation(mid="/m/0h9mv",
                                                                         language_code="en-US",
                                                                         name="Tire",
                                                                         score=0.9025126695632935,
@@ -76,7 +78,7 @@ class MockImageAnnotatorClient:
                                    score=0.542771399021,
                                    locations=[
                                        types.LocationInfo(
-                                           lat_lng=types.LatLng(
+                                           lat_lng=LatLng(
                                                latitude=48.858461,
                                                longitude=2.294351)
                                        )
@@ -84,7 +86,7 @@ class MockImageAnnotatorClient:
             types.EntityAnnotation(description="France Eiffel Hotel",
                                    score=0.166629374027,
                                    locations=[
-                                       types.LocationInfo(lat_lng=types.LatLng(
+                                       types.LocationInfo(lat_lng=LatLng(
                                            latitude=48.863783,
                                            longitude=2.290155)
                                        )
@@ -106,12 +108,12 @@ class MockImageAnnotatorClient:
     def face_detection(self, image):
         mock_annotations = [
             types.FaceAnnotation(
-                bounding_poly=types.geometry_pb2.BoundingPoly(
+                bounding_poly=types.geometry.BoundingPoly(
                     vertices=[
-                        types.geometry_pb2.Vertex(x=101, y=19),
-                        types.geometry_pb2.Vertex(x=273, y=19),
-                        types.geometry_pb2.Vertex(x=273, y=219),
-                        types.geometry_pb2.Vertex(x=101, y=219),
+                        types.geometry.Vertex(x=101, y=19),
+                        types.geometry.Vertex(x=273, y=19),
+                        types.geometry.Vertex(x=273, y=219),
+                        types.geometry.Vertex(x=101, y=219),
                     ]),
                 detection_confidence=0.996880471706,
                 joy_likelihood="UNLIKELY",
