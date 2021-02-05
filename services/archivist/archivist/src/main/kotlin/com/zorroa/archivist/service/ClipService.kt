@@ -133,9 +133,10 @@ class ClipServiceImpl(
 
     @PostConstruct
     fun startup() {
-        logger.info("Deep video analysis enabled: {}",
-            properties.getBoolean("archivist.deep-video-analysis.enabled"))
-
+        logger.info(
+            "Deep video analysis enabled: {}",
+            properties.getBoolean("archivist.deep-video-analysis.enabled")
+        )
     }
 
     override fun createClip(spec: ClipSpec): Clip {
