@@ -500,7 +500,7 @@ class ProcessorWrapper(object):
         try:
             response = requests.post(url, json=body)
         except requests.exceptions.ConnectionError as e:
-            msg = (f'Unable to register billing metrics, could not connect to metrics service.')
+            msg = ('Unable to register billing metrics, could not connect to metrics service.')
             logger.warning(msg)
             sentry_sdk.capture_message(msg)
             sentry_sdk.capture_exception(e)
