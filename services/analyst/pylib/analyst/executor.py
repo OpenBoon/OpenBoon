@@ -588,6 +588,31 @@ class DockerContainerWrapper(object):
             assets (list): The asset or possibly None.
 
         """
+        result = []
+        result_counter = 0
+
+        logger.info("processing {} assets".format(len(assets)))
+
+        self.check_killed()
+
+        # Execute preprocess
+        preprocess = {
+            "type": "preprocess",
+            "payload": {
+                "ref": ref,
+                "assets": assets
+            }
+        }
+        self.socket.send_json(preprocess)
+        while True:
+            event = self.receive_event()
+            event_type = event["type"]
+            if event_type == "preprocess":
+                break
+            else:
+                self.client.emit_event(self.task, event_type, event["payload"])
+
+        # Execute processs
         request = {
             "type": "execute",
             "payload": {
@@ -595,13 +620,6 @@ class DockerContainerWrapper(object):
                 "assets": assets
             }
         }
-
-        result = []
-        result_counter = 0
-
-        logger.info("processing {} assets".format(len(assets)))
-
-        self.check_killed()
         self.socket.send_json(request)
         while True:
             event = self.receive_event()
