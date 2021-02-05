@@ -43,6 +43,19 @@ class ProcessorExecutor(object):
         wrapper = self.get_processor_wrapper(ref)
         wrapper.generate(settings)
 
+    def execute_preprocesss(self, request):
+        assets = request.get("assets")
+        ref = request["ref"]
+        wrapper = self.get_processor_wrapper(ref)
+
+        # Multi-thread
+        if wrapper.instance:
+            wrapper.preprocess(assets)
+        else:
+            logger.warning(
+                "The processor {} has no instance, the class was not found".format(
+                    wrapper.class_name))
+
     def execute_processor(self, request):
         """
         Executes a single processor on a single data object and returns
@@ -66,6 +79,7 @@ class ProcessorExecutor(object):
 
         # Multi-thread
         if wrapper.instance:
+
             if wrapper.instance.use_threads:
                 for asset in assets:
                     self.queue.add_asset(wrapper, asset)
@@ -285,6 +299,30 @@ class ProcessorWrapper(object):
         finally:
             consumer.check_expand(True)
             self.reactor.write_event("finished", {})
+
+    def preprocess(self, assets):
+        start_time = time.monotonic()
+        try:
+            self.instance.preprocess(assets)
+        except ZmlpFatalProcessorException as upe:
+            # Set the asset to be skipped for further processing
+            # It will not be included in result
+            self.increment_stat("unrecoverable_error_count")
+            self.reactor.error(None, self.ref,
+                               upe, True, "preprocess", sys.exc_info()[2])
+        except Exception as e:
+            if self.instance.fatal_errors:
+                self.increment_stat("unrecoverable_error_count")
+            else:
+                self.increment_stat("error_count")
+            self.reactor.error(None, self.ref, e,
+                               self.instance.fatal_errors, "preprocess", sys.exc_info()[2])
+        finally:
+            # Always show metrics even if it was skipped because otherwise
+            # the pipeline checksums don't work.
+            total_time = round(time.monotonic() - start_time, 2)
+            self.instance.logger.info("completed preprocess in {0:.2f}".format(total_time))
+            self.reactor.write_event("preprocess", {})
 
     def process(self, frame):
         """

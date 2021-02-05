@@ -752,6 +752,10 @@ fun getStandardModules(): List<PipelineModSpec> {
                         ProcessorRef(
                             "zmlp_analysis.aws.RekognitionLabelDetection",
                             StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.aws.video.RekognitionLabelDetection",
+                            StandardContainers.ANALYSIS
                         )
                     )
                 )
