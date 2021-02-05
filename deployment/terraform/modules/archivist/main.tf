@@ -243,6 +243,10 @@ resource "kubernetes_deployment" "archivist" {
             name  = "MANAGEMENT_ENDPOINTS_PASSWORD"
             value = random_string.monitor-password.result
           }
+          env {
+            name  = "ARCHIVIST_DEEP_VIDEO_ANALYSIS_ENABLED"
+            value = var.deep-video-analysis-enabled
+          }
         }
       }
     }

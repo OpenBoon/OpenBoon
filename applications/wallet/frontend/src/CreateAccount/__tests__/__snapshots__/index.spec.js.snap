@@ -686,7 +686,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
          
         <a
-          href="/policies/20201208/terms-of-use.pdf"
+          href="/policies/20210201/terms-of-use.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -696,7 +696,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         and
          
         <a
-          href="/policies/20201208/privacy-policy.pdf"
+          href="/policies/20210201/privacy-policy.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -1387,7 +1387,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
         By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
          
         <a
-          href="/policies/20201208/terms-of-use.pdf"
+          href="/policies/20210201/terms-of-use.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -1397,7 +1397,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
         and
          
         <a
-          href="/policies/20201208/privacy-policy.pdf"
+          href="/policies/20210201/privacy-policy.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
