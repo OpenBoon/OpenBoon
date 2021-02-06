@@ -5,8 +5,7 @@ from unittest.mock import patch
 from requests import Response
 
 from zmlpcd.logs import setup_logging
-from zmlpcd.process import (ProcessorExecutor, AssetConsumer, is_file_type_allowed,
-                            ProcessorWrapper)
+from zmlpcd.process import ProcessorExecutor, AssetConsumer, is_file_type_allowed
 from zmlpcd.reactor import Reactor
 from zmlpsdk import Frame
 from zmlpsdk.testing import TestEventEmitter, TestAsset, TestProcessor
@@ -335,7 +334,8 @@ class ProcessorExecutorTests(unittest.TestCase):
         wrapper = self.pe.get_processor_wrapper(ref)
         wrapper.process(frame)
         post_mock.call_count == 2
-        assert ['module_1', 'module_2'] == [c[1]['json']['service'] for c in post_mock.call_args_list]
+        modules_called = [c[1]['json']['service'] for c in post_mock.call_args_list]
+        assert ['module_1', 'module_2'] == modules_called
 
     @patch('requests.post')
     def test_record_analysis_metric_connection_error(self, metric_post_mock):
