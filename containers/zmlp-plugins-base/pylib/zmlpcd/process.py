@@ -355,8 +355,6 @@ class ProcessorWrapper(object):
                     # No need to log, this is normal.
                     return
 
-            # Remove the produced Analysis attribute.
-            frame.asset.del_attr('tmp.produced_analysis')
             self.instance.logger.info("started processor")
 
             retval = self.instance.process(frame)
@@ -368,6 +366,9 @@ class ProcessorWrapper(object):
             total_time = round(time.monotonic() - start_time, 2)
             self.increment_stat("process_count")
             self.increment_stat("total_time", total_time)
+
+            # Remove the produced Analysis attribute.
+            frame.asset.del_attr('tmp.produced_analysis')
 
             # Check the expand queue.  A force check is done at teardown.
             self.reactor.check_expand()
