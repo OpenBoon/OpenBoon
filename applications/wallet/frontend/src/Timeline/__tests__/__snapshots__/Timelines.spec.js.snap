@@ -121,10 +121,6 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
 
 .emotion-27 {
   color: #009f22;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -730,10 +726,6 @@ exports[`<TimelineTimelines /> should render properly with Search Highlights Onl
 
 .emotion-6 {
   color: #009f22;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
