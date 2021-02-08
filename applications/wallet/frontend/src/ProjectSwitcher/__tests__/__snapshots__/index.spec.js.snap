@@ -274,10 +274,6 @@ exports[`<ProjectSwitcher /> should render properly with multiple projects by na
 
 .emotion-3 {
   margin-left: 8px;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 <div
