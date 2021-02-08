@@ -11,7 +11,7 @@ class OfficerPythonClientTests(unittest.TestCase):
     def setUp(self):
         self.path = zorroa_test_data('office/pdfTest.pdf')
         self.asset = TestAsset(str(self.path), id="abcdefg1234")
-        self.local_test = None # 'ws://localhost:7078'
+        self.local_test = None  # 'ws://localhost:7078'
         os.environ['ZMLP_JOB_ID'] = "abc123"
         os.environ['ZORROA_JOB_STORAGE_PATH'] = "/projects/foo"
 
@@ -41,7 +41,7 @@ class OfficerPythonClientTests(unittest.TestCase):
         assert "/office/pdfTest.pdf" in json.loads(body['body'])['fileName']
         assert "/projects/foo/officer/abcdefg1234" in json.loads(body['body'])["outputPath"]
         assert -1 == json.loads(body['body'])["page"]
-        assert True == json.loads(body['body'])["disableImageRender"]
+        assert json.loads(body['body'])["disableImageRender"]
 
     def test_get_render_request_body_clip(self):
         client = OfficerClient(self.local_test)
@@ -54,7 +54,7 @@ class OfficerPythonClientTests(unittest.TestCase):
         assert "/office/pdfTest.pdf" in json.loads(body['body'])['fileName']
         assert "/projects/foo/officer/abcdefg1234" in json.loads(body['body'])["outputPath"]
         assert 5 == json.loads(body['body'])["page"]
-        assert False == json.loads(body['body'])["disableImageRender"]
+        assert not json.loads(body['body'])["disableImageRender"]
 
     def test_get_cache_location_true(self):
         client = OfficerClient(self.local_test)
