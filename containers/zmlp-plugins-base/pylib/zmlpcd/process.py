@@ -50,7 +50,7 @@ class ProcessorExecutor(object):
 
         # Multi-thread
         if wrapper.instance:
-            wrapper.preprocess(assets)
+            wrapper.preprocess([Asset(a) for a in assets])
         else:
             logger.warning(
                 "The processor {} has no instance, the class was not found".format(
