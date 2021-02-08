@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import org.slf4j.LoggerFactory
+import java.io.InterruptedIOException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.Base64
@@ -93,12 +94,24 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
             }
             .get().build()
 
-        val rsp = client.newCall(request).execute()
-        if (rsp.isSuccessful) {
-            val body = rsp.body() ?: throw AuthServerClientException("Invalid APIKey")
-            return Mapper.readValue(body.byteStream())
-        } else {
-            throw AuthServerClientException("Invalid APIKey")
+        var tries = 0L
+        while (true) {
+            tries += 1
+            try {
+                val rsp = client.newCall(request).execute()
+                if (rsp.isSuccessful) {
+                    val body = rsp.body() ?: throw AuthServerClientException("Invalid APIKey")
+                    return Mapper.readValue(body.byteStream())
+                } else {
+                    throw AuthServerClientException("Invalid APIKey")
+                }
+            } catch (e: InterruptedIOException) {
+                logger.warn("Authentication timed out($tries), retrying....")
+                if (tries >= MAX_TRIES) {
+                    throw e
+                }
+                Thread.sleep(100)
+            }
         }
     }
 
@@ -205,6 +218,11 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
     }
 
     companion object {
+
+        /**
+         * Maximum number of tries for an auth request.
+         */
+        const val MAX_TRIES = 10
 
         val MEDIA_TYPE_JSON: MediaType = MediaType.get("application/json; charset=utf-8")
 
