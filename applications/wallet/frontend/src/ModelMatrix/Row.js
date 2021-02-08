@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tippy'
 
@@ -29,6 +29,8 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
       isOpen: false,
     },
   })
+
+  const [showTooltip, setShowTooltip] = useState(true)
 
   /* istanbul ignore next */
   useEffect(() => {
@@ -107,9 +109,12 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
               key={matrix.labels[col]}
               position="top"
               trigger="mouseenter"
+              onShow={() => setShowTooltip(true)}
+              onHide={() => setShowTooltip(false)}
               html={
                 <div
                   css={{
+                    display: showTooltip ? '' : 'none',
                     color: colors.structure.coal,
                     backgroundColor: colors.structure.white,
                     borderRadius: constants.borderRadius.small,
