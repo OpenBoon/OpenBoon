@@ -58,7 +58,7 @@ class OfficerClient(object):
             (str): An internal ZMLP URL where the thumbnails and metadata are located.
         """
         try:
-            conn = self._prepare_connection(self.exists_url)
+            conn = self._prepare_connection(self.render_url)
             post_files = self._get_render_request_body(asset, page, disable_images)
 
             conn.send(json.dumps(post_files))
