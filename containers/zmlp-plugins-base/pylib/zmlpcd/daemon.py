@@ -66,6 +66,7 @@ class ZmlpContainerDaemon(object):
         else:
             logger.warning("Unknown event: {}".format(etype))
 
+
 class ZmqEventEmitter(object):
     """
     An event emitter that emits to a ZMQ socket.
