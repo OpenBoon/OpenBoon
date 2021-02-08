@@ -209,10 +209,6 @@ Array [
 
 .emotion-3 {
   color: #808080;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 .emotion-4 {
@@ -727,10 +723,6 @@ Array [
 
 .emotion-3 {
   color: #808080;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 .emotion-4 {
@@ -1094,10 +1086,6 @@ Array [
 
 .emotion-3 {
   color: #808080;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 .emotion-4 {

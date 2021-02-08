@@ -121,11 +121,6 @@ Array [
   align-items: center;
 }
 
-.emotion-5 {
-  -webkit-animation: ;
-  animation: ;
-}
-
 .emotion-6 {
   padding-left: 4px;
 }
@@ -1739,11 +1734,6 @@ Array [
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-}
-
-.emotion-5 {
-  -webkit-animation: ;
-  animation: ;
 }
 
 .emotion-6 {

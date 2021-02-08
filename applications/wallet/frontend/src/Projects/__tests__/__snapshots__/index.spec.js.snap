@@ -157,10 +157,6 @@ exports[`<Projects /> should render an access denied screen if the url projectId
 
 .emotion-10 {
   margin-left: 8px;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 .emotion-11 {
