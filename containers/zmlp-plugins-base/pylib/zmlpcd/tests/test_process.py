@@ -86,6 +86,26 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert error["payload"]["path"] == "/foo/bing.jpg"
         assert asset["document"]["metrics"]["pipeline"][0]["error"] == "warning"
 
+    def test_execute_preprocess(self):
+        req = {
+            "ref": {
+                "className": "zmlpsdk.testing.TestProcessor",
+                "image": TEST_IMAGE
+            },
+            "assets": [
+                {
+                    "id": "1234",
+                    "document": {
+                        "source": {
+                            "path": "/foo/bing.jpg"
+                        }
+                    }
+                }
+            ]
+        }
+        self.pe.execute_preprocesss(req)
+        assert self.pe.get_processor_wrapper(req["ref"]).instance.preprocess_ran
+
     def test_execute_processor_and_raise_fatal(self):
         req = {
             "ref": {
