@@ -118,10 +118,6 @@ exports[`<TaskAssets /> should render properly 1`] = `
 
 .emotion-13 {
   color: #808080;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 .emotion-51 {

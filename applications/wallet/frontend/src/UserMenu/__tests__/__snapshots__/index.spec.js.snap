@@ -91,10 +91,6 @@ exports[`<UserMenu /> should render properly 1`] = `
 
 .emotion-5 {
   margin-left: 8px;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 <div
@@ -499,10 +495,6 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
 
 .emotion-5 {
   margin-left: 8px;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 <div
