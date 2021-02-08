@@ -5,7 +5,6 @@ from unittest.mock import patch
 import pytest
 
 from zmlp_analysis.google.cloud_video import AsyncVideoIntelligenceProcessor
-import zmlpsdk
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
 
@@ -107,7 +106,8 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
 
         timeline = tl_patch.call_args_list[0][0][1]
         assert "Detected Text" in timeline.tracks
-        assert timeline.tracks['Detected Text']['clips'][0]['content'] == ["there's more coming -- (Laughter)-"]
+        assert timeline.tracks['Detected Text']['clips'][0]['content'] == \
+               ["there's more coming -- (Laughter)-"]
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch("zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.get_video_proxy_uri")
