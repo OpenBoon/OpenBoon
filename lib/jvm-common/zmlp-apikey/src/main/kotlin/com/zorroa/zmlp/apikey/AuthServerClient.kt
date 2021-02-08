@@ -110,7 +110,7 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
                 if (tries >= MAX_TRIES) {
                     throw e
                 }
-                Thread.sleep(100)
+                Thread.sleep(200)
             }
         }
     }
