@@ -168,7 +168,7 @@ describe('Visualizer', function () {
       cy.selectFirstAsset()
     })
 
-    it.only('can add a Date filter', function () {
+    it('can add a Date filter', function () {
       cy.login()
 
       cy.visit(`/${this.PROJECT_ID}/visualizer`)
