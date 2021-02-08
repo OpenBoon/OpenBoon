@@ -142,7 +142,7 @@
     "react-use-clipboard": "1.0.7",
     "react-virtualized-auto-sizer": "1.0.4",
     "react-window": "1.8.6",
-    "react-window-infinite-loader": "1.0.5",
+    "react-window-infinite-loader": "1.0.7",
     "swr": "0.4.1",
     "use-resize-observer": "7.0.0",
     "utf8": "3.0.0",
