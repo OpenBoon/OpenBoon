@@ -2,7 +2,7 @@ import logging
 import time
 
 import backoff
-import google.cloud.videointelligence_v1p3beta1 as videointelligence
+import google.cloud.videointelligence as videointelligence
 from google.api_core.exceptions import ResourceExhausted
 
 from zmlp_analysis.utils.prechecks import Prechecks
@@ -75,7 +75,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         # be badd, mmmkay.
         proxy_uri = self.get_video_proxy_uri(asset)
         annotation_result = self._get_video_annotations(proxy_uri)
-        file_storage.assets.store_blob(annotation_result.SerializeToString(),
+        file_storage.assets.store_blob(annotation_result._pb.SerializeToString(),
                                        asset,
                                        'gcp',
                                        'video-intelligence.dat')
@@ -240,27 +240,32 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         """
         features = []
-        video_context = {}
+        video_context = None
         if self.arg_value('detect_explicit'):
-            features.append(videointelligence.enums.Feature.EXPLICIT_CONTENT_DETECTION)
+            features.append(videointelligence.Feature.EXPLICIT_CONTENT_DETECTION)
         if self.arg_value('detect_labels'):
-            features.append(videointelligence.enums.Feature.LABEL_DETECTION)
+            features.append(videointelligence.Feature.LABEL_DETECTION)
         if self.arg_value('detect_text'):
-            features.append(videointelligence.enums.Feature.TEXT_DETECTION)
+            features.append(videointelligence.Feature.TEXT_DETECTION)
         if self.arg_value('detect_speech'):
-            features.append(videointelligence.enums.Feature.SPEECH_TRANSCRIPTION)
-            config = videointelligence.types.SpeechTranscriptionConfig(
-                    language_code="en-US", enable_automatic_punctuation=True)
-            video_context = videointelligence.types.VideoContext(
-                    speech_transcription_config=config)
+            features.append(videointelligence.Feature.SPEECH_TRANSCRIPTION)
+            config = videointelligence.SpeechTranscriptionConfig(
+                language_code="en-US", enable_automatic_punctuation=True)
+            video_context = videointelligence.VideoContext(
+                speech_transcription_config=config)
         if self.arg_value('detect_objects'):
-            features.append(videointelligence.enums.Feature.OBJECT_TRACKING)
+            features.append(videointelligence.Feature.OBJECT_TRACKING)
         if self.arg_value('detect_logos'):
-            features.append(videointelligence.enums.Feature.LOGO_RECOGNITION)
+            features.append(videointelligence.Feature.LOGO_RECOGNITION)
 
-        logger.info("Calling Google Video Intelligence,  ctx={}".format(video_context))
-        operation = self.video_intel_client.annotate_video(input_uri=uri, features=features,
-                                                           video_context=video_context)
+        logger.info("Calling Google Video Intelligence")
+        operation = self.video_intel_client.annotate_video(
+            request={
+                "features": features,
+                "input_uri": uri,
+                "video_context": video_context
+            }
+        )
 
         while not operation.done():
             logger.info("Waiting on Google Visual Intelligence {}".format(uri))

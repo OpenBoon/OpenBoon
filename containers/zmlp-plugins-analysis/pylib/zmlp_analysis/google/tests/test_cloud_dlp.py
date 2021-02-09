@@ -13,7 +13,7 @@ class MockDlpServiceClient:
     def __init__(self, *args, **kwargs):
         pass
 
-    def inspect_content(self, parent='', inspect_config='', item=''):
+    def inspect_content(self, request={}):
         bbox = types.BoundingBox(top=146, left=86, width=83, height=26)
         image_location = types.ImageLocation(bounding_boxes=[bbox, bbox])
         content_location = types.ContentLocation(image_location=image_location)

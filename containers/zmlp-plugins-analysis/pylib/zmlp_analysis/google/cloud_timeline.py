@@ -316,4 +316,4 @@ def convert_offset(offset):
     if not offset:
         return 0
     else:
-        return offset.seconds + (offset.nanos / 1000000000.0)
+        return offset.seconds + (offset.microseconds / 1000000.0)
