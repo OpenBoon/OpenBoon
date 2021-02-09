@@ -53,7 +53,7 @@ class ZmlpContainerDaemon(object):
         if etype == "ready":
             self.reactor.write_event("ok", {})
         elif etype == "preprocess":
-            self.executor.execute_preprocesss(event["payload"])
+            self.executor.execute_preprocess(event["payload"])
         elif etype == "execute":
             self.executor.execute_processor(event["payload"])
         elif etype == "generate":
