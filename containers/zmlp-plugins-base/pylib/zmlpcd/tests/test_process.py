@@ -86,6 +86,26 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert error["payload"]["path"] == "/foo/bing.jpg"
         assert asset["document"]["metrics"]["pipeline"][0]["error"] == "warning"
 
+    def test_execute_preprocess(self):
+        req = {
+            "ref": {
+                "className": "zmlpsdk.testing.TestProcessor",
+                "image": TEST_IMAGE
+            },
+            "assets": [
+                {
+                    "id": "1234",
+                    "document": {
+                        "source": {
+                            "path": "/foo/bing.jpg"
+                        }
+                    }
+                }
+            ]
+        }
+        self.pe.execute_preprocess(req)
+        assert self.pe.get_processor_wrapper(req["ref"]).instance.preprocess_ran
+
     def test_execute_processor_and_raise_fatal(self):
         req = {
             "ref": {
@@ -320,6 +340,22 @@ class ProcessorExecutorTests(unittest.TestCase):
         wrapper = self.pe.get_processor_wrapper(ref)
         wrapper.process(frame)
         metric_post_mock.asset_called_once()
+
+    @patch('requests.post')
+    def test_record_analysis_metric_multiple_modules(self, post_mock):
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": TEST_IMAGE,
+            "module": "do not look at me"
+        }
+        frame = Frame(TestAsset(path='fake.jpg',
+                                attrs={'tmp.produced_analysis': ['module_1', 'module_2']}))
+        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper.process(frame)
+        post_mock.call_count == 2
+        modules_called = [c[1]['json']['service'] for c in post_mock.call_args_list]
+        assert ['module_1', 'module_2'] == modules_called
 
     @patch('requests.post')
     def test_record_analysis_metric_connection_error(self, metric_post_mock):

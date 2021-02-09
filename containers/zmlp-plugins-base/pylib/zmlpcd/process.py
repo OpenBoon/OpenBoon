@@ -43,18 +43,11 @@ class ProcessorExecutor(object):
         wrapper = self.get_processor_wrapper(ref)
         wrapper.generate(settings)
 
-    def execute_preprocesss(self, request):
+    def execute_preprocess(self, request):
         assets = request.get("assets")
         ref = request["ref"]
         wrapper = self.get_processor_wrapper(ref)
-
-        # Multi-thread
-        if wrapper.instance:
-            wrapper.preprocess(assets)
-        else:
-            logger.warning(
-                "The processor {} has no instance, the class was not found".format(
-                    wrapper.class_name))
+        wrapper.preprocess([Asset(a) for a in assets])
 
     def execute_processor(self, request):
         """
@@ -303,25 +296,22 @@ class ProcessorWrapper(object):
     def preprocess(self, assets):
         start_time = time.monotonic()
         try:
-            self.instance.preprocess(assets)
-        except ZmlpFatalProcessorException as upe:
-            # Set the asset to be skipped for further processing
-            # It will not be included in result
-            self.increment_stat("unrecoverable_error_count")
-            self.reactor.error(None, self.ref,
-                               upe, True, "preprocess", sys.exc_info()[2])
-        except Exception as e:
-            if self.instance.fatal_errors:
-                self.increment_stat("unrecoverable_error_count")
+            if self.instance:
+                self.instance.preprocess(assets)
+                total_time = round(time.monotonic() - start_time, 2)
+                self.instance.logger.info("completed preprocess in {0:.2f}".format(total_time))
             else:
-                self.increment_stat("error_count")
+                logger.warning(
+                    "The processor {} has no instance, the class was not found".format(
+                        self.class_name))
+        except Exception as e:
+            # Preprocess is fatal.
+            self.increment_stat("unrecoverable_error_count")
             self.reactor.error(None, self.ref, e,
-                               self.instance.fatal_errors, "preprocess", sys.exc_info()[2])
+                               True, "preprocess", sys.exc_info()[2])
         finally:
             # Always show metrics even if it was skipped because otherwise
             # the pipeline checksums don't work.
-            total_time = round(time.monotonic() - start_time, 2)
-            self.instance.logger.info("completed preprocess in {0:.2f}".format(total_time))
             self.reactor.write_event("preprocess", {})
 
     def process(self, frame):
@@ -367,6 +357,9 @@ class ProcessorWrapper(object):
             self.increment_stat("process_count")
             self.increment_stat("total_time", total_time)
 
+            # Remove the produced Analysis attribute.
+            frame.asset.del_attr('tmp.produced_analysis')
+
             # Check the expand queue.  A force check is done at teardown.
             self.reactor.check_expand()
 
@@ -391,7 +384,7 @@ class ProcessorWrapper(object):
         finally:
             # Always show metrics even if it was skipped because otherwise
             # the pipeline checksums don't work.
-            self.instance.logger.info("completed processor in {0:.2f}".format(total_time))
+            logger.info("completed processor in {0:.2f}".format(total_time))
             self.apply_metrics(frame.asset, processed, total_time, error)
             self.reactor.write_event("asset", {
                 "asset": frame.asset.for_json(),
@@ -525,37 +518,43 @@ class ProcessorWrapper(object):
             # Include starting ellipses as an indicator, favor end of path
             source_path = '...' + source_path[len(source_path)-252:]
         image_count, video_minutes = self._get_count_and_minutes(asset)
-        service = self.ref['module']
-        body = {
-            'project': ZmlpEnv.get_project_id(),
-            'service': service,
-            'asset_id': asset.id,
-            'asset_path': source_path,
-            'image_count': image_count,
-            'video_minutes': video_minutes,
-        }
-        sentry_sdk.set_context('billing_metric', body)
-        try:
-            response = requests.post(url, json=body)
-        except requests.exceptions.ConnectionError as e:
-            msg = ('Unable to register billing metrics, could not connect to metrics service.')
-            logger.warning(msg)
-            sentry_sdk.capture_message(msg)
-            sentry_sdk.capture_exception(e)
-            msg = f'Metric missed: {body}'
-            logger.warning(msg)
 
-        if not response.ok:
-            duplicate_msg = 'The fields service, asset_id, project must make a unique set.'
-            if duplicate_msg in response.json().get('non_field_errors'):
-                logger.info(f'Duplicate metric skipped for {asset.id}: {service}')
-            else:
-                msg = (f'Unable to register billing metrics. {response.status_code}: '
-                       f'{response.reason}')
+        # Some processors, like gcp-video-intelligence, apply multiple modules at once
+        # and track them in a temporary namespace on the asset. Record analsys for every
+        # module added.
+        modules = asset.get_attr('tmp.produced_analysis') or [self.ref['module']]
+
+        for service in modules:
+            body = {
+                'project': ZmlpEnv.get_project_id(),
+                'service': service,
+                'asset_id': asset.id,
+                'asset_path': source_path,
+                'image_count': image_count,
+                'video_minutes': video_minutes,
+            }
+            sentry_sdk.set_context('billing_metric', body)
+            try:
+                response = requests.post(url, json=body)
+            except requests.exceptions.ConnectionError as e:
+                msg = ('Unable to register billing metrics, could not connect to metrics service.')
                 logger.warning(msg)
                 sentry_sdk.capture_message(msg)
+                sentry_sdk.capture_exception(e)
                 msg = f'Metric missed: {body}'
                 logger.warning(msg)
+
+            if not response.ok:
+                duplicate_msg = 'The fields service, asset_id, project must make a unique set.'
+                if duplicate_msg in response.json().get('non_field_errors'):
+                    logger.info(f'Duplicate metric skipped for {asset.id}: {service}')
+                else:
+                    msg = (f'Unable to register billing metrics. {response.status_code}: '
+                           f'{response.reason}')
+                    logger.warning(msg)
+                    sentry_sdk.capture_message(msg)
+                    msg = f'Metric missed: {body}'
+                    logger.warning(msg)
 
     def _get_count_and_minutes(self, asset):
         """Helper to return total images and number of video minutes for an asset.
