@@ -167,5 +167,29 @@ describe('Visualizer', function () {
 
       cy.selectFirstAsset()
     })
+
+    it('can add a Date filter', function () {
+      cy.login()
+
+      cy.visit(`/${this.PROJECT_ID}/visualizer`)
+
+      cy.get('button[aria-label="Filters"]').click()
+
+      cy.contains('Add Filters').click()
+
+      cy.get('summary[aria-label="System"]').click()
+
+      cy.contains('timeModified').click()
+
+      cy.contains('Add Filters').click()
+
+      cy.contains('system.timeModified')
+
+      cy.contains('exists').get('select').select('date')
+
+      cy.contains('Reset').click()
+
+      cy.selectFirstAsset()
+    })
   })
 })
