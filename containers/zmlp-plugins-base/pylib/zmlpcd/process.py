@@ -43,18 +43,11 @@ class ProcessorExecutor(object):
         wrapper = self.get_processor_wrapper(ref)
         wrapper.generate(settings)
 
-    def execute_preprocesss(self, request):
+    def execute_preprocess(self, request):
         assets = request.get("assets")
         ref = request["ref"]
         wrapper = self.get_processor_wrapper(ref)
-
-        # Multi-thread
-        if wrapper.instance:
-            wrapper.preprocess([Asset(a) for a in assets])
-        else:
-            logger.warning(
-                "The processor {} has no instance, the class was not found".format(
-                    wrapper.class_name))
+        wrapper.preprocess([Asset(a) for a in assets])
 
     def execute_processor(self, request):
         """
@@ -303,25 +296,22 @@ class ProcessorWrapper(object):
     def preprocess(self, assets):
         start_time = time.monotonic()
         try:
-            self.instance.preprocess(assets)
-        except ZmlpFatalProcessorException as upe:
-            # Set the asset to be skipped for further processing
-            # It will not be included in result
-            self.increment_stat("unrecoverable_error_count")
-            self.reactor.error(None, self.ref,
-                               upe, True, "preprocess", sys.exc_info()[2])
-        except Exception as e:
-            if self.instance.fatal_errors:
-                self.increment_stat("unrecoverable_error_count")
+            if self.instance:
+                self.instance.preprocess(assets)
+                total_time = round(time.monotonic() - start_time, 2)
+                self.instance.logger.info("completed preprocess in {0:.2f}".format(total_time))
             else:
-                self.increment_stat("error_count")
+                logger.warning(
+                    "The processor {} has no instance, the class was not found".format(
+                        self.class_name))
+        except Exception as e:
+            # Preprocess is fatal.
+            self.increment_stat("unrecoverable_error_count")
             self.reactor.error(None, self.ref, e,
-                               self.instance.fatal_errors, "preprocess", sys.exc_info()[2])
+                               True, "preprocess", sys.exc_info()[2])
         finally:
             # Always show metrics even if it was skipped because otherwise
             # the pipeline checksums don't work.
-            total_time = round(time.monotonic() - start_time, 2)
-            self.instance.logger.info("completed preprocess in {0:.2f}".format(total_time))
             self.reactor.write_event("preprocess", {})
 
     def process(self, frame):
@@ -391,7 +381,7 @@ class ProcessorWrapper(object):
         finally:
             # Always show metrics even if it was skipped because otherwise
             # the pipeline checksums don't work.
-            self.instance.logger.info("completed processor in {0:.2f}".format(total_time))
+            logger.info("completed processor in {0:.2f}".format(total_time))
             self.apply_metrics(frame.asset, processed, total_time, error)
             self.reactor.write_event("asset", {
                 "asset": frame.asset.for_json(),
