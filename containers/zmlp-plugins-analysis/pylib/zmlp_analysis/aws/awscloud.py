@@ -29,7 +29,7 @@ class AwsCloudResources:
 
         rand = ''.join(random.choice(string.ascii_lowercase) for i in range(10))
         name = "AmazonRekognition_{}_{}".format(ZmlpEnv.get_task_id(), rand)
-        logger.debug("Creating AWS resources: {}".format(name))
+        logger.info("Creating AWS resources: {}".format(name))
 
         self.queue = self.create_queue(name)
         self.topic = self.create_topic(name)
