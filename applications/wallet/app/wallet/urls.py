@@ -43,7 +43,7 @@ from roles.views import RolesViewSet
 from searches.views import SearchViewSet
 from supportadmin.admin import support_admin_site
 from visualizations.views import VisualizationViewSet
-from wallet.views import WalletAPIRootView
+from wallet.views import WalletAPIRootView, UsageReportView
 
 router = routers.DefaultRouter()
 router.APIRootView = WalletAPIRootView
@@ -103,6 +103,7 @@ support_admin_site.enable_nav_sidebar = False
 
 urlpatterns = [
     path('admin/', support_admin_site.urls),
+    path('admin/generate_usage_report', UsageReportView.as_view(), name='generate_usage_report'),
     path('api/v1/login/', LoginView.as_view(), name='api-login'),
     path('api/v1/', include(router.urls)),
     path('api/v1/', include(projects_router.urls)),
