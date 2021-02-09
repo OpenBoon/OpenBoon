@@ -41,7 +41,8 @@ class ServiceComponents(object):
         self.client = ClusterClient(args.archivist, shared_key, args.port)
         self.executor = Executor(self.client,
                                  ping_timer_seconds=args.ping,
-                                 poll_timer_seconds=args.poll)
+                                 poll_timer_seconds=args.poll,
+                                 not_running_grace_seconds=args.grace)
 
 
 class ClusterClient(object):
@@ -177,6 +178,10 @@ class ClusterClient(object):
         }
         return headers
 
+    def get_task_status(self, task_id):
+        return requests.get(self.remote_url + "/api/v1/tasks/{}".format(task_id),
+                            verify=False, headers=self._headers()).json()
+
 
 class Executor(object):
     """
@@ -188,7 +193,8 @@ class Executor(object):
 
     """
 
-    def __init__(self, client, ping_timer_seconds=0, poll_timer_seconds=0):
+    def __init__(self, client, ping_timer_seconds=0, poll_timer_seconds=0,
+                 not_running_grace_seconds=180):
         """
         Create a new Executor.
 
@@ -201,6 +207,8 @@ class Executor(object):
         self.client = client
         self.ping_timer_seconds = ping_timer_seconds
         self.poll_timer_seconds = poll_timer_seconds
+        self.not_running_timer_seconds = {}
+        self.not_running_grace_seconds = not_running_grace_seconds
 
         self.disable_poll_timer = False
         self.poll_count = 0
@@ -355,10 +363,22 @@ class Executor(object):
         while True:
             time.sleep(self.ping_timer_seconds)
             try:
-                self.send_ping()
+                ping_response = self.send_ping()
+                self.check_task_status(ping_response['taskId'])
                 self.first_ping = False
             except Exception:
                 logger.exception("Failed to send ping.")
+
+    def check_task_status(self, task_id):
+        if task_id:
+            response = self.client.get_task_status(task_id)
+            if response['state'] != 'Running':
+                if task_id not in self.not_running_timer_seconds:
+                    self.not_running_timer_seconds[task_id] = 0
+                self.not_running_timer_seconds[task_id] += self.ping_timer_seconds
+                if self.not_running_timer_seconds[task_id] >= self.not_running_grace_seconds:
+                    del self.not_running_timer_seconds[task_id]
+                    return self.kill_task(task_id, "Failure", "Not Running timeout")
 
     def ___poll_timer_func(self):
         """
