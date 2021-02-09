@@ -1,5 +1,6 @@
 import logging
-import time
+import random
+import string
 
 from botocore.exceptions import ClientError
 
@@ -26,13 +27,14 @@ class AwsCloudResources:
         self.sns = AwsEnv.general_aws_client(service='sns')
         self.sqs = AwsEnv.general_aws_client(service='sqs')
 
-        ms = int(time.time())
-        name = "AmazonRekognition_{}_{}".format(ZmlpEnv.get_task_id(), ms)
+        rand = ''.join(random.choice(string.ascii_lowercase) for i in range(10))
+        name = "AmazonRekognition_{}_{}".format(ZmlpEnv.get_task_id(), rand)
+        logger.debug("Creating AWS resources: {}".format(name))
 
         self.queue = self.create_queue(name)
         self.topic = self.create_topic(name)
 
-        # Need to fetch the queue ARN seperately, for some reason.
+        # Need to fetch the queue ARN separately, for some reason.
         q_attrs = self.sqs.get_queue_attributes(
             QueueUrl=self.queue_url, AttributeNames=['QueueArn'])
         self.queue_arn = q_attrs['Attributes']['QueueArn']
