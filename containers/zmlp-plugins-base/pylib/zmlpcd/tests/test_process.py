@@ -103,7 +103,7 @@ class ProcessorExecutorTests(unittest.TestCase):
                 }
             ]
         }
-        self.pe.execute_preprocesss(req)
+        self.pe.execute_preprocess(req)
         assert self.pe.get_processor_wrapper(req["ref"]).instance.preprocess_ran
 
     def test_execute_processor_and_raise_fatal(self):
