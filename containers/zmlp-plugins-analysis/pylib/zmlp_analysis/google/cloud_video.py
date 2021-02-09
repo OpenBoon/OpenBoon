@@ -80,22 +80,28 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                                        'gcp',
                                        'video-intelligence.dat')
 
-        if self.arg_value('detect_logos'):
+        if self.arg_value('detect_logos') and \
+                self.should_run(asset, 'gcp-video-logo-detection'):
             self.handle_detect_logos(asset, annotation_result)
 
-        if self.arg_value('detect_objects'):
+        if self.arg_value('detect_objects') and \
+                self.should_run(asset, 'gcp-video-object-detection'):
             self.handle_detect_objects(asset, annotation_result)
 
-        if self.arg_value('detect_labels'):
+        if self.arg_value('detect_labels') and \
+                self.should_run(asset, 'gcp-video-label-detection'):
             self.handle_detect_labels(asset, annotation_result)
 
-        if self.arg_value('detect_text'):
+        if self.arg_value('detect_text') and \
+                self.should_run(asset, 'gcp-video-text-detection'):
             self.handle_detect_text(asset, annotation_result)
 
-        if self.arg_value('detect_speech'):
+        if self.arg_value('detect_speech') and \
+                self.should_run(asset, 'gcp-video-speech-transcription'):
             self.handle_detect_speech(asset, annotation_result)
 
-        if self.arg_value('detect_explicit'):
+        if self.arg_value('detect_explicit') and \
+                self.should_run(asset, 'gcp-video-explicit-detection'):
             self.handle_detect_explicit(asset, annotation_result)
 
     def get_video_proxy_uri(self, asset):
@@ -103,6 +109,25 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         if not video_proxy:
             raise ProcessorException("Unable to find video proxy for asset {}".format(asset.id))
         return file_storage.assets.get_native_uri(video_proxy)
+
+    def should_run(self, asset, mod_name):
+        """
+        Return true if the module should be applied to the given asset. This
+        works by checking to see if the mod namespace already exists on the asset
+        and returning false if it already exists.
+
+        Args:
+            asset (Asset): The asset
+            mod_name: (str): The module name
+
+        Returns:
+            bool: True if the module should be run
+        """
+        if asset.attr_exists(f'analysis.{mod_name}'):
+            return False
+        else:
+            asset.extend_list_attr('tmp.produced_analysis', [mod_name])
+            return True
 
     def handle_detect_logos(self, asset, results):
         """
@@ -118,6 +143,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                 analysis.add_prediction(Prediction(
                     annotation.entity.description,
                     track.confidence))
+
         asset.add_analysis('gcp-video-logo-detection', analysis)
         cloud_timeline.save_logo_detection_timeline(asset, results)
 
@@ -164,8 +190,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         process_label_annotations(annotation_result.segment_label_annotations)
         process_label_annotations(annotation_result.shot_label_annotations)
         process_label_annotations(annotation_result.shot_presence_label_annotations)
-        asset.add_analysis('gcp-video-label-detection', analysis)
 
+        asset.add_analysis('gcp-video-label-detection', analysis)
         cloud_timeline.save_label_detection_timeline(asset, annotation_result)
 
     def handle_detect_text(self, asset, annotation_result):
