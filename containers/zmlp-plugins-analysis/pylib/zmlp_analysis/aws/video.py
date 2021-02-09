@@ -78,11 +78,12 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         job_count = len(self.jobs)
         job_completed_count = 0
 
-        self.logger.info("{} assets submitted to AWS for processing".format(job_count))
+        self.logger.info(f'Waiting for {job_count} assets submitted to AWS')
 
         # While our job count greater than completed job count, then
         # we wait for more jobs to complete.
         # we'll probably have to time this out somehow
+        sleep_counter = 0
         while job_count > job_completed_count:
 
             rsp = self.aws.sqs.receive_message(QueueUrl=self.aws.queue_url,
@@ -90,6 +91,10 @@ class AbstractVideoDetectProcessor(AssetProcessor):
                                                MaxNumberOfMessages=10)
             if 'Messages' not in rsp:
                 time.sleep(2)
+                sleep_counter += 1
+                if sleep_counter >= 30:
+                    self.logger.info(f'Waiting on AWS for {job_count} assets')
+                    sleep_counter = 0
                 continue
 
             for message in rsp['Messages']:
