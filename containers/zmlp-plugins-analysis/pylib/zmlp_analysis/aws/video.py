@@ -38,6 +38,10 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         self.s3_client = AwsEnv.s3()
         self.role_arn = AwsEnv.get_rekognition_role_arn()
 
+    def teardown(self):
+        if self.aws:
+            self.aws.teardown()
+
     def preprocess(self, assets):
         """
         Iterate all of the assets and send them over to Rekognition.  Once
