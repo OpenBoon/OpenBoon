@@ -23,36 +23,6 @@ class AwsEnv:
         return os.environ.get('ZORROA_AWS_ML_USER_ROLE_ARN')
 
     @staticmethod
-    def get_sns_topic_arn():
-        """
-        Get SNS Topic ARN for ML User
-
-        Returns:
-            (str): SNS Topic ARN
-        """
-        return os.environ.get('ZORROA_AWS_ML_USER_SNS_TOPIC_ARN')
-
-    @staticmethod
-    def get_sqs_queue_arn():
-        """
-        Get SQS Queue ARN for ML User
-
-        Returns:
-            (str): SQS Queue ARN
-        """
-        return os.environ.get('ZORROA_AWS_ML_USER_SQS_ARN')
-
-    @staticmethod
-    def get_sqs_queue_url():
-        """
-        Get SQS Queue URL for ML User
-
-        Returns:
-            (str): SQS Queue URL
-        """
-        return os.environ.get('ZORROA_AWS_ML_USER_SQS_URL')
-
-    @staticmethod
     def general_aws_client(service):
         """
         Return an AWS client configured for service specified with ZVI credentials.
@@ -85,7 +55,7 @@ class AwsEnv:
         aws_env = {
             'aws_access_key_id': os.environ.get('ZORROA_AWS_KEY'),
             'aws_secret_access_key': os.environ.get('ZORROA_AWS_SECRET'),
-            'region_name': os.environ.get('ZORROA_AWS_REGION', 'us-east-1')
+            'region_name': os.environ.get('ZORROA_AWS_REGION', 'us-east-2')
         }
         if None in aws_env.values():
             raise RuntimeError('AWS support is not setup for this environment.')
