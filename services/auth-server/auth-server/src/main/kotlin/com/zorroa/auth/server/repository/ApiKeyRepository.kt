@@ -1,5 +1,7 @@
 package com.zorroa.auth.server.repository
 
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ValidationKey
@@ -18,6 +20,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
+import java.util.concurrent.TimeUnit
 
 @Repository("apiKeyRepository")
 interface ApiKeyRepository : JpaRepository<ApiKey, UUID> {
@@ -67,6 +70,11 @@ interface ApiKeyCustomRepository {
      * Search for ApiKey using an [ApiKeyFilter]
      */
     fun search(filter: ApiKeyFilter): PagedList<ApiKey>
+
+    /**
+     * Invalidate key cache.
+     */
+    fun invalidateCache(accessKey: String)
 }
 
 @Repository
@@ -77,13 +85,30 @@ class ApiKeyCustomRepositoryImpl(
 
     lateinit var jdbc: JdbcTemplate
 
+    @Autowired
+    lateinit var entityManager: EntityManager
+
+    private val validationKeyCache = CacheBuilder.newBuilder()
+        .initialCapacity(128)
+        .maximumSize(1024)
+        .concurrencyLevel(8)
+        .expireAfterWrite(10, TimeUnit.SECONDS)
+        .build(object : CacheLoader<String, ValidationKey>() {
+            @Throws(Exception::class)
+            override fun load(accessKey: String): ValidationKey {
+                return jdbc.queryForObject(GET_VALIDATION_KEY, validationKeyMapper, accessKey)
+                    ?: throw DataRetrievalFailureException("Invalid API Key")
+            }
+        })
+
     @PostConstruct
     fun init() {
         jdbc = JdbcTemplate(dataSource)
     }
 
-    @Autowired
-    lateinit var entityManager: EntityManager
+    override fun invalidateCache(accessKey: String) {
+        validationKeyCache.invalidate(accessKey)
+    }
 
     override fun getSigningKey(id: UUID): SigningKey {
         return jdbc.queryForObject(
@@ -100,8 +125,11 @@ class ApiKeyCustomRepositoryImpl(
     }
 
     override fun getValidationKey(accessKey: String): ValidationKey {
-        return jdbc.queryForObject(GET_VALIDATION_KEY, validationKeyMapper, accessKey)
-            ?: throw DataRetrievalFailureException("Invalid API Key")
+        try {
+            return validationKeyCache.get(accessKey)
+        } catch (e: Exception) {
+            throw DataRetrievalFailureException("Invalid API Key")
+        }
     }
 
     override fun findOne(filter: ApiKeyFilter): ApiKey {
