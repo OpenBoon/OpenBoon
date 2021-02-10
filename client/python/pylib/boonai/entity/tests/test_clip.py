@@ -1,7 +1,7 @@
 import logging
 import unittest
 
-from zmlp import TimelineBuilder, Asset
+from boonai import TimelineBuilder, Asset
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)

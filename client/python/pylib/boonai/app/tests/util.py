@@ -1,6 +1,6 @@
 import os
 
-from zmlp import ZmlpApp
+from boonai import BoonAiApp
 
 
 def get_test_file(path):
@@ -19,12 +19,12 @@ def get_test_file(path):
         path))
 
 
-def get_zmlp_app():
+def get_boonai_app():
     """
-    Get a ZmlpApp with a fake key for testing.
+    Get a BoonAiApp with a fake key for testing.
 
     Returns:
-        ZmlpApp: An unusable ZMLP app.
+        BoonAiApp: An unusable ZMLP app.
 
     """
     key_dict = {
@@ -32,4 +32,4 @@ def get_zmlp_app():
         'keyId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
         'sharedKey': 'test123test135'
     }
-    return ZmlpApp(key_dict)
+    return BoonAiApp(key_dict)

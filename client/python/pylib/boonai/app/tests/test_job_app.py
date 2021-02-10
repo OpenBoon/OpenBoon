@@ -5,8 +5,8 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from zmlp import ZmlpClient, ZmlpApp
-from zmlp.entity import Job, Task
+from boonai import ZmlpClient, BoonAiApp
+from boonai.entity import Job, Task
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -22,7 +22,7 @@ class ZmlpJobAppTests(unittest.TestCase):
             'keyId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'sharedKey': 'test123test135'
         }
-        self.app = ZmlpApp(self.key_dict)
+        self.app = BoonAiApp(self.key_dict)
 
     @patch.object(ZmlpClient, 'get')
     def test_get_job(self, get_patch):

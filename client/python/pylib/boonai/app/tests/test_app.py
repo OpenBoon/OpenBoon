@@ -4,13 +4,13 @@ import logging
 import os
 import unittest
 
-import zmlp.app
+import boonai.app
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
-class ZmlpAppTests(unittest.TestCase):
+class BoonAiAppTests(unittest.TestCase):
 
     def setUp(self):
         # This is not a valid key
@@ -21,13 +21,13 @@ class ZmlpAppTests(unittest.TestCase):
         self.key_str = base64.b64encode(json.dumps(self.key_dict).encode())
 
     def test_create_app_with_key_dict(self):
-        app = zmlp.ZmlpApp(self.key_dict)
+        app = boonai.BoonAiApp(self.key_dict)
         assert app.client
         assert app.client.apikey
         assert app.client.headers()
 
     def test_create_app_with_key_str(self):
-        app = zmlp.ZmlpApp(self.key_str)
+        app = boonai.BoonAiApp(self.key_str)
         assert app.client
         assert app.client.apikey
         assert app.client.headers()
@@ -37,7 +37,7 @@ class ZmlpAppTests(unittest.TestCase):
         os.environ['ZMLP_APIKEY'] = self.key_str.decode()
         os.environ['ZMLP_SERVER'] = server
         try:
-            app1 = zmlp.app_from_env()
+            app1 = boonai.app_from_env()
             # Assert we can sign a request
             assert app1.client.headers()
             assert app1.client.server == server
@@ -50,7 +50,7 @@ class ZmlpAppTests(unittest.TestCase):
         os.environ['ZMLP_APIKEY_FILE'] = os.path.dirname(__file__) + "/test_key.json"
         os.environ['ZMLP_SERVER'] = server
         try:
-            app1 = zmlp.app_from_env()
+            app1 = boonai.app_from_env()
             # Assert we can sign a request
             assert app1.client.headers()
             assert app1.client.server == server

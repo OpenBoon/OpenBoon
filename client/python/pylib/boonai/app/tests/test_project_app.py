@@ -3,7 +3,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from zmlp import ZmlpClient, ZmlpApp
+from boonai import ZmlpClient, BoonAiApp
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -18,7 +18,7 @@ class ZmlpProjectAppTests(unittest.TestCase):
             'keyId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'sharedKey': 'test123test135'
         }
-        self.app = ZmlpApp(self.key_dict)
+        self.app = BoonAiApp(self.key_dict)
 
     @patch.object(ZmlpClient, 'get')
     def test_get_project(self, get_patch):

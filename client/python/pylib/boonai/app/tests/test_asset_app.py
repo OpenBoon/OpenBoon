@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp import Asset, ZmlpClient, app_from_env, \
+from boonai import Asset, ZmlpClient, app_from_env, \
     FileImport, FileUpload, StoredFile, ZmlpException, Model
 from .util import get_test_file
 
@@ -258,7 +258,7 @@ class AssetAppTests(unittest.TestCase):
         search = {
             'query': {'match_all': {}}
         }
-        rsp = self.app.assets.reprocess_search(search, ['zmlp-labels'])
+        rsp = self.app.assets.reprocess_search(search, ['boonai-labels'])
         assert 101 == rsp.asset_count
         assert 'abc' == rsp.job.id
         assert 'reprocess' == rsp.job.name

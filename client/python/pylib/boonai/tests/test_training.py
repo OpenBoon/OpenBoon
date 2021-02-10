@@ -4,9 +4,9 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from zmlp import ZmlpClient, ZmlpApp, Model
-from zmlp.app import AssetApp, ModelApp
-from zmlp.training import TrainingSetDownloader
+from boonai import ZmlpClient, BoonAiApp, Model
+from boonai.app import AssetApp, ModelApp
+from boonai.training import TrainingSetDownloader
 
 key_dict = {
     'projectId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
@@ -19,7 +19,7 @@ key_dict = {
 class TrainingSetDownloaderTests(unittest.TestCase):
 
     def setUp(self):
-        self.app = ZmlpApp(key_dict)
+        self.app = BoonAiApp(key_dict)
 
     @patch.object(ModelApp, 'get_model')
     @patch.object(ZmlpClient, 'get')

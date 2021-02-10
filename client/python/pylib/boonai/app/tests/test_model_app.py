@@ -3,8 +3,8 @@ import unittest
 import tempfile
 from unittest.mock import patch
 
-from zmlp import ZmlpClient, ModelType, Model
-from .util import get_zmlp_app
+from boonai import ZmlpClient, ModelType, Model
+from .util import get_boonai_app
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ class ModelAppTests(unittest.TestCase):
 
     def setUp(self):
         # This is not a valid key
-        self.app = get_zmlp_app()
+        self.app = get_boonai_app()
 
         self.model_data = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',

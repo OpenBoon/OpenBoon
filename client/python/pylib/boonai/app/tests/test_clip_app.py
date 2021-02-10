@@ -3,8 +3,8 @@ import os
 import unittest
 from unittest.mock import patch, Mock
 
-from zmlp import Asset, ZmlpClient, app_from_env
-from zmlp.entity import TimelineBuilder
+from boonai import Asset, ZmlpClient, app_from_env
+from boonai.entity import TimelineBuilder
 
 
 class VideoClipAppTests(unittest.TestCase):

@@ -2,8 +2,8 @@ import json
 import logging
 import unittest
 
-from zmlp import Asset, StoredFile, FileImport, FileUpload, FileTypes, Label, Model
-from zmlp.client import to_json
+from boonai import Asset, StoredFile, FileImport, FileUpload, FileTypes, Label, Model
+from boonai.client import to_json
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)

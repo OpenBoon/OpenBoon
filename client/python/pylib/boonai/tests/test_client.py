@@ -1,7 +1,7 @@
 import unittest
 
-from zmlp import Asset, DataSource
-from zmlp.client import SearchResult, to_json
+from boonai import Asset, DataSource
+from boonai.client import SearchResult, to_json
 
 
 class TestClientFunctions(unittest.TestCase):

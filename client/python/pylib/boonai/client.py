@@ -22,14 +22,14 @@ logger = logging.getLogger(__name__)
 DEFAULT_SERVER = 'https://api.zvi.zorroa.com'
 
 
-class ZmlpClient(object):
+class BoonAiClient:
     """
     ZmlpClient is used to communicate to a ZMLP API server.
     """
 
     def __init__(self, apikey, server, **kwargs):
         """
-        Create a new ZmlpClient instance.
+        Create a new BoonClient instance.
 
         Args:
             apikey: An API key in any supported form. (dict, base64 string, or open file handle)

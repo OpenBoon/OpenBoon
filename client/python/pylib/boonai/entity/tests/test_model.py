@@ -1,6 +1,6 @@
 import unittest
 
-from zmlp import Model
+from boonai import Model
 
 
 class ModelTests(unittest.TestCase):

@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp import ZmlpClient, app_from_env, Asset, \
+from boonai import ZmlpClient, app_from_env, Asset, \
     SimilarityQuery, LabelConfidenceQuery, SingleLabelConfidenceQuery, \
     FaceSimilarityQuery, AssetSearchCsvExporter, AssetSearchScroller, \
     AssetSearchResult, VideoClipContentMatchQuery

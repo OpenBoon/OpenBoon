@@ -2,8 +2,8 @@ import unittest
 import os
 import zipfile
 
-import zmlp.util as util
-from zmlp import Project
+import boonai.util as util
+from boonai import Project
 
 
 class UtilTests(unittest.TestCase):

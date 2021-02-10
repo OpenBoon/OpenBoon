@@ -34,7 +34,7 @@ class SearchScroller:
         Create a new AbstractSearchScroller instance.
 
         Args:
-            app (ZmlpApp): A ZmlpApp instance.
+            app (BoonAiApp): A BoonAiApp instance.
             search: (dict): The ES search
             timeout (str): The maximum amount of time the ES scroll will be active unless it's
                 refreshed.
@@ -184,7 +184,7 @@ class SearchResult:
         Args:
             klass (Class): The Class to wrap the search result.
             endpoint (str): The endpoint to use for search.
-            app (ZmlpApp): A ZmlpApp instance.
+            app (BoonAiApp): A BoonAiApp instance.
             search (dict): An ElasticSearch query.
         """
         self.klass = klass
@@ -401,7 +401,7 @@ class LabelConfidenceTermsAggregation:
         }
 
 
-class LabelConfidenceMetricsAggregation(object):
+class LabelConfidenceMetricsAggregation:
 
     def __init__(self, namespace, agg_type="stats"):
         """
@@ -439,7 +439,7 @@ class LabelConfidenceMetricsAggregation(object):
         }
 
 
-class LabelConfidenceQuery(object):
+class LabelConfidenceQuery:
     """
     A helper class for building a label confidence score query.  This query must point
     at label confidence structure:  For example: analysis.zvi.label-detection.
@@ -516,7 +516,7 @@ class LabelConfidenceQuery(object):
         }
 
 
-class SingleLabelConfidenceQuery(object):
+class SingleLabelConfidenceQuery:
     """
     A helper class for building a label confidence score query.  This query must point
     at label confidence structure:  For example: analysis.zvi.label-detection.
