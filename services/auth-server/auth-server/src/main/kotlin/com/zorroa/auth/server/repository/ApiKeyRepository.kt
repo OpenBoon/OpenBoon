@@ -70,6 +70,11 @@ interface ApiKeyCustomRepository {
      * Search for ApiKey using an [ApiKeyFilter]
      */
     fun search(filter: ApiKeyFilter): PagedList<ApiKey>
+
+    /**
+     * Invalidate key cache.
+     */
+    fun invalidateCache(accessKey: String)
 }
 
 @Repository
@@ -87,7 +92,7 @@ class ApiKeyCustomRepositoryImpl(
         .initialCapacity(128)
         .maximumSize(1024)
         .concurrencyLevel(8)
-        .expireAfterWrite(30, TimeUnit.SECONDS)
+        .expireAfterWrite(10, TimeUnit.SECONDS)
         .build(object : CacheLoader<String, ValidationKey>() {
             @Throws(Exception::class)
             override fun load(accessKey: String): ValidationKey {
@@ -99,6 +104,10 @@ class ApiKeyCustomRepositoryImpl(
     @PostConstruct
     fun init() {
         jdbc = JdbcTemplate(dataSource)
+    }
+
+    override fun invalidateCache(accessKey: String) {
+        validationKeyCache.invalidate(accessKey)
     }
 
     override fun getSigningKey(id: UUID): SigningKey {
