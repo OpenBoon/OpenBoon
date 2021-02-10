@@ -16,7 +16,7 @@ def load_results():
     name = "speech-to-text.dat"
     rsp = speech.types.LongRunningRecognizeResponse()
     with open(os.path.dirname(__file__) + "/mock-data/{}".format(name), 'rb') as fp:
-        rsp.ParseFromString(fp.read())
+        rsp._pb.ParseFromString(fp.read())
     return rsp
 
 

@@ -371,6 +371,16 @@ class Asset(DocumentMixin):
         """
         return self.get_attr("source.extension").lower()
 
+    @property
+    def simhash(self):
+        """
+        Return the image similarity hash.
+
+        Returns:
+            str: The proxy image similarity hash.
+        """
+        return self.get_attr('analysis.zvi-image-similarity.simhash')
+
     def add_file(self, stored_file):
         """
         Adds the StoredFile record to the asset's list of associated files.
