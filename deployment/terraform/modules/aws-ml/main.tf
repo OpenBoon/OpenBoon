@@ -13,6 +13,21 @@ resource "aws_iam_access_key" "ml-user" {
 
 resource "aws_iam_role" "ml-role" {
   name = "${var.environment}-ml-role"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
 }
 
 resource "aws_iam_user_policy_attachment" "rekognition-full-access" {
