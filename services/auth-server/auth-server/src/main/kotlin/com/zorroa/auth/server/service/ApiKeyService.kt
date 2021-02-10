@@ -136,7 +136,7 @@ class ApiKeyServiceImpl constructor(
                 "apiKeyName" to key.name
             )
         )
-
+        apikeyCustomRepository.invalidateCache(apiKey.accessKey)
         return apiKeyRepository.save(key)
     }
 
@@ -197,6 +197,7 @@ class ApiKeyServiceImpl constructor(
             )
         )
         apiKeyRepository.updateEnabledById(enabled, apiKey.id)
+        apikeyCustomRepository.invalidateCache(apiKey.accessKey)
     }
 
     override fun updateEnabledByProject(projectId: UUID, enabled: Boolean) {

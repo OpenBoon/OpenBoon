@@ -23,7 +23,7 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
         del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
-    @patch.object(file_storage.assets, 'get_native_uri')
+    @patch("zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.get_video_proxy_uri")
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_logos(self, store_blob_patch, native_patch, tl_patch):
         uri = 'gs://zorroa-dev-data/video/mustang.mp4'
@@ -41,19 +41,20 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-video-logo-detection')
+
         assert 'labels' == analysis['type']
         assert 'Volvo' in get_prediction_labels(analysis)
         assert 'Ford Motor Company' in get_prediction_labels(analysis)
         assert 17 == analysis['count']
 
-        timeline = tl_patch.call_args_list[0][0][0]
+        timeline = tl_patch.call_args_list[0][0][1]
         assert "Wyoming Cowboys" in timeline.tracks
         assert "Nike" in timeline.tracks
-        assert "Ford" in timeline.tracks
+        assert "Acura" in timeline.tracks
 
     @patch("zmlp_analysis.google.cloud_video.proxy.get_proxy_level", return_value=1)
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
-    @patch.object(file_storage.assets, 'get_native_uri')
+    @patch("zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.get_video_proxy_uri")
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_labels(self, store_blob_patch, native_patch, tl_patch, _):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
@@ -75,13 +76,13 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
         assert 'stage' in get_prediction_labels(analysis)
         assert 16 == analysis['count']
 
-        timeline = tl_patch.call_args_list[0][0][0]
+        timeline = tl_patch.call_args_list[0][0][1]
         assert "television program" in timeline.tracks
         assert "performance" in timeline.tracks
         assert "performing arts" in timeline.tracks
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
-    @patch.object(file_storage.assets, 'get_native_uri')
+    @patch("zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.get_video_proxy_uri")
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_text(self, store_blob_patch, native_patch, tl_patch):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
@@ -103,12 +104,13 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
         assert 'sanitation, toilets and poop' in analysis['content']
         assert 20 == analysis['words']
 
-        timeline = tl_patch.call_args_list[0][0][0]
+        timeline = tl_patch.call_args_list[0][0][1]
         assert "Detected Text" in timeline.tracks
-        assert timeline.tracks['clips'][0]['content'] == ['sanitation, toilets and poop,']
+        assert timeline.tracks['Detected Text']['clips'][0]['content'] == \
+               ["there's more coming -- (Laughter)-"]
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
-    @patch.object(file_storage.assets, 'get_native_uri')
+    @patch("zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.get_video_proxy_uri")
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_objects(self, blob_patch, native_patch, tl_patch):
         uri = 'gs://zorroa-dev-data/video/model.mp4'
@@ -130,13 +132,13 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
         assert 'person' in get_prediction_labels(analysis)
         assert 4 == analysis['count']
 
-        timeline = tl_patch.call_args_list[0][0][0]
+        timeline = tl_patch.call_args_list[0][0][1]
         assert "footwear" in timeline.tracks
         assert "figurine" in timeline.tracks
         assert "swimwear" in timeline.tracks
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
-    @patch.object(file_storage.assets, 'get_native_uri')
+    @patch("zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.get_video_proxy_uri")
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_explicit(self, blob_patch, native_patch, tl_patch):
         uri = 'gs://zorroa-dev-data/video/model.mp4'
@@ -158,7 +160,7 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
         assert 'unlikely' in get_prediction_labels(analysis)
         assert 2 == analysis['count']
 
-        timeline = tl_patch.call_args_list[0][0][0]
+        timeline = tl_patch.call_args_list[0][0][1]
         assert "Very Unlikely" in timeline.tracks
         assert "Unlikely" in timeline.tracks
 
@@ -185,9 +187,9 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
         analysis = frame.asset.get_attr('analysis.gcp-video-speech-transcription')
 
         assert 'content' == analysis['type']
-        assert 'Sanitation. There\'s more coming Sanitation.' in analysis['content']
+        assert "Sanitation" in analysis['content']
 
-        timeline = tl_patch.call_args_list[0][0][0]
+        timeline = tl_patch.call_args_list[0][0][1]
         assert 'Speech Transcription' in timeline.tracks
 
         with open(webvtt_patch.call_args_list[0][0][0]) as fp:

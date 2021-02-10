@@ -63,7 +63,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         save_speech_to_text_timeline(asset, audio_result)
 
     def save_raw_result(self, asset, audio_result):
-        file_storage.assets.store_blob(audio_result.SerializeToString(),
+        file_storage.assets.store_blob(audio_result._pb.SerializeToString(),
                                        asset,
                                        'gcp',
                                        'gcp-speech-to-text.dat')
@@ -96,7 +96,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
             'uri': audio_uri
         }
         config = speech.types.RecognitionConfig(
-            encoding=speech.enums.RecognitionConfig.AudioEncoding.FLAC,
+            encoding=speech.RecognitionConfig.AudioEncoding.FLAC,
             enable_word_time_offsets=True,
             audio_channel_count=self.audio_channels,
             sample_rate_hertz=self.audio_sample_rate,

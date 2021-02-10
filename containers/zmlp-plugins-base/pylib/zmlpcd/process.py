@@ -357,6 +357,9 @@ class ProcessorWrapper(object):
             self.increment_stat("process_count")
             self.increment_stat("total_time", total_time)
 
+            # Remove the produced Analysis attribute.
+            frame.asset.del_attr('tmp.produced_analysis')
+
             # Check the expand queue.  A force check is done at teardown.
             self.reactor.check_expand()
 
@@ -515,37 +518,43 @@ class ProcessorWrapper(object):
             # Include starting ellipses as an indicator, favor end of path
             source_path = '...' + source_path[len(source_path)-252:]
         image_count, video_minutes = self._get_count_and_minutes(asset)
-        service = self.ref['module']
-        body = {
-            'project': ZmlpEnv.get_project_id(),
-            'service': service,
-            'asset_id': asset.id,
-            'asset_path': source_path,
-            'image_count': image_count,
-            'video_minutes': video_minutes,
-        }
-        sentry_sdk.set_context('billing_metric', body)
-        try:
-            response = requests.post(url, json=body)
-        except requests.exceptions.ConnectionError as e:
-            msg = ('Unable to register billing metrics, could not connect to metrics service.')
-            logger.warning(msg)
-            sentry_sdk.capture_message(msg)
-            sentry_sdk.capture_exception(e)
-            msg = f'Metric missed: {body}'
-            logger.warning(msg)
 
-        if not response.ok:
-            duplicate_msg = 'The fields service, asset_id, project must make a unique set.'
-            if duplicate_msg in response.json().get('non_field_errors'):
-                logger.info(f'Duplicate metric skipped for {asset.id}: {service}')
-            else:
-                msg = (f'Unable to register billing metrics. {response.status_code}: '
-                       f'{response.reason}')
+        # Some processors, like gcp-video-intelligence, apply multiple modules at once
+        # and track them in a temporary namespace on the asset. Record analsys for every
+        # module added.
+        modules = asset.get_attr('tmp.produced_analysis') or [self.ref['module']]
+
+        for service in modules:
+            body = {
+                'project': ZmlpEnv.get_project_id(),
+                'service': service,
+                'asset_id': asset.id,
+                'asset_path': source_path,
+                'image_count': image_count,
+                'video_minutes': video_minutes,
+            }
+            sentry_sdk.set_context('billing_metric', body)
+            try:
+                response = requests.post(url, json=body)
+            except requests.exceptions.ConnectionError as e:
+                msg = ('Unable to register billing metrics, could not connect to metrics service.')
                 logger.warning(msg)
                 sentry_sdk.capture_message(msg)
+                sentry_sdk.capture_exception(e)
                 msg = f'Metric missed: {body}'
                 logger.warning(msg)
+
+            if not response.ok:
+                duplicate_msg = 'The fields service, asset_id, project must make a unique set.'
+                if duplicate_msg in response.json().get('non_field_errors'):
+                    logger.info(f'Duplicate metric skipped for {asset.id}: {service}')
+                else:
+                    msg = (f'Unable to register billing metrics. {response.status_code}: '
+                           f'{response.reason}')
+                    logger.warning(msg)
+                    sentry_sdk.capture_message(msg)
+                    msg = f'Metric missed: {body}'
+                    logger.warning(msg)
 
     def _get_count_and_minutes(self, asset):
         """Helper to return total images and number of video minutes for an asset.

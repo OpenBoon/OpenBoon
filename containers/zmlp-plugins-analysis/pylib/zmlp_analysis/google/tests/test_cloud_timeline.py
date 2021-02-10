@@ -1,7 +1,7 @@
 import os
 from unittest.mock import patch
 
-from google.cloud.videointelligence_v1.proto import video_intelligence_pb2
+import google.cloud.videointelligence as videointelligence
 
 from zmlp_analysis.google import cloud_timeline
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset
@@ -128,7 +128,7 @@ class TestCloudTimelineBuilder(PluginUnitTestCase):
                 idx += 1
 
     def load_results(self, name):
-        rsp = video_intelligence_pb2.AnnotateVideoResponse()
+        rsp = videointelligence.AnnotateVideoResponse()
         with open(os.path.dirname(__file__) + '/mock-data/{}'.format(name), 'rb') as fp:
-            rsp.ParseFromString(fp.read())
+            rsp._pb.ParseFromString(fp.read())
         return rsp.annotation_results[0]

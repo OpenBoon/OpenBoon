@@ -15,7 +15,8 @@ __all__ = [
     'FaceSimilarityQuery',
     'LabelConfidenceTermsAggregation',
     'LabelConfidenceMetricsAggregation',
-    'SearchScroller'
+    'SearchScroller',
+    'VideoClipContentMatchQuery'
 ]
 
 
@@ -589,6 +590,59 @@ class SingleLabelConfidenceQuery(object):
         }
 
 
+class VideoClipContentMatchQuery:
+    """
+    Provides a Match query against clip.content and sets clip.score as the query score.
+    """
+    def __init__(self, query, min_score=0.1, max_score=1.0):
+        """
+        Create a new VideoClipContentMatchQuery.
+
+        Args
+            query (str): The text of the query.
+            min_score (float): The minimum label score, default to 0.1.
+            max_score (float): The maximum score, defaults to 1.0 which is highest
+        """
+        self.query = query
+        self.score = [min_score, max_score]
+
+    def for_json(self):
+        return {
+            "bool": {
+                "must": [
+                    {
+                        "function_score": {
+                            "boost_mode": "sum",
+                            "field_value_factor": {
+                                "field": "clip.score",
+                                "missing": 0
+                            },
+                            "query": {
+                                "bool": {
+                                    "filter": [
+                                        {
+                                            "match": {
+                                                "clip.content": self.query
+                                            }
+                                        },
+                                        {
+                                            "range": {
+                                                "clip.score": {
+                                                    "gte": self.score[0],
+                                                    "lte": self.score[1]
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+
+
 class SimilarityQuery:
     """
     A helper class for building a similarity search.  You can embed this class anywhere
@@ -627,7 +681,7 @@ class SimilarityQuery:
         for simhash in as_collection(hashes) or []:
             if isinstance(simhash, Asset):
                 self.hashes.append(simhash.get_attr(self.field))
-            elif isinstance(simhash, VideoClip):
+            elif getattr(simhash, 'simhash', None):
                 if simhash.simhash:
                     self.hashes.append(simhash.simhash)
             else:
