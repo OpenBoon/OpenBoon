@@ -17,13 +17,13 @@ requirements = [
 ]
 
 setup(
-    name='zvi-client',
+    name='boonai',
     version="1.2.0",
     description='Zorroa Visual Intelligence Python Client',
     url='http://www.zorroa.com',
     license='Apache2',
     package_dir={'': 'pylib'},
-    packages=['zmlp', 'zmlp.app', 'zmlp.entity'],
+    packages=['boonai', 'boonai.app', 'boonai.entity'],
     scripts=[],
     author="Matthew Chambers",
     author_email="support@zorroa.com",
