@@ -681,7 +681,7 @@ class SimilarityQuery:
         for simhash in as_collection(hashes) or []:
             if isinstance(simhash, Asset):
                 self.hashes.append(simhash.get_attr(self.field))
-            elif getattr(simhash, 'simhash'):
+            elif getattr(simhash, 'simhash', None):
                 if simhash.simhash:
                     self.hashes.append(simhash.simhash)
             else:
