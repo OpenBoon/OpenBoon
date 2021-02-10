@@ -85,6 +85,7 @@ class ApiKeyCustomRepositoryImpl(
 
     private val validationKeyCache = CacheBuilder.newBuilder()
         .initialCapacity(128)
+        .maximumSize(1024)
         .concurrencyLevel(8)
         .expireAfterWrite(30, TimeUnit.SECONDS)
         .build(object : CacheLoader<String, ValidationKey>() {
