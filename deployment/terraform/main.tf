@@ -344,7 +344,7 @@ module "gcp-marketplace-integration" {
   marketplace-subscription = "zorroa-public"
   marketplace-credentials  = var.marketplace-credentials
   marketplace-service-name = "zorroa-visual-intelligence-zorroa-public.cloudpartnerservices.goog"
-  fqdn                     = var.wallet-domain
+  fqdn                     = var.wallet-domains[0]
   environment              = var.environment
   inception-key-b64        = local.inception-key-b64
   pg_password              = module.wallet.pg_password

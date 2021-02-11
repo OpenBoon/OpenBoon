@@ -114,7 +114,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
   name     = "api-gateway-cert"
   managed {
-    domains = [var.domains]
+    domains = var.domains
   }
 }
 
