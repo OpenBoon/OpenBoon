@@ -111,8 +111,8 @@ resource "kubernetes_service" "api-gateway" {
 }
 
 resource "google_compute_managed_ssl_certificate" "default" {
-  provider    = google-beta
-  name_prefix = "api-gateway-ssl-cert"
+  provider = google-beta
+  name     = "api-gateway-ssl-cert"
   managed {
     domains = var.domains
   }
