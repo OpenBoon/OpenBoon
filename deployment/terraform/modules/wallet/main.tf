@@ -212,7 +212,7 @@ resource "kubernetes_service" "wallet" {
 
 resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
-  name     = "wallet-cert"
+  name     = "wallet-ssl-cert"
   managed {
     domains = var.domains
   }
