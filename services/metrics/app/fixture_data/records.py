@@ -2,7 +2,7 @@ RECORDS = [
   {
     "id": 1,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "V-agLC2UeIpKCZOW8A6afpsoRudYPsaU",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0154.jpg",
     "image_count": 1,
@@ -13,7 +13,7 @@ RECORDS = [
   {
     "id": 2,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "Qzt74QVOGizB1UUtTHgEUplCo-sFe7B-",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_2518.jpg",
     "image_count": 1,
@@ -24,7 +24,7 @@ RECORDS = [
   {
     "id": 3,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "nzncnwNanVzvI8J0lUlxXtpYE4_207os",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0872.jpg",
     "image_count": 1,
@@ -35,7 +35,7 @@ RECORDS = [
   {
     "id": 4,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "HmKSnwlTRj4Dl0XnSuXxnpUUpS2vQh5H",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_2913.jpg",
     "image_count": 1,
@@ -46,7 +46,7 @@ RECORDS = [
   {
     "id": 5,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "4i8iZkhawUFOP6jhPGXf-kC2nKwibUat",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_4132.jpg",
     "image_count": 1,
@@ -57,7 +57,7 @@ RECORDS = [
   {
     "id": 6,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "hZGxkfwka_zLCsDWkGCtWM1_QeXuFtpb",
     "asset_path": "gs://zvi-dev-temp-images/P1101679.jpg",
     "image_count": 1,
@@ -68,7 +68,7 @@ RECORDS = [
   {
     "id": 7,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "G1j7csKuzlo6R5AWmnlB3CumxARF39pt",
     "asset_path": "gs://zvi-dev-temp-images/P1114514-Edit.jpg",
     "image_count": 1,
@@ -79,7 +79,7 @@ RECORDS = [
   {
     "id": 8,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "ExLWoFyhukG8BPstdoKaKPAGK5TsCwGi",
     "asset_path": "gs://zvi-dev-temp-images/P1102027.jpg",
     "image_count": 1,
@@ -90,7 +90,7 @@ RECORDS = [
   {
     "id": 9,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "R4BnaqP1CGE0eehYX6hPYNWAN2OuL2sK",
     "asset_path": "gs://zvi-dev-temp-images/P1067188-Edit.jpg",
     "image_count": 1,
@@ -101,7 +101,7 @@ RECORDS = [
   {
     "id": 10,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "makR6-0L8jaYkCwgOlLi-Wmr0n43EfDw",
     "asset_path": "gs://zvi-dev-temp-images/P1101297.jpg",
     "image_count": 1,
@@ -112,7 +112,7 @@ RECORDS = [
   {
     "id": 11,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "3OYSv0kxreJZ_RJyUBucPS1fqP0VnwC6",
     "asset_path": "gs://zvi-dev-temp-images/P1113808.jpg",
     "image_count": 1,
@@ -123,7 +123,7 @@ RECORDS = [
   {
     "id": 12,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "3ChOGfKLdBMWns_7booi0LaTtYoDNlWh",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0015.jpg",
     "image_count": 1,
@@ -134,7 +134,7 @@ RECORDS = [
   {
     "id": 13,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "6QhY8AnX9CujjIdU951v_ViMXMs7CFPV",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0199.jpg",
     "image_count": 1,
@@ -145,7 +145,7 @@ RECORDS = [
   {
     "id": 14,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "c2S5afJCZ3oos9vuMTuDdq885KRC6cdR",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0025.jpg",
     "image_count": 1,
@@ -156,7 +156,7 @@ RECORDS = [
   {
     "id": 15,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "NoRHjlEVLJxIrFid9kWGBpDL4hz7RPQB",
     "asset_path": "gs://zvi-dev-temp-images/P1112852.jpg",
     "image_count": 1,
@@ -167,7 +167,7 @@ RECORDS = [
   {
     "id": 16,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "QvYiJUNYA8DOpSnwa8bQUrdjnYI_8NuR",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0047.jpg",
     "image_count": 1,
@@ -178,7 +178,7 @@ RECORDS = [
   {
     "id": 17,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "kSutaTysOLmLbjVWVB1h2DHbmwM7pAAY",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0560.jpg",
     "image_count": 1,
@@ -189,7 +189,7 @@ RECORDS = [
   {
     "id": 18,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "jUBz8hzSzu015o7-4SGUheQcMTm-eLEq",
     "asset_path": "gs://zvi-dev-temp-images/P1090685.jpg",
     "image_count": 1,
@@ -200,7 +200,7 @@ RECORDS = [
   {
     "id": 19,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "A46kOJILv0HLY2CW3_ODY5uVi3WLzF8S",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0401.jpg",
     "image_count": 1,
@@ -211,7 +211,7 @@ RECORDS = [
   {
     "id": 20,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "dZyQSffhruoZHPsFjx4QMhEaWhzwGFoa",
     "asset_path": "gs://zvi-dev-temp-images/P1113937.jpg",
     "image_count": 1,
@@ -222,7 +222,7 @@ RECORDS = [
   {
     "id": 21,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "jkkEA2asdDofLlTHVfRlIfG3oIsemgsP",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0371.jpg",
     "image_count": 1,
@@ -233,7 +233,7 @@ RECORDS = [
   {
     "id": 22,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "HcNWvDGt8tE5s7OtoW__Ir-C9tL4VQgL",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_2459.jpg",
     "image_count": 1,
@@ -244,7 +244,7 @@ RECORDS = [
   {
     "id": 23,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "CWR_Ynwn-JDQ78MmHrIhXEh7GtMz25e_",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_2507.jpg",
     "image_count": 1,
@@ -255,7 +255,7 @@ RECORDS = [
   {
     "id": 24,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "WLKFwlGjRAAeR8SgP08MbJg5L272UsgI",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_2490.jpg",
     "image_count": 1,
@@ -266,7 +266,7 @@ RECORDS = [
   {
     "id": 25,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-image-similarity",
+    "service": "standard",
     "asset_id": "IA-bbQSOda_ZCYQoDwsV8zTdt_DEZK5L",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_2530.jpg",
     "image_count": 1,
