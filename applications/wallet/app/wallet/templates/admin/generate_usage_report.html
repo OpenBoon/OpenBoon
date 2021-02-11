@@ -1,0 +1,30 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}">{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; {% trans 'Generate Usage Report' %}
+</div>
+{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+<h1>Generate Usage Report</h1>
+    <div>
+    <li>You can create a report for all projects, or for a specific project.</li>
+    <li>Start and End Dates are not required. If no dates are given the usage for all time is reported.</li>
+    </div>
+<h1></h1>
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Download Report">
+</form>
+{% endblock %}
