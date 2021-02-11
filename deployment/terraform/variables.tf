@@ -51,12 +51,14 @@ variable "google-oauth-client-id" {
   description = "Client ID to enable Google OAuth based login."
 }
 
-variable "wallet-domain" {
-  description = "Fully qualified domain name for the wallet server."
+variable "wallet-domains" {
+  description = "Fully qualified domain names for the wallet server."
+  type        = list(string)
 }
 
-variable "zmlp-domain" {
-  description = "Domain name of the zmlp api."
+variable "zmlp-domains" {
+  description = "Domain names of the zmlp api."
+  type        = list(string)
 }
 
 variable "clarifai-key" {
