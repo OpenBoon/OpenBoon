@@ -50,14 +50,14 @@ class UsageReportView(FormView):
         data = []
         for entry in content:
             project = projects_by_id.get(entry['project'])
+            entry['project_name'] = ''
+            entry['organization_name'] = ''
+            entry['organization'] = ''
             if project:
                 entry['project_name'] = project.name
                 if project.organization:
                     entry['organization_name'] = project.organization.name
                     entry['organization'] = project.organization.id
-                else:
-                    entry['organization_name'] = ''
-                    entry['organization'] = ''
             data.append(entry)
 
         # Build a csv filename
