@@ -744,7 +744,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
