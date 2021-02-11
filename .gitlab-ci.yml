@@ -98,6 +98,7 @@ wallet-backend-test-suite:
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
         - "applications/wallet/app/**/*"
+        - "applications/wallet/Pipfile*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
@@ -205,14 +206,15 @@ metrics-backend-test-suite:
       - name: postgres:9.6.9
         alias: postgres
   variables:
-    DJANGO_SETTINGS_MODULE: metrics.settings
+    DJANGO_SETTINGS_MODULE: metrics.settings.testing
     DEBUG: "true"
-    DB_BACKEND: postgres
     PG_DB_HOST: postgres
+    PG_DB_USER: metrics
     PG_DB_PASSWORD: 2mAPDWhuiYdIW69u
     POSTGRES_DB: metrics
     POSTGRES_USER: metrics
     POSTGRES_PASSWORD: 2mAPDWhuiYdIW69u
+
   script:
     - cd services/metrics
     - pipenv sync
@@ -377,6 +379,8 @@ sdk-unit-tests:
   stage: test
   allow_failure: false
   script:
+    - apt-get update
+    - apt-get -y install openimageio-tools mediainfo
     - python -m pip install pipenv pytest cmake
     - pip install --upgrade pip
     - cd client/python
@@ -610,6 +614,7 @@ zmlp-dockerhub-build-push-prod:
     - docker pull -q zmlp/plugins-train:${SOURCE_TAG}
     - docker pull -q zmlp/wallet:${SOURCE_TAG}
     - docker pull -q zmlp/reporter:${SOURCE_TAG}
+    - docker pull -q zmlp/metrics:${SOURCE_TAG}
     - docker tag zmlp/archivist:${SOURCE_TAG} zmlp/archivist:${DOCKER_TAG}
     - docker tag zmlp/officer:${SOURCE_TAG} zmlp/officer:${DOCKER_TAG}
     - docker tag zmlp/elasticsearch:${SOURCE_TAG} zmlp/elasticsearch:${DOCKER_TAG}
@@ -629,6 +634,7 @@ zmlp-dockerhub-build-push-prod:
     - docker tag zmlp/plugins-train:${SOURCE_TAG} zmlp/plugins-train:${DOCKER_TAG}
     - docker tag zmlp/wallet:${SOURCE_TAG} zmlp/wallet:${DOCKER_TAG}
     - docker tag zmlp/reporter:${SOURCE_TAG} zmlp/reporter:${DOCKER_TAG}
+    - docker tag zmlp/metrics:${SOURCE_TAG} zmlp/metrics:${DOCKER_TAG}
     - docker push zmlp/archivist:${DOCKER_TAG}
     - docker push zmlp/officer:${DOCKER_TAG}
     - docker push zmlp/elasticsearch:${DOCKER_TAG}
@@ -648,6 +654,7 @@ zmlp-dockerhub-build-push-prod:
     - docker push zmlp/plugins-train:${DOCKER_TAG}
     - docker push zmlp/wallet:${DOCKER_TAG}
     - docker push zmlp/reporter:${DOCKER_TAG}
+    - docker push zmlp/metrics:${DOCKER_TAG}
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
       when: manual
@@ -665,7 +672,7 @@ zmlp-deploy-prod:
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
-    - kubectl --namespace default rollout restart deployment wallet analyst api-gateway archivist auth-server officer ml-bbq reporter
+    - kubectl --namespace default rollout restart deployment wallet analyst api-gateway archivist auth-server officer ml-bbq reporter metrics
     - kubectl --namespace default rollout restart statefulset elasticsearch-master elasticsearch-data
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
@@ -771,6 +778,7 @@ zmlp-services-unit-tests:
     MINIO_URL: "http://localhost:9000"
     MINIO_DEFAULT_PROTOCOL: "http"
     ARCHIVIST_ES_BACKUP_BUCKET_NAME: "project-storage-test"
+    REDIS_HOST: "localhost:6379"
   script:
     - export
     - IP="$(cat /etc/hosts |grep $HOSTNAME|cut -d$'\t' -f1)"

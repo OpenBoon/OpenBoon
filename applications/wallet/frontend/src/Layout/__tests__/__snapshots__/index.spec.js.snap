@@ -174,10 +174,6 @@ exports[`<Layout /> should render properly 1`] = `
 
 .emotion-11 {
   margin-left: 8px;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 .emotion-12 {
@@ -462,10 +458,6 @@ exports[`<Layout /> should render properly 2`] = `
 
 .emotion-11 {
   margin-left: 8px;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 .emotion-12 {

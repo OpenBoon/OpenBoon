@@ -27,7 +27,6 @@ import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.isUUID
@@ -192,15 +191,20 @@ class JobServiceImpl @Autowired constructor(
             )
         )
 
-        projectStorageService.recursiveDelete(
-            ProjectDirLocator(
-                ProjectStorageEntity.JOB,
-                job.jobId.toString(),
-                getProjectId()
-            )
-        )
+        val xjob = jobDao.get(job.jobId, false)
+        val deleted = jobDao.delete(job)
 
-        return jobDao.delete(job)
+        if (deleted) {
+            projectStorageService.recursiveDelete(
+                ProjectDirLocator(
+                    ProjectStorageEntity.JOB,
+                    xjob.id.toString(),
+                    xjob.projectId
+                )
+            )
+        }
+
+        return deleted
     }
 
     @Transactional(readOnly = true)

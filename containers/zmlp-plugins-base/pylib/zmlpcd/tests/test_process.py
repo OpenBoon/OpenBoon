@@ -1,5 +1,8 @@
 import unittest
+import requests
 from unittest.mock import patch
+
+from requests import Response
 
 from zmlpcd.logs import setup_logging
 from zmlpcd.process import ProcessorExecutor, AssetConsumer, is_file_type_allowed
@@ -82,6 +85,26 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert error["payload"]["phase"] == "execute"
         assert error["payload"]["path"] == "/foo/bing.jpg"
         assert asset["document"]["metrics"]["pipeline"][0]["error"] == "warning"
+
+    def test_execute_preprocess(self):
+        req = {
+            "ref": {
+                "className": "zmlpsdk.testing.TestProcessor",
+                "image": TEST_IMAGE
+            },
+            "assets": [
+                {
+                    "id": "1234",
+                    "document": {
+                        "source": {
+                            "path": "/foo/bing.jpg"
+                        }
+                    }
+                }
+            ]
+        }
+        self.pe.execute_preprocess(req)
+        assert self.pe.get_processor_wrapper(req["ref"]).instance.preprocess_ran
 
     def test_execute_processor_and_raise_fatal(self):
         req = {
@@ -286,6 +309,67 @@ class ProcessorExecutorTests(unittest.TestCase):
         wrapper.apply_metrics(frame.asset, True, 10, "warning")
         # errors are always not processed.
         assert not wrapper.is_already_processed(frame.asset)
+
+    @patch('requests.post')
+    def test_record_analysis_metric_success(self, metric_post_mock):
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": TEST_IMAGE,
+            "module": "Test Module"
+        }
+        frame = Frame(TestAsset(path='fake.jpg'))
+        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper.process(frame)
+        metric_post_mock.asset_called_once()
+
+    @patch('requests.post')
+    def test_record_analysis_metric_duplicate(self, metric_post_mock):
+        response = Response()
+        response._content = ('{"non_field_errors": ["The fields service, '
+                             'asset_id, project must make a unique set."]}')
+        response.status_code == 400
+        metric_post_mock.return_value = response
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": TEST_IMAGE,
+            "module": "Test Module"
+        }
+        frame = Frame(TestAsset(path='fake.jpg'))
+        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper.process(frame)
+        metric_post_mock.asset_called_once()
+
+    @patch('requests.post')
+    def test_record_analysis_metric_multiple_modules(self, post_mock):
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": TEST_IMAGE,
+            "module": "do not look at me"
+        }
+        frame = Frame(TestAsset(path='fake.jpg',
+                                attrs={'tmp.produced_analysis': ['module_1', 'module_2']}))
+        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper.process(frame)
+        post_mock.call_count == 2
+        modules_called = [c[1]['json']['service'] for c in post_mock.call_args_list]
+        assert ['module_1', 'module_2'] == modules_called
+
+    @patch('requests.post')
+    def test_record_analysis_metric_connection_error(self, metric_post_mock):
+        metric_post_mock.side_effect = requests.exceptions.ConnectionError()
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": TEST_IMAGE,
+            "module": "Test Module"
+        }
+        frame = Frame(TestAsset(path='fake.jpg'))
+        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper.process(frame)
+        metric_post_mock.asset_called_once()
 
 
 class TestAssetConsumer(unittest.TestCase):

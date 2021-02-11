@@ -32,6 +32,10 @@ class PdfDocument(options: RenderRequest, inputStream: InputStream) : com.zorroa
         return fileInfo.numberOfPages
     }
 
+    override fun pageCount(): Int {
+        return PdfFileInfo(pdfDocument).numberOfPages
+    }
+
     override fun renderAllMetadata(): Int {
         val fileInfo = PdfFileInfo(pdfDocument)
         for (page in 1..fileInfo.numberOfPages) {

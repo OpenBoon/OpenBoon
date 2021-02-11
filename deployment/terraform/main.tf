@@ -5,7 +5,7 @@ terraform {
     organization = "zorroa"
 
     workspaces {
-      name = "zvi-dev"
+      name = "01-Development"
     }
   }
 }
@@ -23,7 +23,6 @@ provider "google-beta" {
   project     = var.project
   region      = "${var.country}-${var.region}"
   zone        = "${var.country}-${var.region}-${var.zone}"
-  version     = ">= 3.33.0"
 }
 
 provider "azurerm" {
@@ -48,7 +47,6 @@ provider "kubernetes" {
   client_certificate     = module.gke-cluster.client_certificate
   client_key             = module.gke-cluster.client_key
   cluster_ca_certificate = module.gke-cluster.cluster_ca_certificate
-  version                = ">= 1.12.0"
 }
 
 ## GCP Infrastructure ###################################################################
@@ -153,6 +151,7 @@ resource "google_storage_bucket_object" "task_env" {
   name    = "environments/task_env.json"
   content = <<EOF
 {
+  "ENVIRONMENT": "${var.environment}",
   "CLARIFAI_KEY":  "${var.clarifai-key}",
   "ZORROA_AWS_KEY": "${var.aws-key}",
   "ZORROA_AWS_SECRET": "${var.aws-secret}",
@@ -235,20 +234,21 @@ module "elasticsearch" {
 }
 
 module "archivist" {
-  source                  = "./modules/archivist"
-  project                 = var.project
-  country                 = var.country
-  image-pull-secret       = kubernetes_secret.dockerhub.metadata[0].name
-  sql-service-account-key = module.postgres.sql-service-account-key
-  sql-connection-name     = module.postgres.connection-name
-  sql-instance-name       = module.postgres.instance-name
-  inception-key-b64       = local.inception-key-b64
-  system-bucket           = google_storage_bucket.system.name
-  container-cluster-name  = module.gke-cluster.name
-  analyst-shared-key      = module.analyst.shared-key
-  container-tag           = var.container-tag
-  es-backup-bucket-name   = module.elasticsearch.backup-bucket-name
-  log-bucket-name         = google_storage_bucket.access-logs.name
+  source                      = "./modules/archivist"
+  project                     = var.project
+  country                     = var.country
+  image-pull-secret           = kubernetes_secret.dockerhub.metadata[0].name
+  sql-service-account-key     = module.postgres.sql-service-account-key
+  sql-connection-name         = module.postgres.connection-name
+  sql-instance-name           = module.postgres.instance-name
+  inception-key-b64           = local.inception-key-b64
+  system-bucket               = google_storage_bucket.system.name
+  container-cluster-name      = module.gke-cluster.name
+  analyst-shared-key          = module.analyst.shared-key
+  container-tag               = var.container-tag
+  es-backup-bucket-name       = module.elasticsearch.backup-bucket-name
+  log-bucket-name             = google_storage_bucket.access-logs.name
+  deep-video-analysis-enabled = var.deep-video-analysis-enabled
 }
 
 module "auth-server" {
@@ -321,6 +321,7 @@ module "wallet" {
   marketplace-credentials         = var.marketplace-credentials
   superadmin                      = var.wallet-superadmin
   use-model-ids-for-label-filters = var.wallet-use-model-ids-for-label-filters
+  metrics-ip-address              = module.metrics.ip-address
 }
 
 module "ml-bbq" {
@@ -374,7 +375,6 @@ module "metrics" {
   sql-connection-name  = module.postgres.connection-name
   image-pull-secret    = kubernetes_secret.dockerhub.metadata[0].name
   environment          = var.environment
-  secret-key           = var.metrics-secret-key
   container-tag        = var.container-tag
   browsable            = var.metrics-browsable
   debug                = var.metrics-debug

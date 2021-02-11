@@ -12,10 +12,12 @@ terraform {
       source = "hashicorp/google"
     }
     google-beta = {
-      source = "hashicorp/google-beta"
+      source  = "hashicorp/google-beta"
+      version = ">= 3.33.0"
     }
     kubernetes = {
-      source = "hashicorp/kubernetes"
+      source  = "hashicorp/kubernetes"
+      version = ">= 1.12.0"
     }
     random = {
       source = "hashicorp/random"

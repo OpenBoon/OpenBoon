@@ -5,6 +5,8 @@ import labels from '../../ModelLabels/__mocks__/modelLabels'
 
 import ModelDetails from '../Details'
 
+import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../../Panel'
+
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const MODEL_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
 const JOB_ID = '223fd17d-7028-1519-94a8-d2f0132bc0c8'
@@ -13,6 +15,7 @@ const noop = () => () => {}
 
 jest.mock('next/link', () => 'Link')
 jest.mock('../../ModelAssets', () => 'ModelAssets')
+jest.mock('../MatrixLink', () => 'ModelMatrixLink')
 
 describe('<ModelDetails />', () => {
   it('should handle train errors properly', async () => {
@@ -270,7 +273,14 @@ describe('<ModelDetails />', () => {
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
-    expect(spy).toHaveBeenCalledWith('rightOpeningPanel', '"filters"')
+    expect(spy).toHaveBeenCalledWith(
+      'rightOpeningPanelSettings',
+      JSON.stringify({
+        size: PANEL_MIN_WIDTH,
+        isOpen: true,
+        openPanel: 'filters',
+      }),
+    )
   })
 
   it('should handle Add More Labels properly', async () => {
@@ -297,7 +307,14 @@ describe('<ModelDetails />', () => {
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
-    expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
+    expect(spy).toHaveBeenCalledWith(
+      'leftOpeningPanelSettings',
+      JSON.stringify({
+        size: PANEL_MIN_WIDTH,
+        isOpen: true,
+        openPanel: 'assetLabeling',
+      }),
+    )
 
     expect(spy).toHaveBeenCalledWith(
       `AssetLabelingAdd.${PROJECT_ID}`,

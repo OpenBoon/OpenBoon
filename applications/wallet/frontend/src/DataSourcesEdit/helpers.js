@@ -49,6 +49,11 @@ export const onSubmit = async ({
       },
     )
 
+    revalidate({
+      key: `/api/v1/projects/${projectId}/data_sources/${dataSourceId}/`,
+      paginated: false,
+    })
+
     await revalidate({
       key: `/api/v1/projects/${projectId}/data_sources/`,
       paginated: true,

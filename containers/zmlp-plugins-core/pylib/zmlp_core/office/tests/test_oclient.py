@@ -33,7 +33,7 @@ class OfficerPythonClientTests(unittest.TestCase):
     @patch.object(file_storage, 'localize_file')
     def test_render(self, file_cache_patch, post_patch):
         post_patch.return_value = MockRequestsResponse(
-            {"location": "zmlp://ml-storage/foo/bar"}, 200)
+            {"location": "zmlp://ml-storage/foo/bar", "page-count": 1, "request-id": "123"}, 200)
         file_cache_patch.return_value = zorroa_test_data('office/pdfTest.pdf', False)
         client = OfficerClient()
         result = client.render(self.asset, 1, False)

@@ -218,7 +218,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
 
     def test_not_a_quota_exception(self):
         assert vision.not_a_quota_exception(Exception('Foo'))
-        assert not vision.not_a_quota_exception('Too Many Requests')
+        assert not vision.not_a_quota_exception('Rate limit')
 
 
 class MockDetectResult:

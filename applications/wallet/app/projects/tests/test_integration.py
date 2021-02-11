@@ -1,6 +1,9 @@
 import base64
 import copy
+import requests
+from datetime import datetime
 from uuid import uuid4
+from unittest.mock import Mock, patch
 
 import pytest
 from django.core.exceptions import ValidationError
@@ -11,13 +14,11 @@ from rest_framework import status
 from rest_framework.response import Response
 from zmlp import ZmlpClient
 from zmlp.client import (ZmlpDuplicateException, ZmlpInvalidRequestException,
-                         ZmlpNotFoundException)
+                         ZmlpNotFoundException, ZmlpConnectionException)
 
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
-from projects.utils import random_project_name
 from projects.views import BaseProjectViewSet
-from subscriptions.models import Tier
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
 
 pytestmark = pytest.mark.django_db
@@ -29,15 +30,6 @@ def mock_put_disable_project(*args, **kwargs):
 
 def mock_put_enable_project(*args, **kwargs):
     return {'type': 'project', 'id': '00000000-0000-0000-0000-000000000000', 'op': 'enable', 'success': True}  # noqa
-
-
-def test_random_name():
-    assert random_project_name()
-
-
-def test_project_with_random_name():
-    project = Project.objects.create()
-    assert project.name
 
 
 def test_project_view_user_does_not_belong_to_project(user, project):
@@ -98,12 +90,14 @@ def test_project_serializer_detail(project):
     serializer = ProjectSerializer(project, context={'request': None})
     data = serializer.data
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
-                       'permissions', 'tasks', 'datasources', 'taskerrors', 'subscriptions',
+                       'permissions', 'tasks', 'datasources', 'taskerrors',
                        'modules', 'providers', 'searches', 'faces', 'visualizations',
-                       'models']
+                       'models', 'createdDate', 'modifiedDate']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
+    assert datetime.fromisoformat(data['createdDate'].replace('Z', '+00:00')) == project.createdDate
+    assert datetime.fromisoformat(data['modifiedDate'].replace('Z', '+00:00')) == project.modifiedDate
     assert data['url'] == f'/api/v1/projects/{project.id}/'
     assert data['jobs'] == f'/api/v1/projects/{project.id}/jobs/'
     assert data['users'] == f'/api/v1/projects/{project.id}/users/'
@@ -114,7 +108,6 @@ def test_project_serializer_detail(project):
     assert data['permissions'] == f'/api/v1/projects/{project.id}/permissions/'
     assert data['tasks'] == f'/api/v1/projects/{project.id}/tasks/'
     assert data['taskerrors'] == f'/api/v1/projects/{project.id}/task_errors/'
-    assert data['subscriptions'] == f'/api/v1/projects/{project.id}/subscriptions/'
     assert data['modules'] == f'/api/v1/projects/{project.id}/modules/'
     assert data['providers'] == f'/api/v1/projects/{project.id}/providers/'
     assert data['searches'] == f'/api/v1/projects/{project.id}/searches/'
@@ -176,27 +169,6 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
         project.sync_with_zmlp()
 
 
-def test_project_sync_with_zmlp_with_subscription(monkeypatch, project_zero_user,
-                                                  project_zero_subscription, project_zero):
-    def mock_get_project(*args, **kwargs):
-        return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'ESSENTIALS'}  # noqa
-
-    def mock_post_true(*args, **kwargs):
-        return True
-
-    def mock_put_tier(*args, **kwargs):
-        return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'PREMIER'}  # noqa
-
-    # Test a successful sync.
-    monkeypatch.setattr(ZmlpClient, 'get', mock_get_project)
-    monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
-    monkeypatch.setattr(ZmlpClient, 'put', mock_put_tier)
-    project_zero_subscription.tier = Tier.PREMIER
-    project_zero_subscription.save()
-    monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
-    project_zero.sync_with_zmlp()
-
-
 def test_project_managers(project):
     assert Project.objects.all().count() == 1
     assert str(project.id) == str(Project.objects.first().id)
@@ -247,6 +219,86 @@ def make_users_for_project(project, count, user_model, apikey):
     return users
 
 
+class TestMlUsageThisMonth:
+
+    @patch('requests.get')
+    def test_get(self, requests_mock, project, api_client, login):
+        requests_mock.return_value = Mock(json=Mock(return_value={'key': 'value'}))
+        url = reverse('project-ml-usage-this-month', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {'key': 'value'}
+        assert requests_mock.called
+        assert requests_mock.call_args[0][0] == 'http://metrics/api/v1/apicalls/tiered_usage'
+
+    @patch('requests.get')
+    def test_get_connection_error(self, requests_mock, project, api_client, login):
+        requests_mock.side_effect = requests.exceptions.ConnectionError()
+        url = reverse('project-ml-usage-this-month', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {}
+
+    @patch('requests.get')
+    def test_get_bad_status(self, requests_mock, project, api_client, login):
+        response = requests.models.Response()
+        response.status_code = 400
+        requests_mock.return_value = response
+        url = reverse('project-ml-usage-this-month', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {}
+
+
+class TestTotalStorageUsage:
+
+    @patch.object(ZmlpClient, 'post')
+    def test_get(self, client_mock, project, api_client, login):
+        mock_responses = [{'hits': {'total': {'value': 1000}}},
+                          {'aggregations': {'sum#video_seconds': {'value': 3601}}}]
+        client_mock.side_effect = mock_responses
+        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {'image_count': 1000, 'video_hours': 2}
+
+    @patch.object(ZmlpClient, 'post')
+    def test_get_image_error(self, client_mock, project, api_client, login):
+        mock_responses = [requests.exceptions.ConnectionError(),
+                          {'aggregations': {'sum#video_seconds': {'value': 3601}}}]
+        client_mock.side_effect = mock_responses
+        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {'video_hours': 2}
+
+    @patch.object(ZmlpClient, 'post')
+    def test_get_video_error(self, client_mock, project, api_client, login):
+        mock_responses = [{'hits': {'total': {'value': 1000}}},
+                          requests.exceptions.ConnectionError()]
+        client_mock.side_effect = mock_responses
+        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {'image_count': 1000}
+
+    @patch.object(ZmlpClient, 'post')
+    def test_get_connection_error(self, client_mock, project, api_client, login):
+        client_mock.side_effect = requests.exceptions.ConnectionError()
+        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {}
+
+    @patch.object(ZmlpClient, 'post')
+    def test_get_zmlp_connection_exception(self, client_mock, project, api_client, login):
+        client_mock.side_effect = ZmlpConnectionException()
+        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.json() == {}
+
+
 class TestProjectUserGet:
 
     @override_settings(PLATFORM='zmlp')
@@ -291,7 +343,7 @@ class TestProjectUserGet:
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         new_project = Project.objects.create(id='0820a307-c3dd-460e-a9c4-0e5f582e09c3',
-                                             name='Test Project')
+                                             name='New Test Project')
         response = api_client.get(reverse('projectuser-list', kwargs={'project_pk': new_project.id}))  # noqa
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
@@ -771,7 +823,6 @@ class TestProjectUserPut:
         monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
         monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
         monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
-
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)

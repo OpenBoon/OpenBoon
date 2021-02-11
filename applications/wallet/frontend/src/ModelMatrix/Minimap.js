@@ -7,7 +7,7 @@ import { getScroller } from '../Scroll/helpers'
 
 import { getColor } from './helpers'
 
-const ModelMatrixMinimap = ({ matrix, settings }) => {
+const ModelMatrixMinimap = ({ matrix, settings, isInteractive }) => {
   const verticalScroller = getScroller({ namespace: 'ModelMatrixVertical' })
   const horizontalScroller = getScroller({ namespace: 'ModelMatrixHorizontal' })
 
@@ -83,19 +83,21 @@ const ModelMatrixMinimap = ({ matrix, settings }) => {
         })
       })}
 
-      <div
-        ref={minimapRef}
-        css={{
-          position: 'absolute',
-          borderStyle: 'solid',
-          borderWidth: constants.borderWidths.medium,
-          borderColor: colors.signal.warning.base,
-          top: 0,
-          left: 0,
-          width: `${width}%`,
-          height: `${height}%`,
-        }}
-      />
+      {isInteractive && (
+        <div
+          ref={minimapRef}
+          css={{
+            position: 'absolute',
+            borderStyle: 'solid',
+            borderWidth: constants.borderWidths.medium,
+            borderColor: colors.signal.warning.base,
+            top: 0,
+            left: 0,
+            width: `${width}%`,
+            height: `${height}%`,
+          }}
+        />
+      )}
     </div>
   )
 }
@@ -114,6 +116,7 @@ ModelMatrixMinimap.propTypes = {
     zoom: PropTypes.number.isRequired,
     isMinimapOpen: PropTypes.bool.isRequired,
   }).isRequired,
+  isInteractive: PropTypes.bool.isRequired,
 }
 
 export default ModelMatrixMinimap

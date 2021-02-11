@@ -32,7 +32,7 @@ def get_video_duration(video_path):
     return round(float(duration), 3)
 
 
-def extract_thumbnail_from_video(video_path, thumbnail_path, seconds):
+def extract_thumbnail_from_video(video_path, thumbnail_path, seconds, size=None):
     """Creates a thumbnail image from the video at the specified seconds.
 
     Args:
@@ -41,7 +41,7 @@ def extract_thumbnail_from_video(video_path, thumbnail_path, seconds):
             created.
         seconds (float): The time in the video where the thumbnail should be
             taken from.
-
+        size (tuple): The size the frame should be resized to, if any.
     Raises:
         (IOError): If the thumbnail could not be created.
 
@@ -59,7 +59,12 @@ def extract_thumbnail_from_video(video_path, thumbnail_path, seconds):
            "1",
            str(thumbnail_path)]
 
-    logger.info("running command: %s" % cmd)
+    if size:
+        cmd.insert(8, "-s")
+        cmd.insert(9, "%dx%d" % size)
+
+    logger.info(f"Extracting thumbnail at time {seconds}")
+    logger.debug("running command: %s" % cmd)
     try:
         subprocess.check_call(cmd, shell=False)
     except subprocess.CalledProcessError:
@@ -264,16 +269,27 @@ class ShotBasedFrameExtractor(VideoFrameExtractor):
         return shot_times
 
 
-def save_timeline(timeline):
+def save_timeline(asset, timeline):
     """
     Save the given timeline as Clips.
 
     Args:
+        asset (Asset): The asset to save the timeline for.
         timeline (TimelineBuilder): The timeline
 
     Returns:
         dict: A status object.
 
     """
+    # Disable thumbs when creating timelines from processing
+    # These are processed later.
+    timeline.deep_analysis = False
+
+    new_timelines = asset.get_attr('tmp.timelines')
+    if not new_timelines:
+        new_timelines = []
+    new_timelines.append(timeline.name)
+    asset.set_attr('tmp.timelines', new_timelines)
+
     app = zmlp.app_from_env()
-    return app.clips.create_clips_from_timeline(timeline)
+    return app.clips.create_clips(timeline)

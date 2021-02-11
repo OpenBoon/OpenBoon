@@ -115,11 +115,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   align-items: center;
 }
 
-.emotion-5 {
-  -webkit-animation: ;
-  animation: ;
-}
-
 .emotion-6 {
   padding-left: 4px;
 }
@@ -667,11 +662,6 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-}
-
-.emotion-5 {
-  -webkit-animation: ;
-  animation: ;
 }
 
 .emotion-6 {

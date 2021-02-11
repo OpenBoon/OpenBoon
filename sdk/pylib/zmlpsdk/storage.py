@@ -11,6 +11,7 @@ import zipfile
 from pathlib import Path
 from urllib.parse import urlparse
 
+import backoff
 import requests
 
 from zmlp import app_from_env, Asset, StoredFile, AnalysisModule, \
@@ -18,7 +19,6 @@ from zmlp import app_from_env, Asset, StoredFile, AnalysisModule, \
 from .base import ZmlpEnv
 from .cloud import get_cached_google_storage_client, \
     get_cached_aws_client, get_cached_azure_storage_client
-
 
 __all__ = [
     'file_storage',
@@ -283,14 +283,11 @@ class ProjectStorage(object):
         # a multi-part upload.
         signed = self.app.client.post("/api/v3/files/_signed_upload_uri", spec)
         # Once we have that, we upload the file directly to the URI.
-        with open(src_path, 'rb') as fp:
-            response = requests.put(signed["uri"],
-                                    headers={
-                                        "Content-Type": signed["mediaType"],
-                                        "Content-Length": str(os.path.getsize(src_path))
-                                    },
-                                    data=fp)
-            response.raise_for_status()
+        try:
+            self.__upload_to_signed_url(src_path, signed)
+        except Exception as e:
+            logger.debug("Failed to upload to {}".format(signed), e)
+            logger.warning("Failed to upload {}, was rejected by cloud storage".format(file_id))
 
         # Now that the file is in place, we add our attrs onto the file
         # This returns a StoredFile record which we can embed into the asset.
@@ -303,7 +300,19 @@ class ProjectStorage(object):
             self.cache.precache_file(result, path)
         return result
 
-    def store_file(self, src_path, entity, category, rename=None, attrs=None):
+    @backoff.on_exception(backoff.expo, requests.exceptions.HTTPError, max_time=300)
+    def __upload_to_signed_url(self, src_path, signed):
+        size = os.path.getsize(src_path)
+        with open(src_path, 'rb') as fp:
+            response = requests.put(signed["uri"],
+                                    headers={
+                                        "Content-Type": signed["mediaType"],
+                                        "Content-Length": str(size)
+                                    },
+                                    data=fp)
+            response.raise_for_status()
+
+    def store_file(self, src_path, entity, category, rename=None, attrs=None, precache=True):
         """
         Store an arbitrary file against the project.
 
@@ -313,7 +322,7 @@ class ProjectStorage(object):
             category (str): The general category for the file. (proxy, model, etc)
             rename (str): An optional file name if it should not be based on the src_path name.
             attrs (dict): A dict of arbitrary attrs.
-
+            precache (bool): pre-cache the file into the storage cache.
         Returns:
             StoredFile: A record for the stored file.
 
@@ -324,7 +333,7 @@ class ProjectStorage(object):
             category,
             rename or Path(src_path).name
         ))
-        return self.store_file_by_id(src_path, fid, attrs)
+        return self.store_file_by_id(src_path, fid, attrs=attrs, precache=precache)
 
     def store_blob(self, src_blob, entity, category, name, attrs=None):
         """
@@ -481,9 +490,7 @@ class FileCache(object):
             symlinked = False
             shutil.copy(urlparse(precache_path).path, cache_path)
 
-        name = os.path.basename(src_path)
-        logger.info(f'Pre-caching {name}, linked: {symlinked}')
-
+        logger.debug(f'Pre-caching {src_path}, linked: {symlinked}')
         return cache_path
 
     def localize_uri(self, uri):

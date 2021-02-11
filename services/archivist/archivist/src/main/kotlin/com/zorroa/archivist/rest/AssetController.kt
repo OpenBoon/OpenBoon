@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateCustomFieldsRequest
-import com.zorroa.archivist.domain.BatchUpdateCustomFieldsResponse
+import com.zorroa.archivist.domain.BatchUpdateResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
@@ -133,7 +133,7 @@ class AssetController @Autowired constructor(
     @PreAuthorize("hasAuthority('AssetsImport')")
     @PutMapping("/api/v3/assets/_batch_update_custom_fields")
     fun batchUpdateCustomFields(@RequestBody request: BatchUpdateCustomFieldsRequest):
-        BatchUpdateCustomFieldsResponse {
+        BatchUpdateResponse {
             return assetService.batchUpdateCustomFields(request)
         }
 
@@ -213,7 +213,7 @@ class AssetController @Autowired constructor(
         response.setHeader("Content-Disposition", "attachment; filename=\"all.vtt\"")
 
         val asset = assetService.getAsset(id)
-        clipService.getWebvtt(asset, mapOf(), response.outputStream)
+        clipService.streamWebvtt(asset, mapOf(), response.outputStream)
         response.flushBuffer()
     }
 
@@ -229,7 +229,7 @@ class AssetController @Autowired constructor(
         response.setHeader("Content-Disposition", "attachment; filename=\"$timeline.vtt\"")
 
         val asset = assetService.getAsset(id)
-        clipService.getWebvttByTimeline(asset, timeline, response.outputStream)
+        clipService.streamWebvttByTimeline(asset, timeline, response.outputStream)
         response.flushBuffer()
     }
 

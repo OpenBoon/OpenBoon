@@ -34,7 +34,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         analysis = frame.asset.get_attr('analysis.gcp-vision-image-text-detection')
         assert 'content' == analysis['type']
         assert 'Giants Franchise History' in analysis['content']
-        assert 41 == analysis['words']
+        assert 40 == analysis['words']
 
     @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
@@ -68,7 +68,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         analysis = frame.asset.get_attr('analysis.gcp-vision-landmark-detection')
         assert 'labels' == analysis['type']
         assert 'Eiffel Tower' in get_prediction_labels(analysis)
-        assert 'Champ de Mars' in get_prediction_labels(analysis)
+        assert 'Paris' in get_prediction_labels(analysis)
         assert 2 == analysis['count']
 
     @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')

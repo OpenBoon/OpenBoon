@@ -322,10 +322,6 @@ Array [
 
 .emotion-4 {
   color: #808080;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 .emotion-5 {

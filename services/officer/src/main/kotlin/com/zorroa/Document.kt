@@ -19,6 +19,7 @@ abstract class Document(val options: RenderRequest) : Closeable {
 
     abstract fun renderImage(page: Int)
     abstract fun renderAllImages(): Int
+    abstract fun pageCount(): Int
 
     fun renderMetadata() {
         renderMetadata(options.page)

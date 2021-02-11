@@ -1,11 +1,20 @@
 package com.zorroa.archivist.service
 
+import com.zorroa.archivist.clients.EsRestClient
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.BatchUpdateClipProxyRequest
+import com.zorroa.archivist.domain.BatchUpdateResponse
+import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.ClipIdBuilder
+import com.zorroa.archivist.domain.ClipSpec
 import com.zorroa.archivist.domain.CreateTimelineResponse
 import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.TimelineSpec
+import com.zorroa.archivist.domain.UpdateClipProxyRequest
+import com.zorroa.archivist.domain.WebVTTFilter
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.util.bd
 import com.zorroa.archivist.util.formatDuration
 import com.zorroa.zmlp.service.logging.LogAction
@@ -13,7 +22,9 @@ import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.service.logging.warnEvent
 import com.zorroa.zmlp.util.Json
+import org.elasticsearch.action.DocWriteResponse
 import org.elasticsearch.action.bulk.BulkRequest
+import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.client.RequestOptions
@@ -30,23 +41,80 @@ import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import java.io.OutputStream
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.util.UUID
+import javax.annotation.PostConstruct
 
 interface ClipService {
+
+    /**
+     * Create a map of collapse keys used for searching.
+     */
+    fun getCollapseKeys(assetId: String, time: BigDecimal): Map<String, String>
+
+    /**
+     * Bulk create a bunch of clips using a TimelineSpec.
+     */
     fun createClips(timeline: TimelineSpec): CreateTimelineResponse
 
-    fun searchClips(asset: Asset, search: Map<String, Any>, params: Map<String, Array<String>>): SearchResponse
+    /**
+     * Search for clips using an ES REST DSL query. An Asset can be optionally provided.
+     */
+    fun searchClips(asset: Asset?, search: Map<String, Any>, params: Map<String, Array<String>>): SearchResponse
 
-    fun getWebvtt(asset: Asset, search: Map<String, Any>, outputStream: OutputStream)
+    /**
+     * Stream a WebVTT file that matches the search.
+     */
+    fun streamWebvtt(asset: Asset, search: Map<String, Any>, outputStream: OutputStream)
 
-    fun getWebvttByTimeline(asset: Asset, timeline: String, outputStream: OutputStream)
+    /**
+     * Stream a WebVTT file that matchess the WebVTTFilter.
+     */
+    fun streamWebvtt(filter: WebVTTFilter, outputStream: OutputStream)
 
-    fun mapToSearchSourceBuilder(asset: Asset, search: Map<String, Any>): SearchSourceBuilder
+    /**
+     * Stream a WebVTT file that matches a particular timeline.
+     */
+    fun streamWebvttByTimeline(asset: Asset, timeline: String, outputStream: OutputStream)
 
-    fun deleteClips(assetIdList: List<String>)
+    /**
+     * Converts a ES search DSL request into a SearchSourceBuilder
+     */
+    fun mapToSearchSourceBuilder(asset: Asset?, search: Map<String, Any>): SearchSourceBuilder
+
+    /**
+     * Bulk delete the given clips.
+     */
+    fun deleteClips(ids: List<String>)
+
+    /**
+     * Create a singel clip.
+     */
+    fun createClip(spec: ClipSpec): Clip
+
+    /**
+     * Delete a single clip.
+     */
+    fun deleteClip(id: String): Boolean
+
+    /**
+     * Set the proxy info ont the clip which contains the simhash and file data
+     */
+    fun setProxy(id: String, proxy: UpdateClipProxyRequest): Boolean
+
+    /**
+     * Set proxy data for multiple clips at one time.
+     */
+    fun batchSetProxy(req: BatchUpdateClipProxyRequest): BatchUpdateResponse
+
+    /**
+     * Get a clip by ID
+     */
+    fun getClip(id: String): Clip
 }
 
 @Service
@@ -56,6 +124,60 @@ class ClipServiceImpl(
 
     @Autowired
     private lateinit var assetService: AssetService
+
+    @Autowired
+    private lateinit var jobLaunchService: JobLaunchService
+
+    @Autowired
+    private lateinit var properties: ApplicationProperties
+
+    @PostConstruct
+    fun startup() {
+        logger.info(
+            "Deep video analysis enabled: {}",
+            properties.getBoolean("archivist.deep-video-analysis.enabled")
+        )
+    }
+
+    override fun createClip(spec: ClipSpec): Clip {
+        val rest = indexRoutingService.getProjectRestClient()
+        val asset = assetService.getAsset(spec.assetId)
+
+        val start = spec.start.setScale(3, RoundingMode.HALF_UP)
+        val stop = spec.stop.setScale(3, RoundingMode.HALF_UP)
+        val length = stop.subtract(start)
+        val score = spec.score.bd()
+
+        // Make the document.
+        val doc = mapOf(
+            "clip" to mapOf(
+                "assetId" to asset.id,
+                "timeline" to spec.timeline,
+                "track" to spec.track,
+                "content" to spec.content,
+                "score" to score,
+                "start" to start,
+                "stop" to stop,
+                "length" to length,
+                "collapseKey" to getCollapseKeys(asset.id, start)
+            ),
+            "deepSearch" to mapOf("name" to "clip", "parent" to asset.id)
+        )
+
+        val id = ClipIdBuilder(asset, spec.timeline, spec.track, start, stop).buildId()
+        val req = rest.newIndexRequest(id)
+        req.routing(asset.id)
+        req.source(doc)
+
+        rest.client.index(req, RequestOptions.DEFAULT)
+        val clip = Clip(id, asset.id, spec.timeline, spec.track, start, stop, spec.content, score.toDouble())
+
+        if (properties.getBoolean("archivist.deep-video-analysis.enabled")) {
+            jobLaunchService.launchCipAnalysisJob(clip)
+        }
+
+        return clip
+    }
 
     override fun createClips(timeline: TimelineSpec): CreateTimelineResponse {
         val asset = assetService.getAsset(timeline.assetId)
@@ -73,9 +195,9 @@ class ClipServiceImpl(
             val scoreCache = mutableMapOf<String, BigDecimal>()
 
             for (clip in track.clips) {
-                val id = ClipIdBuilder(asset, timeline.name, track.name, clip).buildId()
                 val start = clip.start.setScale(3, RoundingMode.HALF_UP)
                 val stop = clip.stop.setScale(3, RoundingMode.HALF_UP)
+                val id = ClipIdBuilder(asset, timeline.name, track.name, start, stop).buildId()
                 val length = stop.subtract(start)
                 val score = clip.score.bd()
 
@@ -96,7 +218,8 @@ class ClipServiceImpl(
                         "score" to scoreCache[id],
                         "start" to start,
                         "stop" to stop,
-                        "length" to length
+                        "length" to length,
+                        "collapseKey" to getCollapseKeys(asset.id, start)
                     ),
                     "deepSearch" to mapOf("name" to "clip", "parent" to asset.id)
                 )
@@ -119,11 +242,23 @@ class ClipServiceImpl(
             response.handleBulkResponse(rsp)
         }
 
+        if (properties.getBoolean("archivist.deep-video-analysis.enabled") && timeline.deepAnalysis) {
+            val jobId = getZmlpActor().getAttr("jobId")
+            if (jobId != null) {
+                val task =
+                    jobLaunchService.addTimelineAnalysisTask(UUID.fromString(jobId), timeline.assetId, timeline.name)
+                response.taskId = task.id
+            } else {
+                val job = jobLaunchService.launchTimelineAnalysisJob(timeline.assetId, timeline.name)
+                response.jobId = job.id
+            }
+        }
+
         return response
     }
 
     override fun searchClips(
-        asset: Asset,
+        asset: Asset?,
         search: Map<String, Any>,
         params: Map<String, Array<String>>
     ): SearchResponse {
@@ -138,12 +273,30 @@ class ClipServiceImpl(
         return rest.client.search(req, RequestOptions.DEFAULT)
     }
 
-    override fun getWebvttByTimeline(asset: Asset, timeline: String, outputStream: OutputStream) {
+    override fun streamWebvttByTimeline(asset: Asset, timeline: String, outputStream: OutputStream) {
         val search = mapOf("query" to mapOf("term" to mapOf("clip.timeline" to timeline)))
-        return getWebvtt(asset, search, outputStream)
+        return streamWebvtt(asset, search, outputStream)
     }
 
-    override fun getWebvtt(asset: Asset, search: Map<String, Any>, outputStream: OutputStream) {
+    override fun streamWebvtt(filter: WebVTTFilter, outputStream: OutputStream) {
+
+        val rest = indexRoutingService.getProjectRestClient()
+        val ssb = SearchSourceBuilder()
+        ssb.query(filter.getQuery())
+        val req = rest.newSearchRequest()
+        ssb.size(100)
+        ssb.sort("_doc")
+        req.source(ssb)
+        req.preference(getProjectId().toString())
+        req.scroll("5s")
+
+        val buffer = StringBuilder(512)
+        buffer.append("WEBVTT\n\n")
+
+        outputWebvtt(rest, req, buffer, outputStream)
+    }
+
+    override fun streamWebvtt(asset: Asset, search: Map<String, Any>, outputStream: OutputStream) {
 
         val rest = indexRoutingService.getProjectRestClient()
         val ssb = mapToSearchSourceBuilder(asset, search)
@@ -152,11 +305,20 @@ class ClipServiceImpl(
         ssb.sort("_doc")
         req.source(ssb)
         req.preference(getProjectId().toString())
-        req.scroll("10s")
+        req.scroll("5s")
 
         val buffer = StringBuilder(512)
         buffer.append("WEBVTT\n\n")
 
+        outputWebvtt(rest, req, buffer, outputStream)
+    }
+
+    private fun outputWebvtt(
+        rest: EsRestClient,
+        req: SearchRequest,
+        buffer: StringBuilder,
+        outputStream: OutputStream
+    ) {
         var rsp = rest.client.search(req, RequestOptions.DEFAULT)
         do {
 
@@ -186,7 +348,7 @@ class ClipServiceImpl(
         } while (rsp.hits.hits.isNotEmpty())
     }
 
-    override fun mapToSearchSourceBuilder(asset: Asset, search: Map<String, Any>): SearchSourceBuilder {
+    override fun mapToSearchSourceBuilder(asset: Asset?, search: Map<String, Any>): SearchSourceBuilder {
 
         // Filters out search options that are not supported.
         val searchSource = search.filterKeys { it in allowedSearchProperties }
@@ -197,7 +359,9 @@ class ClipServiceImpl(
 
         val outerQuery = QueryBuilders.boolQuery()
         outerQuery.filter(QueryBuilders.existsQuery("clip.timeline"))
-        outerQuery.filter(QueryBuilders.termQuery("clip.assetId", asset.id))
+        asset?.let {
+            outerQuery.filter(QueryBuilders.termQuery("clip.assetId", it.id))
+        }
 
         val ssb = SearchSourceBuilder.fromXContent(parser)
         if (ssb.query() != null) {
@@ -213,11 +377,23 @@ class ClipServiceImpl(
         return ssb
     }
 
-    override fun deleteClips(assetIdList: List<String>) {
+    override fun deleteClip(id: String): Boolean {
+        val rest = indexRoutingService.getProjectRestClient()
+        val req = rest.newDeleteRequest(id)
+        val rsp = rest.client.delete(req, RequestOptions.DEFAULT).result
+        val deleted = rsp.name == "DELETED"
+
+        if (deleted) {
+            logger.event(LogObject.CLIP, LogAction.DELETE, mapOf("clipId" to rsp))
+        }
+        return rsp.name == "DELETED"
+    }
+
+    override fun deleteClips(ids: List<String>) {
         val rest = indexRoutingService.getProjectRestClient()
 
         val query = QueryBuilders.termsQuery(
-            "clip.assetId", assetIdList
+            "clip.assetId", ids
         )
 
         val rsp = rest.client.deleteByQuery(
@@ -236,7 +412,79 @@ class ClipServiceImpl(
         logger.event(LogObject.CLIP, LogAction.DELETE, mapOf("total" to rsp.deleted))
     }
 
+    override fun setProxy(id: String, proxy: UpdateClipProxyRequest): Boolean {
+        val clip = getClip(id)
+        val rest = indexRoutingService.getProjectRestClient()
+
+        val req = rest.newUpdateRequest(id)
+        req.doc(Json.serializeToString(mapOf("clip" to proxy)), XContentType.JSON)
+        req.routing(clip.assetId)
+
+        return rest.client.update(
+            req,
+            RequestOptions.DEFAULT
+        ).result == DocWriteResponse.Result.UPDATED
+    }
+
+    override fun batchSetProxy(req: BatchUpdateClipProxyRequest): BatchUpdateResponse {
+        val rest = indexRoutingService.getProjectRestClient()
+        if (req.updates.size > 1000) {
+            throw IllegalArgumentException("Batch size too large (1001+)")
+        }
+        val asset = assetService.getAsset(req.assetId)
+        val bulk = BulkRequest()
+        for ((id, prx) in req.updates) {
+            val req = rest.newUpdateRequest(id)
+            req.routing(asset.id)
+            req.doc(Json.serializeToString(mapOf("clip" to prx)), XContentType.JSON)
+            bulk.add(req)
+        }
+
+        val rsp = rest.client.bulk(bulk, RequestOptions.DEFAULT)
+
+        return if (rsp.hasFailures()) {
+            BatchUpdateResponse(rsp.filter { it.isFailed }.map { it.id to it.failureMessage }.toMap())
+        } else {
+            BatchUpdateResponse(mapOf())
+        }
+    }
+
+    override fun getClip(id: String): Clip {
+        // We have to use a search here because the clip is routed to the asset.
+        val rest = indexRoutingService.getProjectRestClient()
+        val ssb = SearchSourceBuilder()
+        ssb.query(QueryBuilders.termQuery("_id", id))
+        val req = rest.newSearchRequest()
+        ssb.size(1)
+        req.source(ssb)
+
+        val rsp = rest.client.search(req, RequestOptions.DEFAULT)
+        if (rsp.hits.hits.isEmpty()) {
+            throw EmptyResultDataAccessException("The Clip '$id' does not exist.", 1)
+        }
+
+        return Clip.fromMap(id, rsp.hits.hits[0].sourceAsMap["clip"] as Map<String, Any>)
+    }
+
+    override fun getCollapseKeys(assetId: String, time: BigDecimal): Map<String, String> {
+        return collapseKeyWindows.map {
+            val key = if (it.value == BigDecimal.ZERO) {
+                time.toString().replace('.', '_')
+            } else {
+                time.divide(it.value).setScale(0, RoundingMode.DOWN)
+            }
+            it.key to "${assetId}_$key"
+        }.toMap()
+    }
+
     companion object {
+
+        val collapseKeyWindows = mapOf(
+            "startTime" to BigDecimal.ZERO,
+            "1secWindow" to BigDecimal.valueOf(1),
+            "5secWindow" to BigDecimal.valueOf(5),
+            "10secWindow" to BigDecimal.valueOf(10)
+        )
 
         val logger: Logger = LoggerFactory.getLogger(AssetSearchServiceImpl::class.java)
 

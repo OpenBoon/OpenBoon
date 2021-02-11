@@ -93,7 +93,7 @@ class AssetAppTests(unittest.TestCase):
                         '_score': 0.2876821,
                         '_source': {
                             'clip': {
-                                'id': '12345',
+                                'assetId': '12345',
                                 'timeline': 'foo',
                                 'track': 'bar',
                                 'start': 0.5,
@@ -194,7 +194,7 @@ class AssetAppTests(unittest.TestCase):
     @patch.object(ZmlpClient, 'post')
     def test_search_defaults(self, post_patch):
         post_patch.return_value = self.mock_search_result
-        assets = self.app.assets.search().assets
+        assets = self.app.assets.search().items
         assert 'https://i.imgur.com/SSN26nN.jpg' == assets[0].get_attr('source.path')
 
     @patch.object(ZmlpClient, 'delete')
@@ -218,19 +218,6 @@ class AssetAppTests(unittest.TestCase):
         for _ in self.app.assets.scroll_search():
             c += 1
         assert c == 2
-
-    @patch.object(ZmlpClient, 'delete')
-    @patch.object(ZmlpClient, 'post')
-    def test_scroll_search_clips(self, post_patch, del_patch):
-        scroll_result = copy.deepcopy(self.mock_clip_search_result)
-        scroll_result['_scroll_id'] = 'abc123'
-
-        post_patch.side_effect = [scroll_result, {'hits': {'hits': []}}]
-        del_patch.return_value = {}
-        for clip in self.app.assets.scroll_search_clips('12345'):
-            assert clip.id == 'dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg'
-            assert clip.timeline == 'foo'
-            assert clip.track == 'bar'
 
     @patch.object(ZmlpClient, 'post')
     def test_search_raw_response(self, post_patch):
@@ -413,3 +400,16 @@ class AssetAppTests(unittest.TestCase):
         }
         rsp = self.app.assets.batch_update_custom_fields(req)
         assert put_patch.return_value == rsp
+
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(ZmlpClient, 'post')
+    def test_scroll_search_clips(self, post_patch, del_patch):
+        scroll_result = copy.deepcopy(self.mock_clip_search_result)
+        scroll_result['_scroll_id'] = 'abc123'
+
+        post_patch.side_effect = [scroll_result, {'hits': {'hits': []}}]
+        del_patch.return_value = {}
+        for clip in self.app.assets.scroll_search_clips('12345'):
+            assert clip.asset_id == '12345'
+            assert clip.timeline == 'foo'
+            assert clip.track == 'bar'

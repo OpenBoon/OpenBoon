@@ -4,12 +4,12 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.elasticsearch.action.bulk.BulkResponse
 import java.math.BigDecimal
-import java.math.RoundingMode
 import java.security.MessageDigest
 import java.util.Base64
+import java.util.UUID
 
 @ApiModel("ClipSpec", description = "Properties for defining a video clip.")
-class ClipSpec(
+class TimelineClipSpec(
 
     @ApiModelProperty("The starting point of the video clip")
     val start: BigDecimal,
@@ -31,7 +31,7 @@ class TrackSpec(
     val name: String,
 
     @ApiModelProperty("The list of clips in the track.")
-    val clips: List<ClipSpec>
+    val clips: List<TimelineClipSpec>
 )
 
 @ApiModel("TimelineSpec", description = "A TimelineSpec is used to batch create video clips.")
@@ -47,7 +47,7 @@ class TimelineSpec(
     val tracks: List<TrackSpec>,
 
     @ApiModelProperty("If the thumbnails should be generated for the timeline.")
-    val generateThumbnails: Boolean = true
+    val deepAnalysis: Boolean
 )
 
 @ApiModel("CreateClipFailure", description = "A clip creation error.")
@@ -69,7 +69,14 @@ class CreateTimelineResponse(
     var created: Long = 0,
 
     @ApiModelProperty("The number of clips that failed to be created")
-    var failed: MutableList<CreateClipFailure> = mutableListOf()
+    var failed: MutableList<CreateClipFailure> = mutableListOf(),
+
+    @ApiModelProperty("The jobId for the analysis job if created.")
+    var jobId: UUID? = null,
+
+    @ApiModelProperty("The taskId for the analysis task if created.")
+    var taskId: UUID? = null
+
 ) {
     fun handleBulkResponse(rsp: BulkResponse) {
         if (rsp.hasFailures()) {
@@ -90,7 +97,8 @@ class ClipIdBuilder(
     val asset: Asset,
     val timeline: String,
     val track: String,
-    val clip: ClipSpec
+    val start: BigDecimal,
+    val stop: BigDecimal
 ) {
 
     fun buildId(): String {
@@ -103,8 +111,8 @@ class ClipIdBuilder(
         digester.update(asset.id.toByteArray())
         digester.update(timeline.toByteArray())
         digester.update(track.toByteArray())
-        digester.update(clip.start.setScale(3, RoundingMode.HALF_UP).toString().toByteArray())
-        digester.update(clip.stop.setScale(3, RoundingMode.HALF_UP).toString().toByteArray())
+        digester.update(start.toString().toByteArray())
+        digester.update(stop.toString().toByteArray())
 
         // Clamp the size to 32, 48 is bit much and you still
         // get much better resolution than a UUID.  We could

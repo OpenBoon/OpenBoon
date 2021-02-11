@@ -58,7 +58,7 @@ enum class ModelType(
         false
     ),
     ZVI_LABEL_DETECTION(
-        "Tensorflow CNN Classifier",
+        "Tensorflow Transfer Learning Classifier",
         "zmlp_train.tf2.TensorflowTransferLearningTrainer",
         mapOf(
             "train-test-ratio" to 4
@@ -122,6 +122,44 @@ enum class ModelType(
         "Upload a Tensorflow model to use for image classification.",
         ModelObjective.LABEL_DETECTION,
         Provider.GOOGLE,
+        true,
+        0,
+        0,
+        listOf(),
+        false,
+        true
+    ),
+    ZVI_PYTORCH_LABEL_DETECTION(
+        "Pytorch Transfer Learning Classifier",
+        "zmlp_train.pytorch.PytorchTransferLearningTrainer",
+        mapOf(
+            "train-test-ratio" to 4
+        ),
+        "zmlp_analysis.custom.PytorchTransferLearningClassifier",
+        mapOf(),
+        null,
+        "Classify images or documents using a custom trained CNN deep learning algorithm.  This type of model" +
+            "generates multiple predictions and can be trained to identify very specific features. " +
+            "The label detection classifier requires at least 2 concepts with 10 labeled images each. ",
+        ModelObjective.LABEL_DETECTION,
+        Provider.ZORROA,
+        false,
+        2,
+        10,
+        listOf(),
+        true,
+        false
+    ),
+    PYTORCH_IMAGE_CLASSIFIER(
+        "Pytorch Image Classifier",
+        "None",
+        mapOf(),
+        "zmlp_analysis.custom.PytorchImageClassifier",
+        mapOf(),
+        null,
+        "Upload a Pytorch model to use for image classification.",
+        ModelObjective.LABEL_DETECTION,
+        Provider.ZORROA,
         true,
         0,
         0,

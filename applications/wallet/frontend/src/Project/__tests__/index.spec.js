@@ -7,7 +7,7 @@ import User from '../../User'
 
 import Project from '..'
 
-jest.mock('../UsagePlan', () => 'ProjectUsagePlan')
+jest.mock('../Metrics', () => 'ProjectMetrics')
 
 describe('<Project />', () => {
   it('should render properly', () => {

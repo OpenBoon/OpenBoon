@@ -48,7 +48,7 @@ class TestSearchViewSetList:
         assert results[0]['name'] == 'Test Search'
         assert results[0]['project'] == project.id
         assert results[0]['search']['query']['prefix']['files.name']['value'] == 'image'
-        assert results[0]['createdBy'] == zmlp_project_membership.id
+        assert results[0]['createdBy'] == zmlp_project_membership.user.id
 
     def test_list_filters_by_project(self, zmlp_project_membership, login, api_client, project,
                                      project2, search, query):
@@ -70,7 +70,7 @@ class TestSearchViewSetRetrieve:
         assert result['name'] == 'Test Search'
         assert result['project'] == project.id
         assert result['search']['query']['prefix']['files.name']['value'] == 'image'
-        assert result['createdBy'] == zmlp_project_membership.id
+        assert result['createdBy'] == zmlp_project_membership.user.id
 
 
 class TestSearchViewSetCreate:
@@ -228,10 +228,12 @@ class TestFieldsAction:
         response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
         content = check_response(response)
         assert content['analysis']['zvi']['tinyProxy'] == ['exists']
-        assert content['clip']['start'] == ['range', 'exists']
         assert content['media']['type'] == ['facet', 'exists']
         assert content['aux'] == ['exists']
         assert content['tmp'] == ['exists']
+
+        # Assert that the clip field was removed since it is restricted.
+        assert 'clip' not in content
 
     def test_get_field_with_underscore(self, login, api_client, monkeypatch, mapping_response,
                                        project):
@@ -242,7 +244,6 @@ class TestFieldsAction:
         response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
         content = check_response(response)
         assert content['analysis']['analyis_underscore']['tinyProxy'] == ['exists']
-        assert content['clip']['start'] == ['range', 'exists']
         assert content['media']['type'] == ['facet', 'exists']
         assert content['aux'] == ['exists']
         assert content['tmp'] == ['exists']
@@ -415,6 +416,36 @@ class TestQuery(BaseFiltersTestCase):
         path = reverse('search-query', kwargs={'project_pk': project.id})
         with patch.object(SearchViewSet, '_zmlp_list_from_es', mock_list):
             api_client.get(path)
+
+    def test_fields_querystring_parsed(self, login, api_client, project):
+        def mock_list(*args, **kwargs):
+            query = kwargs['search_filter']
+            assert query == {'sort': {'system.timeCreated': {'order': 'desc'}},
+                             '_source': ['id',
+                                         'source*',
+                                         'files*',
+                                         'media*',
+                                         'analysis.first*',
+                                         'analysis.second*'],
+                             'track_total_hits': True}
+            return Response(status=status.HTTP_200_OK)
+
+        path = reverse('search-query', kwargs={'project_pk': project.id})
+        with patch.object(SearchViewSet, '_zmlp_list_from_es', mock_list):
+            api_client.get(path, {'fields': 'analysis.first,analysis.second'})
+
+    def test_fields_querystring_serialization(self, login, api_client, project, monkeypatch):
+        def _response(*args, **kwargs):
+            return {'took': 6, 'timed_out': False, '_shards': {'total': 2, 'successful': 2, 'skipped': 0, 'failed': 0}, 'hits': {'total': {'value': 72, 'relation': 'eq'}, 'max_score': None, 'hits': [{'_index': 'eoxds8nkpigim6ey', '_type': '_doc', '_id': 'l8p8gDmv40BHJ-xhKlcIpmdIgZbYyV1X', '_score': None, '_source': {'files': [{'size': 463806, 'name': 'image_1280x884.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/l8p8gDmv40BHJ-xhKlcIpmdIgZbYyV1X/proxy/image_1280x884.jpg', 'category': 'proxy', 'attrs': {'width': 1280, 'height': 884}}, {'size': 75138, 'name': 'image_512x353.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/l8p8gDmv40BHJ-xhKlcIpmdIgZbYyV1X/proxy/image_512x353.jpg', 'category': 'proxy', 'attrs': {'width': 512, 'height': 353}}, {'size': 134349, 'name': 'web-proxy.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/l8p8gDmv40BHJ-xhKlcIpmdIgZbYyV1X/web-proxy/web-proxy.jpg', 'category': 'web-proxy', 'attrs': {'width': 1024, 'height': 707}}], 'source': {'path': 'gs://zvi-dev-temp-images/people/_1021676.jpg', 'extension': 'jpg', 'filename': '_1021676.jpg', 'checksum': 604350599, 'mimetype': 'image/jpeg', 'filesize': 10804250}, 'media': {'orientation': 'landscape', 'aspect': 1.45, 'width': 4030, 'length': 1, 'timeCreated': '2019-05-04T18:59:46', 'type': 'image', 'height': 2785}, 'analysis': {'zvi-image-similarity': {'type': 'similarity', 'simhash': 'PPLNJPPBLIPBDOPIFPPPPLEPHPDPIPPPPAPOOPNPCIFFPPPPPPPPPEPPFPOHFMDPPBLHPPCPCPPPCPHPPPIPIPPPIPCDAMPPHGPFFBFENJPLBKPBPOBNPDBPJPAGJHFBJPGPPGCCAPFPPLGPPAPADJCPENBBHLPLKPPGEJPFFPPIPPIAIMMMBIBEMNCPPBLPMPEDPPODIGKPPPCOPJGJDPPPOPLFMPGCBPNPPOIELPPJILDJPHPPMPPPPPAPJPCPNEPPFPPBPDPEPPDJCCDPPPHPLINPPLJPBPMAEIBBGPKPPHJBFPLKPBMHCPPEPMPGGPGPPCPPPFAKJMPPPPLHPPAPPPPPPPPLCPPPDPPCOPDGLPPLEGPPAPHDLBPPINGPPIPCPGPFCPHMHAPBPPJKMPPMPPDGFPDPPJDOKNLMPFDDPFDCEPPHCLCELPPFBPPNPHBEOPPFCPPFDPPIPDPPAPEIPKPJPJIMPPKGOPPAAIPGEDEPPPCLPDPPFPEEPPECPPEIPDPOPIPPKHCGOPDPPOPKMCPKAJPIPPPEFPPPAPBPMHPPNPPPAEPPAEIAPPADGKPFEJPAPPLGFPPPDPPPPPEBOPDPDAIFDHFPPLBKILPPPIPHIPPCJPIJNNNPPNPOAPMPPIPKAFPMGBPCJDPPAPPMPDPPLPCFKPOBHPAHIPKOPGNPGGHEGPPHHPEPPAPPPPPPMDIKPPPLKPPCEPFLPPFPPGPPPGMPPCPPBDKJNPPGGPPPPHAIPPDPOPEGPIHNPBPOOJEPCPHGFPHBJMPAJICPPAPLDPPAPHPPMPPPDGLGFIFPPANBPIPHPPMOAFFPPPEPPPPNPPCLMBAPKCPFPPPPJAPJPLPPGPDEPOEANPPEBPPCEPAOKHEGPBFPPCEMPGLKBOPOBEPPADCLAGBPPPLEPIPPPPMCOPPEPFPFCFPPGNHGFFPNPDDOHHAGPEPADCAHAPPPOAPPPKGDIGPHBPIDPADPPPPFPPPNBDFOEHPPPMOEPFHPPPPPJCCPBPMMALPNLINGIPPPPPPPPPPOPPLBPGPPFEACDLPPOPBBPIPMPLPPKFJEMMEPIPPPGPPLGHMPCPFBHMPPMGMCEFHPPOPHPPPHAPADLBPPPBEPPDFGGCEIPPDLKPPPPDPHHIPGPGPOPPBCOCPHOIEPPHNPPCEPIKPNLPKPBCPPGLPHPAPPFPNHJDPPDPGPDPPAJFBCPCKCPPNIFPHGPDKHPCBPCDMPPPPPPPPAPICPGFPKPPPPPPGBJPBHLAOPHPMPPNPIPGHOAIPKOPHPGEPIMKEPPHPGPJPCPDPPPMGKODDIPBPPPPPEAHAPPPAPPGPPCHPONFPPDGKPLPPPFADMPJPNKPGJEPPGMPPPIPPLKPPPPJPPPKDPPMPLIPPPDFHPBPPPAPIPPPCDJPCPNPBODPPMNDALPPPNPPJDPNGCPOHGPCMPNPPCPPPKNMOAPDPMNNOPJCPAPMPPFPBCPLELLNPLMGJPCPPPADGPPFPPPJPBHPOGPPPEPAPPLGPPCPPDCHEPPPBPAJDDIPPJFJBFHPMPPCPPPPPPLDOJPGPPKPPPPPPJPPPLPPPPNPPLPBLFPPPPPEDPPPPPFPPPEJMJPPIEAPFPOGAPKAEGGAHJMHJGPPLOPPGNALNIPOPPHEPMPBLEPPGPNFDPLPPPFPKPPPPJPDPONJHCPPPPMKMPHPODPPBNPMPCPLIPPPPHPPIBDBELPPPGAPEKPEICPLPHPAHMPPPHPPPPEDHCCFPJPBFPPPFPNOPPDKDMPPPPPDJBPPPPMMPAPKPHPPDOPNPEPJPOJPPMFLAGMPGPAHIPPMHBPCNGNIPPBPEAPBPPHPPPPPJPCJNPAPAOOMFPCPAAJPPPPKHPEEAPNPNPHDPOJIMBPPPCPCPPAGHPGGPGMJPPPHMCCCHCCJGGPPPPPFHAGPPHFBJPPMPPPPPGMPKPLIPFGPNHMKGDPJGFPFIPPPGPPAPKPMLDPPBJPPPLBPEOENCCMMPPBCAPCPNEPPDEFBJDPJEJEMBBNPIEGPPAPPLPPPCH'}, 'portrait-or-not': {'score': 0.113, 'label': 'Not Portrait', 'type': 'single-label'}}}, 'sort': [1612389133424]}, {'_index': 'eoxds8nkpigim6ey', '_type': '_doc', '_id': 'xby1cFFXT--FZdXRE_DAC09xjWCWNyNa', '_score': None, '_source': {'files': [{'size': 540907, 'name': 'image_1280x960.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/xby1cFFXT--FZdXRE_DAC09xjWCWNyNa/proxy/image_1280x960.jpg', 'category': 'proxy', 'attrs': {'width': 1280, 'height': 960}}, {'size': 112494, 'name': 'image_512x384.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/xby1cFFXT--FZdXRE_DAC09xjWCWNyNa/proxy/image_512x384.jpg', 'category': 'proxy', 'attrs': {'width': 512, 'height': 384}}, {'size': 194055, 'name': 'web-proxy.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/xby1cFFXT--FZdXRE_DAC09xjWCWNyNa/web-proxy/web-proxy.jpg', 'category': 'web-proxy', 'attrs': {'width': 1024, 'height': 768}}], 'source': {'path': 'gs://zvi-dev-temp-images/people/_1010495.jpg', 'extension': 'jpg', 'filename': '_1010495.jpg', 'checksum': 279082393, 'mimetype': 'image/jpeg', 'filesize': 16350098}, 'media': {'orientation': 'landscape', 'aspect': 1.33, 'width': 5184, 'length': 1, 'timeCreated': '2019-04-28T16:14:23', 'type': 'image', 'height': 3888}, 'analysis': {'zvi-image-similarity': {'type': 'similarity', 'simhash': 'IPNPPFIGDGECPJNNPHKAICPANPEPGAPLAACGPHINPAPPNPDALPPPPPPPPBCPJPPPHPPFHPCPFDHPHPPIOCNEHPCPPGBAALPPALPEHAIACPPDPAPIPKAHPCBPDPAGPPAAOPPPPPJHBPIPPDBLCJPEKHNFAPBPCABFCPPIIPPPAPMPPPGOPPPGPEPFPPCJKPLPPAPKPAMBBHPIOPAJPFAAPPKPDANPAPIFEFAJPANPFNNAMFFPPPFALPOPPMFNLOAPBEJPIPFPPFNPPIAPPEPPMAHHPCNCPPPPMPFKPAJCPLPPJCCACPPIPCPJKPHPAPBJBPPFNPJPPEPDHJFPEPPPPPPPCPPLPDAPKPPPEDBPJDODPKBPFPBPCNOPAKPPPPBPPEPELPGMJPEKHGPDPAKPPPPCPPPEAHPOLKBPPLBPBLEPJJLPPPDPAPDOFPMPGHFCPBDPGHPEPGPPLFKEAAGDPPFPPLPMLPNPPPGFPCNEAKPPPPGPPPPNAOPBIDIDHPGAKPINKELEPJPFPPPPIPGPPEPKJJAPCCAJPPFNAGPFBPPPPPGPDPKPPHEHPMBPPPPEPPIILEEALPPFPPPPDNEKPDFDAIBIPPBEAPPPPAADPPPIPPCBPPPNLPPIBBPAMIAPPPJKPHIPPFPPMIMFGDPPCHPDPBEPHAEHPPBLPAFNBEPALPPPMEEINIFMCHAEBKPKPPPDIJPCPPPJPLIPFPBODPPPPFMPFAOIPDPPAPGADPNPAJPJFLHLFPEPNPLBKGPFKPIPCICPCPCFAPPCPJPPPBDKOPBCIPPEPPPPOPKDGBPHBLPEKPIOPEDPPKPGBPIFPAPPPPKPPJHPPBLPKPPBAGJGGDPPPKPMBPOPPMOGELPPHPKEHPHDIFAMJBJJPOBPFBHJJHAPPMDBPJAPPGHKJPEELIPEPPPPLNMPEBPMCFDPPPBEKHPIPPPEBDCPKMBANDLLPECPAPPHPFBAPFPHBPPBPLHNIPGMHPPPPAOPBEPAPICFPPOPEPCPOPPPMPFPEHAINPNGAIPJJPPPPDPPAPPPPPJBDPPIPPPJAGFIPLHPLPJNPOPOOPKPPPMKCPEBFBPPOBPMPLPPPAHAPAPPPCLPOPPEPPAPPEPPBDANPCIGBGBAPPIABPBPGPPPJAPGDPPIOJAPLFHNKAPPPFAPNAPAEPPPPOOPOIFKPFKPLPPAGJBJPPFGHPBPDFFIPCJAKPAPEOPBPDFCPMAPPBCPBAKMCPPPAGPBPPPPCPDHNPPNPPPAPACBOPGKPHHPPCGCCCMLIIKGPBAMFKPADPDCCPPOBIIOBLLPNPGPPPOALOPMPPPPPJLLDPBJPPGEPEPCPAEPAEPGNEPPAFPPPPAMBPJPDHMPFJDPIPPPPPPPMDPPPAAPOKPCHPGPJPBPNPPPKJOIPBKMDPCPMNEPEPPGPFAMPIPPAPLPLPNPAAPPPHBPNLPPPOPGPPOMPPMAPPPHNNAPOBPPPEBGPPDFBPHPBMPPAAPPEAHPEPAPPPKPPFDPPNPAOPPPBPAAPMKBPPBPCGPMPPNFPKPKBPPPBPPFPPPAPPKPAHPFEDPPOPPIADCLPMLCPDNDIBCPPPPPBCPBCPPPPPCBFHCDPPCPPPBEJPNLAPCPBKKNEPPCAPPPPPPHPGPEEKGALDPPPENPPEPDHPKPPPPNILGPPDNPPAPHPPHFCPPBPPBPOBFMPCHHPHMGPPMPPPLPPPPPAPPGAFBPPPPCOPIPPPICEDPPPGAPCPPIGPPPKPPANGPPFEPLNPJPHGFGFDPMPPPPPGPGFJPPFDPPPAILPMJPGCPMOIPDPPJFBPCCPPCGCCJPHAEHPAPJNDPPBFKKDPGPKEJPPPFKMPPBNAPBPKAIPKAEPPPGPJEPCIIDGPHJPHFCLHPOHPAJPHCPFCAPFNFOMJKGPNPPBLMFAPBIPGPBEPELPFPIIPPFPPPDPPPEPFPPPLPAAPPLPDADAPOBJONAECPACCPPLDDAPLCCLJPHGBAEHDAPPPPPPJDFPOOKMPIOPHPLPIGPHPAKPGDPPPPLPPHAPPNL'}, 'portrait-or-not': {'score': 1.0, 'label': 'Portrait', 'type': 'single-label'}}}, 'sort': [1612389133415]}]}}  # noqa
+
+        monkeypatch.setattr(ZmlpClient, 'post', _response)
+        path = reverse('search-query', kwargs={'project_pk': project.id})
+        response = api_client.get(path, {'fields': 'analysis.portrait-or-not,analysis.zvi-image-similarity'})
+        assert response.status_code == 200
+        content = response.json()
+        assert 'analysis' in content['results'][0]['metadata']
+        assert 'portrait-or-not' in content['results'][0]['metadata']['analysis']
+        assert 'zvi-image-similarity' in content['results'][0]['metadata']['analysis']
 
 
 class TestRawQuery(BaseFiltersTestCase):
