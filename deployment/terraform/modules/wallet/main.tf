@@ -216,6 +216,9 @@ resource "google_compute_managed_ssl_certificate" "default" {
   managed {
     domains = var.domains
   }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "kubernetes_ingress" "wallet" {
