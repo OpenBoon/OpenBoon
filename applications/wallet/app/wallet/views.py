@@ -45,7 +45,7 @@ class UsageReportView(FormView):
         # Add project name, org, and org name, if available, to report data
         content = csv_response.json()
         all_project_ids = set([entry['project'] for entry in content])
-        all_projects = Project.objects.filter(id__in=all_project_ids)
+        all_projects = Project.all_objects.filter(id__in=all_project_ids)
         projects_by_id = {str(project.id): project for project in all_projects}
         data = []
         for entry in content:
