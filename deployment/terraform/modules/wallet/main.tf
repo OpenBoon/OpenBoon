@@ -211,10 +211,13 @@ resource "kubernetes_service" "wallet" {
 }
 
 resource "google_compute_managed_ssl_certificate" "default" {
-  provider = google-beta
-  name     = "wallet-ssl-cert"
+  provider    = google-beta
+  name_prefix = "wallet-ssl-cert"
   managed {
     domains = var.domains
+  }
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
