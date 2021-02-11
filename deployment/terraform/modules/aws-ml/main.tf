@@ -20,7 +20,7 @@ resource "aws_iam_role" "ml-role" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": "ec2.amazonaws.com"
+        "Service": "rekognition.amazonaws.com"
       },
       "Effect": "Allow",
       "Sid": ""
