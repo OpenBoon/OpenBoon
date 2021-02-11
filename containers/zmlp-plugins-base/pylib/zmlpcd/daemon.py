@@ -52,6 +52,8 @@ class ZmlpContainerDaemon(object):
         logger.info("handling event: {}".format(etype))
         if etype == "ready":
             self.reactor.write_event("ok", {})
+        elif etype == "preprocess":
+            self.executor.execute_preprocess(event["payload"])
         elif etype == "execute":
             self.executor.execute_processor(event["payload"])
         elif etype == "generate":
@@ -61,6 +63,8 @@ class ZmlpContainerDaemon(object):
         elif etype == "stop":
             logger.warning("Exiting container via stop event")
             sys.exit(event["payload"].get("status", 0))
+        else:
+            logger.warning("Unknown event: {}".format(etype))
 
 
 class ZmqEventEmitter(object):

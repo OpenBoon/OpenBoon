@@ -6,9 +6,10 @@ from django.contrib.auth import get_user_model
 from django.forms import ModelForm
 
 from modules.models import Provider
+from organizations.admin import OrganizationAdmin
+from organizations.models import Organization
 from projects.admin import ProjectAdmin
 from projects.models import Project, Membership
-from subscriptions.models import Subscription
 
 User = get_user_model()
 
@@ -31,11 +32,6 @@ class AlwaysChangedModelForm(ModelForm):
         return True
 
 
-class SubscriptionInline(admin.StackedInline):
-    model = Subscription
-    form = AlwaysChangedModelForm
-
-
 class SupportUserAdmin(NoDeleteMixin, ModelAdmin):
     fieldsets = [
         (None, {'fields': ('email', 'first_name', 'last_name',
@@ -48,6 +44,9 @@ class SupportUserAdmin(NoDeleteMixin, ModelAdmin):
     list_filter = ('is_active', 'is_superuser', 'is_staff')
     exclude = ('permissions',)
     inlines = [MembershipInline]
+
+    def has_add_permission(self, request):
+        False
 
     def save_related(self, request, form, formsets, change):
         user = form.instance
@@ -72,7 +71,7 @@ class SupportUserAdmin(NoDeleteMixin, ModelAdmin):
 
 class SupportProjectAdmin(NoDeleteMixin, ProjectAdmin):
     readonly_fields = ['id']
-    inlines = [SubscriptionInline, MembershipInline]
+    inlines = [MembershipInline]
 
     def save_related(self, request, form, formsets, change):
         project = form.instance
@@ -80,7 +79,7 @@ class SupportProjectAdmin(NoDeleteMixin, ProjectAdmin):
 
         # If any of the Memberships are going to be deleted remove their API keys.
         if change:
-            membership_formset = formsets[1]
+            membership_formset = formsets[0]
             for membership_form in membership_formset:
                 if membership_form.cleaned_data['DELETE']:
                     membership = membership_form.instance
@@ -107,3 +106,4 @@ support_admin_site.register(get_user_model(), SupportUserAdmin)
 support_admin_site.register(Provider)
 support_admin_site.register(AccessAttempt, AccessAttemptAdmin)
 support_admin_site.register(AccessLog, AccessLogAdmin)
+support_admin_site.register(Organization, OrganizationAdmin)

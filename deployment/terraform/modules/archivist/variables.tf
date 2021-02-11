@@ -5,6 +5,7 @@ variable "country" {
 }
 
 variable "image-pull-secret" {
+  sensitive = true
 }
 
 variable "sql-instance-name" {
@@ -14,9 +15,11 @@ variable "sql-connection-name" {
 }
 
 variable "sql-service-account-key" {
+  sensitive = true
 }
 
 variable "inception-key-b64" {
+  sensitive = true
 }
 
 variable "system-bucket" {
@@ -26,6 +29,7 @@ variable "container-cluster-name" {
 }
 
 variable "analyst-shared-key" {
+  sensitive = true
 }
 
 variable "es-backup-bucket-name" {
@@ -69,3 +73,6 @@ variable "elasticsearch-url" {
   default = "http://10.3.240.106"
 }
 
+variable "deep-video-analysis-enabled" {
+  default = "false"
+}

@@ -4,6 +4,7 @@ from enum import Enum
 
 import boto3
 import botocore.waiter
+from botocore.config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -12,14 +13,33 @@ class AwsEnv:
     """
     AWS client utility client.
     """
+    @staticmethod
+    def get_rekognition_role_arn():
+        """
+        Get Rekognition Role ARN
+
+        Returns:
+            (str): role ARN name
+        """
+        return os.environ.get('ZORROA_AWS_ML_USER_ROLE_ARN')
+
+    @staticmethod
+    def general_aws_client(service):
+        """
+        Return an AWS client configured for service specified with ZVI credentials.
+
+        Returns:
+            boto3.client: A boto3 client for specified service
+        """
+        return boto3.client(service, config=AwsEnv.get_config(), **AwsEnv.get_aws_env())
 
     @staticmethod
     def s3():
-        return boto3.client('s3', **AwsEnv.get_aws_env())
+        return AwsEnv.general_aws_client('s3')
 
     @staticmethod
     def transcribe():
-        return boto3.client('transcribe', **AwsEnv.get_aws_env())
+        return AwsEnv.general_aws_client('transcribe')
 
     @staticmethod
     def rekognition():
@@ -29,14 +49,19 @@ class AwsEnv:
         Returns:
             boto3.client: A boto3 client for recognition
         """
-        return boto3.client('rekognition', **AwsEnv.get_aws_env())
+        return AwsEnv.general_aws_client('rekognition')
+
+    @staticmethod
+    def get_config():
+        return Config(
+            region_name=os.environ.get('ZORROA_AWS_REGION', 'us-east-2')
+        )
 
     @staticmethod
     def get_aws_env():
         aws_env = {
             'aws_access_key_id': os.environ.get('ZORROA_AWS_KEY'),
             'aws_secret_access_key': os.environ.get('ZORROA_AWS_SECRET'),
-            'region_name': os.environ.get('ZORROA_AWS_REGION', 'us-east-1')
         }
         if None in aws_env.values():
             raise RuntimeError('AWS support is not setup for this environment.')

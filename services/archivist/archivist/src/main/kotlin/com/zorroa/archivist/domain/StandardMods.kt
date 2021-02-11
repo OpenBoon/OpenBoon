@@ -39,7 +39,7 @@ object ModelObjective {
     const val LOGO_DETECTION = "Logo Detection"
     const val FACE_RECOGNITION = "Face Recognition"
     const val FACE_DETECTION = "Face Detection"
-    const val CLIPIFIER = "Asset Clipifier"
+    const val CLIPIFIER = "Video Clip Generator"
     const val EXPLICIT_DETECTION = "Explicit Detection"
     const val TEXT_DETECTION = "Text Detection (OCR)"
     const val IMAGE_TEXT_DETECTION = "Image Text Detection"
@@ -804,13 +804,13 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.IMAGE_TEXT_DETECTION,
-            listOf(FileType.Images),
+            listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.aws.RekognitionUnsafeDetection",
+                            "zmlp_analysis.aws.RekognitionTextDetection",
                             StandardContainers.ANALYSIS
                         )
                     )

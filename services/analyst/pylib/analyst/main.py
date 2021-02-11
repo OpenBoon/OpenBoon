@@ -41,7 +41,7 @@ def main():
     setup_routes(api)
 
     print("Listening on port {}".format(args.port))
-    server = WSGIServer(('0.0.0.0', int(args.port)), app)
+    server = WSGIServer(('0.0.0.0', int(args.port)), app, log=None)
     server.serve_forever()
 
 

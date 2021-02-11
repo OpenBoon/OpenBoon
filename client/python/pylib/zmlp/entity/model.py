@@ -21,16 +21,22 @@ class ModelType(Enum):
     """A KMeans clustering model for quickly clustering assets into general groups."""
 
     ZVI_LABEL_DETECTION = 1
-    """Retrain the ResNet50 convolutional neural network with your own labels."""
+    """Retrain the ResNet50 with your own labels, Using TensorFlow"""
 
     ZVI_FACE_RECOGNITION = 2
     """Face Recognition model using a KNN classifier."""
 
-    GCP_LABEL_DETECTION = 4
+    GCP_LABEL_DETECTION = 3
     """Train a Google AutoML vision model."""
 
-    TF2_IMAGE_CLASSIFIER = 5
+    TF2_IMAGE_CLASSIFIER = 4
     """Provide your own custom Tensorflow2/Keras model"""
+
+    ZVI_PYTORCH_LABEL_DETECTION = 5
+    """Retrain ResNet50 with your own labels, using Pytorch."""
+
+    PYTORCH_IMAGE_CLASSIFIER = 6
+    """Provide your own custom Pytorch model"""
 
 
 class LabelScope(Enum):

@@ -63,11 +63,6 @@ exports[`<Refresh /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-2 {
-  -webkit-animation: ;
-  animation: ;
-}
-
 .emotion-3 {
   padding-left: 4px;
 }
@@ -269,11 +264,6 @@ exports[`<Refresh /> should render properly 3`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-}
-
-.emotion-2 {
-  -webkit-animation: ;
-  animation: ;
 }
 
 .emotion-3 {

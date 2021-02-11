@@ -9,7 +9,6 @@ from django.contrib.auth import get_user_model
 from django.db import migrations
 
 from projects.models import Project, Membership
-from wallet.utils import get_zmlp_superuser_client
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
@@ -53,7 +52,6 @@ class Migration(migrations.Migration):
     dependencies = [
         ('wallet', '0001_data_migration_add_superuser'),
         ('projects', '0004_auto_20200810_2320'),
-        ('subscriptions', '0002_auto_20200528_2041'),
     ]
 
     operations = [

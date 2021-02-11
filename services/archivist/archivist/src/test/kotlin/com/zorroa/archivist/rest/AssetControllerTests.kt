@@ -5,7 +5,7 @@ import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
-import com.zorroa.archivist.domain.ClipSpec
+import com.zorroa.archivist.domain.TimelineClipSpec
 import com.zorroa.archivist.domain.FieldSpec
 import com.zorroa.archivist.domain.Label
 import com.zorroa.archivist.domain.ModelSpec
@@ -394,11 +394,11 @@ class AssetControllerTests : MockMvcTest() {
 
         val asset = getSample(1)[0]
         val clips = listOf(
-            ClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
-            ClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
+            TimelineClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
+            TimelineClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
         )
         val track = TrackSpec("cats", clips)
-        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
+        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track), false)
 
         clipService.createClips(timeline)
         refreshElastic()
@@ -421,11 +421,11 @@ class AssetControllerTests : MockMvcTest() {
 
         val asset = getSample(1)[0]
         val clips = listOf(
-            ClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
-            ClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
+            TimelineClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
+            TimelineClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
         )
         val track = TrackSpec("cats", clips)
-        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
+        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track), false)
 
         clipService.createClips(timeline)
         refreshElastic()
@@ -445,11 +445,11 @@ class AssetControllerTests : MockMvcTest() {
 
         val asset = getSample(1)[0]
         val clips = listOf(
-            ClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
-            ClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
+            TimelineClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
+            TimelineClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
         )
         val track = TrackSpec("cats", clips)
-        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
+        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track), false)
 
         clipService.createClips(timeline)
         refreshElastic()

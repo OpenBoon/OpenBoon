@@ -70,7 +70,7 @@ const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
 
           // eslint-disable-next-line no-param-reassign
           textTracks[index].mode =
-            textTracks[index].mode === 'showing' ? 'disabled' : 'showing'
+            textTracks[index]?.mode === 'showing' ? 'disabled' : 'showing'
         }}
       >
         <CaptionsSvg height={constants.icons.regular} />

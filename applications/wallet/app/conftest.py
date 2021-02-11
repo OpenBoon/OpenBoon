@@ -4,9 +4,8 @@ import pytest
 from django.conf import settings
 from rest_framework.test import APIClient, APIRequestFactory
 
-
+from organizations.models import Organization
 from projects.models import Project, Membership
-from subscriptions.models import Subscription
 
 
 @pytest.fixture(scope='session')
@@ -33,15 +32,22 @@ def superuser(django_user_model, api_client):
 
 
 @pytest.fixture
-def project():
-    return Project.objects.create(id='6abc33f0-4acf-4196-95ff-4cbb7f640a06',
-                                  name='Test Project')
+def organization(superuser):
+    return Organization.objects.create(name='Test Org', owner=superuser)
 
 
 @pytest.fixture
-def project2():
+def project(organization):
+    return Project.objects.create(id='6abc33f0-4acf-4196-95ff-4cbb7f640a06',
+                                  name='Test Project',
+                                  organization=organization)
+
+
+@pytest.fixture
+def project2(organization):
     return Project.objects.create(id='e93cbadb-e5ae-4598-8395-4cf5b30c0e94',
-                                  name='Test Project 2')
+                                  name='Test Project 2',
+                                  organization=organization)
 
 
 @pytest.fixture
@@ -86,11 +92,6 @@ def project_zero_membership(project_zero, superuser, zmlp_apikey):
     apikey = b64encode(zmlp_apikey).decode('utf-8')
     return Membership.objects.create(user=superuser, project=project_zero,
                                      apikey=apikey, roles=['ML_Tools', 'API_Key', 'User_Admin'])
-
-
-@pytest.fixture
-def project_zero_subscription(project_zero):
-    return Subscription.objects.create(project=project_zero)
 
 
 @pytest.fixture

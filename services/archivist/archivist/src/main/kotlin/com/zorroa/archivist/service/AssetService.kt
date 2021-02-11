@@ -15,7 +15,7 @@ import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchIndexFailure
 import com.zorroa.archivist.domain.BatchIndexResponse
 import com.zorroa.archivist.domain.BatchUpdateCustomFieldsRequest
-import com.zorroa.archivist.domain.BatchUpdateCustomFieldsResponse
+import com.zorroa.archivist.domain.BatchUpdateResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Field
 import com.zorroa.archivist.domain.FileExtResolver
@@ -47,6 +47,7 @@ import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.service.logging.warnEvent
+import com.zorroa.zmlp.service.security.getZmlpActor
 import com.zorroa.zmlp.util.Json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -159,7 +160,7 @@ interface AssetService {
      */
     fun batchUpdate(batch: Map<String, UpdateAssetRequest>): BulkResponse
 
-    fun batchUpdateCustomFields(batch: BatchUpdateCustomFieldsRequest): BatchUpdateCustomFieldsResponse
+    fun batchUpdateCustomFields(batch: BatchUpdateCustomFieldsRequest): BatchUpdateResponse
 
     /**
      * Update the the given assets.  The [UpdateAssetRequest] can
@@ -431,7 +432,7 @@ class AssetServiceImpl : AssetService {
         return rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
     }
 
-    override fun batchUpdateCustomFields(batch: BatchUpdateCustomFieldsRequest): BatchUpdateCustomFieldsResponse {
+    override fun batchUpdateCustomFields(batch: BatchUpdateCustomFieldsRequest): BatchUpdateResponse {
         if (batch.size() > 1000) {
             throw IllegalArgumentException("Batch size must be under 1000")
         }
@@ -454,7 +455,7 @@ class AssetServiceImpl : AssetService {
             bulkRequest.add(rest.newUpdateRequest(id).doc(new_data).retryOnConflict(10))
         }
 
-        return BatchUpdateCustomFieldsResponse(
+        return BatchUpdateResponse(
             rest.client.bulk(bulkRequest, RequestOptions.DEFAULT).filter {
                 it.isFailed
             }.map {
@@ -499,10 +500,17 @@ class AssetServiceImpl : AssetService {
         // A set of IDs where the stat changed to Analyzed.
         val stateChangedIds = mutableSetOf<String>()
         val failedAssets = mutableListOf<BatchIndexFailure>()
+        val postTimelines = mutableMapOf<String, List<String>>()
 
         docs.forEach { (id, doc) ->
             val asset = Asset(id, doc)
             try {
+
+                val timelines = asset.getAttr("tmp.timelines", Json.LIST_OF_STRING)
+                timelines?.let {
+                    postTimelines[id] = timelines
+                }
+
                 prepAssetForUpdate(asset)
                 if (setAnalyzed && !asset.isAnalyzed()) {
                     asset.setAttr("system.state", AssetState.Analyzed.name)
@@ -547,6 +555,10 @@ class AssetServiceImpl : AssetService {
                         )
                     )
                     failedAssets.add(BatchIndexFailure(it.id, null, it.failureMessage))
+
+                    // Remove from timeline processing if the asset
+                    // can't be indexed.
+                    postTimelines.remove(it.id)
                 } else {
                     indexedIds.add(it.id)
                 }
@@ -556,6 +568,20 @@ class AssetServiceImpl : AssetService {
             if (stateChangedIds.isNotEmpty()) {
                 incrementProjectIngestCounters(stateChangedIds.intersect(indexedIds), docs)
             }
+
+            logger.info("Post processing ${postTimelines.size} assets for deep video search.")
+            if (postTimelines.isNotEmpty()) {
+                val jobId = getZmlpActor().getAttr("jobId")
+                if (jobId == null) {
+                    logger.warn("There was post timelines to process but not jobId was found.")
+                } else {
+                    logger.info("Launching deep video analysis on ${postTimelines.size} assets.")
+                    jobLaunchService.addMultipleTimelineAnalysisTask(
+                        UUID.fromString(jobId), postTimelines
+                    )
+                }
+            }
+
             BatchIndexResponse(indexedIds, failedAssets)
         } else {
             BatchIndexResponse(emptyList(), failedAssets)

@@ -62,6 +62,7 @@ class IndexClusterDaoTests : AbstractTest() {
         )
         val cluster1 = indexClusterDao.create(spec)
         // Force the cluster to ready
+        jdbc.update("UPDATE index_cluster SET int_state=0")
         jdbc.update("UPDATE index_cluster SET int_state=1 WHERE pk_index_cluster=?", cluster1.id)
         // Our new cluster should be returned since it has less indexes.
         val cluster2 = indexClusterDao.getNextAutoPoolCluster()

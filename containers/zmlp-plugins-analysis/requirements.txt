@@ -7,11 +7,11 @@ opencv-contrib-python-headless
 google-api-core
 google-api-python-client
 google-auth
-google-cloud-speech==1.3.2
-google-cloud-videointelligence==1.15.0
-google-cloud-vision==1.0.0
+google-cloud-speech
+google-cloud-videointelligence
+google-cloud-vision
 google-cloud-language
-google-cloud-dlp==1.0.0
+google-cloud-dlp
 google-cloud-pubsub
 googleapis-common-protos
 backoff
@@ -20,6 +20,8 @@ cvlib
 matplotlib
 clarifai
 pytesseract
+torch
+torchvision
 facenet-pytorch
 boto3
 nameparser

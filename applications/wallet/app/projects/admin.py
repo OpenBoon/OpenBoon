@@ -17,20 +17,9 @@ def sync_project_with_zmlp(modeladmin, request, queryset):
 @admin.register(Project)
 class ProjectAdmin(ModelAdmin):
     actions = [sync_project_with_zmlp]
-    list_display = ('name', 'id', 'tier', 'usage', 'isActive')
-    list_filter = ('isActive',)
+    list_display = ('name', 'id', 'organization', 'isActive')
+    list_filter = ('isActive', 'organization')
     search_fields = ('name', 'id')
-
-    def tier(self, project):
-        if project.subscription:
-            return project.subscription.tier
-        return None
-
-    def usage(self, project):
-        if hasattr(project, 'subscription'):
-            usage = project.subscription.usage()
-            return f'{usage["video_hours"]} video hours/{usage["image_count"]} images'
-        return None
 
     def save_model(self, request, obj, form, change):
         """Creates a new project in the database as well as ZMLP."""

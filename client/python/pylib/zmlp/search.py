@@ -1,19 +1,22 @@
 import copy
 
-from .entity import Clip, Asset, ZmlpException
+from .entity import VideoClip, Asset, ZmlpException
 from .util import as_collection
 
 __all__ = [
     'AssetSearchScroller',
-    'AssetClipSearchScroller',
+    'VideoClipSearchScroller',
     'AssetSearchResult',
+    'VideoClipSearchResult',
     'AssetSearchCsvExporter',
     'LabelConfidenceQuery',
     'SingleLabelConfidenceQuery',
     'SimilarityQuery',
     'FaceSimilarityQuery',
     'LabelConfidenceTermsAggregation',
-    'LabelConfidenceMetricsAggregation'
+    'LabelConfidenceMetricsAggregation',
+    'SearchScroller',
+    'VideoClipContentMatchQuery'
 ]
 
 
@@ -95,9 +98,7 @@ class SearchScroller:
                     yield result
                 else:
                     for hit in hits['hits']:
-                        yield self.klass({'id': hit['_id'],
-                                          'document': hit.get('_source', {}),
-                                          'score': hit.get('_score', 0)})
+                        yield self.klass.from_hit(hit)
 
                 scroll_id = result.get("_scroll_id")
                 if not scroll_id:
@@ -128,13 +129,14 @@ class AssetSearchScroller(SearchScroller):
         )
 
 
-class AssetClipSearchScroller(SearchScroller):
+class VideoClipSearchScroller(SearchScroller):
     """
-    AssetClipSearchScroller handles scrolling through clips for an asset.
+    VideoClipSearchScroller handles scrolling through video clips.
     """
-    def __init__(self, assetId, app, search, timeout="1m", raw_response=False):
-        super(AssetClipSearchScroller, self).__init__(
-            Clip, f'/api/v3/assets/{assetId}/clips/_search', app, search, timeout, raw_response
+
+    def __init__(self, app, search, timeout="1m", raw_response=False):
+        super(VideoClipSearchScroller, self).__init__(
+            VideoClip, 'api/v1/clips/_search', app, search, timeout, raw_response
         )
 
 
@@ -169,21 +171,24 @@ class AssetSearchCsvExporter:
         return count
 
 
-class AssetSearchResult(object):
+class SearchResult:
     """
     Stores a search result from ElasticSearch and provides some convenience methods
     for accessing the data.
 
     """
-
-    def __init__(self, app, search):
+    def __init__(self, klass, endpoint, app, search):
         """
-        Create a new AssetSearchResult.
+        Create a new SearchResult.
 
         Args:
+            klass (Class): The Class to wrap the search result.
+            endpoint (str): The endpoint to use for search.
             app (ZmlpApp): A ZmlpApp instance.
             search (dict): An ElasticSearch query.
         """
+        self.klass = klass
+        self.endpoint = endpoint
         self.app = app
         if search and getattr(search, "to_dict", None):
             search = search.to_dict()
@@ -193,7 +198,7 @@ class AssetSearchResult(object):
         self._execute_search()
 
     @property
-    def assets(self):
+    def items(self):
         """
         A list of assets returned by the query. This is not all of the matches,
         just a single page of results.
@@ -205,7 +210,7 @@ class AssetSearchResult(object):
         hits = self.result.get("hits")
         if not hits:
             return []
-        return [Asset.from_hit(hit) for hit in hits['hits']]
+        return [self.klass.from_hit(hit) for hit in hits['hits']]
 
     def batches_of(self, batch_size, max_assets=None):
         """
@@ -332,19 +337,47 @@ class AssetSearchResult(object):
         """
         search = copy.deepcopy(self.search or {})
         search['from'] = search.get('from', 0) + len(self.result.get("hits"))
-        return AssetSearchResult(self.app, search)
+        return SearchResult(self.klass, self.endpoint, self.app, search)
 
     def _execute_search(self):
-        self.result = self.app.client.post("api/v3/assets/_search", self.search)
+        self.result = self.app.client.post(self.endpoint, self.search)
 
     def __iter__(self):
-        return iter(self.assets)
+        return iter(self.items)
 
     def __getitem__(self, item):
-        return self.assets[item]
+        return self.items[item]
 
 
-class LabelConfidenceTermsAggregation(object):
+class AssetSearchResult(SearchResult):
+    """
+    The AssetSearchResult subclass handles paging throug an Asset search result.
+    """
+    def __init__(self, app, search):
+        super(AssetSearchResult, self).__init__(
+            Asset, 'api/v3/assets/_search', app, search
+        )
+
+    @property
+    def assets(self):
+        return self.items
+
+
+class VideoClipSearchResult(SearchResult):
+    """
+    The VideoClipSearchResult subclass handles paging through an VideoClip search result.
+    """
+    def __init__(self, app, search):
+        super(VideoClipSearchResult, self).__init__(
+            VideoClip, 'api/v1/clips/_search', app, search
+        )
+
+    @property
+    def clips(self):
+        return self.items
+
+
+class LabelConfidenceTermsAggregation:
     """
     Convenience class for making a simple terms aggregation on an array of predictions
     """
@@ -557,6 +590,59 @@ class SingleLabelConfidenceQuery(object):
         }
 
 
+class VideoClipContentMatchQuery:
+    """
+    Provides a Match query against clip.content and sets clip.score as the query score.
+    """
+    def __init__(self, query, min_score=0.1, max_score=1.0):
+        """
+        Create a new VideoClipContentMatchQuery.
+
+        Args
+            query (str): The text of the query.
+            min_score (float): The minimum label score, default to 0.1.
+            max_score (float): The maximum score, defaults to 1.0 which is highest
+        """
+        self.query = query
+        self.score = [min_score, max_score]
+
+    def for_json(self):
+        return {
+            "bool": {
+                "must": [
+                    {
+                        "function_score": {
+                            "boost_mode": "sum",
+                            "field_value_factor": {
+                                "field": "clip.score",
+                                "missing": 0
+                            },
+                            "query": {
+                                "bool": {
+                                    "filter": [
+                                        {
+                                            "match": {
+                                                "clip.content": self.query
+                                            }
+                                        },
+                                        {
+                                            "range": {
+                                                "clip.score": {
+                                                    "gte": self.score[0],
+                                                    "lte": self.score[1]
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+
+
 class SimilarityQuery:
     """
     A helper class for building a similarity search.  You can embed this class anywhere
@@ -595,6 +681,9 @@ class SimilarityQuery:
         for simhash in as_collection(hashes) or []:
             if isinstance(simhash, Asset):
                 self.hashes.append(simhash.get_attr(self.field))
+            elif getattr(simhash, 'simhash', None):
+                if simhash.simhash:
+                    self.hashes.append(simhash.simhash)
             else:
                 self.hashes.append(simhash)
         return self
@@ -628,6 +717,12 @@ class SimilarityQuery:
     def __add__(self, simhash):
         self.add_hash(simhash)
         return self
+
+
+class VideoClipSimilarityQuery(SimilarityQuery):
+    def __init__(self, hashes, min_score=0.75, boost=1.0):
+        super(VideoClipSimilarityQuery, self).__init__(
+            hashes, min_score, boost, 'clip.simhash')
 
 
 class FaceSimilarityQuery:

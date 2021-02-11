@@ -15,7 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.4.21-2</kotlin.version>
+        <kotlin.version>1.4.30</kotlin.version>
         <kotlin.comiler.jvmTarget>1.8</kotlin.comiler.jvmTarget>
     </properties>
 
@@ -69,33 +69,33 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-pdf</artifactId>
-            <version>20.12</version>
+            <version>21.1</version>
         </dependency>
 
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-slides</artifactId>
-            <version>20.12</version>
+            <version>21.1</version>
             <classifier>jdk16</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-words</artifactId>
-            <version>20.12</version>
+            <version>21.1</version>
             <classifier>jdk17</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-cells</artifactId>
-            <version>20.12</version>
+            <version>21.1</version>
         </dependency>
 
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-diagram</artifactId>
-            <version>20.12</version>
+            <version>21.2</version>
             <classifier>jdk16</classifier>
         </dependency>
 
@@ -133,7 +133,7 @@
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-storage</artifactId>
-            <version>1.113.6</version>
+            <version>1.113.9</version>
         </dependency>
 
         <dependency>
@@ -141,6 +141,25 @@
             <artifactId>mockito-kotlin</artifactId>
             <version>2.2.0</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.15.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <version>1.5.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-transport-native-epoll</artifactId>
+            <version>4.1.53.Final</version>
+            <classifier>linux-x86_64</classifier>
         </dependency>
 
     </dependencies>
@@ -195,7 +214,7 @@
             <plugin>
               <groupId>org.pitest</groupId>
               <artifactId>pitest-maven</artifactId>
-              <version>1.4.6</version>
+              <version>1.6.2</version>
             </plugin>
         </plugins>
     </build>

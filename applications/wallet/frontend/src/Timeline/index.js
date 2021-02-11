@@ -66,6 +66,10 @@ const Timeline = ({ videoRef, length }) => {
     }, {})
 
     dispatch({ type: ACTIONS.UPDATE_TIMELINES, payload: { value } })
+
+    if (cleanQuery === 'W10=' && settings.highlights) {
+      dispatch({ type: ACTIONS.TOGGLE_HIGHLIGHTS })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

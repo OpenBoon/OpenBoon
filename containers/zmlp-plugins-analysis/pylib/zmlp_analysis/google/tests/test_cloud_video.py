@@ -1,7 +1,7 @@
 import os
 import logging
 from unittest.mock import patch
-from google.cloud.videointelligence_v1.proto import video_intelligence_pb2
+import google.cloud.videointelligence as videointelligence
 
 from zmlp_analysis.google.cloud_video import AsyncVideoIntelligenceProcessor
 from zmlpsdk import Frame, file_storage
@@ -204,8 +204,38 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         assert 2 == analysis['count']
         assert not analysis['explicit']
 
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
+    @patch('zmlp_analysis.google.cloud_video.initialize_gcp_client',
+           side_effect=MockVideoIntelligenceClient)
+    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+           '_get_video_annotations')
+    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+           'get_video_proxy_uri')
+    @patch.object(file_storage.assets, 'store_blob')
+    def test_skip_existing_detection(self, store_blob_patch, proxy_patch, annot_patch, _, __):
+        uri = 'gs://zorroa-dev-data/video/mustang.mp4'
+        store_blob_patch.return_value = None
+        annot_patch.return_value = self.load_results("detect-logos.dat")
+        proxy_patch.return_value = uri
+        processor = self.init_processor(
+            AsyncVideoIntelligenceProcessor(), {
+                'detect_logos': True,
+                'detect_labels': True
+            })
+
+        asset = TestAsset(uri)
+        asset.set_attr('media.length', 15.0)
+        asset.set_attr('clip.track', 'full')
+        asset.set_attr('analysis.gcp-video-label-detection', 'foo')
+
+        frame = Frame(asset)
+        processor.process(frame)
+
+        assert frame.asset.get_attr('analysis.gcp-video-label-detection') == 'foo'
+        assert frame.asset.get_attr('tmp.produced_analysis') == set(['gcp-video-logo-detection'])
+
     def load_results(self, name):
-        rsp = video_intelligence_pb2.AnnotateVideoResponse()
+        rsp = videointelligence.AnnotateVideoResponse()
         with open(os.path.dirname(__file__) + "/mock-data/{}".format(name), 'rb') as fp:
-            rsp.ParseFromString(fp.read())
+            rsp._pb.ParseFromString(fp.read())
         return rsp.annotation_results[0]

@@ -8,7 +8,7 @@ import pytest
 from zmlp import ZmlpClient, app_from_env, Asset, \
     SimilarityQuery, LabelConfidenceQuery, SingleLabelConfidenceQuery, \
     FaceSimilarityQuery, AssetSearchCsvExporter, AssetSearchScroller, \
-    AssetSearchResult
+    AssetSearchResult, VideoClipContentMatchQuery
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -217,6 +217,14 @@ class TestSingleLabelConfidenceQuery(unittest.TestCase):
         assert qjson['bool']['filter'][0]['terms']['analysis.foo.label'] == ['dog']
         function_score = qjson['bool']['must'][0]['function_score']
         assert function_score['field_value_factor']['field'] == 'analysis.foo.score'
+
+
+class TestVideoClipContentMatchQuery(unittest.TestCase):
+    def test_for_json(self):
+        s = VideoClipContentMatchQuery("foo", 0.1, 0.5)
+        qjson = s.for_json()
+        function_score = qjson['bool']['must'][0]['function_score']
+        assert function_score['field_value_factor']['field'] == 'clip.score'
 
 
 class TestImageSimilarityQuery(unittest.TestCase):

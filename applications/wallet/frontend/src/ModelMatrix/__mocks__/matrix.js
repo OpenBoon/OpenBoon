@@ -15,7 +15,7 @@ const matrix = {
     'Bird of Paradise Flower',
   ],
   matrix: [
-    [0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [2, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [3, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -29,6 +29,8 @@ const matrix = {
   ],
   maxScore: 1,
   minScore: 0,
+  moduleName: 'flower-types',
+  isMatrixApplicable: true,
 }
 
 export default matrix

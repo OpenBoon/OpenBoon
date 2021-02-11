@@ -36,6 +36,19 @@ class JwtAuthenticationTests : AbstractTest() {
     }
 
     @Test
+    fun testValidateTokenWithhAttrs() {
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead)
+        )
+        val apiKey = apiKeyService.create(spec)
+        val token = apiKey.getValidationKey().getJwtToken()
+
+        val auth = jwtAuthenticationFilter.validateToken(token)
+        assertEquals(auth.user.id, apiKey.id)
+    }
+
+    @Test
     fun testValidateInceptionToken() {
         val apiKey = Json.Mapper.readValue<SigningKey>(File("src/test/resources/key.json"))
         val token = apiKey.getJwtToken()

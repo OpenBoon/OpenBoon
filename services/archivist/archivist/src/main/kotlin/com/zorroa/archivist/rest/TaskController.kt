@@ -107,7 +107,7 @@ class TaskController @Autowired constructor(
         return jobService.getZpsScript(id)
     }
 
-    @ApiOperation("Get the pipeline script the Task will run.")
+    @ApiOperation("Get the task log")
     @GetMapping(value = ["/api/v1/tasks/{id}/_log"])
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)

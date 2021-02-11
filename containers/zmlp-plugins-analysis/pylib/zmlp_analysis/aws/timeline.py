@@ -81,7 +81,7 @@ def save_transcribe_timeline(asset, audio_result):
             segment['sentence'],
             segment['confidence'])
 
-    save_timeline(timeline)
+    save_timeline(asset, timeline)
     return timeline
 
 

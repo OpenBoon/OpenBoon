@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceDelete
 import com.zorroa.archivist.domain.DataSourceImportOptions
@@ -13,6 +14,7 @@ import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchResponse
 import com.zorroa.archivist.domain.ResolvedPipeline
 import com.zorroa.archivist.domain.StandardContainers
+import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.ZpsScript
 import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.stereotype.Component
@@ -20,6 +22,25 @@ import java.util.UUID
 
 interface JobLaunchService {
 
+    /**
+     * Launches a job to analyze a single Clip.
+     */
+    fun launchCipAnalysisJob(clip: Clip): Job
+
+    /**
+     * Launch a job to analyze clips in a timeline
+     */
+    fun launchTimelineAnalysisJob(assetId: String, timeline: String): Job
+
+    /**
+     * Add a task to an existing job to analyze a timeline.
+     */
+    fun addTimelineAnalysisTask(jobId: UUID, assetId: String, timeline: String): Task
+
+    /**
+     * Process multiple timelines.
+     */
+    fun addMultipleTimelineAnalysisTask(jobId: UUID, timelimes: Map<String, List<String>>): Task
     /**
      * Get a task for reprocessing assets.
      */
@@ -209,6 +230,74 @@ class JobLaunchServiceImpl(
         return launchJob(spec)
     }
 
+    override fun launchTimelineAnalysisJob(assetId: String, timeline: String): Job {
+        val script = getTimelineAnalysisScript(assetId, timeline)
+        val spec = JobSpec(
+            "VideoClip Analysis for Asset: $assetId",
+            listOf(script), replace = false, priority = JobPriority.Interactive
+        )
+        return jobService.create(spec)
+    }
+
+    override fun launchCipAnalysisJob(clip: Clip): Job {
+        val script = getClipAnalysisScript(clip.id)
+        val spec = JobSpec(
+            "VideoClip Analysis for Clip: ${clip.id}",
+            listOf(script), replace = false, priority = JobPriority.Interactive
+        )
+        return jobService.create(spec)
+    }
+
+    fun getTimelineAnalysisScript(assetId: String, timeline: String): ZpsScript {
+        val execute = ProcessorRef(
+            "zmlp_analysis.zvi.TimelineAnalysisProcessor",
+            StandardContainers.ANALYSIS,
+            args = mapOf("asset_id" to assetId, "timeline" to timeline)
+
+        )
+        return ZpsScript(
+            "Video Timeline Analysis $timeline", null, listOf(Asset("clips")), listOf(execute),
+            settings = getDefaultJobSettings(), globalArgs = mutableMapOf()
+        )
+    }
+
+    fun getMultipleTimelineAnalysisScript(timelines: Map<String, List<String>>): ZpsScript {
+        val execute = ProcessorRef(
+            "zmlp_analysis.zvi.MultipleTimelineAnalysisProcessor",
+            StandardContainers.ANALYSIS,
+            args = mapOf("timelines" to timelines)
+        )
+
+        return ZpsScript(
+            "Deep Video Timeline Analysis for ${timelines.size} asset(s).",
+            null, listOf(Asset("timelines")), listOf(execute),
+            settings = getDefaultJobSettings(index = false), globalArgs = mutableMapOf()
+        )
+    }
+
+    fun getClipAnalysisScript(clipId: String): ZpsScript {
+        val execute = ProcessorRef(
+            "zmlp_analysis.zvi.ClipAnalysisProcessor",
+            StandardContainers.ANALYSIS,
+            args = mapOf("clip_id" to clipId)
+
+        )
+        return ZpsScript(
+            "Clip Analysis", null, listOf(Asset("clips")), listOf(execute),
+            settings = getDefaultJobSettings(), globalArgs = mutableMapOf()
+        )
+    }
+
+    override fun addMultipleTimelineAnalysisTask(jobId: UUID, timelimes: Map<String, List<String>>): Task {
+        val job = jobService.get(jobId, false)
+        return jobService.createTask(job, getMultipleTimelineAnalysisScript(timelimes))
+    }
+
+    override fun addTimelineAnalysisTask(jobId: UUID, assetId: String, timeline: String): Task {
+        val job = jobService.get(jobId, false)
+        return jobService.createTask(job, getTimelineAnalysisScript(assetId, timeline))
+    }
+
     override fun getReprocessTask(req: ReprocessAssetSearchRequest, count: Long?): ZpsScript {
 
         val assetCount = count ?: assetSearchService.count(req.search)
@@ -251,8 +340,8 @@ class JobLaunchServiceImpl(
     /**
      * Return a map of default job settings.
      */
-    fun getDefaultJobSettings(): MutableMap<String, Any?> {
-        return mutableMapOf("batchSize" to defaultBatchSize)
+    fun getDefaultJobSettings(index: Boolean = true): MutableMap<String, Any?> {
+        return mutableMapOf("batchSize" to defaultBatchSize, "index" to index)
     }
 
     /**
@@ -278,12 +367,12 @@ class JobLaunchServiceImpl(
         /**
          * The default number of assets to add to a task.
          */
-        const val defaultBatchSize = 25
+        const val defaultBatchSize = 5
 
         /**
          * Minimum batch size.
          */
-        const val minBatchSize = 10
+        const val minBatchSize = 5
 
         /**
          * Maximum batch size.
