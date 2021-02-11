@@ -1,14 +1,6 @@
 {% extends 'admin/index.html' %}
 {% load i18n static %}
 
-{#{% block sidebar %}#}
-{#    {{ block.super }}#}
-{#    <li>Hello#}
-{#        <a href="{% url 'generate_usage_report' %}" class="btn btn-high btn-success">Generate Usage Report</a>#}
-{#    </li>#}
-{##}
-{#{% endblock %}#}
-
 {% block sidebar %}
 <div id="content-related">
     <div class="module" id="recent-actions-module">
@@ -39,7 +31,7 @@
             {% endif %}
         <h2>{% translate 'Billing actions' %}</h2>
         <ul class="actionlist">
-            <a href={% url 'generate_usage_report' %} class="btn btn-high btn-success">Generate Usage Report</a>
+            <a href={% url 'generate-usage-report' %} class="btn btn-high btn-success">Generate Usage Report</a>
         </ul>
     </div>
 </div>
