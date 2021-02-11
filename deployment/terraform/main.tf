@@ -265,7 +265,7 @@ module "api-gateway" {
   archivist_host         = module.archivist.ip-address
   auth_server_host       = module.auth-server.ip-address
   ml_bbq_host            = "${module.ml-bbq.ip-address}:8282"
-  domain                 = var.zmlp-domain
+  domains                = var.zmlp-domains
   container-cluster-name = module.gke-cluster.name
   container-tag          = var.container-tag
 }
@@ -311,7 +311,7 @@ module "wallet" {
   google-oauth-client-id          = var.google-oauth-client-id
   environment                     = var.environment
   inception-key-b64               = local.inception-key-b64
-  domain                          = var.wallet-domain
+  domains                         = var.wallet-domains
   container-tag                   = var.container-tag
   browsable                       = var.wallet-browsable-api
   marketplace-project             = "zorroa-public"
@@ -344,7 +344,7 @@ module "gcp-marketplace-integration" {
   marketplace-subscription = "zorroa-public"
   marketplace-credentials  = var.marketplace-credentials
   marketplace-service-name = "zorroa-visual-intelligence-zorroa-public.cloudpartnerservices.goog"
-  fqdn                     = var.wallet-domain
+  fqdn                     = var.wallet-domains[0]
   environment              = var.environment
   inception-key-b64        = local.inception-key-b64
   pg_password              = module.wallet.pg_password
