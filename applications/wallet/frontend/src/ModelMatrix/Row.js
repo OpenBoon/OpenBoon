@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Tooltip } from 'react-tippy'
+import Tippy from '@tippyjs/react/headless'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
@@ -9,6 +9,8 @@ import { useScroller } from '../Scroll/helpers'
 import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
 import { getColor, PANEL_WIDTH } from './helpers'
+
+import ModelMatrixTooltip from './Tooltip'
 
 const CONTRAST_THRESHOLD = 69
 
@@ -103,113 +105,75 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
             settings.selectedCell[1] === col
 
           return (
-            <Tooltip
+            <Tippy
               key={matrix.labels[col]}
-              position="top"
-              trigger="mouseenter"
-              html={
-                <div
-                  css={{
-                    color: colors.structure.coal,
-                    backgroundColor: colors.structure.white,
-                    borderRadius: constants.borderRadius.small,
-                    boxShadow: constants.boxShadows.default,
-                    padding: spacing.moderate,
-                  }}
-                >
-                  <h3>
-                    <span
-                      css={{
-                        fontFamily: typography.family.condensed,
-                        fontWeight: typography.weight.regular,
-                        color: colors.structure.iron,
-                      }}
-                    >
-                      Predictions:
-                    </span>{' '}
-                    {value}/{rowTotal}({Math.round(percent)}%)
-                  </h3>
-                  <h3>
-                    <span
-                      css={{
-                        fontFamily: typography.family.condensed,
-                        fontWeight: typography.weight.regular,
-                        color: colors.structure.iron,
-                      }}
-                    >
-                      Label True:
-                    </span>{' '}
-                    {matrix.labels[index]}
-                  </h3>
-                  <h3>
-                    <span
-                      css={{
-                        fontFamily: typography.family.condensed,
-                        fontWeight: typography.weight.regular,
-                        color: colors.structure.iron,
-                      }}
-                    >
-                      Label Pred:
-                    </span>{' '}
-                    {matrix.labels[col]}
-                  </h3>
-                </div>
-              }
+              render={() => (
+                <ModelMatrixTooltip
+                  matrix={matrix}
+                  index={index}
+                  value={value}
+                  rowTotal={rowTotal}
+                  percent={percent}
+                  col={col}
+                />
+              )}
             >
-              <button
-                type="button"
-                aria-label={`${matrix.labels[index]} / ${
-                  matrix.labels[col]
-                }: ${value}${settings.isNormalized ? '%' : ''}`}
-                css={{
-                  width: cellDimension,
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: getColor({ percent }),
-                  border: isSelected ? constants.borders.keyOneLarge : 'none',
-                  color:
-                    percent > CONTRAST_THRESHOLD
-                      ? colors.structure.white
-                      : colors.structure.coal,
-                  ':hover': {
-                    border: constants.borders.keyTwoLarge,
-                  },
-                }}
-                onClick={() => {
-                  dispatch({
-                    selectedCell: isSelected ? [] : [index, col],
-                  })
-
-                  if (!isOpen && !isSelected) {
-                    setPreviewSettings({
-                      type: ACTIONS.OPEN,
-                      payload: {
-                        minSize: PANEL_WIDTH,
-                      },
-                    })
-                  }
-
-                  if (isOpen && isSelected) {
-                    setPreviewSettings({
-                      type: ACTIONS.CLOSE,
-                    })
-                  }
-                }}
-              >
-                <div
+              <div css={{ display: 'inline' }}>
+                <button
+                  type="button"
+                  aria-label={`${matrix.labels[index]} / ${
+                    matrix.labels[col]
+                  }: ${value}${settings.isNormalized ? '%' : ''}`}
                   css={{
-                    margin: 'auto',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
+                    width: cellDimension,
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: getColor({ percent }),
+                    border: isSelected ? constants.borders.keyOneLarge : 'none',
+                    color:
+                      percent > CONTRAST_THRESHOLD
+                        ? colors.structure.white
+                        : colors.structure.coal,
+                    ':hover': {
+                      border: constants.borders.keyTwoLarge,
+                    },
+                  }}
+                  onClick={() => {
+                    dispatch({
+                      selectedCell: isSelected ? [] : [index, col],
+                    })
+
+                    if (!isOpen && !isSelected) {
+                      setPreviewSettings({
+                        type: ACTIONS.OPEN,
+                        payload: {
+                          minSize: PANEL_WIDTH,
+                        },
+                      })
+                    }
+
+                    if (isOpen && isSelected) {
+                      setPreviewSettings({
+                        type: ACTIONS.CLOSE,
+                      })
+                    }
                   }}
                 >
-                  {settings.isNormalized ? `${Math.round(percent)}%` : value}
-                </div>
-              </button>
-            </Tooltip>
+                  <div
+                    css={{
+                      margin: 'auto',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {settings.isNormalized ? `${Math.round(percent)}%` : value}
+                  </div>
+                </button>
+              </div>
+            </Tippy>
           )
         })}
       </div>
