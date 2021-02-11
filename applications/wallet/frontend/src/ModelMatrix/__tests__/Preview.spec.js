@@ -24,9 +24,7 @@ describe('ModelMatrixPreview', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({
-      data: assets,
-    })
+    require('swr').__setMockUseSWRInfiniteResponse([assets])
 
     const component = TestRenderer.create(
       <ModelMatrixPreview
@@ -41,6 +39,10 @@ describe('ModelMatrixPreview', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root.findByProps({ children: 'Load More' }).props.onClick()
+    })
 
     // eslint-disable-next-line no-proto
     const spy = jest.spyOn(localStorage.__proto__, 'setItem')
@@ -64,6 +66,31 @@ describe('ModelMatrixPreview', () => {
     )
   })
 
+  it('should render properly without data', () => {
+    require('next/router').__setUseRouter({
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRInfiniteResponse()
+
+    const component = TestRenderer.create(
+      <ModelMatrixPreview
+        settings={{
+          selectedCell: [0, 1],
+          minScore: 0,
+          maxScore: 1,
+        }}
+        labels={matrix.labels}
+        moduleName={matrix.moduleName}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly without selection', () => {
     require('next/router').__setUseRouter({
       query: {
@@ -72,9 +99,7 @@ describe('ModelMatrixPreview', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({
-      data: assets,
-    })
+    require('swr').__setMockUseSWRInfiniteResponse([assets])
 
     const component = TestRenderer.create(
       <ModelMatrixPreview

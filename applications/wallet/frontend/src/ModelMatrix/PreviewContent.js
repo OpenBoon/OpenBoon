@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import { useSWRInfinite } from 'swr'
 import PropTypes from 'prop-types'
 
 import { colors, spacing } from '../Styles'
@@ -6,18 +6,34 @@ import { colors, spacing } from '../Styles'
 import { useLocalStorage } from '../LocalStorage/helpers'
 import { reducer } from '../Resizeable/reducer'
 
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+
 import { PANEL_WIDTH } from './helpers'
 
-const FROM = 0
 const SIZE = 28
 const PANEL_BORDER_WIDTH = 1
 
 const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
-  const {
-    data: { results },
-  } = useSWR(
-    `/api/v1/projects/${projectId}/searches/query/?query=${encodedFilter}&from=${FROM}&size=${SIZE}`,
+  /* istanbul ignore next */
+  const { data, size, setSize } = useSWRInfinite(
+    (pageIndex, previousPageData) => {
+      if (previousPageData && !previousPageData.next) return null
+
+      const from = pageIndex * SIZE
+
+      return `/api/v1/projects/${projectId}/searches/query/?query=${encodedFilter}&from=${from}&size=${SIZE}`
+    },
+    undefined,
+    {
+      suspense: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      shouldRetryOnError: false,
+    },
   )
+
+  const { count } = (data && data[0]) || {}
+  const results = Array.isArray(data) ? data.flatMap(({ results: r }) => r) : []
 
   useLocalStorage({
     key: `Resizeable.ModelMatrixPreview`,
@@ -75,6 +91,15 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
           )
         })}
       </div>
+      {count && count > results.length && (
+        <Button
+          variant={BUTTON_VARIANTS.PRIMARY}
+          css={{ marginTop: spacing.base }}
+          onClick={() => setSize(size + 1)}
+        >
+          Load More
+        </Button>
+      )}
     </div>
   )
 }

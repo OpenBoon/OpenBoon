@@ -1515,6 +1515,1378 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
             </div>
           </div>
         </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 65.ef17dbda-0249-45ab-9cf4-711675c172a2-AP_FAA-Southwest_Airlines.JPG"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=oVmC_neGWgK6LHWIfo8T5zzzr5dJcM_P"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="65.ef17dbda-0249-45ab-9cf4-711675c172a2-AP_FAA-Southwest_Airlines.JPG"
+            >
+              <img
+                alt="65.ef17dbda-0249-45ab-9cf4-711675c172a2-AP_FAA-Southwest_Airlines.JPG"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/oVmC_neGWgK6LHWIfo8T5zzzr5dJcM_P/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 65.ef17dbda-0249-45ab-9cf4-711675c172a2-AP_FAA-Southwest_Airlines.JPG"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 65.ef17dbda-0249-45ab-9cf4-711675c172a2-AP_FAA-Southwest_Airlines.JPG"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/oVmC_neGWgK6LHWIfo8T5zzzr5dJcM_P"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 63.ampaire_337.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=6ACeoh2afEGpniGmEktgGmNLEnP1Vh65"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="63.ampaire_337.jpg"
+            >
+              <img
+                alt="63.ampaire_337.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/6ACeoh2afEGpniGmEktgGmNLEnP1Vh65/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 63.ampaire_337.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 63.ampaire_337.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/6ACeoh2afEGpniGmEktgGmNLEnP1Vh65"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 84.delta.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=qjdpQeg1Mt_SQy9Ix9bOcC-jRcaX9gtV"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="84.delta.jpg"
+            >
+              <img
+                alt="84.delta.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/qjdpQeg1Mt_SQy9Ix9bOcC-jRcaX9gtV/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 84.delta.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 84.delta.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/qjdpQeg1Mt_SQy9Ix9bOcC-jRcaX9gtV"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 75.maxresdefault.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=KykWV8DouJe1hOwMSDwep-zL8b6AuNl-"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="75.maxresdefault.jpg"
+            >
+              <img
+                alt="75.maxresdefault.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/KykWV8DouJe1hOwMSDwep-zL8b6AuNl-/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 75.maxresdefault.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 75.maxresdefault.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/KykWV8DouJe1hOwMSDwep-zL8b6AuNl-"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 29.frigate-mom.png"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=XqXxMhb9BHfO9NX3VmT3ox7TKnwh20UL"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="29.frigate-mom.png"
+            >
+              <img
+                alt="29.frigate-mom.png"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/XqXxMhb9BHfO9NX3VmT3ox7TKnwh20UL/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 29.frigate-mom.png"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 29.frigate-mom.png"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/XqXxMhb9BHfO9NX3VmT3ox7TKnwh20UL"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 35.5d82882824000012277db515.jpeg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=htlemy-lvxqqn2I-PMK9nH00cTlECcu2"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="35.5d82882824000012277db515.jpeg"
+            >
+              <img
+                alt="35.5d82882824000012277db515.jpeg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/htlemy-lvxqqn2I-PMK9nH00cTlECcu2/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 35.5d82882824000012277db515.jpeg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 35.5d82882824000012277db515.jpeg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/htlemy-lvxqqn2I-PMK9nH00cTlECcu2"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 4.222e0b84-f164-4fb1-90e7-d20bc27acd8c.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=zSXRkSzTjnWt9ZbaxK2je-Y8w0KRzpCP"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="4.222e0b84-f164-4fb1-90e7-d20bc27acd8c.jpg"
+            >
+              <img
+                alt="4.222e0b84-f164-4fb1-90e7-d20bc27acd8c.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/zSXRkSzTjnWt9ZbaxK2je-Y8w0KRzpCP/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 4.222e0b84-f164-4fb1-90e7-d20bc27acd8c.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 4.222e0b84-f164-4fb1-90e7-d20bc27acd8c.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/zSXRkSzTjnWt9ZbaxK2je-Y8w0KRzpCP"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 38.day-trip-air-travel.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=pjguI3tvyKDWMn9GsWeG9k2cT6gn3IuP"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="38.day-trip-air-travel.jpg"
+            >
+              <img
+                alt="38.day-trip-air-travel.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/pjguI3tvyKDWMn9GsWeG9k2cT6gn3IuP/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 38.day-trip-air-travel.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 38.day-trip-air-travel.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/pjguI3tvyKDWMn9GsWeG9k2cT6gn3IuP"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 43.airbus-albatross-one-ALBATROSS0819.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=0-WGU5bYqdT9J-0Md7LRo8HhqblUubFT"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="43.airbus-albatross-one-ALBATROSS0819.jpg"
+            >
+              <img
+                alt="43.airbus-albatross-one-ALBATROSS0819.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/0-WGU5bYqdT9J-0Md7LRo8HhqblUubFT/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 43.airbus-albatross-one-ALBATROSS0819.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 43.airbus-albatross-one-ALBATROSS0819.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/0-WGU5bYqdT9J-0Md7LRo8HhqblUubFT"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 56.Climate-change-basics-air-travel-climate-change-hero-1024x614.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=I_IuF5oQ4NVYBNQc9qRP-TueGb5csMRq"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="56.Climate-change-basics-air-travel-climate-change-hero-1024x614.jpg"
+            >
+              <img
+                alt="56.Climate-change-basics-air-travel-climate-change-hero-1024x614.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/I_IuF5oQ4NVYBNQc9qRP-TueGb5csMRq/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 56.Climate-change-basics-air-travel-climate-change-hero-1024x614.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 56.Climate-change-basics-air-travel-climate-change-hero-1024x614.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/I_IuF5oQ4NVYBNQc9qRP-TueGb5csMRq"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 55.airplane-5772311c3df78cb62c2109e0.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=GK3CIze7-0NgZJg1rkjr2fiy_pMXo7E1"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="55.airplane-5772311c3df78cb62c2109e0.jpg"
+            >
+              <img
+                alt="55.airplane-5772311c3df78cb62c2109e0.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/GK3CIze7-0NgZJg1rkjr2fiy_pMXo7E1/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 55.airplane-5772311c3df78cb62c2109e0.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 55.airplane-5772311c3df78cb62c2109e0.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/GK3CIze7-0NgZJg1rkjr2fiy_pMXo7E1"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 37.jet-2-carrier.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=u1p9pRtiFjFrFmtwDGEbuvc6gaMf_zdg"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="37.jet-2-carrier.jpg"
+            >
+              <img
+                alt="37.jet-2-carrier.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/u1p9pRtiFjFrFmtwDGEbuvc6gaMf_zdg/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 37.jet-2-carrier.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 37.jet-2-carrier.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/u1p9pRtiFjFrFmtwDGEbuvc6gaMf_zdg"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 47.flying-v.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=PJ5TDnKxv4yvtrHcgmGp0lC981SU0Hnk"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="47.flying-v.jpg"
+            >
+              <img
+                alt="47.flying-v.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/PJ5TDnKxv4yvtrHcgmGp0lC981SU0Hnk/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 47.flying-v.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 47.flying-v.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/PJ5TDnKxv4yvtrHcgmGp0lC981SU0Hnk"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 6.maxresdefault.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=2JrWvHLDc5seX2hUb9_HYg-kVvjbeRlL"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="6.maxresdefault.jpg"
+            >
+              <img
+                alt="6.maxresdefault.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/2JrWvHLDc5seX2hUb9_HYg-kVvjbeRlL/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 6.maxresdefault.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 6.maxresdefault.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/2JrWvHLDc5seX2hUb9_HYg-kVvjbeRlL"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 50.Boeings-New-Planes-are-Fuel-Savers_crop.png"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=BC4cy1iHDDJ3lMW056YO6CCGS2C2bqc3"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="50.Boeings-New-Planes-are-Fuel-Savers_crop.png"
+            >
+              <img
+                alt="50.Boeings-New-Planes-are-Fuel-Savers_crop.png"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/BC4cy1iHDDJ3lMW056YO6CCGS2C2bqc3/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 50.Boeings-New-Planes-are-Fuel-Savers_crop.png"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 50.Boeings-New-Planes-are-Fuel-Savers_crop.png"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/BC4cy1iHDDJ3lMW056YO6CCGS2C2bqc3"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 49.maxresdefault.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=V--85PFJCAYe8Qcnl-VnjHBEBhyztxNP"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="49.maxresdefault.jpg"
+            >
+              <img
+                alt="49.maxresdefault.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/V--85PFJCAYe8Qcnl-VnjHBEBhyztxNP/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 49.maxresdefault.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 49.maxresdefault.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/V--85PFJCAYe8Qcnl-VnjHBEBhyztxNP"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 27.lion-air-pilots-fought-to-save-plane-before-fatal-crash.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=eiVSixAN1mfW40iwzREgtzFqHO24z7cB"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="27.lion-air-pilots-fought-to-save-plane-before-fatal-crash.jpg"
+            >
+              <img
+                alt="27.lion-air-pilots-fought-to-save-plane-before-fatal-crash.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/eiVSixAN1mfW40iwzREgtzFqHO24z7cB/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 27.lion-air-pilots-fought-to-save-plane-before-fatal-crash.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 27.lion-air-pilots-fought-to-save-plane-before-fatal-crash.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/eiVSixAN1mfW40iwzREgtzFqHO24z7cB"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 28.Ethiopia-Plane-Crash-e1552503233778.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=4IfKi8NbnR4HjNPI-2y3enRWtd5rX4FQ"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="28.Ethiopia-Plane-Crash-e1552503233778.jpg"
+            >
+              <img
+                alt="28.Ethiopia-Plane-Crash-e1552503233778.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/4IfKi8NbnR4HjNPI-2y3enRWtd5rX4FQ/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 28.Ethiopia-Plane-Crash-e1552503233778.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 28.Ethiopia-Plane-Crash-e1552503233778.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/4IfKi8NbnR4HjNPI-2y3enRWtd5rX4FQ"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 26.airplane_gettyimages-866616238.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=3R0QlVZwDHGLOxV7aG6KNFbaeTnsVoes"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="26.airplane_gettyimages-866616238.jpg"
+            >
+              <img
+                alt="26.airplane_gettyimages-866616238.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/3R0QlVZwDHGLOxV7aG6KNFbaeTnsVoes/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 26.airplane_gettyimages-866616238.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 26.airplane_gettyimages-866616238.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/3R0QlVZwDHGLOxV7aG6KNFbaeTnsVoes"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 2.toomanyairpl.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=7Z9iDJHQZg2cCz4DC8JtYmoxEuvU0_ck"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="2.toomanyairpl.jpg"
+            >
+              <img
+                alt="2.toomanyairpl.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/7Z9iDJHQZg2cCz4DC8JtYmoxEuvU0_ck/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 2.toomanyairpl.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 2.toomanyairpl.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/7Z9iDJHQZg2cCz4DC8JtYmoxEuvU0_ck"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 1.300px-ANA_777-300_Taking_off_from_JFK.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=Icv3fCQAwav3QLTY5ElYoDMhHYco-0ni"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="1.300px-ANA_777-300_Taking_off_from_JFK.jpg"
+            >
+              <img
+                alt="1.300px-ANA_777-300_Taking_off_from_JFK.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/Icv3fCQAwav3QLTY5ElYoDMhHYco-0ni/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 1.300px-ANA_777-300_Taking_off_from_JFK.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 1.300px-ANA_777-300_Taking_off_from_JFK.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/Icv3fCQAwav3QLTY5ElYoDMhHYco-0ni"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 11.intro-1567189774.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=7pIB-hfBe5p3cOA1j4AQdZqf4_DObIBO"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="11.intro-1567189774.jpg"
+            >
+              <img
+                alt="11.intro-1567189774.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/7pIB-hfBe5p3cOA1j4AQdZqf4_DObIBO/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 11.intro-1567189774.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 11.intro-1567189774.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/7pIB-hfBe5p3cOA1j4AQdZqf4_DObIBO"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 16.GettyImages-755742867.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=2VCBOfW4sGDDts_wf8f5w1T2EwgHsrRz"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="16.GettyImages-755742867.jpg"
+            >
+              <img
+                alt="16.GettyImages-755742867.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/2VCBOfW4sGDDts_wf8f5w1T2EwgHsrRz/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 16.GettyImages-755742867.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 16.GettyImages-755742867.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/2VCBOfW4sGDDts_wf8f5w1T2EwgHsrRz"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 14.shutterstock-311421530.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=hRFfWUgwghdRRGnOCmnai9KoyjBqWG0D"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="14.shutterstock-311421530.jpg"
+            >
+              <img
+                alt="14.shutterstock-311421530.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/hRFfWUgwghdRRGnOCmnai9KoyjBqWG0D/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 14.shutterstock-311421530.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 14.shutterstock-311421530.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/hRFfWUgwghdRRGnOCmnai9KoyjBqWG0D"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 53.how-high-do-airplanes-fly.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=efVJ4D3tvFIM8I_lrGOGZfr-6f9fs4Vw"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="53.how-high-do-airplanes-fly.jpg"
+            >
+              <img
+                alt="53.how-high-do-airplanes-fly.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/efVJ4D3tvFIM8I_lrGOGZfr-6f9fs4Vw/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 53.how-high-do-airplanes-fly.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 53.how-high-do-airplanes-fly.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/efVJ4D3tvFIM8I_lrGOGZfr-6f9fs4Vw"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 67.Rossiya-Airlines-leopard-livery-1200x853.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=2tVyTyUSxFGjQ6V8bgHKNloXS6gaYaIT"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="67.Rossiya-Airlines-leopard-livery-1200x853.jpg"
+            >
+              <img
+                alt="67.Rossiya-Airlines-leopard-livery-1200x853.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/2tVyTyUSxFGjQ6V8bgHKNloXS6gaYaIT/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 67.Rossiya-Airlines-leopard-livery-1200x853.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 67.Rossiya-Airlines-leopard-livery-1200x853.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/2tVyTyUSxFGjQ6V8bgHKNloXS6gaYaIT"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 25.960x0.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=U_YjjJTCluoPhvBHF1Aq8Fux46Q-6Ql8"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="25.960x0.jpg"
+            >
+              <img
+                alt="25.960x0.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/U_YjjJTCluoPhvBHF1Aq8Fux46Q-6Ql8/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 25.960x0.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 25.960x0.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/U_YjjJTCluoPhvBHF1Aq8Fux46Q-6Ql8"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <a
+              aria-label="Select asset 74.3281700261001_6084681607001_6084671367001-vs.jpg"
+              className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=jrlEyDmKRmdzzR2xk720npm9fgGYPvUV"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="74.3281700261001_6084681607001_6084671367001-vs.jpg"
+            >
+              <img
+                alt="74.3281700261001_6084681607001_6084671367001-vs.jpg"
+                className="emotion-14"
+                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/jrlEyDmKRmdzzR2xk720npm9fgGYPvUV/files/category/web-proxy/name/web-proxy.jpg/"
+              />
+            </a>
+            <button
+              aria-label="Find similar images to 74.3281700261001_6084681607001_6084671367001-vs.jpg"
+              className="emotion-15"
+              onClick={[Function]}
+              title="Find similar images"
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                height={20}
+              />
+            </button>
+            <a
+              aria-label="Asset details 74.3281700261001_6084681607001_6084671367001-vs.jpg"
+              className="emotion-16"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/jrlEyDmKRmdzzR2xk720npm9fgGYPvUV"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              title="Asset details"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="search.svg"
+                height={20}
+              />
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
