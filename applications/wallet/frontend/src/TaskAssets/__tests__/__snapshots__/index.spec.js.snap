@@ -129,7 +129,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
   background-color: #ffffff80;
 }
 
-.emotion-335 {
+.emotion-55 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -139,13 +139,13 @@ exports[`<TaskAssets /> should render properly 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-336 {
+.emotion-56 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-337 {
+.emotion-57 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -159,7 +159,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-338 {
+.emotion-58 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -192,27 +192,27 @@ exports[`<TaskAssets /> should render properly 1`] = `
   padding-right: 64px;
 }
 
-.emotion-338,
-.emotion-338:hover,
-.emotion-338:visited,
-.emotion-338 .noop {
+.emotion-58,
+.emotion-58:hover,
+.emotion-58:visited,
+.emotion-58 .noop {
   background-color: #808080;
 }
 
-.emotion-338:hover,
-.emotion-338 .noop {
+.emotion-58:hover,
+.emotion-58 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-338[aria-disabled=true],
-.emotion-338 .noop {
+.emotion-58[aria-disabled=true],
+.emotion-58 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-339 {
+.emotion-59 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -229,7 +229,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-340 {
+.emotion-60 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -261,34 +261,34 @@ exports[`<TaskAssets /> should render properly 1`] = `
   margin-right: 8px;
 }
 
-.emotion-340,
-.emotion-340:hover,
-.emotion-340:visited,
-.emotion-340 .noop {
+.emotion-60,
+.emotion-60:hover,
+.emotion-60:visited,
+.emotion-60 .noop {
   background-color: #808080;
 }
 
-.emotion-340:hover,
-.emotion-340 .noop {
+.emotion-60:hover,
+.emotion-60 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-340[aria-disabled=true],
-.emotion-340 .noop {
+.emotion-60[aria-disabled=true],
+.emotion-60 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-341 {
+.emotion-61 {
   -webkit-transform: rotate(90deg);
   -moz-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-342 {
+.emotion-62 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -319,41 +319,41 @@ exports[`<TaskAssets /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-342,
-.emotion-342:hover,
-.emotion-342:visited,
-.emotion-342 .noop {
+.emotion-62,
+.emotion-62:hover,
+.emotion-62:visited,
+.emotion-62 .noop {
   background-color: #808080;
 }
 
-.emotion-342:hover,
-.emotion-342 .noop {
+.emotion-62:hover,
+.emotion-62 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-342[aria-disabled=true],
-.emotion-342 .noop {
+.emotion-62[aria-disabled=true],
+.emotion-62 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-343 {
+.emotion-63 {
   -webkit-transform: rotate(90deg);
   -moz-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-344 {
+.emotion-64 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-345 {
+.emotion-65 {
   padding: 8px;
   margin-left: 8px;
   text-align: center;
@@ -366,24 +366,24 @@ exports[`<TaskAssets /> should render properly 1`] = `
   -moz-appearance: textfield;
 }
 
-.emotion-345:hover {
+.emotion-65:hover {
   border: 2px solid #ffffff;
 }
 
-.emotion-345:focus {
+.emotion-65:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-345::-webkit-outer-spin-button,
-.emotion-345::-webkit-inner-spin-button {
+.emotion-65::-webkit-outer-spin-button,
+.emotion-65::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.emotion-346 {
+.emotion-66 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -397,7 +397,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-347 {
+.emotion-67 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -428,34 +428,34 @@ exports[`<TaskAssets /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-347,
-.emotion-347:hover,
-.emotion-347:visited,
-.emotion-347 .noop {
+.emotion-67,
+.emotion-67:hover,
+.emotion-67:visited,
+.emotion-67 .noop {
   background-color: #808080;
 }
 
-.emotion-347:hover,
-.emotion-347 .noop {
+.emotion-67:hover,
+.emotion-67 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-347[aria-disabled=true],
-.emotion-347 .noop {
+.emotion-67[aria-disabled=true],
+.emotion-67 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-348 {
+.emotion-68 {
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 
-.emotion-349 {
+.emotion-69 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -487,27 +487,27 @@ exports[`<TaskAssets /> should render properly 1`] = `
   margin-left: 8px;
 }
 
-.emotion-349,
-.emotion-349:hover,
-.emotion-349:visited,
-.emotion-349 .noop {
+.emotion-69,
+.emotion-69:hover,
+.emotion-69:visited,
+.emotion-69 .noop {
   background-color: #808080;
 }
 
-.emotion-349:hover,
-.emotion-349 .noop {
+.emotion-69:hover,
+.emotion-69 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-349[aria-disabled=true],
-.emotion-349 .noop {
+.emotion-69[aria-disabled=true],
+.emotion-69 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-350 {
+.emotion-70 {
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -770,1337 +770,21 @@ exports[`<TaskAssets /> should render properly 1`] = `
         </div>
       </summary>
     </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="65.ef17dbda-0249-45ab-9cf4-711675c172a2-AP_FAA-Southwest_Airlines.JPG"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            6
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="65.ef17dbda-0249-45ab-9cf4-711675c172a2-AP_FAA-Southwest_Airlines.JPG"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/oVmC_neGWgK6LHWIfo8T5zzzr5dJcM_P/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            65.ef17dbda-0249-45ab-9cf4-711675c172a2-AP_FAA-Southwest_Airlines.JPG
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="63.ampaire_337.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            7
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="63.ampaire_337.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/6ACeoh2afEGpniGmEktgGmNLEnP1Vh65/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            63.ampaire_337.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="84.delta.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            8
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="84.delta.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/qjdpQeg1Mt_SQy9Ix9bOcC-jRcaX9gtV/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            84.delta.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="75.maxresdefault.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            9
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="75.maxresdefault.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/KykWV8DouJe1hOwMSDwep-zL8b6AuNl-/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            75.maxresdefault.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="29.frigate-mom.png"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            10
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="29.frigate-mom.png"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/XqXxMhb9BHfO9NX3VmT3ox7TKnwh20UL/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            29.frigate-mom.png
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="35.5d82882824000012277db515.jpeg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            11
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="35.5d82882824000012277db515.jpeg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/htlemy-lvxqqn2I-PMK9nH00cTlECcu2/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            35.5d82882824000012277db515.jpeg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="4.222e0b84-f164-4fb1-90e7-d20bc27acd8c.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            12
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="4.222e0b84-f164-4fb1-90e7-d20bc27acd8c.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/zSXRkSzTjnWt9ZbaxK2je-Y8w0KRzpCP/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            4.222e0b84-f164-4fb1-90e7-d20bc27acd8c.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="38.day-trip-air-travel.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            13
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="38.day-trip-air-travel.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/pjguI3tvyKDWMn9GsWeG9k2cT6gn3IuP/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            38.day-trip-air-travel.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="43.airbus-albatross-one-ALBATROSS0819.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            14
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="43.airbus-albatross-one-ALBATROSS0819.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/0-WGU5bYqdT9J-0Md7LRo8HhqblUubFT/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            43.airbus-albatross-one-ALBATROSS0819.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="56.Climate-change-basics-air-travel-climate-change-hero-1024x614.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            15
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="56.Climate-change-basics-air-travel-climate-change-hero-1024x614.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/I_IuF5oQ4NVYBNQc9qRP-TueGb5csMRq/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            56.Climate-change-basics-air-travel-climate-change-hero-1024x614.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="55.airplane-5772311c3df78cb62c2109e0.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            16
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="55.airplane-5772311c3df78cb62c2109e0.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/GK3CIze7-0NgZJg1rkjr2fiy_pMXo7E1/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            55.airplane-5772311c3df78cb62c2109e0.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="37.jet-2-carrier.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            17
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="37.jet-2-carrier.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/u1p9pRtiFjFrFmtwDGEbuvc6gaMf_zdg/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            37.jet-2-carrier.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="47.flying-v.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            18
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="47.flying-v.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/PJ5TDnKxv4yvtrHcgmGp0lC981SU0Hnk/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            47.flying-v.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="6.maxresdefault.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            19
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="6.maxresdefault.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/2JrWvHLDc5seX2hUb9_HYg-kVvjbeRlL/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            6.maxresdefault.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="50.Boeings-New-Planes-are-Fuel-Savers_crop.png"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            20
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="50.Boeings-New-Planes-are-Fuel-Savers_crop.png"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/BC4cy1iHDDJ3lMW056YO6CCGS2C2bqc3/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            50.Boeings-New-Planes-are-Fuel-Savers_crop.png
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="49.maxresdefault.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            21
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="49.maxresdefault.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/V--85PFJCAYe8Qcnl-VnjHBEBhyztxNP/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            49.maxresdefault.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="27.lion-air-pilots-fought-to-save-plane-before-fatal-crash.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            22
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="27.lion-air-pilots-fought-to-save-plane-before-fatal-crash.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/eiVSixAN1mfW40iwzREgtzFqHO24z7cB/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            27.lion-air-pilots-fought-to-save-plane-before-fatal-crash.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="28.Ethiopia-Plane-Crash-e1552503233778.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            23
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="28.Ethiopia-Plane-Crash-e1552503233778.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/4IfKi8NbnR4HjNPI-2y3enRWtd5rX4FQ/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            28.Ethiopia-Plane-Crash-e1552503233778.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="26.airplane_gettyimages-866616238.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            24
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="26.airplane_gettyimages-866616238.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/3R0QlVZwDHGLOxV7aG6KNFbaeTnsVoes/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            26.airplane_gettyimages-866616238.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="2.toomanyairpl.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            25
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="2.toomanyairpl.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/7Z9iDJHQZg2cCz4DC8JtYmoxEuvU0_ck/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            2.toomanyairpl.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="1.300px-ANA_777-300_Taking_off_from_JFK.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            26
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="1.300px-ANA_777-300_Taking_off_from_JFK.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/Icv3fCQAwav3QLTY5ElYoDMhHYco-0ni/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            1.300px-ANA_777-300_Taking_off_from_JFK.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="11.intro-1567189774.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            27
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="11.intro-1567189774.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/7pIB-hfBe5p3cOA1j4AQdZqf4_DObIBO/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            11.intro-1567189774.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="16.GettyImages-755742867.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            28
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="16.GettyImages-755742867.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/2VCBOfW4sGDDts_wf8f5w1T2EwgHsrRz/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            16.GettyImages-755742867.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="14.shutterstock-311421530.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            29
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="14.shutterstock-311421530.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/hRFfWUgwghdRRGnOCmnai9KoyjBqWG0D/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            14.shutterstock-311421530.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="53.how-high-do-airplanes-fly.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            30
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="53.how-high-do-airplanes-fly.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/efVJ4D3tvFIM8I_lrGOGZfr-6f9fs4Vw/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            53.how-high-do-airplanes-fly.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="67.Rossiya-Airlines-leopard-livery-1200x853.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            31
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="67.Rossiya-Airlines-leopard-livery-1200x853.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/2tVyTyUSxFGjQ6V8bgHKNloXS6gaYaIT/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            67.Rossiya-Airlines-leopard-livery-1200x853.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="25.960x0.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            32
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="25.960x0.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/U_YjjJTCluoPhvBHF1Aq8Fux46Q-6Ql8/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            25.960x0.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
-    <details
-      className="emotion-4"
-      onToggle={[Function]}
-      open={false}
-    >
-      <summary
-        aria-label="74.3281700261001_6084681607001_6084671367001-vs.jpg"
-        className="emotion-5"
-      >
-        <div
-          className="emotion-6"
-        >
-          <div
-            className="emotion-7"
-          >
-            33
-          </div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-9"
-            >
-              <img
-                alt="74.3281700261001_6084681607001_6084671367001-vs.jpg"
-                className="emotion-10"
-                src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/jrlEyDmKRmdzzR2xk720npm9fgGYPvUV/files/category/web-proxy/name/web-proxy.jpg/"
-              />
-            </div>
-          </div>
-          <h4
-            className="emotion-11"
-          >
-            74.3281700261001_6084681607001_6084671367001-vs.jpg
-          </h4>
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-          </div>
-        </div>
-      </summary>
-    </details>
   </div>
   <div>
      
   </div>
   <div
-    className="emotion-335"
+    className="emotion-55"
   >
     <div
-      className="emotion-336"
+      className="emotion-56"
     />
     <div
-      className="emotion-337"
+      className="emotion-57"
     >
       <a
-        className="emotion-338"
+        className="emotion-58"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/5262c1ef-91ad-1d33-82b6-d6edb1b855c4?page=2"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -2110,12 +794,12 @@ exports[`<TaskAssets /> should render properly 1`] = `
       </a>
     </div>
     <div
-      className="emotion-339"
+      className="emotion-59"
     >
       <button
         aria-disabled={true}
         aria-label="First page"
-        className="emotion-340"
+        className="emotion-60"
         onClick={[Function]}
         onMouseEnter={[Function]}
         rel="prev"
@@ -2123,7 +807,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
         type="button"
       >
         <svg
-          className="emotion-341"
+          className="emotion-61"
           data-file-name="doubleChevron.svg"
           height={16}
         />
@@ -2131,7 +815,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
       <button
         aria-disabled={true}
         aria-label="Previous page"
-        className="emotion-342"
+        className="emotion-62"
         onClick={[Function]}
         onMouseEnter={[Function]}
         rel="prev"
@@ -2139,20 +823,20 @@ exports[`<TaskAssets /> should render properly 1`] = `
         type="button"
       >
         <svg
-          className="emotion-343"
+          className="emotion-63"
           data-file-name="chevron.svg"
           height={16}
         />
       </button>
       <form
         action=""
-        className="emotion-344"
+        className="emotion-64"
         method="get"
         onSubmit={[Function]}
       >
         <input
           aria-label="Go to page"
-          className="emotion-345"
+          className="emotion-65"
           max={29}
           min="1"
           onBlur={[Function]}
@@ -2163,14 +847,14 @@ exports[`<TaskAssets /> should render properly 1`] = `
         />
       </form>
       <div
-        className="emotion-346"
+        className="emotion-66"
       >
         of 
         29
       </div>
       <a
         aria-label="Next page"
-        className="emotion-347"
+        className="emotion-67"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/5262c1ef-91ad-1d33-82b6-d6edb1b855c4?page=2"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -2178,14 +862,14 @@ exports[`<TaskAssets /> should render properly 1`] = `
         title="Next page"
       >
         <svg
-          className="emotion-348"
+          className="emotion-68"
           data-file-name="chevron.svg"
           height={16}
         />
       </a>
       <a
         aria-label="Last page"
-        className="emotion-349"
+        className="emotion-69"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/5262c1ef-91ad-1d33-82b6-d6edb1b855c4?page=29"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -2193,7 +877,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
         title="Last page"
       >
         <svg
-          className="emotion-350"
+          className="emotion-70"
           data-file-name="doubleChevron.svg"
           height={16}
         />

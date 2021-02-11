@@ -129,7 +129,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
   object-fit: contain;
 }
 
-.emotion-76 {
+.emotion-20 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -161,22 +161,22 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
   margin-top: 8px;
 }
 
-.emotion-76,
-.emotion-76:hover,
-.emotion-76:visited,
-.emotion-76 .noop {
+.emotion-20,
+.emotion-20:hover,
+.emotion-20:visited,
+.emotion-20 .noop {
   background-color: #73b61c;
 }
 
-.emotion-76:hover,
-.emotion-76 .noop {
+.emotion-20:hover,
+.emotion-20 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #96c955;
 }
 
-.emotion-76[aria-disabled=true],
-.emotion-76 .noop {
+.emotion-20[aria-disabled=true],
+.emotion-20 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -287,289 +287,9 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
           src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
         />
       </div>
-      <div
-        className="emotion-10"
-        title="65.ef17dbda-0249-45ab-9cf4-711675c172a2-AP_FAA-Southwest_Airlines.JPG"
-      >
-        <img
-          alt="65.ef17dbda-0249-45ab-9cf4-711675c172a2-AP_FAA-Southwest_Airlines.JPG"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/oVmC_neGWgK6LHWIfo8T5zzzr5dJcM_P/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="63.ampaire_337.jpg"
-      >
-        <img
-          alt="63.ampaire_337.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/6ACeoh2afEGpniGmEktgGmNLEnP1Vh65/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="84.delta.jpg"
-      >
-        <img
-          alt="84.delta.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/qjdpQeg1Mt_SQy9Ix9bOcC-jRcaX9gtV/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="75.maxresdefault.jpg"
-      >
-        <img
-          alt="75.maxresdefault.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/KykWV8DouJe1hOwMSDwep-zL8b6AuNl-/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="29.frigate-mom.png"
-      >
-        <img
-          alt="29.frigate-mom.png"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/XqXxMhb9BHfO9NX3VmT3ox7TKnwh20UL/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="35.5d82882824000012277db515.jpeg"
-      >
-        <img
-          alt="35.5d82882824000012277db515.jpeg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/htlemy-lvxqqn2I-PMK9nH00cTlECcu2/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="4.222e0b84-f164-4fb1-90e7-d20bc27acd8c.jpg"
-      >
-        <img
-          alt="4.222e0b84-f164-4fb1-90e7-d20bc27acd8c.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/zSXRkSzTjnWt9ZbaxK2je-Y8w0KRzpCP/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="38.day-trip-air-travel.jpg"
-      >
-        <img
-          alt="38.day-trip-air-travel.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/pjguI3tvyKDWMn9GsWeG9k2cT6gn3IuP/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="43.airbus-albatross-one-ALBATROSS0819.jpg"
-      >
-        <img
-          alt="43.airbus-albatross-one-ALBATROSS0819.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/0-WGU5bYqdT9J-0Md7LRo8HhqblUubFT/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="56.Climate-change-basics-air-travel-climate-change-hero-1024x614.jpg"
-      >
-        <img
-          alt="56.Climate-change-basics-air-travel-climate-change-hero-1024x614.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/I_IuF5oQ4NVYBNQc9qRP-TueGb5csMRq/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="55.airplane-5772311c3df78cb62c2109e0.jpg"
-      >
-        <img
-          alt="55.airplane-5772311c3df78cb62c2109e0.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/GK3CIze7-0NgZJg1rkjr2fiy_pMXo7E1/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="37.jet-2-carrier.jpg"
-      >
-        <img
-          alt="37.jet-2-carrier.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/u1p9pRtiFjFrFmtwDGEbuvc6gaMf_zdg/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="47.flying-v.jpg"
-      >
-        <img
-          alt="47.flying-v.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/PJ5TDnKxv4yvtrHcgmGp0lC981SU0Hnk/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="6.maxresdefault.jpg"
-      >
-        <img
-          alt="6.maxresdefault.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/2JrWvHLDc5seX2hUb9_HYg-kVvjbeRlL/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="50.Boeings-New-Planes-are-Fuel-Savers_crop.png"
-      >
-        <img
-          alt="50.Boeings-New-Planes-are-Fuel-Savers_crop.png"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/BC4cy1iHDDJ3lMW056YO6CCGS2C2bqc3/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="49.maxresdefault.jpg"
-      >
-        <img
-          alt="49.maxresdefault.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/V--85PFJCAYe8Qcnl-VnjHBEBhyztxNP/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="27.lion-air-pilots-fought-to-save-plane-before-fatal-crash.jpg"
-      >
-        <img
-          alt="27.lion-air-pilots-fought-to-save-plane-before-fatal-crash.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/eiVSixAN1mfW40iwzREgtzFqHO24z7cB/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="28.Ethiopia-Plane-Crash-e1552503233778.jpg"
-      >
-        <img
-          alt="28.Ethiopia-Plane-Crash-e1552503233778.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/4IfKi8NbnR4HjNPI-2y3enRWtd5rX4FQ/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="26.airplane_gettyimages-866616238.jpg"
-      >
-        <img
-          alt="26.airplane_gettyimages-866616238.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/3R0QlVZwDHGLOxV7aG6KNFbaeTnsVoes/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="2.toomanyairpl.jpg"
-      >
-        <img
-          alt="2.toomanyairpl.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/7Z9iDJHQZg2cCz4DC8JtYmoxEuvU0_ck/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="1.300px-ANA_777-300_Taking_off_from_JFK.jpg"
-      >
-        <img
-          alt="1.300px-ANA_777-300_Taking_off_from_JFK.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/Icv3fCQAwav3QLTY5ElYoDMhHYco-0ni/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="11.intro-1567189774.jpg"
-      >
-        <img
-          alt="11.intro-1567189774.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/7pIB-hfBe5p3cOA1j4AQdZqf4_DObIBO/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="16.GettyImages-755742867.jpg"
-      >
-        <img
-          alt="16.GettyImages-755742867.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/2VCBOfW4sGDDts_wf8f5w1T2EwgHsrRz/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="14.shutterstock-311421530.jpg"
-      >
-        <img
-          alt="14.shutterstock-311421530.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/hRFfWUgwghdRRGnOCmnai9KoyjBqWG0D/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="53.how-high-do-airplanes-fly.jpg"
-      >
-        <img
-          alt="53.how-high-do-airplanes-fly.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/efVJ4D3tvFIM8I_lrGOGZfr-6f9fs4Vw/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="67.Rossiya-Airlines-leopard-livery-1200x853.jpg"
-      >
-        <img
-          alt="67.Rossiya-Airlines-leopard-livery-1200x853.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/2tVyTyUSxFGjQ6V8bgHKNloXS6gaYaIT/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="25.960x0.jpg"
-      >
-        <img
-          alt="25.960x0.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/U_YjjJTCluoPhvBHF1Aq8Fux46Q-6Ql8/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
-      <div
-        className="emotion-10"
-        title="74.3281700261001_6084681607001_6084671367001-vs.jpg"
-      >
-        <img
-          alt="74.3281700261001_6084681607001_6084671367001-vs.jpg"
-          className="emotion-11"
-          src="/api/v1/projects/6977543b-6452-47ea-8769-ab2099b71aac/assets/jrlEyDmKRmdzzR2xk720npm9fgGYPvUV/files/category/web-proxy/name/web-proxy.jpg/"
-        />
-      </div>
     </div>
     <button
-      className="emotion-76"
+      className="emotion-20"
       onClick={[Function]}
       type="button"
     >
