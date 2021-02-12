@@ -70,9 +70,11 @@ export default useSWR
  */
 
 let mockData = []
+let mockError
 
-export const __setMockUseSWRInfiniteResponse = (data) => {
+export const __setMockUseSWRInfiniteResponse = ({ data, error }) => {
   mockData = data
+  mockError = error
 }
 
 export const useSWRInfinite = () => {
@@ -81,5 +83,6 @@ export const useSWRInfinite = () => {
     mutate: () => {},
     size: 10,
     setSize: () => {},
+    error: mockError,
   }
 }
