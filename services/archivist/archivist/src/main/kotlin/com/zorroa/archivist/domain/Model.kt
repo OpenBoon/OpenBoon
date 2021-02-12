@@ -140,8 +140,8 @@ enum class ModelType(
         mapOf(),
         null,
         "Classify images or documents using a custom trained CNN deep learning algorithm.  This type of model" +
-        "generates multiple predictions and can be trained to identify very specific features. " +
-        "The label detection classifier requires at least 2 concepts with 10 labeled images each. ",
+            "generates multiple predictions and can be trained to identify very specific features. " +
+            "The label detection classifier requires at least 2 concepts with 10 labeled images each. ",
         ModelObjective.LABEL_DETECTION,
         Provider.ZORROA,
         false,
