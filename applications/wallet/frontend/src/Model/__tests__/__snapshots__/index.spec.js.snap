@@ -460,7 +460,7 @@ Array [
 }
 
 .emotion-3 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -484,7 +484,7 @@ Array [
 }
 
 .emotion-5 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -506,7 +506,7 @@ Array [
 .emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 <nav
@@ -1156,7 +1156,7 @@ Array [
 }
 
 .emotion-3 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -1178,11 +1178,11 @@ Array [
 .emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-7 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1291,8 +1291,8 @@ Array [
 
 .emotion-4:focus,
 .emotion-4 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -1406,14 +1406,14 @@ Array [
 .emotion-8:hover,
 .emotion-8:visited,
 .emotion-8 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-8:hover,
 .emotion-8 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-8[aria-disabled=true],
@@ -1941,7 +1941,7 @@ Array [
 }
 
 .emotion-3 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1965,7 +1965,7 @@ Array [
 }
 
 .emotion-5 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -1987,7 +1987,7 @@ Array [
 .emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 <nav

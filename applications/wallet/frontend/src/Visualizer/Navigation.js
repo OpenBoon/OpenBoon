@@ -77,7 +77,7 @@ const VisualizerNavigation = () => {
               whiteSpace: 'nowrap',
               color:
                 pathname === '/[projectId]/visualizer'
-                  ? colors.key.one
+                  ? colors.key.two
                   : colors.structure.steel,
             }}
           >
@@ -108,7 +108,7 @@ const VisualizerNavigation = () => {
               whiteSpace: 'nowrap',
               color:
                 pathname === '/[projectId]/visualizer/data-visualization'
-                  ? colors.key.one
+                  ? colors.key.two
                   : colors.structure.steel,
             }}
           >

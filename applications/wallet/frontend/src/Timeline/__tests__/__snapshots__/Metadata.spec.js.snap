@@ -28,7 +28,7 @@ exports[`<TimelineMetadata /> should toggle Metadata 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #73b61c;
+  color: #3A5DFF;
   background-color: transparent;
   font-family: Roboto Condensed;
   text-transform: uppercase;
@@ -56,12 +56,12 @@ exports[`<TimelineMetadata /> should toggle Metadata 1`] = `
 .emotion-0:hover,
 .emotion-0.focus-visible:focus {
   background-color: #2e2e2e;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-0:hover svg path,
 .emotion-0.focus-visible:focus svg path {
-  fill: #73b61c;
+  fill: #3A5DFF;
 }
 
 .emotion-1 {
@@ -76,7 +76,7 @@ exports[`<TimelineMetadata /> should toggle Metadata 1`] = `
 >
   <svg
     className="emotion-1"
-    color="#73b61c"
+    color="#3A5DFF"
     data-file-name="timebasedMetadata.svg"
     height={20}
   />

@@ -74,14 +74,14 @@ Array [
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-0:hover,
 .emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-0[aria-disabled=true],
@@ -174,14 +174,14 @@ Array [
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-0:hover,
 .emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-0[aria-disabled=true],
@@ -257,8 +257,8 @@ Array [
 
 .emotion-4:focus,
 .emotion-4 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -372,14 +372,14 @@ Array [
 .emotion-13:hover,
 .emotion-13:visited,
 .emotion-13 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-13:hover,
 .emotion-13 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-13[aria-disabled=true],
@@ -616,14 +616,14 @@ Array [
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-0:hover,
 .emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-0[aria-disabled=true],

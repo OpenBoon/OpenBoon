@@ -49,7 +49,7 @@ Array [
 }
 
 .emotion-3 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -71,11 +71,11 @@ Array [
 .emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-5 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -152,7 +152,7 @@ Array [
 }
 
 .emotion-2 {
-  color: #73b61c;
+  color: #6088FE;
 }
 
 .emotion-3 {
@@ -208,8 +208,8 @@ Array [
 
 .emotion-11:focus,
 .emotion-11 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -409,8 +409,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: #73b61c;
-  border: 2px solid #73b61c;
+  background-color: #3A5DFF;
+  border: 2px solid #3A5DFF;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -587,7 +587,7 @@ Array [
 }
 
 .emotion-70 svg {
-  color: #73b61c;
+  color: #6088FE;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
@@ -841,14 +841,14 @@ Array [
 .emotion-165:hover,
 .emotion-165:visited,
 .emotion-165 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-165:hover,
 .emotion-165 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-165[aria-disabled=true],
@@ -2051,7 +2051,7 @@ Array [
 }
 
 .emotion-3 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -2073,11 +2073,11 @@ Array [
 .emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-5 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2154,7 +2154,7 @@ Array [
 }
 
 .emotion-2 {
-  color: #73b61c;
+  color: #6088FE;
 }
 
 .emotion-3 {
@@ -2210,8 +2210,8 @@ Array [
 
 .emotion-11:focus,
 .emotion-11 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -2416,8 +2416,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: #73b61c;
-  border: 2px solid #73b61c;
+  background-color: #3A5DFF;
+  border: 2px solid #3A5DFF;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -2594,7 +2594,7 @@ Array [
 }
 
 .emotion-88 svg {
-  color: #73b61c;
+  color: #6088FE;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
@@ -2848,14 +2848,14 @@ Array [
 .emotion-183:hover,
 .emotion-183:visited,
 .emotion-183 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-183:hover,
 .emotion-183 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-183[aria-disabled=true],
@@ -4156,7 +4156,7 @@ Array [
 }
 
 .emotion-3 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -4178,11 +4178,11 @@ Array [
 .emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-5 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -4259,7 +4259,7 @@ Array [
 }
 
 .emotion-2 {
-  color: #73b61c;
+  color: #6088FE;
 }
 
 .emotion-3 {
@@ -4315,8 +4315,8 @@ Array [
 
 .emotion-11:focus,
 .emotion-11 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -4521,8 +4521,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: #73b61c;
-  border: 2px solid #73b61c;
+  background-color: #3A5DFF;
+  border: 2px solid #3A5DFF;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -4699,7 +4699,7 @@ Array [
 }
 
 .emotion-82 svg {
-  color: #73b61c;
+  color: #6088FE;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
@@ -4953,14 +4953,14 @@ Array [
 .emotion-177:hover,
 .emotion-177:visited,
 .emotion-177 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-177:hover,
 .emotion-177 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-177[aria-disabled=true],
@@ -6228,7 +6228,7 @@ Array [
 }
 
 .emotion-3 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -6250,11 +6250,11 @@ Array [
 .emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-5 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -6331,7 +6331,7 @@ Array [
 }
 
 .emotion-2 {
-  color: #73b61c;
+  color: #6088FE;
 }
 
 .emotion-3 {
@@ -6387,8 +6387,8 @@ Array [
 
 .emotion-11:focus,
 .emotion-11 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -6593,8 +6593,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: #73b61c;
-  border: 2px solid #73b61c;
+  background-color: #3A5DFF;
+  border: 2px solid #3A5DFF;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -6771,7 +6771,7 @@ Array [
 }
 
 .emotion-81 svg {
-  color: #73b61c;
+  color: #6088FE;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
@@ -7025,14 +7025,14 @@ Array [
 .emotion-176:hover,
 .emotion-176:visited,
 .emotion-176 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-176:hover,
 .emotion-176 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-176[aria-disabled=true],

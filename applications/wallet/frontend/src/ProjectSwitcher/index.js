@@ -42,7 +42,7 @@ const ProjectSwitcher = ({ projectId }) => {
           justifyContent: 'center',
           alignItems: 'center',
           padding: `${spacing.small}px ${spacing.base}px`,
-          color: colors.key.one,
+          color: colors.key.two,
         }}
       >
         {selectedProject.name}
