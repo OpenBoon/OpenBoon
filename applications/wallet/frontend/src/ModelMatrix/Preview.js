@@ -120,7 +120,7 @@ const ModelMatrixPreview = ({
 
         <div css={{ height: spacing.normal }} />
 
-        <h3>
+        <h3 css={{ paddingBottom: spacing.small }}>
           <span
             css={{
               fontFamily: typography.family.condensed,

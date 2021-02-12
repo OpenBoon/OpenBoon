@@ -24,7 +24,7 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
 
       const from = pageIndex * SIZE
 
-      return `/api/v1/projects/${projectId}/searchesX/query/?query=${encodedFilter}&from=${from}&size=${SIZE}`
+      return `/api/v1/projects/${projectId}/searches/query/?query=${encodedFilter}&from=${from}&size=${SIZE}`
     },
     undefined,
     {

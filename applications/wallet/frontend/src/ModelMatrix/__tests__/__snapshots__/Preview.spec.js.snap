@@ -95,18 +95,22 @@ exports[`ModelMatrixPreview should render properly with an error 1`] = `
 }
 
 .emotion-6 {
+  padding-bottom: 4px;
+}
+
+.emotion-7 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #b3b3b3;
 }
 
-.emotion-8 {
+.emotion-9 {
   height: 100%;
   background-color: #191919;
   padding: 8px;
 }
 
-.emotion-9 {
+.emotion-10 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -129,7 +133,7 @@ exports[`ModelMatrixPreview should render properly with an error 1`] = `
   line-height: 19px;
 }
 
-.emotion-10 {
+.emotion-11 {
   max-width: 80%;
 }
 
@@ -164,9 +168,11 @@ exports[`ModelMatrixPreview should render properly with an error 1`] = `
     <div
       className="emotion-5"
     />
-    <h3>
+    <h3
+      className="emotion-6"
+    >
       <span
-        className="emotion-6"
+        className="emotion-7"
       >
         True:
       </span>
@@ -175,7 +181,7 @@ exports[`ModelMatrixPreview should render properly with an error 1`] = `
     </h3>
     <h3>
       <span
-        className="emotion-6"
+        className="emotion-7"
       >
         Pred:
       </span>
@@ -184,13 +190,13 @@ exports[`ModelMatrixPreview should render properly with an error 1`] = `
     </h3>
   </div>
   <div
-    className="emotion-8"
+    className="emotion-9"
   >
     <div
-      className="emotion-9"
+      className="emotion-10"
     >
       <svg
-        className="emotion-10"
+        className="emotion-11"
         data-file-name="error.svg"
         width={604}
       />
@@ -298,12 +304,16 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
 }
 
 .emotion-6 {
+  padding-bottom: 4px;
+}
+
+.emotion-7 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #b3b3b3;
 }
 
-.emotion-8 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -312,19 +322,19 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
   overflow: auto;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(183px, 1fr));
   gap: 8px;
 }
 
-.emotion-10 {
+.emotion-11 {
   position: relative;
   padding-bottom: 100%;
   background-color: #2e2e2e;
 }
 
-.emotion-11 {
+.emotion-12 {
   position: absolute;
   top: 0;
   width: 100%;
@@ -332,7 +342,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
   object-fit: contain;
 }
 
-.emotion-20 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -343,7 +353,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
   justify-content: center;
 }
 
-.emotion-21 {
+.emotion-22 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -375,22 +385,22 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
   margin-top: 8px;
 }
 
-.emotion-21,
-.emotion-21:hover,
-.emotion-21:visited,
-.emotion-21 .noop {
+.emotion-22,
+.emotion-22:hover,
+.emotion-22:visited,
+.emotion-22 .noop {
   background-color: #808080;
 }
 
-.emotion-21:hover,
-.emotion-21 .noop {
+.emotion-22:hover,
+.emotion-22 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-21[aria-disabled=true],
-.emotion-21 .noop {
+.emotion-22[aria-disabled=true],
+.emotion-22 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -426,9 +436,11 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
     <div
       className="emotion-5"
     />
-    <h3>
+    <h3
+      className="emotion-6"
+    >
       <span
-        className="emotion-6"
+        className="emotion-7"
       >
         True:
       </span>
@@ -437,7 +449,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
     </h3>
     <h3>
       <span
-        className="emotion-6"
+        className="emotion-7"
       >
         Pred:
       </span>
@@ -446,67 +458,67 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
     </h3>
   </div>
   <div
-    className="emotion-8"
+    className="emotion-9"
   >
     <div
-      className="emotion-9"
+      className="emotion-10"
     >
       <div
-        className="emotion-10"
+        className="emotion-11"
         title="test_document.docx"
       >
         <img
           alt="test_document.docx"
-          className="emotion-11"
+          className="emotion-12"
           src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
         />
       </div>
       <div
-        className="emotion-10"
+        className="emotion-11"
         title="irr.pdf"
       >
         <img
           alt="irr.pdf"
-          className="emotion-11"
+          className="emotion-12"
           src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
         />
       </div>
       <div
-        className="emotion-10"
+        className="emotion-11"
         title="irr.pdf"
       >
         <img
           alt="irr.pdf"
-          className="emotion-11"
+          className="emotion-12"
           src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
         />
       </div>
       <div
-        className="emotion-10"
+        className="emotion-11"
         title="irr.pdf"
       >
         <img
           alt="irr.pdf"
-          className="emotion-11"
+          className="emotion-12"
           src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
         />
       </div>
       <div
-        className="emotion-10"
+        className="emotion-11"
         title="FatManOnABike1914.mp4"
       >
         <img
           alt="FatManOnABike1914.mp4"
-          className="emotion-11"
+          className="emotion-12"
           src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
         />
       </div>
     </div>
     <div
-      className="emotion-20"
+      className="emotion-21"
     >
       <button
-        className="emotion-21"
+        className="emotion-22"
         onClick={[Function]}
         type="button"
       >
@@ -628,12 +640,16 @@ exports[`ModelMatrixPreview should render properly without data 1`] = `
 }
 
 .emotion-6 {
+  padding-bottom: 4px;
+}
+
+.emotion-7 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #b3b3b3;
 }
 
-.emotion-8 {
+.emotion-9 {
   min-height: 300px;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -659,7 +675,7 @@ exports[`ModelMatrixPreview should render properly without data 1`] = `
   height: 100%;
 }
 
-.emotion-9 {
+.emotion-10 {
   -webkit-animation: animation-0 2s linear infinite;
   animation: animation-0 2s linear infinite;
   margin-right: 16px;
@@ -696,9 +712,11 @@ exports[`ModelMatrixPreview should render properly without data 1`] = `
     <div
       className="emotion-5"
     />
-    <h3>
+    <h3
+      className="emotion-6"
+    >
       <span
-        className="emotion-6"
+        className="emotion-7"
       >
         True:
       </span>
@@ -707,7 +725,7 @@ exports[`ModelMatrixPreview should render properly without data 1`] = `
     </h3>
     <h3>
       <span
-        className="emotion-6"
+        className="emotion-7"
       >
         Pred:
       </span>
@@ -716,10 +734,10 @@ exports[`ModelMatrixPreview should render properly without data 1`] = `
     </h3>
   </div>
   <div
-    className="Loading emotion-8"
+    className="Loading emotion-9"
   >
     <svg
-      className="emotion-9"
+      className="emotion-10"
       data-file-name="generating.svg"
       height={20}
     />
