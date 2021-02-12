@@ -47,6 +47,7 @@ const ApiKeysAddForm = () => {
           (key) => state.permissions[key],
         )}
         apikey={apikey}
+        name={state.name}
         onReset={() => dispatch(INITIAL_STATE)}
       />
     )

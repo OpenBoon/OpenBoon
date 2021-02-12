@@ -17,7 +17,7 @@ const ASSET_ID = assets.results[0].id
 
 describe('<Visualizer />', () => {
   it('should render properly', () => {
-    require('swr').__setMockUseSWRInfiniteResponse([assets])
+    require('swr').__setMockUseSWRInfiniteResponse({ data: [assets] })
 
     require('next/router').__setUseRouter({
       query: { projectId: PROJECT_ID, action: 'delete-asset-success' },
@@ -33,7 +33,7 @@ describe('<Visualizer />', () => {
   })
 
   it('should render selected asset', () => {
-    require('swr').__setMockUseSWRInfiniteResponse([assets])
+    require('swr').__setMockUseSWRInfiniteResponse({ data: [assets] })
 
     require('next/router').__setUseRouter({
       query: { assetId: ASSET_ID, projectId: PROJECT_ID },

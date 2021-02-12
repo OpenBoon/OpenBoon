@@ -11,7 +11,8 @@ variable "auth_server_host" {
 variable "ml_bbq_host" {
 }
 
-variable "domain" {
+variable "domains" {
+  type = list(string)
 }
 
 variable "container-cluster-name" {
