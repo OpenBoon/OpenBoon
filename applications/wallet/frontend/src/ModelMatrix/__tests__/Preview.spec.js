@@ -24,7 +24,7 @@ describe('ModelMatrixPreview', () => {
       },
     })
 
-    require('swr').__setMockUseSWRInfiniteResponse([assets])
+    require('swr').__setMockUseSWRInfiniteResponse({ data: [assets] })
 
     const component = TestRenderer.create(
       <ModelMatrixPreview
@@ -74,7 +74,32 @@ describe('ModelMatrixPreview', () => {
       },
     })
 
-    require('swr').__setMockUseSWRInfiniteResponse()
+    require('swr').__setMockUseSWRInfiniteResponse({})
+
+    const component = TestRenderer.create(
+      <ModelMatrixPreview
+        settings={{
+          selectedCell: [0, 1],
+          minScore: 0,
+          maxScore: 1,
+        }}
+        labels={matrix.labels}
+        moduleName={matrix.moduleName}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with an error', () => {
+    require('next/router').__setUseRouter({
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRInfiniteResponse({ error: 'error' })
 
     const component = TestRenderer.create(
       <ModelMatrixPreview
