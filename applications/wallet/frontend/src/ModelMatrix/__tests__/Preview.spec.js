@@ -124,7 +124,7 @@ describe('ModelMatrixPreview', () => {
       },
     })
 
-    require('swr').__setMockUseSWRInfiniteResponse([assets])
+    require('swr').__setMockUseSWRInfiniteResponse({ data: [assets] })
 
     const component = TestRenderer.create(
       <ModelMatrixPreview
