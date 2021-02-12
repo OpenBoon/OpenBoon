@@ -1,5 +1,5 @@
 resource "google_compute_global_address" "api-gateway-external" {
-  name         = var.external-ip-name
+  name = var.external-ip-name
 }
 
 resource "kubernetes_deployment" "api-gateway" {
@@ -112,9 +112,12 @@ resource "kubernetes_service" "api-gateway" {
 
 resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
-  name     = "api-gateway-cert"
+  name     = "api-gateway"
   managed {
-    domains = [var.domain]
+    domains = var.domains
+  }
+  lifecycle {
+    create_before_destroy = true
   }
 }
 

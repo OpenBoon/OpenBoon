@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'registration',
     'searches',
     'subscriptions',
+    'supportadmin',
     'wallet',
     'django.contrib.admin',
     'django.contrib.auth',

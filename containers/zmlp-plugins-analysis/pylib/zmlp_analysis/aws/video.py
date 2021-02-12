@@ -92,6 +92,7 @@ class AbstractVideoDetectProcessor(AssetProcessor):
 
             rsp = self.aws.sqs.receive_message(QueueUrl=self.aws.queue_url,
                                                MessageAttributeNames=['ALL'],
+                                               WaitTimeSeconds=5,
                                                MaxNumberOfMessages=10)
             if 'Messages' not in rsp:
                 time.sleep(2)
@@ -152,7 +153,7 @@ class AbstractVideoDetectProcessor(AssetProcessor):
             JobTag="{}:{}".format(asset_id, func)
         )
         start_job_id = rsp['JobId']
-        self.logger.debug('Start Job Id: ' + start_job_id)
+        self.logger.info('Start Job Id: ' + start_job_id)
         return start_job_id
 
     def handle_detection_results(self, clip_tracker, analysis, job_id):
