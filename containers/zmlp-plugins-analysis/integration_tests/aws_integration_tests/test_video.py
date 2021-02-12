@@ -97,8 +97,8 @@ class AmazonVideoProcessorTestCase(PluginUnitTestCase):
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.aws.video.proxy.get_video_proxy')
-    def test_process_celebrity_detection(self, get_prx_patch,
-                                         store_patch, store_blob_patch, tl_patch):
+    def test_process_celebrity_detection(
+            self, get_prx_patch, store_patch, store_blob_patch, tl_patch):
         video_path = zorroa_test_path(BORIS_JOHNSON)
         get_prx_patch.return_value = zorroa_test_path(BORIS_JOHNSON)
         store_patch.return_value = get_mock_stored_file()
@@ -120,3 +120,52 @@ class AmazonVideoProcessorTestCase(PluginUnitTestCase):
         jtl = timeline.for_json()
         assert jtl['tracks'][0]['name'] == 'Slobodan Živojinović'
         assert int(jtl['tracks'][0]['clips'][0]['score']) == 94
+
+    @patch("zmlp_analysis.aws.video.save_timeline", return_value={})
+    @patch.object(file_storage.assets, 'store_blob')
+    @patch.object(file_storage.assets, 'store_file')
+    @patch('zmlp_analysis.aws.video.proxy.get_video_proxy')
+    def test_process_black_frame_detection(
+            self, get_prx_patch, store_patch, store_blob_patch, tl_patch):
+        video_path = zorroa_test_path(MUSTANG)
+        get_prx_patch.return_value = zorroa_test_path(MUSTANG)
+        store_patch.return_value = get_mock_stored_file()
+        store_blob_patch.return_value = get_mock_stored_file()
+
+        processor = self.init_processor(video.BlackFramesVideoDetectProcessor())
+        asset = TestAsset(video_path)
+        asset.set_attr('media.length', MEDIA_LENGTH)
+        frame = Frame(asset)
+        processor.preprocess([asset])
+        processor.process(frame)
+
+        timeline = tl_patch.call_args_list[0][0][1]
+        jtl = timeline.for_json()
+        assert jtl['tracks'][0]['name'] == 'Black Frames'
+        assert round(jtl['tracks'][0]['clips'][0]['score'], 3) == 1.0
+
+    @patch("zmlp_analysis.aws.video.save_timeline", return_value={})
+    @patch.object(file_storage.assets, 'store_blob')
+    @patch.object(file_storage.assets, 'store_file')
+    @patch('zmlp_analysis.aws.video.proxy.get_video_proxy')
+    def test_process_end_credits_detection(
+            self, get_prx_patch, store_patch, store_blob_patch, tl_patch):
+
+        video_path = zorroa_test_path(VID_MP4)
+        get_prx_patch.return_value = zorroa_test_path(VID_MP4)
+        store_patch.return_value = get_mock_stored_file()
+        store_blob_patch.return_value = get_mock_stored_file()
+
+        processor = self.init_processor(video.EndCreditsVideoDetectProcessor())
+        asset = TestAsset(video_path)
+        asset.set_attr('media.length', MEDIA_LENGTH)
+        frame = Frame(asset)
+        processor.preprocess([asset])
+        processor.process(frame)
+
+        frame.asset.get_analysis('aws-credits-detection')
+
+        timeline = tl_patch.call_args_list[0][0][1]
+        jtl = timeline.for_json()
+        assert jtl['tracks'][0]['name'] == 'End Credits'
+        assert round(jtl['tracks'][0]['clips'][0]['score'], 3) == 0.998
