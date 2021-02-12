@@ -13,7 +13,9 @@ __all__ = [
     'RekognitionLabelDetection',
     'RekognitionCelebrityDetection',
     'RekognitionUnsafeDetection',
-    'AbstractVideoDetectProcessor'
+    'AbstractVideoDetectProcessor',
+    'BlackFramesVideoDetectProcessor',
+    'EndCreditsVideoDetectProcessor'
 ]
 
 
@@ -217,7 +219,7 @@ class RekognitionLabelDetection(AbstractVideoDetectProcessor):
 
                 label = detection['Label']
                 name = label['Name']
-                confidence = label['Confidence']
+                confidence = label['Confidence'] / 100.0
 
                 labels[name] = confidence
                 analysis.add_label_and_score(name, confidence)
@@ -247,7 +249,6 @@ class RekognitionUnsafeDetection(AbstractVideoDetectProcessor):
         )
 
     def handle_detection_results(self, clip_tracker, analysis, job_id):
-        print("handing detection results")
         pagination_token = ''
         finished = False
 
@@ -269,7 +270,7 @@ class RekognitionUnsafeDetection(AbstractVideoDetectProcessor):
 
                 content = detection['ModerationLabel']
                 name = content['Name']
-                confidence = content['Confidence']
+                confidence = content['Confidence'] / 100.0
 
                 labels[name] = confidence
                 analysis.add_label_and_score(name, confidence)
@@ -321,7 +322,7 @@ class RekognitionCelebrityDetection(AbstractVideoDetectProcessor):
 
                 content = detection['Celebrity']
                 name = content['Name']
-                confidence = content['Confidence']
+                confidence = content['Confidence'] / 100.0
 
                 labels[name] = confidence
                 analysis.add_label_and_score(name, confidence)
@@ -333,3 +334,80 @@ class RekognitionCelebrityDetection(AbstractVideoDetectProcessor):
 
         if labels:
             clip_tracker.append(current_time / 1000.0, labels)
+
+
+class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
+    """ Segment Detection for Videos using AWS Rekognition """
+    namespace = 'aws-segment-detection'
+
+    cue_map = {
+        'BlackFrames': 'Black Frames',
+        'EndCredits': 'End Credits'
+    }
+
+    def __init__(self, cue):
+        super(SegmentVideoDetectProcessor, self).__init__(detector_func='start_segment_detection')
+        self.cue = cue
+
+    def start_detection_analysis(self, asset_id, video, func):
+
+        segment_types = ['TECHNICAL_CUE']
+        filters = {
+            'TechnicalCueFilter': {
+                'MinSegmentConfidence': 80.0
+            },
+            'ShotFilter': {
+                'MinSegmentConfidence': 80.0
+            }
+        }
+
+        bucket = AwsEnv.get_bucket_name()
+        rsp = getattr(self.rek_client, func)(
+            Video={'S3Object': {'Bucket': bucket, 'Name': video}},
+            NotificationChannel={'RoleArn': self.role_arn, 'SNSTopicArn': self.aws.topic_arn},
+            JobTag=asset_id,
+            SegmentTypes=segment_types,
+            Filters=filters
+        )
+        start_job_id = rsp['JobId']
+        return start_job_id
+
+    def handle_detection_results(self, clip_tracker, analysis, start_job_id):
+        pagination_token = ''
+        finished = False
+
+        while not finished:
+            response = self.rek_client.get_segment_detection(JobId=start_job_id,
+                                                             MaxResults=50,
+                                                             NextToken=pagination_token)
+            for segment in response['Segments']:
+                if segment['Type'] == 'TECHNICAL_CUE':
+                    segment_type = segment['TechnicalCueSegment']['Type']
+                    if segment_type == self.cue:
+                        confidence = segment['TechnicalCueSegment']['Confidence'] / 100.0
+                        start_time = segment['StartTimestampMillis'] / 1000.0  # ms to s
+                        track = self.cue_map.get(self.cue, self.cue)
+
+                        analysis.add_label_and_score(track, confidence)
+                        clip_tracker.append(start_time, {track: confidence})
+
+            if 'NextToken' in response:
+                pagination_token = response['NextToken']
+            else:
+                finished = True
+
+
+class BlackFramesVideoDetectProcessor(SegmentVideoDetectProcessor):
+    """Black Frames Detector in a video using AWS Rekognition """
+    namespace = 'aws-black-frame-detection'
+
+    def __init__(self):
+        super(BlackFramesVideoDetectProcessor, self).__init__(cue='BlackFrames')
+
+
+class EndCreditsVideoDetectProcessor(SegmentVideoDetectProcessor):
+    """Rolling Credits Detector in a video using AWS Rekognition """
+    namespace = 'aws-end-credits-detection'
+
+    def __init__(self):
+        super(EndCreditsVideoDetectProcessor, self).__init__(cue='EndCredits')
