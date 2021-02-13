@@ -212,7 +212,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #191919;
 }
 
-.emotion-21:hover {
+.emotion-24:hover {
   border: 4px solid #6088FE;
 }
 
@@ -243,7 +243,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #191919;
 }
 
-.emotion-103:hover {
+.emotion-139:hover {
   border: 4px solid #6088FE;
 }
 
@@ -267,7 +267,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #ffffff;
 }
 
-.emotion-110:hover {
+.emotion-149:hover {
   border: 4px solid #6088FE;
 }
 
@@ -291,7 +291,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #191919;
 }
 
-.emotion-185:hover {
+.emotion-254:hover {
   border: 4px solid #6088FE;
 }
 
@@ -315,7 +315,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #ffffff;
 }
 
-.emotion-192:hover {
+.emotion-264:hover {
   border: 4px solid #6088FE;
 }
 
@@ -339,7 +339,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #191919;
 }
 
-.emotion-267:hover {
+.emotion-369:hover {
   border: 4px solid #6088FE;
 }
 
@@ -363,7 +363,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #ffffff;
 }
 
-.emotion-274:hover {
+.emotion-379:hover {
   border: 4px solid #6088FE;
 }
 
@@ -387,7 +387,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #191919;
 }
 
-.emotion-349:hover {
+.emotion-484:hover {
   border: 4px solid #6088FE;
 }
 
@@ -411,7 +411,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #191919;
 }
 
-.emotion-356:hover {
+.emotion-494:hover {
   border: 4px solid #6088FE;
 }
 
@@ -435,7 +435,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #191919;
 }
 
-.emotion-431:hover {
+.emotion-599:hover {
   border: 4px solid #6088FE;
 }
 
@@ -477,7 +477,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #ffffff;
 }
 
-.emotion-841:hover {
+.emotion-1174:hover {
   border: 4px solid #6088FE;
 }
 
@@ -619,7 +619,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   opacity: 1;
 }
 
-.emotion-1038:hover {
+.emotion-1401:hover {
   color: #3A5DFF;
 }
 
@@ -666,7 +666,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   opacity: 1;
 }
 
-.emotion-1040:hover {
+.emotion-1403:hover {
   color: #3A5DFF;
 }
 
@@ -707,7 +707,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   opacity: 1;
 }
 
-.emotion-1041:hover {
+.emotion-1404:hover {
   color: #3A5DFF;
 }
 
@@ -9700,7 +9700,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #191919;
 }
 
-.emotion-51:hover {
+.emotion-54:hover {
   border: 4px solid #6088FE;
 }
 
@@ -9731,7 +9731,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #191919;
 }
 
-.emotion-58:hover {
+.emotion-64:hover {
   border: 4px solid #6088FE;
 }
 
@@ -9755,7 +9755,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #191919;
 }
 
-.emotion-133:hover {
+.emotion-169:hover {
   border: 4px solid #6088FE;
 }
 
@@ -9779,7 +9779,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #ffffff;
 }
 
-.emotion-140:hover {
+.emotion-179:hover {
   border: 4px solid #6088FE;
 }
 
@@ -9803,7 +9803,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #191919;
 }
 
-.emotion-215:hover {
+.emotion-284:hover {
   border: 4px solid #6088FE;
 }
 
@@ -9827,7 +9827,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #ffffff;
 }
 
-.emotion-222:hover {
+.emotion-294:hover {
   border: 4px solid #6088FE;
 }
 
@@ -9851,7 +9851,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #191919;
 }
 
-.emotion-297:hover {
+.emotion-399:hover {
   border: 4px solid #6088FE;
 }
 
@@ -9875,7 +9875,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #ffffff;
 }
 
-.emotion-304:hover {
+.emotion-409:hover {
   border: 4px solid #6088FE;
 }
 
@@ -9899,7 +9899,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #191919;
 }
 
-.emotion-379:hover {
+.emotion-514:hover {
   border: 4px solid #6088FE;
 }
 
@@ -9923,7 +9923,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #191919;
 }
 
-.emotion-386:hover {
+.emotion-524:hover {
   border: 4px solid #6088FE;
 }
 
@@ -9947,7 +9947,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #191919;
 }
 
-.emotion-461:hover {
+.emotion-629:hover {
   border: 4px solid #6088FE;
 }
 
@@ -9989,7 +9989,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #ffffff;
 }
 
-.emotion-871:hover {
+.emotion-1204:hover {
   border: 4px solid #6088FE;
 }
 
@@ -10131,7 +10131,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   opacity: 1;
 }
 
-.emotion-1068:hover {
+.emotion-1431:hover {
   color: #3A5DFF;
 }
 
@@ -10178,7 +10178,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   opacity: 1;
 }
 
-.emotion-1070:hover {
+.emotion-1433:hover {
   color: #3A5DFF;
 }
 
