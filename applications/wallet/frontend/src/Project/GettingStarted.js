@@ -92,7 +92,7 @@ const ProjectGettingStarted = ({ projectId }) => {
                 fontWeight: typography.weight.regular,
                 fontSize: typography.size.medium,
                 lineHeight: typography.height.medium,
-                color: colors.key.one,
+                color: colors.key.two,
               }}
             >
               <span css={{ fontWeight: typography.weight.bold }}>

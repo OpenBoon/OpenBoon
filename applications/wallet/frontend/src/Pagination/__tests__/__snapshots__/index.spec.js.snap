@@ -243,8 +243,8 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 }
 
 .emotion-10:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -688,8 +688,8 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 }
 
 .emotion-9:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }

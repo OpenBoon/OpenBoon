@@ -43,7 +43,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
 }
 
 .emotion-4 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -65,7 +65,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
 .emotion-4:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-7 {
@@ -125,14 +125,14 @@ exports[`<AccountProfile /> should render properly 1`] = `
 .emotion-10:hover,
 .emotion-10:visited,
 .emotion-10 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-10:hover,
 .emotion-10 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-10[aria-disabled=true],

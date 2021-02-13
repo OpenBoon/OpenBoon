@@ -316,7 +316,7 @@ Array [
 }
 
 .emotion-3 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -338,11 +338,11 @@ Array [
 .emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-5 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -626,7 +626,7 @@ Array [
 }
 
 .emotion-3 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -650,7 +650,7 @@ Array [
 }
 
 .emotion-5 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -672,7 +672,7 @@ Array [
 .emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 <nav

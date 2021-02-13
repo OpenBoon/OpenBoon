@@ -149,7 +149,7 @@ const ModelMatrixLayout = ({
               paddingTop: spacing.normal,
               paddingBottom: spacing.normal,
               borderBottom: constants.borders.regular.coal,
-              color: isOpen ? colors.key.one : colors.structure.steel,
+              color: isOpen ? colors.key.two : colors.structure.steel,
               ':hover': {
                 backgroundColor: colors.structure.mattGrey,
               },

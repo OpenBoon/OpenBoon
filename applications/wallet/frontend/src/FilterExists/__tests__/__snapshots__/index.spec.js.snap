@@ -327,7 +327,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
         className="emotion-4"
       >
         <svg
-          color="#73b61c"
+          color="#6088FE"
           data-file-name="missing.svg"
           height={20}
         />
@@ -797,7 +797,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
         className="emotion-4"
       >
         <svg
-          color="#73b61c"
+          color="#6088FE"
           data-file-name="exists.svg"
           height={20}
         />

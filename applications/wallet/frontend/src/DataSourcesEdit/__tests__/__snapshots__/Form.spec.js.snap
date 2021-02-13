@@ -63,8 +63,8 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 
 .emotion-7:focus,
 .emotion-7 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -342,7 +342,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
-  fill: #73b61c;
+  fill: #3A5DFF;
 }
 
 .emotion-49 {
@@ -455,7 +455,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 }
 
 .emotion-60 svg {
-  color: #73b61c;
+  color: #6088FE;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
@@ -696,14 +696,14 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 .emotion-124:hover,
 .emotion-124:visited,
 .emotion-124 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-124:hover,
 .emotion-124 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-124[aria-disabled=true],
@@ -1603,8 +1603,8 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 
 .emotion-7:focus,
 .emotion-7 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -1876,7 +1876,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
-  fill: #73b61c;
+  fill: #3A5DFF;
 }
 
 .emotion-48 {
@@ -1989,7 +1989,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 }
 
 .emotion-59 svg {
-  color: #73b61c;
+  color: #6088FE;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
@@ -2230,14 +2230,14 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 .emotion-123:hover,
 .emotion-123:visited,
 .emotion-123 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-123:hover,
 .emotion-123 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-123[aria-disabled=true],

@@ -29,7 +29,7 @@ Array [
 }
 
 .emotion-1 {
-  color: #73b61c;
+  color: #6088FE;
 }
 
 <p
@@ -73,7 +73,7 @@ Array [
 }
 
 .emotion-3 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -95,11 +95,11 @@ Array [
 .emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-5 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -197,8 +197,8 @@ Array [
 
 .emotion-4:focus,
 .emotion-4 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -368,14 +368,14 @@ Array [
 .emotion-106:hover,
 .emotion-106:visited,
 .emotion-106 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-106:hover,
 .emotion-106 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-106[aria-disabled=true],
@@ -933,7 +933,7 @@ Array [
 }
 
 .emotion-1 {
-  color: #73b61c;
+  color: #6088FE;
 }
 
 <p
@@ -977,7 +977,7 @@ Array [
 }
 
 .emotion-3 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -999,11 +999,11 @@ Array [
 .emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-5 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1191,7 +1191,7 @@ Array [
 .emotion-9:hover,
 .emotion-9:visited,
 .emotion-9 .noop {
-  color: #73b61c;
+  color: #6088FE;
 }
 
 .emotion-9:hover,
@@ -1246,7 +1246,7 @@ Array [
 .emotion-11:hover,
 .emotion-11:visited,
 .emotion-11 .noop {
-  color: #73b61c;
+  color: #6088FE;
 }
 
 .emotion-11:hover,
@@ -1355,14 +1355,14 @@ Array [
 .emotion-14:hover,
 .emotion-14:visited,
 .emotion-14 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-14:hover,
 .emotion-14 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-14[aria-disabled=true],
@@ -1492,7 +1492,7 @@ Array [
 }
 
 .emotion-1 {
-  color: #73b61c;
+  color: #6088FE;
 }
 
 <p
@@ -1536,7 +1536,7 @@ Array [
 }
 
 .emotion-3 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -1558,11 +1558,11 @@ Array [
 .emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-5 {
-  border: 0 #73b61c solid;
+  border: 0 #3A5DFF solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1660,8 +1660,8 @@ Array [
 
 .emotion-4:focus,
 .emotion-4 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -1831,14 +1831,14 @@ Array [
 .emotion-106:hover,
 .emotion-106:visited,
 .emotion-106 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-106:hover,
 .emotion-106 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-106[aria-disabled=true],

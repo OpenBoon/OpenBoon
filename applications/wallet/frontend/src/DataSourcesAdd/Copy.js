@@ -14,7 +14,7 @@ const DataSourcesAddCopy = () => {
       system. Zorroa will automatically run a basic analysis on your assets and
       you may add additional modules.{' '}
       <a
-        css={{ color: colors.key.one }}
+        css={{ color: colors.key.two }}
         target="_blank"
         rel="noopener noreferrer"
         href="https://zorroa.gitbook.io/zmlp/client/assets/importing-assets/asset-datasource"

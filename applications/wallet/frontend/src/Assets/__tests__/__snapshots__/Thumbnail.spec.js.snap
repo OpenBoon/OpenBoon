@@ -203,13 +203,13 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
 exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] = `
 .emotion-0 {
   position: relative;
-  border: 4px solid #0074f5;
+  border: 4px solid #3A5DFF;
   width: 100%;
   height: 100%;
 }
 
 .emotion-0:hover {
-  border: 4px solid #0074f5;
+  border: 4px solid #3A5DFF;
 }
 
 .emotion-0:hover a,
