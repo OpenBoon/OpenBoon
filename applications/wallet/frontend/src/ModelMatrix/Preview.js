@@ -47,7 +47,7 @@ const ModelMatrixPreview = ({
           borderLeft: constants.borders.regular.coal,
         }}
       >
-        Select a cell of the matrix to view the labeled assets.
+        Select a cell of the matrix to view the predicted assets.
       </div>
     )
   }

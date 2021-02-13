@@ -1,5 +1,197 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ModelMatrixPreview should render properly when there are no predicted assets 1`] = `
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  border-left: 1px solid #191919;
+  overflow: hidden;
+}
+
+.emotion-1 {
+  padding: 16px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited,
+.emotion-2 .noop {
+  background-color: #808080;
+}
+
+.emotion-2:hover,
+.emotion-2 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-2[aria-disabled=true],
+.emotion-2 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  padding-right: 8px;
+}
+
+.emotion-5 {
+  height: 16px;
+}
+
+.emotion-6 {
+  padding-bottom: 4px;
+}
+
+.emotion-7 {
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  color: #b3b3b3;
+}
+
+.emotion-9 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #191919;
+  padding: 8px;
+  overflow: auto;
+}
+
+.emotion-10 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(183px, 1fr));
+  gap: 8px;
+}
+
+.emotion-11 {
+  padding: 12px;
+  font-style: italic;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <Link
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmZsb3dlci10eXBlcyIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnsibGFiZWxzIjpbIkRhaGxpYSJdLCJzY29wZSI6InRlc3QifX0seyJ0eXBlIjoibGFiZWxDb25maWRlbmNlIiwiYXR0cmlidXRlIjoiYW5hbHlzaXMuZmxvd2VyLXR5cGVzIiwidmFsdWVzIjp7ImxhYmVscyI6WyJDaGVycnkgQmxvc3NvbSJdLCJtaW4iOjAsIm1heCI6MX19XQ=="
+      passHref={true}
+    >
+      <button
+        aria-label="View Filter Panel"
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-3"
+        >
+          <svg
+            className="emotion-4"
+            data-file-name="filter.svg"
+            height={20}
+          />
+          View Filter Panel
+        </div>
+      </button>
+    </Link>
+    <div
+      className="emotion-5"
+    />
+    <h3
+      className="emotion-6"
+    >
+      <span
+        className="emotion-7"
+      >
+        True:
+      </span>
+       
+      Dahlia
+    </h3>
+    <h3>
+      <span
+        className="emotion-7"
+      >
+        Pred:
+      </span>
+       
+      Cherry Blossom
+    </h3>
+  </div>
+  <div
+    className="emotion-9"
+  >
+    <div
+      className="emotion-10"
+    >
+      <div
+        className="emotion-11"
+      >
+        No predicted assets.
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`ModelMatrixPreview should render properly with an error 1`] = `
 .emotion-0 {
   -webkit-flex: 1;
@@ -757,6 +949,6 @@ exports[`ModelMatrixPreview should render properly without selection 1`] = `
 <div
   className="emotion-0"
 >
-  Select a cell of the matrix to view the labeled assets.
+  Select a cell of the matrix to view the predicted assets.
 </div>
 `;
