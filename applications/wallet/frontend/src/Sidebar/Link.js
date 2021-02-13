@@ -20,11 +20,11 @@ const SidebarLink = ({ projectId, href, children }) => {
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
             backgroundColor: isCurrentPage ? colors.structure.mattGrey : 'none',
-            color: isCurrentPage ? colors.key.white : colors.structure.zinc,
+            color: isCurrentPage ? colors.key.two : colors.structure.zinc,
             svg: { marginRight: spacing.moderate },
             ':hover': {
               textDecoration: 'none',
-              color: isCurrentPage ? colors.structure.white : colors.key.one,
+              color: colors.structure.white,
               backgroundColor: colors.structure.mattGrey,
             },
           }}

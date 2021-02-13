@@ -103,14 +103,14 @@ exports[`<Assets /> should render empty properly 1`] = `
 .emotion-7:hover,
 .emotion-7:visited,
 .emotion-7 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-7:hover,
 .emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-7[aria-disabled=true],
@@ -268,14 +268,14 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
 .emotion-5:hover,
 .emotion-5:visited,
 .emotion-5 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-5:hover,
 .emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-5[aria-disabled=true],
@@ -422,14 +422,14 @@ exports[`<Assets /> should render empty with no filters properly 1`] = `
 .emotion-7:hover,
 .emotion-7:visited,
 .emotion-7 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-7:hover,
 .emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-7[aria-disabled=true],
@@ -575,7 +575,7 @@ exports[`<Assets /> should render properly 1`] = `
 }
 
 .emotion-3:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-3[aria-disabled=true] {
@@ -616,7 +616,7 @@ exports[`<Assets /> should render properly 1`] = `
 }
 
 .emotion-4:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-4[aria-disabled=true] {
@@ -747,7 +747,7 @@ exports[`<Assets /> should render properly 2`] = `
 }
 
 .emotion-3:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-3[aria-disabled=true] {
@@ -788,7 +788,7 @@ exports[`<Assets /> should render properly 2`] = `
 }
 
 .emotion-4:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-4[aria-disabled=true] {
@@ -919,7 +919,7 @@ exports[`<Assets /> should render properly 3`] = `
 }
 
 .emotion-3:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-3[aria-disabled=true] {
@@ -960,7 +960,7 @@ exports[`<Assets /> should render properly 3`] = `
 }
 
 .emotion-4:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-4[aria-disabled=true] {

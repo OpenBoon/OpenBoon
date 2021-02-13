@@ -170,7 +170,7 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 .emotion-14 {
   width: 10%;
   height: 100%;
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-14:not(:last-of-type) {
@@ -178,13 +178,13 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 }
 
 .emotion-14:hover {
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-15 {
   width: 10%;
   height: 64%;
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-15:not(:last-of-type) {
@@ -192,13 +192,13 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 }
 
 .emotion-15:hover {
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-16 {
   width: 10%;
   height: 47%;
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-16:not(:last-of-type) {
@@ -206,13 +206,13 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 }
 
 .emotion-16:hover {
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-17 {
   width: 10%;
   height: 37%;
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-17:not(:last-of-type) {
@@ -220,13 +220,13 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 }
 
 .emotion-17:hover {
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-18 {
   width: 10%;
   height: 33%;
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-18:not(:last-of-type) {
@@ -234,13 +234,13 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 }
 
 .emotion-18:hover {
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-19 {
   width: 10%;
   height: 28%;
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-19:not(:last-of-type) {
@@ -248,13 +248,13 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 }
 
 .emotion-19:hover {
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-20 {
   width: 10%;
   height: 27%;
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-20:not(:last-of-type) {
@@ -262,13 +262,13 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 }
 
 .emotion-20:hover {
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-21 {
   width: 10%;
   height: 29%;
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-21:not(:last-of-type) {
@@ -276,13 +276,13 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 }
 
 .emotion-21:hover {
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-22 {
   width: 10%;
   height: 55%;
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-22:not(:last-of-type) {
@@ -290,13 +290,13 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 }
 
 .emotion-22:hover {
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-23 {
   width: 10%;
   height: 4%;
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-23:not(:last-of-type) {
@@ -304,7 +304,7 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 }
 
 .emotion-23:hover {
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-24 {
@@ -747,7 +747,7 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 
 .emotion-14:focus {
   outline: 1px solid transparent;
-  border: 1px solid #73b61c;
+  border: 1px solid #3A5DFF;
   color: #191919;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
@@ -834,8 +834,8 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 
 .emotion-25:focus,
 .emotion-25 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -952,14 +952,14 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 .emotion-30:hover,
 .emotion-30:visited,
 .emotion-30 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-30:hover,
 .emotion-30 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-30[aria-disabled=true],

@@ -230,8 +230,8 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 
 .emotion-17:focus,
 .emotion-17 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -252,7 +252,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-40 a {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-41 {
@@ -437,14 +437,14 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 .emotion-51:hover,
 .emotion-51:visited,
 .emotion-51 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-51:hover,
 .emotion-51 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-51[aria-disabled=true],
@@ -950,8 +950,8 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 
 .emotion-14:focus,
 .emotion-14 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -972,7 +972,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 }
 
 .emotion-37 a {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-38 {
@@ -1157,14 +1157,14 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 .emotion-48:hover,
 .emotion-48:visited,
 .emotion-48 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-48:hover,
 .emotion-48 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-48[aria-disabled=true],
