@@ -139,7 +139,7 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
           })
         )}
       </div>
-      {(count && count > results.length && (
+      {!!count && count > results.length && (
         <div css={{ display: 'flex', justifyContent: 'center' }}>
           <Button
             variant={BUTTON_VARIANTS.SECONDARY}
@@ -149,8 +149,7 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
             Load More
           </Button>
         </div>
-      )) ||
-        null}
+      )}
     </div>
   )
 }
