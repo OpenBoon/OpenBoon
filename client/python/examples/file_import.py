@@ -2,7 +2,7 @@
 import argparse
 import json
 
-from zmlp import app_from_env, FileImport
+from boonsdk import app_from_env, FileImport
 
 
 def main():

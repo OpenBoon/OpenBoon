@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 
-from zmlp import app_from_env
+from boonsdk import app_from_env
 
 
 def main():

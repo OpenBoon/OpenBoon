@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from zmlp import app_from_env
-from zmlp.entity import ModelType
+from boonsdk import app_from_env
+from boonsdk.entity import ModelType
 
 import urllib3
 urllib3.disable_warnings()

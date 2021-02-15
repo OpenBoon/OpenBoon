@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import sys
 
-from zmlp import app_from_env
+from boonsdk import app_from_env
 
 app = app_from_env()
 

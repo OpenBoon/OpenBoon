@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-import zmlp
-from zmlp import app_from_env
+import boonsdk
+from boonsdk import app_from_env
 
 q = {
-    "query": zmlp.search.LabelConfidenceQuery("zvi-label-detection", "lakeside", 0.5)
+    "query": boonsdk.search.LabelConfidenceQuery("zvi-label-detection", "lakeside", 0.5)
 }
 
 

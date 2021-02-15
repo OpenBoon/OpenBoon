@@ -17,16 +17,16 @@ requirements = [
 ]
 
 setup(
-    name='zvi-client',
+    name='boonsdk',
     version="1.2.0",
-    description='Zorroa Visual Intelligence Python Client',
-    url='http://www.zorroa.com',
+    description='Boon AI SDK',
+    url='http://www.boonai.io',
     license='Apache2',
     package_dir={'': 'pylib'},
-    packages=['zmlp', 'zmlp.app', 'zmlp.entity'],
+    packages=['boonsdk', 'boonsdk.app', 'boonsdk.entity'],
     scripts=[],
-    author="Matthew Chambers",
-    author_email="support@zorroa.com",
+    author="Boon AI Team",
+    author_email="support@boonai.io",
     keywords="machine learning artificial intelligence",
     python_requires='>=3.4',
 

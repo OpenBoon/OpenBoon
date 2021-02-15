@@ -1,2 +1,3 @@
-# Zorroa Python SDK
+# Boon AI Python SDK
 
+```pip install boonsdk```

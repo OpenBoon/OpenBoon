@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:experimental
-FROM zmlp/py3-base:latest
+FROM boonai/py3-base:latest
 
 RUN apt-get update && apt-get -y upgrade
 
