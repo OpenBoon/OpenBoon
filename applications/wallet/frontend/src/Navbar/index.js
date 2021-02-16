@@ -8,7 +8,8 @@ import HamburgerSvg from '../Icons/hamburger.svg'
 
 import ProjectSwitcher from '../ProjectSwitcher'
 
-const LOGO_HEIGHT = 18
+const LOGO_HEIGHT = 20
+const LODO_PADDING = 3
 
 const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
   return (
@@ -56,7 +57,7 @@ const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
             css={{
               paddingLeft: spacing.base,
               paddingRight: spacing.base,
-              paddingBottom: spacing.mini,
+              paddingBottom: LODO_PADDING,
               display: 'flex',
               alignItems: 'center',
             }}
