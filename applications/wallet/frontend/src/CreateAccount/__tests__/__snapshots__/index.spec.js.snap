@@ -471,7 +471,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
       >
         <svg
           data-file-name="logo.svg"
-          height={30}
+          height={20}
         />
       </a>
     </div>
@@ -1191,7 +1191,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
       >
         <svg
           data-file-name="logo.svg"
-          height={30}
+          height={20}
         />
       </a>
     </div>

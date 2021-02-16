@@ -292,7 +292,7 @@ exports[`<Projects /> should render an access denied screen if the url projectId
       >
         <svg
           data-file-name="logo.svg"
-          height={30}
+          height={20}
         />
       </a>
     </div>
