@@ -6,7 +6,7 @@ _NOTE_: Zorroa issues Macbooks to developers so all instructions are for MacOS.
 ## Prerequisites
 - Latest Docker and docker-compose installed.
 
-## Start the local ZMLP Deployment
+## Start the local Boon AI Deployment
 
 First off we will use docker-compose to start a local deployment of ZMLP. This will pull all of the 
 latest deployed container images and start them up locally. Once you have a complete ZMLP
