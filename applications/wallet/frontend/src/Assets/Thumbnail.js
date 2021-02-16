@@ -44,14 +44,14 @@ const AssetsThumbnail = ({
       css={{
         position: 'relative',
         border: isSelected
-          ? constants.borders.assetSelected
+          ? constants.borders.keyOneLarge
           : constants.borders.large.transparent,
         width: '100%',
         height: '100%',
         ':hover': isActive
           ? {
               border: isSelected
-                ? constants.borders.assetSelected
+                ? constants.borders.keyOneLarge
                 : constants.borders.large.white,
               'a, button': {
                 opacity: 1,

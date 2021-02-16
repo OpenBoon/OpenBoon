@@ -153,14 +153,11 @@ resource "google_storage_bucket_object" "task_env" {
 {
   "ENVIRONMENT": "${var.environment}",
   "CLARIFAI_KEY":  "${var.clarifai-key}",
-  "ZORROA_AWS_KEY": "${var.aws-key}",
-  "ZORROA_AWS_SECRET": "${var.aws-secret}",
+  "ZORROA_AWS_KEY": "${module.aws-ml.ml-user-key}",
+  "ZORROA_AWS_SECRET": "${module.aws-ml.ml-user-secret}",
   "ZORROA_AWS_REGION": "${var.aws-region}",
   "ZORROA_AWS_BUCKET": "${module.aws-ml.bucket}",
   "ZORROA_AWS_ML_USER_ROLE_ARN": "${module.aws-ml.ml-user-role-arn}",
-  "ZORROA_AWS_ML_USER_SQS_URL": "${module.aws-ml.ml-user-sqs-url}",
-  "ZORROA_AWS_ML_USER_SQS_ARN": "${module.aws-ml.ml-user-sqs-arn}",
-  "ZORROA_AWS_ML_USER_SNS_TOPIC_ARN": "${module.aws-ml.ml-user-sns-topic-arn}",
   "ZORROA_AZURE_VISION_REGION": "${module.azure-ml.vision-region}",
   "ZORROA_AZURE_VISION_ENDPOINT": "${module.azure-ml.vision-endpoint}",
   "ZORROA_AZURE_VISION_KEY": "${module.azure-ml.vision-key}",
@@ -268,7 +265,7 @@ module "api-gateway" {
   archivist_host         = module.archivist.ip-address
   auth_server_host       = module.auth-server.ip-address
   ml_bbq_host            = "${module.ml-bbq.ip-address}:8282"
-  domain                 = var.zmlp-domain
+  domains                = var.zmlp-domains
   container-cluster-name = module.gke-cluster.name
   container-tag          = var.container-tag
 }
@@ -314,7 +311,7 @@ module "wallet" {
   google-oauth-client-id          = var.google-oauth-client-id
   environment                     = var.environment
   inception-key-b64               = local.inception-key-b64
-  domain                          = var.wallet-domain
+  domains                         = var.wallet-domains
   container-tag                   = var.container-tag
   browsable                       = var.wallet-browsable-api
   marketplace-project             = "zorroa-public"
@@ -347,7 +344,7 @@ module "gcp-marketplace-integration" {
   marketplace-subscription = "zorroa-public"
   marketplace-credentials  = var.marketplace-credentials
   marketplace-service-name = "zorroa-visual-intelligence-zorroa-public.cloudpartnerservices.goog"
-  fqdn                     = var.wallet-domain
+  fqdn                     = var.wallet-domains[0]
   environment              = var.environment
   inception-key-b64        = local.inception-key-b64
   pg_password              = module.wallet.pg_password

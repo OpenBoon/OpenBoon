@@ -744,13 +744,17 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.aws.RekognitionLabelDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.aws.video.RekognitionLabelDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -792,6 +796,10 @@ fun getStandardModules(): List<PipelineModSpec> {
                         ProcessorRef(
                             "zmlp_analysis.aws.RekognitionUnsafeDetection",
                             StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.aws.video.RekognitionUnsafeDetection",
+                            StandardContainers.ANALYSIS
                         )
                     )
                 )
@@ -824,13 +832,59 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.FACE_RECOGNITION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.aws.RekognitionCelebrityDetection",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "zmlp_analysis.aws.video.RekognitionCelebrityDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-black-frame-detection",
+            "With Amazon Rekognition Video, you can detect such black frame sequences to automate ad insertion, " +
+                "package content for VOD, and demarcate various program segments or scenes. ",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.video.BlackFramesVideoDetectProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-end-credits-detection",
+            "Amazon Rekognition Video helps you automatically identify the exact frames " +
+                "where the closing credits start and end for a movie or TV show.",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.video.EndCreditsVideoDetectProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )

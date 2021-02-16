@@ -38,7 +38,6 @@ const borders = {
   keyOneLarge: `4px solid ${colors.key.one}`,
   keyTwoLarge: `4px solid ${colors.key.two}`,
   error: `1px solid ${colors.signal.warning.base}`,
-  assetSelected: `4px solid ${colors.signal.sky.base}`,
   ...newBorders,
 }
 

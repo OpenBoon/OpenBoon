@@ -103,7 +103,7 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #73b61c;
+  color: #6088FE;
   background-color: transparent;
   padding-left: 16px;
   height: 100%;
@@ -157,10 +157,6 @@ exports[`<Projects /> should render an access denied screen if the url projectId
 
 .emotion-10 {
   margin-left: 8px;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 .emotion-11 {
@@ -254,14 +250,14 @@ exports[`<Projects /> should render an access denied screen if the url projectId
 .emotion-16:hover,
 .emotion-16:visited,
 .emotion-16 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-16:hover,
 .emotion-16 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-16[aria-disabled=true],

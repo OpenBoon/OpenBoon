@@ -36,14 +36,14 @@ exports[`<Refresh /> should render properly 1`] = `
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-0:hover,
 .emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-0[aria-disabled=true],
@@ -61,11 +61,6 @@ exports[`<Refresh /> should render properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-}
-
-.emotion-2 {
-  -webkit-animation: ;
-  animation: ;
 }
 
 .emotion-3 {
@@ -148,14 +143,14 @@ exports[`<Refresh /> should render properly 2`] = `
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-0:hover,
 .emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-0[aria-disabled=true],
@@ -244,14 +239,14 @@ exports[`<Refresh /> should render properly 3`] = `
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-0:hover,
 .emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-0[aria-disabled=true],
@@ -269,11 +264,6 @@ exports[`<Refresh /> should render properly 3`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-}
-
-.emotion-2 {
-  -webkit-animation: ;
-  animation: ;
 }
 
 .emotion-3 {

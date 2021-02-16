@@ -3,7 +3,11 @@ import json
 
 
 def mock_data(name):
-    return os.path.join(os.path.dirname(__file__), "../../tests", "mock-data", name)
+    return os.path.join(os.path.dirname(__file__), "", "mock-data", name)
+
+
+class MockAwsCloudResources:
+    pass
 
 
 class MockSNSClient:

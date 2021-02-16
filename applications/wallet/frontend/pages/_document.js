@@ -9,6 +9,7 @@ class MyDocument extends Document {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta charSet="utf-8" />
+          <meta name="color-scheme" content="dark" />
           <script src="https://apis.google.com/js/platform.js" />
           <link
             rel="preload"

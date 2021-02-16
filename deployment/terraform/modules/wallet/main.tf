@@ -1,5 +1,5 @@
 resource "google_compute_global_address" "wallet-external" {
-  name         = var.external-ip-name
+  name = var.external-ip-name
 }
 
 resource "random_string" "sql-password" {
@@ -103,7 +103,7 @@ resource "kubernetes_deployment" "wallet" {
           readiness_probe {
             initial_delay_seconds = 5
             period_seconds        = 5
-            failure_threshold = 10
+            failure_threshold     = 10
             http_get {
               scheme = "HTTP"
               path   = "/api/v1/health/"
@@ -157,30 +157,30 @@ resource "kubernetes_deployment" "wallet" {
           }
           env {
             name  = "FQDN"
-            value = "https://${var.domain}"
+            value = "https://${var.domains[0]}"
           }
           env {
             name  = "BROWSABLE"
             value = var.browsable
           }
           env {
-            name = "MARKETPLACE_PROJECT_ID"
+            name  = "MARKETPLACE_PROJECT_ID"
             value = var.marketplace-project
           }
           env {
-            name = "MARKETPLACE_CREDENTIALS"
+            name  = "MARKETPLACE_CREDENTIALS"
             value = var.marketplace-credentials
           }
           env {
-            name = "SUPERADMIN"
+            name  = "SUPERADMIN"
             value = var.superadmin
           }
           env {
-            name = "USE_MODEL_IDS_FOR_LABEL_FILTERS"
+            name  = "USE_MODEL_IDS_FOR_LABEL_FILTERS"
             value = var.use-model-ids-for-label-filters
           }
           env {
-            name = "METRICS_API_URL"
+            name  = "METRICS_API_URL"
             value = "http://${var.metrics-ip-address}"
           }
         }
@@ -212,9 +212,12 @@ resource "kubernetes_service" "wallet" {
 
 resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
-  name     = "wallet-cert"
+  name     = "wallet"
   managed {
-    domains = [var.domain]
+    domains = var.domains
+  }
+  lifecycle {
+    create_before_destroy = true
   }
 }
 

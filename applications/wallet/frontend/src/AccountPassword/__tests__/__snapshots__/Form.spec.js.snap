@@ -51,8 +51,8 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 
 .emotion-5:focus,
 .emotion-5 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -166,14 +166,14 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 .emotion-19:hover,
 .emotion-19:visited,
 .emotion-19 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-19:hover,
 .emotion-19 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-19[aria-disabled=true],
@@ -242,14 +242,14 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 .emotion-25:hover,
 .emotion-25:visited,
 .emotion-25 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-25:hover,
 .emotion-25 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-25[aria-disabled=true],
@@ -524,14 +524,14 @@ Array [
 .emotion-1:hover,
 .emotion-1:visited,
 .emotion-1 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-1:hover,
 .emotion-1 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-1[aria-disabled=true],
@@ -605,8 +605,8 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 
 .emotion-5:focus,
 .emotion-5 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -720,14 +720,14 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 .emotion-19:hover,
 .emotion-19:visited,
 .emotion-19 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-19:hover,
 .emotion-19 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-19[aria-disabled=true],
@@ -796,14 +796,14 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 .emotion-25:hover,
 .emotion-25:visited,
 .emotion-25 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-25:hover,
 .emotion-25 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-25[aria-disabled=true],
@@ -1010,8 +1010,8 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 
 .emotion-5:focus,
 .emotion-5 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -1125,14 +1125,14 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 .emotion-19:hover,
 .emotion-19:visited,
 .emotion-19 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-19:hover,
 .emotion-19 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-19[aria-disabled=true],
@@ -1201,14 +1201,14 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 .emotion-25:hover,
 .emotion-25:visited,
 .emotion-25 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-25:hover,
 .emotion-25 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-25[aria-disabled=true],

@@ -39,7 +39,7 @@ enum class ModelType(
     val uploadable: Boolean
 ) {
     ZVI_KNN_CLASSIFIER(
-        "Sci-kit Learn KNN Classifier",
+        "K-Nearest Neighbors Classifier",
         "zmlp_train.knn.KnnLabelDetectionTrainer",
         mapOf(),
         "zmlp_analysis.custom.KnnLabelDetectionClassifier",
@@ -47,7 +47,8 @@ enum class ModelType(
         null,
         "Classify images or documents using a KNN classifier.  This type of model generates " +
             "a single prediction which can be used to quickly organize assets into general groups." +
-            "The KNN classifier works with just a single image and label.",
+            "If no labels are provided, the model automatically generates numbered groups of " +
+            "similar images. These groups can be renamed and edited in subsequent training passes.",
         ModelObjective.LABEL_DETECTION,
         Provider.ZORROA,
         true,
@@ -79,13 +80,13 @@ enum class ModelType(
         false
     ),
     ZVI_FACE_RECOGNITION(
-        "Face Recognition Classifier",
+        "Face Recognition",
         "zmlp_train.face_rec.KnnFaceRecognitionTrainer",
         mapOf(),
         "zmlp_analysis.custom.KnnFaceRecognitionClassifier",
         mapOf(),
         "zvi-face-recognition",
-        "Relabel existing ZVI faces using a KNN Face Recognition model.",
+        "Label faces detected by the zvi-face-detection module, and classify them with a KNN model. ",
         ModelObjective.FACE_RECOGNITION,
         Provider.ZORROA,
         true,
@@ -102,7 +103,7 @@ enum class ModelType(
         "zmlp_analysis.automl.AutoMLVisionClassifier",
         mapOf(),
         null,
-        "Utilize Google AutoML to train an image classifier.",
+        "Train an image classifier using Google Cloud AutoML.",
         ModelObjective.LABEL_DETECTION,
         Provider.GOOGLE,
         true,
@@ -113,13 +114,13 @@ enum class ModelType(
         false
     ),
     TF2_IMAGE_CLASSIFIER(
-        "Tensorflow2 Keras Image Classifier",
+        "Imported Tensorflow Image Classifier",
         "None",
         mapOf(),
         "zmlp_analysis.custom.TensorflowImageClassifier",
         mapOf(),
         null,
-        "Upload a Tensorflow model to use for image classification.",
+        "Upload a pre-trained Tensorflow model to use for image classification.",
         ModelObjective.LABEL_DETECTION,
         Provider.GOOGLE,
         true,
@@ -151,13 +152,13 @@ enum class ModelType(
         false
     ),
     PYTORCH_IMAGE_CLASSIFIER(
-        "Pytorch Image Classifier",
+        "Imported Pytorch Image Classifier",
         "None",
         mapOf(),
         "zmlp_analysis.custom.PytorchImageClassifier",
         mapOf(),
         null,
-        "Upload a Pytorch model to use for image classification.",
+        "Upload a pre-trained Pytorch model to use for image classification.",
         ModelObjective.LABEL_DETECTION,
         Provider.ZORROA,
         true,

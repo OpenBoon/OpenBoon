@@ -58,7 +58,7 @@ exports[`<FiltersCopyQuery /> should render properly after copy click 1`] = `
   type="button"
 >
   <svg
-    color="#73b61c"
+    color="#3A5DFF"
     data-file-name="checkmark.svg"
     height={20}
   />

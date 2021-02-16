@@ -29,7 +29,7 @@ exports[`<Authentication /> should render properly when user is logged in 1`] = 
     <Layout
       user={
         Object {
-          "agreedToPoliciesDate": "20201208",
+          "agreedToPoliciesDate": "20210211",
           "dateJoined": "2020-03-02T19:09:16Z",
           "email": "jane.doe@zorroa.com",
           "firstName": "Jane",
@@ -143,7 +143,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
 }
 
 .emotion-5 a {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-6 {
@@ -275,14 +275,14 @@ exports[`<Authentication /> should render properly when user needs to approve ne
 .emotion-15:hover,
 .emotion-15:visited,
 .emotion-15 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-15:hover,
 .emotion-15 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-15[aria-disabled=true],
@@ -318,7 +318,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
         By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
          
         <a
-          href="/policies/20201208/terms-of-use.pdf"
+          href="/policies/20210211/terms-of-use.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -328,7 +328,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
         and
          
         <a
-          href="/policies/20201208/privacy-policy.pdf"
+          href="/policies/20210211/privacy-policy.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >

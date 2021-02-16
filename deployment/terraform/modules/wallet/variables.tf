@@ -34,7 +34,8 @@ variable "google-oauth-client-id" {
 variable "environment" {
 }
 
-variable "domain" {
+variable "domains" {
+  type = list(string)
 }
 
 variable "marketplace-project" {

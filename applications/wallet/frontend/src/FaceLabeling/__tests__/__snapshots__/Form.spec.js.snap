@@ -148,14 +148,14 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
 .emotion-7:hover,
 .emotion-7:visited,
 .emotion-7 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-7:hover,
 .emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-7[aria-disabled=true],

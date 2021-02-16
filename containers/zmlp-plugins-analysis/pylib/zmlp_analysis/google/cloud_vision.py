@@ -3,7 +3,7 @@ import io
 import backoff
 from google.api_core.exceptions import ResourceExhausted
 from google.cloud import vision
-from google.cloud.vision import types
+from google.cloud.vision_v1 import types
 
 from zmlpsdk import file_storage, Argument, AssetProcessor, FileTypes
 from zmlpsdk.proxy import get_proxy_level, calculate_normalized_bbox
