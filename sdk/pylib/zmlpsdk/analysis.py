@@ -14,8 +14,6 @@ class Prediction:
             label (str): The string label.
             score (float): The score/confidence.
         """
-        if score > 1:
-            raise ValueError('The prediction score must be a float between 0 and 1.')
         self.label = label
         self.score = round(float(score), self.precision)
         self.occurrences = 1

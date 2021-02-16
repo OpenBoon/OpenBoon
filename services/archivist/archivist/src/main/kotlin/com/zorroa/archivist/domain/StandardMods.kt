@@ -851,48 +851,6 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "aws-black-frame-detection",
-            "With Amazon Rekognition Video, you can detect such black frame sequences to automate ad insertion, " +
-                "package content for VOD, and demarcate various program segments or scenes. ",
-            Provider.AMAZON,
-            Category.AWS_REK,
-            ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Videos),
-            listOf(
-                ModOp(
-                    ModOpType.APPEND,
-                    listOf(
-                        ProcessorRef(
-                            "zmlp_analysis.aws.video.BlackFramesVideoDetectProcessor",
-                            StandardContainers.ANALYSIS
-                        )
-                    )
-                )
-            ),
-            true
-        ),
-        PipelineModSpec(
-            "aws-end-credits-detection",
-            "Amazon Rekognition Video helps you automatically identify the exact frames " +
-                "where the closing credits start and end for a movie or TV show.",
-            Provider.AMAZON,
-            Category.AWS_REK,
-            ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Videos),
-            listOf(
-                ModOp(
-                    ModOpType.APPEND,
-                    listOf(
-                        ProcessorRef(
-                            "zmlp_analysis.aws.video.EndCreditsVideoDetectProcessor",
-                            StandardContainers.ANALYSIS
-                        )
-                    )
-                )
-            ),
-            true
-        ),
-        PipelineModSpec(
             "aws-transcribe",
             "Amazon Transcribe uses a deep learning process called automatic speech recognition (ASR) " +
                 "to convert speech to text quickly and accurately.",
