@@ -35,7 +35,7 @@ const TableContent = ({
 
   const {
     data: { count = 0, results },
-    revalidate,
+    mutate: revalidate,
   } = useSWR(`${url}?from=${from}&size=${SIZE}`)
 
   return (
