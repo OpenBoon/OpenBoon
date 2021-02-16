@@ -24,7 +24,7 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
 
       const from = pageIndex * SIZE
 
-      return `/api/v1/projects/${projectId}/searchesX/query/?query=${encodedFilter}&from=${from}&size=${SIZE}`
+      return `/api/v1/projects/${projectId}/searches/query/?query=${encodedFilter}&from=${from}&size=${SIZE}`
     },
     undefined,
     {
@@ -100,35 +100,46 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
           gap: spacing.base,
         }}
       >
-        {results.map(({ thumbnailUrl, metadata, id }) => {
-          const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
+        {results.length === 0 ? (
+          <div
+            css={{
+              padding: spacing.moderate,
+              fontStyle: typography.style.italic,
+            }}
+          >
+            No predicted assets.
+          </div>
+        ) : (
+          results.map(({ thumbnailUrl, metadata, id }) => {
+            const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
 
-          return (
-            <div
-              key={id}
-              title={metadata?.source?.filename}
-              css={{
-                position: 'relative',
-                paddingBottom: '100%',
-                backgroundColor: colors.structure.mattGrey,
-              }}
-            >
-              <img
+            return (
+              <div
+                key={id}
+                title={metadata?.source?.filename}
                 css={{
-                  position: 'absolute',
-                  top: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
+                  position: 'relative',
+                  paddingBottom: '100%',
+                  backgroundColor: colors.structure.mattGrey,
                 }}
-                src={thumbnailSrc}
-                alt={metadata?.source?.filename}
-              />
-            </div>
-          )
-        })}
+              >
+                <img
+                  css={{
+                    position: 'absolute',
+                    top: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                  }}
+                  src={thumbnailSrc}
+                  alt={metadata?.source?.filename}
+                />
+              </div>
+            )
+          })
+        )}
       </div>
-      {count && count > results.length && (
+      {!!count && count > results.length && (
         <div css={{ display: 'flex', justifyContent: 'center' }}>
           <Button
             variant={BUTTON_VARIANTS.SECONDARY}
