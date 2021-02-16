@@ -44,8 +44,8 @@ exports[`<LabelEdit /> should render properly 1`] = `
 
 .emotion-4:focus,
 .emotion-4 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -159,14 +159,14 @@ exports[`<LabelEdit /> should render properly 1`] = `
 .emotion-8:hover,
 .emotion-8:visited,
 .emotion-8 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-8:hover,
 .emotion-8 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-8[aria-disabled=true],

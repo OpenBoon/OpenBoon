@@ -54,7 +54,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
   height: 8px;
   opacity: 100;
   border-radius: 16px;
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-5 {
@@ -109,14 +109,14 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
 .emotion-8:hover,
 .emotion-8:visited,
 .emotion-8 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-8:hover,
 .emotion-8 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-8[aria-disabled=true],

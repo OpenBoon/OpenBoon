@@ -139,8 +139,8 @@ exports[`<ResetPassword /> should render properly 1`] = `
 
 .emotion-8:focus,
 .emotion-8 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
 }
 
 .emotion-8:hover,
@@ -199,14 +199,14 @@ exports[`<ResetPassword /> should render properly 1`] = `
 .emotion-11:hover,
 .emotion-11:visited,
 .emotion-11 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-11:hover,
 .emotion-11 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-11[aria-disabled=true],

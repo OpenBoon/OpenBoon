@@ -53,7 +53,7 @@ const DataSourcesAddAutomaticAnalysis = ({ fileTypes }) => {
                 paddingRight: spacing.large,
               },
               svg: {
-                color: colors.key.one,
+                color: colors.key.two,
                 marginRight: spacing.normal,
                 minWidth: constants.icons.regular,
                 maxWidth: constants.icons.regular,

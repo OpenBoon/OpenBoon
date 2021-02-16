@@ -96,7 +96,7 @@ const STYLES = {
     padding: spacing.small,
     fontWeight: typography.weight.regular,
     '&, &:hover, &:visited, .noop': {
-      color: colors.key.one,
+      color: colors.key.two,
     },
     '&:hover, .noop': {
       textDecoration: 'underline',
@@ -109,7 +109,7 @@ const STYLES = {
     flex: 1,
     padding: spacing.base,
     paddingLeft: spacing.normal,
-    color: colors.key.one,
+    color: colors.key.two,
     fontWeight: typography.weight.regular,
     height: '100%',
     '&:hover, &.focus-visible:focus, .noop': {

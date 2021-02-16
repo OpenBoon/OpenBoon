@@ -26,8 +26,8 @@ exports[`<PaginationPage /> should render properly 1`] = `
 }
 
 .emotion-1:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
