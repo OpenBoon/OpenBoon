@@ -18,7 +18,7 @@ const TaskErrorContent = () => {
     query: { projectId, errorId },
   } = useRouter()
 
-  const { data: taskError, revalidate } = useSWR(
+  const { data: taskError, mutate: revalidate } = useSWR(
     `/api/v1/projects/${projectId}/task_errors/${errorId}/`,
   )
 

@@ -1,7 +1,5 @@
 import { createElement } from 'react'
 
-const noop = () => () => {}
-
 /**
  * <SWRConfig />
  */
@@ -56,7 +54,7 @@ export const mutate = (_, cb) => {
 let mockUseSWRResponse = {}
 
 export const __setMockUseSWRResponse = (data) => {
-  mockUseSWRResponse = { revalidate: noop, ...data }
+  mockUseSWRResponse = { mutate: mockMutateFn, ...data }
 }
 
 const useSWR = () => {
