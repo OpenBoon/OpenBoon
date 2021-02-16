@@ -66,6 +66,33 @@ describe('ModelMatrixPreview', () => {
     )
   })
 
+  it('should render properly when there are no predicted assets', () => {
+    require('next/router').__setUseRouter({
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRInfiniteResponse({
+      data: [{ count: 0, results: [] }],
+    })
+
+    const component = TestRenderer.create(
+      <ModelMatrixPreview
+        settings={{
+          selectedCell: [0, 1],
+          minScore: 0,
+          maxScore: 1,
+        }}
+        labels={matrix.labels}
+        moduleName={matrix.moduleName}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly without data', () => {
     require('next/router').__setUseRouter({
       query: {
