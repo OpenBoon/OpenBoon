@@ -36,14 +36,14 @@ exports[`<Button /> should have a type "button" and be aria-disabled, and not cl
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-0:hover,
 .emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-0[aria-disabled=true],
@@ -98,14 +98,14 @@ exports[`<Button /> should have a type "button", pass additional props, and be c
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-0:hover,
 .emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-0[aria-disabled=true],
@@ -159,14 +159,14 @@ exports[`<Button /> should render a link as an anchor tag with no onClick 1`] = 
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-0:hover,
 .emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-0[aria-disabled=true],
@@ -340,7 +340,7 @@ exports[`<Button /> should render properly for LINK Button 1`] = `
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  color: #73b61c;
+  color: #6088FE;
 }
 
 .emotion-0:hover,
@@ -394,7 +394,7 @@ exports[`<Button /> should render properly for LINK Link 1`] = `
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  color: #73b61c;
+  color: #6088FE;
 }
 
 .emotion-0:hover,
@@ -439,7 +439,7 @@ exports[`<Button /> should render properly for MENU Button 1`] = `
   font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #73b61c;
+  color: #6088FE;
   background-color: transparent;
   padding-left: 16px;
   height: 100%;
@@ -490,7 +490,7 @@ exports[`<Button /> should render properly for MENU Link 1`] = `
   font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #73b61c;
+  color: #6088FE;
   background-color: transparent;
   padding-left: 16px;
   height: 100%;
@@ -831,14 +831,14 @@ exports[`<Button /> should render properly for PRIMARY Button 1`] = `
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-0:hover,
 .emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-0[aria-disabled=true],
@@ -892,14 +892,14 @@ exports[`<Button /> should render properly for PRIMARY Link 1`] = `
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-0:hover,
 .emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-0[aria-disabled=true],
@@ -952,14 +952,14 @@ exports[`<Button /> should render properly for PRIMARY_SMALL Button 1`] = `
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-0:hover,
 .emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-0[aria-disabled=true],
@@ -1013,14 +1013,14 @@ exports[`<Button /> should render properly for PRIMARY_SMALL Link 1`] = `
 .emotion-0:hover,
 .emotion-0:visited,
 .emotion-0 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-0:hover,
 .emotion-0 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-0[aria-disabled=true],

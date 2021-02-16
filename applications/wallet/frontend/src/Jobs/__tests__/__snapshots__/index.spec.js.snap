@@ -94,14 +94,14 @@ Array [
 .emotion-3:hover,
 .emotion-3:visited,
 .emotion-3 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-3:hover,
 .emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-3[aria-disabled=true],
@@ -1709,14 +1709,14 @@ Array [
 .emotion-3:hover,
 .emotion-3:visited,
 .emotion-3 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-3:hover,
 .emotion-3 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-3[aria-disabled=true],

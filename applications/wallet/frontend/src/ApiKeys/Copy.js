@@ -12,7 +12,7 @@ const ApiKeysCopy = () => {
       integrate with ZVI. An API Key is required to access data for this project
       using the ZVI SDK and REST APIs. For more information please visit{' '}
       <a
-        css={{ color: colors.key.one }}
+        css={{ color: colors.key.two }}
         target="_blank"
         rel="noopener noreferrer"
         href="https://zorroa.gitbook.io/zmlp/"

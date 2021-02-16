@@ -13,7 +13,7 @@ import MissingSvg from '../Icons/missing.svg'
 import FacetSvg from '../Icons/facet.svg'
 
 const HEIGHT = constants.icons.regular
-const COLOR = colors.key.one
+const COLOR = colors.key.two
 
 const FilterIcon = ({ filter: { type, values } }) => {
   switch (type) {

@@ -85,7 +85,7 @@ exports[`<CreateAccountSuccess /> should render properly 1`] = `
 }
 
 .emotion-6 {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-7 {

@@ -159,14 +159,14 @@ exports[`<AssetLabelingAdd /> should add a label 1`] = `
 .emotion-14:hover,
 .emotion-14:visited,
 .emotion-14 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-14:hover,
 .emotion-14 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-14[aria-disabled=true],
@@ -460,14 +460,14 @@ exports[`<AssetLabelingAdd /> should render with localStorage and update a label
 .emotion-14:hover,
 .emotion-14:visited,
 .emotion-14 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-14:hover,
 .emotion-14 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-14[aria-disabled=true],

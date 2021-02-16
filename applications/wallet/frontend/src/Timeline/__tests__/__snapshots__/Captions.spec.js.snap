@@ -35,7 +35,7 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #73b61c;
+  color: #3A5DFF;
   background-color: transparent;
 }
 
@@ -60,7 +60,7 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
 
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
-  color: #73b61c;
+  color: #3A5DFF;
   background-color: #2e2e2e;
 }
 

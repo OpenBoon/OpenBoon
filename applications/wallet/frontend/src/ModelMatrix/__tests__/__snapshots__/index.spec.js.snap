@@ -209,7 +209,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-21:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-22 {
@@ -240,7 +240,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-103:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-110 {
@@ -264,7 +264,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-110:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-185 {
@@ -288,7 +288,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-185:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-192 {
@@ -312,7 +312,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-192:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-267 {
@@ -336,7 +336,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-267:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-274 {
@@ -360,7 +360,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-274:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-349 {
@@ -384,7 +384,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-349:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-356 {
@@ -408,7 +408,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-356:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-431 {
@@ -432,7 +432,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-431:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-832 {
@@ -474,7 +474,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-841:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-913 {
@@ -610,13 +610,13 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  color: #73b61c;
+  color: #3A5DFF;
   padding: 8px;
   opacity: 1;
 }
 
 .emotion-1038:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-1038[aria-disabled=true] {
@@ -663,7 +663,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-1040:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-1040[aria-disabled=true] {
@@ -704,7 +704,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-1041:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-1041[aria-disabled=true] {
@@ -8695,7 +8695,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   height: 8px;
   opacity: 100;
   border-radius: 16px;
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-16 {
@@ -8781,7 +8781,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 
 .emotion-29:focus {
   outline: 1px solid transparent;
-  border: 1px solid #73b61c;
+  border: 1px solid #3A5DFF;
   color: #191919;
   background-color: #ffffff;
 }
@@ -8962,12 +8962,12 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   -webkit-justify-content: center;
   justify-content: center;
   background-color: rgb(255,255,255);
-  border: 4px solid #73b61c;
+  border: 4px solid #3A5DFF;
   color: #191919;
 }
 
 .emotion-51:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-52 {
@@ -8998,7 +8998,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-58:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-133 {
@@ -9022,7 +9022,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-133:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-140 {
@@ -9046,7 +9046,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-140:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-215 {
@@ -9070,7 +9070,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-215:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-222 {
@@ -9094,7 +9094,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-222:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-297 {
@@ -9118,7 +9118,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-297:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-304 {
@@ -9142,7 +9142,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-304:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-379 {
@@ -9166,7 +9166,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-379:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-386 {
@@ -9190,7 +9190,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-386:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-461 {
@@ -9214,7 +9214,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-461:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-862 {
@@ -9256,7 +9256,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-871:hover {
-  border: 4px solid #96c955;
+  border: 4px solid #6088FE;
 }
 
 .emotion-943 {
@@ -9398,7 +9398,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-1068:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-1068[aria-disabled=true] {
@@ -9445,7 +9445,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-1070:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-1070[aria-disabled=true] {
@@ -9612,7 +9612,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #73b61c;
+  color: #6088FE;
   background-color: transparent;
   padding-top: 16px;
   padding-bottom: 16px;
