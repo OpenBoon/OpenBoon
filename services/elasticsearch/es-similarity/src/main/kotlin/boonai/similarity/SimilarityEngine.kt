@@ -1,4 +1,4 @@
-package com.zorroa.zmlp.similarity
+package boonai.similarity
 
 import kotlin.math.abs
 

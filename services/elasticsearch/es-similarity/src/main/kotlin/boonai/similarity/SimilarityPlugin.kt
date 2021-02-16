@@ -1,4 +1,4 @@
-package com.zorroa.zmlp.similarity
+package boonai.similarity
 
 import org.apache.lucene.index.LeafReaderContext
 import org.elasticsearch.common.settings.Settings
