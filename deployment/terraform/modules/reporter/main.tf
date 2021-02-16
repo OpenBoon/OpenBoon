@@ -134,7 +134,7 @@ resource "kubernetes_deployment" "reporter" {
         }
         container {
           name              = "reporter"
-          image             = "zmlp/reporter:${var.container-tag}"
+          image             = "boonai/reporter:${var.container-tag}"
           image_pull_policy = "Always"
           env {
             name  = "PROJECT_ID"

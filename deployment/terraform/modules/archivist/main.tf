@@ -166,7 +166,7 @@ resource "kubernetes_deployment" "archivist" {
         }
         container {
           name              = "archivist"
-          image             = "zmlp/archivist:${var.container-tag}"
+          image             = "boonai/archivist:${var.container-tag}"
           image_pull_policy = "Always"
           volume_mount {
             name       = "archivist-credentials"
