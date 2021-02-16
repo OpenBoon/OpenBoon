@@ -52,7 +52,7 @@ class ApiCall(models.Model):
                       'aws-unsafe-detection',
                       'aws-transcribe',
                       'aws-black-frame-detection',
-                      'aws-credits-detection',
+                      'aws-end-credits-detection',
                       'azure-category-detection',
                       'azure-celebrity-detection',
                       'azure-explicit-detection',
