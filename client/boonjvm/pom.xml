@@ -3,16 +3,16 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zorroa.zmlp</groupId>
-    <artifactId>jvm-common</artifactId>
+    <groupId>boonai</groupId>
+    <artifactId>boonai-jvm-common</artifactId>
     <version>1.0.0</version>
     <modules>
-        <module>zmlp-util</module>
-        <module>zmlp-apikey</module>
-        <module>zmlp-service</module>
+        <module>boonai-util</module>
+        <module>boonai-apikey</module>
+        <module>boonai-service</module>
     </modules>
     <packaging>pom</packaging>
-    <name>jvm-common</name>
+    <name>boonai-jvm-common</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,13 +24,13 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.zorroa.zmlp</groupId>
-                <artifactId>zmlp-util</artifactId>
+                <groupId>boonai</groupId>
+                <artifactId>boonai-util</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.zorroa.zmlp</groupId>
-                <artifactId>zmlp-apikey</artifactId>
+                <groupId>boonai</groupId>
+                <artifactId>boonai-apikey</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

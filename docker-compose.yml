@@ -89,7 +89,7 @@ services:
     depends_on:
       - postgres
       - minio
-      - boonai-jvm
+      - boonai-jvm-common
     ports:
       - "9090:9090"
     build:
@@ -108,7 +108,7 @@ services:
       - es1
       - postgres
       - minio
-      - boonai-jvm
+      - boonai-jvm-common
     environment:
       SENTRY_ENVIRONMENT: localdev
       BOONAI_STORAGE_PROJECT_ACCESSKEY: qwerty123
@@ -130,7 +130,7 @@ services:
   officer:
     image: booninfra/officer:latest
     depends_on:
-      - boonai-jvm
+      - boonai-jvm-common
       - minio
       - redis
     build:
@@ -215,7 +215,7 @@ services:
       - postgres
 
   # These services are only here because their images need to be built.
-  boonai-jvm:
+  boonai-jvm-common:
     image: boonai/boonjvm:latest
     build:
       context: client/boonjvm
