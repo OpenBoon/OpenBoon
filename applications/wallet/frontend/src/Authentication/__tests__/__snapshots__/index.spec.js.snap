@@ -301,7 +301,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   >
     <svg
       className="emotion-2"
-      data-file-name="largeLogo.svg"
+      data-file-name="logo.svg"
       width={180}
     />
     <h3
