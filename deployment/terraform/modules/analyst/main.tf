@@ -107,7 +107,7 @@ resource "kubernetes_deployment" "analyst" {
         }
         container {
           name              = "analyst"
-          image             = "zmlp/analyst:${var.container-tag}"
+          image             = "boonai/analyst:${var.container-tag}"
           image_pull_policy = "Always"
           volume_mount {
             mount_path = "/tmp"
