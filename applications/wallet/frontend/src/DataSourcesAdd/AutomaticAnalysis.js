@@ -22,7 +22,7 @@ const DataSourcesAddAutomaticAnalysis = ({ fileTypes }) => {
     <div css={{ paddingTop: spacing.normal }}>
       <Accordion
         variant={ACCORDION_VARIANTS.PRIMARY}
-        title="Zorroa Automatic Analysis"
+        title="Boon AI Automatic Analysis"
         cacheKey="DataSourcesAddAutomaticAnalysis"
         isInitiallyOpen
         isResizeable={false}

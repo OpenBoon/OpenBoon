@@ -1003,7 +1003,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
       open={true}
     >
       <summary
-        aria-label="Zorroa Automatic Analysis"
+        aria-label="Boon AI Automatic Analysis"
         className="emotion-54"
       >
         <div
@@ -1017,7 +1017,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
           <span
             className="emotion-57"
           >
-            Zorroa Automatic Analysis
+            Boon AI Automatic Analysis
           </span>
         </div>
       </summary>
@@ -2532,7 +2532,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
       open={true}
     >
       <summary
-        aria-label="Zorroa Automatic Analysis"
+        aria-label="Boon AI Automatic Analysis"
         className="emotion-53"
       >
         <div
@@ -2546,7 +2546,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
           <span
             className="emotion-56"
           >
-            Zorroa Automatic Analysis
+            Boon AI Automatic Analysis
           </span>
         </div>
       </summary>
