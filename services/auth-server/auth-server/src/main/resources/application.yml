@@ -17,7 +17,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
-zmlp:
+boonai:
   security:
     inception-key: /service/config/inception-key.json
   storage:
