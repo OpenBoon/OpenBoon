@@ -56,7 +56,7 @@ const AccountPasswordNotice = () => {
             fontWeight: typography.weight.regular,
           }}
         >
-          If so, you may not have a Zorroa password. You can create one by
+          If so, you may not have a Boon AI password. You can create one by
           resetting the password and checking your email for instructions.
         </div>
 
