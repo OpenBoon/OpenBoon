@@ -315,7 +315,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
       <p
         className="emotion-5"
       >
-        By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
+        By accepting and clicking the "Continue" button you confirm that you have read and agree with Boon AI‘s
          
         <a
           href="/policies/20210211/terms-of-use.pdf"

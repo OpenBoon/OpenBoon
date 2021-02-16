@@ -18,7 +18,7 @@ const PoliciesForm = ({ dispatch }) => {
         }}
       >
         By accepting and clicking the &quot;Continue&quot; button you confirm
-        that you have read and agree with Zorroa’s{' '}
+        that you have read and agree with Boon AI&lsquo;s{' '}
         <a
           href={`/policies/${CURRENT_POLICIES_DATE}/terms-of-use.pdf`}
           target="_blank"
