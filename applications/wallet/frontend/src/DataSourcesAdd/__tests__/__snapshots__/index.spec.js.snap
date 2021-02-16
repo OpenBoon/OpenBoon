@@ -866,7 +866,7 @@ Array [
     <p
       className="emotion-1"
     >
-      A data source is the location where your assets are stored. Add your data source credentials below to connect and ingest the files into the Zorroa system. Zorroa will automatically run a basic analysis on your assets and you may add additional modules.
+      A data source is the location where your assets are stored. Add your data source credentials below to connect and ingest the files into the Boon AI system. Boon AI will automatically run a basic analysis on your assets and you may add additional modules.
        
       <a
         className="emotion-2"
@@ -1229,7 +1229,7 @@ Array [
         open={true}
       >
         <summary
-          aria-label="Zorroa Automatic Analysis"
+          aria-label="Boon AI Automatic Analysis"
           className="emotion-64"
         >
           <div
@@ -1243,7 +1243,7 @@ Array [
             <span
               className="emotion-67"
             >
-              Zorroa Automatic Analysis
+              Boon AI Automatic Analysis
             </span>
           </div>
         </summary>
@@ -2873,7 +2873,7 @@ Array [
     <p
       className="emotion-1"
     >
-      A data source is the location where your assets are stored. Add your data source credentials below to connect and ingest the files into the Zorroa system. Zorroa will automatically run a basic analysis on your assets and you may add additional modules.
+      A data source is the location where your assets are stored. Add your data source credentials below to connect and ingest the files into the Boon AI system. Boon AI will automatically run a basic analysis on your assets and you may add additional modules.
        
       <a
         className="emotion-2"
@@ -3334,7 +3334,7 @@ Array [
         open={true}
       >
         <summary
-          aria-label="Zorroa Automatic Analysis"
+          aria-label="Boon AI Automatic Analysis"
           className="emotion-82"
         >
           <div
@@ -3348,7 +3348,7 @@ Array [
             <span
               className="emotion-85"
             >
-              Zorroa Automatic Analysis
+              Boon AI Automatic Analysis
             </span>
           </div>
         </summary>
@@ -4978,7 +4978,7 @@ Array [
     <p
       className="emotion-1"
     >
-      A data source is the location where your assets are stored. Add your data source credentials below to connect and ingest the files into the Zorroa system. Zorroa will automatically run a basic analysis on your assets and you may add additional modules.
+      A data source is the location where your assets are stored. Add your data source credentials below to connect and ingest the files into the Boon AI system. Boon AI will automatically run a basic analysis on your assets and you may add additional modules.
        
       <a
         className="emotion-2"
@@ -5406,7 +5406,7 @@ Array [
         open={true}
       >
         <summary
-          aria-label="Zorroa Automatic Analysis"
+          aria-label="Boon AI Automatic Analysis"
           className="emotion-76"
         >
           <div
@@ -5420,7 +5420,7 @@ Array [
             <span
               className="emotion-79"
             >
-              Zorroa Automatic Analysis
+              Boon AI Automatic Analysis
             </span>
           </div>
         </summary>
@@ -7050,7 +7050,7 @@ Array [
     <p
       className="emotion-1"
     >
-      A data source is the location where your assets are stored. Add your data source credentials below to connect and ingest the files into the Zorroa system. Zorroa will automatically run a basic analysis on your assets and you may add additional modules.
+      A data source is the location where your assets are stored. Add your data source credentials below to connect and ingest the files into the Boon AI system. Boon AI will automatically run a basic analysis on your assets and you may add additional modules.
        
       <a
         className="emotion-2"
@@ -7473,7 +7473,7 @@ Array [
         open={true}
       >
         <summary
-          aria-label="Zorroa Automatic Analysis"
+          aria-label="Boon AI Automatic Analysis"
           className="emotion-75"
         >
           <div
@@ -7487,7 +7487,7 @@ Array [
             <span
               className="emotion-78"
             >
-              Zorroa Automatic Analysis
+              Boon AI Automatic Analysis
             </span>
           </div>
         </summary>

@@ -8,7 +8,7 @@ const NoProject = () => {
   return (
     <>
       <Head>
-        <title>Zorroa</title>
+        <title>Boon AI</title>
       </Head>
 
       <div
