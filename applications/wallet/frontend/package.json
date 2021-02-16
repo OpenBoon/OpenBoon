@@ -117,7 +117,7 @@
     }
   ],
   "dependencies": {
-    "@emotion/babel-preset-css-prop": "11.0.0",
+    "@emotion/babel-preset-css-prop": "11.2.0",
     "@emotion/react": "11.1.5",
     "@reach/combobox": "0.13.0",
     "@reach/listbox": "0.13.0",
@@ -149,8 +149,8 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@emotion/eslint-plugin": "11.0.0",
-    "@emotion/jest": "11.1.0",
+    "@emotion/eslint-plugin": "11.2.0",
+    "@emotion/jest": "11.2.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "26.6.3",
     "babel-plugin-dynamic-import-node": "2.3.3",
