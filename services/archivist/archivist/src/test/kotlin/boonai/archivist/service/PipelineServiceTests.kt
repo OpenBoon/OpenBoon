@@ -110,8 +110,8 @@ class PipelineServiceTests : AbstractTest() {
     fun createTestModule(name: String): PipelineMod {
         val modSpec = PipelineModSpec(
             name, "test",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(),

@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity
 import java.util.concurrent.TimeUnit
 
 @Configuration
-@ConfigurationProperties("zmlp.storage.project")
+@ConfigurationProperties("boonai.storage.project")
 class StorageProperties {
 
     lateinit var bucket: String

@@ -91,7 +91,7 @@ class IndexRoute(
 
     @JsonIgnore
     fun redisCacheKey(): String {
-        return "zmlp/archivist/$projectId/index"
+        return "boonai/archivist/$projectId/index"
     }
 
     override fun toString(): String {

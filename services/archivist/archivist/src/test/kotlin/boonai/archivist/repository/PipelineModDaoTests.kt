@@ -31,8 +31,8 @@ class PipelineModDaoTests : AbstractTest() {
     fun init() {
         val spec = PipelineModSpec(
             "foo", "test",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(), listOf(), true
         )
@@ -54,8 +54,8 @@ class PipelineModDaoTests : AbstractTest() {
     fun testGetProjectBased() {
         val spec = PipelineModSpec(
             "foo2", "test",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(), listOf(), false
         )

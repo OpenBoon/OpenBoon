@@ -111,7 +111,7 @@ class JobLaunchServiceImpl(
             generate = null,
             execute = listOf(
                 ProcessorRef(
-                    className = "zmlp_core.core.processors.DeleteBySearchProcessor",
+                    className = "boonai_core.core.processors.DeleteBySearchProcessor",
                     image = StandardContainers.CORE,
                     args = mapOf("dataSourceId" to dataSource.id)
                 )
@@ -250,7 +250,7 @@ class JobLaunchServiceImpl(
 
     fun getTimelineAnalysisScript(assetId: String, timeline: String): ZpsScript {
         val execute = ProcessorRef(
-            "zmlp_analysis.zvi.TimelineAnalysisProcessor",
+            "boonai_analysis.boonai.TimelineAnalysisProcessor",
             StandardContainers.ANALYSIS,
             args = mapOf("asset_id" to assetId, "timeline" to timeline)
 
@@ -263,7 +263,7 @@ class JobLaunchServiceImpl(
 
     fun getMultipleTimelineAnalysisScript(timelines: Map<String, List<String>>): ZpsScript {
         val execute = ProcessorRef(
-            "zmlp_analysis.zvi.MultipleTimelineAnalysisProcessor",
+            "boonai_analysis.boonai.MultipleTimelineAnalysisProcessor",
             StandardContainers.ANALYSIS,
             args = mapOf("timelines" to timelines)
         )
@@ -277,7 +277,7 @@ class JobLaunchServiceImpl(
 
     fun getClipAnalysisScript(clipId: String): ZpsScript {
         val execute = ProcessorRef(
-            "zmlp_analysis.zvi.ClipAnalysisProcessor",
+            "boonai_analysis.boonai.ClipAnalysisProcessor",
             StandardContainers.ANALYSIS,
             args = mapOf("clip_id" to clipId)
 
@@ -308,7 +308,7 @@ class JobLaunchServiceImpl(
         val name = req.name
             ?: "Applying modules: ${req.modules.joinToString(",")} to $assetCount assets"
         val gen = ProcessorRef(
-            "zmlp_core.core.generators.AssetSearchGenerator",
+            "boonai_core.core.generators.AssetSearchGenerator",
             StandardContainers.CORE,
             args = mapOf("search" to req.search)
         )
@@ -350,9 +350,9 @@ class JobLaunchServiceImpl(
     fun getGenerator(uri: String): ProcessorRef {
 
         val proc = when {
-            uri.startsWith("gs://") -> "zmlp_core.core.generators.GcsBucketGenerator"
-            uri.startsWith("s3://") -> "zmlp_core.core.generators.S3BucketGenerator"
-            uri.startsWith("azure://") -> "zmlp_core.core.generators.AzureBucketGenerator"
+            uri.startsWith("gs://") -> "boonai_core.core.generators.GcsBucketGenerator"
+            uri.startsWith("s3://") -> "boonai_core.core.generators.S3BucketGenerator"
+            uri.startsWith("azure://") -> "boonai_core.core.generators.AzureBucketGenerator"
             else -> throw IllegalArgumentException("Unknown URI type: $uri")
         }
 

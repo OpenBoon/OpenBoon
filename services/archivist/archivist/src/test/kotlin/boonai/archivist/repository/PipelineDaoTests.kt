@@ -64,8 +64,8 @@ class PipelineDaoTests : AbstractTest() {
             PipelineModSpec(
                 "test",
                 "1234",
-                Provider.ZORROA,
-                Category.ZORROA_STD,
+                Provider.BOONAI,
+                Category.BOONAI_STD,
                 ModelObjective.LABEL_DETECTION,
                 listOf(),
                 listOf(),

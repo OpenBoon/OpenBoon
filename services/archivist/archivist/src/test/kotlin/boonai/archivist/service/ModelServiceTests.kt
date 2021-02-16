@@ -191,7 +191,7 @@ class ModelServiceTests : AbstractTest() {
         val script = jobService.getZpsScript(tasks.list[0].id)
         assertEquals("Deploying model: test", script.name)
         assertEquals(1, script.generate!!.size)
-        assertEquals("zmlp_core.core.generators.AssetSearchGenerator", script.generate!![0].className)
+        assertEquals("boonai_core.core.generators.AssetSearchGenerator", script.generate!![0].className)
     }
 
     @Test

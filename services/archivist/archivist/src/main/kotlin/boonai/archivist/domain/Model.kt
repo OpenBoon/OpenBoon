@@ -40,9 +40,9 @@ enum class ModelType(
 ) {
     ZVI_KNN_CLASSIFIER(
         "K-Nearest Neighbors Classifier",
-        "zmlp_train.knn.KnnLabelDetectionTrainer",
+        "boonai_train.knn.KnnLabelDetectionTrainer",
         mapOf(),
-        "zmlp_analysis.custom.KnnLabelDetectionClassifier",
+        "boonai_analysis.custom.KnnLabelDetectionClassifier",
         mapOf(),
         null,
         "Classify images or documents using a KNN classifier.  This type of model generates " +
@@ -50,7 +50,7 @@ enum class ModelType(
             "If no labels are provided, the model automatically generates numbered groups of " +
             "similar images. These groups can be renamed and edited in subsequent training passes.",
         ModelObjective.LABEL_DETECTION,
-        Provider.ZORROA,
+        Provider.BOONAI,
         true,
         0,
         0,
@@ -60,18 +60,18 @@ enum class ModelType(
     ),
     ZVI_LABEL_DETECTION(
         "Tensorflow Transfer Learning Classifier",
-        "zmlp_train.tf2.TensorflowTransferLearningTrainer",
+        "boonai_train.tf2.TensorflowTransferLearningTrainer",
         mapOf(
             "train-test-ratio" to 4
         ),
-        "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
+        "boonai_analysis.custom.TensorflowTransferLearningClassifier",
         mapOf(),
         null,
         "Classify images or documents using a custom strained CNN deep learning algorithm.  This type of model" +
             "generates multiple predictions and can be trained to identify very specific features. " +
             "The label detection classifier requires at least 2 concepts with 10 labeled images each. ",
         ModelObjective.LABEL_DETECTION,
-        Provider.ZORROA,
+        Provider.BOONAI,
         false,
         2,
         10,
@@ -81,26 +81,26 @@ enum class ModelType(
     ),
     ZVI_FACE_RECOGNITION(
         "Face Recognition",
-        "zmlp_train.face_rec.KnnFaceRecognitionTrainer",
+        "boonai_train.face_rec.KnnFaceRecognitionTrainer",
         mapOf(),
-        "zmlp_analysis.custom.KnnFaceRecognitionClassifier",
+        "boonai_analysis.custom.KnnFaceRecognitionClassifier",
         mapOf(),
-        "zvi-face-recognition",
-        "Label faces detected by the zvi-face-detection module, and classify them with a KNN model. ",
+        "boonai-face-recognition",
+        "Label faces detected by the boonai-face-detection module, and classify them with a KNN model. ",
         ModelObjective.FACE_RECOGNITION,
-        Provider.ZORROA,
+        Provider.BOONAI,
         true,
         1,
         1,
-        listOf("zvi-face-detection"),
+        listOf("boonai-face-detection"),
         true,
         false
     ),
     GCP_LABEL_DETECTION(
         "Google AutoML Classifier",
-        "zmlp_train.automl.AutoMLModelTrainer",
+        "boonai_train.automl.AutoMLModelTrainer",
         mapOf(),
-        "zmlp_analysis.automl.AutoMLVisionClassifier",
+        "boonai_analysis.automl.AutoMLVisionClassifier",
         mapOf(),
         null,
         "Train an image classifier using Google Cloud AutoML.",
@@ -117,7 +117,7 @@ enum class ModelType(
         "Imported Tensorflow Image Classifier",
         "None",
         mapOf(),
-        "zmlp_analysis.custom.TensorflowImageClassifier",
+        "boonai_analysis.custom.TensorflowImageClassifier",
         mapOf(),
         null,
         "Upload a pre-trained Tensorflow model to use for image classification.",
@@ -132,18 +132,18 @@ enum class ModelType(
     ),
     ZVI_PYTORCH_LABEL_DETECTION(
         "Pytorch Transfer Learning Classifier",
-        "zmlp_train.pytorch.PytorchTransferLearningTrainer",
+        "boonai_train.pytorch.PytorchTransferLearningTrainer",
         mapOf(
             "train-test-ratio" to 4
         ),
-        "zmlp_analysis.custom.PytorchTransferLearningClassifier",
+        "boonai_analysis.custom.PytorchTransferLearningClassifier",
         mapOf(),
         null,
         "Classify images or documents using a custom trained CNN deep learning algorithm.  This type of model" +
             "generates multiple predictions and can be trained to identify very specific features. " +
             "The label detection classifier requires at least 2 concepts with 10 labeled images each. ",
         ModelObjective.LABEL_DETECTION,
-        Provider.ZORROA,
+        Provider.BOONAI,
         false,
         2,
         10,
@@ -155,12 +155,12 @@ enum class ModelType(
         "Imported Pytorch Image Classifier",
         "None",
         mapOf(),
-        "zmlp_analysis.custom.PytorchImageClassifier",
+        "boonai_analysis.custom.PytorchImageClassifier",
         mapOf(),
         null,
         "Upload a pre-trained Pytorch model to use for image classification.",
         ModelObjective.LABEL_DETECTION,
-        Provider.ZORROA,
+        Provider.BOONAI,
         true,
         0,
         0,

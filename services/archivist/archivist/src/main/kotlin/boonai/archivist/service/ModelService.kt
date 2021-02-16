@@ -175,7 +175,7 @@ class ModelServiceImpl(
         logger.info("Launching train job ${model.type.trainProcessor} $trainArgs")
 
         val processor = ProcessorRef(
-            model.type.trainProcessor, "zmlp/plugins-train", trainArgs
+            model.type.trainProcessor, "boonai/plugins-train", trainArgs
         )
 
         modelJdbcDao.markAsReady(model.id, false)

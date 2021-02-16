@@ -4,9 +4,9 @@ package boonai.archivist.domain
  * Standard Docker containers.
  */
 object StandardContainers {
-    const val CORE = "zmlp/plugins-core"
-    const val ANALYSIS = "zmlp/plugins-analysis"
-    const val TRAIN = "zmlp/plugins-train"
+    const val CORE = "boonai/plugins-core"
+    const val ANALYSIS = "boonai/plugins-analysis"
+    const val TRAIN = "boonai/plugins-train"
 }
 
 object Category {
@@ -17,15 +17,15 @@ object Category {
     const val AWS_REK = "Amazon Rekognition"
     const val AWS_TRANS = "Amazon Transcribe"
     const val AZURE_VISION = "Azure Computer Vision"
-    const val ZORROA_TL = "Zorroa Timeline Extraction"
-    const val ZORROA_STD = "Zorroa Visual Intelligence"
+    const val BOONAI_TL = "Boon AI Timeline Extraction"
+    const val BOONAI_STD = "Boon AI Visual Intelligence"
     const val CLARIFAI_STD = "Clarifai Public"
     const val TRAINED = "Custom Models"
 }
 
 object Provider {
     const val CLARIFAI = "Clarifai"
-    const val ZORROA = "Zorroa"
+    const val BOONAI = "Boon AI"
     const val GOOGLE = "Google"
     const val AMAZON = "Amazon"
     const val CUSTOM = "Custom"
@@ -53,10 +53,10 @@ object ModelObjective {
 fun getStandardModules(): List<PipelineModSpec> {
     return listOf(
         PipelineModSpec(
-            "zvi-extract-pages",
+            "boonai-extract-pages",
             "Extract all pages in MS Office/PDF documents into separate assets.",
-            Provider.ZORROA,
-            Category.ZORROA_TL,
+            Provider.BOONAI,
+            Category.BOONAI_TL,
             ModelObjective.CLIPIFIER,
             listOf(FileType.Documents),
             listOf(
@@ -69,11 +69,11 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "zvi-extract-layers",
+            "boonai-extract-layers",
             "Extract all layers in multilayer or multi-page image formats such as tiff and psd as as " +
                 "separate assets",
-            Provider.ZORROA,
-            Category.ZORROA_TL,
+            Provider.BOONAI,
+            Category.BOONAI_TL,
             ModelObjective.CLIPIFIER,
             listOf(FileType.Images),
             listOf(
@@ -86,10 +86,10 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "zvi-object-detection",
+            "boonai-object-detection",
             "Detect everyday objects in images and documents.",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.OBJECT_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
@@ -97,7 +97,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.zvi.ZviObjectDetectionProcessor",
+                            "boonai_analysis.zvi.ZviObjectDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -108,8 +108,8 @@ fun getStandardModules(): List<PipelineModSpec> {
         PipelineModSpec(
             "zvi-face-detection",
             "Detect faces in images and documents.",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.FACE_RECOGNITION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
@@ -117,7 +117,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.zvi.ZviFaceDetectionProcessor",
+                            "boonai_analysis.zvi.ZviFaceDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -126,10 +126,10 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "zvi-label-detection",
+            "boonai-label-detection",
             "Generate keyword labels for images and documents.",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
@@ -137,7 +137,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.zvi.ZviLabelDetectionProcessor",
+                            "boonai_analysis.boonai.ZviLabelDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -146,10 +146,10 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "zvi-text-detection",
+            "boonai-text-detection",
             "Utilize OCR technology to detect text in documents.",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.TEXT_DETECTION,
             listOf(FileType.Images),
             listOf(
@@ -157,7 +157,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.zvi.ZviOcrProcessor",
+                            "boonai_analysis.boonai.ZviOcrProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -182,11 +182,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiLabelDetectionProcessor",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiVideoLabelDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiVideoLabelDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -206,11 +206,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiFoodDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiFoodDetectionProcessor",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiVideoFoodDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiVideoFoodDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -230,11 +230,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiApparelDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiApparelDetectionProcessor",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiVideoApparelDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiVideoApparelDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -254,11 +254,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiTravelDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiTravelDetectionProcessor",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiVideoTravelDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiVideoTravelDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -278,11 +278,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiWeddingDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiWeddingDetectionProcessor",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiVideoWeddingDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiVideoWeddingDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -302,11 +302,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiExplicitDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiExplicitDetectionProcessor",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiVideoExplicitDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiVideoExplicitDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -326,11 +326,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiModerationDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiModerationDetectionProcessor",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiVideoModerationDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiVideoModerationDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -350,11 +350,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiLogoDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiLogoDetectionProcessor",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiVideoLogoDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiVideoLogoDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -374,11 +374,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiFaceDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiFaceDetectionProcessor",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiVideoFaceDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiVideoFaceDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -398,11 +398,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiCelebrityDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiCelebrityDetectionProcessor",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiVideoCelebrityDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiVideoCelebrityDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -422,11 +422,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiTexturesDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiTexturesDetectionProcessor",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.clarifai.ClarifaiVideoTexturesDetectionProcessor",
+                            "boonai_analysis.clarifai.ClarifaiVideoTexturesDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -447,7 +447,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.CloudVisionDetectLabels",
+                            "boonai_analysis.google.CloudVisionDetectLabels",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -467,7 +467,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.CloudVisionDetectObjects",
+                            "boonai_analysis.google.CloudVisionDetectObjects",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -487,7 +487,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.CloudVisionDetectLogos",
+                            "boonai_analysis.google.CloudVisionDetectLogos",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -507,7 +507,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.CloudVisionDetectImageText",
+                            "boonai_analysis.google.CloudVisionDetectImageText",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -532,7 +532,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.CloudVisionDetectDocumentText",
+                            "boonai_analysis.google.CloudVisionDetectDocumentText",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -557,7 +557,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.CloudVisionDetectLandmarks",
+                            "boonai_analysis.google.CloudVisionDetectLandmarks",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -577,7 +577,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND_MERGE,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
+                            "boonai_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
                             mapOf("detect_labels" to true)
                         )
@@ -598,7 +598,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND_MERGE,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
+                            "boonai_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
                             mapOf("detect_logos" to true)
                         )
@@ -619,7 +619,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND_MERGE,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
+                            "boonai_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
                             mapOf("detect_objects" to true)
                         )
@@ -640,7 +640,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND_MERGE,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
+                            "boonai_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
                             mapOf("detect_explicit" to true)
                         )
@@ -661,7 +661,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND_MERGE,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
+                            "boonai_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
                             mutableMapOf("detect_text" to true)
                         )
@@ -682,7 +682,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND_MERGE,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
+                            "boonai_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
                             mutableMapOf("detect_speech" to true)
                         )
@@ -703,7 +703,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.AsyncSpeechToTextProcessor",
+                            "boonai_analysis.google.AsyncSpeechToTextProcessor",
                             StandardContainers.ANALYSIS,
                             mutableMapOf()
                         )
@@ -724,7 +724,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.google.CloudDLPDetectEntities",
+                            "boonai_analysis.google.CloudDLPDetectEntities",
                             StandardContainers.ANALYSIS,
                             mutableMapOf()
                         )
@@ -750,11 +750,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.aws.RekognitionLabelDetection",
+                            "boonai_analysis.aws.RekognitionLabelDetection",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.aws.video.RekognitionLabelDetection",
+                            "boonai_analysis.aws.video.RekognitionLabelDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -774,7 +774,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.aws.RekognitionFaceDetection",
+                            "boonai_analysis.aws.RekognitionFaceDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -794,11 +794,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.aws.RekognitionUnsafeDetection",
+                            "boonai_analysis.aws.RekognitionUnsafeDetection",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.aws.video.RekognitionUnsafeDetection",
+                            "boonai_analysis.aws.video.RekognitionUnsafeDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -818,7 +818,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.aws.RekognitionTextDetection",
+                            "boonai_analysis.aws.RekognitionTextDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -838,11 +838,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.aws.RekognitionCelebrityDetection",
+                            "boonai_analysis.aws.RekognitionCelebrityDetection",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.aws.video.RekognitionCelebrityDetection",
+                            "boonai_analysis.aws.video.RekognitionCelebrityDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -863,7 +863,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.aws.video.BlackFramesVideoDetectProcessor",
+                            "boonai_analysis.aws.video.BlackFramesVideoDetectProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -884,7 +884,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.aws.video.EndCreditsVideoDetectProcessor",
+                            "boonai_analysis.aws.video.EndCreditsVideoDetectProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -905,7 +905,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.aws.AmazonTranscribeProcessor",
+                            "boonai_analysis.aws.AmazonTranscribeProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -925,11 +925,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVisionObjectDetection",
+                            "boonai_analysis.azure.AzureVisionObjectDetection",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVideoObjectDetection",
+                            "boonai_analysis.azure.AzureVideoObjectDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -949,11 +949,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVisionLabelDetection",
+                            "boonai_analysis.azure.AzureVisionLabelDetection",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVideoLabelDetection",
+                            "boonai_analysis.azure.AzureVideoLabelDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -973,11 +973,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVisionImageDescriptionDetection",
+                            "boonai_analysis.azure.AzureVisionImageDescriptionDetection",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVideoImageDescriptionDetection",
+                            "boonai_analysis.azure.AzureVideoImageDescriptionDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -997,11 +997,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVisionCelebrityDetection",
+                            "boonai_analysis.azure.AzureVisionCelebrityDetection",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVideoCelebrityDetection",
+                            "boonai_analysis.azure.AzureVideoCelebrityDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -1021,11 +1021,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVisionLandmarkDetection",
+                            "boonai_analysis.azure.AzureVisionLandmarkDetection",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVideoLandmarkDetection",
+                            "boonai_analysis.azure.AzureVideoLandmarkDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -1045,11 +1045,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVisionLogoDetection",
+                            "boonai_analysis.azure.AzureVisionLogoDetection",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVideoLogoDetection",
+                            "boonai_analysis.azure.AzureVideoLogoDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -1069,11 +1069,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVisionCategoryDetection",
+                            "boonai_analysis.azure.AzureVisionCategoryDetection",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVideoCategoryDetection",
+                            "boonai_analysis.azure.AzureVideoCategoryDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -1093,11 +1093,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVisionExplicitContentDetection",
+                            "boonai_analysis.azure.AzureVisionExplicitContentDetection",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVideoExplicitContentDetection",
+                            "boonai_analysis.azure.AzureVideoExplicitContentDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -1117,11 +1117,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVisionFaceDetection",
+                            "boonai_analysis.azure.AzureVisionFaceDetection",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVideoFaceDetection",
+                            "boonai_analysis.azure.AzureVideoFaceDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -1141,11 +1141,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVisionTextDetection",
+                            "boonai_analysis.azure.AzureVisionTextDetection",
                             StandardContainers.ANALYSIS
                         ),
                         ProcessorRef(
-                            "zmlp_analysis.azure.AzureVideoTextDetection",
+                            "boonai_analysis.azure.AzureVideoTextDetection",
                             StandardContainers.ANALYSIS
                         )
                     )

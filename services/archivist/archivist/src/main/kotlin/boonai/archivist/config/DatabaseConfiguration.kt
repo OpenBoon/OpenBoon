@@ -20,7 +20,7 @@ class DatabaseConfiguration {
     fun entityManagerFactory(dataSource: DataSource): LocalContainerEntityManagerFactoryBean {
         val emf = LocalContainerEntityManagerFactoryBean()
         emf.dataSource = dataSource
-        emf.setPackagesToScan("com.zorroa.archivist.domain", "com.zorroa.zmlp.service.jpa")
+        emf.setPackagesToScan("boonai.archivist.domain", "boonai.common.service.jpa")
 
         val ad = HibernateJpaVendorAdapter()
         emf.jpaVendorAdapter = ad

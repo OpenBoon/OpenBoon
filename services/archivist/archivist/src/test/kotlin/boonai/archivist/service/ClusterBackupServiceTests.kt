@@ -54,7 +54,7 @@ class ClusterBackupServiceTests : AbstractTest() {
     /*
     @Test
     @Ignore
-    // docker run -d --name elasticsearch-test  -p 9201:9200 -p 9301:9300 -e "discovery.type=single-node" -e "MINIO_URL={yourlocalip}:9000" -e "network.host=0.0.0.0" zmlp/elasticsearch:latest
+    // docker run -d --name elasticsearch-test  -p 9201:9200 -p 9301:9300 -e "discovery.type=single-node" -e "MINIO_URL={yourlocalip}:9000" -e "network.host=0.0.0.0" boonai/elasticsearch:latest
     fun restoreBackupIntoNewCluster() {
         val newCluster =
             indexClusterService.createIndexCluster(IndexClusterSpec("http://localhost:9201", false))

@@ -42,7 +42,7 @@ class PipelineModServiceTests : AbstractTest() {
     fun init() {
         val op1 = ModOp(
             ModOpType.APPEND,
-            listOf(ProcessorRef("foo", "zmlp-plugins-foo"))
+            listOf(ProcessorRef("foo", "boonai-plugins-foo"))
         )
 
         val op2 = ModOp(
@@ -53,8 +53,8 @@ class PipelineModServiceTests : AbstractTest() {
 
         spec = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(op1, op2), true
@@ -75,8 +75,8 @@ class PipelineModServiceTests : AbstractTest() {
     fun testCreateDuplicateProjectWithStandardName() {
         val spec2 = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(), false
@@ -88,16 +88,16 @@ class PipelineModServiceTests : AbstractTest() {
     fun testCreateDuplicateProject() {
         val spec1 = PipelineModSpec(
             "test1", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(), false
         )
         val spec2 = PipelineModSpec(
             "test1", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(), false
@@ -110,8 +110,8 @@ class PipelineModServiceTests : AbstractTest() {
     fun testCreateDuplicateStandard() {
         val spec2 = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(), true
@@ -124,11 +124,11 @@ class PipelineModServiceTests : AbstractTest() {
         val update = PipelineModUpdate(
             "hodoor",
             "spock",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
-            listOf(ModOp(ModOpType.PREPEND, listOf(ProcessorRef("foo", "zmlp-plugins-foo"))))
+            listOf(ModOp(ModOpType.PREPEND, listOf(ProcessorRef("foo", "boonai-plugins-foo"))))
         )
 
         Thread.sleep(10)

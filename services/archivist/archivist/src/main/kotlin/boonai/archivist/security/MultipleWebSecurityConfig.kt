@@ -176,8 +176,8 @@ class MultipleWebSecurityConfig {
     @Bean
     fun authServerClient(): AuthServerClient {
         val client = AuthServerClientImpl(
-            properties.getString("zmlp.security.auth-server.url"),
-            properties.getString("zmlp.security.auth-server.service-key")
+            properties.getString("boonai.security.auth-server.url"),
+            properties.getString("boonai.security.auth-server.service-key")
         )
         logger.info("Loaded inception key: {}", client.serviceKey?.accessKey?.substring(8))
         return client

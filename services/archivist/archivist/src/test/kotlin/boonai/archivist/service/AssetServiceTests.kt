@@ -118,7 +118,7 @@ class AssetServiceTests : AbstractTest() {
 
         val req = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
-            modules = listOf("zvi-label-detection")
+            modules = listOf("boonai-label-detection")
         )
 
         val rsp = assetService.batchCreate(req)
@@ -129,7 +129,7 @@ class AssetServiceTests : AbstractTest() {
 
         // Check the module was applied.
         assertEquals(
-            "zmlp_analysis.zvi.ZviLabelDetectionProcessor",
+            "boonai_analysis.boonai.ZviLabelDetectionProcessor",
             script.execute!!.last().className
         )
     }
@@ -140,7 +140,7 @@ class AssetServiceTests : AbstractTest() {
 
         val req = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
-            modules = listOf("zmlp-arg!")
+            modules = listOf("boonai-arg!")
         )
 
         assetService.batchCreate(req)
@@ -633,7 +633,7 @@ class AssetServiceTests : AbstractTest() {
 
         val createRsp = assetService.batchCreate(batchCreate)
         var asset = assetService.getAll(createRsp.created)[0]
-        asset.setAttr("tmp.timelines", listOf("zvi-video-stuff"))
+        asset.setAttr("tmp.timelines", listOf("boonai-video-stuff"))
 
         val batchIndex = mapOf(asset.id to asset.document)
         assetService.batchIndex(batchIndex)

@@ -32,8 +32,8 @@ class PipelineModControllerTests : MockMvcTest() {
 
     val spec = PipelineModSpec(
         "test", "A test module",
-        Provider.ZORROA,
-        Category.ZORROA_STD,
+        Provider.BOONAI,
+        Category.BOONAI_STD,
         ModelObjective.LABEL_DETECTION,
         listOf(),
         listOf(
@@ -71,8 +71,8 @@ class PipelineModControllerTests : MockMvcTest() {
         val mod = pipelineModService.create(spec)
         val update = PipelineModUpdate(
             name = "cats", description = "dogs",
-            provider = Provider.ZORROA,
-            category = Category.ZORROA_STD,
+            provider = Provider.BOONAI,
+            category = Category.BOONAI_STD,
             type = ModelObjective.CLIPIFIER,
             supportedMedia = listOf(), ops = listOf(op)
         )

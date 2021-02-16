@@ -81,8 +81,8 @@ class PipelineResolverServiceTests : AbstractTest() {
 
         val resolved = pipelineResolverService.resolve(pipeline.name, null)
         val last = resolved.execute.last()
-        assertEquals("zmlp_analysis.zvi.ZviObjectDetectionProcessor", last.className)
-        assertEquals("zmlp/plugins-analysis", last.image)
+        assertEquals("boonai_analysis.zvi.ZviObjectDetectionProcessor", last.className)
+        assertEquals("boonai/plugins-analysis", last.image)
     }
 
     @Test
@@ -95,12 +95,12 @@ class PipelineResolverServiceTests : AbstractTest() {
         val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("zvi-label-detection"))
         val resolved = rpipeline.execute
         val last = resolved.last()
-        assertEquals(last.className, "zmlp_analysis.zvi.ZviLabelDetectionProcessor")
-        assertEquals(last.image, "zmlp/plugins-analysis")
+        assertEquals(last.className, "boonai_analysis.zvi.ZviLabelDetectionProcessor")
+        assertEquals(last.image, "boonai/plugins-analysis")
 
         val beforeLast = resolved[resolved.size - 2]
-        assertEquals("zmlp_analysis.zvi.ZviObjectDetectionProcessor", beforeLast.className)
-        assertEquals("zmlp/plugins-analysis", beforeLast.image)
+        assertEquals("boonai_analysis.zvi.ZviObjectDetectionProcessor", beforeLast.className)
+        assertEquals("boonai/plugins-analysis", beforeLast.image)
     }
 
     @Test
@@ -125,8 +125,8 @@ class PipelineResolverServiceTests : AbstractTest() {
         val resolved = rpipeline.execute
         val last = resolved.last()
 
-        assertEquals(last.className, "zmlp_analysis.zvi.ZviSimilarityProcessor")
-        assertEquals(last.image, "zmlp/plugins-analysis")
+        assertEquals(last.className, "boonai_analysis.zvi.ZviSimilarityProcessor")
+        assertEquals(last.image, "boonai/plugins-analysis")
     }
 
     @Test
@@ -149,27 +149,27 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveLastOp() {
         val spec1 = PipelineModSpec(
             "append", "A append module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
-                    listOf(ProcessorRef("append_processor", "zmlp-plugins-foo"))
+                    listOf(ProcessorRef("append_processor", "boonai-plugins-foo"))
                 )
             )
         )
         val spec2 = PipelineModSpec(
             "last", "A last module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.LAST,
-                    listOf(ProcessorRef("last_processor", "zmlp-plugins-foo"))
+                    listOf(ProcessorRef("last_processor", "boonai-plugins-foo"))
                 )
             )
         )
@@ -192,28 +192,28 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveDependAddBefore() {
         val spec1 = PipelineModSpec(
             "append", "A append module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
                 ModOp(ModOpType.DEPEND, listOf("depend-module")),
                 ModOp(
                     ModOpType.APPEND,
-                    listOf(ProcessorRef("append_processor", "zmlp-plugins-foo"))
+                    listOf(ProcessorRef("append_processor", "boonai-plugins-foo"))
                 )
             )
         )
         val spec2 = PipelineModSpec(
             "depend-module", "Added before",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
-                    listOf(ProcessorRef("depend_processor", "zmlp-plugins-foo"))
+                    listOf(ProcessorRef("depend_processor", "boonai-plugins-foo"))
                 )
             )
         )
@@ -237,14 +237,14 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveAppendOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
-                    listOf(ProcessorRef("foo", "zmlp-plugins-foo"))
+                    listOf(ProcessorRef("foo", "boonai-plugins-foo"))
                 )
             )
         )
@@ -256,36 +256,36 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveAppendOnceOp() {
         val spec1 = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
-                    listOf(ProcessorRef("Foo.FooProcessor", "zmlp-plugins-foo", mapOf("dog" to "cat")))
+                    listOf(ProcessorRef("Foo.FooProcessor", "boonai-plugins-foo", mapOf("dog" to "cat")))
                 ),
                 ModOp(
                     ModOpType.APPEND_MERGE,
-                    listOf(ProcessorRef("Foo.FooProcessor", "zmlp-plugins-foo", mapOf("capt" to "kirk")))
+                    listOf(ProcessorRef("Foo.FooProcessor", "boonai-plugins-foo", mapOf("capt" to "kirk")))
                 )
             )
         )
 
         val spec2 = PipelineModSpec(
             "test2", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
-                    listOf(ProcessorRef("Foo.FooProcessor", "zmlp-plugins-foo", mapOf("capt" to "picard")))
+                    listOf(ProcessorRef("Foo.FooProcessor", "boonai-plugins-foo", mapOf("capt" to "picard")))
                 ),
                 ModOp(
                     ModOpType.APPEND_MERGE,
-                    listOf(ProcessorRef("Foo.FooProcessor", "zmlp-plugins-foo", mapOf("bilbo" to "baggins")))
+                    listOf(ProcessorRef("Foo.FooProcessor", "boonai-plugins-foo", mapOf("bilbo" to "baggins")))
                 )
             )
         )
@@ -303,18 +303,18 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolvePrependOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
-                    listOf(ProcessorRef("append", "zmlp-plugins-foo"))
+                    listOf(ProcessorRef("append", "boonai-plugins-foo"))
                 ),
                 ModOp(
                     ModOpType.PREPEND,
-                    listOf(ProcessorRef("prepend", "zmlp-plugins-foo"))
+                    listOf(ProcessorRef("prepend", "boonai-plugins-foo"))
                 )
             )
         )
@@ -326,8 +326,8 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveRemoveOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
@@ -347,14 +347,14 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveReplaceOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.REPLACE,
-                    listOf(ProcessorRef("replaced", "zmlp-plugins-foo")),
+                    listOf(ProcessorRef("replaced", "boonai-plugins-foo")),
                     OpFilter(OpFilterType.SUBSTR, "FileImportProcessor")
                 )
             )
@@ -368,14 +368,14 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveAddBeforeOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.ADD_BEFORE,
-                    listOf(ProcessorRef("replaced", "zmlp-plugins-foo")),
+                    listOf(ProcessorRef("replaced", "boonai-plugins-foo")),
                     OpFilter(OpFilterType.SUBSTR, "FileImportProcessor")
                 )
             )
@@ -389,14 +389,14 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveAddAfterOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.ADD_AFTER,
-                    listOf(ProcessorRef("replaced", "zmlp-plugins-foo")),
+                    listOf(ProcessorRef("replaced", "boonai-plugins-foo")),
                     OpFilter(OpFilterType.SUBSTR, "FileImportProcessor")
                 )
             )
@@ -410,8 +410,8 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveSetArgsOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
@@ -431,8 +431,8 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveRegexMatcher() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
@@ -453,8 +453,8 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun testResolveMaxApplyCount() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(

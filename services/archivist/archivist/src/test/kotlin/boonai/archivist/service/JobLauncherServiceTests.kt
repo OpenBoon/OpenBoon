@@ -50,7 +50,7 @@ class JobLauncherServiceTests : AbstractTest() {
 
     val dsSpec = DataSourceSpec(
         "dev-data",
-        "gs://zorroa-dev-data",
+        "gs://boonai-dev-data",
         fileTypes = FileType.allTypes()
     )
 
@@ -69,7 +69,7 @@ class JobLauncherServiceTests : AbstractTest() {
         )
         val spec2 = DataSourceSpec(
             "dev-data",
-            "gs://zorroa-dev-data",
+            "gs://boonai-dev-data",
             fileTypes = FileType.allTypes(),
             credentials = setOf("test")
         )
@@ -92,17 +92,17 @@ class JobLauncherServiceTests : AbstractTest() {
     fun testLaunchReprocessAssetSearch() {
 
         val spec = AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
-        spec.attrs = mapOf("analysis.zmlp.similarity.vector" to "AABBCC00")
+        spec.attrs = mapOf("analysis.boonai.similarity.vector" to "AABBCC00")
 
         val batchCreate = BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed)
         assetService.batchCreate(batchCreate)
 
         val req = ReprocessAssetSearchRequest(
             mapOf(),
-            listOf("zvi-label-detection")
+            listOf("boonai-label-detection")
         )
         val rsp = jobLaunchService.launchJob(req)
-        assertEquals("Applying modules: zvi-label-detection to 1 assets", rsp.job.name)
+        assertEquals("Applying modules: boonai-label-detection to 1 assets", rsp.job.name)
         assertEquals(1, rsp.assetCount)
     }
 
@@ -110,14 +110,14 @@ class JobLauncherServiceTests : AbstractTest() {
     fun testLaunchReprocessAssetSearchRename() {
 
         val spec = AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
-        spec.attrs = mapOf("analysis.zmlp.similarity.vector" to "AABBCC00")
+        spec.attrs = mapOf("analysis.boonai.similarity.vector" to "AABBCC00")
 
         val batchCreate = BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed)
         assetService.batchCreate(batchCreate)
 
         val req = ReprocessAssetSearchRequest(
             mapOf(),
-            listOf("zvi-label-detection"),
+            listOf("boonai-label-detection"),
             name = "boomsauce"
         )
         val rsp = jobLaunchService.launchJob(req)
@@ -129,7 +129,7 @@ class JobLauncherServiceTests : AbstractTest() {
     fun testLaunchReprocessAssetSearch_noAssetsFailure() {
         val req = ReprocessAssetSearchRequest(
             mapOf(),
-            listOf("zmlp-labels")
+            listOf("boonai-labels")
         )
         jobLaunchService.launchJob(req)
     }
@@ -138,7 +138,7 @@ class JobLauncherServiceTests : AbstractTest() {
     fun testLaunchReprocessAssetSearchWithDepends() {
 
         val spec = AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
-        spec.attrs = mapOf("analysis.zmlp.similarity.vector" to "AABBCC00")
+        spec.attrs = mapOf("analysis.boonai.similarity.vector" to "AABBCC00")
 
         val batchCreate = BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed)
         assetService.batchCreate(batchCreate)
@@ -152,12 +152,12 @@ class JobLauncherServiceTests : AbstractTest() {
 
         val req = ReprocessAssetSearchRequest(
             mapOf(),
-            listOf("zvi-label-detection"),
+            listOf("boonai-label-detection"),
             dependOnJobIds = listOf(otherJob.id)
         )
 
         val rsp = jobLaunchService.launchJob(req)
-        assertEquals("Applying modules: zvi-label-detection to 1 assets", rsp.job.name)
+        assertEquals("Applying modules: boonai-label-detection to 1 assets", rsp.job.name)
         assertEquals(1, rsp.assetCount)
 
         val tasks = jobService.getTasks(rsp.job.id).list
@@ -167,14 +167,14 @@ class JobLauncherServiceTests : AbstractTest() {
     @Test
     fun testLaunchJobWithGenerator() {
         val name = "test"
-        val gen = ProcessorRef("zmlp_core.core.generators.GcsBucketGenerator", StandardContainers.CORE)
+        val gen = ProcessorRef("boonai_core.core.generators.GcsBucketGenerator", StandardContainers.CORE)
         val pipeline = pipelineResolverService.resolve()
         val job = jobLaunchService.launchJob(name, gen, pipeline)
         assertEquals("test", job.name)
 
         val tasks = jobService.getTasks(job.id)
         val script = jobService.getZpsScript(tasks.first().id)
-        assertEquals("zmlp_core.core.generators.GcsBucketGenerator", script.generate!![0]!!.className)
+        assertEquals("boonai_core.core.generators.GcsBucketGenerator", script.generate!![0]!!.className)
     }
 
     @Test
@@ -214,7 +214,7 @@ class JobLauncherServiceTests : AbstractTest() {
         val tasks = jobService.getTasks(launchJob.id)
         val script = jobService.getZpsScript(tasks.first().id)
 
-        assertEquals("zmlp_core.core.processors.DeleteBySearchProcessor", script.execute!![0]!!.className)
+        assertEquals("boonai_core.core.processors.DeleteBySearchProcessor", script.execute!![0]!!.className)
         assertEquals(ds.id.toString(), script.execute?.get(0)?.args?.get("dataSourceId"))
     }
 
@@ -224,7 +224,7 @@ class JobLauncherServiceTests : AbstractTest() {
         val tasks = jobService.getTasks(job.id)
         val script = jobService.getZpsScript(tasks.first().id)
 
-        assertEquals("zmlp_analysis.zvi.TimelineAnalysisProcessor", script.execute!![0]!!.className)
+        assertEquals("boonai_analysis.boonai.TimelineAnalysisProcessor", script.execute!![0]!!.className)
         assertEquals("abc123", script.execute?.get(0)?.args?.get("asset_id"))
         assertEquals("test", script.execute?.get(0)?.args?.get("timeline"))
     }
@@ -242,7 +242,7 @@ class JobLauncherServiceTests : AbstractTest() {
         val task = jobLaunchService.addTimelineAnalysisTask(job.id, "abc123", "test")
         val script = jobService.getZpsScript(task.id)
 
-        assertEquals("zmlp_analysis.zvi.TimelineAnalysisProcessor", script.execute!![0]!!.className)
+        assertEquals("boonai_analysis.boonai.TimelineAnalysisProcessor", script.execute!![0]!!.className)
         assertEquals("abc123", script.execute?.get(0)?.args?.get("asset_id"))
         assertEquals("test", script.execute?.get(0)?.args?.get("timeline"))
     }

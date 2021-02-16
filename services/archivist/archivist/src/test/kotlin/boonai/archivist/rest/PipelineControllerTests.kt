@@ -46,8 +46,8 @@ class PipelineControllerTests : MockMvcTest() {
     fun init() {
         val modSpec = PipelineModSpec(
             "test", "A test module",
-            Provider.ZORROA,
-            Category.ZORROA_STD,
+            Provider.BOONAI,
+            Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
@@ -241,7 +241,7 @@ class PipelineControllerTests : MockMvcTest() {
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$.execute[0].className",
-                    CoreMatchers.equalTo("zmlp_core.core.PreCacheSourceFileProcessor")
+                    CoreMatchers.equalTo("boonai_core.core.PreCacheSourceFileProcessor")
                 )
             )
             .andExpect(
@@ -266,13 +266,13 @@ class PipelineControllerTests : MockMvcTest() {
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$.execute[0].className",
-                    CoreMatchers.equalTo("zmlp_core.core.PreCacheSourceFileProcessor")
+                    CoreMatchers.equalTo("boonai_core.core.PreCacheSourceFileProcessor")
                 )
             )
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$.execute[5].className",
-                    CoreMatchers.equalTo("zmlp_analysis.google.AsyncVideoIntelligenceProcessor")
+                    CoreMatchers.equalTo("boonai_analysis.google.AsyncVideoIntelligenceProcessor")
                 )
             )
             .andReturn()
