@@ -173,7 +173,7 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
         init_container {
           name              = "chown-data-dir"
           image_pull_policy = "Always"
-          image             = "zmlp/elasticsearch:${var.container-tag}"
+          image             = "boonai/elasticsearch:${var.container-tag}"
           command           = ["chown", "-v", "elasticsearch:elasticsearch", "/usr/share/elasticsearch/data"]
           volume_mount {
             name       = "elasticsearch-data"
@@ -191,7 +191,7 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
         }
         container {
           name              = "elasticsearch"
-          image             = "zmlp/elasticsearch:${var.container-tag}"
+          image             = "boonai/elasticsearch:${var.container-tag}"
           image_pull_policy = "Always"
           env {
             name  = "ES_JAVA_OPTS"
@@ -336,7 +336,7 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
         init_container {
           name              = "chown-data-dir"
           image_pull_policy = "Always"
-          image             = "zmlp/elasticsearch:${var.container-tag}"
+          image             = "boonai/elasticsearch:${var.container-tag}"
           command           = ["chown", "-v", "elasticsearch:elasticsearch", "/usr/share/elasticsearch/data"]
           volume_mount {
             name       = "elasticsearch-data"
@@ -354,7 +354,7 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
         }
         container {
           name              = "elasticsearch"
-          image             = "zmlp/elasticsearch:${var.container-tag}"
+          image             = "boonai/elasticsearch:${var.container-tag}"
           image_pull_policy = "Always"
           env {
             name  = "cluster.name"

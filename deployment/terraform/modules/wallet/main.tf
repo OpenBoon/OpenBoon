@@ -88,7 +88,7 @@ resource "kubernetes_deployment" "wallet" {
         }
         container {
           name              = "wallet"
-          image             = "zmlp/wallet:${var.container-tag}"
+          image             = "boonai/wallet:${var.container-tag}"
           image_pull_policy = "Always"
           liveness_probe {
             initial_delay_seconds = 30
