@@ -80,7 +80,7 @@ resource "kubernetes_deployment" "officer" {
         }
         container {
           name              = "officer"
-          image             = "zmlp/officer:${var.container-tag}"
+          image             = "boonai/officer:${var.container-tag}"
           image_pull_policy = "Always"
           env {
             name  = "ZMLP_STORAGE_PROJECT_BUCKET"
@@ -91,7 +91,7 @@ resource "kubernetes_deployment" "officer" {
             value = var.redis-host
           }
           env {
-            name = "ZMLP_STORAGE_CLIENT"
+            name  = "ZMLP_STORAGE_CLIENT"
             value = "gcs"
           }
           liveness_probe {

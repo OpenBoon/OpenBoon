@@ -85,25 +85,25 @@ resource "kubernetes_deployment" "auth-server" {
         }
         container {
           name              = "auth-server"
-          image             = "zmlp/authserver:${var.container-tag}"
+          image             = "boonai/authserver:${var.container-tag}"
           image_pull_policy = "Always"
           liveness_probe {
             initial_delay_seconds = 120
-            period_seconds = 30
+            period_seconds        = 30
             http_get {
               scheme = "HTTP"
-              path = "/monitor/health"
-              port = "9090"
+              path   = "/monitor/health"
+              port   = "9090"
             }
           }
           readiness_probe {
-            failure_threshold = 6
+            failure_threshold     = 6
             initial_delay_seconds = 90
-            period_seconds = 30
+            period_seconds        = 30
             http_get {
               scheme = "HTTP"
-              path = "/monitor/health"
-              port = "9090"
+              path   = "/monitor/health"
+              port   = "9090"
             }
           }
           port {
