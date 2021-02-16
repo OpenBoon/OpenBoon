@@ -29,7 +29,7 @@ services:
 
   # Elastic Search instance used for local development servers.
   es1:
-    image: zmlp/elasticsearch:latest
+    image: boonai/elasticsearch:latest
     build:
       context: services/elasticsearch
       args:
@@ -57,7 +57,7 @@ services:
 
   # API Gateway
   api-gateway:
-    image: zmlp/apigateway:latest
+    image: boonai/apigateway:latest
     build:
       context: services/api-gateway
     depends_on:
@@ -72,7 +72,7 @@ services:
       MLBBQ_SERVER_HOST: ml-bbq:8282
 
   ml-bbq:
-    image: zmlp/ml-bbq:latest
+    image: boonai/ml-bbq:latest
     depends_on:
       - auth-server
       - zmlp-plugins-models
@@ -85,7 +85,7 @@ services:
 
   # Auth server
   auth-server:
-    image: zmlp/authserver:latest
+    image: boonai/authserver:latest
     depends_on:
       - postgres
       - minio
@@ -103,7 +103,7 @@ services:
 
   # Local Archivist server.
   archivist:
-    image: zmlp/archivist:latest
+    image: boonai/archivist:latest
     depends_on:
       - es1
       - postgres
@@ -128,7 +128,7 @@ services:
       - "./dev/config/archivist/application.properties:/service/config/application.properties"
 
   officer:
-    image: zmlp/officer:latest
+    image: boonai/officer:latest
     depends_on:
       - zmlp-jvm-common
       - minio
@@ -145,7 +145,7 @@ services:
       REDIS_HOST: redis:6379
 
   analyst:
-    image: zmlp/analyst:latest
+    image: boonai/analyst:latest
     depends_on:
       - archivist
       - zmlp-py3-sdk
@@ -165,7 +165,7 @@ services:
 
   # Console web application.
   wallet:
-    image: zmlp/wallet:latest
+    image: boonai/wallet:latest
     ports:
       - 80:80
     build:
@@ -197,7 +197,7 @@ services:
 
   # Metric Collection Service.
   metrics:
-    image: zmlp/metrics:latest
+    image: boonai/metrics:latest
     ports:
       - 8585:80
     build:
@@ -216,19 +216,19 @@ services:
 
   # These services are only here because their images need to be built.
   zmlp-jvm-common:
-    image: zmlp/jvm-common:latest
+    image: boonai/jvm-common:latest
     build:
       context: lib/jvm-common
     command: echo
 
   zmlp-py3-base:
-    image: zmlp/py3-base:latest
+    image: boonai/py3-base:latest
     build:
       context: containers/zmlp-py3-base
     command: echo
 
   zmlp-py3-client:
-    image: zmlp/py3-client:latest
+    image: boonai/py3-client:latest
     depends_on:
       - zmlp-py3-base
     build:
@@ -236,7 +236,7 @@ services:
     command: echo
 
   zmlp-py3-zvi:
-    image: zmlp/py3-zvi:latest
+    image: boonai/py3-zvi:latest
     depends_on:
       - zmlp-py3-client
     build:
@@ -244,7 +244,7 @@ services:
     command: echo
 
   zmlp-py3-sdk:
-    image: zmlp/py3-sdk:latest
+    image: boonai/py3-sdk:latest
     depends_on:
       - zmlp-py3-client
     build:
@@ -252,7 +252,7 @@ services:
     command: echo
 
   zmlp-plugins-base:
-    image: zmlp/plugins-base:latest
+    image: boonai/plugins-base:latest
     depends_on:
       - zmlp-py3-sdk
     build:
@@ -260,7 +260,7 @@ services:
     command: echo
 
   zmlp-plugins-core:
-    image: zmlp/plugins-core:latest
+    image: boonai/plugins-core:latest
     depends_on:
       - zmlp-plugins-base
     build:
@@ -268,7 +268,7 @@ services:
     command: echo
 
   zmlp-plugins-models:
-    image: zmlp/plugins-models:latest
+    image: boonai/plugins-models:latest
     depends_on:
       - zmlp-plugins-base
     build:
@@ -276,7 +276,7 @@ services:
     command: echo
 
   zmlp-plugins-train:
-    image: zmlp/plugins-train:latest
+    image: boonai/plugins-train:latest
     depends_on:
       - zmlp-plugins-models
     build:
@@ -284,7 +284,7 @@ services:
     command: echo
 
   zmlp-plugins-analysis:
-    image: zmlp/plugins-analysis:latest
+    image: boonai/plugins-analysis:latest
     depends_on:
       - zmlp-plugins-models
     build:
@@ -292,7 +292,7 @@ services:
     command: echo
 
   reporter:
-    image: zmlp/reporter:latest
+    image: boonai/reporter:latest
     depends_on:
       - zmlp-plugins-base
     build:
