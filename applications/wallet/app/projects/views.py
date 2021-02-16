@@ -37,7 +37,7 @@ ES_SEARCH_TERMS = ['query', 'from', 'size', 'timeout',
 
 
 class BaseProjectViewSet(ViewSet):
-    """Base viewset to inherit from when needing to interact with a ZMLP Archivist in a
+    """Base viewset to inherit from when needing to interact with a Boon AI Archivist in a
     project context. This viewset forces authentication and has convenience methods for
     working with the Archivist.
 
