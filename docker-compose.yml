@@ -221,7 +221,7 @@ services:
       context: client/boonjvm
     command: echo
 
-  boonai-py3-base
+  boonai-py3-base:
     image: boonai/py3-base:latest
     build:
       context: containers/py3-base
