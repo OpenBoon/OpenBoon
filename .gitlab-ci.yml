@@ -386,16 +386,13 @@ sdk-unit-tests:
     - cd client/boonsdk
     - pip install .
     - pytest
-    - cd ../../sdk
+    - cd ../containers/boonflow
     - tar -xJf ffmpeg-amd64-static.tar.xz
     - cp ffmpeg-4.2.2-amd64-static/ffmpeg /usr/bin
     - cp ffmpeg-4.2.2-amd64-static/ffprobe /usr/bin
     - pip install .
     - pytest
-    - cd ../containers/boonflow
-    - pip install -r requirements.txt
-    - pytest
-    - cd ../containers/boondocks
+    - cd ../boondocks
     - pip install .
     - pytest
   rules:
