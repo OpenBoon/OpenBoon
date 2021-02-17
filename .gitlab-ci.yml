@@ -476,7 +476,6 @@ boonai-dockerhub-build-push-latest:
     - docker tag boonai/plugins-core:${SOURCE_TAG} boonai/plugins-core:${DOCKER_TAG}
     - docker tag boonai/plugins-analysis:${SOURCE_TAG} boonai/plugins-analysis:${DOCKER_TAG}
     - docker tag boonai/analyst:${SOURCE_TAG} boonai/analyst:${DOCKER_TAG}
-    - docker tag boonai/boonjvm:${SOURCE_TAG} boonai/boonjvm:${DOCKER_TAG}
     - docker tag boonai/ml-bbq:${SOURCE_TAG} boonai/ml-bbq:${DOCKER_TAG}
     - docker tag boonai/plugins-train:${SOURCE_TAG} boonai/plugins-train:${DOCKER_TAG}
     - docker tag boonai/reporter:${SOURCE_TAG} boonai/reporter:${DOCKER_TAG}
@@ -494,7 +493,6 @@ boonai-dockerhub-build-push-latest:
     - docker push boonai/plugins-core:${DOCKER_TAG}
     - docker push boonai/plugins-analysis:${DOCKER_TAG}
     - docker push boonai/analyst:${DOCKER_TAG}
-    - docker push boonai/boonjvm:${DOCKER_TAG}
     - docker push boonai/ml-bbq:${DOCKER_TAG}
     - docker push boonai/plugins-train:${DOCKER_TAG}
     - docker push boonai/reporter:${DOCKER_TAG}
@@ -607,7 +605,6 @@ boonai-dockerhub-build-push-prod:
     - docker pull -q boonai/plugins-core:${SOURCE_TAG}
     - docker pull -q boonai/plugins-analysis:${SOURCE_TAG}
     - docker pull -q boonai/analyst:${SOURCE_TAG}
-    - docker pull -q boonai/boonjvm:${SOURCE_TAG}
     - docker pull -q boonai/ml-bbq:${SOURCE_TAG}
     - docker pull -q boonai/plugins-train:${SOURCE_TAG}
     - docker pull -q boonai/wallet:${SOURCE_TAG}
@@ -627,7 +624,6 @@ boonai-dockerhub-build-push-prod:
     - docker tag boonai/plugins-core:${SOURCE_TAG} boonai/plugins-core:${DOCKER_TAG}
     - docker tag boonai/plugins-analysis:${SOURCE_TAG} boonai/plugins-analysis:${DOCKER_TAG}
     - docker tag boonai/analyst:${SOURCE_TAG} boonai/analyst:${DOCKER_TAG}
-    - docker tag boonai/boonjvm:${SOURCE_TAG} boonai/boonjvm:${DOCKER_TAG}
     - docker tag boonai/ml-bbq:${SOURCE_TAG} boonai/ml-bbq:${DOCKER_TAG}
     - docker tag boonai/plugins-train:${SOURCE_TAG} boonai/plugins-train:${DOCKER_TAG}
     - docker tag boonai/wallet:${SOURCE_TAG} boonai/wallet:${DOCKER_TAG}
@@ -647,7 +643,6 @@ boonai-dockerhub-build-push-prod:
     - docker push boonai/plugins-core:${DOCKER_TAG}
     - docker push boonai/plugins-analysis:${DOCKER_TAG}
     - docker push boonai/analyst:${DOCKER_TAG}
-    - docker push boonai/boonjvm:${DOCKER_TAG}
     - docker push boonai/ml-bbq:${DOCKER_TAG}
     - docker push boonai/plugins-train:${DOCKER_TAG}
     - docker push boonai/wallet:${DOCKER_TAG}
@@ -701,7 +696,7 @@ boonai-services-build-artifacts:
         - "services/mlbbq/**/*"
         - "services/officer/**/*"
         - "services/reporter/**/*"
-        - "client/boonjvm/**/*"
+        - "services/jvm-common/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
@@ -788,8 +783,8 @@ boonai-services-unit-tests:
     - ARCHIVIST_ES_URL="http://${IP}:9200"
     - BOONAI_STORAGE_PROJECT_URL="http://${IP}:9000"
     - BOONAI_STORAGE_SYSTEM_URL="http://${IP}:9000"
-    - mvn clean install -f client/boonjvm -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
-    - mvn test verify -f client/boonjvm -q
+    - mvn clean install -f services/jvm-common -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
+    - mvn test verify -f services/jvm-common -q
     - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
     - mvn test verify -f services/officer -q
     - mvn test verify -f services/archivist -q
@@ -810,7 +805,7 @@ boonai-services-unit-tests:
         - "services/mlbbq/**/*"
         - "services/officer/**/*"
         - "services/reporter/**/*"
-        - "client/boonjvm/*"
+        - "services/jvm-common/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:

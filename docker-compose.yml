@@ -216,9 +216,9 @@ services:
 
   # These services are only here because their images need to be built.
   boonai-jvm-common:
-    image: boonai/boonjvm:latest
+    image: boonai/jvm-common:latest
     build:
-      context: client/boonjvm
+      context: services/jvm-common
     command: echo
 
   boonai-py3-base:
