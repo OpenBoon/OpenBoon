@@ -13,6 +13,8 @@ class ApiCall(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
+    # List of module pricing tiers. Any new module added to the platform needs to be
+    # added to one of these lists.
     free_modules = ['zvi-extract-layers',
                     'zvi-extract-pages',
                     'standard']
@@ -51,8 +53,8 @@ class ApiCall(models.Model):
                       'aws-text-detection',
                       'aws-unsafe-detection',
                       'aws-transcribe',
-                      'aws-black-frames-detection',
-                      'aws-credits-detection',
+                      'aws-black-frame-detection',
+                      'aws-end-credits-detection',
                       'azure-category-detection',
                       'azure-celebrity-detection',
                       'azure-explicit-detection',

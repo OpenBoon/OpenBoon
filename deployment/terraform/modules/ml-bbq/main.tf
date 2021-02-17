@@ -53,7 +53,7 @@ resource "kubernetes_deployment" "ml-bbq" {
         }
         container {
           name              = "ml-bbq"
-          image             = "zmlp/ml-bbq:${var.container-tag}"
+          image             = "boonai/ml-bbq:${var.container-tag}"
           image_pull_policy = "Always"
           volume_mount {
             mount_path = "/var/run/docker.sock"

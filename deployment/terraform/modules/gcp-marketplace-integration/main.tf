@@ -1,7 +1,7 @@
 
 resource "kubernetes_deployment" "gcp-marketplace-integration" {
-  count = var.enabled != "" ? 1 : 0
-  provider   = kubernetes
+  count    = var.enabled != "" ? 1 : 0
+  provider = kubernetes
   metadata {
     name      = "gcp-marketplace-integration"
     namespace = var.namespace
@@ -62,9 +62,9 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
         }
         container {
           name              = "gcp-marketplace-usage-report"
-          image             = "zmlp/wallet:${var.container-tag}"
+          image             = "boonai/wallet:${var.container-tag}"
           image_pull_policy = "Always"
-          command = ["python3", "-u", "/applications/wallet/app/manage.py", "gcpmarketplace-usage-report"]
+          command           = ["python3", "-u", "/applications/wallet/app/manage.py", "gcpmarketplace-usage-report"]
           resources {
             limits {
               memory = "1Gi"
@@ -112,27 +112,27 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             value = var.fqdn
           }
           env {
-            name = "MARKETPLACE_PROJECT_ID"
+            name  = "MARKETPLACE_PROJECT_ID"
             value = var.marketplace-project
           }
           env {
-            name = "MARKETPLACE_PUBSUB_SUBSCRIPTION"
+            name  = "MARKETPLACE_PUBSUB_SUBSCRIPTION"
             value = var.marketplace-subscription
           }
           env {
-            name = "MARKETPLACE_CREDENTIALS"
+            name  = "MARKETPLACE_CREDENTIALS"
             value = var.marketplace-credentials
           }
           env {
-            name = "MARKETPLACE_SERVICE_NAME"
+            name  = "MARKETPLACE_SERVICE_NAME"
             value = var.marketplace-service-name
           }
         }
         container {
           name              = "gcp-marketplace-pub-sub"
-          image             = "zmlp/wallet:${var.container-tag}"
+          image             = "boonai/wallet:${var.container-tag}"
           image_pull_policy = "Always"
-          command = ["python3", "-u", "/applications/wallet/app/manage.py", "gcpmarketplace-pubsub"]
+          command           = ["python3", "-u", "/applications/wallet/app/manage.py", "gcpmarketplace-pubsub"]
           resources {
             limits {
               memory = "1Gi"
@@ -180,19 +180,19 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             value = var.fqdn
           }
           env {
-            name = "MARKETPLACE_PROJECT_ID"
+            name  = "MARKETPLACE_PROJECT_ID"
             value = var.marketplace-project
           }
           env {
-            name = "MARKETPLACE_PUBSUB_SUBSCRIPTION"
+            name  = "MARKETPLACE_PUBSUB_SUBSCRIPTION"
             value = var.marketplace-subscription
           }
           env {
-            name = "MARKETPLACE_CREDENTIALS"
+            name  = "MARKETPLACE_CREDENTIALS"
             value = var.marketplace-credentials
           }
           env {
-            name = "MARKETPLACE_SERVICE_NAME"
+            name  = "MARKETPLACE_SERVICE_NAME"
             value = var.marketplace-service-name
           }
         }

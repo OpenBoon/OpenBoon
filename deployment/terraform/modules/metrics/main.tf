@@ -88,7 +88,7 @@ resource "kubernetes_deployment" "metrics" {
         }
         container {
           name              = "metrics"
-          image             = "zmlp/metrics:${var.container-tag}"
+          image             = "boonai/metrics:${var.container-tag}"
           image_pull_policy = "Always"
           liveness_probe {
             initial_delay_seconds = 30

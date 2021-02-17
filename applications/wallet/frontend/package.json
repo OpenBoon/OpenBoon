@@ -117,7 +117,7 @@
     }
   ],
   "dependencies": {
-    "@emotion/babel-preset-css-prop": "11.0.0",
+    "@emotion/babel-preset-css-prop": "11.2.0",
     "@emotion/react": "11.1.5",
     "@reach/combobox": "0.13.0",
     "@reach/listbox": "0.13.0",
@@ -143,20 +143,20 @@
     "react-virtualized-auto-sizer": "1.0.4",
     "react-window": "1.8.6",
     "react-window-infinite-loader": "1.0.7",
-    "swr": "0.4.1",
+    "swr": "0.4.2",
     "use-resize-observer": "7.0.0",
     "utf8": "3.0.0",
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@emotion/eslint-plugin": "11.0.0",
-    "@emotion/jest": "11.1.0",
+    "@emotion/eslint-plugin": "11.2.0",
+    "@emotion/jest": "11.2.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "26.6.3",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-macros": "3.0.1",
     "bundlesize": "0.18.1",
-    "eslint": "7.19.0",
+    "eslint": "7.20.0",
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-prettier": "7.2.0",
     "eslint-plugin-import": "2.22.1",

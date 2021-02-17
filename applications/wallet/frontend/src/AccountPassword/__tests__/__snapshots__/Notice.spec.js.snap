@@ -453,7 +453,7 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
       <div
         className="emotion-26"
       >
-        If so, you may not have a Zorroa password. You can create one by resetting the password and checking your email for instructions.
+        If so, you may not have a Boon AI password. You can create one by resetting the password and checking your email for instructions.
       </div>
       <div
         className="emotion-17"

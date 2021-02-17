@@ -17,16 +17,16 @@ const PoliciesForm = ({ dispatch }) => {
           a: { color: colors.key.one },
         }}
       >
-        By accepting and clicking the &quot;Continue&quot; button you confirm
-        that you have read and agree with Zorroa’s{' '}
+        {`By accepting and clicking the "Continue" button you confirm
+        that you have read and agree with Boon AI's `}
         <a
           href={`/policies/${CURRENT_POLICIES_DATE}/terms-of-use.pdf`}
           target="_blank"
           rel="noopener noreferrer"
         >
           Terms of Use
-        </a>{' '}
-        and{' '}
+        </a>
+        {' and '}
         <a
           href={`/policies/${CURRENT_POLICIES_DATE}/privacy-policy.pdf`}
           target="_blank"

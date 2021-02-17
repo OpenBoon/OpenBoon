@@ -14,7 +14,7 @@ const TaskDetails = () => {
     query: { projectId, taskId },
   } = useRouter()
 
-  const { data: task, revalidate } = useSWR(
+  const { data: task, mutate: revalidate } = useSWR(
     `/api/v1/projects/${projectId}/tasks/${taskId}/`,
   )
 

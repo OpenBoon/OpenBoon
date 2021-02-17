@@ -103,7 +103,7 @@ services:
 
   # Local Archivist server.
   archivist:
-    image: booninfra/archivist:latest
+    image: boonai/archivist:latest
     depends_on:
       - es1
       - postgres
@@ -128,7 +128,7 @@ services:
       - "./dev/config/archivist/application.properties:/service/config/application.properties"
 
   officer:
-    image: booninfra/officer:latest
+    image: boonai/officer:latest
     depends_on:
       - boonai-jvm-common
       - minio
@@ -221,7 +221,7 @@ services:
       context: client/boonjvm
     command: echo
 
-  boonai-py3-base:
+  boonai-py3-base
     image: boonai/py3-base:latest
     build:
       context: containers/py3-base
