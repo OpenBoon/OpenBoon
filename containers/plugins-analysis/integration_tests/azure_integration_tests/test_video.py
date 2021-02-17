@@ -22,7 +22,8 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         with open(cred_location, 'rb') as f:
             key = f.read().decode()
         os.environ['BOONAI_AZURE_VISION_KEY'] = key
-        os.environ['BOONAI_AZURE_VISION_ENDPOINT'] = "https://boonai-dev.cognitiveservices.azure.com/"
+        os.environ['BOONAI_AZURE_VISION_ENDPOINT'] = \
+            "https://boonai-dev.cognitiveservices.azure.com/"
 
     def tearDown(self):
         del os.environ['BOONAI_AZURE_VISION_KEY']

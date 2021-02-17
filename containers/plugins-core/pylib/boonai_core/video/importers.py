@@ -5,7 +5,8 @@ from pathlib import Path
 from boonsdk import ProjectTier
 from boonflow.storage import file_storage
 from boonflow.base import AssetProcessor, ProcessorException, FileTypes, \
-    FatalProcessorExceptionimport boonflow.video as video
+    FatalProcessorException
+import boonflow.video as video
 from ..util.media import get_video_metadata, set_resolution_attrs
 
 

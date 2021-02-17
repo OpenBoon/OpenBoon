@@ -6,7 +6,9 @@ from boonsdk import BoonClient
 from boonsdk.app import AssetApp
 from boonai_core.core.processors import SetAttributesProcessor, AssertAttributesProcessor, \
     PreCacheSourceFileProcessor, DeleteBySearchProcessor
-from boonflow import Frame, FatalProcessorExceptionfrom boonflow.testing import PluginUnitTestCase, TestAsset, test_data, Context
+from boonflow import Frame, FatalProcessorException
+from boonflow.testing import PluginUnitTestCase, TestAsset, test_data, Context
+
 
 MOCK_PERMISSION = {
     'authority': 'string',

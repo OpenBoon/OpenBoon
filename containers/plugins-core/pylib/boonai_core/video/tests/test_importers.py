@@ -3,7 +3,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 from boonai_core.video.importers import VideoImporter
-from boonflow import Frame, ProcessorException, FatalProcessorExceptionfrom boonflow.testing import TestAsset, PluginUnitTestCase, test_data
+from boonflow import Frame, ProcessorException, FatalProcessorException
+from boonflow.testing import TestAsset, PluginUnitTestCase, test_data
 from boonsdk.app import ProjectApp
 from boonsdk import Project
 
