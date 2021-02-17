@@ -14,7 +14,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from boonsdk import BoonClient
 from boonsdk.client import (BoonSdkDuplicateException, BoonSdkInvalidRequestException,
-                         BoonSdkNotFoundException, BoonSdkConnectionException)
+                            BoonSdkNotFoundException, BoonSdkConnectionException)
 
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
