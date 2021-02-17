@@ -38,7 +38,7 @@ zvi-client = {path = "./../../client/python"}
 django-axes = "==5.12.0"
 scikit-learn = "*"
 matplotlib = "*"
-pandas = "==1.1.5"
+pandas = "==1.2.2"
 opencv-python = "==4.3.0.36"
 pyjwt = ">=2.0"
 importlib-metadata = "*"
