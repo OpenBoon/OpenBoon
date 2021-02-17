@@ -341,11 +341,11 @@ backend-py-lint:
     # MR to any branch that is not master with Boon AI Python changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
-        - "client/python/**/*.py"
-        - "client/zvi/**/*.py"
-        - "sdk/**/.py"
+        - "client/boonsdk/**/*.py"
+        - "client/boonlab/**/*.py"
         - "containers/**/*.py"
         - "services/analyst/**/*.py"
+        - "services/mlbbq/**/*.py"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
@@ -383,7 +383,7 @@ sdk-unit-tests:
     - apt-get -y install openimageio-tools mediainfo
     - python -m pip install pipenv pytest cmake
     - pip install --upgrade pip
-    - cd client/python
+    - cd client/boonsdk
     - pip install .
     - pytest
     - cd ../../sdk
@@ -392,8 +392,11 @@ sdk-unit-tests:
     - cp ffmpeg-4.2.2-amd64-static/ffprobe /usr/bin
     - pip install .
     - pytest
-    - cd ../containers/boonai-boondocks
+    - cd ../containers/boonflow
     - pip install -r requirements.txt
+    - pytest
+    - cd ../containers/boondocks
+    - pip install .
     - pytest
   rules:
     # Scheduled Pipelines
@@ -402,10 +405,10 @@ sdk-unit-tests:
     # MR to any branch that is not master with BOONAI changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
-        - "client/python/**/*"
-        - "client/zvi/**/*"
-        - "sdk/**/*"
-        - "containers/boonai-boondocks/**/*"
+        - "client/boonsdk/**/*"
+        - "client/boonlab/**/*"
+        - "containers/boonflow/**/*"
+        - "containers/boondocks/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
@@ -436,8 +439,7 @@ plugin-container-tests:
     # MR to any branch that is not master with Boon AI changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
-        - "client/python/**/*"
-        - "sdk/**/*"
+        - "client/boonsdk/**/*"
         - "containers/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
@@ -507,6 +509,7 @@ boonai-dockerhub-build-push-latest:
         - "containers/**/*"
         - "dev/**/*"
         - "services/analyst/**/*"
+        - "services/jvm-common/**/*"
         - "services/api-gateway/**/*"
         - "services/archivist/**/*"
         - "services/auth-server/**/*"
@@ -552,8 +555,6 @@ boonai-deploy-development:
         - "client/**/*"
         - "containers/**/*"
         - "dev/**/*"
-        - "lib/**/*"
-        - "sdk/**/*"
         - "services/**/*"
 
 boonai-deploy-qa:
