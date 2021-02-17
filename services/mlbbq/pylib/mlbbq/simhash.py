@@ -1,4 +1,3 @@
-import os
 import threading
 from collections import namedtuple
 
@@ -17,7 +16,8 @@ class SimilarityModel:
         """
         Loads the Resnet152 model.
         """
-        cls.sym, cls.arg_params, cls.aux_params = mxnet.model.load_checkpoint(cls.path + "/resnet-152", 0)
+        cls.sym, cls.arg_params, cls.aux_params = mxnet.model.load_checkpoint(
+            cls.path + "/resnet-152", 0)
         mod = mxnet.mod.Module(symbol=cls.sym, context=mxnet.cpu(), label_names=None)
         mod.bind(for_training=False, data_shapes=[('data', (1, 3, 224, 224))])
         mod.set_params(cls.arg_params, cls.aux_params, allow_missing=True)

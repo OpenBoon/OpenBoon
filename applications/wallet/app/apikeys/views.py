@@ -2,7 +2,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_control
 from rest_framework import status
 from rest_framework.response import Response
-from zmlp.client import ZmlpDuplicateException
+from boonsdk.client import BoonSdkDuplicateException
 
 from apikeys.serializers import ApikeySerializer
 from apikeys.utils import create_zmlp_api_key
@@ -31,7 +31,7 @@ class ApikeyViewSet(BaseProjectViewSet):
             apikey = create_zmlp_api_key(request.client, serializer.validated_data['name'],
                                          serializer.validated_data['permissions'], encode_b64=False,
                                          internal=serializer.validated_data.get('internal', False))
-        except ZmlpDuplicateException:
+        except BoonSdkDuplicateException:
             msg = 'An API Key with this name already exists. Please choose another.'
             return Response(status=status.HTTP_409_CONFLICT, data={'name': [msg]})
         slim_key = {'accessKey': apikey['accessKey'],

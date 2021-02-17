@@ -14,20 +14,21 @@ from .simhash import get_similarity_hash, SimilarityModel
 app = Flask(__name__)
 logger = logging.getLogger(__name__)
 
-auth_url = os.environ.get("ZMLP_SECURITY_AUTHSERVER_URL", "http://auth-server:9090")
+auth_url = os.environ.get("BOONAI_SECURITY_AUTHSERVER_URL", "http://auth-server:9090")
 auth_endpoint = "{}/auth/v1/auth-token".format(auth_url)
 
 SimilarityModel.load()
 
+
 def main():
     parser = argparse.ArgumentParser(prog='zmld')
     parser.add_argument("-p", "--port", help="The port to listen on",
-                        default=os.environ.get("ZMLD_PORT", "8282"))
+                        default=os.environ.get("BOONAI_PORT", "8282"))
     parser.add_argument("-v", "--verbose", help="Debg logging",
                         action="store_true")
 
     args = parser.parse_args()
-    if os.environ.get("ZMLP_DEBUG") or args.verbose:
+    if os.environ.get("BOONAI_DEBUG") or args.verbose:
         logging.basicConfig(level=logging.DEBUG)
     else:
         logging.basicConfig(level=logging.INFO)
@@ -67,6 +68,3 @@ def authenticate(token):
     rsp = requests.post(auth_endpoint, headers={"Authorization": token})
     if rsp.status_code != 200:
         raise Exception("Access denied")
-
-
-

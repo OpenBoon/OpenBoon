@@ -141,7 +141,7 @@ resource "kubernetes_deployment" "reporter" {
             value = var.project
           }
           env {
-            name  = "ZMLP_API_URL"
+            name  = "BOONAI_API_URL"
             value = var.zmlp-api-url
           }
           env {

@@ -4,7 +4,7 @@ from django.urls import reverse
 from unittest.mock import patch
 from rest_framework import status
 
-from zmlp import ZmlpClient
+from boonsdk import BoonClient
 from wallet.tests.utils import check_response
 from wallet.utils import convert_json_to_base64
 from searches.utils import FieldUtility
@@ -31,7 +31,7 @@ class TestVisualizationsViewSet:
 
         visuals = [{'type': 'range', 'id': 'myRange', 'attribute': 'media.aspect'}]
         path = reverse('visualization-load', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
         with patch.object(FieldUtility, 'get_attribute_field_type', return_value='double'):
             response = api_client.get(path, {'visuals': convert_json_to_base64(visuals)})
 
@@ -51,7 +51,7 @@ class TestVisualizationsViewSet:
 
         visuals = [{"type": "facet", "id": "myFacet", "attribute": "media.orientation"}]
         path = reverse('visualization-load', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
         with patch.object(FieldUtility, 'get_attribute_field_type', return_value='keyword'):
             response = api_client.get(path, {'visuals': convert_json_to_base64(visuals)})
 
@@ -74,7 +74,7 @@ class TestVisualizationsViewSet:
         visuals = [{'type': 'range', 'id': 'myRange', 'attribute': 'media.aspect'},
                    {"type": "facet", "id": "myFacet", "attribute": "media.orientation"}]
         path = reverse('visualization-load', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
         with patch.object(FieldUtility, 'get_attribute_field_type', return_value='keyword'):
             response = api_client.get(path, {'visuals': convert_json_to_base64(visuals)})
 
@@ -106,7 +106,7 @@ class TestVisualizationsViewSet:
                   'attribute': 'analysis.zvi-face-detection',
                   'values': {'labels': ['face0'], 'min': 0, 'max': 1}}]
         path = reverse('visualization-load', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
         with patch.object(FieldUtility, 'get_attribute_field_type', return_value='keyword'):
             response = api_client.get(path, {'visuals': convert_json_to_base64(visuals),
                                              'query': convert_json_to_base64(query)})

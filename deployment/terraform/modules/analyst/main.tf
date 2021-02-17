@@ -123,7 +123,7 @@ resource "kubernetes_deployment" "analyst" {
             read_only  = true
           }
           env {
-            name  = "ZMLP_SERVER"
+            name  = "BOONAI_SERVER"
             value = var.archivist-url
           }
           env {

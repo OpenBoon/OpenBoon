@@ -15,7 +15,7 @@ app = Flask(__name__)
 def main():
     parser = argparse.ArgumentParser(prog='analyst')
     parser.add_argument('-a', '--archivist', help='The URL of the Archivist server.',
-                        default=os.environ.get('ZMLP_SERVER', 'http://archivist:8080'))
+                        default=os.environ.get('BOONAI_SERVER', 'http://archivist:8080'))
     parser.add_argument('-p', '--port', help='The port to listen on',
                         default=os.environ.get('ANALYST_PORT', '5000'))
     parser.add_argument('-c', '--credentials',
@@ -28,7 +28,7 @@ def main():
                         help='Enable verbose logging')
     args = parser.parse_args()
 
-    if os.environ.get('ZMLP_DEBUG') or args.verbose:
+    if os.environ.get('BOONAI_DEBUG') or args.verbose:
         logging.basicConfig(level=logging.DEBUG)
     else:
         logging.basicConfig(level=logging.INFO)

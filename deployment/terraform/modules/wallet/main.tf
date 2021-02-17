@@ -132,7 +132,7 @@ resource "kubernetes_deployment" "wallet" {
             value = random_string.sql-password.result
           }
           env {
-            name  = "ZMLP_API_URL"
+            name  = "BOONAI_API_URL"
             value = var.zmlp-api-url
           }
           env {

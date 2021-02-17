@@ -399,11 +399,11 @@ class DockerContainerWrapper(object):
 
         env = self.task.get("env", {})
         env.update({
-            "ZMLP_BILLING_METRICS_SERVICE":
-                os.environ.get("ZMLP_BILLING_METRICS_SERVICE", "http://10.3.240.109"),
+            "BOONAI_BILLING_METRICS_SERVICE":
+                os.environ.get("BOONAI_BILLING_METRICS_SERVICE", "http://10.3.240.109"),
             "ZVI_MODEL_CACHE": model_cache,
             "TMPDIR": task_cache,
-            "ZMLP_SERVER": os.environ.get("ZMLP_SERVER"),
+            "BOONAI_SERVER": os.environ.get("BOONAI_SERVER"),
             "OFFICER_URL": os.environ.get("OFFICER_URL"),
             # Get threads from task env, or os env.
             "ANALYST_THREADS": env.get("ANALYST_THREADS", os.environ.get("ANALYST_THREADS"))
