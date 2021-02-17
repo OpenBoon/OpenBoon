@@ -2,7 +2,7 @@ from django.http import Http404
 from rest_framework import exceptions, status
 from rest_framework.exceptions import APIException
 from rest_framework.views import exception_handler
-from boonsdk.client import ZmlpSecurityException, ZmlpInvalidRequestException, \
+from boonsdk.client import BoonSdkSecurityException, BoonSdkInvalidRequestException, \
     BoonSdkNotFoundException, BoonSdkDuplicateException
 
 
@@ -32,8 +32,8 @@ class NotFoundError(APIException):
 
 def zmlp_exception_handler(exc, context):
     """Custom DRF exception handler that converts ZMLP exceptions to built-in DRF exceptions."""
-    exception_mapping = {ZmlpSecurityException: exceptions.PermissionDenied,
-                         ZmlpInvalidRequestException: InvalidRequestError,
+    exception_mapping = {BoonSdkSecurityException: exceptions.PermissionDenied,
+                         BoonSdkInvalidRequestException: InvalidRequestError,
                          BoonSdkNotFoundException: NotFoundError,
                          Http404: NotFoundError,
                          BoonSdkDuplicateException: DuplicateError}

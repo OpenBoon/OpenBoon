@@ -13,8 +13,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.response import Response
 from boonsdk import BoonClient
-from boonsdk.client import (BoonSdkDuplicateException, ZmlpInvalidRequestException,
-                         BoonSdkNotFoundException, ZmlpConnectionException)
+from boonsdk.client import (BoonSdkDuplicateException, BoonSdkInvalidRequestException,
+                         BoonSdkNotFoundException, BoonSdkConnectionException)
 
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
@@ -292,7 +292,7 @@ class TestTotalStorageUsage:
 
     @patch.object(BoonClient, 'post')
     def test_get_zmlp_connection_exception(self, client_mock, project, api_client, login):
-        client_mock.side_effect = ZmlpConnectionException()
+        client_mock.side_effect = BoonSdkConnectionException()
         url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
         response = api_client.get(url)
         assert response.status_code == 200
@@ -677,7 +677,7 @@ class TestProjectUserPost:
                                zmlp_project_membership, api_client, django_user_model):
 
         def mock_api_response(*args, **kwargs):
-            raise ZmlpInvalidRequestException({'msg': 'bad'})
+            raise BoonSdkInvalidRequestException({'msg': 'bad'})
 
         django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')
         monkeypatch.setattr(BoonClient, 'post', mock_api_response)
@@ -746,7 +746,7 @@ class TestProjectUserPut:
                         zmlp_project_membership, api_client, django_user_model):
 
         def mock_post_response(*args, **kwargs):
-            raise ZmlpInvalidRequestException({'msg': 'bad'})
+            raise BoonSdkInvalidRequestException({'msg': 'bad'})
 
         def mock_delete_response(*args, **kwargs):
             return Response(status=status.HTTP_200_OK)
@@ -781,7 +781,7 @@ class TestProjectUserPut:
             return data
 
         def mock_delete_response(*args, **kwargs):
-            raise ZmlpInvalidRequestException({'msg': 'bad'})
+            raise BoonSdkInvalidRequestException({'msg': 'bad'})
 
         def mock_get_response(*args, **kwargs):
             return {'accessKey': 'access',

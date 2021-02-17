@@ -17,7 +17,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet, GenericViewSet
 from boonsdk import BoonClient
-from boonsdk.client import ZmlpConnectionException
+from boonsdk.client import BoonSdkConnectionException
 
 from projects.clients import ZviClient
 from projects.models import Membership, Project
@@ -70,7 +70,7 @@ class BaseProjectViewSet(ViewSet):
 
         # Attach some useful objects for interacting with ZMLP/ZVI to the request.
         if settings.PLATFORM == 'zmlp':
-            request.app = zmlp.BoonApp(apikey, settings.BOONAI_API_URL)
+            request.app = boonsdk.BoonApp(apikey, settings.BOONAI_API_URL)
             request.client = BoonClient(apikey=apikey, server=settings.BOONAI_API_URL,
                                         project_id=project)
         else:
@@ -557,7 +557,7 @@ class ProjectViewSet(ListModelMixin,
         }
         try:
             response = request.client.post(path, query)
-        except (requests.exceptions.ConnectionError, ZmlpConnectionException):
+        except (requests.exceptions.ConnectionError, BoonSdkConnectionException):
             msg = (f'Unable to retrieve image/document count query for project {pk}.')
             logger.warning(msg)
         else:
@@ -585,7 +585,7 @@ class ProjectViewSet(ListModelMixin,
         }
         try:
             response = request.client.post(path, query)
-        except (requests.exceptions.ConnectionError, ZmlpConnectionException):
+        except (requests.exceptions.ConnectionError, BoonSdkConnectionException):
             msg = (f'Unable to retrieve video seconds sum for project {pk}.')
             logger.warning(msg)
         else:
