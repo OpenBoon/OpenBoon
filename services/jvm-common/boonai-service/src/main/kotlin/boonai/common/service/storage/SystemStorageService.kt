@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConfigurationProperties("zmlp.storage.system")
+@ConfigurationProperties("boonai.storage.system")
 class SystemStorageProperties : StorageProperties()
 
 /**
