@@ -104,7 +104,7 @@ class FileCacheTests(TestCase):
         })
         post_patch.return_value = '/tmp/toucan.jpg'
         bird = test_data('images/set01/toucan.jpg', uri=False)
-        self.assertRaises(storage.BoonSdkStorageException, self.lfc.precache_file, pfile, bird)
+        self.assertRaises(storage.StorageException, self.lfc.precache_file, pfile, bird)
 
 
 class FileStorageTests(TestCase):
