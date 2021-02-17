@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 from boonsdk.app import ModelApp, AssetApp
 from boonsdk.entity import Model, StoredFile, AnalysisModule, Asset
-from boonsdk_train.perceptron import LabelDetectionPerceptronTrainer
+from boonai_train.perceptron import LabelDetectionPerceptronTrainer
 from boonflow import Frame, file_storage
 from boonflow.testing import PluginUnitTestCase, TestAsset
 

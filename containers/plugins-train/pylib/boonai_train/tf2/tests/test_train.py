@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 from boonsdk.app import ModelApp
 from boonsdk.entity import Model, StoredFile, AnalysisModule
-from boonsdk_train.tf2 import TensorflowTransferLearningTrainer
+from boonai_train.tf2 import TensorflowTransferLearningTrainer
 from boonflow import file_storage, Frame
 from boonflow.testing import PluginUnitTestCase, TestAsset
 

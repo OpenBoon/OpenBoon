@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 from tensorflow.keras.models import load_model
 
-from boonsdk_train.tf2 import predict
+from boonai_train.tf2 import predict
 from boonflow.testing import PluginUnitTestCase, test_path
 
 

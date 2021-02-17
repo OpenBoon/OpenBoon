@@ -2,7 +2,7 @@ import logging
 from unittest.mock import patch
 
 from boonsdk import Model
-from boonsdk_train.automl.labels import AutomlLabelDetectionSession
+from boonai_train.automl.labels import AutomlLabelDetectionSession
 from boonflow import file_storage
 from boonflow.testing import PluginUnitTestCase, TestAsset
 

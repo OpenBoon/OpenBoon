@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from boonsdk.app import ModelApp, AssetApp
 from boonsdk.entity import Model, StoredFile, AnalysisModule, Asset
-from boonsdk_train.face_rec import KnnFaceRecognitionTrainer
+from boonai_train.face_rec import KnnFaceRecognitionTrainer
 from boonflow import Frame, file_storage
 from boonflow.testing import PluginUnitTestCase, TestAsset
 

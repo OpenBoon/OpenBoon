@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 from boonsdk.app import ModelApp
 from boonsdk.entity import Model, StoredFile, AnalysisModule
-from boonsdk_train.pytorch import PytorchTransferLearningTrainer
+from boonai_train.pytorch import PytorchTransferLearningTrainer
 from boonflow import file_storage, Frame
 from boonflow.testing import PluginUnitTestCase, TestAsset
 
