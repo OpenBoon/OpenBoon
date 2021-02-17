@@ -41,7 +41,7 @@ class ModelStorage:
 
         # When running within the analyst, our project specific
         # model cache is mounted here.
-        self.root = os.environ.get("ZVI_MODEL_CACHE", "/tmp/zvi/model-cache")
+        self.root = os.environ.get("BOONAI_MODEL_CACHE", "/tmp/boonai/model-cache")
 
     @staticmethod
     def get_model_file_id(model):

@@ -3,12 +3,12 @@ from unittest.mock import patch
 from boonflow import Frame
 from boonflow.testing import PluginUnitTestCase, test_path, TestAsset, \
     get_prediction_labels
-from boonai_analysis.zvi.faces import ZviFaceDetectionProcessor
+from boonai_analysis.boonai.faces import ZviFaceDetectionProcessor
 
 
 class ZviFaceDetectionProcessorTests(PluginUnitTestCase):
 
-    @patch('boonai_analysis.zvi.faces.get_proxy_level_path')
+    @patch('boonai_analysis.boonai.faces.get_proxy_level_path')
     def test_process_detection(self, proxy_patch):
         image_path = test_path('images/face-recognition/face1.jpg')
         proxy_patch.return_value = image_path

@@ -27,7 +27,7 @@ class LabelDetectionPerceptronTrainerTests(PluginUnitTestCase):
                         'path': 'https://i.imgur.com/SSN26nN.jpg'
                     },
                     "analysis": {
-                        "zvi-image-similarity": {
+                        "boonai-image-similarity": {
                             "simhash": "".join(random.choice(
                                 string.ascii_uppercase) for _ in range(2048)),
                         }

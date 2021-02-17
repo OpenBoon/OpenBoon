@@ -1,13 +1,13 @@
 from unittest.mock import patch
 
-from boonai_analysis.zvi.ocr import ZviOcrProcessor
+from boonai_analysis.boonai.ocr import ZviOcrProcessor
 from boonflow import Frame
 from boonflow.testing import PluginUnitTestCase, TestAsset, test_data
 
 
 class OcrProcessorTests(PluginUnitTestCase):
 
-    @patch('boonai_analysis.zvi.ocr.get_proxy_level_path')
+    @patch('boonai_analysis.boonai.ocr.get_proxy_level_path')
     def test_process(self, proxy_patch):
         image_path = test_data('images/set09/nvidia_manual_page.jpg', uri=False)
         proxy_patch.return_value = image_path
@@ -17,7 +17,7 @@ class OcrProcessorTests(PluginUnitTestCase):
         assert 'NVIDIA' in frame.asset.get_attr('analysis.boonai-text-detection.content')
 
     @patch.object(TestAsset, 'get_files')
-    @patch('boonai_analysis.zvi.ocr.file_storage.localize_file')
+    @patch('boonai_analysis.boonai.ocr.file_storage.localize_file')
     def test_process_ocr_proxy(self, storage_patch, get_files_patch):
         image_path = test_data('images/set09/nvidia_manual_page.jpg', uri=False)
         storage_patch.return_value = image_path

@@ -41,10 +41,10 @@ class KnnLabelDetectionTrainer(AssetProcessor):
             self.reactor.emit_status("No labeled assets - pre-clustering")
             query = {
                 'size': 100,
-                '_source': ['analysis.zvi-image-similarity.*'],
+                '_source': ['analysis.boonai-image-similarity.*'],
                 'query': {
                     'function_score': {
-                        'query': {'exists': {'field': 'analysis.zvi-image-similarity.simhash'}},
+                        'query': {'exists': {'field': 'analysis.boonai-image-similarity.simhash'}},
                         'random_score': {}
                     }
                 }
@@ -56,7 +56,7 @@ class KnnLabelDetectionTrainer(AssetProcessor):
             count = 0
             for asset in self.app.assets.scroll_search(query):
                 num_hash = []
-                shash = asset['analysis']['zvi-image-similarity']['simhash']
+                shash = asset['analysis']['boonai-image-similarity']['simhash']
                 if shash is not None:
                     for char in shash:
                         num_hash.append(ord(char))
@@ -123,12 +123,12 @@ class KnnLabelDetectionTrainer(AssetProcessor):
 
     def classifier_hashes(self):
         query = {
-            '_source': ['labels.*', 'analysis.zvi-image-similarity.*'],
+            '_source': ['labels.*', 'analysis.boonai-image-similarity.*'],
             'size': 50,
             'query': {
                 'bool': {
                     'must': [
-                        {'exists': {'field': 'analysis.zvi-image-similarity.simhash'}}
+                        {'exists': {'field': 'analysis.boonai-image-similarity.simhash'}}
                     ],
                     'filter': [{
                         'nested': {
@@ -152,7 +152,7 @@ class KnnLabelDetectionTrainer(AssetProcessor):
         for asset in self.app.assets.scroll_search(query):
             for label in asset['labels']:
                 if label['modelId'] == self.app_model.id:
-                    simhash = asset.get_attr('analysis.zvi-image-similarity.simhash')
+                    simhash = asset.get_attr('analysis.boonai-image-similarity.simhash')
                     if simhash is None:
                         continue
                     classifier_hashes.append({'simhash': simhash, 'label': label['label']})
@@ -170,7 +170,7 @@ class KnnLabelDetectionTrainer(AssetProcessor):
             AnalysisModule: The published Pipeline Module.
         """
         self.reactor.emit_status('Saving model: {}'.format(self.app_model.name))
-        model_dir = os.path.join(tempfile.mkdtemp(), "/" + self.app_model.name)
+        model_dir = os.path.join(tempfile.mkdtemp(), self.app_model.name)
         os.makedirs(model_dir, exist_ok=True)
 
         with open(os.path.join(model_dir, 'knn_classifier.pickle'), 'wb') as fp:

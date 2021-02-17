@@ -88,7 +88,7 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
     @patch.object(file_storage.projects, 'store_file')
     def test_process(self, store_plot_patch, upload_patch, labels_patch, model_patch, pub_patch):
         self.prep_assets()
-        name = 'zvi-flowers-label-detection'
+        name = 'boonai-flowers-label-detection'
         store_plot_patch.side_effect = [{}, {}]
         pub_patch.return_value = AnalysisModule({
             'id': "12345",

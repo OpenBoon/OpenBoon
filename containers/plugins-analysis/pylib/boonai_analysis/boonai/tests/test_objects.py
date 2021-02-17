@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from boonai_analysis.zvi.objects import ZviObjectDetectionProcessor
+from boonai_analysis.boonai.objects import ZviObjectDetectionProcessor
 from boonflow import Frame
 from boonflow.testing import PluginUnitTestCase, test_path, TestAsset, \
     get_prediction_labels
@@ -8,7 +8,7 @@ from boonflow.testing import PluginUnitTestCase, test_path, TestAsset, \
 
 class BoonSdkObjectDetectionProcessorTests(PluginUnitTestCase):
 
-    @patch('boonai_analysis.zvi.objects.get_proxy_level_path')
+    @patch('boonai_analysis.boonai.objects.get_proxy_level_path')
     def test_process_single_detections(self, proxy_patch):
         image_path = test_path('images/detect/dogbike.jpg')
         proxy_patch.return_value = image_path
@@ -24,7 +24,7 @@ class BoonSdkObjectDetectionProcessorTests(PluginUnitTestCase):
         assert 'bicycle' in grouped
         assert 'labels' == analysis['type']
 
-    @patch('boonai_analysis.zvi.objects.get_proxy_level_path')
+    @patch('boonai_analysis.boonai.objects.get_proxy_level_path')
     def test_process_multi_detections(self, proxy_patch):
         image_path = test_path('images/detect/cats.jpg')
         proxy_patch.return_value = image_path

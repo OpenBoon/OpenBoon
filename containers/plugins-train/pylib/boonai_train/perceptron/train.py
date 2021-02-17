@@ -41,7 +41,7 @@ class LabelDetectionPerceptronTrainer(AssetProcessor):
         self.add_arg(
             Argument("attr", "str",
                      required=True,
-                     default="analysis.zvi-image-similarity.simhash",
+                     default="analysis.boonai-image-similarity.simhash",
                      toolTip="Attribute to use as features.")
         )
         self.add_arg(
@@ -95,7 +95,7 @@ class LabelDetectionPerceptronTrainer(AssetProcessor):
         random.seed(self.SEED)
 
         query = {
-            '_source': ['labels.*', 'analysis.zvi-image-similarity.*'],
+            '_source': ['labels.*', 'analysis.boonai-image-similarity.*'],
             'size': 25,
             'query': {
                 'nested': {

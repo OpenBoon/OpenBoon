@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from boonflow import Frame
 from boonflow.testing import PluginUnitTestCase, test_path, TestAsset
-from boonai_analysis.zvi.similarity import ZviSimilarityProcessor
+from boonai_analysis.boonai.similarity import ZviSimilarityProcessor
 
 
 class MxUnitTests(PluginUnitTestCase):
@@ -17,7 +17,7 @@ class MxUnitTests(PluginUnitTestCase):
         if not os.path.exists("/models"):
             ZviSimilarityProcessor.model_path = test_path("models/resnet-152")
 
-    @patch('boonai_analysis.zvi.similarity.get_proxy_level_path')
+    @patch('boonai_analysis.boonai.similarity.get_proxy_level_path')
     def test_ResNetSimilarity_defaults(self, proxy_patch):
         proxy_patch.return_value = self.toucan_path
         processor = ZviSimilarityProcessor()

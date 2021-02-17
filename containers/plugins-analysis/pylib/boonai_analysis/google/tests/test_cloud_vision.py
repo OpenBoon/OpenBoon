@@ -7,7 +7,8 @@ from google.type.latlng_pb2 import LatLng
 
 from boonai_analysis.google.cloud_vision import *
 from boonai_analysis.google.cloud_vision import file_storage
-from boonflow import Frame, ProcessorExceptionfrom boonflow.testing import PluginUnitTestCase, test_data, TestAsset, \
+from boonflow import Frame, ProcessorException
+from boonflow.testing import PluginUnitTestCase, test_data, TestAsset, \
     get_prediction_labels, get_mock_stored_file, test_path
 
 patch_path = 'boonai_analysis.google.cloud_vision.vision.ImageAnnotatorClient'

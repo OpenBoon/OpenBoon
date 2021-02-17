@@ -21,16 +21,16 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
     @patch('boonai_train.automl.labels.get_gcp_project_id')
     def test_create_instance(self, get_proj_patch, client_patch):
         client_patch.return_value = MockAutoMlClient
-        get_proj_patch.return_value = "zvi-dev"
+        get_proj_patch.return_value = "boonai-dev"
 
         dsimp = AutomlLabelDetectionSession(self.model)
-        self.assertEquals('projects/zvi-dev/locations/us-central1', dsimp.project_location)
+        self.assertEquals('projects/boonai-dev/locations/us-central1', dsimp.project_location)
 
     @patch("google.cloud.automl.AutoMlClient")
     @patch('boonai_train.automl.labels.get_gcp_project_id')
     def test_create_automl_dataset(self, get_proj_patch, client_patch):
         client_patch.return_value = MockAutoMlClient
-        get_proj_patch.return_value = "zvi-dev"
+        get_proj_patch.return_value = "boonai-dev"
 
         session = AutomlLabelDetectionSession(self.model)
         dataset = session._create_automl_dataset()
@@ -43,7 +43,7 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
                                         get_proj_patch,
                                         store_labels_patch,
                                         client_patch):
-        get_proj_patch.return_value = "zvi-dev"
+        get_proj_patch.return_value = "boonai-dev"
         store_labels_patch.return_value = "gs://foo/bar/labels.csv"
         client_patch.return_value = MockAutoMlClient
 
@@ -56,7 +56,7 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
     @patch('boonai_train.automl.labels.get_gcp_project_id')
     def test_get_image_uri(self, get_proj_patch, native_uri_patch, client_patch):
         client_patch.return_value = MockAutoMlClient
-        get_proj_patch.return_value = "zvi-dev"
+        get_proj_patch.return_value = "boonai-dev"
         native_uri_patch.return_value = "gs://foo/bar"
         asset = TestAsset('flowers/daisy/5547758_eea9edfd54_n.jpg')
         asset.set_attr('files', [
@@ -78,7 +78,7 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
     @patch('boonai_train.automl.labels.get_gcp_project_id')
     def test_get_label(self, get_proj_patch, client_patch):
         client_patch.return_value = MockAutoMlClient
-        get_proj_patch.return_value = "zvi-dev"
+        get_proj_patch.return_value = "boonai-dev"
         asset = TestAsset('flowers/daisy/5547758_eea9edfd54_n.jpg')
         asset.set_attr('labels', [
             {
@@ -102,7 +102,7 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
 class MockAutoMlClient:
 
     def location_path(self, *args):
-        return 'projects/zvi-dev/locations/us-central1'
+        return 'projects/boonai-dev/locations/us-central1'
 
     def create_dataset(self, *args):
         return MockCreateDataSetResult()

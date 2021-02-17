@@ -48,12 +48,12 @@ def test_webvtt_builder():
 def test_save_timeline(post_patch):
     post_patch.return_value = {}
     asset = TestAsset('12345')
-    tl = TimelineBuilder(asset, 'zvi-timeline')
+    tl = TimelineBuilder(asset, 'boonai-timeline')
     video.save_timeline(asset, tl)
 
     # Make sure the TL list is added to tmp.
     tmp_tl = asset.get_attr('tmp.timelines')
-    assert tmp_tl == ['zvi-timeline']
+    assert tmp_tl == ['boonai-timeline']
 
 
 class FrameExtractors(unittest.TestCase):

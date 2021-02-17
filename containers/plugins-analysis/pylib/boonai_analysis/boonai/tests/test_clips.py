@@ -4,7 +4,7 @@ from boonsdk import VideoClip
 from boonsdk.app import AssetApp, VideoClipApp
 from boonsdk.client import BoonClient
 from boonai_analysis.utils.simengine import SimilarityEngine
-from boonai_analysis.zvi import TimelineAnalysisProcessor, ClipAnalysisProcessor, \
+from boonai_analysis.boonai import TimelineAnalysisProcessor, ClipAnalysisProcessor, \
     MultipleTimelineAnalysisProcessor
 from boonflow import Frame
 from boonflow import file_storage
@@ -36,7 +36,7 @@ class TestClipAnalysisProcessors(PluginUnitTestCase):
         args, kwargs = put_patch.call_args
         assert args[1]['simhash'].startswith('OKOPPPNPNPPJPPPPPPI')
 
-    @patch('boonai_analysis.zvi.clips.submit_clip_batch')
+    @patch('boonai_analysis.boonai.clips.submit_clip_batch')
     @patch.object(file_storage.projects, 'store_file')
     @patch.object(VideoClipApp, 'scroll_search')
     @patch.object(file_storage, 'localize_file')
@@ -58,7 +58,7 @@ class TestClipAnalysisProcessors(PluginUnitTestCase):
         assert args[2]['56789']['files'][0]['id'] == 'jonsnow'
         assert args[2]['56789']['simhash'].startswith('OKOPPPN')
 
-    @patch('boonai_analysis.zvi.clips.submit_clip_batch')
+    @patch('boonai_analysis.boonai.clips.submit_clip_batch')
     @patch.object(file_storage.projects, 'store_file')
     @patch.object(VideoClipApp, 'scroll_search')
     @patch.object(file_storage, 'localize_file')

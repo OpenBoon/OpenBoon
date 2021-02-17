@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from boonsdk.app import ModelApp, AssetApp
 from boonsdk.entity import Model, StoredFile, AnalysisModule, Asset
-from boonsdk_train.knn import KnnLabelDetectionTrainer
+from boonai_train.knn import KnnLabelDetectionTrainer
 from boonflow import Frame, file_storage
 from boonflow.testing import PluginUnitTestCase, TestAsset
 
@@ -27,7 +27,7 @@ class KnnLabelDetectionTrainerTests(PluginUnitTestCase):
         })
         model_patch.return_value = Model({
             'id': model_id,
-            'type': "ZVI_KNN_CLASSIFIER",
+            'type': "BOONAI_KNN_CLASSIFIER",
             'fileId': 'models/{}/foo/bar'.format(model_id),
             'name': name
         })
@@ -50,7 +50,7 @@ mock_search_result = [
             'source': {
                 'path': 'https://i.imgur.com/SSN26nN.jpg'
             },
-            "analysis": {"zvi-image-similarity": {"simhash": "AAAAAAAA"}},
+            "analysis": {"boonai-image-similarity": {"simhash": "AAAAAAAA"}},
             "labels": [
                 {
                     "modelId": model_id,
@@ -68,7 +68,7 @@ mock_search_result = [
             'source': {
                 'path': 'https://i.imgur.com/foo.jpg'
             },
-            "analysis": {"zvi-image-similarity": {"simhash": "BBBBBBBB"}},
+            "analysis": {"boonai-image-similarity": {"simhash": "BBBBBBBB"}},
             "labels": [
                 {
                     "modelId": model_id,
