@@ -5,7 +5,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from boonsdk import BoonSdkClient, BoonSdkApp
+from boonsdk import BoonClient, BoonApp
 from boonsdk.entity import Job, Task
 
 
@@ -22,21 +22,21 @@ class BoonSdkJobAppTests(unittest.TestCase):
             'keyId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'sharedKey': 'test123test135'
         }
-        self.app = BoonSdkApp(self.key_dict)
+        self.app = BoonApp(self.key_dict)
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_job(self, get_patch):
         get_patch.return_value = mock_job_data
         self.assert_job(self.app.jobs.get_job('12345'))
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_refresh_job(self, get_patch):
         get_patch.return_value = mock_job_data
         job = self.app.jobs.get_job('12345')
         self.app.jobs.refresh_job(job)
         self.assert_job(job)
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_find_jobs(self, post_patch):
         post_patch.return_value = {
             "list": [mock_job_data]
@@ -53,20 +53,20 @@ class BoonSdkJobAppTests(unittest.TestCase):
         for job in jobs:
             self.assert_job(job)
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_find_one_job(self, post_patch):
         post_patch.return_value = mock_job_data
         self.assert_job(self.app.jobs.find_one_job())
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_find_task_errors(self, post_patch):
         post_patch.return_value = {'list': [mock_task_error_data]}
         errors = list(self.app.jobs.find_task_errors(limit=1))
         assert 1 == len(errors)
         self.assert_task_error(errors[0])
 
-    @patch.object(BoonSdkClient, 'put')
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'put')
+    @patch.object(BoonClient, 'get')
     def test_pause_job(self, get_patch, put_patch):
         get_patch.return_value = mock_job_data
         put_patch.return_value = {
@@ -75,8 +75,8 @@ class BoonSdkJobAppTests(unittest.TestCase):
         assert self.app.jobs.pause_job(Job(mock_job_data))
         assert self.app.jobs.pause_job("12345")
 
-    @patch.object(BoonSdkClient, 'put')
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'put')
+    @patch.object(BoonClient, 'get')
     def test_resume_job(self, get_patch, put_patch):
         get_patch.return_value = mock_job_data
         put_patch.return_value = {
@@ -85,8 +85,8 @@ class BoonSdkJobAppTests(unittest.TestCase):
         assert self.app.jobs.resume_job(Job(mock_job_data))
         assert self.app.jobs.resume_job("12345")
 
-    @patch.object(BoonSdkClient, 'put')
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'put')
+    @patch.object(BoonClient, 'get')
     def test_cancel_job(self, get_patch, put_patch):
         get_patch.return_value = mock_job_data
         put_patch.return_value = {
@@ -95,8 +95,8 @@ class BoonSdkJobAppTests(unittest.TestCase):
         assert self.app.jobs.cancel_job(Job(mock_job_data))
         assert self.app.jobs.cancel_job("12345")
 
-    @patch.object(BoonSdkClient, 'put')
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'put')
+    @patch.object(BoonClient, 'get')
     def test_restart_job(self, get_patch, put_patch):
         get_patch.return_value = mock_job_data
         put_patch.return_value = {
@@ -105,8 +105,8 @@ class BoonSdkJobAppTests(unittest.TestCase):
         assert self.app.jobs.restart_job(Job(mock_job_data))
         assert self.app.jobs.restart_job("12345")
 
-    @patch.object(BoonSdkClient, 'put')
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'put')
+    @patch.object(BoonClient, 'get')
     def test_retry_all_failed_tasks(self, get_patch, put_patch):
         get_patch.return_value = mock_job_data
         put_patch.return_value = {
@@ -115,7 +115,7 @@ class BoonSdkJobAppTests(unittest.TestCase):
         assert self.app.jobs.retry_all_failed_tasks(Job(mock_job_data))
         assert self.app.jobs.retry_all_failed_tasks("12345")
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_find_tasks(self, post_patch):
         post_patch.return_value = {'list': [mock_task_data]}
         tasks = list(self.app.jobs.find_tasks(limit=1))
@@ -131,7 +131,7 @@ class BoonSdkJobAppTests(unittest.TestCase):
         assert 1 == len(tasks)
         self.assert_task(tasks[0])
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_find_one_task(self, post_patch):
         post_patch.return_value = mock_task_data
         task = self.app.jobs.find_one_task()
@@ -142,20 +142,20 @@ class BoonSdkJobAppTests(unittest.TestCase):
                                            state=['12345'])
         self.assert_task(task)
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_task(self, get_patch):
         get_patch.return_value = mock_task_data
         task = self.app.jobs.get_task("12345")
         self.assert_task(task)
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_refresh_task(self, get_patch):
         get_patch.return_value = mock_task_data
         task = self.app.jobs.get_task("12345")
         self.assert_task(task)
 
-    @patch.object(BoonSdkClient, 'get')
-    @patch.object(BoonSdkClient, 'put')
+    @patch.object(BoonClient, 'get')
+    @patch.object(BoonClient, 'put')
     def test_skip_task(self, put_patch, get_patch):
         get_patch.return_value = mock_task_data
         put_patch.return_value = {
@@ -164,8 +164,8 @@ class BoonSdkJobAppTests(unittest.TestCase):
         assert self.app.jobs.skip_task("12345")
         assert self.app.jobs.skip_task(Task(mock_task_data))
 
-    @patch.object(BoonSdkClient, 'get')
-    @patch.object(BoonSdkClient, 'put')
+    @patch.object(BoonClient, 'get')
+    @patch.object(BoonClient, 'put')
     def test_retry_task(self, put_patch, get_patch):
         get_patch.return_value = mock_task_data
         put_patch.return_value = {
@@ -174,7 +174,7 @@ class BoonSdkJobAppTests(unittest.TestCase):
         assert self.app.jobs.retry_task("12345")
         assert self.app.jobs.retry_task(Task(mock_task_data))
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_task_script(self, get_patch):
         get_patch.return_value = {"script": "foo"}
         script = self.app.jobs.get_task_script("12345")
@@ -182,7 +182,7 @@ class BoonSdkJobAppTests(unittest.TestCase):
         script = self.app.jobs.get_task_script(Task(mock_task_data))
         assert script['script'] == 'foo'
 
-    @patch.object(BoonSdkClient, 'stream')
+    @patch.object(BoonClient, 'stream')
     def test_download_task_log(self, stream_patch):
         log_file = "/tmp/task.log"
         try:
@@ -193,7 +193,7 @@ class BoonSdkJobAppTests(unittest.TestCase):
         stream_patch.return_value = log_file
         self.assertEquals(log_file, self.app.jobs.download_task_log("12345", log_file))
 
-    @patch.object(BoonSdkClient, 'stream_text')
+    @patch.object(BoonClient, 'stream_text')
     def test_iterate_task_log(self, stream_patch):
         stream_patch.return_value = (a for a in [b"test", b"test",  b"test"])
         count = 0

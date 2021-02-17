@@ -2,7 +2,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from boonsdk import BoonSdkClient
+from boonsdk import BoonClient
 from .util import get_boon_app
 
 logging.basicConfig(level=logging.DEBUG)
@@ -24,19 +24,19 @@ class AnalysisModuleAppTests(unittest.TestCase):
             'type': "LabelDetection"
         }
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_analyis_module(self, get_patch):
         get_patch.return_value = self.obj_data
         plmod = self.app.analysis.get_analysis_module('12345')
         self.assert_pipeline_mod(plmod)
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_find_one_analysis_module(self, post_patch):
         post_patch.return_value = self.obj_data
         plmod = self.app.analysis.find_one_analysis_module(id="12345")
         self.assert_pipeline_mod(plmod)
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_find_pipeline_mods(self, post_patch):
         post_patch.return_value = {"list": [self.obj_data]}
         plmod = list(self.app.analysis.find_analysis_modules(id="12345", limit=1))

@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from boonsdk import BoonSdkClient, app_from_env
+from boonsdk import BoonClient, app_from_env
 from zvi.hashes import read_hash_as_vectors
 
 
@@ -91,7 +91,7 @@ class HashesTests(unittest.TestCase):
             }
         }
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_read_hash_as_vectors(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {

@@ -4,7 +4,7 @@ from unittest.mock import patch
 import boonsdk
 import boonczar
 
-from boonsdk.client import BoonSdkClient
+from boonsdk.client import BoonClient
 
 
 class ProjectAppTests(unittest.TestCase):
@@ -14,17 +14,17 @@ class ProjectAppTests(unittest.TestCase):
             'accessKey': 'test123test135',
             'secretKey': 'test123test135'
         }
-        self.app = boonsdk.BoonSdkApp(self.key_dict)
+        self.app = boonsdk.BoonApp(self.key_dict)
         self.project_app = boonczar.BoonCzarApp(self.app).projects
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_create_project(self, post_patch):
         post_patch.return_value = mock_project
         project = self.project_app.create_project('cats', size=boonczar.IndexSize.LARGE,
                                                   tier=boonsdk.ProjectTier.ESSENTIALS, pid="1234")
         assert_project(project)
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_project(self, get_patch):
         get_patch.return_value = mock_project
         project = self.project_app.get_project('1234')

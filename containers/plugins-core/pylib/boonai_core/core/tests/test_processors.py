@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from boonsdk import BoonSdkClient
+from boonsdk import BoonClient
 from boonsdk.app import AssetApp
 from boonai_core.core.processors import SetAttributesProcessor, AssertAttributesProcessor, \
     PreCacheSourceFileProcessor, DeleteBySearchProcessor
@@ -76,7 +76,7 @@ class PreCacheSourceFileProcessorTests(PluginUnitTestCase):
 
 class DeleteBySearchProcessorTests(PluginUnitTestCase):
 
-    @patch.object(BoonSdkClient, 'delete')
+    @patch.object(BoonClient, 'delete')
     @patch.object(AssetApp, 'scroll_search')
     def test_generate(self, scroll_search_patch, del_patch):
         scroll_search_patch.return_value = {}

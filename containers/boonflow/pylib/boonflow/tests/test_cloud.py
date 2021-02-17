@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 from boonflow.cloud import get_google_storage_client, \
     get_aws_client, get_credentials_blob, get_azure_storage_client
-from boonsdk.client import BoonSdkClient
+from boonsdk.client import BoonClient
 from boonflow.testing import zorroa_test_path
 
 logging.basicConfig(level=logging.DEBUG)
@@ -35,7 +35,7 @@ class TetCloudUtilFunction(TestCase):
         finally:
             del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_google_storage_client_from_job_creds(self, get_patch):
         with open(zorroa_test_path('creds/gcp_test.json'), 'r') as fp:
             gcs_creds = fp.read()
@@ -52,7 +52,7 @@ class TetCloudUtilFunction(TestCase):
             del os.environ['BOONAI_JOB_ID']
             del os.environ['BOONAI_CREDENTIALS_TYPES']
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_aws_client(self, get_patch):
         get_patch.return_value = {
             'aws_access_key_id': 'boom',
@@ -62,7 +62,7 @@ class TetCloudUtilFunction(TestCase):
         assert getattr(client, 'create_bucket')
         assert getattr(client, 'get_object')
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_azure_client(self, get_patch):
         get_patch.return_value = {
             'connection_string': 'DefaultEndpointsProtocol=https;AccountName=zorroatest;'
@@ -78,7 +78,7 @@ class TetCloudUtilFunction(TestCase):
             del os.environ['BOONAI_JOB_ID']
             del os.environ['BOONAI_CREDENTIALS_TYPES']
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_credentials_blob(self, get_patch):
         os.environ['BOONAI_JOB_ID'] = 'abc123'
         os.environ['BOONAI_CREDENTIALS_TYPES'] = 'AWS'

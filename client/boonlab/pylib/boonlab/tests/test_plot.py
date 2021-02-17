@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from boonsdk import BoonSdkClient, app_from_env
+from boonsdk import BoonClient, app_from_env
 from zvi.plot import plot_tsne
 
 
@@ -133,7 +133,7 @@ class PlotTests(unittest.TestCase):
             }
         }
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_plot_tsne(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {

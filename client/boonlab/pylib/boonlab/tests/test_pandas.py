@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from boonsdk import BoonSdkClient, app_from_env
+from boonsdk import BoonClient, app_from_env
 from zvi.pandas import search_to_df
 
 
@@ -88,7 +88,7 @@ class PandasTests(unittest.TestCase):
             }
         }
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_search_to_df(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {
@@ -111,7 +111,7 @@ class PandasTests(unittest.TestCase):
         assert df.iloc[1][attrs[1]] == 'BBBBBBBB'  # simhash
         assert not df.iloc[2][attrs[2]]  # no `labels` for last asset
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_search_to_df_no_search(self, post_patch):
         post_patch.return_value = self.mock_search_result
         df = search_to_df(

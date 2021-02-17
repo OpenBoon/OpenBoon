@@ -92,7 +92,7 @@ def submit_clip_batch(app, asset_id, batch):
     Submit a batch of clips.
 
     Args:
-        app (BoonSdkApp): An app instance.
+        app (BoonApp): An app instance.
         asset_id (str): The asset Id.
         batch (list): A batch of timeline data.
 
@@ -110,7 +110,7 @@ def analyze_timelines(app, sim, asset_id, timelines):
     Analyze all the timelines for the given asset.
 
     Args:
-        app (BoonSdkApp): An App instance.
+        app (BoonApp): An App instance.
         sim (SimilarityEngine): The similarity engine for hashes.
         asset_id (str): The asset Id.
         timelines (list): A list of timelines

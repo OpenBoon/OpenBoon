@@ -3,7 +3,7 @@ import unittest
 import tempfile
 from unittest.mock import patch
 
-from boonsdk import BoonSdkClient, ModelType, Model
+from boonsdk import BoonClient, ModelType, Model
 from .util import get_boon_app
 
 logging.basicConfig(level=logging.DEBUG)
@@ -23,13 +23,13 @@ class ModelAppTests(unittest.TestCase):
             'fileId': '/abc/123/345/foo.zip'
         }
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_model(self, get_patch):
         get_patch.return_value = self.model_data
         model = self.app.models.get_model('12345')
         self.assert_model(model)
 
-    @patch.object(BoonSdkClient, 'send_file')
+    @patch.object(BoonClient, 'send_file')
     def test_upload_trained_model_directory(self, post_patch):
         post_patch.return_value = {'category': 'LabelDetection'}
 
@@ -37,7 +37,7 @@ class ModelAppTests(unittest.TestCase):
         module = self.app.models.upload_trained_model('12345', tmp_dir, ["dog", "cat"])
         assert module.category == 'LabelDetection'
 
-    @patch.object(BoonSdkClient, 'send_file')
+    @patch.object(BoonClient, 'send_file')
     def test_upload_trained_model_keras_inst(self, post_patch):
         class MockKerasModel:
             def save(self, path):
@@ -47,25 +47,25 @@ class ModelAppTests(unittest.TestCase):
         module = self.app.models.upload_trained_model('12345', MockKerasModel(), ["dog", "cat"])
         assert module.category == 'LabelDetection'
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_find_one_model(self, post_patch):
         post_patch.return_value = self.model_data
         model = self.app.models.find_one_model(id="12345")
         self.assert_model(model)
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_find_models(self, post_patch):
         post_patch.return_value = {"list": [self.model_data]}
         models = list(self.app.models.find_models(id="12345", limit=1))
         self.assert_model(models[0])
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_create_model(self, post_patch):
         post_patch.return_value = self.model_data
         model = self.app.models.create_model('test', ModelType.ZVI_LABEL_DETECTION)
         self.assert_model(model)
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_train_model(self, post_patch):
         job_data = {
             "id": "12345",
@@ -77,7 +77,7 @@ class ModelAppTests(unittest.TestCase):
         assert job_data['id'] == job.id
         assert job_data['name'] == job.name
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_deploy_model(self, post_patch):
         job_data = {
             "id": "12345",
@@ -95,7 +95,7 @@ class ModelAppTests(unittest.TestCase):
         assert self.model_data['type'] == model.type.name
         assert self.model_data['fileId'] == model.file_id
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_label_counts(self, get_patch):
         value = {
             'dog': 1,
@@ -105,7 +105,7 @@ class ModelAppTests(unittest.TestCase):
         rsp = self.app.models.get_label_counts(Model({'id': 'foo'}))
         assert value == rsp
 
-    @patch.object(BoonSdkClient, 'put')
+    @patch.object(BoonClient, 'put')
     def test_rename_label(self, put_patch):
         value = {
             'updated': 1
@@ -114,7 +114,7 @@ class ModelAppTests(unittest.TestCase):
         rsp = self.app.models.rename_label(Model({'id': 'foo'}), 'dog', 'cat')
         assert value == rsp
 
-    @patch.object(BoonSdkClient, 'delete')
+    @patch.object(BoonClient, 'delete')
     def test_delete_label(self, put_patch):
         value = {
             'updated': 1
@@ -123,7 +123,7 @@ class ModelAppTests(unittest.TestCase):
         rsp = self.app.models.delete_label(Model({'id': 'foo'}), 'dog')
         assert value == rsp
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_download_labeled_images(self, get_patch):
         raw = {'id': '12345', 'type': 'ZVI_LABEL_DETECTION'}
         model = Model(raw)
@@ -132,7 +132,7 @@ class ModelAppTests(unittest.TestCase):
         assert '/tmp/dstest' == dl.dst_dir
         assert '12345' == dl.model.id
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_model_type_info(self, get_patch):
         raw = {
             'name': 'ZVI_LABEL_DETECTION',
@@ -152,7 +152,7 @@ class ModelAppTests(unittest.TestCase):
         assert props.min_concepts == 1
         assert props.min_examples == 1
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_all_model_type_info(self, get_patch):
         raw = {
             'name': 'ZVI_LABEL_DETECTION',

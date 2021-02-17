@@ -7,7 +7,7 @@ from unittest.mock import patch
 import boonflow.video as video
 import boonflow.media as media
 from boonflow.testing import zorroa_test_path, TestAsset
-from boonsdk import TimelineBuilder, BoonSdkClient
+from boonsdk import TimelineBuilder, BoonClient
 
 
 logging.basicConfig(level=logging.NOTSET)
@@ -44,7 +44,7 @@ def test_webvtt_builder():
     assert "hello, you bastard" in data
 
 
-@patch.object(BoonSdkClient, 'post')
+@patch.object(BoonClient, 'post')
 def test_save_timeline(post_patch):
     post_patch.return_value = {}
     asset = TestAsset('12345')

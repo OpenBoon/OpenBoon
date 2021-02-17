@@ -1,6 +1,6 @@
 import os
 
-from boonsdk import BoonSdkApp
+from boonsdk import BoonApp
 
 
 def get_test_file(path):
@@ -21,10 +21,10 @@ def get_test_file(path):
 
 def get_boon_app():
     """
-    Get a BoonSdkApp with a fake key for testing.
+    Get a BoonApp with a fake key for testing.
 
     Returns:
-        BoonSdkApp: An unusable Boon AI app.
+        BoonApp: An unusable Boon AI app.
 
     """
     key_dict = {
@@ -32,4 +32,4 @@ def get_boon_app():
         'keyId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
         'sharedKey': 'test123test135'
     }
-    return BoonSdkApp(key_dict)
+    return BoonApp(key_dict)

@@ -3,7 +3,7 @@ import os
 import unittest
 from unittest.mock import patch, Mock
 
-from boonsdk import Asset, BoonSdkClient, app_from_env
+from boonsdk import Asset, BoonClient, app_from_env
 from boonsdk.entity import TimelineBuilder
 
 
@@ -12,7 +12,7 @@ class VideoClipAppTests(unittest.TestCase):
     def setUp(self):
         self.app = app_from_env()
 
-    @patch.object(BoonSdkClient, 'post', return_value={'created': 1})
+    @patch.object(BoonClient, 'post', return_value={'created': 1})
     def test_create_clips(self, _):
         asset = Asset({'id': '123'})
         tl = TimelineBuilder(asset, 'foo')
@@ -21,7 +21,7 @@ class VideoClipAppTests(unittest.TestCase):
         res = self.app.clips.create_clips(tl)
         assert res['created'] == 1
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_create_clip(self, post_patch):
         post_patch.return_value = {
             'id': '12345',
@@ -35,7 +35,7 @@ class VideoClipAppTests(unittest.TestCase):
         assert clip.timeline == 'foo-bar'
         assert clip.track == 'track'
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_get_webvtt(self, post_patch):
         mockresponse = Mock()
         mockresponse.content = b'foo'
@@ -45,7 +45,7 @@ class VideoClipAppTests(unittest.TestCase):
         vtt = self.app.clips.get_webvtt(asset)
         assert 'foo' == vtt
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_get_webvtt_to_file(self, post_patch):
         mockresponse = Mock()
         mockresponse.content = b'foo'
@@ -66,8 +66,8 @@ class VideoClipAppTests(unittest.TestCase):
             contents = fp.read()
         assert 'foo' == contents
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_scroll_search(self, post_patch, del_patch):
         scroll_result = copy.deepcopy(mock_clip_search_result)
         scroll_result['_scroll_id'] = 'abc123'
@@ -80,8 +80,8 @@ class VideoClipAppTests(unittest.TestCase):
             assert clip.timeline == 'foo'
             assert clip.track == 'bar'
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_search(self, post_patch, del_patch):
         scroll_result = copy.deepcopy(mock_clip_search_result)
         post_patch.side_effect = [scroll_result, {'hits': {'hits': []}}]
@@ -92,7 +92,7 @@ class VideoClipAppTests(unittest.TestCase):
             assert clip.timeline == 'foo'
             assert clip.track == 'bar'
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_clip(self, get_patch):
         get_patch.return_value = {
             'id': 'dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',

@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
-class BoonSdkAppTests(unittest.TestCase):
+class BoonAppTests(unittest.TestCase):
 
     def setUp(self):
         # This is not a valid key
@@ -21,13 +21,13 @@ class BoonSdkAppTests(unittest.TestCase):
         self.key_str = base64.b64encode(json.dumps(self.key_dict).encode())
 
     def test_create_app_with_key_dict(self):
-        app = boonsdk.BoonSdkApp(self.key_dict)
+        app = boonsdk.BoonApp(self.key_dict)
         assert app.client
         assert app.client.apikey
         assert app.client.headers()
 
     def test_create_app_with_key_str(self):
-        app = boonsdk.BoonSdkApp(self.key_str)
+        app = boonsdk.BoonApp(self.key_str)
         assert app.client
         assert app.client.apikey
         assert app.client.headers()

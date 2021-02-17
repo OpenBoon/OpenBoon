@@ -2,7 +2,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from boonsdk import BoonSdkClient, BoonSdkApp, DataSource
+from boonsdk import BoonClient, BoonApp, DataSource
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -17,9 +17,9 @@ class BoonSdkDataSourceAppTests(unittest.TestCase):
             'keyId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'sharedKey': 'test123test135'
         }
-        self.app = BoonSdkApp(self.key_dict)
+        self.app = BoonApp(self.key_dict)
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_create_datasource(self, post_patch):
         value = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
@@ -36,7 +36,7 @@ class BoonSdkDataSourceAppTests(unittest.TestCase):
         assert ds.file_types == ['jpg']
         assert ds.modules == ['google-ocr']
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_get_datasource(self, post_patch):
         value = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
@@ -49,7 +49,7 @@ class BoonSdkDataSourceAppTests(unittest.TestCase):
         assert value['name'] == ds.name
         assert value['uri'] == ds.uri
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_import_files(self, post_patch):
         value = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
@@ -60,7 +60,7 @@ class BoonSdkDataSourceAppTests(unittest.TestCase):
         assert value['id'] == job.id
         assert value['name'] == job.name
 
-    @patch.object(BoonSdkClient, 'delete')
+    @patch.object(BoonClient, 'delete')
     def test_delete_ds(self, post_patch):
         value = {'type': 'DataSource',
                  'id': 'bfdb2d1c-597f-16a9-b0a9-0242ac15000a',

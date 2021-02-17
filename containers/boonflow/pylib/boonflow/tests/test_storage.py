@@ -7,7 +7,7 @@ from unittest.mock import patch
 import pytest
 
 import boonsdk
-from boonsdk import StoredFile, BoonSdkClient, AnalysisModule, Job, Model
+from boonsdk import StoredFile, BoonClient, AnalysisModule, Job, Model
 from boonsdk.app import ModelApp
 from boonflow import storage
 from boonflow.testing import zorroa_test_data, TestAsset
@@ -79,7 +79,7 @@ class FileCacheTests(TestCase):
         with pytest.raises(FileNotFoundError):
             self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
 
-    @patch.object(BoonSdkClient, 'stream')
+    @patch.object(BoonClient, 'stream')
     def test_precache_file(self, post_patch):
         pfile = StoredFile({
             'name': 'cat.jpg',
@@ -93,7 +93,7 @@ class FileCacheTests(TestCase):
         path = self.lfc.precache_file(pfile, bird)
         assert os.path.getsize(path) == os.path.getsize(bird)
 
-    @patch.object(BoonSdkClient, 'stream')
+    @patch.object(BoonClient, 'stream')
     def test_precache_file_zero_bytes(self, post_patch):
         pfile = StoredFile({
             'name': 'cat.jpg',
@@ -113,7 +113,7 @@ class FileStorageTests(TestCase):
         os.environ['BOONAI_STORAGE_PIPELINE_URL'] = 'http://localhost:9000'
         self.fs = storage.FileStorage()
 
-    @patch.object(BoonSdkClient, 'stream')
+    @patch.object(BoonClient, 'stream')
     def test_localize_remote_file(self, post_patch):
         pfile = {
             'name': 'cat.jpg',
@@ -136,7 +136,7 @@ class FileStorageTests(TestCase):
         path = self.fs.localize_file('https://i.imgur.com/WkomVeG.jpg')
         assert os.path.exists(path)
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_localize_internal_uri(self, get_object_patch):
         class MockStream:
             @property
@@ -165,9 +165,9 @@ class TestAssetStorage(TestCase):
     def tearDown(self):
         self.fs.cache.clear()
 
-    @patch.object(BoonSdkClient, 'put')
+    @patch.object(BoonClient, 'put')
     @patch('requests.put')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_store_file(self, post_patch, req_put_patch, put_patch):
         post_patch.return_value = {
             'uri': "http://localhost:9999/foo/bar/signed",
@@ -187,7 +187,7 @@ class TestAssetStorage(TestCase):
         assert 'cat.jpg' == result.name
         assert 'proxy' == result.category
 
-    @patch.object(BoonSdkClient, 'upload_file')
+    @patch.object(BoonClient, 'upload_file')
     def test_store_blob(self, upload_patch):
         upload_patch.return_value = {
             'name': 'vid-int-moderation.json',
@@ -202,7 +202,7 @@ class TestAssetStorage(TestCase):
         assert 'google' == result.category
         assert 'vid-int-moderation.json' == result.name
 
-    @patch.object(BoonSdkClient, 'upload_file')
+    @patch.object(BoonClient, 'upload_file')
     def test_store_blob_no_ext(self, upload_patch):
         upload_patch.return_value = StoredFile({
             'name': 'vid-int-moderation.json',
@@ -215,7 +215,7 @@ class TestAssetStorage(TestCase):
             self.fs.assets.store_blob(
                 asset, '{"jo": "boo"}', 'google', 'vid-int-moderation')
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_native_uri(self, get_patch):
         get_patch.return_value = {'uri': 'gs://hulk-hogan'}
         pfile = StoredFile({
@@ -237,9 +237,9 @@ class TestProjectStorage(TestCase):
     def tearDown(self):
         self.fs.cache.clear()
 
-    @patch.object(BoonSdkClient, 'put')
+    @patch.object(BoonClient, 'put')
     @patch('requests.put')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_store_file_with_rename(self, post_patch, req_put_patch, put_patch):
         post_patch.return_value = {
             'uri': "http://localhost:9999/foo/bar/signed",
@@ -261,9 +261,9 @@ class TestProjectStorage(TestCase):
         assert 'celebs.dat' == result.name
         assert 'face_model' == result.category
 
-    @patch.object(BoonSdkClient, 'put')
+    @patch.object(BoonClient, 'put')
     @patch('requests.put')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_store_file(self, post_patch, req_put_patch, put_patch):
         post_patch.return_value = {
             'uri': "http://localhost:9999/foo/bar/signed",
@@ -282,9 +282,9 @@ class TestProjectStorage(TestCase):
         assert 'fake_model.dat' == result.name
         assert 'fake' == result.category
 
-    @patch.object(BoonSdkClient, 'put')
+    @patch.object(BoonClient, 'put')
     @patch('requests.put')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_store_file_by_id(self, post_patch, req_put_patch, put_patch):
         post_patch.return_value = {
             'uri': "http://localhost:9999/foo/bar/signed",
@@ -303,7 +303,7 @@ class TestProjectStorage(TestCase):
         assert 'fake_model.dat' == result.name
         assert 'fake' == result.category
 
-    @patch.object(BoonSdkClient, 'stream')
+    @patch.object(BoonClient, 'stream')
     def test_localize_file(self, post_patch):
         post_patch.return_value = '/tmp/toucan.jpg'
         pfile = StoredFile({
@@ -315,7 +315,7 @@ class TestProjectStorage(TestCase):
         path = self.fs.localize_file(pfile)
         assert path.endswith('b9430537beae3fe8e6ba2e11667f0ccc9be82a28.jpg')
 
-    @patch.object(BoonSdkClient, 'stream')
+    @patch.object(BoonClient, 'stream')
     def test_localize_asset_file_with_asset_override(self, post_patch):
         pfile = StoredFile({
             'name': 'cat.jpg',
@@ -327,13 +327,13 @@ class TestProjectStorage(TestCase):
         self.fs.projects.localize_file(pfile)
         assert 'assets/123456/proxy/cat.jpg' in post_patch.call_args_list[0][0][0]
 
-    @patch.object(BoonSdkClient, 'stream')
+    @patch.object(BoonClient, 'stream')
     def test_localize_file_id(self, post_patch):
         post_patch.return_value = '/tmp/cat.jpg'
         self.fs.projects.localize_file('asset/foo/fake/fake_model.dat')
         assert 'asset/foo/fake/fake_model.dat' in post_patch.call_args_list[0][0][0]
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_native_uri(self, get_patch):
         get_patch.return_value = {'uri': 'gs://hulk-hogan'}
         pfile = StoredFile({
@@ -365,9 +365,9 @@ class ModelStorageTests(TestCase):
         path = self.fs.models.install_model('asset/foo/fake/fake_model.zip')
         assert os.path.exists(path + "/fake_model.dat")
 
-    @patch.object(BoonSdkClient, 'put')
+    @patch.object(BoonClient, 'put')
     @patch('requests.put')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     @patch.object(storage.ModelStorage, 'publish_model')
     @patch.object(ModelApp, 'deploy_model')
     def test_save_model(self, deploy_patch, publish_patch, post_patch, req_put_patch, put_patch):

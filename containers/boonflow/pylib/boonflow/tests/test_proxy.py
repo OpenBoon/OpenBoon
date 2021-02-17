@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 import boonflow.proxy as proxy
-from boonsdk.client import BoonSdkClient
+from boonsdk.client import BoonClient
 from boonflow.testing import zorroa_test_path, TestAsset
 from boonflow import file_storage
 
@@ -97,7 +97,7 @@ class ProxyFunctionTests(TestCase):
         ])
         assert [0.0, 0.0, 0.5, 0.5, 0.2, 0.2] == rect
 
-    @patch.object(BoonSdkClient, 'stream')
+    @patch.object(BoonClient, 'stream')
     def test_get_proxy_level(self, stream_patch):
         asset = TestAsset(IMAGE_JPG, id='123456')
         asset.set_attr('files', self.file_list)
@@ -108,7 +108,7 @@ class ProxyFunctionTests(TestCase):
         prx1 = proxy.get_proxy_level(asset, 9)
         assert 'image_400x400.jpg' == prx1.name
 
-    @patch.object(BoonSdkClient, 'stream')
+    @patch.object(BoonClient, 'stream')
     def test_get_proxy_level_path(self, stream_patch):
         asset = TestAsset(IMAGE_JPG, id='123456')
         asset.set_attr('files', self.file_list)

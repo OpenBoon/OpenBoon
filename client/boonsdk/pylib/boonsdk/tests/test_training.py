@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from boonsdk import BoonSdkClient, BoonSdkApp, Model
+from boonsdk import BoonClient, BoonApp, Model
 from boonsdk.app import AssetApp, ModelApp
 from boonsdk.training import TrainingSetDownloader
 
@@ -19,10 +19,10 @@ key_dict = {
 class TrainingSetDownloaderTests(unittest.TestCase):
 
     def setUp(self):
-        self.app = BoonSdkApp(key_dict)
+        self.app = BoonApp(key_dict)
 
     @patch.object(ModelApp, 'get_model')
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_setup_labels_std_base_dir(self, get_patch, get_model_patch):
         get_model_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
         get_patch.return_value = {
@@ -49,9 +49,9 @@ class TrainingSetDownloaderTests(unittest.TestCase):
 
     @patch.object(ModelApp, 'get_model')
     @patch.object(AssetApp, 'download_file')
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
+    @patch.object(BoonClient, 'get')
     def test_build_labels_std_format(
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
         get_ds_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
@@ -71,9 +71,9 @@ class TrainingSetDownloaderTests(unittest.TestCase):
 
     @patch.object(ModelApp, 'get_model')
     @patch.object(AssetApp, 'download_file')
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
+    @patch.object(BoonClient, 'get')
     def test_download_object_detection(
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
         get_ds_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
@@ -101,9 +101,9 @@ class TrainingSetDownloaderTests(unittest.TestCase):
 
     @patch.object(ModelApp, 'get_model')
     @patch.object(AssetApp, 'download_file')
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
+    @patch.object(BoonClient, 'get')
     def test_build_objects_keras_format(
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
         get_ds_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})

@@ -3,7 +3,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from boonsdk import BoonSdkClient, BoonSdkApp
+from boonsdk import BoonClient, BoonApp
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -18,9 +18,9 @@ class BoonSdkProjectAppTests(unittest.TestCase):
             'keyId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'sharedKey': 'test123test135'
         }
-        self.app = BoonSdkApp(self.key_dict)
+        self.app = BoonApp(self.key_dict)
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_project(self, get_patch):
         value = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',

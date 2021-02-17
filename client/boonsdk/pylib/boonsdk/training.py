@@ -44,7 +44,7 @@ class TrainingSetDownloader:
         Create a new TrainingImageDownloader.
 
         Args:
-            app: (BoonSdkApp): A BoonSdkApp instance.
+            app: (BoonApp): A BoonApp instance.
             model: (Model): A Model or unique Model ID.
             style: (str): The output style: labels_std, objects_keras, objects_coco
             dst_dir (str): A destination directory to write the files into.

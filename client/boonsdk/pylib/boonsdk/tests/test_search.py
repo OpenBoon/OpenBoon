@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from boonsdk import BoonSdkClient, app_from_env, Asset, \
+from boonsdk import BoonClient, app_from_env, Asset, \
     SimilarityQuery, LabelConfidenceQuery, SingleLabelConfidenceQuery, \
     FaceSimilarityQuery, AssetSearchCsvExporter, AssetSearchScroller, \
     AssetSearchResult, VideoClipContentMatchQuery
@@ -20,8 +20,8 @@ class AssetSearchScrollerTests(unittest.TestCase):
         self.app = app_from_env()
         self.mock_search_result = mock_search_result
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_iterate(self, post_patch, del_patch):
         post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
         del_patch.return_value = {}
@@ -31,8 +31,8 @@ class AssetSearchScrollerTests(unittest.TestCase):
         results = list(scroller)
         assert 2 == len(results)
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_iterate_batch(self, post_patch, del_patch):
         post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
         del_patch.return_value = {}
@@ -42,8 +42,8 @@ class AssetSearchScrollerTests(unittest.TestCase):
         results = list(scroller.batches_of(2))
         assert 1 == len(results)
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_iterate_raw_response(self, post_patch, del_patch):
         post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
         del_patch.return_value = {}
@@ -54,8 +54,8 @@ class AssetSearchScrollerTests(unittest.TestCase):
         results = list(scroller)
         assert results[0] == self.mock_search_result
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_search_es_object(self, post_patch, del_patch):
         post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
         del_patch.return_value = {}
@@ -74,8 +74,8 @@ class AssetSearchCsvExporterTests(unittest.TestCase):
         self.app = app_from_env()
         self.mock_search_result = mock_search_result
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_export(self, post_patch, del_patch):
         post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
         del_patch.return_value = {}
@@ -106,8 +106,8 @@ class AssetSearchResultTests(unittest.TestCase):
         self.app = app_from_env()
         self.mock_search_result = mock_search_result
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_properties(self, post_patch, del_patch):
         post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
         del_patch.return_value = {}
@@ -118,8 +118,8 @@ class AssetSearchResultTests(unittest.TestCase):
         assert 100 == results.total_size
         assert results.raw_response == mock_search_result
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_next_page(self, post_patch, del_patch):
         post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
         del_patch.return_value = {}
@@ -128,7 +128,7 @@ class AssetSearchResultTests(unittest.TestCase):
         next_page = results.next_page()
         assert next_page.raw_response == {"hits": {"hits": []}}
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_batches_of(self, post_patch):
         post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
 
@@ -139,7 +139,7 @@ class AssetSearchResultTests(unittest.TestCase):
             asserted = True
         assert asserted
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_batches_of_with_max(self, post_patch):
         post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
 
@@ -150,8 +150,8 @@ class AssetSearchResultTests(unittest.TestCase):
             asserted = True
         assert asserted
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_aggegation(self, post_patch, del_patch):
         post_patch.side_effect = [self.mock_search_result]
         del_patch.return_value = {}
@@ -161,8 +161,8 @@ class AssetSearchResultTests(unittest.TestCase):
         assert 1 == agg["buckets"][0]["doc_count"]
         assert "jpg" == agg["buckets"][0]["key"]
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_aggegation_error_not_exist(self, post_patch, del_patch):
         post_patch.side_effect = [self.mock_search_result]
         del_patch.return_value = {}
@@ -170,8 +170,8 @@ class AssetSearchResultTests(unittest.TestCase):
         results = AssetSearchResult(self.app, {})
         assert results.aggregation("bob") is None
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_aggegation_error_multiple(self, post_patch, del_patch):
         post_patch.side_effect = [self.mock_search_result]
         del_patch.return_value = {}
@@ -180,8 +180,8 @@ class AssetSearchResultTests(unittest.TestCase):
         with pytest.raises(ValueError):
             results.aggregation("dogs")
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_aggegation_fully_qualified(self, post_patch, del_patch):
         post_patch.side_effect = [self.mock_search_result]
         del_patch.return_value = {}
@@ -189,7 +189,7 @@ class AssetSearchResultTests(unittest.TestCase):
         results = AssetSearchResult(self.app, {})
         assert results.aggregation("sterm#dogs") is not None
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_search_es_object(self, post_patch):
         post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
 

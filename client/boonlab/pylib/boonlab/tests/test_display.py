@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from boonsdk import boonsdkClient, app_from_env
+from boonsdk import BoonClient, app_from_env
 from zvi.display import show_thumbnails, show_asset
 
 
@@ -91,7 +91,7 @@ class DisplayTests(unittest.TestCase):
             }
         }
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_show_thumbnails(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {
@@ -103,7 +103,7 @@ class DisplayTests(unittest.TestCase):
         assert len(paths) == 3
         assert all(path.endswith('jpg') for path in paths)
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_show_asset(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {

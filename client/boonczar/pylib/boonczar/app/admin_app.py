@@ -34,7 +34,7 @@ def from_app(app):
     Create and return an BoonCzarApp instance.
 
     Args:
-        app (BoonSdkApp): A BoonSdkApp instance.
+        app (BoonApp): A BoonApp instance.
 
     Returns:
         BoonCzarApp: A  BoonCzarApp instance.

@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 from dateutil.tz import tzutc
 
-from boonsdk import BoonSdkClient, Asset
+from boonsdk import BoonClient, Asset
 from boonai_core.core.generators import GcsBucketGenerator, AssetSearchGenerator, \
     S3BucketGenerator, AzureBucketGenerator
 from boonflow import Context
@@ -79,8 +79,8 @@ class AzureBucketGeneratorUnitTests(unittest.TestCase):
 
 class AssetSearchGeneratorTests(unittest.TestCase):
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_generate(self, post_patch, del_patch):
         post_patch.side_effect = [mock_search_result, {'_scroll_id': 'bones', 'hits': {'hits': []}}]
         del_patch.return_value = {}

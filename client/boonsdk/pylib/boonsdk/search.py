@@ -34,7 +34,7 @@ class SearchScroller:
         Create a new AbstractSearchScroller instance.
 
         Args:
-            app (BoonSdkApp): A BoonSdkApp instance.
+            app (BoonApp): A BoonApp instance.
             search: (dict): The ES search
             timeout (str): The maximum amount of time the ES scroll will be active unless it's
                 refreshed.
@@ -184,7 +184,7 @@ class SearchResult:
         Args:
             klass (Class): The Class to wrap the search result.
             endpoint (str): The endpoint to use for search.
-            app (BoonSdkApp): A BoonSdkApp instance.
+            app (BoonApp): A BoonApp instance.
             search (dict): An ElasticSearch query.
         """
         self.klass = klass

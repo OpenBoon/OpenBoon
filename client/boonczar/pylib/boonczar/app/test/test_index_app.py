@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import boonsdk
 import boonczar
-from boonsdk.client import BoonSdkClient
+from boonsdk.client import BoonClient
 
 
 class IndexAppTests(unittest.TestCase):
@@ -13,52 +13,52 @@ class IndexAppTests(unittest.TestCase):
             'accessKey': 'test123test135',
             'secretKey': 'test123test135'
         }
-        self.app = boonsdk.BoonSdkApp(self.key_dict)
+        self.app = boonsdk.BoonApp(self.key_dict)
         self.index_app = boonczar.BoonCzarApp(self.app).indexes
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_create_index(self, post_patch):
         post_patch.return_value = mock_index_data
         index = self.index_app.create_index(boonczar.IndexSize.LARGE)
         assert_mock_index(index)
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_migrate_index(self, post_patch):
         post_patch.return_value = mock_index_task_data
         task = self.index_app.migrate_index('abc123', '456789')
         assert_mock_task(task)
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_index_task(self, get_patch):
         get_patch.return_value = mock_index_task_data
         task = self.index_app.get_index_task('abc123')
         assert_mock_task(task)
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_index_tasks(self, get_patch):
         get_patch.return_value = [mock_index_task_data]
         tasks = self.index_app.get_index_tasks()
         assert_mock_task(tasks[0])
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_es_task_info(self, get_patch):
         get_patch.return_value = mock_es_task_info
         info = self.index_app.get_es_task_info('abc123')
         assert info['action'] == 'indices:data/write/reindex'
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_migrate_project_index(self, post_patch):
         post_patch.return_value = mock_index_task_data
         task = self.index_app.migrate_project_index('1234', 'english_strict', 2)
         assert_mock_task(task)
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_get_indexes(self, post_patch):
         post_patch.return_value = {'list': [mock_index_data]}
         for index in self.index_app.find_indexes(limit=1):
             assert_mock_index(index)
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_index_attrs(self, get_patch):
         get_patch.return_value = {'name': 'foo'}
         index = self.index_app.get_index_attrs('foo')

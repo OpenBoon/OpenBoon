@@ -22,14 +22,14 @@ logger = logging.getLogger(__name__)
 DEFAULT_SERVER = 'https://api.boonai.io'
 
 
-class BoonSdkClient(object):
+class BoonClient(object):
     """
-    BoonSdkClient is used to communicate to a Boon AI API server.
+    BoonClient is used to communicate to a Boon AI API server.
     """
 
     def __init__(self, apikey, server, **kwargs):
         """
-        Create a new BoonSdkClient instance.
+        Create a new BoonClient instance.
 
         Args:
             apikey: An API key in any supported form. (dict, base64 string, or open file handle)
@@ -58,7 +58,7 @@ class BoonSdkClient(object):
                                         headers=self.headers(), stream=True)
 
                 if not response.ok:
-                    raise BoonSdkClientException(
+                    raise BoonClientException(
                         "Failed to stream asset: %s, %s" % (url, response))
 
                 for block in response.iter_content(1024):
@@ -82,7 +82,7 @@ class BoonSdkClient(object):
             response = requests.get(self.get_url(url), verify=self.verify,
                                     headers=self.headers(), stream=True)
             if not response.ok:
-                raise BoonSdkClientException(
+                raise BoonClientException(
                     "Failed to stream text: %s" % response)
 
             for line in response.iter_lines(decode_unicode=True):
@@ -505,17 +505,17 @@ class BoonSdkJsonEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-class BoonSdkClientException(BoonSdkException):
-    """The base exception class for all BoonSdkClient related Exceptions."""
+class BoonClientException(BoonSdkException):
+    """The base exception class for all BoonClient related Exceptions."""
     pass
 
 
-class BoonSdkRequestException(BoonSdkClientException):
+class BoonSdkRequestException(BoonClientException):
     """
     The base exception class for all exceptions thrown from boonsdk.
     """
     def __init__(self, data):
-        super(BoonSdkClientException, self).__init__(
+        super(BoonClientException, self).__init__(
             data.get("message", "Unknown request exception"))
         self.__data = data
 
@@ -539,7 +539,7 @@ class BoonSdkRequestException(BoonSdkClientException):
         return "<BoonSdkRequestException msg=%s>" % self.__data["message"]
 
 
-class BoonSdkConnectionException(BoonSdkClientException):
+class BoonSdkConnectionException(BoonClientException):
     """
     This exception is thrown if the client encounters a connectivity issue
     with the BoonSdk API servers..

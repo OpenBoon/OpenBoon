@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from boonsdk import Asset, BoonSdkClient, app_from_env, \
+from boonsdk import Asset, BoonClient, app_from_env, \
     FileImport, FileUpload, StoredFile, BoonSdkException, Model
 from .util import get_test_file
 
@@ -106,14 +106,14 @@ class AssetAppTests(unittest.TestCase):
             }
         }
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_import_files(self, post_patch):
         post_patch.return_value = self.mock_import_result
         assets = [FileImport('gs://zorroa-dev-data/image/pluto.png')]
         rsp = self.app.assets.batch_import_files(assets)
         assert rsp['created'][0] == 'dd0KZtqyec48n1q1fniqVMV5yllhRRGx'
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_get_asset(self, get_patch):
         get_patch.return_value = {
             'id': 'abc13',
@@ -129,7 +129,7 @@ class AssetAppTests(unittest.TestCase):
         assert asset.id is not None
         assert asset.document is not None
 
-    @patch.object(BoonSdkClient, 'upload_files')
+    @patch.object(BoonClient, 'upload_files')
     def test_batch_upload_directory(self, post_patch):
         post_patch.return_value = self.mock_import_result
         path = get_test_file('images/set01/toucan.jpg')
@@ -149,7 +149,7 @@ class AssetAppTests(unittest.TestCase):
         assert 1 == rsp['batch_count']
         assert called
 
-    @patch.object(BoonSdkClient, 'upload_files')
+    @patch.object(BoonClient, 'upload_files')
     def test_batch_upload_directory_file_types(self, post_patch):
         post_patch.return_value = self.mock_import_result
         path = get_test_file('images/set01/toucan.jpg')
@@ -169,7 +169,7 @@ class AssetAppTests(unittest.TestCase):
         assert 0 == rsp['batch_count']
         assert not called
 
-    @patch.object(BoonSdkClient, 'upload_files')
+    @patch.object(BoonClient, 'upload_files')
     def test_batch_upload_directory_batch_size(self, post_patch):
         post_patch.return_value = self.mock_import_result
         path = get_test_file('images/set01/toucan.jpg')
@@ -182,7 +182,7 @@ class AssetAppTests(unittest.TestCase):
         assert 579485 == rsp['file_size']
         assert 5 == rsp['batch_count']
 
-    @patch.object(BoonSdkClient, 'upload_files')
+    @patch.object(BoonClient, 'upload_files')
     def test_batch_upload_files(self, post_patch):
         post_patch.return_value = self.mock_import_result
 
@@ -191,14 +191,14 @@ class AssetAppTests(unittest.TestCase):
         rsp = self.app.assets.batch_upload_files(assets)
         assert rsp['created'][0] == 'dd0KZtqyec48n1q1fniqVMV5yllhRRGx'
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_search_defaults(self, post_patch):
         post_patch.return_value = self.mock_search_result
         assets = self.app.assets.search().items
         assert 'https://i.imgur.com/SSN26nN.jpg' == assets[0].get_attr('source.path')
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_scroll_search_raises_on_no_scroll_id(self, post_patch, del_patch):
         post_patch.return_value = self.mock_search_result
         del_patch.return_value = {}
@@ -206,8 +206,8 @@ class AssetAppTests(unittest.TestCase):
             for _ in self.app.assets.scroll_search():
                 pass
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_scroll_search(self, post_patch, del_patch):
         scroll_result = copy.deepcopy(self.mock_search_result)
         scroll_result['_scroll_id'] = 'abc123'
@@ -219,7 +219,7 @@ class AssetAppTests(unittest.TestCase):
             c += 1
         assert c == 2
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_search_raw_response(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {
@@ -229,7 +229,7 @@ class AssetAppTests(unittest.TestCase):
         path = rsp.raw_response['hits']['hits'][0]['_source']['source']['path']
         assert path == 'https://i.imgur.com/SSN26nN.jpg'
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_search_iter(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {
@@ -246,7 +246,7 @@ class AssetAppTests(unittest.TestCase):
             count += 1
         assert count == 2
 
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_reprocess_search(self, post_patch):
         post_patch.return_value = {
             'assetCount': 101,
@@ -263,7 +263,7 @@ class AssetAppTests(unittest.TestCase):
         assert 'abc' == rsp.job.id
         assert 'reprocess' == rsp.job.name
 
-    @patch.object(BoonSdkClient, 'delete')
+    @patch.object(BoonClient, 'delete')
     def test_delete_with_asset_object(self, del_patch):
         asset = Asset({'id': '123'})
         del_patch.return_value = {'success': True}
@@ -273,7 +273,7 @@ class AssetAppTests(unittest.TestCase):
         assert res is True
         assert '/api/v3/assets/123' == uri
 
-    @patch.object(BoonSdkClient, 'delete')
+    @patch.object(BoonClient, 'delete')
     def test_delete_with_asset_id(self, del_patch):
         del_patch.return_value = {'success': True}
         res = self.app.assets.delete_asset('123')
@@ -282,7 +282,7 @@ class AssetAppTests(unittest.TestCase):
         assert res is True
         assert '/api/v3/assets/123' == uri
 
-    @patch.object(BoonSdkClient, 'delete')
+    @patch.object(BoonClient, 'delete')
     def test_batch_delete_by_id(self, del_patch):
         q = {'assetIds': ["12345"]}
         del_patch.return_value = {
@@ -294,7 +294,7 @@ class AssetAppTests(unittest.TestCase):
         assert q == args[0][0][1]
         assert "12345" in res['deleted']
 
-    @patch.object(BoonSdkClient, 'delete')
+    @patch.object(BoonClient, 'delete')
     def test_batch_delete_by_assets(self, del_patch):
         assets = [Asset({'id': '12345'}), Asset({'id': '6789'})]
         self.app.assets.batch_delete_assets(assets)
@@ -303,7 +303,7 @@ class AssetAppTests(unittest.TestCase):
         assert '12345' in args[0][0][1]['assetIds']
         assert '6789' in args[0][0][1]['assetIds']
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_download_file(self, get_patch):
         data = b'some_data'
         mockresponse = mock.Mock()
@@ -313,7 +313,7 @@ class AssetAppTests(unittest.TestCase):
         b = self.app.assets.download_file('assets/123/proxy/proxy123.jpg')
         assert 'some_data' == b.read().decode()
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_download_file_using_stored_file(self, get_patch):
         data = b'some_data'
         mockresponse = mock.Mock()
@@ -324,7 +324,7 @@ class AssetAppTests(unittest.TestCase):
         b = self.app.assets.download_file(sf)
         assert 'some_data' == b.read().decode()
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_download_file_to_file(self, get_patch):
         data = b'some_data'
         mockresponse = mock.Mock()
@@ -336,7 +336,7 @@ class AssetAppTests(unittest.TestCase):
             'assets/123/proxy/proxy123.jpg', dst_file=path)
         assert 9 == size
 
-    @patch.object(BoonSdkClient, 'get')
+    @patch.object(BoonClient, 'get')
     def test_download_file_to_file_using_stored_file(self, get_patch):
         data = b'some_data'
         mockresponse = mock.Mock()
@@ -348,28 +348,28 @@ class AssetAppTests(unittest.TestCase):
         size = self.app.assets.download_file(sf, path)
         assert 9 == size
 
-    @patch.object(BoonSdkClient, 'upload_files')
+    @patch.object(BoonClient, 'upload_files')
     def test_et_sim_hashes(self, upload_patch):
         upload_patch.return_value = ['ABC']
         path = get_test_file('images/set01/toucan.jpg')
         b = self.app.assets.get_sim_hashes(path)
         assert b == ['ABC']
 
-    @patch.object(BoonSdkClient, 'upload_files')
+    @patch.object(BoonClient, 'upload_files')
     def test_get_sim_hashes_file_handle(self, upload_patch):
         upload_patch.return_value = ['ABC']
         path = open(get_test_file('images/set01/toucan.jpg'), 'rb')
         b = self.app.assets.get_sim_hashes(path)
         assert b == ['ABC']
 
-    @patch.object(BoonSdkClient, 'upload_files')
+    @patch.object(BoonClient, 'upload_files')
     def test_get_sim_query(self, upload_patch):
         upload_patch.return_value = ['ABC']
         path = open(get_test_file('images/set01/toucan.jpg'), 'rb')
         b = self.app.assets.get_sim_query(path)
         assert b.hashes == ['ABC']
 
-    @patch.object(BoonSdkClient, 'put')
+    @patch.object(BoonClient, 'put')
     def test_update_labels(self, put_patch):
         put_patch.return_value = {
             'type': 'asset',
@@ -381,7 +381,7 @@ class AssetAppTests(unittest.TestCase):
         rsp = self.app.assets.update_labels(["12345"], add_labels=[label1], remove_labels=[label2])
         assert put_patch.return_value == rsp
 
-    @patch.object(BoonSdkClient, 'put')
+    @patch.object(BoonClient, 'put')
     def test_update_custom_fields(self, put_patch):
         put_patch.return_value = {
             'success': True
@@ -390,7 +390,7 @@ class AssetAppTests(unittest.TestCase):
             "12345", {"shoe": "nike"})
         assert put_patch.return_value == rsp
 
-    @patch.object(BoonSdkClient, 'put')
+    @patch.object(BoonClient, 'put')
     def test_batch_custom_fields(self, put_patch):
         put_patch.return_value = {
             'success': True
@@ -401,8 +401,8 @@ class AssetAppTests(unittest.TestCase):
         rsp = self.app.assets.batch_update_custom_fields(req)
         assert put_patch.return_value == rsp
 
-    @patch.object(BoonSdkClient, 'delete')
-    @patch.object(BoonSdkClient, 'post')
+    @patch.object(BoonClient, 'delete')
+    @patch.object(BoonClient, 'post')
     def test_scroll_search_clips(self, post_patch, del_patch):
         scroll_result = copy.deepcopy(self.mock_clip_search_result)
         scroll_result['_scroll_id'] = 'abc123'

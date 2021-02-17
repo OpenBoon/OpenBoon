@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from boonsdk import VideoClip
 from boonsdk.app import AssetApp, VideoClipApp
-from boonsdk.client import BoonSdkClient
+from boonsdk.client import BoonClient
 from boonai_analysis.utils.simengine import SimilarityEngine
 from boonai_analysis.zvi import TimelineAnalysisProcessor, ClipAnalysisProcessor, \
     MultipleTimelineAnalysisProcessor
@@ -13,7 +13,7 @@ from boonflow.testing import PluginUnitTestCase, test_path, TestAsset
 
 class TestClipAnalysisProcessors(PluginUnitTestCase):
 
-    @patch.object(BoonSdkClient, 'put')
+    @patch.object(BoonClient, 'put')
     @patch.object(file_storage.projects, 'store_file')
     @patch.object(VideoClipApp, 'scroll_search')
     @patch.object(file_storage, 'localize_file')

@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from boonflow import Frame
 from boonflow.testing import TestAsset, PluginUnitTestCase, test_data
-from boonsdk.client import BoonSdkClient
+from boonsdk.client import BoonClient
 from boonai_core.proxy.video import VideoProxyProcessor
 
 logging.basicConfig(level=logging.INFO)
@@ -48,7 +48,7 @@ class VideoProxyProcessorTests(PluginUnitTestCase):
         op = self.processor.get_transcoding_process(frame.asset)
         self.assertEquals('OPTIMIZE', op)
 
-    @patch.object(BoonSdkClient, 'upload_file')
+    @patch.object(BoonClient, 'upload_file')
     @patch('boonai_core.proxy.video.store_media_proxy')
     def test_process_transcode(self, store_patch, post_patch):
         movie_path = test_data('video/test_P1113171.mov')
@@ -78,7 +78,7 @@ class VideoProxyProcessorTests(PluginUnitTestCase):
         assert ptype == 'video'
         assert attrs['transcode'] == 'full'
 
-    @patch.object(BoonSdkClient, 'upload_file')
+    @patch.object(BoonClient, 'upload_file')
     @patch('boonai_core.proxy.video.store_media_proxy')
     def test_process_copy(self, store_patch, post_patch):
         movie_path = test_data('video/out.mp4')
@@ -107,7 +107,7 @@ class VideoProxyProcessorTests(PluginUnitTestCase):
         assert ptype == 'video'
         assert attrs['transcode'] == 'none'
 
-    @patch.object(BoonSdkClient, 'upload_file')
+    @patch.object(BoonClient, 'upload_file')
     @patch('boonai_core.proxy.video.store_media_proxy')
     def test_process_optimize(self, store_patch, post_patch):
         movie_path = test_data('video/ted_talk.mp4')

@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 
 import boonflow.media as media
-from boonsdk.client import BoonSdkClient
+from boonsdk.client import BoonClient
 from boonflow import file_storage, StoredFile
 from boonflow.storage import ProjectStorage
 from boonflow.testing import zorroa_test_path, TestAsset
@@ -211,7 +211,7 @@ class ProxyFunctionTests(unittest.TestCase):
         assert 2 == len(asset.get_files())
 
     @patch.object(file_storage.assets, 'store_file')
-    @patch.object(BoonSdkClient, 'upload_file')
+    @patch.object(BoonClient, 'upload_file')
     def test_store_media_proxy_with_attrs(self, upload_patch, store_file_patch):
         upload_patch.return_value = {}
 
