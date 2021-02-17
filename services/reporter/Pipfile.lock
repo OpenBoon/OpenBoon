@@ -393,9 +393,9 @@
             ],
             "version": "==0.57.0"
         },
-        "zvi-client": {
+        "boonsdk": {
             "editable": true,
-            "path": "./../../client/python"
+            "path": "./../../client/boonsdk"
         }
     },
     "develop": {}
