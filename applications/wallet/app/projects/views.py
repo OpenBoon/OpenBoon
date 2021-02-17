@@ -6,7 +6,7 @@ from datetime import datetime
 import requests
 from rest_framework.decorators import action
 
-import zmlp
+import boonsdk
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import transaction
@@ -16,8 +16,8 @@ from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet, GenericViewSet
-from zmlp import ZmlpClient
-from zmlp.client import ZmlpConnectionException
+from boonsdk import BoonClient
+from boonsdk.client import ZmlpConnectionException
 
 from projects.clients import ZviClient
 from projects.models import Membership, Project
@@ -70,8 +70,8 @@ class BaseProjectViewSet(ViewSet):
 
         # Attach some useful objects for interacting with ZMLP/ZVI to the request.
         if settings.PLATFORM == 'zmlp':
-            request.app = zmlp.ZmlpApp(apikey, settings.ZMLP_API_URL)
-            request.client = ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL,
+            request.app = zmlp.BoonApp(apikey, settings.ZMLP_API_URL)
+            request.client = BoonClient(apikey=apikey, server=settings.ZMLP_API_URL,
                                         project_id=project)
         else:
             request.client = ZviClient(apikey=apikey, server=settings.ZMLP_API_URL)
@@ -512,8 +512,8 @@ class ProjectViewSet(ListModelMixin,
 
             # Attach some useful objects for interacting with ZMLP/ZVI to the request.
             if settings.PLATFORM == 'zmlp':
-                request.app = zmlp.ZmlpApp(apikey, settings.ZMLP_API_URL)
-                request.client = ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL,
+                request.app = boonsdk.BoonApp(apikey, settings.ZMLP_API_URL)
+                request.client = BoonClient(apikey=apikey, server=settings.ZMLP_API_URL,
                                             project_id=project)
             else:
                 request.client = ZviClient(apikey=apikey, server=settings.ZMLP_API_URL)

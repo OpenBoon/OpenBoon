@@ -1,5 +1,5 @@
-from zmlp.client import ZmlpSecurityException, ZmlpInvalidRequestException, \
-    ZmlpDuplicateException, ZmlpNotFoundException
+from boonsdk.client import ZmlpSecurityException, ZmlpInvalidRequestException, \
+    BoonSdkDuplicateException, BoonSdkNotFoundException
 
 from wallet.exceptions import zmlp_exception_handler
 
@@ -16,13 +16,13 @@ def test_zmlpinvalidrequestexception_error():
     assert response.status_code == 400
 
 
-def test_zmlpnotfoundexception_error():
-    exc = ZmlpNotFoundException({})
+def test_BoonSdkNotFoundException_error():
+    exc = BoonSdkNotFoundException({})
     response = zmlp_exception_handler(exc, {})
     assert response.status_code == 404
 
 
-def test_zmlpduplicateexception_error():
-    exc = ZmlpDuplicateException({})
+def test_BoonSdkDuplicateException_error():
+    exc = BoonSdkDuplicateException({})
     response = zmlp_exception_handler(exc, {})
     assert response.status_code == 409

@@ -3,7 +3,7 @@ import binascii
 import json
 
 from django.conf import settings
-from zmlp import ZmlpClient
+from boonsdk import BoonClient
 
 from wallet.exceptions import InvalidZmlpDataError
 
@@ -28,10 +28,10 @@ def get_zmlp_superuser_client(project_id=None):
     """
     apikey = settings.INCEPTION_KEY_B64
     if project_id:
-        return ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL,
+        return BoonClient(apikey=apikey, server=settings.ZMLP_API_URL,
                           project_id=str(project_id))
     else:
-        return ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL)
+        return BoonClient(apikey=apikey, server=settings.ZMLP_API_URL)
 
 
 def convert_base64_to_json(encoded_blob):

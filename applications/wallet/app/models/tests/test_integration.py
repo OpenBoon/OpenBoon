@@ -8,9 +8,9 @@ from rest_framework import status
 from models.utils import ConfusionMatrix
 from models.views import ModelViewSet, get_model_type_restrictions
 from wallet.tests.utils import check_response
-from zmlp import ZmlpClient, Model
-from zmlp.app import ModelApp, AssetApp
-from zmlp.entity import LabelScope
+from boonsdk import BoonClient, Model
+from boonsdk.app import ModelApp, AssetApp
+from boonsdk.entity import LabelScope
 
 pytestmark = pytest.mark.django_db
 
@@ -66,8 +66,8 @@ class TestModelViewSetList:
             return []
 
         path = reverse('model-list', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
-        monkeypatch.setattr(ZmlpClient, 'iter_paged_results', job_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
+        monkeypatch.setattr(BoonClient, 'iter_paged_results', job_response)
         response = api_client.get(path)
         content = check_response(response)
         results = content['results']
@@ -89,8 +89,8 @@ class TestModelViewSetListAll:
             return []
 
         path = reverse('model-all', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
-        monkeypatch.setattr(ZmlpClient, 'iter_paged_results', job_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
+        monkeypatch.setattr(BoonClient, 'iter_paged_results', job_response)
         response = api_client.get(path)
         content = check_response(response)
         results = content['results']
@@ -119,8 +119,8 @@ class TestModelViewSetRetrieve:
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
         path = reverse('model-detail', kwargs={'project_pk': project.id,
                                                'pk': model_id})
-        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
-        monkeypatch.setattr(ZmlpClient, 'iter_paged_results', job_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_response)
+        monkeypatch.setattr(BoonClient, 'iter_paged_results', job_response)
         monkeypatch.setattr(ModelApp, 'get_model_type_info', model_info_response)
         monkeypatch.setattr(ModelApp, 'get_label_counts', label_counts_response)
         response = api_client.get(path)
@@ -144,7 +144,7 @@ class TestModelViewSetDestroy:
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
         path = reverse('model-detail', kwargs={'project_pk': project.id,
                                                'pk': model_id})
-        monkeypatch.setattr(ZmlpClient, 'delete', mock_response)
+        monkeypatch.setattr(BoonClient, 'delete', mock_response)
         response = api_client.delete(path)
         content = check_response(response)
         assert content['id'] == model_id
@@ -161,7 +161,7 @@ class TestModelViewSetCreate:
         body = {'name': 'Test Model',
                 'type': 'ZVI_KNN_CLASSIFIER'}
         path = reverse('model-list', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
         response = api_client.post(path, body)
         content = check_response(response, status.HTTP_201_CREATED)
         results = content['results']
@@ -181,7 +181,7 @@ class TestModelViewSetActions:
             return []
 
         path = reverse('model-model-types', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_response)
         response = api_client.get(path)
         content = check_response(response)
         assert content['results'] == []
@@ -192,7 +192,7 @@ class TestModelViewSetActions:
             return [{'name': 'ZVI_KNN_CLASSIFIER', 'label': 'Sci-kit Learn KNN Classifier', 'description': 'Classify images or documents using a KNN classifier.  This type of model generates a single prediction which can be used to quickly organize assets into general groups.The KNN classifier works with just a single image and label.', 'objective': 'Label Detection', 'provider': 'Zorroa', 'deployOnTrainingSet': True, 'minConcepts': 1, 'minExamples': 1}, {'name': 'ZVI_LABEL_DETECTION', 'label': 'Tensorflow CNN Classifier', 'description': 'Classify images or documents using a custom trained CNN deep learning algorithm.  This type of model generates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each. ', 'objective': 'Label Detection', 'provider': 'Zorroa', 'deployOnTrainingSet': False, 'minConcepts': 2, 'minExamples': 10}, {'name': 'ZVI_FACE_RECOGNITION', 'label': 'ZVI Face Recognition', 'description': 'Relabel existing ZVI faces using a KNN Face Recognition model.', 'objective': 'Face Recognition', 'provider': 'Zorroa', 'deployOnTrainingSet': True, 'minConcepts': 1, 'minExamples': 1}, {'name': 'GCP_LABEL_DETECTION', 'label': 'Google AutoML Classifier', 'description': 'Utilize Google AutoML to train an image classifier.', 'objective': 'Label Detection', 'provider': 'Google', 'deployOnTrainingSet': True, 'minConcepts': 2, 'minExamples': 10}]  # noqa
 
         path = reverse('model-model-types', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_response)
         response = api_client.get(path)
         content = check_response(response)
         results = content['results']
@@ -237,7 +237,7 @@ class TestModelViewSetActions:
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
         path = reverse('model-get-labels', kwargs={'project_pk': project.id,
                                                    'pk': model_id})
-        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_response)
         response = api_client.get(path)
         content = check_response(response)
         assert content == {'count': 1,
@@ -248,7 +248,7 @@ class TestModelViewSetActions:
             return {'updated': 26}
 
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
-        monkeypatch.setattr(ZmlpClient, 'put', mock_response)
+        monkeypatch.setattr(BoonClient, 'put', mock_response)
         path = reverse('model-rename-label', kwargs={'project_pk': project.id,
                                                      'pk': model_id})
         response = api_client.put(path, {'label': 'Dog', 'newLabel': 'Cat'})
@@ -260,7 +260,7 @@ class TestModelViewSetActions:
             return {'updated': 1}
 
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
-        monkeypatch.setattr(ZmlpClient, 'delete', mock_response)
+        monkeypatch.setattr(BoonClient, 'delete', mock_response)
         path = reverse('model-destroy-label', kwargs={'project_pk': project.id,
                                                       'pk': model_id})
         response = api_client.delete(path, {'label': 'Dog'})
