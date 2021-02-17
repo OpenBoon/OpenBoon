@@ -386,7 +386,7 @@ sdk-unit-tests:
     - cd client/boonsdk
     - pip install .
     - pytest
-    - cd ../containers/boonflow
+    - cd ../../containers/boonflow
     - tar -xJf ffmpeg-amd64-static.tar.xz
     - cp ffmpeg-4.2.2-amd64-static/ffmpeg /usr/bin
     - cp ffmpeg-4.2.2-amd64-static/ffprobe /usr/bin
@@ -426,9 +426,9 @@ plugin-container-tests:
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
     - ./buildx --plugins
-    - docker run -v ${PWD}/test-data:/test-data boonai/plugins-core:latest pytest -s /zvi/pylib
-    - docker run -v ${PWD}/test-data:/test-data boonai/plugins-analysis:latest pytest -s /zvi/pylib
-    - docker run -v ${PWD}/test-data:/test-data boonai/plugins-train:latest pytest -s /zvi/pylib
+    - docker run -v ${PWD}/test-data:/test-data boonai/plugins-core:latest pytest -s /boonai/pylib
+    - docker run -v ${PWD}/test-data:/test-data boonai/plugins-analysis:latest pytest -s /boonai/pylib
+    - docker run -v ${PWD}/test-data:/test-data boonai/plugins-train:latest pytest -s /boonai/pylib
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -468,8 +468,8 @@ boonai-dockerhub-build-push-latest:
     - docker tag boonai/apigateway:${SOURCE_TAG} boonai/apigateway:${DOCKER_TAG}
     - docker tag boonai/py3-base:${SOURCE_TAG} boonai/py3-base:${DOCKER_TAG}
     - docker tag boonai/boonsdk:${SOURCE_TAG} boonai/boonsdk:${DOCKER_TAG}
-    - docker tag boonai/py3-zvi:${SOURCE_TAG} boonai/boonlab:${DOCKER_TAG}
-    - docker tag boonai/py3-sdk:${SOURCE_TAG} boonai/bonoflow:${DOCKER_TAG}
+    - docker tag boonai/boonlab:${SOURCE_TAG} boonai/boonlab:${DOCKER_TAG}
+    - docker tag boonai/boonflow:${SOURCE_TAG} boonai/bonoflow:${DOCKER_TAG}
     - docker tag boonai/plugins-base:${SOURCE_TAG} boonai/boondocks:${DOCKER_TAG}
     - docker tag boonai/plugins-models:${SOURCE_TAG} boonai/plugins-models:${DOCKER_TAG}
     - docker tag boonai/plugins-core:${SOURCE_TAG} boonai/plugins-core:${DOCKER_TAG}
