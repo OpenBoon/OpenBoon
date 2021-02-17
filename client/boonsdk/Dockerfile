@@ -7,6 +7,6 @@ RUN mkdir /build
 COPY ./ /build
 WORKDIR /build
 RUN --mount=type=cache,target=/root/.cache/pip pip install .
-WORKDIR /zps
+WORKDIR /boonai
 
 RUN rm -rf /build

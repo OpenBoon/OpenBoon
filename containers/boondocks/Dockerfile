@@ -1,4 +1,4 @@
-FROM boonai/py3-base:latest
+FROM boonai/boonflow:latest
 
 RUN mkdir /build
 COPY ./ /build
