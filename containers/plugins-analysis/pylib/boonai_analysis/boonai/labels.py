@@ -15,7 +15,7 @@ class ZviLabelDetectionProcessor(AssetProcessor):
     Performs image classification using Resnet152 and imagenet weights.
     """
 
-    namespace = 'zvi-label-detection'
+    namespace = 'boonai-label-detection'
 
     def init(self):
         tensorflow.config.set_visible_devices([], 'GPU')

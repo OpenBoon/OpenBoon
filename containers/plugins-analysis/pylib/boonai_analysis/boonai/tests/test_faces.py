@@ -17,7 +17,7 @@ class ZviFaceDetectionProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(ZviFaceDetectionProcessor(), {})
         processor.process(frame)
 
-        analysis = frame.asset.get_attr('analysis.zvi-face-detection')
+        analysis = frame.asset.get_attr('analysis.boonai-face-detection')
         grouped = get_prediction_labels(analysis)
         assert 'face0' in grouped
         assert 'labels' == analysis['type']

@@ -27,7 +27,7 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
 
-        faces = asset.get_attr('analysis.zvi-face-detection.predictions')
+        faces = asset.get_attr('analysis.boonai-face-detection.predictions')
         if not faces:
             return
 

@@ -78,7 +78,7 @@ class LabelDetectionClassifiersUnitTests(PluginUnitTestCase):
                 "type": "ZVI_LABEL_DETECTION",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": "pets",
-                "moduleName": "zvi-pets"
+                "moduleName": "boonai-pets"
             }
         )
         args = {"model_id": self.model_id, "attr": "shash"}
@@ -92,4 +92,4 @@ class LabelDetectionClassifiersUnitTests(PluginUnitTestCase):
 
             # since all hashes are random, prediction could be either dog or
             # cat so just need to check that it made a prediction at all
-            assert asset.get_attr("analysis")["zvi-pets"]["pred0"]
+            assert asset.get_attr("analysis")["boonai-pets"]["pred0"]

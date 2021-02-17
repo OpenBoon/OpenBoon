@@ -24,4 +24,4 @@ class MxUnitTests(PluginUnitTestCase):
         processor = self.init_processor(processor, {'debug': True})
         processor.process(self.frame)
 
-        self.assertEquals(2048, len(self.frame.asset['analysis.zvi-image-similarity.simhash']))
+        self.assertEquals(2048, len(self.frame.asset['analysis.boonai-image-similarity.simhash']))

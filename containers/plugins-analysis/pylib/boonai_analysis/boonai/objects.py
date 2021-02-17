@@ -8,7 +8,7 @@ from boonflow.analysis import LabelDetectionAnalysis
 
 class ZviObjectDetectionProcessor(AssetProcessor):
 
-    namespace = "zvi-object-detection"
+    namespace = "boonai-object-detection"
 
     use_threads = False
 

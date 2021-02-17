@@ -59,7 +59,7 @@ class DataSourceServiceTests : AbstractTest() {
             "dev-data",
             "gs://zorroa-dev-data",
             fileTypes = FileType.allTypes(),
-            modules = setOf("zvi-object-detection")
+            modules = setOf("boonai-object-detection")
         )
 
         val ds = dataSourceService.create(spec2)
@@ -114,7 +114,7 @@ class DataSourceServiceTests : AbstractTest() {
             "gs://foo/bar",
             listOf("images", "videos", "documents"),
             setOf(),
-            setOf("zvi-object-detection")
+            setOf("boonai-object-detection")
         )
         dataSourceService.update(ds.id, update)
 

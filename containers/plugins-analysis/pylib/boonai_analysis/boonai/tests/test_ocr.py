@@ -14,7 +14,7 @@ class OcrProcessorTests(PluginUnitTestCase):
         frame = Frame(TestAsset(image_path))
         processor = self.init_processor(ZviOcrProcessor(), {})
         processor.process(frame)
-        assert 'NVIDIA' in frame.asset.get_attr('analysis.zvi-text-detection.content')
+        assert 'NVIDIA' in frame.asset.get_attr('analysis.boonai-text-detection.content')
 
     @patch.object(TestAsset, 'get_files')
     @patch('boonai_analysis.zvi.ocr.file_storage.localize_file')
@@ -31,6 +31,6 @@ class OcrProcessorTests(PluginUnitTestCase):
         ])
         processor = self.init_processor(ZviOcrProcessor(), {})
         processor.process(frame)
-        assert 'NVIDIA' in frame.asset.get_attr('analysis.zvi-text-detection.content')
+        assert 'NVIDIA' in frame.asset.get_attr('analysis.boonai-text-detection.content')
 
         get_files_patch.assert_called_with(category='ocr-proxy')

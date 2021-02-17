@@ -14,7 +14,7 @@ class ZviOcrProcessor(AssetProcessor):
     file_types = FileTypes.images | frozenset(['pdf'])
     """Allows PDFs to be processed by OCR which is a required common case."""
 
-    namespace = "zvi-text-detection"
+    namespace = "boonai-text-detection"
 
     # Tesseract uses a lot of CPU
     use_threads = False

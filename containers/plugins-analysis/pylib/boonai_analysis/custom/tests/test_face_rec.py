@@ -23,7 +23,7 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
         })
 
         asset = TestAsset()
-        asset.set_attr("analysis.zvi-face-detection.predictions", [
+        asset.set_attr("analysis.boonai-face-detection.predictions", [
             {
                 "label": "face0",
                 "score": 0.1,

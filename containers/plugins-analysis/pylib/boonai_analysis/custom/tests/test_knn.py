@@ -22,7 +22,7 @@ class KnnLabelDetectionClassifierTests(PluginUnitTestCase):
         })
 
         asset = TestAsset()
-        asset.set_attr('analysis.zvi-image-similarity.simhash', 'AAAAAAAA')
+        asset.set_attr('analysis.boonai-image-similarity.simhash', 'AAAAAAAA')
         frame = Frame(asset)
         processor = self.init_processor(KnnLabelDetectionClassifier(), {})
         processor.process(frame)

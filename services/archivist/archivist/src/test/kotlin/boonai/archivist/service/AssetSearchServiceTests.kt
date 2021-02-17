@@ -33,9 +33,9 @@ class AssetSearchServiceTests : AbstractTest() {
         val rsp = assetService.batchCreate(batchCreate)
         val id = rsp.created[0]
         val asset = assetService.getAsset(id)
-        asset.setAttr("analysis.zvi-image-similarity.simhash", "AABBCC00")
-        asset.setAttr("analysis.zvi-multi-similarity.simhash", listOf("AABBCC00", "CCCCCCCC", "AABBDDDD"))
-        asset.setAttr("analysis.zvi-label-detection.predictions", labels)
+        asset.setAttr("analysis.boonai-image-similarity.simhash", "AABBCC00")
+        asset.setAttr("analysis.boonai-multi-similarity.simhash", listOf("AABBCC00", "CCCCCCCC", "AABBDDDD"))
+        asset.setAttr("analysis.boonai-label-detection.predictions", labels)
         assetService.index(id, asset.document, true)
 
         indexRoutingService.getProjectRestClient().refresh()
@@ -147,7 +147,7 @@ class AssetSearchServiceTests : AbstractTest() {
                           "lang": "zorroa-similarity",
                           "params": {
                             "minScore": 0.50,
-                            "field": "analysis.zvi-image-similarity.simhash",
+                            "field": "analysis.boonai-image-similarity.simhash",
                             "hashes": [
                               "AABBDD00"
                             ]
@@ -188,7 +188,7 @@ class AssetSearchServiceTests : AbstractTest() {
                     "lang": "zorroa-similarity",
                     "params": {
                       "minScore": 1.0,
-                      "field": "analysis.zvi-multi-similarity.simhash",
+                      "field": "analysis.boonai-multi-similarity.simhash",
                       "hashes": [
                         "CCCCCCCC"
                       ]
@@ -221,7 +221,7 @@ class AssetSearchServiceTests : AbstractTest() {
                     "lang": "zorroa-similarity",
                     "params": {
                       "minScore": 1.0,
-                      "field": "analysis.zvi-foo-similarity.simhash",
+                      "field": "analysis.boonai-foo-similarity.simhash",
                       "hashes": [
                         "CCCCCCCC"
                       ]
@@ -253,7 +253,7 @@ class AssetSearchServiceTests : AbstractTest() {
                           "lang": "zorroa-similarity",
                           "params": {
                             "minScore": 0.50,
-                            "field": "analysis.zvi-image-similarity.simhash",
+                            "field": "analysis.boonai-image-similarity.simhash",
                             "hashes": [
                               "PPPPPPPP"
                             ]
@@ -293,7 +293,7 @@ class AssetSearchServiceTests : AbstractTest() {
                               0.5,
                               1.0
                             ],
-                            "field": "analysis.zvi-label-detection.predictions",
+                            "field": "analysis.boonai-label-detection.predictions",
                             "labels": [
                               "toucan"
                             ]
@@ -333,7 +333,7 @@ class AssetSearchServiceTests : AbstractTest() {
                               0.1,
                               0.2
                             ],
-                            "field": "analysis.zvi-label-detection",
+                            "field": "analysis.boonai-label-detection",
                             "labels": [
                               "toucan"
                             ]

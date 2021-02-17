@@ -86,7 +86,7 @@ class ClipController @Autowired constructor(
     ) {
 
         response.contentType = "text/vtt"
-        response.setHeader("Content-Disposition", "attachment; filename=\"zvi-dynamic.vtt\"")
+        response.setHeader("Content-Disposition", "attachment; filename=\"boonai-dynamic.vtt\"")
         clipService.streamWebvtt(filter, response.outputStream)
         response.flushBuffer()
     }

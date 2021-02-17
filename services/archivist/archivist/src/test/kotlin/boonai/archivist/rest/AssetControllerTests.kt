@@ -375,7 +375,7 @@ class AssetControllerTests : MockMvcTest() {
         )
 
         val search =
-            """{ "modules": ["zvi-label-detection"], "search": { "query": { "match_all": { } } } }"""
+            """{ "modules": ["boonai-label-detection"], "search": { "query": { "match_all": { } } } }"""
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/_search/reprocess")
                 .headers(admin())
@@ -398,7 +398,7 @@ class AssetControllerTests : MockMvcTest() {
             TimelineClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
         )
         val track = TrackSpec("cats", clips)
-        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track), false)
+        val timeline = TimelineSpec(asset.id, "boonai-label-detection", listOf(track), false)
 
         clipService.createClips(timeline)
         refreshElastic()
@@ -425,7 +425,7 @@ class AssetControllerTests : MockMvcTest() {
             TimelineClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
         )
         val track = TrackSpec("cats", clips)
-        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track), false)
+        val timeline = TimelineSpec(asset.id, "boonai-label-detection", listOf(track), false)
 
         clipService.createClips(timeline)
         refreshElastic()
@@ -449,7 +449,7 @@ class AssetControllerTests : MockMvcTest() {
             TimelineClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
         )
         val track = TrackSpec("cats", clips)
-        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track), false)
+        val timeline = TimelineSpec(asset.id, "boonai-label-detection", listOf(track), false)
 
         clipService.createClips(timeline)
         refreshElastic()

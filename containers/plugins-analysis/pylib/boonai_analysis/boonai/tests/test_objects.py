@@ -17,7 +17,7 @@ class BoonSdkObjectDetectionProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(ZviObjectDetectionProcessor(), {})
         processor.process(frame)
 
-        analysis = frame.asset.get_attr('analysis.zvi-object-detection')
+        analysis = frame.asset.get_attr('analysis.boonai-object-detection')
         grouped = get_prediction_labels(analysis)
         assert 'dog' in grouped
         assert 'toilet' in grouped
@@ -33,6 +33,6 @@ class BoonSdkObjectDetectionProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(ZviObjectDetectionProcessor(), {})
         processor.process(frame)
 
-        analysis = frame.asset.get_attr('analysis.zvi-object-detection')
+        analysis = frame.asset.get_attr('analysis.boonai-object-detection')
         grouped = get_prediction_labels(analysis)
         assert ["cat", "cat", "cat", "cat"] == grouped

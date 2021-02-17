@@ -11,7 +11,7 @@ class ZviFaceDetectionProcessor(AssetProcessor):
     """
     Simple Face Detection processor
     """
-    namespace = "zvi-face-detection"
+    namespace = "boonai-face-detection"
 
     def __init__(self):
         super(ZviFaceDetectionProcessor, self).__init__()

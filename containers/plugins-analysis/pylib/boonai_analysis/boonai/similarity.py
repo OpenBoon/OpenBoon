@@ -15,7 +15,7 @@ class ZviSimilarityProcessor(AssetProcessor):
     make a hash with ResNet
     """
 
-    namespace = "zvi-image-similarity"
+    namespace = "boonai-image-similarity"
 
     # MXNet is not thread safe.
     use_threads = False

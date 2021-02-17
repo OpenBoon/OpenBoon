@@ -26,7 +26,7 @@ class KnnLabelDetectionClassifier(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
 
-        simhash = asset.get_attr('analysis.zvi-image-similarity.simhash')
+        simhash = asset.get_attr('analysis.boonai-image-similarity.simhash')
         if not simhash:
             return
 

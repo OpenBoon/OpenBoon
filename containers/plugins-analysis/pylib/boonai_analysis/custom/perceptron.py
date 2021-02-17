@@ -19,7 +19,7 @@ class LabelDetectionPerceptionClassifier(AssetProcessor):
             Argument(
                 "attr", "str",
                 required=True,
-                default="analysis.zvi-image-similarity.simhash",
+                default="analysis.boonai-image-similarity.simhash",
                 toolTip="asset attribute"
             )
         )

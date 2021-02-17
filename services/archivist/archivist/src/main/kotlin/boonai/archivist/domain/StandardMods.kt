@@ -106,7 +106,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "zvi-face-detection",
+            "boonai-face-detection",
             "Detect faces in images and documents.",
             Provider.BOONAI,
             Category.BOONAI_STD,

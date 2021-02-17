@@ -76,7 +76,7 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineName() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("zvi-object-detection"))
+        val pspec = PipelineSpec("test", modules = listOf("boonai-object-detection"))
         val pipeline = pipelineService.create(pspec)
 
         val resolved = pipelineResolverService.resolve(pipeline.name, null)
@@ -89,10 +89,10 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineNameAndPlusModules() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("zvi-object-detection"))
+        val pspec = PipelineSpec("test", modules = listOf("boonai-object-detection"))
         val pipeline = pipelineService.create(pspec)
 
-        val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("zvi-label-detection"))
+        val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("boonai-label-detection"))
         val resolved = rpipeline.execute
         val last = resolved.last()
         assertEquals(last.className, "boonai_analysis.zvi.ZviLabelDetectionProcessor")
@@ -107,10 +107,10 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveAndCheckGlobals() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("zvi-object-detection"))
+        val pspec = PipelineSpec("test", modules = listOf("boonai-object-detection"))
         val pipeline = pipelineService.create(pspec)
 
-        val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("zvi-label-detection"))
+        val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("boonai-label-detection"))
         Json.prettyPrint(rpipeline)
     }
 
@@ -118,10 +118,10 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineNameAndMinusModules() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("zvi-extract-pages"))
+        val pspec = PipelineSpec("test", modules = listOf("boonai-extract-pages"))
         val pipeline = pipelineService.create(pspec)
 
-        val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("-zvi-extract-pages"))
+        val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("-boonai-extract-pages"))
         val resolved = rpipeline.execute
         val last = resolved.last()
 

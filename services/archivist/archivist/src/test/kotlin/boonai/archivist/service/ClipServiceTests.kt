@@ -50,7 +50,7 @@ class ClipServiceTests : AbstractTest() {
             TimelineClipSpec(BigDecimal(11.684), BigDecimal(14.231), listOf("cat"), 0.2)
         )
         val track = TrackSpec("cats", clips)
-        timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track), false)
+        timeline = TimelineSpec(asset.id, "boonai-label-detection", listOf(track), false)
         rsp = clipService.createClips(timeline)
         refreshElastic()
     }
@@ -108,7 +108,7 @@ class ClipServiceTests : AbstractTest() {
             TimelineClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.11)
         )
         val track = TrackSpec("dogs", clips)
-        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track), false)
+        val timeline = TimelineSpec(asset.id, "boonai-label-detection", listOf(track), false)
         val rsp = clipService.createClips(timeline)
         refreshElastic()
         assertEquals(1, rsp.created)
@@ -166,7 +166,7 @@ class ClipServiceTests : AbstractTest() {
         val json = webvtt.substring(startPos, endPos + 1)
 
         val data = Json.Mapper.readValue(json, Json.GENERIC_MAP)
-        assertEquals("zvi-label-detection", data["timeline"])
+        assertEquals("boonai-label-detection", data["timeline"])
         assertEquals("cats", data["track"])
         assertEquals(listOf("cat"), data["content"])
         assertEquals(0.5, data["score"])
