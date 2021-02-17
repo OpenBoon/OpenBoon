@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
-from zmlp import ZmlpClient
-from zmlp.client import ZmlpDuplicateException
+from boonsdk import BoonClient
+from boonsdk.client import BoonSdkDuplicateException
 
 pytestmark = pytest.mark.django_db
 
@@ -30,7 +30,7 @@ class TestApikey:
         def mock_api_response(*args, **kwargs):
             return list_data
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_api_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         response = api_client.get(reverse('apikey-list', kwargs={'project_pk': project.id}))
@@ -43,7 +43,7 @@ class TestApikey:
         def mock_api_response(*args, **kwargs):
             return detail_data
 
-        monkeypatch.setattr(ZmlpClient, 'get', mock_api_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_api_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         response = api_client.get(reverse('apikey-detail',
@@ -62,8 +62,8 @@ class TestApikey:
             return {'accessKey': 'access',
                     'secretKey': 'secret'}
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
-        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_post_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         body = {'name': 'job-runner',
@@ -80,7 +80,7 @@ class TestApikey:
         def mock_api_response(*args, **kwargs):
             return detail_data
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_api_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         response = api_client.post(reverse('apikey-list', kwargs={'project_pk': project.id}), {})
@@ -91,9 +91,9 @@ class TestApikey:
     def test_post_create_existing_name(self, zmlp_project_user, project, api_client,
                                        monkeypatch, login):
         def mock_api_response(*args, **kwargs):
-            raise ZmlpDuplicateException({})
+            raise BoonSdkDuplicateException({})
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_api_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         body = {'name': 'job-runner',
@@ -110,7 +110,7 @@ class TestApikey:
         def mock_api_response(*args, **kwargs):
             return {}
 
-        monkeypatch.setattr(ZmlpClient, 'delete', mock_api_response)
+        monkeypatch.setattr(BoonClient, 'delete', mock_api_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         response = api_client.delete(reverse('apikey-detail',

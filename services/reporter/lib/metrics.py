@@ -66,7 +66,7 @@ class BaseMetric(object):
 class JobQueueMetrics(BaseMetric):
 
     def get_metric_values(self):
-        api_gateway_url = os.environ['ZMLP_API_URL']
+        api_gateway_url = os.environ['BOONAI_API_URL']
         basic_auth = HTTPBasicAuth('monitor', os.environ['MONITOR_PASSWORD'])
 
         # Get max running tasks.

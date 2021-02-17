@@ -333,7 +333,7 @@ backend-py-lint:
   allow_failure: false
   script:
     - python -m pip install flake8
-    - flake8 --config .flake8.cfg sdk client/admin client/python client/zvi containers/zmlp-py3-base services/analyst containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis containers/zmlp-plugins-train
+    - flake8 --config .flake8.cfg client/boonczar client/boonsdk client/boonlab containers/boonflow containers/py3-base containers/boondocks containers/plugins-core containers/plugins-analysis containers/plugins-train services/analyst services/mlbbq
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -341,11 +341,11 @@ backend-py-lint:
     # MR to any branch that is not master with Boon AI Python changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
-        - "client/python/**/*.py"
-        - "client/zvi/**/*.py"
-        - "sdk/**/.py"
+        - "client/boonsdk/**/*.py"
+        - "client/boonlab/**/*.py"
         - "containers/**/*.py"
         - "services/analyst/**/*.py"
+        - "services/mlbbq/**/*.py"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
@@ -375,7 +375,7 @@ backend-kotlin-lint:
 # Testing other containers requires building containers
 # Testing analyst requires it can pull plugin containers.
 sdk-unit-tests:
-  image: python:3.7.5
+  image: python:3.8.5
   stage: test
   allow_failure: false
   script:
@@ -383,29 +383,29 @@ sdk-unit-tests:
     - apt-get -y install openimageio-tools mediainfo
     - python -m pip install pipenv pytest cmake
     - pip install --upgrade pip
-    - cd client/python
+    - cd client/boonsdk
     - pip install .
     - pytest
-    - cd ../../sdk
+    - cd ../../containers/boonflow
     - tar -xJf ffmpeg-amd64-static.tar.xz
     - cp ffmpeg-4.2.2-amd64-static/ffmpeg /usr/bin
     - cp ffmpeg-4.2.2-amd64-static/ffprobe /usr/bin
     - pip install .
     - pytest
-    - cd ../containers/zmlp-plugins-base
-    - pip install -r requirements.txt
+    - cd ../boondocks
+    - pip install .
     - pytest
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
-    # MR to any branch that is not master with ZMLP changes
+    # MR to any branch that is not master with BOONAI changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
-        - "client/python/**/*"
-        - "client/zvi/**/*"
-        - "sdk/**/*"
-        - "containers/zmlp-plugins-base/**/*"
+        - "client/boonsdk/**/*"
+        - "client/boonlab/**/*"
+        - "containers/boonflow/**/*"
+        - "containers/boondocks/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
@@ -426,9 +426,9 @@ plugin-container-tests:
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
     - ./buildx --plugins
-    - docker run -v ${PWD}/test-data:/test-data boonai/plugins-core:latest pytest -s /zvi/pylib
-    - docker run -v ${PWD}/test-data:/test-data boonai/plugins-analysis:latest pytest -s /zvi/pylib
-    - docker run -v ${PWD}/test-data:/test-data boonai/plugins-train:latest pytest -s /zvi/pylib
+    - docker run -v ${PWD}/test-data:/test-data boonai/plugins-core:latest pytest -s /boonai/pylib
+    - docker run -v ${PWD}/test-data:/test-data boonai/plugins-analysis:latest pytest -s /boonai/pylib
+    - docker run -v ${PWD}/test-data:/test-data boonai/plugins-train:latest pytest -s /boonai/pylib
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -436,8 +436,7 @@ plugin-container-tests:
     # MR to any branch that is not master with Boon AI changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
-        - "client/python/**/*"
-        - "sdk/**/*"
+        - "client/boonsdk/**/*"
         - "containers/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
@@ -468,15 +467,14 @@ boonai-dockerhub-build-push-latest:
     - docker tag boonai/authserver:${SOURCE_TAG} boonai/authserver:${DOCKER_TAG}
     - docker tag boonai/apigateway:${SOURCE_TAG} boonai/apigateway:${DOCKER_TAG}
     - docker tag boonai/py3-base:${SOURCE_TAG} boonai/py3-base:${DOCKER_TAG}
-    - docker tag boonai/py3-client:${SOURCE_TAG} boonai/py3-client:${DOCKER_TAG}
-    - docker tag boonai/py3-zvi:${SOURCE_TAG} boonai/py3-zvi:${DOCKER_TAG}
-    - docker tag boonai/py3-sdk:${SOURCE_TAG} boonai/py3-sdk:${DOCKER_TAG}
-    - docker tag boonai/plugins-base:${SOURCE_TAG} boonai/plugins-base:${DOCKER_TAG}
+    - docker tag boonai/boonsdk:${SOURCE_TAG} boonai/boonsdk:${DOCKER_TAG}
+    - docker tag boonai/boonlab:${SOURCE_TAG} boonai/boonlab:${DOCKER_TAG}
+    - docker tag boonai/boonflow:${SOURCE_TAG} boonai/bonoflow:${DOCKER_TAG}
+    - docker tag boonai/plugins-base:${SOURCE_TAG} boonai/boondocks:${DOCKER_TAG}
     - docker tag boonai/plugins-models:${SOURCE_TAG} boonai/plugins-models:${DOCKER_TAG}
     - docker tag boonai/plugins-core:${SOURCE_TAG} boonai/plugins-core:${DOCKER_TAG}
     - docker tag boonai/plugins-analysis:${SOURCE_TAG} boonai/plugins-analysis:${DOCKER_TAG}
     - docker tag boonai/analyst:${SOURCE_TAG} boonai/analyst:${DOCKER_TAG}
-    - docker tag boonai/jvm-common:${SOURCE_TAG} boonai/jvm-common:${DOCKER_TAG}
     - docker tag boonai/ml-bbq:${SOURCE_TAG} boonai/ml-bbq:${DOCKER_TAG}
     - docker tag boonai/plugins-train:${SOURCE_TAG} boonai/plugins-train:${DOCKER_TAG}
     - docker tag boonai/reporter:${SOURCE_TAG} boonai/reporter:${DOCKER_TAG}
@@ -486,15 +484,14 @@ boonai-dockerhub-build-push-latest:
     - docker push boonai/authserver:${DOCKER_TAG}
     - docker push boonai/apigateway:${DOCKER_TAG}
     - docker push boonai/py3-base:${DOCKER_TAG}
-    - docker push boonai/py3-client:${DOCKER_TAG}
-    - docker push boonai/py3-zvi:${DOCKER_TAG}
-    - docker push boonai/py3-sdk:${DOCKER_TAG}
+    - docker push boonai/boonsdk:${DOCKER_TAG}
+    - docker push boonai/boonlab:${DOCKER_TAG}
+    - docker push boonai/boonflow:${DOCKER_TAG}
     - docker push boonai/plugins-base:${DOCKER_TAG}
     - docker push boonai/plugins-models:${DOCKER_TAG}
     - docker push boonai/plugins-core:${DOCKER_TAG}
     - docker push boonai/plugins-analysis:${DOCKER_TAG}
     - docker push boonai/analyst:${DOCKER_TAG}
-    - docker push boonai/jvm-common:${DOCKER_TAG}
     - docker push boonai/ml-bbq:${DOCKER_TAG}
     - docker push boonai/plugins-train:${DOCKER_TAG}
     - docker push boonai/reporter:${DOCKER_TAG}
@@ -508,9 +505,8 @@ boonai-dockerhub-build-push-latest:
         - "client/**/*"
         - "containers/**/*"
         - "dev/**/*"
-        - "lib/**/*"
-        - "sdk/**/*"
         - "services/analyst/**/*"
+        - "services/jvm-common/**/*"
         - "services/api-gateway/**/*"
         - "services/archivist/**/*"
         - "services/auth-server/**/*"
@@ -556,8 +552,6 @@ boonai-deploy-development:
         - "client/**/*"
         - "containers/**/*"
         - "dev/**/*"
-        - "lib/**/*"
-        - "sdk/**/*"
         - "services/**/*"
 
 boonai-deploy-qa:
@@ -601,15 +595,14 @@ boonai-dockerhub-build-push-prod:
     - docker pull -q boonai/authserver:${SOURCE_TAG}
     - docker pull -q boonai/apigateway:${SOURCE_TAG}
     - docker pull -q boonai/py3-base:${SOURCE_TAG}
-    - docker pull -q boonai/py3-client:${SOURCE_TAG}
-    - docker pull -q boonai/py3-zvi:${SOURCE_TAG}
-    - docker pull -q boonai/py3-sdk:${SOURCE_TAG}
-    - docker pull -q boonai/plugins-base:${SOURCE_TAG}
+    - docker pull -q boonai/boonsdk:${SOURCE_TAG}
+    - docker pull -q boonai/boonlab:${SOURCE_TAG}
+    - docker pull -q boonai/boonflow:${SOURCE_TAG}
+    - docker pull -q boonai/boondocks:${SOURCE_TAG}
     - docker pull -q boonai/plugins-models:${SOURCE_TAG}
     - docker pull -q boonai/plugins-core:${SOURCE_TAG}
     - docker pull -q boonai/plugins-analysis:${SOURCE_TAG}
     - docker pull -q boonai/analyst:${SOURCE_TAG}
-    - docker pull -q boonai/jvm-common:${SOURCE_TAG}
     - docker pull -q boonai/ml-bbq:${SOURCE_TAG}
     - docker pull -q boonai/plugins-train:${SOURCE_TAG}
     - docker pull -q boonai/wallet:${SOURCE_TAG}
@@ -621,15 +614,14 @@ boonai-dockerhub-build-push-prod:
     - docker tag boonai/authserver:${SOURCE_TAG} boonai/authserver:${DOCKER_TAG}
     - docker tag boonai/apigateway:${SOURCE_TAG} boonai/apigateway:${DOCKER_TAG}
     - docker tag boonai/py3-base:${SOURCE_TAG} boonai/py3-base:${DOCKER_TAG}
-    - docker tag boonai/py3-client:${SOURCE_TAG} boonai/py3-client:${DOCKER_TAG}
-    - docker tag boonai/py3-zvi:${SOURCE_TAG} boonai/py3-zvi:${DOCKER_TAG}
-    - docker tag boonai/py3-sdk:${SOURCE_TAG} boonai/py3-sdk:${DOCKER_TAG}
-    - docker tag boonai/plugins-base:${SOURCE_TAG} boonai/plugins-base:${DOCKER_TAG}
+    - docker tag boonai/boonsdk:${SOURCE_TAG} boonai/boonsdk:${DOCKER_TAG}
+    - docker tag boonai/boonlab:${SOURCE_TAG} boonai/boonlab:${DOCKER_TAG}
+    - docker tag boonai/boonflow:${SOURCE_TAG} boonai/boonflow:${DOCKER_TAG}
+    - docker tag boonai/boondocks:${SOURCE_TAG} boonai/boondocks:${DOCKER_TAG}
     - docker tag boonai/plugins-models:${SOURCE_TAG} boonai/plugins-models:${DOCKER_TAG}
     - docker tag boonai/plugins-core:${SOURCE_TAG} boonai/plugins-core:${DOCKER_TAG}
     - docker tag boonai/plugins-analysis:${SOURCE_TAG} boonai/plugins-analysis:${DOCKER_TAG}
     - docker tag boonai/analyst:${SOURCE_TAG} boonai/analyst:${DOCKER_TAG}
-    - docker tag boonai/jvm-common:${SOURCE_TAG} boonai/jvm-common:${DOCKER_TAG}
     - docker tag boonai/ml-bbq:${SOURCE_TAG} boonai/ml-bbq:${DOCKER_TAG}
     - docker tag boonai/plugins-train:${SOURCE_TAG} boonai/plugins-train:${DOCKER_TAG}
     - docker tag boonai/wallet:${SOURCE_TAG} boonai/wallet:${DOCKER_TAG}
@@ -641,15 +633,14 @@ boonai-dockerhub-build-push-prod:
     - docker push boonai/authserver:${DOCKER_TAG}
     - docker push boonai/apigateway:${DOCKER_TAG}
     - docker push boonai/py3-base:${DOCKER_TAG}
-    - docker push boonai/py3-client:${DOCKER_TAG}
-    - docker push boonai/py3-zvi:${DOCKER_TAG}
-    - docker push boonai/py3-sdk:${DOCKER_TAG}
-    - docker push boonai/plugins-base:${DOCKER_TAG}
+    - docker push boonai/boonsdk:${DOCKER_TAG}
+    - docker push boonai/boonlab:${DOCKER_TAG}
+    - docker push boonai/boonflow:${DOCKER_TAG}
+    - docker push boonai/boondocks:${DOCKER_TAG}
     - docker push boonai/plugins-models:${DOCKER_TAG}
     - docker push boonai/plugins-core:${DOCKER_TAG}
     - docker push boonai/plugins-analysis:${DOCKER_TAG}
     - docker push boonai/analyst:${DOCKER_TAG}
-    - docker push boonai/jvm-common:${DOCKER_TAG}
     - docker push boonai/ml-bbq:${DOCKER_TAG}
     - docker push boonai/plugins-train:${DOCKER_TAG}
     - docker push boonai/wallet:${DOCKER_TAG}
@@ -703,7 +694,7 @@ boonai-services-build-artifacts:
         - "services/mlbbq/**/*"
         - "services/officer/**/*"
         - "services/reporter/**/*"
-        - "lib/**/*"
+        - "services/jvm-common/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
@@ -768,13 +759,13 @@ boonai-services-unit-tests:
     SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/zorroa?currentSchema=archivist_test"
     LOGGING_LEVEL_COM_ZORROA: "WARN"
     USER: "gitlab"
-    ZMLP_STORAGE_PROJECT_ACCESSKEY: "qwerty123"
-    ZMLP_STORAGE_PROJECT_SECRETKEY: "123qwerty"
-    ZMLP_STORAGE_PROJECT_URL: "http://localhost:9000"
-    ZMLP_STORAGE_SYSTEM_ACCESSKEY: "qwerty123"
-    ZMLP_STORAGE_SYSTEM_SECRETKEY: "123qwerty"
-    ZMLP_STORAGE_SYSTEM_URL: "http://localhost:9000"
-    ZMLP_STORAGE_CLIENT: "minio"
+    BOONAI_STORAGE_PROJECT_ACCESSKEY: "qwerty123"
+    BOONAI_STORAGE_PROJECT_SECRETKEY: "123qwerty"
+    BOONAI_STORAGE_PROJECT_URL: "http://localhost:9000"
+    BOONAI_STORAGE_SYSTEM_ACCESSKEY: "qwerty123"
+    BOONAI_STORAGE_SYSTEM_SECRETKEY: "123qwerty"
+    BOONAI_STORAGE_SYSTEM_URL: "http://localhost:9000"
+    BOONAI_STORAGE_CLIENT: "minio"
     MINIO_ACCESS_KEY: "qwerty123"
     MINIO_SECRET_KEY: "123qwerty"
     MXNET_OS: "linux"
@@ -788,10 +779,10 @@ boonai-services-unit-tests:
     - export
     - IP="$(cat /etc/hosts |grep $HOSTNAME|cut -d$'\t' -f1)"
     - ARCHIVIST_ES_URL="http://${IP}:9200"
-    - ZMLP_STORAGE_PROJECT_URL="http://${IP}:9000"
-    - ZMLP_STORAGE_SYSTEM_URL="http://${IP}:9000"
-    - mvn clean install -f lib/jvm-common -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
-    - mvn test verify -f lib/jvm-common -q
+    - BOONAI_STORAGE_PROJECT_URL="http://${IP}:9000"
+    - BOONAI_STORAGE_SYSTEM_URL="http://${IP}:9000"
+    - mvn clean install -f services/jvm-common -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
+    - mvn test verify -f services/jvm-common -q
     - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
     - mvn test verify -f services/officer -q
     - mvn test verify -f services/archivist -q
@@ -812,7 +803,7 @@ boonai-services-unit-tests:
         - "services/mlbbq/**/*"
         - "services/officer/**/*"
         - "services/reporter/**/*"
-        - "lib/**/*"
+        - "services/jvm-common/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:

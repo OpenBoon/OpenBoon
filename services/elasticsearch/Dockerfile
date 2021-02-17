@@ -1,7 +1,5 @@
 FROM maven:3.6-jdk-11-slim as mvn_build
-COPY es-kwconf es-kwconf
 COPY es-similarity es-similarity
-COPY es-similarity-query es-similarity-query
 COPY pom.xml pom.xml
 RUN mvn clean install -q -Dmaven.test.skip=true
 
@@ -12,7 +10,6 @@ COPY ./docker/docker-entrypoint.sh /usr/local/bin
 RUN chown elasticsearch:root /usr/local/bin/docker-entrypoint.sh
 RUN chmod 755 /usr/local/bin/docker-entrypoint.sh
 
-COPY --from=mvn_build ./es-kwconf/target/releases/es-kwconf.zip /usr/share/elasticsearch/plugins/es-kwconf.zip
 COPY --from=mvn_build ./es-similarity/target/releases/es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip
 COPY --from=mvn_build /usr/local/openjdk-11 /usr/local/openjdk-11
 RUN yum install -y unzip wget
@@ -25,10 +22,6 @@ WORKDIR /usr/share/elasticsearch/plugins
 RUN unzip es-similarity.zip
 RUN mv elasticsearch zorroa-similarity
 RUN rm es-similarity.zip
-
-RUN unzip es-kwconf.zip
-RUN mv elasticsearch zorroa-kwconf
-RUN rm es-kwconf.zip
 
 RUN yum remove -y unzip wget
 

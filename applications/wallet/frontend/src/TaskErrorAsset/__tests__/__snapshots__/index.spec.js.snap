@@ -88,33 +88,33 @@ exports[`<TaskErrorAsset /> should render properly when asset has no proxies 1`]
     \\"<span class=\\"__json-key__\\">metrics</span>\\": {
       \\"<span class=\\"__json-key__\\">pipeline</span>\\": [
         {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.core.processors.PreCacheSourceFileProcessor\\"</span>,
+          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai_core.core.processors.PreCacheSourceFileProcessor\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
           \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1621235190</span>,
           \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0.11</span>,
           \\"<span class=\\"__json-key__\\">executionDate</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"2020-03-03T21:22:27.694149\\"</span>
         },
         {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.image.importers.ImageImporter\\"</span>,
+          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai_core.image.importers.ImageImporter\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
           \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1426657387</span>,
           \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0.26</span>,
           \\"<span class=\\"__json-key__\\">executionDate</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"2020-03-03T21:22:28.215069\\"</span>
         },
         {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.office.importers.OfficeImporter\\"</span>,
+          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai_core.office.importers.OfficeImporter\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
           \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">2001473853</span>,
           \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0</span>
         },
         {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.video.VideoImporter\\"</span>,
+          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai_core.video.VideoImporter\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
           \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">3310423168</span>,
           \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0</span>
         },
         {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.core.processors.AssertAttributesProcessor\\"</span>,
+          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai_core.core.processors.AssertAttributesProcessor\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
           \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1841569083</span>,
           \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0</span>,
@@ -266,33 +266,33 @@ exports[`<TaskErrorAsset /> should render properly when asset has proxies 1`] = 
     \\"<span class=\\"__json-key__\\">metrics</span>\\": {
       \\"<span class=\\"__json-key__\\">pipeline</span>\\": [
         {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.core.processors.PreCacheSourceFileProcessor\\"</span>,
+          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai_core.core.processors.PreCacheSourceFileProcessor\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
           \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1621235190</span>,
           \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0.11</span>,
           \\"<span class=\\"__json-key__\\">executionDate</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"2020-03-03T21:22:27.694149\\"</span>
         },
         {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.image.importers.ImageImporter\\"</span>,
+          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai_core.image.importers.ImageImporter\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
           \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1426657387</span>,
           \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0.26</span>,
           \\"<span class=\\"__json-key__\\">executionDate</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"2020-03-03T21:22:28.215069\\"</span>
         },
         {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.office.importers.OfficeImporter\\"</span>,
+          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai_core.office.importers.OfficeImporter\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
           \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">2001473853</span>,
           \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0</span>
         },
         {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.video.VideoImporter\\"</span>,
+          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai_core.video.VideoImporter\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
           \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">3310423168</span>,
           \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0</span>
         },
         {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.core.processors.AssertAttributesProcessor\\"</span>,
+          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai_core.core.processors.AssertAttributesProcessor\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
           \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1841569083</span>,
           \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0</span>,

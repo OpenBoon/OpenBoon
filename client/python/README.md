@@ -1,2 +1,0 @@
-# Zorroa Python SDK
-

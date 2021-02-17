@@ -1,7 +1,7 @@
 from wallet.settings import *  # noqa
 
 # Points to the Live Development Servers ZMLP API
-ZMLP_API_URL = 'https://dev.api.zvi.zorroa.com'
+BOONAI_API_URL = 'https://dev.api.zvi.zorroa.com'
 
 # Useful for local debugging
 DEBUG = True

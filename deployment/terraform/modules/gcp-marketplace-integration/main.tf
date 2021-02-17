@@ -84,7 +84,7 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             value = var.pg_password
           }
           env {
-            name  = "ZMLP_API_URL"
+            name  = "BOONAI_API_URL"
             value = var.zmlp-api-url
           }
           env {
@@ -152,7 +152,7 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             value = var.pg_password
           }
           env {
-            name  = "ZMLP_API_URL"
+            name  = "BOONAI_API_URL"
             value = var.zmlp-api-url
           }
           env {
