@@ -251,7 +251,7 @@ wallet container.
 | -------------------- | ------ |
 | ENABLE_SENTRY | Enables Sentry error logging if "true". |
 | ENVIRONMENT | Name of the environment wallet is running in (i.e. qa, staging). |
-| ZMLP_API_URL | FQDN for the ZMLP REST API. |
+| BOONAI_API_URL | FQDN for the ZMLP REST API. |
 | PG_HOST | Hostname of the Postgres DB server. |
 | PG_PASSWORD | Password to be used by the wallet Postgres user. |
 | SMTP_PASSWORD | Password for the MailGun SMTP server used for sending emails. |

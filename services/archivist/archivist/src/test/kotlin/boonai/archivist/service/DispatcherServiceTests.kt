@@ -267,7 +267,7 @@ class DispatcherServiceTests : AbstractTest() {
 
         assertNotNull(next)
         next?.let {
-            assertFalse("ZMLP_DATASOURCE_ID" in next.env)
+            assertFalse("BOONAI_DATASOURCE_ID" in next.env)
             assertEquals(job.id, it.jobId)
             val host: String = this.jdbc.queryForObject(
                 "SELECT str_host FROM task WHERE pk_task=?",

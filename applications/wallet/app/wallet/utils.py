@@ -28,10 +28,10 @@ def get_zmlp_superuser_client(project_id=None):
     """
     apikey = settings.INCEPTION_KEY_B64
     if project_id:
-        return BoonClient(apikey=apikey, server=settings.ZMLP_API_URL,
+        return BoonClient(apikey=apikey, server=settings.BOONAI_API_URL,
                           project_id=str(project_id))
     else:
-        return BoonClient(apikey=apikey, server=settings.ZMLP_API_URL)
+        return BoonClient(apikey=apikey, server=settings.BOONAI_API_URL)
 
 
 def convert_base64_to_json(encoded_blob):

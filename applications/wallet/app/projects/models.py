@@ -98,7 +98,7 @@ class Membership(models.Model):
 
     def get_client(self):
         """Returns a ZMLP Client using the apikey for this Membership."""
-        return BoonClient(self.apikey, server=settings.ZMLP_API_URL)
+        return BoonClient(self.apikey, server=settings.BOONAI_API_URL)
 
     def sync_with_zmlp(self, client=None, force=False):
         """Syncs the permissions requested in Wallet with ZMLP by updating the api key.

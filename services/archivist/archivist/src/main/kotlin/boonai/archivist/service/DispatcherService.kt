@@ -231,24 +231,24 @@ class DispatchQueueManager @Autowired constructor(
                 task.env.putAll(it)
             }
 
-            task.env["ZMLP_TASK_ID"] = task.id.toString()
-            task.env["ZMLP_JOB_ID"] = task.jobId.toString()
-            task.env["ZMLP_PROJECT_ID"] = task.projectId.toString()
-            task.dataSourceId?.let { task.env["ZMLP_DATASOURCE_ID"] = it.toString() }
-            task.env["ZMLP_ARCHIVIST_MAX_RETRIES"] = "0"
+            task.env["BOONAI_TASK_ID"] = task.id.toString()
+            task.env["BOONAI_JOB_ID"] = task.jobId.toString()
+            task.env["BOONAI_PROJECT_ID"] = task.projectId.toString()
+            task.dataSourceId?.let { task.env["BOONAI_DATASOURCE_ID"] = it.toString() }
+            task.env["BOONAI_ARCHIVIST_MAX_RETRIES"] = "0"
 
             // So the container can make API calls as the JobRunner
             // This call is made with inception key
             val key = authServerClient.getSigningKey(task.projectId, KnownKeys.JOB_RUNNER)
-            task.env["ZMLP_APIKEY"] = key.toBase64()
-            task.env["ZMLP_CREDENTIALS_TYPES"] = jobService.getCredentialsTypes(task).joinToString(",")
+            task.env["BOONAI_APIKEY"] = key.toBase64()
+            task.env["BOONAI_CREDENTIALS_TYPES"] = jobService.getCredentialsTypes(task).joinToString(",")
 
             withAuth(InternalThreadAuthentication(task.projectId, setOf())) {
                 task.logFile = storageService.getSignedUrl(
                     task.getLogFileLocation(), true, 1, TimeUnit.DAYS
                 ).getValue("uri").toString()
 
-                task.env["ZORROA_JOB_STORAGE_PATH"] =
+                task.env["BOONAI_JOB_STORAGE_PATH"] =
                     ProjectDirLocator(ProjectStorageEntity.JOB, task.jobId.toString()).getPath()
             }
 

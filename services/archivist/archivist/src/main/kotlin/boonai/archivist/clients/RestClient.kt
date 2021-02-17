@@ -54,10 +54,10 @@ class RestClientException constructor(
  * A Hmac client for the archivist.
  *
  * For auto-configuration, some environment variables can be set.
- * ZORROA_ARCHIVIST_URL - the base URL for the archivist.
- * ZORROA_HMAC_PATH - the location the HMAC keys.
- * ZORROA_HMAC_KEY - the user's hmac key, overrides ZORROA_HMAC_PATH
- * ZORROA_USER - the username making the request.
+ * BOONAI_ARCHIVIST_URL - the base URL for the archivist.
+ * BOONAI_HMAC_PATH - the location the HMAC keys.
+ * BOONAI_HMAC_KEY - the user's hmac key, overrides BOONAI_HMAC_PATH
+ * BOONAI_USER - the username making the request.
  */
 class RestClient {
 
@@ -91,7 +91,7 @@ class RestClient {
 
     private fun initHost(): HttpHost {
         var host: String? = (System.getenv() as java.util.Map<String, String>).getOrDefault(
-            "ZORROA_ARCHIVIST_URL",
+            "BOONAI_ARCHIVIST_URL",
             System.getProperty("system.archivist.url")
         )
         if (host == null) {
@@ -103,14 +103,14 @@ class RestClient {
 
     private fun initUser(): String {
         return (System.getenv() as java.util.Map<String, String>).getOrDefault(
-            "ZORROA_USER",
+            "BOONAI_USER",
             System.getProperty("system.user")
         )
             ?: return System.getProperty("user.name")
     }
 
     private fun initHmacKey(): String? {
-        var key: String? = System.getenv("ZORROA_HMAC_KEY")
+        var key: String? = System.getenv("BOONAI_HMAC_KEY")
         if (key != null) {
             return key
         }
@@ -123,7 +123,7 @@ class RestClient {
         val paths = arrayOf(
             String.format(
                 "%s/%s.key",
-                (System.getenv() as java.util.Map<String, String>).getOrDefault("ZORROA_HMAC_PATH", "/vol/hmac"),
+                (System.getenv() as java.util.Map<String, String>).getOrDefault("BOONAI_HMAC_PATH", "/vol/hmac"),
                 user
             ),
             String.format("%s/.zorroa/%s.key", System.getProperty("user.home"), user)

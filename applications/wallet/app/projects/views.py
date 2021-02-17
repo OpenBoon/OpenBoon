@@ -70,11 +70,11 @@ class BaseProjectViewSet(ViewSet):
 
         # Attach some useful objects for interacting with ZMLP/ZVI to the request.
         if settings.PLATFORM == 'zmlp':
-            request.app = zmlp.BoonApp(apikey, settings.ZMLP_API_URL)
-            request.client = BoonClient(apikey=apikey, server=settings.ZMLP_API_URL,
+            request.app = zmlp.BoonApp(apikey, settings.BOONAI_API_URL)
+            request.client = BoonClient(apikey=apikey, server=settings.BOONAI_API_URL,
                                         project_id=project)
         else:
-            request.client = ZviClient(apikey=apikey, server=settings.ZMLP_API_URL)
+            request.client = ZviClient(apikey=apikey, server=settings.BOONAI_API_URL)
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -512,11 +512,11 @@ class ProjectViewSet(ListModelMixin,
 
             # Attach some useful objects for interacting with ZMLP/ZVI to the request.
             if settings.PLATFORM == 'zmlp':
-                request.app = boonsdk.BoonApp(apikey, settings.ZMLP_API_URL)
-                request.client = BoonClient(apikey=apikey, server=settings.ZMLP_API_URL,
+                request.app = boonsdk.BoonApp(apikey, settings.BOONAI_API_URL)
+                request.client = BoonClient(apikey=apikey, server=settings.BOONAI_API_URL,
                                             project_id=project)
             else:
-                request.client = ZviClient(apikey=apikey, server=settings.ZMLP_API_URL)
+                request.client = ZviClient(apikey=apikey, server=settings.BOONAI_API_URL)
 
         return super().dispatch(request, *args, **kwargs)
 
