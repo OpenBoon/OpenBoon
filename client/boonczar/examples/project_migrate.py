@@ -19,13 +19,13 @@ def main():
     project = admin.projects.get_project(args.id)
     print(project.name)
     print(app.client.server)
-    print(zmlp_admin.IndexSize[args.size.upper()])
+    print(boonczar.IndexSize[args.size.upper()])
     print("Continue?")
     _ = input()
 
     task = admin.indexes.migrate_project_index(project,
                                                "english_strict", args.version,
-                                               size=zmlp_admin.IndexSize[args.size.upper()])
+                                               size=boonczar.IndexSize[args.size.upper()])
     pprint.pprint(task._data)
 
 

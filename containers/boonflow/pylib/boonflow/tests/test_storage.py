@@ -10,7 +10,7 @@ import boonsdk
 from boonsdk import StoredFile, BoonClient, AnalysisModule, Job, Model
 from boonsdk.app import ModelApp
 from boonflow import storage
-from boonflow.testing import zorroa_test_data, TestAsset
+from boonflow.testing import test_data, TestAsset
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -47,7 +47,7 @@ class FileCacheTests(TestCase):
         assert os.path.getsize(path) == 5
 
     def test_localize_uri_local_path(self):
-        local_file = zorroa_test_data('images/set01/toucan.jpg', uri=False)
+        local_file = test_data('images/set01/toucan.jpg', uri=False)
         path = self.lfc.localize_uri(local_file)
         assert os.path.exists(path)
         assert os.path.getsize(path) == 97221
@@ -89,7 +89,7 @@ class FileCacheTests(TestCase):
             'size': 100
         })
         post_patch.return_value = '/tmp/toucan.jpg'
-        bird = zorroa_test_data('images/set01/toucan.jpg', uri=False)
+        bird = test_data('images/set01/toucan.jpg', uri=False)
         path = self.lfc.precache_file(pfile, bird)
         assert os.path.getsize(path) == os.path.getsize(bird)
 
@@ -103,7 +103,7 @@ class FileCacheTests(TestCase):
             'size': 0
         })
         post_patch.return_value = '/tmp/toucan.jpg'
-        bird = zorroa_test_data('images/set01/toucan.jpg', uri=False)
+        bird = test_data('images/set01/toucan.jpg', uri=False)
         self.assertRaises(storage.BoonSdkStorageException, self.lfc.precache_file, pfile, bird)
 
 
@@ -183,7 +183,7 @@ class TestAssetStorage(TestCase):
 
         asset = TestAsset(id='123456')
         result = self.fs.assets.store_file(
-            zorroa_test_data('images/set01/toucan.jpg', uri=False), asset, 'test')
+            test_data('images/set01/toucan.jpg', uri=False), asset, 'test')
         assert 'cat.jpg' == result.name
         assert 'proxy' == result.category
 

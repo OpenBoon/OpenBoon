@@ -6,7 +6,8 @@ import time
 import backoff
 import requests
 
-from boonflow import FatalProcessorExceptionfrom, file_storage, StorageException
+from boonflow import FatalProcessorException
+from boonflow.storage import file_storage, StorageException
 from boonsdk.client import BoonSdkJsonEncoder
 from boonsdk.util import as_id
 

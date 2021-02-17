@@ -19,7 +19,7 @@ class BoonDockerDaemonTests(unittest.TestCase):
 
     def setUp(self):
         self.emitter = TestEventEmitter()
-        self.zpsd = BoonDockerDaemon(9999, Reactor(self.emitter))
+        self.zpsd = BoonDockDaemon(9999, Reactor(self.emitter))
 
     def test_event_handler_generate_no_file_types(self):
         event = {

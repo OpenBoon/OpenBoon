@@ -4,7 +4,8 @@ import pytest
 
 from boonai_core.core.importers import FileImportProcessor
 from boonai_core.office.importers import OfficerClient, OfficeImporter
-from boonflow import Frame, FatalProcessorExceptionfrom boonflow.testing import PluginUnitTestCase, TestAsset, test_data
+from boonflow import Frame, FatalProcessorException
+from boonflow.testing import PluginUnitTestCase, TestAsset, test_data
 from boonsdk.app import ProjectApp
 
 

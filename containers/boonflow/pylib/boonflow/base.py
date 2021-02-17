@@ -170,11 +170,6 @@ class Context(object):
         return self.args.get(name, def_value)
 
 
-class ProcessorException(Exception):
-    """The base Exception for all Exceptions thrown by processors."""
-    pass
-
-
 class Processor(object):
     """The base class for all Processors.
 
@@ -301,7 +296,7 @@ class Processor(object):
                 if not expr.get("ignore_error"):
                     msg = "Failed to parse expression for arg '%s' : '%s', " \
                           "unexpected: %s"
-                    raise BoonSdkFatalProcessorException(
+                    raise FatalProcessorException(
                         msg % (arg_name, arg_expr, e))
 
     def teardown(self):

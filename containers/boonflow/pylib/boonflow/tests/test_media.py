@@ -5,15 +5,15 @@ import boonflow.media as media
 from boonsdk.client import BoonClient
 from boonflow import file_storage, StoredFile
 from boonflow.storage import ProjectStorage
-from boonflow.testing import zorroa_test_path, TestAsset
+from boonflow.testing import test_path, TestAsset
 
-IMAGE_EXR = zorroa_test_path('images/set06/SquaresSwirls.exr')
-IMAGE_PSD = zorroa_test_path('images/set06/psd_123.psd')
-IMAGE_JPG = zorroa_test_path('images/set02/beer_kettle_01.jpg')
-VIDEO_WEBM = zorroa_test_path('video/dc.webm')
-VIDEO_MP4 = zorroa_test_path('video/FatManOnABike1914.mp4')
-VIDEO_MXF = zorroa_test_path('mxf/freeMXF-mxf1.mxf')
-VIDEO_MOV = zorroa_test_path('video/1324_CAPS_23.0_030.00_15_MISC.mov')
+IMAGE_EXR = test_path('images/set06/SquaresSwirls.exr')
+IMAGE_PSD = test_path('images/set06/psd_123.psd')
+IMAGE_JPG = test_path('images/set02/beer_kettle_01.jpg')
+VIDEO_WEBM = test_path('video/dc.webm')
+VIDEO_MP4 = test_path('video/FatManOnABike1914.mp4')
+VIDEO_MXF = test_path('mxf/freeMXF-mxf1.mxf')
+VIDEO_MOV = test_path('video/1324_CAPS_23.0_030.00_15_MISC.mov')
 
 
 def test_get_image_metadata():

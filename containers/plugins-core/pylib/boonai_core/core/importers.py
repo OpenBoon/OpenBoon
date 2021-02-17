@@ -5,6 +5,7 @@ from boonai_core.office.importers import OfficeImporter
 from boonai_core.video.importers import VideoImporter
 from boonflow import AssetProcessor, FatalProcessorException
 
+
 class FileImportProcessor(AssetProcessor):
     """
     A composite processor made up of:

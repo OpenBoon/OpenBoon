@@ -12,7 +12,7 @@ import requests
 
 from boonsdk import FileImport, Asset, StoredFile
 from boonflow.base import Context, AssetProcessor, Generator, Argument, \
-    BoonSdkFatalProcessorException, BoonSdkProcessorException
+    FatalProcessorException, ProcessorException
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +44,7 @@ class TestProcessor(AssetProcessor):
 
     def init(self):
         if self.arg_value('raise_on_init'):
-            raise BoonSdkProcessorException('Failed to initialize!')
+            raise ProcessorException('Failed to initialize!')
 
     def preprocess(self, assets):
         for asset in assets:
@@ -54,10 +54,10 @@ class TestProcessor(AssetProcessor):
     def process(self, frame):
         self.logger.info('Running TestProcessor process()')
         if self.arg_value('raise_fatal'):
-            raise BoonSdkFatalProcessorException('Fatal exception raised')
+            raise FatalProcessorException('Fatal exception raised')
 
         if self.arg_value('raise'):
-            raise BoonSdkProcessorException('Warning exception raised')
+            raise ProcessorException('Warning exception raised')
 
         attrs = self.arg_value('attrs')
         if attrs:
@@ -292,7 +292,7 @@ class TestReactor(object):
         print(f"Emit event: '{event}'  payload: '{payload}'")
 
 
-def zorroa_test_path(rel_path=""):
+def test_path(rel_path=""):
     """
     Return the absolute path to the given test file.
 
@@ -302,10 +302,10 @@ def zorroa_test_path(rel_path=""):
     Returns:
         str: The path to the test data file
     """
-    return zorroa_test_data(rel_path, False)
+    return test_data(rel_path, False)
 
 
-def zorroa_test_data(rel_path="", uri=True):
+def test_data(rel_path="", uri=True):
     """
     Return the absolute path to the given test file.
 

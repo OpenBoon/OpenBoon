@@ -6,7 +6,8 @@ from unittest.mock import patch
 import pytest
 from pathlib import Path
 
-from boonflow import Frame, FatalProcessorExceptionfrom boonflow.storage import file_storage
+from boonflow import Frame, FatalProcessorException
+from boonflow.storage import file_storage
 from boonflow.testing import PluginUnitTestCase, TestAsset, test_path
 from boonai_core.office.importers import OfficeImporter, _content_sanitizer
 from boonai_core.office.oclient import OfficerClient

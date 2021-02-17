@@ -6,14 +6,14 @@ from unittest.mock import patch
 
 import boonflow.video as video
 import boonflow.media as media
-from boonflow.testing import zorroa_test_path, TestAsset
+from boonflow.testing import test_path, TestAsset
 from boonsdk import TimelineBuilder, BoonClient
 
 
 logging.basicConfig(level=logging.NOTSET)
 
-VIDEO_M4V = zorroa_test_path('video/sample_ipad.m4v')
-VIDEO_MOV = zorroa_test_path('video/1324_CAPS_23.0_030.00_15_MISC.mov')
+VIDEO_M4V = test_path('video/sample_ipad.m4v')
+VIDEO_MOV = test_path('video/1324_CAPS_23.0_030.00_15_MISC.mov')
 
 
 def test_extract_thumbnail_from_video():

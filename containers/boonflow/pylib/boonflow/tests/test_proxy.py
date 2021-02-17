@@ -3,12 +3,12 @@ from unittest.mock import patch
 
 import boonflow.proxy as proxy
 from boonsdk.client import BoonClient
-from boonflow.testing import zorroa_test_path, TestAsset
+from boonflow.testing import test_path, TestAsset
 from boonflow import file_storage
 
-IMAGE_JPG = zorroa_test_path('images/set01/faces.jpg')
-VIDEO_WEBM = zorroa_test_path('video/dc.webm')
-VIDEO_MP4 = zorroa_test_path('video/sample_ipad.m4v')
+IMAGE_JPG = test_path('images/set01/faces.jpg')
+VIDEO_WEBM = test_path('video/dc.webm')
+VIDEO_MP4 = test_path('video/sample_ipad.m4v')
 
 
 class ProxyFunctionTests(TestCase):
@@ -77,7 +77,7 @@ class ProxyFunctionTests(TestCase):
 
     @patch.object(file_storage, 'localize_file')
     def test_get_audio_proxy_auto_create_no_audio(self, localize_patch):
-        localize_patch.return_value = zorroa_test_path("video/no_audio.mp4")
+        localize_patch.return_value = test_path("video/no_audio.mp4")
         asset = TestAsset(IMAGE_JPG, id='123456')
         audio = proxy.get_audio_proxy(asset, True)
         assert not audio
@@ -85,7 +85,7 @@ class ProxyFunctionTests(TestCase):
     @patch.object(file_storage.assets, 'store_file')
     @patch.object(file_storage, 'localize_file')
     def test_get_audio_proxy_auto_create_audio(self, localize_patch, store_patch):
-        localize_patch.return_value = zorroa_test_path("video/ted_talk.mp4")
+        localize_patch.return_value = test_path("video/ted_talk.mp4")
         store_patch.return_value = True
         asset = TestAsset(IMAGE_JPG, id='123456')
         audio = proxy.get_audio_proxy(asset, True)

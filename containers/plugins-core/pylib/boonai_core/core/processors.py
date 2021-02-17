@@ -1,8 +1,9 @@
 import os
 from zlib import adler32
 
-from boonflow import AssetProcessor, Argument, FatalProcessorExceptionfrom
-from boonflow import storage
+from boonflow import AssetProcessor, Argument, FatalProcessorException
+from boonflow import file_storage
+
 
 class GroupProcessor(AssetProcessor):
     """A GroupProcessor is for holding sub processors. By itself, GroupProcessor is a no-op."""

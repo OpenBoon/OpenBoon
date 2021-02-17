@@ -19,6 +19,7 @@ auth_endpoint = "{}/auth/v1/auth-token".format(auth_url)
 
 SimilarityModel.load()
 
+
 def main():
     parser = argparse.ArgumentParser(prog='zmld')
     parser.add_argument("-p", "--port", help="The port to listen on",
@@ -67,6 +68,3 @@ def authenticate(token):
     rsp = requests.post(auth_endpoint, headers={"Authorization": token})
     if rsp.status_code != 200:
         raise Exception("Access denied")
-
-
-

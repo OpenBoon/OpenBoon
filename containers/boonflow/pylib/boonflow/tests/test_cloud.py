@@ -7,7 +7,7 @@ from unittest.mock import patch
 from boonflow.cloud import get_google_storage_client, \
     get_aws_client, get_credentials_blob, get_azure_storage_client
 from boonsdk.client import BoonClient
-from boonflow.testing import zorroa_test_path
+from boonflow.testing import test_path
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -26,7 +26,7 @@ class TetCloudUtilFunction(TestCase):
         Ensure we load a service account file from the
         GOOGLE_APPLICATION_CREDENTIALS environment variable.
         """
-        path = zorroa_test_path('creds/gcp_test.json')
+        path = test_path('creds/gcp_test.json')
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = path
         try:
             client = get_google_storage_client()
@@ -37,7 +37,7 @@ class TetCloudUtilFunction(TestCase):
 
     @patch.object(BoonClient, 'get')
     def test_get_google_storage_client_from_job_creds(self, get_patch):
-        with open(zorroa_test_path('creds/gcp_test.json'), 'r') as fp:
+        with open(test_path('creds/gcp_test.json'), 'r') as fp:
             gcs_creds = fp.read()
 
         get_patch.return_value = json.loads(gcs_creds)
