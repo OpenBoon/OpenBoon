@@ -81,7 +81,7 @@ class PipelineResolverServiceTests : AbstractTest() {
 
         val resolved = pipelineResolverService.resolve(pipeline.name, null)
         val last = resolved.execute.last()
-        assertEquals("boonai_analysis.zvi.ZviObjectDetectionProcessor", last.className)
+        assertEquals("boonai_analysis.boonai.ZviObjectDetectionProcessor", last.className)
         assertEquals("boonai/plugins-analysis", last.image)
     }
 
@@ -95,11 +95,11 @@ class PipelineResolverServiceTests : AbstractTest() {
         val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("boonai-label-detection"))
         val resolved = rpipeline.execute
         val last = resolved.last()
-        assertEquals(last.className, "boonai_analysis.zvi.ZviLabelDetectionProcessor")
+        assertEquals(last.className, "boonai_analysis.boonai.ZviLabelDetectionProcessor")
         assertEquals(last.image, "boonai/plugins-analysis")
 
         val beforeLast = resolved[resolved.size - 2]
-        assertEquals("boonai_analysis.zvi.ZviObjectDetectionProcessor", beforeLast.className)
+        assertEquals("boonai_analysis.boonai.ZviObjectDetectionProcessor", beforeLast.className)
         assertEquals("boonai/plugins-analysis", beforeLast.image)
     }
 
@@ -125,7 +125,7 @@ class PipelineResolverServiceTests : AbstractTest() {
         val resolved = rpipeline.execute
         val last = resolved.last()
 
-        assertEquals(last.className, "boonai_analysis.zvi.ZviSimilarityProcessor")
+        assertEquals(last.className, "boonai_analysis.boonai.ZviSimilarityProcessor")
         assertEquals(last.image, "boonai/plugins-analysis")
     }
 

@@ -97,7 +97,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "boonai_analysis.zvi.ZviObjectDetectionProcessor",
+                            "boonai_analysis.boonai.ZviObjectDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )
@@ -117,7 +117,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "boonai_analysis.zvi.ZviFaceDetectionProcessor",
+                            "boonai_analysis.boonai.ZviFaceDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )

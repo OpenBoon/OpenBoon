@@ -217,7 +217,7 @@ class PipelineResolverServiceImpl(
             ProcessorRef("boonai_core.core.FileImportProcessor", "boonai/plugins-core"),
             ProcessorRef("boonai_core.proxy.ImageProxyProcessor", "boonai/plugins-core"),
             ProcessorRef("boonai_core.proxy.VideoProxyProcessor", "boonai/plugins-core"),
-            ProcessorRef("boonai_analysis.zvi.ZviSimilarityProcessor", "boonai/plugins-analysis"),
+            ProcessorRef("boonai_analysis.boonai.ZviSimilarityProcessor", "boonai/plugins-analysis"),
             ProcessorRef("PrependMarker", "none")
         ).dropLastWhile { trimPrependMarker }
     }

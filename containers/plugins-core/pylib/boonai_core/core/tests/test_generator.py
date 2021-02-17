@@ -24,7 +24,7 @@ class GcsBucketGeneratorUnitTests(unittest.TestCase):
     def test_generate(self):
         consumer = TestConsumer()
         generator = GcsBucketGenerator()
-        generator.set_context(Context(None, {'uri': 'gs://boonai-dev-data'}, {}))
+        generator.set_context(Context(None, {'uri': 'gs://zorroa-dev-data'}, {}))
         generator.generate(consumer)
         assert consumer.count > 0
 
@@ -60,7 +60,7 @@ class S3BucketGeneratorUnitTests(unittest.TestCase):
         aws_client_patch.return_value = MockS3Client()
         consumer = TestConsumer()
         generator = S3BucketGenerator()
-        generator.set_context(Context(None, {'uri': 's3://boonai-test-data'}, {}))
+        generator.set_context(Context(None, {'uri': 's3://zorroa-test-data'}, {}))
         generator.generate(consumer)
         assert consumer.count > 0
 
@@ -72,7 +72,7 @@ class AzureBucketGeneratorUnitTests(unittest.TestCase):
         azure_client_patch.return_value = MockAzureClient()
         consumer = TestConsumer()
         generator = AzureBucketGenerator()
-        generator.set_context(Context(None, {'uri': 'azure://boonai-test-data'}, {}))
+        generator.set_context(Context(None, {'uri': 'azure://zorroa-test-data'}, {}))
         generator.generate(consumer)
         assert consumer.count > 0
 
@@ -87,7 +87,7 @@ class AssetSearchGeneratorTests(unittest.TestCase):
 
         consumer = TestConsumer()
         generator = AssetSearchGenerator()
-        generator.set_context(Context(None, {'uri': 'gs://boonai-dev-data'}, {}))
+        generator.set_context(Context(None, {'uri': 'gs://zorroa-dev-data'}, {}))
         generator.generate(consumer)
         assert consumer.count > 0
 

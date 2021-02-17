@@ -142,7 +142,7 @@ class ModelServiceTests : AbstractTest() {
         val mod = modelService.publishModel(model1)
         assertEquals(getProjectId(), mod.projectId)
         assertEquals(model1.moduleName, mod.name)
-        assertEquals("Zorroa", mod.provider)
+        assertEquals("Boon AI", mod.provider)
         assertEquals("Custom Models", mod.category)
         assertEquals("Label Detection", mod.type)
         assertEquals(ModOpType.APPEND, mod.ops[0].type)
