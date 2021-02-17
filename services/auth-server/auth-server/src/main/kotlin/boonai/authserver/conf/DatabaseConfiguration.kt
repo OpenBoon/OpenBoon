@@ -22,7 +22,7 @@ class DatabaseConfiguration {
     fun entityManagerFactory(dataSource: DataSource): LocalContainerEntityManagerFactoryBean {
         val emf = LocalContainerEntityManagerFactoryBean()
         emf.dataSource = dataSource
-        emf.setPackagesToScan("com.zorroa.auth.server.domain")
+        emf.setPackagesToScan("boonai.authserver.domain")
 
         val ad = HibernateJpaVendorAdapter()
         emf.jpaVendorAdapter = ad

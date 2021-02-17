@@ -49,15 +49,15 @@ management:
 #Swagger info
 swagger:
   isPublic: true
-  title: ZMLP APIKey Server
-  description: Validates ZMLP API keys
+  title: Boon AI API Key Server
+  description: Validates Boon AI API keys
   version: 1.0.0
 
-  termOfService: http://www.zorroa.com/terms
+  termOfService: http://www.boonai.io
 
-  contactCompanyName: Zorroa
-  contactCompanyWebsite: http://www.zorroa.com/contact
-  contactCompanySupportEmail: support@zorroa.com
-  restBasePackage: com.zorroa.auth.rest
+  contactCompanyName: Boon AI
+  contactCompanyWebsite: http://www.boonai.io
+  contactCompanySupportEmail: support@boonai.io
+  restBasePackage: boonai.autserver.rest
   licenseName: Commercial
-  licenseUrl: http://www.zorroa.com/contact
+  licenseUrl: http://www.boonai.io
