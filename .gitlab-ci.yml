@@ -734,11 +734,8 @@ elasticsearch-push-to-local-registry:
 
 boonai-services-unit-tests:
   stage: test
-  image: maven:3.6-jdk-11
-  retry: 1
-  cache:
-    paths:
-      - .m2/repository
+  image: boonai/jvm-build:latest
+  retry: 
   services:
     - name: redis:alpine
       alias: redis
@@ -782,11 +779,13 @@ boonai-services-unit-tests:
     - BOONAI_STORAGE_PROJECT_URL="http://${IP}:9000"
     - BOONAI_STORAGE_SYSTEM_URL="http://${IP}:9000"
     - mvn clean install -f services/jvm-common -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
-    - mvn test verify -f services/jvm-common -q
-    - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
+    - mvn test verify -f services/jvm-common -
+    - mvn clean install -f services/officer -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
     - mvn test verify -f services/officer -q
+    - mvn clean install -f services/archivist -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
     - mvn test verify -f services/archivist -q
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
+    - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
     - mvn test verify -f services/auth-server -q
   rules:
     # Scheduled Pipelines
