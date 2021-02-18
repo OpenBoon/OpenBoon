@@ -779,7 +779,7 @@ boonai-services-unit-tests:
     - BOONAI_STORAGE_PROJECT_URL="http://${IP}:9000"
     - BOONAI_STORAGE_SYSTEM_URL="http://${IP}:9000"
     - mvn clean install -f services/jvm-common -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
-    - mvn test verify -f services/jvm-common -
+    - mvn test verify -f services/jvm-common -q
     - mvn clean install -f services/officer -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
     - mvn test verify -f services/officer -q
     - mvn clean install -f services/archivist -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
