@@ -1,8 +1,8 @@
 {% extends "email/base-email.html" %}
 {% block content %}
-  <h2 style="color: #73B61C">Account Confirmation</h2>
+  <h2 style="color: #254CFF">Account Confirmation</h2>
   <p style="font-weight: bold;">
-    Thanks for signing up for Zorroa.
+    Thanks for signing up for Boon AI.
   </p>
   <p>
     To get started, click the link below to activate your account.
@@ -10,7 +10,7 @@
   <p>&nbsp;</p>
   <p>
     <a
-      style="padding-left: 45px; padding-right: 45px; padding-top: 15px; padding-bottom: 15px; background-color: #73B61C; color: #fff; text-decoration: none; border-radius: 2px; font-weight: 500;"
+      style="padding-left: 45px; padding-right: 45px; padding-top: 15px; padding-bottom: 15px; background-color: #254CFF; color: #fff; text-decoration: none; border-radius: 2px; font-weight: 500;"
       href="{{ fqdn }}/create-account?token={{ token }}&uid={{ user_id }}"
       target="_blank"
       >Confirm Your Account</a

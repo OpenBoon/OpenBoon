@@ -4,7 +4,7 @@ import Head from 'next/head'
 
 import { colors, constants, typography, spacing } from '../Styles'
 
-import LargeLogo from '../Icons/largeLogo.svg'
+import Logo from '../Icons/logo.svg'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import FlashMessageErrors from '../FlashMessage/Errors'
@@ -56,7 +56,7 @@ const Policies = ({ userId }) => {
           boxShadow: constants.boxShadows.default,
         }}
       >
-        <LargeLogo width={LOGO_WIDTH} css={{ alignSelf: 'center' }} />
+        <Logo width={LOGO_WIDTH} css={{ alignSelf: 'center' }} />
 
         <h3
           css={{

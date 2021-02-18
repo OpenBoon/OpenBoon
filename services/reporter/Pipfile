@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 google-cloud-monitoring = "*"
-zvi-client = {editable = true,path = "./../../client/python"}
+boonsdk = {editable = true,path = "./../../client/python"}
 kubernetes = "*"
 
 [requires]

@@ -53,7 +53,7 @@ resource "kubernetes_deployment" "ml-bbq" {
         }
         container {
           name              = "ml-bbq"
-          image             = "zmlp/ml-bbq:${var.container-tag}"
+          image             = "boonai/ml-bbq:${var.container-tag}"
           image_pull_policy = "Always"
           volume_mount {
             mount_path = "/var/run/docker.sock"
@@ -65,7 +65,7 @@ resource "kubernetes_deployment" "ml-bbq" {
             read_only  = true
           }
           env {
-            name  = "ZMLP_SECURITY_AUTHSERVER_URL"
+            name  = "BOONAI_SECURITY_AUTHSERVER_URL"
             value = var.auth-server-url
           }
           liveness_probe {

@@ -67,12 +67,12 @@ To export the cert in PEM format, use the openssl tool.
 openssl pkcs12 -in zorroa.p12 -nokeys -out zorroa.pem
 ```
 
-Set the ZORROA_CERT_PATH environment variable to the absolute path containing the zorroa.pem file,
+Set the BOONAI_CERT_PATH environment variable to the absolute path containing the zorroa.pem file,
 along with the archivist URL.  Note the trailing / in the URL.
 
 ```
-export ZORROA_ARCHIVIST_URL="https://archivist:8066/"
-export ZORROA_CERT_PATH="/vol/zorroa/shared/certs"
+export BOONAI_ARCHIVIST_URL="https://archivist:8066/"
+export BOONAI_CERT_PATH="/vol/zorroa/shared/certs"
 ```
 
 ## Signed Cert

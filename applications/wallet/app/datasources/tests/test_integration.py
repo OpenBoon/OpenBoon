@@ -3,10 +3,10 @@ from uuid import uuid4
 
 import pytest
 from django.urls import reverse
-from zmlp import ZmlpClient, Job
-from zmlp.app import DataSourceApp
-from zmlp.client import ZmlpDuplicateException
-from zmlp import DataSource
+from boonsdk import BoonClient, Job
+from boonsdk.app import DataSourceApp
+from boonsdk.client import BoonSdkDuplicateException
+from boonsdk import DataSource
 
 pytestmark = pytest.mark.django_db
 
@@ -57,7 +57,7 @@ def test_datasource_viewset_create(api_client, monkeypatch, project, zmlp_projec
             'credentials': {},
             'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
 
-    monkeypatch.setattr(ZmlpClient, 'post', mock_zmlp_create_datasource_post_response)
+    monkeypatch.setattr(BoonClient, 'post', mock_zmlp_create_datasource_post_response)
     monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
@@ -77,7 +77,7 @@ def test_datasource_viewset_create_gcp_creds(api_client, monkeypatch, project,
             'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
 
     monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
-    monkeypatch.setattr(ZmlpClient, 'post', mock_zmlp_create_datasource_post_response)
+    monkeypatch.setattr(BoonClient, 'post', mock_zmlp_create_datasource_post_response)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
     assert response.status_code == 200
@@ -93,7 +93,7 @@ def test_datasource_viewset_create_aws_creds(api_client, monkeypatch, project,
             'credentials': aws_credentials,
             'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
 
-    monkeypatch.setattr(ZmlpClient, 'post', mock_zmlp_create_datasource_post_response)
+    monkeypatch.setattr(BoonClient, 'post', mock_zmlp_create_datasource_post_response)
     monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
@@ -111,7 +111,7 @@ def test_datasource_viewset_create_azure_creds(api_client, monkeypatch, project,
             'credentials': azure_credentials,
             'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
 
-    monkeypatch.setattr(ZmlpClient, 'post', mock_zmlp_create_datasource_post_response)
+    monkeypatch.setattr(BoonClient, 'post', mock_zmlp_create_datasource_post_response)
     monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
@@ -128,7 +128,7 @@ def test_datasource_viewset_create_null_credentials(api_client, monkeypatch, pro
             'credentials': {},
             'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
 
-    monkeypatch.setattr(ZmlpClient, 'post', mock_zmlp_create_datasource_post_response)
+    monkeypatch.setattr(BoonClient, 'post', mock_zmlp_create_datasource_post_response)
     monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
@@ -149,9 +149,9 @@ def test_datasource_viewset_create_duplicate(api_client, monkeypatch, project, z
             'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
 
     def mock_post_response(*args, **kwargs):
-        raise ZmlpDuplicateException(data={})
+        raise BoonSdkDuplicateException(data={})
 
-    monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
+    monkeypatch.setattr(BoonClient, 'post', mock_post_response)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
     assert response.status_code == 409
@@ -174,10 +174,10 @@ def test_datasource_viewset_list(api_client, monkeypatch, zmlp_project_user, pro
         return {'list': [{'id': '48b45e81-4c31-11ea-a1f6-eeae6cabf22b', 'projectId': '00000000-0000-0000-0000-000000000000', 'name': 'Dev Data Jpgs', 'uri': 'gs://zorroa-dev-data', 'fileTypes': ['jpg', 'jpeg'], 'credentials': [], 'modules': ['959d7b33-c92f-124a-98af-223772aac895'], 'timeCreated': 1581358514511, 'timeModified': 1581358514511, 'actorCreated': 'admin-key', 'actorModified': 'admin-key'}], 'page': {'from': 0, 'size': 50, 'totalCount': 1}}  # noqa
 
     def mock_get_response(*args, **kwargs):
-        return {'id': '959d7b33-c92f-124a-98af-223772aac895', 'name': 'zmlp-labels', 'description': 'Generate keyword labels for image, video, and documents.', 'restricted': False, 'ops': [{'type': 'APPEND', 'apply': [{'args': {}, 'image': 'zmlp/plugins-analysis', 'module': 'standard', 'className': 'zmlp_analysis.mxnet.processors.ResNetClassifyProcessor'}], 'maxApplyCount': 1}], 'timeCreated': 1581354514397, 'timeModified': 1581375180564, 'actorCreated': '00000000-1234-1234-1234-000000000000/background-thread', 'actorModified': '00000000-1234-1234-1234-000000000000/background-thread'}  # noqa
+        return {'id': '959d7b33-c92f-124a-98af-223772aac895', 'name': 'zmlp-labels', 'description': 'Generate keyword labels for image, video, and documents.', 'restricted': False, 'ops': [{'type': 'APPEND', 'apply': [{'args': {}, 'image': 'zmlp/plugins-analysis', 'module': 'standard', 'className': 'boonai_analysis.mxnet.processors.ResNetClassifyProcessor'}], 'maxApplyCount': 1}], 'timeCreated': 1581354514397, 'timeModified': 1581375180564, 'actorCreated': '00000000-1234-1234-1234-000000000000/background-thread', 'actorModified': '00000000-1234-1234-1234-000000000000/background-thread'}  # noqa
 
-    monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
-    monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+    monkeypatch.setattr(BoonClient, 'post', mock_post_response)
+    monkeypatch.setattr(BoonClient, 'get', mock_get_response)
     response = api_client.get(reverse('datasource-list', kwargs={'project_pk': project.id}))
     assert response.json() == {'count': 1, 'next': None, 'previous': None, 'results': [{'id': '48b45e81-4c31-11ea-a1f6-eeae6cabf22b', 'projectId': '00000000-0000-0000-0000-000000000000', 'name': 'Dev Data Jpgs', 'uri': 'gs://zorroa-dev-data', 'fileTypes': ['jpg', 'jpeg'], 'credentials': [], 'modules': ['zmlp-labels'], 'timeCreated': 1581358514511, 'timeModified': 1581358514511, 'actorCreated': 'admin-key', 'actorModified': 'admin-key', 'url': 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/data_sources/48b45e81-4c31-11ea-a1f6-eeae6cabf22b/'}]}  # noqa
 
@@ -187,7 +187,7 @@ def test_datasource_viewset_retrieve(api_client, monkeypatch, zmlp_project_user,
     def mock_get_response(*args, **kwargs):
         return {'id': '48b45e81-4c31-11ea-a1f6-eeae6cabf22b', 'projectId': '00000000-0000-0000-0000-000000000000', 'name': 'Dev Data Jpgs', 'uri': 'gs://zorroa-dev-data', 'fileTypes': ['jpg', 'jpeg'], 'credentials': [], 'modules': ['959d7b33-c92f-124a-98af-223772aac895'], 'timeCreated': 1581358514511, 'timeModified': 1581358514511, 'actorCreated': 'admin-key', 'actorModified': 'admin-key'}  # noqa
 
-    monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+    monkeypatch.setattr(BoonClient, 'get', mock_get_response)
     response = api_client.get(reverse('datasource-detail',
                                       kwargs={'project_pk': project.id,
                                               'pk': '48b45e81-4c31-11ea-a1f6-eeae6cabf22b'}))
@@ -200,7 +200,7 @@ def test_datasource_viewset_delete(api_client, monkeypatch, zmlp_project_user, p
     def mock_delete_response(*args, **kwargs):
         return {'detail': 'success'}  # noqa
 
-    monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
+    monkeypatch.setattr(BoonClient, 'delete', mock_delete_response)
     response = api_client.delete(reverse('datasource-detail',
                                          kwargs={'project_pk': project.id,
                                                  'pk': '48b45e81-4c31-11ea-a1f6-eeae6cabf22b'}))
@@ -216,7 +216,7 @@ def test_datasource_viewset_update(api_client, monkeypatch, zmlp_project_user, p
     def mock_get_datasource(*args, **kwargs):
         return DataSource(data)
 
-    monkeypatch.setattr(ZmlpClient, 'put', mock_put_response)
+    monkeypatch.setattr(BoonClient, 'put', mock_put_response)
     monkeypatch.setattr(DataSourceApp, 'get_datasource', mock_get_datasource)
     monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
     kwargs = {'project_pk': project.id, 'pk': '48b45e81-4c31-11ea-a1f6-eeae6cabf22b'}
@@ -242,7 +242,7 @@ def test_datasource_actions_create_scan(api_client, monkeypatch, zmlp_project_us
     def mock_post_response(*args, **kwargs):
         return job_response
 
-    monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
+    monkeypatch.setattr(BoonClient, 'post', mock_post_response)
     kwargs = {'project_pk': project.id, 'pk': '48b45e81-4c31-11ea-a1f6-eeae6cabf22b'}
     response = api_client.post(reverse('datasource-scan', kwargs=kwargs), {})
     assert response.json() == {'jobId': job_response['id']}

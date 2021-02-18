@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "boonai-fake-project",
+  "private_key_id": "a267ef00a9aab4444cc40fc23cabcfea9e65aa2b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDC5tAivJd8Qw/V\nGpzIUG12B+clKHL4Icp+dMED/jC7x/QQmq7snmQxsbOSPXGQKTTagCaPiJ7IuLlm\n3hk9SsC+pGCyxaenT30gQ0V07SyjsJ3MjDTBRg8hsn5zV7q+knofXJezVHkVaH1t\n2iTLW4C+LABzmXdM0FCqUHwgksn26F/y8Ty2i5Jyc0zHrnD/cqKzz3xYHRssYZlw\nktD6AnuG2ysjlr1JxmPyFRKsKwMi6QEnmI9rkdhDGyHEiouGfz8exjPeDmNRkC5/\nJv3h8O9oLoZCiBZ4LcMyjHxAxyB1XhaNQ4cBIIO7q9UPF7PvmiInmhBSwg34objm\nAZTck0PLAgMBAAECggEARS3kJtBF/MdY9U125SsXD1QSyW+oD0b/Nw9+C0rIRX7e\nU6Lz/+zgp3rpwDiq/H6D0iK2jS/zHE/m1Kq4zraf34s8/3eE4LAoO7FlD/G3bIqe\nGCKUAT9u04kltQ8oq8gWLNeSyQZszBqAmuNZOA1MjzPTHTUV0WAHocxborw3j7mg\n8ljiwHTrQ8DRlV77u52OrmMwTtkFOhbRCKrSXJ4k2i3YJHCbbtdeu875Ao4tDpdD\nrEsckqz6TsT3Rb0JlLqfquLcPdT7+Z4QD4S6Kao5wdUQrmIY0Mt0kJ4L/VNUH+HF\nabgm+wywtC6hIpy9NekGcJ7/GbK6fFKLhk4YK4UiUQKBgQDgUhuVjlACmZCrl2nf\nLJnH0HijARJLA5kxDCelkrNmFyYDSGF08dEB2uC9MPeigUWgEzCxlE+KbBT9Y5Qc\nLqKU5w66+Nmj17bStWSE7vtbGuWsNiqk0DIpWg2G0z2kVugRVvm7QOjMGHa7BTje\nR8VFK5qS2zb2nRV/xs7taCDTXwKBgQDebRzSWSoy71tRjcK92/02WCZf/2e9N+dA\n7wpFAey0R69+2/hhxXjgXzPtwKx1pISbK1qKeAEIfR7b6eJkJIKSsbaOsyQ4Z+Zq\nAuOq0doNDIWM0h4biu0rWpz5Tv6Z0rjDTBroFjFhkXl+nMAnhrQhWg22M5Pv8qh2\nvazTw/ozFQKBgBkO8wfk6ukvcGrKskf8+nzIvAExiHKax00kV3V2itXXtiZduo1O\nyhNT+REJXFBp8nYsTp83ux7ybfHUYuI3D3Bk009tpxpXaZPmMYFsFOYbfhabwm3A\n2CmoZqRuCo/GKYxuU91oJdlOzkycC7tA9zd/5HeNR3mLGLC6a7k3jZsvAoGBALzQ\nISRK/rCIUZu0XDkxUwzb3Y+mTxjoKM4NXUlhLd+H7ukgsAPHTyoghwNviLbA9rSG\nI/Dhl/btx9FlBIKAH7uJUnBmj/u173nUhBFQ3Oow0/nLsDUvRM+FtzVHoodPwvo+\nU6Tqmfa6OEmLpO6owaaCPJuLwyxwcCOENf76IR1VAoGAAZQhJjanGbuosJ5oAwEy\nul6BCHFUP+gqfyJdpRpWeowrqnQEXEGyLd9MROmMsGjwqkUTOduJhgMIrAEA+IH2\nvsjIyi70t4N7virtbhr2xVFnk6rifdM86MXhbvUUccNo+740wUOxGaJmntR+CbhT\nEq8bB9dofzwnO6ZRaax0758=\n-----END PRIVATE KEY-----\n",
+  "client_email": "fake_service_account@zorroa-deploy.iam.gserviceaccount.com",
+  "client_id": "998877665544332211001",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/fake_service_account%40zorroa-deploy.iam.gserviceaccount.com"
+}

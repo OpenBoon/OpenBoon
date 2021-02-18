@@ -4,6 +4,7 @@ RUN apt-get -y update && apt-get -y upgrade && apt-get -y install python3 python
 # Install python dependencies.
 COPY services/metrics/Pipfile /service/metrics/Pipfile
 COPY services/metrics/Pipfile.lock /service/metrics/Pipfile.lock
+COPY client /client
 WORKDIR /service/metrics
 ENV PYTHONPATH /service/metrics/app:$PATH
 RUN pip3 install --upgrade pip \

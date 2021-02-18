@@ -2,8 +2,8 @@ from django.http import Http404
 from rest_framework import exceptions, status
 from rest_framework.exceptions import APIException
 from rest_framework.views import exception_handler
-from zmlp.client import ZmlpSecurityException, ZmlpInvalidRequestException, \
-    ZmlpNotFoundException, ZmlpDuplicateException
+from boonsdk.client import BoonSdkSecurityException, BoonSdkInvalidRequestException, \
+    BoonSdkNotFoundException, BoonSdkDuplicateException
 
 
 class InvalidRequestError(APIException):
@@ -20,7 +20,7 @@ class DuplicateError(APIException):
 
 class InvalidZmlpDataError(APIException):
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-    default_detail = {'detail': ['Invalid data was returned from ZMLP.']}
+    default_detail = {'detail': ['Invalid data was returned from boonsdk.']}
     default_code = 'invalid_zmlp_data'
 
 
@@ -32,11 +32,11 @@ class NotFoundError(APIException):
 
 def zmlp_exception_handler(exc, context):
     """Custom DRF exception handler that converts ZMLP exceptions to built-in DRF exceptions."""
-    exception_mapping = {ZmlpSecurityException: exceptions.PermissionDenied,
-                         ZmlpInvalidRequestException: InvalidRequestError,
-                         ZmlpNotFoundException: NotFoundError,
+    exception_mapping = {BoonSdkSecurityException: exceptions.PermissionDenied,
+                         BoonSdkInvalidRequestException: InvalidRequestError,
+                         BoonSdkNotFoundException: NotFoundError,
                          Http404: NotFoundError,
-                         ZmlpDuplicateException: DuplicateError}
+                         BoonSdkDuplicateException: DuplicateError}
     exc_type = type(exc)
     if exc_type in exception_mapping:
         exc = exception_mapping[exc_type]()

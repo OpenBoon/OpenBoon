@@ -440,7 +440,7 @@ exports[`<Login /> should render error 1`] = `
   >
     <svg
       className="emotion-5"
-      data-file-name="largeLogo.svg"
+      data-file-name="logo.svg"
       width={180}
     />
     <h3
@@ -1006,7 +1006,7 @@ exports[`<Login /> should render password changed 1`] = `
   >
     <svg
       className="emotion-5"
-      data-file-name="largeLogo.svg"
+      data-file-name="logo.svg"
       width={180}
     />
     <h3
@@ -1532,7 +1532,7 @@ exports[`<Login /> should render properly 1`] = `
   >
     <svg
       className="emotion-5"
-      data-file-name="largeLogo.svg"
+      data-file-name="logo.svg"
       width={180}
     />
     <h3
@@ -2058,7 +2058,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   >
     <svg
       className="emotion-5"
-      data-file-name="largeLogo.svg"
+      data-file-name="logo.svg"
       width={180}
     />
     <h3

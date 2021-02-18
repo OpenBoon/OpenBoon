@@ -277,7 +277,7 @@ RECORDS = [
   {
     "id": 26,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "V-agLC2UeIpKCZOW8A6afpsoRudYPsaU",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0154.jpg",
     "image_count": 1,
@@ -288,7 +288,7 @@ RECORDS = [
   {
     "id": 27,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "Qzt74QVOGizB1UUtTHgEUplCo-sFe7B-",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_2518.jpg",
     "image_count": 1,
@@ -299,7 +299,7 @@ RECORDS = [
   {
     "id": 28,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "nzncnwNanVzvI8J0lUlxXtpYE4_207os",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0872.jpg",
     "image_count": 1,
@@ -310,7 +310,7 @@ RECORDS = [
   {
     "id": 29,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "HmKSnwlTRj4Dl0XnSuXxnpUUpS2vQh5H",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_2913.jpg",
     "image_count": 1,
@@ -321,7 +321,7 @@ RECORDS = [
   {
     "id": 30,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "4i8iZkhawUFOP6jhPGXf-kC2nKwibUat",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_4132.jpg",
     "image_count": 1,
@@ -332,7 +332,7 @@ RECORDS = [
   {
     "id": 31,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "hZGxkfwka_zLCsDWkGCtWM1_QeXuFtpb",
     "asset_path": "gs://zvi-dev-temp-images/P1101679.jpg",
     "image_count": 1,
@@ -343,7 +343,7 @@ RECORDS = [
   {
     "id": 32,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "G1j7csKuzlo6R5AWmnlB3CumxARF39pt",
     "asset_path": "gs://zvi-dev-temp-images/P1114514-Edit.jpg",
     "image_count": 1,
@@ -354,7 +354,7 @@ RECORDS = [
   {
     "id": 33,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "ExLWoFyhukG8BPstdoKaKPAGK5TsCwGi",
     "asset_path": "gs://zvi-dev-temp-images/P1102027.jpg",
     "image_count": 1,
@@ -365,7 +365,7 @@ RECORDS = [
   {
     "id": 34,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "makR6-0L8jaYkCwgOlLi-Wmr0n43EfDw",
     "asset_path": "gs://zvi-dev-temp-images/P1101297.jpg",
     "image_count": 1,
@@ -376,7 +376,7 @@ RECORDS = [
   {
     "id": 35,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "3OYSv0kxreJZ_RJyUBucPS1fqP0VnwC6",
     "asset_path": "gs://zvi-dev-temp-images/P1113808.jpg",
     "image_count": 1,
@@ -387,7 +387,7 @@ RECORDS = [
   {
     "id": 36,
     "project": "11111111-1111-1111-1111-111111111111",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "3ChOGfKLdBMWns_7booi0LaTtYoDNlWh",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0015.jpg",
     "image_count": 1,
@@ -398,7 +398,7 @@ RECORDS = [
   {
     "id": 37,
     "project": "00000000-0000-0000-0000-000000000000",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "6QhY8AnX9CujjIdU951v_ViMXMs7CFPV",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0199.jpg",
     "image_count": 1,
@@ -409,7 +409,7 @@ RECORDS = [
   {
     "id": 38,
     "project": "22222222-2222-2222-2222-222222222222",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "c2S5afJCZ3oos9vuMTuDdq885KRC6cdR",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0025.jpg",
     "image_count": 1,
@@ -420,7 +420,7 @@ RECORDS = [
   {
     "id": 39,
     "project": "22222222-2222-2222-2222-222222222222",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "NoRHjlEVLJxIrFid9kWGBpDL4hz7RPQB",
     "asset_path": "gs://zvi-dev-temp-images/P1112852.jpg",
     "image_count": 1,
@@ -431,7 +431,7 @@ RECORDS = [
   {
     "id": 40,
     "project": "22222222-2222-2222-2222-222222222222",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "QvYiJUNYA8DOpSnwa8bQUrdjnYI_8NuR",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0047.jpg",
     "image_count": 1,
@@ -442,7 +442,7 @@ RECORDS = [
   {
     "id": 41,
     "project": "22222222-2222-2222-2222-222222222222",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "kSutaTysOLmLbjVWVB1h2DHbmwM7pAAY",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0560.jpg",
     "image_count": 1,
@@ -453,7 +453,7 @@ RECORDS = [
   {
     "id": 42,
     "project": "22222222-2222-2222-2222-222222222222",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "jUBz8hzSzu015o7-4SGUheQcMTm-eLEq",
     "asset_path": "gs://zvi-dev-temp-images/P1090685.jpg",
     "image_count": 1,
@@ -464,7 +464,7 @@ RECORDS = [
   {
     "id": 43,
     "project": "22222222-2222-2222-2222-222222222222",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "A46kOJILv0HLY2CW3_ODY5uVi3WLzF8S",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0401.jpg",
     "image_count": 1,
@@ -475,7 +475,7 @@ RECORDS = [
   {
     "id": 44,
     "project": "22222222-2222-2222-2222-222222222222",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "dZyQSffhruoZHPsFjx4QMhEaWhzwGFoa",
     "asset_path": "gs://zvi-dev-temp-images/P1113937.jpg",
     "image_count": 1,
@@ -486,7 +486,7 @@ RECORDS = [
   {
     "id": 45,
     "project": "22222222-2222-2222-2222-222222222222",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "jkkEA2asdDofLlTHVfRlIfG3oIsemgsP",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0371.jpg",
     "image_count": 1,
@@ -497,7 +497,7 @@ RECORDS = [
   {
     "id": 46,
     "project": "22222222-2222-2222-2222-222222222222",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "HcNWvDGt8tE5s7OtoW__Ir-C9tL4VQgL",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_2459.jpg",
     "image_count": 1,
@@ -508,7 +508,7 @@ RECORDS = [
   {
     "id": 47,
     "project": "22222222-2222-2222-2222-222222222222",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "CWR_Ynwn-JDQ78MmHrIhXEh7GtMz25e_",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_2507.jpg",
     "image_count": 1,
@@ -519,7 +519,7 @@ RECORDS = [
   {
     "id": 48,
     "project": "22222222-2222-2222-2222-222222222222",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "WLKFwlGjRAAeR8SgP08MbJg5L272UsgI",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_2490.jpg",
     "image_count": 1,
@@ -530,7 +530,7 @@ RECORDS = [
   {
     "id": 49,
     "project": "22222222-2222-2222-2222-222222222222",
-    "service": "zvi-object-detection",
+    "service": "boonai-object-detection",
     "asset_id": "IA-bbQSOda_ZCYQoDwsV8zTdt_DEZK5L",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_2530.jpg",
     "image_count": 1,
@@ -541,7 +541,7 @@ RECORDS = [
   {
     "id": 50,
     "project": "22222222-2222-2222-2222-222222222222",
-    "service": "zvi-label-detection",
+    "service": "boonai-label-detection",
     "asset_id": "V-agLC2UeIpKCZOW8A6afpsoRudYPsaU",
     "asset_path": "gs://zvi-dev-temp-images/people/IMG_0154.jpg",
     "image_count": 1,

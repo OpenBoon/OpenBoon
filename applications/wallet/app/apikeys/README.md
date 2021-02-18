@@ -1,5 +1,5 @@
 # Apikeys
-Contains views for getting apikeys from ZMLP.
+Contains views for getting apikeys from boonsdk.
 
 ## Setup for ZMLP ApiKey Testing
 

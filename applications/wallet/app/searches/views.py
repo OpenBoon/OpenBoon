@@ -9,7 +9,7 @@ from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_csv.renderers import CSVRenderer
-from zmlp.search import AssetSearchScroller
+from boonsdk.search import AssetSearchScroller
 
 from assets.utils import get_asset_style, get_video_length, get_thumbnail_and_video_urls
 from assets.views import asset_modifier
@@ -350,9 +350,9 @@ class MetadataExportViewSet(BaseProjectViewSet):
         return self._yield_all_items_from_es(request, base_url=path, search_filter=query)
 
     def _yield_all_items_from_es(self, request, base_url=None, search_filter={}):
-        """Helper to get all results from scroll responses from ZMLP.
+        """Helper to get all results from scroll responses from boonsdk.
 
-        Given the search in `search_filter`, will return the results from ZMLP, making
+        Given the search in `search_filter`, will return the results from boonsdk, making
         repeated paginated requests until all results are returned. Returned items will
         be run through an item_modifier to correctly update them.
 
