@@ -1,6 +1,6 @@
 # Welcome to the "Wallet Frontend"
 
-The `wallet` project provides monitoring and control tools for ZMLP. This
+The `wallet` project provides monitoring and control tools for Boon AI. This
 version uses the [Next.js](https://nextjs.org/) framework to facilitate
 server-side rendering and enforce best practices. It relies very much on the
 opinions of the underlying tools described below.
@@ -108,9 +108,9 @@ session ends. It should also allow you to work offline.
 
 #### Local Mode
 
-To run a local environment of ZVI Console, you need to build the docker setup
-(`docker-compose build`) and run it (`docker-compose up`). Refer to the overall
-`wallet` or `wallet/app` docs for further information.
+To run a local environment of Boon AI Console, you need to build the docker
+setup (`docker-compose build`) and run it (`docker-compose up`). Refer to the
+overall `wallet` or `wallet/app` docs for further information.
 
 Run `npm run dev` to start a local development node server on
 http://localhost:3000. This starts the node.js / next.js SSR development server

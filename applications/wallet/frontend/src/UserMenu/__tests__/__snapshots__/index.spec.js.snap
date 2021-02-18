@@ -364,7 +364,7 @@ exports[`<UserMenu /> should render properly 2`] = `
           <li>
             <a
               className="emotion-10"
-              href="mailto:zvi-console-support@zorroa.com"
+              href="mailto:support@boonai.io"
               onBlur={[Function]}
               onClick={[Function]}
               rel="noopener noreferrer"

@@ -5,9 +5,9 @@ import { useLocalStorage } from '../LocalStorage/helpers'
 
 export const ENVS = {
   LOCAL: 'localdev',
-  DEV: 'zvi-dev',
-  QA: 'zvi-qa',
-  PROD: 'zvi-prod',
+  DEV: 'boonai-dev',
+  QA: 'boonai-qa',
+  PROD: 'boonai-prod',
 }
 
 const Feature = ({ flag, envs, children }) => {

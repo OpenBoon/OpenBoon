@@ -9,13 +9,14 @@ const ApiKeysCopy = () => {
       }}
     >
       Create and manage API Keys for applications or tools you would like to
-      integrate with ZVI. An API Key is required to access data for this project
-      using the ZVI SDK and REST APIs. For more information please visit{' '}
+      integrate with Boon AI. An API Key is required to access data for this
+      project using the Boon AI SDK and REST APIs. For more information please
+      visit{' '}
       <a
         css={{ color: colors.key.two }}
         target="_blank"
         rel="noopener noreferrer"
-        href="https://zorroa.gitbook.io/zmlp/"
+        href="https://app.gitbook.com/@zorroa/s/boonsdk/"
       >
         our documentation
       </a>

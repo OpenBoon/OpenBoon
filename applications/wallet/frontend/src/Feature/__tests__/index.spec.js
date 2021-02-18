@@ -46,7 +46,9 @@ describe('<Feature />', () => {
   })
 
   it('should not render a feature with no env in prod', () => {
-    require('next/config').__setPublicRuntimeConfig({ ENVIRONMENT: 'zvi-prod' })
+    require('next/config').__setPublicRuntimeConfig({
+      ENVIRONMENT: 'boonai-prod',
+    })
 
     const component = TestRenderer.create(
       <Feature flag="hello" envs={[]}>
@@ -58,7 +60,9 @@ describe('<Feature />', () => {
   })
 
   it('should render a prod feature in prod', () => {
-    require('next/config').__setPublicRuntimeConfig({ ENVIRONMENT: 'zvi-prod' })
+    require('next/config').__setPublicRuntimeConfig({
+      ENVIRONMENT: 'boonai-prod',
+    })
 
     const component = TestRenderer.create(
       <Feature flag="hello" envs={[ENVS.PROD]}>

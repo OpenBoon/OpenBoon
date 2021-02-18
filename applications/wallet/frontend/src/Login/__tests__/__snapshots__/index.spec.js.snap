@@ -497,7 +497,7 @@ exports[`<Login /> should render error 1`] = `
           />
           <a
             className="emotion-16"
-            href="mailto:support@zorroa.com?subject=ZVI Console Login Trouble"
+            href="mailto:support@boonai.io?subject=Boon AI Console Login Trouble"
             rel="noopener noreferrer"
             target="_blank"
           >
