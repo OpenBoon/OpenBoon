@@ -79,11 +79,11 @@ resource "kubernetes_deployment" "metrics" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "512Mi"
               cpu    = 0.5
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.2
             }
@@ -117,11 +117,11 @@ resource "kubernetes_deployment" "metrics" {
             container_port = "80"
           }
           resources {
-            limits {
+            limits = {
               memory = "2Gi"
               cpu    = 2
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 1
             }
