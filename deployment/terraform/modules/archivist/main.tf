@@ -101,11 +101,13 @@ resource "kubernetes_deployment" "archivist" {
     name      = "archivist"
     namespace = var.namespace
     labels = {
-      app = "archivist"
+      app                                  = "archivist"
+      "sql-service-account-key-date"       = var.sql-service-account-key-date
+      "archivist-service-account-key-date" = google_service_account_key.archivist.valid_after
     }
     annotations = {
-      sql-service-account-key-date       = var.sql-service-account-key-date
-      archivist-service-account-key-date = google_service_account_key.archivist.valid_after
+      "sql-service-account-key-date"       = var.sql-service-account-key-date
+      "archivist-service-account-key-date" = google_service_account_key.archivist.valid_after
     }
   }
   spec {
@@ -158,11 +160,11 @@ resource "kubernetes_deployment" "archivist" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "512Mi"
               cpu    = 0.5
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.2
             }
@@ -178,11 +180,11 @@ resource "kubernetes_deployment" "archivist" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "2Gi"
               cpu    = 0.7
             }
-            requests {
+            requests = {
               memory = "1Gi"
               cpu    = 0.5
             }

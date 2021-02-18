@@ -33,11 +33,11 @@ resource "kubernetes_deployment" "elasticsearch-hq" {
             value = "http://${var.es-ip-address}:9200"
           }
           resources {
-            requests {
+            requests = {
               memory = var.memory-request
               cpu    = var.cpu-request
             }
-            limits {
+            limits = {
               memory = var.memory-limit
               cpu    = var.cpu-limit
             }
