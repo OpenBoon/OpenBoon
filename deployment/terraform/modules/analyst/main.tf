@@ -158,11 +158,11 @@ resource "kubernetes_deployment" "analyst" {
             }
           }
           resources {
-            requests {
+            requests = {
               memory = var.memory-request
               cpu    = var.cpu-request
             }
-            limits {
+            limits = {
               memory = var.memory-limit
               cpu    = var.cpu-limit
             }

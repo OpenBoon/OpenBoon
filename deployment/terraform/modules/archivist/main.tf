@@ -158,11 +158,11 @@ resource "kubernetes_deployment" "archivist" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "512Mi"
               cpu    = 0.5
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.2
             }
@@ -178,11 +178,11 @@ resource "kubernetes_deployment" "archivist" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "2Gi"
               cpu    = 0.7
             }
-            requests {
+            requests = {
               memory = "1Gi"
               cpu    = 0.5
             }

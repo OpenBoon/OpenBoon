@@ -53,11 +53,11 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "512Mi"
               cpu    = 0.5
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.2
             }

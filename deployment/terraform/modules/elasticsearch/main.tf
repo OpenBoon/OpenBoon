@@ -243,11 +243,11 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
             read_only  = true
           }
           resources {
-            requests {
+            requests = {
               memory = "512Mi"
               cpu    = 1
             }
-            limits {
+            limits = {
               memory = "1Gi"
               cpu    = 1.5
             }
