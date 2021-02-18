@@ -469,7 +469,7 @@ boonai-dockerhub-build-push-latest:
     - docker tag boonai/py3-base:${SOURCE_TAG} boonai/py3-base:${DOCKER_TAG}
     - docker tag boonai/boonsdk:${SOURCE_TAG} boonai/boonsdk:${DOCKER_TAG}
     - docker tag boonai/boonlab:${SOURCE_TAG} boonai/boonlab:${DOCKER_TAG}
-    - docker tag boonai/boonflow:${SOURCE_TAG} boonai/bonoflow:${DOCKER_TAG}
+    - docker tag boonai/boonflow:${SOURCE_TAG} boonai/boonflow:${DOCKER_TAG}
     - docker tag boonai/boondocks:${SOURCE_TAG} boonai/boondocks:${DOCKER_TAG}
     - docker tag boonai/plugins-models:${SOURCE_TAG} boonai/plugins-models:${DOCKER_TAG}
     - docker tag boonai/plugins-core:${SOURCE_TAG} boonai/plugins-core:${DOCKER_TAG}
