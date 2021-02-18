@@ -448,9 +448,6 @@ boonai-dockerhub-build-push-latest:
   stage: push
   services:
     - docker:19-dind
-  cache:
-    paths:
-      - .m2/repository
   variables:
     FF_USE_LEGACY_KUBERNETES_EXECUTION_STRATEGY: "false" # This feature flag fixes a bug where the job would stop and say it succeeded.
     DOCKER_TLS_CERTDIR: ""
@@ -458,8 +455,6 @@ boonai-dockerhub-build-push-latest:
     DOCKER_HOST: tcp://localhost:2375
     SOURCE_TAG: latest
     DOCKER_TAG: latest
-    MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
-    MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
   retry: 2
   before_script:
     - apk add docker-compose
@@ -500,25 +495,25 @@ boonai-dockerhub-build-push-latest:
     - docker push boonai/ml-bbq:${DOCKER_TAG}
     - docker push boonai/plugins-train:${DOCKER_TAG}
     - docker push boonai/reporter:${DOCKER_TAG}
-#  rules:
-#    # Scheduled Pipelines
-#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-#      when: never
-#    # Merged to development with Boon AI changes
-#    - if: $CI_COMMIT_BRANCH == "development"
-#      changes:
-#        - "client/**/*"
-#        - "containers/**/*"
-#        - "dev/**/*"
-#        - "services/analyst/**/*"
-#        - "services/jvm-common/**/*"
-#        - "services/api-gateway/**/*"
-#        - "services/archivist/**/*"
-#        - "services/auth-server/**/*"
-#        - "services/elasticsearch/**/*"
-#        - "services/mlbbq/**/*"
-#        - "services/officer/**/*"
-#        - "services/reporter/**/*"
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # Merged to development with Boon AI changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "client/**/*"
+        - "containers/**/*"
+        - "dev/**/*"
+        - "services/analyst/**/*"
+        - "services/jvm-common/**/*"
+        - "services/api-gateway/**/*"
+        - "services/archivist/**/*"
+        - "services/auth-server/**/*"
+        - "services/elasticsearch/**/*"
+        - "services/mlbbq/**/*"
+        - "services/officer/**/*"
+        - "services/reporter/**/*"
 
 boonai-dockerhub-build-push-qa:
   extends:
