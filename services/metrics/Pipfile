@@ -18,7 +18,7 @@ djangorestframework-csv = "*"
 django-health-check = "*"
 flake8 = "*"
 pytest-cov = "*"
-zvi-client = ">=1.1.3"
+boonsdk = {path = "./../../client/boonsdk"}
 
 [requires]
 python_version = "3.7"

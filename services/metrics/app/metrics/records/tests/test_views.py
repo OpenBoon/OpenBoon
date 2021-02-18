@@ -1,5 +1,6 @@
 import pytest
-import zmlp
+# import zmlp
+import boonsdk
 
 from django.urls import reverse
 from django.conf import settings
@@ -49,40 +50,40 @@ class TestAPICallsViewSet:
         response = api_client.get(reverse('apicalls-report'))
         assert response.status_code == 200
         content = response.json()
-        assert content == [{'image_count': 10,
+        assert content == [{'image_count': 1,
                             'project': '00000000-0000-0000-0000-000000000000',
-                            'tier': 'tier_2',
+                            'service': 'boonai-object-detection',
+                            'tier': 'tier_1',
+                            'video_minutes': 7.17},
+                           {'image_count': 10,
+                            'project': '00000000-0000-0000-0000-000000000000',
                             'service': 'gcp-label-detection',
+                            'tier': 'tier_2',
                             'video_minutes': 46.51},
                            {'image_count': 15,
                             'project': '00000000-0000-0000-0000-000000000000',
-                            'tier': 'free',
                             'service': 'standard',
+                            'tier': 'free',
                             'video_minutes': 73.13},
-                           {'image_count': 1,
-                            'project': '00000000-0000-0000-0000-000000000000',
-                            'tier': 'tier_1',
-                            'service': 'zvi-object-detection',
-                            'video_minutes': 7.17},
-                           {'image_count': 10,
-                            'project': '11111111-1111-1111-1111-111111111111',
-                            'tier': 'free',
-                            'service': 'standard',
-                            'video_minutes': 48.8},
                            {'image_count': 11,
                             'project': '11111111-1111-1111-1111-111111111111',
+                            'service': 'boonai-object-detection',
                             'tier': 'tier_1',
-                            'service': 'zvi-object-detection',
                             'video_minutes': 45.66},
+                           {'image_count': 10,
+                            'project': '11111111-1111-1111-1111-111111111111',
+                            'service': 'standard',
+                            'tier': 'free',
+                            'video_minutes': 48.8},
                            {'image_count': 1,
                             'project': '22222222-2222-2222-2222-222222222222',
+                            'service': 'boonai-label-detection',
                             'tier': 'tier_1',
-                            'service': 'zvi-label-detection',
                             'video_minutes': 2.5},
                            {'image_count': 12,
                             'project': '22222222-2222-2222-2222-222222222222',
+                            'service': 'boonai-object-detection',
                             'tier': 'tier_1',
-                            'service': 'zvi-object-detection',
                             'video_minutes': 52.55}]
 
     def test_report_csv(self, api_client, test_set):
@@ -131,7 +132,8 @@ class TestAPICallsViewSet:
 class TestTiers:
 
     def test_all_tiers_covered(self):
-        app = zmlp.ZmlpApp(settings.DEV_PIPELINES_KEY, server=settings.DEV_DOMAIN)
+        app = boonsdk.BoonApp(settings.DEV_PIPELINES_KEY, server=settings.DEV_DOMAIN)
+        # app = zmlp.ZmlpApp(settings.DEV_PIPELINES_KEY, server=settings.DEV_DOMAIN)
         # Get all current modules on Dev
         index = 0
         size = 50
