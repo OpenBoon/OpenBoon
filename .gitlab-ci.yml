@@ -735,7 +735,7 @@ elasticsearch-push-to-local-registry:
 boonai-services-unit-tests:
   stage: test
   image: boonai/jvm-build:latest
-  retry: 
+  retry: 1
   services:
     - name: redis:alpine
       alias: redis
