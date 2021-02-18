@@ -129,7 +129,7 @@ class AssetApp(object):
                 print("--processed files--")
                 for path in files:
                     print(path)
-                print("--zvi response--")
+                print("--boonsdk response--")
                 pprint.pprint(rsp)
 
             app.assets.batch_upload_directory("/home", file_types=['images'],
