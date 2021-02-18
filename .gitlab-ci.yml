@@ -475,7 +475,7 @@ boonai-dockerhub-build-push-latest:
     - docker tag boonai/boonsdk:${SOURCE_TAG} boonai/boonsdk:${DOCKER_TAG}
     - docker tag boonai/boonlab:${SOURCE_TAG} boonai/boonlab:${DOCKER_TAG}
     - docker tag boonai/boonflow:${SOURCE_TAG} boonai/bonoflow:${DOCKER_TAG}
-    - docker tag boonai/plugins-base:${SOURCE_TAG} boonai/boondocks:${DOCKER_TAG}
+    - docker tag boonai/boondocks:${SOURCE_TAG} boonai/boondocks:${DOCKER_TAG}
     - docker tag boonai/plugins-models:${SOURCE_TAG} boonai/plugins-models:${DOCKER_TAG}
     - docker tag boonai/plugins-core:${SOURCE_TAG} boonai/plugins-core:${DOCKER_TAG}
     - docker tag boonai/plugins-analysis:${SOURCE_TAG} boonai/plugins-analysis:${DOCKER_TAG}
@@ -492,7 +492,7 @@ boonai-dockerhub-build-push-latest:
     - docker push boonai/boonsdk:${DOCKER_TAG}
     - docker push boonai/boonlab:${DOCKER_TAG}
     - docker push boonai/boonflow:${DOCKER_TAG}
-    - docker push boonai/plugins-base:${DOCKER_TAG}
+    - docker push boonai/boondocks:${DOCKER_TAG}
     - docker push boonai/plugins-models:${DOCKER_TAG}
     - docker push boonai/plugins-core:${DOCKER_TAG}
     - docker push boonai/plugins-analysis:${DOCKER_TAG}
