@@ -231,32 +231,33 @@ module "elasticsearch" {
 }
 
 module "archivist" {
-  source                      = "./modules/archivist"
-  project                     = var.project
-  country                     = var.country
-  image-pull-secret           = kubernetes_secret.dockerhub.metadata[0].name
-  sql-service-account-key     = module.postgres.sql-service-account-key
-  sql-connection-name         = module.postgres.connection-name
-  sql-instance-name           = module.postgres.instance-name
-  inception-key-b64           = local.inception-key-b64
-  system-bucket               = google_storage_bucket.system.name
-  container-cluster-name      = module.gke-cluster.name
-  analyst-shared-key          = module.analyst.shared-key
-  container-tag               = var.container-tag
-  es-backup-bucket-name       = module.elasticsearch.backup-bucket-name
-  log-bucket-name             = google_storage_bucket.access-logs.name
-  deep-video-analysis-enabled = var.deep-video-analysis-enabled
+  source                       = "./modules/archivist"
+  project                      = var.project
+  country                      = var.country
+  image-pull-secret            = kubernetes_secret.dockerhub.metadata[0].name
+  sql-service-account-key-date = module.postgres.sql-service-account-key-date
+  sql-connection-name          = module.postgres.connection-name
+  sql-instance-name            = module.postgres.instance-name
+  inception-key-b64            = local.inception-key-b64
+  system-bucket                = google_storage_bucket.system.name
+  container-cluster-name       = module.gke-cluster.name
+  analyst-shared-key           = module.analyst.shared-key
+  container-tag                = var.container-tag
+  es-backup-bucket-name        = module.elasticsearch.backup-bucket-name
+  log-bucket-name              = google_storage_bucket.access-logs.name
+  deep-video-analysis-enabled  = var.deep-video-analysis-enabled
 }
 
 module "auth-server" {
-  source                 = "./modules/auth-server"
-  sql-instance-name      = module.postgres.instance-name
-  sql-connection-name    = module.postgres.connection-name
-  image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
-  inception-key-b64      = local.inception-key-b64
-  system-bucket          = google_storage_bucket.system.name
-  container-cluster-name = module.gke-cluster.name
-  container-tag          = var.container-tag
+  source                       = "./modules/auth-server"
+  sql-instance-name            = module.postgres.instance-name
+  sql-connection-name          = module.postgres.connection-name
+  sql-service-account-key-date = module.postgres.sql-service-account-key-date
+  image-pull-secret            = kubernetes_secret.dockerhub.metadata[0].name
+  inception-key-b64            = local.inception-key-b64
+  system-bucket                = google_storage_bucket.system.name
+  container-cluster-name       = module.gke-cluster.name
+  container-tag                = var.container-tag
 }
 
 module "api-gateway" {
@@ -304,8 +305,8 @@ module "wallet" {
   image-pull-secret               = kubernetes_secret.dockerhub.metadata[0].name
   pg_host                         = module.postgres.ip-address
   sql-instance-name               = module.postgres.instance-name
-  sql-service-account-key         = module.postgres.sql-service-account-key
   sql-connection-name             = module.postgres.connection-name
+  sql-service-account-key-date    = module.postgres.sql-service-account-key-date
   zmlp-api-url                    = "http://${module.api-gateway.ip-address}"
   smtp-password                   = var.smtp-password
   google-oauth-client-id          = var.google-oauth-client-id
@@ -330,26 +331,26 @@ module "ml-bbq" {
 }
 
 module "gcp-marketplace-integration" {
-  source                   = "./modules/gcp-marketplace-integration"
-  project                  = var.project
-  image-pull-secret        = kubernetes_secret.dockerhub.metadata[0].name
-  pg_host                  = module.postgres.ip-address
-  sql-instance-name        = module.postgres.instance-name
-  sql-service-account-key  = module.postgres.sql-service-account-key
-  sql-connection-name      = module.postgres.connection-name
-  zmlp-api-url             = "http://${module.api-gateway.ip-address}"
-  smtp-password            = var.smtp-password
-  google-oauth-client-id   = var.google-oauth-client-id
-  marketplace-project      = "zorroa-public"
-  marketplace-subscription = "zorroa-public"
-  marketplace-credentials  = var.marketplace-credentials
-  marketplace-service-name = "zorroa-visual-intelligence-zorroa-public.cloudpartnerservices.goog"
-  fqdn                     = var.wallet-domains[0]
-  environment              = var.environment
-  inception-key-b64        = local.inception-key-b64
-  pg_password              = module.wallet.pg_password
-  enabled                  = var.deploy-marketplace-integration
-  container-tag            = var.container-tag
+  source                       = "./modules/gcp-marketplace-integration"
+  project                      = var.project
+  image-pull-secret            = kubernetes_secret.dockerhub.metadata[0].name
+  pg_host                      = module.postgres.ip-address
+  sql-instance-name            = module.postgres.instance-name
+  sql-connection-name          = module.postgres.connection-name
+  sql-service-account-key-date = module.postgres.sql-service-account-key-date
+  zmlp-api-url                 = "http://${module.api-gateway.ip-address}"
+  smtp-password                = var.smtp-password
+  google-oauth-client-id       = var.google-oauth-client-id
+  marketplace-project          = "zorroa-public"
+  marketplace-subscription     = "zorroa-public"
+  marketplace-credentials      = var.marketplace-credentials
+  marketplace-service-name     = "zorroa-visual-intelligence-zorroa-public.cloudpartnerservices.goog"
+  fqdn                         = var.wallet-domains[0]
+  environment                  = var.environment
+  inception-key-b64            = local.inception-key-b64
+  pg_password                  = module.wallet.pg_password
+  enabled                      = var.deploy-marketplace-integration
+  container-tag                = var.container-tag
 }
 
 module "elasticsearch-hq" {
@@ -367,18 +368,19 @@ module "reporter" {
 }
 
 module "metrics" {
-  source               = "./modules/metrics"
-  sql-instance-name    = module.postgres.instance-name
-  sql-connection-name  = module.postgres.connection-name
-  image-pull-secret    = kubernetes_secret.dockerhub.metadata[0].name
-  environment          = var.environment
-  container-tag        = var.container-tag
-  browsable            = var.metrics-browsable
-  debug                = var.metrics-debug
-  superuser-email      = var.metrics-superuser-email
-  superuser-password   = var.metrics-superuser-password
-  superuser-first-name = var.metrics-superuser-first-name
-  superuser-last-name  = var.metrics-superuser-last-name
-  django-log-level     = var.metrics-django-log-level
-  log-requests         = var.metrics-log-requests
+  source                       = "./modules/metrics"
+  sql-instance-name            = module.postgres.instance-name
+  sql-connection-name          = module.postgres.connection-name
+  sql-service-account-key-date = module.postgres.sql-service-account-key-date
+  image-pull-secret            = kubernetes_secret.dockerhub.metadata[0].name
+  environment                  = var.environment
+  container-tag                = var.container-tag
+  browsable                    = var.metrics-browsable
+  debug                        = var.metrics-debug
+  superuser-email              = var.metrics-superuser-email
+  superuser-password           = var.metrics-superuser-password
+  superuser-first-name         = var.metrics-superuser-first-name
+  superuser-last-name          = var.metrics-superuser-last-name
+  django-log-level             = var.metrics-django-log-level
+  log-requests                 = var.metrics-log-requests
 }
