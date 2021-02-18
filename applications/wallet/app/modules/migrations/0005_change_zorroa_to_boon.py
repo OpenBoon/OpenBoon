@@ -3,7 +3,7 @@
 from django.db import migrations
 
 
-def forward(self, apps, schema_editor):
+def forward(apps, schema_editor):
     Provider = apps.get_model('modules', 'Provider')
     provider = Provider.objects.get(name='zorroa')
     provider.name = 'boon ai'
@@ -11,7 +11,7 @@ def forward(self, apps, schema_editor):
     provider.save()
 
 
-def backward(self, apps, schema_editor):
+def backward(apps, schema_editor):
     Provider = apps.get_model('modules', 'Provider')
     provider = Provider.objects.get(name='boon ai')
     provider.name = 'zorroa'
