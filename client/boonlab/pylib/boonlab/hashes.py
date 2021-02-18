@@ -4,7 +4,7 @@ from boonsdk import app_from_env
 
 
 def read_hash_as_vectors(search=None,
-                         attr='analysis.zvi-image-similarity.simhash',
+                         attr='analysis.boonai-image-similarity.simhash',
                          percentage=100,
                          verbose=True):
     """This function reads a similarity hash from a Zorroa server into a numpy array.

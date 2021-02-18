@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 
 from boonsdk import BoonClient, app_from_env
-from zvi.display import show_thumbnails, show_asset
+from boonlab.display import show_thumbnails, show_asset
 
 
 class DisplayTests(unittest.TestCase):
@@ -27,7 +27,7 @@ class DisplayTests(unittest.TestCase):
                             'source': {
                                 'path': 'https://i.imgur.com/SSN26nN.jpg'
                             },
-                            "analysis": {"zvi-image-similarity": {
+                            "analysis": {"boonai-image-similarity": {
                                 "simhash": "AAAAAAAA"}
                             },
                             "labels": [
@@ -50,7 +50,7 @@ class DisplayTests(unittest.TestCase):
                             'source': {
                                 'path': 'https://i.imgur.com/foo.jpg'
                             },
-                            'analysis': {"zvi-image-similarity": {
+                            'analysis': {"boonai-image-similarity": {
                                 "simhash": "BBBBBBBB"}
                             },
                             "labels": [
@@ -73,7 +73,7 @@ class DisplayTests(unittest.TestCase):
                             'source': {
                                 'path': 'https://i.imgur.com/bar.jpg'
                             },
-                            'analysis': {"zvi-image-similarity": {
+                            'analysis': {"boonai-image-similarity": {
                                 "simhash": "CCCCCCCC"}
                             },
                             "labels": [

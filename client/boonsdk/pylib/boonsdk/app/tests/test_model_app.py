@@ -138,7 +138,7 @@ class ModelAppTests(unittest.TestCase):
             'name': 'ZVI_LABEL_DETECTION',
             'description': 'a description',
             'objective': 'label detection',
-            'provider': 'zorroa',
+            'provider': 'boonai',
             'minConcepts': 1,
             'minExamples': 1
         }
@@ -148,7 +148,7 @@ class ModelAppTests(unittest.TestCase):
         assert props.name == "ZVI_LABEL_DETECTION"
         assert props.description == 'a description'
         assert props.objective == 'label detection'
-        assert props.provider == 'zorroa'
+        assert props.provider == 'boonai'
         assert props.min_concepts == 1
         assert props.min_examples == 1
 
@@ -158,7 +158,7 @@ class ModelAppTests(unittest.TestCase):
             'name': 'ZVI_LABEL_DETECTION',
             'description': 'a description',
             'objective': 'label detection',
-            'provider': 'zorroa',
+            'provider': 'boonai',
             'minConcepts': 1,
             'minExamples': 1
         }
@@ -168,6 +168,6 @@ class ModelAppTests(unittest.TestCase):
         assert props.name == "ZVI_LABEL_DETECTION"
         assert props.description == 'a description'
         assert props.objective == 'label detection'
-        assert props.provider == 'zorroa'
+        assert props.provider == 'boonai'
         assert props.min_concepts == 1
         assert props.min_examples == 1
