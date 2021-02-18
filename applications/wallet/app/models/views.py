@@ -15,8 +15,8 @@ from models.utils import ConfusionMatrix
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 from wallet.utils import validate_zmlp_data
-from zmlp.client import ZmlpNotFoundException
-from zmlp.entity.model import LabelScope
+from boonsdk.client import BoonSdkNotFoundException
+from boonsdk.entity.model import LabelScope
 
 
 def get_model_type_restrictions(label_counts, min_concepts, min_examples):
@@ -132,7 +132,7 @@ class ModelViewSet(BaseProjectViewSet):
 
     @action(methods=['get'], detail=False)
     def model_types(self, request, project_pk):
-        """Get the available model types from ZMLP."""
+        """Get the available model types from boonsdk."""
         path = f'{self.zmlp_root_api_path}/_types'
         excluded_names = ['ZVI_FACE_RECOGNITION']
         response = request.client.get(path)
@@ -361,5 +361,5 @@ class ModelViewSet(BaseProjectViewSet):
         """Gets the model for the given ID"""
         try:
             return app.models.get_model(model_id)
-        except ZmlpNotFoundException:
+        except BoonSdkNotFoundException:
             raise Http404()

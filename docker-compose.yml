@@ -29,7 +29,7 @@ services:
 
   # Elastic Search instance used for local development servers.
   es1:
-    image: zmlp/elasticsearch:latest
+    image: boonai/elasticsearch:latest
     build:
       context: services/elasticsearch
       args:
@@ -42,7 +42,7 @@ services:
     environment:
       discovery.type: "single-node"
       discovery.zen.minimum_master_nodes: "1"
-      cluster.name: "zorroa-es-cluster"
+      cluster.name: "boonai-cluster"
       network.host: "0.0.0.0"
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
       MINIO_URL: http://minio:9000
@@ -57,7 +57,7 @@ services:
 
   # API Gateway
   api-gateway:
-    image: zmlp/apigateway:latest
+    image: boonai/apigateway:latest
     build:
       context: services/api-gateway
     depends_on:
@@ -72,54 +72,54 @@ services:
       MLBBQ_SERVER_HOST: ml-bbq:8282
 
   ml-bbq:
-    image: zmlp/ml-bbq:latest
+    image: boonai/ml-bbq:latest
     depends_on:
       - auth-server
-      - zmlp-plugins-models
+      - boonai-plugins-models
     ports:
       - "8282:8282"
     build:
       context: services/mlbbq
     environment:
-      ZMLP_SECURITY_AUTHSERVER_URL : http://auth-server:9090
+      BOONAI_SECURITY_AUTHSERVER_URL : http://auth-server:9090
 
   # Auth server
   auth-server:
-    image: zmlp/authserver:latest
+    image: boonai/authserver:latest
     depends_on:
       - postgres
       - minio
-      - zmlp-jvm-common
+      - boonai-jvm-common
     ports:
       - "9090:9090"
     build:
       context: services/auth-server
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/zorroa?currentSchema=auth
-      ZMLP_SECURITY_INCEPTIONKEY: ewogICAgIm5hbWUiOiAiYWRtaW4ta2V5IiwKICAgICJwcm9qZWN0SWQiOiAiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwKICAgICJpZCI6ICI0MzM4YTgzZi1hOTIwLTQwYWItYTI1MS1hMTIzYjE3ZGYxYmEiLAogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiLAogICAgInBlcm1pc3Npb25zIjogW10KfQoK
-      ZMLP_STORAGE_SYSTEM_ACCESSKEY: qwerty123
-      ZMLP_STORAGE_SYSTEM_SECRETKEY: 123qwerty
+      BOONAI_SECURITY_INCEPTION_KEY: ewogICAgIm5hbWUiOiAiYWRtaW4ta2V5IiwKICAgICJwcm9qZWN0SWQiOiAiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwKICAgICJpZCI6ICI0MzM4YTgzZi1hOTIwLTQwYWItYTI1MS1hMTIzYjE3ZGYxYmEiLAogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiLAogICAgInBlcm1pc3Npb25zIjogW10KfQoK
+      BOONAI_STORAGE_SYSTEM_ACCESSKEY: qwerty123
+      BOONAI_STORAGE_SYSTEM_SECRETKEY: 123qwerty
       JAVA_OPTS: "-Xms1g -Xmx1g -XX:+UseG1GC -XX:InitiatingHeapOccupancyPercent=70 -XX:G1HeapRegionSize=16m"
 
   # Local Archivist server.
   archivist:
-    image: zmlp/archivist:latest
+    image: boonai/archivist:latest
     depends_on:
       - es1
       - postgres
       - minio
-      - zmlp-jvm-common
+      - boonai-jvm-common
     environment:
       SENTRY_ENVIRONMENT: localdev
-      ZMLP_STORAGE_PROJECT_ACCESSKEY: qwerty123
-      ZMLP_STORAGE_PROJECT_SECRETKEY: 123qwerty
-      ZMLP_STORAGE_SYSTEM_URL: http://minio:9000
-      ZMLP_STORAGE_SYSTEM_ACCESSKEY: qwerty123
-      ZMLP_STORAGE_SYSTEM_SECRETKEY: 123qwerty
-      ZMLP_STORAGE_PROJECT_URL: http://minio:9000
+      BOONAI_STORAGE_PROJECT_ACCESSKEY: qwerty123
+      BOONAI_STORAGE_PROJECT_SECRETKEY: 123qwerty
+      BOONAI_STORAGE_SYSTEM_URL: http://minio:9000
+      BOONAI_STORAGE_SYSTEM_ACCESSKEY: qwerty123
+      BOONAI_STORAGE_SYSTEM_SECRETKEY: 123qwerty
+      BOONAI_STORAGE_PROJECT_URL: http://minio:9000
       ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
       ARCHIVIST_DEEP_VIDEO_ANALYSIS_ENABLED: "true"
-      ZMLP_SECURITY_AUTHSERVER_SERVICEKEY: ewogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiCn0KCg==
+      BOONAI_SECURITY_AUTHSERVER_SERVICEKEY: ewogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiCn0KCg==
       JAVA_OPTS: "-Xms1g -Xmx1g -XX:+UseG1GC -XX:InitiatingHeapOccupancyPercent=70 -XX:G1HeapRegionSize=16m"
     build:
       context: services/archivist
@@ -128,9 +128,9 @@ services:
       - "./dev/config/archivist/application.properties:/service/config/application.properties"
 
   officer:
-    image: zmlp/officer:latest
+    image: boonai/officer:latest
     depends_on:
-      - zmlp-jvm-common
+      - boonai-jvm-common
       - minio
       - redis
     build:
@@ -138,17 +138,17 @@ services:
     ports:
       - 7078:7078
     environment:
-      ZMLP_STORAGE_PROJECT_URL: http://minio:9000
-      ZMLP_STORAGE_PROJECT_ACCESSKEY: qwerty123
-      ZMLP_STORAGE_PROJECT_SECRETKEY: 123qwerty
-      ZMLP_STORAGE_CLIENT: minio
+      BOONAI_STORAGE_PROJECT_URL: http://minio:9000
+      BOONAI_STORAGE_PROJECT_ACCESSKEY: qwerty123
+      BOONAI_STORAGE_PROJECT_SECRETKEY: 123qwerty
+      BOONAI_STORAGE_CLIENT: minio
       REDIS_HOST: redis:6379
 
   analyst:
-    image: zmlp/analyst:latest
+    image: boonai/analyst:latest
     depends_on:
       - archivist
-      - zmlp-py3-sdk
+      - boonai-boonflow
     build:
       context: services/analyst
     ports:
@@ -159,13 +159,13 @@ services:
     environment:
       ANALYST_DOCKER_PULL: "false"
       ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
-      ZMLP_SERVER: http://archivist:8080
+      BOONAI_SERVER: http://archivist:8080
       OFFICER_URL: http://officer:7078
-      ZMLP_BILLING_METRICS_SERVICE: http://metrics
+      BOONAI_BILLING_METRICS_SERVICE: http://metrics
 
   # Console web application.
   wallet:
-    image: zmlp/wallet:latest
+    image: boonai/wallet:latest
     ports:
       - 80:80
     build:
@@ -178,7 +178,7 @@ services:
       DEBUG: "true"
       BROWSABLE: "true"
       PG_HOST: postgres
-      ZMLP_API_URL: http://api-gateway:80
+      BOONAI_API_URL: http://api-gateway:80
       INCEPTION_KEY_B64: ewogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiCn0KCg==
       GOOGLE_OAUTH_CLIENT_ID: 980622341235-39kks0r3pkl0iotcb8mt6iclbvj98mml
       SUPERADMIN: "true"
@@ -197,7 +197,7 @@ services:
 
   # Metric Collection Service.
   metrics:
-    image: zmlp/metrics:latest
+    image: boonai/metrics:latest
     ports:
       - 8585:80
     build:
@@ -215,86 +215,86 @@ services:
       - postgres
 
   # These services are only here because their images need to be built.
-  zmlp-jvm-common:
-    image: zmlp/jvm-common:latest
+  boonai-jvm-common:
+    image: boonai/jvm-common:latest
     build:
-      context: lib/jvm-common
+      context: services/jvm-common
     command: echo
 
-  zmlp-py3-base:
-    image: zmlp/py3-base:latest
+  boonai-py3-base:
+    image: boonai/py3-base:latest
     build:
-      context: containers/zmlp-py3-base
+      context: containers/py3-base
     command: echo
 
-  zmlp-py3-client:
-    image: zmlp/py3-client:latest
+  boonai-boonsdk:
+    image: boonai/boonsdk:latest
     depends_on:
-      - zmlp-py3-base
+      - boonai-py3-base
     build:
-      context: client/python
+      context: client/boonsdk
     command: echo
 
-  zmlp-py3-zvi:
-    image: zmlp/py3-zvi:latest
+  boonai-lab:
+    image: boonai/boonlab:latest
     depends_on:
-      - zmlp-py3-client
+      - boonai-boonsdk
     build:
-      context: client/zvi
+      context: client/boonlab
     command: echo
 
-  zmlp-py3-sdk:
-    image: zmlp/py3-sdk:latest
+  boonai-boonflow:
+    image: boonai/boonflow:latest
     depends_on:
-      - zmlp-py3-client
+      - boonai-boonsdk
     build:
-      context: sdk
+      context: containers/boonflow
     command: echo
 
-  zmlp-plugins-base:
-    image: zmlp/plugins-base:latest
+  boonai-boondocks:
+    image: boonai/boondocks:latest
     depends_on:
-      - zmlp-py3-sdk
+      - boonai-boonflow
     build:
-      context: containers/zmlp-plugins-base
+      context: containers/boondocks
     command: echo
 
-  zmlp-plugins-core:
-    image: zmlp/plugins-core:latest
+  boonai-plugins-core:
+    image: boonai/plugins-core:latest
     depends_on:
-      - zmlp-plugins-base
+      - boonai-boondocks
     build:
-      context: containers/zmlp-plugins-core
+      context: containers/plugins-core
     command: echo
 
-  zmlp-plugins-models:
-    image: zmlp/plugins-models:latest
+  boonai-plugins-models:
+    image: boonai/plugins-models:latest
     depends_on:
-      - zmlp-plugins-base
+      - boonai-boondocks
     build:
-      context: containers/zmlp-plugins-models
+      context: containers/plugins-models
     command: echo
 
-  zmlp-plugins-train:
-    image: zmlp/plugins-train:latest
+  boonai-plugins-train:
+    image: boonai/plugins-train:latest
     depends_on:
-      - zmlp-plugins-models
+      - boonai-plugins-models
     build:
-      context: containers/zmlp-plugins-train
+      context: containers/plugins-train
     command: echo
 
-  zmlp-plugins-analysis:
-    image: zmlp/plugins-analysis:latest
+  boonai-plugins-analysis:
+    image: boonai/plugins-analysis:latest
     depends_on:
-      - zmlp-plugins-models
+      - boonai-plugins-models
     build:
-      context: containers/zmlp-plugins-analysis
+      context: containers/plugins-analysis
     command: echo
 
   reporter:
-    image: zmlp/reporter:latest
+    image: boonai/reporter:latest
     depends_on:
-      - zmlp-plugins-base
+      - boonai-py3-base
     build:
       context: .
       dockerfile: services/reporter/Dockerfile

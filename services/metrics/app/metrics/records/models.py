@@ -13,13 +13,15 @@ class ApiCall(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
-    free_modules = ['zvi-extract-layers',
-                    'zvi-extract-pages',
+    # List of module pricing tiers. Any new module added to the platform needs to be
+    # added to one of these lists.
+    free_modules = ['boonai-extract-layers',
+                    'boonai-extract-pages',
                     'standard']
-    tier_1_modules = ['zvi-label-detection',
-                      'zvi-object-detection',
-                      'zvi-text-detection',
-                      'zvi-face-detection']
+    tier_1_modules = ['boonai-label-detection',
+                      'boonai-object-detection',
+                      'boonai-text-detection',
+                      'boonai-face-detection']
     tier_2_modules = ['gcp-dlp',
                       'gcp-document-text-detection',
                       'gcp-image-text-detection',

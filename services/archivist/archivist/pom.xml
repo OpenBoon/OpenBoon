@@ -4,15 +4,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>archivist</artifactId>
-    <groupId>com.zorroa.zmlp</groupId>
-    <name>archivist</name>
+    <groupId>boonai</groupId>
+    <name>boonai-archivist</name>
     <packaging>jar</packaging>
     <description>Zorroa Platform Application Server</description>
 
     <parent>
         <relativePath>../pom.xml</relativePath>
-        <groupId>com.zorroa.zmlp</groupId>
-        <artifactId>zorroa-achivist-parent</artifactId>
+        <groupId>boonai</groupId>
+        <artifactId>boonai-achivist-parent</artifactId>
         <version>1.0</version>
     </parent>
 
@@ -26,21 +26,21 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
-        <zmlp-common.version>1.0.0</zmlp-common.version>
+        <boonai-common.version>1.0.0</boonai-common.version>
     </properties>
 
     <dependencies>
 
         <dependency>
-            <groupId>com.zorroa.zmlp</groupId>
-            <artifactId>zmlp-apikey</artifactId>
-            <version>${zmlp-common.version}</version>
+            <groupId>boonai</groupId>
+            <artifactId>boonai-apikey</artifactId>
+            <version>${boonai-common.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.zorroa.zmlp</groupId>
-            <artifactId>zmlp-service</artifactId>
-            <version>${zmlp-common.version}</version>
+            <groupId>boonai</groupId>
+            <artifactId>boonai-service</artifactId>
+            <version>${boonai-common.version}</version>
         </dependency>
 
         <dependency>
@@ -176,7 +176,7 @@
         <dependency>
             <groupId>com.google.cloud.sql</groupId>
             <artifactId>postgres-socket-factory</artifactId>
-            <version>1.2.0</version>
+            <version>1.2.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>mysql</groupId>

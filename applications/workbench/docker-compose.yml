@@ -8,6 +8,6 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      ZMLP_API_URL: http://api-gateway:80
+      BOONAI_API_URL: http://api-gateway:80
     volumes:
       - "./applications/workbench/data:/data"

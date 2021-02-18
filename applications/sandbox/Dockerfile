@@ -20,8 +20,8 @@ USER zorroa
 ENV PYTHONPATH="/sandbox"
 ENV PATH=$PATH:~/.local/bin
 
-ENV ZMLP_SERVER="http://api-gateway:80"
-ENV ZMLP_APIKEY_FILE="/home/zorroa/signing-key.json"
+ENV BOONAI_SERVER="http://api-gateway:80"
+ENV BOONAI_APIKEY_FILE="/home/zorroa/signing-key.json"
 WORKDIR /sandbox
 
 CMD streamlit run sandbox.py

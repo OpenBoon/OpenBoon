@@ -33,9 +33,9 @@ class BaseMetric(object):
     https://cloud.google.com/monitoring/custom-metrics/creating-metrics.
 
     """
-    def __init__(self, monitoring_client, zmlp_client, k8s_client, project_id):
+    def __init__(self, monitoring_client, boon_client, k8s_client, project_id):
         self.monitoring_client = monitoring_client
-        self.zmlp_client = zmlp_client
+        self.boon_client = boon_client
         self.project_id = project_id
         self.k8s_client = k8s_client
 
@@ -66,7 +66,7 @@ class BaseMetric(object):
 class JobQueueMetrics(BaseMetric):
 
     def get_metric_values(self):
-        api_gateway_url = os.environ['ZMLP_API_URL']
+        api_gateway_url = os.environ['BOONAI_API_URL']
         basic_auth = HTTPBasicAuth('monitor', os.environ['MONITOR_PASSWORD'])
 
         # Get max running tasks.
@@ -83,11 +83,11 @@ class JobQueueMetrics(BaseMetric):
         current_analyst_count = self.get_analyst_count()
         analyst_scale_ratio = desired_analyst_count / current_analyst_count
 
-        return [MetricValue('custom.googleapis.com/zmlp/total-pending-tasks', total_pending_tasks),
-                MetricValue('custom.googleapis.com/zmlp/max-running-tasks', max_running_tasks),
-                MetricValue('custom.googleapis.com/zmlp/current-analyst-count', current_analyst_count),
-                MetricValue('custom.googleapis.com/zmlp/desired-analyst-count', desired_analyst_count),
-                MetricValue('custom.googleapis.com/zmlp/analyst-scale-ratio', analyst_scale_ratio)]
+        return [MetricValue('custom.googleapis.com/boon/total-pending-tasks', total_pending_tasks),
+                MetricValue('custom.googleapis.com/boon/max-running-tasks', max_running_tasks),
+                MetricValue('custom.googleapis.com/boon/current-analyst-count', current_analyst_count),
+                MetricValue('custom.googleapis.com/boon/desired-analyst-count', desired_analyst_count),
+                MetricValue('custom.googleapis.com/boon/analyst-scale-ratio', analyst_scale_ratio)]
 
     def get_analyst_count(self):
         scale = self.k8s_client.AppsV1Api().read_namespaced_deployment_scale('analyst', 'default')

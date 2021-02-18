@@ -85,25 +85,25 @@ resource "kubernetes_deployment" "auth-server" {
         }
         container {
           name              = "auth-server"
-          image             = "zmlp/authserver:${var.container-tag}"
+          image             = "boonai/authserver:${var.container-tag}"
           image_pull_policy = "Always"
           liveness_probe {
             initial_delay_seconds = 120
-            period_seconds = 30
+            period_seconds        = 30
             http_get {
               scheme = "HTTP"
-              path = "/monitor/health"
-              port = "9090"
+              path   = "/monitor/health"
+              port   = "9090"
             }
           }
           readiness_probe {
-            failure_threshold = 6
+            failure_threshold     = 6
             initial_delay_seconds = 90
-            period_seconds = 30
+            period_seconds        = 30
             http_get {
               scheme = "HTTP"
-              path = "/monitor/health"
-              port = "9090"
+              path   = "/monitor/health"
+              port   = "9090"
             }
           }
           port {
@@ -124,7 +124,7 @@ resource "kubernetes_deployment" "auth-server" {
             value = "jdbc:postgresql://localhost/${google_sql_database.auth.name}?currentSchema=auth&useSSL=false&cloudSqlInstance=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${google_sql_user.auth-server.name}&password=${random_string.sql-password.result}"
           }
           env {
-            name  = "ZMLP_SECURITY_INCEPTIONKEY"
+            name  = "BOONAI_SECURITY_INCEPTIONKEY"
             value = var.inception-key-b64
           }
           env {
@@ -136,7 +136,7 @@ resource "kubernetes_deployment" "auth-server" {
             value = "gcs"
           }
           env {
-            name  = "ZMLP_STORAGE_SYSTEM_BUCKET"
+            name  = "BOONAI_STORAGE_SYSTEM_BUCKET"
             value = var.system-bucket
           }
         }

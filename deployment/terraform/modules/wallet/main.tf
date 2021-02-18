@@ -88,7 +88,7 @@ resource "kubernetes_deployment" "wallet" {
         }
         container {
           name              = "wallet"
-          image             = "zmlp/wallet:${var.container-tag}"
+          image             = "boonai/wallet:${var.container-tag}"
           image_pull_policy = "Always"
           liveness_probe {
             initial_delay_seconds = 30
@@ -132,7 +132,7 @@ resource "kubernetes_deployment" "wallet" {
             value = random_string.sql-password.result
           }
           env {
-            name  = "ZMLP_API_URL"
+            name  = "BOONAI_API_URL"
             value = var.zmlp-api-url
           }
           env {
