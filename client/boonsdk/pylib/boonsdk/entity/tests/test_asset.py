@@ -71,8 +71,8 @@ class AssetTests(unittest.TestCase):
                 return {"predictions": [{"cat": 12345}]}
 
         asset = Asset({"id": "123"})
-        asset.add_analysis("zvi-foo", Labels())
-        analysis = asset.get_analysis("zvi-foo")
+        asset.add_analysis("boonai-foo", Labels())
+        analysis = asset.get_analysis("boonai-foo")
         assert len(analysis['predictions']) == 1
         assert analysis['predictions'][0]['cat'] == 12345
 
@@ -186,7 +186,7 @@ class AssetTests(unittest.TestCase):
 
     def test_get_predicted_labels(self):
         asset = Asset({"id": "123"})
-        asset.set_attr("analysis.zvi-label-detection.predictions", [
+        asset.set_attr("analysis.boonai-label-detection.predictions", [
             {
                 "score": 0.99,
                 "label": "house"
@@ -200,12 +200,12 @@ class AssetTests(unittest.TestCase):
                 "label": "market"
             }
         ])
-        assert 3 == len(asset.get_predicted_labels("zvi-label-detection"))
-        assert 1 == len(asset.get_predicted_labels("zvi-label-detection", min_score=0.85))
+        assert 3 == len(asset.get_predicted_labels("boonai-label-detection"))
+        assert 1 == len(asset.get_predicted_labels("boonai-label-detection", min_score=0.85))
 
     def test_get_predicted_label(self):
         asset = Asset({"id": "123"})
-        asset.set_attr("analysis.zvi-label-detection.predictions", [
+        asset.set_attr("analysis.boonai-label-detection.predictions", [
             {
                 "score": 0.99,
                 "label": "house"
@@ -216,17 +216,17 @@ class AssetTests(unittest.TestCase):
             }
         ])
         # Get by index
-        pred = asset.get_predicted_label("zvi-label-detection", 0)
+        pred = asset.get_predicted_label("boonai-label-detection", 0)
         assert "house" == pred["label"]
         assert 0.99 == pred["score"]
 
-        pred = asset.get_predicted_label("zvi-label-detection", "broom")
+        pred = asset.get_predicted_label("boonai-label-detection", "broom")
         assert "broom" == pred["label"]
         assert 0.5 == pred["score"]
 
     def test_get_analysis(self):
         asset = Asset({"id": "123"})
-        asset.set_attr("analysis.zvi-label-detection.predictions", [
+        asset.set_attr("analysis.boonai-label-detection.predictions", [
             {
                 "score": 0.99,
                 "label": "house"
@@ -236,7 +236,7 @@ class AssetTests(unittest.TestCase):
                 "label": "broom"
             }
         ])
-        analysis = asset.get_analysis("zvi-label-detection")
+        analysis = asset.get_analysis("boonai-label-detection")
         assert "house" == analysis['predictions'][0]['label']
 
     def test_get_analysis_by_model(self):

@@ -144,7 +144,7 @@ class AssetSearchServiceTests : AbstractTest() {
                       "script_score": {
                         "script": {
                           "source": "similarity",
-                          "lang": "zorroa-similarity",
+                          "lang": "boonai-similarity",
                           "params": {
                             "minScore": 0.50,
                             "field": "analysis.boonai-image-similarity.simhash",
@@ -185,7 +185,7 @@ class AssetSearchServiceTests : AbstractTest() {
                   },
                   "script": {
                     "source": "similarity",
-                    "lang": "zorroa-similarity",
+                    "lang": "boonai-similarity",
                     "params": {
                       "minScore": 1.0,
                       "field": "analysis.boonai-multi-similarity.simhash",
@@ -218,7 +218,7 @@ class AssetSearchServiceTests : AbstractTest() {
                   },
                   "script": {
                     "source": "similarity",
-                    "lang": "zorroa-similarity",
+                    "lang": "boonai-similarity",
                     "params": {
                       "minScore": 1.0,
                       "field": "analysis.boonai-foo-similarity.simhash",
@@ -250,7 +250,7 @@ class AssetSearchServiceTests : AbstractTest() {
                       "script_score": {
                         "script": {
                           "source": "similarity",
-                          "lang": "zorroa-similarity",
+                          "lang": "boonai-similarity",
                           "params": {
                             "minScore": 0.50,
                             "field": "analysis.boonai-image-similarity.simhash",

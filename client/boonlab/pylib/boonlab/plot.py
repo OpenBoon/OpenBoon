@@ -18,7 +18,7 @@ from .display import is_running_from_ipython
 
 
 def plot_tsne(search=None,
-              attr='analysis.zvi-image-similarity.simhash',
+              attr='analysis.boonai-image-similarity.simhash',
               percentage=100,
               maxPoints=10000,
               nClusters=1,

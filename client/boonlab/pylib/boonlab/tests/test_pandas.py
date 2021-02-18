@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 
 from boonsdk import BoonClient, app_from_env
-from zvi.pandas import search_to_df
+from boonlab.pandas import search_to_df
 
 
 class PandasTests(unittest.TestCase):
@@ -27,7 +27,7 @@ class PandasTests(unittest.TestCase):
                             'source': {
                                 'path': 'https://i.imgur.com/SSN26nN.jpg'
                             },
-                            "analysis": {"zvi-image-similarity": {
+                            "analysis": {"boonai-image-similarity": {
                                 "simhash": "AAAAAAAA"}
                             },
                             "labels": [
@@ -51,7 +51,7 @@ class PandasTests(unittest.TestCase):
                             'source': {
                                 'path': 'https://i.imgur.com/foo.jpg'
                             },
-                            'analysis': {"zvi-image-similarity": {
+                            'analysis': {"boonai-image-similarity": {
                                 "simhash": "BBBBBBBB"}
                             },
                             "labels": [
@@ -75,7 +75,7 @@ class PandasTests(unittest.TestCase):
                             'source': {
                                 'path': 'https://i.imgur.com/bar.jpg'
                             },
-                            'analysis': {"zvi-image-similarity": {
+                            'analysis': {"boonai-image-similarity": {
                                 "simhash": "CCCCCCCC"}
                             },
                             "media": {
@@ -96,7 +96,7 @@ class PandasTests(unittest.TestCase):
         }
         attrs = [
             'source.path',
-            'analysis.zvi-image-similarity.simhash',
+            'analysis.boonai-image-similarity.simhash',
             'labels'
         ]
         rsp = self.app.assets.search(search=search)

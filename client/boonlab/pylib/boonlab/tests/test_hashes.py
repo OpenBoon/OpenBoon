@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 
 from boonsdk import BoonClient, app_from_env
-from zvi.hashes import read_hash_as_vectors
+from boonlab.hashes import read_hash_as_vectors
 
 
 class HashesTests(unittest.TestCase):
@@ -27,7 +27,7 @@ class HashesTests(unittest.TestCase):
                             'source': {
                                 'path': 'https://i.imgur.com/SSN26nN.jpg'
                             },
-                            "analysis": {"zvi-image-similarity": {
+                            "analysis": {"boonai-image-similarity": {
                                 "simhash": "AAAAAAAA"}
                             },
                             "labels": [
@@ -50,7 +50,7 @@ class HashesTests(unittest.TestCase):
                             'source': {
                                 'path': 'https://i.imgur.com/foo.jpg'
                             },
-                            'analysis': {"zvi-image-similarity": {
+                            'analysis': {"boonai-image-similarity": {
                                 "simhash": "BBBBBBBB"}
                             },
                             "labels": [
@@ -73,7 +73,7 @@ class HashesTests(unittest.TestCase):
                             'source': {
                                 'path': 'https://i.imgur.com/bar.jpg'
                             },
-                            'analysis': {"zvi-image-similarity2": {
+                            'analysis': {"boonai-image-similarity2": {
                                 "simhash": "CCCCCCCC"}
                             },
                             "labels": [

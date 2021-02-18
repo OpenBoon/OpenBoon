@@ -30,7 +30,7 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
         }
 
         override fun getType(): String {
-            return "zorroa-similarity"
+            return "boonai-similarity"
         }
 
         override fun <T> compile(
