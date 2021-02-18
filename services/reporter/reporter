@@ -6,7 +6,7 @@ from time import sleep
 
 from google.cloud import monitoring_v3
 from kubernetes import client, config
-from zmlp import ZmlpClient
+from boonsdk import BoonClient
 
 from lib.metrics import JobQueueMetrics
 
@@ -31,7 +31,7 @@ class Reporter:
         inception_key_b64 = inception_key_b64 or os.getenv('INCEPTION_KEY_B64')
 
         self.monitoring_client = monitoring_v3.MetricServiceClient()
-        self.zmlp_client = ZmlpClient(apikey=inception_key_b64, server=zmlp_api_url)
+        self.zmlp_client = BoonClient(apikey=inception_key_b64, server=zmlp_api_url)
         self.k8s_client = self._configure_k8s_client()
 
     def monitor(self):
