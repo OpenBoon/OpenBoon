@@ -402,11 +402,11 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
             read_only  = true
           }
           resources {
-            requests {
+            requests = {
               memory = "15Gi"
               cpu    = 4
             }
-            limits {
+            limits = {
               memory = "16Gi"
               cpu    = 4.1
             }
