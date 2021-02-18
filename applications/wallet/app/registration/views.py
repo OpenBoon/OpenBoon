@@ -116,7 +116,7 @@ Response Codes:
             return Response(data={'detail': ['Email address invalid.']},
                             status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         send_mail(subject=subject, message=body, html_message=html, fail_silently=False,
-                  from_email='do_not_reply@zorroa.com', recipient_list=[user.username])
+                  from_email='do_not_reply@boonai.io', recipient_list=[user.username])
 
         return Response(data={'detail': ['Success, confirmation email has been sent.']})
 
