@@ -69,11 +69,11 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
           image_pull_policy = "Always"
           command           = ["python3", "-u", "/applications/wallet/app/manage.py", "gcpmarketplace-usage-report"]
           resources {
-            limits {
+            limits = {
               memory = "1Gi"
               cpu    = 1
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.5
             }
