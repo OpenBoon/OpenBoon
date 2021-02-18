@@ -20,4 +20,3 @@ class SimHashTests(unittest.TestCase):
         with open(test_file, 'rb') as fp:
             simhash = get_similarity_hash(fp)
         assert simhash.startswith('PBPCLPPIAPPPGNKMPPPKMOPI')
-

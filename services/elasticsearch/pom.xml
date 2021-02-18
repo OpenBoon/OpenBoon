@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zorroa.zmlp</groupId>
-    <artifactId>zorroa-es-plugins</artifactId>
+    <groupId>boonai</groupId>
+    <artifactId>boonai-es-plugins</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
 
-    <name>zorroa-es-plugins</name>
-    <description>Zorroa Platform Application Server</description>
+    <name>boonai-es-plugins</name>
+    <description>Boon AI ES Plugins</description>
 
     <properties>
         <junit.version>4.13.2</junit.version>
@@ -21,8 +21,6 @@
 
     <modules>
         <module>es-similarity</module>
-        <module>es-kwconf</module>
-        <module>es-similarity-query</module>
     </modules>
 
     <dependencyManagement>

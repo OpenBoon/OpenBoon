@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zorroa.zmlp</groupId>
-    <artifactId>zorroa-achivist-parent</artifactId>
+    <groupId>boonai</groupId>
+    <artifactId>boonai-achivist-parent</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
 
-    <name>zorroa-achivist-parent</name>
+    <name>boonai-achivist-parent</name>
     <description>Zorroa Platform Application Server</description>
 
     <properties>

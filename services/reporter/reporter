@@ -27,7 +27,7 @@ class Reporter:
     def __init__(self, project_id=None, interval=None, zmlp_api_url=None, inception_key_b64=None):
         self.project_id = project_id or os.getenv('PROJECT_ID', 'zvi-dev')
         self.interval = int(interval or os.getenv('COLLECTION_INTERVAL', 30))
-        zmlp_api_url = zmlp_api_url or os.getenv('ZMLP_API_URL', 'https://dev.api.zvi.zorroa.com')
+        zmlp_api_url = zmlp_api_url or os.getenv('BOONAI_API_URL', 'https://dev.api.zvi.zorroa.com')
         inception_key_b64 = inception_key_b64 or os.getenv('INCEPTION_KEY_B64')
 
         self.monitoring_client = monitoring_v3.MetricServiceClient()

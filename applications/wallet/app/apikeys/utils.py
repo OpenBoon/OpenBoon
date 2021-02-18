@@ -7,7 +7,7 @@ def create_zmlp_api_key(client, name, permissions, encode_b64=True, internal=Fal
     """Creates an API key for ZMLP and returns it as a base64 encoded string.
 
     Args:
-        client(ZmlpClient): ZmlpClient used to communicate with ZMLP.
+        client(BoonClient): BoonClient used to communicate with ZMLP.
         name(str): Name of the API key to create.
         permissions(list<str>): List of permissions to add to the API key.
         encode_b64(bool): If True the key is returned as a base64 encoded string.

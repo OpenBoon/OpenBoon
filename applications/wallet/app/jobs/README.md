@@ -1,2 +1,2 @@
 # Jobs
-Contains views for getting jobs from ZMLP.
+Contains views for getting jobs from boonsdk.

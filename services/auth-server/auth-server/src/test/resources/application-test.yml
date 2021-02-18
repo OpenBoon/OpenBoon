@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test
 
-zmlp:
+boonai:
   security:
     inception-key: src/test/resources/key.json
   storage:
