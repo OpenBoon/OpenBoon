@@ -34,6 +34,9 @@ resource "kubernetes_deployment" "wallet" {
     labels = {
       app = "wallet"
     }
+    annotations = {
+      sql-service-account-key-date = var.sql-service-account-key-date
+    }
   }
   spec {
     replicas = 1
