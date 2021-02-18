@@ -1,5 +1,4 @@
 import pytest
-# import zmlp
 import boonsdk
 
 from django.urls import reverse
@@ -133,7 +132,7 @@ class TestTiers:
 
     def test_all_tiers_covered(self):
         app = boonsdk.BoonApp(settings.DEV_PIPELINES_KEY, server=settings.DEV_DOMAIN)
-        # app = zmlp.ZmlpApp(settings.DEV_PIPELINES_KEY, server=settings.DEV_DOMAIN)
+
         # Get all current modules on Dev
         index = 0
         size = 50
