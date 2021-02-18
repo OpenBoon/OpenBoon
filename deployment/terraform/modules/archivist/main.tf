@@ -103,6 +103,10 @@ resource "kubernetes_deployment" "archivist" {
     labels = {
       app = "archivist"
     }
+    annotations = {
+      sql-service-account-key-date       = var.sql-service-account-key-date
+      archivist-service-account-key-date = google_service_account_key.archivist.valid_after
+    }
   }
   spec {
     replicas = 2

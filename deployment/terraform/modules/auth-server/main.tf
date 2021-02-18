@@ -31,6 +31,9 @@ resource "kubernetes_deployment" "auth-server" {
     labels = {
       app = "auth-server"
     }
+    annotations = {
+      sql-service-account-key-date = var.sql-service-account-key-date
+    }
   }
   spec {
     replicas = 2

@@ -8,6 +8,9 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
     labels = {
       app = "gcp-marketplace-integration"
     }
+    annotations = {
+      sql-service-account-key-date = var.sql-service-account-key-date
+    }
   }
   spec {
     replicas = 1
