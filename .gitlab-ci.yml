@@ -780,15 +780,15 @@ boonai-services-unit-tests:
     - ARCHIVIST_ES_URL="http://${IP}:9200"
     - BOONAI_STORAGE_PROJECT_URL="http://${IP}:9000"
     - BOONAI_STORAGE_SYSTEM_URL="http://${IP}:9000"
-    - mvn clean install -f services/jvm-common -q -Dmaven.test.skip=true
-    - mvn test verify -f services/jvm-common -q
-    - mvn clean install -f services/officer -q -Dmaven.test.skip=true
-    - mvn test verify -f services/officer -q
-    - mvn clean install -f services/archivist -q -Dmaven.test.skip=true
-    - mvn test verify -f services/archivist -q
+    - mvn clean install -f services/jvm-common -q -Dmaven.test.skip=true -Dmaven.wagon.http.pool=false
+    - mvn test verify -f services/jvm-common -q -Dmaven.wagon.http.pool=false
+    - mvn clean install -f services/officer -q -Dmaven.test.skip=true -Dmaven.wagon.http.pool=false
+    - mvn test verify -f services/officer -q -Dmaven.wagon.http.pool=false
+    - mvn clean install -f services/archivist -q -Dmaven.test.skip=true -Dmaven.wagon.http.pool=false
+    - mvn test verify -f services/archivist -q -Dmaven.wagon.http.pool=false
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
-    - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true
-    - mvn test verify -f services/auth-server -q
+    - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true -Dmaven.wagon.http.pool=false
+    - mvn test verify -f services/auth-server -q -Dmaven.wagon.http.pool=false
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
