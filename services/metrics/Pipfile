@@ -19,6 +19,10 @@ django-health-check = "*"
 flake8 = "*"
 pytest-cov = "*"
 boonsdk = {path = "./../../client/boonsdk"}
+requests = "*"
+pyopenssl = "*"
+pyjwt = ">=2.0"
+backoff = "*"
 
 [requires]
 python_version = "3.7"
