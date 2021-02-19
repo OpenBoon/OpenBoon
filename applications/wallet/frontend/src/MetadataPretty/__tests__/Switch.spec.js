@@ -34,10 +34,10 @@ describe('<MetadataPrettySwitch />', () => {
   })
 
   it('should render label with no box images detection properly', () => {
-    const value = bboxAsset.metadata.analysis['zvi-label-detection']
+    const value = bboxAsset.metadata.analysis['boonai-label-detection']
     const component = TestRenderer.create(
       <MetadataPrettySwitch
-        name="zvi-label-detection"
+        name="boonai-label-detection"
         value={value}
         path="analysis"
       />,
@@ -61,7 +61,7 @@ describe('<MetadataPrettySwitch />', () => {
   it('should render label with no predictions properly', () => {
     const component = TestRenderer.create(
       <MetadataPrettySwitch
-        name="zvi-label-detection"
+        name="boonai-label-detection"
         value={{ type: 'labels', predictions: [] }}
         path="analysis"
       />,
@@ -75,10 +75,10 @@ describe('<MetadataPrettySwitch />', () => {
       data: boxImagesResponse,
     })
 
-    const value = bboxAsset.metadata.analysis['zvi-object-detection']
+    const value = bboxAsset.metadata.analysis['boonai-object-detection']
     const component = TestRenderer.create(
       <MetadataPrettySwitch
-        name="zvi-object-detection"
+        name="boonai-object-detection"
         value={value}
         path="analysis"
       />,
@@ -95,7 +95,7 @@ describe('<MetadataPrettySwitch />', () => {
     }
     const component = TestRenderer.create(
       <MetadataPrettySwitch
-        name="zvi-text-detection"
+        name="boonai-text-detection"
         value={value}
         path="analysis"
       />,
@@ -105,10 +105,10 @@ describe('<MetadataPrettySwitch />', () => {
   })
 
   it('should render content detection with no results properly', () => {
-    const value = bboxAsset.metadata.analysis['zvi-text-detection']
+    const value = bboxAsset.metadata.analysis['boonai-text-detection']
     const component = TestRenderer.create(
       <MetadataPrettySwitch
-        name="zvi-text-detection"
+        name="boonai-text-detection"
         value={value}
         path="analysis"
       />,
@@ -124,11 +124,11 @@ describe('<MetadataPrettySwitch />', () => {
       query: { assetId: ASSET_ID, projectId: PROJECT_ID },
     })
 
-    const value = bboxAsset.metadata.analysis['zvi-image-similarity']
+    const value = bboxAsset.metadata.analysis['boonai-image-similarity']
 
     const component = TestRenderer.create(
       <MetadataPrettySwitch
-        name="zvi-image-similarity"
+        name="boonai-image-similarity"
         value={value}
         path="analysis"
       />,
@@ -144,11 +144,11 @@ describe('<MetadataPrettySwitch />', () => {
       query: { assetId: ASSET_ID, projectId: PROJECT_ID },
     })
 
-    const value = bboxAsset.metadata.analysis['zvi-image-similarity']
+    const value = bboxAsset.metadata.analysis['boonai-image-similarity']
 
     const component = TestRenderer.create(
       <MetadataPrettySwitch
-        name="zvi-image-similarity"
+        name="boonai-image-similarity"
         value={value}
         path="analysis"
       />,

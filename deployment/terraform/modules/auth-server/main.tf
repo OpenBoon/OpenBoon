@@ -73,11 +73,11 @@ resource "kubernetes_deployment" "auth-server" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "512Mi"
               cpu    = 0.5
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.2
             }
@@ -110,11 +110,11 @@ resource "kubernetes_deployment" "auth-server" {
             container_port = "9090"
           }
           resources {
-            limits {
+            limits = {
               memory = "1Gi"
               cpu    = 0.5
             }
-            requests {
+            requests = {
               memory = "512Mi"
               cpu    = 0.2
             }
@@ -138,6 +138,10 @@ resource "kubernetes_deployment" "auth-server" {
           env {
             name  = "BOONAI_STORAGE_SYSTEM_BUCKET"
             value = var.system-bucket
+          }
+          env {
+            name  = "SA_KEY_DATE"
+            value = var.sql-service-account-key-date
           }
         }
       }

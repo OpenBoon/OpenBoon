@@ -5,6 +5,9 @@ variable "sql-instance-name" {
 variable "sql-connection-name" {
 }
 
+variable "sql-service-account-key-date" {
+}
+
 variable "image-pull-secret" {
   sensitive = true
 }

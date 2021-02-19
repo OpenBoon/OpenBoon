@@ -62,11 +62,11 @@ resource "kubernetes_deployment" "api-gateway" {
             container_port = "80"
           }
           resources {
-            limits {
+            limits = {
               memory = "2Gi"
               cpu    = 2
             }
-            requests {
+            requests = {
               memory = "512Mi"
               cpu    = 1
             }

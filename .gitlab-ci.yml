@@ -671,11 +671,13 @@ boonai-deploy-prod:
 
 # Kotlin services - Unit tests - Step 1
 boonai-services-build-artifacts:
-  image: maven:3.6-jdk-11-slim
+  image: boonai/jvm-build:latest
   stage: build
+  variables:
+    MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
   script:
     - cd services/elasticsearch
-    - mvn clean install -Dmaven.test.skip=true -Dhttp.keepAlive=false
+    - mvn clean install -Dmaven.test.skip=true
   artifacts:
     paths:
       - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
@@ -734,11 +736,8 @@ elasticsearch-push-to-local-registry:
 
 boonai-services-unit-tests:
   stage: test
-  image: maven:3.6-jdk-11
+  image: boonai/jvm-build:latest
   retry: 1
-  cache:
-    paths:
-      - .m2/repository
   services:
     - name: redis:alpine
       alias: redis
@@ -773,7 +772,7 @@ boonai-services-unit-tests:
     MINIO_DEFAULT_PROTOCOL: "http"
     ARCHIVIST_ES_BACKUP_BUCKET_NAME: "project-storage-test"
     REDIS_HOST: "localhost:6379"
-    MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+    MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
     MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
   script:
     - export
@@ -781,13 +780,15 @@ boonai-services-unit-tests:
     - ARCHIVIST_ES_URL="http://${IP}:9200"
     - BOONAI_STORAGE_PROJECT_URL="http://${IP}:9000"
     - BOONAI_STORAGE_SYSTEM_URL="http://${IP}:9000"
-    - mvn clean install -f services/jvm-common -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
-    - mvn test verify -f services/jvm-common -q
-    - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true -Dhttp.keepAlive=false
-    - mvn test verify -f services/officer -q
-    - mvn test verify -f services/archivist -q
+    - mvn clean install -f services/jvm-common -q -Dmaven.test.skip=true -Dmaven.wagon.http.pool=false
+    - mvn test verify -f services/jvm-common -q -Dmaven.wagon.http.pool=false
+    - mvn clean install -f services/officer -q -Dmaven.test.skip=true -Dmaven.wagon.http.pool=false
+    - mvn test verify -f services/officer -q -Dmaven.wagon.http.pool=false
+    - mvn clean install -f services/archivist -q -Dmaven.test.skip=true -Dmaven.wagon.http.pool=false
+    - mvn test verify -f services/archivist -q -Dmaven.wagon.http.pool=false
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
-    - mvn test verify -f services/auth-server -q
+    - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true -Dmaven.wagon.http.pool=false
+    - mvn test verify -f services/auth-server -q -Dmaven.wagon.http.pool=false
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'

@@ -262,7 +262,7 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
     }
   ],
   \\"<span class=\\"__json-key__\\">analysis</span>\\": {
-    \\"<span class=\\"__json-key__\\">zvi</span>\\": {
+    \\"<span class=\\"__json-key__\\">boonai</span>\\": {
       \\"<span class=\\"__json-key__\\">tinyProxy</span>\\": [
         <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"#f3dfc3\\"</span>,
         <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"#f4efd8\\"</span>,

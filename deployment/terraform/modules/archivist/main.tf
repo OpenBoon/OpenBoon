@@ -154,11 +154,11 @@ resource "kubernetes_deployment" "archivist" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "512Mi"
               cpu    = 0.5
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.2
             }
@@ -174,11 +174,11 @@ resource "kubernetes_deployment" "archivist" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "2Gi"
               cpu    = 0.7
             }
-            requests {
+            requests = {
               memory = "1Gi"
               cpu    = 0.5
             }
@@ -246,6 +246,10 @@ resource "kubernetes_deployment" "archivist" {
           env {
             name  = "ARCHIVIST_DEEP_VIDEO_ANALYSIS_ENABLED"
             value = var.deep-video-analysis-enabled
+          }
+          env {
+            name  = "SA_KEY_DATE"
+            value = var.sql-service-account-key-date
           }
         }
       }

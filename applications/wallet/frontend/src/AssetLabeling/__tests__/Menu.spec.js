@@ -32,7 +32,7 @@ describe('<AssetLabelingMenu />', () => {
         modelId={MODEL_ID}
         label="Mark Ruffalo"
         scope="TRAIN"
-        moduleName="zvi-face-recognition"
+        moduleName="boonai-face-recognition"
         triggerReload={noop}
         setError={noop}
       />,
@@ -58,7 +58,7 @@ describe('<AssetLabelingMenu />', () => {
       JSON.stringify([
         {
           type: 'label',
-          attribute: 'labels.zvi-face-recognition',
+          attribute: 'labels.boonai-face-recognition',
           modelId: MODEL_ID,
           values: { labels: ['Mark Ruffalo'] },
         },
@@ -83,7 +83,7 @@ describe('<AssetLabelingMenu />', () => {
         modelId={MODEL_ID}
         label="Mark Ruffalo"
         scope="TRAIN"
-        moduleName="zvi-face-recognition"
+        moduleName="boonai-face-recognition"
         triggerReload={mockFn}
         setError={noop}
       />,
@@ -126,7 +126,7 @@ describe('<AssetLabelingMenu />', () => {
         modelId={MODEL_ID}
         label="Mark Ruffalo"
         scope="TRAIN"
-        moduleName="zvi-face-recognition"
+        moduleName="boonai-face-recognition"
         triggerReload={mockFn}
         setError={noop}
       />,

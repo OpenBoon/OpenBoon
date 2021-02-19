@@ -108,7 +108,7 @@ describe('<Assets />', () => {
           filters: [
             {
               type: 'similarity',
-              attribute: 'analysis.zvi-image-similarity',
+              attribute: 'analysis.boonai-image-similarity',
               values: { ids: [ASSET_ID] },
             },
           ],

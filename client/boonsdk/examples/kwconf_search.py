@@ -4,7 +4,7 @@ import boonsdk
 from boonsdk import app_from_env
 
 q = {
-    "query": boonsdk.search.LabelConfidenceQuery("zvi-label-detection", "lakeside", 0.5)
+    "query": boonsdk.search.LabelConfidenceQuery("boonai-label-detection", "lakeside", 0.5)
 }
 
 

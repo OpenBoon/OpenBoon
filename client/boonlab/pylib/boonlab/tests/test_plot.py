@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 
 from boonsdk import BoonClient, app_from_env
-from zvi.plot import plot_tsne
+from boonlab.plot import plot_tsne
 
 
 class PlotTests(unittest.TestCase):
@@ -24,7 +24,7 @@ class PlotTests(unittest.TestCase):
                         '_id': 'dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',
                         '_source': {
 
-                            "analysis": {"zvi-image-similarity": {
+                            "analysis": {"boonai-image-similarity": {
                                 "simhash": "EESEAAAAA"}
                             }
                         }
@@ -35,7 +35,7 @@ class PlotTests(unittest.TestCase):
                         '_id': 'ad0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',
                         '_source': {
 
-                            "analysis": {"zvi-image-similarity": {
+                            "analysis": {"boonai-image-similarity": {
                                 "simhash": "FFFASAAAA"}
                             }
                         }
@@ -46,7 +46,7 @@ class PlotTests(unittest.TestCase):
                         '_id': 'bd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',
                         '_source': {
 
-                            "analysis": {"zvi-image-similarity": {
+                            "analysis": {"boonai-image-similarity": {
                                 "simhash": "DDDSAAAAA"}
                             }
                         }
@@ -57,7 +57,7 @@ class PlotTests(unittest.TestCase):
                         '_id': 'cd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',
                         '_source': {
 
-                            "analysis": {"zvi-image-similarity": {
+                            "analysis": {"boonai-image-similarity": {
                                 "simhash": "CCCSAAAAA"}
                             }
                         }
@@ -68,7 +68,7 @@ class PlotTests(unittest.TestCase):
                         '_id': 'ed0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',
                         '_source': {
 
-                            "analysis": {"zvi-image-similarity": {
+                            "analysis": {"boonai-image-similarity": {
                                 "simhash": "BBBSAAAAA"}
                             }
                         }
@@ -79,7 +79,7 @@ class PlotTests(unittest.TestCase):
                         '_id': 'fd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',
                         '_source': {
 
-                            "analysis": {"zvi-image-similarity": {
+                            "analysis": {"boonai-image-similarity": {
                                 "simhash": "ACCCSAAHA"}
                             }
                         }
@@ -90,7 +90,7 @@ class PlotTests(unittest.TestCase):
                         '_id': 'gd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',
                         '_source': {
 
-                            "analysis": {"zvi-image-similarity": {
+                            "analysis": {"boonai-image-similarity": {
                                 "simhash": "AAACCSAAA"}
                             }
                         }
@@ -101,7 +101,7 @@ class PlotTests(unittest.TestCase):
                         '_id': 'hd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',
                         '_source': {
 
-                            "analysis": {"zvi-image-similarity": {
+                            "analysis": {"boonai-image-similarity": {
                                 "simhash": "ACGAEASAA"}
                             }
                         }
@@ -112,7 +112,7 @@ class PlotTests(unittest.TestCase):
                         '_id': 'id0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',
                         '_source': {
 
-                            "analysis": {"zvi-image-similarity": {
+                            "analysis": {"boonai-image-similarity": {
                                 "simhash": "AAAAFGAAA"}
                             }
                         }
@@ -123,7 +123,7 @@ class PlotTests(unittest.TestCase):
                         '_id': 'jd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg',
                         '_source': {
 
-                            "analysis": {"zvi-image-similarity": {
+                            "analysis": {"boonai-image-similarity": {
                                 "simhash": "ADFAAAAAA"}
                             }
                         }
