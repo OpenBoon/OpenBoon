@@ -271,7 +271,7 @@ abstract class AbstractTest {
         return Paths.get("/tmp/images/$subdir")
     }
 
-    fun getTestAssets(subdir: String): List<AssetSpec> {
+    fun getTestAssets(subdir: String, analysis: Map<String, Any>? = null): List<AssetSpec> {
 
         val formats = setOf("jpg", "pdf", "m4v", "gif", "tif", "mov")
         val imagePaths = Json.Mapper.readValue<List<String>>(
@@ -290,8 +290,10 @@ abstract class AbstractTest {
                     "type" to FileExtResolver.getType(FileUtils.extension(path))
                 )
                 asset.attrs = mapOf(
-                    "media" to media
+                    "media" to media,
+                    "analysis" to (analysis ?: mapOf())
                 )
+
                 if (indexRoutingService.getProjectRestClient().route.majorVersion == 4) {
                     asset.attrs = mapOf(
                         "media" to media,
@@ -306,8 +308,8 @@ abstract class AbstractTest {
         }
     }
 
-    fun addTestAssets(subdir: String) {
-        addTestAssets(getTestAssets(subdir))
+    fun addTestAssets(subdir: String, analysis: Map<String, Any>? = null) {
+        addTestAssets(getTestAssets(subdir, analysis))
     }
 
     fun addTestAssets(assets: List<AssetSpec>) {
