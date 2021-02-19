@@ -101,13 +101,7 @@ resource "kubernetes_deployment" "archivist" {
     name      = "archivist"
     namespace = var.namespace
     labels = {
-      app                                = "archivist"
-      sql-service-account-key-date       = var.sql-service-account-key-date
-      archivist-service-account-key-date = google_service_account_key.archivist.valid_after
-    }
-    annotations = {
-      "terraform/sa-date" = var.sql-service-account-key-date
-      "terraform/test"    = "test"
+      app = "archivist"
     }
   }
   spec {
@@ -252,6 +246,10 @@ resource "kubernetes_deployment" "archivist" {
           env {
             name  = "ARCHIVIST_DEEP_VIDEO_ANALYSIS_ENABLED"
             value = var.deep-video-analysis-enabled
+          }
+          env {
+            name  = "SA_KEY_DATE"
+            value = var.sql-service-account-key-date
           }
         }
       }
