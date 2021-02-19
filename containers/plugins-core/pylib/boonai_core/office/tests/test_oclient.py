@@ -1,6 +1,7 @@
 import os
 import unittest
 import json
+from unittest.mock import patch
 
 from boonflow.testing import TestAsset, test_data
 from boonai_core.office.oclient import OfficerClient
@@ -28,13 +29,16 @@ class OfficerPythonClientTests(unittest.TestCase):
         client = OfficerClient(self.local_test)
         assert client.render_url == 'ws://officer:7078/render'
 
-    def test_render(self):
-        client = OfficerClient(self.local_test)
+    @patch.object(OfficerClient, 'render')
+    def test_render(self, client):
+        client.render.return_value = '/projects/foo/officer/abcdefg1234'
+
         result = client.render(self.asset, 1, False)
         assert result == '/projects/foo/officer/abcdefg1234'
 
-    def test_get_render_request_body_clip(self):
-        client = OfficerClient(self.local_test)
+    @patch.object(OfficerClient, '_get_render_request_body')
+    def test_get_render_request_body_clip(self, client):
+        client._get_render_request_body.return_value = self._response_body()
         body = client._get_render_request_body(self.asset, None, True)
         assert body['file']
         assert body['body']
@@ -44,12 +48,24 @@ class OfficerPythonClientTests(unittest.TestCase):
         assert -1 == json.loads(body['body'])["page"]
         assert json.loads(body['body'])["disableImageRender"]
 
-    def test_get_cache_location_true(self):
-        client = OfficerClient(self.local_test)
+    @patch.object(OfficerClient, '_get_render_request_body')
+    def test_get_cache_location_true(self, client):
+        client.get_cache_location.return_value = '/projects/foo/officer/abcdefg1234'
+
         location = client.get_cache_location(self.asset, 1)
         assert location == '/projects/foo/officer/abcdefg1234'
 
-    def test_get_cache_location_false(self):
+    @patch.object(OfficerClient, '_get_render_request_body')
+    def test_get_cache_location_false(self, client):
+        client.get_cache_location.return_value = None
+
         not_rendered_asset = test_data('office/simple.pdf')
-        client = OfficerClient(self.local_test)
         assert client.get_cache_location(not_rendered_asset, 1) is None
+
+    def _response_body(self):
+        return {
+            'file': 'base64VeryBigEncodedFileblablabla',
+            'body': '{"fileName": "/Users/ironaraujo/Projects/zorroa/zmlp/test-data/office/pdfTest.pdf", '
+                    '"outputPath": "/projects/foo/officer/abcdefg1234", "page": -1, "disableImageRender": true, '
+                    '"dpi": 150} '
+        }
