@@ -283,7 +283,7 @@ class AssetServiceTests : AbstractTest() {
         val ds = modelService.createModel(
             ModelSpec(
                 "THB Characters",
-                ModelType.ZVI_LABEL_DETECTION,
+                ModelType.BOONAI_LABEL_DETECTION,
                 moduleName = "thb-chars"
             )
         )
@@ -780,7 +780,7 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testUpdateLabels() {
-        val ds = modelService.createModel(ModelSpec("test", ModelType.ZVI_LABEL_DETECTION))
+        val ds = modelService.createModel(ModelSpec("test", ModelType.BOONAI_LABEL_DETECTION))
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
         )

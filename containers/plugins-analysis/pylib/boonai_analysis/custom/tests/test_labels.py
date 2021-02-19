@@ -33,7 +33,7 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "ZVI_LABEL_DETECTION",
+                "type": "BOONAI_LABEL_DETECTION",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": name,
                 "moduleName": name

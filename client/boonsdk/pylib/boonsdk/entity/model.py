@@ -17,13 +17,13 @@ class ModelType(Enum):
     Types of models that can be Trained.
     """
 
-    ZVI_KNN_CLASSIFIER = 0
+    BOONAI_KNN_CLASSIFIER = 0
     """A KMeans clustering model for quickly clustering assets into general groups."""
 
-    ZVI_LABEL_DETECTION = 1
+    BOONAI_LABEL_DETECTION = 1
     """Retrain the ResNet50 with your own labels, Using TensorFlow"""
 
-    ZVI_FACE_RECOGNITION = 2
+    BOONAI_FACE_RECOGNITION = 2
     """Face Recognition model using a KNN classifier."""
 
     GCP_LABEL_DETECTION = 3
@@ -32,7 +32,7 @@ class ModelType(Enum):
     TF2_IMAGE_CLASSIFIER = 4
     """Provide your own custom Tensorflow2/Keras model"""
 
-    ZVI_PYTORCH_LABEL_DETECTION = 5
+    BOONAI_PYTORCH_LABEL_DETECTION = 5
     """Retrain ResNet50 with your own labels, using Pytorch."""
 
     PYTORCH_IMAGE_CLASSIFIER = 6
@@ -173,12 +173,12 @@ class Model(BaseEntity):
 
         """
         prediction_term_map = {
-            ModelType.ZVI_KNN_CLASSIFIER: f'{self.namespace}.label',
-            ModelType.ZVI_FACE_RECOGNITION: f'{self.namespace}.predictions.label'
+            ModelType.BOONAI_KNN_CLASSIFIER: f'{self.namespace}.label',
+            ModelType.BOONAI_FACE_RECOGNITION: f'{self.namespace}.predictions.label'
         }
-        score_map = {ModelType.ZVI_KNN_CLASSIFIER: f'{self.namespace}.score',
-                     ModelType.ZVI_LABEL_DETECTION: f'{self.namespace}.score',
-                     ModelType.ZVI_FACE_RECOGNITION: f'{self.namespace}.predictions.score'}
+        score_map = {ModelType.BOONAI_KNN_CLASSIFIER: f'{self.namespace}.score',
+                     ModelType.BOONAI_LABEL_DETECTION: f'{self.namespace}.score',
+                     ModelType.BOONAI_FACE_RECOGNITION: f'{self.namespace}.predictions.score'}
         if self.type not in prediction_term_map:
             raise TypeError(f'Cannot create a confusion matrix search for {self.type} models.')
         search_query = {

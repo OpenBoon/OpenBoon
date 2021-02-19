@@ -15,7 +15,7 @@ class KnnLabelDetectionClassifierTests(PluginUnitTestCase):
         localize_patch.return_value = test_path('training/model_knn.zip')
         get_model_patch.return_value = Model({
             'id': '12345',
-            'type': 'ZVI_LABEL_DETECTION',
+            'type': 'BOONAI_LABEL_DETECTION',
             'fileId': 'models/foo/knn/12345',
             'name': 'foo',
             'moduleName': 'foo'
