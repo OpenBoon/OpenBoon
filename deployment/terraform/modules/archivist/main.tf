@@ -106,8 +106,8 @@ resource "kubernetes_deployment" "archivist" {
       archivist-service-account-key-date = google_service_account_key.archivist.valid_after
     }
     annotations = {
-      terraform / sa-date = var.sql-service-account-key-date
-      terraform / test    = test
+      "terraform/sa-date" = var.sql-service-account-key-date
+      "terraform/test"    = "test"
     }
   }
   spec {
