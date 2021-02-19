@@ -38,7 +38,7 @@ enum class ModelType(
     val trainable: Boolean,
     val uploadable: Boolean
 ) {
-    ZVI_KNN_CLASSIFIER(
+    BOONAI_KNN_CLASSIFIER(
         "K-Nearest Neighbors Classifier",
         "boonai_train.knn.KnnLabelDetectionTrainer",
         mapOf(),
@@ -58,7 +58,7 @@ enum class ModelType(
         true,
         false
     ),
-    ZVI_LABEL_DETECTION(
+    BOONAI_LABEL_DETECTION(
         "Tensorflow Transfer Learning Classifier",
         "boonai_train.tf2.TensorflowTransferLearningTrainer",
         mapOf(
@@ -79,7 +79,7 @@ enum class ModelType(
         true,
         false
     ),
-    ZVI_FACE_RECOGNITION(
+    BOONAI_FACE_RECOGNITION(
         "Face Recognition",
         "boonai_train.face_rec.KnnFaceRecognitionTrainer",
         mapOf(),
@@ -130,7 +130,7 @@ enum class ModelType(
         false,
         true
     ),
-    ZVI_PYTORCH_LABEL_DETECTION(
+    BOONAI_PYTORCH_LABEL_DETECTION(
         "Pytorch Transfer Learning Classifier",
         "boonai_train.pytorch.PytorchTransferLearningTrainer",
         mapOf(

@@ -30,7 +30,7 @@ class ModelControllerTests : MockMvcTest() {
     @Autowired
     lateinit var pipelineModService: PipelineModService
 
-    val modelSpec = ModelSpec("Dog Breeds", ModelType.ZVI_LABEL_DETECTION)
+    val modelSpec = ModelSpec("Dog Breeds", ModelType.BOONAI_LABEL_DETECTION)
 
     lateinit var model: Model
 
@@ -44,7 +44,7 @@ class ModelControllerTests : MockMvcTest() {
 
         val mspec = ModelSpec(
             "test",
-            ModelType.ZVI_LABEL_DETECTION
+            ModelType.BOONAI_LABEL_DETECTION
         )
 
         mvc.perform(
@@ -150,7 +150,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testTypeInfo() {
-        val type = ModelType.ZVI_LABEL_DETECTION
+        val type = ModelType.BOONAI_LABEL_DETECTION
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/models/_types/$type")
                 .headers(job())
@@ -343,7 +343,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testGetType() {
-        val module = ModelType.ZVI_LABEL_DETECTION
+        val module = ModelType.BOONAI_LABEL_DETECTION
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/models/_types/${module.name}")
                 .headers(admin())
