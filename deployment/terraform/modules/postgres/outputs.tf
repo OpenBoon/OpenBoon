@@ -12,7 +12,7 @@ output "sql-service-account-key" {
 }
 
 output "sql-service-account-key-date" {
-  value = "${replace(google_service_account_key.cloud-sql-account-key.valid_after, ":", "-")}"
+  value = replace(tostring(google_service_account_key.cloud-sql-account-key.valid_after), ":", "-")
 }
 
 output "ip-address" {
