@@ -89,4 +89,39 @@ class IndexTaskServiceTests : AbstractTest() {
         val video = getSample(1, type = "video")[0]
         assertEquals("video", video.getAttr("deepSearch.name"))
     }
+
+    @Test
+    fun testMigrateProjectV5ToV6() {
+        val project = projectService.get(getProjectId())
+
+        val analysis = mapOf(
+            "zvi-image-similarity" to
+                mapOf("simhash" to "12345ABCED", "type" to "similarity")
+        )
+
+        // Make new v4 index.
+        val rspec = IndexRouteSpec("english_strict", 5, shards = 1, replicas = 0)
+        val route = indexRoutingService.createIndexRoute(rspec)
+        projectService.setIndexRoute(project, route)
+
+        addTestAssets("images", analysis)
+        addTestAssets("video", analysis)
+        refreshIndex()
+
+        val spec = ProjectIndexMigrationSpec("english_strict", 6, size = ProjectSize.XSMALL)
+        val task = indexTaskService.migrateProject(project, spec)
+        // Sleep while task completes
+
+        Thread.sleep(6000)
+
+        val newRoute = indexRoutingService.getIndexRoute(task.dstIndexRouteId as UUID)
+        projectService.setIndexRoute(project, newRoute)
+        indexRoutingService.setIndexRefreshInterval(newRoute, "5s")
+        refreshIndex()
+        Thread.sleep(1000)
+
+        val image = getSample(1, type = "image")[0]
+        assertEquals("12345ABCED", image.getAttr("analysis.boonai-image-similarity.simhash"))
+        assertEquals("similarity", image.getAttr("analysis.boonai-image-similarity.type"))
+    }
 }
