@@ -32,7 +32,7 @@ resource "kubernetes_deployment" "auth-server" {
       app = "auth-server"
     }
     annotations = {
-      sql-service-account-key-date = var.sql-service-account-key-date
+      "terraform/sql-service-account-key-date" = var.sql-service-account-key-date
     }
   }
   spec {

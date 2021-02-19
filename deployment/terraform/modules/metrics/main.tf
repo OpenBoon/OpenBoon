@@ -35,7 +35,7 @@ resource "kubernetes_deployment" "metrics" {
       app = "metrics"
     }
     annotations = {
-      sql-service-account-key-date = var.sql-service-account-key-date
+      "terraform/sql-service-account-key-date" = var.sql-service-account-key-date
     }
   }
   spec {
