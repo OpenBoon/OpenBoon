@@ -8,6 +8,9 @@ variable "sql-instance-name" {
 variable "sql-connection-name" {
 }
 
+variable "sql-service-account-key-date" {
+}
+
 variable "inception-key-b64" {
   sensitive = true
 }

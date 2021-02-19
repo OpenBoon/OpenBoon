@@ -109,12 +109,12 @@ resource "kubernetes_deployment" "custom_metrics_stackdriver_adapter" {
           command = ["/adapter", "--use-new-resource-model=true"]
 
           resources {
-            limits {
+            limits = {
               cpu    = "250m"
               memory = "200Mi"
             }
 
-            requests {
+            requests = {
               cpu    = "250m"
               memory = "200Mi"
             }

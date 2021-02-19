@@ -13,17 +13,17 @@ object Config {
     )
 
     class MinioBucketConfiguration() : BucketConfiguration(
-        System.getenv("ZMLP_STORAGE_PROJECT_BUCKET") ?: "project-storage",
-        System.getenv("ZMLP_STORAGE_PROJECT_ACCESSKEY") ?: "qwerty123",
-        System.getenv("ZMLP_STORAGE_PROJECT_SECRETKEY") ?: "123qwerty",
-        System.getenv("ZMLP_STORAGE_PROJECT_URL") ?: "http://localhost:9000",
+        System.getenv("BOONAI_STORAGE_PROJECT_BUCKET") ?: "project-storage",
+        System.getenv("BOONAI_STORAGE_PROJECT_ACCESSKEY") ?: "qwerty123",
+        System.getenv("BOONAI_STORAGE_PROJECT_SECRETKEY") ?: "123qwerty",
+        System.getenv("BOONAI_STORAGE_PROJECT_URL") ?: "http://localhost:9000",
     )
 
     /**
      * We don't need anything besides bucket name for GCS.
      */
     class GcsBucketConfiguration() : BucketConfiguration(
-        System.getenv("ZMLP_STORAGE_PROJECT_BUCKET") ?: "project-storage",
+        System.getenv("BOONAI_STORAGE_PROJECT_BUCKET") ?: "project-storage",
         null,
         null,
         null
@@ -38,8 +38,8 @@ object Config {
 
     val officer: OfficerConfiguration
     val bucket: BucketConfiguration
-    val storageClient = System.getenv("ZMLP_STORAGE_CLIENT")
-        ?: System.getProperty("ZMLP_STORAGE_CLIENT") ?: "minio"
+    val storageClient = System.getenv("BOONAI_STORAGE_CLIENT")
+        ?: System.getProperty("BOONAI_STORAGE_CLIENT") ?: "minio"
 
     init {
         officer = OfficerConfiguration()

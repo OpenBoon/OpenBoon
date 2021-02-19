@@ -123,7 +123,7 @@ resource "kubernetes_deployment" "analyst" {
             read_only  = true
           }
           env {
-            name  = "ZMLP_SERVER"
+            name  = "BOONAI_SERVER"
             value = var.archivist-url
           }
           env {
@@ -158,11 +158,11 @@ resource "kubernetes_deployment" "analyst" {
             }
           }
           resources {
-            requests {
+            requests = {
               memory = var.memory-request
               cpu    = var.cpu-request
             }
-            limits {
+            limits = {
               memory = var.memory-limit
               cpu    = var.cpu-limit
             }

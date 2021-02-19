@@ -65,7 +65,7 @@ resource "kubernetes_deployment" "ml-bbq" {
             read_only  = true
           }
           env {
-            name  = "ZMLP_SECURITY_AUTHSERVER_URL"
+            name  = "BOONAI_SECURITY_AUTHSERVER_URL"
             value = var.auth-server-url
           }
           liveness_probe {
@@ -88,11 +88,11 @@ resource "kubernetes_deployment" "ml-bbq" {
             }
           }
           resources {
-            requests {
+            requests = {
               memory = var.memory-request
               cpu    = var.cpu-request
             }
-            limits {
+            limits = {
               memory = var.memory-limit
               cpu    = var.cpu-limit
             }

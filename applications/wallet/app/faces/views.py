@@ -2,8 +2,8 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from zmlp import ModelType
-from zmlp.client import ZmlpNotFoundException
+from boonsdk import ModelType
+from boonsdk.client import BoonSdkNotFoundException
 
 from assets.utils import AssetBoxImager
 from assets.views import AssetViewSet
@@ -252,6 +252,6 @@ class FaceViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
         """Helper to get or create the model for Face Training."""
         try:
             model = app.models.find_one_model(name=self.model_name)
-        except ZmlpNotFoundException:
+        except BoonSdkNotFoundException:
             model = app.models.create_model(self.model_name, ModelType.ZVI_FACE_RECOGNITION)
         return model

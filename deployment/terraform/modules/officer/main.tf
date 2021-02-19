@@ -83,7 +83,7 @@ resource "kubernetes_deployment" "officer" {
           image             = "boonai/officer:${var.container-tag}"
           image_pull_policy = "Always"
           env {
-            name  = "ZMLP_STORAGE_PROJECT_BUCKET"
+            name  = "BOONAI_STORAGE_PROJECT_BUCKET"
             value = var.data-bucket-name
           }
           env {
@@ -91,7 +91,7 @@ resource "kubernetes_deployment" "officer" {
             value = var.redis-host
           }
           env {
-            name  = "ZMLP_STORAGE_CLIENT"
+            name  = "BOONAI_STORAGE_CLIENT"
             value = "gcs"
           }
           liveness_probe {
@@ -114,11 +114,11 @@ resource "kubernetes_deployment" "officer" {
             }
           }
           resources {
-            requests {
+            requests = {
               memory = var.memory-request
               cpu    = var.cpu-request
             }
-            limits {
+            limits = {
               memory = var.memory-limit
               cpu    = var.cpu-limit
             }

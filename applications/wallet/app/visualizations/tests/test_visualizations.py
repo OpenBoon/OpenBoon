@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import Mock
 
-from zmlp import ZmlpClient
+from boonsdk import BoonClient
 from visualizations.visualizations import FacetVisualization, HistogramVisualization
 from wallet.utils import convert_json_to_base64
 
@@ -101,10 +101,10 @@ class TestHistogram(TestBaseVisualizationTestCase):
                                 'upper': 1.140250888417294,
                                 'lower': -0.025584227790564573}}}}}
 
-        client = ZmlpClient(apikey=convert_json_to_base64(zmlp_apikey), server='localhost')
+        client = BoonClient(apikey=convert_json_to_base64(zmlp_apikey), server='localhost')
         viz = self.Viz(data, Mock(client=client), query={})
         viz._field_type = 'prediction'
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
         agg = viz.get_es_agg()
         assert agg == {
             'aggs': {
@@ -142,9 +142,9 @@ class TestHistogram(TestBaseVisualizationTestCase):
                             'upper': 159115.49739399232,
                             'lower': -32417.739289933488}}}}
 
-        client = ZmlpClient(apikey=convert_json_to_base64(zmlp_apikey), server='localhost')
+        client = BoonClient(apikey=convert_json_to_base64(zmlp_apikey), server='localhost')
         viz = self.Viz(data, Mock(client=client), query={})
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
         viz._field_type = 'keyword'
         agg = viz.get_es_agg()
         assert agg == {
@@ -180,9 +180,9 @@ class TestHistogram(TestBaseVisualizationTestCase):
                                 'upper': None,
                                 'lower': None}}}}}
 
-        client = ZmlpClient(apikey=convert_json_to_base64(zmlp_apikey), server='localhost')
+        client = BoonClient(apikey=convert_json_to_base64(zmlp_apikey), server='localhost')
         viz = self.Viz(data, Mock(client=client), query={})
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
         viz._field_type = 'prediction'
         agg = viz.get_es_agg()
         assert agg == {

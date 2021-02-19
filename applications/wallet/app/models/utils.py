@@ -15,7 +15,7 @@ class ConfusionMatrix(object):
 
     Args:
         model(zmlp.Model): Model to evaluate a confusion matrix for.
-        app(zmlp.ZmlpApp): ZMLP app to use for fetching data.
+        app(zmlp.BoonApp): ZMLP app to use for fetching data.
         test_set_only(bool): If True the confusion matrix is calculate for the TEST set
          only. If False, all assets will be evaluated.
         min_score(float): Minimum confidence score to filter by.

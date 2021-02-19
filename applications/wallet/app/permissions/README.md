@@ -1,2 +1,2 @@
 # Permissions
-Contains views for getting permissions from ZMLP.
+Contains views for getting permissions from boonsdk.

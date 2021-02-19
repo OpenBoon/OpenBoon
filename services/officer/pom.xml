@@ -24,7 +24,7 @@
         <repository>
             <id>AsposeJavaAPI</id>
             <name>Aspose Java API</name>
-            <url>http://artifact.aspose.com/repo/</url>
+            <url>https://artifact.aspose.com/repo/</url>
         </repository>
     </repositories>
 
@@ -216,7 +216,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.3.3.RELEASE</version>
+                <version>2.3.8.RELEASE</version>
                 <executions>
                     <execution>
                         <goals>

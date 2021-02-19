@@ -27,11 +27,10 @@ variable "marketplace-service-name" {
 variable "sql-instance-name" {
 }
 
-variable "sql-service-account-key" {
-  sensitive = true
+variable "sql-connection-name" {
 }
 
-variable "sql-connection-name" {
+variable "sql-service-account-key-date" {
 }
 
 variable "image-pull-secret" {
