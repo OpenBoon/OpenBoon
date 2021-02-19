@@ -34,9 +34,6 @@ resource "kubernetes_deployment" "wallet" {
     labels = {
       app = "wallet"
     }
-    annotations = {
-      "terraform/sql-service-account-key-date" = var.sql-service-account-key-date
-    }
   }
   spec {
     replicas = 1
@@ -185,6 +182,10 @@ resource "kubernetes_deployment" "wallet" {
           env {
             name  = "METRICS_API_URL"
             value = "http://${var.metrics-ip-address}"
+          }
+          env {
+            name  = "SA_KEY_DATE"
+            value = var.sql-service-account-key-date
           }
         }
       }

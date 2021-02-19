@@ -34,9 +34,6 @@ resource "kubernetes_deployment" "metrics" {
     labels = {
       app = "metrics"
     }
-    annotations = {
-      "terraform/sql-service-account-key-date" = var.sql-service-account-key-date
-    }
   }
   spec {
     replicas = 1
@@ -181,6 +178,10 @@ resource "kubernetes_deployment" "metrics" {
           env {
             name  = "LOG_REQUESTS"
             value = var.log-requests
+          }
+          env {
+            name  = "SA_KEY_DATE"
+            value = var.sql-service-account-key-date
           }
         }
       }

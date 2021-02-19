@@ -8,9 +8,6 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
     labels = {
       app = "gcp-marketplace-integration"
     }
-    annotations = {
-      "terraform/sql-service-account-key-date" = var.sql-service-account-key-date
-    }
   }
   spec {
     replicas = 1
@@ -129,6 +126,10 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
           env {
             name  = "MARKETPLACE_SERVICE_NAME"
             value = var.marketplace-service-name
+          }
+          env {
+            name  = "SA_KEY_DATE"
+            value = var.sql-service-account-key-date
           }
         }
         container {
