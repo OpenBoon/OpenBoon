@@ -31,9 +31,6 @@ resource "kubernetes_deployment" "auth-server" {
     labels = {
       app = "auth-server"
     }
-    annotations = {
-      sql-service-account-key-date = var.sql-service-account-key-date
-    }
   }
   spec {
     replicas = 2
@@ -141,6 +138,10 @@ resource "kubernetes_deployment" "auth-server" {
           env {
             name  = "BOONAI_STORAGE_SYSTEM_BUCKET"
             value = var.system-bucket
+          }
+          env {
+            name  = "SA_KEY_DATE"
+            value = var.sql-service-account-key-date
           }
         }
       }
