@@ -17,13 +17,13 @@ class ModelType(Enum):
     Types of models that can be Trained.
     """
 
-    ZVI_KNN_CLASSIFIER = 0
+    BOONAI_KNN_CLASSIFIER = 0
     """A KMeans clustering model for quickly clustering assets into general groups."""
 
-    ZVI_LABEL_DETECTION = 1
+    BOONAI_LABEL_DETECTION = 1
     """Retrain the ResNet50 with your own labels, Using TensorFlow"""
 
-    ZVI_FACE_RECOGNITION = 2
+    BOONAI_FACE_RECOGNITION = 2
     """Face Recognition model using a KNN classifier."""
 
     GCP_LABEL_DETECTION = 3
@@ -32,7 +32,7 @@ class ModelType(Enum):
     TF2_IMAGE_CLASSIFIER = 4
     """Provide your own custom Tensorflow2/Keras model"""
 
-    ZVI_PYTORCH_LABEL_DETECTION = 5
+    BOONAI_PYTORCH_LABEL_DETECTION = 5
     """Retrain ResNet50 with your own labels, using Pytorch."""
 
     PYTORCH_IMAGE_CLASSIFIER = 6
