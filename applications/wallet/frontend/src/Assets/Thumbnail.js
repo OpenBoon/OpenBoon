@@ -185,7 +185,7 @@ const AssetsThumbnail = ({
 }
 
 AssetsThumbnail.defaultProps = {
-  attribute: 'analysis.zvi-image-similarity',
+  attribute: 'analysis.boonai-image-similarity',
 }
 
 AssetsThumbnail.propTypes = {

@@ -27,7 +27,7 @@ describe('<MetadataPrettyLabelsMenu />', () => {
           simhash: 'NNLHLINNMQPONMLMJFLMQMKKKM...',
           b64_image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
         }}
-        moduleName="zvi-face-recognition"
+        moduleName="boonai-face-recognition"
       />,
     )
 
@@ -51,7 +51,7 @@ describe('<MetadataPrettyLabelsMenu />', () => {
       JSON.stringify([
         {
           type: 'label',
-          attribute: 'labels.zvi-face-recognition',
+          attribute: 'labels.boonai-face-recognition',
           modelId: MODEL_ID,
           values: { labels: ['Mark Ruffalo'] },
         },
@@ -84,7 +84,7 @@ describe('<MetadataPrettyLabelsMenu />', () => {
           simhash: 'NNLHLINNMQPONMLMJFLMQMKKKM...',
           b64_image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
         }}
-        moduleName="zvi-face-recognition"
+        moduleName="boonai-face-recognition"
       />,
     )
 
@@ -123,7 +123,7 @@ describe('<MetadataPrettyLabelsMenu />', () => {
           simhash: 'NNLHLINNMQPONMLMJFLMQMKKKM...',
           b64_image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
         }}
-        moduleName="zvi-face-recognition"
+        moduleName="boonai-face-recognition"
       />,
     )
 

@@ -7,11 +7,11 @@ const models = {
       id: '621bf774-89d9-1244-9596-d6df43f1ede5',
       name: 'console_face_recognition',
       type: 'ZVI_FACE_RECOGNITION',
-      moduleName: 'zvi-console_face_recognition-face-recognition',
+      moduleName: 'boonai-console_face_recognition-face-recognition',
       fileId:
-        'models/621bf774-89d9-1244-9596-d6df43f1ede5/zvi-console_face_recognition-face-recognition/zvi-console_face_recognition-face-recognition.zip',
+        'models/621bf774-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip',
       trainingJobName:
-        'Train console_face_recognition / zvi-console_face_recognition-face-recognition',
+        'Train console_face_recognition / boonai-console_face_recognition-face-recognition',
       ready: true,
       deploySearch: { query: { matchAll: {} } },
       timeCreated: 1594243378141,
@@ -28,11 +28,11 @@ const models = {
       id: '621bf774-89d9-9596-1244-d6df43f1ede5',
       name: 'console_cat_recognition',
       type: 'ZVI_CAT_RECOGNITION',
-      moduleName: 'zvi-console_cat_recognition-cat-recognition',
+      moduleName: 'boonai-console_cat_recognition-cat-recognition',
       fileId:
-        'models/621bf774-89d9-9596-1244-d6df43f1ede5/zvi-console_cat_recognition-cat-recognition/zvi-console_cat_recognition-cat-recognition.zip',
+        'models/621bf774-89d9-9596-1244-d6df43f1ede5/boonai-console_cat_recognition-cat-recognition/boonai-console_cat_recognition-cat-recognition.zip',
       trainingJobName:
-        'Train console_cat_recognition / zvi-console_cat_recognition-cat-recognition',
+        'Train console_cat_recognition / boonai-console_cat_recognition-cat-recognition',
       ready: false,
       deploySearch: { query: { matchAll: {} } },
       timeCreated: 1594243378141,

@@ -183,7 +183,7 @@ describe('<FilterReset />', () => {
     const filters = [
       {
         type: 'similarity',
-        attribute: 'analysis.zvi-image-similarity',
+        attribute: 'analysis.boonai-image-similarity',
         values: { ids: [asset.id] },
       },
     ]

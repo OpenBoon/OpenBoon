@@ -42,7 +42,7 @@ const providers = {
             },
             {
               id: '006592d6-5555-1264-99d6-12022d8ebebd',
-              name: 'zvi-label-detection',
+              name: 'boonai-label-detection',
               description:
                 'Generate keyword labels for image, video, and documents.',
               provider: 'Zorroa',
@@ -57,7 +57,7 @@ const providers = {
             },
             {
               id: '006592d5-5555-1264-99d6-12022d8ebebd',
-              name: 'zvi-object-detection',
+              name: 'boonai-object-detection',
               description:
                 'Detect everyday objects in images, video, and documents.',
               provider: 'Zorroa',
@@ -77,7 +77,7 @@ const providers = {
           modules: [
             {
               id: '2357b0f6-4672-1cf3-9d61-0af5076e65af',
-              name: 'zvi-document-page-clips',
+              name: 'boonai-document-page-clips',
               description:
                 'Extract all pages in MS Office/PDF documents into separate assets.',
               provider: 'Zorroa',
@@ -92,7 +92,7 @@ const providers = {
             },
             {
               id: '2357b0f7-4672-1cf3-9d61-0af5076e65af',
-              name: 'zvi-image-page-clips',
+              name: 'boonai-image-page-clips',
               description:
                 'Extract all layers in multi page image formats such as tiff and psd as as separate assets',
               provider: 'Zorroa',
@@ -107,7 +107,7 @@ const providers = {
             },
             {
               id: '2357b0f8-4672-1cf3-9d61-0af5076e65af',
-              name: 'zvi-video-shot-clips',
+              name: 'boonai-video-shot-clips',
               description:
                 'Break video files into individual assets based on a shot detection algorithm.',
               provider: 'Zorroa',
@@ -127,7 +127,7 @@ const providers = {
           modules: [
             {
               id: '2357b0f9-4672-1cf3-9d61-0af5076e65af',
-              name: 'zvi-text-detection',
+              name: 'boonai-text-detection',
               description: 'Utilize OCR technology to detect text on an image.',
               provider: 'Zorroa',
               category: 'Zorroa Visual Intelligence',

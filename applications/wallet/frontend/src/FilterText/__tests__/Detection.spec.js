@@ -12,7 +12,7 @@ describe('<FilterTextDetection />', () => {
   it('should select a facet', () => {
     const filter = {
       type: 'textContent',
-      attribute: 'analysis.zvi-text-content',
+      attribute: 'analysis.boonai-text-content',
       values: {},
     }
 
@@ -58,7 +58,7 @@ describe('<FilterTextDetection />', () => {
       JSON.stringify([
         {
           type: 'textContent',
-          attribute: 'analysis.zvi-text-content',
+          attribute: 'analysis.boonai-text-content',
           values: { query: 'cats' },
         },
       ]),
@@ -73,7 +73,7 @@ describe('<FilterTextDetection />', () => {
   it('should edit a text detection', () => {
     const filter = {
       type: 'textContent',
-      attribute: 'analysis.zvi-text-content',
+      attribute: 'analysis.boonai-text-content',
       values: { query: 'cats' },
     }
 
@@ -100,7 +100,7 @@ describe('<FilterTextDetection />', () => {
   it('should clear a text detection', () => {
     const filter = {
       type: 'textContent',
-      attribute: 'analysis.zvi-text-content',
+      attribute: 'analysis.boonai-text-content',
       values: { query: 'cats' },
     }
 
@@ -131,7 +131,7 @@ describe('<FilterTextDetection />', () => {
       JSON.stringify([
         {
           type: 'textContent',
-          attribute: 'analysis.zvi-text-content',
+          attribute: 'analysis.boonai-text-content',
           values: {},
         },
       ]),
