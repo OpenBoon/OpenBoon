@@ -19,7 +19,7 @@ class ModelAppTests(unittest.TestCase):
         self.model_data = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'test',
-            'type': 'ZVI_LABEL_DETECTION',
+            'type': 'BOONAI_LABEL_DETECTION',
             'fileId': '/abc/123/345/foo.zip'
         }
 
@@ -62,7 +62,7 @@ class ModelAppTests(unittest.TestCase):
     @patch.object(BoonClient, 'post')
     def test_create_model(self, post_patch):
         post_patch.return_value = self.model_data
-        model = self.app.models.create_model('test', ModelType.ZVI_LABEL_DETECTION)
+        model = self.app.models.create_model('test', ModelType.BOONAI_LABEL_DETECTION)
         self.assert_model(model)
 
     @patch.object(BoonClient, 'post')
@@ -125,7 +125,7 @@ class ModelAppTests(unittest.TestCase):
 
     @patch.object(BoonClient, 'get')
     def test_download_labeled_images(self, get_patch):
-        raw = {'id': '12345', 'type': 'ZVI_LABEL_DETECTION'}
+        raw = {'id': '12345', 'type': 'BOONAI_LABEL_DETECTION'}
         model = Model(raw)
         get_patch.return_value = raw
         dl = self.app.models.download_labeled_images(model, 'objects_coco', '/tmp/dstest')
@@ -135,39 +135,39 @@ class ModelAppTests(unittest.TestCase):
     @patch.object(BoonClient, 'get')
     def test_get_model_type_info(self, get_patch):
         raw = {
-            'name': 'ZVI_LABEL_DETECTION',
+            'name': 'BOONAI_LABEL_DETECTION',
             'description': 'a description',
             'objective': 'label detection',
-            'provider': 'zorroa',
+            'provider': 'boonai',
             'minConcepts': 1,
             'minExamples': 1
         }
         get_patch.return_value = raw
 
-        props = self.app.models.get_model_type_info(ModelType.ZVI_LABEL_DETECTION)
-        assert props.name == "ZVI_LABEL_DETECTION"
+        props = self.app.models.get_model_type_info(ModelType.BOONAI_LABEL_DETECTION)
+        assert props.name == "BOONAI_LABEL_DETECTION"
         assert props.description == 'a description'
         assert props.objective == 'label detection'
-        assert props.provider == 'zorroa'
+        assert props.provider == 'boonai'
         assert props.min_concepts == 1
         assert props.min_examples == 1
 
     @patch.object(BoonClient, 'get')
     def test_get_all_model_type_info(self, get_patch):
         raw = {
-            'name': 'ZVI_LABEL_DETECTION',
+            'name': 'BOONAI_LABEL_DETECTION',
             'description': 'a description',
             'objective': 'label detection',
-            'provider': 'zorroa',
+            'provider': 'boonai',
             'minConcepts': 1,
             'minExamples': 1
         }
         get_patch.return_value = [raw]
 
         props = self.app.models.get_all_model_type_info()[0]
-        assert props.name == "ZVI_LABEL_DETECTION"
+        assert props.name == "BOONAI_LABEL_DETECTION"
         assert props.description == 'a description'
         assert props.objective == 'label detection'
-        assert props.provider == 'zorroa'
+        assert props.provider == 'boonai'
         assert props.min_concepts == 1
         assert props.min_examples == 1

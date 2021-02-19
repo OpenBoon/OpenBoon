@@ -274,7 +274,7 @@ class TestFaceSimilarityQuery(unittest.TestCase):
         print(esq)
 
         params = esq['script_score']['script']['params']
-        assert 'analysis.zvi-face-detection.predictions.simhash' == params['field']
+        assert 'analysis.boonai-face-detection.predictions.simhash' == params['field']
         assert ['abc123'] == params['hashes']
         assert 0.90 == params['minScore']
 
@@ -285,7 +285,7 @@ class TestFaceSimilarityQuery(unittest.TestCase):
         esq = FaceSimilarityQuery(pred, min_score=1.0).for_json()
 
         params = esq['script_score']['script']['params']
-        assert 'analysis.zvi-face-detection.predictions.simhash' == params['field']
+        assert 'analysis.boonai-face-detection.predictions.simhash' == params['field']
         assert ['QWERTY'] == params['hashes']
         assert 1.0 == params['minScore']
 

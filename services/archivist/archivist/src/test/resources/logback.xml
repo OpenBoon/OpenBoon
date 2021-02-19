@@ -9,7 +9,7 @@
         </layout>
     </appender>
 
-    <logger name="com.zorroa" level="debug" additivity="false">
+    <logger name="boonai" level="debug" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
 

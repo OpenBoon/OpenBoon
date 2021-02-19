@@ -95,7 +95,7 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
               </li>
               <li>
                 <Button
-                  href="mailto:zvi-console-support@zorroa.com"
+                  href="mailto:support@boonai.io"
                   target="_blank"
                   variant={VARIANTS.MENU_ITEM}
                   onBlur={onBlur}

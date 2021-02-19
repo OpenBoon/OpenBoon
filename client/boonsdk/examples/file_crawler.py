@@ -11,7 +11,7 @@ def callback_function(files, rsp):
     print("--processed files--")
     for path in files:
         print(path)
-    print("--zvi response--")
+    print("--boonai response--")
     pprint.pprint(rsp)
 
 

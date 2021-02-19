@@ -711,7 +711,7 @@ class TestSimilarityFilter(FilterBaseTestCase):
                             'query': {'match_all': {}},
                             'script': {
                                 'source': 'similarity',
-                                'lang': 'zorroa-similarity',
+                                'lang': 'boonai-similarity',
                                 'params': {
                                     'minScore': 0.75,
                                     'field': 'analysis.zvi-image-similarity.simhash',
@@ -746,7 +746,7 @@ class TestSimilarityFilter(FilterBaseTestCase):
                             'query': {'match_all': {}},
                             'script': {
                                 'source': 'similarity',
-                                'lang': 'zorroa-similarity',
+                                'lang': 'boonai-similarity',
                                 'params': {
                                     'minScore': 0.5,
                                     'field': 'analysis.zvi-image-similarity.simhash',

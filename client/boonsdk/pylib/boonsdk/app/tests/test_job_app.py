@@ -191,7 +191,7 @@ class BoonSdkJobAppTests(unittest.TestCase):
             pass
 
         stream_patch.return_value = log_file
-        self.assertEquals(log_file, self.app.jobs.download_task_log("12345", log_file))
+        self.assertEqual(log_file, self.app.jobs.download_task_log("12345", log_file))
 
     @patch.object(BoonClient, 'stream_text')
     def test_iterate_task_log(self, stream_patch):
@@ -291,15 +291,15 @@ mock_task_error_data = {
                     'lineNumber': 293,
                     'methodName': 'retval = self.instance.process(frame)'},
                    {'className': 'process',
-                    'file': '/zvi/pylib/boonai_core/core/importers.py',
+                    'file': '/boonlab/pylib/boonai_core/core/importers.py',
                     'lineNumber': 49,
                     'methodName': 'proc.process(frame)'},
                    {'className': 'process',
-                    'file': '/zvi/pylib/boonai_core/image/importers.py',
+                    'file': '/boonlab/pylib/boonai_core/image/importers.py',
                     'lineNumber': 42,
                     'methodName': 'metadata = get_image_metadata(path)'},
                    {'className': 'get_image_metadata',
-                    'file': '/zvi/pylib/boonai_core/util/media.py',
+                    'file': '/boonlab/pylib/boonai_core/util/media.py',
                     'lineNumber': 80,
                     'methodName': 'output = check_output(cmd, shell=False, '
                                   'stderr=DEVNULL)'},

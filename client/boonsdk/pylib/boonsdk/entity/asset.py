@@ -137,7 +137,7 @@ class DocumentMixin(object):
         label predictions are present, returns None.
 
         Args:
-            namespace (str): The analysis namespace, example 'zvi-label-detection'.
+            namespace (str): The analysis namespace, example 'boonai-label-detection'.
             min_score (float): Filter results by a minimum score.
 
         Returns:
@@ -379,7 +379,7 @@ class Asset(DocumentMixin):
         Returns:
             str: The proxy image similarity hash.
         """
-        return self.get_attr('analysis.zvi-image-similarity.simhash')
+        return self.get_attr('analysis.boonai-image-similarity.simhash')
 
     def add_file(self, stored_file):
         """

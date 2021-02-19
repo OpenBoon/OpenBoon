@@ -174,7 +174,7 @@ class TrainingSetDownloader:
                     'name': label['label']
                 }
 
-                bbox, area = self._zvi_to_cocos_bbox(prx, label['bbox'])
+                bbox, area = self._boonai_to_cocos_bbox(prx, label['bbox'])
                 annotation = {
                     'bbox': bbox,
                     'segmentation': [],
@@ -227,7 +227,7 @@ class TrainingSetDownloader:
                         dst_path
                     ]
                     line.extend([str(point) for point in
-                                 self._zvi_to_keras_bbox(prx, label['bbox'])])
+                                 self._boonai_to_keras_bbox(prx, label['bbox'])])
                     line.append(label['label'])
                     str_line = "{}\n".format(",".join(line))
                     if set_type == self.SET_TRAIN:
@@ -242,7 +242,7 @@ class TrainingSetDownloader:
             for idx, cls in enumerate(sorted(unique_labels)):
                 fp_classes.write("{},{}\n".format(cls, idx))
 
-    def _zvi_to_keras_bbox(self, prx, bbox):
+    def _boonai_to_keras_bbox(self, prx, bbox):
         total_width = prx.attrs['width']
         total_height = prx.attrs['height']
         return [int(total_width * bbox[0]),
@@ -250,7 +250,7 @@ class TrainingSetDownloader:
                 int(total_width * bbox[2]),
                 int(total_height * bbox[3])]
 
-    def _zvi_to_cocos_bbox(self, prx, bbox):
+    def _boonai_to_cocos_bbox(self, prx, bbox):
         """
         Converts a ZVI bbox to a COCOs bbox.  The format is x, y, width, height.
 

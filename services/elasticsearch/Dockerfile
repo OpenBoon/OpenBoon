@@ -20,7 +20,7 @@ ENV JAVA_HOME="/usr/local/openjdk-11"
 WORKDIR /usr/share/elasticsearch/plugins
 
 RUN unzip es-similarity.zip
-RUN mv elasticsearch zorroa-similarity
+RUN mv elasticsearch boonai-similarity
 RUN rm es-similarity.zip
 
 RUN yum remove -y unzip wget

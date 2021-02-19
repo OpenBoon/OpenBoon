@@ -82,8 +82,8 @@ describe('<FiltersMenuSection />', () => {
       <FiltersMenuSection
         projectId={PROJECT_ID}
         path="analysis"
-        attribute="zvi"
-        value={fields.analysis.zvi}
+        attribute="boonai"
+        value={fields.analysis.boonai}
         filters={[]}
         onClick={noop}
       />,

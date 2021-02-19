@@ -408,7 +408,7 @@ class LabelConfidenceMetricsAggregation(object):
         Create a new LabelConfidenceMetricsAggregation
 
         Args:
-            namespace (str): The analysis namespace. (ex: zvi-label-detection)
+            namespace (str): The analysis namespace. (ex: boonai-label-detection)
             agg_type (str): A type of metrics agg to perform.
                 stats, extended_stats,
         """
@@ -442,7 +442,7 @@ class LabelConfidenceMetricsAggregation(object):
 class LabelConfidenceQuery(object):
     """
     A helper class for building a label confidence score query.  This query must point
-    at label confidence structure:  For example: analysis.zvi.label-detection.
+    at label confidence structure:  For example: analysis.boonai.label-detection.
 
     References:
         "labels": [
@@ -456,7 +456,7 @@ class LabelConfidenceQuery(object):
         Create a new LabelConfidenceScoreQuery.
 
         Args:
-            namespace (str): The analysis namespace with predictions. (ex: zvi-label-detection)
+            namespace (str): The analysis namespace with predictions. (ex: boonai-label-detection)
             labels (list): A list of labels to filter.
             min_score (float): The minimum label score, default to 0.1.
             Note that 0.0 allows everything.
@@ -519,7 +519,7 @@ class LabelConfidenceQuery(object):
 class SingleLabelConfidenceQuery(object):
     """
     A helper class for building a label confidence score query.  This query must point
-    at label confidence structure:  For example: analysis.zvi.label-detection.
+    at label confidence structure:  For example: analysis.boonai.label-detection.
 
     References:
         "labels": [
@@ -533,7 +533,7 @@ class SingleLabelConfidenceQuery(object):
         Create a new SingleLabelConfidenceScoreQuery.
 
         Args:
-            namespace (str): The analysis namespace with predictions. (ex: zvi-label-detection)
+            namespace (str): The analysis namespace with predictions. (ex: boonai-label-detection)
             labels (list): A list of labels to filter.
             min_score (float): The minimum label score, default to 0.1.
             Note that 0.0 allows everything.
@@ -660,7 +660,7 @@ class SimilarityQuery:
         }
     """
     def __init__(self, hashes, min_score=0.75, boost=1.0,
-                 field="analysis.zvi-image-similarity.simhash"):
+                 field="analysis.boonai-image-similarity.simhash"):
         self.field = field
         self.hashes = []
         self.min_score = min_score
@@ -702,7 +702,7 @@ class SimilarityQuery:
                 },
                 "script": {
                     "source": "similarity",
-                    "lang": "zorroa-similarity",
+                    "lang": "boonai-similarity",
                     "params": {
                         "minScore": self.min_score,
                         "field": self.field,
@@ -730,7 +730,7 @@ class FaceSimilarityQuery:
     Performs a face similarity search.
     """
     def __init__(self, faces, min_score=0.90, boost=1.0,
-                 field="analysis.zvi-face-detection.predictions.simhash"):
+                 field="analysis.boonai-face-detection.predictions.simhash"):
         """
         Create a new FaceSimilarityQuery.
 

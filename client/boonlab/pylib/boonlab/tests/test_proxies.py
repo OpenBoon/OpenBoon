@@ -5,7 +5,7 @@ from PIL import Image
 
 from boonsdk import Asset
 from boonsdk.app import AssetApp
-from zvi.proxies import download_proxy
+from boonlab.proxies import download_proxy
 
 
 class ProxiesTests(unittest.TestCase):

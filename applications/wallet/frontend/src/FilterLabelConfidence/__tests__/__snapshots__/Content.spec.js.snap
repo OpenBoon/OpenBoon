@@ -6,7 +6,7 @@ Array [
     assetId=""
     filter={
       Object {
-        "attribute": "analysis.zvi-label-detection",
+        "attribute": "analysis.boonai-label-detection",
         "type": "labelConfidence",
         "values": Object {
           "labels": Array [],
@@ -19,7 +19,7 @@ Array [
     filters={
       Array [
         Object {
-          "attribute": "analysis.zvi-label-detection",
+          "attribute": "analysis.boonai-label-detection",
           "type": "labelConfidence",
           "values": Object {
             "labels": Array [],
@@ -290,7 +290,7 @@ Array [
     assetId=""
     filter={
       Object {
-        "attribute": "analysis.zvi-label-detection",
+        "attribute": "analysis.boonai-label-detection",
         "type": "labelConfidence",
         "values": Object {},
       }
@@ -299,7 +299,7 @@ Array [
     filters={
       Array [
         Object {
-          "attribute": "analysis.zvi-label-detection",
+          "attribute": "analysis.boonai-label-detection",
           "type": "labelConfidence",
           "values": Object {},
         },
@@ -832,7 +832,7 @@ Array [
     assetId=""
     filter={
       Object {
-        "attribute": "analysis.zvi-label-detection",
+        "attribute": "analysis.boonai-label-detection",
         "type": "labelConfidence",
         "values": Object {},
       }
@@ -841,7 +841,7 @@ Array [
     filters={
       Array [
         Object {
-          "attribute": "analysis.zvi-label-detection",
+          "attribute": "analysis.boonai-label-detection",
           "type": "labelConfidence",
           "values": Object {},
         },
@@ -1230,7 +1230,7 @@ Array [
     assetId=""
     filter={
       Object {
-        "attribute": "analysis.zvi-label-detection",
+        "attribute": "analysis.boonai-label-detection",
         "type": "labelConfidence",
         "values": Object {
           "labels": Array [
@@ -1245,7 +1245,7 @@ Array [
     filters={
       Array [
         Object {
-          "attribute": "analysis.zvi-label-detection",
+          "attribute": "analysis.boonai-label-detection",
           "type": "labelConfidence",
           "values": Object {
             "labels": Array [

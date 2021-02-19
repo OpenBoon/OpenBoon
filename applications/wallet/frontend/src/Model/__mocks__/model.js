@@ -2,11 +2,11 @@ const model = {
   id: '621bf775-89d9-1244-9596-d6df43f1ede5',
   name: 'console_face_recognition',
   type: 'ZVI_FACE_RECOGNITION',
-  moduleName: 'zvi-console_face_recognition-face-recognition',
+  moduleName: 'boonai-console_face_recognition-face-recognition',
   fileId:
-    'models/621bf775-89d9-1244-9596-d6df43f1ede5/zvi-console_face_recognition-face-recognition/zvi-console_face_recognition-face-recognition.zip',
+    'models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip',
   trainingJobName:
-    'Train console_face_recognition / zvi-console_face_recognition-face-recognition',
+    'Train console_face_recognition / boonai-console_face_recognition-face-recognition',
   unappliedChanges: true,
   deploySearch: { query: { matchAll: {} } },
   timeCreated: 1594243397871,

@@ -50,11 +50,11 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "512Mi"
               cpu    = 0.5
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.2
             }
@@ -66,11 +66,11 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
           image_pull_policy = "Always"
           command           = ["python3", "-u", "/applications/wallet/app/manage.py", "gcpmarketplace-usage-report"]
           resources {
-            limits {
+            limits = {
               memory = "1Gi"
               cpu    = 1
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.5
             }
@@ -127,6 +127,10 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             name  = "MARKETPLACE_SERVICE_NAME"
             value = var.marketplace-service-name
           }
+          env {
+            name  = "SA_KEY_DATE"
+            value = var.sql-service-account-key-date
+          }
         }
         container {
           name              = "gcp-marketplace-pub-sub"
@@ -134,11 +138,11 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
           image_pull_policy = "Always"
           command           = ["python3", "-u", "/applications/wallet/app/manage.py", "gcpmarketplace-pubsub"]
           resources {
-            limits {
+            limits = {
               memory = "1Gi"
               cpu    = 1
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.5
             }
