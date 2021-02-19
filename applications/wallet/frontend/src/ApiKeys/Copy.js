@@ -16,7 +16,7 @@ const ApiKeysCopy = () => {
         css={{ color: colors.key.two }}
         target="_blank"
         rel="noopener noreferrer"
-        href="https://app.gitbook.com/@zorroa/s/boonsdk/"
+        href="https://docs.boonai.app/boonsdk/working-with-api-keys"
       >
         our documentation
       </a>

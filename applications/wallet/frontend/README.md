@@ -108,9 +108,9 @@ session ends. It should also allow you to work offline.
 
 #### Local Mode
 
-To run a local environment of Boon AI Console, you need to build the docker
-setup (`docker-compose build`) and run it (`docker-compose up`). Refer to the
-overall `wallet` or `wallet/app` docs for further information.
+To run a local environment of Boon AI, you need to build the docker setup
+(`docker-compose build`) and run it (`docker-compose up`). Refer to the overall
+`wallet` or `wallet/app` docs for further information.
 
 Run `npm run dev` to start a local development node server on
 http://localhost:3000. This starts the node.js / next.js SSR development server
