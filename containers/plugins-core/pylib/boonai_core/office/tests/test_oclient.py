@@ -65,7 +65,9 @@ class OfficerPythonClientTests(unittest.TestCase):
     def _response_body(self):
         return {
             'file': 'base64VeryBigEncodedFileblablabla',
-            'body': '{"fileName": "/Users/ironaraujo/Projects/zorroa/zmlp/test-data/office/pdfTest.pdf", '
-                    '"outputPath": "/projects/foo/officer/abcdefg1234", "page": -1, "disableImageRender": true, '
+            'body': '{"fileName": '
+                    '"/Users/ironaraujo/Projects/zorroa/zmlp/test-data/office/pdfTest.pdf", '
+                    '"outputPath": '
+                    '"/projects/foo/officer/abcdefg1234", "page": -1, "disableImageRender": true, '
                     '"dpi": 150} '
         }
