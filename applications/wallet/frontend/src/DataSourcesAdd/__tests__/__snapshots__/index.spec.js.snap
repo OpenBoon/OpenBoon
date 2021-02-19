@@ -1518,7 +1518,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-label-detection"
+                          value="boonai-label-detection"
                         />
                         <div
                           className="emotion-37"
@@ -1533,14 +1533,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-label-detection
+                        boonai-label-detection
                         : 
                         Generate keyword labels for image, video, and documents.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-label-detection
+                    boonai-label-detection
                   </td>
                   <td>
                     Generate keyword labels for image, video, and documents.
@@ -1585,7 +1585,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-object-detection"
+                          value="boonai-object-detection"
                         />
                         <div
                           className="emotion-37"
@@ -1600,14 +1600,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-object-detection
+                        boonai-object-detection
                         : 
                         Detect everyday objects in images, video, and documents.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-object-detection
+                    boonai-object-detection
                   </td>
                   <td>
                     Detect everyday objects in images, video, and documents.
@@ -1686,7 +1686,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-document-page-clips"
+                          value="boonai-document-page-clips"
                         />
                         <div
                           className="emotion-37"
@@ -1701,14 +1701,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-document-page-clips
+                        boonai-document-page-clips
                         : 
                         Extract all pages in MS Office/PDF documents into separate assets.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-document-page-clips
+                    boonai-document-page-clips
                   </td>
                   <td>
                     Extract all pages in MS Office/PDF documents into separate assets.
@@ -1753,7 +1753,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-image-page-clips"
+                          value="boonai-image-page-clips"
                         />
                         <div
                           className="emotion-37"
@@ -1768,14 +1768,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-image-page-clips
+                        boonai-image-page-clips
                         : 
                         Extract all layers in multi page image formats such as tiff and psd as as separate assets
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-image-page-clips
+                    boonai-image-page-clips
                   </td>
                   <td>
                     Extract all layers in multi page image formats such as tiff and psd as as separate assets
@@ -1820,7 +1820,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-video-shot-clips"
+                          value="boonai-video-shot-clips"
                         />
                         <div
                           className="emotion-37"
@@ -1835,14 +1835,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-video-shot-clips
+                        boonai-video-shot-clips
                         : 
                         Break video files into individual assets based on a shot detection algorithm.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-video-shot-clips
+                    boonai-video-shot-clips
                   </td>
                   <td>
                     Break video files into individual assets based on a shot detection algorithm.
@@ -1921,7 +1921,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-text-detection"
+                          value="boonai-text-detection"
                         />
                         <div
                           className="emotion-37"
@@ -1936,14 +1936,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-text-detection
+                        boonai-text-detection
                         : 
                         Utilize OCR technology to detect text on an image.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-text-detection
+                    boonai-text-detection
                   </td>
                   <td>
                     Utilize OCR technology to detect text on an image.
@@ -3623,7 +3623,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-label-detection"
+                          value="boonai-label-detection"
                         />
                         <div
                           className="emotion-55"
@@ -3638,14 +3638,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-label-detection
+                        boonai-label-detection
                         : 
                         Generate keyword labels for image, video, and documents.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-label-detection
+                    boonai-label-detection
                   </td>
                   <td>
                     Generate keyword labels for image, video, and documents.
@@ -3690,7 +3690,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-object-detection"
+                          value="boonai-object-detection"
                         />
                         <div
                           className="emotion-55"
@@ -3705,14 +3705,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-object-detection
+                        boonai-object-detection
                         : 
                         Detect everyday objects in images, video, and documents.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-object-detection
+                    boonai-object-detection
                   </td>
                   <td>
                     Detect everyday objects in images, video, and documents.
@@ -3791,7 +3791,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-document-page-clips"
+                          value="boonai-document-page-clips"
                         />
                         <div
                           className="emotion-55"
@@ -3806,14 +3806,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-document-page-clips
+                        boonai-document-page-clips
                         : 
                         Extract all pages in MS Office/PDF documents into separate assets.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-document-page-clips
+                    boonai-document-page-clips
                   </td>
                   <td>
                     Extract all pages in MS Office/PDF documents into separate assets.
@@ -3858,7 +3858,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-image-page-clips"
+                          value="boonai-image-page-clips"
                         />
                         <div
                           className="emotion-55"
@@ -3873,14 +3873,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-image-page-clips
+                        boonai-image-page-clips
                         : 
                         Extract all layers in multi page image formats such as tiff and psd as as separate assets
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-image-page-clips
+                    boonai-image-page-clips
                   </td>
                   <td>
                     Extract all layers in multi page image formats such as tiff and psd as as separate assets
@@ -3925,7 +3925,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-video-shot-clips"
+                          value="boonai-video-shot-clips"
                         />
                         <div
                           className="emotion-55"
@@ -3940,14 +3940,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-video-shot-clips
+                        boonai-video-shot-clips
                         : 
                         Break video files into individual assets based on a shot detection algorithm.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-video-shot-clips
+                    boonai-video-shot-clips
                   </td>
                   <td>
                     Break video files into individual assets based on a shot detection algorithm.
@@ -4026,7 +4026,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-text-detection"
+                          value="boonai-text-detection"
                         />
                         <div
                           className="emotion-55"
@@ -4041,14 +4041,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-text-detection
+                        boonai-text-detection
                         : 
                         Utilize OCR technology to detect text on an image.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-text-detection
+                    boonai-text-detection
                   </td>
                   <td>
                     Utilize OCR technology to detect text on an image.
@@ -5695,7 +5695,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-label-detection"
+                          value="boonai-label-detection"
                         />
                         <div
                           className="emotion-49"
@@ -5710,14 +5710,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-label-detection
+                        boonai-label-detection
                         : 
                         Generate keyword labels for image, video, and documents.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-label-detection
+                    boonai-label-detection
                   </td>
                   <td>
                     Generate keyword labels for image, video, and documents.
@@ -5762,7 +5762,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-object-detection"
+                          value="boonai-object-detection"
                         />
                         <div
                           className="emotion-49"
@@ -5777,14 +5777,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-object-detection
+                        boonai-object-detection
                         : 
                         Detect everyday objects in images, video, and documents.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-object-detection
+                    boonai-object-detection
                   </td>
                   <td>
                     Detect everyday objects in images, video, and documents.
@@ -5863,7 +5863,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-document-page-clips"
+                          value="boonai-document-page-clips"
                         />
                         <div
                           className="emotion-49"
@@ -5878,14 +5878,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-document-page-clips
+                        boonai-document-page-clips
                         : 
                         Extract all pages in MS Office/PDF documents into separate assets.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-document-page-clips
+                    boonai-document-page-clips
                   </td>
                   <td>
                     Extract all pages in MS Office/PDF documents into separate assets.
@@ -5930,7 +5930,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-image-page-clips"
+                          value="boonai-image-page-clips"
                         />
                         <div
                           className="emotion-49"
@@ -5945,14 +5945,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-image-page-clips
+                        boonai-image-page-clips
                         : 
                         Extract all layers in multi page image formats such as tiff and psd as as separate assets
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-image-page-clips
+                    boonai-image-page-clips
                   </td>
                   <td>
                     Extract all layers in multi page image formats such as tiff and psd as as separate assets
@@ -5997,7 +5997,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-video-shot-clips"
+                          value="boonai-video-shot-clips"
                         />
                         <div
                           className="emotion-49"
@@ -6012,14 +6012,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-video-shot-clips
+                        boonai-video-shot-clips
                         : 
                         Break video files into individual assets based on a shot detection algorithm.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-video-shot-clips
+                    boonai-video-shot-clips
                   </td>
                   <td>
                     Break video files into individual assets based on a shot detection algorithm.
@@ -6098,7 +6098,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-text-detection"
+                          value="boonai-text-detection"
                         />
                         <div
                           className="emotion-49"
@@ -6113,14 +6113,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-text-detection
+                        boonai-text-detection
                         : 
                         Utilize OCR technology to detect text on an image.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-text-detection
+                    boonai-text-detection
                   </td>
                   <td>
                     Utilize OCR technology to detect text on an image.
@@ -7762,7 +7762,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-label-detection"
+                          value="boonai-label-detection"
                         />
                         <div
                           className="emotion-48"
@@ -7777,14 +7777,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-label-detection
+                        boonai-label-detection
                         : 
                         Generate keyword labels for image, video, and documents.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-label-detection
+                    boonai-label-detection
                   </td>
                   <td>
                     Generate keyword labels for image, video, and documents.
@@ -7829,7 +7829,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-object-detection"
+                          value="boonai-object-detection"
                         />
                         <div
                           className="emotion-48"
@@ -7844,14 +7844,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-object-detection
+                        boonai-object-detection
                         : 
                         Detect everyday objects in images, video, and documents.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-object-detection
+                    boonai-object-detection
                   </td>
                   <td>
                     Detect everyday objects in images, video, and documents.
@@ -7930,7 +7930,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-document-page-clips"
+                          value="boonai-document-page-clips"
                         />
                         <div
                           className="emotion-48"
@@ -7945,14 +7945,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-document-page-clips
+                        boonai-document-page-clips
                         : 
                         Extract all pages in MS Office/PDF documents into separate assets.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-document-page-clips
+                    boonai-document-page-clips
                   </td>
                   <td>
                     Extract all pages in MS Office/PDF documents into separate assets.
@@ -7997,7 +7997,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-image-page-clips"
+                          value="boonai-image-page-clips"
                         />
                         <div
                           className="emotion-48"
@@ -8012,14 +8012,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-image-page-clips
+                        boonai-image-page-clips
                         : 
                         Extract all layers in multi page image formats such as tiff and psd as as separate assets
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-image-page-clips
+                    boonai-image-page-clips
                   </td>
                   <td>
                     Extract all layers in multi page image formats such as tiff and psd as as separate assets
@@ -8064,7 +8064,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-video-shot-clips"
+                          value="boonai-video-shot-clips"
                         />
                         <div
                           className="emotion-48"
@@ -8079,14 +8079,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-video-shot-clips
+                        boonai-video-shot-clips
                         : 
                         Break video files into individual assets based on a shot detection algorithm.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-video-shot-clips
+                    boonai-video-shot-clips
                   </td>
                   <td>
                     Break video files into individual assets based on a shot detection algorithm.
@@ -8165,7 +8165,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="zvi-text-detection"
+                          value="boonai-text-detection"
                         />
                         <div
                           className="emotion-48"
@@ -8180,14 +8180,14 @@ Array [
                       <div
                         className="hidden"
                       >
-                        zvi-text-detection
+                        boonai-text-detection
                         : 
                         Utilize OCR technology to detect text on an image.
                       </div>
                     </label>
                   </td>
                   <td>
-                    zvi-text-detection
+                    boonai-text-detection
                   </td>
                   <td>
                     Utilize OCR technology to detect text on an image.

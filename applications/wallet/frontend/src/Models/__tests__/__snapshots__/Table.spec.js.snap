@@ -193,7 +193,7 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
               ZVI_FACE_RECOGNITION
             </td>
             <td>
-              zvi-console_face_recognition-face-recognition
+              boonai-console_face_recognition-face-recognition
             </td>
           </tr>
           <tr
@@ -214,7 +214,7 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
               ZVI_CAT_RECOGNITION
             </td>
             <td>
-              zvi-console_cat_recognition-cat-recognition
+              boonai-console_cat_recognition-cat-recognition
             </td>
           </tr>
           <tr

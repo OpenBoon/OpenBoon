@@ -13,7 +13,7 @@ describe('<FilterLabelConfidenceContent />', () => {
   it('should select a label', () => {
     const filter = {
       type: 'labelConfidence',
-      attribute: 'analysis.zvi-label-detection',
+      attribute: 'analysis.boonai-label-detection',
       values: {},
     }
 
@@ -67,7 +67,7 @@ describe('<FilterLabelConfidenceContent />', () => {
       JSON.stringify([
         {
           type: 'labelConfidence',
-          attribute: 'analysis.zvi-label-detection',
+          attribute: 'analysis.boonai-label-detection',
           values: { labels: ['web_site'], min: 0, max: 1 },
         },
       ]),
@@ -82,7 +82,7 @@ describe('<FilterLabelConfidenceContent />', () => {
   it('should unselect a label', () => {
     const filter = {
       type: 'labelConfidence',
-      attribute: 'analysis.zvi-label-detection',
+      attribute: 'analysis.boonai-label-detection',
       values: { labels: ['web_site'], min: 0.0, max: 1.0 },
     }
 
@@ -126,7 +126,7 @@ describe('<FilterLabelConfidenceContent />', () => {
       JSON.stringify([
         {
           type: 'labelConfidence',
-          attribute: 'analysis.zvi-label-detection',
+          attribute: 'analysis.boonai-label-detection',
           values: {},
         },
       ]),
@@ -141,7 +141,7 @@ describe('<FilterLabelConfidenceContent />', () => {
   it('should update the confidence range', () => {
     const filter = {
       type: 'labelConfidence',
-      attribute: 'analysis.zvi-label-detection',
+      attribute: 'analysis.boonai-label-detection',
       values: { labels: ['web_site'], min: 0.0, max: 1.0 },
     }
 
@@ -185,7 +185,7 @@ describe('<FilterLabelConfidenceContent />', () => {
       JSON.stringify([
         {
           type: 'labelConfidence',
-          attribute: 'analysis.zvi-label-detection',
+          attribute: 'analysis.boonai-label-detection',
           values: { labels: ['web_site'], min: 0.2, max: 0.8 },
         },
       ]),
@@ -204,7 +204,7 @@ describe('<FilterLabelConfidenceContent />', () => {
   it('should render with no data', () => {
     const filter = {
       type: 'labelConfidence',
-      attribute: 'analysis.zvi-label-detection',
+      attribute: 'analysis.boonai-label-detection',
       values: { labels: [], min: 0.0, max: 1.0 },
     }
 

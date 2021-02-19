@@ -3878,7 +3878,7 @@ Array [
       open={true}
     >
       <summary
-        aria-label="analysis.zvi-label-detection"
+        aria-label="analysis.boonai-label-detection"
         className="emotion-2"
       >
         <div
@@ -3901,7 +3901,7 @@ Array [
           <span
             className="emotion-6"
           >
-            analysis.zvi-label-detection
+            analysis.boonai-label-detection
           </span>
           <div
             className="emotion-7"
@@ -3947,7 +3947,7 @@ Array [
             assetId=""
             filter={
               Object {
-                "attribute": "analysis.zvi-label-detection",
+                "attribute": "analysis.boonai-label-detection",
                 "type": "labelConfidence",
                 "values": Object {},
               }
@@ -3956,7 +3956,7 @@ Array [
             filters={
               Array [
                 Object {
-                  "attribute": "analysis.zvi-label-detection",
+                  "attribute": "analysis.boonai-label-detection",
                   "type": "labelConfidence",
                   "values": Object {},
                 },
@@ -10622,7 +10622,7 @@ Array [
       open={true}
     >
       <summary
-        aria-label="analysis.zvi-image-similarity"
+        aria-label="analysis.boonai-image-similarity"
         className="emotion-2"
       >
         <div
@@ -10645,7 +10645,7 @@ Array [
           <span
             className="emotion-6"
           >
-            analysis.zvi-image-similarity
+            analysis.boonai-image-similarity
           </span>
           <div
             className="emotion-7"
@@ -10692,7 +10692,7 @@ Array [
               assetId=""
               filter={
                 Object {
-                  "attribute": "analysis.zvi-image-similarity",
+                  "attribute": "analysis.boonai-image-similarity",
                   "type": "similarity",
                   "values": Object {
                     "ids": Array [
@@ -10705,7 +10705,7 @@ Array [
               filters={
                 Array [
                   Object {
-                    "attribute": "analysis.zvi-image-similarity",
+                    "attribute": "analysis.boonai-image-similarity",
                     "type": "similarity",
                     "values": Object {
                       "ids": Array [
@@ -11400,7 +11400,7 @@ Array [
       open={true}
     >
       <summary
-        aria-label="analysis.zvi-text-content"
+        aria-label="analysis.boonai-text-content"
         className="emotion-2"
       >
         <div
@@ -11423,7 +11423,7 @@ Array [
           <span
             className="emotion-6"
           >
-            analysis.zvi-text-content
+            analysis.boonai-text-content
           </span>
           <div
             className="emotion-7"

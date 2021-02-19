@@ -253,10 +253,10 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
           options={
             Object {
               "Analysis": Object {
-                "Zvi": Object {
-                  "tinyProxy": "analysis.zvi.tinyProxy",
+                "Boonai": Object {
+                  "tinyProxy": "analysis.boonai.tinyProxy",
                 },
-                "zvi-face-detection": "analysis.zvi-face-detection",
+                "boonai-face-detection": "analysis.boonai-face-detection",
               },
               "Clip": Object {
                 "pile": "clip.pile",
@@ -608,10 +608,10 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
           options={
             Object {
               "Analysis": Object {
-                "Zvi": Object {
-                  "tinyProxy": "analysis.zvi.tinyProxy",
+                "Boonai": Object {
+                  "tinyProxy": "analysis.boonai.tinyProxy",
                 },
-                "zvi-face-detection": "analysis.zvi-face-detection",
+                "boonai-face-detection": "analysis.boonai-face-detection",
               },
               "Clip": Object {
                 "pile": "clip.pile",
@@ -963,10 +963,10 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
           options={
             Object {
               "Analysis": Object {
-                "Zvi": Object {
-                  "tinyProxy": "analysis.zvi.tinyProxy",
+                "Boonai": Object {
+                  "tinyProxy": "analysis.boonai.tinyProxy",
                 },
-                "zvi-face-detection": "analysis.zvi-face-detection",
+                "boonai-face-detection": "analysis.boonai-face-detection",
               },
               "Clip": Object {
                 "pile": "clip.pile",
