@@ -477,7 +477,7 @@ class SimilarityFilter(BaseFilter):
 
         hashes = []
         for asset in assets:
-            simhash = asset.get_attr(f'{self.data["attribute"]}.simhashbutts')
+            simhash = asset.get_attr(f'{self.data["attribute"]}.simhash')
             if simhash:
                 hashes.append(simhash)
         return hashes
