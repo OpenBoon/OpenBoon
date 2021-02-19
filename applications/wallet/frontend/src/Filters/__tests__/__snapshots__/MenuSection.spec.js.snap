@@ -115,7 +115,7 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="labels.zvi-console_face_recognition-face-recognition"
+          value="labels.boonai-console_face_recognition-face-recognition"
         />
         <div
           className="emotion-5"
@@ -133,7 +133,7 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
         <span
           className="emotion-8"
         >
-          zvi-console_face_recognition-face-recognition
+          boonai-console_face_recognition-face-recognition
         </span>
       </div>
     </label>
@@ -268,7 +268,7 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
   <h4
     className="emotion-1"
   >
-    zvi
+    boonai
   </h4>
   <div
     className="emotion-2"
@@ -287,7 +287,7 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="analysis.zvi.tinyProxy"
+            value="analysis.boonai.tinyProxy"
           />
           <div
             className="emotion-7"
