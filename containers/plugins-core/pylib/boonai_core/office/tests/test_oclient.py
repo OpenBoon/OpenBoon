@@ -2,16 +2,16 @@ import os
 import unittest
 import json
 
-from boonflow.testing import TestAsset, MockRequestsResponse, test_data
+from boonflow.testing import TestAsset, test_data
 from boonai_core.office.oclient import OfficerClient
 
 
 class OfficerPythonClientTests(unittest.TestCase):
 
     def setUp(self):
-        self.path = test_data('office/pdfTest.pdf')
+        self.path = test_data('officer/pdfTest.pdf')
         self.asset = TestAsset(str(self.path), id="abcdefg1234")
-        self.local_test = None  # 'ws://localhost:7078'
+        self.local_test = 'ws://localhost:7078'
         os.environ['BOONAI_JOB_ID'] = "abc123"
         os.environ['BOONAI_JOB_STORAGE_PATH'] = "/projects/foo"
 
@@ -20,14 +20,14 @@ class OfficerPythonClientTests(unittest.TestCase):
         del os.environ['BOONAI_JOB_STORAGE_PATH']
 
     def test_service_url(self):
-        client = OfficerClient()
+        client = OfficerClient(self.local_test)
         assert client.url == 'ws://officer:7078'
 
     def test_render_url(self):
-        client = OfficerClient()
+        client = OfficerClient(self.local_test)
         assert client.render_url == 'ws://officer:7078/render'
 
-    def test_render(self, file_cache_patch, post_patch):
+    def test_render(self):
         client = OfficerClient(self.local_test)
         result = client.render(self.asset, 1, False)
         assert result == '/projects/foo/officer/abcdefg1234'
@@ -42,19 +42,6 @@ class OfficerPythonClientTests(unittest.TestCase):
         assert "/projects/foo/officer/abcdefg1234" in json.loads(body['body'])["outputPath"]
         assert -1 == json.loads(body['body'])["page"]
         assert json.loads(body['body'])["disableImageRender"]
-
-    def test_get_render_request_body_clip(self, file_cache_patch, post_patch):
-        client = OfficerClient()
-        body = client._get_render_request_body(self.asset, 5, False)
-
-        assert body['file']
-        assert '/office/pdfTest.pdf' in json.loads(body['body'])['fileName']
-        assert body['body']
-
-        assert "/office/pdfTest.pdf" in json.loads(body['body'])['fileName']
-        assert "/projects/foo/officer/abcdefg1234" in json.loads(body['body'])["outputPath"]
-        assert 5 == json.loads(body['body'])["page"]
-        assert not json.loads(body['body'])["disableImageRender"]
 
     def test_get_cache_location_true(self):
         client = OfficerClient(self.local_test)
