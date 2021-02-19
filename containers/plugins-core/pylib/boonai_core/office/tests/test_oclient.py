@@ -9,8 +9,8 @@ from boonai_core.office.oclient import OfficerClient
 class OfficerPythonClientTests(unittest.TestCase):
 
     def setUp(self):
-        self.path = test_data\
-            ('{}/../../../../../../../test-data/office/pdfTest.pdf'.format(__file__), False)
+        self.path = test_data(
+            '{}/../../../../../../../test-data/office/pdfTest.pdf'.format(__file__), False)
         self.asset = TestAsset(str(self.path), id="abcdefg1234")
         self.local_test = None  # 'ws://localhost:7078'
         os.environ['BOONAI_JOB_ID'] = "abc123"
