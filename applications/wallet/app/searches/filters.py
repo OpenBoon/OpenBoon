@@ -477,7 +477,7 @@ class SimilarityFilter(BaseFilter):
 
         hashes = []
         for asset in assets:
-            simhash = asset.get_attr('analysis.zvi-image-similarity.simhash')
+            simhash = asset.get_attr(f'{self.data["attribute"]}.simhashbutts')
             if simhash:
                 hashes.append(simhash)
         return hashes
