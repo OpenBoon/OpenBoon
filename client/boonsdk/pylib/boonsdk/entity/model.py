@@ -173,12 +173,12 @@ class Model(BaseEntity):
 
         """
         prediction_term_map = {
-            ModelType.ZVI_KNN_CLASSIFIER: f'{self.namespace}.label',
-            ModelType.ZVI_FACE_RECOGNITION: f'{self.namespace}.predictions.label'
+            ModelType.BOONAI_KNN_CLASSIFIER: f'{self.namespace}.label',
+            ModelType.BOONAI_FACE_RECOGNITION: f'{self.namespace}.predictions.label'
         }
-        score_map = {ModelType.ZVI_KNN_CLASSIFIER: f'{self.namespace}.score',
-                     ModelType.ZVI_LABEL_DETECTION: f'{self.namespace}.score',
-                     ModelType.ZVI_FACE_RECOGNITION: f'{self.namespace}.predictions.score'}
+        score_map = {ModelType.BOONAI_KNN_CLASSIFIER: f'{self.namespace}.score',
+                     ModelType.BOONAI_LABEL_DETECTION: f'{self.namespace}.score',
+                     ModelType.BOONAI_FACE_RECOGNITION: f'{self.namespace}.predictions.score'}
         if self.type not in prediction_term_map:
             raise TypeError(f'Cannot create a confusion matrix search for {self.type} models.')
         search_query = {

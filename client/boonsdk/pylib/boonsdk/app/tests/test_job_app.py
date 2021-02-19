@@ -191,7 +191,7 @@ class BoonSdkJobAppTests(unittest.TestCase):
             pass
 
         stream_patch.return_value = log_file
-        self.assertEquals(log_file, self.app.jobs.download_task_log("12345", log_file))
+        self.assertEqual(log_file, self.app.jobs.download_task_log("12345", log_file))
 
     @patch.object(BoonClient, 'stream_text')
     def test_iterate_task_log(self, stream_patch):
