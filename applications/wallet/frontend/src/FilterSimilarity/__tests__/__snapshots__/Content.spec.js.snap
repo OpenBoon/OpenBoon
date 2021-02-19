@@ -51,7 +51,7 @@ exports[`<FilterSimilarityContent /> should render a video properly 1`] = `
     assetId=""
     filter={
       Object {
-        "attribute": "analysis.zvi-image-similarity",
+        "attribute": "analysis.boonai-image-similarity",
         "type": "similarity",
         "values": Object {
           "ids": Array [
@@ -64,7 +64,7 @@ exports[`<FilterSimilarityContent /> should render a video properly 1`] = `
     filters={
       Array [
         Object {
-          "attribute": "analysis.zvi-image-similarity",
+          "attribute": "analysis.boonai-image-similarity",
           "type": "similarity",
           "values": Object {
             "ids": Array [
@@ -183,7 +183,7 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
     assetId=""
     filter={
       Object {
-        "attribute": "analysis.zvi-image-similarity",
+        "attribute": "analysis.boonai-image-similarity",
         "type": "similarity",
         "values": Object {
           "ids": Array [
@@ -196,7 +196,7 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
     filters={
       Array [
         Object {
-          "attribute": "analysis.zvi-image-similarity",
+          "attribute": "analysis.boonai-image-similarity",
           "type": "similarity",
           "values": Object {
             "ids": Array [
@@ -315,7 +315,7 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
     assetId=""
     filter={
       Object {
-        "attribute": "analysis.zvi-image-similarity",
+        "attribute": "analysis.boonai-image-similarity",
         "type": "similarity",
         "values": Object {
           "ids": Array [
@@ -328,7 +328,7 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
     filters={
       Array [
         Object {
-          "attribute": "analysis.zvi-image-similarity",
+          "attribute": "analysis.boonai-image-similarity",
           "type": "similarity",
           "values": Object {
             "ids": Array [
@@ -447,7 +447,7 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
     assetId=""
     filter={
       Object {
-        "attribute": "analysis.zvi-image-similarity",
+        "attribute": "analysis.boonai-image-similarity",
         "type": "similarity",
         "values": Object {
           "ids": Array [
@@ -460,7 +460,7 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
     filters={
       Array [
         Object {
-          "attribute": "analysis.zvi-image-similarity",
+          "attribute": "analysis.boonai-image-similarity",
           "type": "similarity",
           "values": Object {
             "ids": Array [
@@ -579,7 +579,7 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
     assetId=""
     filter={
       Object {
-        "attribute": "analysis.zvi-image-similarity",
+        "attribute": "analysis.boonai-image-similarity",
         "type": "similarity",
         "values": Object {
           "ids": Array [
@@ -592,7 +592,7 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
     filters={
       Array [
         Object {
-          "attribute": "analysis.zvi-image-similarity",
+          "attribute": "analysis.boonai-image-similarity",
           "type": "similarity",
           "values": Object {
             "ids": Array [
@@ -711,7 +711,7 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
     assetId=""
     filter={
       Object {
-        "attribute": "analysis.zvi-image-similarity",
+        "attribute": "analysis.boonai-image-similarity",
         "type": "similarity",
         "values": Object {
           "ids": Array [
@@ -724,7 +724,7 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
     filters={
       Array [
         Object {
-          "attribute": "analysis.zvi-image-similarity",
+          "attribute": "analysis.boonai-image-similarity",
           "type": "similarity",
           "values": Object {
             "ids": Array [

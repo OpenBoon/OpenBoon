@@ -82,21 +82,21 @@ exports[`<TaskScript /> should render properly 1`] = `
       \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai_analysis.zvi.ZviObjectDetectionProcessor\\"</span>,
       \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp/plugins-analysis\\"</span>,
       \\"<span class=\\"__json-key__\\">args</span>\\": {},
-      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zvi-object-detection\\"</span>,
+      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai-object-detection\\"</span>,
       \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">3329037091</span>
     },
     {
       \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai_analysis.zvi.ZviLabelDetectionProcessor\\"</span>,
       \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp/plugins-analysis\\"</span>,
       \\"<span class=\\"__json-key__\\">args</span>\\": {},
-      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zvi-label-detection\\"</span>,
+      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai-label-detection\\"</span>,
       \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">2989691564</span>
     },
     {
       \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai_analysis.zvi.ZviOcrProcessor\\"</span>,
       \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp/plugins-analysis\\"</span>,
       \\"<span class=\\"__json-key__\\">args</span>\\": {},
-      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zvi-text-detection\\"</span>,
+      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"boonai-text-detection\\"</span>,
       \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">4290842193</span>
     }
   ],

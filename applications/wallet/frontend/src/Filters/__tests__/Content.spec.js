@@ -100,7 +100,7 @@ describe('<FiltersContent />', () => {
     const filters = [
       {
         type: 'labelConfidence',
-        attribute: 'analysis.zvi-label-detection',
+        attribute: 'analysis.boonai-label-detection',
         values: {},
       },
     ]
@@ -124,7 +124,7 @@ describe('<FiltersContent />', () => {
     const filters = [
       {
         type: 'textContent',
-        attribute: 'analysis.zvi-text-content',
+        attribute: 'analysis.boonai-text-content',
         values: {},
       },
     ]
@@ -148,7 +148,7 @@ describe('<FiltersContent />', () => {
     const filters = [
       {
         type: 'similarity',
-        attribute: 'analysis.zvi-image-similarity',
+        attribute: 'analysis.boonai-image-similarity',
         values: { ids: [ASSET_ID] },
       },
     ]

@@ -1,9 +1,9 @@
 const fields = {
   analysis: {
-    zvi: { tinyProxy: ['facet', 'text', 'exists'] },
-    'zvi-image-similarity': { simhash: ['similarity', 'exists'] },
-    'zvi-object-detection': { predictions: [], count: ['range', 'exists'] },
-    'zvi-face-detection': ['labelConfidence', 'exists'],
+    boonai: { tinyProxy: ['facet', 'text', 'exists'] },
+    'boonai-image-similarity': { simhash: ['similarity', 'exists'] },
+    'boonai-object-detection': { predictions: [], count: ['range', 'exists'] },
+    'boonai-face-detection': ['labelConfidence', 'exists'],
   },
   aux: ['exists'],
   clip: {

@@ -112,7 +112,7 @@ describe('<AssetsThumbnail />', () => {
       JSON.stringify([
         {
           type: 'similarity',
-          attribute: 'analysis.zvi-image-similarity',
+          attribute: 'analysis.boonai-image-similarity',
           values: { ids: [ASSET_ID], minScore: 0.75 },
         },
       ]),
@@ -152,7 +152,7 @@ describe('<AssetsThumbnail />', () => {
       JSON.stringify([
         {
           type: 'similarity',
-          attribute: 'analysis.zvi-image-similarity',
+          attribute: 'analysis.boonai-image-similarity',
           values: { ids: [SIMILAR_ASSET_ID], minScore: 0.75 },
         },
       ]),
@@ -170,7 +170,7 @@ describe('<AssetsThumbnail />', () => {
       JSON.stringify([
         {
           type: 'similarity',
-          attribute: 'analysis.zvi-image-similarity',
+          attribute: 'analysis.boonai-image-similarity',
           values: { ids: [ASSET_ID] },
         },
       ]),
@@ -199,7 +199,7 @@ describe('<AssetsThumbnail />', () => {
       JSON.stringify([
         {
           type: 'similarity',
-          attribute: 'analysis.zvi-image-similarity',
+          attribute: 'analysis.boonai-image-similarity',
           values: { ids: [assets.results[1].id], minScore: 0.75 },
         },
       ]),

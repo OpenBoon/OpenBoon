@@ -123,7 +123,7 @@ exports[`<CreateAccountSuccess /> should render properly 1`] = `
       >
         <svg
           data-file-name="logo.svg"
-          height={20}
+          height={26}
         />
       </a>
     </div>
