@@ -39,3 +39,4 @@ class ProviderSerializer(serializers.Serializer):
     logo = serializers.CharField(required=True)
     description = serializers.CharField(required=True)
     categories = serializers.ListField(child=CategorySerializer())
+    sort_index = serializers.IntegerField()
