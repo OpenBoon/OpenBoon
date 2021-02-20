@@ -1,7 +1,7 @@
 from wallet.settings import *  # noqa
 
-# Points to the Live Development Servers ZMLP API
-BOONAI_API_URL = 'https://dev.api.zvi.zorroa.com'
+# Points to the Live Development Servers Boon AI API
+BOONAI_API_URL = 'https://dev.api.boonai.app'
 
 # Useful for local debugging
 DEBUG = True
@@ -11,7 +11,7 @@ REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.Brow
 
 SUPERADMIN = True
 
-# Required for authenticating requests with the ZMLP API
+# Required for authenticating requests with the Boon AI API
 INCEPTION_KEY_B64 = 'Replace with the Dev Servers value in the Wallet Service YAML file'
 
 # Required to use the Live Development Servers Postgres DB
@@ -29,8 +29,8 @@ DATABASES = {
 # Mail settings
 EMAIL_HOST_PASSWORD = 'Replace with the Dev Servers value in the Wallet Service YAML file'
 
-ENVIRONMENT = 'zvi-dev'
-FQDN = 'https://dev.console.zvi.zorroa.com'
+ENVIRONMENT = 'dev'
+FQDN = 'https://dev.boonai.app'
 
 # Turn off Migrations for the runserver
 
