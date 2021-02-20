@@ -350,6 +350,7 @@ module "gcp-marketplace-integration" {
   pg_password                  = module.wallet.pg_password
   enabled                      = var.deploy-marketplace-integration
   container-tag                = var.container-tag
+  metrics-ip-address           = module.metrics.ip-address
 }
 
 module "elasticsearch-hq" {
