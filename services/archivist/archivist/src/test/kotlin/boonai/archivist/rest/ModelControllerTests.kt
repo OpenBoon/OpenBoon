@@ -160,7 +160,7 @@ class ModelControllerTests : MockMvcTest() {
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$.name",
-                    CoreMatchers.equalTo("ZVI_LABEL_DETECTION")
+                    CoreMatchers.equalTo("BOONAI_LABEL_DETECTION")
                 )
             )
             .andReturn()
@@ -177,7 +177,7 @@ class ModelControllerTests : MockMvcTest() {
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$[0].name",
-                    CoreMatchers.equalTo("ZVI_KNN_CLASSIFIER")
+                    CoreMatchers.equalTo("BOONAI_KNN_CLASSIFIER")
                 )
             )
             .andReturn()
