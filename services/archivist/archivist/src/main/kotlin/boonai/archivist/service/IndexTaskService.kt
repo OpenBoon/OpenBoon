@@ -257,6 +257,8 @@ class IndexTaskMonitor(
         logger.info("ES reindex task completed: ${task.esTaskId} : ${esTask.isCompleted}")
         logger.info("Status: ${esTask.taskInfo.status}")
 
+        // TODO: Don't flip the index if the status is not good.
+
         return withAuth(InternalThreadAuthentication(indexRoute.projectId, setOf())) {
 
             // If this instance actually changes the state of the task, then the route gets swapped.
