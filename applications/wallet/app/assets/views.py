@@ -205,7 +205,7 @@ class AssetViewSet(BaseProjectViewSet):
         return filter_boy.reduce_filters_to_clip_query(_filters)
 
     def _get_formatted_timelines(self, content):
-        """Helper to format the clip search response from ZMLP into the JSON response for the UI"""
+        """Helper to format the clip search response from boonsdk into the JSON response for the UI"""
         # Organize the detections into a more helpful state
         data = {}
         for entry in content:

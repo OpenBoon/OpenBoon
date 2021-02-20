@@ -23,33 +23,33 @@ const asset = {
     metrics: {
       pipeline: [
         {
-          processor: 'zmlp_core.core.processors.PreCacheSourceFileProcessor',
+          processor: 'boonai_core.core.processors.PreCacheSourceFileProcessor',
           module: 'standard',
           checksum: 1621235190,
           executionTime: 0.11,
           executionDate: '2020-03-03T21:22:27.694149',
         },
         {
-          processor: 'zmlp_core.image.importers.ImageImporter',
+          processor: 'boonai_core.image.importers.ImageImporter',
           module: 'standard',
           checksum: 1426657387,
           executionTime: 0.26,
           executionDate: '2020-03-03T21:22:28.215069',
         },
         {
-          processor: 'zmlp_core.office.importers.OfficeImporter',
+          processor: 'boonai_core.office.importers.OfficeImporter',
           module: 'standard',
           checksum: 2001473853,
           executionTime: 0,
         },
         {
-          processor: 'zmlp_core.video.VideoImporter',
+          processor: 'boonai_core.video.VideoImporter',
           module: 'standard',
           checksum: 3310423168,
           executionTime: 0,
         },
         {
-          processor: 'zmlp_core.core.processors.AssertAttributesProcessor',
+          processor: 'boonai_core.core.processors.AssertAttributesProcessor',
           module: 'standard',
           checksum: 1841569083,
           executionTime: 0,
@@ -103,7 +103,7 @@ const asset = {
       },
     ],
     analysis: {
-      zvi: {
+      boonai: {
         tinyProxy: [
           '#f3dfc3',
           '#f4efd8',

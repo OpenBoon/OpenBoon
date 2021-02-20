@@ -13,7 +13,7 @@ const JobDetails = () => {
     query: { projectId, jobId },
   } = useRouter()
 
-  const { data: job, revalidate } = useSWR(
+  const { data: job, mutate: revalidate } = useSWR(
     `/api/v1/projects/${projectId}/jobs/${jobId}/`,
   )
 

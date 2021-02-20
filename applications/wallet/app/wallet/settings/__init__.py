@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'registration',
     'searches',
     'subscriptions',
+    'supportadmin',
     'wallet',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -229,7 +230,7 @@ REST_AUTH_SERIALIZERS = {
 }
 
 # General Application Configuration
-ZMLP_API_URL = os.environ.get('ZMLP_API_URL', 'archivist')
+BOONAI_API_URL = os.environ.get('BOONAI_API_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
 INCEPTION_KEY_B64 = os.environ.get('INCEPTION_KEY_B64')
 METRICS_API_URL = os.environ.get('METRICS_API_URL', 'http://metrics')
@@ -241,9 +242,9 @@ GOOGLE_OAUTH_CLIENT_ID = os.environ.get(
 ) + '.apps.googleusercontent.com'
 
 # Mail Server
-DEFAULT_FROM_EMAIL = 'do_not_reply@zorroa.com'
+DEFAULT_FROM_EMAIL = 'do_not_reply@boonai.io'
 EMAIL_HOST = 'smtp.mailgun.org'
-EMAIL_HOST_USER = 'postmaster@mg.zorroa.com'
+EMAIL_HOST_USER = 'postmaster@mg.boonai.io'
 EMAIL_HOST_PASSWORD = os.environ.get('SMTP_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

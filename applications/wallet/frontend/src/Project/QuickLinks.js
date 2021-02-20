@@ -47,7 +47,7 @@ const LINKS = [
     title: 'API Keys',
     icon: <KeySvg height={constants.icons.regular} />,
     legend:
-      'Create a ZMLP API key, which allows you to obtain access to ZVI API resources.',
+      'Create a Boon AI API key, which allows you to obtain access to Boon AI API resources.',
   },
   {
     url: 'users',

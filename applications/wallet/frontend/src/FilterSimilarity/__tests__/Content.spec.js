@@ -18,7 +18,7 @@ describe('<FilterSimilarityContent />', () => {
 
     const filter = {
       type: 'similarity',
-      attribute: 'analysis.zvi-image-similarity',
+      attribute: 'analysis.boonai-image-similarity',
       values: { ids: [ASSET_ID] },
     }
 
@@ -59,7 +59,7 @@ describe('<FilterSimilarityContent />', () => {
 
     const filter = {
       type: 'similarity',
-      attribute: 'analysis.zvi-image-similarity',
+      attribute: 'analysis.boonai-image-similarity',
       values: { ids: [ASSET_ID] },
     }
 
@@ -82,7 +82,7 @@ describe('<FilterSimilarityContent />', () => {
 
     const filter = {
       type: 'similarity',
-      attribute: 'analysis.zvi-image-similarity',
+      attribute: 'analysis.boonai-image-similarity',
       values: { ids: [ASSET_ID] },
     }
 

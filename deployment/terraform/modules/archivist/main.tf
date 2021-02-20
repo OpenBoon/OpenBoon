@@ -154,11 +154,11 @@ resource "kubernetes_deployment" "archivist" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "512Mi"
               cpu    = 0.5
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.2
             }
@@ -166,7 +166,7 @@ resource "kubernetes_deployment" "archivist" {
         }
         container {
           name              = "archivist"
-          image             = "zmlp/archivist:${var.container-tag}"
+          image             = "boonai/archivist:${var.container-tag}"
           image_pull_policy = "Always"
           volume_mount {
             name       = "archivist-credentials"
@@ -174,11 +174,11 @@ resource "kubernetes_deployment" "archivist" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "2Gi"
               cpu    = 0.7
             }
-            requests {
+            requests = {
               memory = "1Gi"
               cpu    = 0.5
             }
@@ -212,7 +212,7 @@ resource "kubernetes_deployment" "archivist" {
             value = "jdbc:postgresql://localhost/${var.database-name}?currentSchema=zorroa&useSSL=false&cloudSqlInstance=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${var.database-user}&password=${random_string.sql-password.result}"
           }
           env {
-            name  = "ZMLP_STORAGE_PROJECT_BUCKET"
+            name  = "BOONAI_STORAGE_PROJECT_BUCKET"
             value = google_storage_bucket.data.name
           }
           env {
@@ -220,11 +220,11 @@ resource "kubernetes_deployment" "archivist" {
             value = "${var.elasticsearch-url}:9200"
           }
           env {
-            name  = "ZMLP_SECURITY_AUTHSERVER_SERVICEKEY"
+            name  = "BOONAI_SECURITY_AUTHSERVER_SERVICEKEY"
             value = var.inception-key-b64
           }
           env {
-            name  = "ZMLP_SECURITY_AUTHSERVER_URL"
+            name  = "BOONAI_SECURITY_AUTHSERVER_URL"
             value = var.auth-server-url
           }
           env {
@@ -232,7 +232,7 @@ resource "kubernetes_deployment" "archivist" {
             value = var.analyst-shared-key
           }
           env {
-            name  = "ZMLP_STORAGE_SYSTEM_BUCKET"
+            name  = "BOONAI_STORAGE_SYSTEM_BUCKET"
             value = var.system-bucket
           }
           env {
@@ -246,6 +246,10 @@ resource "kubernetes_deployment" "archivist" {
           env {
             name  = "ARCHIVIST_DEEP_VIDEO_ANALYSIS_ENABLED"
             value = var.deep-video-analysis-enabled
+          }
+          env {
+            name  = "SA_KEY_DATE"
+            value = var.sql-service-account-key-date
           }
         }
       }

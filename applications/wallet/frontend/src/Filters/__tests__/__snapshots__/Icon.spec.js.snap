@@ -6,7 +6,7 @@ exports[`<FiltersIcon /> should render properly with a green dot 1`] = `
 }
 
 .emotion-1 {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
   width: 10px;
   height: 10px;
   border-radius: 10px;

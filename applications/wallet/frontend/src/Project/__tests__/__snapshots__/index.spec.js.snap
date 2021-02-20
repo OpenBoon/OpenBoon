@@ -283,7 +283,7 @@ Array [
   font-weight: 400;
   font-size: 17px;
   line-height: 20px;
-  color: #73b61c;
+  color: #6088FE;
 }
 
 .emotion-43 {
@@ -520,7 +520,7 @@ Array [
                 </div>
               </a>
             </div>
-            Create a ZMLP API key, which allows you to obtain access to ZVI API resources.
+            Create a Boon AI API key, which allows you to obtain access to Boon AI API resources.
           </div>
           <div
             className="emotion-8"

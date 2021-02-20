@@ -1,4 +1,31 @@
-# Pixel ML
+# Boon AI Platform
+
+## Components
+
+### External Libs
+   * boonsdk - Client facing library for interacting with platform.
+   * boonlab - Client facing library for viewing Boon AI data in Jupyter.
+
+### Internal Libs   
+   * boonczar - Library for project and ES index administration.
+   * boonjvm - Library for shared JVM interfaces.
+   * boondocks - Service for executing Boon AI docker plugin images.
+   * boonflow - A Library for describing and executing Boon AI jobs.
+
+### Plugin Containers
+   * plugins-core - The core Boon AI processors for reading file types.
+   * plugins-models - A base container for shared models.
+   * plugins-analysis - Boon AI processors for ML services
+   * plugins-train - Boon AI processors for training models.
+
+### Services
+   * analyst - Service launches boondocks servers for running plugin images.
+   * archivist - Service which exposes core Boon AI platform API.
+   * auth-server - Service for validating API keys
+   * metrics - Service for keeping track of ML API usage
+   * mlbbq - Service for exposing various ML related endpoints.
+   * officer - Service for processing documents.
+   * reporter - Not sure
 
 ## Running a local dev deployment.
 Refer to the [gitbook](https://app.gitbook.com/@zorroa/s/developers/guidelines/local-development).

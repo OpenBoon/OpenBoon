@@ -89,8 +89,8 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
 
 .emotion-10:focus,
 .emotion-10 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -207,14 +207,14 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
 .emotion-15:hover,
 .emotion-15:visited,
 .emotion-15 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-15:hover,
 .emotion-15 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-15[aria-disabled=true],
@@ -253,10 +253,10 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
           options={
             Object {
               "Analysis": Object {
-                "Zvi": Object {
-                  "tinyProxy": "analysis.zvi.tinyProxy",
+                "Boonai": Object {
+                  "tinyProxy": "analysis.boonai.tinyProxy",
                 },
-                "zvi-face-detection": "analysis.zvi-face-detection",
+                "boonai-face-detection": "analysis.boonai-face-detection",
               },
               "Clip": Object {
                 "pile": "clip.pile",
@@ -444,8 +444,8 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
 
 .emotion-10:focus,
 .emotion-10 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -562,14 +562,14 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
 .emotion-15:hover,
 .emotion-15:visited,
 .emotion-15 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-15:hover,
 .emotion-15 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-15[aria-disabled=true],
@@ -608,10 +608,10 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
           options={
             Object {
               "Analysis": Object {
-                "Zvi": Object {
-                  "tinyProxy": "analysis.zvi.tinyProxy",
+                "Boonai": Object {
+                  "tinyProxy": "analysis.boonai.tinyProxy",
                 },
-                "zvi-face-detection": "analysis.zvi-face-detection",
+                "boonai-face-detection": "analysis.boonai-face-detection",
               },
               "Clip": Object {
                 "pile": "clip.pile",
@@ -799,8 +799,8 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
 
 .emotion-10:focus,
 .emotion-10 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -917,14 +917,14 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
 .emotion-15:hover,
 .emotion-15:visited,
 .emotion-15 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-15:hover,
 .emotion-15 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-15[aria-disabled=true],
@@ -963,10 +963,10 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
           options={
             Object {
               "Analysis": Object {
-                "Zvi": Object {
-                  "tinyProxy": "analysis.zvi.tinyProxy",
+                "Boonai": Object {
+                  "tinyProxy": "analysis.boonai.tinyProxy",
                 },
-                "zvi-face-detection": "analysis.zvi-face-detection",
+                "boonai-face-detection": "analysis.boonai-face-detection",
               },
               "Clip": Object {
                 "pile": "clip.pile",

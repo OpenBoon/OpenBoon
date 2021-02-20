@@ -34,7 +34,6 @@ google-api-python-client = "*"
 google-cloud = "*"
 google-cloud-pubsub = "*"
 namegenerator = "*"
-zvi-client = {path = "./../../client/python"}
 django-axes = "==5.12.0"
 scikit-learn = "*"
 matplotlib = "*"
@@ -42,6 +41,7 @@ pandas = "==1.1.5"
 opencv-python = "==4.3.0.36"
 pyjwt = ">=2.0"
 importlib-metadata = "*"
+boonsdk = {path = "./../../client/boonsdk"}
 
 [requires]
 python_version = "3.7"

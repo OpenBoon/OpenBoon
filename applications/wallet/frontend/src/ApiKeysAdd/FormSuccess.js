@@ -10,8 +10,15 @@ import ButtonGroup from '../Button/Group'
 import SectionTitle from '../SectionTitle'
 
 import { onCopy } from '../Copy/helpers'
+import { slugify } from '../ModelsAdd/helpers'
 
-const ApiKeysAddFormSuccess = ({ projectId, permissions, apikey, onReset }) => {
+const ApiKeysAddFormSuccess = ({
+  projectId,
+  permissions,
+  apikey,
+  name,
+  onReset,
+}) => {
   const copyRef = useRef()
 
   useEffect(() => {
@@ -93,7 +100,7 @@ const ApiKeysAddFormSuccess = ({ projectId, permissions, apikey, onReset }) => {
           </span>
           <Button
             variant={VARIANTS.LINK}
-            download="api-key.json"
+            download={`${slugify({ value: name })}.json`}
             href={`data:application/octet-stream;charset=utf-8;base64,${window.btoa(
               JSON.stringify(apikey),
             )}`}
@@ -126,6 +133,7 @@ ApiKeysAddFormSuccess.propTypes = {
     accessKey: PropTypes.string.isRequired,
     secretKey: PropTypes.string.isRequired,
   }).isRequired,
+  name: PropTypes.string.isRequired,
   onReset: PropTypes.func.isRequired,
 }
 

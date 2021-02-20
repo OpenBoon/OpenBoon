@@ -49,54 +49,54 @@ const bboxAsset = {
           module: 'standard',
           checksum: 2178814325,
           executionDate: '2020-04-23T17:43:28.248368',
-          processor: 'zmlp_core.core.PreCacheSourceFileProcessor',
+          processor: 'boonai_core.core.PreCacheSourceFileProcessor',
         },
         {
           executionTime: 0.16,
           module: 'standard',
           checksum: 117837444,
           executionDate: '2020-04-23T17:43:30.819801',
-          processor: 'zmlp_core.core.FileImportProcessor',
+          processor: 'boonai_core.core.FileImportProcessor',
         },
         {
           executionTime: 0.66,
           module: 'standard',
           checksum: 457707303,
           executionDate: '2020-04-23T17:43:41.308661',
-          processor: 'zmlp_core.proxy.ImageProxyProcessor',
+          processor: 'boonai_core.proxy.ImageProxyProcessor',
         },
         {
           module: 'standard',
           checksum: 482873147,
-          processor: 'zmlp_core.proxy.VideoProxyProcessor',
+          processor: 'boonai_core.proxy.VideoProxyProcessor',
         },
         {
           executionTime: 0.56,
           module: 'standard',
           checksum: 1879445844,
           executionDate: '2020-04-23T17:44:52.332863',
-          processor: 'zmlp_analysis.zvi.ZviSimilarityProcessor',
+          processor: 'boonai_analysis.zvi.ZviSimilarityProcessor',
         },
         {
           executionTime: 0.22,
-          module: 'zvi-text-detection',
+          module: 'boonai-text-detection',
           checksum: 4290842193,
           executionDate: '2020-04-23T17:44:54.720051',
-          processor: 'zmlp_analysis.zvi.ZviOcrProcessor',
+          processor: 'boonai_analysis.zvi.ZviOcrProcessor',
         },
         {
           executionTime: 0.86,
-          module: 'zvi-object-detection',
+          module: 'boonai-object-detection',
           checksum: 3329037091,
           executionDate: '2020-04-23T17:45:07.981961',
-          processor: 'zmlp_analysis.zvi.ZviObjectDetectionProcessor',
+          processor: 'boonai_analysis.zvi.ZviObjectDetectionProcessor',
         },
         {
           executionTime: 0.67,
-          module: 'zvi-label-detection',
+          module: 'boonai-label-detection',
           checksum: 2989691564,
           executionDate: '2020-04-23T17:45:23.523104',
-          processor: 'zmlp_analysis.zvi.ZviLabelDetectionProcessor',
+          processor: 'boonai_analysis.zvi.ZviLabelDetectionProcessor',
         },
       ],
     },
@@ -109,7 +109,7 @@ const bboxAsset = {
       height: 178,
     },
     analysis: {
-      'zvi-object-detection': {
+      'boonai-object-detection': {
         count: 1,
         type: 'labels',
         predictions: [
@@ -120,7 +120,7 @@ const bboxAsset = {
           },
         ],
       },
-      'zvi-label-detection': {
+      'boonai-label-detection': {
         count: 1,
         type: 'labels',
         predictions: [
@@ -135,12 +135,12 @@ const bboxAsset = {
           },
         ],
       },
-      'zvi-text-detection': {
+      'boonai-text-detection': {
         count: 0,
         type: 'content',
         content: '',
       },
-      'zvi-image-similarity': {
+      'boonai-image-similarity': {
         type: 'similarity',
         simhash:
           'FBIJPPAIPBPPAPPPBDPLPICAHBDIDPPAAHPPFPBHIPBBLKBOHJJEPAPPBCABCDAPCPBHCCCCHIKEDPEFNPPPPGOPAHKBIAKPFEPFPGGJPPPCPPFPPPLFLBCAKOPNFPBFGPPFCMIBPJJMCGPDKPKDMPPOPODJDGMBDPPAFBJIPBPBCGEFHMBBBPCPIAEKMGPPPPPEBPIGEDAOHDPCPCPAMPALPJIDPGPGDPPHODHPPPPJAGPAPPPNKKPDPPDPPPJPPLPLPPFGBFPPPPMJPPGBHEPPAKPPPPPBLMMBMDPHJPDPPBCALMHOHPPPEPIIKIPMKPDJGEPHPPDPPIDBBCPPCPPIDJLPCPPDFFANJPPDCPFPMAPPPPPAPMKPPCFPABPBGBHPCFPPPAJPDBDNPPFMHMFMBLAPFHFOLJPJAPJKMDNHBPABEGIJPCPFEPJPIPPLPAPGILPEPPHFAGPPPMDFCAPPAPKNDKPPLGJEDNDHGLCPDIPJBPAKAFOPCKIIPEPFIFAPJPCLFJOPLAPPPHPIPCNCHHIPAPDNPALEPGDEGCFCEPLHPJJPENEPFDPGMAKABLOIPGMPCPJPABPPGPFDKJHAFGPPPDEAODPPPPPPJPBPBALIOCMPCLPPJFOPMCDGBCDPHFGDKPJPOAPPCPPCAMPJKOHEPGHCPOGOBHPADPKPEDPAPPAGNPNPKPAKGPCPDPPIKGPPHBKGKGOPICACPPFPPAADPEJIKBIEPPGPPJIGPHMLOGKAPPPLALJHNNPPGAPPAAOPPEBPKBAGBPEPCPEHPPPIPFPPEGJBKDPHPPIPMPBDAEBPJIGCPOOPKOLPFHDHOCAMLCNAPDNGMEHDPPPPAPPEPCCPIGBPPPAPAIPPPONPPPPPPAONICPOPMEBJPMPBEPCNAIECAEBPPPHHINPEABPPPEOEIAAEPPLPNPAPFIPBPPBGHPPCPJAPAPGAHPPLODAPPPBPCEAEPBDDGKGPDFLDPPCPHPPNDPEABPPPDEKAPPPPPPICADCPFFPPBEPDEPPNHMPOPMEGCNFBEFAIFPCFHPEFPPPNJBAEABKPCPJCPDFIPCPGCENMKJECELHPAPPJCNPAEHHBFAEPPAACIPBAPFBDNPAEEIPPAEMMBBPKBENKPFLPDBPPELJPBAICPPBEPNFDGPHDPJJPAHLDNBAPPPJPMLKBPNBPCKKJFLOMHIOJNPPPPPBBBBMPAAOOBPEOKGPCKKPAPFPDPPLPCICODPKBDGMPPPFBPKEBGIPDBACBPEPJPEDJPPEPPPDBPPIIOPFPCFKLDCPOOLLPCHPGLPHFPPKDPNPPPAJJPPPJDIPPFPBPHPKBEBIDDEFOPPPOHMFPBBPPPKPACPAOPEPPFJPNFBHPGDGADPEHBPKPHLEOADBJPPIIPPGBCABAPPGPIPDPNBPAGLKPFCEHIAIPPPPFJKBPCNIGGBPPPBBNPKDMIPLPHPIPLGCPFBPLMNLPIIPAIPELPGPHPPIPPJEPPAAMPMKPGPCBPAPPMPABAHBPFAODNOEKCOGPPGKDHBCPCJEPBIALBDJPPAEPAPGPCPPLADHBGPPLNGHAGPAEPPEHPOPDGPKAMGPPDGIBPFJBDPIBPJPPPCPDPKIFDHCDPGFPMGHPCBPIJMPFDCPLJBEPPPPDKLAJMPBAPIBPBGMICGCDGBNPOAAEJMKPPHPKPPAHMMPKKLPEHPPNKPEPDLPHBPCCPPPHPNPPJBDBCPFCPOCPPEPHNEPNEPKPAAPPPAFFPPAFBEPBHMDCDIPPPFPGEAFBPGGIKBLPFCPGHOJJPEOAMBACCCGAEEPPPPDPPBPPOICPLEEAPABPCPPKPPBPPENDPCHABIDMPPPPPPPIOOCFPPPBHCKEJNGEPEPPGODFPPDKFFNPBEPFIPPCEDOPBPDEOKDOLDDPHCAICAPLCPHPDPPIDHPPLPLJAPECPHCIPAPPHPPPBPCPDPCJIAHMPDFOJAPHPPOGABBPCNPKNPEFHCPPIPFPMPCAPPFALPBPHADPEPAKPECDCPOGPPEPGPOPKMPHPPG',
@@ -158,7 +158,7 @@ const bboxAsset = {
 }
 
 export const boxImagesResponse = {
-  'zvi-object-detection': {
+  'boonai-object-detection': {
     count: 2,
     type: 'labels',
     predictions: [
