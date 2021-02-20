@@ -5,8 +5,8 @@ from functools import lru_cache
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from zmlp import DataSource
-from zmlp.client import ZmlpDuplicateException
+from boonsdk import DataSource
+from boonsdk.client import BoonSdkDuplicateException
 
 from datasources.serializers import DataSourceSerializer, CreateDataSourceSerializer, \
     AzureCredentialSerializer, AwsCredentialSerializer, GcpCredentialSerializer
@@ -93,7 +93,7 @@ Below are examples of all 3.
             #  the POST. Once ZMLP-338 is fixed remove this note.
             datasource = DataSource(request.client.post(self.zmlp_root_api_path, body=body))
 
-        except ZmlpDuplicateException:
+        except BoonSdkDuplicateException:
             body = {'name': ['A Data Source with that name already exists.']}
             return Response(body, status=409)
         job = app.datasource.import_files(datasource)

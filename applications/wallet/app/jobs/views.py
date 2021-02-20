@@ -301,7 +301,7 @@ class TaskViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
         if response.get('success'):
             return Response({'detail': [f'Task {pk} has been successfully retried.']})
         else:
-            message = f'Task {pk} failed to be retried. Message from ZMLP: {response}'
+            message = f'Task {pk} failed to be retried. Message from boonsdk: {response}'
             return Response({'detail': [message]}, status=500)
 
     @action(detail=True, methods=['get'])

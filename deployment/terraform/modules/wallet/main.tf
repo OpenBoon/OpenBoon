@@ -1,5 +1,5 @@
 resource "google_compute_global_address" "wallet-external" {
-  name         = var.external-ip-name
+  name = var.external-ip-name
 }
 
 resource "random_string" "sql-password" {
@@ -76,11 +76,11 @@ resource "kubernetes_deployment" "wallet" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "512Mi"
               cpu    = 0.5
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.2
             }
@@ -88,7 +88,7 @@ resource "kubernetes_deployment" "wallet" {
         }
         container {
           name              = "wallet"
-          image             = "zmlp/wallet:${var.container-tag}"
+          image             = "boonai/wallet:${var.container-tag}"
           image_pull_policy = "Always"
           liveness_probe {
             initial_delay_seconds = 30
@@ -103,7 +103,7 @@ resource "kubernetes_deployment" "wallet" {
           readiness_probe {
             initial_delay_seconds = 5
             period_seconds        = 5
-            failure_threshold = 10
+            failure_threshold     = 10
             http_get {
               scheme = "HTTP"
               path   = "/api/v1/health/"
@@ -114,11 +114,11 @@ resource "kubernetes_deployment" "wallet" {
             container_port = "80"
           }
           resources {
-            limits {
+            limits = {
               memory = "2Gi"
               cpu    = 3
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 2
             }
@@ -132,7 +132,7 @@ resource "kubernetes_deployment" "wallet" {
             value = random_string.sql-password.result
           }
           env {
-            name  = "ZMLP_API_URL"
+            name  = "BOONAI_API_URL"
             value = var.zmlp-api-url
           }
           env {
@@ -157,31 +157,35 @@ resource "kubernetes_deployment" "wallet" {
           }
           env {
             name  = "FQDN"
-            value = "https://${var.domain}"
+            value = "https://${var.domains[0]}"
           }
           env {
             name  = "BROWSABLE"
             value = var.browsable
           }
           env {
-            name = "MARKETPLACE_PROJECT_ID"
+            name  = "MARKETPLACE_PROJECT_ID"
             value = var.marketplace-project
           }
           env {
-            name = "MARKETPLACE_CREDENTIALS"
+            name  = "MARKETPLACE_CREDENTIALS"
             value = var.marketplace-credentials
           }
           env {
-            name = "SUPERADMIN"
+            name  = "SUPERADMIN"
             value = var.superadmin
           }
           env {
-            name = "USE_MODEL_IDS_FOR_LABEL_FILTERS"
+            name  = "USE_MODEL_IDS_FOR_LABEL_FILTERS"
             value = var.use-model-ids-for-label-filters
           }
           env {
-            name = "METRICS_API_URL"
+            name  = "METRICS_API_URL"
             value = "http://${var.metrics-ip-address}"
+          }
+          env {
+            name  = "SA_KEY_DATE"
+            value = var.sql-service-account-key-date
           }
         }
       }
@@ -212,9 +216,12 @@ resource "kubernetes_service" "wallet" {
 
 resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
-  name     = "wallet-cert"
+  name     = "wallet"
   managed {
-    domains = [var.domain]
+    domains = var.domains
+  }
+  lifecycle {
+    create_before_destroy = true
   }
 }
 

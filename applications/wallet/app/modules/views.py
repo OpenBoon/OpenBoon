@@ -44,7 +44,8 @@ class ProviderViewSet(BaseProjectViewSet):
                 results.append({'name': name,
                                 'logo': provider.logo_data_uri,
                                 'description': provider.description,
-                                'categories': categories})
+                                'categories': categories,
+                                'sort_index': provider.sort_index})
         serializer = ProviderSerializer(data=results, many=True)
         validate_zmlp_data(serializer)
         return Response({'results': serializer.validated_data})

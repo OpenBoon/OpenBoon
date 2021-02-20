@@ -28,8 +28,8 @@ USER zorroa
 ENV PYTHONPATH="/data"
 ENV PATH=$PATH:~/.local/bin
 
-ENV ZMLP_SERVER="http://archivist:8080"
-ENV ZMLP_APIKEY_FILE="/home/zorroa/signing-key.json"
+ENV BOONAI_SERVER="http://archivist:8080"
+ENV BOONAI_APIKEY_FILE="/home/zorroa/signing-key.json"
 
 
 # Enable Jupyter extensions

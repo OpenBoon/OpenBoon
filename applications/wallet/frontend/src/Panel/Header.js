@@ -59,7 +59,7 @@ const PanelHeader = ({ openPanel, dispatch, minWidth, children }) => {
                 backgroundColor: colors.structure.lead,
                 marginBottom: spacing.hairline,
                 color:
-                  key === openPanel ? colors.key.one : colors.structure.steel,
+                  key === openPanel ? colors.key.two : colors.structure.steel,
                 ':hover': {
                   backgroundColor: colors.structure.mattGrey,
                 },

@@ -4,7 +4,7 @@ import numpy
 from unittest.mock import patch
 
 from models.utils import ConfusionMatrix
-from zmlp import Model
+from boonsdk import Model
 
 
 def mock_aggs(*args, **kwargs):

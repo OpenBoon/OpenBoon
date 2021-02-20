@@ -140,7 +140,7 @@ exports[`<Checkbox /> should render properly 2`] = `
 }
 
 .emotion-0:hover div {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-0:hover rect {
@@ -148,11 +148,11 @@ exports[`<Checkbox /> should render properly 2`] = `
 }
 
 .emotion-0:hover circle {
-  fill: #73b61c;
+  fill: #3A5DFF;
 }
 
 .emotion-0 div {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-0 rect {
@@ -160,7 +160,7 @@ exports[`<Checkbox /> should render properly 2`] = `
 }
 
 .emotion-0 circle {
-  fill: #73b61c;
+  fill: #3A5DFF;
 }
 
 .emotion-1 {
@@ -171,7 +171,7 @@ exports[`<Checkbox /> should render properly 2`] = `
 .emotion-2 {
   -webkit-transition: all .15s ease;
   transition: all .15s ease;
-  fill: #73b61c;
+  fill: #3A5DFF;
 }
 
 .emotion-3 {
@@ -188,7 +188,7 @@ exports[`<Checkbox /> should render properly 2`] = `
   text-transform: uppercase;
   -webkit-transition: all .15s ease;
   transition: all .15s ease;
-  color: #73b61c;
+  color: #3A5DFF;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -257,7 +257,7 @@ exports[`<Checkbox /> should render properly 3`] = `
 }
 
 .emotion-0:hover div {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-0:hover rect {
@@ -265,7 +265,7 @@ exports[`<Checkbox /> should render properly 3`] = `
 }
 
 .emotion-0:hover circle {
-  fill: #73b61c;
+  fill: #3A5DFF;
 }
 
 .emotion-1 {
@@ -276,7 +276,7 @@ exports[`<Checkbox /> should render properly 3`] = `
 .emotion-2 {
   -webkit-transition: all .15s ease;
   transition: all .15s ease;
-  fill: #73b61c;
+  fill: #3A5DFF;
 }
 
 .emotion-3 {
@@ -293,7 +293,7 @@ exports[`<Checkbox /> should render properly 3`] = `
   text-transform: uppercase;
   -webkit-transition: all .15s ease;
   transition: all .15s ease;
-  color: #73b61c;
+  color: #3A5DFF;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

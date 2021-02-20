@@ -19,7 +19,7 @@ const ModelMatrixTooltip = ({
       padding: spacing.moderate,
     }}
   >
-    <h3>
+    <h3 css={{ paddingBottom: spacing.small }}>
       <span
         css={{
           fontFamily: typography.family.condensed,
@@ -31,7 +31,7 @@ const ModelMatrixTooltip = ({
       </span>{' '}
       {value}/{rowTotal}({Math.round(percent)}%)
     </h3>
-    <h3>
+    <h3 css={{ paddingBottom: spacing.small }}>
       <span
         css={{
           fontFamily: typography.family.condensed,
@@ -43,7 +43,7 @@ const ModelMatrixTooltip = ({
       </span>{' '}
       {matrix.labels[index]}
     </h3>
-    <h3>
+    <h3 css={{ paddingBottom: spacing.small }}>
       <span
         css={{
           fontFamily: typography.family.condensed,

@@ -58,7 +58,7 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
 
 .emotion-2 {
   white-space: nowrap;
-  color: #73b61c;
+  color: #6088FE;
 }
 
 .emotion-3 {
@@ -192,7 +192,7 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
 
 .emotion-4 {
   white-space: nowrap;
-  color: #73b61c;
+  color: #6088FE;
 }
 
 .emotion-5 {
@@ -304,7 +304,7 @@ exports[`<VisualizerNavigation /> should render properly without a count 1`] = `
 
 .emotion-2 {
   white-space: nowrap;
-  color: #73b61c;
+  color: #6088FE;
 }
 
 .emotion-3 {

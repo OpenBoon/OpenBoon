@@ -2,7 +2,7 @@ import pytest
 from django.urls import reverse
 from django.test import override_settings
 
-from zmlp import ZmlpClient
+from boonsdk import BoonClient
 
 pytestmark = pytest.mark.django_db
 
@@ -29,7 +29,7 @@ class TestPermission:
         def mock_api_response(*args, **kwargs):
             return data
 
-        monkeypatch.setattr(ZmlpClient, 'get', mock_api_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_api_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         response = api_client.get(reverse('permission-list', kwargs={'project_pk': project.id}))

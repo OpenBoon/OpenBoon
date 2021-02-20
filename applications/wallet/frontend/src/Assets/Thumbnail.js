@@ -44,14 +44,14 @@ const AssetsThumbnail = ({
       css={{
         position: 'relative',
         border: isSelected
-          ? constants.borders.assetSelected
+          ? constants.borders.keyOneLarge
           : constants.borders.large.transparent,
         width: '100%',
         height: '100%',
         ':hover': isActive
           ? {
               border: isSelected
-                ? constants.borders.assetSelected
+                ? constants.borders.keyOneLarge
                 : constants.borders.large.white,
               'a, button': {
                 opacity: 1,
@@ -185,7 +185,7 @@ const AssetsThumbnail = ({
 }
 
 AssetsThumbnail.defaultProps = {
-  attribute: 'analysis.zvi-image-similarity',
+  attribute: 'analysis.boonai-image-similarity',
 }
 
 AssetsThumbnail.propTypes = {

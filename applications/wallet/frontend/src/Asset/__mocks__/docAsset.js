@@ -59,52 +59,52 @@ const docAsset = {
           module: 'standard',
           checksum: 2178814325,
           executionDate: '2020-04-23T19:37:03.208034',
-          processor: 'zmlp_core.core.PreCacheSourceFileProcessor',
+          processor: 'boonai_core.core.PreCacheSourceFileProcessor',
         },
         {
           executionTime: 1.23,
           module: 'standard',
           checksum: 3558348737,
           executionDate: '2020-04-23T19:37:06.407931',
-          processor: 'zmlp_core.core.FileImportProcessor',
+          processor: 'boonai_core.core.FileImportProcessor',
         },
         {
           executionTime: 2.93,
           module: 'standard',
           checksum: 457707303,
           executionDate: '2020-04-23T19:37:09.686094',
-          processor: 'zmlp_core.proxy.ImageProxyProcessor',
+          processor: 'boonai_core.proxy.ImageProxyProcessor',
         },
         {
           module: 'standard',
           checksum: 482873147,
-          processor: 'zmlp_core.proxy.VideoProxyProcessor',
+          processor: 'boonai_core.proxy.VideoProxyProcessor',
         },
         {
           executionTime: 0.6,
           module: 'standard',
           checksum: 1879445844,
           executionDate: '2020-04-23T19:37:44.015925',
-          processor: 'zmlp_analysis.zvi.ZviSimilarityProcessor',
+          processor: 'boonai_analysis.zvi.ZviSimilarityProcessor',
         },
         {
           executionTime: 0.83,
-          module: 'zvi-object-detection',
+          module: 'boonai-object-detection',
           checksum: 3329037091,
           executionDate: '2020-04-23T19:38:16.097040',
-          processor: 'zmlp_analysis.zvi.ZviObjectDetectionProcessor',
+          processor: 'boonai_analysis.zvi.ZviObjectDetectionProcessor',
         },
         {
           executionTime: 3.57,
-          module: 'zvi-label-detection',
+          module: 'boonai-label-detection',
           checksum: 2989691564,
           executionDate: '2020-04-23T19:39:08.218578',
-          processor: 'zmlp_analysis.zvi.ZviLabelDetectionProcessor',
+          processor: 'boonai_analysis.zvi.ZviLabelDetectionProcessor',
         },
         {
-          module: 'zvi-text-detection',
+          module: 'boonai-text-detection',
           checksum: 4290842193,
-          processor: 'zmlp_analysis.zvi.ZviOcrProcessor',
+          processor: 'boonai_analysis.zvi.ZviOcrProcessor',
         },
       ],
     },
@@ -120,12 +120,12 @@ const docAsset = {
       height: 792.0,
     },
     analysis: {
-      'zvi-label-detection': {
+      'boonai-label-detection': {
         count: 1,
         type: 'labels',
         predictions: [{ score: 1.0, label: 'web_site' }],
       },
-      'zvi-image-similarity': {
+      'boonai-image-similarity': {
         type: 'similarity',
         simhash:
           'POCBPPPAJPFJPAPHJJILIMNPAPGPJPPPDFPJPDPPOFOPGBKDPPCPHDIPPPIPHDKBPAMPPLPOHKPAFPPPHGBKBPPPPHABPHPPBMPPPPPIPNGHJCEOPPPBPPEEPPIPINPFPPLGLCCJBIMPPBHKBCPBCOLCKPPCPPHKIGBJEPFINHNINPBLHEBPGDPHPBHLPJPPPPPIMPPPJPHPEPOKPJELPJPJPFPEDMJJDHJCPHPPCPPDHFCGOMPPHHBOPPJDPFNDANPBPPPIPOLKPMKPPBMGPJBJPBBPLPIPGPLIIMFEPPPLPPADGPPPPGJGIPDLGPPBJCPPPKAKPODGFPDPNPBMPPAPFFPCHFLHPEHBEPPANPPBPBNKPKPIFKPCIPPPEPBPPPLAKDJOCPECOBPJPFJGPFPCPKPKHPPPBPHJGPNPPMOPPDKKLHPGBPKJAPIPKPPCPMCLEPDPPBPPPPODGCAJABHPMPPPJPHFBPPDLPIPJGPLABPGOPJPMKDIPPPOLLPABCAMMPPPEPLOOPNCPPPPPPPPPBKNPPEPBHOPAGIBHPIPNENGKHPJFIGPIOBBPPGDPPJBFPPPPPPPKHGCHDPPPPPGBDDPCFCKDPPHPDPMEJGHHPEPJPPPMPPPEPPKPCOPFPOEMKPLBHPDCADPKNPBAPPBDFJLPFBAPLPJPIMEPHBPPJBGEAPPPBOPCPAANFHPMBFAPIJBPBPFFMPIAPEPPGPNPPEPAHKJFEKHFCDPOLAPKPELPPDPIPEKKPPPLPPCPBIICOKHPPAPPPANPCDDPPPNGECPFIPDAOBPPPPLDAPPHPGPJJEBEOICPPPPOPHDLPGPOBPPPKHPPACPAPPPHDPPBDPDPPPPINPPPJAKBDPCAPIKPFBFKIAAPPIAPPFPLHKILPEOBGDOCCIJEPHPEPJDPKJJIPKJPCDAGGEPPPPGPHPPBOPMFPPAFOABPBJPLPPPPIBPAIEPPEPANPHIEDKKNCDCPPPPNGPIAMPPAKPBFPPPPPJMPPPOACKBAODPJCFEPHIEJDPDNPPBPOPPPJPDPPPPPPEKHPPNPLIFPPPGINEPPKCPICPPNMPEPJPPDDACMPPPCCLPOCPBBPGKPILPPBIPPPCPBEPPPDPPOAABGCEEIKBGBHPPPPPPJIJKGPDGFAFCLGPPNCABPKDPKPCPFNPAPKPPBCEBIPEPPPPPBPGPIPGPPPKPCDHPPGPAKOIGJPPBPPPPPLBMPPPJPECPAKCAEPPPPAPDHBPCKPPPPIMCNAAGDFPCPCCDOBPMHPIBPPPAMPPAADOEPFGPKDPMCIPPMPMPPPDPLHPPIEAFPPPPLPGBOAHHNJFACFDPBAEKBAJPPJAHJPPNPNNIPNIPPCFKAJFPEBPCIDMPPEPBPPOPBIPBCOJCPPKPDPPECPCNDCLCAPEAPNBLIPGPBPPPPFIPPPPPHPPCPPPAGFPLJAPBPBIPPNGNEPPKPLEPIDPMPLHPPPBOCAPEPANBPFHCBEPPPFGPLMPPAPPPDMPMEPPDJGPCAPMPCPANPFAEPCALPNFIPPPPPMPPBLEPJIPGEPAFGCPPOAPPFPPPNAGPPPPAGPPMOKEAJOPPPKPEIBPPPPPJEELBAOCPPBBFCPBDPBPOBFGJKPPEJFAMGDEEOPPPCPPDPKPPPIPPBFKPPCJBOOPNEFPPKAOGPPPDPPEKKIAPPPEPFCPPPIGIKABGPPPHPIPPCPPAPPPCEPIMPOPPDIDDPBPDKIPNHHNPPPFKEPPPEODJCDPCPGCGPFAPCFCJKPPPMPPOKKKEPGPPHHPPPHCNPEDEJPPODPCCJNJDCLIKPPBPGPIPDPPMPGMJPPPOAFAPGDPPPLHBIGPGKHPPPPOPPICMNCLHFPODPCJJDDAHDPPPCPPBPPBNODDPPGOPHPFPPBCOPPCPCPPPMCPAALPPLJFCGPPPPPBPAOPPPLFEPPPKPPHPCCJAJPCAPAPCDFPBKLPPPPPCPBPPPAOMPOPMPKPOGEPJDCPCPAAPPCFPPDCBPPPPLOGHPJEPAEAPAIPAFGPCKPMGPHFE',

@@ -12,7 +12,7 @@ class AssetBoxImager(object):
 
     Args:
         asset(zmlp.Asset): Asset to generate box images for.
-        zmlp_client(ZmlpClient): ZMLP client used to get information about the asset.
+        zmlp_client(BoonClient): ZMLP client used to get information about the asset.
 
     """
     def __init__(self, asset, zmlp_client):
@@ -35,7 +35,7 @@ class AssetBoxImager(object):
         return self._image
 
     def _download_image_from_zmlp(self, file_id):
-        """Testing seam that downloads the bites of a file from ZMLP.
+        """Testing seam that downloads the bites of a file from boonsdk.
 
         Args:
             file_id(str): UUID of a file associated with the Asset that will be downloaded.

@@ -1,7 +1,7 @@
 
 resource "kubernetes_deployment" "gcp-marketplace-integration" {
-  count = var.enabled != "" ? 1 : 0
-  provider   = kubernetes
+  count    = var.enabled != "" ? 1 : 0
+  provider = kubernetes
   metadata {
     name      = "gcp-marketplace-integration"
     namespace = var.namespace
@@ -50,11 +50,11 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             read_only  = true
           }
           resources {
-            limits {
+            limits = {
               memory = "512Mi"
               cpu    = 0.5
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.2
             }
@@ -62,15 +62,15 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
         }
         container {
           name              = "gcp-marketplace-usage-report"
-          image             = "zmlp/wallet:${var.container-tag}"
+          image             = "boonai/wallet:${var.container-tag}"
           image_pull_policy = "Always"
-          command = ["python3", "-u", "/applications/wallet/app/manage.py", "gcpmarketplace-usage-report"]
+          command           = ["python3", "-u", "/applications/wallet/app/manage.py", "gcpmarketplace-usage-report"]
           resources {
-            limits {
+            limits = {
               memory = "1Gi"
               cpu    = 1
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.5
             }
@@ -84,7 +84,7 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             value = var.pg_password
           }
           env {
-            name  = "ZMLP_API_URL"
+            name  = "BOONAI_API_URL"
             value = var.zmlp-api-url
           }
           env {
@@ -112,33 +112,37 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             value = var.fqdn
           }
           env {
-            name = "MARKETPLACE_PROJECT_ID"
+            name  = "MARKETPLACE_PROJECT_ID"
             value = var.marketplace-project
           }
           env {
-            name = "MARKETPLACE_PUBSUB_SUBSCRIPTION"
+            name  = "MARKETPLACE_PUBSUB_SUBSCRIPTION"
             value = var.marketplace-subscription
           }
           env {
-            name = "MARKETPLACE_CREDENTIALS"
+            name  = "MARKETPLACE_CREDENTIALS"
             value = var.marketplace-credentials
           }
           env {
-            name = "MARKETPLACE_SERVICE_NAME"
+            name  = "MARKETPLACE_SERVICE_NAME"
             value = var.marketplace-service-name
+          }
+          env {
+            name  = "SA_KEY_DATE"
+            value = var.sql-service-account-key-date
           }
         }
         container {
           name              = "gcp-marketplace-pub-sub"
-          image             = "zmlp/wallet:${var.container-tag}"
+          image             = "boonai/wallet:${var.container-tag}"
           image_pull_policy = "Always"
-          command = ["python3", "-u", "/applications/wallet/app/manage.py", "gcpmarketplace-pubsub"]
+          command           = ["python3", "-u", "/applications/wallet/app/manage.py", "gcpmarketplace-pubsub"]
           resources {
-            limits {
+            limits = {
               memory = "1Gi"
               cpu    = 1
             }
-            requests {
+            requests = {
               memory = "256Mi"
               cpu    = 0.5
             }
@@ -152,7 +156,7 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             value = var.pg_password
           }
           env {
-            name  = "ZMLP_API_URL"
+            name  = "BOONAI_API_URL"
             value = var.zmlp-api-url
           }
           env {
@@ -180,19 +184,19 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             value = var.fqdn
           }
           env {
-            name = "MARKETPLACE_PROJECT_ID"
+            name  = "MARKETPLACE_PROJECT_ID"
             value = var.marketplace-project
           }
           env {
-            name = "MARKETPLACE_PUBSUB_SUBSCRIPTION"
+            name  = "MARKETPLACE_PUBSUB_SUBSCRIPTION"
             value = var.marketplace-subscription
           }
           env {
-            name = "MARKETPLACE_CREDENTIALS"
+            name  = "MARKETPLACE_CREDENTIALS"
             value = var.marketplace-credentials
           }
           env {
-            name = "MARKETPLACE_SERVICE_NAME"
+            name  = "MARKETPLACE_SERVICE_NAME"
             value = var.marketplace-service-name
           }
         }

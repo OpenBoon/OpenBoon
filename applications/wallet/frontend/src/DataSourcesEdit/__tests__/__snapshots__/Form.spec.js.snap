@@ -63,8 +63,8 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 
 .emotion-7:focus,
 .emotion-7 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -342,7 +342,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
-  fill: #73b61c;
+  fill: #3A5DFF;
 }
 
 .emotion-49 {
@@ -455,7 +455,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 }
 
 .emotion-60 svg {
-  color: #73b61c;
+  color: #6088FE;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
@@ -696,14 +696,14 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 .emotion-124:hover,
 .emotion-124:visited,
 .emotion-124 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-124:hover,
 .emotion-124 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-124[aria-disabled=true],
@@ -1003,7 +1003,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
       open={true}
     >
       <summary
-        aria-label="Zorroa Automatic Analysis"
+        aria-label="Boon AI Automatic Analysis"
         className="emotion-54"
       >
         <div
@@ -1017,7 +1017,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
           <span
             className="emotion-57"
           >
-            Zorroa Automatic Analysis
+            Boon AI Automatic Analysis
           </span>
         </div>
       </summary>
@@ -1292,7 +1292,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-label-detection"
+                        value="boonai-label-detection"
                       />
                       <div
                         className="emotion-27"
@@ -1307,14 +1307,14 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                     <div
                       className="hidden"
                     >
-                      zvi-label-detection
+                      boonai-label-detection
                       : 
                       Generate keyword labels for image, video, and documents.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zvi-label-detection
+                  boonai-label-detection
                 </td>
                 <td>
                   Generate keyword labels for image, video, and documents.
@@ -1359,7 +1359,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-object-detection"
+                        value="boonai-object-detection"
                       />
                       <div
                         className="emotion-27"
@@ -1374,14 +1374,14 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                     <div
                       className="hidden"
                     >
-                      zvi-object-detection
+                      boonai-object-detection
                       : 
                       Detect everyday objects in images, video, and documents.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zvi-object-detection
+                  boonai-object-detection
                 </td>
                 <td>
                   Detect everyday objects in images, video, and documents.
@@ -1460,7 +1460,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-video-shot-clips"
+                        value="boonai-video-shot-clips"
                       />
                       <div
                         className="emotion-27"
@@ -1475,14 +1475,14 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                     <div
                       className="hidden"
                     >
-                      zvi-video-shot-clips
+                      boonai-video-shot-clips
                       : 
                       Break video files into individual assets based on a shot detection algorithm.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zvi-video-shot-clips
+                  boonai-video-shot-clips
                 </td>
                 <td>
                   Break video files into individual assets based on a shot detection algorithm.
@@ -1603,8 +1603,8 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 
 .emotion-7:focus,
 .emotion-7 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -1876,7 +1876,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
-  fill: #73b61c;
+  fill: #3A5DFF;
 }
 
 .emotion-48 {
@@ -1989,7 +1989,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 }
 
 .emotion-59 svg {
-  color: #73b61c;
+  color: #6088FE;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
@@ -2230,14 +2230,14 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 .emotion-123:hover,
 .emotion-123:visited,
 .emotion-123 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-123:hover,
 .emotion-123 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-123[aria-disabled=true],
@@ -2532,7 +2532,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
       open={true}
     >
       <summary
-        aria-label="Zorroa Automatic Analysis"
+        aria-label="Boon AI Automatic Analysis"
         className="emotion-53"
       >
         <div
@@ -2546,7 +2546,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
           <span
             className="emotion-56"
           >
-            Zorroa Automatic Analysis
+            Boon AI Automatic Analysis
           </span>
         </div>
       </summary>
@@ -2821,7 +2821,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-label-detection"
+                        value="boonai-label-detection"
                       />
                       <div
                         className="emotion-26"
@@ -2836,14 +2836,14 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      zvi-label-detection
+                      boonai-label-detection
                       : 
                       Generate keyword labels for image, video, and documents.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zvi-label-detection
+                  boonai-label-detection
                 </td>
                 <td>
                   Generate keyword labels for image, video, and documents.
@@ -2888,7 +2888,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-object-detection"
+                        value="boonai-object-detection"
                       />
                       <div
                         className="emotion-26"
@@ -2903,14 +2903,14 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      zvi-object-detection
+                      boonai-object-detection
                       : 
                       Detect everyday objects in images, video, and documents.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zvi-object-detection
+                  boonai-object-detection
                 </td>
                 <td>
                   Detect everyday objects in images, video, and documents.
@@ -2989,7 +2989,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-video-shot-clips"
+                        value="boonai-video-shot-clips"
                       />
                       <div
                         className="emotion-26"
@@ -3004,14 +3004,14 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      zvi-video-shot-clips
+                      boonai-video-shot-clips
                       : 
                       Break video files into individual assets based on a shot detection algorithm.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zvi-video-shot-clips
+                  boonai-video-shot-clips
                 </td>
                 <td>
                   Break video files into individual assets based on a shot detection algorithm.

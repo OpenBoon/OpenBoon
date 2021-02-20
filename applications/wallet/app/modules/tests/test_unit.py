@@ -15,7 +15,7 @@ def data():
                                           'image': 'zmlp/plugins-analysis',
                                           'module': 'standard',
                                           'checksum': 3907589052,
-                                          'className': 'zmlp_analysis.clarifai.ClarifaiPredictProcessor'}],  # noqa
+                                          'className': 'boonai_analysis.clarifai.ClarifaiPredictProcessor'}],  # noqa
                                'maxApplyCount': 1}],
                       'timeCreated': 1584641786546,
                       'timeModified': 1584987295350,
@@ -30,7 +30,7 @@ def data():
                                           'image': 'zmlp/plugins-analysis',
                                           'module': 'standard',
                                           'checksum': 2975666803,
-                                          'className': 'zmlp_analysis.google.CloudVisionDetectLabels'}],  # noqa
+                                          'className': 'boonai_analysis.google.CloudVisionDetectLabels'}],  # noqa
                                'maxApplyCount': 1}],
                       'timeCreated': 1584641786561,
                       'timeModified': 1584987295364,

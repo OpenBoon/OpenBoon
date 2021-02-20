@@ -1,23 +1,42 @@
-import useSWR from 'swr'
+import { useSWRInfinite } from 'swr'
 import PropTypes from 'prop-types'
 
-import { colors, spacing } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 
 import { useLocalStorage } from '../LocalStorage/helpers'
 import { reducer } from '../Resizeable/reducer'
 
+import Loading from '../Loading'
+import ErrorSvg from '../Icons/error.svg'
+
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+
 import { PANEL_WIDTH } from './helpers'
 
-const FROM = 0
 const SIZE = 28
 const PANEL_BORDER_WIDTH = 1
 
 const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
-  const {
-    data: { results },
-  } = useSWR(
-    `/api/v1/projects/${projectId}/searches/query/?query=${encodedFilter}&from=${FROM}&size=${SIZE}`,
+  /* istanbul ignore next */
+  const { data, error, size, setSize } = useSWRInfinite(
+    (pageIndex, previousPageData) => {
+      if (previousPageData && !previousPageData.next) return null
+
+      const from = pageIndex * SIZE
+
+      return `/api/v1/projects/${projectId}/searches/query/?query=${encodedFilter}&from=${from}&size=${SIZE}`
+    },
+    undefined,
+    {
+      suspense: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      shouldRetryOnError: false,
+    },
   )
+
+  const { count } = (data && data[0]) || {}
+  const results = Array.isArray(data) ? data.flatMap(({ results: r }) => r) : []
 
   useLocalStorage({
     key: `Resizeable.ModelMatrixPreview`,
@@ -28,6 +47,40 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
       isOpen: false,
     },
   })
+
+  if (!data && !error) {
+    return <Loading />
+  }
+
+  if (error) {
+    return (
+      <div
+        css={{
+          height: '100%',
+          backgroundColor: colors.structure.coal,
+          padding: spacing.base,
+        }}
+      >
+        <div
+          css={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            color: colors.structure.steel,
+            backgroundColor: colors.structure.lead,
+            lineHeight: typography.height.regular,
+          }}
+        >
+          <ErrorSvg width={604} css={{ maxWidth: '80%' }} />
+          <br /> Hmmm, something went wrong.
+          <br /> Please try refreshing.
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div
@@ -47,34 +100,56 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
           gap: spacing.base,
         }}
       >
-        {results.map(({ thumbnailUrl, metadata, id }) => {
-          const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
+        {results.length === 0 ? (
+          <div
+            css={{
+              padding: spacing.moderate,
+              fontStyle: typography.style.italic,
+            }}
+          >
+            No predicted assets.
+          </div>
+        ) : (
+          results.map(({ thumbnailUrl, metadata, id }) => {
+            const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
 
-          return (
-            <div
-              key={id}
-              title={metadata?.source?.filename}
-              css={{
-                position: 'relative',
-                paddingBottom: '100%',
-                backgroundColor: colors.structure.mattGrey,
-              }}
-            >
-              <img
+            return (
+              <div
+                key={id}
+                title={metadata?.source?.filename}
                 css={{
-                  position: 'absolute',
-                  top: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
+                  position: 'relative',
+                  paddingBottom: '100%',
+                  backgroundColor: colors.structure.mattGrey,
                 }}
-                src={thumbnailSrc}
-                alt={metadata?.source?.filename}
-              />
-            </div>
-          )
-        })}
+              >
+                <img
+                  css={{
+                    position: 'absolute',
+                    top: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                  }}
+                  src={thumbnailSrc}
+                  alt={metadata?.source?.filename}
+                />
+              </div>
+            )
+          })
+        )}
       </div>
+      {!!count && count > results.length && (
+        <div css={{ display: 'flex', justifyContent: 'center' }}>
+          <Button
+            variant={BUTTON_VARIANTS.SECONDARY}
+            css={{ marginTop: spacing.base }}
+            onClick={() => setSize(size + 1)}
+          >
+            Load More
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

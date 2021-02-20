@@ -15,7 +15,7 @@ resource "kubernetes_stateful_set" "redis" {
   provider = kubernetes
   lifecycle {
     prevent_destroy = true
-    ignore_changes = [spec[0].replicas]
+    ignore_changes  = [spec[0].replicas]
   }
   metadata {
     name      = "redis"
@@ -82,11 +82,11 @@ resource "kubernetes_stateful_set" "redis" {
             mount_path = "/usr/share/redis/data"
           }
           resources {
-            requests {
+            requests = {
               memory = "1Gi"
               cpu    = 0.25
             }
-            limits {
+            limits = {
               memory = "2Gi"
               cpu    = 0.8
             }
