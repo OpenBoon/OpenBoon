@@ -1,6 +1,6 @@
 from wallet.settings import *  # noqa
 
-# Points to the Live Development Servers ZMLP API
+# Points to the Live Development Servers Boon AI API
 BOONAI_API_URL = 'https://dev.api.boonai.app'
 
 # Useful for local debugging
@@ -11,7 +11,7 @@ REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.Brow
 
 SUPERADMIN = True
 
-# Required for authenticating requests with the ZMLP API
+# Required for authenticating requests with the Boon AI API
 INCEPTION_KEY_B64 = 'Replace with the Dev Servers value in the Wallet Service YAML file'
 
 # Required to use the Live Development Servers Postgres DB
