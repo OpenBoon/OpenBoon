@@ -11,3 +11,4 @@ services:
       BOONAI_API_URL: http://api-gateway:80
     volumes:
       - "./data:/data"
+      - "./applications/workbench/data:/data"
