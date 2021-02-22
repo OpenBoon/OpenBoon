@@ -8,7 +8,7 @@ import HamburgerSvg from '../Icons/hamburger.svg'
 
 import ProjectSwitcher from '../ProjectSwitcher'
 
-const LOGO_HEIGHT = 20
+const LOGO_HEIGHT = 26
 
 const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
   return (

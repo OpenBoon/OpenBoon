@@ -107,7 +107,7 @@ describe('<DataSourcesAdd />', () => {
     // Select module
     act(() => {
       component.root
-        .findByProps({ type: 'checkbox', value: 'zvi-label-detection' })
+        .findByProps({ type: 'checkbox', value: 'boonai-label-detection' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -163,7 +163,7 @@ describe('<DataSourcesAdd />', () => {
         uri: 'gs://zorroa-dev-data',
         credentials: {},
         fileTypes: ['Documents', 'Videos'],
-        modules: ['zvi-label-detection'],
+        modules: ['boonai-label-detection'],
       }),
     })
 

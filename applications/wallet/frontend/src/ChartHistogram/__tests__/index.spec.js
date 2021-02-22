@@ -20,7 +20,7 @@ describe('<ChartHistogram />', () => {
     const chart = {
       id: CHART_ID,
       type: 'histogram',
-      attribute: 'analysis.zvi-face-detection',
+      attribute: 'analysis.boonai-face-detection',
       values: '10',
     }
 
@@ -44,7 +44,7 @@ describe('<ChartHistogram />', () => {
       JSON.stringify([
         {
           type: 'labelConfidence',
-          attribute: 'analysis.zvi-face-detection',
+          attribute: 'analysis.boonai-face-detection',
           values: {},
         },
       ]),
@@ -65,7 +65,7 @@ describe('<ChartHistogram />', () => {
     const chart = {
       id: CHART_ID,
       type: 'histogram',
-      attribute: 'analysis.zvi-face-detection',
+      attribute: 'analysis.boonai-face-detection',
       values: '10',
     }
 
@@ -103,7 +103,7 @@ describe('<ChartHistogram />', () => {
     act(() => {
       component.root
         .findByProps({ label: 'Metadata Type' })
-        .props.onChange({ value: 'analysis.zvi-face-detection' })
+        .props.onChange({ value: 'analysis.boonai-face-detection' })
     })
 
     // Set Values
@@ -127,7 +127,7 @@ describe('<ChartHistogram />', () => {
         updatedChart: {
           id: CHART_ID,
           type: 'histogram',
-          attribute: 'analysis.zvi-face-detection',
+          attribute: 'analysis.boonai-face-detection',
           values: '5',
         },
       },
@@ -147,7 +147,7 @@ describe('<ChartHistogram />', () => {
     const chart = {
       id: CHART_ID,
       type: 'histogram',
-      attribute: 'analysis.zvi-face-detection',
+      attribute: 'analysis.boonai-face-detection',
       values: '10',
     }
 
@@ -163,7 +163,7 @@ describe('<ChartHistogram />', () => {
 
     expect(mockDispatch).toHaveBeenCalledWith({
       payload: {
-        attribute: 'analysis.zvi-face-detection',
+        attribute: 'analysis.boonai-face-detection',
         type: 'facet',
         values: 10,
       },

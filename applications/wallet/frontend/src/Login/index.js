@@ -109,7 +109,7 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
               {errorMessage}
               <div css={{ height: spacing.base }} />
               <a
-                href="mailto:support@zorroa.com?subject=ZVI Console Login Trouble"
+                href="mailto:support@boonai.io?subject=Boon AI Login Trouble"
                 target="_blank"
                 rel="noopener noreferrer"
                 css={{ marginLeft: 0 }}

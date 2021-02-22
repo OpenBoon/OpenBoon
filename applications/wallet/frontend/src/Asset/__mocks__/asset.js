@@ -103,7 +103,7 @@ const asset = {
       },
     ],
     analysis: {
-      zvi: {
+      boonai: {
         tinyProxy: [
           '#f3dfc3',
           '#f4efd8',

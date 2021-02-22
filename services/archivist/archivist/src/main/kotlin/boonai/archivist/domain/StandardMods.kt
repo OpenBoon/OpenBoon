@@ -151,7 +151,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.TEXT_DETECTION,
-            listOf(FileType.Images),
+            listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,

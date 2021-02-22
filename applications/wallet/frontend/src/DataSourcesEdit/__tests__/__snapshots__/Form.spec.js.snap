@@ -1292,7 +1292,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-label-detection"
+                        value="boonai-label-detection"
                       />
                       <div
                         className="emotion-27"
@@ -1307,14 +1307,14 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                     <div
                       className="hidden"
                     >
-                      zvi-label-detection
+                      boonai-label-detection
                       : 
                       Generate keyword labels for image, video, and documents.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zvi-label-detection
+                  boonai-label-detection
                 </td>
                 <td>
                   Generate keyword labels for image, video, and documents.
@@ -1359,7 +1359,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-object-detection"
+                        value="boonai-object-detection"
                       />
                       <div
                         className="emotion-27"
@@ -1374,14 +1374,14 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                     <div
                       className="hidden"
                     >
-                      zvi-object-detection
+                      boonai-object-detection
                       : 
                       Detect everyday objects in images, video, and documents.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zvi-object-detection
+                  boonai-object-detection
                 </td>
                 <td>
                   Detect everyday objects in images, video, and documents.
@@ -1460,7 +1460,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-video-shot-clips"
+                        value="boonai-video-shot-clips"
                       />
                       <div
                         className="emotion-27"
@@ -1475,14 +1475,14 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                     <div
                       className="hidden"
                     >
-                      zvi-video-shot-clips
+                      boonai-video-shot-clips
                       : 
                       Break video files into individual assets based on a shot detection algorithm.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zvi-video-shot-clips
+                  boonai-video-shot-clips
                 </td>
                 <td>
                   Break video files into individual assets based on a shot detection algorithm.
@@ -2821,7 +2821,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-label-detection"
+                        value="boonai-label-detection"
                       />
                       <div
                         className="emotion-26"
@@ -2836,14 +2836,14 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      zvi-label-detection
+                      boonai-label-detection
                       : 
                       Generate keyword labels for image, video, and documents.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zvi-label-detection
+                  boonai-label-detection
                 </td>
                 <td>
                   Generate keyword labels for image, video, and documents.
@@ -2888,7 +2888,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-object-detection"
+                        value="boonai-object-detection"
                       />
                       <div
                         className="emotion-26"
@@ -2903,14 +2903,14 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      zvi-object-detection
+                      boonai-object-detection
                       : 
                       Detect everyday objects in images, video, and documents.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zvi-object-detection
+                  boonai-object-detection
                 </td>
                 <td>
                   Detect everyday objects in images, video, and documents.
@@ -2989,7 +2989,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zvi-video-shot-clips"
+                        value="boonai-video-shot-clips"
                       />
                       <div
                         className="emotion-26"
@@ -3004,14 +3004,14 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      zvi-video-shot-clips
+                      boonai-video-shot-clips
                       : 
                       Break video files into individual assets based on a shot detection algorithm.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zvi-video-shot-clips
+                  boonai-video-shot-clips
                 </td>
                 <td>
                   Break video files into individual assets based on a shot detection algorithm.

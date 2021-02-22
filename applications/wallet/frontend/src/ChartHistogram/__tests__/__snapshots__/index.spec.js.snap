@@ -417,7 +417,7 @@ exports[`<ChartHistogram /> should render properly 1`] = `
         <h3
           className="emotion-4"
         >
-          analysis.zvi-face-detection
+          analysis.boonai-face-detection
         </h3>
         <button
           aria-label="Edit Chart"
@@ -1059,9 +1059,9 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
                         >
                           <ListboxOption
                             className="emotion-20"
-                            value="analysis.zvi-face-detection"
+                            value="analysis.boonai-face-detection"
                           >
-                            zvi-face-detection
+                            boonai-face-detection
                           </ListboxOption>
                         </ul>
                       </li>
@@ -1408,7 +1408,7 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
         <h3
           className="emotion-4"
         >
-          analysis.zvi-face-detection
+          analysis.boonai-face-detection
         </h3>
         <button
           aria-label="Edit Chart"

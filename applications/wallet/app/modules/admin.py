@@ -6,4 +6,4 @@ from modules.models import Provider
 
 @admin.register(Provider)
 class ProviderAdmin(ModelAdmin):
-    list_display = ('name', 'description')
+    list_display = ('name', 'sort_index', 'description')

@@ -226,7 +226,7 @@ class FileStorageControllerTests : MockMvcTest() {
     @Test
     fun testUploadLabeledModel() {
 
-        val ds = modelService.createModel(ModelSpec("foo", ModelType.ZVI_LABEL_DETECTION))
+        val ds = modelService.createModel(ModelSpec("foo", ModelType.BOONAI_LABEL_DETECTION))
         val file = MockMultipartFile(
             "file", "toucan.jpg", "image/jpeg",
             File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
