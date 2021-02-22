@@ -9,6 +9,8 @@ services:
       dockerfile: Dockerfile
     environment:
       BOONAI_API_URL: http://api-gateway:80
+    # If only workbench os desired, change the commented
+    # lines so this can be run from the local dir
     volumes:
-      - "./data:/data"
+      #- "./data:/data"
       - "./applications/workbench/data:/data"
