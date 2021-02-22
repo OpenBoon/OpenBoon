@@ -133,11 +133,11 @@ describe('Visualizer', function () {
 
       cy.get('summary[aria-label="Analysis"]').click()
 
-      cy.contains('zvi-text-detection').click()
+      cy.contains('boonai-text-detection').click()
 
       cy.contains('Add Filters').click()
 
-      cy.contains('analysis.zvi-text-detection')
+      cy.contains('analysis.boonai-text-detection')
 
       cy.get('input[aria-label="Add Text Detection Filter"]')
         .type('improbable text that should never have results')
@@ -157,11 +157,11 @@ describe('Visualizer', function () {
 
       cy.get('summary[aria-label="Analysis"]').click()
 
-      cy.contains('zvi-label-detection').click()
+      cy.contains('boonai-label-detection').click()
 
       cy.contains('Add Filters').click()
 
-      cy.contains('analysis.zvi-label-detection')
+      cy.contains('analysis.boonai-label-detection')
 
       cy.contains('daisy').click()
 
