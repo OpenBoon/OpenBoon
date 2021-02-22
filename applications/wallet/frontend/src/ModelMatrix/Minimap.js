@@ -69,7 +69,7 @@ const ModelMatrixMinimap = ({ matrix, settings, isInteractive }) => {
         )
 
         return matrix.matrix[index].map((value, col) => {
-          const percent = (value / rowTotal) * 100
+          const percent = rowTotal === 0 ? 0 : (value / rowTotal) * 100
 
           return (
             <div
