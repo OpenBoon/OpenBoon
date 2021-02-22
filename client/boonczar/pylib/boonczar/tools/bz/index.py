@@ -25,11 +25,27 @@ def add_subparser(subparsers):
                          help='The predicted index size, defaults to same size')
     mig_cmd.set_defaults(func=migrate_project)
 
+    close_cmd = commands.add_parser('close', help='Close an index.')
+    close_cmd.add_argument('index', metavar='INDEX', help='The Index id')
+    close_cmd.set_defaults(func=close_index)
+
+    open_cmd = commands.add_parser('open', help='Open an index.')
+    open_cmd.add_argument('index', metavar='INDEX', help='The Index id')
+    open_cmd.set_defaults(func=open_index)
+
     subparser.set_defaults(func=handle_args)
 
 
 def handle_args(args):
     args.func(args)
+
+
+def close_index(args):
+    print(czar.indexes.close_index(args.index))
+
+
+def open_index(args):
+    print(czar.indexes.open_index(args.index))
 
 
 def display_list(args):
