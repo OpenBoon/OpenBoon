@@ -36,8 +36,9 @@ the `CYPRESS_` prefix added to variables of the same name. For instance
 
 - there should be a `cypress@zorroa.com` User
 - this User should have access to a `Cypress` Project
-- this Project should have at least one Asset in the Visualizer
+- this Project should have at least one Asset in the Visualizer (recommended
+  data source: gs://zorroa-public)
 - there should be at least one Model named `custom-model`
-- there should be at least one Asset with a `location.city` of `Long Beach`
+- there should be at least one Asset with a `media.orientation` of `portrait`
 - there should be at least one Asset with a `boonai-label-detection` of a
   `daisy`

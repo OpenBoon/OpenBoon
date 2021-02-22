@@ -109,15 +109,15 @@ describe('Visualizer', function () {
 
       cy.contains('Add Filters').click()
 
-      cy.get('summary[aria-label="Location"]').click()
+      cy.get('summary[aria-label="Media"]').click()
 
-      cy.contains('city').click()
+      cy.contains('orientation').click()
 
       cy.contains('Add Filters').click()
 
-      cy.contains('location.city')
+      cy.contains('media.orientation')
 
-      cy.contains('Long Beach').click()
+      cy.contains('portrait').click()
 
       cy.selectFirstAsset()
     })
