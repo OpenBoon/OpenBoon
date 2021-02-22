@@ -32,7 +32,11 @@ describe('Visualizer', function () {
 
       cy.get('summary[aria-label*="Asset Labels"]').click()
 
-      cy.get('label').contains('Model').children().children().select('console')
+      cy.get('label')
+        .contains('Model')
+        .children()
+        .children()
+        .select('custom-model')
 
       cy.get('label').contains('Scope').children().children().select('Test')
 
