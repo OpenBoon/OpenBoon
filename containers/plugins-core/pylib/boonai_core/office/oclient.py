@@ -103,7 +103,7 @@ class OfficerClient(object):
         rsp = json.loads(conn.recv())
         self._raise_conn_error(rsp)
 
-        if rsp["status"] == "EXISTS":
+        if rsp["status"] == ResponseStatus.EXISTS.value:
             return rsp['location']
         return None
 
