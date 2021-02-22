@@ -15,6 +15,11 @@ const assets = {
           mimetype:
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         },
+        analysis: {
+          'flower-types': {
+            score: 0.333,
+          },
+        },
       },
       thumbnailUrl:
         'https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/',
@@ -28,6 +33,11 @@ const assets = {
           extension: 'pdf',
           filename: 'irr.pdf',
           mimetype: 'application/pdf',
+        },
+        analysis: {
+          'flower-types': {
+            score: 0.333,
+          },
         },
       },
       thumbnailUrl:
@@ -43,6 +53,11 @@ const assets = {
           filename: 'irr.pdf',
           mimetype: 'application/pdf',
         },
+        analysis: {
+          'flower-types': {
+            score: 0.333,
+          },
+        },
       },
       thumbnailUrl:
         'https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/',
@@ -56,6 +71,11 @@ const assets = {
           extension: 'pdf',
           filename: 'irr.pdf',
           mimetype: 'application/pdf',
+        },
+        analysis: {
+          'flower-types': {
+            score: 0.333,
+          },
         },
       },
       thumbnailUrl:
@@ -73,6 +93,11 @@ const assets = {
           mimetype: 'video/mp4',
           path:
             'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/mp4/FatManOnABike1914.mp4',
+        },
+        analysis: {
+          'flower-types': {
+            score: 0.333,
+          },
         },
       },
       thumbnailUrl:

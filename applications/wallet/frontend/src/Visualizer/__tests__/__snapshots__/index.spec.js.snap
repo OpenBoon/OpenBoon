@@ -285,6 +285,11 @@ exports[`<Visualizer /> should render properly 1`] = `
               Object {
                 "id": "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
                 "metadata": Object {
+                  "analysis": Object {
+                    "flower-types": Object {
+                      "score": 0.333,
+                    },
+                  },
                   "source": Object {
                     "extension": "docx",
                     "filename": "test_document.docx",
@@ -297,6 +302,11 @@ exports[`<Visualizer /> should render properly 1`] = `
               Object {
                 "id": "3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4",
                 "metadata": Object {
+                  "analysis": Object {
+                    "flower-types": Object {
+                      "score": 0.333,
+                    },
+                  },
                   "source": Object {
                     "extension": "pdf",
                     "filename": "irr.pdf",
@@ -309,6 +319,11 @@ exports[`<Visualizer /> should render properly 1`] = `
               Object {
                 "id": "iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo",
                 "metadata": Object {
+                  "analysis": Object {
+                    "flower-types": Object {
+                      "score": 0.333,
+                    },
+                  },
                   "source": Object {
                     "extension": "pdf",
                     "filename": "irr.pdf",
@@ -321,6 +336,11 @@ exports[`<Visualizer /> should render properly 1`] = `
               Object {
                 "id": "LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r",
                 "metadata": Object {
+                  "analysis": Object {
+                    "flower-types": Object {
+                      "score": 0.333,
+                    },
+                  },
                   "source": Object {
                     "extension": "pdf",
                     "filename": "irr.pdf",
@@ -334,6 +354,11 @@ exports[`<Visualizer /> should render properly 1`] = `
                 "assetStyle": "video",
                 "id": "srL8ob5cTpCJjYoKkqqfa2ciyG425dGi",
                 "metadata": Object {
+                  "analysis": Object {
+                    "flower-types": Object {
+                      "score": 0.333,
+                    },
+                  },
                   "source": Object {
                     "checksum": 2431356942,
                     "extension": "mp4",
@@ -745,6 +770,11 @@ exports[`<Visualizer /> should render selected asset 1`] = `
               Object {
                 "id": "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
                 "metadata": Object {
+                  "analysis": Object {
+                    "flower-types": Object {
+                      "score": 0.333,
+                    },
+                  },
                   "source": Object {
                     "extension": "docx",
                     "filename": "test_document.docx",
@@ -757,6 +787,11 @@ exports[`<Visualizer /> should render selected asset 1`] = `
               Object {
                 "id": "3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4",
                 "metadata": Object {
+                  "analysis": Object {
+                    "flower-types": Object {
+                      "score": 0.333,
+                    },
+                  },
                   "source": Object {
                     "extension": "pdf",
                     "filename": "irr.pdf",
@@ -769,6 +804,11 @@ exports[`<Visualizer /> should render selected asset 1`] = `
               Object {
                 "id": "iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo",
                 "metadata": Object {
+                  "analysis": Object {
+                    "flower-types": Object {
+                      "score": 0.333,
+                    },
+                  },
                   "source": Object {
                     "extension": "pdf",
                     "filename": "irr.pdf",
@@ -781,6 +821,11 @@ exports[`<Visualizer /> should render selected asset 1`] = `
               Object {
                 "id": "LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r",
                 "metadata": Object {
+                  "analysis": Object {
+                    "flower-types": Object {
+                      "score": 0.333,
+                    },
+                  },
                   "source": Object {
                     "extension": "pdf",
                     "filename": "irr.pdf",
@@ -794,6 +839,11 @@ exports[`<Visualizer /> should render selected asset 1`] = `
                 "assetStyle": "video",
                 "id": "srL8ob5cTpCJjYoKkqqfa2ciyG425dGi",
                 "metadata": Object {
+                  "analysis": Object {
+                    "flower-types": Object {
+                      "score": 0.333,
+                    },
+                  },
                   "source": Object {
                     "checksum": 2431356942,
                     "extension": "mp4",
