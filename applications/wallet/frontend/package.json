@@ -122,7 +122,7 @@
     "@reach/combobox": "0.13.0",
     "@reach/listbox": "0.13.0",
     "@reach/skip-nav": "0.13.0",
-    "@sentry/browser": "6.1.0",
+    "@sentry/browser": "6.2.0",
     "@svgr/webpack": "5.5.0",
     "@tippyjs/react": "4.2.0",
     "body-scroll-lock": "3.1.5",
