@@ -53,7 +53,7 @@ class IndexApp:
         return IndexTask(self.app.client.post('/api/v1/index-routes/_migrate', body))
 
     def find_indexes(self, index=None, project=None, cluster=None,
-                     mappings=None, limit=None, sort=None):
+                     mappings=None, project_name=None, limit=None, sort=None):
         """
         Search for Indexes based on filter args.  All args can be a collection or
         a scalar value.
@@ -64,6 +64,7 @@ class IndexApp:
         body = {
             'indexId': as_id_collection(index),
             'projectIds': as_id_collection(project),
+            'projectNames':  as_id_collection(project_name),
             'clusterIds': as_id_collection(cluster),
             'mappings': as_collection(mappings),
             'sort': sort

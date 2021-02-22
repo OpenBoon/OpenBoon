@@ -167,7 +167,7 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
     }
 
     override fun get(id: UUID): IndexRoute {
-        return jdbc.queryForObject("$GET WHERE pk_index_route=?", MAPPER, id)
+        return jdbc.queryForObject("$GET WHERE index_route.pk_index_route=?", MAPPER, id)
     }
 
     override fun setMinorVersion(route: IndexRoute, version: Int): Boolean {
@@ -229,7 +229,8 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
                 rs.getInt("int_mapping_major_ver"),
                 rs.getInt("int_mapping_minor_ver"),
                 rs.getInt("int_replicas"),
-                rs.getInt("int_shards")
+                rs.getInt("int_shards"),
+                rs.getString("project_name")
             )
         }
 
@@ -250,35 +251,25 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             "int_mapping_error_ver"
         )
 
-        const val GET = "SELECT index_cluster.str_url, index_route.* " +
+        const val GET = "SELECT index_cluster.str_url, index_route.*, project.str_name as project_name " +
             "FROM " +
             "index_route " +
-            "JOIN " +
-            "index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster)"
+            "JOIN index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster) " +
+            "JOIN project ON (index_route.pk_project = project.pk_project) "
 
-        const val GET_OPEN = "SELECT index_cluster.str_url, index_route.* " +
-            "FROM " +
-            "index_route " +
-            "JOIN " +
-            "index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster) " +
-            "AND " +
-            "index_route.int_state=0"
+        const val GET_OPEN = "$GET WHERE index_route.int_state=0"
 
-        const val GET_PROJECT_DEFAULT = "SELECT index_cluster.str_url, index_route.* " +
+        const val GET_PROJECT_DEFAULT = "SELECT index_cluster.str_url, index_route.*, project.str_name as project_name " +
             "FROM " +
             "index_route " +
-            "JOIN " +
-            "index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster) " +
-            "JOIN " +
-            "project ON (index_route.pk_index_route = project.pk_index_route) " +
-            "AND " +
-            "project.pk_project=?"
+            "JOIN index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster) " +
+            "JOIN project ON (index_route.pk_index_route = project.pk_index_route AND project.pk_project=?) "
 
         const val COUNT = "SELECT COUNT(1) " +
             "FROM " +
             "index_route " +
-            "JOIN " +
-            "index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster)"
+            "JOIN index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster) " +
+            "JOIN project ON (index_route.pk_project = project.pk_project) "
 
         const val UPDATE_MINOR_VER =
             "UPDATE " +
