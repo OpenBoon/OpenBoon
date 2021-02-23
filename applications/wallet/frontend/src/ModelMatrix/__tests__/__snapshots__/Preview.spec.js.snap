@@ -522,7 +522,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
 
 .emotion-11 {
   position: relative;
-  padding-bottom: 100%;
+  padding-top: 100%;
   background-color: #2e2e2e;
 }
 
@@ -534,7 +534,19 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
   object-fit: contain;
 }
 
-.emotion-21 {
+.emotion-13 {
+  padding: 8px;
+  font-weight: 700;
+  background-color: #2e2e2e;
+}
+
+.emotion-14 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  font-weight: 400;
+}
+
+.emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -545,7 +557,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
   justify-content: center;
 }
 
-.emotion-22 {
+.emotion-32 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -577,22 +589,22 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
   margin-top: 8px;
 }
 
-.emotion-22,
-.emotion-22:hover,
-.emotion-22:visited,
-.emotion-22 .noop {
+.emotion-32,
+.emotion-32:hover,
+.emotion-32:visited,
+.emotion-32 .noop {
   background-color: #808080;
 }
 
-.emotion-22:hover,
-.emotion-22 .noop {
+.emotion-32:hover,
+.emotion-32 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-22[aria-disabled=true],
-.emotion-22 .noop {
+.emotion-32[aria-disabled=true],
+.emotion-32 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -655,62 +667,127 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
     <div
       className="emotion-10"
     >
-      <div
-        className="emotion-11"
-        title="test_document.docx"
-      >
-        <img
-          alt="test_document.docx"
-          className="emotion-12"
-          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
-        />
+      <div>
+        <div
+          className="emotion-11"
+          title="test_document.docx"
+        >
+          <img
+            alt="test_document.docx"
+            className="emotion-12"
+            src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
+          />
+        </div>
+        <div
+          className="emotion-13"
+        >
+          <span
+            className="emotion-14"
+          >
+            Confidence:
+             
+          </span>
+          0.333
+        </div>
       </div>
-      <div
-        className="emotion-11"
-        title="irr.pdf"
-      >
-        <img
-          alt="irr.pdf"
-          className="emotion-12"
-          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
-        />
+      <div>
+        <div
+          className="emotion-11"
+          title="irr.pdf"
+        >
+          <img
+            alt="irr.pdf"
+            className="emotion-12"
+            src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
+          />
+        </div>
+        <div
+          className="emotion-13"
+        >
+          <span
+            className="emotion-14"
+          >
+            Confidence:
+             
+          </span>
+          0.333
+        </div>
       </div>
-      <div
-        className="emotion-11"
-        title="irr.pdf"
-      >
-        <img
-          alt="irr.pdf"
-          className="emotion-12"
-          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
-        />
+      <div>
+        <div
+          className="emotion-11"
+          title="irr.pdf"
+        >
+          <img
+            alt="irr.pdf"
+            className="emotion-12"
+            src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
+          />
+        </div>
+        <div
+          className="emotion-13"
+        >
+          <span
+            className="emotion-14"
+          >
+            Confidence:
+             
+          </span>
+          0.333
+        </div>
       </div>
-      <div
-        className="emotion-11"
-        title="irr.pdf"
-      >
-        <img
-          alt="irr.pdf"
-          className="emotion-12"
-          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
-        />
+      <div>
+        <div
+          className="emotion-11"
+          title="irr.pdf"
+        >
+          <img
+            alt="irr.pdf"
+            className="emotion-12"
+            src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
+          />
+        </div>
+        <div
+          className="emotion-13"
+        >
+          <span
+            className="emotion-14"
+          >
+            Confidence:
+             
+          </span>
+          0.333
+        </div>
       </div>
-      <div
-        className="emotion-11"
-        title="FatManOnABike1914.mp4"
-      >
-        <img
-          alt="FatManOnABike1914.mp4"
-          className="emotion-12"
-          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
-        />
+      <div>
+        <div
+          className="emotion-11"
+          title="FatManOnABike1914.mp4"
+        >
+          <img
+            alt="FatManOnABike1914.mp4"
+            className="emotion-12"
+            src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
+          />
+        </div>
+        <div
+          className="emotion-13"
+        >
+          <span
+            className="emotion-14"
+          >
+            Confidence:
+             
+          </span>
+          0.333
+        </div>
       </div>
     </div>
     <div
-      className="emotion-21"
+      className="emotion-31"
     >
       <button
-        className="emotion-22"
+        className="emotion-32"
         onClick={[Function]}
         type="button"
       >
