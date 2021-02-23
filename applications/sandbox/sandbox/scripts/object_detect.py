@@ -1,5 +1,5 @@
-from zmlp import app_from_env
-from zmlp.search import SimilarityQuery
+from boonsdk import app_from_env
+from boonsdk.search import SimilarityQuery
 import numpy as np
 import cv2
 from PIL import Image
@@ -8,14 +8,14 @@ import pickle
 import json
 import pandas as pd
 
-from zvi.proxies import download_proxy
+from boonlab.proxies import download_proxy
 
 spread_attrs = ['source.filename', 'media.width', 'media.height']
 
 
 app = app_from_env()
 
-query = {"size": 2000, "query": {"exists": {"field": "analysis.zvi-object-detection.type"}}}
+query = {"size": 2000, "query": {"exists": {"field": "analysis.boonai-object-detection.type"}}}
 search = app.assets.search(query)
 count = len(search.assets)
 
@@ -28,7 +28,7 @@ asset = search.assets[image_index]
 
 img = download_proxy(asset, 2)
 
-detections = asset.document['analysis']['zvi-object-detection']
+detections = asset.document['analysis']['boonai-object-detection']
 
 yr = img.shape[0]
 xr = img.shape[1]
@@ -46,5 +46,5 @@ if draw_boxes:
 st.image(img)
 st.sidebar.text(str(xr) + ' x ' + str(yr))
 st.sidebar.text("Detections")
-st.sidebar.json(asset.document['analysis']['zvi-object-detection'])
+st.sidebar.json(asset.document['analysis']['boonai-object-detection'])
 

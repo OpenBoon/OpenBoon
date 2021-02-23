@@ -23,6 +23,7 @@ _max_width_()
 
 scripts = glob.glob('scripts/*.py')
 
+st.sidebar.image('BoonAI-logo.png', width=200)
 script = st.sidebar.selectbox('Script to run', scripts)
 st.sidebar.markdown('---')
 exec(open(script).read())

@@ -9,11 +9,13 @@ import boonai.archivist.domain.IndexTask
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.service.IndexTaskService
 import boonai.archivist.service.IndexRoutingService
+import boonai.archivist.util.HttpUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -58,6 +60,18 @@ class IndexRoutingController @Autowired constructor(
     fun getState(@PathVariable id: UUID): Map<String, Any> {
         val route = indexRoutingService.getIndexRoute(id)
         return indexRoutingService.getEsIndexState(route)
+    }
+
+    @PutMapping(value = ["/api/v1/index-routes/{id}/_close"])
+    fun closeIndex(@PathVariable id: UUID): Any {
+        val route = indexRoutingService.getIndexRoute(id)
+        return HttpUtils.status("index-route", "close", indexRoutingService.closeIndex(route))
+    }
+
+    @PutMapping(value = ["/api/v1/index-routes/{id}/_open"])
+    fun openIndex(@PathVariable id: UUID): Any {
+        val route = indexRoutingService.getIndexRoute(id)
+        return HttpUtils.status("index-route", "close", indexRoutingService.openIndex(route))
     }
 
     @PostMapping(value = ["/api/v1/index-routes/_migrate"])
