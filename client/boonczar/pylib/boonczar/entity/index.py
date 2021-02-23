@@ -108,6 +108,10 @@ class Index(BaseEntity):
     def index_url(self):
         return self._data['indexUrl']
 
+    @property
+    def project_name(self):
+        return self._data['projectName']
+
     def __str__(self):
         return "<Index id={} url={} mapping={}>".format(
             self.id, self.index_url, self.mapping_version)
