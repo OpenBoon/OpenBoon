@@ -33,6 +33,32 @@ class IndexApp:
         }
         return Index(self.app.client.post('/api/v2/index-routes', body))
 
+    def open_index(self, index):
+        """
+        Open a closed index. The new state will be "READY".
+
+        Args:
+            index (Index): The Index to open.
+
+        Returns:
+            dict: A status dictionary
+        """
+        idx = as_id(index)
+        return self.app.client.put(f'/api/v1/index-routes/{idx}/_open')
+
+    def close_index(self, index):
+        """
+        Close a open index.
+
+        Args:
+            index (Index): The Index to close.
+
+        Returns:
+            dict: A status dictionary
+        """
+        idx = as_id(index)
+        return self.app.client.put(f'/api/v1/index-routes/{idx}/_close')
+
     def migrate_index(self, src_index, dst_index):
         """
         Migrate all data from the src_index to the dst_index. The project is swapped to
@@ -53,7 +79,7 @@ class IndexApp:
         return IndexTask(self.app.client.post('/api/v1/index-routes/_migrate', body))
 
     def find_indexes(self, index=None, project=None, cluster=None,
-                     mappings=None, limit=None, sort=None):
+                     mappings=None, project_name=None, limit=None, sort=None):
         """
         Search for Indexes based on filter args.  All args can be a collection or
         a scalar value.
@@ -64,6 +90,7 @@ class IndexApp:
         body = {
             'indexId': as_id_collection(index),
             'projectIds': as_id_collection(project),
+            'projectNames':  as_id_collection(project_name),
             'clusterIds': as_id_collection(cluster),
             'mappings': as_collection(mappings),
             'sort': sort

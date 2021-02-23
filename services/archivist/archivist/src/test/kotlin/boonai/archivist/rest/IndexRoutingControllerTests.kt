@@ -6,6 +6,7 @@ import boonai.archivist.domain.IndexToIndexMigrationSpec
 import boonai.archivist.domain.IndexRoute
 import boonai.archivist.domain.IndexRouteSimpleSpec
 import boonai.archivist.domain.IndexRouteSpec
+import boonai.archivist.domain.IndexRouteState
 import boonai.archivist.domain.IndexTaskState
 import boonai.archivist.domain.IndexTaskType
 import boonai.archivist.domain.ProjectSize
@@ -128,5 +129,40 @@ class IndexRoutingControllerTests : MockMvcTest() {
             .andExpect(jsonPath("$.type", CoreMatchers.equalTo(IndexTaskType.REINDEX.toString())))
             .andExpect(jsonPath("$.state", CoreMatchers.equalTo(IndexTaskState.RUNNING.toString())))
             .andReturn()
+    }
+
+    @Test
+    fun testClose() {
+        val route = indexRoutingService.createIndexRoute(testSpec)
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/index-routes/${route.id}/_close")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+
+        val state = indexRoutingService.getIndexRoute(route.id).state
+        assertEquals(IndexRouteState.CLOSED, state)
+    }
+
+    @Test
+    fun testOpen() {
+        val route = indexRoutingService.createIndexRoute(testSpec)
+        indexRoutingService.closeIndex(route)
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/index-routes/${route.id}/_open")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+
+        val state = indexRoutingService.getIndexRoute(route.id).state
+        assertEquals(IndexRouteState.READY, state)
     }
 }

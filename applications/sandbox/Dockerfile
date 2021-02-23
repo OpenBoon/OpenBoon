@@ -1,6 +1,17 @@
-FROM zmlp/py3-zvi:latest
+FROM ubuntu:focal
+
 USER root
-RUN ls
+
+RUN groupadd -r boonai && useradd --no-log-init -r -m -g boonai boonai
+
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
+    python3 \
+    python3-pip \
+    libmagic-dev \
+    wget \
+    curl \
+     --no-install-recommends
 
 # apt install a bunch of binary packages
 ENV DEBIAN_FRONTEND=noninteractive
@@ -12,16 +23,16 @@ COPY requirements.txt .
 ENV PATH=$PATH:~/.local/bin
 RUN pip3 install --ignore-installed -r requirements.txt
 
-COPY signing-key.json /home/zorroa/
+COPY signing-key.json /home/boonai/
 
-RUN chown zorroa.zorroa /home/zorroa/signing-key.json
+RUN chown boonai.boonai /home/boonai/signing-key.json
 
-USER zorroa
+USER boonai
 ENV PYTHONPATH="/sandbox"
 ENV PATH=$PATH:~/.local/bin
 
 ENV BOONAI_SERVER="http://api-gateway:80"
-ENV BOONAI_APIKEY_FILE="/home/zorroa/signing-key.json"
+ENV BOONAI_APIKEY_FILE="/home/boonai/signing-key.json"
 WORKDIR /sandbox
 
 CMD streamlit run sandbox.py

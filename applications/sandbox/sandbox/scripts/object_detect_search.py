@@ -1,5 +1,5 @@
-from zmlp import app_from_env
-from zmlp.search import SimilarityQuery
+from boonsdk import app_from_env
+from boonsdk.search import SimilarityQuery
 import numpy as np
 import cv2
 from PIL import Image
@@ -124,7 +124,7 @@ def do_similarity(f):
 
 app = app_from_env()
 
-query = {"size": 10000, "query": {"exists": {"field": "analysis.zvi-object-detection.type"}}}
+query = {"size": 10000, "query": {"exists": {"field": "analysis.boonai-object-detection.type"}}}
 search = app.assets.search(query)
 count = len(search.assets)
 
@@ -151,7 +151,7 @@ img = download_proxy(asset, 2)
 img_draw = img.copy()
 
 
-detections = asset.document['analysis']['zvi-object-detection']
+detections = asset.document['analysis']['boonai-object-detection']
 yr = img.shape[0]
 xr = img.shape[1]
 
@@ -189,7 +189,7 @@ if draw_boxes:
 st.image(img_draw)
 
 if st.sidebar.button('Similarity Search'):
-    sim_hash = asset.document['analysis']['zvi-image-similarity']['simhash']
+    sim_hash = asset.document['analysis']['boonai-image-similarity']['simhash']
     do_similarity(sim_hash)
 
 st.sidebar.markdown('---')

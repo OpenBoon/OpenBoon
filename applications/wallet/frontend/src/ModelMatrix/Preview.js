@@ -148,6 +148,7 @@ const ModelMatrixPreview = ({
 
       <SuspenseBoundary>
         <ModelMatrixPreviewContent
+          moduleName={moduleName}
           encodedFilter={encodedFilter}
           projectId={projectId}
         />

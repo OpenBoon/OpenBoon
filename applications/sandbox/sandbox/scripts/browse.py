@@ -1,5 +1,5 @@
-from zmlp import app_from_env
-from zmlp.search import SimilarityQuery
+from boonsdk import app_from_env
+from boonsdk.search import SimilarityQuery
 import numpy as np
 import cv2
 from PIL import Image
@@ -8,7 +8,7 @@ import pickle
 import json
 import pandas as pd
 
-from zvi.proxies import download_proxy
+from boonlab.proxies import download_proxy
 
 spread_attrs = ['source.filename', 'media.width', 'media.height']
 
@@ -29,13 +29,12 @@ def similarity_search(h):
 
     app = app_from_env()
     search = app.assets.search(q)
-    return(search)
+    return search
+
 
 app = app_from_env()
 
-st.markdown('ZMLP')
-
-search = app.assets.search({"size": 3000, "query": { "term": {"system.state": "Analyzed" }}})
+search = app.assets.search()
 count = len(search.assets)
 
 
@@ -43,6 +42,7 @@ sim_search = False
 
 
 PAGESIZE = int(st.sidebar.text_input(label='Page Size', value='15'))
+
 
 image_index = int(st.sidebar.text_input(label='Image Index', value='0'))
 
@@ -59,7 +59,7 @@ if sim_search:
         if image_index >= len(prev_search.assets):
             image_index = 0
         asset = prev_search.assets[image_index]
-        h = asset.document['analysis']['zvi-image-similarity']['simhash']
+        h = asset.document['analysis']['boonai-image-similarity']['simhash']
         ss = similarity_search(h)
         count = len(ss.assets)
 
@@ -75,10 +75,10 @@ if sim_search:
     if image_index >= len(prev_search.assets):
         image_index = 0
     asset = prev_search.assets[image_index]
-    h = asset.document['analysis']['zvi-image-similarity']['simhash']
+    h = asset.document['analysis']['boonai-image-similarity']['simhash']
     search = similarity_search(h)
 else:
-    search = app.assets.search({"from": page*PAGESIZE, "size": PAGESIZE, "query": { "term": {"system.state": "Analyzed" }}})
+    search = app.assets.search({"from": (page-1)*PAGESIZE, "size": PAGESIZE})
 
 with open('search.pickle', 'wb') as output:  # Overwrites any existing file.
     pickle.dump(search, output)
@@ -100,6 +100,7 @@ except:
 st.sidebar.text("Document Contents")
 if len(search.assets) <= image_index:
     image_index = 0
+
 st.sidebar.json(search.assets[image_index].document)
 
 data = {}
