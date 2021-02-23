@@ -1,10 +1,10 @@
-from zmlp import app_from_env
+from boonsdk import app_from_env
 import numpy as np
 import cv2
 from PIL import Image
 import streamlit as st
 import random
-from zvi.proxies import download_proxy
+from boonlab.proxies import download_proxy
 
 
 app = app_from_env()
