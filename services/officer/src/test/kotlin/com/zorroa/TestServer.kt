@@ -30,7 +30,6 @@ import java.util.Base64
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-@Ignore
 class TestServer {
 
     val serverPort = 9876
