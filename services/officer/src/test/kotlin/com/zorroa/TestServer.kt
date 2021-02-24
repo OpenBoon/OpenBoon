@@ -211,8 +211,7 @@ class TestServer {
             application.install(WebSockets)
             application.routing {
                 webSocket("/render") {
-                    while (true) {
-                        incoming.receive()
+                    for (frame in incoming){
                         assert(true)
                     }
                 }
