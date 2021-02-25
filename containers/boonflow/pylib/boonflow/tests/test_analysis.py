@@ -1,8 +1,8 @@
 import json
 from unittest import TestCase
 
-from boonsdk.client import to_json
 from boonflow import analysis
+from boonsdk.client import to_json
 
 
 class PredicationTests(TestCase):
@@ -52,6 +52,11 @@ class LabelDetectionAnalysisTestsCollapsed(TestCase):
         assert self.analysis.add_prediction(analysis.Prediction('dog', 0.01)) is False
         assert 1 == len(self.analysis)
 
+    def test_add_predictions(self):
+        preds = [analysis.Prediction('cat', 0.50), analysis.Prediction('dog', 0.9)]
+        self.analysis.add_predictions(preds)
+        assert 2 == len(self.analysis)
+
     def test_add_label_and_score(self):
         assert self.analysis.add_label_and_score("dog", 0.5, color='brown') is True
         assert self.analysis.add_label_and_score("dog", 0.6) is True
@@ -77,6 +82,13 @@ class LabelDetectionAnalysisTests(TestCase):
     def setUp(self):
         self.analysis = analysis.LabelDetectionAnalysis(min_score=0.15, collapse_labels=False)
         self.pred = analysis.Prediction('cat', 0.50)
+
+    def test_add_predictions_no_attrs(self):
+        labels = analysis.LabelDetectionAnalysis(save_pred_attrs=False)
+        preds = [analysis.Prediction('dog', 0.9, bbox=[1, 2, 3, 4])]
+        labels.add_predictions(preds)
+        sd = labels.for_json()
+        assert not sd['predictions'][0].get('bbox')
 
     def test_add_prediction(self):
         assert self.analysis.add_prediction(self.pred) is True
