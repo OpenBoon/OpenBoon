@@ -27,7 +27,7 @@ class ZviFaceDetectionProcessor(AssetProcessor):
         analysis = LabelDetectionAnalysis()
         for i, elem in enumerate(self.engine.detect(p_path)):
             analysis.add_label_and_score('face{}'.format(i),
-                                         elem['score'], bbox=elem['rect'], simhash=elem['simhash'])
+                                         elem['score'], bbox=elem['bbox'], simhash=elem['simhash'])
 
         asset.add_analysis(self.namespace, analysis)
 
