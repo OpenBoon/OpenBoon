@@ -228,7 +228,7 @@ class ModelServiceImpl(
             val update = PipelineModUpdate(
                 mod.name, mod.description, model.type.provider,
                 mod.category, mod.type,
-                listOf(FileType.Documents, FileType.Images),
+                listOf(FileType.Documents, FileType.Images, FileType.Videos),
                 ops
             )
             pipelineModService.update(mod.id, update)
@@ -240,7 +240,7 @@ class ModelServiceImpl(
                 model.type.provider,
                 Category.TRAINED,
                 model.type.objective,
-                listOf(FileType.Documents, FileType.Images),
+                listOf(FileType.Documents, FileType.Images, FileType.Videos),
                 ops
             )
 
