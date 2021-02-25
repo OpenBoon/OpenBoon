@@ -20,5 +20,5 @@ USER boonai
 
 COPY model_setup.py .
 RUN python3 model_setup.py
-RUN rm /boonai/model_setup.py
+
 
