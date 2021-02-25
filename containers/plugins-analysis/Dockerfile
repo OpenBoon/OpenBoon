@@ -12,13 +12,13 @@ RUN rm requirements.txt
 
 COPY pylib /boonai/pylib
 WORKDIR /models
-COPY model_setup.py .
-RUN python3 model_setup.py
-RUN rm /models/model_setup.py
 
 RUN curl https://storage.googleapis.com/zorroa-public/models/resnet.tar.gz | tar -xz
 
 WORKDIR /boonai
 USER boonai
 
+COPY model_setup.py .
+RUN python3 model_setup.py
+RUN rm /boonai/model_setup.py
 
