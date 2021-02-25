@@ -22,7 +22,7 @@ class ZviFaceDetectionProcessor(AssetProcessor):
 
     def process(self, frame):
         asset = frame.asset
-        p_path = get_proxy_level_path(asset, 2)
+        p_path = get_proxy_level_path(asset, 3)
 
         analysis = LabelDetectionAnalysis()
         for i, elem in enumerate(self.engine.detect(p_path)):
