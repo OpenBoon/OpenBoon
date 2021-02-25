@@ -17,7 +17,7 @@ const DataSourcesAddCopy = () => {
         css={{ color: colors.key.two }}
         target="_blank"
         rel="noopener noreferrer"
-        href="https://zorroa.gitbook.io/zmlp/client/assets/importing-assets/asset-datasource"
+        href="https://docs.boonai.app/boonsdk/boon-ai-graphical-user-interface-demo/creating-a-data-source"
       >
         Learn more about data sources.
       </a>
