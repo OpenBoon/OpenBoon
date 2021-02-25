@@ -1,4 +1,12 @@
 
+__all__ = [
+    'Prediction',
+    'LabelDetectionAnalysis',
+    'ContentDetectionAnalysis',
+    'SingleLabelAnalysis'
+]
+
+
 class Prediction:
     """
     A single ML prediction which includes at minimum a label
@@ -51,10 +59,14 @@ class Prediction:
         """
         self.attrs[key] = value
 
-    def for_json(self):
+    def for_json(self, save_attrs=True):
         """Returns a dictionary suitable for JSON encoding.
 
         The ZpsJsonEncoder will call this method automatically.
+
+        Args:
+            save_attrs (bool): Save arbitrary prediction attrs.  Not
+                good for video.
 
         Returns:
             :obj:`dict`: A JSON serializable version of this Document.
@@ -64,7 +76,8 @@ class Prediction:
             "label": self.label,
             "score": self.score,
         }
-        base.update(self.attrs)
+        if save_attrs:
+            base.update(self.attrs)
         # If occurrences is nulled out, don't include.
         if self.occurrences is not None:
             base["occurrences"] = self.occurrences
@@ -89,7 +102,11 @@ class LabelDetectionAnalysis:
 
     """
 
-    def __init__(self, min_score=0.0, max_predictions=32, collapse_labels=False):
+    def __init__(self,
+                 min_score=0.0,
+                 max_predictions=32,
+                 collapse_labels=False,
+                 save_pred_attrs=True):
         """
         Create a new LabelDetectionSchema instance.
 
@@ -98,11 +115,14 @@ class LabelDetectionAnalysis:
             max_predictions (int): The max number of predictions.
             collapse_labels (bool): If true, labels of the same name are collapsed into single
                 entry with an occurrence count. This is desired fo video. Default its false.
+            save_pred_attrs (bool): Serialize arbitrary prediction attrs, not good for video.
 
         """
         self.min_score = min_score
         self.max_predictions = max_predictions
         self.collapse_labels = collapse_labels
+        self.save_pred_attrs = save_pred_attrs
+
         self.pred_map = {}
         self.pred_list = []
         self.attrs = {}
@@ -130,6 +150,16 @@ class LabelDetectionAnalysis:
             bool: True if prediction was added. False if the score was not high enough.
         """
         return self.add_prediction(Prediction(label, score, **kwargs))
+
+    def add_predictions(self, predictions):
+        """
+        Add a list of predictiond to Analysis.
+
+        Args:
+            predictions (list): A list of predictions.
+        """
+        for pred in predictions:
+            self.add_prediction(pred)
 
     def add_prediction(self, pred):
         """
@@ -171,6 +201,7 @@ class LabelDetectionAnalysis:
             base_list = [p for p in self.pred_map.values()]
         else:
             base_list = self.pred_list
+
         return sorted(base_list, key=lambda o: o.score, reverse=True)
 
     def for_json(self):
@@ -186,7 +217,8 @@ class LabelDetectionAnalysis:
         base = {
             'type': 'labels',
             'count': min(predict_count, self.max_predictions),
-            'predictions': predictions[0: min(predict_count, self.max_predictions)]
+            'predictions': [p.for_json(self.save_pred_attrs)
+                            for p in predictions[0: min(predict_count, self.max_predictions)]]
         }
         base.update(self.attrs)
         return base
