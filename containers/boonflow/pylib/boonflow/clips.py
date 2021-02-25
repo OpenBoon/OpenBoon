@@ -1,5 +1,7 @@
 """Tools for building clips"""
+from boonflow import Prediction
 from boonsdk.entity import TimelineBuilder
+from boonsdk.util import as_collection
 
 
 class ClipTracker:
@@ -26,18 +28,33 @@ class ClipTracker:
             predictions: A dictionary (label, score) or a list containing predictions info
 
         """
-
         if isinstance(predictions, list):
             # Setting default score in case of list
-            predictions = {pred: 1 for pred in predictions}
+            predictions = [Prediction(pred, 1) for pred in predictions]
+        elif isinstance(predictions, dict):
+            predictions = [Prediction(k, v) for k, v in predictions.items()]
 
-        for label, score in predictions.items():
-            current = self.clips.get(label)
+        self.append_predictions(time, predictions)
+
+    def append_predictions(self, time, preds):
+        """
+        Append a list of predictions to the ClipTacker.
+
+        Args:
+            time (float): Time in seconds.
+            preds (list): A list of predictions.
+        """
+
+        for pred in as_collection(preds):
+            label = pred.label
+            score = pred.score
+            current = self.clips.get(pred.label)
             if not current:
                 self.clips[label] = {
                     'start': time,
                     'stop': time,
-                    'score': score
+                    'score': score,
+                    'bbox': pred.attrs.get('bbox')
                 }
             else:
                 current['stop'] = time
@@ -46,7 +63,8 @@ class ClipTracker:
         to_remove = []
         for label, clip in self.clips.items():
             if clip['stop'] != time:
-                self.timeline.add_clip(label, clip['start'], time, label, clip['score'])
+                self.timeline.add_clip(
+                    label, clip['start'], time, label, clip['score'], bbox=clip['bbox'])
                 to_remove.append(label)
 
         for label in to_remove:

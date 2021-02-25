@@ -1,7 +1,7 @@
 from tensorflow.keras.applications.resnet_v2 import preprocess_input
 
 from boonai_analysis.utils.prechecks import Prechecks
-from boonflow import AssetProcessor, Argument
+from boonflow import AssetProcessor, Argument, Prediction
 from boonflow import FileTypes, file_storage, proxy, clips, video
 from boonflow.analysis import LabelDetectionAnalysis
 from boonflow.proxy import get_proxy_level_path
@@ -104,7 +104,7 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         video.save_timeline(asset, timeline)
 
     def set_analysis(self, extractor, clip_tracker):
-        """ Set up ClipTracker and Asset Detection Analysis
+        """Set up ClipTracker and Asset Detection Analysis
 
         Args:
             extractor: ShotBasedFrameExtractor
@@ -113,11 +113,14 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         Returns:
             (tuple): asset detection analysis, clip_tracker
         """
-        analysis = LabelDetectionAnalysis(collapse_labels=True, min_score=0.01)
+        analysis = LabelDetectionAnalysis(collapse_labels=True,
+                                          min_score=0.01,
+                                          save_pred_attrs=False)
 
         for time_ms, path in extractor:
-            clip_tracker.append(time_ms, self.labels)
-            results = self.predict(path)
-            [analysis.add_label_and_score(r[0], r[1]) for r in results]
+            results = [Prediction(r[0], r[1]) for r in self.predict(path)]
+            clip_tracker.append_predictions(time_ms, results)
+            for p in results:
+                analysis.add_prediction(p)
 
         return analysis, clip_tracker
