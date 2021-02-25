@@ -58,7 +58,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         timeline = tl_patch.call_args_list[0][0][1]
         jtl = timeline.for_json()
         assert jtl['tracks'][0]['name'] == 'Word'
-        assert jtl['tracks'][0]['clips'][0]['score'] == 0.606594352722168
+        assert jtl['tracks'][0]['clips'][0]['score'] == 0.607
 
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)
@@ -91,7 +91,7 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
         timeline = tl_patch.call_args_list[0][0][1]
         jtl = timeline.for_json()
         assert jtl['tracks'][0]['name'] == 'Revealing Clothes'
-        assert jtl['tracks'][0]['clips'][0]['score'] == 0.8383500671386719
+        assert jtl['tracks'][0]['clips'][0]['score'] == 0.838
 
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)
