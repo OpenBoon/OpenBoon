@@ -172,3 +172,23 @@ def zip_directory(src_dir, dst_file, zip_root_name=""):
     zipdir(src_dir + '/', zipf, zip_root_name)
     zipf.close()
     return dst_file
+
+
+def denormalize_bbox(img_width, img_height, poly):
+    """
+    Denormalize a bounding box.
+    Args:
+        img_width (int): The width of the image to draw box on.
+        img_height (int): The height of the image to draw box on.
+        poly (list): A list of relative points.
+
+    Returns:
+
+    """
+    result = []
+    for idx, value in enumerate(poly):
+        if idx % 2 == 0:
+            result.append(int(poly[idx] * img_width))
+        else:
+            result.append(int(poly[idx] * img_height))
+    return result
