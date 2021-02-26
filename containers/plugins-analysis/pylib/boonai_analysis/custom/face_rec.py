@@ -43,7 +43,7 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
         if not faces:
             return
 
-        analysis = LabelDetectionAnalysis()
+        analysis = LabelDetectionAnalysis(min_score=0)
         for pred in self.get_rec_predictions(faces):
             analysis.add_prediction(pred)
         asset.add_analysis(self.app_model.module_name, analysis)
@@ -82,7 +82,7 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
                 score = 1.0 - max(0, min(1, (dist[i][0] - 200) / (min_distance - 200)))
             else:
                 label = 'Unrecognized'
-                score = 1.0
+                score = 0
             result.append(Prediction(label, score, bbox=face['bbox']))
         return result
 
@@ -125,7 +125,7 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
             return
 
         analysis = LabelDetectionAnalysis(
-            collapse_labels=True, save_pred_attrs=False)
+            min_score=0, collapse_labels=True, save_pred_attrs=False)
 
         local_path = file_storage.localize_file(video_proxy)
         # Extract a frame every 1 second.
