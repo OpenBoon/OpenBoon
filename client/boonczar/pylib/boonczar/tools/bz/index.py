@@ -49,13 +49,14 @@ def open_index(args):
 
 
 def display_list(args):
-    fmt = '%-36s %-32s %-32s %-6s'
-    print((fmt % ('ID', 'URL', 'Project', 'State')))
+    fmt = '%-36s %-6s %-16s %-20s %-6s'
+    print((fmt % ('ID', 'State', 'Name', 'Project', 'Ver')))
     for idx in czar.indexes.find_indexes(project=args.p, project_name=args.n):
         print(fmt % (idx.id,
-                     idx.index_url,
+                     idx.state.name,
+                     idx.index_name,
                      idx.project_name,
-                     idx.state.name))
+                     idx.version))
 
 
 def migrate_project(args):

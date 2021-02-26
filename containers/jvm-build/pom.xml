@@ -144,7 +144,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.18</version>
+            <version>42.2.19</version>
         </dependency>
 
         <dependency>
@@ -324,13 +324,13 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-pdf</artifactId>
-            <version>21.1</version>
+            <version>21.2</version>
         </dependency>
 
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-slides</artifactId>
-            <version>21.1</version>
+            <version>21.2</version>
             <classifier>jdk16</classifier>
         </dependency>
 

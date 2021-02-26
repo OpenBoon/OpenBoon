@@ -18,4 +18,7 @@ RUN curl https://storage.googleapis.com/zorroa-public/models/resnet.tar.gz | tar
 WORKDIR /boonai
 USER boonai
 
+COPY model_setup.py .
+RUN python3 model_setup.py
+
 

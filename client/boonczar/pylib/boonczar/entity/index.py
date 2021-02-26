@@ -112,6 +112,18 @@ class Index(BaseEntity):
     def project_name(self):
         return self._data['projectName']
 
+    @property
+    def major_version(self):
+        return self._data['majorVer']
+
+    @property
+    def minor_version(self):
+        return self._data['minorVer']
+
+    @property
+    def version(self):
+        return "{}.{}".format(self._data['majorVer'], self._data['minorVer'])
+
     def __str__(self):
         return "<Index id={} url={} mapping={}>".format(
             self.id, self.index_url, self.mapping_version)
