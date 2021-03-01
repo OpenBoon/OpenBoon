@@ -51,12 +51,14 @@ variable "google-oauth-client-id" {
   description = "Client ID to enable Google OAuth based login."
 }
 
-variable "wallet-domain" {
-  description = "Fully qualified domain name for the wallet server."
+variable "wallet-domains" {
+  description = "Fully qualified domain names for the wallet server."
+  type        = list(string)
 }
 
-variable "zmlp-domain" {
-  description = "Domain name of the zmlp api."
+variable "zmlp-domains" {
+  description = "Domain names of the zmlp api."
+  type        = list(string)
 }
 
 variable "clarifai-key" {
@@ -199,9 +201,16 @@ variable "metrics-log-requests" {
   default     = "false"
 }
 
+variable "deep-video-analysis-enabled" {
+  description = "Feature flags deep video analysis"
+  default     = "false"
+}
+
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"
   zone   = "${var.country}-${var.region}-${var.zone}"
 }
+
+
 

@@ -14,8 +14,7 @@ variable "sql-instance-name" {
 variable "sql-connection-name" {
 }
 
-variable "sql-service-account-key" {
-  sensitive = true
+variable "sql-service-account-key-date" {
 }
 
 variable "inception-key-b64" {
@@ -73,3 +72,6 @@ variable "elasticsearch-url" {
   default = "http://10.3.240.106"
 }
 
+variable "deep-video-analysis-enabled" {
+  default = "false"
+}

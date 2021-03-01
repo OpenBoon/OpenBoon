@@ -1,0 +1,14 @@
+if (ctx._source !=null) {
+    if (ctx._source.containsKey("analysis")) {
+         Map m = new HashMap();
+         for (Map.Entry entry : ctx._source.analysis.entrySet()) {
+                if (entry.getKey().startsWith("zvi-")) {
+                    String k = entry.getKey().replace("zvi-", "boonai-");
+                    m.put(k, entry.getValue());
+                }
+         }
+         ctx._source.analysis.putAll(m);
+    }
+}
+
+

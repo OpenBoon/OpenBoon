@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>es-similarity</artifactId>
-    <groupId>com.zorroa.zmlp</groupId>
-    <name>es-similarity</name>
+    <groupId>boonai</groupId>
+    <name>boonai-es-similarity</name>
     <packaging>jar</packaging>
 
     <parent>
         <relativePath>../pom.xml</relativePath>
-        <groupId>com.zorroa.zmlp</groupId>
-        <artifactId>zorroa-es-plugins</artifactId>
+        <groupId>boonai</groupId>
+        <artifactId>boonai-es-plugins</artifactId>
         <version>1.0</version>
     </parent>
 

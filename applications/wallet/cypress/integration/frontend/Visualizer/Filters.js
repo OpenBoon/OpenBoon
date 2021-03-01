@@ -109,15 +109,15 @@ describe('Visualizer', function () {
 
       cy.contains('Add Filters').click()
 
-      cy.get('summary[aria-label="Location"]').click()
+      cy.get('summary[aria-label="Media"]').click()
 
-      cy.contains('city').click()
+      cy.contains('orientation').click()
 
       cy.contains('Add Filters').click()
 
-      cy.contains('location.city')
+      cy.contains('media.orientation')
 
-      cy.contains('Long Beach').click()
+      cy.contains('portrait').click()
 
       cy.selectFirstAsset()
     })
@@ -133,11 +133,11 @@ describe('Visualizer', function () {
 
       cy.get('summary[aria-label="Analysis"]').click()
 
-      cy.contains('zvi-text-detection').click()
+      cy.contains('boonai-text-detection').click()
 
       cy.contains('Add Filters').click()
 
-      cy.contains('analysis.zvi-text-detection')
+      cy.contains('analysis.boonai-text-detection')
 
       cy.get('input[aria-label="Add Text Detection Filter"]')
         .type('improbable text that should never have results')
@@ -157,13 +157,37 @@ describe('Visualizer', function () {
 
       cy.get('summary[aria-label="Analysis"]').click()
 
-      cy.contains('zvi-label-detection').click()
+      cy.contains('boonai-label-detection').click()
 
       cy.contains('Add Filters').click()
 
-      cy.contains('analysis.zvi-label-detection')
+      cy.contains('analysis.boonai-label-detection')
 
       cy.contains('daisy').click()
+
+      cy.selectFirstAsset()
+    })
+
+    it('can add a Date filter', function () {
+      cy.login()
+
+      cy.visit(`/${this.PROJECT_ID}/visualizer`)
+
+      cy.get('button[aria-label="Filters"]').click()
+
+      cy.contains('Add Filters').click()
+
+      cy.get('summary[aria-label="System"]').click()
+
+      cy.contains('timeModified').click()
+
+      cy.contains('Add Filters').click()
+
+      cy.contains('system.timeModified')
+
+      cy.contains('exists').get('select').select('date')
+
+      cy.contains('Reset').click()
 
       cy.selectFirstAsset()
     })

@@ -8,9 +8,9 @@ from rest_framework import status
 from models.utils import ConfusionMatrix
 from models.views import ModelViewSet, get_model_type_restrictions
 from wallet.tests.utils import check_response
-from zmlp import ZmlpClient, Model
-from zmlp.app import ModelApp, AssetApp
-from zmlp.entity import LabelScope
+from boonsdk import BoonClient, Model
+from boonsdk.app import ModelApp, AssetApp
+from boonsdk.entity import LabelScope
 
 pytestmark = pytest.mark.django_db
 
@@ -66,8 +66,8 @@ class TestModelViewSetList:
             return []
 
         path = reverse('model-list', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
-        monkeypatch.setattr(ZmlpClient, 'iter_paged_results', job_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
+        monkeypatch.setattr(BoonClient, 'iter_paged_results', job_response)
         response = api_client.get(path)
         content = check_response(response)
         results = content['results']
@@ -89,8 +89,8 @@ class TestModelViewSetListAll:
             return []
 
         path = reverse('model-all', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
-        monkeypatch.setattr(ZmlpClient, 'iter_paged_results', job_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
+        monkeypatch.setattr(BoonClient, 'iter_paged_results', job_response)
         response = api_client.get(path)
         content = check_response(response)
         results = content['results']
@@ -119,8 +119,8 @@ class TestModelViewSetRetrieve:
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
         path = reverse('model-detail', kwargs={'project_pk': project.id,
                                                'pk': model_id})
-        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
-        monkeypatch.setattr(ZmlpClient, 'iter_paged_results', job_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_response)
+        monkeypatch.setattr(BoonClient, 'iter_paged_results', job_response)
         monkeypatch.setattr(ModelApp, 'get_model_type_info', model_info_response)
         monkeypatch.setattr(ModelApp, 'get_label_counts', label_counts_response)
         response = api_client.get(path)
@@ -144,7 +144,7 @@ class TestModelViewSetDestroy:
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
         path = reverse('model-detail', kwargs={'project_pk': project.id,
                                                'pk': model_id})
-        monkeypatch.setattr(ZmlpClient, 'delete', mock_response)
+        monkeypatch.setattr(BoonClient, 'delete', mock_response)
         response = api_client.delete(path)
         content = check_response(response)
         assert content['id'] == model_id
@@ -161,7 +161,7 @@ class TestModelViewSetCreate:
         body = {'name': 'Test Model',
                 'type': 'ZVI_KNN_CLASSIFIER'}
         path = reverse('model-list', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
         response = api_client.post(path, body)
         content = check_response(response, status.HTTP_201_CREATED)
         results = content['results']
@@ -181,7 +181,7 @@ class TestModelViewSetActions:
             return []
 
         path = reverse('model-model-types', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_response)
         response = api_client.get(path)
         content = check_response(response)
         assert content['results'] == []
@@ -192,7 +192,7 @@ class TestModelViewSetActions:
             return [{'name': 'ZVI_KNN_CLASSIFIER', 'label': 'Sci-kit Learn KNN Classifier', 'description': 'Classify images or documents using a KNN classifier.  This type of model generates a single prediction which can be used to quickly organize assets into general groups.The KNN classifier works with just a single image and label.', 'objective': 'Label Detection', 'provider': 'Zorroa', 'deployOnTrainingSet': True, 'minConcepts': 1, 'minExamples': 1}, {'name': 'ZVI_LABEL_DETECTION', 'label': 'Tensorflow CNN Classifier', 'description': 'Classify images or documents using a custom trained CNN deep learning algorithm.  This type of model generates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each. ', 'objective': 'Label Detection', 'provider': 'Zorroa', 'deployOnTrainingSet': False, 'minConcepts': 2, 'minExamples': 10}, {'name': 'ZVI_FACE_RECOGNITION', 'label': 'ZVI Face Recognition', 'description': 'Relabel existing ZVI faces using a KNN Face Recognition model.', 'objective': 'Face Recognition', 'provider': 'Zorroa', 'deployOnTrainingSet': True, 'minConcepts': 1, 'minExamples': 1}, {'name': 'GCP_LABEL_DETECTION', 'label': 'Google AutoML Classifier', 'description': 'Utilize Google AutoML to train an image classifier.', 'objective': 'Label Detection', 'provider': 'Google', 'deployOnTrainingSet': True, 'minConcepts': 2, 'minExamples': 10}]  # noqa
 
         path = reverse('model-model-types', kwargs={'project_pk': project.id})
-        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_response)
         response = api_client.get(path)
         content = check_response(response)
         results = content['results']
@@ -237,7 +237,7 @@ class TestModelViewSetActions:
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
         path = reverse('model-get-labels', kwargs={'project_pk': project.id,
                                                    'pk': model_id})
-        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_response)
         response = api_client.get(path)
         content = check_response(response)
         assert content == {'count': 1,
@@ -248,7 +248,7 @@ class TestModelViewSetActions:
             return {'updated': 26}
 
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
-        monkeypatch.setattr(ZmlpClient, 'put', mock_response)
+        monkeypatch.setattr(BoonClient, 'put', mock_response)
         path = reverse('model-rename-label', kwargs={'project_pk': project.id,
                                                      'pk': model_id})
         response = api_client.put(path, {'label': 'Dog', 'newLabel': 'Cat'})
@@ -260,7 +260,7 @@ class TestModelViewSetActions:
             return {'updated': 1}
 
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
-        monkeypatch.setattr(ZmlpClient, 'delete', mock_response)
+        monkeypatch.setattr(BoonClient, 'delete', mock_response)
         path = reverse('model-destroy-label', kwargs={'project_pk': project.id,
                                                       'pk': model_id})
         response = api_client.delete(path, {'label': 'Dog'})
@@ -268,7 +268,8 @@ class TestModelViewSetActions:
         assert content == {'updated': 1}
 
     def test_confusion_matrix_actions(self, login, project, api_client, monkeypatch):
-        mock_aggs = lambda self : {'nested#nested_labels': {'doc_count': 1744, 'filter#model_train_labels': {'doc_count': 838, 'sterms#labels': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'bird', 'doc_count': 90, 'reverse_nested#predictions_by_label': {'doc_count': 90, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'Unrecognized', 'doc_count': 60}, {'key': 'bird', 'doc_count': 28}, {'key': 'frog', 'doc_count': 2}]}}}, {'key': 'deer', 'doc_count': 90, 'reverse_nested#predictions_by_label': {'doc_count': 90, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'deer', 'doc_count': 88}, {'key': 'Unrecognized', 'doc_count': 2}]}}}, {'key': 'dog', 'doc_count': 90, 'reverse_nested#predictions_by_label': {'doc_count': 90, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'dog', 'doc_count': 64}, {'key': 'Unrecognized', 'doc_count': 20}, {'key': 'cat', 'doc_count': 3}, {'key': 'horse', 'doc_count': 2}, {'key': 'deer', 'doc_count': 1}]}}}, {'key': 'frog', 'doc_count': 87, 'reverse_nested#predictions_by_label': {'doc_count': 87, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'frog', 'doc_count': 83}, {'key': 'Unrecognized', 'doc_count': 4}]}}}, {'key': 'cat', 'doc_count': 86, 'reverse_nested#predictions_by_label': {'doc_count': 86, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'cat', 'doc_count': 83}, {'key': 'Unrecognized', 'doc_count': 3}]}}}, {'key': 'ship', 'doc_count': 84, 'reverse_nested#predictions_by_label': {'doc_count': 84, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'ship', 'doc_count': 70}, {'key': 'Unrecognized', 'doc_count': 14}]}}}, {'key': 'horse', 'doc_count': 82, 'reverse_nested#predictions_by_label': {'doc_count': 82, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'horse', 'doc_count': 75}, {'key': 'Unrecognized', 'doc_count': 7}]}}}, {'key': 'truck', 'doc_count': 82, 'reverse_nested#predictions_by_label': {'doc_count': 82, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'truck', 'doc_count': 63}, {'key': 'Unrecognized', 'doc_count': 19}]}}}, {'key': 'airplane', 'doc_count': 75, 'reverse_nested#predictions_by_label': {'doc_count': 75, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'airplane', 'doc_count': 61}, {'key': 'Unrecognized', 'doc_count': 14}]}}}, {'key': 'automobile', 'doc_count': 72, 'reverse_nested#predictions_by_label': {'doc_count': 72, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'Unrecognized', 'doc_count': 38}, {'key': 'truck', 'doc_count': 24}, {'key': 'automobile', 'doc_count': 9}, {'key': 'frog', 'doc_count': 1}]}}}]}}}}  # noqa
+        def mock_aggs(*args, **kwargs):
+            return {'nested#nested_labels': {'doc_count': 1744, 'filter#model_train_labels': {'doc_count': 838, 'sterms#labels': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'bird', 'doc_count': 90, 'reverse_nested#predictions_by_label': {'doc_count': 90, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'Unrecognized', 'doc_count': 60}, {'key': 'bird', 'doc_count': 28}, {'key': 'frog', 'doc_count': 2}]}}}, {'key': 'deer', 'doc_count': 90, 'reverse_nested#predictions_by_label': {'doc_count': 90, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'deer', 'doc_count': 88}, {'key': 'Unrecognized', 'doc_count': 2}]}}}, {'key': 'dog', 'doc_count': 90, 'reverse_nested#predictions_by_label': {'doc_count': 90, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'dog', 'doc_count': 64}, {'key': 'Unrecognized', 'doc_count': 20}, {'key': 'cat', 'doc_count': 3}, {'key': 'horse', 'doc_count': 2}, {'key': 'deer', 'doc_count': 1}]}}}, {'key': 'frog', 'doc_count': 87, 'reverse_nested#predictions_by_label': {'doc_count': 87, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'frog', 'doc_count': 83}, {'key': 'Unrecognized', 'doc_count': 4}]}}}, {'key': 'cat', 'doc_count': 86, 'reverse_nested#predictions_by_label': {'doc_count': 86, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'cat', 'doc_count': 83}, {'key': 'Unrecognized', 'doc_count': 3}]}}}, {'key': 'ship', 'doc_count': 84, 'reverse_nested#predictions_by_label': {'doc_count': 84, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'ship', 'doc_count': 70}, {'key': 'Unrecognized', 'doc_count': 14}]}}}, {'key': 'horse', 'doc_count': 82, 'reverse_nested#predictions_by_label': {'doc_count': 82, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'horse', 'doc_count': 75}, {'key': 'Unrecognized', 'doc_count': 7}]}}}, {'key': 'truck', 'doc_count': 82, 'reverse_nested#predictions_by_label': {'doc_count': 82, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'truck', 'doc_count': 63}, {'key': 'Unrecognized', 'doc_count': 19}]}}}, {'key': 'airplane', 'doc_count': 75, 'reverse_nested#predictions_by_label': {'doc_count': 75, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'airplane', 'doc_count': 61}, {'key': 'Unrecognized', 'doc_count': 14}]}}}, {'key': 'automobile', 'doc_count': 72, 'reverse_nested#predictions_by_label': {'doc_count': 72, 'sterms#predictions': {'doc_count_error_upper_bound': 0, 'sum_other_doc_count': 0, 'buckets': [{'key': 'Unrecognized', 'doc_count': 38}, {'key': 'truck', 'doc_count': 24}, {'key': 'automobile', 'doc_count': 9}, {'key': 'frog', 'doc_count': 1}]}}}]}}}}  # noqa
         monkeypatch.setattr(ConfusionMatrix, '_ConfusionMatrix__get_confusion_matrix_aggregations',
                             mock_aggs)
         monkeypatch.setattr(ModelApp, 'get_model', lambda self, pk: Model({'name': 'test', 'moduleName': 'also-test'}))

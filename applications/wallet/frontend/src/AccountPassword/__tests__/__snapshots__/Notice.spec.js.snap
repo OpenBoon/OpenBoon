@@ -51,8 +51,8 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
 
 .emotion-5:focus,
 .emotion-5 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
@@ -166,14 +166,14 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
 .emotion-19:hover,
 .emotion-19:visited,
 .emotion-19 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-19:hover,
 .emotion-19 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-19[aria-disabled=true],
@@ -290,14 +290,14 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
 .emotion-28:hover,
 .emotion-28:visited,
 .emotion-28 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-28:hover,
 .emotion-28 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-28[aria-disabled=true],
@@ -453,7 +453,7 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
       <div
         className="emotion-26"
       >
-        If so, you may not have a Zorroa password. You can create one by resetting the password and checking your email for instructions.
+        If so, you may not have a Boon AI password. You can create one by resetting the password and checking your email for instructions.
       </div>
       <div
         className="emotion-17"

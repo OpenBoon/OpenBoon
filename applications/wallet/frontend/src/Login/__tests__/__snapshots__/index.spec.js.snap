@@ -269,8 +269,8 @@ exports[`<Login /> should render error 1`] = `
 
 .emotion-20:focus,
 .emotion-20 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
 }
 
 .emotion-20:hover,
@@ -336,7 +336,7 @@ exports[`<Login /> should render error 1`] = `
 }
 
 .emotion-28:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-31 {
@@ -386,14 +386,14 @@ exports[`<Login /> should render error 1`] = `
 .emotion-32:hover,
 .emotion-32:visited,
 .emotion-32 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-32:hover,
 .emotion-32 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-32[aria-disabled=true],
@@ -440,7 +440,7 @@ exports[`<Login /> should render error 1`] = `
   >
     <svg
       className="emotion-5"
-      data-file-name="largeLogo.svg"
+      data-file-name="logo.svg"
       width={180}
     />
     <h3
@@ -497,7 +497,7 @@ exports[`<Login /> should render error 1`] = `
           />
           <a
             className="emotion-16"
-            href="mailto:support@zorroa.com?subject=ZVI Console Login Trouble"
+            href="mailto:support@boonai.io?subject=Boon AI Login Trouble"
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -841,8 +841,8 @@ exports[`<Login /> should render password changed 1`] = `
 
 .emotion-15:focus,
 .emotion-15 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
 }
 
 .emotion-15:hover,
@@ -902,7 +902,7 @@ exports[`<Login /> should render password changed 1`] = `
 }
 
 .emotion-22:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-24 {
@@ -952,14 +952,14 @@ exports[`<Login /> should render password changed 1`] = `
 .emotion-25:hover,
 .emotion-25:visited,
 .emotion-25 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-25:hover,
 .emotion-25 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-25[aria-disabled=true],
@@ -1006,7 +1006,7 @@ exports[`<Login /> should render password changed 1`] = `
   >
     <svg
       className="emotion-5"
-      data-file-name="largeLogo.svg"
+      data-file-name="logo.svg"
       width={180}
     />
     <h3
@@ -1367,8 +1367,8 @@ exports[`<Login /> should render properly 1`] = `
 
 .emotion-15:focus,
 .emotion-15 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
 }
 
 .emotion-15:hover,
@@ -1428,7 +1428,7 @@ exports[`<Login /> should render properly 1`] = `
 }
 
 .emotion-22:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-24 {
@@ -1478,14 +1478,14 @@ exports[`<Login /> should render properly 1`] = `
 .emotion-25:hover,
 .emotion-25:visited,
 .emotion-25 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-25:hover,
 .emotion-25 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-25[aria-disabled=true],
@@ -1532,7 +1532,7 @@ exports[`<Login /> should render properly 1`] = `
   >
     <svg
       className="emotion-5"
-      data-file-name="largeLogo.svg"
+      data-file-name="logo.svg"
       width={180}
     />
     <h3
@@ -1893,8 +1893,8 @@ exports[`<Login /> should render properly on account activation success 1`] = `
 
 .emotion-15:focus,
 .emotion-15 .noop {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
 }
 
 .emotion-15:hover,
@@ -1954,7 +1954,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
 }
 
 .emotion-22:hover {
-  color: #73b61c;
+  color: #3A5DFF;
 }
 
 .emotion-24 {
@@ -2004,14 +2004,14 @@ exports[`<Login /> should render properly on account activation success 1`] = `
 .emotion-25:hover,
 .emotion-25:visited,
 .emotion-25 .noop {
-  background-color: #73b61c;
+  background-color: #3A5DFF;
 }
 
 .emotion-25:hover,
 .emotion-25 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #96c955;
+  background-color: #6088FE;
 }
 
 .emotion-25[aria-disabled=true],
@@ -2058,7 +2058,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   >
     <svg
       className="emotion-5"
-      data-file-name="largeLogo.svg"
+      data-file-name="logo.svg"
       width={180}
     />
     <h3

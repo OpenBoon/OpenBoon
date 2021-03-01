@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import pytest
 from requests import Response
-from zmlp import Asset
+from boonsdk import Asset
 
 from assets.utils import AssetBoxImager, crop_image_poly, get_largest_proxy
 
@@ -31,21 +31,21 @@ def asset():
         'metrics': {'pipeline': [
             {'executionTime': 1.02, 'module': 'standard', 'checksum': 2178814325,
              'executionDate': '2020-04-21T02:49:45.161782',
-             'processor': 'zmlp_core.core.PreCacheSourceFileProcessor'},
+             'processor': 'boonai_core.core.PreCacheSourceFileProcessor'},
             {'executionTime': 3.49, 'module': 'standard', 'checksum': 117837444,
              'executionDate': '2020-04-21T02:49:48.915740',
-             'processor': 'zmlp_core.core.FileImportProcessor'},
+             'processor': 'boonai_core.core.FileImportProcessor'},
             {'executionTime': 2.68, 'module': 'standard', 'checksum': 457707303,
              'executionDate': '2020-04-21T02:49:52.344155',
-             'processor': 'zmlp_core.proxy.ImageProxyProcessor'},
+             'processor': 'boonai_core.proxy.ImageProxyProcessor'},
             {'module': 'standard', 'checksum': 482873147,
-             'processor': 'zmlp_core.proxy.VideoProxyProcessor'},
+             'processor': 'boonai_core.proxy.VideoProxyProcessor'},
             {'executionTime': 4.9, 'module': 'standard', 'checksum': 4122678338,
              'executionDate': '2020-04-21T02:50:06.853707',
-             'processor': 'zmlp_analysis.similarity.ZviSimilarityProcessor'},
+             'processor': 'boonai_analysis.similarity.ZviSimilarityProcessor'},
             {'executionTime': 5.54, 'module': 'zvi-object-detection',
              'checksum': 332797101, 'executionDate': '2020-04-21T22:27:26.028970',
-             'processor': 'zmlp_analysis.detect.ZmlpObjectDetectionProcessor'}]},
+             'processor': 'boonai_analysis.detect.ZmlpObjectDetectionProcessor'}]},
         'media': {'orientation': 'landscape', 'aspect': 1.5, 'width': 650, 'length': 1,
                   'type': 'image', 'height': 434}, 'analysis': {
             'zvi-object-detection': {'count': 1, 'type': 'labels', 'predictions': [

@@ -134,14 +134,14 @@ resource "kubernetes_deployment" "reporter" {
         }
         container {
           name              = "reporter"
-          image             = "zmlp/reporter:${var.container-tag}"
+          image             = "boonai/reporter:${var.container-tag}"
           image_pull_policy = "Always"
           env {
             name  = "PROJECT_ID"
             value = var.project
           }
           env {
-            name  = "ZMLP_API_URL"
+            name  = "BOONAI_API_URL"
             value = var.zmlp-api-url
           }
           env {

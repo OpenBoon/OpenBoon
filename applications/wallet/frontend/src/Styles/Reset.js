@@ -89,6 +89,7 @@ const StylesReset = () => (
       }}
     />
     <Global
+      // eslint-disable-next-line @emotion/syntax-preference
       styles={css`
         @font-face {
           font-family: 'Roboto';

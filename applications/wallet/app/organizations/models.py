@@ -12,7 +12,7 @@ User = get_user_model()
 
 
 class Plan(models.TextChoices):
-    """Choices for the tier field in the Subscription model."""
+    """Choices for the plan field in the Organization model."""
     ACCESS = 'access'
     BUILD = 'build'
     CUSTOM_ENTERPRISE = 'custom_enterprise'
@@ -73,9 +73,9 @@ class Organization(UUIDMixin, TimeStampMixin, ActiveMixin):
             project_results.append(response.json())
 
         summed_tiers = {
-            'tier_1_image_count': sum([r['tier_1_image_count'] for r in project_results]),
-            'tier_1_video_hours': sum([r['tier_1_video_hours'] for r in project_results]),
-            'tier_2_image_count': sum([r['tier_2_image_count'] for r in project_results]),
-            'tier_2_video_hours': sum([r['tier_2_video_hours'] for r in project_results])
+            'tier_1_image_count': sum([r['tier_1']['image_count'] for r in project_results]),
+            'tier_1_video_hours': int(sum([r['tier_1']['video_minutes'] for r in project_results])/60),
+            'tier_2_image_count': sum([r['tier_2']['image_count'] for r in project_results]),
+            'tier_2_video_hours': int(sum([r['tier_2']['video_minutes'] for r in project_results])/60)
         }
         return summed_tiers

@@ -5,38 +5,38 @@
 
     <parent>
         <relativePath>../pom.xml</relativePath>
-        <groupId>com.zorroa.zmlp</groupId>
-        <artifactId>auth-server-parent</artifactId>
+        <groupId>boonai</groupId>
+        <artifactId>authserver-parent</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <groupId>com.zorroa.zmlp</groupId>
-    <artifactId>auth-server</artifactId>
-    <name>auth-server</name>
-    <description>ZMLP Auth Server</description>
+    <groupId>boonai</groupId>
+    <artifactId>authserver</artifactId>
+    <name>authserver</name>
+    <description>Boon AI Auth Server</description>
 
     <properties>
         <java.version>1.8</java.version>
-        <kotlin.version>1.4.21-2</kotlin.version>
-        <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
-        <zmlp-common.version>1.0.0</zmlp-common.version>
+        <kotlin.version>1.4.30</kotlin.version>
+        <spring-boot.version>2.3.8.RELEASE</spring-boot.version>
+        <boonai-common.version>1.0.0</boonai-common.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.zorroa.zmlp</groupId>
-            <artifactId>zmlp-service</artifactId>
-            <version>${zmlp-common.version}</version>
+            <groupId>boonai</groupId>
+            <artifactId>boonai-service</artifactId>
+            <version>${boonai-common.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.zorroa.zmlp</groupId>
-            <artifactId>zmlp-util</artifactId>
-            <version>${zmlp-common.version}</version>
+            <groupId>boonai</groupId>
+            <artifactId>boonai-util</artifactId>
+            <version>${boonai-common.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.zorroa.zmlp</groupId>
-            <artifactId>zmlp-apikey</artifactId>
-            <version>${zmlp-common.version}</version>
+            <groupId>boonai</groupId>
+            <artifactId>boonai-apikey</artifactId>
+            <version>${boonai-common.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -50,17 +50,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
 
         <dependency>
@@ -101,7 +90,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.18</version>
+            <version>42.2.19</version>
         </dependency>
 
         <dependency>
@@ -112,7 +101,7 @@
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>3.12.1</version>
+            <version>3.13.0</version>
         </dependency>
 
         <dependency>
@@ -174,7 +163,7 @@
         <dependency>
             <groupId>com.google.cloud.sql</groupId>
             <artifactId>postgres-socket-factory</artifactId>
-            <version>1.2.0</version>
+            <version>1.2.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>mysql</groupId>

@@ -3,7 +3,7 @@ import uuid
 from django.core.exceptions import ImproperlyConfigured
 from rest_framework.exceptions import ValidationError, NotFound
 
-from zmlp.search import SimilarityQuery, LabelConfidenceQuery
+from boonsdk.search import SimilarityQuery, LabelConfidenceQuery
 
 
 class BaseFilter(object):
@@ -161,7 +161,7 @@ class BaseFilter(object):
         return query
 
     def serialize_agg_response(self, response):
-        """Serializes an aggregation query's response from ZMLP."""
+        """Serializes an aggregation query's response from boonsdk."""
         count = response['hits']['total']['value']
         agg_name = f'{self.agg_prefix}#{self.name}'
         data = response['aggregations'][agg_name]
@@ -477,7 +477,7 @@ class SimilarityFilter(BaseFilter):
 
         hashes = []
         for asset in assets:
-            simhash = asset.get_attr('analysis.zvi-image-similarity.simhash')
+            simhash = asset.get_attr(f'{self.data["attribute"]}.simhash')
             if simhash:
                 hashes.append(simhash)
         return hashes
@@ -571,7 +571,7 @@ class LabelFilter(BaseFilter):
         return query
 
     def serialize_agg_response(self, response):
-        """Serializes an aggregation query's response from ZMLP."""
+        """Serializes an aggregation query's response from boonsdk."""
         count = response['hits']['total']['value']
         nested_agg_name = f'nested#{self.name}'
         terms_agg_name = f'sterms#nested_{self.name}'

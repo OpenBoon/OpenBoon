@@ -19,7 +19,7 @@ describe('<Assets />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    require('swr').__setMockUseSWRInfiniteResponse()
+    require('swr').__setMockUseSWRInfiniteResponse({})
 
     const component = TestRenderer.create(<Assets />)
 
@@ -32,7 +32,7 @@ describe('<Assets />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    require('swr').__setMockUseSWRInfiniteResponse([assets])
+    require('swr').__setMockUseSWRInfiniteResponse({ data: [assets] })
 
     const component = TestRenderer.create(<Assets />)
 
@@ -86,7 +86,9 @@ describe('<Assets />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    require('swr').__setMockUseSWRInfiniteResponse([{ count: 0, results: [] }])
+    require('swr').__setMockUseSWRInfiniteResponse({
+      data: [{ count: 0, results: [] }],
+    })
 
     const component = TestRenderer.create(<Assets />)
 
@@ -106,7 +108,7 @@ describe('<Assets />', () => {
           filters: [
             {
               type: 'similarity',
-              attribute: 'analysis.zvi-image-similarity',
+              attribute: 'analysis.boonai-image-similarity',
               values: { ids: [ASSET_ID] },
             },
           ],
@@ -114,7 +116,9 @@ describe('<Assets />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRInfiniteResponse([{ count: 0, results: [] }])
+    require('swr').__setMockUseSWRInfiniteResponse({
+      data: [{ count: 0, results: [] }],
+    })
 
     const component = TestRenderer.create(<Assets />)
 
@@ -141,7 +145,9 @@ describe('<Assets />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRInfiniteResponse([{ count: 0, results: [] }])
+    require('swr').__setMockUseSWRInfiniteResponse({
+      data: [{ count: 0, results: [] }],
+    })
 
     const component = TestRenderer.create(<Assets />)
 

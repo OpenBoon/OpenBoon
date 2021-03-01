@@ -1,5 +1,5 @@
 import pytest
-import zmlp
+import boonsdk
 
 from django.urls import reverse
 from django.conf import settings
@@ -49,27 +49,48 @@ class TestAPICallsViewSet:
         response = api_client.get(reverse('apicalls-report'))
         assert response.status_code == 200
         content = response.json()
-        assert content[0]['image_count'] == 10
-        assert content[1]['image_count'] == 15
-        assert content[2]['image_count'] == 1
-        assert content[3]['image_count'] == 10
-        assert content[4]['image_count'] == 11
-        assert content[5]['image_count'] == 1
-        assert content[6]['image_count'] == 12
-        assert content[0]['video_minutes'] == 46.51
-        assert content[1]['video_minutes'] == 73.13
-        assert content[2]['video_minutes'] == 7.17
-        assert content[3]['video_minutes'] == 48.8
-        assert content[4]['video_minutes'] == 45.66
-        assert content[5]['video_minutes'] == 2.5
-        assert content[6]['video_minutes'] == 52.55
+        assert content == [{'image_count': 1,
+                            'project': '00000000-0000-0000-0000-000000000000',
+                            'service': 'boonai-object-detection',
+                            'tier': 'tier_1',
+                            'video_minutes': 7.17},
+                           {'image_count': 10,
+                            'project': '00000000-0000-0000-0000-000000000000',
+                            'service': 'gcp-label-detection',
+                            'tier': 'tier_2',
+                            'video_minutes': 46.51},
+                           {'image_count': 15,
+                            'project': '00000000-0000-0000-0000-000000000000',
+                            'service': 'standard',
+                            'tier': 'free',
+                            'video_minutes': 73.13},
+                           {'image_count': 11,
+                            'project': '11111111-1111-1111-1111-111111111111',
+                            'service': 'boonai-object-detection',
+                            'tier': 'tier_1',
+                            'video_minutes': 45.66},
+                           {'image_count': 10,
+                            'project': '11111111-1111-1111-1111-111111111111',
+                            'service': 'standard',
+                            'tier': 'free',
+                            'video_minutes': 48.8},
+                           {'image_count': 1,
+                            'project': '22222222-2222-2222-2222-222222222222',
+                            'service': 'boonai-label-detection',
+                            'tier': 'tier_1',
+                            'video_minutes': 2.5},
+                           {'image_count': 12,
+                            'project': '22222222-2222-2222-2222-222222222222',
+                            'service': 'boonai-object-detection',
+                            'tier': 'tier_1',
+                            'video_minutes': 52.55}]
 
     def test_report_csv(self, api_client, test_set):
         response = api_client.get(reverse('apicalls-report'), content_type='text/csv',
                                   HTTP_ACCEPT='text/csv')
         content = response.rendered_content.decode('utf-8').strip().split('\r\n')
         assert len(content) == 8
-        assert content[0] == 'project,service,image_count,video_minutes'
+        assert content[0] == 'project,service,tier,image_count,video_minutes'
         assert response['content-disposition'] == 'attachment; filename=billing_report.csv'
 
     def test_report_csv_custom_filename(self, api_client, test_set):
@@ -91,8 +112,8 @@ class TestAPICallsViewSet:
         response = api_client.get(reverse('apicalls-tiered-usage'),
                                   {'project': '00000000-0000-0000-0000-000000000000'})
         assert response.status_code == 200
-        assert response.json() == {'tier_1': {'image_count': 16,
-                                              'video_minutes': 80.3},
+        assert response.json() == {'tier_1': {'image_count': 1,
+                                              'video_minutes': 7.17},
                                    'tier_2': {'image_count': 10,
                                               'video_minutes': 46.51}}
 
@@ -110,7 +131,8 @@ class TestAPICallsViewSet:
 class TestTiers:
 
     def test_all_tiers_covered(self):
-        app = zmlp.ZmlpApp(settings.DEV_PIPELINES_KEY, server=settings.DEV_DOMAIN)
+        app = boonsdk.BoonApp(settings.DEV_PIPELINES_KEY, server=settings.DEV_DOMAIN)
+
         # Get all current modules on Dev
         index = 0
         size = 50

@@ -175,7 +175,7 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
     className="emotion-1"
   >
     <button
-      aria-label="zmlp_core.core.processors.PreCacheSourceFileProcessor"
+      aria-label="boonai_core.core.processors.PreCacheSourceFileProcessor"
       className="emotion-2"
       onBlur={[Function]}
       onFocus={[Function]}
@@ -185,7 +185,7 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
       type="button"
     />
     <button
-      aria-label="zmlp_core.image.importers.ImageImporter"
+      aria-label="boonai_core.image.importers.ImageImporter"
       className="emotion-3"
       onBlur={[Function]}
       onFocus={[Function]}
@@ -195,7 +195,7 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
       type="button"
     />
     <button
-      aria-label="zmlp_core.office.importers.OfficeImporter"
+      aria-label="boonai_core.office.importers.OfficeImporter"
       className="emotion-4"
       onBlur={[Function]}
       onFocus={[Function]}
@@ -205,7 +205,7 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
       type="button"
     />
     <button
-      aria-label="zmlp_core.video.VideoImporter"
+      aria-label="boonai_core.video.VideoImporter"
       className="emotion-5"
       onBlur={[Function]}
       onFocus={[Function]}
@@ -215,7 +215,7 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
       type="button"
     />
     <button
-      aria-label="zmlp_core.core.processors.AssertAttributesProcessor"
+      aria-label="boonai_core.core.processors.AssertAttributesProcessor"
       className="emotion-6"
       onBlur={[Function]}
       onFocus={[Function]}

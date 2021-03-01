@@ -13,7 +13,7 @@ import { fetcher, parseResponse } from '../Fetch/helpers'
  *    where only CURRENT_POLICIES_DATE changes
  */
 
-export const CURRENT_POLICIES_DATE = '20201208'
+export const CURRENT_POLICIES_DATE = '20210211'
 
 export const onSubmit = async ({ dispatch }) => {
   dispatch({ isLoading: true, errors: {} })

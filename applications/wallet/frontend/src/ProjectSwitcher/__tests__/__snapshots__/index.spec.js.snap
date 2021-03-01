@@ -33,7 +33,7 @@ exports[`<ProjectSwitcher /> should render properly with multiple projects by da
   font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #73b61c;
+  color: #6088FE;
   background-color: transparent;
   padding-left: 16px;
   height: 100%;
@@ -243,7 +243,7 @@ exports[`<ProjectSwitcher /> should render properly with multiple projects by na
   font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #73b61c;
+  color: #6088FE;
   background-color: transparent;
   padding-left: 16px;
   height: 100%;
@@ -274,10 +274,6 @@ exports[`<ProjectSwitcher /> should render properly with multiple projects by na
 
 .emotion-3 {
   margin-left: 8px;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 <div
@@ -336,7 +332,7 @@ exports[`<ProjectSwitcher /> should render properly with multiple projects by na
   font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #73b61c;
+  color: #6088FE;
   background-color: transparent;
   padding-left: 16px;
   height: 100%;
@@ -528,7 +524,7 @@ exports[`<ProjectSwitcher /> should render properly with one project 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 4px 8px;
-  color: #73b61c;
+  color: #6088FE;
 }
 
 <div

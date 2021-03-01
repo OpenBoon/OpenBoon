@@ -47,7 +47,7 @@ const ModelMatrixPreview = ({
           borderLeft: constants.borders.regular.coal,
         }}
       >
-        Select a cell of the matrix to view the labeled assets.
+        Select a cell of the matrix to view the predicted assets.
       </div>
     )
   }
@@ -120,7 +120,7 @@ const ModelMatrixPreview = ({
 
         <div css={{ height: spacing.normal }} />
 
-        <h3>
+        <h3 css={{ paddingBottom: spacing.small }}>
           <span
             css={{
               fontFamily: typography.family.condensed,
@@ -148,6 +148,7 @@ const ModelMatrixPreview = ({
 
       <SuspenseBoundary>
         <ModelMatrixPreviewContent
+          moduleName={moduleName}
           encodedFilter={encodedFilter}
           projectId={projectId}
         />

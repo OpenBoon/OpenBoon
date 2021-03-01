@@ -2,8 +2,8 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from zmlp import ModelType
-from zmlp.client import ZmlpNotFoundException
+from boonsdk import ModelType
+from boonsdk.client import BoonSdkNotFoundException
 
 from assets.utils import AssetBoxImager
 from assets.views import AssetViewSet
@@ -26,7 +26,7 @@ def predictions_match(left, right):
 class FaceViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
     zmlp_only = True
     zmlp_root_api_path = 'api/v3/assets/'
-    detection_attr = 'analysis.zvi-face-detection'
+    detection_attr = 'analysis.boonai-face-detection'
     model_name = 'console'
     serializer_class = UpdateFaceLabelsSerializer
     pagination_class = ZMLPFromSizePagination
@@ -41,7 +41,7 @@ class FaceViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
         filter = {
             'query': {
                 'bool': {
-                    'filter': [{'exists': {'field': 'analysis.zvi-face-detection'}}]
+                    'filter': [{'exists': {'field': self.detection_attr}}]
                 }
             }
         }
@@ -53,7 +53,7 @@ class FaceViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
     def retrieve(self, request, project_pk, pk):
         """Given an asset, returns the face predictions and applicable labels for that asset.
 
-        Looks at the zvi-face-detection analysis and returns the bbox image, simhash, label,
+        Looks at the boonai-face-detection analysis and returns the bbox image, simhash, label,
         and bbox coordinates for each prediction that is made. Also looks at applied labels
         for this asset, and matches up labels with their associated prediction. If a label
         mathes a prediction, the predictions `label` will be overridden with the labels value,
@@ -252,6 +252,6 @@ class FaceViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
         """Helper to get or create the model for Face Training."""
         try:
             model = app.models.find_one_model(name=self.model_name)
-        except ZmlpNotFoundException:
-            model = app.models.create_model(self.model_name, ModelType.ZVI_FACE_RECOGNITION)
+        except BoonSdkNotFoundException:
+            model = app.models.create_model(self.model_name, ModelType.BOONAI_FACE_RECOGNITION)
         return model

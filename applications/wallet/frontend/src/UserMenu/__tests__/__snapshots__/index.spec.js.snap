@@ -37,7 +37,7 @@ exports[`<UserMenu /> should render properly 1`] = `
   font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #73b61c;
+  color: #6088FE;
   background-color: transparent;
   padding-left: 16px;
   height: 100%;
@@ -91,10 +91,6 @@ exports[`<UserMenu /> should render properly 1`] = `
 
 .emotion-5 {
   margin-left: 8px;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 <div
@@ -167,7 +163,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #73b61c;
+  color: #6088FE;
   background-color: #3b3b3b;
   padding-left: 16px;
   height: 100%;
@@ -368,7 +364,7 @@ exports[`<UserMenu /> should render properly 2`] = `
           <li>
             <a
               className="emotion-10"
-              href="mailto:zvi-console-support@zorroa.com"
+              href="mailto:support@boonai.io"
               onBlur={[Function]}
               onClick={[Function]}
               rel="noopener noreferrer"
@@ -445,7 +441,7 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #73b61c;
+  color: #6088FE;
   background-color: transparent;
   padding-left: 16px;
   height: 100%;
@@ -499,10 +495,6 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
 
 .emotion-5 {
   margin-left: 8px;
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  transform: ;
 }
 
 <div

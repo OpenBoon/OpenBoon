@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 
 import { colors, constants, typography, spacing } from '../Styles'
 
-import LargeLogo from '../Icons/largeLogo.svg'
+import Logo from '../Icons/logo.svg'
 import HiddenSvg from '../Icons/hidden.svg'
 import VisibleSvg from '../Icons/visible.svg'
 
@@ -79,7 +79,7 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
           boxShadow: constants.boxShadows.default,
         }}
       >
-        <LargeLogo width={LOGO_WIDTH} css={{ alignSelf: 'center' }} />
+        <Logo width={LOGO_WIDTH} css={{ alignSelf: 'center' }} />
 
         <h3
           css={{
@@ -109,7 +109,7 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
               {errorMessage}
               <div css={{ height: spacing.base }} />
               <a
-                href="mailto:support@zorroa.com?subject=ZVI Console Login Trouble"
+                href="mailto:support@boonai.io?subject=Boon AI Login Trouble"
                 target="_blank"
                 rel="noopener noreferrer"
                 css={{ marginLeft: 0 }}

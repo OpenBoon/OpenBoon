@@ -11,6 +11,10 @@ class Provider(models.Model):
                   'images, use the "copy image" button after converting '
                   'and paste results above. If you have an svg you can use '
                   'https://base64.guru/converter/encode/image/svg')
+    sort_index = models.IntegerField(blank=False, null=False, default=10)
+
+    class Meta:
+        ordering = ['sort_index']
 
     def __str__(self):
         return self.name

@@ -47,7 +47,7 @@ const LINKS = [
     title: 'API Keys',
     icon: <KeySvg height={constants.icons.regular} />,
     legend:
-      'Create a ZMLP API key, which allows you to obtain access to ZVI API resources.',
+      'Create a Boon AI API key, which allows you to obtain access to Boon AI API resources.',
   },
   {
     url: 'users',
@@ -67,13 +67,14 @@ const ProjectQuickLinks = ({ projectId }) => {
         boxShadow: constants.boxShadows.tableRow,
         borderRadius: constants.borderRadius.small,
         padding: spacing.comfy,
+        paddingBottom: spacing.giant,
       }}
     >
-      <h3 css={{ paddingBottom: spacing.base }}>Quick Links</h3>
+      <h3 css={{ paddingBottom: spacing.comfy }}>Quick Links</h3>
       <div
         css={{
           display: 'grid',
-          gap: spacing.spacious,
+          gap: spacing.comfy,
           gridTemplateColumns: `repeat(auto-fill, minmax(${MAX_WIDTH}px, 1fr))`,
         }}
       >
@@ -81,9 +82,13 @@ const ProjectQuickLinks = ({ projectId }) => {
           return (
             <div
               key={link.url}
-              css={{ display: 'flex', flexDirection: 'column' }}
+              css={{
+                display: 'flex',
+                flexDirection: 'column',
+                color: colors.structure.zinc,
+              }}
             >
-              <div css={{ display: 'flex', paddingBottom: spacing.base }}>
+              <div css={{ display: 'flex', paddingBottom: spacing.comfy }}>
                 <Link href={`${projectId}/${link.url}`} passHref>
                   <Button variant={VARIANTS.SECONDARY_SMALL}>
                     <div css={{ display: 'flex', alignItems: 'center' }}>

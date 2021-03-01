@@ -18,7 +18,7 @@ Array [
 <div
     className="emotion-0"
   >
-    zvi-text-detection
+    boonai-text-detection
   </div>,
   .emotion-0 {
   padding: 8px 16px;
@@ -172,7 +172,7 @@ Array [
 <div
     className="emotion-0"
   >
-    zvi-text-detection
+    boonai-text-detection
   </div>,
   .emotion-0 {
   width: 100%;
@@ -271,7 +271,7 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
     <div
       className="emotion-2"
     >
-      zvi-object-detection
+      boonai-object-detection
     </div>
     <table>
       <thead>
@@ -437,7 +437,7 @@ Array [
     <div
       className="emotion-1"
     >
-      zvi-label-detection
+      boonai-label-detection
     </div>
     <table>
       <thead>
@@ -641,7 +641,7 @@ Array [
 <div
     className="emotion-0"
   >
-    zvi-label-detection
+    boonai-label-detection
   </div>,
   .emotion-0 {
   width: 100%;
@@ -1268,7 +1268,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   <div
     className="emotion-1"
   >
-    zvi-image-similarity
+    boonai-image-similarity
   </div>
   <div
     className="emotion-2"
@@ -1641,7 +1641,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
   <div
     className="emotion-1"
   >
-    zvi-image-similarity
+    boonai-image-similarity
   </div>
   <div
     className="emotion-2"

@@ -1,13 +1,16 @@
 version: "3.6"
 services:
   workbench:
-    image: zmlp/workbench
+    image: boonai/workbench
     ports:
       - 8888:8888
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      ZMLP_API_URL: http://api-gateway:80
+      BOONAI_API_URL: http://api-gateway:80
+    # If only workbench os desired, change the commented
+    # lines so this can be run from the local dir
     volumes:
+      #- "./data:/data"
       - "./applications/workbench/data:/data"

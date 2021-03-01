@@ -40,7 +40,6 @@ provider "aws" {
 }
 
 provider "kubernetes" {
-  load_config_file       = "false"
   host                   = module.gke-cluster.endpoint
   username               = module.gke-cluster.username
   password               = module.gke-cluster.password
@@ -153,18 +152,15 @@ resource "google_storage_bucket_object" "task_env" {
 {
   "ENVIRONMENT": "${var.environment}",
   "CLARIFAI_KEY":  "${var.clarifai-key}",
-  "ZORROA_AWS_KEY": "${var.aws-key}",
-  "ZORROA_AWS_SECRET": "${var.aws-secret}",
-  "ZORROA_AWS_REGION": "${var.aws-region}",
-  "ZORROA_AWS_BUCKET": "${module.aws-ml.bucket}",
-  "ZORROA_AWS_ML_USER_ROLE_ARN": "${module.aws-ml.ml-user-role-arn}",
-  "ZORROA_AWS_ML_USER_SQS_URL": "${module.aws-ml.ml-user-sqs-url}",
-  "ZORROA_AWS_ML_USER_SQS_ARN": "${module.aws-ml.ml-user-sqs-arn}",
-  "ZORROA_AWS_ML_USER_SNS_TOPIC_ARN": "${module.aws-ml.ml-user-sns-topic-arn}",
-  "ZORROA_AZURE_VISION_REGION": "${module.azure-ml.vision-region}",
-  "ZORROA_AZURE_VISION_ENDPOINT": "${module.azure-ml.vision-endpoint}",
-  "ZORROA_AZURE_VISION_KEY": "${module.azure-ml.vision-key}",
-  "ZMLP_BILLING_METRICS_SERVICE": "http://${module.metrics.ip-address}"
+  "BOONAI_AWS_KEY": "${module.aws-ml.ml-user-key}",
+  "BOONAI_AWS_SECRET": "${module.aws-ml.ml-user-secret}",
+  "BOONAI_AWS_REGION": "${var.aws-region}",
+  "BOONAI_AWS_BUCKET": "${module.aws-ml.bucket}",
+  "BOONAI_AWS_ML_USER_ROLE_ARN": "${module.aws-ml.ml-user-role-arn}",
+  "BOONAI_AZURE_VISION_REGION": "${module.azure-ml.vision-region}",
+  "BOONAI_AZURE_VISION_ENDPOINT": "${module.azure-ml.vision-endpoint}",
+  "BOONAI_AZURE_VISION_KEY": "${module.azure-ml.vision-key}",
+  "BOONAI_BILLING_METRICS_SERVICE": "http://${module.metrics.ip-address}"
 }
 EOF
 
@@ -234,31 +230,33 @@ module "elasticsearch" {
 }
 
 module "archivist" {
-  source                  = "./modules/archivist"
-  project                 = var.project
-  country                 = var.country
-  image-pull-secret       = kubernetes_secret.dockerhub.metadata[0].name
-  sql-service-account-key = module.postgres.sql-service-account-key
-  sql-connection-name     = module.postgres.connection-name
-  sql-instance-name       = module.postgres.instance-name
-  inception-key-b64       = local.inception-key-b64
-  system-bucket           = google_storage_bucket.system.name
-  container-cluster-name  = module.gke-cluster.name
-  analyst-shared-key      = module.analyst.shared-key
-  container-tag           = var.container-tag
-  es-backup-bucket-name   = module.elasticsearch.backup-bucket-name
-  log-bucket-name         = google_storage_bucket.access-logs.name
+  source                       = "./modules/archivist"
+  project                      = var.project
+  country                      = var.country
+  image-pull-secret            = kubernetes_secret.dockerhub.metadata[0].name
+  sql-service-account-key-date = module.postgres.sql-service-account-key-date
+  sql-connection-name          = module.postgres.connection-name
+  sql-instance-name            = module.postgres.instance-name
+  inception-key-b64            = local.inception-key-b64
+  system-bucket                = google_storage_bucket.system.name
+  container-cluster-name       = module.gke-cluster.name
+  analyst-shared-key           = module.analyst.shared-key
+  container-tag                = var.container-tag
+  es-backup-bucket-name        = module.elasticsearch.backup-bucket-name
+  log-bucket-name              = google_storage_bucket.access-logs.name
+  deep-video-analysis-enabled  = var.deep-video-analysis-enabled
 }
 
 module "auth-server" {
-  source                 = "./modules/auth-server"
-  sql-instance-name      = module.postgres.instance-name
-  sql-connection-name    = module.postgres.connection-name
-  image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
-  inception-key-b64      = local.inception-key-b64
-  system-bucket          = google_storage_bucket.system.name
-  container-cluster-name = module.gke-cluster.name
-  container-tag          = var.container-tag
+  source                       = "./modules/auth-server"
+  sql-instance-name            = module.postgres.instance-name
+  sql-connection-name          = module.postgres.connection-name
+  sql-service-account-key-date = module.postgres.sql-service-account-key-date
+  image-pull-secret            = kubernetes_secret.dockerhub.metadata[0].name
+  inception-key-b64            = local.inception-key-b64
+  system-bucket                = google_storage_bucket.system.name
+  container-cluster-name       = module.gke-cluster.name
+  container-tag                = var.container-tag
 }
 
 module "api-gateway" {
@@ -267,7 +265,7 @@ module "api-gateway" {
   archivist_host         = module.archivist.ip-address
   auth_server_host       = module.auth-server.ip-address
   ml_bbq_host            = "${module.ml-bbq.ip-address}:8282"
-  domain                 = var.zmlp-domain
+  domains                = var.zmlp-domains
   container-cluster-name = module.gke-cluster.name
   container-tag          = var.container-tag
 }
@@ -306,14 +304,14 @@ module "wallet" {
   image-pull-secret               = kubernetes_secret.dockerhub.metadata[0].name
   pg_host                         = module.postgres.ip-address
   sql-instance-name               = module.postgres.instance-name
-  sql-service-account-key         = module.postgres.sql-service-account-key
   sql-connection-name             = module.postgres.connection-name
+  sql-service-account-key-date    = module.postgres.sql-service-account-key-date
   zmlp-api-url                    = "http://${module.api-gateway.ip-address}"
   smtp-password                   = var.smtp-password
   google-oauth-client-id          = var.google-oauth-client-id
   environment                     = var.environment
   inception-key-b64               = local.inception-key-b64
-  domain                          = var.wallet-domain
+  domains                         = var.wallet-domains
   container-tag                   = var.container-tag
   browsable                       = var.wallet-browsable-api
   marketplace-project             = "zorroa-public"
@@ -332,26 +330,26 @@ module "ml-bbq" {
 }
 
 module "gcp-marketplace-integration" {
-  source                   = "./modules/gcp-marketplace-integration"
-  project                  = var.project
-  image-pull-secret        = kubernetes_secret.dockerhub.metadata[0].name
-  pg_host                  = module.postgres.ip-address
-  sql-instance-name        = module.postgres.instance-name
-  sql-service-account-key  = module.postgres.sql-service-account-key
-  sql-connection-name      = module.postgres.connection-name
-  zmlp-api-url             = "http://${module.api-gateway.ip-address}"
-  smtp-password            = var.smtp-password
-  google-oauth-client-id   = var.google-oauth-client-id
-  marketplace-project      = "zorroa-public"
-  marketplace-subscription = "zorroa-public"
-  marketplace-credentials  = var.marketplace-credentials
-  marketplace-service-name = "zorroa-visual-intelligence-zorroa-public.cloudpartnerservices.goog"
-  fqdn                     = var.wallet-domain
-  environment              = var.environment
-  inception-key-b64        = local.inception-key-b64
-  pg_password              = module.wallet.pg_password
-  enabled                  = var.deploy-marketplace-integration
-  container-tag            = var.container-tag
+  source                       = "./modules/gcp-marketplace-integration"
+  project                      = var.project
+  image-pull-secret            = kubernetes_secret.dockerhub.metadata[0].name
+  pg_host                      = module.postgres.ip-address
+  sql-instance-name            = module.postgres.instance-name
+  sql-connection-name          = module.postgres.connection-name
+  sql-service-account-key-date = module.postgres.sql-service-account-key-date
+  zmlp-api-url                 = "http://${module.api-gateway.ip-address}"
+  smtp-password                = var.smtp-password
+  google-oauth-client-id       = var.google-oauth-client-id
+  marketplace-project          = "zorroa-public"
+  marketplace-subscription     = "zorroa-public"
+  marketplace-credentials      = var.marketplace-credentials
+  marketplace-service-name     = "zorroa-visual-intelligence-zorroa-public.cloudpartnerservices.goog"
+  fqdn                         = var.wallet-domains[0]
+  environment                  = var.environment
+  inception-key-b64            = local.inception-key-b64
+  pg_password                  = module.wallet.pg_password
+  enabled                      = var.deploy-marketplace-integration
+  container-tag                = var.container-tag
 }
 
 module "elasticsearch-hq" {
@@ -369,18 +367,19 @@ module "reporter" {
 }
 
 module "metrics" {
-  source               = "./modules/metrics"
-  sql-instance-name    = module.postgres.instance-name
-  sql-connection-name  = module.postgres.connection-name
-  image-pull-secret    = kubernetes_secret.dockerhub.metadata[0].name
-  environment          = var.environment
-  container-tag        = var.container-tag
-  browsable            = var.metrics-browsable
-  debug                = var.metrics-debug
-  superuser-email      = var.metrics-superuser-email
-  superuser-password   = var.metrics-superuser-password
-  superuser-first-name = var.metrics-superuser-first-name
-  superuser-last-name  = var.metrics-superuser-last-name
-  django-log-level     = var.metrics-django-log-level
-  log-requests         = var.metrics-log-requests
+  source                       = "./modules/metrics"
+  sql-instance-name            = module.postgres.instance-name
+  sql-connection-name          = module.postgres.connection-name
+  sql-service-account-key-date = module.postgres.sql-service-account-key-date
+  image-pull-secret            = kubernetes_secret.dockerhub.metadata[0].name
+  environment                  = var.environment
+  container-tag                = var.container-tag
+  browsable                    = var.metrics-browsable
+  debug                        = var.metrics-debug
+  superuser-email              = var.metrics-superuser-email
+  superuser-password           = var.metrics-superuser-password
+  superuser-first-name         = var.metrics-superuser-first-name
+  superuser-last-name          = var.metrics-superuser-last-name
+  django-log-level             = var.metrics-django-log-level
+  log-requests                 = var.metrics-log-requests
 }

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import { colors, constants, spacing } from '../Styles'
 
-import LargeLogo from '../Icons/largeLogo.svg'
+import Logo from '../Icons/logo.svg'
 
 import ResetPasswordRequest from './Request'
 import ResetPasswordConfirm from './Confirm'
@@ -42,7 +42,7 @@ const ResetPassword = () => {
           boxShadow: constants.boxShadows.default,
         }}
       >
-        <LargeLogo width={LOGO_WIDTH} css={{ alignSelf: 'center' }} />
+        <Logo width={LOGO_WIDTH} css={{ alignSelf: 'center' }} />
 
         {uid && token ? (
           <ResetPasswordConfirm uid={uid} token={token} />

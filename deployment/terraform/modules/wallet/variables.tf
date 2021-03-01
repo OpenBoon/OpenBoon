@@ -7,8 +7,7 @@ variable "pg_host" {
 variable "sql-instance-name" {
 }
 
-variable "sql-service-account-key" {
-  sensitive = true
+variable "sql-service-account-key-date" {
 }
 
 variable "sql-connection-name" {
@@ -34,7 +33,8 @@ variable "google-oauth-client-id" {
 variable "environment" {
 }
 
-variable "domain" {
+variable "domains" {
+  type = list(string)
 }
 
 variable "marketplace-project" {

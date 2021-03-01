@@ -12,14 +12,13 @@ from django.test import RequestFactory, override_settings
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.response import Response
-from zmlp import ZmlpClient
-from zmlp.client import (ZmlpDuplicateException, ZmlpInvalidRequestException,
-                         ZmlpNotFoundException, ZmlpConnectionException)
+from boonsdk import BoonClient
+from boonsdk.client import (BoonSdkDuplicateException, BoonSdkInvalidRequestException,
+                            BoonSdkNotFoundException, BoonSdkConnectionException)
 
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
 from projects.views import BaseProjectViewSet
-from subscriptions.models import Tier
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
 
 pytestmark = pytest.mark.django_db
@@ -91,7 +90,7 @@ def test_project_serializer_detail(project):
     serializer = ProjectSerializer(project, context={'request': None})
     data = serializer.data
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
-                       'permissions', 'tasks', 'datasources', 'taskerrors', 'subscriptions',
+                       'permissions', 'tasks', 'datasources', 'taskerrors',
                        'modules', 'providers', 'searches', 'faces', 'visualizations',
                        'models', 'createdDate', 'modifiedDate']
     assert set(expected_fields) == set(data.keys())
@@ -109,7 +108,6 @@ def test_project_serializer_detail(project):
     assert data['permissions'] == f'/api/v1/projects/{project.id}/permissions/'
     assert data['tasks'] == f'/api/v1/projects/{project.id}/tasks/'
     assert data['taskerrors'] == f'/api/v1/projects/{project.id}/task_errors/'
-    assert data['subscriptions'] == f'/api/v1/projects/{project.id}/subscriptions/'
     assert data['modules'] == f'/api/v1/projects/{project.id}/modules/'
     assert data['providers'] == f'/api/v1/projects/{project.id}/providers/'
     assert data['searches'] == f'/api/v1/projects/{project.id}/searches/'
@@ -132,13 +130,13 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
         return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'ESSENTIALS'}  # noqa
 
     def mock_get_project_exists(*args, **kwargs):
-        raise ZmlpNotFoundException({})
+        raise BoonSdkNotFoundException({})
 
     def mock_post_true(*args, **kwargs):
         return True
 
     def mock_post_duplicate(*args, **kwargs):
-        raise ZmlpDuplicateException({})
+        raise BoonSdkDuplicateException({})
 
     def mock_post_exception(*args, **kwargs):
         raise KeyError('')
@@ -148,48 +146,27 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
                 'success': False}
 
     # Test a successful sync.
-    monkeypatch.setattr(ZmlpClient, 'get', mock_get_project)
-    monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
-    monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
+    monkeypatch.setattr(BoonClient, 'get', mock_get_project)
+    monkeypatch.setattr(BoonClient, 'post', mock_post_true)
+    monkeypatch.setattr(BoonClient, 'put', mock_put_enable_project)
     project = Project.objects.create(name='test', id=uuid4())
     project.sync_with_zmlp()
 
     # Test a disabled project.
     project.isActive = False
     project.save()
-    monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
+    monkeypatch.setattr(BoonClient, 'put', mock_put_enable_project)
     project.sync_with_zmlp()
 
     # Test a sync when the project already exists in zmlp.
-    monkeypatch.setattr(ZmlpClient, 'get', mock_get_project_exists)
-    monkeypatch.setattr(ZmlpClient, 'post', mock_get_project)
+    monkeypatch.setattr(BoonClient, 'get', mock_get_project_exists)
+    monkeypatch.setattr(BoonClient, 'post', mock_get_project)
     project.sync_with_zmlp()
 
     # Test failed status sync.
-    monkeypatch.setattr(ZmlpClient, 'put', mock_put_failed_enable)
+    monkeypatch.setattr(BoonClient, 'put', mock_put_failed_enable)
     with pytest.raises(IOError):
         project.sync_with_zmlp()
-
-
-def test_project_sync_with_zmlp_with_subscription(monkeypatch, project_zero_user,
-                                                  project_zero_subscription, project_zero):
-    def mock_get_project(*args, **kwargs):
-        return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'ESSENTIALS'}  # noqa
-
-    def mock_post_true(*args, **kwargs):
-        return True
-
-    def mock_put_tier(*args, **kwargs):
-        return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'PREMIER'}  # noqa
-
-    # Test a successful sync.
-    monkeypatch.setattr(ZmlpClient, 'get', mock_get_project)
-    monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
-    monkeypatch.setattr(ZmlpClient, 'put', mock_put_tier)
-    project_zero_subscription.tier = Tier.PREMIER
-    project_zero_subscription.save()
-    monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
-    project_zero.sync_with_zmlp()
 
 
 def test_project_managers(project):
@@ -275,7 +252,7 @@ class TestMlUsageThisMonth:
 
 class TestTotalStorageUsage:
 
-    @patch.object(ZmlpClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_get(self, client_mock, project, api_client, login):
         mock_responses = [{'hits': {'total': {'value': 1000}}},
                           {'aggregations': {'sum#video_seconds': {'value': 3601}}}]
@@ -285,7 +262,7 @@ class TestTotalStorageUsage:
         assert response.status_code == 200
         assert response.json() == {'image_count': 1000, 'video_hours': 2}
 
-    @patch.object(ZmlpClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_get_image_error(self, client_mock, project, api_client, login):
         mock_responses = [requests.exceptions.ConnectionError(),
                           {'aggregations': {'sum#video_seconds': {'value': 3601}}}]
@@ -295,7 +272,7 @@ class TestTotalStorageUsage:
         assert response.status_code == 200
         assert response.json() == {'video_hours': 2}
 
-    @patch.object(ZmlpClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_get_video_error(self, client_mock, project, api_client, login):
         mock_responses = [{'hits': {'total': {'value': 1000}}},
                           requests.exceptions.ConnectionError()]
@@ -305,7 +282,7 @@ class TestTotalStorageUsage:
         assert response.status_code == 200
         assert response.json() == {'image_count': 1000}
 
-    @patch.object(ZmlpClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_get_connection_error(self, client_mock, project, api_client, login):
         client_mock.side_effect = requests.exceptions.ConnectionError()
         url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
@@ -313,9 +290,9 @@ class TestTotalStorageUsage:
         assert response.status_code == 200
         assert response.json() == {}
 
-    @patch.object(ZmlpClient, 'post')
+    @patch.object(BoonClient, 'post')
     def test_get_zmlp_connection_exception(self, client_mock, project, api_client, login):
-        client_mock.side_effect = ZmlpConnectionException()
+        client_mock.side_effect = BoonSdkConnectionException()
         url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
         response = api_client.get(url)
         assert response.status_code == 200
@@ -388,7 +365,7 @@ class TestProjectUserGet:
     @override_settings(PLATFORM='zmlp')
     def test_with_bad_apikey(self, project, zmlp_project_user, zmlp_project_membership,
                              api_client, monkeypatch):
-        monkeypatch.setattr(ZmlpClient, '_ZmlpClient__load_apikey', lambda x, y: {})
+        monkeypatch.setattr(BoonClient, '_BoonClient__load_apikey', lambda x, y: {})
         zmlp_project_membership.apikey = 'no good'
         zmlp_project_membership.save()
         api_client.force_authenticate(zmlp_project_user)
@@ -435,7 +412,7 @@ class TestProjectUserDelete:
         def mock_return(*args, **kwargs):
             return Response(status=status.HTTP_200_OK)
 
-        monkeypatch.setattr(ZmlpClient, 'delete', mock_return)
+        monkeypatch.setattr(BoonClient, 'delete', mock_return)
         user = make_users_for_project(project, 1, django_user_model, zmlp_apikey)[0]
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
@@ -492,7 +469,7 @@ class TestProjectUserDelete:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         user = make_users_for_project(project, 1, django_user_model, zmlp_apikey)[0]
-        monkeypatch.setattr(ZmlpClient, 'delete', mock_return)
+        monkeypatch.setattr(BoonClient, 'delete', mock_return)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         response = api_client.delete(reverse('projectuser-detail',
@@ -528,8 +505,8 @@ class TestProjectUserPost:
             return api_key
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
-        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
-        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_post_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         body = {'email': 'tester@fake.com', 'roles': ['ML_Tools']}
@@ -550,8 +527,8 @@ class TestProjectUserPost:
         def mock_get_response(*args, **kwargs):
             return api_key
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
-        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_post_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         body = {'email': zmlp_project_membership.user.username,
@@ -571,8 +548,8 @@ class TestProjectUserPost:
         def mock_get_response(*args, **kwargs):
             return api_key
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
-        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_post_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         body = {'batch': [{'email': zmlp_project_membership.user.username,
@@ -596,8 +573,8 @@ class TestProjectUserPost:
         def mock_get_response(*args, **kwargs):
             return api_key
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
-        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_post_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         body = {'email': zmlp_project_membership.user.username,
@@ -618,8 +595,8 @@ class TestProjectUserPost:
 
         tester1 = django_user_model.objects.create_user('tester1@fake.com', 'tester1@fake.com', 'letmein')  # noqa
         django_user_model.objects.create_user('tester2@fake.com', 'tester2@fake.com', 'letmein')
-        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
-        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_post_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         body = {'batch': [
@@ -651,7 +628,7 @@ class TestProjectUserPost:
             return data
 
         django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_api_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         body = {'email': 'tester@fake.com',
@@ -700,10 +677,10 @@ class TestProjectUserPost:
                                zmlp_project_membership, api_client, django_user_model):
 
         def mock_api_response(*args, **kwargs):
-            raise ZmlpInvalidRequestException({'msg': 'bad'})
+            raise BoonSdkInvalidRequestException({'msg': 'bad'})
 
         django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_api_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         body = {'email': 'tester@fake.com', 'roles': ['ML_Tools']}
@@ -729,9 +706,9 @@ class TestProjectUserPut:
             return {'accessKey': 'access',
                     'secretKey': 'secret'}
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
-        monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
-        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_post_response)
+        monkeypatch.setattr(BoonClient, 'delete', mock_delete_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_response)
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
@@ -769,7 +746,7 @@ class TestProjectUserPut:
                         zmlp_project_membership, api_client, django_user_model):
 
         def mock_post_response(*args, **kwargs):
-            raise ZmlpInvalidRequestException({'msg': 'bad'})
+            raise BoonSdkInvalidRequestException({'msg': 'bad'})
 
         def mock_delete_response(*args, **kwargs):
             return Response(status=status.HTTP_200_OK)
@@ -777,9 +754,9 @@ class TestProjectUserPut:
         def mock_get_response(*args, **kwargs):
             return {'permissions': ['AssetsWrite']}
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
-        monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
-        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_post_response)
+        monkeypatch.setattr(BoonClient, 'delete', mock_delete_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_response)
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
@@ -804,15 +781,15 @@ class TestProjectUserPut:
             return data
 
         def mock_delete_response(*args, **kwargs):
-            raise ZmlpInvalidRequestException({'msg': 'bad'})
+            raise BoonSdkInvalidRequestException({'msg': 'bad'})
 
         def mock_get_response(*args, **kwargs):
             return {'accessKey': 'access',
                     'secretKey': 'secret'}
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
-        monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
-        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_post_response)
+        monkeypatch.setattr(BoonClient, 'delete', mock_delete_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_response)
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
@@ -843,9 +820,9 @@ class TestProjectUserPut:
             return {'accessKey': 'access',
                     'secretKey': 'secret'}
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
-        monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
-        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        monkeypatch.setattr(BoonClient, 'post', mock_post_response)
+        monkeypatch.setattr(BoonClient, 'delete', mock_delete_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_response)
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
@@ -869,7 +846,7 @@ class TestProjectUserPut:
         def get_mock_response(*args, **kwargs):
             return {}
 
-        monkeypatch.setattr(ZmlpClient, 'get', get_mock_response)
+        monkeypatch.setattr(BoonClient, 'get', get_mock_response)
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com',
                                                          'letmein')  # noqa
@@ -934,8 +911,8 @@ class TestMembershipModel:
         def post_get_response(*args, **kwargs):
             return data
 
-        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
-        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
+        monkeypatch.setattr(BoonClient, 'post', post_mock_response)
+        monkeypatch.setattr(BoonClient, 'get', post_get_response)
 
         membership = Membership(user=zmlp_project_user, project=project,
                                 roles=['ML_Tools'])
@@ -954,8 +931,8 @@ class TestMembershipModel:
         def post_get_response(*args, **kwargs):
             return apikey_data
 
-        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
-        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
+        monkeypatch.setattr(BoonClient, 'post', post_mock_response)
+        monkeypatch.setattr(BoonClient, 'get', post_get_response)
 
         membership = Membership(user=zmlp_project_user, project=project,
                                 roles=['ML_Tools'])
@@ -976,8 +953,8 @@ class TestMembershipModel:
         def post_get_response(*args, **kwargs):
             return apikey_data
 
-        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
-        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
+        monkeypatch.setattr(BoonClient, 'post', post_mock_response)
+        monkeypatch.setattr(BoonClient, 'get', post_get_response)
 
         membership = Membership(user=zmlp_project_user, project=project,
                                 roles=['ML_Tools'])
@@ -1002,9 +979,9 @@ class TestMembershipModel:
         def delete_mock_response(*args, **kwargs):
             return Response(status=status.HTTP_200_OK)
 
-        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
-        monkeypatch.setattr(ZmlpClient, 'get', get_mock_response)
-        monkeypatch.setattr(ZmlpClient, 'delete', delete_mock_response)
+        monkeypatch.setattr(BoonClient, 'post', post_mock_response)
+        monkeypatch.setattr(BoonClient, 'get', get_mock_response)
+        monkeypatch.setattr(BoonClient, 'delete', delete_mock_response)
 
         membership = Membership(user=zmlp_project_user, project=project,
                                 roles=['ML_Tools'])
@@ -1032,9 +1009,9 @@ class TestMembershipModel:
         def delete_mock_response(*args, **kwargs):
             return Response(status=status.HTTP_200_OK)
 
-        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
-        monkeypatch.setattr(ZmlpClient, 'get', get_mock_response)
-        monkeypatch.setattr(ZmlpClient, 'delete', delete_mock_response)
+        monkeypatch.setattr(BoonClient, 'post', post_mock_response)
+        monkeypatch.setattr(BoonClient, 'get', get_mock_response)
+        monkeypatch.setattr(BoonClient, 'delete', delete_mock_response)
 
         membership = Membership(user=zmlp_project_user, project=project,
                                 roles=['ML_Tools'])
@@ -1056,9 +1033,9 @@ class TestMembershipModel:
         def delete_mock_response(*args, **kwargs):
             return Response(status=status.HTTP_200_OK)
 
-        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
-        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
-        monkeypatch.setattr(ZmlpClient, 'delete', delete_mock_response)
+        monkeypatch.setattr(BoonClient, 'post', post_mock_response)
+        monkeypatch.setattr(BoonClient, 'get', post_get_response)
+        monkeypatch.setattr(BoonClient, 'delete', delete_mock_response)
 
         membership = Membership(user=zmlp_project_user, project=project,
                                 roles=['ML_Tools'])
@@ -1078,14 +1055,14 @@ class TestMembershipModel:
             if args[-1].endswith('_download'):
                 return apikey_data
             else:
-                raise ZmlpNotFoundException({})
+                raise BoonSdkNotFoundException({})
 
         def delete_mock_response(*args, **kwargs):
             return Response(status=status.HTTP_200_OK)
 
-        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
-        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
-        monkeypatch.setattr(ZmlpClient, 'delete', delete_mock_response)
+        monkeypatch.setattr(BoonClient, 'post', post_mock_response)
+        monkeypatch.setattr(BoonClient, 'get', post_get_response)
+        monkeypatch.setattr(BoonClient, 'delete', delete_mock_response)
 
         membership = Membership(user=zmlp_project_user, project=project,
                                 roles=['ML_Tools'])

@@ -8,10 +8,7 @@ Array [
       Object {
         "attribute": "system.timeCreated",
         "type": "date",
-        "values": Object {
-          "max": "2020-05-04T00:00:00.000Z",
-          "min": "2020-05-04T00:00:00.000Z",
-        },
+        "values": Object {},
       }
     }
     filterIndex={0}
@@ -20,10 +17,7 @@ Array [
         Object {
           "attribute": "system.timeCreated",
           "type": "date",
-          "values": Object {
-            "max": "2020-05-04T00:00:00.000Z",
-            "min": "2020-05-04T00:00:00.000Z",
-          },
+          "values": Object {},
         },
       ]
     }
@@ -104,7 +98,7 @@ Array [
 
 .emotion-6:focus {
   outline: 1px solid transparent;
-  border: 1px solid #73b61c;
+  border: 1px solid #3A5DFF;
   color: #191919;
   background-color: #ffffff;
 }
@@ -140,7 +134,7 @@ Array [
         05/04/2020
       </span>
       <span>
-        06/10/2020
+        05/04/2020
       </span>
     </div>
     <div
@@ -150,7 +144,7 @@ Array [
         domain={
           Array [
             1588550400000,
-            1591747200001,
+            1588550400001,
           ]
         }
         isDisabled={false}
@@ -202,7 +196,7 @@ Array [
         />
         <input
           className="emotion-6"
-          max="2020-06-10"
+          max="2020-05-04"
           min="2020-05-04"
           onBlur={[Function]}
           onChange={[Function]}
@@ -319,7 +313,7 @@ Array [
 
 .emotion-6:focus {
   outline: 1px solid transparent;
-  border: 1px solid #73b61c;
+  border: 1px solid #3A5DFF;
   color: #191919;
   background-color: #ffffff;
 }
@@ -534,7 +528,7 @@ Array [
 
 .emotion-6:focus {
   outline: 1px solid transparent;
-  border: 1px solid #73b61c;
+  border: 1px solid #3A5DFF;
   color: #191919;
   background-color: #ffffff;
 }
@@ -749,7 +743,7 @@ Array [
 
 .emotion-6:focus {
   outline: 1px solid transparent;
-  border: 1px solid #73b61c;
+  border: 1px solid #3A5DFF;
   color: #191919;
   background-color: #ffffff;
 }
@@ -964,7 +958,7 @@ Array [
 
 .emotion-6:focus {
   outline: 1px solid transparent;
-  border: 1px solid #73b61c;
+  border: 1px solid #3A5DFF;
   color: #191919;
   background-color: #ffffff;
 }
@@ -1179,7 +1173,7 @@ Array [
 
 .emotion-6:focus {
   outline: 1px solid transparent;
-  border: 1px solid #73b61c;
+  border: 1px solid #3A5DFF;
   color: #191919;
   background-color: #ffffff;
 }
@@ -1394,7 +1388,7 @@ Array [
 
 .emotion-6:focus {
   outline: 1px solid transparent;
-  border: 1px solid #73b61c;
+  border: 1px solid #3A5DFF;
   color: #191919;
   background-color: #ffffff;
 }
@@ -1603,7 +1597,7 @@ Array [
 
 .emotion-6:focus {
   outline: 1px solid transparent;
-  border: 1px solid #73b61c;
+  border: 1px solid #3A5DFF;
   color: #191919;
   background-color: #ffffff;
 }
@@ -1649,7 +1643,7 @@ Array [
         domain={
           Array [
             1591574400000,
-            1591574400000,
+            1591574400001,
           ]
         }
         isDisabled={false}
@@ -1660,7 +1654,7 @@ Array [
         values={
           Array [
             1591574400000,
-            1591574400000,
+            1591574400001,
           ]
         }
       />

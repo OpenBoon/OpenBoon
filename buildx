@@ -11,13 +11,13 @@ def main():
     parser.add_argument('containers', metavar='C', type=str, nargs='*',
                         help='Container names to build')
     parser.add_argument('--core', '-c', action='store_true',
-                        help='Build zmlp-plugins-core and SDK requirements')
+                        help='Build boonai-plugins-core and SDK requirements')
     parser.add_argument('--jvm', '-j', action='store_true',
                         help='Build Python services')
     parser.add_argument('--plugins', '-p', action='store_true',
                         help='Build full plugins stack')
     parser.add_argument('--analysis', '-a', action='store_true',
-                        help='Build zmlp-plugins-analysis and SDK requirements')
+                        help='Build boonai-plugins-analysis and SDK requirements')
     parser.add_argument('--list', '-l', action='store_true',
                         help='Output list of containers')
     parser.add_argument('--threads', '-t', type=int, default=8,
@@ -34,33 +34,33 @@ def main():
         containers = set()
 
     if args.plugins:
-        containers.update(['zmlp-py3-base',
-                           'zmlp-py3-client',
-                           'zmlp-py3-zvi',
-                           'zmlp-py3-sdk',
-                           'zmlp-plugins-base',
-                           'zmlp-plugins-core',
-                           'zmlp-plugins-models',
-                           'zmlp-plugins-analysis',
-                           'zmlp-plugins-train'])
+        containers.update(['boonai-py3-base',
+                           'boonai-boonsdk',
+                           'boonai-boonlab',
+                           'boonai-boonflow',
+                           'boonai-boondocks',
+                           'boonai-plugins-core',
+                           'boonai-plugins-models',
+                           'boonai-plugins-analysis',
+                           'boonai-plugins-train'])
 
     if args.core:
-        containers.update(['zmlp-py3-client',
-                           'zmlp-py3-zvi',
-                           'zmlp-py3-sdk',
-                           'zmlp-plugins-base',
-                           'zmlp-plugins-core'])
+        containers.update(['boonai-boonsdk',
+                           'boonai-boonlab',
+                           'boonai-boonflow',
+                           'boonai-boondocks',
+                           'boonai-plugins-core'])
     if args.jvm:
         containers.update(['es1',
-                           'zmlp-jvm-common',
+                           'boonai-jvm-common',
                            'archivist',
                            'auth-server'])
     if args.analysis:
-        containers.update(['zmlp-py3-client',
-                           'zmlp-py3-zvi',
-                           'zmlp-py3-sdk',
-                           'zmlp-plugins-base',
-                           'zmlp-plugins-analysis'])
+        containers.update(['boonai-boonsdk',
+                           'boonai-boonlab',
+                           'boonai-boonflow',
+                           'boonai-boondocks',
+                           'boonai-plugins-analysis'])
 
     if args.system_prune or args.full_system_prune:
         system_prune(args.full_system_prune)
