@@ -5,6 +5,7 @@ from facenet_pytorch import MTCNN, InceptionResnetV1
 from boonflow import AssetProcessor
 from boonflow.proxy import get_proxy_level_path, calculate_normalized_bbox
 from boonflow.analysis import LabelDetectionAnalysis
+from boonflow import FileTypes
 
 
 class ZviFaceDetectionProcessor(AssetProcessor):
@@ -12,6 +13,10 @@ class ZviFaceDetectionProcessor(AssetProcessor):
     Simple Face Detection processor
     """
     namespace = 'boonai-face-detection'
+
+    # Running in video just detects a face in the proxy
+    # which means results are ambitious and inconsistent.
+    file_types = FileTypes.documents | FileTypes.images
 
     def __init__(self):
         super(ZviFaceDetectionProcessor, self).__init__()

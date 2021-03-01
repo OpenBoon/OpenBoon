@@ -83,7 +83,10 @@ class ClipSpec(
     val content: List<String>,
 
     @ApiModelProperty("The confidence score that the content is correct.")
-    val score: Double = 1.0
+    val score: Double = 1.0,
+
+    @ApiModelProperty("A bbox associated with clip")
+    val bbox: List<Double>? = null
 )
 
 class WebVTTFilter(
