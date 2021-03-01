@@ -84,7 +84,7 @@ class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
     @patch.object(file_storage.projects, "localize_file")
     @patch("boonai_analysis.custom.pytorch.video.save_timeline", return_value={})
     @patch('boonai_analysis.custom.pytorch.proxy.get_video_proxy')
-    def test_predict(self, proxy_path_patch, _, file_patch, model_patch):
+    def test_predict(self, proxy_path_patch, tl_patch, file_patch, model_patch):
         proxy_path_patch.return_value = self.video_path
         model_file = test_path("training/{}.zip".format(self.name))
         file_patch.return_value = model_file
@@ -114,3 +114,8 @@ class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         assert 'labels' in analysis['type']
         assert 2 == analysis['count']
         assert 'bees' in predictions
+
+        timeline = tl_patch.call_args_list[0][0][1]
+        jtl = timeline.for_json()
+        assert jtl['tracks'][0]['name'] == 'ants'
+        assert jtl['tracks'][0]['clips'][0]['score'] == 0.062

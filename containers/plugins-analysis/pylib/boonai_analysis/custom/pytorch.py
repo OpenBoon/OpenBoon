@@ -1,7 +1,7 @@
 import torch
 
 from boonai_analysis.utils.prechecks import Prechecks
-from boonflow import AssetProcessor, Argument, file_storage, proxy, clips, video
+from boonflow import AssetProcessor, Argument, file_storage, proxy, clips, video, Prediction
 from boonflow.analysis import LabelDetectionAnalysis
 from boonflow.proxy import get_proxy_level_path
 from ..utils.pytorch import load_pytorch_image, load_pytorch_model
@@ -117,8 +117,7 @@ class PytorchTransferLearningClassifier(AssetProcessor):
         analysis = LabelDetectionAnalysis(collapse_labels=True, min_score=0.01)
 
         for time_ms, path in extractor:
-            clip_tracker.append(time_ms, self.labels)
-            results = self.predict(path)
-            [analysis.add_label_and_score(r[0], r[1]) for r in results]
-
+            results = [Prediction(r[0], r[1]) for r in self.predict(path)]
+            clip_tracker.append_predictions(time_ms, results)
+            analysis.add_predictions(results)
         return analysis, clip_tracker
