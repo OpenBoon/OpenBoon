@@ -112,7 +112,7 @@ elasticsearch-push-to-local-registry:
     MINIO_DEFAULT_PROTOCOL: "http"
     ARCHIVIST_ES_BACKUP_BUCKET_NAME: "project-storage-test"
     REDIS_HOST: "localhost:6379"
-    MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+    MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dhttps.protocols=TLSv1.2 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
     MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
   script:
     - export
@@ -126,6 +126,9 @@ elasticsearch-push-to-local-registry:
 jvm-common-unit-tests:
   extends: .kt-services-base-unit-tests
   stage: pretest-stage-2
+  cache:
+    paths:
+      - .m2/repository
   variables:
     SERVICE: "jvm-common"
 #  rules:
