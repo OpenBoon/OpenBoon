@@ -13,6 +13,8 @@ stages:
   - push
   - deploy
 
+include: "gitlab-ci/deploy.gitlab-ci.yml"
+
 ########  Wallet  ########
 
 ## Wallet Integration CI Tests

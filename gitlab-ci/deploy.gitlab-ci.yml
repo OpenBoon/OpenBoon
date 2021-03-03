@@ -1,0 +1,45 @@
+.dockerhub-build-push:
+  image: boonai/docker-buildx
+  stage: push
+  services:
+    - docker:19-dind
+  variables:
+    FF_USE_LEGACY_KUBERNETES_EXECUTION_STRATEGY: "false" # This feature flag fixes a bug where the job would stop and say it succeeded.
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+    SOURCE_TAG: latest
+    DOCKER_TAG: test #TODO: CHANGE ME
+    CONTAINERS: none
+  retry: 2
+  before_script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+  script:
+    - ./buildx ${CONTAINERS}
+    - for c in {${CONTAINERS}}; do docker tag boonai/$c:${SOURCE_TAG} boonai/$c:${DOCKER_TAG}; done
+    - for c in {${CONTAINERS}}; do docker push boonai/$c:${DOCKER_TAG}; done
+
+kotlin-build-push-latest:
+  extends: .dockerhub-build-push
+  variables:
+    CONTAINERS: es1 boonai-jvm-common archivist auth-server officer
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # Merged to development with Boon AI changes
+#    - if: $CI_COMMIT_BRANCH == "development"
+#      changes:
+#        - "client/**/*"
+#        - "containers/**/*"
+#        - "dev/**/*"
+#        - "services/analyst/**/*"
+#        - "services/jvm-common/**/*"
+#        - "services/api-gateway/**/*"
+#        - "services/archivist/**/*"
+#        - "services/auth-server/**/*"
+#        - "services/elasticsearch/**/*"
+#        - "services/mlbbq/**/*"
+#        - "services/officer/**/*"
+#        - "services/reporter/**/*"
