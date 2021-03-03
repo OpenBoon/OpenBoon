@@ -57,8 +57,8 @@ python-services-build-push-latest:
 
 wallet-build-push-latest:
   extends: .dockerhub-build-push
-    variables:
-      CONTAINERS: wallet
+  variables:
+    CONTAINERS: wallet
 #  rules:
 #    # Scheduled Pipelines
 #    - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -70,8 +70,8 @@ wallet-build-push-latest:
 
 metrics-build-push-latest:
   extends: .dockerhub-build-push
-    variables:
-      CONTAINERS: metrics
+  variables:
+    CONTAINERS: metrics
 #  rules:
 #    # Scheduled Pipelines
 #    - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -83,8 +83,8 @@ metrics-build-push-latest:
 
 api-gateway-build-push-latest:
   extends: .dockerhub-build-push
-    variables:
-      CONTAINERS: apigateway
+  variables:
+    CONTAINERS: apigateway
 #  rules:
 #    # Scheduled Pipelines
 #    - if: '$CI_PIPELINE_SOURCE == "schedule"'
