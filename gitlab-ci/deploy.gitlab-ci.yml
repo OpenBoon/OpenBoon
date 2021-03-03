@@ -10,22 +10,39 @@
     DOCKER_HOST: tcp://localhost:2375
     SOURCE_TAG: latest
     DOCKER_TAG: test #TODO: CHANGE ME
-    SERVICES: none
     CONTAINERS: none
   retry: 2
   before_script:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
-    - ./buildx -t 1 ${SERVICES}
+    - ./buildx -t 1 ${CONTAINERS}
     - for c in ${CONTAINERS}; do docker tag boonai/$c:${SOURCE_TAG} boonai/$c:${DOCKER_TAG}; done
     - for c in ${CONTAINERS}; do docker push boonai/$c:${DOCKER_TAG}; done
 
-kotlin-build-push-latest:
+kotlin-services-build-push-latest:
   extends: .dockerhub-build-push
   variables:
-    SERVICES: es1 boonai-jvm-common archivist auth-server officer
     CONTAINERS: elasticsearch jvm-common archivist authserver officer
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # Merged to development with Boon AI changes
+#    - if: $CI_COMMIT_BRANCH == "development"
+#      changes:
+#        - "services/jvm-common/**/*"
+#        - "services/archivist/**/*"
+#        - "services/auth-server/**/*"
+#        - "services/elasticsearch/**/*"
+#        - "services/officer/**/*"
+
+python-services-build-push-latest:
+  extends: .dockerhub-build-push
+  variables:
+    CONTAINERS: >
+      reporter plugins-train ml-bbq analyst plugins-analysis plugins-models plugins-core
+      boondocks boonflow boonlab boonsdk py3-base
 #  rules:
 #    # Scheduled Pipelines
 #    - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -35,13 +52,44 @@ kotlin-build-push-latest:
 #      changes:
 #        - "client/**/*"
 #        - "containers/**/*"
-#        - "dev/**/*"
 #        - "services/analyst/**/*"
-#        - "services/jvm-common/**/*"
-#        - "services/api-gateway/**/*"
-#        - "services/archivist/**/*"
-#        - "services/auth-server/**/*"
-#        - "services/elasticsearch/**/*"
 #        - "services/mlbbq/**/*"
-#        - "services/officer/**/*"
-#        - "services/reporter/**/*"
+
+wallet-build-push-latest:
+  extends: .dockerhub-build-push
+    variables:
+      CONTAINERS: wallet
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # Merged to Development with Wallet changes
+#    - if: $CI_COMMIT_BRANCH == "development"
+#      changes:
+#        - "applications/wallet/**/*"
+
+metrics-build-push-latest:
+  extends: .dockerhub-build-push
+    variables:
+      CONTAINERS: metrics
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # Merged to Development with Wallet changes
+#    - if: $CI_COMMIT_BRANCH == "development"
+#      changes:
+#        - "services/metrics/**/*"
+
+api-gateway-build-push-latest:
+  extends: .dockerhub-build-push
+    variables:
+      CONTAINERS: apigateway
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # Merged to Development with Wallet changes
+#    - if: $CI_COMMIT_BRANCH == "development"
+#      changes:
+#        - "services/api-gateway/**/*"
