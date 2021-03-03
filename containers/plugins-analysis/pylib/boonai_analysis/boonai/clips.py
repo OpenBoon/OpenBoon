@@ -1,12 +1,14 @@
-import tempfile
 import logging
+import tempfile
 
+import cv2
+
+from boonsdk.util import denormalize_bbox
 import boonflow.proxy as proxy
-from boonflow import AssetProcessor, Argument, file_storage
-from boonflow.video import extract_thumbnail_from_video
-from boonflow.media import media_size, get_output_dimension
-
 from boonai_analysis.utils import simengine
+from boonflow import AssetProcessor, Argument, file_storage
+from boonflow.media import media_size, get_output_dimension
+from boonflow.video import extract_thumbnail_from_video
 
 logger = logging.getLogger(__name__)
 
@@ -151,10 +153,21 @@ def analyze_timelines(app, sim, asset_id, timelines):
             extract_thumbnail_from_video(video_path, jpg_file, current_time, psize)
             simhash = sim.calculate_hash(jpg_file)
 
-        # Always store the file
-        prx = file_storage.projects.store_file(jpg_file, clip, "proxy", "proxy.jpg",
-                                               attrs={"width": psize[0], "height": psize[1]},
-                                               precache=False)
+        # If the clip has a bbox then we'll burn it into the proxy.
+        if clip.bbox:
+            img = cv2.imread(jpg_file)
+            bbox = denormalize_bbox(psize[0], psize[1], clip.bbox)
+            cv2.rectangle(img, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (0, 255, 0), 2)
+
+            with tempfile.NamedTemporaryFile(suffix=".jpg") as tf:
+                cv2.imwrite(tf.name, img)
+                prx = upload_clip_proxy(clip, tf.name, psize, bbox)
+        else:
+            # Always store the file even if we're storing the same file (for now)
+            # An optimization could be to share proxies in some cases but it gets
+            # difficult if people are rebuilding their timelines.
+            prx = upload_clip_proxy(clip, jpg_file, psize)
+
         if prx:
             batch[clip.id] = {'files': [prx], 'simhash': simhash}
 
@@ -164,3 +177,23 @@ def analyze_timelines(app, sim, asset_id, timelines):
 
     # Add final batch
     submit_clip_batch(app, asset_id, batch)
+
+
+def upload_clip_proxy(clip, path, size, bbox=None):
+    """
+    Upload a clip proxy.
+
+    Args:
+        clip (Clip): The clip proxy.
+        path (str): The file path to the clip proxy.
+        size (list): The image size in width, height
+        bbox (listO): The denormalized bbox.
+    Returns:
+        StoredFile: A StoredFile record.
+    """
+    attrs = {"width": size[0], "height": size[1]}
+    if bbox:
+        attrs['bbox'] = bbox
+    return file_storage.projects.store_file(path, clip, "proxy", "proxy.jpg",
+                                            attrs=attrs,
+                                            precache=False)
