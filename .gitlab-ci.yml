@@ -14,10 +14,10 @@ stages:
   - deploy
 
 include:
-  - local: './gitlab-ci/metrics.yml'
-  - local: './gitlab-ci/sdk.yml'
-  - local: './gitlab-ci/services.yml'
-  - local: './gitlab-ci/wallet.yml'
+  - local: 'gitlab-ci/metrics.yml'
+  - local: 'gitlab-ci/sdk.yml'
+  - local: 'gitlab-ci/services.yml'
+  - local: 'gitlab-ci/wallet.yml'
 
 plugin-container-tests:
   image: boonai/docker-buildx
