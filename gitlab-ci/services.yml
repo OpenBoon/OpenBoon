@@ -4,19 +4,19 @@ backend-kotlin-lint:
   stage: pretest
   script:
     - ktlint services/**/*.kt lib/**/*.kt
-  rules:
-    # Scheduled Pipelines
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    # MR to any branch that is not master with Boon AI Kotlin changes
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
-      changes:
-        - "services/**/*.kt"
-        - "lib/**/*.kt"
-    # MR to QA with any change
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
-      changes:
-        - "**/*"
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI Kotlin changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/**/*.kt"
+#        - "lib/**/*.kt"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
 
 # Kotlin services - Unit tests - Step 1
 elasticsearch-build-artifacts:
@@ -30,22 +30,22 @@ elasticsearch-build-artifacts:
   artifacts:
     paths:
       - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
-  rules:
-    # Scheduled Pipelines
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    # MR to any branch that is not master with Boon AI changes
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
-      changes:
-        - "services/archivist/**/*"
-        - "services/auth-server/**/*"
-        - "services/elasticsearch/**/*"
-        - "services/officer/**/*"
-        - "services/jvm-common/**/*"
-    # MR to QA with any change
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
-      changes:
-        - "**/*"
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/archivist/**/*"
+#        - "services/auth-server/**/*"
+#        - "services/elasticsearch/**/*"
+#        - "services/officer/**/*"
+#        - "services/jvm-common/**/*"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
 
 elasticsearch-push-to-local-registry:
   image: docker:18.09.8-dind
@@ -58,21 +58,21 @@ elasticsearch-push-to-local-registry:
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
     - docker build -t $LOCAL_ES_NAME .
     - docker push $LOCAL_ES_NAME
-  rules:
-    # Scheduled Pipelines
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    # MR to any branch that is not master with Boon AI changes
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
-      changes:
-        - "services/archivist/**/*"
-        - "services/auth-server/**/*"
-        - "services/elasticsearch/**/*"
-        - "services/officer/**/*"
-    # MR to QA with any change
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
-      changes:
-        - "**/*"
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/archivist/**/*"
+#        - "services/auth-server/**/*"
+#        - "services/elasticsearch/**/*"
+#        - "services/officer/**/*"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
 
 .kt-services-base-unit-tests:
   stage: test
@@ -128,69 +128,69 @@ jvm-common-unit-tests:
   stage: pretest
   variables:
     SERVICE: "jvm-common"
-  rules:
-    # Scheduled Pipelines
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    # MR to any branch that is not master with Boon AI changes
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
-      changes:
-        - "services/jvm-common/**/*"
-        - "services/auth-server/**/*"
-        - "services/officer/**/*"
-        - "services/archivist/**/*"
-    # MR to QA with any change
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
-      changes:
-        - "**/*"
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/jvm-common/**/*"
+#        - "services/auth-server/**/*"
+#        - "services/officer/**/*"
+#        - "services/archivist/**/*"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
 
 archivist-unit-tests:
   extends: .kt-services-base-unit-tests
   variables:
     SERVICE: "archivist"
-  rules:
-    # Scheduled Pipelines
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    # MR to any branch that is not master with Boon AI changes
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
-      changes:
-        - "services/archivist/**/*"
-    # MR to QA with any change
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
-      changes:
-        - "**/*"
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/archivist/**/*"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
 
 auth-server-unit-tests:
   extends: .kt-services-base-unit-tests
   variables:
     SERVICE: "auth-server"
-  rules:
-    # Scheduled Pipelines
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    # MR to any branch that is not master with Boon AI changes
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
-      changes:
-        - "services/auth-server/**/*"
-    # MR to QA with any change
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
-      changes:
-        - "**/*"
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/auth-server/**/*"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
 
 officer-unit-tests:
   extends: .kt-services-base-unit-tests
   variables:
     SERVICE: "officer"
-  rules:
-    # Scheduled Pipelines
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    # MR to any branch that is not master with Boon AI changes
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
-      changes:
-        - "services/officer/**/*"
-    # MR to QA with any change
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
-      changes:
-        - "**/*"
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/officer/**/*"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
