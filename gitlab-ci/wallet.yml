@@ -1,0 +1,180 @@
+## Wallet Integration CI Tests
+wallet-integration-test-suite:
+  stage: test
+  image: cypress/browsers:node14.7.0-chrome84
+  before_script:
+    - cd applications/wallet/cypress
+    - npm ci
+  script:
+    - npm run cli -- --browser chrome --headless --record --group Backend --spec 'integration/backend/**/*'
+    - npm run cli -- --browser chrome --headless --record --group Frontend --spec 'integration/frontend/**/*'
+  artifacts:
+    when: always
+    paths:
+      - applications/wallet/cypress/videos/**/*.mp4
+      - applications/wallet/cypress/screenshots/**/*.png
+    expire_in: 1 day
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: always
+    # MR to Development with Cypress changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development"
+      changes:
+        - "applications/wallet/cypress/**/*"
+
+## Wallet Frontend CI Tests
+wallet-frontend-test-suite:
+  stage: test
+  image: node:12
+  before_script:
+    - cd applications/wallet/frontend
+    - npm ci
+  script:
+    - npm run lint
+    - npm run test:cover
+    - npm run size
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # MR to any branch that is not master with Frontend changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "applications/wallet/frontend/**/*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
+    # Merged to Development with Frontend changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "applications/wallet/frontend/**/*"
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
+
+## Wallet Backend CI Tests
+wallet-backend-test-suite:
+  stage: test
+  image: mc706/pipenv-3.7
+  services:
+    - name: postgres:9.6.9
+      alias: postgres
+  variables:
+    POSTGRES_PASSWORD: a8fnnbe934j
+    POSTGRES_USER: wallet
+    POSTGRES_DB: wallet
+    PG_HOST: postgres
+  script:
+    - cd applications/wallet
+    - pipenv sync
+    - cd app
+    - pipenv run flake8
+    - pipenv run pytest --cov=.
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # MR to any branch that is not master with Backend changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "applications/wallet/app/**/*"
+        - "applications/wallet/Pipfile*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
+    # Merged to Development with Backend changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "applications/wallet/app/**/*"
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
+
+## Wallet Build & Push Latest on changes to Development
+wallet-dockerhub-build-push-latest:
+  image: boonai/docker-buildx
+  stage: push
+  services:
+    - docker:19-dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+    DOCKER_TAG: latest
+  retry: 2
+  before_script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+  script:
+    - ./buildx wallet
+    - docker tag boonai/wallet:latest boonai/wallet:${DOCKER_TAG}
+    - docker push boonai/wallet:${DOCKER_TAG}
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # Merged to Development with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "applications/wallet/**/*"
+
+## Wallet Deploy Latest on any changes to Development
+wallet-deploy-development:
+  image: google/cloud-sdk
+  retry: 1
+  variables:
+    PROJECT: zvi-dev
+  stage: deploy
+  environment:
+    name: dev
+    url: https://dev.console.zvi.zorroa.com/
+  before_script:
+    - echo $DEV_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
+  script:
+    - kubectl --namespace default rollout restart deployment wallet
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # Merged to development with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "applications/wallet/**/*"
+
+## Wallet Build & Push QA on changes to QA branch
+wallet-dockerhub-build-push-qa:
+  extends:
+    - wallet-dockerhub-build-push-latest
+  variables:
+    DOCKER_TAG: qa
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
+
+## Wallet Deploy Latest on any changes to QA
+wallet-deploy-qa:
+  extends:
+    - wallet-deploy-development
+  variables:
+    PROJECT: zvi-qa
+  environment:
+    name: qa
+    url: https://qa.console.zvi.zorroa.com/
+  before_script:
+    - echo $QA_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"

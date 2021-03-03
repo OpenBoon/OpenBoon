@@ -1,0 +1,64 @@
+## Backend Python Lint
+backend-py-lint:
+  image: python:3.7.5
+  stage: pretest
+  allow_failure: false
+  script:
+    - python -m pip install flake8
+    - flake8 --config .flake8.cfg client/boonczar client/boonsdk client/boonlab containers/boonflow containers/py3-base containers/boondocks containers/plugins-core containers/plugins-analysis containers/plugins-train services/analyst services/mlbbq
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # MR to any branch that is not master with Boon AI Python changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "client/boonsdk/**/*.py"
+        - "client/boonlab/**/*.py"
+        - "containers/**/*.py"
+        - "services/analyst/**/*.py"
+        - "services/mlbbq/**/*.py"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
+
+# SDK Test
+# Testing other containers requires building containers
+# Testing analyst requires it can pull plugin containers.
+sdk-unit-tests:
+  image: python:3.8.5
+  stage: test
+  allow_failure: false
+  script:
+    - apt-get update
+    - apt-get -y install openimageio-tools mediainfo
+    - python -m pip install pipenv pytest cmake
+    - pip install --upgrade pip
+    - cd client/boonsdk
+    - pip install .
+    - pytest
+    - cd ../../containers/boonflow
+    - tar -xJf ffmpeg-amd64-static.tar.xz
+    - cp ffmpeg-4.2.2-amd64-static/ffmpeg /usr/bin
+    - cp ffmpeg-4.2.2-amd64-static/ffprobe /usr/bin
+    - pip install .
+    - pytest
+    - cd ../boondocks
+    - pip install .
+    - pytest
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # MR to any branch that is not master with BOONAI changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "client/boonsdk/**/*"
+        - "client/boonlab/**/*"
+        - "containers/boonflow/**/*"
+        - "containers/boondocks/**/*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
