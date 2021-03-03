@@ -15,7 +15,7 @@
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
-    - ./buildx -t 1 ${CONTAINERS}
+    - ./buildx -t 2 ${CONTAINERS}
     - for c in ${CONTAINERS}; do docker tag boonai/$c:${SOURCE_TAG} boonai/$c:${DOCKER_TAG}; done
     - for c in ${CONTAINERS}; do docker push boonai/$c:${DOCKER_TAG}; done
 
