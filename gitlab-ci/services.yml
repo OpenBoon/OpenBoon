@@ -125,7 +125,7 @@ elasticsearch-push-to-local-registry:
 
 jvm-common-unit-tests:
   extends: .kt-services-base-unit-tests
-  stage: pretest
+  stage: test
   variables:
     SERVICE: "jvm-common"
 #  rules:
