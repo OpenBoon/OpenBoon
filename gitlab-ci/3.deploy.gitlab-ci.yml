@@ -1,0 +1,129 @@
+.deploy:
+  image: google/cloud-sdk
+  retry: 1
+  variables:
+    PROJECT: none
+    SA_JSON: none
+    DEPLOYMENTS: none
+    STATEFUL_SETS: none
+  stage: deploy
+  before_script:
+    - echo $SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
+  script:
+    - if [ "$DEPLOYMENTS" == none ]; then kubectl --namespace default rollout restart deployment ${DEPLOYMENTS}; fi
+    - if [ "$STATEFUL_SETS" == none ]; then kubectl --namespace default rollout restart statefulset ${STATEFUL_SETS}; fi
+
+boonai-deploy-development:
+  variables:
+    PROJECT: zvi-dev
+    SA_JSON: ${DEV_SA_JSON}
+    DEPLOYMENTS: analyst api-gateway archivist auth-server officer ml-bbq reporter
+    STATEFUL_SETS: statefulset elasticsearch-master elasticsearch-data
+  environment:
+    name: dev
+    url: https://dev.boonai.app
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # Merged to development with Boon AI changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "client/**/*"
+        - "containers/**/*"
+        - "dev/**/*"
+        - "services/**/*"
+
+boonai-deploy-qa:
+  extends:
+    - boonai-deploy-development
+  environment:
+    name: qa
+    url: https://qa.boonai.app
+  variables:
+    PROJECT: zvi-qa
+    SA_JSON: ${QA_SA_JSON}
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+
+## Wallet Deploy Latest on any changes to Development
+wallet-deploy-development:
+  variables:
+    PROJECT: zvi-dev
+    DEPLOYMENTS: wallet
+    SA_JSON: ${DEV_SA_JSON}
+  environment:
+    name: dev
+    url: https://dev.boonai.app
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # Merged to development with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "applications/wallet/**/*"
+
+## Wallet Deploy Latest on any changes to QA
+wallet-deploy-qa:
+  extends:
+    - wallet-deploy-development
+  variables:
+    PROJECT: zvi-qa
+    SA_JSON: ${QA_SA_JSON}
+  environment:
+    name: qa
+    url: https://qa.boonai.app
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+
+## Wallet Deploy Latest on any changes to Development
+metrics-deploy-development:
+  variables:
+    PROJECT: zvi-dev
+    DEPLOYMENTS: metrics
+    SA_JSON: ${DEV_SA_JSON}
+  environment:
+    name: dev
+    url: https://dev.boonai.app
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # Merged to development with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "services/metrics/**/*"
+
+## Wallet Deploy Latest on any changes to QA
+metrics-deploy-qa:
+  extends:
+    - metrics-deploy-development
+  variables:
+    PROJECT: zvi-qa
+    SA_JSON: ${QA_SA_JSON}
+  environment:
+    name: qa
+    url: https://qa.boonai.app
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+
+deploy-prod:
+  image: google/cloud-sdk
+  variables:
+    PROJECT: zvi-prod
+    SA_JSON: ${$PROD_SA_JSON}
+    DEPLOYMENTS: wallet analyst api-gateway archivist auth-server officer ml-bbq reporter metrics
+    STATEFUL_SETS: elasticsearch-master elasticsearch-data
+  stage: deploy
+  environment:
+    name: prod
+    url: https://boonai.app/
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: manual

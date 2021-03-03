@@ -1,4 +1,4 @@
-.dockerhub-build-push:
+.dockerhub-push:
   image: boonai/docker-buildx
   stage: push
   services:
@@ -19,8 +19,8 @@
     - for c in ${CONTAINERS}; do docker tag boonai/$c:${SOURCE_TAG} boonai/$c:${DOCKER_TAG}; done
     - for c in ${CONTAINERS}; do docker push boonai/$c:${DOCKER_TAG}; done
 
-kotlin-services-build-push-latest:
-  extends: .dockerhub-build-push
+kotlin-services-push-latest:
+  extends: .dockerhub-push
   variables:
     CONTAINERS: elasticsearch jvm-common archivist authserver officer
   rules:
@@ -36,16 +36,16 @@ kotlin-services-build-push-latest:
         - "services/elasticsearch/**/*"
         - "services/officer/**/*"
 
-kotlin-services-build-push-qa:
-  extends: kotlin-services-build-push-latest
+kotlin-services-push-qa:
+  extends: kotlin-services-push-latest
   variables:
     DOCKER_TAG: qa
   rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
 
-python-services-build-push-latest:
-  extends: .dockerhub-build-push
+python-services-push-latest:
+  extends: .dockerhub-push
   variables:
     CONTAINERS: >
       reporter plugins-train ml-bbq analyst plugins-analysis plugins-models plugins-core
@@ -62,16 +62,16 @@ python-services-build-push-latest:
         - "services/analyst/**/*"
         - "services/mlbbq/**/*"
 
-python-services-build-push-qa:
-  extends: python-services-build-push-latest
+python-services-push-qa:
+  extends: python-services-push-latest
   variables:
     DOCKER_TAG: qa
   rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
 
-wallet-build-push-latest:
-  extends: .dockerhub-build-push
+wallet-push-latest:
+  extends: .dockerhub-push
   variables:
     CONTAINERS: wallet
   rules:
@@ -83,16 +83,16 @@ wallet-build-push-latest:
       changes:
         - "applications/wallet/**/*"
 
-wallet-build-push-qa:
-  extends: wallet-build-push-latest
+wallet-push-qa:
+  extends: wallet-push-latest
   variables:
     DOCKER_TAG: qa
   rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
 
-metrics-build-push-latest:
-  extends: .dockerhub-build-push
+metrics-push-latest:
+  extends: .dockerhub-push
   variables:
     CONTAINERS: metrics
   rules:
@@ -104,16 +104,16 @@ metrics-build-push-latest:
       changes:
         - "services/metrics/**/*"
 
-metrics-build-push-qa:
-  extends: metrics-build-push-latest
+metrics-push-qa:
+  extends: metrics-push-latest
   variables:
     DOCKER_TAG: qa
   rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
 
-api-gateway-build-push-latest:
-  extends: .dockerhub-build-push
+api-gateway-push-latest:
+  extends: .dockerhub-push
   variables:
     CONTAINERS: apigateway
   rules:
@@ -125,8 +125,8 @@ api-gateway-build-push-latest:
       changes:
         - "services/api-gateway/**/*"
 
-api-gateway-build-push-qa:
-  extends: api-gateway-build-push-latest
+api-gateway-push-qa:
+  extends: api-gateway-push-latest
   variables:
     DOCKER_TAG: qa
   rules:
@@ -134,7 +134,7 @@ api-gateway-build-push-qa:
     - if: $CI_COMMIT_BRANCH == "qa"
 
 # Production Push and Deploy
-boonai-dockerhub-build-push-prod:
+boonai-dockerhub-push-prod:
   image: boonai/docker-buildx
   stage: push
   services:
@@ -144,7 +144,7 @@ boonai-dockerhub-build-push-prod:
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
     SOURCE_TAG: qa
-    DOCKER_TAG: stable-test
+    DOCKER_TAG: stable
     CONTAINERS: >
       archivist officer elasticsearch authserver apigateway py3-base boonsdk boonlab boonflow
       boondocks plugins-models plugins-core plugins-analysis analyst ml-bbq plugins-train
@@ -156,6 +156,6 @@ boonai-dockerhub-build-push-prod:
     - for c in ${CONTAINERS}; do docker pull -q boonai/$c:${SOURCE_TAG}; done
     - for c in ${CONTAINERS}; do docker tag boonai/$c:${SOURCE_TAG} boonai/$c:${DOCKER_TAG}; done
     - for c in ${CONTAINERS}; do docker push boonai/$c:${DOCKER_TAG}; done
-#  rules:
-#    - if: $CI_COMMIT_BRANCH == "master"
-#      when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: manual
