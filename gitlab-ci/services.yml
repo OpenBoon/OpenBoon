@@ -1,0 +1,199 @@
+## Backend Kotlin Lint
+backend-kotlin-lint:
+  image: kkopper/ktlint:0.37.2
+  stage: pretest
+  script:
+    - ktlint services/**/*.kt lib/**/*.kt
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI Kotlin changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/**/*.kt"
+#        - "lib/**/*.kt"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
+
+# Kotlin services - Unit tests - Step 1
+elasticsearch-build-artifacts:
+  image: boonai/jvm-build:latest
+  stage: build
+  variables:
+    MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  script:
+    - cd services/elasticsearch
+    - mvn clean install -Dmaven.test.skip=true
+  artifacts:
+    paths:
+      - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/archivist/**/*"
+#        - "services/auth-server/**/*"
+#        - "services/elasticsearch/**/*"
+#        - "services/officer/**/*"
+#        - "services/jvm-common/**/*"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
+
+elasticsearch-push-to-local-registry:
+  image: docker:18.09.8-dind
+  stage: pretest
+  retry: 2
+  services:
+    - docker:18.09.8-dind
+  script:
+    - cd services/elasticsearch
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker build -t $LOCAL_ES_NAME --cache-from=$CI_REGISTRY_IMAGE/elasticsearch .
+    - docker push $LOCAL_ES_NAME
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/archivist/**/*"
+#        - "services/auth-server/**/*"
+#        - "services/elasticsearch/**/*"
+#        - "services/officer/**/*"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
+
+.kt-services-base-unit-tests:
+  stage: test
+  image: boonai/jvm-build:latest
+  retry: 1
+  services:
+    - name: redis:alpine
+      alias: redis
+    - name: minio/minio
+      alias: minio
+      command: ["server", "/data"]
+    - name: postgres:9.6.9
+      alias: postgres
+    - name: $LOCAL_ES_NAME
+      alias: elasticsearch
+      command: ["bin/elasticsearch", "-Ediscovery.type=single-node"]
+  variables:
+    POSTGRES_PASSWORD: "zorroa"
+    POSTGRES_USER: "zorroa"
+    POSTGRES_DB: "zorroa"
+    PGDATA: "/var/lib/postgresql/data/pgdata"
+    ARCHIVIST_ES_URL: "http://localhost:9200"
+    SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/zorroa?currentSchema=archivist_test"
+    LOGGING_LEVEL_COM_ZORROA: "WARN"
+    USER: "gitlab"
+    BOONAI_STORAGE_PROJECT_ACCESSKEY: "qwerty123"
+    BOONAI_STORAGE_PROJECT_SECRETKEY: "123qwerty"
+    BOONAI_STORAGE_PROJECT_URL: "http://localhost:9000"
+    BOONAI_STORAGE_SYSTEM_ACCESSKEY: "qwerty123"
+    BOONAI_STORAGE_SYSTEM_SECRETKEY: "123qwerty"
+    BOONAI_STORAGE_SYSTEM_URL: "http://localhost:9000"
+    BOONAI_STORAGE_CLIENT: "minio"
+    MINIO_ACCESS_KEY: "qwerty123"
+    MINIO_SECRET_KEY: "123qwerty"
+    MXNET_OS: "linux"
+    MINIO_URL: "http://localhost:9000"
+    MINIO_DEFAULT_PROTOCOL: "http"
+    ARCHIVIST_ES_BACKUP_BUCKET_NAME: "project-storage-test"
+    REDIS_HOST: "localhost:6379"
+    MAVEN_OPTS: "-Dmaven.repo.local=./.m2/repository -Dhttps.protocols=TLSv1.2 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+    MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+  script:
+    - export
+    - IP="$(cat /etc/hosts |grep $HOSTNAME|cut -d$'\t' -f1)"
+    - ARCHIVIST_ES_URL="http://${IP}:9200"
+    - BOONAI_STORAGE_PROJECT_URL="http://${IP}:9000"
+    - BOONAI_STORAGE_SYSTEM_URL="http://${IP}:9000"
+    - mvn clean install -f services/$SERVICE -q -Dmaven.test.skip=true -Dmaven.wagon.http.pool=false
+    - mvn test verify -f services/$SERVICE -q -Dmaven.wagon.http.pool=false
+
+jvm-common-unit-tests:
+  extends: .kt-services-base-unit-tests
+  stage: pretest-stage-2
+  artifacts:
+    paths:
+      - .m2/repository
+  variables:
+    SERVICE: "jvm-common"
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/jvm-common/**/*"
+#        - "services/auth-server/**/*"
+#        - "services/officer/**/*"
+#        - "services/archivist/**/*"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
+
+archivist-unit-tests:
+  extends: .kt-services-base-unit-tests
+  variables:
+    SERVICE: "archivist"
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/archivist/**/*"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
+
+auth-server-unit-tests:
+  extends: .kt-services-base-unit-tests
+  variables:
+    SERVICE: "auth-server"
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/auth-server/**/*"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
+
+officer-unit-tests:
+  extends: .kt-services-base-unit-tests
+  variables:
+    SERVICE: "officer"
+#  rules:
+#    # Scheduled Pipelines
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    # MR to any branch that is not master with Boon AI changes
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+#      changes:
+#        - "services/officer/**/*"
+#    # MR to QA with any change
+#    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+#      changes:
+#        - "**/*"
