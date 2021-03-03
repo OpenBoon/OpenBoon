@@ -109,5 +109,19 @@ describe('<ModelMatrix />', () => {
         .findByProps({ 'aria-label': 'Dahlia / Sacred Lotus: 0' })
         .props.onClick()
     })
+
+    // Hover label
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Prediction Label: Dahlia' })
+        .props.onMouseEnter()
+    })
+
+    // Hover label
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Prediction Label: Dahlia' })
+        .props.onMouseLeave()
+    })
   })
 })
