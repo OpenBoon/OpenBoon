@@ -10,20 +10,22 @@
     DOCKER_HOST: tcp://localhost:2375
     SOURCE_TAG: latest
     DOCKER_TAG: test #TODO: CHANGE ME
+    SERVICES: none
     CONTAINERS: none
   retry: 2
   before_script:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
-    - ./buildx -t 1 ${CONTAINERS}
-    - for c in {${CONTAINERS}}; do docker tag boonai/$c:${SOURCE_TAG} boonai/$c:${DOCKER_TAG}; done
-    - for c in {${CONTAINERS}}; do docker push boonai/$c:${DOCKER_TAG}; done
+    - ./buildx -t 1 ${SERVICES}
+    - for c in ${CONTAINERS}; do docker tag boonai/$c:${SOURCE_TAG} boonai/$c:${DOCKER_TAG}; done
+    - for c in ${CONTAINERS}; do docker push boonai/$c:${DOCKER_TAG}; done
 
 kotlin-build-push-latest:
   extends: .dockerhub-build-push
   variables:
-    CONTAINERS: es1 boonai-jvm-common archivist auth-server officer
+    SERVICES: es1 boonai-jvm-common archivist auth-server officer
+    CONTAINERS: elasticsearch jvm-common archivist authserver officer
 #  rules:
 #    # Scheduled Pipelines
 #    - if: '$CI_PIPELINE_SOURCE == "schedule"'
