@@ -267,4 +267,42 @@ class JobServiceTests : AbstractTest() {
             projectStorageService.fetch(loc)
         }
     }
+
+    @Test
+    fun testSearchByWildCard() {
+        val baseName1 = "iron"
+        val baseName2 = "man"
+
+        val spec1 = JobSpec(
+            "${baseName1}ic",
+            emptyZpsScripts("foo"),
+        )
+
+        val spec2 = JobSpec(
+            "$baseName1 maiden",
+            emptyZpsScripts("foo"),
+        )
+
+        val spec3 = JobSpec(
+            "${baseName2}ual",
+            emptyZpsScripts("foo"),
+        )
+        val job1 = jobService.create(spec1)
+        val job2 = jobService.create(spec2)
+        val job3 = jobService.create(spec3)
+
+        val first = jobService.getAll(
+            JobFilter(
+                wildCardNames = listOf(baseName1)
+            )
+        )
+        val all = jobService.getAll(
+            JobFilter(
+                wildCardNames = listOf(baseName1, baseName2)
+            )
+        )
+
+        assertEquals(2, first.size())
+        assertEquals(3, all.size())
+    }
 }
