@@ -75,7 +75,7 @@ services:
     image: boonai/ml-bbq:latest
     depends_on:
       - jvm-common
-      - boonai-plugins-models
+      - plugins-models
     ports:
       - "8282:8282"
     build:
@@ -89,7 +89,7 @@ services:
     depends_on:
       - postgres
       - minio
-      - boonai-jvm-common
+      - jvm-common
     ports:
       - "9090:9090"
     build:
