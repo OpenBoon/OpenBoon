@@ -97,6 +97,12 @@ class ProxyFunctionTests(TestCase):
         ])
         assert [0.0, 0.0, 0.5, 0.5, 0.2, 0.2] == rect
 
+    def test_calculate_pixel_bbox(self):
+        rect = proxy.calculate_normalized_bbox(1000, 1000, [
+            0, 0, 500, 500, 200, 200
+        ])
+        assert [0.0, 0.0, 0.5, 0.5, 0.2, 0.2] == rect
+
     @patch.object(BoonClient, 'stream')
     def test_get_proxy_level(self, stream_patch):
         asset = TestAsset(IMAGE_JPG, id='123456')

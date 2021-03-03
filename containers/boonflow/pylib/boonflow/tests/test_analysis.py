@@ -90,6 +90,13 @@ class LabelDetectionAnalysisTests(TestCase):
         sd = labels.for_json()
         assert not sd['predictions'][0].get('bbox')
 
+    def test_add_predictions_with_attrs(self):
+        labels = analysis.LabelDetectionAnalysis()
+        preds = [analysis.Prediction('dog', 0.9, bbox=[1, 2, 3, 4])]
+        labels.add_predictions(preds)
+        sd = labels.for_json()
+        assert sd['predictions'][0].get('bbox')
+
     def test_add_prediction(self):
         assert self.analysis.add_prediction(self.pred) is True
         assert self.analysis.add_prediction(self.pred) is True
