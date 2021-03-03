@@ -118,4 +118,3 @@ class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         timeline = tl_patch.call_args_list[0][0][1]
         jtl = timeline.for_json()
         assert jtl['tracks'][0]['name'] == 'ants'
-        assert jtl['tracks'][0]['clips'][0]['score'] == 0.062
