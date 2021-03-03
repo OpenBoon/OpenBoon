@@ -78,11 +78,6 @@ elasticsearch-push-to-local-registry:
   stage: test
   image: boonai/jvm-build:latest
   retry: 1
-  cache:
-    paths:
-      - ./.m2/repository
-    # keep cache across branch
-    key: "$CI_BUILD_REF_NAME"
   services:
     - name: redis:alpine
       alias: redis
@@ -131,7 +126,9 @@ elasticsearch-push-to-local-registry:
 jvm-common-unit-tests:
   extends: .kt-services-base-unit-tests
   stage: pretest-stage-2
-
+  artifacts:
+    paths:
+      - .m2/repository
   variables:
     SERVICE: "jvm-common"
 #  rules:
