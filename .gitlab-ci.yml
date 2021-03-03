@@ -115,16 +115,16 @@ wallet-backend-test-suite:
         - "**/*"
 
 ## Wallet Build & Push QA on changes to QA branch
-wallet-dockerhub-build-push-qa:
-  extends:
-    - wallet-dockerhub-build-push-latest
-  variables:
-    DOCKER_TAG: qa
-  rules:
-    # Merged to QA with any change
-    - if: $CI_COMMIT_BRANCH == "qa"
-      changes:
-        - "**/*"
+#wallet-dockerhub-build-push-qa:
+#  extends:
+#    - wallet-dockerhub-build-push-latest
+#  variables:
+#    DOCKER_TAG: qa
+#  rules:
+#    # Merged to QA with any change
+#    - if: $CI_COMMIT_BRANCH == "qa"
+#      changes:
+#        - "**/*"
 
 ## Wallet Deploy Latest on any changes to Development
 wallet-deploy-development:
@@ -218,16 +218,16 @@ metrics-backend-test-suite:
 
 
 ## Metrics Build & Push QA on changes to QA branch
-metrics-dockerhub-build-push-qa:
-  extends:
-    - metrics-dockerhub-build-push-latest
-  variables:
-    DOCKER_TAG: qa
-  rules:
-    # Merged to QA with any change
-    - if: $CI_COMMIT_BRANCH == "qa"
-      changes:
-        - "**/*"
+#metrics-dockerhub-build-push-qa:
+#  extends:
+#    - metrics-dockerhub-build-push-latest
+#  variables:
+#    DOCKER_TAG: qa
+#  rules:
+#    # Merged to QA with any change
+#    - if: $CI_COMMIT_BRANCH == "qa"
+#      changes:
+#        - "**/*"
 
 ## Metrics Deploy Latest on any changes to Development
 metrics-deploy-development:
