@@ -9,7 +9,7 @@
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
     SOURCE_TAG: latest
-    DOCKER_TAG: test #TODO: CHANGE ME
+    DOCKER_TAG: latest
     CONTAINERS: none
   before_script:
     - apk add docker-compose
@@ -23,18 +23,26 @@ kotlin-services-build-push-latest:
   extends: .dockerhub-build-push
   variables:
     CONTAINERS: elasticsearch jvm-common archivist authserver officer
-#  rules:
-#    # Scheduled Pipelines
-#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-#      when: never
-#    # Merged to development with Boon AI changes
-#    - if: $CI_COMMIT_BRANCH == "development"
-#      changes:
-#        - "services/jvm-common/**/*"
-#        - "services/archivist/**/*"
-#        - "services/auth-server/**/*"
-#        - "services/elasticsearch/**/*"
-#        - "services/officer/**/*"
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # Merged to development with Boon AI changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "services/jvm-common/**/*"
+        - "services/archivist/**/*"
+        - "services/auth-server/**/*"
+        - "services/elasticsearch/**/*"
+        - "services/officer/**/*"
+
+kotlin-services-build-push-qa:
+  extends: kotlin-services-build-push-latest
+  variables:
+    DOCKER_TAG: qa
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
 
 python-services-build-push-latest:
   extends: .dockerhub-build-push
@@ -42,54 +50,112 @@ python-services-build-push-latest:
     CONTAINERS: >
       reporter plugins-train ml-bbq analyst plugins-analysis plugins-models plugins-core
       boondocks boonflow boonlab boonsdk py3-base
-#  rules:
-#    # Scheduled Pipelines
-#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-#      when: never
-#    # Merged to development with Boon AI changes
-#    - if: $CI_COMMIT_BRANCH == "development"
-#      changes:
-#        - "client/**/*"
-#        - "containers/**/*"
-#        - "services/analyst/**/*"
-#        - "services/mlbbq/**/*"
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # Merged to development with Boon AI changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "client/**/*"
+        - "containers/**/*"
+        - "services/analyst/**/*"
+        - "services/mlbbq/**/*"
+
+python-services-build-push-qa:
+  extends: python-services-build-push-latest
+  variables:
+    DOCKER_TAG: qa
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
 
 wallet-build-push-latest:
   extends: .dockerhub-build-push
   variables:
     CONTAINERS: wallet
-#  rules:
-#    # Scheduled Pipelines
-#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-#      when: never
-#    # Merged to Development with Wallet changes
-#    - if: $CI_COMMIT_BRANCH == "development"
-#      changes:
-#        - "applications/wallet/**/*"
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # Merged to Development with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "applications/wallet/**/*"
+
+wallet-build-push-qa:
+  extends: wallet-build-push-latest
+  variables:
+    DOCKER_TAG: qa
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
 
 metrics-build-push-latest:
   extends: .dockerhub-build-push
   variables:
     CONTAINERS: metrics
-#  rules:
-#    # Scheduled Pipelines
-#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-#      when: never
-#    # Merged to Development with Wallet changes
-#    - if: $CI_COMMIT_BRANCH == "development"
-#      changes:
-#        - "services/metrics/**/*"
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # Merged to Development with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "services/metrics/**/*"
+
+metrics-build-push-qa:
+  extends: metrics-build-push-latest
+  variables:
+    DOCKER_TAG: qa
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
 
 api-gateway-build-push-latest:
   extends: .dockerhub-build-push
   variables:
     CONTAINERS: apigateway
-#  rules:
-#    # Scheduled Pipelines
-#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-#      when: never
-#    # Merged to Development with Wallet changes
-#    - if: $CI_COMMIT_BRANCH == "development"
-#      changes:
-#        - "services/api-gateway/**/*"
+  rules:
+    # Scheduled Pipelines
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    # Merged to Development with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "services/api-gateway/**/*"
 
+api-gateway-build-push-qa:
+  extends: api-gateway-build-push-latest
+  variables:
+    DOCKER_TAG: qa
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+
+# Production Push and Deploy
+boonai-dockerhub-build-push-prod:
+  image: boonai/docker-buildx
+  stage: push
+  services:
+    - docker:19-dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+    SOURCE_TAG: qa
+    DOCKER_TAG: stable-test
+    CONTAINERS: >
+      archivist officer elasticsearch authserver apigateway py3-base boonsdk boonlab boonflow
+      boondocks plugins-models plugins-core plugins-analysis analyst ml-bbq plugins-train
+      wallet reporter metrics
+  before_script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+  script:
+    - for c in ${CONTAINERS}; do docker pull -q boonai/$c:${SOURCE_TAG}; done
+    - for c in ${CONTAINERS}; do docker tag boonai/$c:${SOURCE_TAG} boonai/$c:${DOCKER_TAG}; done
+    - for c in ${CONTAINERS}; do docker push boonai/$c:${DOCKER_TAG}; done
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == "master"
+#      when: manual
