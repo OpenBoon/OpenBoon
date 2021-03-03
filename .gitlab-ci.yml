@@ -9,6 +9,7 @@ variables:
 stages:
   - build
   - pretest
+  - pretest-stage-2
   - test
   - push
   - deploy

@@ -56,7 +56,7 @@ elasticsearch-push-to-local-registry:
   script:
     - cd services/elasticsearch
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-    - docker build -t $LOCAL_ES_NAME .
+    - docker build -t $LOCAL_ES_NAME --cache-from= $CI_REGISTRY_IMAGE/elasticsearch .
     - docker push $LOCAL_ES_NAME
 #  rules:
 #    # Scheduled Pipelines
@@ -125,7 +125,7 @@ elasticsearch-push-to-local-registry:
 
 jvm-common-unit-tests:
   extends: .kt-services-base-unit-tests
-  stage: test
+  stage: pretest-stage-2
   variables:
     SERVICE: "jvm-common"
 #  rules:
