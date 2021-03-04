@@ -28,7 +28,7 @@ services:
       MINIO_SECRET_KEY: 123qwerty
 
   # Elastic Search instance used for local development servers.
-  es1:
+  elasticsearch:
     image: boonai/elasticsearch:latest
     build:
       context: services/elasticsearch
@@ -53,11 +53,11 @@ services:
     ports:
       - "5001:5000"
     depends_on:
-      - es1
+      - elasticsearch
 
   # API Gateway
   api-gateway:
-    image: boonai/apigateway:latest
+    image: boonai/api-gateway:latest
     build:
       context: services/api-gateway
     depends_on:
@@ -74,8 +74,8 @@ services:
   ml-bbq:
     image: boonai/ml-bbq:latest
     depends_on:
-      - auth-server
-      - boonai-plugins-models
+      - jvm-common
+      - plugins-models
     ports:
       - "8282:8282"
     build:
@@ -85,11 +85,11 @@ services:
 
   # Auth server
   auth-server:
-    image: boonai/authserver:latest
+    image: boonai/auth-server:latest
     depends_on:
       - postgres
       - minio
-      - boonai-jvm-common
+      - jvm-common
     ports:
       - "9090:9090"
     build:
@@ -105,10 +105,10 @@ services:
   archivist:
     image: boonai/archivist:latest
     depends_on:
-      - es1
+      - elasticsearch
       - postgres
       - minio
-      - boonai-jvm-common
+      - jvm-common
     environment:
       SENTRY_ENVIRONMENT: localdev
       BOONAI_STORAGE_PROJECT_ACCESSKEY: qwerty123
@@ -130,7 +130,7 @@ services:
   officer:
     image: boonai/officer:latest
     depends_on:
-      - boonai-jvm-common
+      - jvm-common
       - minio
       - redis
     build:
@@ -148,7 +148,7 @@ services:
     image: boonai/analyst:latest
     depends_on:
       - archivist
-      - boonai-boonflow
+      - boonflow
     build:
       context: services/analyst
     ports:
@@ -215,78 +215,78 @@ services:
       - postgres
 
   # These services are only here because their images need to be built.
-  boonai-jvm-common:
+  jvm-common:
     image: boonai/jvm-common:latest
     build:
       context: services/jvm-common
     command: echo
 
-  boonai-py3-base:
+  py3-base:
     image: boonai/py3-base:latest
     build:
       context: containers/py3-base
     command: echo
 
-  boonai-boonsdk:
+  boonsdk:
     image: boonai/boonsdk:latest
     depends_on:
-      - boonai-py3-base
+      - py3-base
     build:
       context: client/boonsdk
     command: echo
 
-  boonai-lab:
+  boonlab:
     image: boonai/boonlab:latest
     depends_on:
-      - boonai-boonsdk
+      - boonsdk
     build:
       context: client/boonlab
     command: echo
 
-  boonai-boonflow:
+  boonflow:
     image: boonai/boonflow:latest
     depends_on:
-      - boonai-boonsdk
+      - boonsdk
     build:
       context: containers/boonflow
     command: echo
 
-  boonai-boondocks:
+  boondocks:
     image: boonai/boondocks:latest
     depends_on:
-      - boonai-boonflow
+      - boonflow
     build:
       context: containers/boondocks
     command: echo
 
-  boonai-plugins-core:
+  plugins-core:
     image: boonai/plugins-core:latest
     depends_on:
-      - boonai-boondocks
+      - boondocks
     build:
       context: containers/plugins-core
     command: echo
 
-  boonai-plugins-models:
+  plugins-models:
     image: boonai/plugins-models:latest
     depends_on:
-      - boonai-boondocks
+      - boondocks
     build:
       context: containers/plugins-models
     command: echo
 
-  boonai-plugins-train:
+  plugins-train:
     image: boonai/plugins-train:latest
     depends_on:
-      - boonai-plugins-models
+      - plugins-models
     build:
       context: containers/plugins-train
     command: echo
 
-  boonai-plugins-analysis:
+  plugins-analysis:
     image: boonai/plugins-analysis:latest
     depends_on:
-      - boonai-plugins-models
+      - plugins-models
     build:
       context: containers/plugins-analysis
     command: echo
@@ -294,7 +294,7 @@ services:
   reporter:
     image: boonai/reporter:latest
     depends_on:
-      - boonai-py3-base
+      - py3-base
     build:
       context: .
       dockerfile: services/reporter/Dockerfile

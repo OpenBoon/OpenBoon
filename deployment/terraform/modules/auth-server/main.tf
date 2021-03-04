@@ -85,7 +85,7 @@ resource "kubernetes_deployment" "auth-server" {
         }
         container {
           name              = "auth-server"
-          image             = "boonai/authserver:${var.container-tag}"
+          image             = "boonai/auth-server:${var.container-tag}"
           image_pull_policy = "Always"
           liveness_probe {
             initial_delay_seconds = 120
