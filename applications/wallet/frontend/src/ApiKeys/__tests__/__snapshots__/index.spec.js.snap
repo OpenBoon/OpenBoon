@@ -262,7 +262,7 @@ Array [
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
@@ -275,34 +275,39 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-7 {
+  padding: 12px 16px;
+}
+
+.emotion-10 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: 1px;
 }
 
-.emotion-8:nth-of-type(2) {
+.emotion-10:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-8:not(:last-child) {
+.emotion-10:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 12px 16px;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -314,12 +319,12 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-15 {
+.emotion-17 {
   position: relative;
   height: 100%;
 }
 
-.emotion-16 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -351,8 +356,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-16:hover,
-.emotion-16.focus-visible:focus {
+.emotion-18:hover,
+.emotion-18.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -385,18 +390,26 @@ Array [
               <th
                 className="emotion-6"
               >
-                API Key Name
+                <div
+                  className="emotion-7"
+                >
+                  API Key Name
+                </div>
               </th>
               <th
                 className="emotion-6"
               >
-                Permissions
+                <div
+                  className="emotion-7"
+                >
+                  Permissions
+                </div>
               </th>
               <th
-                className="emotion-8"
+                className="emotion-10"
               >
                 <div
-                  className="emotion-9"
+                  className="emotion-11"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -413,38 +426,38 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-12"
                 >
                    Assets Read
                 </span>
                 <span
-                  className="emotion-10"
+                  className="emotion-12"
                 >
                    Assets Import
                 </span>
                 <span
-                  className="emotion-10"
+                  className="emotion-12"
                 >
                    Project Files Read
                 </span>
                 <span
-                  className="emotion-10"
+                  className="emotion-12"
                 >
                    System Project Decrypt
                 </span>
                 <span
-                  className="emotion-10"
+                  className="emotion-12"
                 >
                    Project Files Write
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-15"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-16"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -463,23 +476,23 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-12"
                 >
                    Api Key Manage
                 </span>
                 <span
-                  className="emotion-10"
+                  className="emotion-12"
                 >
                    Project Manage
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-15"
+                  className="emotion-17"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-16"
+                    className="actions emotion-18"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -843,7 +856,7 @@ Array [
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
@@ -856,39 +869,44 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-7 {
+  padding: 12px 16px;
+}
+
+.emotion-10 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: 1px;
 }
 
-.emotion-8:nth-of-type(2) {
+.emotion-10:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-8:not(:last-child) {
+.emotion-10:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 12px 16px;
 }
 
-.emotion-10 {
+.emotion-12 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-11 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -939,18 +957,26 @@ Array [
               <th
                 className="emotion-6"
               >
-                API Key Name
+                <div
+                  className="emotion-7"
+                >
+                  API Key Name
+                </div>
               </th>
               <th
                 className="emotion-6"
               >
-                Permissions
+                <div
+                  className="emotion-7"
+                >
+                  Permissions
+                </div>
               </th>
               <th
-                className="emotion-8"
+                className="emotion-10"
               >
                 <div
-                  className="emotion-9"
+                  className="emotion-11"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -962,13 +988,13 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-10"
+              className="emotion-12"
             >
               <td
                 colSpan={3}
               >
                 <div
-                  className="emotion-11"
+                  className="emotion-13"
                 >
                   No api keys
                 </div>
