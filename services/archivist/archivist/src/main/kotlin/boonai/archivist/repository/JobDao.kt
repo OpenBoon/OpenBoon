@@ -99,7 +99,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         )
         return jdbc.update(
             UPDATE,
-            update.name, update.priority, update.paused, update.timePauseExpired, job.jobId
+            update.name, update.priority, update.paused, update.timePauseExpired, getTsWordVector(update.name), job.jobId,
         ) == 1
     }
 
@@ -343,7 +343,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         private const val UPDATE = "UPDATE " +
             "job " +
             "SET " +
-            "str_name=?, int_priority=?, bool_paused=?, time_pause_expired=? " +
+            "str_name=?, int_priority=?, bool_paused=?, time_pause_expired=?, fti_keywords=to_tsvector(?) " +
             "WHERE pk_job=?"
 
         private val INSERT = insert(
