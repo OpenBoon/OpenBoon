@@ -14,9 +14,6 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import org.apache.http.util.EntityUtils
 
-
-
-
 class AssetSearchServiceTests : AbstractTest() {
 
     @Autowired

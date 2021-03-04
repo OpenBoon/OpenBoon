@@ -20,11 +20,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.apache.http.util.EntityUtils
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.Response
 import java.lang.IllegalArgumentException
-
 
 interface AssetSearchService {
     fun search(search: Map<String, Any>, params: Map<String, Array<String>>): SearchResponse
@@ -132,7 +130,7 @@ class AssetSearchServiceImpl : AssetSearchService {
         return ssb
     }
 
-    override fun sqlSearch(query: String) : Response {
+    override fun sqlSearch(query: String): Response {
         val rest = indexRoutingService.getProjectRestClient()
 
         // Not sure if this is secure enough but if the query does not reference
