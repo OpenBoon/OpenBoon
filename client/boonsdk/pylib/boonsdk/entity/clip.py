@@ -68,6 +68,11 @@ class VideoClip:
         return self._data.get('simhash')
 
     @property
+    def bbox(self):
+        """A bounding box for a detection on the clip proxy image"""
+        return self._data.get('bbox')
+
+    @property
     def files(self):
         """The array of associated files."""
         return [StoredFile(f) for f in self._data.get('files', [])]

@@ -21,7 +21,10 @@ class TimelineClipSpec(
     val content: List<String>,
 
     @ApiModelProperty("The confidence score that the content is correct.")
-    val score: Double
+    val score: Double,
+
+    @ApiModelProperty("A Bbox assocated with the clip, if any.")
+    val bbox: List<Double>? = null
 )
 
 @ApiModel("TrackSpec", description = "Properties for defining a timeline Track. Tracks contain clips.")

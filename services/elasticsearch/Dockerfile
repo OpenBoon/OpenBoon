@@ -13,7 +13,7 @@ RUN chmod 755 /usr/local/bin/docker-entrypoint.sh
 COPY --from=mvn_build ./es-similarity/target/releases/es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip
 COPY --from=mvn_build /usr/local/openjdk-11 /usr/local/openjdk-11
 RUN yum install -y unzip wget
-
+RUN yum update -y
 ENV PATH="/usr/local/openjdk-11/bin:${PATH}"
 ENV JAVA_HOME="/usr/local/openjdk-11"
 
