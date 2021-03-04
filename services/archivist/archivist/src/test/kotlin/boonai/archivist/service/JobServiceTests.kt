@@ -274,7 +274,7 @@ class JobServiceTests : AbstractTest() {
         val baseName2 = "man"
 
         val spec1 = JobSpec(
-            "${baseName1}ic",
+            "man $baseName1",
             emptyZpsScripts("foo"),
         )
 
@@ -284,7 +284,7 @@ class JobServiceTests : AbstractTest() {
         )
 
         val spec3 = JobSpec(
-            "${baseName2}ual",
+            "$baseName2 of steel",
             emptyZpsScripts("foo"),
         )
         val job1 = jobService.create(spec1)

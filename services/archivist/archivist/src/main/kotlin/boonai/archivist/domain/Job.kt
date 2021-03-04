@@ -265,8 +265,8 @@ class JobFilter(
         }
 
         wildCardNames?.let {
-            addToWhere(JdbcUtils.wildCardSearch("job.str_name", it.size))
-            addToValues(it)
+            addToWhere("(job.fti_keywords @@ to_tsquery(?))")
+            addToValues(it.joinToString(separator = " | "))
         }
     }
 }

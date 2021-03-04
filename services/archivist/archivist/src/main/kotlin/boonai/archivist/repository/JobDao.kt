@@ -76,6 +76,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
             ps.setInt(12, spec.priority)
             ps.setBoolean(13, spec.paused)
             ps.setLong(14, pauseUntil)
+            ps.setObject(15, spec.name)
             ps
         }
 
@@ -359,7 +360,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
             "json_env",
             "int_priority",
             "bool_paused",
-            "time_pause_expired"
+            "time_pause_expired",
+            "fti_keywords::tsvector"
         )
 
         private const val GET_TASK_COUNTS =
