@@ -22,7 +22,7 @@
 kotlin-services-push-latest:
   extends: .dockerhub-push
   variables:
-    CONTAINERS: elasticsearch jvm-common archivist authserver officer
+    CONTAINERS: elasticsearch jvm-common archivist -ver officer
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -115,7 +115,7 @@ metrics-push-qa:
 api-gateway-push-latest:
   extends: .dockerhub-push
   variables:
-    CONTAINERS: apigateway
+    CONTAINERS: api-gateway
   rules:
     # Scheduled Pipelines
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -146,7 +146,7 @@ boonai-dockerhub-push-prod:
     SOURCE_TAG: qa
     DOCKER_TAG: stable
     CONTAINERS: >
-      archivist officer elasticsearch authserver apigateway py3-base boonsdk boonlab boonflow
+      archivist officer elasticsearch auths-erver api-gateway py3-base boonsdk boonlab boonflow
       boondocks plugins-models plugins-core plugins-analysis analyst ml-bbq plugins-train
       wallet reporter metrics
   before_script:

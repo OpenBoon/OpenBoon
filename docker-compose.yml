@@ -56,19 +56,19 @@ services:
       - elasticsearch
 
   # API Gateway
-  apigateway:
-    image: boonai/apigateway:latest
+  api-gateway:
+    image: boonai/api-gateway:latest
     build:
       context: services/api-gateway
     depends_on:
-      - jvm-common
+      - auth-server
       - archivist
       - ml-bbq
     ports:
       - 8080:80
     environment:
       ARCHIVIST_HOST: archivist:8080
-      AUTH_SERVER_HOST: jvm-common:9090
+      AUTH_SERVER_HOST: auth-server:9090
       MLBBQ_SERVER_HOST: ml-bbq:8282
 
   ml-bbq:
@@ -81,11 +81,11 @@ services:
     build:
       context: services/mlbbq
     environment:
-      BOONAI_SECURITY_AUTHSERVER_URL : http://jvm-common:9090
+      BOONAI_SECURITY_AUTHSERVER_URL : http://auth-server:9090
 
   # Auth server
-  authserver:
-    image: boonai/authserver:latest
+  auth-server:
+    image: boonai/auth-server:latest
     depends_on:
       - postgres
       - minio
@@ -178,7 +178,7 @@ services:
       DEBUG: "true"
       BROWSABLE: "true"
       PG_HOST: postgres
-      BOONAI_API_URL: http://apigateway:80
+      BOONAI_API_URL: http://api-gateway:80
       INCEPTION_KEY_B64: ewogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiCn0KCg==
       GOOGLE_OAUTH_CLIENT_ID: 980622341235-39kks0r3pkl0iotcb8mt6iclbvj98mml
       SUPERADMIN: "true"
@@ -193,7 +193,7 @@ services:
       start_period: 10s
     depends_on:
       - postgres
-      - apigateway
+      - api-gateway
 
   # Metric Collection Service.
   metrics:
