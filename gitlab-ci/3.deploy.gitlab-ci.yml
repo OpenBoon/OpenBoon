@@ -12,8 +12,8 @@
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
-    - if [ "${DEPLOYMENTS}" == "none" ]; then kubectl --namespace default rollout restart deployment ${DEPLOYMENTS}; fi
-    - if [ "${STATEFUL_SETS}" == "none" ]; then kubectl --namespace default rollout restart statefulset ${STATEFUL_SETS}; fi
+    - if [ "${DEPLOYMENTS}" != "none" ]; then kubectl --namespace default rollout restart deployment ${DEPLOYMENTS}; fi
+    - if [ "${STATEFUL_SETS}" != "none" ]; then kubectl --namespace default rollout restart statefulset ${STATEFUL_SETS}; fi
 
 boonai-deploy-development:
   extends: .deploy
