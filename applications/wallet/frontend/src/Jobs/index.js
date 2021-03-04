@@ -27,10 +27,10 @@ const Jobs = () => {
         refreshKeys={[]}
         refreshButton
         columns={[
-          'Status',
-          'Job Name',
-          'Priority',
-          'Created',
+          { key: 'state', label: 'Status' },
+          { key: 'name', label: 'Job Name' },
+          { key: 'priority', label: 'Priority' },
+          { key: 'timeCreated', label: 'Created' },
           '# Assets',
           'Errors',
           'Task Progress',

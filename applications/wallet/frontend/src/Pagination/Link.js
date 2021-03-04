@@ -20,6 +20,7 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
   const queryParamPage = isPrev ? currentPage - 1 : currentPage + 1
   const queryParam = getQueryString({
     query: query.query,
+    sort: query.sort,
     page: queryParamPage === 1 ? '' : queryParamPage,
   })
   const href = `${pathname}${queryParam}`

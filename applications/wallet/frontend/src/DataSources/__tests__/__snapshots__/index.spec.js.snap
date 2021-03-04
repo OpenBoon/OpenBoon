@@ -315,7 +315,7 @@ Array [
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
@@ -328,59 +328,64 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-7 {
+  padding: 12px 16px;
+}
+
+.emotion-18 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: 1px;
 }
 
-.emotion-12:nth-of-type(0) {
+.emotion-18:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-12:not(:last-child) {
+.emotion-18:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-13 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 12px 16px;
 }
 
-.emotion-14 {
+.emotion-20 {
   cursor: pointer;
 }
 
-.emotion-15:hover {
+.emotion-21:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-16 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-17 {
+.emotion-23 {
   margin-right: 16px;
 }
 
-.emotion-19 {
+.emotion-25 {
   position: relative;
   height: 100%;
 }
 
-.emotion-20 {
+.emotion-26 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -412,8 +417,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-20:hover,
-.emotion-20.focus-visible:focus {
+.emotion-26:hover,
+.emotion-26.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -446,38 +451,62 @@ Array [
               <th
                 className="emotion-6"
               >
-                Name
+                <div
+                  className="emotion-7"
+                >
+                  Name
+                </div>
               </th>
               <th
                 className="emotion-6"
-              >
-                Source Type
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Path
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Date Created
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Date Modified
-              </th>
-              <th
-                className="emotion-6"
-              >
-                File Types
-              </th>
-              <th
-                className="emotion-12"
               >
                 <div
-                  className="emotion-13"
+                  className="emotion-7"
+                >
+                  Source Type
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  Path
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  Date Created
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  Date Modified
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  File Types
+                </div>
+              </th>
+              <th
+                className="emotion-18"
+              >
+                <div
+                  className="emotion-19"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -489,12 +518,12 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -516,16 +545,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="#ebb52e"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="documents.svg"
                     height={24}
@@ -539,11 +568,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -557,12 +586,12 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -584,16 +613,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="#00bdc1"
                     data-file-name="documents.svg"
                     height={24}
@@ -607,11 +636,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -625,12 +654,12 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -652,16 +681,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="documents.svg"
                     height={24}
@@ -675,11 +704,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -693,12 +722,12 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -720,16 +749,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="#ebb52e"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="#00bdc1"
                     data-file-name="documents.svg"
                     height={24}
@@ -743,11 +772,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -761,12 +790,12 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -788,16 +817,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="documents.svg"
                     height={24}
@@ -811,11 +840,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1150,7 +1179,7 @@ Array [
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
@@ -1163,59 +1192,64 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-7 {
+  padding: 12px 16px;
+}
+
+.emotion-18 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: 1px;
 }
 
-.emotion-12:nth-of-type(0) {
+.emotion-18:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-12:not(:last-child) {
+.emotion-18:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-13 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 12px 16px;
 }
 
-.emotion-14 {
+.emotion-20 {
   cursor: pointer;
 }
 
-.emotion-15:hover {
+.emotion-21:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-16 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-17 {
+.emotion-23 {
   margin-right: 16px;
 }
 
-.emotion-19 {
+.emotion-25 {
   position: relative;
   height: 100%;
 }
 
-.emotion-20 {
+.emotion-26 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1247,8 +1281,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-20:hover,
-.emotion-20.focus-visible:focus {
+.emotion-26:hover,
+.emotion-26.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -1281,38 +1315,62 @@ Array [
               <th
                 className="emotion-6"
               >
-                Name
+                <div
+                  className="emotion-7"
+                >
+                  Name
+                </div>
               </th>
               <th
                 className="emotion-6"
-              >
-                Source Type
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Path
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Date Created
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Date Modified
-              </th>
-              <th
-                className="emotion-6"
-              >
-                File Types
-              </th>
-              <th
-                className="emotion-12"
               >
                 <div
-                  className="emotion-13"
+                  className="emotion-7"
+                >
+                  Source Type
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  Path
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  Date Created
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  Date Modified
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  File Types
+                </div>
+              </th>
+              <th
+                className="emotion-18"
+              >
+                <div
+                  className="emotion-19"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -1324,12 +1382,12 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1351,16 +1409,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="#ebb52e"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="documents.svg"
                     height={24}
@@ -1374,11 +1432,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1392,12 +1450,12 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1419,16 +1477,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="#00bdc1"
                     data-file-name="documents.svg"
                     height={24}
@@ -1442,11 +1500,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1460,12 +1518,12 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1487,16 +1545,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="documents.svg"
                     height={24}
@@ -1510,11 +1568,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1528,12 +1586,12 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1555,16 +1613,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="#ebb52e"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="#00bdc1"
                     data-file-name="documents.svg"
                     height={24}
@@ -1578,11 +1636,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1596,12 +1654,12 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -1623,16 +1681,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="documents.svg"
                     height={24}
@@ -1646,11 +1704,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -1993,7 +2051,7 @@ Array [
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
@@ -2006,39 +2064,44 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-7 {
+  padding: 12px 16px;
+}
+
+.emotion-18 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: 1px;
 }
 
-.emotion-12:nth-of-type(0) {
+.emotion-18:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-12:not(:last-child) {
+.emotion-18:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-13 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 12px 16px;
 }
 
-.emotion-14 {
+.emotion-20 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-15 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2089,38 +2152,62 @@ Array [
               <th
                 className="emotion-6"
               >
-                Name
+                <div
+                  className="emotion-7"
+                >
+                  Name
+                </div>
               </th>
               <th
                 className="emotion-6"
-              >
-                Source Type
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Path
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Date Created
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Date Modified
-              </th>
-              <th
-                className="emotion-6"
-              >
-                File Types
-              </th>
-              <th
-                className="emotion-12"
               >
                 <div
-                  className="emotion-13"
+                  className="emotion-7"
+                >
+                  Source Type
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  Path
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  Date Created
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  Date Modified
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  File Types
+                </div>
+              </th>
+              <th
+                className="emotion-18"
+              >
+                <div
+                  className="emotion-19"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -2132,13 +2219,13 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-14"
+              className="emotion-20"
             >
               <td
                 colSpan={7}
               >
                 <div
-                  className="emotion-15"
+                  className="emotion-21"
                 >
                   No data sources
                 </div>
@@ -2467,7 +2554,7 @@ Array [
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
@@ -2480,59 +2567,64 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-7 {
+  padding: 12px 16px;
+}
+
+.emotion-18 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: 1px;
 }
 
-.emotion-12:nth-of-type(0) {
+.emotion-18:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-12:not(:last-child) {
+.emotion-18:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-13 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 12px 16px;
 }
 
-.emotion-14 {
+.emotion-20 {
   cursor: pointer;
 }
 
-.emotion-15:hover {
+.emotion-21:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-16 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-17 {
+.emotion-23 {
   margin-right: 16px;
 }
 
-.emotion-19 {
+.emotion-25 {
   position: relative;
   height: 100%;
 }
 
-.emotion-20 {
+.emotion-26 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2564,8 +2656,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-20:hover,
-.emotion-20.focus-visible:focus {
+.emotion-26:hover,
+.emotion-26.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -2598,38 +2690,62 @@ Array [
               <th
                 className="emotion-6"
               >
-                Name
+                <div
+                  className="emotion-7"
+                >
+                  Name
+                </div>
               </th>
               <th
                 className="emotion-6"
-              >
-                Source Type
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Path
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Date Created
-              </th>
-              <th
-                className="emotion-6"
-              >
-                Date Modified
-              </th>
-              <th
-                className="emotion-6"
-              >
-                File Types
-              </th>
-              <th
-                className="emotion-12"
               >
                 <div
-                  className="emotion-13"
+                  className="emotion-7"
+                >
+                  Source Type
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  Path
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  Date Created
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  Date Modified
+                </div>
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-7"
+                >
+                  File Types
+                </div>
+              </th>
+              <th
+                className="emotion-18"
+              >
+                <div
+                  className="emotion-19"
                 >
                   <svg
                     data-file-name="kebab.svg"
@@ -2641,12 +2757,12 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -2668,16 +2784,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="#ebb52e"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="documents.svg"
                     height={24}
@@ -2691,11 +2807,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2709,12 +2825,12 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -2736,16 +2852,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="#00bdc1"
                     data-file-name="documents.svg"
                     height={24}
@@ -2759,11 +2875,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2777,12 +2893,12 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -2804,16 +2920,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="documents.svg"
                     height={24}
@@ -2827,11 +2943,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2845,12 +2961,12 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -2872,16 +2988,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="#ebb52e"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="#00bdc1"
                     data-file-name="documents.svg"
                     height={24}
@@ -2895,11 +3011,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -2913,12 +3029,12 @@ Array [
               </td>
             </tr>
             <tr
-              className="emotion-14"
+              className="emotion-20"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-15"
+                  className="emotion-21"
                   href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -2940,16 +3056,16 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="images.svg"
                     height={24}
                   />
                   <svg
-                    className="emotion-17"
+                    className="emotion-23"
                     color="transparent"
                     data-file-name="documents.svg"
                     height={24}
@@ -2963,11 +3079,11 @@ Array [
               </td>
               <td>
                 <div
-                  className="emotion-19"
+                  className="emotion-25"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-20"
+                    className="actions emotion-26"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"

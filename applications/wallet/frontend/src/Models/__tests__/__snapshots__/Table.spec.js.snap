@@ -109,7 +109,7 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
@@ -122,11 +122,15 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-9 {
+.emotion-7 {
+  padding: 12px 16px;
+}
+
+.emotion-12 {
   cursor: pointer;
 }
 
-.emotion-10:hover {
+.emotion-13:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
@@ -160,28 +164,40 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
             <th
               className="emotion-6"
             >
-              Name
+              <div
+                className="emotion-7"
+              >
+                Name
+              </div>
             </th>
             <th
               className="emotion-6"
             >
-              Type
+              <div
+                className="emotion-7"
+              >
+                Type
+              </div>
             </th>
             <th
               className="emotion-6"
             >
-              Module
+              <div
+                className="emotion-7"
+              >
+                Module
+              </div>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr
-            className="emotion-9"
+            className="emotion-12"
             onClick={[Function]}
           >
             <td>
               <a
-                className="emotion-10"
+                className="emotion-13"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf774-89d9-1244-9596-d6df43f1ede5"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -197,12 +213,12 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-9"
+            className="emotion-12"
             onClick={[Function]}
           >
             <td>
               <a
-                className="emotion-10"
+                className="emotion-13"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf774-89d9-9596-1244-d6df43f1ede5"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -218,12 +234,12 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-9"
+            className="emotion-12"
             onClick={[Function]}
           >
             <td>
               <a
-                className="emotion-10"
+                className="emotion-13"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/models/c0e83460-6a25-1238-86fa-0242ac150002"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -239,12 +255,12 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-9"
+            className="emotion-12"
             onClick={[Function]}
           >
             <td>
               <a
-                className="emotion-10"
+                className="emotion-13"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/models/c0e83462-6a25-1238-86fa-0242ac150002"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -389,7 +405,7 @@ exports[`<ModelsTable /> should render properly without models 1`] = `
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
@@ -402,12 +418,16 @@ exports[`<ModelsTable /> should render properly without models 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-9 {
+.emotion-7 {
+  padding: 12px 16px;
+}
+
+.emotion-12 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-10 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -429,7 +449,7 @@ exports[`<ModelsTable /> should render properly without models 1`] = `
   line-height: 19px;
 }
 
-.emotion-11 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -474,32 +494,44 @@ exports[`<ModelsTable /> should render properly without models 1`] = `
             <th
               className="emotion-6"
             >
-              Name
+              <div
+                className="emotion-7"
+              >
+                Name
+              </div>
             </th>
             <th
               className="emotion-6"
             >
-              Type
+              <div
+                className="emotion-7"
+              >
+                Type
+              </div>
             </th>
             <th
               className="emotion-6"
             >
-              Module
+              <div
+                className="emotion-7"
+              >
+                Module
+              </div>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr
-            className="emotion-9"
+            className="emotion-12"
           >
             <td
               colSpan={3}
             >
               <div
-                className="emotion-10"
+                className="emotion-13"
               >
                 <div
-                  className="emotion-11"
+                  className="emotion-14"
                 >
                   <svg
                     data-file-name="noJobs.svg"
