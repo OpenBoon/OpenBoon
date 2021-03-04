@@ -4,6 +4,7 @@ COPY pom.xml pom.xml
 RUN mvn clean install -q -Dmaven.test.skip=true
 
 FROM docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+RUN yum update -y
 
 COPY ./docker/jvm.options /usr/share/elasticsearch/config
 COPY ./docker/docker-entrypoint.sh /usr/local/bin
