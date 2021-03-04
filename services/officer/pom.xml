@@ -15,7 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.4.30</kotlin.version>
+        <kotlin.version>1.4.31</kotlin.version>
         <kotlin.comiler.jvmTarget>1.8</kotlin.comiler.jvmTarget>
         <ktor.version>1.5.1</ktor.version>
     </properties>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
-            <version>1.78</version>
+            <version>1.81</version>
         </dependency>
 
         <dependency>
@@ -121,7 +121,7 @@
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-storage</artifactId>
-            <version>1.113.9</version>
+            <version>1.113.12</version>
         </dependency>
 
         <dependency>
@@ -134,7 +134,7 @@
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
-            <version>3.15.0</version>
+            <version>3.15.1</version>
         </dependency>
 
         <dependency>

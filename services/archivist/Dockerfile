@@ -9,7 +9,7 @@ WORKDIR /build
 RUN --mount=type=cache,target=/root/.m2 mvn clean package -q -Dmaven.test.skip=true
 
 FROM openjdk:11-jdk-slim
-RUN apt-get update; apt-get install -y --no-install-recommends python3
+RUN apt-get update -y; apt-get upgrade -y; apt-get install -y --no-install-recommends python3
 
 
 VOLUME /tmp
