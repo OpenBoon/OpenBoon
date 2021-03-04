@@ -22,7 +22,7 @@
 kotlin-services-push-latest:
   extends: .dockerhub-push
   variables:
-    CONTAINERS: elasticsearch jvm-common archivist -ver officer
+    CONTAINERS: archivist auth-server elasticsearch jvm-common officer
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -30,10 +30,10 @@ kotlin-services-push-latest:
     # Merged to development with Boon AI changes
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
-        - "services/jvm-common/**/*"
         - "services/archivist/**/*"
         - "services/auth-server/**/*"
         - "services/elasticsearch/**/*"
+        - "services/jvm-common/**/*"
         - "services/officer/**/*"
 
 kotlin-services-push-qa:
