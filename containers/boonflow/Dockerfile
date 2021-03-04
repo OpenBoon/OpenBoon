@@ -23,7 +23,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get -y install \
 RUN mkdir /build
 COPY ./ /build
 WORKDIR /build
-RUN pip3 install .
+RUN --mount=type=cache,target=/root/.cache/pip pip3 install .
 
 ARG ffmver=4.2.2-amd64
 COPY ffmpeg-amd64-static.tar.xz .

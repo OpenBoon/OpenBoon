@@ -6,7 +6,7 @@ RUN apt-get update && apt-get -y upgrade
 RUN mkdir /build
 COPY ./ /build
 WORKDIR /build
-RUN --mount=type=cache,target=/root/.cache/pip pip install .
+RUN --mount=type=cache,target=/root/.cache/pip pip3 install .
 WORKDIR /boonai
 
 RUN rm -rf /build
