@@ -17,7 +17,7 @@ import org.elasticsearch.client.slm.PutSnapshotLifecyclePolicyRequest
 import org.elasticsearch.client.slm.SnapshotLifecyclePolicy
 import org.elasticsearch.client.slm.SnapshotLifecyclePolicyMetadata
 import org.elasticsearch.client.slm.SnapshotRetentionConfiguration
-import org.elasticsearch.cluster.metadata.RepositoryMetaData
+import org.elasticsearch.cluster.metadata.RepositoryMetadata
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.unit.TimeValue
 import org.elasticsearch.snapshots.SnapshotInfo
@@ -45,7 +45,7 @@ interface ClusterBackupService {
      *
      * @param cluster: [IndexCluster] Cluster reference
      */
-    fun getRepository(cluster: IndexCluster): RepositoryMetaData?
+    fun getRepository(cluster: IndexCluster): RepositoryMetadata?
 
     /**
      * Retrieve a Policy by ID
@@ -128,7 +128,7 @@ class ClusterBackupServiceImpl(
         executeSnapshotPolicy(cluster)
     }
 
-    override fun getRepository(cluster: IndexCluster): RepositoryMetaData? {
+    override fun getRepository(cluster: IndexCluster): RepositoryMetadata? {
         val client = esClientCache.getRestHighLevelClient(cluster)
         val repos = client.snapshot().getRepository(
             GetRepositoriesRequest(), RequestOptions.DEFAULT
