@@ -34,33 +34,33 @@ def main():
         containers = set()
 
     if args.plugins:
-        containers.update(['boonai-py3-base',
-                           'boonai-boonsdk',
-                           'boonai-boonlab',
-                           'boonai-boonflow',
-                           'boonai-boondocks',
-                           'boonai-plugins-core',
-                           'boonai-plugins-models',
-                           'boonai-plugins-analysis',
-                           'boonai-plugins-train'])
+        containers.update(['py3-base',
+                           'boonsdk',
+                           'boonlab',
+                           'boonflow',
+                           'boondocks',
+                           'plugins-core',
+                           'plugins-models',
+                           'plugins-analysis',
+                           'plugins-train'])
 
     if args.core:
-        containers.update(['boonai-boonsdk',
-                           'boonai-boonlab',
-                           'boonai-boonflow',
-                           'boonai-boondocks',
-                           'boonai-plugins-core'])
+        containers.update(['boonsdk',
+                           'boonlab',
+                           'boonflow',
+                           'boondocks',
+                           'plugins-core'])
     if args.jvm:
-        containers.update(['es1',
-                           'boonai-jvm-common',
+        containers.update(['elasticsearch',
+                           'jvm-common',
                            'archivist',
                            'auth-server'])
     if args.analysis:
-        containers.update(['boonai-boonsdk',
-                           'boonai-boonlab',
-                           'boonai-boonflow',
-                           'boonai-boondocks',
-                           'boonai-plugins-analysis'])
+        containers.update(['boonsdk',
+                           'boonlab',
+                           'boonflow',
+                           'boondocks',
+                           'plugins-analysis'])
 
     if args.system_prune or args.full_system_prune:
         system_prune(args.full_system_prune)
