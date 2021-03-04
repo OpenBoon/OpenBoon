@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
+import org.apache.http.util.EntityUtils
+
+
+
 
 class AssetSearchServiceTests : AbstractTest() {
 
@@ -39,6 +43,15 @@ class AssetSearchServiceTests : AbstractTest() {
         assetService.index(id, asset.document, true)
 
         indexRoutingService.getProjectRestClient().refresh()
+    }
+
+    @Test
+    fun testSqlQuery() {
+        val rsp = assetSearchService.sqlSearch("SELECT source.* FROM boonai WHERE media.type=\'image\'")
+        val map = Json.Mapper.readValue(EntityUtils.toString(rsp.entity), Json.GENERIC_MAP)
+
+        assertTrue(map.containsKey("columns"))
+        assertTrue(map.containsKey("rows"))
     }
 
     @Test
