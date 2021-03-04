@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:experimental
 FROM boonai/boonflow:latest
 
 RUN mkdir /build
