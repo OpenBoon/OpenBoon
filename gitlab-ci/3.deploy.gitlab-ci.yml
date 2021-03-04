@@ -59,14 +59,14 @@ wallet-deploy-development:
   environment:
     name: dev
     url: https://dev.boonai.app
-#  rules:
-#    # Scheduled Pipelines
-#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-#      when: never
-#    # Merged to development with Wallet changes
-#    - if: $CI_COMMIT_BRANCH == "development"
-#      changes:
-#        - "applications/wallet/**/*"
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    # Merged to development with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "applications/wallet/**/*"
 
 ## Wallet Deploy Latest on any changes to QA
 wallet-deploy-qa:
