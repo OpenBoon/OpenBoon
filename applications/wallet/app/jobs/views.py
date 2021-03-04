@@ -67,6 +67,9 @@ class JobViewSet(BaseProjectViewSet):
         Accepts an optional `sort` query parameter. The value can be a comma-separated list of
         fields to sort on, with each field set to ascending (a) or descending (d).
 
+        Also accepts a `filter` query parameter, which will do a wildcard search against
+        all potential job names.
+
         Example:
             ?sort=timeCreated:a,priority:d
 
@@ -79,11 +82,17 @@ class JobViewSet(BaseProjectViewSet):
             job['tasks'] = f'{job["url"]}tasks/'
             job['assetCounts'] = set_asset_total_count(job['assetCounts'])
 
+        search_filter = {}
+        # Add the sort, if any
         sort = request.query_params.get('sort')
         if sort:
-            search_filter = {'sort': sort.split(',')}
-        else:
-            search_filter = {}
+            search_filter['sort'] = sort.split(',')
+
+        # Add the filter, if any
+        filter = request.query_params.get('filter')
+        if filter:
+            search_filter['wildCardNames'] = [filter]
+
         return self._zmlp_list_from_search(request, search_filter=search_filter,
                                            item_modifier=item_modifier)
 
