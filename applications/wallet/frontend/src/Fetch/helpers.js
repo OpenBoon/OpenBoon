@@ -3,7 +3,7 @@ import camelCase from 'camelcase'
 
 export const getQueryString = (params = {}) => {
   const queryString = Object.keys(params)
-    .filter((p) => params[p])
+    .filter((p) => params[p] || params[p] === 0)
     .map((p) => `${p}=${params[p]}`)
     .join('&')
 

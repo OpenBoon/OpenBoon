@@ -109,7 +109,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
@@ -122,38 +122,43 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-7 {
+  padding: 12px 16px;
+}
+
+.emotion-18 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: 1px;
 }
 
-.emotion-12:nth-of-type(0) {
+.emotion-18:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-12:not(:last-child) {
+.emotion-18:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-13 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 12px 16px;
 }
 
-.emotion-14 {
+.emotion-20 {
   cursor: pointer;
 }
 
-.emotion-15 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -168,22 +173,22 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   padding-right: 8px;
 }
 
-.emotion-15 span {
+.emotion-21 span {
   padding-left: 12px;
   font-weight: 500;
 }
 
-.emotion-16:hover {
+.emotion-22:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-17 {
+.emotion-23 {
   position: relative;
   height: 100%;
 }
 
-.emotion-18 {
+.emotion-24 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -215,8 +220,8 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   margin: -6px;
 }
 
-.emotion-18:hover,
-.emotion-18.focus-visible:focus {
+.emotion-24:hover,
+.emotion-24.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -249,38 +254,62 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             <th
               className="emotion-6"
             >
-              Error Type
+              <div
+                className="emotion-7"
+              >
+                Error Type
+              </div>
             </th>
             <th
               className="emotion-6"
-            >
-              Phase
-            </th>
-            <th
-              className="emotion-6"
-            >
-              Message
-            </th>
-            <th
-              className="emotion-6"
-            >
-              File Name
-            </th>
-            <th
-              className="emotion-6"
-            >
-              Processor
-            </th>
-            <th
-              className="emotion-6"
-            >
-              Time
-            </th>
-            <th
-              className="emotion-12"
             >
               <div
-                className="emotion-13"
+                className="emotion-7"
+              >
+                Phase
+              </div>
+            </th>
+            <th
+              className="emotion-6"
+            >
+              <div
+                className="emotion-7"
+              >
+                Message
+              </div>
+            </th>
+            <th
+              className="emotion-6"
+            >
+              <div
+                className="emotion-7"
+              >
+                File Name
+              </div>
+            </th>
+            <th
+              className="emotion-6"
+            >
+              <div
+                className="emotion-7"
+              >
+                Processor
+              </div>
+            </th>
+            <th
+              className="emotion-6"
+            >
+              <div
+                className="emotion-7"
+              >
+                Time
+              </div>
+            </th>
+            <th
+              className="emotion-18"
+            >
+              <div
+                className="emotion-19"
               >
                 <svg
                   data-file-name="kebab.svg"
@@ -292,12 +321,12 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
         </thead>
         <tbody>
           <tr
-            className="emotion-14"
+            className="emotion-20"
             onClick={[Function]}
           >
             <td>
               <div
-                className="emotion-15"
+                className="emotion-21"
               >
                 <svg
                   color="#d6680b"
@@ -320,7 +349,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               }
             >
               <a
-                className="emotion-16"
+                className="emotion-22"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86bc-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -349,11 +378,11 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
             <td>
               <div
-                className="emotion-17"
+                className="emotion-23"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-18"
+                  className="actions emotion-24"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -367,12 +396,12 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-14"
+            className="emotion-20"
             onClick={[Function]}
           >
             <td>
               <div
-                className="emotion-15"
+                className="emotion-21"
               >
                 <svg
                   color="#c92300"
@@ -395,7 +424,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               }
             >
               <a
-                className="emotion-16"
+                className="emotion-22"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86bb-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -424,11 +453,11 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
             <td>
               <div
-                className="emotion-17"
+                className="emotion-23"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-18"
+                  className="actions emotion-24"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -442,12 +471,12 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-14"
+            className="emotion-20"
             onClick={[Function]}
           >
             <td>
               <div
-                className="emotion-15"
+                className="emotion-21"
               >
                 <svg
                   color="#d6680b"
@@ -470,7 +499,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               }
             >
               <a
-                className="emotion-16"
+                className="emotion-22"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86ba-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -499,11 +528,11 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
             <td>
               <div
-                className="emotion-17"
+                className="emotion-23"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-18"
+                  className="actions emotion-24"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -517,12 +546,12 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-14"
+            className="emotion-20"
             onClick={[Function]}
           >
             <td>
               <div
-                className="emotion-15"
+                className="emotion-21"
               >
                 <svg
                   color="#c92300"
@@ -545,7 +574,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               }
             >
               <a
-                className="emotion-16"
+                className="emotion-22"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b9-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -574,11 +603,11 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
             <td>
               <div
-                className="emotion-17"
+                className="emotion-23"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-18"
+                  className="actions emotion-24"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -592,12 +621,12 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-14"
+            className="emotion-20"
             onClick={[Function]}
           >
             <td>
               <div
-                className="emotion-15"
+                className="emotion-21"
               >
                 <svg
                   color="#d6680b"
@@ -620,7 +649,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               }
             >
               <a
-                className="emotion-16"
+                className="emotion-22"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b8-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -649,11 +678,11 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
             <td>
               <div
-                className="emotion-17"
+                className="emotion-23"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-18"
+                  className="actions emotion-24"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -667,12 +696,12 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-14"
+            className="emotion-20"
             onClick={[Function]}
           >
             <td>
               <div
-                className="emotion-15"
+                className="emotion-21"
               >
                 <svg
                   color="#d6680b"
@@ -695,7 +724,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               }
             >
               <a
-                className="emotion-16"
+                className="emotion-22"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b7-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -724,11 +753,11 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
             </td>
             <td>
               <div
-                className="emotion-17"
+                className="emotion-23"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-18"
+                  className="actions emotion-24"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -871,7 +900,7 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
@@ -884,39 +913,44 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-7 {
+  padding: 12px 16px;
+}
+
+.emotion-18 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: 1px;
 }
 
-.emotion-12:nth-of-type(0) {
+.emotion-18:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-12:not(:last-child) {
+.emotion-18:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-13 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 12px 16px;
 }
 
-.emotion-14 {
+.emotion-20 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-15 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -938,7 +972,7 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   line-height: 19px;
 }
 
-.emotion-16 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -983,38 +1017,62 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
             <th
               className="emotion-6"
             >
-              Error Type
+              <div
+                className="emotion-7"
+              >
+                Error Type
+              </div>
             </th>
             <th
               className="emotion-6"
-            >
-              Phase
-            </th>
-            <th
-              className="emotion-6"
-            >
-              Message
-            </th>
-            <th
-              className="emotion-6"
-            >
-              File Name
-            </th>
-            <th
-              className="emotion-6"
-            >
-              Processor
-            </th>
-            <th
-              className="emotion-6"
-            >
-              Time
-            </th>
-            <th
-              className="emotion-12"
             >
               <div
-                className="emotion-13"
+                className="emotion-7"
+              >
+                Phase
+              </div>
+            </th>
+            <th
+              className="emotion-6"
+            >
+              <div
+                className="emotion-7"
+              >
+                Message
+              </div>
+            </th>
+            <th
+              className="emotion-6"
+            >
+              <div
+                className="emotion-7"
+              >
+                File Name
+              </div>
+            </th>
+            <th
+              className="emotion-6"
+            >
+              <div
+                className="emotion-7"
+              >
+                Processor
+              </div>
+            </th>
+            <th
+              className="emotion-6"
+            >
+              <div
+                className="emotion-7"
+              >
+                Time
+              </div>
+            </th>
+            <th
+              className="emotion-18"
+            >
+              <div
+                className="emotion-19"
               >
                 <svg
                   data-file-name="kebab.svg"
@@ -1026,16 +1084,16 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
         </thead>
         <tbody>
           <tr
-            className="emotion-14"
+            className="emotion-20"
           >
             <td
               colSpan={7}
             >
               <div
-                className="emotion-15"
+                className="emotion-21"
               >
                 <div
-                  className="emotion-16"
+                  className="emotion-22"
                 >
                   <svg
                     data-file-name="noJobs.svg"
