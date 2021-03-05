@@ -191,7 +191,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
@@ -204,31 +204,35 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-15 {
+.emotion-11 {
+  padding: 12px 16px;
+}
+
+.emotion-20 {
   cursor: pointer;
 }
 
-.emotion-16 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-17 {
+.emotion-22 {
   padding-left: 16px;
 }
 
-.emotion-18:hover {
+.emotion-23:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-19 {
+.emotion-24 {
   font-style: italic;
 }
 
-.emotion-23 {
+.emotion-28 {
   -webkit-animation: animation-0 2s linear infinite;
   animation: animation-0 2s linear infinite;
 }
@@ -284,37 +288,57 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             <th
               className="emotion-10"
             >
-              State
+              <div
+                className="emotion-11"
+              >
+                State
+              </div>
             </th>
             <th
               className="emotion-10"
             >
-              Description
+              <div
+                className="emotion-11"
+              >
+                Description
+              </div>
             </th>
             <th
               className="emotion-10"
             >
-              Started
+              <div
+                className="emotion-11"
+              >
+                Started
+              </div>
             </th>
             <th
               className="emotion-10"
             >
-              Duration
+              <div
+                className="emotion-11"
+              >
+                Duration
+              </div>
             </th>
             <th
               className="emotion-10"
             >
-              Errors
+              <div
+                className="emotion-11"
+              >
+                Errors
+              </div>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr
-            className="emotion-15"
+            className="emotion-20"
             onClick={[Function]}
           >
             <td
-              className="emotion-16"
+              className="emotion-21"
             >
               <svg
                 color="#ffffff"
@@ -322,14 +346,14 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
                 height={20}
               />
               <span
-                className="emotion-17"
+                className="emotion-22"
               >
                 Waiting
               </span>
             </td>
             <td>
               <a
-                className="emotion-18"
+                className="emotion-23"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f6"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -340,14 +364,14 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             </td>
             <td>
               <div
-                className="emotion-19"
+                className="emotion-24"
               >
                 Waiting...
               </div>
             </td>
             <td>
               <div
-                className="emotion-19"
+                className="emotion-24"
               >
                 Waiting...
               </div>
@@ -357,27 +381,27 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-15"
+            className="emotion-20"
             onClick={[Function]}
           >
             <td
-              className="emotion-16"
+              className="emotion-21"
             >
               <svg
-                className="emotion-23"
+                className="emotion-28"
                 color="#ebb52e"
                 data-file-name="generating.svg"
                 height={20}
               />
               <span
-                className="emotion-17"
+                className="emotion-22"
               >
                 Running
               </span>
             </td>
             <td>
               <a
-                className="emotion-18"
+                className="emotion-23"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82545"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -397,11 +421,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-15"
+            className="emotion-20"
             onClick={[Function]}
           >
             <td
-              className="emotion-16"
+              className="emotion-21"
             >
               <svg
                 color="#009f22"
@@ -409,14 +433,14 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
                 height={20}
               />
               <span
-                className="emotion-17"
+                className="emotion-22"
               >
                 Success
               </span>
             </td>
             <td>
               <a
-                className="emotion-18"
+                className="emotion-23"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82545"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -436,11 +460,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-15"
+            className="emotion-20"
             onClick={[Function]}
           >
             <td
-              className="emotion-16"
+              className="emotion-21"
             >
               <svg
                 color="#c92300"
@@ -448,14 +472,14 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
                 height={20}
               />
               <span
-                className="emotion-17"
+                className="emotion-22"
               >
                 Failure
               </span>
             </td>
             <td>
               <a
-                className="emotion-18"
+                className="emotion-23"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f9"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -475,11 +499,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-15"
+            className="emotion-20"
             onClick={[Function]}
           >
             <td
-              className="emotion-16"
+              className="emotion-21"
             >
               <svg
                 color="#808080"
@@ -487,14 +511,14 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
                 height={20}
               />
               <span
-                className="emotion-17"
+                className="emotion-22"
               >
                 Skipped
               </span>
             </td>
             <td>
               <a
-                className="emotion-18"
+                className="emotion-23"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82549"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -514,11 +538,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             </td>
           </tr>
           <tr
-            className="emotion-15"
+            className="emotion-20"
             onClick={[Function]}
           >
             <td
-              className="emotion-16"
+              className="emotion-21"
             >
               <svg
                 color="#0074f5"
@@ -526,14 +550,14 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
                 height={20}
               />
               <span
-                className="emotion-17"
+                className="emotion-22"
               >
                 Queued
               </span>
             </td>
             <td>
               <a
-                className="emotion-18"
+                className="emotion-23"
                 href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82549"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
@@ -748,7 +772,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
@@ -761,12 +785,16 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-15 {
+.emotion-11 {
+  padding: 12px 16px;
+}
+
+.emotion-20 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-16 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -788,7 +816,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   line-height: 19px;
 }
 
-.emotion-17 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -855,42 +883,62 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
             <th
               className="emotion-10"
             >
-              State
+              <div
+                className="emotion-11"
+              >
+                State
+              </div>
             </th>
             <th
               className="emotion-10"
             >
-              Description
+              <div
+                className="emotion-11"
+              >
+                Description
+              </div>
             </th>
             <th
               className="emotion-10"
             >
-              Started
+              <div
+                className="emotion-11"
+              >
+                Started
+              </div>
             </th>
             <th
               className="emotion-10"
             >
-              Duration
+              <div
+                className="emotion-11"
+              >
+                Duration
+              </div>
             </th>
             <th
               className="emotion-10"
             >
-              Errors
+              <div
+                className="emotion-11"
+              >
+                Errors
+              </div>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr
-            className="emotion-15"
+            className="emotion-20"
           >
             <td
               colSpan={5}
             >
               <div
-                className="emotion-16"
+                className="emotion-21"
               >
                 <div
-                  className="emotion-17"
+                  className="emotion-22"
                 >
                   <svg
                     data-file-name="noJobs.svg"

@@ -36,7 +36,7 @@ resource "kubernetes_deployment" "api-gateway" {
         }
         container {
           name              = "api-gateway"
-          image             = "boonai/apigateway:${var.container-tag}"
+          image             = "boonai/api-gateway:${var.container-tag}"
           image_pull_policy = "Always"
           liveness_probe {
             initial_delay_seconds = 120

@@ -15,6 +15,7 @@ const PaginationNext = ({ currentPage, totalPages }) => {
 
   const queryParam = getQueryString({
     query: query.query,
+    sort: query.sort,
     page: currentPage + 1,
   })
   const href = `${pathname}${queryParam}`
