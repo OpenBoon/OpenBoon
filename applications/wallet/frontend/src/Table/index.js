@@ -55,7 +55,7 @@ const Table = ({ role, filterLabel, ...props }) => {
                   .join('/')
                 Router.push(href, as)
               }}
-              variant={INPUT_SEARCH_VARIANTS.DARK}
+              variant={INPUT_SEARCH_VARIANTS.EXTRADARK}
             />
           </div>
         </div>
