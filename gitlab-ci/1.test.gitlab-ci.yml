@@ -22,6 +22,7 @@ wallet-integration-test-suite:
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development"
       changes:
         - "applications/wallet/cypress/**/*"
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
 
 ## Wallet Frontend CI Tests
 wallet-frontend-test-suite:
@@ -48,8 +49,6 @@ wallet-frontend-test-suite:
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
         - "applications/wallet/frontend/**/*"
-    # Merged to QA with any change
-    - if: $CI_COMMIT_BRANCH == "qa"
 
 ## Wallet Backend CI Tests
 wallet-backend-test-suite:
@@ -84,8 +83,6 @@ wallet-backend-test-suite:
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
         - "applications/wallet/app/**/*"
-    # Merged to QA with any change
-    - if: $CI_COMMIT_BRANCH == "qa"
 
 ## Metrics Backend Tests
 metrics-backend-test-suite:
@@ -124,8 +121,6 @@ metrics-backend-test-suite:
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
         - "services/metrics/app/**/*"
-    # Merged to QA with any change
-    - if: $CI_COMMIT_BRANCH == "qa"
 
 ## Backend Python Lint
 backend-py-lint:
