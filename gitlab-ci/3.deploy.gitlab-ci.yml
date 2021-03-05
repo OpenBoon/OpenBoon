@@ -89,8 +89,8 @@ deploy-qa:
   environment:
     name: qa
     url: https://qa.boonai.app/
-#  rules:
-#    - if: $CI_COMMIT_BRANCH == "qa"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "qa"
 
 deploy-prod:
   extends: deploy-qa
