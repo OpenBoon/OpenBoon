@@ -26,17 +26,23 @@ const TableContent = ({
   refreshButton,
 }) => {
   const {
-    query: { page = 1, sort },
+    query: { page = 1, sort, filter = '' },
   } = useRouter()
 
   const parsedPage = parseInt(page, 10)
   const from = parsedPage * SIZE - SIZE
-  const queryParam = getQueryString({ from, size: SIZE, sort })
-  const queryParamPlus = getQueryString({ from: from + SIZE, size: SIZE, sort })
+  const queryParam = getQueryString({ from, size: SIZE, sort, filter })
+  const queryParamPlus = getQueryString({
+    from: from + SIZE,
+    size: SIZE,
+    sort,
+    filter,
+  })
   const queryParamMinus = getQueryString({
     from: from - SIZE,
     size: SIZE,
     sort,
+    filter,
   })
 
   const {
