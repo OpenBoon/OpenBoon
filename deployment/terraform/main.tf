@@ -288,7 +288,7 @@ module "analyst" {
   container-cluster-name = module.gke-cluster.name
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
   archivist-url          = "http://${module.archivist.ip-address}"
-  officer-url            = "http://${module.officer.ip-address}:7078"
+  officer-url            = "ws://${module.officer.ip-address}:7078"
   container-tag          = var.container-tag
   memory-request         = var.analyst-memory-request
   memory-limit           = var.analyst-memory-limit
