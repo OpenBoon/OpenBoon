@@ -16,7 +16,11 @@ import { PANEL_WIDTH } from './helpers'
 const SIZE = 28
 const PANEL_BORDER_WIDTH = 1
 
-const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
+const ModelMatrixPreviewContent = ({
+  moduleName,
+  encodedFilter,
+  projectId,
+}) => {
   /* istanbul ignore next */
   const { data, error, size, setSize } = useSWRInfinite(
     (pageIndex, previousPageData) => {
@@ -24,7 +28,7 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
 
       const from = pageIndex * SIZE
 
-      return `/api/v1/projects/${projectId}/searches/query/?query=${encodedFilter}&from=${from}&size=${SIZE}`
+      return `/api/v1/projects/${projectId}/searches/query/?fields=analysis.${moduleName}&query=${encodedFilter}&from=${from}&size=${SIZE}`
     },
     undefined,
     {
@@ -112,28 +116,48 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
         ) : (
           results.map(({ thumbnailUrl, metadata, id }) => {
             const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
+            const confidenceScore = metadata.analysis[moduleName].score
 
             return (
-              <div
-                key={id}
-                title={metadata?.source?.filename}
-                css={{
-                  position: 'relative',
-                  paddingBottom: '100%',
-                  backgroundColor: colors.structure.mattGrey,
-                }}
-              >
-                <img
+              <div key={id}>
+                <div
+                  title={metadata?.source?.filename}
                   css={{
-                    position: 'absolute',
-                    top: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
+                    position: 'relative',
+                    paddingTop: '100%',
+                    backgroundColor: colors.structure.mattGrey,
                   }}
-                  src={thumbnailSrc}
-                  alt={metadata?.source?.filename}
-                />
+                >
+                  <img
+                    css={{
+                      position: 'absolute',
+                      top: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                    }}
+                    src={thumbnailSrc}
+                    alt={metadata?.source?.filename}
+                  />
+                </div>
+                <div
+                  css={{
+                    padding: spacing.base,
+                    fontWeight: typography.weight.bold,
+                    backgroundColor: colors.structure.mattGrey,
+                  }}
+                >
+                  <span
+                    css={{
+                      color: colors.structure.zinc,
+                      fontFamily: typography.family.condensed,
+                      fontWeight: typography.weight.regular,
+                    }}
+                  >
+                    Confidence:{' '}
+                  </span>
+                  {confidenceScore}
+                </div>
               </div>
             )
           })
@@ -155,6 +179,7 @@ const ModelMatrixPreviewContent = ({ encodedFilter, projectId }) => {
 }
 
 ModelMatrixPreviewContent.propTypes = {
+  moduleName: PropTypes.string.isRequired,
   encodedFilter: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
 }

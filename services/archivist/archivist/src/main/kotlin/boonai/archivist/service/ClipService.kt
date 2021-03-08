@@ -159,7 +159,8 @@ class ClipServiceImpl(
                 "start" to start,
                 "stop" to stop,
                 "length" to length,
-                "collapseKey" to getCollapseKeys(asset.id, start)
+                "collapseKey" to getCollapseKeys(asset.id, start),
+                "bbox" to spec.bbox
             ),
             "deepSearch" to mapOf("name" to "clip", "parent" to asset.id)
         )
@@ -219,7 +220,8 @@ class ClipServiceImpl(
                         "start" to start,
                         "stop" to stop,
                         "length" to length,
-                        "collapseKey" to getCollapseKeys(asset.id, start)
+                        "collapseKey" to getCollapseKeys(asset.id, start),
+                        "bbox" to clip.bbox
                     ),
                     "deepSearch" to mapOf("name" to "clip", "parent" to asset.id)
                 )

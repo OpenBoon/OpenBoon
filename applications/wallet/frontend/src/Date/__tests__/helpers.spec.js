@@ -16,7 +16,7 @@ describe('<Date /> helpers', () => {
   describe('formatPrettyDate()', () => {
     it('should return formatted date string', () => {
       const timestamp = '2020-04-10T00:27:25.526192Z'
-      const formattedString = '2020-04-10 12:27 UTC'
+      const formattedString = '2020-04-10 00:27 UTC'
       expect(formatPrettyDate({ timestamp })).toEqual(formattedString)
     })
   })

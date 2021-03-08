@@ -132,7 +132,7 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
 
 .emotion-3 {
   padding-bottom: 100%;
-  background-color: rgb(NaN,NaN,NaN);
+  background-color: rgb(255,255,255);
 }
 
 .emotion-14 {
@@ -143,11 +143,6 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
 .emotion-15 {
   padding-bottom: 100%;
   background-color: rgb(0,69,147);
-}
-
-.emotion-16 {
-  padding-bottom: 100%;
-  background-color: rgb(255,255,255);
 }
 
 .emotion-25 {
@@ -306,31 +301,31 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
         className="emotion-15"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
         className="emotion-25"
@@ -339,31 +334,31 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
         className="emotion-26"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
         className="emotion-36"
@@ -372,31 +367,31 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
         className="emotion-37"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
         className="emotion-47"
@@ -405,64 +400,64 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
         className="emotion-48"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
-      />
-      <div
-        className="emotion-58"
+        className="emotion-3"
       />
       <div
         className="emotion-58"
       />
       <div
-        className="emotion-16"
+        className="emotion-58"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
       />
       <div
         className="emotion-48"
@@ -471,31 +466,31 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
         className="emotion-47"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
         className="emotion-37"
@@ -504,31 +499,31 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
         className="emotion-36"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
         className="emotion-26"
@@ -537,31 +532,31 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
         className="emotion-25"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
         className="emotion-15"
@@ -570,64 +565,64 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
         className="emotion-14"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
         className="emotion-113"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
       <div
-        className="emotion-16"
+        className="emotion-3"
       />
     </div>
   </div>

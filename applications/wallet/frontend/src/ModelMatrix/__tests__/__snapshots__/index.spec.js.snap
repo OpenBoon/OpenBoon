@@ -500,7 +500,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 
 .emotion-1278 {
   padding-bottom: 100%;
-  background-color: rgb(NaN,NaN,NaN);
+  background-color: rgb(255,255,255);
 }
 
 .emotion-1289 {
@@ -511,11 +511,6 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 .emotion-1290 {
   padding-bottom: 100%;
   background-color: rgb(0,69,147);
-}
-
-.emotion-1291 {
-  padding-bottom: 100%;
-  background-color: rgb(255,255,255);
 }
 
 .emotion-1300 {
@@ -793,6 +788,11 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-1413 {
+  position: relative;
+  cursor: default;
+}
+
+.emotion-1414 {
   min-width: 0;
   max-width: 0;
   padding: 16px;
@@ -802,7 +802,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-right: 1px solid #191919;
 }
 
-.emotion-1424 {
+.emotion-1435 {
   padding: 16px;
   text-align: center;
   font-weight: 700;
@@ -810,7 +810,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   line-height: 20px;
 }
 
-.emotion-1425 {
+.emotion-1436 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -825,7 +825,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-left: 1px solid #191919;
 }
 
-.emotion-1426 {
+.emotion-1437 {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
@@ -859,26 +859,26 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-1426:hover,
-.emotion-1426.focus-visible:focus,
-.emotion-1426 .noop {
+.emotion-1437:hover,
+.emotion-1437.focus-visible:focus,
+.emotion-1437 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-1426:hover svg,
-.emotion-1426.focus-visible:focus svg,
-.emotion-1426 .noop svg {
+.emotion-1437:hover svg,
+.emotion-1437.focus-visible:focus svg,
+.emotion-1437 .noop svg {
   opacity: 1;
 }
 
-.emotion-1426[aria-disabled=true],
-.emotion-1426 .noop {
+.emotion-1437[aria-disabled=true],
+.emotion-1437 .noop {
   color: #808080;
 }
 
-.emotion-1426:hover {
+.emotion-1437:hover {
   background-color: #2e2e2e;
 }
 
@@ -8756,31 +8756,31 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                       className="emotion-1290"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
                       className="emotion-1300"
@@ -8789,31 +8789,31 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                       className="emotion-1301"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
                       className="emotion-1311"
@@ -8822,31 +8822,31 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                       className="emotion-1312"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
                       className="emotion-1322"
@@ -8855,64 +8855,64 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                       className="emotion-1323"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
-                    />
-                    <div
-                      className="emotion-1333"
+                      className="emotion-1278"
                     />
                     <div
                       className="emotion-1333"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1333"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
+                    />
+                    <div
+                      className="emotion-1278"
                     />
                     <div
                       className="emotion-1323"
@@ -8921,31 +8921,31 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                       className="emotion-1322"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
                       className="emotion-1312"
@@ -8954,31 +8954,31 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                       className="emotion-1311"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
                       className="emotion-1301"
@@ -8987,31 +8987,31 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                       className="emotion-1300"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
                       className="emotion-1290"
@@ -9020,64 +9020,64 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                       className="emotion-1289"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
                       className="emotion-1388"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
-                      className="emotion-1291"
+                      className="emotion-1278"
                     />
                     <div
                       className="emotion-1399"
@@ -9159,63 +9159,140 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                   className="emotion-1412"
                 >
                   <div
+                    aria-label="Prediction Label: Dahlia"
                     className="emotion-1413"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Dahlia
+                    <div
+                      className="emotion-1414"
+                    >
+                      Dahlia
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Cherry Blossom"
                     className="emotion-1413"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Cherry Blossom
+                    <div
+                      className="emotion-1414"
+                    >
+                      Cherry Blossom
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Sacred Lotus"
                     className="emotion-1413"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Sacred Lotus
+                    <div
+                      className="emotion-1414"
+                    >
+                      Sacred Lotus
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Rose"
                     className="emotion-1413"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Rose
+                    <div
+                      className="emotion-1414"
+                    >
+                      Rose
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Hydrangea"
                     className="emotion-1413"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Hydrangea
+                    <div
+                      className="emotion-1414"
+                    >
+                      Hydrangea
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Orchids"
                     className="emotion-1413"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Orchids
+                    <div
+                      className="emotion-1414"
+                    >
+                      Orchids
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Chrysanthemum"
                     className="emotion-1413"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Chrysanthemum
+                    <div
+                      className="emotion-1414"
+                    >
+                      Chrysanthemum
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Peony"
                     className="emotion-1413"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Peony
+                    <div
+                      className="emotion-1414"
+                    >
+                      Peony
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Lily 'Stargazer'"
                     className="emotion-1413"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Lily 'Stargazer'
+                    <div
+                      className="emotion-1414"
+                    >
+                      Lily 'Stargazer'
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Irises"
                     className="emotion-1413"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Irises
+                    <div
+                      className="emotion-1414"
+                    >
+                      Irises
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Bird of Paradise Flower"
                     className="emotion-1413"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Bird of Paradise Flower
+                    <div
+                      className="emotion-1414"
+                    >
+                      Bird of Paradise Flower
+                    </div>
                   </div>
                 </div>
                 <div
-                  className="emotion-1424"
+                  className="emotion-1435"
                 >
                   Predictions
                 </div>
@@ -9236,11 +9313,11 @@ exports[`<ModelMatrix /> should render properly 1`] = `
         }
       />
       <div
-        className="emotion-1425"
+        className="emotion-1436"
       >
         <button
           aria-label="Preview"
-          className="emotion-1426"
+          className="emotion-1437"
           onClick={[Function]}
           title="Preview"
           type="button"
@@ -10012,7 +10089,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 
 .emotion-1308 {
   padding-bottom: 100%;
-  background-color: rgb(NaN,NaN,NaN);
+  background-color: rgb(255,255,255);
 }
 
 .emotion-1319 {
@@ -10023,11 +10100,6 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 .emotion-1320 {
   padding-bottom: 100%;
   background-color: rgb(0,69,147);
-}
-
-.emotion-1321 {
-  padding-bottom: 100%;
-  background-color: rgb(255,255,255);
 }
 
 .emotion-1330 {
@@ -10264,6 +10336,11 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-1443 {
+  position: relative;
+  cursor: default;
+}
+
+.emotion-1444 {
   min-width: 109.0909090909091px;
   max-width: 109.0909090909091px;
   padding: 16px;
@@ -10273,7 +10350,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-right: 1px solid #191919;
 }
 
-.emotion-1454 {
+.emotion-1465 {
   padding: 16px;
   text-align: center;
   font-weight: 700;
@@ -10281,7 +10358,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   line-height: 20px;
 }
 
-.emotion-1455 {
+.emotion-1466 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -10293,7 +10370,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   margin-right: -2px;
 }
 
-.emotion-1456 {
+.emotion-1467 {
   width: 200px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -10304,7 +10381,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   flex-direction: column;
 }
 
-.emotion-1457 {
+.emotion-1468 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -10319,7 +10396,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-left: 1px solid #191919;
 }
 
-.emotion-1458 {
+.emotion-1469 {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
@@ -10353,26 +10430,26 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-1458:hover,
-.emotion-1458.focus-visible:focus,
-.emotion-1458 .noop {
+.emotion-1469:hover,
+.emotion-1469.focus-visible:focus,
+.emotion-1469 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-1458:hover svg,
-.emotion-1458.focus-visible:focus svg,
-.emotion-1458 .noop svg {
+.emotion-1469:hover svg,
+.emotion-1469.focus-visible:focus svg,
+.emotion-1469 .noop svg {
   opacity: 1;
 }
 
-.emotion-1458[aria-disabled=true],
-.emotion-1458 .noop {
+.emotion-1469[aria-disabled=true],
+.emotion-1469 .noop {
   color: #808080;
 }
 
-.emotion-1458:hover {
+.emotion-1469:hover {
   background-color: #2e2e2e;
 }
 
@@ -18406,31 +18483,31 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                       className="emotion-1320"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
                       className="emotion-1330"
@@ -18439,31 +18516,31 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                       className="emotion-1331"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
                       className="emotion-1341"
@@ -18472,31 +18549,31 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                       className="emotion-1342"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
                       className="emotion-1352"
@@ -18505,64 +18582,64 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                       className="emotion-1353"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
-                    />
-                    <div
-                      className="emotion-1363"
+                      className="emotion-1308"
                     />
                     <div
                       className="emotion-1363"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1363"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
+                    />
+                    <div
+                      className="emotion-1308"
                     />
                     <div
                       className="emotion-1353"
@@ -18571,31 +18648,31 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                       className="emotion-1352"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
                       className="emotion-1342"
@@ -18604,31 +18681,31 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                       className="emotion-1341"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
                       className="emotion-1331"
@@ -18637,31 +18714,31 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                       className="emotion-1330"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
                       className="emotion-1320"
@@ -18670,64 +18747,64 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                       className="emotion-1319"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
                       className="emotion-1418"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
-                      className="emotion-1321"
+                      className="emotion-1308"
                     />
                     <div
                       className="emotion-1429"
@@ -18808,63 +18885,140 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                   className="emotion-1442"
                 >
                   <div
+                    aria-label="Prediction Label: Dahlia"
                     className="emotion-1443"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Dahlia
+                    <div
+                      className="emotion-1444"
+                    >
+                      Dahlia
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Cherry Blossom"
                     className="emotion-1443"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Cherry Blossom
+                    <div
+                      className="emotion-1444"
+                    >
+                      Cherry Blossom
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Sacred Lotus"
                     className="emotion-1443"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Sacred Lotus
+                    <div
+                      className="emotion-1444"
+                    >
+                      Sacred Lotus
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Rose"
                     className="emotion-1443"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Rose
+                    <div
+                      className="emotion-1444"
+                    >
+                      Rose
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Hydrangea"
                     className="emotion-1443"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Hydrangea
+                    <div
+                      className="emotion-1444"
+                    >
+                      Hydrangea
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Orchids"
                     className="emotion-1443"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Orchids
+                    <div
+                      className="emotion-1444"
+                    >
+                      Orchids
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Chrysanthemum"
                     className="emotion-1443"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Chrysanthemum
+                    <div
+                      className="emotion-1444"
+                    >
+                      Chrysanthemum
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Peony"
                     className="emotion-1443"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Peony
+                    <div
+                      className="emotion-1444"
+                    >
+                      Peony
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Lily 'Stargazer'"
                     className="emotion-1443"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Lily 'Stargazer'
+                    <div
+                      className="emotion-1444"
+                    >
+                      Lily 'Stargazer'
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Irises"
                     className="emotion-1443"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Irises
+                    <div
+                      className="emotion-1444"
+                    >
+                      Irises
+                    </div>
                   </div>
                   <div
+                    aria-label="Prediction Label: Bird of Paradise Flower"
                     className="emotion-1443"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
-                    Bird of Paradise Flower
+                    <div
+                      className="emotion-1444"
+                    >
+                      Bird of Paradise Flower
+                    </div>
                   </div>
                 </div>
                 <div
-                  className="emotion-1454"
+                  className="emotion-1465"
                 >
                   Predictions
                 </div>
@@ -18886,11 +19040,11 @@ exports[`<ModelMatrix /> should render properly 2`] = `
       >
         <div
           aria-label="Resize horizontally"
-          className="emotion-1455"
+          className="emotion-1466"
           onMouseDown={[Function]}
         />
         <div
-          className="emotion-1456"
+          className="emotion-1467"
         >
           <ModelMatrixPreview
             labels={
@@ -18930,11 +19084,11 @@ exports[`<ModelMatrix /> should render properly 2`] = `
         </div>
       </div>
       <div
-        className="emotion-1457"
+        className="emotion-1468"
       >
         <button
           aria-label="Preview"
-          className="emotion-1458"
+          className="emotion-1469"
           onClick={[Function]}
           title="Preview"
           type="button"

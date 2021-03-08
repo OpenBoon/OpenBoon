@@ -1,19 +1,18 @@
 import os
 import unittest
+import json
 from unittest.mock import patch
 
-from pathlib import Path
-
-from boonflow.storage import file_storage
-from boonflow.testing import TestAsset, MockRequestsResponse, test_data
+from boonflow.testing import TestAsset, test_data
 from boonai_core.office.oclient import OfficerClient
 
 
 class OfficerPythonClientTests(unittest.TestCase):
 
     def setUp(self):
-        self.path = Path('/tmp/path/file.pdf')
+        self.path = test_data('office/pdfTest.pdf')
         self.asset = TestAsset(str(self.path), id="abcdefg1234")
+        self.local_test = None  # 'ws://localhost:7078'
         os.environ['BOONAI_JOB_ID'] = "abc123"
         os.environ['BOONAI_JOB_STORAGE_PATH'] = "/projects/foo"
 
@@ -22,76 +21,52 @@ class OfficerPythonClientTests(unittest.TestCase):
         del os.environ['BOONAI_JOB_STORAGE_PATH']
 
     def test_service_url(self):
-        client = OfficerClient()
-        assert client.url == 'http://officer:7078'
+        client = OfficerClient(self.local_test)
+        assert client.url == 'ws://officer:7078'
 
     def test_render_url(self):
-        client = OfficerClient()
-        assert client.render_url == 'http://officer:7078/render'
+        client = OfficerClient(self.local_test)
+        assert client.render_url == 'ws://officer:7078/render'
 
-    @patch('requests.post')
-    @patch.object(file_storage, 'localize_file')
-    def test_render(self, file_cache_patch, post_patch):
-        post_patch.return_value = MockRequestsResponse(
-            {"location": "boonai://ml-storage/foo/bar", "page-count": 1, "request-id": "123"}, 200)
-        file_cache_patch.return_value = test_data('office/pdfTest.pdf', False)
-        client = OfficerClient()
+    @patch.object(OfficerClient, 'render')
+    def test_render(self, client):
+        client.render.return_value = '/projects/foo/officer/abcdefg1234'
+
         result = client.render(self.asset, 1, False)
-        assert result == "boonai://ml-storage/foo/bar"
+        assert result == '/projects/foo/officer/abcdefg1234'
 
-    @patch('requests.post')
-    @patch.object(file_storage, 'localize_file')
-    def test_get_render_request_body(self, file_cache_patch, post_patch):
-        post_patch.return_value = MockRequestsResponse(
-            {"output": "boonai://ml-storage/foo/bar"}, 200)
-        file_cache_patch.return_value = test_data('office/pdfTest.pdf', False)
-        client = OfficerClient()
+    @patch.object(OfficerClient, '_get_render_request_body')
+    def test_get_render_request_body_clip(self, client):
+        client._get_render_request_body.return_value = self._response_body()
         body = client._get_render_request_body(self.asset, None, True)
-        assert body[0][0] == 'file'
-        assert body[0][1][0] == '/tmp/path/file.pdf'
-        assert body[1][0] == 'body'
-        assert body[1][1][0] is None
+        assert body['file']
+        assert body['body']
 
-        assert '"fileName": "/tmp/path/file.pdf"' in body[1][1][1]
-        assert '"outputPath": "/projects/foo/officer/abcdefg1234"' in body[1][1][1]
-        assert '"page": -1' in body[1][1][1]
-        assert '"disableImageRender": true' in body[1][1][1]
+        assert "/office/pdfTest.pdf" in json.loads(body['body'])['fileName']
+        assert "/projects/foo/officer/abcdefg1234" in json.loads(body['body'])["outputPath"]
+        assert -1 == json.loads(body['body'])["page"]
+        assert json.loads(body['body'])["disableImageRender"]
 
-    @patch('requests.post')
-    @patch.object(file_storage, 'localize_file')
-    def test_get_render_request_body_clip(self, file_cache_patch, post_patch):
-        post_patch.return_value = MockRequestsResponse(
-            {"location": "boonai://ml-storage/foo/bar"}, 200)
-        file_cache_patch.return_value = test_data('office/pdfTest.pdf', False)
-        client = OfficerClient()
-        body = client._get_render_request_body(self.asset, 5, False)
+    @patch.object(OfficerClient, '_get_render_request_body')
+    def test_get_cache_location_true(self, client):
+        client.get_cache_location.return_value = '/projects/foo/officer/abcdefg1234'
 
-        assert body[0][0] == 'file'
-        assert body[0][1][0] == '/tmp/path/file.pdf'
-        assert body[1][0] == 'body'
-        assert body[1][1][0] is None
+        location = client.get_cache_location(self.asset, 1)
+        assert location == '/projects/foo/officer/abcdefg1234'
 
-        assert '"fileName": "/tmp/path/file.pdf"' in body[1][1][1]
-        assert '"outputPath": "/projects/foo/officer/abcdefg1234"' in body[1][1][1]
-        assert '"page": 5' in body[1][1][1]
-        assert '"disableImageRender": false' in body[1][1][1]
+    @patch.object(OfficerClient, '_get_render_request_body')
+    def test_get_cache_location_false(self, client):
+        client.get_cache_location.return_value = None
 
-    @patch('requests.post')
-    def test_get_cache_location_true(self, post_patch):
-        post_patch.return_value = MockRequestsResponse({"location": "/foo"}, 200)
-        client = OfficerClient()
-        assert client.get_cache_location(self.asset, 1) == "/foo"
-        args = post_patch.call_args_list[0][1]
-        assert args['json']['outputPath'] == '/projects/foo/officer/abcdefg1234'
-        assert args['json']['page'] == 1
-        assert args['headers']['Content-Type'] == 'application/json'
+        not_rendered_asset = test_data('office/simple.pdf')
+        assert client.get_cache_location(not_rendered_asset, 1) is None
 
-    @patch('requests.post')
-    def test_get_cache_location_false(self, post_patch):
-        post_patch.return_value = MockRequestsResponse("", 404)
-        client = OfficerClient()
-        assert client.get_cache_location(self.asset, 1) is None
-        args = post_patch.call_args_list[0][1]
-        assert args['json']['outputPath'] == '/projects/foo/officer/abcdefg1234'
-        assert args['json']['page'] == 1
-        assert args['headers']['Content-Type'] == 'application/json'
+    def _response_body(self):
+        return {
+            'file': 'base64VeryBigEncodedFileblablabla',
+            'body': '{"fileName": '
+                    '"/Users/ironaraujo/Projects/zorroa/zmlp/test-data/office/pdfTest.pdf", '
+                    '"outputPath": '
+                    '"/projects/foo/officer/abcdefg1234", "page": -1, "disableImageRender": true, '
+                    '"dpi": 150} '
+        }

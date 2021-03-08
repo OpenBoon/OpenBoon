@@ -204,6 +204,9 @@ class JobFilter(
     @ApiModelProperty("Job names to match.")
     val names: List<String>? = null,
 
+    @ApiModelProperty("Job names that contains")
+    val wildCardNames: List<String>? = null,
+
     @ApiModelProperty("Paused status to match.")
     val paused: Boolean? = null,
 
@@ -259,6 +262,11 @@ class JobFilter(
         paused?.let {
             addToWhere("job.bool_paused=?")
             addToValues(paused)
+        }
+
+        wildCardNames?.let {
+            addToWhere(JdbcUtils.wildCardSearch("job.str_name", it.size))
+            addToValues(it)
         }
     }
 }

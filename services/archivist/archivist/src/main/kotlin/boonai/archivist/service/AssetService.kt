@@ -70,8 +70,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import java.net.URI
 import java.util.UUID
 import java.util.concurrent.TimeUnit
+import org.springframework.web.util.UriComponentsBuilder
 
 /**
  * AssetService contains the entry points for Asset CRUD operations. In general
@@ -836,7 +838,7 @@ class AssetServiceImpl : AssetService {
         val asset = Asset(id)
         val projectId = getProjectId()
 
-        spec.custom?.forEach { k, v ->
+        spec.custom?.forEach { (k, v) ->
             if (!k.matches(Field.NAME_REGEX)) {
                 throw IllegalArgumentException(
                     "Field names '$k' must be alpha-numeric, underscores/dashes are allowed."
@@ -846,11 +848,11 @@ class AssetServiceImpl : AssetService {
         }
 
         // Spec.attrs can only be set locally via tests, not via REST endpoints.
-        spec.attrs?.forEach { k, v ->
+        spec.attrs?.forEach { (k, v) ->
             asset.setAttr(k, v)
         }
 
-        spec.tmp?.forEach { k, v ->
+        spec.tmp?.forEach { (k, v) ->
             val key = if (k.startsWith("tmp.")) {
                 k
             } else {
@@ -876,20 +878,31 @@ class AssetServiceImpl : AssetService {
                 asset.addLabels(listOf(spec.label))
             }
 
-            asset.setAttr("source.path", spec.getRealPath())
-            asset.setAttr("source.filename", FileUtils.filename(spec.getRealPath()))
+            if (spec.getRealPath().startsWith("https://www.youtube.com/watch?")) {
+                val ytUri = URI.create(spec.uri)
+                val ytCmp = UriComponentsBuilder.fromUri(ytUri).build()
+                val tyId = ytCmp.queryParams["v"]?.get(0) ?: throw IllegalArgumentException("Invalid Youtube URL")
 
-            val ext = FileUtils.extension(spec.getRealPath())
-            asset.setAttr("source.extension", ext)
+                asset.setAttr("source.path", "https://www.youtube.com/watch/$tyId.mp4")
+                asset.setAttr("source.filename", "$tyId.mp4")
+                asset.setAttr("source.extension", "mp4")
+                asset.setAttr("source.mimetype", "video/mp4")
+            } else {
+                asset.setAttr("source.path", spec.getRealPath())
+                asset.setAttr("source.filename", FileUtils.filename(spec.getRealPath()))
 
-            if (indexRoutingService.getProjectRestClient().route.majorVersion > 4) {
-                if (FileExtResolver.getType(ext) == "video") {
-                    asset.setAttr("deepSearch", "video")
+                val ext = FileUtils.extension(spec.getRealPath())
+                asset.setAttr("source.extension", ext)
+
+                if (indexRoutingService.getProjectRestClient().route.majorVersion > 4) {
+                    if (FileExtResolver.getType(ext) == "video") {
+                        asset.setAttr("deepSearch", "video")
+                    }
                 }
-            }
 
-            val mediaType = FileExtResolver.getMediaType(spec.uri)
-            asset.setAttr("source.mimetype", mediaType)
+                val mediaType = FileExtResolver.getMediaType(spec.uri)
+                asset.setAttr("source.mimetype", mediaType)
+            }
 
             asset.setAttr("system.projectId", projectId)
             task?.let {
@@ -1054,7 +1067,7 @@ class AssetServiceImpl : AssetService {
         projectService.incrementQuotaCounters(counters)
     }
 
-    fun setParentAsset(spec: AssetSpec) {
+    fun handleYoutubeVideo(path: String) {
     }
 
     /**

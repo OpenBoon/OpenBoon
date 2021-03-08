@@ -62,12 +62,39 @@ class JobViewSet(BaseProjectViewSet):
     serializer_class = JobSerializer
 
     def list(self, request, project_pk):
+        """Lists all jobs in the job queue.
+
+        Accepts an optional `sort` query parameter. The value can be a comma-separated list of
+        fields to sort on, with each field set to ascending (a) or descending (d).
+
+        Also accepts a `filter` query parameter, which will do a wildcard search against
+        all potential job names.
+
+        Example:
+            ?sort=timeCreated:a,priority:d
+
+        Return:
+            (Response): Paginated contents of the listed jobs.
+        """
+
         def item_modifier(request, job):
             job['actions'] = self._get_action_links(request, job['url'], detail=True)
             job['tasks'] = f'{job["url"]}tasks/'
             job['assetCounts'] = set_asset_total_count(job['assetCounts'])
 
-        return self._zmlp_list_from_search(request, item_modifier=item_modifier)
+        search_filter = {}
+        # Add the sort, if any
+        sort = request.query_params.get('sort')
+        if sort:
+            search_filter['sort'] = sort.split(',')
+
+        # Add the filter, if any
+        filter = request.query_params.get('filter')
+        if filter:
+            search_filter['wildCardNames'] = [filter]
+
+        return self._zmlp_list_from_search(request, search_filter=search_filter,
+                                           item_modifier=item_modifier)
 
     def retrieve(self, request, project_pk, pk):
         def item_modifier(request, job):

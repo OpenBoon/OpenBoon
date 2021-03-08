@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types'
 
-import { constants, spacing } from '../Styles'
+import { constants } from '../Styles'
 
 import { useScroller } from '../Scroll/helpers'
+
+import ModelMatrixLabel from './Label'
 
 const ModelMatrixLabels = ({ matrix, settings: { height, zoom } }) => {
   const rowRef = useScroller({
@@ -24,20 +26,11 @@ const ModelMatrixLabels = ({ matrix, settings: { height, zoom } }) => {
       }}
     >
       {matrix.labels.map((label) => (
-        <div
+        <ModelMatrixLabel
           key={label}
-          css={{
-            minWidth: cellDimension,
-            maxWidth: cellDimension,
-            padding: spacing.normal,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            borderRight: constants.borders.regular.coal,
-          }}
-        >
-          {label}
-        </div>
+          cellDimension={cellDimension}
+          label={label}
+        />
       ))}
     </div>
   )

@@ -5,44 +5,62 @@ from facenet_pytorch import MTCNN, InceptionResnetV1
 from boonflow import AssetProcessor
 from boonflow.proxy import get_proxy_level_path, calculate_normalized_bbox
 from boonflow.analysis import LabelDetectionAnalysis
+from boonflow import FileTypes
 
 
 class ZviFaceDetectionProcessor(AssetProcessor):
     """
     Simple Face Detection processor
     """
-    namespace = "boonai-face-detection"
+    namespace = 'boonai-face-detection'
+
+    # Running in video just detects a face in the proxy
+    # which means results are ambitious and inconsistent.
+    file_types = FileTypes.documents | FileTypes.images
 
     def __init__(self):
         super(ZviFaceDetectionProcessor, self).__init__()
-        self.mtcnn = None
-        self.resnet = None
+        self.engine = None
 
     def init(self):
-        self.mtcnn = MTCNN(image_size=160, margin=20, keep_all=True)
-        self.resnet = InceptionResnetV1(pretrained='vggface2').eval()
+        self.engine = MtCnnFaceDetectionEngine()
 
     def process(self, frame):
         asset = frame.asset
         p_path = get_proxy_level_path(asset, 3)
-        img = cv2.imread(p_path)
 
+        analysis = LabelDetectionAnalysis()
+        for i, elem in enumerate(self.engine.detect(p_path)):
+            analysis.add_label_and_score('face{}'.format(i),
+                                         elem['score'], bbox=elem['bbox'], simhash=elem['simhash'])
+
+        asset.add_analysis(self.namespace, analysis)
+
+
+class MtCnnFaceDetectionEngine:
+    """
+    A class for sharing the MTCNN face detection algorithm.
+    """
+    def __init__(self):
+        self.mtcnn = MTCNN(image_size=160, margin=20, keep_all=True)
+        self.resnet = InceptionResnetV1(pretrained='vggface2').eval()
+
+    def detect(self, path):
+        result = []
+        img = cv2.imread(path)
+        img_cropped = self.mtcnn(img)
         rects, confidences = self.mtcnn.detect(img)
 
-        if confidences[0] is None:
-            return
+        if rects is None:
+            return result
 
-        img_cropped = self.mtcnn(img)
-        analysis = LabelDetectionAnalysis()
-
-        for i, elem in enumerate(zip(rects, confidences)):
-            # Calculate a face similarity hash
+        for i, item in enumerate(zip(rects, confidences)):
             img_embedding = self.resnet(img_cropped[i].unsqueeze(0))
             v_hash = np.clip(img_embedding.detach().numpy() + .25, 0, .5) * 50
             v_hash = v_hash.astype(int) + 65
-            f_hash = "".join([chr(item) for item in v_hash[0]])
+            f_hash = ''.join([chr(item) for item in v_hash[0]])
 
-            rect = calculate_normalized_bbox(img.shape[1], img.shape[0], elem[0])
-            analysis.add_label_and_score('face{}'.format(i), elem[1], bbox=rect, simhash=f_hash)
+            rect = calculate_normalized_bbox(img.shape[1], img.shape[0], item[0])
+            result.append({'bbox': rect, 'score': item[1], 'simhash': f_hash})
 
-        asset.add_analysis(self.namespace, analysis)
+        return result

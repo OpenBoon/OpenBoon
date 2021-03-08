@@ -76,7 +76,9 @@ class IndexRoute(
     @ApiModelProperty("Number of index replicas.")
     val replicas: Int,
     @ApiModelProperty("Number of shards.")
-    val shards: Int
+    val shards: Int,
+    @ApiModelProperty("Project name")
+    val projectName: String
 ) {
     @ApiModelProperty("The ES index URL, or the cluster URL and index name combined.")
     val indexUrl = "$clusterUrl/$indexName"
@@ -186,7 +188,8 @@ class IndexRouteFilter(
     val ids: List<UUID>? = null,
     val clusterIds: List<UUID>? = null,
     val mappings: List<String>? = null,
-    val projectIds: List<UUID>? = null
+    val projectIds: List<UUID>? = null,
+    val projectNames: List<String>? = null,
 ) : KDaoFilter() {
 
     @JsonIgnore
@@ -194,6 +197,7 @@ class IndexRouteFilter(
         mapOf(
             "id" to "index_route.pk_index_route",
             "projectId" to "index_route.pk_project",
+            "projectName" to "project.str_name",
             "clusterUrl" to "index_cluster.str_url",
             "mapping" to "index_route.str_mapping_type",
             "timeCreated" to "index_route.time_created"
@@ -218,6 +222,11 @@ class IndexRouteFilter(
 
         projectIds?.let {
             addToWhere(JdbcUtils.inClause("index_route.pk_project", it.size))
+            addToValues(it)
+        }
+
+        projectNames?.let {
+            addToWhere(JdbcUtils.inClause("project.str_name", it.size))
             addToValues(it)
         }
 

@@ -104,7 +104,7 @@ class CloudDLPDetectEntities(AssetProcessor):
             analysis_dict[f.info_type.name].add_prediction(
                 Prediction(
                     value,
-                    f.likelihood / 4.0,
+                    min(1, f.likelihood / 4.0),
                     bbox=rect
                 )
             )
