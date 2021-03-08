@@ -274,7 +274,7 @@ class JobServiceTests : AbstractTest() {
         val baseName2 = "man"
 
         val spec1 = JobSpec(
-            "man $baseName1",
+            "$baseName2 $baseName1",
             emptyZpsScripts("foo"),
         )
 
@@ -293,16 +293,17 @@ class JobServiceTests : AbstractTest() {
 
         val first = jobService.getAll(
             JobFilter(
-                wildCardNames = listOf(baseName1)
+                keywords = baseName1
             )
         )
         val all = jobService.getAll(
             JobFilter(
-                wildCardNames = listOf(baseName1, baseName2)
+                keywords = "$baseName1 $baseName2"
             )
         )
 
+        println(all[0].name)
         assertEquals(2, first.size())
-        assertEquals(3, all.size())
+        assertEquals(1, all.size())
     }
 }

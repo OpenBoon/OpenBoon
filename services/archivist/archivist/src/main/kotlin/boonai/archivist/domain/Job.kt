@@ -205,7 +205,7 @@ class JobFilter(
     val names: List<String>? = null,
 
     @ApiModelProperty("Job names that contains")
-    val wildCardNames: List<String>? = null,
+    val keywords: String? = null,
 
     @ApiModelProperty("Paused status to match.")
     val paused: Boolean? = null,
@@ -264,9 +264,9 @@ class JobFilter(
             addToValues(paused)
         }
 
-        wildCardNames?.let {
-            addToWhere("(job.fti_keywords @@ to_tsquery(?))")
-            addToValues(it.joinToString(separator = " | "))
+        keywords?.let {
+            addToWhere("job.fti_keywords @@ plainto_tsquery(?)")
+            addToValues(it)
         }
     }
 }
