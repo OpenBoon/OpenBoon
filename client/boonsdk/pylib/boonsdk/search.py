@@ -432,9 +432,9 @@ class LabelConfidenceTermsAggregation:
         return ((k, v) for k, v in self.for_json().items())
 
 
-class LabelConfidenceMetricsAggregation(object):
+class LabelConfidenceMetricsAggregation:
 
-    def __init__(self, namespace, agg_type="stats"):
+    def __init__(self, name, namespace, agg_type="stats"):
         """
         Create a new LabelConfidenceMetricsAggregation
 
@@ -443,31 +443,46 @@ class LabelConfidenceMetricsAggregation(object):
             agg_type (str): A type of metrics agg to perform.
                 stats, extended_stats,
         """
+        self.name = name
         self.field = "analysis.{}.predictions".format(namespace)
         self.agg_type = agg_type
 
     def for_json(self):
         return {
-            "nested": {
-                "path": self.field
-            },
-            "aggs": {
-                "labels": {
-                    "terms": {
-                        "field": self.field + ".label",
-                        "size": 1000,
-                        "order": {"_count": "desc"}
-                    },
-                    "aggs": {
-                        "stats": {
-                            self.agg_type: {
-                                "field": self.field + ".score"
+            self.name: {
+                "nested": {
+                    "path": self.field
+                },
+                "aggs": {
+                    "labels": {
+                        "terms": {
+                            "field": self.field + ".label",
+                            "size": 1000,
+                            "order": {"_count": "desc"}
+                        },
+                        "aggs": {
+                            "stats": {
+                                self.agg_type: {
+                                    "field": self.field + ".score"
+                                }
                             }
                         }
                     }
                 }
             }
         }
+
+    def agg_key(self):
+        """
+        Used by SearchResult to get a specific deeply nested aggregation.
+
+        Returns:
+            list: An array of agg names.
+        """
+        return [f'nested#{self.name}', 'sterms#labels']
+
+    def __iter__(self):
+        return ((k, v) for k, v in self.for_json().items())
 
 
 class LabelConfidenceQuery(object):
