@@ -10,7 +10,6 @@ __all__ = [
     'VideoClipSearchResult',
     'AssetSearchCsvExporter',
     'LabelConfidenceQuery',
-    'SingleLabelConfidenceQuery',
     'SimilarityQuery',
     'FaceSimilarityQuery',
     'LabelConfidenceTermsAggregation',
@@ -508,80 +507,6 @@ class LabelConfidenceQuery(object):
                                         }
                                     }
                                 }
-                            }
-                        }
-                    }
-                ]
-            }
-        }
-
-
-class SingleLabelConfidenceQuery(object):
-    """
-    A helper class for building a label confidence score query.  This query must point
-    at label confidence structure:  For example: analysis.boonai.label-detection.
-
-    References:
-        "labels": [
-                {"label": "dog", "score": 0.97 },
-                {"label": "fox", "score": 0.63 }
-        ]
-    """
-
-    def __init__(self, namespace, labels, min_score=0.1, max_score=1.0):
-        """
-        Create a new SingleLabelConfidenceScoreQuery.
-
-        Args:
-            namespace (str): The analysis namespace with predictions. (ex: boonai-label-detection)
-            labels (list): A list of labels to filter.
-            min_score (float): The minimum label score, default to 0.1.
-            Note that 0.0 allows everything.
-            max_score (float): The maximum score, defaults to 1.0 which is highest
-        """
-        self.namespace = namespace
-
-        self.field = "analysis.{}".format(namespace)
-        self.labels = as_collection(labels)
-        self.score = [min_score, max_score]
-
-    def for_json(self):
-        return {
-            "bool": {
-                "filter": [
-                    {
-                        "terms": {
-                            self.field + ".label": self.labels
-                        }
-                    }
-                ],
-                "must": [
-                    {
-                        "function_score": {
-                            "query": {
-                                "bool": {
-                                    "must": [
-                                        {
-                                            "terms": {
-                                                self.field + ".label": self.labels
-                                            }
-                                        },
-                                        {
-                                            "range": {
-                                                self.field + ".score": {
-                                                    "gte": self.score[0],
-                                                    "lte": self.score[1]
-                                                }
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            "boost": "5",
-                            "boost_mode": "sum",
-                            "field_value_factor": {
-                                "field": self.field + ".score",
-                                "missing": 0
                             }
                         }
                     }
