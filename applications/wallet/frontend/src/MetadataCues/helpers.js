@@ -3,7 +3,7 @@ export const getMetadata = (event) => {
     target: { label, activeCues },
   } = event
 
-  if (activeCues.length === 0) return { [label]: [] }
+  if (!activeCues || activeCues.length === 0) return { [label]: [] }
 
   const metadata = Object.values(event.target.activeCues).reduce(
     (acc, { text }) => {
