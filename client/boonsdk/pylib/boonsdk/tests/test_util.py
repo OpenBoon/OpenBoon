@@ -48,3 +48,8 @@ class ZipDirectoryTexts(unittest.TestCase):
         with zipfile.ZipFile(output_zip) as zip:
             assert 'base/test_search.py' in zip.namelist()
             assert 'base/test_util.py' in zip.namelist()
+
+
+def test_denormalize_bbox():
+    r = util.denormalize_bbox(1000, 1000, [0.1, 0.1, 0.5, 0.5])
+    assert r == [100, 100, 500, 500]

@@ -233,6 +233,23 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testBatchYoutubeVideo() {
+        val spec = AssetSpec(
+            "https://www.youtube.com/watch?v=VW_R-snOs2k"
+        )
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        val rsp = assetService.batchCreate(req)
+        val asset = assetService.getAll(rsp.created)[0]
+
+        assertEquals("mp4", asset.getAttr<String>("source.extension"))
+        assertEquals("VW_R-snOs2k.mp4", asset.getAttr<String>("source.filename"))
+        assertEquals("https://www.youtube.com/watch/VW_R-snOs2k.mp4", asset.getAttr<String>("source.path"))
+    }
+
+    @Test
     fun testGetExistingAssetIds() {
         AssetSpec(
             "gs://cats/large-brown-cat.jpg",

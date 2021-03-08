@@ -20,6 +20,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.elasticsearch.client.Request
+import org.elasticsearch.client.Response
+import java.lang.IllegalArgumentException
 
 interface AssetSearchService {
     fun search(search: Map<String, Any>, params: Map<String, Array<String>>): SearchResponse
@@ -31,6 +34,7 @@ interface AssetSearchService {
     fun count(ssb: SearchSourceBuilder): Long
     fun mapToSearchSourceBuilder(search: Map<String, Any>): SearchSourceBuilder
     fun searchSourceBuilderToMap(ssb: SearchSourceBuilder): Map<String, Any>
+    fun sqlSearch(query: String): Response
 }
 
 @Service
@@ -124,6 +128,22 @@ class AssetSearchServiceImpl : AssetSearchService {
         }
 
         return ssb
+    }
+
+    override fun sqlSearch(query: String): Response {
+        val rest = indexRoutingService.getProjectRestClient()
+
+        // Not sure if this is secure enough but if the query does not reference
+        // the boonai index the it will be an error.
+        if (!query.contains(Regex("^SELECT (.*?) FROM boonai(\\s+|$)", setOf(RegexOption.IGNORE_CASE)))) {
+            throw IllegalArgumentException("Your query must contain a reference to the boonai index.")
+        }
+
+        val queryfixed = query.replace("boonai", "\"${rest.route.indexName}\"")
+        val request = Request("GET", "/_sql")
+        request.setJsonEntity(Json.serializeToString(mapOf("query" to queryfixed)))
+
+        return rest.client.lowLevelClient.performRequest(request)
     }
 
     companion object {

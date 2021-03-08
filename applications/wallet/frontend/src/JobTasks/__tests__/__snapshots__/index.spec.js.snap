@@ -29,6 +29,17 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
 }
 
 .emotion-1 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -46,14 +57,14 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -84,27 +95,27 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   background-color: transparent;
 }
 
-.emotion-3,
-.emotion-3:hover,
-.emotion-3:visited,
-.emotion-3 .noop {
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-3:hover,
-.emotion-3 .noop {
+.emotion-4:hover,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-3[aria-disabled=true],
-.emotion-3 .noop {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -115,55 +126,55 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   align-items: center;
 }
 
-.emotion-6 {
+.emotion-7 {
   padding-left: 4px;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-9 {
+.emotion-10 {
   height: auto;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-9 tr {
+.emotion-10 tr {
   background-color: #252525;
 }
 
-.emotion-9 tr:nth-of-type(2n) {
+.emotion-10 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-9 tr:hover {
+.emotion-10 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-9 tr:hover .actions {
+.emotion-10 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-9 tr:hover td {
+.emotion-10 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-9 tr:hover td:first-of-type {
+.emotion-10 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-9 tr:hover td:last-of-type {
+.emotion-10 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-9 td {
+.emotion-10 td {
   max-width: calc(100vw / 4);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -175,60 +186,64 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   border-right: 0;
 }
 
-.emotion-9 td:first-of-type {
+.emotion-10 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-9 td:last-of-type {
+.emotion-10 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-10 {
+.emotion-11 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
 
-.emotion-10:nth-of-type(2) {
+.emotion-11:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-10:not(:last-child) {
+.emotion-11:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-15 {
+.emotion-12 {
+  padding: 12px 16px;
+}
+
+.emotion-21 {
   cursor: pointer;
 }
 
-.emotion-16 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-17 {
+.emotion-23 {
   padding-left: 16px;
 }
 
-.emotion-18:hover {
+.emotion-24:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-19 {
+.emotion-25 {
   font-style: italic;
 }
 
-.emotion-23 {
+.emotion-29 {
   -webkit-animation: animation-0 2s linear infinite;
   animation: animation-0 2s linear infinite;
 }
@@ -239,327 +254,351 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   <div
     className="emotion-1"
   >
-    <h3
+    <div
       className="emotion-2"
     >
-      Number of 
-      Tasks
-      : 
-      3
-    </h3>
-    <button
-      className="emotion-3"
-      onClick={[Function]}
-      type="button"
-    >
-      <div
-        className="emotion-4"
+      <h3
+        className="emotion-3"
       >
-        <svg
-          className="emotion-5"
-          color="#ffffff"
-          data-file-name="refresh.svg"
-          height={20}
-        />
+        Number of 
+        Tasks
+        : 
+        3
+      </h3>
+      <button
+        className="emotion-4"
+        onClick={[Function]}
+        type="button"
+      >
         <div
-          className="emotion-6"
+          className="emotion-5"
         >
-          Refresh 
-          Tasks
+          <svg
+            className="emotion-6"
+            color="#ffffff"
+            data-file-name="refresh.svg"
+            height={20}
+          />
+          <div
+            className="emotion-7"
+          >
+            Refresh 
+            Tasks
+          </div>
         </div>
-      </div>
-    </button>
-  </div>
-  <div
-    className="emotion-7"
-  >
+      </button>
+    </div>
     <div
       className="emotion-8"
     >
-      <table
+      <div
         className="emotion-9"
       >
-        <thead>
-          <tr>
-            <th
-              className="emotion-10"
+        <table
+          className="emotion-10"
+        >
+          <thead>
+            <tr>
+              <th
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  State
+                </div>
+              </th>
+              <th
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  Description
+                </div>
+              </th>
+              <th
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  Started
+                </div>
+              </th>
+              <th
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  Duration
+                </div>
+              </th>
+              <th
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  Errors
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-21"
+              onClick={[Function]}
             >
-              State
-            </th>
-            <th
-              className="emotion-10"
+              <td
+                className="emotion-22"
+              >
+                <svg
+                  color="#ffffff"
+                  data-file-name="clock.svg"
+                  height={20}
+                />
+                <span
+                  className="emotion-23"
+                >
+                  Waiting
+                </span>
+              </td>
+              <td>
+                <a
+                  className="emotion-24"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f6"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  title="Expand with 20 assets, 8 processors."
+                >
+                  Expand with 20 assets, 8 processors.
+                </a>
+              </td>
+              <td>
+                <div
+                  className="emotion-25"
+                >
+                  Waiting...
+                </div>
+              </td>
+              <td>
+                <div
+                  className="emotion-25"
+                >
+                  Waiting...
+                </div>
+              </td>
+              <td>
+                0
+              </td>
+            </tr>
+            <tr
+              className="emotion-21"
+              onClick={[Function]}
             >
-              Description
-            </th>
-            <th
-              className="emotion-10"
+              <td
+                className="emotion-22"
+              >
+                <svg
+                  className="emotion-29"
+                  color="#ebb52e"
+                  data-file-name="generating.svg"
+                  height={20}
+                />
+                <span
+                  className="emotion-23"
+                >
+                  Running
+                </span>
+              </td>
+              <td>
+                <a
+                  className="emotion-24"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82545"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  title="Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'"
+                >
+                  Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'
+                </a>
+              </td>
+              <td>
+                2020-03-05 23:41:02
+              </td>
+              <td>
+                06h : 42m : 49s
+              </td>
+              <td>
+                0
+              </td>
+            </tr>
+            <tr
+              className="emotion-21"
+              onClick={[Function]}
             >
-              Started
-            </th>
-            <th
-              className="emotion-10"
+              <td
+                className="emotion-22"
+              >
+                <svg
+                  color="#009f22"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+                <span
+                  className="emotion-23"
+                >
+                  Success
+                </span>
+              </td>
+              <td>
+                <a
+                  className="emotion-24"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82545"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  title="Expand with 15 assets, 8 processors."
+                >
+                  Expand with 15 assets, 8 processors.
+                </a>
+              </td>
+              <td>
+                2020-03-05 23:41:55
+              </td>
+              <td>
+                06h : 42m : 49s
+              </td>
+              <td>
+                0
+              </td>
+            </tr>
+            <tr
+              className="emotion-21"
+              onClick={[Function]}
             >
-              Duration
-            </th>
-            <th
-              className="emotion-10"
+              <td
+                className="emotion-22"
+              >
+                <svg
+                  color="#c92300"
+                  data-file-name="crossSmall.svg"
+                  height={20}
+                />
+                <span
+                  className="emotion-23"
+                >
+                  Failure
+                </span>
+              </td>
+              <td>
+                <a
+                  className="emotion-24"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f9"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  title="Expand with 20 assets, 8 processors."
+                >
+                  Expand with 20 assets, 8 processors.
+                </a>
+              </td>
+              <td>
+                2020-03-05 23:41:06
+              </td>
+              <td>
+                06h : 42m : 49s
+              </td>
+              <td>
+                0
+              </td>
+            </tr>
+            <tr
+              className="emotion-21"
+              onClick={[Function]}
             >
-              Errors
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            className="emotion-15"
-            onClick={[Function]}
-          >
-            <td
-              className="emotion-16"
+              <td
+                className="emotion-22"
+              >
+                <svg
+                  color="#808080"
+                  data-file-name="paused.svg"
+                  height={20}
+                />
+                <span
+                  className="emotion-23"
+                >
+                  Skipped
+                </span>
+              </td>
+              <td>
+                <a
+                  className="emotion-24"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82549"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  title="Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'"
+                >
+                  Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'
+                </a>
+              </td>
+              <td>
+                2020-03-05 23:41:02
+              </td>
+              <td>
+                06h : 42m : 49s
+              </td>
+              <td>
+                0
+              </td>
+            </tr>
+            <tr
+              className="emotion-21"
+              onClick={[Function]}
             >
-              <svg
-                color="#ffffff"
-                data-file-name="clock.svg"
-                height={20}
-              />
-              <span
-                className="emotion-17"
+              <td
+                className="emotion-22"
               >
-                Waiting
-              </span>
-            </td>
-            <td>
-              <a
-                className="emotion-18"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f6"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
-                title="Expand with 20 assets, 8 processors."
-              >
-                Expand with 20 assets, 8 processors.
-              </a>
-            </td>
-            <td>
-              <div
-                className="emotion-19"
-              >
-                Waiting...
-              </div>
-            </td>
-            <td>
-              <div
-                className="emotion-19"
-              >
-                Waiting...
-              </div>
-            </td>
-            <td>
-              0
-            </td>
-          </tr>
-          <tr
-            className="emotion-15"
-            onClick={[Function]}
-          >
-            <td
-              className="emotion-16"
-            >
-              <svg
-                className="emotion-23"
-                color="#ebb52e"
-                data-file-name="generating.svg"
-                height={20}
-              />
-              <span
-                className="emotion-17"
-              >
-                Running
-              </span>
-            </td>
-            <td>
-              <a
-                className="emotion-18"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82545"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
-                title="Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'"
-              >
-                Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'
-              </a>
-            </td>
-            <td>
-              2020-03-05 23:41:02
-            </td>
-            <td>
-              06h : 42m : 49s
-            </td>
-            <td>
-              0
-            </td>
-          </tr>
-          <tr
-            className="emotion-15"
-            onClick={[Function]}
-          >
-            <td
-              className="emotion-16"
-            >
-              <svg
-                color="#009f22"
-                data-file-name="checkmark.svg"
-                height={20}
-              />
-              <span
-                className="emotion-17"
-              >
-                Success
-              </span>
-            </td>
-            <td>
-              <a
-                className="emotion-18"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82545"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
-                title="Expand with 15 assets, 8 processors."
-              >
-                Expand with 15 assets, 8 processors.
-              </a>
-            </td>
-            <td>
-              2020-03-05 23:41:55
-            </td>
-            <td>
-              06h : 42m : 49s
-            </td>
-            <td>
-              0
-            </td>
-          </tr>
-          <tr
-            className="emotion-15"
-            onClick={[Function]}
-          >
-            <td
-              className="emotion-16"
-            >
-              <svg
-                color="#c92300"
-                data-file-name="crossSmall.svg"
-                height={20}
-              />
-              <span
-                className="emotion-17"
-              >
-                Failure
-              </span>
-            </td>
-            <td>
-              <a
-                className="emotion-18"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f9"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
-                title="Expand with 20 assets, 8 processors."
-              >
-                Expand with 20 assets, 8 processors.
-              </a>
-            </td>
-            <td>
-              2020-03-05 23:41:06
-            </td>
-            <td>
-              06h : 42m : 49s
-            </td>
-            <td>
-              0
-            </td>
-          </tr>
-          <tr
-            className="emotion-15"
-            onClick={[Function]}
-          >
-            <td
-              className="emotion-16"
-            >
-              <svg
-                color="#808080"
-                data-file-name="paused.svg"
-                height={20}
-              />
-              <span
-                className="emotion-17"
-              >
-                Skipped
-              </span>
-            </td>
-            <td>
-              <a
-                className="emotion-18"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82549"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
-                title="Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'"
-              >
-                Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'
-              </a>
-            </td>
-            <td>
-              2020-03-05 23:41:02
-            </td>
-            <td>
-              06h : 42m : 49s
-            </td>
-            <td>
-              0
-            </td>
-          </tr>
-          <tr
-            className="emotion-15"
-            onClick={[Function]}
-          >
-            <td
-              className="emotion-16"
-            >
-              <svg
-                color="#0074f5"
-                data-file-name="squareSquareSquare.svg"
-                height={20}
-              />
-              <span
-                className="emotion-17"
-              >
-                Queued
-              </span>
-            </td>
-            <td>
-              <a
-                className="emotion-18"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82549"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
-                title="Expand with 15 assets, 8 processors."
-              >
-                Expand with 15 assets, 8 processors.
-              </a>
-            </td>
-            <td>
-              2020-03-05 23:41:55
-            </td>
-            <td>
-              06h : 42m : 49s
-            </td>
-            <td>
-              0
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div>
-       
-    </div>
-    <div>
-       
+                <svg
+                  color="#0074f5"
+                  data-file-name="squareSquareSquare.svg"
+                  height={20}
+                />
+                <span
+                  className="emotion-23"
+                >
+                  Queued
+                </span>
+              </td>
+              <td>
+                <a
+                  className="emotion-24"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82549"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  title="Expand with 15 assets, 8 processors."
+                >
+                  Expand with 15 assets, 8 processors.
+                </a>
+              </td>
+              <td>
+                2020-03-05 23:41:55
+              </td>
+              <td>
+                06h : 42m : 49s
+              </td>
+              <td>
+                0
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+         
+      </div>
+      <div>
+         
+      </div>
     </div>
   </div>
 </div>
@@ -578,6 +617,17 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
 }
 
 .emotion-1 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -595,14 +645,14 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -633,27 +683,27 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   background-color: transparent;
 }
 
-.emotion-3,
-.emotion-3:hover,
-.emotion-3:visited,
-.emotion-3 .noop {
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-3:hover,
-.emotion-3 .noop {
+.emotion-4:hover,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-3[aria-disabled=true],
-.emotion-3 .noop {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -664,18 +714,18 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   align-items: center;
 }
 
-.emotion-6 {
+.emotion-7 {
   padding-left: 4px;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-8 {
+.emotion-9 {
   position: absolute;
   top: 0;
   left: 0;
@@ -683,44 +733,44 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   bottom: 0;
 }
 
-.emotion-9 {
+.emotion-10 {
   height: 100%;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-9 tr {
+.emotion-10 tr {
   background-color: #252525;
 }
 
-.emotion-9 tr:nth-of-type(2n) {
+.emotion-10 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-9 tr:hover {
+.emotion-10 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-9 tr:hover .actions {
+.emotion-10 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-9 tr:hover td {
+.emotion-10 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-9 tr:hover td:first-of-type {
+.emotion-10 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-9 tr:hover td:last-of-type {
+.emotion-10 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-9 td {
+.emotion-10 td {
   max-width: calc(100vw / 4);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -732,41 +782,45 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   border-right: 0;
 }
 
-.emotion-9 td:first-of-type {
+.emotion-10 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-9 td:last-of-type {
+.emotion-10 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-10 {
+.emotion-11 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
 
-.emotion-10:nth-of-type(2) {
+.emotion-11:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-10:not(:last-child) {
+.emotion-11:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-15 {
+.emotion-12 {
+  padding: 12px 16px;
+}
+
+.emotion-21 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-16 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -788,7 +842,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   line-height: 19px;
 }
 
-.emotion-17 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -810,104 +864,128 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   <div
     className="emotion-1"
   >
-    <h3
+    <div
       className="emotion-2"
     >
-      Number of 
-      Tasks
-      : 
-      0
-    </h3>
-    <button
-      className="emotion-3"
-      onClick={[Function]}
-      type="button"
-    >
-      <div
-        className="emotion-4"
+      <h3
+        className="emotion-3"
       >
-        <svg
-          className="emotion-5"
-          color="#ffffff"
-          data-file-name="refresh.svg"
-          height={20}
-        />
+        Number of 
+        Tasks
+        : 
+        0
+      </h3>
+      <button
+        className="emotion-4"
+        onClick={[Function]}
+        type="button"
+      >
         <div
-          className="emotion-6"
+          className="emotion-5"
         >
-          Refresh 
-          Tasks
+          <svg
+            className="emotion-6"
+            color="#ffffff"
+            data-file-name="refresh.svg"
+            height={20}
+          />
+          <div
+            className="emotion-7"
+          >
+            Refresh 
+            Tasks
+          </div>
         </div>
-      </div>
-    </button>
-  </div>
-  <div
-    className="emotion-7"
-  >
+      </button>
+    </div>
     <div
       className="emotion-8"
     >
-      <table
+      <div
         className="emotion-9"
       >
-        <thead>
-          <tr>
-            <th
-              className="emotion-10"
-            >
-              State
-            </th>
-            <th
-              className="emotion-10"
-            >
-              Description
-            </th>
-            <th
-              className="emotion-10"
-            >
-              Started
-            </th>
-            <th
-              className="emotion-10"
-            >
-              Duration
-            </th>
-            <th
-              className="emotion-10"
-            >
-              Errors
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            className="emotion-15"
-          >
-            <td
-              colSpan={5}
-            >
-              <div
-                className="emotion-16"
+        <table
+          className="emotion-10"
+        >
+          <thead>
+            <tr>
+              <th
+                className="emotion-11"
               >
                 <div
-                  className="emotion-17"
+                  className="emotion-12"
                 >
-                  <svg
-                    data-file-name="noJobs.svg"
-                    width={200}
-                  />
-                  <div>
-                    This job has no tasks.
-                  </div>
-                  <div>
-                    Any new task will appear here.
+                  State
+                </div>
+              </th>
+              <th
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  Description
+                </div>
+              </th>
+              <th
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  Started
+                </div>
+              </th>
+              <th
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  Duration
+                </div>
+              </th>
+              <th
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  Errors
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-21"
+            >
+              <td
+                colSpan={5}
+              >
+                <div
+                  className="emotion-22"
+                >
+                  <div
+                    className="emotion-23"
+                  >
+                    <svg
+                      data-file-name="noJobs.svg"
+                      width={200}
+                    />
+                    <div>
+                      This job has no tasks.
+                    </div>
+                    <div>
+                      Any new task will appear here.
+                    </div>
                   </div>
                 </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

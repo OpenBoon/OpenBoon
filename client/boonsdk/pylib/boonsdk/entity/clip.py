@@ -68,6 +68,11 @@ class VideoClip:
         return self._data.get('simhash')
 
     @property
+    def bbox(self):
+        """A bounding box for a detection on the clip proxy image"""
+        return self._data.get('bbox')
+
+    @property
     def files(self):
         """The array of associated files."""
         return [StoredFile(f) for f in self._data.get('files', [])]
@@ -124,7 +129,7 @@ class TimelineBuilder:
         self.tracks = {}
         self.deep_analysis = deep_analysis
 
-    def add_clip(self, track_name, start, stop, content, score=1, tags=None):
+    def add_clip(self, track_name, start, stop, content, score=1, tags=None, bbox=None):
         """
         Add a clip to the timeline.
 
@@ -135,13 +140,16 @@ class TimelineBuilder:
             content (str): The content.
             score: (float): The score if any.
             tags: (list): A list of tags that describes the content.
+            bbox: (list): A relative rect or shape that defines the bbox which outlines
+                the detection. The position of the rect should be where the detection is
+                no the first frame of the clip.
 
         Returns:
             (dict): A clip entry.
 
         """
         if stop < start:
-            raise ValueError("The stop time cannot be smaller than the start time.")
+            raise ValueError('The stop time cannot be smaller than the start time.')
 
         track = self.tracks.get(track_name)
         if not track:
@@ -149,11 +157,12 @@ class TimelineBuilder:
             self.tracks[track_name] = track
 
         clip = {
-            "start": start,
-            "stop":  stop,
-            "content": [c.replace("\n", " ").strip() for c in as_collection(content)],
-            "score": score,
-            "tags": as_collection(tags)
+            'start': start,
+            'stop':  stop,
+            'content': [c.replace('\n', ' ').strip() for c in as_collection(content)],
+            'score': score,
+            'tags': as_collection(tags),
+            'bbox': bbox
         }
 
         track['clips'].append(clip)

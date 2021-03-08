@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,t
      --no-install-recommends
 
 # Auto-updating pip sometimes causes issues.
-RUN pip3 install -U pip
+RUN --mount=type=cache,target=/root/.cache/pip pip3 install -U pip
 COPY requirements.txt .
-RUN pip3 install -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip pip3 install -r requirements.txt
 RUN rm requirements.txt

@@ -13,6 +13,17 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
 }
 
 .emotion-1 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -30,58 +41,58 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-5 {
+.emotion-6 {
   height: auto;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-5 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-5 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-5 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-5 tr:hover .actions {
+.emotion-6 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-5 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-5 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-5 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-5 td {
+.emotion-6 td {
   max-width: calc(100vw / 0);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -93,36 +104,40 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
   border-right: 0;
 }
 
-.emotion-5 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-5 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-6 {
+.emotion-7 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
 
-.emotion-6:nth-of-type(2) {
+.emotion-7:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-7:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
+  padding: 12px 16px;
+}
+
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -132,13 +147,13 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-8 {
+.emotion-10 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-9 {
+.emotion-11 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -152,7 +167,7 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
   justify-content: center;
 }
 
-.emotion-10 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -185,75 +200,6 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
   padding-right: 64px;
 }
 
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited,
-.emotion-10 .noop {
-  background-color: #808080;
-}
-
-.emotion-10:hover,
-.emotion-10 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-10[aria-disabled=true],
-.emotion-10 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-11 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  -webkit-justify-content: flex-end;
-  justify-content: flex-end;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-12 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  margin-right: 8px;
-}
-
 .emotion-12,
 .emotion-12:hover,
 .emotion-12:visited,
@@ -275,10 +221,20 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
 }
 
 .emotion-13 {
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-14 {
@@ -310,6 +266,7 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  margin-right: 8px;
 }
 
 .emotion-14,
@@ -340,13 +297,71 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
 }
 
 .emotion-16 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited,
+.emotion-16 .noop {
+  background-color: #808080;
+}
+
+.emotion-16:hover,
+.emotion-16 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-16[aria-disabled=true],
+.emotion-16 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-17 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-17 {
+.emotion-19 {
   padding: 8px;
   margin-left: 8px;
   text-align: center;
@@ -359,24 +374,24 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
   -moz-appearance: textfield;
 }
 
-.emotion-17:hover {
+.emotion-19:hover {
   border: 2px solid #ffffff;
 }
 
-.emotion-17:focus {
+.emotion-19:focus {
   border: 2px solid #3A5DFF;
   outline: #3A5DFF;
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-17::-webkit-outer-spin-button,
-.emotion-17::-webkit-inner-spin-button {
+.emotion-19::-webkit-outer-spin-button,
+.emotion-19::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.emotion-18 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -390,14 +405,14 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-20 {
+.emotion-22 {
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 
-.emotion-21 {
+.emotion-23 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -429,27 +444,27 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
   margin-left: 8px;
 }
 
-.emotion-21,
-.emotion-21:hover,
-.emotion-21:visited,
-.emotion-21 .noop {
+.emotion-23,
+.emotion-23:hover,
+.emotion-23:visited,
+.emotion-23 .noop {
   background-color: #808080;
 }
 
-.emotion-21:hover,
-.emotion-21 .noop {
+.emotion-23:hover,
+.emotion-23 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-21[aria-disabled=true],
-.emotion-21 .noop {
+.emotion-23[aria-disabled=true],
+.emotion-23 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-22 {
+.emotion-24 {
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -462,155 +477,163 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
   <div
     className="emotion-1"
   >
-    <h3
+    <div
       className="emotion-2"
     >
-      Number of 
-      Stuff
-      : 
-      100
-    </h3>
-  </div>
-  <div
-    className="emotion-3"
-  >
+      <h3
+        className="emotion-3"
+      >
+        Number of 
+        Stuff
+        : 
+        100
+      </h3>
+    </div>
     <div
       className="emotion-4"
     >
-      <table
+      <div
         className="emotion-5"
       >
-        <thead>
-          <tr>
-            <th
-              className="emotion-6"
-            >
-              ColumnOne, ColumnTwo
-            </th>
-          </tr>
-        </thead>
-        <tbody />
-      </table>
-    </div>
-    <div>
-       
-    </div>
-    <div
-      className="emotion-7"
-    >
-      <div
-        className="emotion-8"
-      />
+        <table
+          className="emotion-6"
+        >
+          <thead>
+            <tr>
+              <th
+                className="emotion-7"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  ColumnOne, ColumnTwo
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody />
+        </table>
+      </div>
+      <div>
+         
+      </div>
       <div
         className="emotion-9"
       >
-        <a
-          className="emotion-10"
-          href="/undefined?page=3"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-          rel="next"
-        >
-          Next
-        </a>
-      </div>
-      <div
-        className="emotion-11"
-      >
-        <a
-          aria-label="First page"
-          className="emotion-12"
-          href="/undefined"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-          rel="prev"
-          title="First page"
-        >
-          <svg
-            className="emotion-13"
-            data-file-name="doubleChevron.svg"
-            height={16}
-          />
-        </a>
-        <a
-          aria-label="Previous page"
-          className="emotion-14"
-          href="/undefined"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-          rel="prev"
-          title="Previous page"
-        >
-          <svg
-            className="emotion-15"
-            data-file-name="chevron.svg"
-            height={16}
-          />
-        </a>
-        <form
-          action=""
-          className="emotion-16"
-          method="get"
-          onSubmit={[Function]}
-        >
-          <input
-            aria-label="Go to page"
-            className="emotion-17"
-            max={5}
-            min="1"
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
-            type="number"
-            value="2"
-          />
-        </form>
         <div
-          className="emotion-18"
+          className="emotion-10"
+        />
+        <div
+          className="emotion-11"
         >
-          of 
-          5
+          <a
+            className="emotion-12"
+            href="/undefined?page=3"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            rel="next"
+          >
+            Next
+          </a>
         </div>
-        <a
-          aria-label="Next page"
-          className="emotion-14"
-          href="/undefined?page=3"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-          rel="next"
-          title="Next page"
+        <div
+          className="emotion-13"
         >
-          <svg
+          <a
+            aria-label="First page"
+            className="emotion-14"
+            href="/undefined"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            rel="prev"
+            title="First page"
+          >
+            <svg
+              className="emotion-15"
+              data-file-name="doubleChevron.svg"
+              height={16}
+            />
+          </a>
+          <a
+            aria-label="Previous page"
+            className="emotion-16"
+            href="/undefined"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            rel="prev"
+            title="Previous page"
+          >
+            <svg
+              className="emotion-17"
+              data-file-name="chevron.svg"
+              height={16}
+            />
+          </a>
+          <form
+            action=""
+            className="emotion-18"
+            method="get"
+            onSubmit={[Function]}
+          >
+            <input
+              aria-label="Go to page"
+              className="emotion-19"
+              max={5}
+              min="1"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onFocus={[Function]}
+              type="number"
+              value="2"
+            />
+          </form>
+          <div
             className="emotion-20"
-            data-file-name="chevron.svg"
-            height={16}
-          />
-        </a>
-        <a
-          aria-label="Last page"
-          className="emotion-21"
-          href="/undefined?page=5"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-          rel="next"
-          title="Last page"
-        >
-          <svg
-            className="emotion-22"
-            data-file-name="doubleChevron.svg"
-            height={16}
-          />
-        </a>
+          >
+            of 
+            5
+          </div>
+          <a
+            aria-label="Next page"
+            className="emotion-16"
+            href="/undefined?page=3"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            rel="next"
+            title="Next page"
+          >
+            <svg
+              className="emotion-22"
+              data-file-name="chevron.svg"
+              height={16}
+            />
+          </a>
+          <a
+            aria-label="Last page"
+            className="emotion-23"
+            href="/undefined?page=5"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            rel="next"
+            title="Last page"
+          >
+            <svg
+              className="emotion-24"
+              data-file-name="doubleChevron.svg"
+              height={16}
+            />
+          </a>
+        </div>
       </div>
-    </div>
-    <FetchAhead
-      url="/api/v1/stuff?from=40&size=20"
-    />
-    <FetchAhead
-      url="/api/v1/stuff?from=0&size=20"
-    />
-    <div>
-       
+      <FetchAhead
+        url="/api/v1/stuff?from=40&size=20"
+      />
+      <FetchAhead
+        url="/api/v1/stuff?from=0&size=20"
+      />
+      <div>
+         
+      </div>
     </div>
   </div>
 </div>
@@ -629,6 +652,17 @@ exports[`<Table /> should render properly without data 1`] = `
 }
 
 .emotion-1 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -646,21 +680,21 @@ exports[`<Table /> should render properly without data 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-4 {
+.emotion-5 {
   position: absolute;
   top: 0;
   left: 0;
@@ -668,44 +702,44 @@ exports[`<Table /> should render properly without data 1`] = `
   bottom: 0;
 }
 
-.emotion-5 {
+.emotion-6 {
   height: 100%;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-5 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-5 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-5 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-5 tr:hover .actions {
+.emotion-6 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-5 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-5 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-5 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-5 td {
+.emotion-6 td {
   max-width: calc(100vw / 0);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -717,41 +751,45 @@ exports[`<Table /> should render properly without data 1`] = `
   border-right: 0;
 }
 
-.emotion-5 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-5 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-6 {
+.emotion-7 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
-  padding: 12px 16px;
+  padding: 0;
   border-bottom: 1px solid #2e2e2e;
   width: auto;
 }
 
-.emotion-6:nth-of-type(2) {
+.emotion-7:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-7:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
+  padding: 12px 16px;
+}
+
+.emotion-9 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-8 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -779,49 +817,57 @@ exports[`<Table /> should render properly without data 1`] = `
   <div
     className="emotion-1"
   >
-    <h3
+    <div
       className="emotion-2"
     >
-      Number of 
-      Stuff
-      : 
-      0
-    </h3>
-  </div>
-  <div
-    className="emotion-3"
-  >
+      <h3
+        className="emotion-3"
+      >
+        Number of 
+        Stuff
+        : 
+        0
+      </h3>
+    </div>
     <div
       className="emotion-4"
     >
-      <table
+      <div
         className="emotion-5"
       >
-        <thead>
-          <tr>
-            <th
-              className="emotion-6"
-            >
-              ColumnOne, ColumnTwo
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            className="emotion-7"
-          >
-            <td
-              colSpan={1}
-            >
-              <div
-                className="emotion-8"
+        <table
+          className="emotion-6"
+        >
+          <thead>
+            <tr>
+              <th
+                className="emotion-7"
               >
-                Empty
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                <div
+                  className="emotion-8"
+                >
+                  ColumnOne, ColumnTwo
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-9"
+            >
+              <td
+                colSpan={1}
+              >
+                <div
+                  className="emotion-10"
+                >
+                  Empty
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

@@ -19,6 +19,12 @@ class TimelineBulderTests(unittest.TestCase):
         assert clip['start'] == 0
         assert clip['stop'] == 1
 
+    def test_add_clip_with_bbox(self):
+        bbox = [0.1, 0.2, 0.1, 0.2]
+        self.tl.add_clip('cat', 0, 1, 'cat', bbox=bbox)
+        clip = self.tl.tracks['cat']['clips'][0]
+        assert clip['bbox'] == bbox
+
     def test_for_json(self):
         struct = self.tl.for_json()
         assert struct['name'] == 'label-detection'

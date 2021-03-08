@@ -52,7 +52,9 @@ describe('Visualizer', function () {
 
       cy.get('button[aria-label*="Filters"]').click()
 
-      cy.contains('analysis.zvi-image-similarity')
+      cy.contains('analysis.boonai-image-similarity')
+
+      cy.selectFirstAsset()
 
       cy.contains('Similarity Range: 0.75')
 
