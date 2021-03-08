@@ -4,7 +4,7 @@ export const formatFullDate = ({ timestamp }) => {
     day: '2-digit',
     year: 'numeric',
     hour: '2-digit',
-    hour12: false,
+    hourCycle: 'h23',
     minute: '2-digit',
     second: '2-digit',
   }
@@ -32,7 +32,7 @@ export const formatPrettyDate = ({ timestamp }) => {
     day: '2-digit',
     year: 'numeric',
     hour: 'numeric',
-    hour12: true,
+    hourCycle: 'h23',
     minute: '2-digit',
     timeZoneName: 'short',
   }

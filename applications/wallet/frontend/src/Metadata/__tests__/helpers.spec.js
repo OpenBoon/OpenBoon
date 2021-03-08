@@ -31,7 +31,7 @@ describe('<Metadata /> helpers', () => {
           name: 'time',
           value: '2020-04-23T17:45:23.523104',
         }),
-      ).toEqual('2020-04-23 5:45 UTC')
+      ).toEqual('2020-04-23 17:45 UTC')
     })
   })
 })
