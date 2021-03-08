@@ -38,6 +38,15 @@ const STYLES = {
     backgroundColor: colors.structure.mattGrey,
     backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==')`,
   },
+  EXTRADARK: {
+    paddingLeft: spacing.large,
+    backgroundColor: colors.structure.smoke,
+    backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+DQogICAgPHBhdGggZmlsbD0iIzgwODA4MCIgZD0iTTEzLjg1NyAxMi4zMTRoLS44MjNsLS4zMDgtLjMwOGE2LjQzOCA2LjQzOCAwIDAwMS42NDUtNC4zMkE2LjY3MiA2LjY3MiAwIDAwNy42ODYgMSA2LjY3MiA2LjY3MiAwIDAwMSA3LjY4NmE2LjY3MiA2LjY3MiAwIDAwNi42ODYgNi42ODUgNi40MzggNi40MzggMCAwMDQuMzItMS42NDVsLjMwOC4zMDh2LjgyM0wxNy40NTcgMTkgMTkgMTcuNDU3bC01LjE0My01LjE0M3ptLTYuMTcxIDBhNC42MSA0LjYxIDAgMDEtNC42MjktNC42MjggNC42MSA0LjYxIDAgMDE0LjYyOS00LjYyOSA0LjYxIDQuNjEgMCAwMTQuNjI4IDQuNjI5IDQuNjEgNC42MSAwIDAxLTQuNjI4IDQuNjI4eiIvPg0KPC9zdmc+')`,
+    '::placeholder': {
+      fontStyle: typography.style.normal,
+      color: colors.structure.zinc,
+    },
+  },
 }
 
 export const VARIANTS = Object.keys(STYLES).reduce(
