@@ -54,8 +54,7 @@ def extract_thumbnail_from_video(video_path, thumbnail_path, seconds, size=None)
            str(seconds),
            "-i",
            str(video_path),
-           "-pix_fmt", "yuvj422p",
-           "-qscale:v", "5",
+           "-qscale:v", "4",
            "-vframes",
            "1",
            str(thumbnail_path)]
