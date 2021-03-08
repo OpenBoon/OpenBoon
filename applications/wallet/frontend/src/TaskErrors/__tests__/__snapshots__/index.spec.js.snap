@@ -13,6 +13,17 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
 }
 
 .emotion-1 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -30,58 +41,58 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-5 {
+.emotion-6 {
   height: auto;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-5 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-5 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-5 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-5 tr:hover .actions {
+.emotion-6 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-5 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-5 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-5 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-5 td {
+.emotion-6 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -93,16 +104,16 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   border-right: 0;
 }
 
-.emotion-5 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-5 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-6 {
+.emotion-7 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -114,19 +125,19 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   width: auto;
 }
 
-.emotion-6:nth-of-type(0) {
+.emotion-7:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-7:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
   padding: 12px 16px;
 }
 
-.emotion-18 {
+.emotion-19 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -138,15 +149,15 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   width: 1px;
 }
 
-.emotion-18:nth-of-type(0) {
+.emotion-19:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-18:not(:last-child) {
+.emotion-19:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-19 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -154,11 +165,11 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   padding: 12px 16px;
 }
 
-.emotion-20 {
+.emotion-21 {
   cursor: pointer;
 }
 
-.emotion-21 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -173,22 +184,22 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   padding-right: 8px;
 }
 
-.emotion-21 span {
+.emotion-22 span {
   padding-left: 12px;
   font-weight: 500;
 }
 
-.emotion-22:hover {
+.emotion-23:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-23 {
+.emotion-24 {
   position: relative;
   height: 100%;
 }
 
-.emotion-24 {
+.emotion-25 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -220,8 +231,8 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   margin: -6px;
 }
 
-.emotion-24:hover,
-.emotion-24.focus-visible:focus {
+.emotion-25:hover,
+.emotion-25.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -231,553 +242,557 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   <div
     className="emotion-1"
   >
-    <h3
+    <div
       className="emotion-2"
     >
-      Number of 
-      Errors
-      : 
-      6
-    </h3>
-  </div>
-  <div
-    className="emotion-3"
-  >
+      <h3
+        className="emotion-3"
+      >
+        Number of 
+        Errors
+        : 
+        6
+      </h3>
+    </div>
     <div
       className="emotion-4"
     >
-      <table
+      <div
         className="emotion-5"
       >
-        <thead>
-          <tr>
-            <th
-              className="emotion-6"
-            >
-              <div
+        <table
+          className="emotion-6"
+        >
+          <thead>
+            <tr>
+              <th
                 className="emotion-7"
               >
-                Error Type
-              </div>
-            </th>
-            <th
-              className="emotion-6"
-            >
-              <div
+                <div
+                  className="emotion-8"
+                >
+                  Error Type
+                </div>
+              </th>
+              <th
                 className="emotion-7"
               >
-                Phase
-              </div>
-            </th>
-            <th
-              className="emotion-6"
-            >
-              <div
+                <div
+                  className="emotion-8"
+                >
+                  Phase
+                </div>
+              </th>
+              <th
                 className="emotion-7"
               >
-                Message
-              </div>
-            </th>
-            <th
-              className="emotion-6"
-            >
-              <div
+                <div
+                  className="emotion-8"
+                >
+                  Message
+                </div>
+              </th>
+              <th
                 className="emotion-7"
               >
-                File Name
-              </div>
-            </th>
-            <th
-              className="emotion-6"
-            >
-              <div
+                <div
+                  className="emotion-8"
+                >
+                  File Name
+                </div>
+              </th>
+              <th
                 className="emotion-7"
               >
-                Processor
-              </div>
-            </th>
-            <th
-              className="emotion-6"
-            >
-              <div
+                <div
+                  className="emotion-8"
+                >
+                  Processor
+                </div>
+              </th>
+              <th
                 className="emotion-7"
               >
-                Time
-              </div>
-            </th>
-            <th
-              className="emotion-18"
-            >
-              <div
+                <div
+                  className="emotion-8"
+                >
+                  Time
+                </div>
+              </th>
+              <th
                 className="emotion-19"
               >
-                <svg
-                  data-file-name="kebab.svg"
-                  height={20}
-                />
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            className="emotion-20"
-            onClick={[Function]}
-          >
-            <td>
-              <div
-                className="emotion-21"
-              >
-                <svg
-                  color="#d6680b"
-                  data-file-name="errorWarning.svg"
-                  height={18}
-                />
-                <span>
-                  Warning
-                </span>
-              </div>
-            </td>
-            <td>
-              execute
-            </td>
-            <td
-              style={
-                Object {
-                  "width": "55%",
-                }
-              }
-            >
-              <a
-                className="emotion-22"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86bc-74b9-1519-b065-d2f0132bc0c8"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
-                title="AttributeError: 'NoneType' object has no attribute 'startswith'"
-              >
-                AttributeError: 'NoneType' object has no attribute 'startswith'
-              </a>
-            </td>
-            <td
-              style={
-                Object {
-                  "width": "50%",
-                }
-              }
-              title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
-            >
-              gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
-            </td>
-            <td
-              title="HSVSimilarityProcessor"
-            >
-              HSVSimilarityProcessor
-            </td>
-            <td>
-              2020-01-17 00:25:26
-            </td>
-            <td>
-              <div
-                className="emotion-23"
-              >
-                <button
-                  aria-label="Toggle Actions Menu"
-                  className="actions emotion-24"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  type="button"
+                <div
+                  className="emotion-20"
                 >
                   <svg
                     data-file-name="kebab.svg"
                     height={20}
                   />
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr
-            className="emotion-20"
-            onClick={[Function]}
-          >
-            <td>
-              <div
-                className="emotion-21"
-              >
-                <svg
-                  color="#c92300"
-                  data-file-name="errorFatal.svg"
-                  height={18}
-                />
-                <span>
-                  Fatal
-                </span>
-              </div>
-            </td>
-            <td>
-              execute
-            </td>
-            <td
-              style={
-                Object {
-                  "width": "55%",
-                }
-              }
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-21"
+              onClick={[Function]}
             >
-              <a
-                className="emotion-22"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86bb-74b9-1519-b065-d2f0132bc0c8"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
-                title="NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)"
-              >
-                NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)
-              </a>
-            </td>
-            <td
-              style={
-                Object {
-                  "width": "50%",
-                }
-              }
-              title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
-            >
-              gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
-            </td>
-            <td
-              title="DuplicateDetectionProcessor"
-            >
-              DuplicateDetectionProcessor
-            </td>
-            <td>
-              2020-01-17 00:25:26
-            </td>
-            <td>
-              <div
-                className="emotion-23"
-              >
-                <button
-                  aria-label="Toggle Actions Menu"
-                  className="actions emotion-24"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  type="button"
+              <td>
+                <div
+                  className="emotion-22"
                 >
                   <svg
-                    data-file-name="kebab.svg"
-                    height={20}
+                    color="#d6680b"
+                    data-file-name="errorWarning.svg"
+                    height={18}
                   />
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr
-            className="emotion-20"
-            onClick={[Function]}
-          >
-            <td>
-              <div
-                className="emotion-21"
-              >
-                <svg
-                  color="#d6680b"
-                  data-file-name="errorWarning.svg"
-                  height={18}
-                />
-                <span>
-                  Warning
-                </span>
-              </div>
-            </td>
-            <td>
-              execute
-            </td>
-            <td
-              style={
-                Object {
-                  "width": "55%",
+                  <span>
+                    Warning
+                  </span>
+                </div>
+              </td>
+              <td>
+                execute
+              </td>
+              <td
+                style={
+                  Object {
+                    "width": "55%",
+                  }
                 }
-              }
-            >
-              <a
-                className="emotion-22"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86ba-74b9-1519-b065-d2f0132bc0c8"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
-                title="AttributeError: 'NoneType' object has no attribute 'startswith'"
               >
-                AttributeError: 'NoneType' object has no attribute 'startswith'
-              </a>
-            </td>
-            <td
-              style={
-                Object {
-                  "width": "50%",
-                }
-              }
-              title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
-            >
-              gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
-            </td>
-            <td
-              title="ResNetSimilarityProcessor"
-            >
-              ResNetSimilarityProcessor
-            </td>
-            <td>
-              2020-01-17 00:25:26
-            </td>
-            <td>
-              <div
-                className="emotion-23"
-              >
-                <button
-                  aria-label="Toggle Actions Menu"
-                  className="actions emotion-24"
-                  onBlur={[Function]}
+                <a
+                  className="emotion-23"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86bc-74b9-1519-b065-d2f0132bc0c8"
                   onClick={[Function]}
-                  type="button"
+                  onMouseEnter={[Function]}
+                  title="AttributeError: 'NoneType' object has no attribute 'startswith'"
+                >
+                  AttributeError: 'NoneType' object has no attribute 'startswith'
+                </a>
+              </td>
+              <td
+                style={
+                  Object {
+                    "width": "50%",
+                  }
+                }
+                title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
+              >
+                gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
+              </td>
+              <td
+                title="HSVSimilarityProcessor"
+              >
+                HSVSimilarityProcessor
+              </td>
+              <td>
+                2020-01-17 00:25:26
+              </td>
+              <td>
+                <div
+                  className="emotion-24"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-25"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-21"
+              onClick={[Function]}
+            >
+              <td>
+                <div
+                  className="emotion-22"
                 >
                   <svg
-                    data-file-name="kebab.svg"
-                    height={20}
+                    color="#c92300"
+                    data-file-name="errorFatal.svg"
+                    height={18}
                   />
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr
-            className="emotion-20"
-            onClick={[Function]}
-          >
-            <td>
-              <div
-                className="emotion-21"
-              >
-                <svg
-                  color="#c92300"
-                  data-file-name="errorFatal.svg"
-                  height={18}
-                />
-                <span>
-                  Fatal
-                </span>
-              </div>
-            </td>
-            <td>
-              execute
-            </td>
-            <td
-              style={
-                Object {
-                  "width": "55%",
+                  <span>
+                    Fatal
+                  </span>
+                </div>
+              </td>
+              <td>
+                execute
+              </td>
+              <td
+                style={
+                  Object {
+                    "width": "55%",
+                  }
                 }
-              }
-            >
-              <a
-                className="emotion-22"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b9-74b9-1519-b065-d2f0132bc0c8"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
-                title="AttributeError: 'NoneType' object has no attribute 'startswith'"
               >
-                AttributeError: 'NoneType' object has no attribute 'startswith'
-              </a>
-            </td>
-            <td
-              style={
-                Object {
-                  "width": "50%",
-                }
-              }
-              title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
-            >
-              gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
-            </td>
-            <td
-              title="ResNetClassifyProcessor"
-            >
-              ResNetClassifyProcessor
-            </td>
-            <td>
-              2020-01-17 00:25:26
-            </td>
-            <td>
-              <div
-                className="emotion-23"
-              >
-                <button
-                  aria-label="Toggle Actions Menu"
-                  className="actions emotion-24"
-                  onBlur={[Function]}
+                <a
+                  className="emotion-23"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86bb-74b9-1519-b065-d2f0132bc0c8"
                   onClick={[Function]}
-                  type="button"
+                  onMouseEnter={[Function]}
+                  title="NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)"
+                >
+                  NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)
+                </a>
+              </td>
+              <td
+                style={
+                  Object {
+                    "width": "50%",
+                  }
+                }
+                title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
+              >
+                gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
+              </td>
+              <td
+                title="DuplicateDetectionProcessor"
+              >
+                DuplicateDetectionProcessor
+              </td>
+              <td>
+                2020-01-17 00:25:26
+              </td>
+              <td>
+                <div
+                  className="emotion-24"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-25"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-21"
+              onClick={[Function]}
+            >
+              <td>
+                <div
+                  className="emotion-22"
                 >
                   <svg
-                    data-file-name="kebab.svg"
-                    height={20}
+                    color="#d6680b"
+                    data-file-name="errorWarning.svg"
+                    height={18}
                   />
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr
-            className="emotion-20"
-            onClick={[Function]}
-          >
-            <td>
-              <div
-                className="emotion-21"
-              >
-                <svg
-                  color="#d6680b"
-                  data-file-name="errorWarning.svg"
-                  height={18}
-                />
-                <span>
-                  Warning
-                </span>
-              </div>
-            </td>
-            <td>
-              execute
-            </td>
-            <td
-              style={
-                Object {
-                  "width": "55%",
+                  <span>
+                    Warning
+                  </span>
+                </div>
+              </td>
+              <td>
+                execute
+              </td>
+              <td
+                style={
+                  Object {
+                    "width": "55%",
+                  }
                 }
-              }
-            >
-              <a
-                className="emotion-22"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b8-74b9-1519-b065-d2f0132bc0c8"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
-                title="AttributeError: 'NoneType' object has no attribute 'startswith'"
               >
-                AttributeError: 'NoneType' object has no attribute 'startswith'
-              </a>
-            </td>
-            <td
-              style={
-                Object {
-                  "width": "50%",
-                }
-              }
-              title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
-            >
-              gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
-            </td>
-            <td
-              title="FaceRecognitionProcessor"
-            >
-              FaceRecognitionProcessor
-            </td>
-            <td>
-              2020-01-17 00:25:26
-            </td>
-            <td>
-              <div
-                className="emotion-23"
-              >
-                <button
-                  aria-label="Toggle Actions Menu"
-                  className="actions emotion-24"
-                  onBlur={[Function]}
+                <a
+                  className="emotion-23"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86ba-74b9-1519-b065-d2f0132bc0c8"
                   onClick={[Function]}
-                  type="button"
+                  onMouseEnter={[Function]}
+                  title="AttributeError: 'NoneType' object has no attribute 'startswith'"
+                >
+                  AttributeError: 'NoneType' object has no attribute 'startswith'
+                </a>
+              </td>
+              <td
+                style={
+                  Object {
+                    "width": "50%",
+                  }
+                }
+                title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
+              >
+                gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
+              </td>
+              <td
+                title="ResNetSimilarityProcessor"
+              >
+                ResNetSimilarityProcessor
+              </td>
+              <td>
+                2020-01-17 00:25:26
+              </td>
+              <td>
+                <div
+                  className="emotion-24"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-25"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-21"
+              onClick={[Function]}
+            >
+              <td>
+                <div
+                  className="emotion-22"
                 >
                   <svg
-                    data-file-name="kebab.svg"
-                    height={20}
+                    color="#c92300"
+                    data-file-name="errorFatal.svg"
+                    height={18}
                   />
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr
-            className="emotion-20"
-            onClick={[Function]}
-          >
-            <td>
-              <div
-                className="emotion-21"
-              >
-                <svg
-                  color="#d6680b"
-                  data-file-name="errorWarning.svg"
-                  height={18}
-                />
-                <span>
-                  Warning
-                </span>
-              </div>
-            </td>
-            <td>
-              execute
-            </td>
-            <td
-              style={
-                Object {
-                  "width": "55%",
+                  <span>
+                    Fatal
+                  </span>
+                </div>
+              </td>
+              <td>
+                execute
+              </td>
+              <td
+                style={
+                  Object {
+                    "width": "55%",
+                  }
                 }
-              }
-            >
-              <a
-                className="emotion-22"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b7-74b9-1519-b065-d2f0132bc0c8"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
-                title="NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)"
               >
-                NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)
-              </a>
-            </td>
-            <td
-              style={
-                Object {
-                  "width": "50%",
-                }
-              }
-              title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
-            >
-              gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
-            </td>
-            <td
-              title="ImageImporter"
-            >
-              ImageImporter
-            </td>
-            <td>
-              2020-01-17 00:25:26
-            </td>
-            <td>
-              <div
-                className="emotion-23"
-              >
-                <button
-                  aria-label="Toggle Actions Menu"
-                  className="actions emotion-24"
-                  onBlur={[Function]}
+                <a
+                  className="emotion-23"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b9-74b9-1519-b065-d2f0132bc0c8"
                   onClick={[Function]}
-                  type="button"
+                  onMouseEnter={[Function]}
+                  title="AttributeError: 'NoneType' object has no attribute 'startswith'"
+                >
+                  AttributeError: 'NoneType' object has no attribute 'startswith'
+                </a>
+              </td>
+              <td
+                style={
+                  Object {
+                    "width": "50%",
+                  }
+                }
+                title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
+              >
+                gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
+              </td>
+              <td
+                title="ResNetClassifyProcessor"
+              >
+                ResNetClassifyProcessor
+              </td>
+              <td>
+                2020-01-17 00:25:26
+              </td>
+              <td>
+                <div
+                  className="emotion-24"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-25"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-21"
+              onClick={[Function]}
+            >
+              <td>
+                <div
+                  className="emotion-22"
                 >
                   <svg
-                    data-file-name="kebab.svg"
-                    height={20}
+                    color="#d6680b"
+                    data-file-name="errorWarning.svg"
+                    height={18}
                   />
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div>
-       
-    </div>
-    <div>
-       
+                  <span>
+                    Warning
+                  </span>
+                </div>
+              </td>
+              <td>
+                execute
+              </td>
+              <td
+                style={
+                  Object {
+                    "width": "55%",
+                  }
+                }
+              >
+                <a
+                  className="emotion-23"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b8-74b9-1519-b065-d2f0132bc0c8"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  title="AttributeError: 'NoneType' object has no attribute 'startswith'"
+                >
+                  AttributeError: 'NoneType' object has no attribute 'startswith'
+                </a>
+              </td>
+              <td
+                style={
+                  Object {
+                    "width": "50%",
+                  }
+                }
+                title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
+              >
+                gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
+              </td>
+              <td
+                title="FaceRecognitionProcessor"
+              >
+                FaceRecognitionProcessor
+              </td>
+              <td>
+                2020-01-17 00:25:26
+              </td>
+              <td>
+                <div
+                  className="emotion-24"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-25"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-21"
+              onClick={[Function]}
+            >
+              <td>
+                <div
+                  className="emotion-22"
+                >
+                  <svg
+                    color="#d6680b"
+                    data-file-name="errorWarning.svg"
+                    height={18}
+                  />
+                  <span>
+                    Warning
+                  </span>
+                </div>
+              </td>
+              <td>
+                execute
+              </td>
+              <td
+                style={
+                  Object {
+                    "width": "55%",
+                  }
+                }
+              >
+                <a
+                  className="emotion-23"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b7-74b9-1519-b065-d2f0132bc0c8"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  title="NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)"
+                >
+                  NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)
+                </a>
+              </td>
+              <td
+                style={
+                  Object {
+                    "width": "50%",
+                  }
+                }
+                title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
+              >
+                gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
+              </td>
+              <td
+                title="ImageImporter"
+              >
+                ImageImporter
+              </td>
+              <td>
+                2020-01-17 00:25:26
+              </td>
+              <td>
+                <div
+                  className="emotion-24"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-25"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+         
+      </div>
+      <div>
+         
+      </div>
     </div>
   </div>
 </div>
@@ -796,6 +811,17 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
 }
 
 .emotion-1 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -813,21 +839,21 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-4 {
+.emotion-5 {
   position: absolute;
   top: 0;
   left: 0;
@@ -835,44 +861,44 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   bottom: 0;
 }
 
-.emotion-5 {
+.emotion-6 {
   height: 100%;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-5 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-5 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-5 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-5 tr:hover .actions {
+.emotion-6 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-5 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-5 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-5 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-5 td {
+.emotion-6 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -884,16 +910,16 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   border-right: 0;
 }
 
-.emotion-5 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-5 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-6 {
+.emotion-7 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -905,19 +931,19 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   width: auto;
 }
 
-.emotion-6:nth-of-type(0) {
+.emotion-7:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-7:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
   padding: 12px 16px;
 }
 
-.emotion-18 {
+.emotion-19 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -929,15 +955,15 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   width: 1px;
 }
 
-.emotion-18:nth-of-type(0) {
+.emotion-19:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-18:not(:last-child) {
+.emotion-19:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-19 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -945,12 +971,12 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   padding: 12px 16px;
 }
 
-.emotion-20 {
+.emotion-21 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-21 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -972,7 +998,7 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   line-height: 19px;
 }
 
-.emotion-22 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -994,123 +1020,127 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   <div
     className="emotion-1"
   >
-    <h3
+    <div
       className="emotion-2"
     >
-      Number of 
-      Errors
-      : 
-      0
-    </h3>
-  </div>
-  <div
-    className="emotion-3"
-  >
+      <h3
+        className="emotion-3"
+      >
+        Number of 
+        Errors
+        : 
+        0
+      </h3>
+    </div>
     <div
       className="emotion-4"
     >
-      <table
+      <div
         className="emotion-5"
       >
-        <thead>
-          <tr>
-            <th
-              className="emotion-6"
-            >
-              <div
+        <table
+          className="emotion-6"
+        >
+          <thead>
+            <tr>
+              <th
                 className="emotion-7"
               >
-                Error Type
-              </div>
-            </th>
-            <th
-              className="emotion-6"
-            >
-              <div
+                <div
+                  className="emotion-8"
+                >
+                  Error Type
+                </div>
+              </th>
+              <th
                 className="emotion-7"
               >
-                Phase
-              </div>
-            </th>
-            <th
-              className="emotion-6"
-            >
-              <div
+                <div
+                  className="emotion-8"
+                >
+                  Phase
+                </div>
+              </th>
+              <th
                 className="emotion-7"
               >
-                Message
-              </div>
-            </th>
-            <th
-              className="emotion-6"
-            >
-              <div
+                <div
+                  className="emotion-8"
+                >
+                  Message
+                </div>
+              </th>
+              <th
                 className="emotion-7"
               >
-                File Name
-              </div>
-            </th>
-            <th
-              className="emotion-6"
-            >
-              <div
+                <div
+                  className="emotion-8"
+                >
+                  File Name
+                </div>
+              </th>
+              <th
                 className="emotion-7"
               >
-                Processor
-              </div>
-            </th>
-            <th
-              className="emotion-6"
-            >
-              <div
+                <div
+                  className="emotion-8"
+                >
+                  Processor
+                </div>
+              </th>
+              <th
                 className="emotion-7"
               >
-                Time
-              </div>
-            </th>
-            <th
-              className="emotion-18"
-            >
-              <div
+                <div
+                  className="emotion-8"
+                >
+                  Time
+                </div>
+              </th>
+              <th
                 className="emotion-19"
               >
-                <svg
-                  data-file-name="kebab.svg"
-                  height={20}
-                />
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            className="emotion-20"
-          >
-            <td
-              colSpan={7}
+                <div
+                  className="emotion-20"
+                >
+                  <svg
+                    data-file-name="kebab.svg"
+                    height={20}
+                  />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-21"
             >
-              <div
-                className="emotion-21"
+              <td
+                colSpan={7}
               >
                 <div
                   className="emotion-22"
                 >
-                  <svg
-                    data-file-name="noJobs.svg"
-                    width={200}
-                  />
-                  <div>
-                    This job has no errors.
-                  </div>
-                  <div>
-                    Any new error will appear here.
+                  <div
+                    className="emotion-23"
+                  >
+                    <svg
+                      data-file-name="noJobs.svg"
+                      width={200}
+                    />
+                    <div>
+                      This job has no errors.
+                    </div>
+                    <div>
+                      Any new error will appear here.
+                    </div>
                   </div>
                 </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

@@ -219,6 +219,17 @@ Array [
 }
 
 .emotion-1 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -236,58 +247,58 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-5 {
+.emotion-6 {
   height: auto;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-5 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-5 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-5 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-5 tr:hover .actions {
+.emotion-6 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-5 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-5 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-5 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-5 td {
+.emotion-6 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -299,16 +310,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-5 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-5 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-6 {
+.emotion-7 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -320,19 +331,19 @@ Array [
   width: auto;
 }
 
-.emotion-6:nth-of-type(0) {
+.emotion-7:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-7:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
   padding: 12px 16px;
 }
 
-.emotion-18 {
+.emotion-19 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -344,15 +355,15 @@ Array [
   width: 1px;
 }
 
-.emotion-18:nth-of-type(0) {
+.emotion-19:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-18:not(:last-child) {
+.emotion-19:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-19 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -360,32 +371,32 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-20 {
+.emotion-21 {
   cursor: pointer;
 }
 
-.emotion-21:hover {
+.emotion-22:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-22 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-23 {
+.emotion-24 {
   margin-right: 16px;
 }
 
-.emotion-25 {
+.emotion-26 {
   position: relative;
   height: 100%;
 }
 
-.emotion-26 {
+.emotion-27 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -417,8 +428,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-26:hover,
-.emotion-26.focus-visible:focus {
+.emotion-27:hover,
+.emotion-27.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -428,443 +439,447 @@ Array [
     <div
       className="emotion-1"
     >
-      <h3
+      <div
         className="emotion-2"
       >
-        Number of 
-        Sources
-        : 
-        5
-      </h3>
-    </div>
-    <div
-      className="emotion-3"
-    >
+        <h3
+          className="emotion-3"
+        >
+          Number of 
+          Sources
+          : 
+          5
+        </h3>
+      </div>
       <div
         className="emotion-4"
       >
-        <table
+        <div
           className="emotion-5"
         >
-          <thead>
-            <tr>
-              <th
-                className="emotion-6"
-              >
-                <div
+          <table
+            className="emotion-6"
+          >
+            <thead>
+              <tr>
+                <th
                   className="emotion-7"
                 >
-                  Name
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Name
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Source Type
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Source Type
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Path
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Path
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Date Created
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Date Created
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Date Modified
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Date Modified
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  File Types
-                </div>
-              </th>
-              <th
-                className="emotion-18"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    File Types
+                  </div>
+                </th>
+                <th
                   className="emotion-19"
                 >
-                  <svg
-                    data-file-name="kebab.svg"
-                    height={20}
-                  />
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test
-                </a>
-              </td>
-              <td>
-                Amazon Web Service (AWS)
-              </td>
-              <td>
-                s3://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 01:37:47
-              </td>
-              <td>
-                2020-02-10 01:37:47
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="#ebb52e"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="transparent"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    type="button"
+                  <div
+                    className="emotion-20"
                   >
                     <svg
                       data-file-name="kebab.svg"
                       height={20}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test2
-                </a>
-              </td>
-              <td>
-                Azure
-              </td>
-              <td>
-                azure://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 01:40:26
-              </td>
-              <td>
-                2020-02-10 01:40:26
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="#00bdc1"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="transparent"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
                     onClick={[Function]}
-                    type="button"
+                    onMouseEnter={[Function]}
+                  >
+                    test
+                  </a>
+                </td>
+                <td>
+                  Amazon Web Service (AWS)
+                </td>
+                <td>
+                  s3://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 01:37:47
+                </td>
+                <td>
+                  2020-02-10 01:37:47
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
                   >
                     <svg
-                      data-file-name="kebab.svg"
-                      height={20}
+                      className="emotion-24"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test3
-                </a>
-              </td>
-              <td>
-                Google Cloud Platform (GCP)
-              </td>
-              <td>
-                gs://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 01:42:23
-              </td>
-              <td>
-                2020-02-10 01:42:23
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="#8f89e7"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
+                    <svg
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="transparent"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
                     onClick={[Function]}
-                    type="button"
+                    onMouseEnter={[Function]}
+                  >
+                    test2
+                  </a>
+                </td>
+                <td>
+                  Azure
+                </td>
+                <td>
+                  azure://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 01:40:26
+                </td>
+                <td>
+                  2020-02-10 01:40:26
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
                   >
                     <svg
-                      data-file-name="kebab.svg"
-                      height={20}
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="images.svg"
+                      height={24}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test4
-                </a>
-              </td>
-              <td>
-                Unknown
-              </td>
-              <td>
-                ftp://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 16:21:18
-              </td>
-              <td>
-                2020-02-10 16:21:18
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="#ebb52e"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="#00bdc1"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="#8f89e7"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
+                    <svg
+                      className="emotion-24"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="transparent"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
                     onClick={[Function]}
-                    type="button"
+                    onMouseEnter={[Function]}
+                  >
+                    test3
+                  </a>
+                </td>
+                <td>
+                  Google Cloud Platform (GCP)
+                </td>
+                <td>
+                  gs://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 01:42:23
+                </td>
+                <td>
+                  2020-02-10 01:42:23
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
                   >
                     <svg
-                      data-file-name="kebab.svg"
-                      height={20}
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="images.svg"
+                      height={24}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test5
-                </a>
-              </td>
-              <td>
-                Google Cloud Platform (GCP)
-              </td>
-              <td>
-                gs://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 16:47:39
-              </td>
-              <td>
-                2020-02-10 16:47:39
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="#8f89e7"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
+                    <svg
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
                     onClick={[Function]}
-                    type="button"
+                    onMouseEnter={[Function]}
+                  >
+                    test4
+                  </a>
+                </td>
+                <td>
+                  Unknown
+                </td>
+                <td>
+                  ftp://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 16:21:18
+                </td>
+                <td>
+                  2020-02-10 16:21:18
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
                   >
                     <svg
-                      data-file-name="kebab.svg"
-                      height={20}
+                      className="emotion-24"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div>
-         
-      </div>
-      <div>
-         
+                    <svg
+                      className="emotion-24"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                  >
+                    test5
+                  </a>
+                </td>
+                <td>
+                  Google Cloud Platform (GCP)
+                </td>
+                <td>
+                  gs://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 16:47:39
+                </td>
+                <td>
+                  2020-02-10 16:47:39
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
+                  >
+                    <svg
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="images.svg"
+                      height={24}
+                    />
+                    <svg
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+           
+        </div>
+        <div>
+           
+        </div>
       </div>
     </div>
   </div>,
@@ -1083,6 +1098,17 @@ Array [
 }
 
 .emotion-1 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1100,58 +1126,58 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-5 {
+.emotion-6 {
   height: auto;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-5 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-5 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-5 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-5 tr:hover .actions {
+.emotion-6 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-5 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-5 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-5 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-5 td {
+.emotion-6 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1163,16 +1189,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-5 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-5 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-6 {
+.emotion-7 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -1184,19 +1210,19 @@ Array [
   width: auto;
 }
 
-.emotion-6:nth-of-type(0) {
+.emotion-7:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-7:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
   padding: 12px 16px;
 }
 
-.emotion-18 {
+.emotion-19 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -1208,15 +1234,15 @@ Array [
   width: 1px;
 }
 
-.emotion-18:nth-of-type(0) {
+.emotion-19:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-18:not(:last-child) {
+.emotion-19:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-19 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1224,32 +1250,32 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-20 {
+.emotion-21 {
   cursor: pointer;
 }
 
-.emotion-21:hover {
+.emotion-22:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-22 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-23 {
+.emotion-24 {
   margin-right: 16px;
 }
 
-.emotion-25 {
+.emotion-26 {
   position: relative;
   height: 100%;
 }
 
-.emotion-26 {
+.emotion-27 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1281,8 +1307,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-26:hover,
-.emotion-26.focus-visible:focus {
+.emotion-27:hover,
+.emotion-27.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -1292,443 +1318,447 @@ Array [
     <div
       className="emotion-1"
     >
-      <h3
+      <div
         className="emotion-2"
       >
-        Number of 
-        Sources
-        : 
-        5
-      </h3>
-    </div>
-    <div
-      className="emotion-3"
-    >
+        <h3
+          className="emotion-3"
+        >
+          Number of 
+          Sources
+          : 
+          5
+        </h3>
+      </div>
       <div
         className="emotion-4"
       >
-        <table
+        <div
           className="emotion-5"
         >
-          <thead>
-            <tr>
-              <th
-                className="emotion-6"
-              >
-                <div
+          <table
+            className="emotion-6"
+          >
+            <thead>
+              <tr>
+                <th
                   className="emotion-7"
                 >
-                  Name
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Name
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Source Type
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Source Type
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Path
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Path
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Date Created
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Date Created
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Date Modified
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Date Modified
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  File Types
-                </div>
-              </th>
-              <th
-                className="emotion-18"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    File Types
+                  </div>
+                </th>
+                <th
                   className="emotion-19"
                 >
-                  <svg
-                    data-file-name="kebab.svg"
-                    height={20}
-                  />
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test
-                </a>
-              </td>
-              <td>
-                Amazon Web Service (AWS)
-              </td>
-              <td>
-                s3://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 01:37:47
-              </td>
-              <td>
-                2020-02-10 01:37:47
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="#ebb52e"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="transparent"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    type="button"
+                  <div
+                    className="emotion-20"
                   >
                     <svg
                       data-file-name="kebab.svg"
                       height={20}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test2
-                </a>
-              </td>
-              <td>
-                Azure
-              </td>
-              <td>
-                azure://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 01:40:26
-              </td>
-              <td>
-                2020-02-10 01:40:26
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="#00bdc1"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="transparent"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
                     onClick={[Function]}
-                    type="button"
+                    onMouseEnter={[Function]}
+                  >
+                    test
+                  </a>
+                </td>
+                <td>
+                  Amazon Web Service (AWS)
+                </td>
+                <td>
+                  s3://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 01:37:47
+                </td>
+                <td>
+                  2020-02-10 01:37:47
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
                   >
                     <svg
-                      data-file-name="kebab.svg"
-                      height={20}
+                      className="emotion-24"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test3
-                </a>
-              </td>
-              <td>
-                Google Cloud Platform (GCP)
-              </td>
-              <td>
-                gs://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 01:42:23
-              </td>
-              <td>
-                2020-02-10 01:42:23
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="#8f89e7"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
+                    <svg
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="transparent"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
                     onClick={[Function]}
-                    type="button"
+                    onMouseEnter={[Function]}
+                  >
+                    test2
+                  </a>
+                </td>
+                <td>
+                  Azure
+                </td>
+                <td>
+                  azure://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 01:40:26
+                </td>
+                <td>
+                  2020-02-10 01:40:26
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
                   >
                     <svg
-                      data-file-name="kebab.svg"
-                      height={20}
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="images.svg"
+                      height={24}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test4
-                </a>
-              </td>
-              <td>
-                Unknown
-              </td>
-              <td>
-                ftp://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 16:21:18
-              </td>
-              <td>
-                2020-02-10 16:21:18
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="#ebb52e"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="#00bdc1"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="#8f89e7"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
+                    <svg
+                      className="emotion-24"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="transparent"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
                     onClick={[Function]}
-                    type="button"
+                    onMouseEnter={[Function]}
+                  >
+                    test3
+                  </a>
+                </td>
+                <td>
+                  Google Cloud Platform (GCP)
+                </td>
+                <td>
+                  gs://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 01:42:23
+                </td>
+                <td>
+                  2020-02-10 01:42:23
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
                   >
                     <svg
-                      data-file-name="kebab.svg"
-                      height={20}
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="images.svg"
+                      height={24}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test5
-                </a>
-              </td>
-              <td>
-                Google Cloud Platform (GCP)
-              </td>
-              <td>
-                gs://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 16:47:39
-              </td>
-              <td>
-                2020-02-10 16:47:39
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="#8f89e7"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
+                    <svg
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
                     onClick={[Function]}
-                    type="button"
+                    onMouseEnter={[Function]}
+                  >
+                    test4
+                  </a>
+                </td>
+                <td>
+                  Unknown
+                </td>
+                <td>
+                  ftp://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 16:21:18
+                </td>
+                <td>
+                  2020-02-10 16:21:18
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
                   >
                     <svg
-                      data-file-name="kebab.svg"
-                      height={20}
+                      className="emotion-24"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div>
-         
-      </div>
-      <div>
-         
+                    <svg
+                      className="emotion-24"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                  >
+                    test5
+                  </a>
+                </td>
+                <td>
+                  Google Cloud Platform (GCP)
+                </td>
+                <td>
+                  gs://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 16:47:39
+                </td>
+                <td>
+                  2020-02-10 16:47:39
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
+                  >
+                    <svg
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="images.svg"
+                      height={24}
+                    />
+                    <svg
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+           
+        </div>
+        <div>
+           
+        </div>
       </div>
     </div>
   </div>,
@@ -1947,6 +1977,17 @@ Array [
 }
 
 .emotion-1 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1964,21 +2005,21 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-4 {
+.emotion-5 {
   position: absolute;
   top: 0;
   left: 0;
@@ -1986,44 +2027,44 @@ Array [
   bottom: 0;
 }
 
-.emotion-5 {
+.emotion-6 {
   height: 100%;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-5 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-5 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-5 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-5 tr:hover .actions {
+.emotion-6 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-5 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-5 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-5 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-5 td {
+.emotion-6 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2035,16 +2076,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-5 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-5 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-6 {
+.emotion-7 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -2056,19 +2097,19 @@ Array [
   width: auto;
 }
 
-.emotion-6:nth-of-type(0) {
+.emotion-7:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-7:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
   padding: 12px 16px;
 }
 
-.emotion-18 {
+.emotion-19 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -2080,15 +2121,15 @@ Array [
   width: 1px;
 }
 
-.emotion-18:nth-of-type(0) {
+.emotion-19:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-18:not(:last-child) {
+.emotion-19:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-19 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2096,12 +2137,12 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-20 {
+.emotion-21 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-21 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2129,110 +2170,114 @@ Array [
     <div
       className="emotion-1"
     >
-      <h3
+      <div
         className="emotion-2"
       >
-        Number of 
-        Sources
-        : 
-        0
-      </h3>
-    </div>
-    <div
-      className="emotion-3"
-    >
+        <h3
+          className="emotion-3"
+        >
+          Number of 
+          Sources
+          : 
+          0
+        </h3>
+      </div>
       <div
         className="emotion-4"
       >
-        <table
+        <div
           className="emotion-5"
         >
-          <thead>
-            <tr>
-              <th
-                className="emotion-6"
-              >
-                <div
+          <table
+            className="emotion-6"
+          >
+            <thead>
+              <tr>
+                <th
                   className="emotion-7"
                 >
-                  Name
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Name
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Source Type
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Source Type
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Path
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Path
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Date Created
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Date Created
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Date Modified
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Date Modified
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  File Types
-                </div>
-              </th>
-              <th
-                className="emotion-18"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    File Types
+                  </div>
+                </th>
+                <th
                   className="emotion-19"
                 >
-                  <svg
-                    data-file-name="kebab.svg"
-                    height={20}
-                  />
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              className="emotion-20"
-            >
-              <td
-                colSpan={7}
+                  <div
+                    className="emotion-20"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                className="emotion-21"
               >
-                <div
-                  className="emotion-21"
+                <td
+                  colSpan={7}
                 >
-                  No data sources
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  <div
+                    className="emotion-22"
+                  >
+                    No data sources
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>,
@@ -2458,6 +2503,17 @@ Array [
 }
 
 .emotion-1 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2475,58 +2531,58 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-5 {
+.emotion-6 {
   height: auto;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.emotion-5 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-5 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-5 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
-.emotion-5 tr:hover .actions {
+.emotion-6 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-5 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-5 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-5 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-5 td {
+.emotion-6 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2538,16 +2594,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-5 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-5 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-6 {
+.emotion-7 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -2559,19 +2615,19 @@ Array [
   width: auto;
 }
 
-.emotion-6:nth-of-type(0) {
+.emotion-7:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-7:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
   padding: 12px 16px;
 }
 
-.emotion-18 {
+.emotion-19 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -2583,15 +2639,15 @@ Array [
   width: 1px;
 }
 
-.emotion-18:nth-of-type(0) {
+.emotion-19:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-18:not(:last-child) {
+.emotion-19:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-19 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2599,32 +2655,32 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-20 {
+.emotion-21 {
   cursor: pointer;
 }
 
-.emotion-21:hover {
+.emotion-22:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-22 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-23 {
+.emotion-24 {
   margin-right: 16px;
 }
 
-.emotion-25 {
+.emotion-26 {
   position: relative;
   height: 100%;
 }
 
-.emotion-26 {
+.emotion-27 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2656,8 +2712,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-26:hover,
-.emotion-26.focus-visible:focus {
+.emotion-27:hover,
+.emotion-27.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -2667,443 +2723,447 @@ Array [
     <div
       className="emotion-1"
     >
-      <h3
+      <div
         className="emotion-2"
       >
-        Number of 
-        Sources
-        : 
-        5
-      </h3>
-    </div>
-    <div
-      className="emotion-3"
-    >
+        <h3
+          className="emotion-3"
+        >
+          Number of 
+          Sources
+          : 
+          5
+        </h3>
+      </div>
       <div
         className="emotion-4"
       >
-        <table
+        <div
           className="emotion-5"
         >
-          <thead>
-            <tr>
-              <th
-                className="emotion-6"
-              >
-                <div
+          <table
+            className="emotion-6"
+          >
+            <thead>
+              <tr>
+                <th
                   className="emotion-7"
                 >
-                  Name
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Name
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Source Type
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Source Type
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Path
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Path
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Date Created
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Date Created
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  Date Modified
-                </div>
-              </th>
-              <th
-                className="emotion-6"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    Date Modified
+                  </div>
+                </th>
+                <th
                   className="emotion-7"
                 >
-                  File Types
-                </div>
-              </th>
-              <th
-                className="emotion-18"
-              >
-                <div
+                  <div
+                    className="emotion-8"
+                  >
+                    File Types
+                  </div>
+                </th>
+                <th
                   className="emotion-19"
                 >
-                  <svg
-                    data-file-name="kebab.svg"
-                    height={20}
-                  />
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test
-                </a>
-              </td>
-              <td>
-                Amazon Web Service (AWS)
-              </td>
-              <td>
-                s3://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 01:37:47
-              </td>
-              <td>
-                2020-02-10 01:37:47
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="#ebb52e"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="transparent"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    type="button"
+                  <div
+                    className="emotion-20"
                   >
                     <svg
                       data-file-name="kebab.svg"
                       height={20}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test2
-                </a>
-              </td>
-              <td>
-                Azure
-              </td>
-              <td>
-                azure://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 01:40:26
-              </td>
-              <td>
-                2020-02-10 01:40:26
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="#00bdc1"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="transparent"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
                     onClick={[Function]}
-                    type="button"
+                    onMouseEnter={[Function]}
+                  >
+                    test
+                  </a>
+                </td>
+                <td>
+                  Amazon Web Service (AWS)
+                </td>
+                <td>
+                  s3://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 01:37:47
+                </td>
+                <td>
+                  2020-02-10 01:37:47
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
                   >
                     <svg
-                      data-file-name="kebab.svg"
-                      height={20}
+                      className="emotion-24"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test3
-                </a>
-              </td>
-              <td>
-                Google Cloud Platform (GCP)
-              </td>
-              <td>
-                gs://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 01:42:23
-              </td>
-              <td>
-                2020-02-10 01:42:23
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="#8f89e7"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
+                    <svg
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="transparent"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85b-95fd-120e-85f3-0242ac120002/edit"
                     onClick={[Function]}
-                    type="button"
+                    onMouseEnter={[Function]}
+                  >
+                    test2
+                  </a>
+                </td>
+                <td>
+                  Azure
+                </td>
+                <td>
+                  azure://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 01:40:26
+                </td>
+                <td>
+                  2020-02-10 01:40:26
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
                   >
                     <svg
-                      data-file-name="kebab.svg"
-                      height={20}
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="images.svg"
+                      height={24}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test4
-                </a>
-              </td>
-              <td>
-                Unknown
-              </td>
-              <td>
-                ftp://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 16:21:18
-              </td>
-              <td>
-                2020-02-10 16:21:18
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="#ebb52e"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="#00bdc1"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="#8f89e7"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
+                    <svg
+                      className="emotion-24"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="transparent"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de85f-95fd-120e-85f3-0242ac120002/edit"
                     onClick={[Function]}
-                    type="button"
+                    onMouseEnter={[Function]}
+                  >
+                    test3
+                  </a>
+                </td>
+                <td>
+                  Google Cloud Platform (GCP)
+                </td>
+                <td>
+                  gs://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 01:42:23
+                </td>
+                <td>
+                  2020-02-10 01:42:23
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
                   >
                     <svg
-                      data-file-name="kebab.svg"
-                      height={20}
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="images.svg"
+                      height={24}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-20"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-21"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  test5
-                </a>
-              </td>
-              <td>
-                Google Cloud Platform (GCP)
-              </td>
-              <td>
-                gs://zorroa-dev-data
-              </td>
-              <td>
-                2020-02-10 16:47:39
-              </td>
-              <td>
-                2020-02-10 16:47:39
-              </td>
-              <td>
-                <div
-                  className="emotion-22"
-                >
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="images.svg"
-                    height={24}
-                  />
-                  <svg
-                    className="emotion-23"
-                    color="transparent"
-                    data-file-name="documents.svg"
-                    height={24}
-                  />
-                  <svg
-                    color="#8f89e7"
-                    data-file-name="videos.svg"
-                    height={24}
-                  />
-                </div>
-              </td>
-              <td>
-                <div
-                  className="emotion-25"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-26"
-                    onBlur={[Function]}
+                    <svg
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e4-3aaf-1933-b424-0242ac12000e/edit"
                     onClick={[Function]}
-                    type="button"
+                    onMouseEnter={[Function]}
+                  >
+                    test4
+                  </a>
+                </td>
+                <td>
+                  Unknown
+                </td>
+                <td>
+                  ftp://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 16:21:18
+                </td>
+                <td>
+                  2020-02-10 16:21:18
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
                   >
                     <svg
-                      data-file-name="kebab.svg"
-                      height={20}
+                      className="emotion-24"
+                      color="#ebb52e"
+                      data-file-name="images.svg"
+                      height={24}
                     />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div>
-         
-      </div>
-      <div>
-         
+                    <svg
+                      className="emotion-24"
+                      color="#00bdc1"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                className="emotion-21"
+                onClick={[Function]}
+              >
+                <td>
+                  <a
+                    className="emotion-22"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/3eee30e8-3aaf-1933-b424-0242ac12000e/edit"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                  >
+                    test5
+                  </a>
+                </td>
+                <td>
+                  Google Cloud Platform (GCP)
+                </td>
+                <td>
+                  gs://zorroa-dev-data
+                </td>
+                <td>
+                  2020-02-10 16:47:39
+                </td>
+                <td>
+                  2020-02-10 16:47:39
+                </td>
+                <td>
+                  <div
+                    className="emotion-23"
+                  >
+                    <svg
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="images.svg"
+                      height={24}
+                    />
+                    <svg
+                      className="emotion-24"
+                      color="transparent"
+                      data-file-name="documents.svg"
+                      height={24}
+                    />
+                    <svg
+                      color="#8f89e7"
+                      data-file-name="videos.svg"
+                      height={24}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className="emotion-26"
+                  >
+                    <button
+                      aria-label="Toggle Actions Menu"
+                      className="actions emotion-27"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="kebab.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+           
+        </div>
+        <div>
+           
+        </div>
       </div>
     </div>
   </div>,

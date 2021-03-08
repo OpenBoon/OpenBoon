@@ -19,6 +19,7 @@ const typography = {
     bold: 700,
   },
   style: {
+    normal: 'normal',
     italic: 'italic',
   },
   family: {
