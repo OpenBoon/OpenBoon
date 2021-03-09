@@ -5,7 +5,7 @@ from boonsdk.search import PredictionLabelsAggregation, PredictionLabelsMetricsA
 
 
 agg1 = PredictionLabelsAggregation("face_rec", "boonai-face-recognition", max_score=1)
-agg2 = PredictionLabelsAggregation("face_metrics", "boonai-face-recognition")
+agg2 = PredictionLabelsMetricsAggregation("face_metrics", "boonai-face-recognition")
 
 aggs = {}
 aggs.update(agg1)
@@ -21,4 +21,3 @@ search = app.assets.search(q)
 
 for bucket in search.aggregation(agg1)['buckets']:
     print(bucket)
-
