@@ -23,7 +23,8 @@ requirements = [
     "Pillow",
     "pdoc3",
     "requests",
-    "xmltodict"
+    "xmltodict",
+    "youtube-dl"
 ]
 
 setup(

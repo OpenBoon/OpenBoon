@@ -8,6 +8,7 @@ import time
 import urllib
 import uuid
 import zipfile
+import subprocess
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -511,7 +512,15 @@ class FileCache(object):
 
         # Remote HTTP/HTTPS Files
         if parsed_uri.scheme in ('http', 'https'):
-            urllib.request.urlretrieve(uri, filename=str(path))
+            if uri.startswith('https://www.youtube.com/watch'):
+                fname = os.path.basename(uri).replace(".mp4", "")
+                subprocess.check_call(
+                    ['youtube-dl',
+                     '-f', 'mp4',
+                     '--output', str(path),
+                     f'https://www.youtube.com/watch?v={fname}'], shell=False)
+            else:
+                urllib.request.urlretrieve(uri, filename=str(path))
 
         # File URIs
         elif parsed_uri.scheme == 'file':

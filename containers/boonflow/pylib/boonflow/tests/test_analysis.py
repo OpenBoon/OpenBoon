@@ -154,18 +154,3 @@ class ContentDetectionAnalysisTests(TestCase):
         assert 3 == serialized['words']
         assert "us" == serialized['lang']
         assert "cat dog mouse" == serialized['content']
-
-
-class SingleLabelAnalysisTests(TestCase):
-
-    def setUp(self):
-        self.analysis = analysis.SingleLabelAnalysis('cat', 0.50)
-
-    def test_add_label_and_score(self):
-        assert 'cat' == self.analysis.label
-        assert 0.5 == self.analysis.score
-
-        self.analysis.label = 'dog'
-        self.analysis.score = 0.60
-        assert 'dog' == self.analysis.label
-        assert 0.60 == self.analysis.score

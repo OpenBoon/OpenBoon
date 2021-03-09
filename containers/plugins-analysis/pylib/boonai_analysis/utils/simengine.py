@@ -2,6 +2,7 @@ import cv2
 import mxnet
 import numpy as np
 from collections import namedtuple
+from threading import Lock
 
 Batch = namedtuple('Batch', ['data'])
 
@@ -16,6 +17,7 @@ class SimilarityEngine:
         if not model_path:
             model_path = self.default_model_path
         self.mod = self._load_model(model_path)
+        self.lock = Lock()
 
     def calculate_hash(self, path):
         """
@@ -23,16 +25,41 @@ class SimilarityEngine:
 
         Args:
             path (str): Path to the file.
-
         Returns:
             str: The hash itself.
         """
-        self.mod.forward(Batch([self._load_image(path)]))
-        features = self.mod.get_outputs()[0].asnumpy()
-        features = np.squeeze(features)
+        return "".join([chr(item) for item in self.calculate_nparray_hash(path)])
 
-        mxh = np.clip((features*16).astype(int), 0, 15) + 65
-        return "".join([chr(item) for item in mxh])
+    def calculate_nparray_hash(self, path):
+        """
+        Calculate a similarity hash using the given file path.
+
+        Args:
+            path (str): Path to the file.
+
+        Returns:
+            numpy array: A numpy array of integers
+        """
+        img = self._load_image(path)
+        with self.lock:
+            self.mod.forward(Batch([img]))
+            features = self.mod.get_outputs()[0].asnumpy()
+        features = np.squeeze(features)
+        return np.clip((features*16).astype(int), 0, 15) + 65
+
+    @staticmethod
+    def hash_as_nparray(simhash):
+        """
+        Convert a str sim hash into a NP array so they can be compared
+        to the ones in the model.
+
+        Args:
+            simhash (list): sim hash.
+
+        Returns:
+            nparray: simhash as a NP array.
+        """
+        return np.asarray([ord(c) for c in simhash], dtype=np.float64)
 
     def _load_image(self, path):
         """

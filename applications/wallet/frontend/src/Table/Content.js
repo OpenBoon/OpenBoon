@@ -4,15 +4,14 @@ import useSWR from 'swr'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import CheckmarkSvg from '../Icons/checkmark.svg'
+import { getQueryString } from '../Fetch/helpers'
 
 import FetchAhead from '../Fetch/Ahead'
 import Pagination from '../Pagination'
 
-import KebabSvg from '../Icons/kebab.svg'
-
 import TableException from './Exception'
 import TableRefresh from './Refresh'
+import TableHead from './Head'
 
 const SIZE = 20
 
@@ -27,16 +26,29 @@ const TableContent = ({
   refreshButton,
 }) => {
   const {
-    query: { page = 1 },
+    query: { page = 1, sort, filter = '' },
   } = useRouter()
 
   const parsedPage = parseInt(page, 10)
   const from = parsedPage * SIZE - SIZE
+  const queryParam = getQueryString({ from, size: SIZE, sort, filter })
+  const queryParamPlus = getQueryString({
+    from: from + SIZE,
+    size: SIZE,
+    sort,
+    filter,
+  })
+  const queryParamMinus = getQueryString({
+    from: from - SIZE,
+    size: SIZE,
+    sort,
+    filter,
+  })
 
   const {
     data: { count = 0, results },
     mutate: revalidate,
-  } = useSWR(`${url}?from=${from}&size=${SIZE}`)
+  } = useSWR(`${url}${queryParam}`)
 
   return (
     <div css={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -129,43 +141,16 @@ const TableContent = ({
           >
             <thead>
               <tr>
-                {columns.map((column) => (
-                  <th
-                    key={column}
-                    css={{
-                      textAlign: 'left',
-                      fontSize: typography.size.regular,
-                      lineHeight: typography.height.regular,
-                      fontWeight: typography.weight.medium,
-                      color: colors.structure.pebble,
-                      backgroundColor: colors.structure.iron,
-                      padding: `${spacing.moderate}px ${spacing.normal}px`,
-                      borderBottom: constants.borders.regular.mattGrey,
-                      // hack to resize the Actions column to its smallest possible width
-                      width: column === '#Actions#' ? 1 : 'auto',
-                      [`:nth-of-type(${expandColumn})`]: { width: '100%' },
-                      '&:not(:last-child)': {
-                        borderRight: constants.borders.regular.mattGrey,
-                      },
-                    }}
-                  >
-                    {column === '#Actions#' && (
-                      <div css={{ display: 'flex' }}>
-                        <KebabSvg height={constants.icons.regular} />
-                      </div>
-                    )}
-
-                    {column === '#Checkmark#' && (
-                      <div css={{ display: 'flex' }}>
-                        <CheckmarkSvg height={constants.icons.regular} />
-                      </div>
-                    )}
-
-                    {column !== '#Actions#' &&
-                      column !== '#Checkmark#' &&
-                      column}
-                  </th>
-                ))}
+                {columns.map((column) => {
+                  const label = column?.label || column
+                  return (
+                    <TableHead
+                      key={label}
+                      column={column}
+                      expandColumn={expandColumn}
+                    />
+                  )
+                })}
               </tr>
             </thead>
 
@@ -191,11 +176,11 @@ const TableContent = ({
         )}
 
         {count > 0 && parsedPage < Math.ceil(count / SIZE) && (
-          <FetchAhead url={`${url}?from=${from + SIZE}&size=${SIZE}`} />
+          <FetchAhead url={`${url}${queryParamPlus}`} />
         )}
 
         {count > 0 && parsedPage > 1 && (
-          <FetchAhead url={`${url}?from=${from - SIZE}&size=${SIZE}`} />
+          <FetchAhead url={`${url}${queryParamMinus}`} />
         )}
 
         {count > 0 && <div>&nbsp;</div>}
@@ -206,7 +191,12 @@ const TableContent = ({
 
 TableContent.propTypes = {
   url: PropTypes.string.isRequired,
-  columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+  columns: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({ key: PropTypes.string, label: PropTypes.string }),
+    ]).isRequired,
+  ).isRequired,
   expandColumn: PropTypes.number.isRequired,
   renderEmpty: PropTypes.node.isRequired,
   renderRow: PropTypes.func.isRequired,
