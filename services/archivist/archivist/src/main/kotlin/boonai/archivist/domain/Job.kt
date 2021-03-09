@@ -265,7 +265,7 @@ class JobFilter(
         }
 
         keywords?.let {
-            addToWhere("job.fti_keywords @@ plainto_tsquery(?)")
+            addToWhere("job.fti_keywords @@ to_tsquery(?)")
             addToValues(it)
         }
     }
