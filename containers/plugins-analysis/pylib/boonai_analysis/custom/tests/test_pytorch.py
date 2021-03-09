@@ -16,7 +16,7 @@ class PytorchModelImageClassifierTests(PluginUnitTestCase):
 
     def setUp(self):
         try:
-            shutil.rmtree("/tmp/model-cache/models_model-id-34568_foo_bar")
+            shutil.rmtree("/tmp/boonai/model-cache")
         except FileNotFoundError:
             print("Didn't clear out model cache, this is ok.")
 
@@ -64,14 +64,14 @@ class PytorchModelImageClassifierTests(PluginUnitTestCase):
             assert 'labels' == analysis['type']
 
 
-class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
+class PytorchVideoTransferLearningClassifierTests(PluginUnitTestCase):
     model_id = "model-id-34568"
     base_dir = os.path.dirname(__file__)
     name = "pytorch_ants_and_bees"
 
     def setUp(self):
         try:
-            shutil.rmtree("/tmp/model-cache/models_model-id-34568_foo_bar")
+            shutil.rmtree("/tmp/boonai/model-cache")
         except FileNotFoundError:
             print("Didn't clear out model cache, this is ok.")
 
