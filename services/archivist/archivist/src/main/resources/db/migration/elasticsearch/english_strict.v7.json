@@ -1,0 +1,468 @@
+{
+  "settings": {
+    "index": {
+      "mapping": {
+        "coerce": false,
+        "ignore_malformed": false
+      }
+    },
+    "analysis": {
+      "analyzer": {
+        "default": {
+          "tokenizer": "standard",
+          "filter": [
+            "trim",
+            "stop",
+            "lowercase",
+            "delimiter_filter",
+            "stemmer_english"
+          ]
+        },
+        "path_analyzer" : {
+          "type" : "custom",
+          "tokenizer" : "path_tokenizer"
+        }
+      },
+      "filter": {
+        "stemmer_english": {
+          "type": "stemmer",
+          "language": "english"
+        },
+        "delimiter_filter": {
+          "type": "word_delimiter",
+          "preserve_original": "true"
+        }
+      },
+      "tokenizer": {
+        "path_tokenizer": {
+          "type": "path_hierarchy",
+          "delimiter": "/"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "deepSearch": {
+        "type": "join",
+        "relations": {
+          "video": "clip"
+        }
+      },
+      "source": {
+        "dynamic": "strict",
+        "properties": {
+          "path": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              },
+              "path": {
+                "type": "text",
+                "analyzer": "path_analyzer",
+                "fielddata": true
+              }
+            }
+          },
+          "filename": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          },
+          "extension": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          },
+          "mimetype": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          },
+          "filesize": {
+            "type": "long"
+          },
+          "checksum": {
+            "type": "long"
+          }
+        }
+      },
+      "location": {
+        "dynamic": "strict",
+        "properties": {
+          "point": {
+            "type": "geo_point"
+          },
+          "city": {
+            "type": "keyword"
+          },
+          "code": {
+            "type": "keyword"
+          },
+          "country": {
+            "type": "keyword"
+          }
+        }
+      },
+      "analysis": {
+        "dynamic": true,
+        "properties": { }
+      },
+      "labels": {
+        "dynamic": false,
+        "type": "nested",
+        "properties": {
+          "label": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          },
+          "modelId": {
+            "type": "keyword"
+          },
+          "scope": {
+            "type": "keyword"
+          },
+          "bbox": {
+            "type": "float"
+          },
+          "simhash": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      },
+      "clip": {
+        "dynamic": false,
+        "properties": {
+          "start": {
+            "type": "double"
+          },
+          "stop": {
+            "type": "double"
+          },
+          "length": {
+            "type": "double"
+          },
+          "timeline": {
+            "type": "keyword"
+          },
+          "track": {
+            "type": "keyword"
+          },
+          "content": {
+            "type": "text",
+            "analyzer": "default"
+          },
+          "score": {
+            "type": "double"
+          },
+          "assetId": {
+            "type": "keyword"
+          },
+          "simhash": {
+            "type": "keyword",
+            "index": false
+          },
+          "files": {
+            "type": "object",
+            "enabled": false
+          },
+          "asset_id": {
+            "type": "alias",
+            "path": "clip.assetId"
+          },
+          "bbox": {
+            "type": "float"
+          },
+          "collapseKey": {
+            "properties": {
+              "startTime": {
+                "type": "keyword"
+              },
+              "1secWindow": {
+                "type": "keyword"
+              },
+              "5secWindow": {
+                "type": "keyword"
+              },
+              "10secWindow": {
+                "type": "keyword"
+              }
+            }
+          },
+          "tags": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          }
+        }
+      },
+      "media": {
+        "dynamic": "strict",
+        "properties": {
+          "width": {
+            "type": "float"
+          },
+          "height": {
+            "type": "float"
+          },
+          "aspect": {
+            "type": "float"
+          },
+          "orientation": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
+          },
+          "length": {
+            "type": "float"
+          },
+          "pageNumber": {
+            "coerce": true,
+            "type": "integer"
+          },
+          "pageStack": {
+            "type": "keyword"
+          },
+          "timeCreated": {
+            "type": "date"
+          },
+          "keywords": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          },
+          "title": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          },
+          "author": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          },
+          "description": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          },
+          "content": {
+            "type": "text",
+            "analyzer": "default"
+          },
+          "videoCodec": {
+            "type": "keyword"
+          }
+        }
+      },
+      "aux": {
+        "type": "object",
+        "enabled": false
+      },
+      "tmp": {
+        "type": "object",
+        "enabled": false
+      },
+      "files": {
+        "type": "object",
+        "enabled": false
+      },
+      "metrics": {
+        "dynamic": "strict",
+        "type": "object",
+        "properties": {
+          "pipeline": {
+            "type": "nested",
+            "dynamic": "strict",
+            "properties": {
+              "processor": {
+                "type": "keyword",
+                "fields": {
+                  "fulltext": {
+                    "type": "text",
+                    "analyzer": "default"
+                  }
+                }
+              },
+              "module": {
+                "type": "keyword",
+                "fields": {
+                  "fulltext": {
+                    "type": "text",
+                    "analyzer": "default"
+                  }
+                }
+              },
+              "checksum": {
+                "type": "long"
+              },
+              "executionTime": {
+                "type": "double"
+              },
+              "executionDate": {
+                "type": "date"
+              },
+              "error": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "system": {
+        "dynamic": "strict",
+        "properties": {
+          "timeCreated": {
+            "type": "date"
+          },
+          "timeModified": {
+            "type": "date"
+          },
+          "projectId": {
+            "type": "keyword"
+          },
+          "dataSourceId": {
+            "type": "keyword"
+          },
+          "jobId": {
+            "type": "keyword"
+          },
+          "taskId": {
+            "type": "keyword"
+          },
+          "state": {
+            "type": "keyword"
+          }
+        }
+      }
+    },
+    "dynamic_templates": [
+      {
+        "analysis_label": {
+          "path_match": "analysis.*.predictions",
+          "match_mapping_type": "object",
+          "mapping": {
+            "type": "nested",
+            "include_in_root": true,
+            "dynamic": false,
+            "properties": {
+              "label": {
+                "type": "keyword",
+                "fields": {
+                  "fulltext": {
+                    "type": "text",
+                    "analyzer": "default"
+                  }
+                }
+              },
+              "score": {
+                "type": "float"
+              },
+              "bbox": {
+                "type": "float"
+              },
+              "simhash": {
+                "type": "keyword",
+                "index": false
+              },
+              "occurrences": {
+                "type": "integer"
+              },
+              "point": {
+                "type": "geo_point"
+              },
+              "tags": {
+                "type": "keyword",
+                "fields": {
+                  "fulltext": {
+                    "type": "text",
+                    "analyzer": "default"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "simhash": {
+          "match_pattern": "regex",
+          "match": "simhash",
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      },
+      {
+        "content": {
+          "match": "content",
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "text",
+            "analyzer": "default"
+          }
+        }
+      },
+      {
+        "default_string": {
+          "match": "*",
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+
