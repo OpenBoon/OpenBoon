@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 from boonsdk import app_from_env
-from boonsdk.search import PredictionLabelsAggregation, PredictionLabelsMetricsAggregation
+from boonsdk.search import PredictionLabelsAggregation, PredictionMetricsAggregation
 
 
 agg1 = PredictionLabelsAggregation("face_rec", "boonai-face-recognition", max_score=1)
-agg2 = PredictionLabelsMetricsAggregation("face_metrics", "boonai-face-recognition")
+agg2 = PredictionMetricsAggregation("face_metrics", "boonai-face-recognition")
 
 aggs = {}
 aggs.update(agg1)

@@ -13,7 +13,7 @@ __all__ = [
     'SimilarityQuery',
     'FaceSimilarityQuery',
     'PredictionLabelsAggregation',
-    'PredictionLabelsMetricsAggregation',
+    'PredictionMetricsAggregation',
     'SearchScroller',
     'VideoClipContentMatchQuery'
 ]
@@ -432,7 +432,7 @@ class PredictionLabelsAggregation:
         return ((k, v) for k, v in self.for_json().items())
 
 
-class PredictionLabelsMetricsAggregation:
+class PredictionMetricsAggregation:
 
     def __init__(self, name, namespace, agg_type="stats"):
         """
