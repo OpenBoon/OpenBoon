@@ -87,6 +87,7 @@ interface ModelService {
     fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod
 
     fun validateTensorflowModel(path: Path)
+    fun validatePyTorchModel(path: Path)
 }
 
 @Service
@@ -477,8 +478,15 @@ class ModelServiceImpl(
         Files.copy(inputStream, tmpFile, StandardCopyOption.REPLACE_EXISTING)
 
         try {
+
             if (model.type == ModelType.TF2_IMAGE_CLASSIFIER) {
                 validateTensorflowModel(tmpFile)
+            }
+            else if (model.type == ModelType.PYTORCH_IMAGE_CLASSIFIER) {
+                validatePyTorchModel(tmpFile)
+            }
+            else {
+                throw IllegalArgumentException("The model type ${model.type} does not support uploads")
             }
 
             // Now store the file locally.
@@ -486,7 +494,7 @@ class ModelServiceImpl(
                 model.getModelStorageLocator(), mapOf(),
                 FileInputStream(tmpFile.toFile()), Files.size(tmpFile)
             )
-            val modelFile = fileStorageService.store(storage)
+           fileStorageService.store(storage)
 
             // Now we can publish the model.
             return publishModel(model, mapOf("version" to System.currentTimeMillis()))
@@ -495,7 +503,7 @@ class ModelServiceImpl(
         }
     }
 
-    override fun validateTensorflowModel(path: Path) {
+    fun validateModel(path: Path, allowedFiles: List<Any>) {
 
         val zipFile = ZipFile(path.toFile())
         val files = zipFile.stream()
@@ -506,23 +514,10 @@ class ModelServiceImpl(
             throw IllegalArgumentException("The model zip must contain a labels.txt file")
         }
 
-        /**
-         * The valid files in a tensorflow zip file.
-         */
-        val validTensorflowFiles = listOf(
-            "labels.txt",
-            "saved_model.pb",
-            "tfhub_module.pb",
-            "assets/",
-            "variables/",
-            Regex("^variables/variables.data-[\\d]+-of-[\\d]+$"),
-            "variables/variables.index"
-        )
-
         files.forEach { fileName ->
             var matched = false
 
-            for (pattern in validTensorflowFiles) {
+            for (pattern in allowedFiles) {
                 if (pattern is Regex) {
                     if (pattern.matches(fileName)) {
                         matched = true
@@ -540,6 +535,27 @@ class ModelServiceImpl(
                 throw IllegalArgumentException("'$fileName' is not an expected Tensorflow model file.")
             }
         }
+    }
+
+    override fun validateTensorflowModel(path: Path) {
+        val validTensorflowFiles = listOf(
+                "labels.txt",
+                "saved_model.pb",
+                "tfhub_module.pb",
+                "assets/",
+                "variables/",
+                Regex("^variables/variables.data-[\\d]+-of-[\\d]+$"),
+                "variables/variables.index"
+        )
+        validateModel(path, validTensorflowFiles)
+    }
+
+    override fun validatePyTorchModel(path: Path) {
+        val validTorchFiles = listOf(
+                "model.pth",
+                "labels.txt"
+        )
+        validateModel(path, validTorchFiles)
     }
 
     companion object {
