@@ -12,8 +12,8 @@ __all__ = [
     'LabelConfidenceQuery',
     'SimilarityQuery',
     'FaceSimilarityQuery',
-    'LabelConfidenceTermsAggregation',
-    'LabelConfidenceMetricsAggregation',
+    'PredictionLabelsAggregation',
+    'PredictionLabelsMetricsAggregation',
     'SearchScroller',
     'VideoClipContentMatchQuery'
 ]
@@ -379,7 +379,7 @@ class VideoClipSearchResult(SearchResult):
         return self.items
 
 
-class LabelConfidenceTermsAggregation:
+class PredictionLabelsAggregation:
     """
     Convenience class for making a simple terms aggregation on an array of predictions.
     """
@@ -432,7 +432,7 @@ class LabelConfidenceTermsAggregation:
         return ((k, v) for k, v in self.for_json().items())
 
 
-class LabelConfidenceMetricsAggregation:
+class PredictionLabelsMetricsAggregation:
 
     def __init__(self, name, namespace, agg_type="stats"):
         """

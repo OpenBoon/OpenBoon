@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
 from boonsdk import app_from_env
-from boonsdk.search import LabelConfidenceTermsAggregation
+from boonsdk.search import PredictionLabelsAggregation, PredictionLabelsMetricsAggregation
 
-agg = LabelConfidenceTermsAggregation("face_rec", "boonai-face-recognition", max_score=1)
+
+agg1 = PredictionLabelsAggregation("face_rec", "boonai-face-recognition", max_score=1)
+agg2 = PredictionLabelsAggregation("face_metrics", "boonai-face-recognition")
 
 aggs = {}
-aggs.update(agg)
+aggs.update(agg1)
+aggs.update(agg2)
 
 q = {
     "size": 0,
@@ -15,6 +18,7 @@ q = {
 
 app = app_from_env()
 search = app.assets.search(q)
-for bucket in search.aggregation(agg)['buckets']:
+
+for bucket in search.aggregation(agg1)['buckets']:
     print(bucket)
 
