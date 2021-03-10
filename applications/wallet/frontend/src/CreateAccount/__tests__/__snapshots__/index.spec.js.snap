@@ -104,6 +104,8 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   background-color: #dbecff;
   border-radius: 2px;
   padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-8 {
@@ -117,19 +119,14 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-8 a {
-  color: #ffffff;
-  background-color: #0074f5;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
 }
 
 .emotion-8 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #005dc4;
+  color: #3A5DFF;
 }
 
 .emotion-9 {
@@ -166,32 +163,8 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   background-color: #ffb6b2;
   border-radius: 2px;
   padding: 12px;
-}
-
-.emotion-12 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
-}
-
-.emotion-12 a {
-  color: #ffffff;
-  background-color: #3b3b3b;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
-}
-
-.emotion-12 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #2e2e2e;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-13 {
@@ -522,7 +495,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
             height={20}
           />
           <div
-            className="emotion-12"
+            className="emotion-8"
             role="alert"
           >
             Confirmation link expired. Links expire after three days. Please create a new account.
@@ -870,6 +843,8 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   background-color: #dbecff;
   border-radius: 2px;
   padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-8 {
@@ -883,19 +858,14 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 }
 
 .emotion-8 a {
-  color: #ffffff;
-  background-color: #0074f5;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
 }
 
 .emotion-8 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #005dc4;
+  color: #3A5DFF;
 }
 
 .emotion-9 {

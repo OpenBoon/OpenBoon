@@ -1523,6 +1523,8 @@ Array [
   background-color: #ffb6b2;
   border-radius: 2px;
   padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-2 {
@@ -1536,19 +1538,14 @@ Array [
 }
 
 .emotion-2 a {
-  color: #ffffff;
-  background-color: #3b3b3b;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
 }
 
 .emotion-2 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #2e2e2e;
+  color: #3A5DFF;
 }
 
 .emotion-3 {
@@ -1672,32 +1669,8 @@ Array [
   background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
-}
-
-.emotion-13 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
-}
-
-.emotion-13 a {
-  color: #ffffff;
-  background-color: #009f22;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
-}
-
-.emotion-13 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #00791a;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-15 {
@@ -1903,7 +1876,7 @@ Array [
           height={20}
         />
         <div
-          className="emotion-13"
+          className="emotion-2"
           role="alert"
         >
           Users added.

@@ -7,8 +7,6 @@ import WarningSvg from '../Icons/warning.svg'
 import InformationSvg from '../Icons/information.svg'
 import GeneratingSvg from '../Icons/generating.svg'
 
-const PADDING = spacing.moderate
-
 const STYLES = {
   SUCCESS: {
     backgroundColor: colors.signal.grass.background,
@@ -18,8 +16,6 @@ const STYLES = {
         color={colors.signal.grass.base}
       />
     ),
-    linkBackground: colors.signal.grass.base,
-    linkHover: colors.signal.grass.strong,
   },
   ERROR: {
     backgroundColor: colors.signal.warning.background,
@@ -29,8 +25,6 @@ const STYLES = {
         color={colors.signal.warning.base}
       />
     ),
-    linkBackground: colors.structure.smoke,
-    linkHover: colors.structure.mattGrey,
   },
   INFO: {
     backgroundColor: colors.signal.sky.background,
@@ -40,8 +34,6 @@ const STYLES = {
         color={colors.signal.sky.base}
       />
     ),
-    linkBackground: colors.signal.sky.base,
-    linkHover: colors.signal.sky.strong,
   },
   PROCESSING: {
     backgroundColor: colors.signal.sky.background,
@@ -52,8 +44,6 @@ const STYLES = {
         css={{ animation: constants.animations.infiniteRotation }}
       />
     ),
-    linkBackground: colors.signal.sky.base,
-    linkHover: colors.signal.sky.strong,
   },
 }
 
@@ -70,7 +60,9 @@ const FlashMessage = ({ variant, children }) => {
         alignItems: 'flex-start',
         backgroundColor: STYLES[variant].backgroundColor,
         borderRadius: constants.borderRadius.small,
-        padding: PADDING,
+        padding: spacing.moderate,
+        paddingLeft: spacing.normal,
+        paddingRight: spacing.normal,
       }}
     >
       {STYLES[variant].icon}
@@ -79,21 +71,16 @@ const FlashMessage = ({ variant, children }) => {
         role="alert"
         css={{
           flex: 1,
-          paddingLeft: PADDING,
+          paddingLeft: spacing.moderate,
           color: colors.structure.coal,
           fontWeight: typography.weight.medium,
           whiteSpace: 'pre-line',
           a: {
-            color: colors.structure.white,
-            backgroundColor: STYLES[variant].linkBackground,
-            padding: spacing.small + spacing.mini,
-            marginLeft: spacing.base,
-            paddingLeft: spacing.base,
-            paddingRight: spacing.base,
-            borderRadius: constants.borderRadius.small,
+            color: colors.structure.coal,
+            textDecoration: 'underline',
+            marginLeft: spacing.small,
             ':hover': {
-              textDecoration: 'none',
-              backgroundColor: STYLES[variant].linkHover,
+              color: colors.key.one,
             },
           },
         }}
