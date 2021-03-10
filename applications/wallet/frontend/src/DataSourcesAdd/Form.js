@@ -175,7 +175,6 @@ const DataSourcesAddForm = () => {
 
         <Providers
           providers={providers}
-          initialModules={{}}
           modules={state.modules}
           fileTypes={Object.keys(state.fileTypes).filter((f) => fileTypes[f])}
           dispatch={dispatch}
