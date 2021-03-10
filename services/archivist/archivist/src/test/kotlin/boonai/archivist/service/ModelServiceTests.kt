@@ -334,7 +334,7 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testValidateTensorflowModelUpload() {
+    fun testValidateTModelUpload() {
         modelService.validateTensorflowModel(
             Paths.get(
                 "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
@@ -343,7 +343,7 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun testValidateTensorflowModelUploadFail() {
+    fun testValidateModelUploadFail() {
         modelService.validateTensorflowModel(Paths.get("../../../test-data/training/pets.zip"))
     }
 

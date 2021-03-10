@@ -1,18 +1,19 @@
 package boonai.archivist.rest
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import boonai.archivist.MockMvcTest
-import boonai.archivist.domain.IndexToIndexMigrationSpec
 import boonai.archivist.domain.IndexRoute
+import boonai.archivist.domain.IndexRouteFilter
 import boonai.archivist.domain.IndexRouteSimpleSpec
 import boonai.archivist.domain.IndexRouteSpec
 import boonai.archivist.domain.IndexRouteState
 import boonai.archivist.domain.IndexTaskState
 import boonai.archivist.domain.IndexTaskType
+import boonai.archivist.domain.IndexToIndexMigrationSpec
 import boonai.archivist.domain.ProjectSize
 import boonai.archivist.repository.IndexRouteDao
 import boonai.archivist.security.getProjectId
 import boonai.common.util.Json
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class IndexRoutingControllerTests : MockMvcTest() {
 
@@ -164,5 +166,23 @@ class IndexRoutingControllerTests : MockMvcTest() {
 
         val state = indexRoutingService.getIndexRoute(route.id).state
         assertEquals(IndexRouteState.READY, state)
+    }
+
+    @Test
+    fun testDelete() {
+        val route = indexRoutingService.createIndexRoute(testSpec)
+        indexRoutingService.closeIndex(route)
+
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/api/v1/index-routes/${route.id}")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+
+        val exists = indexRoutingService.getAll(IndexRouteFilter(ids = listOf(route.id)))
+        assertTrue(exists.list.isEmpty())
     }
 }
