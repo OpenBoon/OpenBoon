@@ -153,7 +153,6 @@ const DataSourcesEditForm = ({ initialState }) => {
 
         <Providers
           providers={providers}
-          initialModules={initialModules}
           modules={state.modules}
           fileTypes={selectedFileTypes}
           dispatch={dispatch}

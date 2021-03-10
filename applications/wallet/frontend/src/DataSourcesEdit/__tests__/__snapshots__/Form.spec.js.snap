@@ -533,7 +533,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 }
 
 .emotion-73 {
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .emotion-74 {
@@ -545,45 +545,6 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   -moz-user-select: none;
 }
 
-.emotion-76 {
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: none;
-  border-radius: 2px;
-  cursor: not-allowed;
-}
-
-.emotion-77 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
-}
-
-.emotion-78 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 100;
-  fill: #3A5DFF;
-}
-
 .emotion-79 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -593,10 +554,6 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 
 .emotion-80 {
   margin-right: 16px;
-}
-
-.emotion-82 {
-  cursor: pointer;
 }
 
 .emotion-122 {
@@ -1157,17 +1114,17 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                       className="emotion-25"
                     >
                       <input
-                        className="emotion-76"
+                        className="emotion-43"
                         defaultChecked={true}
                         onClick={[Function]}
                         type="checkbox"
                         value="gcp-label-detection"
                       />
                       <div
-                        className="emotion-77"
+                        className="emotion-27"
                       >
                         <svg
-                          className="emotion-78"
+                          className="emotion-45"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
@@ -1213,7 +1170,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
               </tr>
               <tr
-                className="emotion-82"
+                className="emotion-73"
                 onClick={[Function]}
               >
                 <td>
@@ -1280,7 +1237,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
               </tr>
               <tr
-                className="emotion-82"
+                className="emotion-73"
                 onClick={[Function]}
               >
                 <td>
@@ -1347,7 +1304,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
               </tr>
               <tr
-                className="emotion-82"
+                className="emotion-73"
                 onClick={[Function]}
               >
                 <td>
@@ -1448,7 +1405,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
             </thead>
             <tbody>
               <tr
-                className="emotion-82"
+                className="emotion-73"
                 onClick={[Function]}
               >
                 <td>
@@ -2070,7 +2027,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 }
 
 .emotion-72 {
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .emotion-73 {
@@ -2082,45 +2039,6 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   -moz-user-select: none;
 }
 
-.emotion-75 {
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: none;
-  border-radius: 2px;
-  cursor: not-allowed;
-}
-
-.emotion-76 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
-}
-
-.emotion-77 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 100;
-  fill: #3A5DFF;
-}
-
 .emotion-78 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2130,10 +2048,6 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 
 .emotion-79 {
   margin-right: 16px;
-}
-
-.emotion-81 {
-  cursor: pointer;
 }
 
 .emotion-121 {
@@ -2689,17 +2603,17 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                       className="emotion-24"
                     >
                       <input
-                        className="emotion-75"
+                        className="emotion-42"
                         defaultChecked={true}
                         onClick={[Function]}
                         type="checkbox"
                         value="gcp-label-detection"
                       />
                       <div
-                        className="emotion-76"
+                        className="emotion-26"
                       >
                         <svg
-                          className="emotion-77"
+                          className="emotion-44"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
@@ -2745,7 +2659,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-81"
+                className="emotion-72"
                 onClick={[Function]}
               >
                 <td>
@@ -2812,7 +2726,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-81"
+                className="emotion-72"
                 onClick={[Function]}
               >
                 <td>
@@ -2879,7 +2793,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-81"
+                className="emotion-72"
                 onClick={[Function]}
               >
                 <td>
@@ -2980,7 +2894,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
             </thead>
             <tbody>
               <tr
-                className="emotion-81"
+                className="emotion-72"
                 onClick={[Function]}
               >
                 <td>
