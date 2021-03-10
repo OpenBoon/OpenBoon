@@ -292,57 +292,21 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   color: #b3b3b3;
 }
 
-.emotion-41 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-left: 16px;
-  padding-bottom: 16px;
-}
-
 .emotion-43 {
   padding: 0;
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: transparent;
-  border: none;
+  background-color: #3A5DFF;
+  border: 2px solid #3A5DFF;
   border-radius: 2px;
-  cursor: not-allowed;
-}
-
-.emotion-44 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .emotion-45 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
-  fill: #3A5DFF;
 }
 
 .emotion-49 {
@@ -581,6 +545,45 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   -moz-user-select: none;
 }
 
+.emotion-76 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: none;
+  border-radius: 2px;
+  cursor: not-allowed;
+}
+
+.emotion-77 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: not-allowed;
+}
+
+.emotion-78 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+  fill: #3A5DFF;
+}
+
 .emotion-79 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -777,7 +780,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     <legend
       className="emotion-12"
     >
-      STEP 2: Add Additional File Types
+      STEP 2: Edit File Types
       <div
         className="emotion-13"
       >
@@ -843,7 +846,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
       className="emotion-22"
     >
       <div>
-        Additional file types can be added to this data source. Previous selections cannot be removed.
+        You can change the file types to import. You must select at least one file type.
       </div>
     </div>
     <div
@@ -939,7 +942,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
       </div>
     </label>
     <label
-      className="emotion-41"
+      className="emotion-24"
     >
       <div
         className="emotion-25"
@@ -952,7 +955,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
           value="Videos"
         />
         <div
-          className="emotion-44"
+          className="emotion-27"
         >
           <svg
             className="emotion-45"
@@ -987,12 +990,12 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   <h3
     className="emotion-3"
   >
-    STEP 3: Add Additional Analysis
+    STEP 3: Edit Analysis Modules
   </h3>
   <p
     className="emotion-51"
   >
-    Additional analysis can be added to this data source. Previous selections cannot be removed.
+    You can change the analysis modules to be applied to the file types selected in step 2.
   </p>
   <div
     className="emotion-52"
@@ -1154,17 +1157,17 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                       className="emotion-25"
                     >
                       <input
-                        className="emotion-43"
+                        className="emotion-76"
                         defaultChecked={true}
                         onClick={[Function]}
                         type="checkbox"
                         value="gcp-label-detection"
                       />
                       <div
-                        className="emotion-44"
+                        className="emotion-77"
                       >
                         <svg
-                          className="emotion-45"
+                          className="emotion-78"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
@@ -1826,57 +1829,21 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-40 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-left: 16px;
-  padding-bottom: 16px;
-}
-
 .emotion-42 {
   padding: 0;
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: transparent;
-  border: none;
+  background-color: #3A5DFF;
+  border: 2px solid #3A5DFF;
   border-radius: 2px;
-  cursor: not-allowed;
-}
-
-.emotion-43 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .emotion-44 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
-  fill: #3A5DFF;
 }
 
 .emotion-48 {
@@ -2115,6 +2082,45 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   -moz-user-select: none;
 }
 
+.emotion-75 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: none;
+  border-radius: 2px;
+  cursor: not-allowed;
+}
+
+.emotion-76 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: not-allowed;
+}
+
+.emotion-77 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+  fill: #3A5DFF;
+}
+
 .emotion-78 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2306,7 +2312,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
     <legend
       className="emotion-11"
     >
-      STEP 2: Add Additional File Types
+      STEP 2: Edit File Types
       <div
         className="emotion-12"
       >
@@ -2372,7 +2378,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
       className="emotion-21"
     >
       <div>
-        Additional file types can be added to this data source. Previous selections cannot be removed.
+        You can change the file types to import. You must select at least one file type.
       </div>
     </div>
     <div
@@ -2468,7 +2474,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
       </div>
     </label>
     <label
-      className="emotion-40"
+      className="emotion-23"
     >
       <div
         className="emotion-24"
@@ -2481,7 +2487,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
           value="Videos"
         />
         <div
-          className="emotion-43"
+          className="emotion-26"
         >
           <svg
             className="emotion-44"
@@ -2516,12 +2522,12 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   <h3
     className="emotion-3"
   >
-    STEP 3: Add Additional Analysis
+    STEP 3: Edit Analysis Modules
   </h3>
   <p
     className="emotion-50"
   >
-    Additional analysis can be added to this data source. Previous selections cannot be removed.
+    You can change the analysis modules to be applied to the file types selected in step 2.
   </p>
   <div
     className="emotion-51"
@@ -2683,17 +2689,17 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                       className="emotion-24"
                     >
                       <input
-                        className="emotion-42"
+                        className="emotion-75"
                         defaultChecked={true}
                         onClick={[Function]}
                         type="checkbox"
                         value="gcp-label-detection"
                       />
                       <div
-                        className="emotion-43"
+                        className="emotion-76"
                       >
                         <svg
-                          className="emotion-44"
+                          className="emotion-77"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
