@@ -88,7 +88,7 @@ const ProjectQuickLinks = ({ projectId }) => {
                 color: colors.structure.zinc,
               }}
             >
-              <div css={{ display: 'flex', paddingBottom: spacing.comfy }}>
+              <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
                 <Link href={`${projectId}/${link.url}`} passHref>
                   <Button variant={VARIANTS.SECONDARY_SMALL}>
                     <div css={{ display: 'flex', alignItems: 'center' }}>

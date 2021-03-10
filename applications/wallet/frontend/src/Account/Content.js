@@ -55,7 +55,7 @@ const AccountContent = () => {
       <div
         css={{
           display: 'flex',
-          paddingTop: spacing.comfy,
+          paddingTop: spacing.normal,
           paddingBottom: spacing.normal,
         }}
       >
@@ -67,7 +67,7 @@ const AccountContent = () => {
             onChange={({ value }) => {
               setSearchString(value)
             }}
-            variant={INPUT_SEARCH_VARIANTS.DARK}
+            variant={INPUT_SEARCH_VARIANTS.EXTRADARK}
             style={{ backgroundColor: colors.structure.smoke }}
           />
         </div>
