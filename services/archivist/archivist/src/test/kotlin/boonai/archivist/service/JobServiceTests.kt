@@ -274,7 +274,7 @@ class JobServiceTests : AbstractTest() {
         val baseName2 = "man"
 
         val spec1 = JobSpec(
-            "${baseName1}ic",
+            "$baseName2 $baseName1",
             emptyZpsScripts("foo"),
         )
 
@@ -284,25 +284,43 @@ class JobServiceTests : AbstractTest() {
         )
 
         val spec3 = JobSpec(
-            "${baseName2}ual",
+            "$baseName2 of steel",
             emptyZpsScripts("foo"),
         )
-        val job1 = jobService.create(spec1)
-        val job2 = jobService.create(spec2)
-        val job3 = jobService.create(spec3)
+        jobService.create(spec1)
+        jobService.create(spec2)
+        jobService.create(spec3)
 
         val first = jobService.getAll(
             JobFilter(
-                wildCardNames = listOf(baseName1)
+                keywords = baseName1
             )
         )
         val all = jobService.getAll(
             JobFilter(
-                wildCardNames = listOf(baseName1, baseName2)
+                keywords = "$baseName1 | $baseName2"
+            )
+        )
+
+        val onlyOne = jobService.getAll(
+            JobFilter(
+                keywords = "$baseName1 & $baseName2"
             )
         )
 
         assertEquals(2, first.size())
         assertEquals(3, all.size())
+        assertEquals(1, onlyOne.size())
+    }
+
+    @Test
+    fun testSearchByWildCardError() {
+        assertThrows<IllegalArgumentException> {
+            jobService.getAll(
+                JobFilter(
+                    keywords = "failing query"
+                )
+            )
+        }
     }
 }
