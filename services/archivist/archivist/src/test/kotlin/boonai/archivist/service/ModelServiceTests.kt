@@ -337,7 +337,8 @@ class ModelServiceTests : AbstractTest() {
     fun testValidateTModelUpload() {
         modelService.validateTensorflowModel(
             Paths.get(
-                "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip")
+                "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
+            )
         )
     }
 

@@ -481,11 +481,9 @@ class ModelServiceImpl(
 
             if (model.type == ModelType.TF2_IMAGE_CLASSIFIER) {
                 validateTensorflowModel(tmpFile)
-            }
-            else if (model.type == ModelType.PYTORCH_IMAGE_CLASSIFIER) {
+            } else if (model.type == ModelType.PYTORCH_IMAGE_CLASSIFIER) {
                 validatePyTorchModel(tmpFile)
-            }
-            else {
+            } else {
                 throw IllegalArgumentException("The model type ${model.type} does not support uploads")
             }
 
@@ -494,7 +492,7 @@ class ModelServiceImpl(
                 model.getModelStorageLocator(), mapOf(),
                 FileInputStream(tmpFile.toFile()), Files.size(tmpFile)
             )
-           fileStorageService.store(storage)
+            fileStorageService.store(storage)
 
             // Now we can publish the model.
             return publishModel(model, mapOf("version" to System.currentTimeMillis()))
@@ -539,21 +537,21 @@ class ModelServiceImpl(
 
     override fun validateTensorflowModel(path: Path) {
         val validTensorflowFiles = listOf(
-                "labels.txt",
-                "saved_model.pb",
-                "tfhub_module.pb",
-                "assets/",
-                "variables/",
-                Regex("^variables/variables.data-[\\d]+-of-[\\d]+$"),
-                "variables/variables.index"
+            "labels.txt",
+            "saved_model.pb",
+            "tfhub_module.pb",
+            "assets/",
+            "variables/",
+            Regex("^variables/variables.data-[\\d]+-of-[\\d]+$"),
+            "variables/variables.index"
         )
         validateModel(path, validTensorflowFiles)
     }
 
     override fun validatePyTorchModel(path: Path) {
         val validTorchFiles = listOf(
-                "model.pth",
-                "labels.txt"
+            "model.pth",
+            "labels.txt"
         )
         validateModel(path, validTorchFiles)
     }
