@@ -704,7 +704,6 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
         className="emotion-6"
       >
         <input
-          autoFocus={true}
           className="emotion-7"
           disabled={false}
           id="name"
@@ -2198,7 +2197,6 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
         className="emotion-6"
       >
         <input
-          autoFocus={true}
           className="emotion-7"
           disabled={false}
           id="name"
