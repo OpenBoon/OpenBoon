@@ -10,7 +10,7 @@ describe('Models', function () {
 
     cy.visit(`/${this.PROJECT_ID}/models/add`)
 
-    cy.contains('Model Type').get('select').select('KNN_CLASSIFIER')
+    cy.contains('Model Type').get('select').select('BOONAI_KNN_CLASSIFIER')
 
     cy.get('input[name=name]').type(modelName)
 
