@@ -104,7 +104,7 @@ class PytorchTransferLearningTrainerTests(PluginUnitTestCase):
         })
         model_patch.return_value = Model({
             'id': self.model_id,
-            'type': "BOONAI_LABEL_DETECTION",
+            'type': "TF_CLASSIFIER",
             'fileId': 'models/{}/foo/bar'.format(self.model_id),
             'moduleName': name,
             'name': name

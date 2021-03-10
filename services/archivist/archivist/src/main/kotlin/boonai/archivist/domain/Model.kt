@@ -38,7 +38,7 @@ enum class ModelType(
     val trainable: Boolean,
     val uploadable: Boolean
 ) {
-    BOONAI_KNN_CLASSIFIER(
+    KNN_CLASSIFIER(
         "K-Nearest Neighbors Classifier",
         "boonai_train.knn.KnnLabelDetectionTrainer",
         mapOf(),
@@ -58,7 +58,7 @@ enum class ModelType(
         true,
         false
     ),
-    BOONAI_LABEL_DETECTION(
+    TF_CLASSIFIER(
         "Tensorflow Transfer Learning Classifier",
         "boonai_train.tf2.TensorflowTransferLearningTrainer",
         mapOf(
@@ -79,7 +79,7 @@ enum class ModelType(
         true,
         false
     ),
-    BOONAI_FACE_RECOGNITION(
+    FACE_RECOGNITION(
         "Face Recognition",
         "boonai_train.face_rec.KnnFaceRecognitionTrainer",
         mapOf(),
@@ -96,7 +96,7 @@ enum class ModelType(
         true,
         false
     ),
-    GCP_LABEL_DETECTION(
+    GCP_AUTOML_CLASSIFIER(
         "Google AutoML Classifier",
         "boonai_train.automl.AutoMLModelTrainer",
         mapOf(),
@@ -113,7 +113,7 @@ enum class ModelType(
         true,
         false
     ),
-    TF2_IMAGE_CLASSIFIER(
+    TF_UPLOADED_CLASSIFIER(
         "Imported Tensorflow Image Classifier",
         "None",
         mapOf(),
@@ -130,7 +130,7 @@ enum class ModelType(
         false,
         true
     ),
-    BOONAI_PYTORCH_LABEL_DETECTION(
+    PYTORCH_CLASSIFIER(
         "Pytorch Transfer Learning Classifier",
         "boonai_train.pytorch.PytorchTransferLearningTrainer",
         mapOf(
@@ -151,7 +151,7 @@ enum class ModelType(
         true,
         false
     ),
-    PYTORCH_IMAGE_CLASSIFIER(
+    PYTORCH_UPLOADED_CLASSIFIER(
         "Imported Pytorch Image Classifier",
         "None",
         mapOf(),

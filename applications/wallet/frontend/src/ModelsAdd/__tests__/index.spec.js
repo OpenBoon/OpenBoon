@@ -45,7 +45,7 @@ describe('<ModelsAdd />', () => {
     act(() => {
       component.root
         .findByProps({ label: 'Model Type' })
-        .props.onChange({ value: 'GCP_LABEL_DETECTION' })
+        .props.onChange({ value: 'GCP_AUTOML_CLASSIFIER' })
     })
 
     // Input valid name
@@ -118,7 +118,7 @@ describe('<ModelsAdd />', () => {
         'X-CSRFToken': 'CSRF_TOKEN',
       },
       body: JSON.stringify({
-        type: 'GCP_LABEL_DETECTION',
+        type: 'GCP_AUTOML_CLASSIFIER',
         name: 'My New Model Really',
         moduleName: 'my-module-name',
       }),

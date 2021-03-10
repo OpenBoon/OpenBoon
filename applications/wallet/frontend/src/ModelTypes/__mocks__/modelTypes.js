@@ -1,8 +1,8 @@
 const modelTypes = {
   results: [
     {
-      name: 'ZVI_KNN_CLASSIFIER',
-      label: 'Sci-kit Learn KNN Classifier',
+      name: 'KNN_CLASSIFIER',
+      label: 'K-Nearest Neighbors Classifier',
       description:
         'Classify images or documents using a KNN classifier.  This type of model generates a single prediction which can be used to quickly organize assets into general groups.The KNN classifier works with just a single image and label.',
       objective: 'Label Detection',
@@ -12,8 +12,8 @@ const modelTypes = {
       minExamples: 0,
     },
     {
-      name: 'ZVI_LABEL_DETECTION',
-      label: 'Tensorflow CNN Classifier',
+      name: 'TF_CLASSIFIER',
+      label: 'Tensorflow Transfer Learning Classifier',
       description:
         'Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each.',
       objective: 'Label Detection',
@@ -23,8 +23,8 @@ const modelTypes = {
       minExamples: 10,
     },
     {
-      name: 'TF2_IMAGE_CLASSIFIER',
-      label: 'Tensorflow2 Keras Image Classifier',
+      name: 'TF_UPLOADED_CLASSIFIER',
+      label: 'Imported Tensorflow Image Classifier',
       description: 'Upload a Tensorflow model to use for image classification.',
       objective: 'Label Detection',
       provider: 'Google',
@@ -33,7 +33,7 @@ const modelTypes = {
       minExamples: 0,
     },
     {
-      name: 'GCP_LABEL_DETECTION',
+      name: 'GCP_AUTOML_CLASSIFIER',
       label: 'Google AutoML Classifier',
       description: 'Utilize Google AutoML to train an image classifier.',
       objective: 'Label Detection',
