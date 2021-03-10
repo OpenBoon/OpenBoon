@@ -70,7 +70,6 @@ const Providers = ({ providers, modules, fileTypes, dispatch }) => {
                     })),
                   }}
                   onClick={(module) => {
-                    console.log(module)
                     dispatch({ modules: { ...modules, ...module } })
                   }}
                 />
