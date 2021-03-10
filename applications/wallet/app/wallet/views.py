@@ -61,10 +61,13 @@ class UsageReportView(FormView):
             data.append(entry)
 
         # Build a csv filename
-        if len(all_projects) > 1:
-            project_description = 'all_projects'
+        project_id = args.get('project')
+        if project_id:
+            this_project = Project.all_objects.get(id=args['project'])
+            project_description = this_project.name.replace(' ', '_')
         else:
-            project_description = all_projects[0].name.replace(' ', '_')
+            project_description = 'all_projects'
+
         if args.get('after'):
             start_description = f'_{args.get("after")}'
         else:
