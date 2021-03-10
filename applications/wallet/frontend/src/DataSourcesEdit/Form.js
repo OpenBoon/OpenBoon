@@ -72,7 +72,6 @@ const DataSourcesEditForm = ({ initialState }) => {
           <SectionTitle>STEP 1: Data Source Name </SectionTitle>
 
           <Input
-            autoFocus
             id="name"
             variant={INPUT_VARIANTS.SECONDARY}
             label="Name"
