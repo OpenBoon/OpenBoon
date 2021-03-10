@@ -207,6 +207,8 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
   background-color: #ffb6b2;
   border-radius: 2px;
   padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-23 {
@@ -220,19 +222,14 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
 }
 
 .emotion-23 a {
-  color: #ffffff;
-  background-color: #3b3b3b;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
 }
 
 .emotion-23 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #2e2e2e;
+  color: #3A5DFF;
 }
 
 .emotion-24 {
