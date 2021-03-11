@@ -66,7 +66,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             options=[("grpc.max_receive_message_length", 32 * 1024 * 1024)]
         )
         transport = VideoIntelligenceServiceGrpcTransport(channel=channel)
-        self.video_intel_client = videointelligence.VideoIntelligenceServiceClient(transport=transport)
+        self.video_intel_client = 
+            videointelligence.VideoIntelligenceServiceClient(transport=transport)
 
     def process(self, frame):
         asset = frame.asset
