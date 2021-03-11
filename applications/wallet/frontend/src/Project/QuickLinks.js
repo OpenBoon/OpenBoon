@@ -95,7 +95,7 @@ const ProjectQuickLinks = ({ projectId }) => {
                       <div
                         css={{
                           display: 'flex',
-                          paddingRight: spacing.small,
+                          paddingRight: spacing.base,
                         }}
                       >
                         {link.icon}
