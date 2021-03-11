@@ -30,7 +30,7 @@ class ModelControllerTests : MockMvcTest() {
     @Autowired
     lateinit var pipelineModService: PipelineModService
 
-    val modelSpec = ModelSpec("Dog Breeds", ModelType.BOONAI_LABEL_DETECTION)
+    val modelSpec = ModelSpec("Dog Breeds", ModelType.TF_CLASSIFIER)
 
     lateinit var model: Model
 
@@ -44,7 +44,7 @@ class ModelControllerTests : MockMvcTest() {
 
         val mspec = ModelSpec(
             "test",
-            ModelType.BOONAI_LABEL_DETECTION
+            ModelType.TF_CLASSIFIER
         )
 
         mvc.perform(
@@ -150,7 +150,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testTypeInfo() {
-        val type = ModelType.BOONAI_LABEL_DETECTION
+        val type = ModelType.TF_CLASSIFIER
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/models/_types/$type")
                 .headers(job())
@@ -160,7 +160,7 @@ class ModelControllerTests : MockMvcTest() {
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$.name",
-                    CoreMatchers.equalTo("BOONAI_LABEL_DETECTION")
+                    CoreMatchers.equalTo("TF_CLASSIFIER")
                 )
             )
             .andReturn()
@@ -177,7 +177,7 @@ class ModelControllerTests : MockMvcTest() {
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$[0].name",
-                    CoreMatchers.equalTo("BOONAI_KNN_CLASSIFIER")
+                    CoreMatchers.equalTo("KNN_CLASSIFIER")
                 )
             )
             .andReturn()
@@ -262,7 +262,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testUploadModel() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF2_IMAGE_CLASSIFIER)
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_UPLOADED_CLASSIFIER)
         val model = modelService.createModel(modelSpec)
 
         val mfp = Paths.get(
@@ -281,7 +281,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testSetModelArguments() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF2_IMAGE_CLASSIFIER)
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_UPLOADED_CLASSIFIER)
         val model = modelService.createModel(modelSpec)
         modelService.publishModel(model)
         val arg = mapOf("foo" to "bar")
@@ -311,7 +311,7 @@ class ModelControllerTests : MockMvcTest() {
     @Test
     fun testCreateAutomlSession() {
 
-        val modelSpec = ModelSpec("Dog Breeds 2", ModelType.GCP_LABEL_DETECTION)
+        val modelSpec = ModelSpec("Dog Breeds 2", ModelType.GCP_AUTOML_CLASSIFIER)
         val model = modelService.createModel(modelSpec)
 
         val automlSpec = AutomlSessionSpec(
@@ -343,7 +343,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testGetType() {
-        val module = ModelType.BOONAI_LABEL_DETECTION
+        val module = ModelType.TF_CLASSIFIER
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/models/_types/${module.name}")
                 .headers(admin())

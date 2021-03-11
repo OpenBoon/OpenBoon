@@ -52,7 +52,7 @@ class AutomlDaoTests : AbstractTest() {
     }
 
     fun create(): AutomlSession {
-        val modelSpec = ModelSpec("animals", ModelType.GCP_LABEL_DETECTION)
+        val modelSpec = ModelSpec("animals", ModelType.GCP_AUTOML_CLASSIFIER)
         val model = modelService.createModel(modelSpec)
 
         val automlSpec = AutomlSessionSpec(
