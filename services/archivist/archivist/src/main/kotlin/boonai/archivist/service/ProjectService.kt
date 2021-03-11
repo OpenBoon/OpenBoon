@@ -3,27 +3,8 @@ package boonai.archivist.service
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import boonai.archivist.config.ApplicationProperties
-import boonai.archivist.domain.ArchivistException
-import boonai.archivist.domain.IndexRoute
-import boonai.archivist.domain.IndexRouteFilter
-import boonai.archivist.domain.IndexRouteSimpleSpec
-import boonai.archivist.domain.Pipeline
-import boonai.archivist.domain.PipelineMode
-import boonai.archivist.domain.PipelineSpec
-import boonai.archivist.domain.Project
-import boonai.archivist.domain.ProjectFilter
-import boonai.archivist.domain.ProjectNameUpdate
-import boonai.archivist.domain.ProjectQuotaCounters
-import boonai.archivist.domain.ProjectQuotas
-import boonai.archivist.domain.ProjectQuotasTimeSeriesEntry
-import boonai.archivist.domain.ProjectSize
-import boonai.archivist.domain.ProjectSpec
-import boonai.archivist.domain.ProjectTier
-import boonai.archivist.repository.KPagedList
-import boonai.archivist.repository.ProjectCustomDao
-import boonai.archivist.repository.ProjectDao
-import boonai.archivist.repository.ProjectQuotasDao
-import boonai.archivist.repository.UUIDGen
+import boonai.archivist.domain.*
+import boonai.archivist.repository.*
 import boonai.archivist.security.InternalThreadAuthentication
 import boonai.archivist.security.KnownKeys
 import boonai.archivist.security.getProjectId
@@ -130,6 +111,11 @@ interface ProjectService {
      * Delete Project related storage
      */
     fun deleteProjectStorage(project: Project)
+
+    /**
+     * Delete Project
+     */
+    fun delete(project: Project)
 }
 
 @Service
@@ -142,7 +128,8 @@ class ProjectServiceImpl constructor(
     val systemStorageService: SystemStorageService,
     var projectStorageService: ProjectStorageService,
     val properties: ApplicationProperties,
-    val txEvent: TransactionEventManager
+    val txEvent: TransactionEventManager,
+    val projectDeleteDao: ProjectDeleteDao
 ) : ProjectService {
 
     @Autowired
@@ -412,6 +399,24 @@ class ProjectServiceImpl constructor(
     override fun deleteProjectStorage(project: Project) {
         projectStorageService.recursiveDelete("projects/${project.id}")
         logger.warn("Deleted Project ${project.id} storage files")
+    }
+
+    @Transactional
+    override fun delete(project: Project) {
+        val projectStoragePath = "projects/${project.id}"
+
+        // Delete API Key
+        // Delete System Storage
+        // Delete Project Storage
+        // Delete Project Indexes
+        // Delete Project from Database
+
+        authServerClient.deleteProjectApiKeys(projectId = project.id)
+        systemStorageService.recursiveDelete(projectStoragePath)
+        deleteProjectStorage(project)
+        indexRoutingService.closeAndDeleteProjectIndexes(project.id)
+        projectDeleteDao.deleteProjectRelatedObjects(project.id)
+
     }
 
     // This gets called alot so hold onto the values for a while.
