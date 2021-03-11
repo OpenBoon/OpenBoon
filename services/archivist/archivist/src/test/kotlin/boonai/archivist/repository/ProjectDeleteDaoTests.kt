@@ -128,7 +128,7 @@ class ProjectDeleteDaoTests : AbstractTest() {
     }
 
     private fun createAutoMl() {
-        val modelSpec = ModelSpec("animals", ModelType.GCP_LABEL_DETECTION)
+        val modelSpec = ModelSpec("animals", ModelType.GCP_AUTOML_CLASSIFIER)
         val model = modelService.createModel(modelSpec)
 
         val automlSpec = AutomlSessionSpec(
