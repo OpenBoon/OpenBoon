@@ -88,6 +88,8 @@ describe('<TaskError />', () => {
       },
       method: 'PUT',
     })
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should render properly with an asset', () => {

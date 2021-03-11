@@ -8,7 +8,7 @@ import Menu from '../Menu'
 import MenuButton from '../Menu/Button'
 import Button, { VARIANTS } from '../Button'
 
-const TaskErrorTaskMenu = ({ projectId, taskId, revalidate }) => {
+const TaskErrorTaskMenu = ({ projectId, taskId, setIsRetried, revalidate }) => {
   return (
     <div
       css={{
@@ -38,6 +38,7 @@ const TaskErrorTaskMenu = ({ projectId, taskId, revalidate }) => {
                       { method: 'PUT' },
                     )
 
+                    setIsRetried(true)
                     revalidate()
                   }}
                 >
@@ -55,6 +56,7 @@ const TaskErrorTaskMenu = ({ projectId, taskId, revalidate }) => {
 TaskErrorTaskMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   taskId: PropTypes.string.isRequired,
+  setIsRetried: PropTypes.func.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 
