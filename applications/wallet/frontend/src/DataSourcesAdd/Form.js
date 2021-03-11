@@ -109,7 +109,7 @@ const DataSourcesAddForm = () => {
         <CheckboxGroup
           legend={
             <div css={{ display: 'flex' }}>
-              STEP 3: Determine Import File Type(s)
+              STEP 3: Choose File Types
               <Toggletip openToThe="right" label="Supported File Types">
                 <div
                   css={{
@@ -138,9 +138,9 @@ const DataSourcesAddForm = () => {
           }
           description={
             <div>
-              You can import all supported file types or limit them by editing
-              the selection below.
-              <br />A minimum of one file type must be selected.{' '}
+              Choose the file types to import.
+              <br />
+              You must select at least one file type.{' '}
               <span css={{ color: colors.signal.warning.base }}>*</span>
             </div>
           }
@@ -160,13 +160,13 @@ const DataSourcesAddForm = () => {
 
         <div css={{ height: spacing.base }} />
 
-        <SectionTitle>STEP 4: Select Analysis</SectionTitle>
+        <SectionTitle>STEP 4: Choose Analysis Modules</SectionTitle>
 
         <SectionSubTitle>
-          Choose the type of analysis you’d like performed on your dataset.
+          Choose the analysis modules to apply to the dataset.
           <br />
-          (Only modules that can be applied to the file type selected above will
-          be shown.)
+          Only modules that can be applied to the file types selected in step 3
+          are shown.
         </SectionSubTitle>
 
         <DataSourcesAddAutomaticAnalysis
@@ -175,7 +175,6 @@ const DataSourcesAddForm = () => {
 
         <Providers
           providers={providers}
-          initialModules={{}}
           modules={state.modules}
           fileTypes={Object.keys(state.fileTypes).filter((f) => fileTypes[f])}
           dispatch={dispatch}

@@ -1,42 +1,37 @@
 package boonai.archivist.repository
 
 import boonai.archivist.AbstractTest
-import boonai.archivist.domain.AutomlSessionSpec
-import boonai.archivist.domain.Category
-import boonai.archivist.domain.DataSourceSpec
-import boonai.archivist.domain.FileType
 import boonai.archivist.domain.IndexRouteFilter
-import boonai.archivist.domain.IndexRouteSpec
 import boonai.archivist.domain.JobSpec
+import boonai.archivist.domain.PipelineSpec
+import boonai.archivist.domain.PipelineMode
+import boonai.archivist.domain.emptyZpsScript
+import boonai.archivist.domain.ProcessorRef
+import boonai.archivist.domain.PipelineModSpec
+import boonai.archivist.domain.Provider
+import boonai.archivist.domain.Category
 import boonai.archivist.domain.ModelObjective
+import boonai.archivist.domain.FileType
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelType
-import boonai.archivist.domain.PipelineModSpec
-import boonai.archivist.domain.PipelineMode
-import boonai.archivist.domain.PipelineSpec
-import boonai.archivist.domain.ProcessorRef
-import boonai.archivist.domain.Provider
-import boonai.archivist.domain.emptyZpsScript
+import boonai.archivist.domain.AutomlSessionSpec
+import boonai.archivist.domain.DataSourceSpec
 import boonai.archivist.security.getProjectId
 import boonai.archivist.service.AutomlService
 import boonai.archivist.service.CredentialsService
-import boonai.archivist.service.DataSourceService
 import boonai.archivist.service.JobService
-import boonai.archivist.service.ModelService
 import boonai.archivist.service.PipelineModService
+import boonai.archivist.service.ModelService
+import boonai.archivist.service.DataSourceService
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
 import kotlin.test.assertEquals
 
-class ProjectDaoTests : AbstractTest() {
+class ProjectDeleteDaoTests : AbstractTest() {
 
     @Autowired
-    lateinit var projectCustomDao: ProjectCustomDao
-    
-    @Autowired
     lateinit var projectDeleteDao: ProjectDeleteDao
-    
+
     @Autowired
     lateinit var jobService: JobService
 
@@ -56,31 +51,6 @@ class ProjectDaoTests : AbstractTest() {
     lateinit var dataSourceService: DataSourceService
 
     @Test
-    fun testUpdateDefaultPipeline() {
-        val pipeline = pipelineService.create(PipelineSpec("footest"))
-        projectCustomDao.updateDefaultPipeline(getProjectId(), pipeline)
-
-        val pipelineId = jdbc.queryForObject(
-            "SELECT pk_pipeline_default FROM project WHERE pk_project=?", UUID::class.java, getProjectId()
-        )
-
-        assertEquals(pipeline.id, pipelineId)
-    }
-
-    @Test
-    fun testUpdateIndexRoute() {
-        val testSpec = IndexRouteSpec("test", 1)
-        val route = indexRoutingService.createIndexRoute(testSpec)
-
-        projectCustomDao.updateIndexRoute(getProjectId(), route)
-        val indexRouteId = jdbc.queryForObject(
-            "SELECT pk_index_route FROM project WHERE pk_project=?", UUID::class.java, getProjectId()
-        )
-
-        assertEquals(route.id, indexRouteId)
-    }
-
-    @Test
     fun testDeleteProjectRelatedObjects() {
         createJobAndTasks()
         createPipelineAndModule()
@@ -89,7 +59,7 @@ class ProjectDaoTests : AbstractTest() {
 
         val indexRoute = indexRoutingService.findOne(IndexRouteFilter(projectIds = listOf(getProjectId())))
         indexRoutingService.closeAndDeleteIndex(indexRoute)
-    
+
         projectDeleteDao.deleteProjectRelatedObjects(getProjectId())
 
         val listOfTables = listOf(
@@ -158,7 +128,7 @@ class ProjectDaoTests : AbstractTest() {
     }
 
     private fun createAutoMl() {
-        val modelSpec = ModelSpec("animals", ModelType.GCP_AUTOML_CLASSIFIER)
+        val modelSpec = ModelSpec("animals", ModelType.GCP_LABEL_DETECTION)
         val model = modelService.createModel(modelSpec)
 
         val automlSpec = AutomlSessionSpec(

@@ -36,6 +36,8 @@ exports[`<Login /> should render error 1`] = `
   background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-3 {
@@ -49,19 +51,14 @@ exports[`<Login /> should render error 1`] = `
 }
 
 .emotion-3 a {
-  color: #ffffff;
-  background-color: #009f22;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
 }
 
 .emotion-3 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #00791a;
+  color: #3A5DFF;
 }
 
 .emotion-4 {
@@ -204,32 +201,8 @@ exports[`<Login /> should render error 1`] = `
   background-color: #ffb6b2;
   border-radius: 2px;
   padding: 12px;
-}
-
-.emotion-14 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
-}
-
-.emotion-14 a {
-  color: #ffffff;
-  background-color: #3b3b3b;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
-}
-
-.emotion-14 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #2e2e2e;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-15 {
@@ -488,7 +461,7 @@ exports[`<Login /> should render error 1`] = `
           height={20}
         />
         <div
-          className="emotion-14"
+          className="emotion-3"
           role="alert"
         >
           Something went wrong
@@ -660,6 +633,8 @@ exports[`<Login /> should render password changed 1`] = `
   background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-3 {
@@ -673,19 +648,14 @@ exports[`<Login /> should render password changed 1`] = `
 }
 
 .emotion-3 a {
-  color: #ffffff;
-  background-color: #009f22;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
 }
 
 .emotion-3 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #00791a;
+  color: #3A5DFF;
 }
 
 .emotion-4 {
@@ -1186,6 +1156,8 @@ exports[`<Login /> should render properly 1`] = `
   background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-3 {
@@ -1199,19 +1171,14 @@ exports[`<Login /> should render properly 1`] = `
 }
 
 .emotion-3 a {
-  color: #ffffff;
-  background-color: #009f22;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
 }
 
 .emotion-3 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #00791a;
+  color: #3A5DFF;
 }
 
 .emotion-4 {
@@ -1712,6 +1679,8 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-3 {
@@ -1725,19 +1694,14 @@ exports[`<Login /> should render properly on account activation success 1`] = `
 }
 
 .emotion-3 a {
-  color: #ffffff;
-  background-color: #009f22;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
 }
 
 .emotion-3 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #00791a;
+  color: #3A5DFF;
 }
 
 .emotion-4 {
