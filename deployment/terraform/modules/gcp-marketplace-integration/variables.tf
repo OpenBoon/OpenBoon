@@ -53,6 +53,9 @@ variable "environment" {
 variable "fqdn" {
 }
 
+variable "metrics-ip-address" {
+}
+
 variable "container-tag" {
   default = "latest"
 }
