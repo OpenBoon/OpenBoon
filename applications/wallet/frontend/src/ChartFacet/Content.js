@@ -77,7 +77,7 @@ const ChartFacetContent = ({
 
   const filters = decode({ query })
 
-  const { values: { facets = [] } = {} } =
+  const { values: { facets = [], labels = [], min = 0, max = 1 } = {} } =
     filters.find((f) => f.attribute === attribute) || {}
 
   return (
@@ -117,7 +117,8 @@ const ChartFacetContent = ({
 
           const offset = Math.ceil((docCount * 100) / largestCount)
           const facetIndex = facets.findIndex((f) => f === key)
-          const isSelected = !!(facetIndex + 1)
+          const labelIndex = labels.findIndex((f) => f === key)
+          const isSelected = !!(facetIndex + 1) || !!(labelIndex + 1)
 
           return (
             <li key={key}>
@@ -138,15 +139,20 @@ const ChartFacetContent = ({
                 onClick={() => {
                   if (isSelected) return
 
+                  const newValues =
+                    defaultFilterType === 'labelConfidence'
+                      ? { labels: [key], min, max }
+                      : { facets: [key] }
+
                   filterDispatch({
                     type: FILTER_ACTIONS.ADD_VALUE,
                     payload: {
                       pathname,
                       projectId,
                       filter: {
-                        type,
+                        type: defaultFilterType,
                         attribute,
-                        values: { facets: [...facets, key] },
+                        values: newValues,
                       },
                       query,
                     },

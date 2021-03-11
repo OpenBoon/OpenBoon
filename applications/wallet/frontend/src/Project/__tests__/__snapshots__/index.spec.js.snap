@@ -250,7 +250,7 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-right: 4px;
+  padding-right: 8px;
 }
 
 .emotion-38 {

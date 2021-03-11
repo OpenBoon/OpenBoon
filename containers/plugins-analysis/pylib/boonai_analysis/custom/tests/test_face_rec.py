@@ -23,7 +23,7 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
         get_model_patch.return_value = Model({
             'id': '12345',
             'modelId': '12345',
-            'type': "BOONAI_FACE_RECOGNITION",
+            'type': "FACE_RECOGNITION",
             'fileId': 'models/foo/bar/12345',
             'name': "foo",
             'moduleName': 'foo'
@@ -62,7 +62,7 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
         get_model_patch.return_value = Model({
             'id': '12345',
             'modelId': '12345',
-            'type': "BOONAI_FACE_RECOGNITION",
+            'type': "FACE_RECOGNITION",
             'fileId': 'models/foo/bar/12345',
             'name': "foo",
             'moduleName': 'foo'
