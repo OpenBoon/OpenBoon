@@ -992,7 +992,7 @@ Array [
         <div
           className="emotion-21"
         >
-          STEP 3: Determine Import File Type(s)
+          STEP 3: Choose File Types
           <div
             className="emotion-22"
           >
@@ -1059,9 +1059,9 @@ Array [
         className="emotion-31"
       >
         <div>
-          You can import all supported file types or limit them by editing the selection below.
+          Choose the file types to import.
           <br />
-          A minimum of one file type must be selected.
+          You must select at least one file type.
            
           <span
             className="emotion-5"
@@ -1211,14 +1211,14 @@ Array [
     <h3
       className="emotion-6"
     >
-      STEP 4: Select Analysis
+      STEP 4: Choose Analysis Modules
     </h3>
     <p
       className="emotion-61"
     >
-      Choose the type of analysis you’d like performed on your dataset.
+      Choose the analysis modules to apply to the dataset.
       <br />
-      (Only modules that can be applied to the file type selected above will be shown.)
+      Only modules that can be applied to the file types selected in step 3 are shown.
     </p>
     <div
       className="emotion-62"
@@ -3097,7 +3097,7 @@ Array [
         <div
           className="emotion-39"
         >
-          STEP 3: Determine Import File Type(s)
+          STEP 3: Choose File Types
           <div
             className="emotion-40"
           >
@@ -3164,9 +3164,9 @@ Array [
         className="emotion-49"
       >
         <div>
-          You can import all supported file types or limit them by editing the selection below.
+          Choose the file types to import.
           <br />
-          A minimum of one file type must be selected.
+          You must select at least one file type.
            
           <span
             className="emotion-5"
@@ -3316,14 +3316,14 @@ Array [
     <h3
       className="emotion-6"
     >
-      STEP 4: Select Analysis
+      STEP 4: Choose Analysis Modules
     </h3>
     <p
       className="emotion-79"
     >
-      Choose the type of analysis you’d like performed on your dataset.
+      Choose the analysis modules to apply to the dataset.
       <br />
-      (Only modules that can be applied to the file type selected above will be shown.)
+      Only modules that can be applied to the file types selected in step 3 are shown.
     </p>
     <div
       className="emotion-80"
@@ -5169,7 +5169,7 @@ Array [
         <div
           className="emotion-33"
         >
-          STEP 3: Determine Import File Type(s)
+          STEP 3: Choose File Types
           <div
             className="emotion-34"
           >
@@ -5236,9 +5236,9 @@ Array [
         className="emotion-43"
       >
         <div>
-          You can import all supported file types or limit them by editing the selection below.
+          Choose the file types to import.
           <br />
-          A minimum of one file type must be selected.
+          You must select at least one file type.
            
           <span
             className="emotion-5"
@@ -5388,14 +5388,14 @@ Array [
     <h3
       className="emotion-6"
     >
-      STEP 4: Select Analysis
+      STEP 4: Choose Analysis Modules
     </h3>
     <p
       className="emotion-73"
     >
-      Choose the type of analysis you’d like performed on your dataset.
+      Choose the analysis modules to apply to the dataset.
       <br />
-      (Only modules that can be applied to the file type selected above will be shown.)
+      Only modules that can be applied to the file types selected in step 3 are shown.
     </p>
     <div
       className="emotion-74"
@@ -7236,7 +7236,7 @@ Array [
         <div
           className="emotion-32"
         >
-          STEP 3: Determine Import File Type(s)
+          STEP 3: Choose File Types
           <div
             className="emotion-33"
           >
@@ -7303,9 +7303,9 @@ Array [
         className="emotion-42"
       >
         <div>
-          You can import all supported file types or limit them by editing the selection below.
+          Choose the file types to import.
           <br />
-          A minimum of one file type must be selected.
+          You must select at least one file type.
            
           <span
             className="emotion-5"
@@ -7455,14 +7455,14 @@ Array [
     <h3
       className="emotion-6"
     >
-      STEP 4: Select Analysis
+      STEP 4: Choose Analysis Modules
     </h3>
     <p
       className="emotion-72"
     >
-      Choose the type of analysis you’d like performed on your dataset.
+      Choose the analysis modules to apply to the dataset.
       <br />
-      (Only modules that can be applied to the file type selected above will be shown.)
+      Only modules that can be applied to the file types selected in step 3 are shown.
     </p>
     <div
       className="emotion-73"

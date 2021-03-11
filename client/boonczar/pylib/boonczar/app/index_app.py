@@ -59,6 +59,19 @@ class IndexApp:
         idx = as_id(index)
         return self.app.client.put(f'/api/v1/index-routes/{idx}/_close')
 
+    def delete_index(self, index):
+        """
+        Delete a closed index.
+
+        Args:
+            index (Index): The Index to close.
+
+        Returns:
+            dict: A status dictionary
+        """
+        idx = as_id(index)
+        return self.app.client.delete(f'/api/v1/index-routes/{idx}')
+
     def migrate_index(self, src_index, dst_index):
         """
         Migrate all data from the src_index to the dst_index. The project is swapped to

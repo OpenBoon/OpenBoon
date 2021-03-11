@@ -23,7 +23,7 @@ class ModelApp:
 
     def create_model(self, name, type):
         """
-        Create and retrn a new model .
+        Create and return a new model .
 
         Args:
             name (str): The name of the model.

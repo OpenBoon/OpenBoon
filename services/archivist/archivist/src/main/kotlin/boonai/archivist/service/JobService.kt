@@ -33,6 +33,7 @@ import boonai.archivist.util.isUUID
 import boonai.common.service.logging.event
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.jdbc.BadSqlGrammarException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
@@ -219,7 +220,11 @@ class JobServiceImpl @Autowired constructor(
 
     @Transactional(readOnly = true)
     override fun getAll(filter: JobFilter?): KPagedList<Job> {
-        return jobDao.getAll(filter)
+        try {
+            return jobDao.getAll(filter)
+        } catch (ex: BadSqlGrammarException) {
+            throw IllegalArgumentException()
+        }
     }
 
     override fun findOneJob(filter: JobFilter): Job {

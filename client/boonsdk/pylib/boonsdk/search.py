@@ -10,11 +10,10 @@ __all__ = [
     'VideoClipSearchResult',
     'AssetSearchCsvExporter',
     'LabelConfidenceQuery',
-    'SingleLabelConfidenceQuery',
     'SimilarityQuery',
     'FaceSimilarityQuery',
-    'LabelConfidenceTermsAggregation',
-    'LabelConfidenceMetricsAggregation',
+    'PredictionLabelsAggregation',
+    'PredictionMetricsAggregation',
     'SearchScroller',
     'VideoClipContentMatchQuery'
 ]
@@ -270,19 +269,22 @@ class SearchResult:
         if not aggs:
             return None
 
-        if "#" in name:
+        if getattr(name, 'agg_key', None):
+            key = name.agg_key()
+        elif "#" in name:
             key = [name]
         else:
             key = [k for k in
                    self.result.get("aggregations", {}) if k.endswith("#{}".format(name))]
-
-        if len(key) > 1:
-            raise ValueError(
-                "Aggs with the same name must be qualified by type (pick 1):  {}".format(key))
-        elif not key:
-            return None
+            if len(key) > 1:
+                raise ValueError(
+                    "Aggs with the same name must be qualified by type (pick 1):  {}".format(key))
+            elif not key:
+                return None
         try:
-            return aggs[key[0]]
+            for k in key:
+                aggs = aggs[k]
+            return aggs
         except KeyError:
             return None
 
@@ -377,33 +379,62 @@ class VideoClipSearchResult(SearchResult):
         return self.items
 
 
-class LabelConfidenceTermsAggregation:
+class PredictionLabelsAggregation:
     """
-    Convenience class for making a simple terms aggregation on an array of predictions
+    Convenience class for making a simple terms aggregation on an array of predictions.
     """
-    def __init__(self, namespace):
+    def __init__(self, name, namespace, min_score=0.0, max_score=1.0):
+        self.name = name
         self.field = "analysis.{}.predictions".format(namespace)
+        self.min_score = min_score
+        self.max_score = max_score
 
     def for_json(self):
         return {
-            "nested": {
-                "path": self.field
-            },
-            "aggs": {
-                "names": {
-                    "terms": {
-                        "field": self.field + ".label",
-                        "size": 1000,
-                        "order": {"_count": "desc"}
+            self.name: {
+                "nested": {
+                    "path": self.field
+                },
+                "aggs": {
+                    "score_filter": {
+                        "filter": {
+                            "range": {
+                                self.field + ".score": {
+                                    "gte": self.min_score,
+                                    "lte": self.max_score
+                                }
+                            }
+                        },
+                        "aggs": {
+                            "labels": {
+                                "terms": {
+                                    "field": self.field + ".label",
+                                    "size": 1000,
+                                    "order": {"_count": "desc"}
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
 
+    def agg_key(self):
+        """
+        Used by SearchResult to get a specific deeply nested aggregation.
 
-class LabelConfidenceMetricsAggregation(object):
+        Returns:
+            list: An array of agg names.
+        """
+        return [f'nested#{self.name}', 'filter#score_filter', 'sterms#labels']
 
-    def __init__(self, namespace, agg_type="stats"):
+    def __iter__(self):
+        return ((k, v) for k, v in self.for_json().items())
+
+
+class PredictionMetricsAggregation:
+
+    def __init__(self, name, namespace, agg_type="stats"):
         """
         Create a new LabelConfidenceMetricsAggregation
 
@@ -412,31 +443,46 @@ class LabelConfidenceMetricsAggregation(object):
             agg_type (str): A type of metrics agg to perform.
                 stats, extended_stats,
         """
+        self.name = name
         self.field = "analysis.{}.predictions".format(namespace)
         self.agg_type = agg_type
 
     def for_json(self):
         return {
-            "nested": {
-                "path": self.field
-            },
-            "aggs": {
-                "labels": {
-                    "terms": {
-                        "field": self.field + ".label",
-                        "size": 1000,
-                        "order": {"_count": "desc"}
-                    },
-                    "aggs": {
-                        "stats": {
-                            self.agg_type: {
-                                "field": self.field + ".score"
+            self.name: {
+                "nested": {
+                    "path": self.field
+                },
+                "aggs": {
+                    "labels": {
+                        "terms": {
+                            "field": self.field + ".label",
+                            "size": 1000,
+                            "order": {"_count": "desc"}
+                        },
+                        "aggs": {
+                            "stats": {
+                                self.agg_type: {
+                                    "field": self.field + ".score"
+                                }
                             }
                         }
                     }
                 }
             }
         }
+
+    def agg_key(self):
+        """
+        Used by SearchResult to get a specific deeply nested aggregation.
+
+        Returns:
+            list: An array of agg names.
+        """
+        return [f'nested#{self.name}', 'sterms#labels']
+
+    def __iter__(self):
+        return ((k, v) for k, v in self.for_json().items())
 
 
 class LabelConfidenceQuery(object):
@@ -508,80 +554,6 @@ class LabelConfidenceQuery(object):
                                         }
                                     }
                                 }
-                            }
-                        }
-                    }
-                ]
-            }
-        }
-
-
-class SingleLabelConfidenceQuery(object):
-    """
-    A helper class for building a label confidence score query.  This query must point
-    at label confidence structure:  For example: analysis.boonai.label-detection.
-
-    References:
-        "labels": [
-                {"label": "dog", "score": 0.97 },
-                {"label": "fox", "score": 0.63 }
-        ]
-    """
-
-    def __init__(self, namespace, labels, min_score=0.1, max_score=1.0):
-        """
-        Create a new SingleLabelConfidenceScoreQuery.
-
-        Args:
-            namespace (str): The analysis namespace with predictions. (ex: boonai-label-detection)
-            labels (list): A list of labels to filter.
-            min_score (float): The minimum label score, default to 0.1.
-            Note that 0.0 allows everything.
-            max_score (float): The maximum score, defaults to 1.0 which is highest
-        """
-        self.namespace = namespace
-
-        self.field = "analysis.{}".format(namespace)
-        self.labels = as_collection(labels)
-        self.score = [min_score, max_score]
-
-    def for_json(self):
-        return {
-            "bool": {
-                "filter": [
-                    {
-                        "terms": {
-                            self.field + ".label": self.labels
-                        }
-                    }
-                ],
-                "must": [
-                    {
-                        "function_score": {
-                            "query": {
-                                "bool": {
-                                    "must": [
-                                        {
-                                            "terms": {
-                                                self.field + ".label": self.labels
-                                            }
-                                        },
-                                        {
-                                            "range": {
-                                                self.field + ".score": {
-                                                    "gte": self.score[0],
-                                                    "lte": self.score[1]
-                                                }
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            "boost": "5",
-                            "boost_mode": "sum",
-                            "field_value_factor": {
-                                "field": self.field + ".score",
-                                "missing": 0
                             }
                         }
                     }
