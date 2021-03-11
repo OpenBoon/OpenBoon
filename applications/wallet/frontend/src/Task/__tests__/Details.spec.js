@@ -1,27 +1,25 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import TaskMenu from '../Menu'
+import task from '../__mocks__/task'
+
+import TaskDetails from '../Details'
 
 const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const JOB_ID = '82d5308b-67c2-1433-8fef-0a580a000955'
 const TASK_ID = '5262c1ef-91ad-1d33-82b6-d6edb1b855c4'
 
-describe('<TaskMenu />', () => {
+describe('<TaskDetails />', () => {
   it('should render properly', async () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/api-keys',
-      query: { projectId: PROJECT_ID, jobId: JOB_ID, taskId: TASK_ID },
+      query: { projectId: PROJECT_ID, taskId: TASK_ID },
     })
-    const mockSetIsRetried = jest.fn()
-    const mockRevalidate = jest.fn()
 
-    fetch.mockResponseOnce('{}')
+    require('swr').__setMockUseSWRResponse({
+      data: task,
+    })
 
-    const component = TestRenderer.create(
-      <TaskMenu setIsRetried={mockSetIsRetried} revalidate={mockRevalidate} />,
-    )
+    const component = TestRenderer.create(<TaskDetails />)
 
     act(() => {
       component.root
@@ -49,7 +47,6 @@ describe('<TaskMenu />', () => {
       method: 'PUT',
     })
 
-    expect(mockSetIsRetried).toHaveBeenCalledWith(true)
-    expect(mockRevalidate).toHaveBeenCalled()
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

@@ -9,7 +9,7 @@ import Menu from '../Menu'
 import MenuButton from '../Menu/Button'
 import Button, { VARIANTS } from '../Button'
 
-const TaskMenu = ({ revalidate }) => {
+const TaskMenu = ({ setIsRetried, revalidate }) => {
   const {
     pathname,
     asPath,
@@ -45,6 +45,8 @@ const TaskMenu = ({ revalidate }) => {
                       { method: 'PUT' },
                     )
 
+                    setIsRetried(true)
+
                     revalidate()
 
                     Router.push(
@@ -73,6 +75,7 @@ const TaskMenu = ({ revalidate }) => {
 }
 
 TaskMenu.propTypes = {
+  setIsRetried: PropTypes.func.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 
