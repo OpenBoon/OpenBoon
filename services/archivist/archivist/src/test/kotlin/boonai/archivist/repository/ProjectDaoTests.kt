@@ -26,17 +26,17 @@ import boonai.archivist.service.ModelService
 import boonai.archivist.service.PipelineModService
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
+import java.util.UUID
 import kotlin.test.assertEquals
 
 class ProjectDaoTests : AbstractTest() {
 
     @Autowired
     lateinit var projectCustomDao: ProjectCustomDao
-    
+
     @Autowired
     lateinit var projectDeleteDao: ProjectDeleteDao
-    
+
     @Autowired
     lateinit var jobService: JobService
 
@@ -89,7 +89,7 @@ class ProjectDaoTests : AbstractTest() {
 
         val indexRoute = indexRoutingService.findOne(IndexRouteFilter(projectIds = listOf(getProjectId())))
         indexRoutingService.closeAndDeleteIndex(indexRoute)
-    
+
         projectDeleteDao.deleteProjectRelatedObjects(getProjectId())
 
         val listOfTables = listOf(
