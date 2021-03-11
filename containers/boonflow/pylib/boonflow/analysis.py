@@ -2,8 +2,7 @@
 __all__ = [
     'Prediction',
     'LabelDetectionAnalysis',
-    'ContentDetectionAnalysis',
-    'SingleLabelAnalysis'
+    'ContentDetectionAnalysis'
 ]
 
 
@@ -306,42 +305,3 @@ class ContentDetectionAnalysis:
 
     def __bool__(self):
         return len(self.content) > 0
-
-
-class SingleLabelAnalysis:
-    """
-    SingleLabelAnalysis is similar to LabelDetectionAnalysis but for a
-    single label and confidence. Note that the internals of this class are
-    not oriented the same way the data is represented on the Asset.
-    The 'for_json' transforms the data into something more suitable for ElasticSearch.
-
-    """
-
-    def __init__(self, label, score):
-        """
-        Create a new LabelDetectionSchema instance.
-
-        Args:
-            label: (str) single label to be added
-            score: (float) score for the label
-        """
-        self.label = label
-        self.score = round(score, 3)
-
-    def for_json(self):
-        """Returns a dictionary suitable for JSON encoding.
-
-        The ZpsJsonEncoder will call this method automatically.
-
-        Returns:
-            :obj:`dict`: A JSON serializable version of this Document.
-        """
-        base = {
-            'label': self.label,
-            'score': self.score,
-            'type': 'single-label'
-        }
-        return base
-
-    def __bool__(self):
-        return bool(self.label)

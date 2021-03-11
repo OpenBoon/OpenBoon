@@ -156,7 +156,7 @@ const ModelDetails = () => {
             </ul>
           </div>
 
-          <div css={{ paddingTop: spacing.base }}>
+          <div css={{ paddingTop: spacing.base, display: 'flex' }}>
             {(!!missingLabels || !!missingLabelsOnAssets) && (
               <FlashMessage variant={FLASH_VARIANTS.INFO}>
                 {!!missingLabels && (
@@ -183,7 +183,7 @@ const ModelDetails = () => {
 
             {!missingLabels && !missingLabelsOnAssets && (
               <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-                Ready to train
+                The model is ready to train.
               </FlashMessage>
             )}
           </div>

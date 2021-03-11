@@ -5,6 +5,7 @@ from django.contrib.admin import AdminSite, ModelAdmin
 from django.contrib.auth import get_user_model
 from django.forms import ModelForm
 
+from modules.admin import ProviderAdmin
 from modules.models import Provider
 from organizations.admin import OrganizationAdmin
 from organizations.models import Organization
@@ -103,7 +104,7 @@ class SupportAdminSite(AdminSite):
 support_admin_site = SupportAdminSite(name='support_admin')
 support_admin_site.register(Project, SupportProjectAdmin)
 support_admin_site.register(get_user_model(), SupportUserAdmin)
-support_admin_site.register(Provider)
+support_admin_site.register(Provider, ProviderAdmin)
 support_admin_site.register(AccessAttempt, AccessAttemptAdmin)
 support_admin_site.register(AccessLog, AccessLogAdmin)
 support_admin_site.register(Organization, OrganizationAdmin)

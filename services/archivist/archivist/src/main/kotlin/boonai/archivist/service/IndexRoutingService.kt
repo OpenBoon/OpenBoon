@@ -1,8 +1,5 @@
 package boonai.archivist.service
 
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
 import boonai.archivist.clients.EsRestClient
 import boonai.archivist.config.ApplicationProperties
 import boonai.archivist.domain.Asset
@@ -19,6 +16,7 @@ import boonai.archivist.repository.IndexClusterDao
 import boonai.archivist.repository.IndexRouteDao
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.repository.ProjectCustomDao
+import boonai.archivist.repository.ProjectDao
 import boonai.archivist.security.getProjectId
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
@@ -26,6 +24,9 @@ import boonai.common.service.logging.event
 import boonai.common.service.storage.SystemStorageService
 import boonai.common.util.Json
 import boonai.common.util.readValueOrNull
+import com.fasterxml.jackson.module.kotlin.readValue
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.open.OpenIndexRequest
@@ -48,10 +49,10 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.params.SetParams
-import java.lang.IllegalStateException
 import java.net.URI
 import java.util.UUID
 import java.util.concurrent.TimeUnit
+import kotlin.Comparator
 
 /**
  * Manages the creation and usage of ES indexes.  Currently this implementation only supports
@@ -239,6 +240,7 @@ constructor(
     val indexClusterDao: IndexClusterDao,
     val systemStorageService: SystemStorageService,
     val projectCustomDao: ProjectCustomDao,
+    val projectDao: ProjectDao,
     val properties: ApplicationProperties,
     val txEvent: TransactionEventManager,
     val jedis: JedisPool
@@ -639,6 +641,16 @@ constructor(
     }
 
     override fun deleteIndex(route: IndexRoute, force: Boolean): Boolean {
+        val uroute = indexRouteDao.get(route.id)
+        if (uroute.state == IndexRouteState.READY) {
+            throw IllegalArgumentException("The index must be closed before it can be deleted.")
+        }
+
+        val proj = projectDao.getOne(route.projectId)
+        if (proj.indexRouteId == route.id) {
+            throw IllegalArgumentException("You can't delete the active index for a project.")
+        }
+
         val rsp = getClusterRestClient(route).client.indices()
             .delete(DeleteIndexRequest(route.indexName), RequestOptions.DEFAULT)
         if (rsp.isAcknowledged) {

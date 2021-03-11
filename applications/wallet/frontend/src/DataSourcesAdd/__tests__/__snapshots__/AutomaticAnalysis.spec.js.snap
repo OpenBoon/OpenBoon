@@ -22,6 +22,8 @@ exports[`<DataSourcesAddAutomaticAnalysis /> should render properly with no file
   background-color: #dbecff;
   border-radius: 2px;
   padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-2 {
@@ -35,19 +37,14 @@ exports[`<DataSourcesAddAutomaticAnalysis /> should render properly with no file
 }
 
 .emotion-2 a {
-  color: #ffffff;
-  background-color: #0074f5;
-  padding: 6px;
-  margin-left: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 2px;
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
 }
 
 .emotion-2 a:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #005dc4;
+  color: #3A5DFF;
 }
 
 <div

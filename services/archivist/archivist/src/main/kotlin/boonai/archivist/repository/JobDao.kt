@@ -15,6 +15,7 @@ import boonai.archivist.domain.TaskState
 import boonai.archivist.domain.TaskStateCounts
 import boonai.archivist.security.getZmlpActor
 import boonai.archivist.security.getZmlpActorOrNull
+import boonai.archivist.util.JdbcUtils.getTsWordVector
 import boonai.common.service.logging.event
 import boonai.archivist.util.JdbcUtils.insert
 import boonai.common.util.Json
@@ -76,6 +77,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
             ps.setInt(12, spec.priority)
             ps.setBoolean(13, spec.paused)
             ps.setLong(14, pauseUntil)
+            ps.setObject(15, getTsWordVector(spec.name))
             ps
         }
 
@@ -97,7 +99,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         )
         return jdbc.update(
             UPDATE,
-            update.name, update.priority, update.paused, update.timePauseExpired, job.jobId
+            update.name, update.priority, update.paused, update.timePauseExpired, getTsWordVector(update.name), job.jobId,
         ) == 1
     }
 
@@ -341,7 +343,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         private const val UPDATE = "UPDATE " +
             "job " +
             "SET " +
-            "str_name=?, int_priority=?, bool_paused=?, time_pause_expired=? " +
+            "str_name=?, int_priority=?, bool_paused=?, time_pause_expired=?, fti_keywords=to_tsvector(?) " +
             "WHERE pk_job=?"
 
         private val INSERT = insert(
@@ -359,7 +361,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
             "json_env",
             "int_priority",
             "bool_paused",
-            "time_pause_expired"
+            "time_pause_expired",
+            "fti_keywords@to_tsvector"
         )
 
         private const val GET_TASK_COUNTS =
