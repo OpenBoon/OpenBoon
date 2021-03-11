@@ -1,4 +1,4 @@
-const aggregate = [
+const facet = [
   {
     id: '972a8ab5-cdcb-4eea-ada7-f1c88d997fed',
     defaultFilterType: 'facet',
@@ -18,4 +18,4 @@ const aggregate = [
   },
 ]
 
-export default aggregate
+export default facet
