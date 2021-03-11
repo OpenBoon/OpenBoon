@@ -26,7 +26,7 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
     @patch("boonai_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.get_video_proxy_uri")
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_logos(self, store_blob_patch, native_patch, tl_patch):
-        uri = 'gs://boonai-dev-data/video/mustang.mp4'
+        uri = 'gs://zorroa-dev-data/video/mustang.mp4'
         store_blob_patch.return_value = None
         native_patch.return_value = uri
         processor = self.init_processor(
@@ -34,7 +34,7 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
                 'detect_logos': 0.5,
             })
 
-        uri = 'gs://boonai-dev-data/video/mustang.mp4'
+        uri = 'gs://zorroa-dev-data/video/mustang.mp4'
         asset = TestAsset(uri)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -57,7 +57,7 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
     @patch("boonai_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.get_video_proxy_uri")
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_labels(self, store_blob_patch, native_patch, tl_patch, _):
-        uri = 'gs://boonai-dev-data/video/ted_talk.mp4'
+        uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         store_blob_patch.return_value = None
         native_patch.return_value = uri
 
@@ -85,7 +85,7 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
     @patch("boonai_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.get_video_proxy_uri")
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_text(self, store_blob_patch, native_patch, tl_patch):
-        uri = 'gs://boonai-dev-data/video/ted_talk.mp4'
+        uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         store_blob_patch.return_value = None
         native_patch.return_value = uri
 
@@ -113,7 +113,7 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
     @patch("boonai_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.get_video_proxy_uri")
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_objects(self, blob_patch, native_patch, tl_patch):
-        uri = 'gs://boonai-dev-data/video/model.mp4'
+        uri = 'gs://zorroa-dev-data/video/model.mp4'
         blob_patch.return_value = None
         native_patch.return_value = uri
 
@@ -141,7 +141,7 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
     @patch("boonai_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.get_video_proxy_uri")
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_explicit(self, blob_patch, native_patch, tl_patch):
-        uri = 'gs://boonai-dev-data/video/model.mp4'
+        uri = 'gs://zorroa-dev-data/video/model.mp4'
         blob_patch.return_value = None
         native_patch.return_value = uri
 
@@ -169,7 +169,7 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     def test_speech_transcription(self, webvtt_patch, blob_patch, native_patch, tl_patch):
-        uri = 'gs://boonai-dev-data/video/ted_talk.mp4'
+        uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         webvtt_patch.return_value = None
         blob_patch.return_value = None
         native_patch.return_value = uri

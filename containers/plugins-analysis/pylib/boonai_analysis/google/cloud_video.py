@@ -8,6 +8,7 @@ from google.cloud.videointelligence_v1.services.video_intelligence_service.trans
     VideoIntelligenceServiceGrpcTransport,
 )
 
+from .gcp_client import initialize_gcp_client
 from boonai_analysis.utils.prechecks import Prechecks
 from boonflow import Argument, AssetProcessor, FileTypes, file_storage, proxy
 from boonflow.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
@@ -66,8 +67,10 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             options=[("grpc.max_receive_message_length", 32 * 1024 * 1024)]
         )
         transport = VideoIntelligenceServiceGrpcTransport(channel=channel)
-        self.video_intel_client = 
-            videointelligence.VideoIntelligenceServiceClient(transport=transport)
+        self.video_intel_client = initialize_gcp_client(
+            videointelligence.VideoIntelligenceServiceClient,
+            transport=transport
+        )
 
     def process(self, frame):
         asset = frame.asset
