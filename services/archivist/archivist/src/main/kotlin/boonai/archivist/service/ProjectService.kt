@@ -416,7 +416,6 @@ class ProjectServiceImpl constructor(
         deleteProjectStorage(project)
         indexRoutingService.closeAndDeleteProjectIndexes(project.id)
         projectDeleteDao.deleteProjectRelatedObjects(project.id)
-
     }
 
     // This gets called alot so hold onto the values for a while.
