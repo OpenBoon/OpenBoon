@@ -479,9 +479,9 @@ class ModelServiceImpl(
 
         try {
 
-            if (model.type == ModelType.TF2_IMAGE_CLASSIFIER) {
+            if (model.type == ModelType.TF_UPLOADED_CLASSIFIER) {
                 validateTensorflowModel(tmpFile)
-            } else if (model.type == ModelType.PYTORCH_IMAGE_CLASSIFIER) {
+            } else if (model.type == ModelType.PYTORCH_UPLOADED_CLASSIFIER) {
                 validatePyTorchModel(tmpFile)
             } else {
                 throw IllegalArgumentException("The model type ${model.type} does not support uploads")
@@ -568,7 +568,7 @@ class ModelServiceImpl(
         private val RENAME_LABEL_SCRIPT =
             """
             for (int i = 0; i < ctx._source['labels'].length; ++i) {
-               if (ctx._source['labels'][i]['label'] == params.oldLabel && 
+               if (ctx._source['labels'][i]['label'] == params.oldLabel &&
                    ctx._source['labels'][i]['modelId'] == params.modelId) {
                        ctx._source['labels'][i]['label'] = params.newLabel;
                        break;
@@ -583,7 +583,7 @@ class ModelServiceImpl(
             """
             int index = -1;
             for (int i = 0; i < ctx._source['labels'].length; ++i) {
-               if (ctx._source['labels'][i]['label'] == params.label && 
+               if (ctx._source['labels'][i]['label'] == params.label &&
                    ctx._source['labels'][i]['modelId'] == params.modelId) {
                    index = i;
                    break;
