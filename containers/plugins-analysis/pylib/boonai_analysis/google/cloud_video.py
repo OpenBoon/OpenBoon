@@ -2,15 +2,18 @@ import logging
 import time
 
 import backoff
-import google.cloud.videointelligence as videointelligence
 from google.api_core.exceptions import ResourceExhausted
+from google.cloud import videointelligence
+from google.cloud.videointelligence_v1.services.video_intelligence_service.transports.grpc import (
+    VideoIntelligenceServiceGrpcTransport,
+)
 
+from .gcp_client import initialize_gcp_client
 from boonai_analysis.utils.prechecks import Prechecks
 from boonflow import Argument, AssetProcessor, FileTypes, file_storage, proxy
 from boonflow.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
 from boonflow.base import ProcessorException
 from . import cloud_timeline
-from .gcp_client import initialize_gcp_client
 
 logger = logging.getLogger(__name__)
 
@@ -59,8 +62,15 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
     def init(self):
         super(AsyncVideoIntelligenceProcessor, self).init()
+
+        channel = VideoIntelligenceServiceGrpcTransport.create_channel(
+            options=[("grpc.max_receive_message_length", 32 * 1024 * 1024)]
+        )
+        transport = VideoIntelligenceServiceGrpcTransport(channel=channel)
         self.video_intel_client = initialize_gcp_client(
-            videointelligence.VideoIntelligenceServiceClient)
+            videointelligence.VideoIntelligenceServiceClient,
+            transport=transport
+        )
 
     def process(self, frame):
         asset = frame.asset

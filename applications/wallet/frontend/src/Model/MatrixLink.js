@@ -47,7 +47,7 @@ const ModelMatrixLink = ({ projectId, modelId }) => {
           />
         </div>
         <div css={{ width: TEXT_WIDTH, fontStyle: typography.style.italic }}>
-          Train the model to view the confusion matrix.
+          To view the matrix, you must add test labels and train the model.
         </div>
       </div>
     )
