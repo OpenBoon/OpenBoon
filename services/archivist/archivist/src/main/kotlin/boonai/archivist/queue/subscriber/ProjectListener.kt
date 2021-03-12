@@ -2,14 +2,13 @@ package boonai.archivist.queue.subscriber
 
 import boonai.archivist.service.ProjectService
 import boonai.archivist.service.ProjectServiceImpl
-import net.bytebuddy.pool.TypePool
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.redis.connection.Message
 import org.springframework.stereotype.Service
 import java.lang.IllegalArgumentException
-import java.util.*
+import java.util.UUID
 
 @Qualifier("project-listener")
 @Service
@@ -29,17 +28,42 @@ class ProjectListener : MessageListener() {
     }
 
     private val optMap = mapOf(
-        "delete" to { content: String -> delete(content) }
+        "delete" to { content: String -> delete(content) },
+        "system-storage/delete" to { content: String -> deleteProjectSystemStorage(content) },
+        "storage/delete" to { content: String -> deleteProjectStorage(content) }
     )
 
-    fun delete(content: String) {
+    private fun delete(content: String) {
         try {
             val projectId = UUID.fromString(content)
+            val project = projectService.get(projectId)
+            projectService.delete(project)
             logger.debug("Deleting project $projectId")
-        }catch (ex: IllegalArgumentException){
+        } catch (ex: IllegalArgumentException) {
             logger.error("Bad content format")
         }
+    }
 
+    private fun deleteProjectStorage(content: String) {
+        try {
+            val projectId = UUID.fromString(content)
+            val project = projectService.get(projectId)
+            projectService.deleteProjectStorage(project)
+            logger.debug("Deleting project:$projectId Storage")
+        } catch (ex: IllegalArgumentException) {
+            logger.error("Bad content format")
+        }
+    }
+
+    fun deleteProjectSystemStorage(content: String) {
+        try {
+            val projectId = UUID.fromString(content)
+            val project = projectService.get(projectId)
+            projectService.deleteProjectSystemStorage(project)
+            logger.debug("Deleting Project:$projectId System Storage")
+        } catch (ex: IllegalArgumentException) {
+            logger.error("Bad content format")
+        }
     }
 
     companion object {

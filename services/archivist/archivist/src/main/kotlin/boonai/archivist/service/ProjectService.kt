@@ -3,8 +3,28 @@ package boonai.archivist.service
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import boonai.archivist.config.ApplicationProperties
-import boonai.archivist.domain.*
-import boonai.archivist.repository.*
+import boonai.archivist.domain.Project
+import boonai.archivist.domain.ProjectSpec
+import boonai.archivist.domain.ProjectFilter
+import boonai.archivist.domain.ProjectQuotaCounters
+import boonai.archivist.domain.ProjectQuotas
+import boonai.archivist.domain.ProjectQuotasTimeSeriesEntry
+import boonai.archivist.domain.ProjectNameUpdate
+import boonai.archivist.domain.ProjectTier
+import boonai.archivist.domain.ProjectSize
+import boonai.archivist.domain.IndexRoute
+import boonai.archivist.domain.IndexRouteSimpleSpec
+import boonai.archivist.domain.Pipeline
+import boonai.archivist.domain.PipelineSpec
+import boonai.archivist.domain.IndexRouteFilter
+import boonai.archivist.domain.ArchivistException
+import boonai.archivist.domain.PipelineMode
+import boonai.archivist.repository.KPagedList
+import boonai.archivist.repository.ProjectDao
+import boonai.archivist.repository.ProjectCustomDao
+import boonai.archivist.repository.ProjectDeleteDao
+import boonai.archivist.repository.ProjectQuotasDao
+import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.InternalThreadAuthentication
 import boonai.archivist.security.KnownKeys
 import boonai.archivist.security.getProjectId
@@ -403,7 +423,8 @@ class ProjectServiceImpl constructor(
 
     @Transactional
     override fun delete(project: Project) {
-        val projectStoragePath = "projects/${project.id}"
+
+        projectDeleteDao.deleteProjectRelatedObjects(project.id)
 
         // Delete API Key
         // Delete System Storage
@@ -412,10 +433,9 @@ class ProjectServiceImpl constructor(
         // Delete Project from Database
 
         authServerClient.deleteProjectApiKeys(projectId = project.id)
-        systemStorageService.recursiveDelete(projectStoragePath)
+        deleteProjectSystemStorage(project)
         deleteProjectStorage(project)
         indexRoutingService.closeAndDeleteProjectIndexes(project.id)
-        projectDeleteDao.deleteProjectRelatedObjects(project.id)
     }
 
     // This gets called alot so hold onto the values for a while.
