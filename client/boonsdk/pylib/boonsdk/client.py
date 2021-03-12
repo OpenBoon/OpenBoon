@@ -19,7 +19,7 @@ from .entity.storage import StoredFile
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_SERVER = 'https://api.boonai.io'
+DEFAULT_SERVER = 'https://api.boonai.app'
 
 
 class BoonClient(object):
