@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.listener.PatternTopic
 import org.springframework.data.redis.listener.RedisMessageListenerContainer
 import org.springframework.data.redis.listener.Topic
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter
 import org.springframework.data.redis.serializer.GenericToStringSerializer
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
@@ -55,8 +56,8 @@ class RedisConfiguration {
 
     @Bean
     fun redisContainer(
-        @Qualifier("projectTopic") projectTopic: Topic,
-        @Qualifier("projectListener") projectListener: MessageListener
+        @Qualifier("project-topic") projectTopic: PatternTopic,
+        @Qualifier("project-listener") projectListener: MessageListener
     ): RedisMessageListenerContainer? {
         val container = RedisMessageListenerContainer()
         container.connectionFactory = jedisConnectionFactory()
@@ -64,14 +65,9 @@ class RedisConfiguration {
         return container
     }
 
-    @Bean("projectTopic")
+    @Bean("project-topic")
     fun topic(): PatternTopic {
-        return PatternTopic("project")
-    }
-
-    @Bean("projectListener")
-    fun projectListener(): MessageListener {
-        return ProjectListener()
+        return PatternTopic("project/*")
     }
 }
 

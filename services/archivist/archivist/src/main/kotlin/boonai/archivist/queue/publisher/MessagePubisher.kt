@@ -8,5 +8,5 @@ abstract class MessagePubisher {
     @Autowired
     lateinit var redisTemplate: RedisTemplate<String, Any>
 
-    abstract fun publish()
+    abstract fun publish(operation:String, message: Any)
 }
