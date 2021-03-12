@@ -128,6 +128,10 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             value = var.marketplace-service-name
           }
           env {
+            name  = "METRICS_API_URL"
+            value = "http://${var.metrics-ip-address}"
+          }
+          env {
             name  = "SA_KEY_DATE"
             value = var.sql-service-account-key-date
           }

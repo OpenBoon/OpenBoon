@@ -327,4 +327,4 @@ class TestHelpers:
         result = view._get_model(app_mock)
         assert result
         find_one_model_mock.assert_called_once()
-        create_model_mock.assert_called_once_with(view.model_name, ModelType.BOONAI_FACE_RECOGNITION)
+        create_model_mock.assert_called_once_with(view.model_name, ModelType.FACE_RECOGNITION)

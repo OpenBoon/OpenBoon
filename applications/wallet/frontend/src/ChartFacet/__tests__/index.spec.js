@@ -1,11 +1,11 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import aggregate from '../__mocks__/aggregate'
+import facet from '../__mocks__/facet'
+import labelConfidence from '../__mocks__/labelConfidence'
 
 import ChartFacet from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const CHART_ID = '972a8ab5-cdcb-4eea-ada7-f1c88d997fed'
 
 jest.mock('../../ChartForm', () => 'ChartForm')
 
@@ -19,7 +19,7 @@ describe('<ChartFacet />', () => {
     })
 
     const chart = {
-      id: CHART_ID,
+      id: facet[0].id,
       type: 'facet',
       attribute: 'location.city',
     }
@@ -28,7 +28,7 @@ describe('<ChartFacet />', () => {
 
     require('next/router').__setMockPushFunction(mockRouterPush)
 
-    require('swr').__setMockUseSWRResponse({ data: aggregate })
+    require('swr').__setMockUseSWRResponse({ data: facet })
 
     const component = TestRenderer.create(
       <ChartFacet chart={chart} chartIndex={0} dispatch={noop} />,
@@ -63,7 +63,7 @@ describe('<ChartFacet />', () => {
     })
 
     const chart = {
-      id: CHART_ID,
+      id: facet[0].id,
       type: 'facet',
       attribute: 'location.city',
     }
@@ -84,7 +84,7 @@ describe('<ChartFacet />', () => {
     })
 
     const chart = {
-      id: CHART_ID,
+      id: facet[0].id,
       type: 'facet',
       attribute: 'location.city',
     }
@@ -93,7 +93,7 @@ describe('<ChartFacet />', () => {
 
     require('next/router').__setMockPushFunction(mockRouterPush)
 
-    require('swr').__setMockUseSWRResponse({ data: aggregate })
+    require('swr').__setMockUseSWRResponse({ data: facet })
 
     const component = TestRenderer.create(
       <ChartFacet chart={chart} chartIndex={0} dispatch={noop} />,
@@ -119,7 +119,7 @@ describe('<ChartFacet />', () => {
     )
   })
 
-  it('should add a value to a filter', () => {
+  it('should reset the value of a facet filter', () => {
     const query = btoa(
       JSON.stringify([
         {
@@ -136,7 +136,7 @@ describe('<ChartFacet />', () => {
     })
 
     const chart = {
-      id: CHART_ID,
+      id: facet[0].id,
       type: 'facet',
       attribute: 'location.city',
     }
@@ -145,7 +145,7 @@ describe('<ChartFacet />', () => {
 
     require('next/router').__setMockPushFunction(mockRouterPush)
 
-    require('swr').__setMockUseSWRResponse({ data: aggregate })
+    require('swr').__setMockUseSWRResponse({ data: facet })
 
     const component = TestRenderer.create(
       <ChartFacet chart={chart} chartIndex={0} dispatch={noop} />,
@@ -160,7 +160,59 @@ describe('<ChartFacet />', () => {
         {
           type: 'facet',
           attribute: 'location.city',
-          values: { facets: ['Brooklyn', 'Zermatt'] },
+          values: { facets: ['Zermatt'] },
+        },
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer/data-visualization?query=${newQuery}`,
+      `/${PROJECT_ID}/visualizer/data-visualization?query=${newQuery}`,
+    )
+  })
+
+  it('should reset the value of a labelConfidence filter', () => {
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'labelConfidence',
+          attribute: 'analysis.gcp-video-logo-detection',
+          values: { labels: ['Toyota'], min: 0, max: 1 },
+        },
+      ]),
+    )
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer/data-visualization',
+      query: { projectId: PROJECT_ID, query },
+    })
+
+    const chart = {
+      id: labelConfidence[0].id,
+      type: 'facet',
+      attribute: 'analysis.gcp-video-logo-detection',
+    }
+
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('swr').__setMockUseSWRResponse({ data: labelConfidence })
+
+    const component = TestRenderer.create(
+      <ChartFacet chart={chart} chartIndex={0} dispatch={noop} />,
+    )
+
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Patagonia' }).props.onClick()
+    })
+
+    const newQuery = btoa(
+      JSON.stringify([
+        {
+          type: 'labelConfidence',
+          attribute: 'analysis.gcp-video-logo-detection',
+          values: { labels: ['Patagonia'], min: 0, max: 1 },
         },
       ]),
     )
@@ -175,9 +227,9 @@ describe('<ChartFacet />', () => {
     const query = btoa(
       JSON.stringify([
         {
-          type: 'facet',
-          attribute: 'location.city',
-          values: { facets: ['Brooklyn'] },
+          type: 'labelConfidence',
+          attribute: 'analysis.gcp-video-logo-detection',
+          values: { labels: ['Toyota'], min: 0, max: 1 },
         },
       ]),
     )
@@ -188,23 +240,23 @@ describe('<ChartFacet />', () => {
     })
 
     const chart = {
-      id: CHART_ID,
+      id: labelConfidence[0].id,
       type: 'facet',
-      attribute: 'location.city',
+      attribute: 'analysis.gcp-video-logo-detection',
     }
 
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
 
-    require('swr').__setMockUseSWRResponse({ data: aggregate })
+    require('swr').__setMockUseSWRResponse({ data: labelConfidence })
 
     const component = TestRenderer.create(
       <ChartFacet chart={chart} chartIndex={0} dispatch={noop} />,
     )
 
     act(() => {
-      component.root.findByProps({ 'aria-label': 'Brooklyn' }).props.onClick()
+      component.root.findByProps({ 'aria-label': 'Toyota' }).props.onClick()
     })
 
     expect(mockRouterPush).not.toHaveBeenCalled()
@@ -217,7 +269,7 @@ describe('<ChartFacet />', () => {
     })
 
     const chart = {
-      id: CHART_ID,
+      id: facet[0].id,
       type: 'facet',
     }
 
@@ -236,10 +288,10 @@ describe('<ChartFacet />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: aggregate })
+    require('swr').__setMockUseSWRResponse({ data: facet })
 
     const chart = {
-      id: CHART_ID,
+      id: facet[0].id,
       type: 'facet',
       attribute: 'system.type',
     }
@@ -268,10 +320,10 @@ describe('<ChartFacet />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: aggregate })
+    require('swr').__setMockUseSWRResponse({ data: facet })
 
     const chart = {
-      id: CHART_ID,
+      id: facet[0].id,
       type: 'facet',
       attribute: 'system.type',
     }
@@ -296,11 +348,11 @@ describe('<ChartFacet />', () => {
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: [{ ...aggregate[0], defaultFilterType: 'labelConfidence' }],
+      data: [{ ...facet[0], defaultFilterType: 'labelConfidence' }],
     })
 
     const chart = {
-      id: CHART_ID,
+      id: facet[0].id,
       type: 'facet',
       attribute: 'system.type',
     }

@@ -18,7 +18,7 @@ class AutoMLModelTrainer(AssetProcessor):
 
     def process(self, frame):
         # Check the type of model and use the correct session class.
-        if self.app_model.type == ModelType.GCP_LABEL_DETECTION:
+        if self.app_model.type == ModelType.GCP_AUTOML_CLASSIFIER:
             session = AutomlLabelDetectionSession(self.app_model, self.reactor)
         else:
             raise FatalProcessorException(f'{self.app_model.type} is not supported. ')

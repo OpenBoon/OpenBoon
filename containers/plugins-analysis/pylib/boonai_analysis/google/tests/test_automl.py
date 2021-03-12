@@ -23,7 +23,7 @@ class AutoMLModelClassifierTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model,
-                "type": "GCP_LABEL_DETECTION",
+                "type": "GCP_AUTOML_CLASSIFIER",
                 "fileId": "models/{}/foo/bar".format(self.model),
                 "name": name,
                 "moduleName": name
