@@ -132,6 +132,16 @@ class ModelApp:
         return Job(self.app.client.post(f'/api/v3/models/{mid}/_deploy', body))
 
     def upload_trained_model(self, model, model_path, labels):
+        # Make sure we have the model object so we can check its type
+        mid = as_id(model)
+        model = self.find_one_model(id=mid)
+
+        if model.type == 'TF_UPLOADED_CLASSIFIER':
+            self.upload_trained_model_tf(model, model_path, labels)
+        elif model.type == 'PYTORCH_UPLOADED_CLASSIFIER':
+            self.upload_trained_model_pth(model, model_path, labels)
+
+    def upload_trained_model_tf(self, model, model_path, labels):
         """
         Uploads a Tensorflow2/Keras model.  For the 'model_path' arg you can either
         pass the path to a Tensorflow saved model or a trained model instance itself.
@@ -152,6 +162,33 @@ class ModelApp:
             tmp_path = tempfile.mkdtemp()
             model_path.save(tmp_path)
             model_path = tmp_path
+
+        with open(model_path + '/labels.txt', 'w') as fp:
+            for label in labels:
+                fp.write(f'{label}\n')
+
+        model_file = tempfile.mkstemp(prefix="model_", suffix=".zip")[1]
+        zip_file_path = zip_directory(model_path, model_file)
+
+        mid = as_id(model)
+        print(mid, zip_file_path)
+        return AnalysisModule(self.app.client.send_file(
+            f'/api/v3/models/{mid}/_upload', zip_file_path))
+
+    def upload_trained_model_pth(self, model, model_path, labels):
+        """
+        Uploads a Pytorch model.
+
+        Args:
+            model (Model): The path to the model weights
+            model_path (mixed): The path to the model directory.
+            labels (list): The list of labels,.
+        Returns:
+            AnalysisModule: The AnalysisModule configured to use the model.
+        """
+
+        if not labels:
+            raise ValueError("Uploading a model requires an array of labels")
 
         with open(model_path + '/labels.txt', 'w') as fp:
             for label in labels:

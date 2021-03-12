@@ -1,9 +1,11 @@
 import logging
 import unittest
 import tempfile
+from types import SimpleNamespace
 from unittest.mock import patch
 
 from boonsdk import BoonClient, ModelType, Model
+from boonsdk.app import ModelApp
 from .util import get_boon_app
 
 logging.basicConfig(level=logging.DEBUG)
@@ -19,7 +21,7 @@ class ModelAppTests(unittest.TestCase):
         self.model_data = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'test',
-            'type': 'TF_CLASSIFIER',
+            'type': 'TF_UPLOADED_CLASSIFIER',
             'fileId': '/abc/123/345/foo.zip'
         }
 
@@ -29,12 +31,15 @@ class ModelAppTests(unittest.TestCase):
         model = self.app.models.get_model('12345')
         self.assert_model(model)
 
+    @patch.object(ModelApp, 'find_one_model')
     @patch.object(BoonClient, 'send_file')
-    def test_upload_trained_model_directory(self, post_patch):
+    def test_upload_trained_model_directory(self, post_patch, model_patch):
         post_patch.return_value = {'category': 'LabelDetection'}
+        model_patch.return_value = SimpleNamespace(**self.model_data)
 
         tmp_dir = tempfile.mkdtemp()
         module = self.app.models.upload_trained_model('12345', tmp_dir, ["dog", "cat"])
+
         assert module.category == 'LabelDetection'
 
     @patch.object(BoonClient, 'send_file')
