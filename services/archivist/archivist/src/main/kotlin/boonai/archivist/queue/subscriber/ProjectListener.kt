@@ -2,11 +2,13 @@ package boonai.archivist.queue.subscriber
 
 import boonai.archivist.service.ProjectService
 import boonai.archivist.service.ProjectServiceImpl
+import net.bytebuddy.pool.TypePool
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.redis.connection.Message
 import org.springframework.stereotype.Service
+import java.lang.IllegalArgumentException
 import java.util.*
 
 @Qualifier("project-listener")
@@ -31,8 +33,13 @@ class ProjectListener : MessageListener() {
     )
 
     fun delete(content: String) {
-        val projectId = UUID.fromString(content)
-        logger.debug("Deleting project $projectId")
+        try {
+            val projectId = UUID.fromString(content)
+            logger.debug("Deleting project $projectId")
+        }catch (ex: IllegalArgumentException){
+            logger.error("Bad content format")
+        }
+
     }
 
     companion object {

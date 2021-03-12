@@ -28,6 +28,12 @@ class RedisConfiguration {
         val host = properties.getString("archivist.redis.host")
         val port = properties.getInt("archivist.redis.port")
 
+        val config = jedisPoolConfig()
+
+        return JedisPool(config, host, port, 10000)
+    }
+
+    private fun jedisPoolConfig(): JedisPoolConfig {
         val config = JedisPoolConfig()
         config.maxTotal = 128
         config.maxIdle = 128
@@ -37,13 +43,12 @@ class RedisConfiguration {
         config.timeBetweenEvictionRunsMillis = 3000L
         config.numTestsPerEvictionRun = 3
         config.blockWhenExhausted = true
-
-        return JedisPool(config, host, port, 10000)
+        return config
     }
 
     @Bean
     fun jedisConnectionFactory(): JedisConnectionFactory? {
-        return JedisConnectionFactory()
+        return JedisConnectionFactory(jedisPoolConfig())
     }
 
     @Bean
