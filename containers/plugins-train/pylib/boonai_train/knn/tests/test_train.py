@@ -27,7 +27,7 @@ class KnnLabelDetectionTrainerTests(PluginUnitTestCase):
         })
         model_patch.return_value = Model({
             'id': model_id,
-            'type': "BOONAI_KNN_CLASSIFIER",
+            'type': "KNN_CLASSIFIER",
             'fileId': 'models/{}/foo/bar'.format(model_id),
             'name': name
         })

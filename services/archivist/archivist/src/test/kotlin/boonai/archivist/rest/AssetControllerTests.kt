@@ -119,7 +119,7 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdateLabels() {
-        val ds = modelService.createModel(ModelSpec("test", ModelType.BOONAI_KNN_CLASSIFIER))
+        val ds = modelService.createModel(ModelSpec("test", ModelType.KNN_CLASSIFIER))
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
 
@@ -141,7 +141,7 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdateLabelsWithBbox() {
-        val ds = modelService.createModel(ModelSpec("test", ModelType.BOONAI_KNN_CLASSIFIER))
+        val ds = modelService.createModel(ModelSpec("test", ModelType.KNN_CLASSIFIER))
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
 

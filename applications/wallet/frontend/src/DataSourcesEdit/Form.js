@@ -49,6 +49,10 @@ const DataSourcesEditForm = ({ initialState }) => {
 
   const { errors, fileTypes, name, uri } = state
 
+  const selectedFileTypes = Object.keys(state.fileTypes).filter(
+    (f) => fileTypes[f],
+  )
+
   return (
     <>
       <FlashMessageErrors
@@ -68,7 +72,6 @@ const DataSourcesEditForm = ({ initialState }) => {
           <SectionTitle>STEP 1: Data Source Name </SectionTitle>
 
           <Input
-            autoFocus
             id="name"
             variant={INPUT_VARIANTS.SECONDARY}
             label="Name"
@@ -89,7 +92,7 @@ const DataSourcesEditForm = ({ initialState }) => {
         <CheckboxGroup
           legend={
             <>
-              STEP 2: Add Additional File Types
+              STEP 2: Edit File Types
               <Toggletip openToThe="right" label="Supported File Types">
                 <div
                   css={{
@@ -118,8 +121,8 @@ const DataSourcesEditForm = ({ initialState }) => {
           }
           description={
             <div>
-              Additional file types can be added to this data source. Previous
-              selections cannot be removed.
+              You can change the file types to import. You must select at least
+              one file type.
             </div>
           }
           onClick={(fileType) =>
@@ -131,29 +134,26 @@ const DataSourcesEditForm = ({ initialState }) => {
             icon,
             legend,
             initialValue: !!fileTypes[value],
-            isDisabled: !!initialState.fileTypes[value],
+            isDisabled: false,
           }))}
           variant={CHECKBOX_VARIANTS.SECONDARY}
         />
 
         <div css={{ height: spacing.base }} />
 
-        <SectionTitle>STEP 3: Add Additional Analysis</SectionTitle>
+        <SectionTitle>STEP 3: Edit Analysis Modules</SectionTitle>
 
         <SectionSubTitle>
-          Additional analysis can be added to this data source. Previous
-          selections cannot be removed.
+          You can change the analysis modules to be applied to the file types
+          selected in step 2.
         </SectionSubTitle>
 
-        <DataSourcesAddAutomaticAnalysis
-          fileTypes={Object.keys(state.fileTypes).filter((f) => fileTypes[f])}
-        />
+        <DataSourcesAddAutomaticAnalysis fileTypes={selectedFileTypes} />
 
         <Providers
           providers={providers}
-          initialModules={initialModules}
           modules={state.modules}
-          fileTypes={Object.keys(state.fileTypes).filter((f) => fileTypes[f])}
+          fileTypes={selectedFileTypes}
           dispatch={dispatch}
         />
 
@@ -171,7 +171,9 @@ const DataSourcesEditForm = ({ initialState }) => {
             onClick={() =>
               onSubmit({ dispatch, projectId, dataSourceId, state })
             }
-            isDisabled={!name || state.isLoading}
+            isDisabled={
+              !name || selectedFileTypes.length === 0 || state.isLoading
+            }
           >
             {state.isLoading ? 'Updating...' : 'Update Data Source'}
           </Button>

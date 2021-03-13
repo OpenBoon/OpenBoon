@@ -70,7 +70,7 @@ const DataSources = () => {
           'File Types',
           '#Actions#',
         ]}
-        expandColumn={0}
+        expandColumn={3}
         renderEmpty="No data sources"
         renderRow={({ result, revalidate }) => (
           <DataSourcesRow

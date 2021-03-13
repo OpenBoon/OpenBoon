@@ -253,5 +253,5 @@ class FaceViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
         try:
             model = app.models.find_one_model(name=self.model_name)
         except BoonSdkNotFoundException:
-            model = app.models.create_model(self.model_name, ModelType.BOONAI_FACE_RECOGNITION)
+            model = app.models.create_model(self.model_name, ModelType.FACE_RECOGNITION)
         return model

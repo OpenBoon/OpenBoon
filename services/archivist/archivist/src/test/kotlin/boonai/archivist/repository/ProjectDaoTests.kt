@@ -32,10 +32,10 @@ import kotlin.test.assertEquals
 class ProjectDaoTests : AbstractTest() {
 
     @Autowired
-    lateinit var projectDao: ProjectDao
+    lateinit var projectCustomDao: ProjectCustomDao
 
     @Autowired
-    lateinit var projectCustomDao: ProjectCustomDao
+    lateinit var projectDeleteDao: ProjectDeleteDao
 
     @Autowired
     lateinit var jobService: JobService
@@ -90,7 +90,7 @@ class ProjectDaoTests : AbstractTest() {
         val indexRoute = indexRoutingService.findOne(IndexRouteFilter(projectIds = listOf(getProjectId())))
         indexRoutingService.closeAndDeleteIndex(indexRoute)
 
-        projectCustomDao.deleteProjectRelatedObjects(getProjectId())
+        projectDeleteDao.deleteProjectRelatedObjects(getProjectId())
 
         val listOfTables = listOf(
             "project_quota",
@@ -158,7 +158,7 @@ class ProjectDaoTests : AbstractTest() {
     }
 
     private fun createAutoMl() {
-        val modelSpec = ModelSpec("animals", ModelType.GCP_LABEL_DETECTION)
+        val modelSpec = ModelSpec("animals", ModelType.GCP_AUTOML_CLASSIFIER)
         val model = modelService.createModel(modelSpec)
 
         val automlSpec = AutomlSessionSpec(

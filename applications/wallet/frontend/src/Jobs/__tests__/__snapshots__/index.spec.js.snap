@@ -345,10 +345,12 @@ Array [
 }
 
 .emotion-16 {
+  margin-left: 4px;
   color: transparent;
 }
 
 .emotion-25 {
+  margin-left: 4px;
   color: #6088FE;
 }
 
@@ -2191,6 +2193,7 @@ Array [
 }
 
 .emotion-16 {
+  margin-left: 4px;
   color: transparent;
 }
 
@@ -2227,6 +2230,7 @@ Array [
 }
 
 .emotion-25 {
+  margin-left: 4px;
   color: #6088FE;
   -webkit-transform: rotate(-180deg);
   -moz-transform: rotate(-180deg);

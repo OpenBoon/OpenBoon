@@ -9,6 +9,7 @@ import boonai.archivist.domain.ProjectIndexMigrationSpec
 import boonai.archivist.domain.ProjectSize
 import boonai.archivist.repository.IndexRouteDao
 import boonai.archivist.security.getProjectId
+import boonai.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
@@ -123,5 +124,52 @@ class IndexTaskServiceTests : AbstractTest() {
         val image = getSample(1, type = "image")[0]
         assertEquals("12345ABCED", image.getAttr("analysis.boonai-image-similarity.simhash"))
         assertEquals("similarity", image.getAttr("analysis.boonai-image-similarity.type"))
+    }
+
+    @Test
+    fun testMigrateProjectV6ToV7() {
+        val project = projectService.get(getProjectId())
+
+        val analysis = mapOf(
+            "zvi-foo" to
+                mapOf(
+                    "label" to "cats",
+                    "score" to 0.991,
+                    "type" to "single-label"
+                )
+        )
+
+        // Make new v4 index.
+        val rspec = IndexRouteSpec("english_strict", 6, shards = 1, replicas = 0)
+        val route = indexRoutingService.createIndexRoute(rspec)
+        projectService.setIndexRoute(project, route)
+
+        addTestAssets("images", analysis)
+        refreshIndex()
+
+        val spec = ProjectIndexMigrationSpec("english_strict", 7, size = ProjectSize.XSMALL)
+        val task = indexTaskService.migrateProject(project, spec)
+        // Sleep while task completes
+
+        Thread.sleep(5000)
+
+        val newRoute = indexRoutingService.getIndexRoute(task.dstIndexRouteId as UUID)
+        projectService.setIndexRoute(project, newRoute)
+        indexRoutingService.setIndexRefreshInterval(newRoute, "5s")
+        refreshIndex()
+        Thread.sleep(1000)
+
+        val image = getSample(1, type = "image")[0]
+        assertEquals("labels", image.getAttr("analysis.zvi-foo.type"))
+        val preds = image.getAttr(
+            "analysis.zvi-foo.predictions",
+            Json.LIST_OF_GENERIC_MAP
+        ) ?: throw Exception("no preds")
+
+        val pred = preds[0]
+        assertEquals(pred["score"], 0.991)
+        assertEquals(pred["label"], "cats")
+        assertEquals(pred["occurrences"], 1)
+        assertEquals(pred["count"], 1)
     }
 }

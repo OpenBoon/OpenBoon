@@ -1,0 +1,26 @@
+if (ctx._source !=null) {
+    if (ctx._source.containsKey("analysis")) {
+         Map replace = new HashMap();
+         for (Map.Entry entry : ctx._source.analysis.entrySet()) {
+                 Map existing = (Map) entry.getValue();
+                 String t = existing.get("type");
+                 if (t == "single-label") {
+                    Map nm = new HashMap();
+                    nm.put("type", "labels");
+
+                    List preds = new ArrayList();
+                    Map pred = new HashMap();
+                    pred.put("label",  existing.get("label"));
+                    pred.put("score", existing.get("score"));
+                    pred.put("occurrences", 1);
+                    pred.put("count", 1);
+                    preds.add(pred);
+                    nm.put("predictions", preds);
+                    replace.put(entry.getKey(), nm);
+                 }
+         }
+         ctx._source.analysis.putAll(replace);
+    }
+}
+
+

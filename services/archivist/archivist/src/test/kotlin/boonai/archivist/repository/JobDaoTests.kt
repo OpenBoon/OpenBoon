@@ -84,6 +84,10 @@ class JobDaoTests : AbstractTest() {
         assertEquals(update.paused, t2.paused)
         assertEquals(update.timePauseExpired, t2.timePauseExpired)
         assertEquals(update.maxRunningTasks, t2.maxRunningTasks)
+
+        val queryForObject =
+            jdbc.queryForObject("SELECT fti_keywords FROM job where pk_job=?", String::class.java, t2.id)
+        assertEquals("'baggin':2 'bilbo':1", queryForObject)
     }
 
     @Test

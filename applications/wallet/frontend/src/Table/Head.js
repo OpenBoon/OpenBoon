@@ -106,6 +106,7 @@ const TableHead = ({ column, expandColumn }) => {
             <SortSvg
               height={constants.icons.small}
               css={{
+                marginLeft: spacing.small,
                 color:
                   key === sortKey
                     ? colors.key.two

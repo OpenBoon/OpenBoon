@@ -48,7 +48,7 @@ def extract_thumbnail_from_video(video_path, thumbnail_path, seconds, size=None)
     """
     cmd = ["ffmpeg",
            "-v",
-           "warning",
+           "error",
            "-y",
            "-ss",
            str(seconds),

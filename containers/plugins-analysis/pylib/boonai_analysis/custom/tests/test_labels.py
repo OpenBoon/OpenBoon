@@ -33,7 +33,7 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "BOONAI_LABEL_DETECTION",
+                "type": "TF_CLASSIFIER",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": name,
                 "moduleName": name
@@ -86,7 +86,7 @@ class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "BOONAI_LABEL_DETECTION",
+                "type": "TF_CLASSIFIER",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": self.name,
                 "moduleName": self.name

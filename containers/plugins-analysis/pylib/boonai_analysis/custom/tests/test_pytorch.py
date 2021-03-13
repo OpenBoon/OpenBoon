@@ -16,7 +16,7 @@ class PytorchModelImageClassifierTests(PluginUnitTestCase):
 
     def setUp(self):
         try:
-            shutil.rmtree("/tmp/model-cache/models_model-id-34568_foo_bar")
+            shutil.rmtree("/tmp/boonai/model-cache")
         except FileNotFoundError:
             print("Didn't clear out model cache, this is ok.")
 
@@ -31,7 +31,7 @@ class PytorchModelImageClassifierTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "BOONAI_PYTORCH_LABEL_DETECTION",
+                "type": "PYTORCH_CLASSIFIER",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": name,
                 "moduleName": name
@@ -64,14 +64,14 @@ class PytorchModelImageClassifierTests(PluginUnitTestCase):
             assert 'labels' == analysis['type']
 
 
-class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
+class PytorchVideoTransferLearningClassifierTests(PluginUnitTestCase):
     model_id = "model-id-34568"
     base_dir = os.path.dirname(__file__)
     name = "pytorch_ants_and_bees"
 
     def setUp(self):
         try:
-            shutil.rmtree("/tmp/model-cache/models_model-id-34568_foo_bar")
+            shutil.rmtree("/tmp/boonai/model-cache")
         except FileNotFoundError:
             print("Didn't clear out model cache, this is ok.")
 
@@ -91,7 +91,7 @@ class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "PYTORCH_IMAGE_CLASSIFIER",
+                "type": "PYTORCH_UPLOADED_CLASSIFIER",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": self.name,
                 "moduleName": self.name

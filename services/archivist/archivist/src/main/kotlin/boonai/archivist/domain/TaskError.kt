@@ -172,7 +172,7 @@ class TaskErrorFilter(
         }
 
         keywords?.let {
-            addToWhere("fti_keywords @@ to_tsquery(?)")
+            addToWhere("task_error.fti_keywords @@ to_tsquery(?)")
             addToValues(it)
         }
     }

@@ -166,27 +166,6 @@ object JdbcUtils {
         }
         return sb.toString()
     }
-
-    /**
-     * Where clause fragment that searches from matches from parts of strings in a list
-     *
-     * @param col The column name
-     * @param size Number of elements in the query list
-     * @param cast Cast type for the column
-     */
-    fun wildCardSearch(col: String, size: Int, cast: String? = null): String {
-        val repeat = if (cast != null) {
-            "?::$cast"
-        } else {
-            "?"
-        }
-
-        val sb = StringBuilder(128)
-        sb.append("$col ILIKE any (ARRAY[")
-        sb.append(StringUtils.repeat("CONCAT( '%',$repeat,'%')", ",", size))
-        sb.append("]) ")
-        return sb.toString()
-    }
 }
 
 @ApiModel("Long Range Filter", description = "Filters on a range using Longs.")
