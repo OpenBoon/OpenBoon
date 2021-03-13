@@ -26,6 +26,7 @@ const ProjectCards = () => {
         display: 'flex',
         gap: spacing.comfy,
         flexWrap: 'wrap',
+        paddingTop: spacing.normal,
         paddingBottom: spacing.spacious,
       }}
     >
@@ -53,7 +54,7 @@ const ProjectCards = () => {
           <div
             css={{
               color: colors.structure.zinc,
-              paddingBottom: spacing.normal,
+              paddingBottom: spacing.spacious,
             }}
           >
             Project ID: {id}

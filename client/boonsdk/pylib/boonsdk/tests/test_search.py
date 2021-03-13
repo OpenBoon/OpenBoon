@@ -6,7 +6,7 @@ from unittest.mock import patch
 import pytest
 
 from boonsdk import BoonClient, app_from_env, Asset, \
-    SimilarityQuery, LabelConfidenceQuery, SingleLabelConfidenceQuery, \
+    SimilarityQuery, LabelConfidenceQuery, \
     FaceSimilarityQuery, AssetSearchCsvExporter, AssetSearchScroller, \
     AssetSearchResult, VideoClipContentMatchQuery
 
@@ -207,16 +207,6 @@ class TestLabelConfidenceQuery(unittest.TestCase):
         assert qjson['bool']['filter'][0]['terms']['analysis.foo.predictions.label'] == ['dog']
         nested = qjson['bool']['must'][0]['nested']
         assert nested['path'] == 'analysis.foo.predictions'
-
-
-class TestSingleLabelConfidenceQuery(unittest.TestCase):
-    def test_for_json(self):
-        s = SingleLabelConfidenceQuery("foo", "dog", 0.5)
-        qjson = s.for_json()
-
-        assert qjson['bool']['filter'][0]['terms']['analysis.foo.label'] == ['dog']
-        function_score = qjson['bool']['must'][0]['function_score']
-        assert function_score['field_value_factor']['field'] == 'analysis.foo.score'
 
 
 class TestVideoClipContentMatchQuery(unittest.TestCase):

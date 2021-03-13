@@ -28,6 +28,11 @@ class IndexAppTests(unittest.TestCase):
         task = self.index_app.migrate_index('abc123', '456789')
         assert_mock_task(task)
 
+    @patch.object(BoonClient, 'delete')
+    def test_delete(self, post_patch):
+        post_patch.return_value = {}
+        self.index_app.delete_index('abc123')
+
     @patch.object(BoonClient, 'get')
     def test_get_index_task(self, get_patch):
         get_patch.return_value = mock_index_task_data

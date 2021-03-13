@@ -46,7 +46,7 @@ class ModelServiceTests : AbstractTest() {
     val testSearch =
         """{"query": {"term": { "source.filename": "large-brown-cat.jpg"} } }"""
 
-    fun create(name: String = "test", type: ModelType = ModelType.BOONAI_LABEL_DETECTION): Model {
+    fun create(name: String = "test", type: ModelType = ModelType.TF_CLASSIFIER): Model {
         val mspec = ModelSpec(
             name,
             type,
@@ -65,7 +65,7 @@ class ModelServiceTests : AbstractTest() {
     fun createFaceModelDefaultModuleName() {
         val mspec = ModelSpec(
             "faces",
-            ModelType.BOONAI_FACE_RECOGNITION,
+            ModelType.FACE_RECOGNITION,
             deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
         val model = modelService.createModel(mspec)
@@ -76,7 +76,7 @@ class ModelServiceTests : AbstractTest() {
     fun createFaceModuleCustomModel() {
         val mspec = ModelSpec(
             "faces",
-            ModelType.BOONAI_FACE_RECOGNITION,
+            ModelType.FACE_RECOGNITION,
             moduleName = "foo",
             deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
@@ -150,11 +150,11 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testPublishModelWithDepend() {
-        val model1 = create(type = ModelType.BOONAI_FACE_RECOGNITION)
+        val model1 = create(type = ModelType.FACE_RECOGNITION)
         val mod = modelService.publishModel(model1)
         assertEquals(ModOpType.DEPEND, mod.ops[0].type)
         assertEquals(ModOpType.APPEND, mod.ops[1].type)
-        assertEquals(ModelType.BOONAI_FACE_RECOGNITION.dependencies, mod.ops[0].apply as List<String>)
+        assertEquals(ModelType.FACE_RECOGNITION.dependencies, mod.ops[0].apply as List<String>)
     }
 
     @Test
@@ -334,7 +334,7 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testValidateTensorflowModelUpload() {
+    fun testValidateTModelUpload() {
         modelService.validateTensorflowModel(
             Paths.get(
                 "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
@@ -343,13 +343,13 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun testValidateTensorflowModelUploadFail() {
+    fun testValidateModelUploadFail() {
         modelService.validateTensorflowModel(Paths.get("../../../test-data/training/pets.zip"))
     }
 
     @Test
     fun testAcceptModelFileUpload() {
-        val model = create(type = ModelType.TF2_IMAGE_CLASSIFIER)
+        val model = create(type = ModelType.TF_UPLOADED_CLASSIFIER)
         val mfp = Paths.get(
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
         )
@@ -360,7 +360,7 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testSetModelArgs() {
-        val model = create(type = ModelType.BOONAI_LABEL_DETECTION)
+        val model = create(type = ModelType.TF_CLASSIFIER)
         modelService.publishModel(model)
 
         val module = modelService.setModelArgs(model, mapOf("input_size" to listOf(321, 321)))
@@ -369,7 +369,7 @@ class ModelServiceTests : AbstractTest() {
     }
 
     fun assertModel(model: Model) {
-        assertEquals(ModelType.BOONAI_LABEL_DETECTION, model.type)
+        assertEquals(ModelType.TF_CLASSIFIER, model.type)
         assertEquals("test", model.name)
         assertEquals("test", model.moduleName)
         assertTrue(model.fileId.endsWith("model.zip"))

@@ -33,6 +33,10 @@ def add_subparser(subparsers):
     open_cmd.add_argument('index', metavar='INDEX', help='The Index id')
     open_cmd.set_defaults(func=open_index)
 
+    open_cmd = commands.add_parser('delete', help='Delete an index.')
+    open_cmd.add_argument('index', metavar='INDEX', help='The Index id')
+    open_cmd.set_defaults(func=delete_index)
+
     subparser.set_defaults(func=handle_args)
 
 
@@ -46,6 +50,10 @@ def close_index(args):
 
 def open_index(args):
     print(czar.indexes.open_index(args.index))
+
+
+def delete_index(args):
+    print(czar.indexes.delete_index(args.index))
 
 
 def display_list(args):

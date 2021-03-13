@@ -102,7 +102,7 @@ exports[`<ModelMatrixLink /> should render properly when a matrix does not yet e
   <div
     className="emotion-19"
   >
-    Train the model to view the confusion matrix.
+    To view the matrix, you must add test labels and train the model.
   </div>
 </div>
 `;

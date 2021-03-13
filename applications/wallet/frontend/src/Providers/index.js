@@ -7,13 +7,7 @@ import CheckboxTable from '../Checkbox/Table'
 
 const IMG_HEIGHT = 32
 
-const Providers = ({
-  providers,
-  initialModules,
-  modules,
-  fileTypes,
-  dispatch,
-}) => {
+const Providers = ({ providers, modules, fileTypes, dispatch }) => {
   const providersFilterModules = providers.map((p) => ({
     ...p,
     categories: p.categories.map((c) => ({
@@ -71,9 +65,7 @@ const Providers = ({
                       label: module.description,
                       initialValue:
                         (modules && !!modules[module.name]) || false,
-                      isDisabled:
-                        (initialModules && !!initialModules[module.name]) ||
-                        false,
+                      isDisabled: false,
                       supportedMedia: module.supportedMedia,
                     })),
                   }}
@@ -115,7 +107,6 @@ Providers.propTypes = {
       ).isRequired,
     }).isRequired,
   ).isRequired,
-  initialModules: PropTypes.shape({}).isRequired,
   modules: PropTypes.shape({}).isRequired,
   fileTypes: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   dispatch: PropTypes.func.isRequired,

@@ -26,7 +26,7 @@ import ModelAssetsDropdown from '../ModelAssets/Dropdown'
 import ModelLabels from '../ModelLabels'
 import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
-import Feature from '../Feature'
+import Feature, { ENVS } from '../Feature'
 
 import ModelMatrixLink from './MatrixLink'
 
@@ -156,7 +156,7 @@ const ModelDetails = () => {
             </ul>
           </div>
 
-          <div css={{ paddingTop: spacing.base }}>
+          <div css={{ paddingTop: spacing.base, display: 'flex' }}>
             {(!!missingLabels || !!missingLabelsOnAssets) && (
               <FlashMessage variant={FLASH_VARIANTS.INFO}>
                 {!!missingLabels && (
@@ -183,7 +183,7 @@ const ModelDetails = () => {
 
             {!missingLabels && !missingLabelsOnAssets && (
               <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-                Ready to train
+                The model is ready to train.
               </FlashMessage>
             )}
           </div>
@@ -264,7 +264,7 @@ const ModelDetails = () => {
           </ButtonGroup>
         </div>
 
-        <Feature flag="ModelMatrixShortcut" envs={[]}>
+        <Feature flag="ModelMatrixShortcut" envs={[ENVS.QA]}>
           <ModelMatrixLink projectId={projectId} modelId={modelId} />
         </Feature>
       </div>

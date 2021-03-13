@@ -1,17 +1,18 @@
 package boonai.archivist.rest
 
-import boonai.archivist.domain.IndexToIndexMigrationSpec
 import boonai.archivist.domain.IndexRoute
 import boonai.archivist.domain.IndexRouteFilter
 import boonai.archivist.domain.IndexRouteSimpleSpec
 import boonai.archivist.domain.IndexRouteSpec
 import boonai.archivist.domain.IndexTask
+import boonai.archivist.domain.IndexToIndexMigrationSpec
 import boonai.archivist.repository.KPagedList
-import boonai.archivist.service.IndexTaskService
 import boonai.archivist.service.IndexRoutingService
+import boonai.archivist.service.IndexTaskService
 import boonai.archivist.util.HttpUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -66,6 +67,12 @@ class IndexRoutingController @Autowired constructor(
     fun closeIndex(@PathVariable id: UUID): Any {
         val route = indexRoutingService.getIndexRoute(id)
         return HttpUtils.status("index-route", "close", indexRoutingService.closeIndex(route))
+    }
+
+    @DeleteMapping(value = ["/api/v1/index-routes/{id}"])
+    fun deleteIndex(@PathVariable id: UUID): Any {
+        val route = indexRoutingService.getIndexRoute(id)
+        return HttpUtils.status("index-route", "delete", indexRoutingService.deleteIndex(route))
     }
 
     @PutMapping(value = ["/api/v1/index-routes/{id}/_open"])

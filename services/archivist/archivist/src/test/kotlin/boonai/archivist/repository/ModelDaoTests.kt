@@ -21,7 +21,7 @@ class ModelDaoTests : AbstractTest() {
 
     @Test
     fun testMarkAsReady() {
-        val model = modelService.createModel(ModelSpec("foo", ModelType.BOONAI_LABEL_DETECTION))
+        val model = modelService.createModel(ModelSpec("foo", ModelType.TF_CLASSIFIER))
         modelJdbcDao.markAsReady(model.id, true)
         var trained = jdbc.queryForObject(
             "SELECT bool_trained FROM model WHERE pk_model=?", Boolean::class.java, model.id
@@ -37,11 +37,11 @@ class ModelDaoTests : AbstractTest() {
 
     @Test
     fun testFindOrderDesc() {
-        val model1 = modelService.createModel(ModelSpec("test1", ModelType.BOONAI_LABEL_DETECTION))
+        val model1 = modelService.createModel(ModelSpec("test1", ModelType.TF_CLASSIFIER))
         Thread.sleep(100)
-        val model2 = modelService.createModel(ModelSpec("test2", ModelType.BOONAI_LABEL_DETECTION))
+        val model2 = modelService.createModel(ModelSpec("test2", ModelType.TF_CLASSIFIER))
         Thread.sleep(100)
-        val model3 = modelService.createModel(ModelSpec("test3", ModelType.BOONAI_LABEL_DETECTION))
+        val model3 = modelService.createModel(ModelSpec("test3", ModelType.TF_CLASSIFIER))
 
         val find = modelJdbcDao.find(ModelFilter())
 

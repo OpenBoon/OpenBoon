@@ -17,25 +17,25 @@ class ModelType(Enum):
     Types of models that can be Trained.
     """
 
-    BOONAI_KNN_CLASSIFIER = 0
+    KNN_CLASSIFIER = 0
     """A KMeans clustering model for quickly clustering assets into general groups."""
 
-    BOONAI_LABEL_DETECTION = 1
+    TF_CLASSIFIER = 1
     """Retrain the ResNet50 with your own labels, Using TensorFlow"""
 
-    BOONAI_FACE_RECOGNITION = 2
+    FACE_RECOGNITION = 2
     """Face Recognition model using a KNN classifier."""
 
-    GCP_LABEL_DETECTION = 3
+    GCP_AUTOML_CLASSIFIER = 3
     """Train a Google AutoML vision model."""
 
-    TF2_IMAGE_CLASSIFIER = 4
+    TF_UPLOADED_CLASSIFIER = 4
     """Provide your own custom Tensorflow2/Keras model"""
 
-    BOONAI_PYTORCH_LABEL_DETECTION = 5
+    PYTORCH_CLASSIFIER = 5
     """Retrain ResNet50 with your own labels, using Pytorch."""
 
-    PYTORCH_IMAGE_CLASSIFIER = 6
+    PYTORCH_UPLOADED_CLASSIFIER = 6
     """Provide your own custom Pytorch model"""
 
 
@@ -173,12 +173,12 @@ class Model(BaseEntity):
 
         """
         prediction_term_map = {
-            ModelType.BOONAI_KNN_CLASSIFIER: f'{self.namespace}.label',
-            ModelType.BOONAI_FACE_RECOGNITION: f'{self.namespace}.predictions.label'
+            ModelType.KNN_CLASSIFIER: f'{self.namespace}.label',
+            ModelType.FACE_RECOGNITION: f'{self.namespace}.predictions.label'
         }
-        score_map = {ModelType.BOONAI_KNN_CLASSIFIER: f'{self.namespace}.score',
-                     ModelType.BOONAI_LABEL_DETECTION: f'{self.namespace}.score',
-                     ModelType.BOONAI_FACE_RECOGNITION: f'{self.namespace}.predictions.score'}
+        score_map = {ModelType.KNN_CLASSIFIER: f'{self.namespace}.score',
+                     ModelType.TF_CLASSIFIER: f'{self.namespace}.score',
+                     ModelType.FACE_RECOGNITION: f'{self.namespace}.predictions.score'}
         if self.type not in prediction_term_map:
             raise TypeError(f'Cannot create a confusion matrix search for {self.type} models.')
         search_query = {
