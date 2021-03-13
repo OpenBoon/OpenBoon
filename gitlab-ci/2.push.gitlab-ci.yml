@@ -146,7 +146,7 @@ boonai-dockerhub-push-prod:
     SOURCE_TAG: qa
     DOCKER_TAG: stable
     CONTAINERS: >
-      archivist officer elasticsearch auths-erver api-gateway py3-base boonsdk boonlab boonflow
+      archivist officer elasticsearch auth-server api-gateway py3-base boonsdk boonlab boonflow
       boondocks plugins-models plugins-core plugins-analysis analyst ml-bbq plugins-train
       wallet reporter metrics
   before_script:
