@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import Router, { useRouter } from 'next/router'
 
 import { spacing } from '../Styles'
 
@@ -8,7 +9,13 @@ import Menu from '../Menu'
 import MenuButton from '../Menu/Button'
 import Button, { VARIANTS } from '../Button'
 
-const TaskErrorTaskMenu = ({ projectId, taskId, setIsRetried, revalidate }) => {
+const TaskErrorTaskMenu = ({ taskId, revalidate }) => {
+  const {
+    pathname,
+    asPath,
+    query: { projectId },
+  } = useRouter()
+
   return (
     <div
       css={{
@@ -38,8 +45,17 @@ const TaskErrorTaskMenu = ({ projectId, taskId, setIsRetried, revalidate }) => {
                       { method: 'PUT' },
                     )
 
-                    setIsRetried(true)
                     revalidate()
+
+                    Router.push(
+                      {
+                        pathname,
+                        query: {
+                          action: 'Retry',
+                        },
+                      },
+                      asPath,
+                    )
                   }}
                 >
                   Retry Task
@@ -54,9 +70,7 @@ const TaskErrorTaskMenu = ({ projectId, taskId, setIsRetried, revalidate }) => {
 }
 
 TaskErrorTaskMenu.propTypes = {
-  projectId: PropTypes.string.isRequired,
   taskId: PropTypes.string.isRequired,
-  setIsRetried: PropTypes.func.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 

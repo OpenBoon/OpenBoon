@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-import { useState } from 'react'
 
 import { spacing } from '../Styles'
 
@@ -19,14 +18,12 @@ import TaskErrorDetails from './Details'
 const TaskErrorContent = () => {
   const {
     pathname,
-    query: { projectId, errorId },
+    query: { projectId, errorId, action },
   } = useRouter()
 
   const { data: taskError, mutate: revalidate } = useSWR(
     `/api/v1/projects/${projectId}/task_errors/${errorId}/`,
   )
-
-  const [retried, setIsRetried] = useState(false)
 
   const { jobName, fatal, message, taskId, assetId } = taskError
 
@@ -40,20 +37,15 @@ const TaskErrorContent = () => {
         {message}
       </Value>
 
-      {retried && (
+      {!!action && (
         <div css={{ display: 'flex', paddingTop: spacing.comfy }}>
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Task has been retried successfully.
+            {`${action} successful.`}
           </FlashMessage>
         </div>
       )}
 
-      <TaskErrorTaskMenu
-        projectId={projectId}
-        taskId={taskId}
-        setIsRetried={setIsRetried}
-        revalidate={revalidate}
-      />
+      <TaskErrorTaskMenu taskId={taskId} revalidate={revalidate} />
 
       <TaskErrorDetails taskError={taskError} />
 

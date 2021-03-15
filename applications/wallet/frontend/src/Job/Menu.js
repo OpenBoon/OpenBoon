@@ -59,6 +59,7 @@ const JobMenu = ({ status, revalidate }) => {
                             projectId,
                             jobId,
                             refreshParam: Math.random(),
+                            action: name,
                           },
                         },
                         asPath,

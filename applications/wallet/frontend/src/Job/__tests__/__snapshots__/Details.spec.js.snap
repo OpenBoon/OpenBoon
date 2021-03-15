@@ -1,13 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TaskDetails /> should render properly 1`] = `
+exports[`<JobDetails /> should render properly 1`] = `
 .emotion-0 {
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-1 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
@@ -15,22 +9,18 @@ exports[`<TaskDetails /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -39,12 +29,12 @@ exports[`<TaskDetails /> should render properly 1`] = `
   padding-right: 48px;
 }
 
-.emotion-4 {
+.emotion-3 {
   position: relative;
   height: 100%;
 }
 
-.emotion-5 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -88,87 +78,21 @@ exports[`<TaskDetails /> should render properly 1`] = `
   color: #ffffff;
 }
 
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
   background-color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-4:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-6 {
-  position: absolute;
-  z-index: 1;
-  top: 100%;
-  right: 0;
-  background-color: #808080;
-  border-radius: 2px;
-  box-shadow: 0 4px 7px 0 #000000;
-  min-width: 200px;
-  font-family: Roboto,Avenir,"sans-serif";
-}
-
-.emotion-6 ul {
-  list-style-type: none;
-  padding: 0;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  margin: 0;
-}
-
-.emotion-6 li {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-7 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 0;
-  padding: 8px 16px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 400;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-7:hover,
-.emotion-7.focus-visible:focus,
-.emotion-7 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #4a4a4a;
-}
-
-.emotion-8 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -181,154 +105,180 @@ exports[`<TaskDetails /> should render properly 1`] = `
   padding-bottom: 12px;
 }
 
-.emotion-9 {
+.emotion-6 {
   font-weight: 700;
   color: #ffffff;
   padding-bottom: 4px;
 }
 
-.emotion-10 {
+.emotion-7 {
   color: #b3b3b3;
 }
 
-<div
-  className="emotion-0"
->
+.emotion-20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+  position: relative;
+}
+
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.emotion-22 {
+  height: 100%;
+  -webkit-flex: 3 0 auto;
+  -ms-flex: 3 0 auto;
+  flex: 3 0 auto;
+  background-color: #009f22;
+}
+
+.emotion-22:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-22:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+<div>
   <h3
-    className="emotion-1"
+    className="emotion-0"
   >
-    Task: 
-    Crawling files in 'gs://zorroa-dev-data'
+    Job: 
+    image_similarity.json
   </h3>
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
         <button
           aria-label="Toggle Dropdown Menu"
-          className="emotion-5"
+          className="emotion-4"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
         >
-          Modify Task
+          Modify Job
           <svg
             data-file-name="chevron.svg"
             height={20}
           />
         </button>
+      </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-6"
+      >
+        ID
+        :
+      </div>
+      <div
+        className="emotion-7"
+      >
+        82d5308b-67c2-1433-8fef-0a580a000956
+      </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-6"
+      >
+        Status
+        :
+      </div>
+      <div
+        className="emotion-7"
+      >
+        InProgress
+      </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-6"
+      >
+        Priority
+        :
+      </div>
+      <div
+        className="emotion-7"
+      >
+        100
+      </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-6"
+      >
+        # Assets
+        :
+      </div>
+      <div
+        className="emotion-7"
+      >
+        4
+      </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-6"
+      >
+        Progress
+        :
+      </div>
+      <div
+        className="emotion-7"
+      >
         <div
-          className="emotion-6"
+          aria-label="Progress Bar"
+          className="emotion-20"
+          onKeyPress={[Function]}
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          role="button"
+          tabIndex="0"
         >
-          <div>
-            <ul>
-              <li>
-                <button
-                  className="emotion-7"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Retry
-                </button>
-              </li>
-            </ul>
+          <div
+            className="emotion-21"
+          >
+            <div
+              className="emotion-22"
+            />
           </div>
         </div>
       </div>
     </div>
-    <div
-      className="emotion-8"
-    >
-      <div
-        className="emotion-9"
-      >
-        ID
-        :
-      </div>
-      <div
-        className="emotion-10"
-      >
-        5262c1ef-91ad-1d33-82b6-d6edb1b855c4
-      </div>
-    </div>
-    <div
-      className="emotion-8"
-    >
-      <div
-        className="emotion-9"
-      >
-        State
-        :
-      </div>
-      <div
-        className="emotion-10"
-      >
-        Success
-      </div>
-    </div>
-    <div
-      className="emotion-8"
-    >
-      <div
-        className="emotion-9"
-      >
-        Host
-        :
-      </div>
-      <div
-        className="emotion-10"
-      >
-        http://analyst-7b7fd7958-9zl69:5000
-      </div>
-    </div>
-    <div
-      className="emotion-8"
-    >
-      <div
-        className="emotion-9"
-      >
-        Started
-        :
-      </div>
-      <div
-        className="emotion-10"
-      >
-        2020-03-05 22:31:18
-      </div>
-    </div>
-    <div
-      className="emotion-8"
-    >
-      <div
-        className="emotion-9"
-      >
-        Duration
-        :
-      </div>
-      <div
-        className="emotion-10"
-      >
-        00h : 00m : 03s
-      </div>
-    </div>
   </div>
 </div>
 `;
 
-exports[`<TaskDetails /> should render properly 2`] = `
+exports[`<JobDetails /> should render properly 2`] = `
 .emotion-0 {
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-1 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
@@ -336,22 +286,18 @@ exports[`<TaskDetails /> should render properly 2`] = `
   padding-bottom: 16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -360,12 +306,12 @@ exports[`<TaskDetails /> should render properly 2`] = `
   padding-right: 48px;
 }
 
-.emotion-4 {
+.emotion-3 {
   position: relative;
   height: 100%;
 }
 
-.emotion-5 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -409,21 +355,21 @@ exports[`<TaskDetails /> should render properly 2`] = `
   color: #ffffff;
 }
 
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
   background-color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-4:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-6 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -436,42 +382,76 @@ exports[`<TaskDetails /> should render properly 2`] = `
   padding-bottom: 12px;
 }
 
-.emotion-7 {
+.emotion-6 {
   font-weight: 700;
   color: #ffffff;
   padding-bottom: 4px;
 }
 
-.emotion-8 {
+.emotion-7 {
   color: #b3b3b3;
 }
 
-<div
-  className="emotion-0"
->
+.emotion-20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+  position: relative;
+}
+
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.emotion-22 {
+  height: 100%;
+  -webkit-flex: 3 0 auto;
+  -ms-flex: 3 0 auto;
+  flex: 3 0 auto;
+  background-color: #009f22;
+}
+
+.emotion-22:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-22:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+<div>
   <h3
-    className="emotion-1"
+    className="emotion-0"
   >
-    Task: 
-    Crawling files in 'gs://zorroa-dev-data'
+    Job: 
+    image_similarity.json
   </h3>
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
         <button
           aria-label="Toggle Dropdown Menu"
-          className="emotion-5"
+          className="emotion-4"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
         >
-          Modify Task
+          Modify Job
           <svg
             data-file-name="chevron.svg"
             height={20}
@@ -480,92 +460,102 @@ exports[`<TaskDetails /> should render properly 2`] = `
       </div>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-5"
     >
       <div
-        className="emotion-7"
+        className="emotion-6"
       >
         ID
         :
       </div>
       <div
-        className="emotion-8"
+        className="emotion-7"
       >
-        5262c1ef-91ad-1d33-82b6-d6edb1b855c4
+        82d5308b-67c2-1433-8fef-0a580a000956
       </div>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-5"
     >
       <div
-        className="emotion-7"
+        className="emotion-6"
       >
-        State
+        Status
         :
       </div>
       <div
-        className="emotion-8"
+        className="emotion-7"
       >
-        Success
+        InProgress
       </div>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-5"
     >
       <div
-        className="emotion-7"
+        className="emotion-6"
       >
-        Host
+        Priority
         :
       </div>
       <div
-        className="emotion-8"
+        className="emotion-7"
       >
-        http://analyst-7b7fd7958-9zl69:5000
+        100
       </div>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-5"
     >
       <div
-        className="emotion-7"
+        className="emotion-6"
       >
-        Started
+        # Assets
         :
       </div>
       <div
-        className="emotion-8"
+        className="emotion-7"
       >
-        2020-03-05 22:31:18
+        4
       </div>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-5"
     >
       <div
-        className="emotion-7"
+        className="emotion-6"
       >
-        Duration
+        Progress
         :
       </div>
       <div
-        className="emotion-8"
+        className="emotion-7"
       >
-        00h : 00m : 03s
+        <div
+          aria-label="Progress Bar"
+          className="emotion-20"
+          onKeyPress={[Function]}
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          role="button"
+          tabIndex="0"
+        >
+          <div
+            className="emotion-21"
+          >
+            <div
+              className="emotion-22"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 `;
 
-exports[`<TaskDetails /> should render properly with an action confrimation 1`] = `
+exports[`<JobDetails /> should render properly with an action confirmation 1`] = `
 .emotion-0 {
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-1 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
@@ -573,14 +563,14 @@ exports[`<TaskDetails /> should render properly with an action confrimation 1`] 
   padding-bottom: 16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -596,7 +586,7 @@ exports[`<TaskDetails /> should render properly with an action confrimation 1`] 
   padding-right: 16px;
 }
 
-.emotion-4 {
+.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -606,105 +596,29 @@ exports[`<TaskDetails /> should render properly with an action confrimation 1`] 
   white-space: pre-line;
 }
 
-.emotion-4 a {
+.emotion-3 a {
   color: #191919;
   -webkit-text-decoration: underline;
   text-decoration: underline;
   margin-left: 4px;
 }
 
-.emotion-4 a:hover {
+.emotion-3 a:hover {
   color: #3A5DFF;
 }
 
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
 .emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  margin-bottom: -4px;
-  padding-right: 48px;
-}
-
-.emotion-7 {
-  position: relative;
-  height: 100%;
-}
-
-.emotion-8 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 0;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  width: 200px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 16px;
-  padding-right: 12px;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-  margin-bottom: 4px;
-  color: #ffffff;
-}
-
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited {
-  background-color: #808080;
-}
-
-.emotion-8:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-8[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -717,30 +631,64 @@ exports[`<TaskDetails /> should render properly with an action confrimation 1`] 
   padding-bottom: 12px;
 }
 
-.emotion-10 {
+.emotion-6 {
   font-weight: 700;
   color: #ffffff;
   padding-bottom: 4px;
 }
 
-.emotion-11 {
+.emotion-7 {
   color: #b3b3b3;
 }
 
-<div
-  className="emotion-0"
->
+.emotion-20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+  position: relative;
+}
+
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.emotion-22 {
+  height: 100%;
+  -webkit-flex: 3 0 auto;
+  -ms-flex: 3 0 auto;
+  flex: 3 0 auto;
+  background-color: #009f22;
+}
+
+.emotion-22:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-22:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+<div>
   <h3
-    className="emotion-1"
+    className="emotion-0"
   >
-    Task: 
-    Crawling files in 'gs://zorroa-dev-data'
+    Job: 
+    image_similarity.json
   </h3>
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <svg
         color="#009f22"
@@ -748,110 +696,105 @@ exports[`<TaskDetails /> should render properly with an action confrimation 1`] 
         height={20}
       />
       <div
-        className="emotion-4"
+        className="emotion-3"
         role="alert"
       >
-        Retry successful.
+        Retry All Failures successful.
       </div>
     </div>
   </div>
   <div
-    className="emotion-5"
+    className="emotion-4"
   >
     <div
-      className="emotion-6"
+      className="emotion-5"
     >
       <div
-        className="emotion-7"
-      >
-        <button
-          aria-label="Toggle Dropdown Menu"
-          className="emotion-8"
-          onBlur={[Function]}
-          onClick={[Function]}
-          type="button"
-        >
-          Modify Task
-          <svg
-            data-file-name="chevron.svg"
-            height={20}
-          />
-        </button>
-      </div>
-    </div>
-    <div
-      className="emotion-9"
-    >
-      <div
-        className="emotion-10"
+        className="emotion-6"
       >
         ID
         :
       </div>
       <div
-        className="emotion-11"
+        className="emotion-7"
       >
-        5262c1ef-91ad-1d33-82b6-d6edb1b855c4
+        82d5308b-67c2-1433-8fef-0a580a000956
       </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-5"
     >
       <div
-        className="emotion-10"
+        className="emotion-6"
       >
-        State
+        Status
         :
       </div>
       <div
-        className="emotion-11"
+        className="emotion-7"
       >
         Success
       </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-5"
     >
       <div
-        className="emotion-10"
+        className="emotion-6"
       >
-        Host
+        Priority
         :
       </div>
       <div
-        className="emotion-11"
+        className="emotion-7"
       >
-        http://analyst-7b7fd7958-9zl69:5000
+        100
       </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-5"
     >
       <div
-        className="emotion-10"
+        className="emotion-6"
       >
-        Started
+        # Assets
         :
       </div>
       <div
-        className="emotion-11"
+        className="emotion-7"
       >
-        2020-03-05 22:31:18
+        4
       </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-5"
     >
       <div
-        className="emotion-10"
+        className="emotion-6"
       >
-        Duration
+        Progress
         :
       </div>
       <div
-        className="emotion-11"
+        className="emotion-7"
       >
-        00h : 00m : 03s
+        <div
+          aria-label="Progress Bar"
+          className="emotion-20"
+          onKeyPress={[Function]}
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          role="button"
+          tabIndex="0"
+        >
+          <div
+            className="emotion-21"
+          >
+            <div
+              className="emotion-22"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>

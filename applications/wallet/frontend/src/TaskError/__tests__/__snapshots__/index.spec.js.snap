@@ -2125,70 +2125,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 24px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #e3f7e8;
-  border-radius: 2px;
-  padding: 12px;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.emotion-2 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
-}
-
-.emotion-2 a {
-  color: #191919;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-  margin-left: 4px;
-}
-
-.emotion-2 a:hover {
-  color: #3A5DFF;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <svg
-        color="#009f22"
-        data-file-name="checkmark.svg"
-        height={20}
-      />
-      <div
-        className="emotion-2"
-        role="alert"
-      >
-        Task has been retried successfully.
-      </div>
-    </div>
-  </div>,
-  .emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
   margin-bottom: -4px;
   padding-top: 24px;
 }
@@ -2607,6 +2543,635 @@ Array [
       }
     />
   </div>,
+]
+`;
+
+exports[`<TaskError /> should render properly with an action confirmation 1`] = `
+Array [
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-3 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-10 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <a
+        className="emotion-2"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Job Queue
+      </a>
+      <span
+        className="emotion-3"
+      >
+        /
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <a
+        className="emotion-2"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Job Details
+      </a>
+      <span
+        className="emotion-3"
+      >
+        /
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <a
+        className="emotion-2"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Task Details
+      </a>
+      <span
+        className="emotion-3"
+      >
+        /
+      </span>
+    </div>
+    <h2
+      className="emotion-10"
+    >
+      Error Details
+    </h2>
+  </div>,
+  .emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    Job: 
+    Applying modules:  to gs://zorroa-dev-data
+  </h3>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 32px;
+}
+
+.emotion-1 {
+  padding-right: 8px;
+}
+
+.emotion-2 {
+  color: #c92300;
+  font-weight: 700;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#c92300"
+        data-file-name="errorFatal.svg"
+        height={18}
+      />
+    </div>
+    <div
+      className="emotion-2"
+    >
+      Error Type: 
+      Fatal
+    </div>
+  </div>,
+  .emotion-0 {
+  padding-top: 16px;
+}
+
+.emotion-1 {
+  font-weight: 700;
+  color: #ffffff;
+  padding-bottom: 4px;
+}
+
+.emotion-2 {
+  color: #b3b3b3;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      Error Message
+      :
+    </div>
+    <div
+      className="emotion-2"
+    >
+      ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
+    </div>
+  </div>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 24px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-2 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-2 a:hover {
+  color: #3A5DFF;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-2"
+        role="alert"
+      >
+        Retry successful.
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: -4px;
+  padding-top: 24px;
+}
+
+.emotion-1 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  width: 200px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 12px;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  color: #ffffff;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  background-color: #808080;
+}
+
+.emotion-2:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-2[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <button
+        aria-label="Toggle Dropdown Menu"
+        className="emotion-2"
+        onBlur={[Function]}
+        onClick={[Function]}
+        type="button"
+      >
+        Modify Task
+        <svg
+          data-file-name="chevron.svg"
+          height={20}
+        />
+      </button>
+    </div>
+  </div>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding-top: 16px;
+}
+
+.emotion-1 {
+  padding-right: 64px;
+}
+
+.emotion-2 {
+  padding-top: 16px;
+}
+
+.emotion-3 {
+  font-weight: 700;
+  color: #ffffff;
+  padding-bottom: 4px;
+}
+
+.emotion-4 {
+  color: #b3b3b3;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-3"
+        >
+          Job ID
+          :
+        </div>
+        <div
+          className="emotion-4"
+        >
+          85f0d094-0631-104b-a57e-ce490d54f27a
+        </div>
+      </div>
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-3"
+        >
+          Task ID
+          :
+        </div>
+        <div
+          className="emotion-4"
+        >
+          d2bb6ad3-54d0-11ea-9250-32240f207bfa
+        </div>
+      </div>
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-3"
+        >
+          Error ID
+          :
+        </div>
+        <div
+          className="emotion-4"
+        >
+          85f0d09b-0631-104b-a57e-ce490d54f27a
+        </div>
+      </div>
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-3"
+        >
+          Host ID
+          :
+        </div>
+        <div
+          className="emotion-4"
+        >
+          not-implemented
+        </div>
+      </div>
+    </div>
+    <div>
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-3"
+        >
+          Phase
+          :
+        </div>
+        <div
+          className="emotion-4"
+        >
+          index
+        </div>
+      </div>
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-3"
+        >
+          File Path
+          :
+        </div>
+        <div
+          className="emotion-4"
+        >
+          gs://zorroa-dev-data/image/cat.gif
+        </div>
+      </div>
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-3"
+        >
+          Processor
+          :
+        </div>
+        <div
+          className="emotion-4"
+        >
+          unknown
+        </div>
+      </div>
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-3"
+        >
+          Time of Error
+          :
+        </div>
+        <div
+          className="emotion-4"
+        >
+          2020-02-21 17:37:49
+        </div>
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-3 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #3A5DFF;
+}
+
+.emotion-5 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-0"
+  >
+    <ul
+      className="emotion-1"
+    >
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Stack Trace
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-5"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a/asset"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Asset
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  <TaskErrorAsset
+    assetId="5o7oiiw9WhA5ZkkOn_KZcMxValbwOBvn"
+  />,
 ]
 `;
 

@@ -49,4 +49,18 @@ describe('<TaskDetails />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render properly with an action confrimation', () => {
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID, taskId: TASK_ID, action: 'Retry' },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: task,
+    })
+
+    const component = TestRenderer.create(<TaskDetails />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

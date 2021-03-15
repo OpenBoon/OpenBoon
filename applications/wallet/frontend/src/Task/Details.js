@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-import { useState } from 'react'
 
 import { spacing, typography } from '../Styles'
 
@@ -13,14 +12,12 @@ import TaskMenu from './Menu'
 
 const TaskDetails = () => {
   const {
-    query: { projectId, taskId },
+    query: { projectId, taskId, action },
   } = useRouter()
 
   const { data: task, mutate: revalidate } = useSWR(
     `/api/v1/projects/${projectId}/tasks/${taskId}/`,
   )
-
-  const [retried, setIsRetried] = useState(false)
 
   const { name, state, host, timeStarted, timeStopped } = task
 
@@ -46,16 +43,16 @@ const TaskDetails = () => {
         Task: {name}
       </h3>
 
-      {retried && (
+      {!!action && (
         <div css={{ display: 'flex' }}>
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Task has been retried successfully.
+            {`${action} successful.`}
           </FlashMessage>
         </div>
       )}
 
       <div css={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
-        <TaskMenu setIsRetried={setIsRetried} revalidate={revalidate} />
+        <TaskMenu revalidate={revalidate} />
 
         <Value legend="ID" variant={VARIANTS.PRIMARY}>
           {taskId}
