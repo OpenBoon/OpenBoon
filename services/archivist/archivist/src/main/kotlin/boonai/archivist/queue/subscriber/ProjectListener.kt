@@ -1,7 +1,7 @@
 package boonai.archivist.queue.subscriber
 
 import boonai.archivist.service.ProjectService
-import boonai.archivist.service.ProjectServiceImpl
+import boonai.common.apikey.AuthServerClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.redis.connection.Message
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service("project-listener")
-class ProjectListener : MessageListener() {
-
-    @Autowired
-    lateinit var projectService: ProjectService
+class ProjectListener(
+    val projectService: ProjectService,
+    val authServerClient: AuthServerClient
+) : MessageListener() {
 
     override fun onMessage(msg: Message, p1: ByteArray?) {
         val channel = String(msg.channel)
@@ -27,7 +27,8 @@ class ProjectListener : MessageListener() {
     private val optMap = mapOf(
         "delete" to { content: String -> delete(content) },
         "system-storage/delete" to { content: String -> deleteProjectSystemStorage(content) },
-        "storage/delete" to { content: String -> deleteProjectStorage(content) }
+        "storage/delete" to { content: String -> deleteProjectStorage(content) },
+        "api-key/delete" to { content: String -> deleteApiKeys(content) }
     )
 
     private fun delete(content: String) {
@@ -52,7 +53,7 @@ class ProjectListener : MessageListener() {
         }
     }
 
-    fun deleteProjectSystemStorage(content: String) {
+    private fun deleteProjectSystemStorage(content: String) {
         try {
             val projectId = UUID.fromString(content)
             val project = projectService.get(projectId)
@@ -63,7 +64,17 @@ class ProjectListener : MessageListener() {
         }
     }
 
+    private fun deleteApiKeys(content: String) {
+        try {
+            val projectId = UUID.fromString(content)
+            authServerClient.deleteProjectApiKeys(projectId)
+            logger.debug("Deleting Project:$projectId API Keys")
+        } catch (ex: IllegalArgumentException) {
+            logger.error("Bad content format")
+        }
+    }
+
     companion object {
-        private val logger = LoggerFactory.getLogger(ProjectServiceImpl::class.java)
+        private val logger = LoggerFactory.getLogger(ProjectListener::class.java)
     }
 }

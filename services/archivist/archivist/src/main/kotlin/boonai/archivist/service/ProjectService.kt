@@ -433,9 +433,6 @@ class ProjectServiceImpl constructor(
         // Delete Project from Database
 
         authServerClient.deleteProjectApiKeys(projectId = project.id)
-        deleteProjectSystemStorage(project)
-        deleteProjectStorage(project)
-        indexRoutingService.closeAndDeleteProjectIndexes(project.id)
     }
 
     // This gets called alot so hold onto the values for a while.

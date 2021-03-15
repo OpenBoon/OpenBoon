@@ -13,4 +13,16 @@ class ProjectPublisher(
     fun delete(projectId: UUID) {
         publish("delete", projectId)
     }
+
+    fun deleteSystemStorage(projectId: UUID) {
+        publish("system-storage/delete", projectId)
+    }
+
+    fun deleteStorage(projectId: UUID) {
+        publish("storage/delete", projectId)
+    }
+
+    fun deleteApiKey(projectId: UUID) {
+        publish("api-key/delete", projectId)
+    }
 }

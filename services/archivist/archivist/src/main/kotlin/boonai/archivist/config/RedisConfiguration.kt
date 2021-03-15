@@ -76,9 +76,15 @@ class RedisConfiguration {
         return PatternTopic("project/*")
     }
 
+    @Bean("index-routing-topic")
+    fun indexRoutingTopic(): PatternTopic {
+        return PatternTopic("index-routing/*")
+    }
+
     companion object {
         val listeners = mapOf(
-            "project-topic" to "project-listener"
+            "project-topic" to "project-listener",
+            "index-routing-topic" to "index-routing-listener"
         )
     }
 }
