@@ -7,7 +7,8 @@ from wallet.utils import convert_base64_to_json
 from searches.schemas import (SimilarityAnalysisSchema, ContentAnalysisSchema,
                               LabelsAnalysisSchema, FIELD_TYPE_FILTER_MAPPING)
 from searches.filters import (ExistsFilter, FacetFilter, RangeFilter, LabelConfidenceFilter,
-                              TextContentFilter, SimilarityFilter, LabelFilter, DateFilter)
+                              TextContentFilter, SimilarityFilter, LabelFilter, DateFilter,
+                              PredictionCountFilter)
 
 
 ANALYSIS_SCHEMAS = [SimilarityAnalysisSchema, ContentAnalysisSchema, LabelsAnalysisSchema]
@@ -136,7 +137,8 @@ class FilterBuddy(object):
                TextContentFilter,
                SimilarityFilter,
                LabelFilter,
-               DateFilter]
+               DateFilter,
+               PredictionCountFilter]
 
     def get_filter_from_request(self, request):
         """Gets Filter object from a requests querystring.

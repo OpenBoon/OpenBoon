@@ -7,7 +7,8 @@ from boonsdk import BoonApp, BoonClient
 
 from searches.filters import (BaseFilter, RangeFilter, ExistsFilter, FacetFilter,
                               LabelConfidenceFilter, TextContentFilter,
-                              SimilarityFilter, LabelFilter, DateFilter)
+                              SimilarityFilter, LabelFilter, DateFilter,
+                              PredictionCountFilter)
 
 
 class MockFilter(BaseFilter):
@@ -189,13 +190,17 @@ class TestRangeFilter(FilterBaseTestCase):
                 'attribute': 'my_attr'}
 
     @pytest.fixture
+    def expected_attr_name(self):
+        return 'my_attr'
+
+    @pytest.fixture
     def mock_query_data(self, mock_data):
         data = mock_data
         data['values'] = {'min': 1, 'max': 100}
         return data
 
-    def test_get_es_agg(self, mock_data):
-        _filter = RangeFilter(mock_data)
+    def test_get_es_agg(self, mock_data, expected_attr_name):
+        _filter = self.Filter(mock_data)
         agg = _filter.get_es_agg()
         name = list(agg['aggs'].keys())[0]
         assert agg == {
@@ -203,14 +208,14 @@ class TestRangeFilter(FilterBaseTestCase):
             'aggs': {
                 name: {
                     'stats': {
-                        'field': 'my_attr'
+                        'field': expected_attr_name
                     }
                 }
             }
         }
 
-    def test_get_es_query(self, mock_query_data):
-        _filter = RangeFilter(mock_query_data)
+    def test_get_es_query(self, mock_query_data, expected_attr_name):
+        _filter = self.Filter(mock_query_data)
         query = _filter.get_es_query()
         assert query == {
             'query': {
@@ -218,7 +223,7 @@ class TestRangeFilter(FilterBaseTestCase):
                     'filter': [
                         {
                             'range': {
-                                'my_attr': {
+                                expected_attr_name: {
                                     'gte': 1,
                                     'lte': 100
                                 }
@@ -229,36 +234,45 @@ class TestRangeFilter(FilterBaseTestCase):
             }
         }
 
-    def test_add_to_empty_query(self, mock_query_data):
-        _filter = RangeFilter(mock_query_data)
+    def test_add_to_empty_query(self, mock_query_data, expected_attr_name):
+        _filter = self.Filter(mock_query_data)
         query = {}
         query = _filter.add_to_query(query)
         assert query == {
-            'query': {'bool': {'filter': [{'range': {'my_attr': {'gte': 1, 'lte': 100}}}]}}}  # noqa
+            'query': {'bool': {'filter': [{'range': {expected_attr_name: {'gte': 1, 'lte': 100}}}]}}}  # noqa
 
-    def test_add_to_existing_range_query(self, mock_query_data):
-        _filter = RangeFilter(mock_query_data)
+    def test_add_to_existing_range_query(self, mock_query_data, expected_attr_name):
+        _filter = self.Filter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'range': {'foo': {'gte': 1, 'lte': 5}}}]}}}
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'range': {'foo': {'gte': 1, 'lte': 5}}},
-                                                       {'range': {'my_attr': {'gte': 1,
-                                                                              'lte': 100}}}]}}}  # noqa
+                                                       {'range': {expected_attr_name: {'gte': 1,
+                                                                                       'lte': 100}}}]}}}  # noqa
 
-    def test_add_to_existing_range_query_same_attr(self, mock_query_data):
-        _filter = RangeFilter(mock_query_data)
+    def test_add_to_existing_range_query_same_attr(self, mock_query_data, expected_attr_name):
+        _filter = self.Filter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'range': {'my_attr': {'gte': 1, 'lte': 5}}}]}}}
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'range': {'my_attr': {'gte': 1, 'lte': 5}}},
-                                                       {'range': {'my_attr': {'gte': 1,
-                                                                              'lte': 100}}}]}}}  # noqa
+                                                       {'range': {expected_attr_name: {'gte': 1,
+                                                                                       'lte': 100}}}]}}}  # noqa
 
-    def test_add_to_other_query(self, mock_query_data):
-        _filter = RangeFilter(mock_query_data)
+    def test_add_to_other_query(self, mock_query_data, expected_attr_name):
+        _filter = self.Filter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'terms': ['foo', 'bar']}]}}}
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'terms': ['foo', 'bar']},
-                                                       {'range': {'my_attr': {'gte': 1,
-                                                                              'lte': 100}}}]}}}  # noqa
+                                                       {'range': {expected_attr_name: {'gte': 1,
+                                                                                       'lte': 100}}}]}}}  # noqa
+
+
+class TestPredictionCountFilter(TestRangeFilter):
+
+    Filter = PredictionCountFilter
+
+    @pytest.fixture
+    def expected_attr_name(self):
+        return 'my_attr.count'
 
 
 class TestFacetFilter(FilterBaseTestCase):
