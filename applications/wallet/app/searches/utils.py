@@ -5,14 +5,12 @@ from rest_framework.exceptions import ParseError
 from wallet.exceptions import InvalidRequestError
 from wallet.utils import convert_base64_to_json
 from searches.schemas import (SimilarityAnalysisSchema, ContentAnalysisSchema,
-                              LabelsAnalysisSchema, SingleLabelAnalysisSchema,
-                              FIELD_TYPE_FILTER_MAPPING)
+                              LabelsAnalysisSchema, FIELD_TYPE_FILTER_MAPPING)
 from searches.filters import (ExistsFilter, FacetFilter, RangeFilter, LabelConfidenceFilter,
                               TextContentFilter, SimilarityFilter, LabelFilter, DateFilter)
 
 
-ANALYSIS_SCHEMAS = [SimilarityAnalysisSchema, ContentAnalysisSchema, LabelsAnalysisSchema,
-                    SingleLabelAnalysisSchema]
+ANALYSIS_SCHEMAS = [SimilarityAnalysisSchema, ContentAnalysisSchema, LabelsAnalysisSchema]
 logger = logging.getLogger(__name__)
 
 
