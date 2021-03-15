@@ -96,6 +96,30 @@ describe('<FiltersContent />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render the "Count" filter', () => {
+    const filters = [
+      {
+        type: 'predictionCount',
+        attribute: 'analysis.boonai-label-detection',
+        values: {},
+      },
+    ]
+
+    require('swr').__setMockUseSWRResponse({})
+
+    const component = TestRenderer.create(
+      <FiltersContent
+        pathname="/[projectId]/visualizer"
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={filters}
+        setIsMenuOpen={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render the "Label Confidence" filter', () => {
     const filters = [
       {

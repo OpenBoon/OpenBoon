@@ -1,5 +1,835 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<FiltersContent /> should render the "Count" filter 1`] = `
+Array [
+  .emotion-0 {
+  padding: 4px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited,
+.emotion-2 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-2:hover,
+.emotion-2 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-2[aria-disabled=true],
+.emotion-2 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 4px;
+}
+
+.emotion-5 {
+  width: 4px;
+  min-width: 4px;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited,
+.emotion-6 .noop {
+  background-color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-8 {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-8:hover,
+.emotion-8.focus-visible:focus {
+  cursor: pointer;
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+.emotion-9 {
+  height: 4px;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-11 {
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
+  background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+  background-color: #2e2e2e;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+  background-color: #191919;
+}
+
+.emotion-11::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-11::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-11:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-11::placeholder {
+  font-style: italic;
+}
+
+.emotion-11:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-11:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #3A5DFF;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 42px;
+  margin-left: 4px;
+  border-radius: 2px;
+  background-color: #808080;
+  padding: 0;
+  border: 0;
+  cursor: not-allowed;
+}
+
+.emotion-13 {
+  color: #3b3b3b;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <button
+        aria-label="Add Filters"
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-3"
+        >
+          <div
+            className="emotion-4"
+          >
+            <svg
+              data-file-name="plus.svg"
+              height={20}
+            />
+          </div>
+          Add Filters
+        </div>
+      </button>
+      <div
+        className="emotion-5"
+      />
+      <button
+        className="emotion-6"
+        onClick={[Function]}
+        type="button"
+      >
+        Clear All Filters
+      </button>
+      <div
+        className="emotion-5"
+      />
+      <button
+        aria-label="Copy Search Query"
+        className="emotion-8"
+        onClick={[Function]}
+        title="Copy Search Query"
+        type="button"
+      >
+        <svg
+          data-file-name="copy.svg"
+          height={20}
+        />
+      </button>
+    </div>
+    <div
+      className="emotion-9"
+    />
+    <form
+      action=""
+      method="post"
+      onSubmit={[Function]}
+    >
+      <div
+        className="emotion-10"
+      >
+        <input
+          aria-label="Add Simple Text Filter"
+          className="emotion-11"
+          onChange={[Function]}
+          placeholder="Type here to create a simple text filter"
+          type="search"
+          value=""
+        />
+        <button
+          aria-disabled={true}
+          aria-label="Search"
+          className="emotion-12"
+          onClick={[Function]}
+          type="submit"
+        >
+          <svg
+            className="emotion-13"
+            data-file-name="plus.svg"
+            height={20}
+          />
+        </button>
+      </div>
+    </form>
+  </div>,
+  .emotion-0 {
+  overflow: auto;
+}
+
+.emotion-1 {
+  border-radius: 2px;
+  background-color: #191919;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-1:hover summary svg {
+  opacity: 1;
+}
+
+.emotion-2 {
+  list-style-type: none;
+  padding: 8px;
+  background-color: #252525;
+}
+
+.emotion-2::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-2:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  color: #808080;
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 8px;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: -2px;
+  padding-left: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+  padding-right: 4px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 4px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.emotion-8:hover,
+.emotion-8.focus-visible:focus,
+.emotion-8 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-8:hover svg,
+.emotion-8.focus-visible:focus svg,
+.emotion-8 .noop svg {
+  opacity: 1;
+}
+
+.emotion-8[aria-disabled=true],
+.emotion-8 .noop {
+  color: #808080;
+}
+
+.emotion-8:hover,
+.emotion-8.focus-visible:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-8:hover svg,
+.emotion-8.focus-visible:focus svg {
+  color: #ffffff;
+}
+
+.emotion-9 {
+  opacity: 0;
+}
+
+.emotion-11 {
+  opacity: 0;
+}
+
+.emotion-12 {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.emotion-13 {
+  padding: 16px;
+}
+
+.emotion-14 {
+  padding: 16px;
+}
+
+.emotion-15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-16 {
+  padding: 4px;
+}
+
+.emotion-17 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%, -50%);
+  -moz-transform: translate(0%, -50%);
+  -ms-transform: translate(0%, -50%);
+  transform: translate(0%, -50%);
+  cursor: pointer;
+}
+
+.emotion-18 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%, -50%);
+  -moz-transform: translate(0%, -50%);
+  -ms-transform: translate(0%, -50%);
+  transform: translate(0%, -50%);
+  pointer-events: none;
+  background-color: #4a4a4a;
+}
+
+.emotion-19 {
+  padding: 0;
+  border: none;
+  left: 0%;
+  position: absolute;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 8px;
+  height: 24px;
+  background-color: #808080;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+.emotion-19:hover,
+.emotion-19:active {
+  background-color: #ffffff;
+}
+
+.emotion-21 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+}
+
+.emotion-22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-23 {
+  text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border: 1px solid transparent;
+  width: 60%;
+}
+
+.emotion-23:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #3A5DFF;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-23:hover {
+  border: 1px solid #808080;
+}
+
+<div
+    className="emotion-0"
+  >
+    <details
+      className="emotion-1"
+      onToggle={[Function]}
+      open={true}
+    >
+      <summary
+        aria-label="analysis.boonai-label-detection"
+        className="emotion-2"
+      >
+        <div
+          className="emotion-3"
+        >
+          <svg
+            className="emotion-4"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <span
+            className="emotion-5"
+          >
+            <svg
+              color="#6088FE"
+              data-file-name="facet.svg"
+              height={20}
+            />
+          </span>
+          <span
+            className="emotion-6"
+          >
+            analysis.boonai-label-detection
+          </span>
+          <div
+            className="emotion-7"
+          >
+            <button
+              aria-label="Disable Filter"
+              className="emotion-8"
+              onClick={[Function]}
+              title="Disable Filter"
+              type="button"
+            >
+              <svg
+                className="emotion-9"
+                color="#808080"
+                data-file-name="hidden.svg"
+                height={20}
+              />
+            </button>
+            <button
+              aria-label="Delete Filter"
+              className="emotion-8"
+              onClick={[Function]}
+              title="Delete Filter"
+              type="button"
+            >
+              <svg
+                className="emotion-11"
+                color="#808080"
+                data-file-name="cross.svg"
+                height={20}
+              />
+            </button>
+          </div>
+        </div>
+      </summary>
+      <div
+        className="emotion-12"
+      >
+        <div
+          className="emotion-13"
+        >
+          <div>
+            <FilterReset
+              assetId=""
+              filter={
+                Object {
+                  "attribute": "analysis.boonai-label-detection",
+                  "type": "predictionCount",
+                  "values": Object {},
+                }
+              }
+              filterIndex={0}
+              filters={
+                Array [
+                  Object {
+                    "attribute": "analysis.boonai-label-detection",
+                    "type": "predictionCount",
+                    "values": Object {},
+                  },
+                ]
+              }
+              onReset={[Function]}
+              pathname="/[projectId]/visualizer"
+              projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+            />
+            <div
+              className="emotion-14"
+            >
+              <div
+                className="emotion-15"
+              >
+                <span>
+                  0
+                </span>
+                <span>
+                  0
+                </span>
+              </div>
+              <div
+                className="emotion-16"
+              >
+                <div
+                  style={
+                    Object {
+                      "position": "relative",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  <div
+                    className="emotion-17"
+                    onMouseDown={[Function]}
+                    onTouchStart={[Function]}
+                  />
+                  <div
+                    className="emotion-18"
+                  />
+                  <div>
+                    <button
+                      aria-valuenow={0}
+                      className="emotion-19"
+                      onKeyDown={[Function]}
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      role="slider"
+                      type="button"
+                    />
+                    <button
+                      aria-valuenow={0}
+                      className="emotion-19"
+                      onKeyDown={[Function]}
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      role="slider"
+                      type="button"
+                    />
+                  </div>
+                  <div>
+                    <div
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      style={
+                        Object {
+                          "backgroundColor": "#3A5DFF",
+                          "cursor": "pointer",
+                          "height": 4,
+                          "left": "0%",
+                          "position": "absolute",
+                          "transform": "translate(0%, -50%)",
+                          "width": "0%",
+                          "zIndex": 1,
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="emotion-21"
+              >
+                <label
+                  className="emotion-22"
+                >
+                  MIN
+                    
+                  <input
+                    className="emotion-23"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onKeyPress={[Function]}
+                    type="text"
+                    value={0}
+                  />
+                </label>
+                <label
+                  className="emotion-22"
+                >
+                  MAX
+                    
+                  <input
+                    className="emotion-23"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onKeyPress={[Function]}
+                    type="text"
+                    value={0}
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>,
+]
+`;
+
 exports[`<FiltersContent /> should render the "Date Range" filter 1`] = `
 Array [
   .emotion-0 {
