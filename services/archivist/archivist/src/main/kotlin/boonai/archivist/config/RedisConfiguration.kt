@@ -1,7 +1,7 @@
 package boonai.archivist.config
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.connection.MessageListener
@@ -18,6 +18,9 @@ class RedisConfiguration {
 
     @Autowired
     lateinit var properties: ApplicationProperties
+
+    @Autowired
+    lateinit var applicationContext: ApplicationContext
 
     @Bean
     fun redisClient(): JedisPool {
@@ -56,18 +59,26 @@ class RedisConfiguration {
     }
 
     @Bean
-    fun redisContainer(
-        @Qualifier("project-topic") projectTopic: PatternTopic,
-        @Qualifier("project-listener") projectListener: MessageListener
-    ): RedisMessageListenerContainer? {
+    fun redisContainer(): RedisMessageListenerContainer? {
         val container = RedisMessageListenerContainer()
         container.connectionFactory = jedisConnectionFactory()
-        container.addMessageListener(projectListener, projectTopic)
+        listeners.entries.forEach {
+            container.addMessageListener(
+                applicationContext.getBean(it.value, MessageListener::class.java),
+                applicationContext.getBean(it.key, PatternTopic::class.java)
+            )
+        }
         return container
     }
 
     @Bean("project-topic")
-    fun topic(): PatternTopic {
+    fun projectTopic(): PatternTopic {
         return PatternTopic("project/*")
+    }
+
+    companion object {
+        val listeners = mapOf(
+            "project-topic" to "project-listener"
+        )
     }
 }

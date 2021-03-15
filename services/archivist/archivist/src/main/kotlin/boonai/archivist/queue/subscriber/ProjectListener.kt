@@ -4,14 +4,11 @@ import boonai.archivist.service.ProjectService
 import boonai.archivist.service.ProjectServiceImpl
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.redis.connection.Message
 import org.springframework.stereotype.Service
-import java.lang.IllegalArgumentException
 import java.util.UUID
 
-@Qualifier("project-listener")
-@Service
+@Service("project-listener")
 class ProjectListener : MessageListener() {
 
     @Autowired
