@@ -1,6 +1,5 @@
 package boonai.archivist.config
 
-import boonai.archivist.queue.subscriber.ProjectListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
@@ -10,12 +9,9 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.listener.PatternTopic
 import org.springframework.data.redis.listener.RedisMessageListenerContainer
-import org.springframework.data.redis.listener.Topic
-import org.springframework.data.redis.listener.adapter.MessageListenerAdapter
 import org.springframework.data.redis.serializer.GenericToStringSerializer
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
-
 
 @Configuration
 class RedisConfiguration {
@@ -75,5 +71,3 @@ class RedisConfiguration {
         return PatternTopic("project/*")
     }
 }
-
-
