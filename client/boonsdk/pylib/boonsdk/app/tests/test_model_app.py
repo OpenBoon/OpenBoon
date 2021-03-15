@@ -64,7 +64,7 @@ class ModelAppTests(unittest.TestCase):
                 pass
 
         post_patch.return_value = {'category': 'LabelDetection'}
-        module = self.app.models.upload_trained_model('12345', MockKerasModel(), ["dog", "cat"])
+        module = self.app.models.upload_trained_model_tf('12345', MockKerasModel(), ["dog", "cat"])
         assert module.category == 'LabelDetection'
 
     @patch.object(BoonClient, 'post')
