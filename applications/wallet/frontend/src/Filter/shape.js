@@ -4,6 +4,7 @@ const filterShape = {
   type: PropTypes.oneOf([
     'exists',
     'range',
+    'predictionCount',
     'facet',
     'labelConfidence',
     'textContent',

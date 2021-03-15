@@ -7,5 +7,9 @@ export const formatOptions = ({ option }) => {
     return 'prediction'
   }
 
+  if (option === 'predictionCount') {
+    return 'count'
+  }
+
   return option
 }
