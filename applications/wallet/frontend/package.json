@@ -140,7 +140,7 @@
     "react-json-pretty": "2.2.0",
     "react-resizable": "2.0.0",
     "react-use-clipboard": "1.0.7",
-    "react-virtualized-auto-sizer": "1.0.4",
+    "react-virtualized-auto-sizer": "1.0.5",
     "react-window": "1.8.6",
     "react-window-infinite-loader": "1.0.7",
     "swr": "0.4.2",
