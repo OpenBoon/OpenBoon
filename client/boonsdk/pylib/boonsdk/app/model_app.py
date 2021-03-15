@@ -137,9 +137,9 @@ class ModelApp:
         model = self.find_one_model(id=mid)
 
         if model.type == 'TF_UPLOADED_CLASSIFIER':
-            self.upload_trained_model_tf(model, model_path, labels)
+            return self.upload_trained_model_tf(model, model_path, labels)
         elif model.type == 'PYTORCH_UPLOADED_CLASSIFIER':
-            self.upload_trained_model_pth(model, model_path, labels)
+            return self.upload_trained_model_pth(model, model_path, labels)
 
     def upload_trained_model_tf(self, model, model_path, labels):
         """
@@ -147,7 +147,7 @@ class ModelApp:
         pass the path to a Tensorflow saved model or a trained model instance itself.
 
         Args:
-            model (Model): The Model or te unique Model ID.
+            model (Model): The Model or the unique Model ID.
             model_path (mixed): The path to the model directory or a Tensorflow model instance.
             labels (list): The list of labels,.
         Returns:

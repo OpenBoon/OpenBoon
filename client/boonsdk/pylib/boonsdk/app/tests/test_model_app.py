@@ -32,14 +32,29 @@ class ModelAppTests(unittest.TestCase):
         self.assert_model(model)
 
     @patch.object(ModelApp, 'find_one_model')
-    @patch.object(BoonClient, 'send_file')
-    def test_upload_trained_model_directory(self, post_patch, model_patch):
-        post_patch.return_value = {'category': 'LabelDetection'}
+    @patch.object(ModelApp, 'upload_trained_model_tf')
+    def test_upload_trained_model_directory(self, upload_patch, model_patch):
+        upload_patch.return_value = SimpleNamespace(**{'category': 'LabelDetection'})
         model_patch.return_value = SimpleNamespace(**self.model_data)
 
         tmp_dir = tempfile.mkdtemp()
         module = self.app.models.upload_trained_model('12345', tmp_dir, ["dog", "cat"])
+        assert module.category == 'LabelDetection'
 
+    @patch.object(BoonClient, 'send_file')
+    def test_upload_trained_model_directory_tf(self, post_patch):
+        post_patch.return_value = {'category': 'LabelDetection'}
+
+        tmp_dir = tempfile.mkdtemp()
+        module = self.app.models.upload_trained_model_tf('12345', tmp_dir, ["dog", "cat"])
+        assert module.category == 'LabelDetection'
+
+    @patch.object(BoonClient, 'send_file')
+    def test_upload_trained_model_directory_pth(self, post_patch):
+        post_patch.return_value = {'category': 'LabelDetection'}
+
+        tmp_dir = tempfile.mkdtemp()
+        module = self.app.models.upload_trained_model_tf('12345', tmp_dir, ["dog", "cat"])
         assert module.category == 'LabelDetection'
 
     @patch.object(BoonClient, 'send_file')
