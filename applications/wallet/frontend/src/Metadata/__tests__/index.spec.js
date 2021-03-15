@@ -32,6 +32,13 @@ describe('<Metadata />', () => {
 
     const component = TestRenderer.create(<Metadata />)
 
+    // Filter the fields
+    act(() => {
+      component.root
+        .findByProps({ placeholder: 'Filter metadata fields' })
+        .props.onChange({ value: 'cloud' })
+    })
+
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
