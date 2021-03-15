@@ -124,7 +124,7 @@
     "@reach/skip-nav": "0.13.2",
     "@sentry/browser": "6.2.2",
     "@svgr/webpack": "5.5.0",
-    "@tippyjs/react": "4.2.3",
+    "@tippyjs/react": "4.2.4",
     "body-scroll-lock": "3.1.5",
     "camelcase": "6.2.0",
     "deep-filter": "1.0.2",
