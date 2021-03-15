@@ -198,32 +198,44 @@ class RangeFilter(BaseFilter):
     required_query_keys = ['min', 'max']
     agg_prefix = 'stats'
 
+    @property
+    def attribute(self):
+        return self.data['attribute']
+
     def get_es_agg(self):
-        attribute = self.data['attribute']
         return {
             'size': 0,
             'aggs': {
                 self.name: {
                     'stats': {
-                        'field': attribute
+                        'field': self.attribute
                     }
                 }
             }
         }
 
     def get_es_query(self):
-        attribute = self.data['attribute']
         min = self.data['values']['min']
         max = self.data['values']['max']
         return {
             'query': {
                 'bool': {
                     'filter': [
-                        {'range': {attribute: {'gte': min, 'lte': max}}}
+                        {'range': {self.attribute: {'gte': min, 'lte': max}}}
                     ]
                 }
             }
         }
+
+
+class PredictionCountFilter(RangeFilter):
+
+    type = 'predictionCount'
+
+    @property
+    def attribute(self):
+        attribute = self.data['attribute']
+        return f'{attribute}.count'
 
 
 class FacetFilter(BaseFilter):

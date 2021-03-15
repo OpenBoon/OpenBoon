@@ -410,7 +410,8 @@ class TestFieldUtility:
 
     def test_zvi_label_detection(self, mock_zmlp_client):
         result = self.field_utility.get_filter_map(mock_zmlp_client)
-        assert result['analysis']['zvi-label-detection'] == ['labelConfidence', 'exists']
+        assert result['analysis']['zvi-label-detection'] == ['labelConfidence', 'predictionCount',
+                                                             'exists']
 
     def test_labels(self, mock_zmlp_client):
         result = self.field_utility.get_filter_map(mock_zmlp_client)

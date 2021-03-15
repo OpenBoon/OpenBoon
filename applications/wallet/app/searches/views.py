@@ -201,6 +201,21 @@ class SearchViewSet(CreateModelMixin,
             *Note:* The `min` and `max` values need to be in "yyyy-mm-ddTHH:MM:SSZ"
             format (ISO 8601).
 
+        PredictionCount:
+
+            {
+                "type": "predictionCount",
+                "attribute": "$metadata_attribute_dot_path",
+                "values": {
+                    "min": $value,
+                    "max": $value
+                }
+            }
+
+            *Note:* This is meant to be used on LabelConfidence/Prediction attrs. Works
+            like a Range filter, but adds the `.count` field to the analysis name to filter
+            over the given prediction count.
+
         """
         path = 'api/v3/assets'
         fields = ['id',
