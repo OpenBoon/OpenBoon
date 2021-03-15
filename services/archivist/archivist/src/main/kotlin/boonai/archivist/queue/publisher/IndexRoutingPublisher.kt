@@ -13,5 +13,4 @@ class IndexRoutingPublisher(
     fun closeAndDeleteProject(projectID: UUID) {
         publish("project/close-and-delete", projectID)
     }
-
 }

@@ -36,5 +36,4 @@ class IndexRoutingListener(
     companion object {
         private val logger = LoggerFactory.getLogger(IndexRoutingListener::class.java)
     }
-
 }
