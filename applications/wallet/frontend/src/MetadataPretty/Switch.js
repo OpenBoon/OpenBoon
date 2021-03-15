@@ -41,15 +41,6 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
 
   if (typeof sortedValue === 'object') {
     switch (sortedValue.type) {
-      case 'single-label':
-        return (
-          <MetadataPrettyPredictions
-            name={name}
-            value={{ predictions: [sortedValue] }}
-            path={path}
-          />
-        )
-
       case 'labels':
         return (
           <MetadataPrettyPredictions

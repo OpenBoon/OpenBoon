@@ -46,18 +46,6 @@ describe('<MetadataPrettySwitch />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render single-label predictions properly', () => {
-    const component = TestRenderer.create(
-      <MetadataPrettySwitch
-        name="animal"
-        value={{ label: 'Horse', score: 0.998, type: 'single-label' }}
-        path="analysis"
-      />,
-    )
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
   it('should render label with no predictions properly', () => {
     const component = TestRenderer.create(
       <MetadataPrettySwitch
