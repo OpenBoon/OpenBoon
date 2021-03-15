@@ -115,32 +115,6 @@ class TestFieldUtility:
                                                                                           'properties': {
                                                                                               'count': {
                                                                                                   'type': 'long'},
-                                                                                              'predictions': {
-                                                                                                  'type': 'nested',
-                                                                                                  'include_in_root': True,
-                                                                                                  'dynamic': 'false',
-                                                                                                  'properties': {
-                                                                                                      'bbox': {
-                                                                                                          'type': 'float'},
-                                                                                                      'label': {
-                                                                                                          'type': 'keyword',
-                                                                                                          'fields': {
-                                                                                                              'fulltext': {
-                                                                                                                  'type': 'text'}}},
-                                                                                                      'occurrences': {
-                                                                                                          'type': 'integer'},
-                                                                                                      'point': {
-                                                                                                          'type': 'geo_point'},
-                                                                                                      'score': {
-                                                                                                          'type': 'float'},
-                                                                                                      'simhash': {
-                                                                                                          'type': 'keyword',
-                                                                                                          'index': False},
-                                                                                                      'tags': {
-                                                                                                          'type': 'keyword',
-                                                                                                          'fields': {
-                                                                                                              'fulltext': {
-                                                                                                                  'type': 'text'}}}}},
                                                                                               'type': {
                                                                                                   'type': 'text',
                                                                                                   'fields': {
@@ -423,6 +397,7 @@ class TestFieldUtility:
 
     @pytest.mark.parametrize('attr,expected', [
         ('analysis.zvi-face-detection', 'prediction'),
+        ('analysis.zvi-label-detection', 'prediction'),
         ('analysis.zvi-image-similarity', 'similarity'),
         ('analysis.zvi-text-detection', 'text_content'),
         ('aux', 'object'),
