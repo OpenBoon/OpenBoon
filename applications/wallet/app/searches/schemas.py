@@ -30,7 +30,6 @@ FIELD_TYPE_FILTER_MAPPING = {
     'text_content': TEXT_CONTENT_FILTERS,
     'prediction': PREDICTION_FILTERS,
     'label': LABEL_FILTERS,
-    'single_label': PREDICTION_FILTERS,
     'join': DEFAULT_FILTERS,
 }
 
@@ -92,11 +91,3 @@ class LabelsAnalysisSchema(AbstractAnalysisSchema):
 
     def get_field_type_representation(self):
         return {f'{self.property_name}': {'fieldType': 'prediction'}}
-
-
-class SingleLabelAnalysisSchema(AbstractAnalysisSchema):
-
-    required_properties = ['type', 'score', 'label']
-
-    def get_field_type_representation(self):
-        return {f'{self.property_name}': {'fieldType': 'single_label'}}
