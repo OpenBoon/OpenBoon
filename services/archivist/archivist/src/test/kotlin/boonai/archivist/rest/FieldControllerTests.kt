@@ -16,6 +16,8 @@ class FieldControllerTests : MockMvcTest() {
     @Autowired
     lateinit var fieldService: FieldService
 
+    override fun requiresElasticSearch() = true
+
     @Test
     fun testMapping() {
         mvc.perform(
@@ -56,6 +58,49 @@ class FieldControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.equalTo(field.id.toString())))
             .andExpect(MockMvcResultMatchers.jsonPath("$.timeCreated", CoreMatchers.anything()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.timeModified", CoreMatchers.anything()))
+            .andReturn()
+    }
+
+    @Test
+    fun testFindOne() {
+        val field = fieldService.createField(FieldSpec("name", "keyword"))
+        val filter =
+            """
+            {
+                "names": ["${field.name}"]
+            }
+            """
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/custom-fields/_find_one")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(filter)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.type", CoreMatchers.equalTo(field.type)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(field.name)))
+            .andReturn()
+    }
+
+    @Test
+    fun testSearch() {
+
+        val field = fieldService.createField(FieldSpec("name", "keyword"))
+        val filter =
+            """
+            {
+                "names": ["${field.name}"]
+            }
+            """
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/custom-fields/_search")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(filter)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].type", CoreMatchers.equalTo(field.type)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name", CoreMatchers.equalTo(field.name)))
             .andReturn()
     }
 }
