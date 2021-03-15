@@ -13,7 +13,7 @@ export const getMetadata = (event) => {
 
       return {
         ...acc,
-        [timeline]: [...timelineCues, { label: content.join(', '), score }],
+        [timeline]: [...timelineCues, { content: content.join(', '), score }],
       }
     },
     {},
