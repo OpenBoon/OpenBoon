@@ -423,16 +423,7 @@ class ProjectServiceImpl constructor(
 
     @Transactional
     override fun delete(project: Project) {
-
         projectDeleteDao.deleteProjectRelatedObjects(project.id)
-
-        // Delete API Key
-        // Delete System Storage
-        // Delete Project Storage
-        // Delete Project Indexes
-        // Delete Project from Database
-
-        authServerClient.deleteProjectApiKeys(projectId = project.id)
     }
 
     // This gets called alot so hold onto the values for a while.
