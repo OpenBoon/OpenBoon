@@ -88,7 +88,7 @@ class ContentAnalysisSchema(AbstractAnalysisSchema):
 
 class LabelsAnalysisSchema(AbstractAnalysisSchema):
 
-    required_properties = ['type', 'predictions.label', 'predictions.score']
+    required_properties = ['type', 'count']
 
     def get_field_type_representation(self):
         return {f'{self.property_name}': {'fieldType': 'prediction'}}
