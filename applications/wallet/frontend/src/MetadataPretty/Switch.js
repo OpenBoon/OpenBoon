@@ -12,8 +12,16 @@ import MetadataPrettySimilarity from './Similarity'
 import MetadataPrettyRow from './Row'
 
 const MetadataPrettySwitch = ({ name, value, path }) => {
-  if (Array.isArray(value)) {
-    return value.map((attribute, index) => (
+  // Sort Analysis modules alphabetically
+  const sortedValue =
+    path === 'analysis'
+      ? Object.keys(value)
+          .sort()
+          .reduce((obj, key) => ({ ...obj, [key]: value[key] }), {})
+      : value
+
+  if (Array.isArray(sortedValue)) {
+    return sortedValue.map((attribute, index) => (
       <div
         // eslint-disable-next-line react/no-array-index-key
         key={`${path}${index}`}
@@ -31,24 +39,19 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
     ))
   }
 
-  if (typeof value === 'object') {
-    switch (value.type) {
-      case 'single-label':
+  if (typeof sortedValue === 'object') {
+    switch (sortedValue.type) {
+      case 'labels':
         return (
           <MetadataPrettyPredictions
             name={name}
-            value={{ predictions: [value] }}
+            value={sortedValue}
             path={path}
           />
         )
 
-      case 'labels':
-        return (
-          <MetadataPrettyPredictions name={name} value={value} path={path} />
-        )
-
       case 'content':
-        return <MetadataPrettyContent name={name} value={value} />
+        return <MetadataPrettyContent name={name} value={sortedValue} />
 
       case 'similarity':
         return (
@@ -60,7 +63,11 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
             }}
           >
             <SuspenseBoundary isTransparent>
-              <MetadataPrettySimilarity name={name} value={value} path={path} />
+              <MetadataPrettySimilarity
+                name={name}
+                value={sortedValue}
+                path={path}
+              />
             </SuspenseBoundary>
           </div>
         )
@@ -89,7 +96,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
             )}
 
             <div css={name ? { paddingLeft: spacing.normal } : {}}>
-              {Object.entries(value).map(([k, v]) => (
+              {Object.entries(sortedValue).map(([k, v]) => (
                 <MetadataPrettySwitch
                   key={k}
                   name={k}
@@ -103,7 +110,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
     }
   }
 
-  return <MetadataPrettyRow name={name} value={value} path={path} />
+  return <MetadataPrettyRow name={name} value={sortedValue} path={path} />
 }
 
 MetadataPrettySwitch.propTypes = {
