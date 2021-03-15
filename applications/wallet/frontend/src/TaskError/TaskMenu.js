@@ -51,7 +51,7 @@ const TaskErrorTaskMenu = ({ taskId, revalidate }) => {
                       {
                         pathname,
                         query: {
-                          action: 'Retry',
+                          action: 'Retrying task.',
                         },
                       },
                       asPath,

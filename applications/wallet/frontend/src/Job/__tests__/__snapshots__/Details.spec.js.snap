@@ -579,7 +579,7 @@ exports[`<JobDetails /> should render properly with an action confirmation 1`] =
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #e3f7e8;
+  background-color: #dbecff;
   border-radius: 2px;
   padding: 12px;
   padding-left: 16px;
@@ -691,15 +691,15 @@ exports[`<JobDetails /> should render properly with an action confirmation 1`] =
       className="emotion-2"
     >
       <svg
-        color="#009f22"
-        data-file-name="checkmark.svg"
+        color="#0074f5"
+        data-file-name="information.svg"
         height={20}
       />
       <div
         className="emotion-3"
         role="alert"
       >
-        Retry All Failures successful.
+        Retry All Failures
       </div>
     </div>
   </div>

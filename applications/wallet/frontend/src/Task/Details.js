@@ -45,9 +45,7 @@ const TaskDetails = () => {
 
       {!!action && (
         <div css={{ display: 'flex' }}>
-          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            {`${action} successful.`}
-          </FlashMessage>
+          <FlashMessage variant={FLASH_VARIANTS.INFO}>{action}</FlashMessage>
         </div>
       )}
 

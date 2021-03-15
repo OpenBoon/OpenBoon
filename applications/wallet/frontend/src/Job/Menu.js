@@ -37,7 +37,7 @@ const JobMenu = ({ status, revalidate }) => {
         {({ onBlur, onClick }) => (
           <div>
             <ul>
-              {ACTIONS[status].map(({ name, action }) => (
+              {ACTIONS[status].map(({ name, action, confirmation }) => (
                 <li key={action}>
                   <Button
                     variant={VARIANTS.MENU_ITEM}
@@ -59,7 +59,7 @@ const JobMenu = ({ status, revalidate }) => {
                             projectId,
                             jobId,
                             refreshParam: Math.random(),
-                            action: name,
+                            action: confirmation,
                           },
                         },
                         asPath,
