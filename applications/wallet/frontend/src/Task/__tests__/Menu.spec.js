@@ -14,13 +14,11 @@ describe('<TaskMenu />', () => {
       pathname: '/[projectId]/api-keys',
       query: { projectId: PROJECT_ID, jobId: JOB_ID, taskId: TASK_ID },
     })
-    const mockRevalidate = jest.fn()
+    const mockFn = jest.fn()
 
     fetch.mockResponseOnce('{}')
 
-    const component = TestRenderer.create(
-      <TaskMenu revalidate={mockRevalidate} />,
-    )
+    const component = TestRenderer.create(<TaskMenu revalidate={mockFn} />)
 
     act(() => {
       component.root
@@ -48,6 +46,6 @@ describe('<TaskMenu />', () => {
       method: 'PUT',
     })
 
-    expect(mockRevalidate).toHaveBeenCalled()
+    expect(mockFn).toHaveBeenCalled()
   })
 })
