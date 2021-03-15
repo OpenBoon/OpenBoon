@@ -13,12 +13,12 @@ describe('<JobMenu />', () => {
       pathname: '/[projectId]/jobs/[jobId]',
       query: { projectId: PROJECT_ID, jobId: JOB_ID },
     })
-    const mockRevalidate = jest.fn()
+    const mockFn = jest.fn()
 
     fetch.mockResponseOnce('{}')
 
     const component = TestRenderer.create(
-      <JobMenu status="InProgress" revalidate={mockRevalidate} />,
+      <JobMenu status="InProgress" revalidate={mockFn} />,
     )
 
     act(() => {
@@ -47,6 +47,6 @@ describe('<JobMenu />', () => {
       method: 'PUT',
     })
 
-    expect(mockRevalidate).toHaveBeenCalled()
+    expect(mockFn).toHaveBeenCalled()
   })
 })

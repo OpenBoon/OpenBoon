@@ -24,6 +24,7 @@ describe('<TaskError />', () => {
         jobId: JOB_ID,
         taskId: TASK_ID,
         errorId: ERROR_ID,
+        action: 'Retrying task.',
       },
     })
 
@@ -88,8 +89,6 @@ describe('<TaskError />', () => {
       },
       method: 'PUT',
     })
-
-    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should render properly with an asset', () => {
@@ -101,32 +100,6 @@ describe('<TaskError />', () => {
         jobId: JOB_ID,
         taskId: TASK_ID,
         errorId: ERROR_ID,
-      },
-    })
-
-    require('swr').__setMockUseSWRResponse({
-      data: taskError,
-    })
-
-    const component = TestRenderer.create(
-      <User initialUser={mockUser}>
-        <TaskError />
-      </User>,
-    )
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
-  it('should render properly with an action confirmation', () => {
-    require('next/router').__setUseRouter({
-      pathname:
-        '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]/asset',
-      query: {
-        projectId: PROJECT_ID,
-        jobId: JOB_ID,
-        taskId: TASK_ID,
-        errorId: ERROR_ID,
-        action: 'Retry',
       },
     })
 
