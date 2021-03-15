@@ -41,6 +41,15 @@ const MetadataContent = ({ projectId, assetId }) => {
     // Ignore first level section (analysis, files, media, etc.)
     if (Object.keys(metadata).includes(prop)) return true
 
+    // Special case to filter processors
+    if (
+      typeof prop === 'number' &&
+      typeof value === 'object' &&
+      typeof value.processor === 'string'
+    ) {
+      return value.processor.toLowerCase().includes(searchString.toLowerCase())
+    }
+
     // Filter entries that are an object because it means they
     // are a section a.k.a. a module
     if (
@@ -48,7 +57,7 @@ const MetadataContent = ({ projectId, assetId }) => {
       typeof value === 'object' &&
       !Array.isArray(value)
     ) {
-      return prop.includes(searchString)
+      return prop.toLowerCase().includes(searchString.toLowerCase())
     }
 
     return true
