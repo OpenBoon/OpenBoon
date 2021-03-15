@@ -33,10 +33,10 @@ describe('<MetadataCues /> helpers', () => {
         }),
       ).toEqual({
         'gcp-label-detection': [
-          { label: 'cheese, mozzarella', score: 0.91 },
-          { label: 'pepperoni', score: 0.82 },
+          { content: 'cheese, mozzarella', score: 0.91 },
+          { content: 'pepperoni', score: 0.82 },
         ],
-        'gcp-object-detection': [{ label: 'food', score: 0.73 }],
+        'gcp-object-detection': [{ content: 'food', score: 0.73 }],
       })
     })
 
