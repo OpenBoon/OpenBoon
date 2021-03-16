@@ -5,13 +5,14 @@ import { spacing, typography } from '../Styles'
 
 import { formatFullDate, getDuration, formatDuration } from '../Date/helpers'
 
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Value, { VARIANTS } from '../Value'
 
 import TaskMenu from './Menu'
 
 const TaskDetails = () => {
   const {
-    query: { projectId, taskId },
+    query: { projectId, taskId, action },
   } = useRouter()
 
   const { data: task, mutate: revalidate } = useSWR(
@@ -41,6 +42,12 @@ const TaskDetails = () => {
       >
         Task: {name}
       </h3>
+
+      {!!action && (
+        <div css={{ display: 'flex' }}>
+          <FlashMessage variant={FLASH_VARIANTS.INFO}>{action}</FlashMessage>
+        </div>
+      )}
 
       <div css={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
         <TaskMenu revalidate={revalidate} />

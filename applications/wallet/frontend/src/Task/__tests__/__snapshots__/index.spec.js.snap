@@ -1071,6 +1071,50 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #dbecff;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-4 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-4 a:hover {
+  color: #3A5DFF;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-box-flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
@@ -1081,7 +1125,7 @@ Array [
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1090,12 +1134,12 @@ Array [
   padding-right: 48px;
 }
 
-.emotion-4 {
+.emotion-7 {
   position: relative;
   height: 100%;
 }
 
-.emotion-5 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1139,21 +1183,21 @@ Array [
   color: #ffffff;
 }
 
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
   background-color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-8:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-6 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1166,17 +1210,17 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-7 {
+.emotion-10 {
   font-weight: 700;
   color: #ffffff;
   padding-bottom: 4px;
 }
 
-.emotion-8 {
+.emotion-11 {
   color: #b3b3b3;
 }
 
-.emotion-18 {
+.emotion-21 {
   font-style: italic;
 }
 
@@ -1195,12 +1239,31 @@ Array [
       <div
         className="emotion-3"
       >
+        <svg
+          color="#0074f5"
+          data-file-name="information.svg"
+          height={20}
+        />
         <div
           className="emotion-4"
+          role="alert"
+        >
+          Retrying task.
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-6"
+      >
+        <div
+          className="emotion-7"
         >
           <button
             aria-label="Toggle Dropdown Menu"
-            className="emotion-5"
+            className="emotion-8"
             onBlur={[Function]}
             onClick={[Function]}
             type="button"
@@ -1214,83 +1277,83 @@ Array [
         </div>
       </div>
       <div
-        className="emotion-6"
+        className="emotion-9"
       >
         <div
-          className="emotion-7"
+          className="emotion-10"
         >
           ID
           :
         </div>
         <div
-          className="emotion-8"
+          className="emotion-11"
         >
           0571517b-5f31-11ea-bb46-6a6895b1a9f6
         </div>
       </div>
       <div
-        className="emotion-6"
+        className="emotion-9"
       >
         <div
-          className="emotion-7"
+          className="emotion-10"
         >
           State
           :
         </div>
         <div
-          className="emotion-8"
+          className="emotion-11"
         >
           Waiting
         </div>
       </div>
       <div
-        className="emotion-6"
+        className="emotion-9"
       >
         <div
-          className="emotion-7"
+          className="emotion-10"
         >
           Host
           :
         </div>
         <div
-          className="emotion-8"
+          className="emotion-11"
         >
           http://analyst-7b7fd7958-9zl69:5000
         </div>
       </div>
       <div
-        className="emotion-6"
+        className="emotion-9"
       >
         <div
-          className="emotion-7"
+          className="emotion-10"
         >
           Started
           :
         </div>
         <div
-          className="emotion-8"
+          className="emotion-11"
         >
           <div
-            className="emotion-18"
+            className="emotion-21"
           >
             Waiting...
           </div>
         </div>
       </div>
       <div
-        className="emotion-6"
+        className="emotion-9"
       >
         <div
-          className="emotion-7"
+          className="emotion-10"
         >
           Duration
           :
         </div>
         <div
-          className="emotion-8"
+          className="emotion-11"
         >
           <div
-            className="emotion-18"
+            className="emotion-21"
           >
             Waiting...
           </div>

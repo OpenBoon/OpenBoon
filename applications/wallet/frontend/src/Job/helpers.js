@@ -3,6 +3,7 @@ export const ACTIONS = {
     {
       name: 'Pause',
       action: 'pause',
+      confirmation: 'Pausing job.',
     },
     {
       name: 'Cancel',
@@ -13,6 +14,7 @@ export const ACTIONS = {
     {
       name: 'Restart',
       action: 'restart',
+      confirmation: 'Restarting job.',
     },
   ],
   Success: [],
@@ -21,12 +23,14 @@ export const ACTIONS = {
     {
       name: 'Retry All Failures',
       action: 'retry_all_failures',
+      confirmation: 'Retrying all failures.',
     },
   ],
   Paused: [
     {
       name: 'Resume',
       action: 'resume',
+      confirmation: 'Resuming job.',
     },
   ],
   // Follwing statuses are here for backwards compatibility with ZVI.
@@ -34,14 +38,17 @@ export const ACTIONS = {
     {
       name: 'Cancel',
       action: 'cancel',
+      confirmation: 'Canceling job.',
     },
     {
       name: 'Restart',
       action: 'restart',
+      confirmation: 'Restarting job.',
     },
     {
       name: 'Retry All Failures',
       action: 'retry_all_failures',
+      confirmation: 'Retrying all failures.',
     },
   ],
   Finished: [],
