@@ -1,5 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<MetadataPrettySwitch /> should render an empty row properly 1`] = `
+.emotion-0 {
+  padding: 12px;
+  padding-left: 16px;
+  color: #e0e0e0;
+  font-style: italic;
+}
+
+.emotion-0:not(:first-of-type) {
+  border-top: 1px solid #3b3b3b;
+}
+
+<div
+  className="emotion-0"
+>
+  empty
+</div>
+`;
+
 exports[`<MetadataPrettySwitch /> should render content detection properly 1`] = `
 Array [
   .emotion-0 {
@@ -320,6 +339,7 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
                 ]
               }
             />
+             
           </td>
           <td
             className="emotion-9"
@@ -358,6 +378,7 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
                 ]
               }
             />
+             
           </td>
           <td
             className="emotion-9"

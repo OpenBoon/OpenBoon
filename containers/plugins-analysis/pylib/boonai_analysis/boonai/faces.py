@@ -47,7 +47,7 @@ class MtCnnFaceDetectionEngine:
 
     def detect(self, path):
         result = []
-        img = Image.open(path)
+        img = Image.open(path).convert('RGB')
         img_cropped = self.mtcnn(img)
         rects, confidences = self.mtcnn.detect(img)
 

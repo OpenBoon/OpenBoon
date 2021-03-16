@@ -10,6 +10,9 @@ const asset = {
       taskId: '106e0f32-5d95-11ea-baea-364023b135f5',
       timeModified: '2020-03-03T21:22:47.575195Z',
     },
+    custom: {
+      numbers: [1, 2, 3],
+    },
     source: {
       path: 'gs://zorroa-dev-data/image/TIFF_1MB.tiff',
       extension: 'tiff',
@@ -100,6 +103,14 @@ const asset = {
         attrs: { width: 320, height: 213 },
         url:
           'https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg',
+      },
+      {
+        size: 1500,
+        name: 'dlp.dat',
+        mimetype: 'application/octet-stream',
+        id: 'assets/josv8dw1_3lw_eGb1rMCE2K0WG4zGstB/gcp/dlp.dat',
+        category: 'gcp',
+        attrs: {},
       },
     ],
     analysis: {
