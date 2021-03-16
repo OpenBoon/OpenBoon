@@ -142,6 +142,7 @@ const FiltersContent = ({
               )
 
             case 'range':
+            case 'predictionCount':
               return (
                 <FilterRange
                   key={`${filter.type}-${index}`}

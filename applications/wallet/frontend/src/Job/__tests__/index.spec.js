@@ -18,7 +18,11 @@ describe('<Job />', () => {
   it('should render properly for Tasks', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs/[jobId]',
-      query: { projectId: PROJECT_ID, jobId: JOB_ID },
+      query: {
+        projectId: PROJECT_ID,
+        jobId: JOB_ID,
+        action: 'Retry All Failures',
+      },
     })
 
     require('swr').__setMockUseSWRResponse({
