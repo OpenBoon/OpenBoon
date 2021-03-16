@@ -104,6 +104,14 @@ const asset = {
         url:
           'https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg',
       },
+      {
+        size: 1500,
+        name: 'dlp.dat',
+        mimetype: 'application/octet-stream',
+        id: 'assets/josv8dw1_3lw_eGb1rMCE2K0WG4zGstB/gcp/dlp.dat',
+        category: 'gcp',
+        attrs: {},
+      },
     ],
     analysis: {
       boonai: {

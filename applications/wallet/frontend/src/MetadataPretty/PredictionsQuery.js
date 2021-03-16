@@ -7,7 +7,7 @@ import MetadataPrettyPredictionsContent, {
 } from './PredictionsContent'
 
 const MetadataPrettyPredictionsQuery = ({ name, path }) => {
-  const attr = `${path}${name}&width=${BBOX_SIZE}`
+  const attr = `${path}.${name}&width=${BBOX_SIZE}`
 
   const {
     query: { projectId, assetId },
