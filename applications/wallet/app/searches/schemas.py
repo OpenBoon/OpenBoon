@@ -1,6 +1,7 @@
 from searches.filters import (RangeFilter, ExistsFilter, FacetFilter,
                               LabelConfidenceFilter, TextContentFilter,
-                              SimilarityFilter, DateFilter, LabelFilter)
+                              SimilarityFilter, DateFilter, LabelFilter,
+                              PredictionCountFilter)
 
 # Applicable filter sets for an ES Field type
 NUMBER_FILTERS = [RangeFilter.type, ExistsFilter.type]
@@ -9,7 +10,7 @@ SIMILARITY_FILTERS = [ExistsFilter.type, SimilarityFilter.type]
 BOOLEAN_FILTERS = [ExistsFilter.type]
 DEFAULT_FILTERS = [ExistsFilter.type]
 TEXT_FILTERS = [ExistsFilter.type]
-PREDICTION_FILTERS = [LabelConfidenceFilter.type, ExistsFilter.type]
+PREDICTION_FILTERS = [LabelConfidenceFilter.type, PredictionCountFilter.type, ExistsFilter.type]
 TEXT_CONTENT_FILTERS = [TextContentFilter.type, ExistsFilter.type]
 DATE_FILTERS = [ExistsFilter.type, DateFilter.type]
 LABEL_FILTERS = [LabelFilter.type]
@@ -30,7 +31,6 @@ FIELD_TYPE_FILTER_MAPPING = {
     'text_content': TEXT_CONTENT_FILTERS,
     'prediction': PREDICTION_FILTERS,
     'label': LABEL_FILTERS,
-    'single_label': PREDICTION_FILTERS,
     'join': DEFAULT_FILTERS,
 }
 
@@ -88,15 +88,7 @@ class ContentAnalysisSchema(AbstractAnalysisSchema):
 
 class LabelsAnalysisSchema(AbstractAnalysisSchema):
 
-    required_properties = ['type', 'predictions.label', 'predictions.score']
+    required_properties = ['type', 'count']
 
     def get_field_type_representation(self):
         return {f'{self.property_name}': {'fieldType': 'prediction'}}
-
-
-class SingleLabelAnalysisSchema(AbstractAnalysisSchema):
-
-    required_properties = ['type', 'score', 'label']
-
-    def get_field_type_representation(self):
-        return {f'{self.property_name}': {'fieldType': 'single_label'}}
