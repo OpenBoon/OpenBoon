@@ -54,6 +54,7 @@ MetadataPretty.propTypes = {
           'captions',
           'audio',
           'timeline',
+          'ocr-proxy',
         ]),
         attrs: PropTypes.shape({
           width: PropTypes.number,

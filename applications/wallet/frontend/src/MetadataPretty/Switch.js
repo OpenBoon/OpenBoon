@@ -110,6 +110,9 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
                   path={`${path.toLowerCase()}${name ? '.' : ''}${name}`}
                 />
               ))}
+              {Object.entries(sortedValue).length === 0 && (
+                <MetadataPrettyRow name="" value="" path={path} />
+              )}
             </div>
           </>
         )
