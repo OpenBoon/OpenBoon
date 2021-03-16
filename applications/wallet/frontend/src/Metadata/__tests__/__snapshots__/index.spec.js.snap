@@ -425,16 +425,16 @@ Array [
   border-top: 4px solid #4a4a4a;
 }
 
-.emotion-53 {
+.emotion-54 {
   padding: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-54 {
+.emotion-55 {
   padding-bottom: 12px;
 }
 
-.emotion-55 {
+.emotion-56 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -443,7 +443,7 @@ Array [
   position: relative;
 }
 
-.emotion-56 {
+.emotion-57 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -483,7 +483,13 @@ Array [
       >
         <div
           className="emotion-7"
-        />
+        >
+          <MetadataPrettyRow
+            name=""
+            path="analysis"
+            value=""
+          />
+        </div>
       </div>
     </details>
     <details
@@ -729,6 +735,35 @@ Array [
             value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg"
           />
         </div>
+        <div
+          className="emotion-31"
+        >
+          <MetadataPrettyRow
+            name="size"
+            path="files"
+            value={1500}
+          />
+          <MetadataPrettyRow
+            name="name"
+            path="files"
+            value="dlp.dat"
+          />
+          <MetadataPrettyRow
+            name="mimetype"
+            path="files"
+            value="application/octet-stream"
+          />
+          <MetadataPrettyRow
+            name="id"
+            path="files"
+            value="assets/josv8dw1_3lw_eGb1rMCE2K0WG4zGstB/gcp/dlp.dat"
+          />
+          <MetadataPrettyRow
+            name="category"
+            path="files"
+            value="gcp"
+          />
+        </div>
       </div>
     </details>
     <details
@@ -852,19 +887,19 @@ Array [
         className="emotion-6"
       >
         <div
-          className="emotion-53"
+          className="emotion-54"
         >
           <div
-            className="emotion-54"
+            className="emotion-55"
           >
             Processors: 
             0
           </div>
           <div
-            className="emotion-55"
+            className="emotion-56"
           >
             <div
-              className="emotion-56"
+              className="emotion-57"
             />
           </div>
         </div>
@@ -1388,6 +1423,14 @@ Array [
               "name": "image_320x213.jpg",
               "size": 30882,
               "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg",
+            },
+            Object {
+              "attrs": Object {},
+              "category": "gcp",
+              "id": "assets/josv8dw1_3lw_eGb1rMCE2K0WG4zGstB/gcp/dlp.dat",
+              "mimetype": "application/octet-stream",
+              "name": "dlp.dat",
+              "size": 1500,
             },
           ],
           "labels": Array [
