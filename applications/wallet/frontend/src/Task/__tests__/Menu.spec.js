@@ -46,6 +46,6 @@ describe('<TaskMenu />', () => {
       method: 'PUT',
     })
 
-    expect(mockFn).toHaveBeenCalled()
+    expect(mockFn).toHaveBeenCalledWith()
   })
 })
