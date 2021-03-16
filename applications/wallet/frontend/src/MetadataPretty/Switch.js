@@ -20,7 +20,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
           .reduce((obj, key) => ({ ...obj, [key]: value[key] }), {})
       : value
 
-  if (Array.isArray(sortedValue)) {
+  if (!name && Array.isArray(sortedValue)) {
     return sortedValue.map((attribute, index) => (
       <div
         // eslint-disable-next-line react/no-array-index-key
@@ -76,7 +76,13 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
         return (
           <>
             {!!name && (
-              <div css={{ borderTop: constants.borders.regular.smoke }}>
+              <div
+                css={{
+                  '&:not(:first-of-type)': {
+                    borderTop: constants.borders.regular.smoke,
+                  },
+                }}
+              >
                 <div
                   css={{
                     fontFamily: typography.family.condensed,
@@ -101,7 +107,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
                   key={k}
                   name={k}
                   value={v}
-                  path={`${path.toLowerCase()}.${name}`}
+                  path={`${path.toLowerCase()}${name ? '.' : ''}${name}`}
                 />
               ))}
             </div>
