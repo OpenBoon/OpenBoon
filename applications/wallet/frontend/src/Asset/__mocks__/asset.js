@@ -10,6 +10,9 @@ const asset = {
       taskId: '106e0f32-5d95-11ea-baea-364023b135f5',
       timeModified: '2020-03-03T21:22:47.575195Z',
     },
+    custom: {
+      numbers: [1, 2, 3],
+    },
     source: {
       path: 'gs://zorroa-dev-data/image/TIFF_1MB.tiff',
       extension: 'tiff',
