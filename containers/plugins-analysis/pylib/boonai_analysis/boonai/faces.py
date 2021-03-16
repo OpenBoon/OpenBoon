@@ -1,3 +1,4 @@
+from PIL import Image
 import cv2
 import numpy as np
 from facenet_pytorch import MTCNN, InceptionResnetV1
@@ -47,7 +48,7 @@ class MtCnnFaceDetectionEngine:
 
     def detect(self, path):
         result = []
-        img = cv2.imread(path)
+        img = Image.open(path)
         img_cropped = self.mtcnn(img)
         rects, confidences = self.mtcnn.detect(img)
 
@@ -60,7 +61,7 @@ class MtCnnFaceDetectionEngine:
             v_hash = v_hash.astype(int) + 65
             f_hash = ''.join([chr(item) for item in v_hash[0]])
 
-            rect = calculate_normalized_bbox(img.shape[1], img.shape[0], item[0])
+            rect = calculate_normalized_bbox(img.size[0], img.size[1], item[0])
             result.append({'bbox': rect, 'score': item[1], 'simhash': f_hash})
 
         return result
