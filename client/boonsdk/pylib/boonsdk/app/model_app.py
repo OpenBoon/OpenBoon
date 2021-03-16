@@ -2,7 +2,7 @@ import logging
 import os
 import tempfile
 
-from ..entity import Model, Job, ModelTypeInfo, AnalysisModule
+from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule
 from ..training import TrainingSetDownloader
 from ..util import as_collection, as_id, zip_directory
 
@@ -133,36 +133,49 @@ class ModelApp:
 
     def upload_trained_model(self, model, model_path, labels):
         """
-        Uploads a Tensorflow2/Keras model.  For the 'model_path' arg you can either
-        pass the path to a Tensorflow saved model or a trained model instance itself.
+        Upload a trained model directory to Boon AI.
 
         Args:
-            model (Model): The Model or te unique Model ID.
-            model_path (mixed): The path to the model directory or a Tensorflow model instance.
-            labels (list): The list of labels,.
+            model (Model): The model object or it's unique ID.
+            model_path (str): The path to a directory containing the proper files.
+            labels (list): A list of labels, optional if you have a labels.txt file.
+
         Returns:
-            AnalysisModule: The AnalysisModule configured to use the model.
+            dict: a dict describing the newly published Analysis Module.
         """
+        # Make sure we have the model object so we can check its type
+        mid = as_id(model)
+        model = self.find_one_model(id=mid)
+        label_path = f'{model_path}/labels.txt'
+        labels_exist = os.path.exists(label_path)
 
-        if not labels:
-            raise ValueError("Uploading a model requires an array of labels")
+        if not labels and not labels_exist:
+            raise ValueError("You must provide an list of labels or a labels.txt file.")
 
-        # check to see if its a keras model and save to a temp dir.
-        if getattr(model_path, 'save', None):
-            tmp_path = tempfile.mkdtemp()
-            model_path.save(tmp_path)
-            model_path = tmp_path
+        if labels:
+            if labels_exist:
+                # delete label file if it exists.
+                # handles exported tf ,odel
+                os.unlink(label_path)
 
-        with open(model_path + '/labels.txt', 'w') as fp:
-            for label in labels:
-                fp.write(f'{label}\n')
+            with open(label_path, 'w') as fp:
+                for label in labels:
+                    fp.write(f'{label}\n')
+
+        # check the model types.
+        if model.type not in (ModelType.TF_UPLOADED_CLASSIFIER,
+                              ModelType.PYTORCH_UPLOADED_CLASSIFIER):
+            raise ValueError(f'Invalid model type for upload: {model.type}')
 
         model_file = tempfile.mkstemp(prefix="model_", suffix=".zip")[1]
         zip_file_path = zip_directory(model_path, model_file)
-
         mid = as_id(model)
-        return AnalysisModule(self.app.client.send_file(
+
+        rsp = AnalysisModule(self.app.client.send_file(
             f'/api/v3/models/{mid}/_upload', zip_file_path))
+
+        os.unlink(zip_file_path)
+        return rsp
 
     def get_label_counts(self, model):
         """
