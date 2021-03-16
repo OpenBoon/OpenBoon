@@ -39,3 +39,17 @@ class ZviFaceDetectionProcessorTests(PluginUnitTestCase):
                                                         'MMMNRONPMMNLPMJJPNGPKJOSNJOKLM' \
                                                         'NNMMMJLKLNMNNMKNQPMINQOQLMHKNK' \
                                                         'JMRNOQMMJMOOOOOQMOPLNLNMQOKNKKLN'
+
+        image_path = test_path('images/face-recognition/marilyn.jpeg')
+        proxy_patch.return_value = image_path
+        frame = Frame(TestAsset(image_path))
+
+        processor = self.init_processor(ZviFaceDetectionProcessor(), {})
+        processor.process(frame)
+
+        analysis = frame.asset.get_attr('analysis.boonai-face-detection')
+        grouped = get_prediction_labels(analysis)
+        assert 'face0' in grouped
+        assert 'labels' == analysis['type']
+        assert analysis['predictions'][0]['bbox']
+
