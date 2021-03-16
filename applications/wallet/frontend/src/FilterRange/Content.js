@@ -41,7 +41,7 @@ const FilterRangeContent = ({
   const { results = {} } = data || {}
 
   const resultsMin = results?.min || 0
-  const resultsMax = results?.max || 1
+  const resultsMax = results?.max || (type === 'predictionCount' ? 0 : 1)
 
   const minMaxFix = resultsMin === resultsMax ? 0.001 : 0
 
@@ -147,7 +147,7 @@ const FilterRangeContent = ({
         </div>
         <div css={{ padding: spacing.small }}>
           <Slider
-            step={0.1}
+            step={type === 'predictionCount' ? 1 : 0.1}
             domain={domain}
             values={rangeValues}
             isMuted={!!isDisabled}
