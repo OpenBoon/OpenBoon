@@ -22,21 +22,20 @@ class ZviFaceDetectionProcessorTests(PluginUnitTestCase):
         assert 'face0' in grouped
         assert 'labels' == analysis['type']
         assert analysis['predictions'][0]['bbox']
-        assert analysis['predictions'][0]['simhash'] == 'JJJLMIOLPMONNKKOLLNOLMNLMLKGIP' \
-                                                        'KLINOPNKKSLMKNJNNQNOPNJPNLMLIL' \
-                                                        'OOOKPMMJOLNNLILNPJOOJLNKLNOLPM' \
-                                                        'PNLLKMOLKPMHOMJOOPNNMJPOKJLOKO' \
-                                                        'LIOPNLFOJNMHMKLPKOOONNMPNOOPLP' \
-                                                        'LLMOJJTPLONKHMPNMLNIOLOPMLMKJN' \
-                                                        'JNNNJPOLIKKJNNJKQPMOKLJMOKQLLN' \
-                                                        'LKMJJMMNQNMIQKPOJIMMPQLOPOJLIM' \
-                                                        'NJMNOPLPRJNNLMMKLILMNMMLKQKLHM' \
-                                                        'KLHLLNNJKMPKNOJIJMKQMLNKLNJLLO' \
-                                                        'LPNOMKMPKMNMNHNOMLLKNPPNLPONNR' \
-                                                        'POMPOMMQONOMKLNNLMLHJMOJLMOJNM' \
-                                                        'NQKMNLOMKMJONNHLLMMLPONKNOKLJQ' \
-                                                        'OKJLMJLJMLOLKOLMNKKKIKNLKLNMMO' \
-                                                        'MMMORONPNMNKPMJJPNGQJJNTOLMJLM' \
-                                                        'NPLMLJLLLNNLLNJMPOMINRNOLNHKMK' \
-                                                        'INSONRLMILOOMOOQNOOLNMMNQNKNKM' \
-                                                        'ML'
+        assert analysis['predictions'][0]['simhash'] == 'JHIJMJQLOMONNJKNLKMOLNMKMLKGJN' \
+                                                        'LLKNNQNKKRMLKLJNNPONQMJONKLMIL' \
+                                                        'MPNLPKNJNKMNLIMNQKNOILOJMMOKOM' \
+                                                        'PLKLLMOLKPNHPMJMOPONNKQNJJLMNP' \
+                                                        'LHMPMLGNKLOHKMLPMPONNOMPNONOKP' \
+                                                        'LLMNLKSPLOMIHLONOLMHOLOONMLJJN' \
+                                                        'KMNNJPOKHKKJMNKLPQLMIMJLOJQLMN' \
+                                                        'LKMIJMMMROOJPKOMIHMMORKPONKKIL' \
+                                                        'NJMMONLNQJNNLKMJLHMMNOMLLQKLIK' \
+                                                        'LNGJLMNJKNPKNNJIJNLPMLNKKOKLKO' \
+                                                        'LPMNLJLOLNNLMHMNMLKKNQPMMNNMNP' \
+                                                        'OPOPNMMQMNOMJLONMLMGKLOKMMNKNM' \
+                                                        'OPKNOLPMJLKNLOGJLOLLOOMLNOJLIR' \
+                                                        'OKJLMJLIOMNMKPLNNKKJIJNLKLPNMN' \
+                                                        'MMMNRONPMMNLPMJJPNGPKJOSNJOKLM' \
+                                                        'NNMMMJLKLNMNNMKNQPMINQOQLMHKNK' \
+                                                        'JMRNOQMMJMOOOOOQMOPLNLNMQOKNKKLN'
