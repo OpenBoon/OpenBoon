@@ -458,12 +458,14 @@ class AssetServiceImpl : AssetService {
         }
 
         val rsp = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
-        return BatchUpdateResponse(rsp.filter {
-            it.isFailed
-        }.map {
-            logger.warn("Failed to update asset: ${it.id}, ${it.failureMessage}")
-            it.id to "Error updating asset, check your field name or data type."
-        }.toMap())
+        return BatchUpdateResponse(
+            rsp.filter {
+                it.isFailed
+            }.map {
+                logger.warn("Failed to update asset: ${it.id}, ${it.failureMessage}")
+                it.id to "Error updating asset, check your field name or data type."
+            }.toMap()
+        )
     }
 
     override fun updateByQuery(req: UpdateAssetsByQueryRequest): Response {
