@@ -1,5 +1,4 @@
 from PIL import Image
-import cv2
 import numpy as np
 from facenet_pytorch import MTCNN, InceptionResnetV1
 
