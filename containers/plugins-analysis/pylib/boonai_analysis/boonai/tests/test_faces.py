@@ -52,4 +52,3 @@ class ZviFaceDetectionProcessorTests(PluginUnitTestCase):
         assert 'face0' in grouped
         assert 'labels' == analysis['type']
         assert analysis['predictions'][0]['bbox']
-
