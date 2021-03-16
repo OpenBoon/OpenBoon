@@ -384,4 +384,10 @@ class ModelServiceTests : AbstractTest() {
             AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("zanzibar"))
         )
     }
+
+    @Test
+    fun testGenerateModelName() {
+        val spec = ModelSpec("myModel\n   foo", ModelType.KNN_CLASSIFIER)
+        assertEquals("mymodel-foo", modelService.generateModuleName(spec))
+    }
 }
