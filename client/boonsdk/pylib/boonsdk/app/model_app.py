@@ -133,14 +133,15 @@ class ModelApp:
 
     def upload_trained_model(self, model, model_path, labels):
         """
+        Upload a trained model directory to Boon AI.
 
         Args:
-            model:
-            model_path:
-            labels:
+            model (Model): The model object or it's unique ID.
+            model_path (str): The path to a directory containing the proper files.
+            labels (list): A list of labels, optional if you have a labels.txt file.
 
         Returns:
-
+            dict: a dict describing the newly published Analysis Module.
         """
         # Make sure we have the model object so we can check its type
         mid = as_id(model)
