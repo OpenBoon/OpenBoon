@@ -1,12 +1,15 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
+import { spacing } from '../Styles'
+
 import SectionTitle from '../SectionTitle'
 import Value, { VARIANTS } from '../Value'
 import Tabs from '../Tabs'
 import TaskErrorStackTrace from '../TaskErrorStackTrace'
 import TaskErrorAsset from '../TaskErrorAsset'
 import SuspenseBoundary from '../SuspenseBoundary'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 
 import TaskErrorType from './Type'
 import TaskErrorTaskMenu from './TaskMenu'
@@ -15,7 +18,7 @@ import TaskErrorDetails from './Details'
 const TaskErrorContent = () => {
   const {
     pathname,
-    query: { projectId, errorId },
+    query: { projectId, errorId, action },
   } = useRouter()
 
   const { data: taskError, mutate: revalidate } = useSWR(
@@ -34,11 +37,13 @@ const TaskErrorContent = () => {
         {message}
       </Value>
 
-      <TaskErrorTaskMenu
-        projectId={projectId}
-        taskId={taskId}
-        revalidate={revalidate}
-      />
+      {!!action && (
+        <div css={{ display: 'flex', paddingTop: spacing.comfy }}>
+          <FlashMessage variant={FLASH_VARIANTS.INFO}>{action}</FlashMessage>
+        </div>
+      )}
+
+      <TaskErrorTaskMenu taskId={taskId} revalidate={revalidate} />
 
       <TaskErrorDetails taskError={taskError} />
 

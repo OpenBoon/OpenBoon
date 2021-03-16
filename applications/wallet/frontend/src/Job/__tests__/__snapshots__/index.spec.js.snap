@@ -432,13 +432,57 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #dbecff;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-3 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-3 a:hover {
+  color: #3A5DFF;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
 }
 
-.emotion-2 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -451,17 +495,17 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-3 {
+.emotion-6 {
   font-weight: 700;
   color: #ffffff;
   padding-bottom: 4px;
 }
 
-.emotion-4 {
+.emotion-7 {
   color: #b3b3b3;
 }
 
-.emotion-17 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -471,7 +515,7 @@ Array [
   position: relative;
 }
 
-.emotion-18 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -479,7 +523,7 @@ Array [
   width: 100%;
 }
 
-.emotion-19 {
+.emotion-22 {
   height: 100%;
   -webkit-flex: 3 0 auto;
   -ms-flex: 3 0 auto;
@@ -487,12 +531,12 @@ Array [
   background-color: #009f22;
 }
 
-.emotion-19:first-of-type {
+.emotion-22:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-19:last-of-type {
+.emotion-22:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
@@ -510,78 +554,97 @@ Array [
       <div
         className="emotion-2"
       >
+        <svg
+          color="#0074f5"
+          data-file-name="information.svg"
+          height={20}
+        />
         <div
           className="emotion-3"
+          role="alert"
+        >
+          Retry All Failures
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-6"
         >
           ID
           :
         </div>
         <div
-          className="emotion-4"
+          className="emotion-7"
         >
           82d5308b-67c2-1433-8fef-0a580a000956
         </div>
       </div>
       <div
-        className="emotion-2"
+        className="emotion-5"
       >
         <div
-          className="emotion-3"
+          className="emotion-6"
         >
           Status
           :
         </div>
         <div
-          className="emotion-4"
+          className="emotion-7"
         >
           Success
         </div>
       </div>
       <div
-        className="emotion-2"
+        className="emotion-5"
       >
         <div
-          className="emotion-3"
+          className="emotion-6"
         >
           Priority
           :
         </div>
         <div
-          className="emotion-4"
+          className="emotion-7"
         >
           100
         </div>
       </div>
       <div
-        className="emotion-2"
+        className="emotion-5"
       >
         <div
-          className="emotion-3"
+          className="emotion-6"
         >
           # Assets
           :
         </div>
         <div
-          className="emotion-4"
+          className="emotion-7"
         >
           4
         </div>
       </div>
       <div
-        className="emotion-2"
+        className="emotion-5"
       >
         <div
-          className="emotion-3"
+          className="emotion-6"
         >
           Progress
           :
         </div>
         <div
-          className="emotion-4"
+          className="emotion-7"
         >
           <div
             aria-label="Progress Bar"
-            className="emotion-17"
+            className="emotion-20"
             onKeyPress={[Function]}
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
@@ -589,10 +652,10 @@ Array [
             tabIndex="0"
           >
             <div
-              className="emotion-18"
+              className="emotion-21"
             >
               <div
-                className="emotion-19"
+                className="emotion-22"
               />
             </div>
           </div>
