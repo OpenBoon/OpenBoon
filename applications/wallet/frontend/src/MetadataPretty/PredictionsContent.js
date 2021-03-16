@@ -7,7 +7,7 @@ import Pills from '../Pills'
 
 export const BBOX_SIZE = 56
 
-const COLUMNS = ['bbox', 'label', 'score']
+const COLUMNS = ['bbox', 'label', 'content', 'score']
 
 const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
   const predictionColumns = Object.keys(predictions[0])

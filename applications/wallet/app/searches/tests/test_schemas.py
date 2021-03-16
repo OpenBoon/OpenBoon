@@ -1,7 +1,7 @@
 import pytest
 
 from searches.schemas import (SimilarityAnalysisSchema, ContentAnalysisSchema,
-                              LabelsAnalysisSchema, SingleLabelAnalysisSchema)
+                              LabelsAnalysisSchema)
 
 
 @pytest.fixture
@@ -88,10 +88,10 @@ def mock_response():
                                                 'coerce': True}}}
                                 }
                             },
-                            "zvi-content-moderation": {
+                            "zvi-label-detection-incomplete": {
                                 "properties": {
-                                    "safe": {
-                                        "type": "boolean",
+                                    "count": {
+                                        "type": "long",
                                     },
                                     "type": {
                                         "type": "text",
@@ -101,17 +101,7 @@ def mock_response():
                                                 "ignore_above": 256
                                             }
                                         }
-                                    },
-                                    'predictions': {
-                                         'properties': {
-                                             'label': {
-                                                 'type': 'keyword',
-                                                 'fields': {
-                                                     'fulltext': {
-                                                         'type': 'text'}}},
-                                             'score': {
-                                                 'type': 'float',
-                                                 'coerce': True}}}
+                                    }
                                 }
                             },
                             'setting': {'properties': {'label': {'type': 'text',
@@ -174,45 +164,27 @@ class TestLabelsAnalysisSchema:
         return mock_response['index']['mappings']['properties']['analysis']['properties']['zvi-label-detection']  # noqa
 
     @pytest.fixture
-    def safe_data(self, mock_response):
-        return mock_response['index']['mappings']['properties']['analysis']['properties']['zvi-content-moderation']  # noqa
+    def incomplete_data(self, mock_response):
+        return mock_response['index']['mappings']['properties']['analysis']['properties']['zvi-label-detection-incomplete']  # noqa
 
     @pytest.fixture
     def count_schema(self, count_data):
         return LabelsAnalysisSchema('zvi-label-detection', count_data['properties'])
 
     @pytest.fixture
-    def safe_schema(self, safe_data):
-        return LabelsAnalysisSchema('zvi-content-moderation', safe_data['properties'])
+    def incomplete_schema(self, incomplete_data):
+        return LabelsAnalysisSchema('zvi-label-detection-incomplete', incomplete_data['properties'])
 
     def test_is_valid_count(self, count_schema):
         assert count_schema.is_valid()
 
-    def test_is_valid_safe(self, safe_schema):
-        assert safe_schema.is_valid()
+    def test_is_valid_incomplete(self, incomplete_schema):
+        assert incomplete_schema.is_valid()
 
     def test_get_field_type_with_count(self, count_schema):
         rep = count_schema.get_field_type_representation()
         assert rep == {'zvi-label-detection': {'fieldType': 'prediction'}}
 
-    def test_get_field_type_with_safe(self, safe_schema):
-        rep = safe_schema.get_field_type_representation()
-        assert rep == {'zvi-content-moderation': {'fieldType': 'prediction'}}
-
-
-class TestSingleLabelAnalysisSchema:
-
-    @pytest.fixture
-    def label_data(self, mock_response):
-        return mock_response['index']['mappings']['properties']['analysis']['properties']['setting']
-
-    @pytest.fixture
-    def label_schema(self, label_data):
-        return SingleLabelAnalysisSchema('setting', label_data['properties'])
-
-    def test_is_valid(self, label_schema):
-        assert label_schema.is_valid()
-
-    def test_get_field_type(self, label_schema):
-        rep = label_schema.get_field_type_representation()
-        assert rep == {'setting': {'fieldType': 'single_label'}}
+    def test_get_field_type_with_incomplete(self, incomplete_schema):
+        rep = incomplete_schema.get_field_type_representation()
+        assert rep == {'zvi-label-detection-incomplete': {'fieldType': 'prediction'}}
