@@ -61,6 +61,7 @@ def test_is_user_project_organization_owner_false(user, project):
 
 
 def test_is_user_project_organization_owner_true(user, project):
+    Project.objects.create(name='other_project', organization=project.organization)
     assert is_user_project_organization_owner(project.organization.owners.first(), project)
 
 

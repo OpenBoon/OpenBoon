@@ -11,6 +11,10 @@ def sync_project_with_zmlp(apps, schema_editor):
         project.sync_with_zmlp()
 
 
+def reverse(apps, schema_editor):
+    return
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -23,5 +27,5 @@ class Migration(migrations.Migration):
             name='apikey',
             field=django_cryptography.fields.encrypt(models.TextField(blank=True, editable=False, null=True)),
         ),
-        migrations.RunPython(sync_project_with_zmlp)
+        migrations.RunPython(sync_project_with_zmlp, reverse_code=reverse)
     ]

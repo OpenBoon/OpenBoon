@@ -22,8 +22,11 @@ class ProjectInline(admin.TabularInline):
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ['name', 'plan', 'isActive']
-    list_filter = ['plan', 'isActive']
+    list_display = ['name', 'plan', 'owners', 'isActive']
+    list_filter = ['plan', 'owners', 'isActive']
     search_fields = ['name', 'id']
     fields = ['name', 'owners', 'plan', 'isActive']
     inlines = [ProjectInline]
+
+    def owners(self, obj):
+        return ','.join([o.username for o in object.owners.all()])

@@ -21,7 +21,7 @@ class Plan(models.TextChoices):
 class Organization(UUIDMixin, TimeStampMixin, ActiveMixin):
     """An organization is a collection of projects with owners that have full access."""
     name = models.CharField(max_length=144, unique=True, default=random_organization_name)
-    owners = models.ManyToManyField(User)
+    owners = models.ManyToManyField(User, related_name='organizations')
     plan = models.CharField(max_length=24, choices=Plan.choices, default=Plan.ACCESS)
 
     def __str__(self):
