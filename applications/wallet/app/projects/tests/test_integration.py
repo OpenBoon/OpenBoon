@@ -15,6 +15,9 @@ from django.test import RequestFactory, override_settings
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.response import Response
+from boonsdk import BoonClient
+from boonsdk.client import (BoonSdkInvalidRequestException, BoonSdkNotFoundException,
+                            BoonSdkConnectionException)
 
 from organizations.models import Organization
 from projects.models import Project, Membership
