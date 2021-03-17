@@ -10,7 +10,7 @@ abstract class MessagePubisher(
     @Autowired
     lateinit var redisTemplate: RedisTemplate<String, Any>
 
-    fun publish(operation: String, message: Any) {
+    protected fun publish(operation: String, message: Any) {
         redisTemplate.convertAndSend("${channel.topic}/$operation", message)
     }
 }

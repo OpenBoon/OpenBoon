@@ -59,7 +59,7 @@ class RedisConfiguration {
     }
 
     @Bean
-    fun redisContainer(): RedisMessageListenerContainer? {
+    fun redisContainer(): RedisMessageListenerContainer {
         val container = RedisMessageListenerContainer()
         container.connectionFactory = jedisConnectionFactory()
         listeners.entries.forEach {
