@@ -31,7 +31,7 @@ def set_index(args):
 
 
 def display_list(args):
-    fmt = '%-36s %-32s'
-    print((fmt % ('ID', 'Name')))
+    fmt = '%-36s %-32s %-5s'
+    print((fmt % ('ID', 'Name', 'Enabled')))
     for item in czar.projects.find_projects():
-        print(fmt % (item.id, item.name))
+        print(fmt % (item.id, item.name, item.enabled))
