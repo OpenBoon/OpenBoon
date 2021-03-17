@@ -3,7 +3,6 @@ package boonai.archivist.queue.subscriber
 import boonai.archivist.service.ProjectService
 import boonai.common.apikey.AuthServerClient
 import org.slf4j.LoggerFactory
-import org.springframework.data.redis.connection.Message
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -13,17 +12,7 @@ class ProjectListener(
     val authServerClient: AuthServerClient
 ) : MessageListener() {
 
-    override fun onMessage(msg: Message, p1: ByteArray?) {
-        val channel = String(msg.channel)
-        val content = String(msg.body)
-        val opt = extractOperation(channel)
-
-        optMap[opt]?.let {
-            it(content)
-        }
-    }
-
-    private val optMap = mapOf(
+    override fun getOptMap() = mapOf(
         "delete" to { content: String -> delete(content) },
         "system-storage/delete" to { content: String -> deleteProjectSystemStorage(content) },
         "storage/delete" to { content: String -> deleteProjectStorage(content) },
