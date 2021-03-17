@@ -69,7 +69,7 @@ class ModelServiceTests : AbstractTest() {
             deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
         val model = modelService.createModel(mspec)
-        assertEquals("boonai-face-recognition", model.moduleName)
+        assertEquals("faces", model.moduleName)
     }
 
     @Test

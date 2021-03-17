@@ -39,7 +39,7 @@ class FieldControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.esField", CoreMatchers.equalTo("custom.pet_name")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.path", CoreMatchers.equalTo("custom.pet_name")))
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("pet_name")))
             .andReturn()
     }
@@ -54,7 +54,7 @@ class FieldControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("name")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.esField", CoreMatchers.equalTo("custom.name")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.path", CoreMatchers.equalTo("custom.name")))
             .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.equalTo(field.id.toString())))
             .andExpect(MockMvcResultMatchers.jsonPath("$.timeCreated", CoreMatchers.anything()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.timeModified", CoreMatchers.anything()))
