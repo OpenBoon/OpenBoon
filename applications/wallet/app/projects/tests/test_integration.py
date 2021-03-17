@@ -1,23 +1,28 @@
 import base64
 import copy
-import requests
 from datetime import datetime
-from uuid import uuid4
 from unittest.mock import Mock, patch
+from uuid import uuid4
 
 import pytest
+import requests
+from boonsdk import BoonClient
+from boonsdk.client import (BoonSdkInvalidRequestException, BoonSdkNotFoundException,
+                            BoonSdkConnectionException)
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse
 from django.test import RequestFactory, override_settings
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.response import Response
 from boonsdk import BoonClient
-from boonsdk.client import (BoonSdkDuplicateException, BoonSdkInvalidRequestException,
-                            BoonSdkNotFoundException, BoonSdkConnectionException)
+from boonsdk.client import (BoonSdkInvalidRequestException, BoonSdkNotFoundException,
+                            BoonSdkConnectionException)
 
+from organizations.models import Organization
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
+from projects.utils import is_user_project_organization_owner
 from projects.views import BaseProjectViewSet
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
 
@@ -46,23 +51,18 @@ def test_project_view_user_does_not_belong_to_project(user, project):
     assert response.status_code == 403
 
 
-@override_settings(PLATFORM='zvi')
-def test_zmlp_only_flag(user, project):
+def test_is_user_project_organization_owner_no_org(user):
+    project = Project.objects.create(name='no-org')
+    assert not is_user_project_organization_owner(user, project)
 
-    class FakeViewSet(BaseProjectViewSet):
-        zmlp_only = True
 
-        def get(self, request, project):
-            return JsonResponse({'success': True})
+def test_is_user_project_organization_owner_false(user, project):
+    assert not is_user_project_organization_owner(user, project)
 
-    request = RequestFactory().get('/fake-path')
-    request.user = user
-    view = FakeViewSet()
-    view.request = request
-    view.args = []
-    view.kwargs = {'project_pk': project.id}
-    with pytest.raises(Http404):
-        view.dispatch(view.request, *view.args, **view.kwargs)
+
+def test_is_user_project_organization_owner_true(user, project):
+    Project.objects.create(name='other_project', organization=project.organization)
+    assert is_user_project_organization_owner(project.organization.owners.first(), project)
 
 
 def test_projects_view_no_projects(project, user, api_client):
@@ -76,6 +76,17 @@ def test_projects_view_with_projects(project, zmlp_project_user, api_client):
     response = api_client.get(reverse('project-list')).json()
     assert response['count'] == 1
     assert response['results'][0]['name'] == project.name
+
+
+def test_projects_view_with_org_owner(project, zmlp_project_user, api_client):
+    api_client.force_authenticate(zmlp_project_user)
+    organization = Organization.objects.create()
+    organization.owners.add(zmlp_project_user)
+    org_project = Project.objects.create(name='org project', organization=organization)
+    response = api_client.get(reverse('project-list')).json()
+    assert response['count'] == 2
+    assert response['results'][0]['name'] == project.name
+    assert response['results'][1]['name'] == org_project.name
 
 
 def test_projects_view_inactive_projects(project, zmlp_project_user, api_client):
@@ -125,7 +136,7 @@ def test_project_serializer_list(project, project2):
     assert [entry['id'] for entry in data] == [project.id, project2.id]
 
 
-def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
+def test_project_sync_with_zmlp(monkeypatch, project_zero_user, data):
     def mock_get_project(*args, **kwargs):
         return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'ESSENTIALS'}  # noqa
 
@@ -135,20 +146,18 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
     def mock_post_true(*args, **kwargs):
         return True
 
-    def mock_post_duplicate(*args, **kwargs):
-        raise BoonSdkDuplicateException({})
-
-    def mock_post_exception(*args, **kwargs):
-        raise KeyError('')
-
     def mock_put_failed_enable(*args, **kwargs):
         return {'type': 'project', 'id': '00000000-0000-0000-0000-000000000000', 'op': 'enable',
                 'success': False}
+
+    def mock_create_zmlp_api_key(*args, **kwargs):
+        return data
 
     # Test a successful sync.
     monkeypatch.setattr(BoonClient, 'get', mock_get_project)
     monkeypatch.setattr(BoonClient, 'post', mock_post_true)
     monkeypatch.setattr(BoonClient, 'put', mock_put_enable_project)
+    monkeypatch.setattr('projects.models.create_zmlp_api_key', mock_create_zmlp_api_key)
     project = Project.objects.create(name='test', id=uuid4())
     project.sync_with_zmlp()
 

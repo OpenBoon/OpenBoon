@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_auth.serializers import PasswordResetSerializer
 from rest_framework import serializers
 
-from projects.models import Membership
+from projects.models import Membership, Project
 
 
 class PasswordResetSerializer(PasswordResetSerializer):
@@ -44,10 +44,17 @@ class UserSerializer(serializers.ModelSerializer):
                             'roles', 'agreed_to_policies_date']
 
     def get_roles(self, obj):
+        # Adds roles for all projects the user is a member of.
         memberships = Membership.objects.filter(user=obj)
         roles = {}
         for membership in memberships:
             roles[str(membership.project.id)] = membership.roles
+
+        # Add roles for all projects in organizations owned by the user.
+        owned_projects = Project.objects.filter(organization__owners=obj)
+        for project in owned_projects:
+            roles[str(project.id)] = [r['name'] for r in settings.ROLES]
+
         return roles
 
     def get_agreed_to_policies_date(self, obj):
