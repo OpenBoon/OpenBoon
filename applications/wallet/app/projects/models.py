@@ -33,6 +33,7 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
                                    related_name='projects')
     organization = models.ForeignKey('organizations.Organization', on_delete=models.SET_NULL,
                                      null=True, blank=True, related_name='projects')
+    apikey = encrypt(models.TextField(blank=True, editable=False))
 
     def __str__(self):
         return self.name
@@ -74,6 +75,13 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
                 project_status_response = client.put(f'/api/v1/projects/{self.id}/_disable', {})
             if not project_status_response.get('success'):
                 raise IOError(f'Unable to sync project {self.id} status.')
+
+        # Create an apikey if one doesn't exist.
+        if not self.apikey:
+            name = f'wallet-project-key-{self.id}'
+            permissions = get_permissions_for_roles([r['name'] for r in settings.ROLES])
+            self.apikey = create_zmlp_api_key(client, name, permissions, internal=True)
+            self.save()
 
 
 class Membership(models.Model):

@@ -13,8 +13,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.response import Response
 from boonsdk import BoonClient
-from boonsdk.client import (BoonSdkDuplicateException, BoonSdkInvalidRequestException,
-                            BoonSdkNotFoundException, BoonSdkConnectionException)
+from boonsdk.client import (BoonSdkInvalidRequestException, BoonSdkNotFoundException,
+                            BoonSdkConnectionException)
 
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
@@ -125,7 +125,7 @@ def test_project_serializer_list(project, project2):
     assert [entry['id'] for entry in data] == [project.id, project2.id]
 
 
-def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
+def test_project_sync_with_zmlp(monkeypatch, project_zero_user, data):
     def mock_get_project(*args, **kwargs):
         return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'ESSENTIALS'}  # noqa
 
@@ -135,20 +135,18 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
     def mock_post_true(*args, **kwargs):
         return True
 
-    def mock_post_duplicate(*args, **kwargs):
-        raise BoonSdkDuplicateException({})
-
-    def mock_post_exception(*args, **kwargs):
-        raise KeyError('')
-
     def mock_put_failed_enable(*args, **kwargs):
         return {'type': 'project', 'id': '00000000-0000-0000-0000-000000000000', 'op': 'enable',
                 'success': False}
+
+    def mock_create_zmlp_api_key(*args, **kwargs):
+        return data
 
     # Test a successful sync.
     monkeypatch.setattr(BoonClient, 'get', mock_get_project)
     monkeypatch.setattr(BoonClient, 'post', mock_post_true)
     monkeypatch.setattr(BoonClient, 'put', mock_put_enable_project)
+    monkeypatch.setattr('projects.models.create_zmlp_api_key', mock_create_zmlp_api_key)
     project = Project.objects.create(name='test', id=uuid4())
     project.sync_with_zmlp()
 
