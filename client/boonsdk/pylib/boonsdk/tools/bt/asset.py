@@ -16,8 +16,10 @@ def add_subparser(subparsers):
 
     subparser.set_defaults(func=handle_default)
 
+
 def handle_default(args):
     pass
+
 
 def set_field_value(args):
     j_value = json.loads(args.value)
