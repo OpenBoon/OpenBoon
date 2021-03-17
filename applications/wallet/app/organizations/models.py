@@ -19,17 +19,16 @@ class Plan(models.TextChoices):
 
 
 class Organization(UUIDMixin, TimeStampMixin, ActiveMixin):
-    """An organization is a collection of projects with an owner. Currently this is only
-    used for billing purposes."""
+    """An organization is a collection of projects with owners that have full access."""
     name = models.CharField(max_length=144, unique=True, default=random_organization_name)
-    owner = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, blank=True)
+    owners = models.ManyToManyField(User, related_name='organizations')
     plan = models.CharField(max_length=24, choices=Plan.choices, default=Plan.ACCESS)
 
     def __str__(self):
         return self.name
 
     def __repr__(self):
-        return f"Organization(name='{self.name}', owner_id={self.owner_id})"
+        return f"Organization(name='{self.name}')"
 
     def save(self, *args, **kwargs):
         with transaction.atomic():
