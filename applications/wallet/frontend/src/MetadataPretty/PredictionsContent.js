@@ -106,6 +106,7 @@ const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
                             title={prediction.bbox}
                             src={prediction.b64_image}
                           />
+                          &nbsp;
                         </td>
                       )
                     }

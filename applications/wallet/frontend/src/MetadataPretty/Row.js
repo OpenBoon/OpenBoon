@@ -7,6 +7,24 @@ import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 import { formatDisplayName, formatDisplayValue } from '../Metadata/helpers'
 
 const MetadataPrettyRow = ({ name, value, path }) => {
+  if (name === '' && value === '') {
+    return (
+      <div
+        css={{
+          '&:not(:first-of-type)': {
+            borderTop: constants.borders.regular.smoke,
+          },
+          padding: spacing.moderate,
+          paddingLeft: spacing.normal,
+          color: colors.structure.pebble,
+          fontStyle: typography.style.italic,
+        }}
+      >
+        empty
+      </div>
+    )
+  }
+
   return (
     <div
       css={{

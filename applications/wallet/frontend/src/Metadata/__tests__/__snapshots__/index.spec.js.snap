@@ -399,24 +399,42 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-21 {
+.emotion-22:not(:first-of-type) {
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-23 {
+  font-family: Roboto Condensed;
+  color: #808080;
+  padding: 16px;
+  padding-bottom: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-24 {
+  padding-left: 16px;
+}
+
+.emotion-31 {
   width: 100%;
 }
 
-.emotion-21:not(:first-of-type) {
+.emotion-31:not(:first-of-type) {
   border-top: 4px solid #4a4a4a;
 }
 
-.emotion-43 {
+.emotion-54 {
   padding: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-44 {
+.emotion-55 {
   padding-bottom: 12px;
 }
 
-.emotion-45 {
+.emotion-56 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -425,7 +443,7 @@ Array [
   position: relative;
 }
 
-.emotion-46 {
+.emotion-57 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -465,7 +483,13 @@ Array [
       >
         <div
           className="emotion-7"
-        />
+        >
+          <MetadataPrettyRow
+            name=""
+            path="analysis"
+            value=""
+          />
+        </div>
       </div>
     </details>
     <details
@@ -500,34 +524,100 @@ Array [
         >
           <MetadataPrettyRow
             name="type"
-            path="clip."
+            path="clip"
             value="page"
           />
           <MetadataPrettyRow
             name="start"
-            path="clip."
+            path="clip"
             value={1}
           />
           <MetadataPrettyRow
             name="stop"
-            path="clip."
+            path="clip"
             value={1}
           />
           <MetadataPrettyRow
             name="length"
-            path="clip."
+            path="clip"
             value={1}
           />
           <MetadataPrettyRow
             name="pile"
-            path="clip."
+            path="clip"
             value="pUn6wBxUN7x9JxOxLkvruOyNdYA"
           />
           <MetadataPrettyRow
             name="sourceAssetId"
-            path="clip."
+            path="clip"
             value="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
           />
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-1"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="Custom"
+        className="emotion-2"
+      >
+        <div
+          className="emotion-3"
+        >
+          <svg
+            className="emotion-4"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <span
+            className="emotion-5"
+          >
+            Custom
+          </span>
+        </div>
+      </summary>
+      <div
+        className="emotion-6"
+      >
+        <div
+          className="emotion-7"
+        >
+          <div
+            className="emotion-22"
+          >
+            <div
+              className="emotion-23"
+            >
+              <span
+                title="custom.numbers"
+              >
+                Numbers
+              </span>
+            </div>
+            <div />
+          </div>
+          <div
+            className="emotion-24"
+          >
+            <MetadataPrettyRow
+              name="0"
+              path="custom.numbers"
+              value={1}
+            />
+            <MetadataPrettyRow
+              name="1"
+              path="custom.numbers"
+              value={2}
+            />
+            <MetadataPrettyRow
+              name="2"
+              path="custom.numbers"
+              value={3}
+            />
+          </div>
         </div>
       </div>
     </details>
@@ -559,7 +649,7 @@ Array [
         className="emotion-6"
       >
         <div
-          className="emotion-21"
+          className="emotion-31"
         >
           <MetadataPrettyRow
             name="name"
@@ -588,7 +678,7 @@ Array [
           />
         </div>
         <div
-          className="emotion-21"
+          className="emotion-31"
         >
           <MetadataPrettyRow
             name="name"
@@ -617,7 +707,7 @@ Array [
           />
         </div>
         <div
-          className="emotion-21"
+          className="emotion-31"
         >
           <MetadataPrettyRow
             name="name"
@@ -643,6 +733,35 @@ Array [
             name="url"
             path="files"
             value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg"
+          />
+        </div>
+        <div
+          className="emotion-31"
+        >
+          <MetadataPrettyRow
+            name="size"
+            path="files"
+            value={1500}
+          />
+          <MetadataPrettyRow
+            name="name"
+            path="files"
+            value="dlp.dat"
+          />
+          <MetadataPrettyRow
+            name="mimetype"
+            path="files"
+            value="application/octet-stream"
+          />
+          <MetadataPrettyRow
+            name="id"
+            path="files"
+            value="assets/josv8dw1_3lw_eGb1rMCE2K0WG4zGstB/gcp/dlp.dat"
+          />
+          <MetadataPrettyRow
+            name="category"
+            path="files"
+            value="gcp"
           />
         </div>
       </div>
@@ -709,32 +828,32 @@ Array [
         >
           <MetadataPrettyRow
             name="width"
-            path="media."
+            path="media"
             value={650}
           />
           <MetadataPrettyRow
             name="height"
-            path="media."
+            path="media"
             value={434}
           />
           <MetadataPrettyRow
             name="aspect"
-            path="media."
+            path="media"
             value={1.5}
           />
           <MetadataPrettyRow
             name="orientation"
-            path="media."
+            path="media"
             value="landscape"
           />
           <MetadataPrettyRow
             name="type"
-            path="media."
+            path="media"
             value="image"
           />
           <MetadataPrettyRow
             name="length"
-            path="media."
+            path="media"
             value={1}
           />
         </div>
@@ -768,19 +887,19 @@ Array [
         className="emotion-6"
       >
         <div
-          className="emotion-43"
+          className="emotion-54"
         >
           <div
-            className="emotion-44"
+            className="emotion-55"
           >
             Processors: 
             0
           </div>
           <div
-            className="emotion-45"
+            className="emotion-56"
           >
             <div
-              className="emotion-46"
+              className="emotion-57"
             />
           </div>
         </div>
@@ -818,7 +937,7 @@ Array [
         >
           <MetadataPrettyRow
             name="simhash"
-            path="similarity."
+            path="similarity"
             value="NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP"
           />
         </div>
@@ -856,37 +975,37 @@ Array [
         >
           <MetadataPrettyRow
             name="path"
-            path="source."
+            path="source"
             value="gs://zorroa-dev-data/image/TIFF_1MB.tiff"
           />
           <MetadataPrettyRow
             name="extension"
-            path="source."
+            path="source"
             value="tiff"
           />
           <MetadataPrettyRow
             name="filename"
-            path="source."
+            path="source"
             value="TIFF_1MB.tiff"
           />
           <MetadataPrettyRow
             name="mimetype"
-            path="source."
+            path="source"
             value="image/tiff"
           />
           <MetadataPrettyRow
             name="filesize"
-            path="source."
+            path="source"
             value={1131930}
           />
           <MetadataPrettyRow
             name="checksum"
-            path="source."
+            path="source"
             value={1867533868}
           />
           <MetadataPrettyRow
             name="url"
-            path="source."
+            path="source"
             value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff"
           />
         </div>
@@ -924,37 +1043,37 @@ Array [
         >
           <MetadataPrettyRow
             name="jobId"
-            path="system."
+            path="system"
             value="106d4be1-5d95-11ea-baea-364023b135f5"
           />
           <MetadataPrettyRow
             name="dataSourceId"
-            path="system."
+            path="system"
             value="10509c20-5d95-11ea-baea-364023b135f5"
           />
           <MetadataPrettyRow
             name="timeCreated"
-            path="system."
+            path="system"
             value="2020-03-03T21:22:24.922700Z"
           />
           <MetadataPrettyRow
             name="state"
-            path="system."
+            path="system"
             value="Analyzed"
           />
           <MetadataPrettyRow
             name="projectId"
-            path="system."
+            path="system"
             value="89382033-bcbb-4c8f-81a9-3d0883298a81"
           />
           <MetadataPrettyRow
             name="taskId"
-            path="system."
+            path="system"
             value="106e0f32-5d95-11ea-baea-364023b135f5"
           />
           <MetadataPrettyRow
             name="timeModified"
-            path="system."
+            path="system"
             value="2020-03-03T21:22:47.575195Z"
           />
         </div>
@@ -1264,6 +1383,13 @@ Array [
             "stop": 1,
             "type": "page",
           },
+          "custom": Object {
+            "numbers": Array [
+              1,
+              2,
+              3,
+            ],
+          },
           "files": Array [
             Object {
               "attrs": Object {
@@ -1297,6 +1423,14 @@ Array [
               "name": "image_320x213.jpg",
               "size": 30882,
               "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg",
+            },
+            Object {
+              "attrs": Object {},
+              "category": "gcp",
+              "id": "assets/josv8dw1_3lw_eGb1rMCE2K0WG4zGstB/gcp/dlp.dat",
+              "mimetype": "application/octet-stream",
+              "name": "dlp.dat",
+              "size": 1500,
             },
           ],
           "labels": Array [
