@@ -54,7 +54,7 @@ class UserSerializer(serializers.ModelSerializer):
         owned_projects = Project.objects.filter(organization__owners=obj)
         for project in owned_projects:
             roles[str(project.id)] = [r['name'] for r in settings.ROLES]
-            
+
         return roles
 
     def get_agreed_to_policies_date(self, obj):
