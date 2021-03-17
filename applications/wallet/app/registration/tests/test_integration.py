@@ -355,7 +355,7 @@ def test_api_login_google_oauth_bad_issuer(api_client, monkeypatch, user):
     assert response.status_code == 401
 
 
-def test_get_me(login, api_client):
+def test_get_me(login, api_client, project):
     response = api_client.get(reverse('me'))
     assert response.status_code == 200
     response_data = response.json()
@@ -363,6 +363,20 @@ def test_get_me(login, api_client):
     assert response_data['username'] == 'user'
     assert response_data['firstName'] == ''
     assert response_data['lastName'] == ''
+    assert response_data['roles'] == {str(project.id): ['ML_Tools', 'User_Admin']}
+
+
+def test_get_me_org_owner(api_client, project):
+    api_client.force_authenticate(project.organization.owners.first())
+    api_client.force_login(project.organization.owners.first())
+    response = api_client.get(reverse('me'))
+    assert response.status_code == 200
+    response_data = response.json()
+    assert response_data['email'] == 'software@zorroa.com'
+    assert response_data['username'] == 'superuser'
+    assert response_data['firstName'] == ''
+    assert response_data['lastName'] == ''
+    assert response_data['roles'] == {str(project.id): ['ML_Tools', 'API_Keys', 'User_Admin']}
 
 
 def test_patch_me(login, api_client):
