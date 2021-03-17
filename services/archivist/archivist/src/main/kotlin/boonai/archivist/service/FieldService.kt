@@ -1,8 +1,11 @@
 package boonai.archivist.service
 
 import boonai.archivist.domain.Field
+import boonai.archivist.domain.FieldFilter
 import boonai.archivist.domain.FieldSpec
+import boonai.archivist.repository.CustomFieldDao
 import boonai.archivist.repository.FieldDao
+import boonai.archivist.repository.KPagedList
 import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.getZmlpActor
 import boonai.common.service.logging.LogAction
@@ -24,12 +27,23 @@ interface FieldService {
      * Get an existing field by id.
      */
     fun getField(id: UUID): Field
+
+    /**
+     * Find a single field.
+     */
+    fun findOneField(filter: FieldFilter): Field
+
+    /**
+     * Search for fields.
+     */
+    fun findFields(filter: FieldFilter): KPagedList<Field>
 }
 
 @Service
 @Transactional
 class FieldServiceImpl(
     val fieldDao: FieldDao,
+    val customFieldDao: CustomFieldDao,
     val indexMappingService: IndexMappingService
 ) : FieldService {
 
@@ -72,6 +86,16 @@ class FieldServiceImpl(
     @Transactional(readOnly = true)
     override fun getField(id: UUID): Field {
         return fieldDao.getByProjectIdAndId(getProjectId(), id)
+    }
+
+    @Transactional(readOnly = true)
+    override fun findOneField(filter: FieldFilter): Field {
+        return customFieldDao.findOne(filter)
+    }
+
+    @Transactional(readOnly = true)
+    override fun findFields(filter: FieldFilter): KPagedList<Field> {
+        return customFieldDao.getAll(filter)
     }
 
     companion object {

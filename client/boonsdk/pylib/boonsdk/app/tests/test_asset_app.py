@@ -386,7 +386,7 @@ class AssetAppTests(unittest.TestCase):
         put_patch.return_value = {
             'success': True
         }
-        rsp = self.app.assets.update_custom_fields(
+        rsp = self.app.assets.set_field_values(
             "12345", {"shoe": "nike"})
         assert put_patch.return_value == rsp
 
