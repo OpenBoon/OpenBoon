@@ -9,6 +9,7 @@ import requests
 from boonsdk import BoonClient
 from boonsdk.client import (BoonSdkInvalidRequestException, BoonSdkNotFoundException,
                             BoonSdkConnectionException)
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.test import RequestFactory, override_settings
@@ -83,6 +84,12 @@ def test_projects_view_with_org_owner(project, zmlp_project_user, api_client):
     organization = Organization.objects.create()
     organization.owners.add(zmlp_project_user)
     org_project = Project.objects.create(name='org project', organization=organization)
+
+    # Adding users to project to test for a bad query regression.
+    org_project.users.add(User.objects.create(username='user1'))
+    org_project.users.add(User.objects.create(username='user2'))
+    org_project.users.add(User.objects.create(username='user3'))
+
     response = api_client.get(reverse('project-list')).json()
     assert response['count'] == 2
     assert response['results'][0]['name'] == project.name
