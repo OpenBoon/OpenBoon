@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { useEffect, useRef } from 'react'
 
-import { colors, constants, zIndex } from '../Styles'
+import { colors, constants, spacing, zIndex } from '../Styles'
 
 import { getScroller } from '../Scroll/helpers'
 
@@ -12,22 +12,34 @@ const TimelineScrollbar = ({ settings }) => {
   const horizontalScroller = getScroller({ namespace: 'Timeline' })
   const scrollbarRef = useRef()
 
+  const horizontalScrollerDeregister = horizontalScroller.register({
+    eventName: 'scroll',
+    callback: /* istanbul ignore next */ ({ node }) => {
+      if (!scrollbarRef.current || !node) return
+
+      const maxScrollLeft = node.scrollWidth - node.offsetWidth
+
+      const scrollPercent =
+        maxScrollLeft === 0 ? maxScrollLeft : node.scrollLeft / maxScrollLeft
+
+      const {
+        width: scrollbarWidth,
+      } = scrollbarRef.current.getBoundingClientRect()
+
+      const scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
+
+      const availableScroll =
+        scrollbarTrackWidth - scrollbarRef.current.offsetWidth
+
+      scrollbarRef.current.style.left = `${scrollPercent * availableScroll}px`
+    },
+  })
+
   useEffect(() => {
-    const horizontalScrollerDeregister = horizontalScroller.register({
-      eventName: 'scroll',
-      callback: /* istanbul ignore next */ ({ node }) => {
-        if (!scrollbarRef.current || !node) return
-
-        scrollbarRef.current.style.left = `${
-          node.scrollLeft / (settings.zoom / 100)
-        }px`
-      },
-    })
-
     return () => {
       horizontalScrollerDeregister()
     }
-  }, [horizontalScroller, scrollbarRef, settings.zoom])
+  }, [horizontalScrollerDeregister])
 
   return (
     <>
@@ -49,6 +61,8 @@ const TimelineScrollbar = ({ settings }) => {
           height: LAST_ROW_HEIGHT,
           backgroundColor: colors.structure.soot,
           zIndex: zIndex.timeline.tracks + 1,
+          paddingLeft: spacing.small,
+          paddingRight: spacing.small,
         }}
       >
         <div
