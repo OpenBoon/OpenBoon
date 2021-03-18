@@ -1,12 +1,11 @@
 package boonai.archivist.queue.publisher
 
-import boonai.archivist.AbstractTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
 import kotlin.test.assertEquals
 
-class IndexRoutingPublisherTest() : AbstractTest() {
+class IndexRoutingPublisherTest() : PublisherTest() {
 
     @Autowired
     lateinit var indexRoutingPublisher: IndexRoutingPublisher
@@ -14,14 +13,15 @@ class IndexRoutingPublisherTest() : AbstractTest() {
     @Test
     fun testCloseAndDeleteProject() {
         val randomId = UUID.randomUUID()
-        redisListener.addMessageListener(
 
-            { message, _ ->
-                assertEquals(randomId, UUID.nameUUIDFromBytes(message.body))
+        testPublishingMethod(
+            indexRoutingPublisher.channel,
+            {
+                indexRoutingPublisher.closeAndDeleteProject(randomId)
             },
-            indexRoutingPublisher.channel
+            { message ->
+                assertEquals(randomId.toString(), String(message.body))
+            }
         )
-
-        indexRoutingPublisher.closeAndDeleteProject(UUID.randomUUID())
     }
 }
