@@ -92,8 +92,8 @@ def test_projects_view_with_org_owner(project, zmlp_project_user, api_client):
 
     response = api_client.get(reverse('project-list')).json()
     assert response['count'] == 2
-    assert response['results'][0]['name'] == project.name
-    assert response['results'][1]['name'] == org_project.name
+    assert response['results'][0]['name'] == org_project.name
+    assert response['results'][1]['name'] == project.name
 
 
 def test_projects_view_inactive_projects(project, zmlp_project_user, api_client):
