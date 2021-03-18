@@ -6,6 +6,8 @@ import { colors, constants, zIndex } from '../Styles'
 
 import { getScroller } from '../Scroll/helpers'
 
+import { LAST_ROW_HEIGHT } from './Scrollbar'
+
 import { updatePlayheadPosition, GUIDE_WIDTH } from './helpers'
 
 const HEIGHT = 12
@@ -119,7 +121,7 @@ const TimelinePlayhead = ({ videoRef, rulerRef, zoom, followPlayhead }) => {
         position: 'absolute',
         marginTop: 0,
         top: constants.timeline.rulerRowHeight - HEIGHT,
-        bottom: 0,
+        bottom: LAST_ROW_HEIGHT,
         marginLeft: -(WIDTH / 2) + constants.borderWidths.regular / 2,
         width: WIDTH,
         display: 'flex',

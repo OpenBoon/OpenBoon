@@ -291,6 +291,7 @@ const Timeline = ({ videoRef, length }) => {
               settings={settings}
               dispatch={dispatch}
             />
+
             <TimelineResize
               dispatch={dispatch}
               zoom={settings.zoom}
