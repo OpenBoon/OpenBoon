@@ -480,7 +480,7 @@ class ProjectViewSet(ListModelMixin,
 
     def get_queryset(self):
         user = self.request.user
-        return Project.objects.filter(Q(users=user) | Q(organization__owners=user))
+        return Project.objects.filter(Q(users=user) | Q(organization__owners=user)).distinct()
 
     @action(methods=['get'], detail=True)
     def ml_usage_this_month(self, request, pk):
