@@ -10,7 +10,7 @@ exports[`<TimelinePlayhead /> should render properly 1`] = `
   position: absolute;
   margin-top: 0;
   top: 32px;
-  bottom: 0;
+  bottom: 36px;
   margin-left: -4.5px;
   width: 10px;
   display: -webkit-box;
