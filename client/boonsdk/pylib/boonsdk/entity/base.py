@@ -1,3 +1,5 @@
+import json
+
 from datetime import datetime
 
 
@@ -30,6 +32,15 @@ class BaseEntity:
     def actor_modified(self):
         """The UUID of the actor that modified the entity."""
         return self._data['actorModified']
+
+    def as_json(self):
+        """
+        A json string containing the entity internals
+
+        Returns:
+            (str): the json.
+        """
+        return json.dumps(self._data, indent=2)
 
     def __hash__(self):
         return hash(self._data['id'])

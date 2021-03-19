@@ -33,9 +33,9 @@ def add_subparser(subparsers):
     open_cmd.add_argument('index', metavar='INDEX', help='The Index id')
     open_cmd.set_defaults(func=open_index)
 
-    open_cmd = commands.add_parser('delete', help='Delete an index.')
-    open_cmd.add_argument('index', metavar='INDEX', help='The Index id')
-    open_cmd.set_defaults(func=delete_index)
+    del_cmd = commands.add_parser('delete', help='Delete an index.')
+    del_cmd.add_argument('index', metavar='INDEX', help='The Index id')
+    del_cmd.set_defaults(func=delete_index)
 
     subparser.set_defaults(func=handle_args)
 

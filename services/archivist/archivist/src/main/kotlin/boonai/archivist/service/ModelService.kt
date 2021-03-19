@@ -12,7 +12,6 @@ import boonai.archivist.domain.ModelApplyResponse
 import boonai.archivist.domain.ModelFilter
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelTrainingArgs
-import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.PipelineMod
 import boonai.archivist.domain.PipelineModSpec
 import boonai.archivist.domain.PipelineModUpdate
@@ -88,6 +87,7 @@ interface ModelService {
 
     fun validateTensorflowModel(path: Path)
     fun validatePyTorchModel(path: Path)
+    fun generateModuleName(spec: ModelSpec): String
 }
 
 @Service
@@ -103,12 +103,18 @@ class ModelServiceImpl(
     val fileStorageService: ProjectStorageService
 ) : ModelService {
 
+    override fun generateModuleName(spec: ModelSpec): String {
+        return spec.moduleName ?: "${spec.name}"
+            .replace(Regex("[\\s\\n\\r\\t]+", RegexOption.MULTILINE), "-")
+            .toLowerCase()
+    }
+
     override fun createModel(spec: ModelSpec): Model {
         val time = System.currentTimeMillis()
         val id = UUIDGen.uuid1.generate()
         val actor = getZmlpActor()
 
-        val moduleName = (spec.moduleName ?: spec.type.moduleName ?: spec.name)
+        val moduleName = generateModuleName(spec)
 
         if (moduleName.trim().isEmpty() || !moduleName.matches(modelNameRegex)) {
             throw IllegalArgumentException(
@@ -479,11 +485,7 @@ class ModelServiceImpl(
 
         try {
 
-            if (model.type == ModelType.TF_UPLOADED_CLASSIFIER) {
-                validateTensorflowModel(tmpFile)
-            } else if (model.type == ModelType.PYTORCH_UPLOADED_CLASSIFIER) {
-                validatePyTorchModel(tmpFile)
-            } else {
+            if (!model.type.uploadable) {
                 throw IllegalArgumentException("The model type ${model.type} does not support uploads")
             }
 

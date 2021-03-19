@@ -1,5 +1,9 @@
 package boonai.archivist.domain
 
+import boonai.archivist.repository.KDaoFilter
+import boonai.archivist.security.getProjectId
+import boonai.archivist.util.JdbcUtils
+import com.fasterxml.jackson.annotation.JsonIgnore
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
@@ -70,7 +74,7 @@ class Field(
         return id.hashCode()
     }
 
-    fun getEsField(): String {
+    fun getPath(): String {
         return "custom.$name"
     }
 
@@ -115,5 +119,53 @@ class Field(
             "point",
             "shape"
         )
+    }
+}
+
+@ApiModel("Job Filter", description = "Search filter for finding Fields.")
+class FieldFilter(
+    @ApiModelProperty("Field UUIDs to match.")
+    val ids: List<UUID>? = null,
+
+    @ApiModelProperty("Field names to match.")
+    val names: List<String>? = null,
+
+    @ApiModelProperty("Field types to match.")
+    val types: List<String>? = null
+
+) : KDaoFilter() {
+
+    @JsonIgnore
+    override val sortMap: Map<String, String> =
+        mapOf(
+            "id" to "field.pk_field",
+            "name" to "field.str_name",
+            "type" to "field.str_type"
+        )
+
+    @JsonIgnore
+    override fun build() {
+
+        if (sort.isNullOrEmpty()) {
+            sort = listOf("name:desc")
+        }
+
+        addToWhere("field.pk_project=?")
+        addToValues(getProjectId())
+
+        ids?.let {
+            addToWhere(JdbcUtils.inClause("field.pk_field", it.size))
+            addToValues(it)
+        }
+
+        names?.let {
+            addToWhere(JdbcUtils.inClause("field.str_name", it.size))
+            addToValues(it)
+        }
+
+        types?.let {
+            addToWhere(JdbcUtils.inClause("field.str_type", it.size))
+            addToValues(it)
+        }
     }
 }
