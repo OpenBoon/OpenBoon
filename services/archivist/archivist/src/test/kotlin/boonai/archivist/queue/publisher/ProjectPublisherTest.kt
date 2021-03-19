@@ -1,14 +1,11 @@
 package boonai.archivist.queue.publisher
 
+import boonai.archivist.queue.PubSubAbstractTest
 import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
 import kotlin.test.assertEquals
 
-class ProjectPublisherTest : PublisherTest() {
-
-    @Autowired
-    lateinit var projectPublisher: ProjectPublisher
+class ProjectPublisherTest : PubSubAbstractTest() {
 
     @Test
     fun projectDeletePublishTest() {

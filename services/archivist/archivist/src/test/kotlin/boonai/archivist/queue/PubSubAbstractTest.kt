@@ -1,11 +1,24 @@
-package boonai.archivist.queue.publisher
+package boonai.archivist.queue
 
 import boonai.archivist.AbstractTest
+import boonai.archivist.queue.listener.IndexRoutingListener
+import boonai.archivist.queue.publisher.IndexRoutingPublisher
+import boonai.archivist.queue.publisher.ProjectPublisher
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.redis.connection.Message
 import org.springframework.data.redis.listener.Topic
 import java.util.concurrent.Phaser
 
-class PublisherTest : AbstractTest() {
+class PubSubAbstractTest : AbstractTest() {
+
+    @Autowired
+    lateinit var indexRoutingPublisher: IndexRoutingPublisher
+
+    @Autowired
+    lateinit var indexRoutingListener: IndexRoutingListener
+
+    @Autowired
+    lateinit var projectPublisher: ProjectPublisher
 
     /**
      * This Publish an message on a redis pub/sub channel and waits until the message arrive
@@ -18,7 +31,7 @@ class PublisherTest : AbstractTest() {
     fun testPublishingMethod(
         channel: Topic,
         publishingMethod: () -> Any,
-        listenerWithValidations: (message: Message) -> Any
+        listenerWithValidations: (message: Message) -> Any,
     ) {
         val ph = Phaser(2)
         var error: AssertionError? = null
@@ -33,7 +46,8 @@ class PublisherTest : AbstractTest() {
             }
         }
         redisListener.addMessageListener(
-            listener, channel
+            listener,
+            channel
         )
 
         publishingMethod()

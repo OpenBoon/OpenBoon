@@ -1,4 +1,4 @@
-package boonai.archivist.queue.subscriber
+package boonai.archivist.queue.listener
 
 import boonai.archivist.service.ProjectService
 import boonai.common.apikey.AuthServerClient

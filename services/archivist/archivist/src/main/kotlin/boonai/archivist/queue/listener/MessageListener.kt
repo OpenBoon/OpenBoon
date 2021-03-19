@@ -1,4 +1,4 @@
-package boonai.archivist.queue.subscriber
+package boonai.archivist.queue.listener
 
 import org.springframework.beans.factory.annotation.Autowired
 import redis.clients.jedis.JedisPool

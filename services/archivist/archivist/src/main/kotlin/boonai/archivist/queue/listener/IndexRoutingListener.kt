@@ -1,12 +1,13 @@
-package boonai.archivist.queue.subscriber
+package boonai.archivist.queue.listener
 
 import boonai.archivist.service.IndexRoutingService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service("index-routing-listener")
 class IndexRoutingListener(
-    val indexRoutingService: IndexRoutingService
+    val indexRoutingService: IndexRoutingService,
 ) : MessageListener() {
 
     override fun getOptMap() = mapOf(
@@ -15,9 +16,7 @@ class IndexRoutingListener(
 
     fun closeAndDeleteProjectIndexes(projectId: String) {
         try {
-            logger.info("Delete project index of Project: $projectId")
-            Thread.sleep(1000)
-            // indexRoutingService.closeAndDeleteProjectIndexes(UUID.fromString(projectIndex))
+            indexRoutingService.closeAndDeleteProjectIndexes(UUID.fromString(projectId))
         } catch (ex: IllegalArgumentException) {
             logger.error("Bad content format")
         }
