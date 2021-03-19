@@ -98,7 +98,7 @@ Array [
               <th
                 className="emotion-4"
               >
-                label
+                content
               </th>
               <th
                 className="emotion-4"
@@ -157,7 +157,7 @@ Array [
               <th
                 className="emotion-4"
               >
-                label
+                content
               </th>
               <th
                 className="emotion-4"
@@ -202,7 +202,7 @@ Array [
               <th
                 className="emotion-4"
               >
-                label
+                content
               </th>
               <th
                 className="emotion-4"

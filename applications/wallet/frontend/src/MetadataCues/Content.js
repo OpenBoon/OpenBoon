@@ -82,7 +82,7 @@ MetadataCuesContent.propTypes = {
   metadata: PropTypes.objectOf(
     PropTypes.arrayOf(
       PropTypes.shape({
-        label: PropTypes.string.isRequired,
+        content: PropTypes.string.isRequired,
         score: PropTypes.number.isRequired,
       }).isRequired,
     ).isRequired,
