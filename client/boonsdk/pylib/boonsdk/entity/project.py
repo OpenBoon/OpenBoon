@@ -42,3 +42,8 @@ class Project(BaseEntity):
     def tier(self):
         """The project billing tier"""
         return ProjectTier[self._data['tier']]
+
+    @property
+    def enabled(self):
+        """True if project is enabled"""
+        return self._data['enabled']

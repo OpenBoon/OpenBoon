@@ -457,11 +457,13 @@ class AssetServiceImpl : AssetService {
             bulkRequest.add(rest.newUpdateRequest(id).doc(new_data).retryOnConflict(10))
         }
 
+        val rsp = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
         return BatchUpdateResponse(
-            rest.client.bulk(bulkRequest, RequestOptions.DEFAULT).filter {
+            rsp.filter {
                 it.isFailed
             }.map {
-                it.id to it.failureMessage
+                logger.warn("Failed to update asset: ${it.id}, ${it.failureMessage}")
+                it.id to "Error updating asset, check your field name or data type."
             }.toMap()
         )
     }
