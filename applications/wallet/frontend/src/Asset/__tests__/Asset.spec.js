@@ -27,4 +27,16 @@ describe('<AssetAsset />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should handle an empty signed url response', () => {
+    require('swr').__setMockUseSWRResponse({})
+
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
+    })
+
+    const component = TestRenderer.create(<AssetAsset isQuickView={false} />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })
