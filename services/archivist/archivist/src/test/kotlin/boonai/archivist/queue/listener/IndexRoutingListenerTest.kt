@@ -27,6 +27,12 @@ class IndexRoutingListenerTest : PubSubAbstractTest() {
         val ir1 = indexRoutingService.createIndexRoute(spec1)
         indexRoutingService.getAll(IndexRouteFilter(projectIds = listOf(getProjectId())))
 
+        sendTestMessage(
+            indexRoutingListener,
+            "project/close-and-delete",
+            getProjectId().toString()
+        )
+
         indexRoutingListener.closeAndDeleteProjectIndexes(getProjectId().toString())
 
         assertThrows<EmptyResultDataAccessException> {

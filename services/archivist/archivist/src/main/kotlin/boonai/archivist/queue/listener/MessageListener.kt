@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import redis.clients.jedis.JedisPool
 import java.util.Base64
 import org.springframework.data.redis.connection.Message
+import org.springframework.data.redis.connection.MessageListener
+import org.springframework.data.redis.listener.Topic
 
-abstract class MessageListener : org.springframework.data.redis.connection.MessageListener {
+abstract class MessageListener : MessageListener {
 
     private val expirationTimeSeconds = 5L
     private val expirationTimeMillis = expirationTimeSeconds * 1000L
@@ -20,6 +22,8 @@ abstract class MessageListener : org.springframework.data.redis.connection.Messa
     }
 
     abstract fun getOptMap(): Map<String, (String) -> Unit>
+
+    abstract fun getTopic(): Topic
 
     override fun onMessage(msg: Message, p1: ByteArray?) {
         val channel = String(msg.channel)

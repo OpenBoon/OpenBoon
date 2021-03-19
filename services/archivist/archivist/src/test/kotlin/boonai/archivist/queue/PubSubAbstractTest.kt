@@ -2,9 +2,12 @@ package boonai.archivist.queue
 
 import boonai.archivist.AbstractTest
 import boonai.archivist.queue.listener.IndexRoutingListener
+import boonai.archivist.queue.listener.MessageListener
+import boonai.archivist.queue.listener.ProjectListener
 import boonai.archivist.queue.publisher.IndexRoutingPublisher
 import boonai.archivist.queue.publisher.ProjectPublisher
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.redis.connection.DefaultMessage
 import org.springframework.data.redis.connection.Message
 import org.springframework.data.redis.listener.Topic
 import java.util.concurrent.Phaser
@@ -19,6 +22,9 @@ class PubSubAbstractTest : AbstractTest() {
 
     @Autowired
     lateinit var projectPublisher: ProjectPublisher
+
+    @Autowired
+    lateinit var projectListener: ProjectListener
 
     /**
      * This Publish an message on a redis pub/sub channel and waits until the message arrive
@@ -54,5 +60,15 @@ class PubSubAbstractTest : AbstractTest() {
         ph.arriveAndAwaitAdvance()
         error?.let { throw (it) }
         redisListener.removeMessageListener(listener, channel)
+    }
+
+    fun sendTestMessage(messageListener: MessageListener, operation: String, content: String) {
+        messageListener.onMessage(
+            DefaultMessage(
+                "${messageListener.getTopic()}/$operation".toByteArray(),
+                content.toByteArray()
+            ),
+            null
+        )
     }
 }

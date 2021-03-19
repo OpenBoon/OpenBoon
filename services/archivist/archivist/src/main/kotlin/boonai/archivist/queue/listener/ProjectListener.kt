@@ -3,6 +3,9 @@ package boonai.archivist.queue.listener
 import boonai.archivist.service.ProjectService
 import boonai.common.apikey.AuthServerClient
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.data.redis.listener.Topic
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -11,6 +14,12 @@ class ProjectListener(
     val projectService: ProjectService,
     val authServerClient: AuthServerClient
 ) : MessageListener() {
+
+    @Autowired
+    @Qualifier("index-routing-topic")
+    lateinit var channel: Topic
+
+    override fun getTopic() = channel
 
     override fun getOptMap() = mapOf(
         "delete" to { content: String -> delete(content) },

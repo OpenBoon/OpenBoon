@@ -19,6 +19,8 @@ import boonai.archivist.domain.PipelineSpec
 import boonai.archivist.domain.IndexRouteFilter
 import boonai.archivist.domain.ArchivistException
 import boonai.archivist.domain.PipelineMode
+import boonai.archivist.queue.publisher.IndexRoutingPublisher
+import boonai.archivist.queue.publisher.ProjectPublisher
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.repository.ProjectDao
 import boonai.archivist.repository.ProjectCustomDao
@@ -149,7 +151,9 @@ class ProjectServiceImpl constructor(
     var projectStorageService: ProjectStorageService,
     val properties: ApplicationProperties,
     val txEvent: TransactionEventManager,
-    val projectDeleteDao: ProjectDeleteDao
+    val projectDeleteDao: ProjectDeleteDao,
+    val projectPublisher: ProjectPublisher,
+    val indexRoutingPublisher: IndexRoutingPublisher
 ) : ProjectService {
 
     @Autowired
@@ -423,7 +427,15 @@ class ProjectServiceImpl constructor(
 
     @Transactional
     override fun delete(project: Project) {
+
+        logger.warn("Deleting Project ${project.id}")
+        indexRoutingService.closeAndDeleteProjectIndexes(project.id)
         projectDeleteDao.deleteProjectRelatedObjects(project.id)
+
+        // Publishing to Redis Queue
+        projectPublisher.deleteApiKey(project.id)
+        projectPublisher.deleteStorage(project.id)
+        projectPublisher.deleteSystemStorage(project.id)
     }
 
     // This gets called alot so hold onto the values for a while.
