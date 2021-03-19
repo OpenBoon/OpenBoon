@@ -45,10 +45,6 @@ describe('<TimelineTimelines />', () => {
       payload: { timeline: timelines[0].timeline },
       type: 'TOGGLE_OPEN',
     })
-
-    act(() => {
-      component.unmount()
-    })
   })
 
   it('should render properly with Search Highlights Only', () => {

@@ -5,8 +5,7 @@ import { colors, constants, spacing, zIndex } from '../Styles'
 
 import { getScroller } from '../Scroll/helpers'
 
-export const LAST_ROW_HEIGHT = 36
-const SCROLLBAR_HEIGHT = 12
+export const SCROLLBAR_CONTAINER_HEIGHT = 36
 
 const TimelineScrollbar = ({ settings }) => {
   const horizontalScroller = getScroller({ namespace: 'Timeline' })
@@ -17,8 +16,10 @@ const TimelineScrollbar = ({ settings }) => {
     callback: /* istanbul ignore next */ ({ node }) => {
       if (!scrollbarRef.current || !node) return
 
+      // the scrollLeft value when the timeline is scrolled all the way to the end
       const maxScrollLeft = node.scrollWidth - node.offsetWidth
 
+      // compute scrollLeft as a percentage to simplify translating to scrollbar scrollLeft
       const percentScrolled =
         maxScrollLeft === 0 ? maxScrollLeft : node.scrollLeft / maxScrollLeft
 
@@ -28,6 +29,7 @@ const TimelineScrollbar = ({ settings }) => {
 
       const scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
 
+      // the amount of space the scrollbar thumb can travel
       const scrollbarScrollableWidth =
         scrollbarTrackWidth - scrollbarRef.current.offsetWidth
 
@@ -47,7 +49,7 @@ const TimelineScrollbar = ({ settings }) => {
     <>
       <div
         css={{
-          height: LAST_ROW_HEIGHT,
+          height: SCROLLBAR_CONTAINER_HEIGHT,
           backgroundColor: colors.structure.soot,
           marginLeft: -settings.width,
           width: settings.width,
@@ -60,18 +62,20 @@ const TimelineScrollbar = ({ settings }) => {
           width: '100%',
           display: 'flex',
           alignItems: 'center',
-          height: LAST_ROW_HEIGHT,
+          height: SCROLLBAR_CONTAINER_HEIGHT,
           backgroundColor: colors.structure.soot,
           zIndex: zIndex.timeline.tracks + 1,
           paddingLeft: spacing.small,
           paddingRight: spacing.small,
+          paddingTop: spacing.moderate,
+          paddingBottom: spacing.moderate,
         }}
       >
         <div
           css={{
             position: 'relative',
             width: '100%',
-            height: SCROLLBAR_HEIGHT,
+            height: '100%',
             backgroundColor: colors.structure.coal,
             borderRadius: constants.borderRadius.large,
             border: constants.borders.regular.smoke,
@@ -82,7 +86,7 @@ const TimelineScrollbar = ({ settings }) => {
             css={{
               position: 'absolute',
               width: `${100 / (settings.zoom / 100)}%`,
-              height: SCROLLBAR_HEIGHT - 2,
+              height: '100%',
               backgroundColor: colors.structure.smoke,
               borderRadius: constants.borderRadius.medium,
             }}
