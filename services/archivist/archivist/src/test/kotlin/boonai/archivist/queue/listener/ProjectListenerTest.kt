@@ -4,6 +4,7 @@ import boonai.archivist.domain.ProjectFileLocator
 import boonai.archivist.domain.ProjectStorageCategory
 import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
+import boonai.archivist.domain.IndexRouteFilter
 import boonai.archivist.queue.PubSubAbstractTest
 import boonai.archivist.security.getProjectId
 import boonai.archivist.storage.ProjectStorageException
@@ -14,6 +15,7 @@ import org.junit.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 
 class ProjectListenerTest : PubSubAbstractTest() {
 
@@ -27,13 +29,20 @@ class ProjectListenerTest : PubSubAbstractTest() {
     fun testDeleteProject() {
         val projectId = getProjectId()
 
+        var allProjectIndex = indexRoutingService.getAll(IndexRouteFilter(projectIds = listOf(getProjectId())))
+        assertNotEquals(0, allProjectIndex.size())
+
         sendTestMessage(
             projectListener,
             "delete",
             projectId.toString()
         )
 
+        allProjectIndex = indexRoutingService.getAll(IndexRouteFilter(projectIds = listOf(getProjectId())))
+        assertEquals(0, allProjectIndex.size())
+
         val listOfTables = listOf(
+            "index_route",
             "project_quota",
             "project_quota_time_series",
             "processor",

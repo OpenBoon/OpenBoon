@@ -9,7 +9,7 @@ import org.springframework.data.redis.listener.Topic
 
 abstract class MessageListener : MessageListener {
 
-    private val expirationTimeSeconds = 5L
+    private val expirationTimeSeconds = 10L
     private val expirationTimeMillis = expirationTimeSeconds * 1000L
 
     @Autowired
@@ -44,7 +44,6 @@ abstract class MessageListener : MessageListener {
 
         // If someone already processed it, then exit
         if (isAccomplished(taskState)) {
-            println("Accomplished Exiting $content")
             return
         }
         // Otherwise run
