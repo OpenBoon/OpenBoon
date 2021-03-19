@@ -1,6 +1,7 @@
 import Head from 'next/head'
 
 import PageTitle from '../PageTitle'
+import BetaBadge from '../BetaBadge'
 import Tabs from '../Tabs'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 
@@ -10,10 +11,13 @@ const Models = () => {
   return (
     <>
       <Head>
-        <title>Create New Model</title>
+        <title>Custom Models</title>
       </Head>
 
-      <PageTitle>Create New Model</PageTitle>
+      <PageTitle>
+        Custom Models
+        <BetaBadge />
+      </PageTitle>
 
       <Tabs
         tabs={[
