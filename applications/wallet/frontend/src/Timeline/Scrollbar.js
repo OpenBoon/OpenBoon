@@ -23,13 +23,14 @@ const TimelineScrollbar = ({ settings }) => {
       const percentScrolled =
         maxScrollLeft === 0 ? maxScrollLeft : node.scrollLeft / maxScrollLeft
 
-      const scrollbarWidth = scrollbarRef.current.scrollWidth
+      const {
+        width: scrollbarWidth,
+      } = scrollbarRef.current.getBoundingClientRect()
 
       const scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
 
       // the amount of space the scrollbar thumb can travel
-      const scrollbarScrollableWidth =
-        scrollbarTrackWidth - scrollbarRef.current.offsetWidth
+      const scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
 
       scrollbarRef.current.style.left = `${
         percentScrolled * scrollbarScrollableWidth
