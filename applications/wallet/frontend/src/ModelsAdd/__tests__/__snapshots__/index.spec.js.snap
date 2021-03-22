@@ -18,10 +18,30 @@ Array [
   align-items: center;
 }
 
+.emotion-1 {
+  color: #ffffff;
+  background-color: #0074f5;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 15.399999999999999px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-left: 8px;
+}
+
 <h2
     className="emotion-0"
   >
-    Create New Model
+    Custom Models
+    <span
+      className="emotion-1"
+    >
+      beta
+    </span>
   </h2>,
   .emotion-0 {
   padding: 16px;
@@ -423,10 +443,30 @@ Array [
   align-items: center;
 }
 
+.emotion-1 {
+  color: #ffffff;
+  background-color: #0074f5;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 15.399999999999999px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-left: 8px;
+}
+
 <h2
     className="emotion-0"
   >
-    Create New Model
+    Custom Models
+    <span
+      className="emotion-1"
+    >
+      beta
+    </span>
   </h2>,
   .emotion-0 {
   padding: 16px;

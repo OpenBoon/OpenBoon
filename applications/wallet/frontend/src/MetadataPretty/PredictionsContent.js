@@ -78,7 +78,9 @@ const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
             {predictions.map((prediction) => {
               return (
                 <tr
-                  key={`${prediction.label}-${prediction.score}`}
+                  key={`${prediction.label || prediction.content}-${
+                    prediction.score
+                  }`}
                   css={{
                     td: {
                       verticalAlign: 'bottom',
@@ -175,7 +177,9 @@ MetadataPrettyPredictionsContent.propTypes = {
   name: PropTypes.string.isRequired,
   predictions: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
+      bbox: PropTypes.arrayOf(PropTypes.number),
+      label: PropTypes.string,
+      content: PropTypes.string,
       score: PropTypes.number.isRequired,
     }).isRequired,
   ).isRequired,
