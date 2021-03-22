@@ -143,7 +143,7 @@
     "react-virtualized-auto-sizer": "1.0.5",
     "react-window": "1.8.6",
     "react-window-infinite-loader": "1.0.7",
-    "swr": "0.4.2",
+    "swr": "0.5.4",
     "use-resize-observer": "7.0.0",
     "utf8": "3.0.0",
     "uuid": "8.3.2"
