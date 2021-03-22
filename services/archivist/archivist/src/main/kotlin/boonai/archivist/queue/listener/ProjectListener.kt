@@ -42,8 +42,7 @@ class ProjectListener(
     private fun deleteProjectStorage(content: String) {
         try {
             val projectId = UUID.fromString(content)
-            val project = projectService.get(projectId)
-            projectService.deleteProjectStorage(project)
+            projectService.deleteProjectStorage(projectId)
             logger.debug("Deleting project:$projectId Storage")
         } catch (ex: IllegalArgumentException) {
             logger.error("Bad content format")
@@ -53,8 +52,7 @@ class ProjectListener(
     private fun deleteProjectSystemStorage(content: String) {
         try {
             val projectId = UUID.fromString(content)
-            val project = projectService.get(projectId)
-            projectService.deleteProjectSystemStorage(project)
+            projectService.deleteProjectSystemStorage(projectId)
             logger.debug("Deleting Project:$projectId System Storage")
         } catch (ex: IllegalArgumentException) {
             logger.error("Bad content format")

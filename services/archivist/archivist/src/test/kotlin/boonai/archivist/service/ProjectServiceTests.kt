@@ -167,7 +167,7 @@ class ProjectServiceTests : AbstractTest() {
         val obj1 = systemStorageService.fetchObject("projects/${getProjectId()}/test1.json", Map::class.java)
         val obj2 = systemStorageService.fetchObject("projects/${getProjectId()}/test2.json", Map::class.java)
 
-        projectService.deleteProjectSystemStorage(project)
+        projectService.deleteProjectSystemStorage(project.id)
 
         assertEquals(true, obj1.isNotEmpty())
         assertEquals(true, obj2.isNotEmpty())
@@ -184,7 +184,7 @@ class ProjectServiceTests : AbstractTest() {
         val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         val result = projectStorageService.store(spec)
-        projectService.deleteProjectStorage(project)
+        projectService.deleteProjectStorage(project.id)
 
         assertEquals(true, result.size > 0)
         assertThrows<ProjectStorageException> {

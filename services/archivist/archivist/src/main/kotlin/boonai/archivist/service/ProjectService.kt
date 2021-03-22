@@ -127,12 +127,12 @@ interface ProjectService {
     /**
      * Delete System Storage files of a Project
      */
-    fun deleteProjectSystemStorage(project: Project)
+    fun deleteProjectSystemStorage(projectId: UUID)
 
     /**
      * Delete Project related storage
      */
-    fun deleteProjectStorage(project: Project)
+    fun deleteProjectStorage(projectId: UUID)
 
     /**
      * Delete Project
@@ -288,11 +288,11 @@ class ProjectServiceImpl constructor(
         )
     }
 
-    override fun deleteProjectSystemStorage(project: Project) {
+    override fun deleteProjectSystemStorage(projectId: UUID) {
         systemStorageService.recursiveDelete(
-            "projects/${project.id}"
+            "projects/$projectId"
         )
-        logger.info("Deleting System Storage of Project: ${project.name}")
+        logger.info("Deleting System Storage of Project: $projectId")
     }
 
     override fun setEnabled(projectId: UUID, value: Boolean) {
@@ -420,9 +420,9 @@ class ProjectServiceImpl constructor(
         return indexRoutingService.setIndexRoute(project, route)
     }
 
-    override fun deleteProjectStorage(project: Project) {
-        projectStorageService.recursiveDelete("projects/${project.id}")
-        logger.warn("Deleted Project ${project.id} storage files")
+    override fun deleteProjectStorage(projectId: UUID) {
+        projectStorageService.recursiveDelete("projects/$projectId")
+        logger.warn("Deleted Project $projectId storage files")
     }
 
     @Transactional

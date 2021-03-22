@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.connection.MessageListener
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.listener.PatternTopic
@@ -47,7 +48,9 @@ class RedisConfiguration {
 
     @Bean
     fun jedisConnectionFactory(): JedisConnectionFactory? {
-        return JedisConnectionFactory(jedisPoolConfig())
+        val host = properties.getString("archivist.redis.host")
+        val port = properties.getInt("archivist.redis.port")
+        return JedisConnectionFactory(RedisStandaloneConfiguration(host, port))
     }
 
     @Bean
