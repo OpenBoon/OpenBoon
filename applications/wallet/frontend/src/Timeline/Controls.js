@@ -65,6 +65,7 @@ const TimelineControls = ({
       <div css={{ display: 'flex' }}>
         <Button
           aria-label="Previous Detection"
+          title="Previous Detection"
           variant={VARIANTS.ICON}
           style={{
             padding: spacing.small,
@@ -82,6 +83,7 @@ const TimelineControls = ({
 
         <Button
           aria-label="Previous Second"
+          title="Previous Second (Shift+Left)"
           variant={VARIANTS.ICON}
           style={{
             padding: spacing.small,
@@ -104,6 +106,7 @@ const TimelineControls = ({
 
         <Button
           aria-label={video?.paused ? 'Play' : 'Pause'}
+          title={video?.paused ? 'Play (Space)' : 'Pause (Space)'}
           variant={VARIANTS.ICON}
           style={{
             padding: spacing.small,
@@ -131,6 +134,7 @@ const TimelineControls = ({
 
         <Button
           aria-label="Next Second"
+          title="Next Second (Shift+Right)"
           variant={VARIANTS.ICON}
           style={{
             padding: spacing.small,
@@ -148,6 +152,7 @@ const TimelineControls = ({
 
         <Button
           aria-label="Next Detection"
+          title="Next Detection"
           variant={VARIANTS.ICON}
           style={{
             padding: spacing.small,

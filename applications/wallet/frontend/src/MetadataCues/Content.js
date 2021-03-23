@@ -30,7 +30,7 @@ const MetadataCuesContent = ({ metadata }) => {
           borderBottom: constants.borders.regular.smoke,
         }}
       >
-        Time Based Metadata:
+        Clip Metadata:
       </div>
 
       <div css={{ flex: 1, overflowY: 'auto' }}>

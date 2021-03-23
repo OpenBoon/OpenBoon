@@ -85,7 +85,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
 
 .emotion-6 {
   position: absolute;
-  top: -16px;
+  top: -18px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
