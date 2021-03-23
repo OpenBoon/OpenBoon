@@ -21,6 +21,7 @@ const TimelineControls = ({
 }) => {
   const currentTimeRef = useRef()
   const frameRef = useRef()
+  const isPausedRef = useRef(true)
 
   const [, setTick] = useState()
 
@@ -35,7 +36,11 @@ const TimelineControls = ({
           seconds: video?.currentTime,
         })
 
-        setTick(performance.now())
+        if (isPausedRef.current !== video?.paused) {
+          isPausedRef.current = video?.paused
+
+          setTick(performance.now())
+        }
       }
 
       frameRef.current = requestAnimationFrame(animate)
