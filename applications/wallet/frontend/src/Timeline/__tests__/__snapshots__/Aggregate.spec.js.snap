@@ -112,6 +112,10 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   cursor: pointer;
 }
 
+.emotion-6:hover div {
+  background-color: #ffffff;
+}
+
 .emotion-7 {
   background-color: #808080;
   width: 100%;
@@ -132,6 +136,10 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   cursor: pointer;
 }
 
+.emotion-8:hover div {
+  background-color: #ffffff;
+}
+
 .emotion-10 {
   margin: 0;
   border: 0;
@@ -144,6 +152,10 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   background-color: #191919;
   padding: 2px;
   cursor: pointer;
+}
+
+.emotion-10:hover div {
+  background-color: #ffffff;
 }
 
 .emotion-12 {
@@ -160,6 +172,10 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   cursor: pointer;
 }
 
+.emotion-12:hover div {
+  background-color: #ffffff;
+}
+
 .emotion-16 {
   margin: 0;
   border: 0;
@@ -172,6 +188,10 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   background-color: #191919;
   padding: 2px;
   cursor: pointer;
+}
+
+.emotion-16:hover div {
+  background-color: #ffffff;
 }
 
 .emotion-18 {
@@ -188,6 +208,10 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   cursor: pointer;
 }
 
+.emotion-18:hover div {
+  background-color: #ffffff;
+}
+
 .emotion-20 {
   margin: 0;
   border: 0;
@@ -200,6 +224,10 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   background-color: #191919;
   padding: 2px;
   cursor: pointer;
+}
+
+.emotion-20:hover div {
+  background-color: #ffffff;
 }
 
 .emotion-22 {
@@ -216,6 +244,10 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   cursor: pointer;
 }
 
+.emotion-22:hover div {
+  background-color: #ffffff;
+}
+
 .emotion-24 {
   margin: 0;
   border: 0;
@@ -228,6 +260,10 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   background-color: #191919;
   padding: 2px;
   cursor: pointer;
+}
+
+.emotion-24:hover div {
+  background-color: #ffffff;
 }
 
 .emotion-26 {
@@ -244,6 +280,10 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   cursor: pointer;
 }
 
+.emotion-26:hover div {
+  background-color: #ffffff;
+}
+
 .emotion-28 {
   margin: 0;
   border: 0;
@@ -256,6 +296,10 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   background-color: #191919;
   padding: 2px;
   cursor: pointer;
+}
+
+.emotion-28:hover div {
+  background-color: #ffffff;
 }
 
 <div
@@ -853,6 +897,10 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   cursor: pointer;
 }
 
+.emotion-48:hover div {
+  background-color: #ffffff;
+}
+
 .emotion-49 {
   background-color: #808080;
   width: 100%;
@@ -873,6 +921,10 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   cursor: pointer;
 }
 
+.emotion-50:hover div {
+  background-color: #ffffff;
+}
+
 .emotion-52 {
   margin: 0;
   border: 0;
@@ -885,6 +937,10 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   background-color: #191919;
   padding: 2px;
   cursor: pointer;
+}
+
+.emotion-52:hover div {
+  background-color: #ffffff;
 }
 
 .emotion-54 {
@@ -901,6 +957,10 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   cursor: pointer;
 }
 
+.emotion-54:hover div {
+  background-color: #ffffff;
+}
+
 .emotion-58 {
   margin: 0;
   border: 0;
@@ -913,6 +973,10 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   background-color: #191919;
   padding: 2px;
   cursor: pointer;
+}
+
+.emotion-58:hover div {
+  background-color: #ffffff;
 }
 
 .emotion-60 {
@@ -929,6 +993,10 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   cursor: pointer;
 }
 
+.emotion-60:hover div {
+  background-color: #ffffff;
+}
+
 .emotion-62 {
   margin: 0;
   border: 0;
@@ -941,6 +1009,10 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   background-color: #191919;
   padding: 2px;
   cursor: pointer;
+}
+
+.emotion-62:hover div {
+  background-color: #ffffff;
 }
 
 .emotion-64 {
@@ -957,6 +1029,10 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   cursor: pointer;
 }
 
+.emotion-64:hover div {
+  background-color: #ffffff;
+}
+
 .emotion-66 {
   margin: 0;
   border: 0;
@@ -969,6 +1045,10 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   background-color: #191919;
   padding: 2px;
   cursor: pointer;
+}
+
+.emotion-66:hover div {
+  background-color: #ffffff;
 }
 
 .emotion-68 {
@@ -985,6 +1065,10 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   cursor: pointer;
 }
 
+.emotion-68:hover div {
+  background-color: #ffffff;
+}
+
 .emotion-70 {
   margin: 0;
   border: 0;
@@ -997,6 +1081,10 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   background-color: #191919;
   padding: 2px;
   cursor: pointer;
+}
+
+.emotion-70:hover div {
+  background-color: #ffffff;
 }
 
 <div
