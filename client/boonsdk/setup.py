@@ -18,7 +18,7 @@ requirements = [
 
 setup(
     name='boonsdk',
-    version="1.2.0",
+    version="1.2.1",
     description='Boon AI SDK',
     url='http://www.boonai.io',
     license='Apache2',
