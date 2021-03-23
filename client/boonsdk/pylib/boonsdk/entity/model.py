@@ -172,10 +172,6 @@ class Model(BaseEntity):
             dict: A search to pass to an asset search.
 
         """
-        supported_module_types = [ModelType.KNN_CLASSIFIER,
-                                  ModelType.FACE_RECOGNITION]
-        if self.type not in supported_module_types:
-            raise TypeError(f'Cannot create a confusion matrix search for {self.type} models.')
         search_query = {
             "size": 0,
             "query": {
