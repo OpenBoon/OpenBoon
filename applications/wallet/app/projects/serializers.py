@@ -80,6 +80,19 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     )
 
 
+class ProjectDetailSerializer(serializers.ModelSerializer):
+    # mlUsageThisMonth = MlUsageThisMonthSerializer() #TODO
+    # totalStorageUsage = TotalStorageUsageSerializer() #TODO
+    numberOfUsers = serializers.SerializerMethodField('get_number_of_users')
+
+    class Meta:
+        model = Project
+        fields = ['id', 'name', 'numberOfUsers']
+
+    def get_number_of_users(self, obj):
+        return obj.users.count()
+
+
 class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.SerializerMethodField()
     permissions = serializers.SerializerMethodField()
