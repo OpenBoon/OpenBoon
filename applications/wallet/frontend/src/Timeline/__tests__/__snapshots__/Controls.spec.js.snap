@@ -139,6 +139,7 @@ exports[`<TimelineControls /> should pause 1`] = `
       aria-label="Previous Detection"
       className="emotion-3"
       onClick={[Function]}
+      title="Previous Detection"
       type="button"
     >
       <svg
@@ -151,6 +152,7 @@ exports[`<TimelineControls /> should pause 1`] = `
       aria-label="Previous Second"
       className="emotion-3"
       onClick={[Function]}
+      title="Previous Second (Shift+Left)"
       type="button"
     >
       <svg
@@ -166,6 +168,7 @@ exports[`<TimelineControls /> should pause 1`] = `
       aria-label="Pause"
       className="emotion-3"
       onClick={[Function]}
+      title="Pause (Space)"
       type="button"
     >
       <svg
@@ -180,6 +183,7 @@ exports[`<TimelineControls /> should pause 1`] = `
       aria-label="Next Second"
       className="emotion-3"
       onClick={[Function]}
+      title="Next Second (Shift+Right)"
       type="button"
     >
       <svg
@@ -191,6 +195,7 @@ exports[`<TimelineControls /> should pause 1`] = `
       aria-label="Next Detection"
       className="emotion-3"
       onClick={[Function]}
+      title="Next Detection"
       type="button"
     >
       <svg
@@ -356,6 +361,7 @@ exports[`<TimelineControls /> should play 1`] = `
       aria-label="Previous Detection"
       className="emotion-3"
       onClick={[Function]}
+      title="Previous Detection"
       type="button"
     >
       <svg
@@ -368,6 +374,7 @@ exports[`<TimelineControls /> should play 1`] = `
       aria-label="Previous Second"
       className="emotion-3"
       onClick={[Function]}
+      title="Previous Second (Shift+Left)"
       type="button"
     >
       <svg
@@ -383,6 +390,7 @@ exports[`<TimelineControls /> should play 1`] = `
       aria-label="Play"
       className="emotion-3"
       onClick={[Function]}
+      title="Play (Space)"
       type="button"
     >
       <svg
@@ -397,6 +405,7 @@ exports[`<TimelineControls /> should play 1`] = `
       aria-label="Next Second"
       className="emotion-3"
       onClick={[Function]}
+      title="Next Second (Shift+Right)"
       type="button"
     >
       <svg
@@ -408,6 +417,7 @@ exports[`<TimelineControls /> should play 1`] = `
       aria-label="Next Detection"
       className="emotion-3"
       onClick={[Function]}
+      title="Next Detection"
       type="button"
     >
       <svg

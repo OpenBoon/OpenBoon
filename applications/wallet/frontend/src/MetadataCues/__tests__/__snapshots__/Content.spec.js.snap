@@ -11,7 +11,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Time Based Metadata:
+    Clip Metadata:
   </div>,
   .emotion-0 {
   -webkit-flex: 1;
@@ -245,7 +245,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Time Based Metadata:
+    Clip Metadata:
   </div>,
   .emotion-0 {
   -webkit-flex: 1;
