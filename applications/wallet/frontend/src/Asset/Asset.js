@@ -37,17 +37,14 @@ const AssetAsset = ({ isQuickView }) => {
   const {
     data: {
       metadata: {
-        source: { filename },
-        media: { length },
-      },
-    },
+        source: { filename = '' } = {},
+        media: { length = 0 } = {},
+      } = {},
+    } = {},
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
   const {
-    data: {
-      signedUrl: { mediaType, uri },
-      tracks = [],
-    },
+    data: { signedUrl: { mediaType = '', uri = '' } = {}, tracks = [] } = {},
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/urls/`)
 
   const isVideo = mediaType.includes('video')
