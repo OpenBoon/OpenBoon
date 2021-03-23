@@ -173,10 +173,10 @@ class Model(BaseEntity):
 
         """
         prediction_term_map = {
-            ModelType.KNN_CLASSIFIER: f'{self.namespace}.label',
+            ModelType.KNN_CLASSIFIER: f'{self.namespace}.predictions.label',
             ModelType.FACE_RECOGNITION: f'{self.namespace}.predictions.label'
         }
-        score_map = {ModelType.KNN_CLASSIFIER: f'{self.namespace}.score',
+        score_map = {ModelType.KNN_CLASSIFIER: f'{self.namespace}.predictions.score',
                      ModelType.TF_CLASSIFIER: f'{self.namespace}.score',
                      ModelType.FACE_RECOGNITION: f'{self.namespace}.predictions.score'}
         if self.type not in prediction_term_map:
