@@ -36,7 +36,7 @@
         <boonai-common.version>1.0.0</boonai-common.version>
         <elasticsearch.version>7.6.2</elasticsearch.version>
         <spring-boot.version>2.3.8.RELEASE</spring-boot.version>
-        <kotlin.version>1.4.31</kotlin.version>
+        <kotlin.version>1.4.32</kotlin.version>
     </properties>
 
     <dependencies>
