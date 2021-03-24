@@ -30,6 +30,12 @@ class NotFoundError(APIException):
     default_code = 'not_found'
 
 
+class NotAllowedError(APIException):
+    status_code = status.HTTP_405_METHOD_NOT_ALLOWED
+    default_detail = {'detail': ['Not allowed at this time.']}
+    default_code = 'not_found'
+
+
 def zmlp_exception_handler(exc, context):
     """Custom DRF exception handler that converts ZMLP exceptions to built-in DRF exceptions."""
     exception_mapping = {BoonSdkSecurityException: exceptions.PermissionDenied,

@@ -16,15 +16,13 @@ from django.test import RequestFactory, override_settings
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.response import Response
-from boonsdk import BoonClient
-from boonsdk.client import (BoonSdkInvalidRequestException, BoonSdkNotFoundException,
-                            BoonSdkConnectionException)
 
 from organizations.models import Organization
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
 from projects.utils import is_user_project_organization_owner
 from projects.views import BaseProjectViewSet
+from wallet.tests.utils import check_response
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
 
 pytestmark = pytest.mark.django_db
@@ -70,6 +68,20 @@ def test_projects_view_no_projects(project, user, api_client):
     api_client.force_authenticate(user)
     response = api_client.get(reverse('project-list')).json()
     assert response['count'] == 0
+
+
+def test_projects_delete(login, api_client, zmlp_project_user, organization, project, monkeypatch):
+    monkeypatch.setattr(Project, 'sync_with_zmlp', lambda x: None)
+    path = reverse('project-detail', kwargs={'pk': project.id})
+
+    # User is not an organization owner
+    check_response(api_client.delete(path), status=403)
+
+    # User is an organization owner.
+    organization.owners.add(zmlp_project_user)
+    assert project.isActive
+    check_response(api_client.delete(path))
+    assert not Project.all_objects.get(id=project.id).isActive
 
 
 def test_projects_view_with_projects(project, zmlp_project_user, api_client):

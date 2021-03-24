@@ -33,7 +33,8 @@ from gcpmarketplace.views import signup_success, SignUpView
 from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet, JobTaskViewSet
 from models.views import ModelViewSet
 from modules.views import ModuleViewSet, ProviderViewSet
-from organizations.views import OrganizationViewSet, OrganizationProjectViewSet
+from organizations.views import OrganizationViewSet, OrganizationProjectViewSet, \
+    OrganizationUserViewSet, OrganizationOwnerViewSet
 from permissions.views import PermissionViewSet
 from projects.views import ProjectViewSet, ProjectUserViewSet
 from registration.admin import UserAdmin
@@ -53,6 +54,8 @@ router.register('me/agreements', AgreementViewSet, basename='agreement')
 router.register('organizations', OrganizationViewSet, basename='organization')
 organizations_router = NestedSimpleRouter(router, 'organizations', lookup='organization')
 organizations_router.register('projects', OrganizationProjectViewSet, basename='org-project')
+organizations_router.register('users', OrganizationUserViewSet, basename='org-user')
+organizations_router.register('owners', OrganizationOwnerViewSet, basename='org-owner')
 
 router.register('projects', ProjectViewSet, basename='project')
 projects_router = NestedSimpleRouter(router, 'projects', lookup='project')

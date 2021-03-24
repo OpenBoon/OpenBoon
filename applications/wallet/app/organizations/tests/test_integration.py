@@ -3,12 +3,14 @@ from unittest.mock import patch, Mock
 
 import pytest
 import requests
+from boonsdk import BoonClient
+from django.contrib.auth.models import User
 from rest_framework.reverse import reverse
 
-from organizations.models import Organization
+from organizations.models import Organization, Plan
 from organizations.serializers import OrganizationSerializer
 from organizations.utils import random_organization_name
-from projects.models import Project
+from projects.models import Project, Membership
 from projects.serializers import ProjectDetailSerializer
 from wallet.tests.utils import check_response
 
@@ -56,8 +58,7 @@ class TestViews(object):
         path = reverse('org-project-list', kwargs={'organization_pk': organization.id})
 
         # User is not an organization owner
-        response = check_response(api_client.get(path))
-        assert response['count'] == 0
+        check_response(api_client.get(path), status=403)
 
         # User is an organization owner.
         organization.owners.add(zmlp_project_user)
@@ -65,9 +66,141 @@ class TestViews(object):
         assert response['count'] == 1
         assert response['results'][0] == ProjectDetailSerializer(organization.projects.first()).data
 
+    def test_org_project_create(self, login, zmlp_project_user, api_client, organization, monkeypatch):
+        monkeypatch.setattr(Project, 'sync_with_zmlp', lambda x: None)
+        path = reverse('org-project-list', kwargs={'organization_pk': organization.id})
+
+        # User is not an organization owner
+        check_response(api_client.post(path), status=403)
+
+        # User is an organization owner.
+        organization.owners.add(zmlp_project_user)
+
+        # Try with maxed out projects for organization plan.
+        check_response(api_client.post(path), status=405)
+
+        # Try with missing arguments.
+        organization.plan = Plan.BUILD
+        organization.save()
+        check_response(api_client.post(path), status=400)
+
+        # Create a new project in the organization.
+        check_response(api_client.post(path, data={'name': 'project_1'}))
+        project = Project.objects.get(name='project_1')
+        assert project.organization == organization
+
+    def test_org_user_list(self, login, zmlp_project_user, api_client, organization, project):
+        path = reverse('org-user-list', kwargs={'organization_pk': organization.id})
+
+        # User is not an organization owner
+        check_response(api_client.get(path), status=403)
+
+        # User is an organization owner.
+        organization.owners.add(zmlp_project_user)
+        other_user = User.objects.create(first_name='other', last_name='user',
+                                         email='other@user.com', username='other@user.com')
+        other_user.projects.add()
+        organization.owners.add(other_user)
+        project.users.add(other_user)
+        Project.objects.create(name='1', organization=organization).users.add(other_user)
+        Project.objects.create(name='2', organization=organization).users.add(other_user)
+        response = check_response(api_client.get(path))
+        assert response['count'] == 2
+        for user in response['results']:
+            if user['email'] == zmlp_project_user.email:
+                assert user['projectCount'] == 1
+            else:
+                assert user['projectCount'] == 3
+
+    def test_org_user_retrieve(self, login, zmlp_project_user, api_client, organization, project):
+        path = reverse('org-user-detail', kwargs={'organization_pk': organization.id,
+                                                  'pk': zmlp_project_user.id})
+
+        # User is not an organization owner
+        check_response(api_client.get(path), status=403)
+
+        # User is an organization owner.
+        organization.owners.add(zmlp_project_user)
+        other_project = Project.objects.create(name='1', organization=organization)
+        other_project.users.add(zmlp_project_user)
+        Project.objects.create(name='should_not_be_in_response')
+        response = check_response(api_client.get(path))
+        assert response['id'] == zmlp_project_user.id
+        assert response['email'] == zmlp_project_user.email
+        assert response['projects'] == [{'id': project.id, 'name': 'Test Project',
+                                         'roles': ['ML_Tools', 'User_Admin']},
+                                        {'id': str(other_project.id), 'name': '1', 'roles': []}]
+
+    def test_org_user_destroy(self, login, zmlp_project_user, organization, project, api_client,
+                              monkeypatch):
+        def mock_destroy_zmlp_api_key(self, client):
+            assert type(client) == BoonClient
+
+        monkeypatch.setattr(Membership, 'destroy_zmlp_api_key', mock_destroy_zmlp_api_key)
+        other_user = User.objects.create(username='other')
+        path = reverse('org-user-detail', kwargs={'organization_pk': organization.id,
+                                                  'pk': other_user.id})
+
+        # User is not an organization owner
+        check_response(api_client.delete(path), status=403)
+
+        # User is an organization owner.
+        organization.owners.add(zmlp_project_user)
+        project.users.add(other_user)
+        assert project.users.filter(id=other_user.id).exists()
+        check_response(api_client.delete(path))
+        assert not project.users.filter(id=other_user.id).exists()
+
+    def test_org_owner_list(self, login, zmlp_project_user, api_client, organization, project):
+        path = reverse('org-owner-list', kwargs={'organization_pk': organization.id})
+
+        # User is not an organization owner
+        check_response(api_client.get(path), status=403)
+
+        # User is an organization owner.
+        organization.owners.add(zmlp_project_user)
+        response = check_response(api_client.get(path))
+        assert response['count'] == 2
+        for user in response['results']:
+            assert user['email']
+
+    def test_org_owner_destroy(self, login, zmlp_project_user, superuser, api_client,
+                               organization, project):
+        path = reverse('org-owner-detail', kwargs={'organization_pk': organization.id,
+                                                   'pk': superuser.id})
+
+        # User is not an organization owner
+        check_response(api_client.delete(path), status=403)
+
+        # User is an organization owner.
+        organization.owners.add(zmlp_project_user)
+        assert organization.owners.filter(id=superuser.id).exists()
+        check_response(api_client.delete(path))
+        assert not organization.owners.filter(id=superuser.id).exists()
+
+    def test_org_owner_create(self, api_client, login, zmlp_project_user, organization, project):
+        path = reverse('org-owner-list', kwargs={'organization_pk': organization.id})
+
+        # User is not an organization owner
+        check_response(api_client.post(path), status=403)
+
+        # User is an organization owner.
+        organization.owners.add(zmlp_project_user)
+
+        # Try with missing arguments.
+        check_response(api_client.post(path), status=400)
+
+        # Add a new owner.
+        user = User.objects.create(username='other@user.com', email='other@user.com')
+        assert not organization.owners.filter(id=user.id).exists()
+        data = {'emails': [user.email, 'fail@mail.com']}
+        response = check_response(api_client.post(path, data=data), status=207)
+        assert response == {'results': {'failed': ['fail@mail.com'],
+                                        'succeeded': [user.email]}}
+        assert organization.owners.filter(id=user.id).exists()
+
 
 class TestGetMLUsageForTimePeriod:
-
     fake_usage = {'tier_1': {'video_minutes': 100,
                              'image_count': 100},
                   'tier_2': {'video_minutes': 100,

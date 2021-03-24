@@ -14,6 +14,7 @@ from django.db.models import Q
 from django.http import Http404, JsonResponse
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -23,6 +24,7 @@ from projects.models import Membership, Project
 from projects.permissions import ManagerUserPermissions
 from projects.serializers import ProjectSerializer, ProjectUserSerializer
 from projects.utils import is_user_project_organization_owner
+from wallet.exceptions import InvalidRequestError
 from wallet.paginators import FromSizePagination
 from wallet.utils import validate_zmlp_data
 
@@ -482,6 +484,15 @@ class ProjectViewSet(ListModelMixin,
         user = self.request.user
         return Project.objects.filter(Q(users=user) | Q(organization__owners=user)).distinct()
 
+    def destroy(self, request, *args, **kwargs):
+        project = self.get_object()
+        if not project.organization.owners.filter(id=request.user.id).exists():
+            raise PermissionDenied({'detail': 'You must be an owner of project to delete it.'})
+        project.isActive = False
+        project.save()
+        project.sync_with_zmlp()
+        return Response({'detail': [f'Success, Project "{project.name}" has been deleted.']})
+
     @action(methods=['get'], detail=True)
     def ml_usage_this_month(self, request, pk):
         """Returns the ml module usage for the current month."""
@@ -614,8 +625,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
     def create(self, request, project_pk):
         batch = request.data.get('batch')
         if batch and request.data.get('email'):
-            return Response(data={'detail': ['Batch argument provided with single creation arguments.']},  # noqa
-                            status=status.HTTP_400_BAD_REQUEST)
+            raise InvalidRequestError({'detail': ['Batch argument provided with single creation arguments.']})
         elif batch:
             response_body = {'results': {'succeeded': [], 'failed': []}}
             for entry in batch:

@@ -93,6 +93,12 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
         return obj.users.count()
 
 
+class ProjectSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ['id', 'name']
+
+
 class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.SerializerMethodField()
     permissions = serializers.SerializerMethodField()

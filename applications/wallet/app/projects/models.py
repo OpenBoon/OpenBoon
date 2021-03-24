@@ -48,6 +48,10 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
         """
         return get_zmlp_superuser_client(project_id=str(self.id))
 
+    def get_admin_client(self):
+        """Returns a BoonClient with the admin api key associated with the project."""
+        return BoonClient(self.apikey, server=settings.BOONAI_API_URL)
+
     def sync_with_zmlp(self):
         """Tries to create a project in ZMLP with the same name and ID. This syncs the projects
         between the Wallet DB and ZMLP and is a necessary step for any project to function
