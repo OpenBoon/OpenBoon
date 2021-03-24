@@ -213,7 +213,7 @@ class ModelTrainingRequest(
     var args: Map<String, Any>? = null,
 
     @ApiModelProperty("The action to take after training.")
-    var postAction: PostTrainAction? = PostTrainAction.APPLY
+    var postAction: PostTrainAction = PostTrainAction.NONE
 )
 
 @ApiModel("ModelApplyRequest", description = "Arguments for applying a model to data.")

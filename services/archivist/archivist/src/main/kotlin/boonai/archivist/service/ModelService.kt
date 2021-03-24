@@ -16,7 +16,6 @@ import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.PipelineMod
 import boonai.archivist.domain.PipelineModSpec
 import boonai.archivist.domain.PipelineModUpdate
-import boonai.archivist.domain.PostTrainAction
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectFileLocator
@@ -179,7 +178,7 @@ class ModelServiceImpl(
         val trainArgs = model.type.trainArgs.plus(
             mutableMapOf(
                 "model_id" to model.id.toString(),
-                "post_action" to (request.postAction?.name ?: PostTrainAction.APPLY.name),
+                "post_action" to (request.postAction?.name),
                 "tag" to "latest"
             )
         ).plus(request.args ?: emptyMap())

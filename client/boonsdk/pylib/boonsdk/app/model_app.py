@@ -2,7 +2,7 @@ import logging
 import os
 import tempfile
 
-from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule
+from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule, PostTrainAction
 from ..training import TrainingSetDownloader
 from ..util import as_collection, as_id, zip_directory
 
@@ -90,7 +90,7 @@ class ModelApp:
         }
         return self.app.client.iter_paged_results('/api/v3/models/_search', body, limit, Model)
 
-    def train_model(self, model, post_action=None):
+    def train_model(self, model, post_action=PostTrainAction.NONE):
         """
         Train the given Model by kicking off a model training job.  If a post action is
         specified the training job will expand once training is complete.
@@ -102,11 +102,10 @@ class ModelApp:
             Job: A model training job.
         """
         model_id = as_id(model)
-        body = {}
-        if post_action:
-            body['postAction'] = post_action
-
-        return Job(self.app.client.post('/api/v3/models/{}/_train'.format(model_id), body))
+        body = {
+            "post_action": str(post_action)
+        }
+        return Job(self.app.client.post('/api/v4/models/{}/_train'.format(model_id), body))
 
     def apply_model(self, model, search=None):
         """

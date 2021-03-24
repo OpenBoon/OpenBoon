@@ -5,6 +5,7 @@ import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.AutomlSessionSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.Model
+import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelType
@@ -135,6 +136,18 @@ class ModelControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(model.trainingJobName)))
+            .andReturn()
+    }
+
+    @Test
+    fun testTest() {
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_test")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(ModelApplyRequest()))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
     }
 

@@ -190,7 +190,7 @@ class ModelServiceTests : AbstractTest() {
         val rsp = modelService.applyModel(model1, ModelApplyRequest())
         val tasks = jobService.getTasks(rsp.job!!.id)
         val script = jobService.getZpsScript(tasks.list[0].id)
-        assertEquals("Deploying model: test / Tag: production", script.name)
+        assertEquals("Applying model: test", script.name)
         assertEquals(1, script.generate!!.size)
         assertEquals("boonai_core.core.generators.AssetSearchGenerator", script.generate!![0].className)
     }

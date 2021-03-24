@@ -13,6 +13,7 @@ import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.PipelineMod
+import boonai.archivist.domain.PostTrainAction
 import boonai.archivist.domain.UpdateLabelRequest
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.service.AutomlService
@@ -53,7 +54,16 @@ class ModelController(
     @PreAuthorize("hasAuthority('AssetsImport')")
     @ApiOperation("Kick off a model training job.")
     @PostMapping(value = ["/api/v3/models/{id}/_train"])
-    fun train(@PathVariable id: UUID, @RequestBody request: ModelTrainingRequest): Job {
+    fun train(@PathVariable id: UUID): Job {
+        val model = modelService.getModel(id)
+        val req = ModelTrainingRequest(postAction = PostTrainAction.APPLY)
+        return modelService.trainModel(model, req)
+    }
+
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @ApiOperation("Kick off a model training job.")
+    @PostMapping(value = ["/api/v4/models/{id}/_train"])
+    fun trainV4(@PathVariable id: UUID, @RequestBody request: ModelTrainingRequest): Job {
         val model = modelService.getModel(id)
         return modelService.trainModel(model, request)
     }
@@ -106,7 +116,7 @@ class ModelController(
     }
 
     @ApiOperation("Deploy the model and apply to given search.")
-    @PostMapping(value = ["/api/v3/models/{id}/_apply", "/api/v3/models/{id}/_deploy"])
+    @PostMapping(value = ["/api/v3/models/{id}/_apply"])
     @PreAuthorize("hasAuthority('AssetsImport')")
     fun apply(@PathVariable id: UUID, @RequestBody req: ModelApplyRequest): ModelApplyResponse {
         return modelService.applyModel(modelService.getModel(id), req)
