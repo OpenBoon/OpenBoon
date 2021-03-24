@@ -180,6 +180,14 @@ class GcsProjectStorageService constructor(
         }
     }
 
+    override fun listFiles(prefix: String): List<String> {
+        val bucket = gcs.get(properties.bucket)
+        val blobs = bucket.list(
+            Storage.BlobListOption.prefix(prefix),
+        )
+        return blobs.iterateAll().map { it.name }
+    }
+
     fun getBlobId(locator: ProjectStorageLocator): BlobId {
         return BlobId.of(properties.bucket, locator.getPath())
     }

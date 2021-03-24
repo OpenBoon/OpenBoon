@@ -134,7 +134,11 @@ class ReprocessAssetSearchRequest(
     var fileTypes: List<FileType> = FileType.allTypes(),
 
     @ApiModelProperty("Include standard modules in pipeline.")
-    val includeStandard: Boolean = true
+    val includeStandard: Boolean = true,
+
+    @ApiModelProperty("Settings for the task.")
+    val settings: Map<String, Any>? = null
+
 )
 
 @ApiModel(
