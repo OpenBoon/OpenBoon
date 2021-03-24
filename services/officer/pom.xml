@@ -15,7 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.4.31</kotlin.version>
+        <kotlin.version>1.4.32</kotlin.version>
         <kotlin.comiler.jvmTarget>1.8</kotlin.comiler.jvmTarget>
         <ktor.version>1.5.2</ktor.version>
     </properties>
@@ -70,13 +70,13 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-pdf</artifactId>
-            <version>21.2.1</version>
+            <version>21.3</version>
         </dependency>
 
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-slides</artifactId>
-            <version>21.2</version>
+            <version>21.3</version>
             <classifier>jdk16</classifier>
         </dependency>
 
@@ -134,7 +134,7 @@
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
-            <version>3.15.1</version>
+            <version>3.15.2</version>
         </dependency>
 
         <dependency>
@@ -231,7 +231,7 @@
             <plugin>
               <groupId>org.pitest</groupId>
               <artifactId>pitest-maven</artifactId>
-              <version>1.6.2</version>
+              <version>1.6.4</version>
             </plugin>
         </plugins>
     </build>

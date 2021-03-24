@@ -1,28 +1,28 @@
 import logging
-import os
 import math
+import os
 from datetime import datetime
 
-import requests
-from rest_framework.decorators import action
-
 import boonsdk
+import requests
+from boonsdk import BoonClient
+from boonsdk.client import BoonSdkConnectionException
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import transaction
+from django.db.models import Q
 from django.http import Http404, JsonResponse
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet, GenericViewSet
-from boonsdk import BoonClient
-from boonsdk.client import BoonSdkConnectionException
 
-from projects.clients import ZviClient
 from projects.models import Membership, Project
 from projects.permissions import ManagerUserPermissions
 from projects.serializers import ProjectSerializer, ProjectUserSerializer
+from projects.utils import is_user_project_organization_owner
 from wallet.paginators import FromSizePagination
 from wallet.utils import validate_zmlp_data
 
@@ -48,34 +48,28 @@ class BaseProjectViewSet(ViewSet):
     """
     zmlp_root_api_path = ''
     zmlp_only = False
+    project_pk_kwarg = 'project_pk'
 
     def dispatch(self, request, *args, **kwargs):
         """Overrides the dispatch method to include an instance of an archivist client
         to the view.
 
         """
-        project = kwargs["project_pk"]
-        if self.zmlp_only and settings.PLATFORM != 'zmlp':
-            # This is needed to keep from returning terrible stacktraces on endpoints
-            # not meant for dual platform usage
-            raise Http404
-
-        try:
-            apikey = Membership.objects.get(user=request.user, project=kwargs['project_pk']).apikey
-        except Membership.DoesNotExist:
-            return JsonResponse(data={'detail': [f'{request.user.username} is not a member of '
-                                                 f'the project {project}']}, status=403)
-        except TypeError:
-            return JsonResponse(data={'detail': ['Unauthorized.']}, status=403)
-
-        # Attach some useful objects for interacting with ZMLP/ZVI to the request.
-        if settings.PLATFORM == 'zmlp':
+        if self.project_pk_kwarg in kwargs:
+            project = kwargs[self.project_pk_kwarg]
+            try:
+                if is_user_project_organization_owner(request.user, project):
+                    apikey = Project.objects.get(id=project).apikey
+                else:
+                    apikey = Membership.objects.get(user=request.user, project=project).apikey
+            except Membership.DoesNotExist:
+                return JsonResponse(data={'detail': [f'{request.user.username} is not a member of '
+                                                     f'the project {project}']}, status=403)
+            except TypeError:
+                return JsonResponse(data={'detail': ['Unauthorized.']}, status=403)
             request.app = boonsdk.BoonApp(apikey, settings.BOONAI_API_URL)
             request.client = BoonClient(apikey=apikey, server=settings.BOONAI_API_URL,
                                         project_id=project)
-        else:
-            request.client = ZviClient(apikey=apikey, server=settings.BOONAI_API_URL)
-
         return super().dispatch(request, *args, **kwargs)
 
     def get_serializer(self, *args, **kwargs):
@@ -478,50 +472,15 @@ class BaseProjectViewSet(ViewSet):
 
 class ProjectViewSet(ListModelMixin,
                      RetrieveModelMixin,
-                     GenericViewSet):
-    """
-    API endpoint that allows Projects to be viewed and created.
-
-    If a fresh project is being created, only the `name` argument needs to be sent. The ID
-    will be auto-generated.
-
-    **Note:** The POST to create against this endpoint is not supported for ZVI
-    configured instances. In that case, please create projects directly in the Django
-    Admin panel.
-    """
+                     GenericViewSet,
+                     BaseProjectViewSet):
+    """API endpoint that allows Projects to be viewed and created."""
     serializer_class = ProjectSerializer
-
-    def dispatch(self, request, *args, **kwargs):
-        """Overrides the dispatch method to include an instance of an archivist client
-        to the view.
-
-        Since this ProjectViewSet cannot inherit from the BaseProjectViewSet, this
-        replicates the often used functionality around the ZMLP App and Client.
-
-        """
-        if 'pk' in kwargs:
-            project = kwargs["pk"]
-
-            try:
-                apikey = Membership.objects.get(user=request.user, project=project).apikey
-            except Membership.DoesNotExist:
-                return JsonResponse(data={'detail': [f'{request.user.username} is not a member of '
-                                                     f'the project {project}']}, status=403)
-            except TypeError:
-                return JsonResponse(data={'detail': ['Unauthorized.']}, status=403)
-
-            # Attach some useful objects for interacting with ZMLP/ZVI to the request.
-            if settings.PLATFORM == 'zmlp':
-                request.app = boonsdk.BoonApp(apikey, settings.BOONAI_API_URL)
-                request.client = BoonClient(apikey=apikey, server=settings.BOONAI_API_URL,
-                                            project_id=project)
-            else:
-                request.client = ZviClient(apikey=apikey, server=settings.BOONAI_API_URL)
-
-        return super().dispatch(request, *args, **kwargs)
+    project_pk_kwarg = 'pk'
 
     def get_queryset(self):
-        return self.request.user.projects.filter(isActive=True)
+        user = self.request.user
+        return Project.objects.filter(Q(users=user) | Q(organization__owners=user)).distinct()
 
     @action(methods=['get'], detail=True)
     def ml_usage_this_month(self, request, pk):

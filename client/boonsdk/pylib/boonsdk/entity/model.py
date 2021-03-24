@@ -188,21 +188,12 @@ class Model(BaseEntity):
             dict: A search to pass to an asset search.
 
         """
-        prediction_term_map = {
-            ModelType.KNN_CLASSIFIER: f'{self.namespace}.label',
-            ModelType.FACE_RECOGNITION: f'{self.namespace}.predictions.label'
-        }
-        score_map = {ModelType.KNN_CLASSIFIER: f'{self.namespace}.score',
-                     ModelType.TF_CLASSIFIER: f'{self.namespace}.score',
-                     ModelType.FACE_RECOGNITION: f'{self.namespace}.predictions.score'}
-        if self.type not in prediction_term_map:
-            raise TypeError(f'Cannot create a confusion matrix search for {self.type} models.')
         search_query = {
             "size": 0,
             "query": {
                 "bool": {
                     "filter": [
-                        {"range": {score_map[self.type]: {"gte": min_score, "lte": max_score}}}
+                        {"range": {f'{self.namespace}.predictions.score': {"gte": min_score, "lte": max_score}}}  # noqa
                     ]
                 }
             },
@@ -229,7 +220,7 @@ class Model(BaseEntity):
                                             "aggs": {
                                                 "predictions": {
                                                     "terms": {
-                                                        "field": prediction_term_map[self.type]
+                                                        "field": f'{self.namespace}.predictions.label'  # noqa
                                                     }
                                                 }
                                             }

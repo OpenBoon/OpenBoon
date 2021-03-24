@@ -22,15 +22,15 @@ const MetadataCues = ({ videoRef }) => {
 
   const [metadata, setMetadata] = useState({})
 
-  const video = videoRef.current
-  const textTracks = video?.textTracks || {}
-
-  const metadataTracks = Object.values(textTracks).filter(
-    ({ kind }) => kind === 'metadata',
-  )
-
   /* istanbul ignore next */
   useEffect(() => {
+    const video = videoRef.current
+    const textTracks = video?.textTracks || {}
+
+    const metadataTracks = Object.values(textTracks).filter(
+      ({ kind }) => kind === 'metadata',
+    )
+
     if (!metadataTracks) return () => {}
 
     const onCueChange = (event) => {
@@ -47,7 +47,7 @@ const MetadataCues = ({ videoRef }) => {
       metadataTracks.forEach((track) =>
         track.removeEventListener('cuechange', onCueChange),
       )
-  }, [metadataTracks])
+  }, [videoRef])
 
   return (
     <AutoSizer defaultHeight={0} disableWidth>

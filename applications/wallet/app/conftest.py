@@ -33,7 +33,9 @@ def superuser(django_user_model, api_client):
 
 @pytest.fixture
 def organization(superuser):
-    return Organization.objects.create(name='Test Org', owner=superuser)
+    org = Organization.objects.create(name='Test Org')
+    org.owners.add(superuser)
+    return org
 
 
 @pytest.fixture

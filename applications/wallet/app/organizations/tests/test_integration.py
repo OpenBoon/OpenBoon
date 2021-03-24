@@ -1,8 +1,8 @@
+import datetime
+from unittest.mock import patch, Mock
+
 import pytest
 import requests
-import datetime
-
-from unittest.mock import patch, Mock
 
 from organizations.models import Organization
 from organizations.utils import random_organization_name
@@ -27,7 +27,7 @@ def test_random_name():
     assert random_organization_name()
 
 
-def test_orgainzation_with_random_name():
+def test_organization_with_random_name():
     organization = Organization.objects.create()
     assert organization.name
 
