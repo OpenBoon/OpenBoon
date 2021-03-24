@@ -8,8 +8,9 @@ import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelApplyResponse
 import boonai.archivist.domain.ModelFilter
+import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
-import boonai.archivist.domain.ModelTrainingArgs
+import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.PipelineMod
 import boonai.archivist.domain.UpdateLabelRequest
@@ -52,9 +53,9 @@ class ModelController(
     @PreAuthorize("hasAuthority('AssetsImport')")
     @ApiOperation("Kick off a model training job.")
     @PostMapping(value = ["/api/v3/models/{id}/_train"])
-    fun train(@PathVariable id: UUID, @RequestBody args: ModelTrainingArgs): Job {
+    fun train(@PathVariable id: UUID, @RequestBody request: ModelTrainingRequest): Job {
         val model = modelService.getModel(id)
-        return modelService.trainModel(model, args)
+        return modelService.trainModel(model, request)
     }
 
     @ApiOperation("Get Information about a model type.")
@@ -84,16 +85,16 @@ class ModelController(
     @ApiOperation("Publish a model as a PipelineMod")
     @PostMapping("/api/v3/models/{id}/_publish")
     @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
-    fun publish(@PathVariable id: UUID): PipelineMod {
+    fun publish(@PathVariable id: UUID, @RequestBody(required = false) req: ModelPublishRequest?): PipelineMod {
         val model = modelService.getModel(id)
-        return modelService.publishModel(model)
+        return modelService.publishModel(model, req ?: ModelPublishRequest())
     }
 
     @ApiOperation("Set model arguments")
     @PutMapping("/api/v3/models/{id}/_set_args")
-    fun setModelArguments(@PathVariable id: UUID, @RequestBody args: Map<String, Any>): PipelineMod {
+    fun setModelArguments(@PathVariable id: UUID, @RequestBody req: ModelPublishRequest): PipelineMod {
         val model = modelService.getModel(id)
-        return modelService.setModelArgs(model, args)
+        return modelService.setModelArgs(model, req)
     }
 
     @ApiOperation("Delete a model")
@@ -105,10 +106,24 @@ class ModelController(
     }
 
     @ApiOperation("Deploy the model and apply to given search.")
-    @PostMapping("/api/v3/models/{id}/_deploy")
+    @PostMapping(value = ["/api/v3/models/{id}/_apply", "/api/v3/models/{id}/_deploy"])
     @PreAuthorize("hasAuthority('AssetsImport')")
     fun apply(@PathVariable id: UUID, @RequestBody req: ModelApplyRequest): ModelApplyResponse {
-        return modelService.deployModel(modelService.getModel(id), req)
+        return modelService.applyModel(modelService.getModel(id), req)
+    }
+
+    @ApiOperation("Test the model and apply to given search.")
+    @PostMapping("/api/v3/models/{id}/_test")
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    fun test(@PathVariable id: UUID, @RequestBody req: ModelApplyRequest): ModelApplyResponse {
+        return modelService.testModel(modelService.getModel(id), req)
+    }
+
+    @ApiOperation("Test the model and apply to given search.")
+    @GetMapping("/api/v3/models/{id}/_tags")
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    fun getVersionTags(@PathVariable id: UUID): Set<String> {
+        return modelService.getModelVersions(modelService.getModel(id))
     }
 
     @ApiOperation("Get the labels for the model")
