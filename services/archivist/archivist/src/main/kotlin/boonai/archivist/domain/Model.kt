@@ -155,7 +155,7 @@ enum class ModelType(
         "Imported Pytorch Image Classifier",
         "None",
         mapOf(),
-        "boonai_analysis.custom.PytorchImageClassifier",
+        "boonai_analysis.custom.PytorchTransferLearningClassifier",
         mapOf(),
         null,
         "Upload a pre-trained Pytorch model to use for image classification.",
