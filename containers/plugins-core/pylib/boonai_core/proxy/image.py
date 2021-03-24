@@ -128,6 +128,11 @@ class ImageProxyProcessor(AssetProcessor):
                 '--autocc', '--quality', self.ml_quality
             ])
             oiiotool_command.extend(['-o', str(output_path)])
+
+        # If we are working with a PNG, get rid of the -autocc option
+        if asset.get_attr("source.extension").lower() == "png":
+            oiiotool_command = list(filter('--autocc'.__ne__, oiiotool_command))
+
         return oiiotool_command
 
     def _get_proxy_descriptors(self, asset):
