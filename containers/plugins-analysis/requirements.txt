@@ -1,6 +1,6 @@
 scikit-learn
 scipy
-mxnet==1.7.0.post1
+mxnet==1.8.0
 protobuf
 opencv-python-headless
 opencv-contrib-python-headless
