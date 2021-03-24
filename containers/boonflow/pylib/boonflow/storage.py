@@ -159,11 +159,14 @@ class ModelStorage:
 
         mod = self.publish_model(model)
 
-        if post_action.lower() == "test":
+        if not post_action:
+            return mod
+        elif post_action.lower() == "test":
+            logger.info("Applying model to test Assets")
             self.app.models.test_model(model)
         elif post_action.lower() == "apply":
+            logger.info("Applying model to Assets")
             self.app.models.apply_model(model)
-
         return mod
 
     def publish_model(self, model):

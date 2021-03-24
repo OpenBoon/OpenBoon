@@ -36,7 +36,8 @@ class KnnFaceRecognitionTrainerTests(PluginUnitTestCase):
 
         args = {
             'model_id': model_id,
-            'tag': 'latest'
+            'tag': 'latest',
+            'post_action': 'none'
         }
 
         processor = self.init_processor(KnnFaceRecognitionTrainer(), args)

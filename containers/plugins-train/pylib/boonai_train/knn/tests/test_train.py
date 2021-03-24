@@ -37,7 +37,7 @@ class KnnLabelDetectionTrainerTests(PluginUnitTestCase):
         args = {
             'model_id': model_id,
             'tag': 'latest',
-            'post_action': 'apply'
+            'post_action': 'none'
         }
 
         processor = self.init_processor(KnnLabelDetectionTrainer(), args)

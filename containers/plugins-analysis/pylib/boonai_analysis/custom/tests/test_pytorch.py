@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from boonsdk.app import ModelApp
 from boonsdk.entity import Model
-from boonai_analysis.custom.pytorch import PytorchTransferLearningClassifier
+from boonai_analysis.custom.pytorch import PytorchImageClassifier
 from boonflow.base import Frame
 from boonflow.storage import file_storage
 from boonflow.testing import PluginUnitTestCase, TestAsset, test_path, get_prediction_labels
@@ -56,7 +56,7 @@ class PytorchModelImageClassifierTests(PluginUnitTestCase):
             frame = Frame(TestAsset(paths))
 
             processor = self.init_processor(
-                PytorchTransferLearningClassifier(), args
+                PytorchImageClassifier(), args
             )
             processor.process(frame)
             analysis = frame.asset.get_analysis(name)
@@ -65,7 +65,7 @@ class PytorchModelImageClassifierTests(PluginUnitTestCase):
             assert 'labels' == analysis['type']
 
 
-class PytorchVideoTransferLearningClassifierTests(PluginUnitTestCase):
+class PytorchImageClassifierTests(PluginUnitTestCase):
     model_id = "model-id-34568"
     base_dir = os.path.dirname(__file__)
     name = "pytorch_ants_and_bees"
@@ -106,7 +106,7 @@ class PytorchVideoTransferLearningClassifierTests(PluginUnitTestCase):
         }
 
         processor = self.init_processor(
-            PytorchTransferLearningClassifier(), args
+            PytorchImageClassifier(), args
         )
         self.frame.asset.set_attr('media.type', 'video')
         processor.process(self.frame)

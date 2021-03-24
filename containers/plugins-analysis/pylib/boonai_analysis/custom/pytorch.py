@@ -8,11 +8,11 @@ from ..utils.pytorch import load_pytorch_image, load_pytorch_model
 from .base import CustomModelProcessor
 
 
-class PytorchTransferLearningClassifier(CustomModelProcessor):
+class PytorchImageClassifier(CustomModelProcessor):
     """A processor for loading and executing a uploaded Tensorflow image classifier"""
 
     def __init__(self):
-        super(PytorchTransferLearningClassifier, self).__init__()
+        super(PytorchImageClassifier, self).__init__()
         self.add_arg(Argument("input_size", "list", required=True,
                               toolTip="The input size", default=(224, 224)))
 
@@ -75,13 +75,14 @@ class PytorchTransferLearningClassifier(CustomModelProcessor):
         return result
 
     def process_video(self, asset):
-        """Process the given frame for predicting and adding labels to an asset
+        """
+        Process a video asset.
 
         Args:
-            frame (Frame): Frame to be processed
+            asset (Asset): An Asset instance.
 
         Returns:
-            None
+
         """
         asset_id = asset.id
         final_time = asset.get_attr('media.length')
