@@ -35,4 +35,4 @@ google-api-python-client
 google-auth
 google-cloud-vision
 azure-cognitiveservices-vision-computervision==0.7.0
-azure-cognitiveservices-vision-face==0.4.1
+azure-cognitiveservices-vision-face==0.5.0
