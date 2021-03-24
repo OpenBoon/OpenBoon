@@ -40,7 +40,8 @@ class PytorchModelImageClassifierTests(PluginUnitTestCase):
 
         args = {
             "model_id": self.model_id,
-            "input_size": (321, 321)
+            "input_size": (321, 321),
+            "tag": "latest"
         }
 
         flower_paths = [
@@ -100,6 +101,7 @@ class PytorchVideoTransferLearningClassifierTests(PluginUnitTestCase):
 
         args = {
             "model_id": self.model_id,
+            "tag": "latest",
             "input_size": (321, 321)
         }
 

@@ -35,7 +35,8 @@ class KnnFaceRecognitionTrainerTests(PluginUnitTestCase):
         upload_patch.return_value = StoredFile({"id": "12345"})
 
         args = {
-            'model_id': model_id
+            'model_id': model_id,
+            'tag': 'latest'
         }
 
         processor = self.init_processor(KnnFaceRecognitionTrainer(), args)

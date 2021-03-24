@@ -8,8 +8,6 @@ import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
-from boonflow import file_storage
-
 logger = logging.getLogger(__name__)
 
 
@@ -27,37 +25,35 @@ def load_keras_image(path, size=(224, 224)):
     img = load_img(
         path,
         grayscale=False,
-        color_mode="rgb",
+        color_mode='rgb',
         target_size=size,
-        interpolation="lanczos",
+        interpolation='lanczos',
     )
 
     numpy_image = img_to_array(img)
     return np.expand_dims(numpy_image, axis=0)
 
 
-def load_keras_model(model):
+def load_keras_model(model_path):
     """
     Install the given Boon AI model into the local model cache and return
     the Keras model instance with its array of labels.
 
     Args:
-        model (Model): A boonai model instance.
-
+        model_path (str): A keras model path.
     Returns:
         tuple: (Keras model instance, List[str] of labels)
     """
-    model_path = file_storage.models.install_model(model)
     # load dir as a model using keras
     trained_model = load_model(model_path)
 
     # labels.txt is always the name
     # create a list of labels from file labels.txt
     try:
-        with open(os.path.join(model_path, "labels.txt")) as fp:
+        with open(os.path.join(model_path, 'labels.txt')) as fp:
             labels = fp.read().splitlines()
     except FileNotFoundError:
-        logger.warning("failed to find labels.txt file for model {}".format(model))
+        logger.warning('failed to find labels.txt file for model')
         labels = []
 
     # return model and labels

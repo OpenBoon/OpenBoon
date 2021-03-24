@@ -45,50 +45,52 @@ class ModelStorage:
         self.root = os.environ.get("BOONAI_MODEL_CACHE", "/tmp/boonai/model-cache")
 
     @staticmethod
-    def get_model_file_id(model):
+    def get_model_file_id(model, tag):
         """
         Utility method which takes a model instance or model file id (str)
         and returns the model file id.
 
         Args:
             model (mixed): A Model instance or model file id.
-
+            tag (str): The model version tag.
         Returns:
             str: The model file id.
         """
-        return getattr(model, 'file_id', None) or model
+        file_id = getattr(model, 'file_id', None) or model
+        return file_id.replace("__TAG__", tag)
 
-    def get_model_install_path(self, model):
+    def get_model_install_path(self, model, tag):
         """
         Return the path to where the model should be installed.
 
         Args:
             model (mixed): A Model instance or model file id.
-
+            tag (str): The Model version tag.
         Returns:
             str: The model install path.
         """
-        model_file_id = self.get_model_file_id(model)
+        model_file_id = self.get_model_file_id(model, tag)
         base, ext = os.path.splitext(model_file_id)
         base = base.replace('/', '_')
         return os.path.join(self.root, base)
 
-    def install_model(self, model):
+    def install_model(self, model, tag):
         """
         Install the given model file.
 
         Args:
             model (mixed): The Model instance or the model file id.
+            tag (str): The model version tag.
 
         Returns:
             str: The path to an unzipped model directory.
 
         """
-        model_file_id = self.get_model_file_id(model)
-        install_path = self.get_model_install_path(model)
+        model_file_id = self.get_model_file_id(model, tag)
+        install_path = self.get_model_install_path(model, tag)
 
-        if not self.model_exists(model_file_id):
-            logger.info(f'Installing model into {install_path}')
+        if not self.model_exists(model_file_id, tag):
+            logger.info(f'Installing model ({tag} into {install_path}')
             model_zip = self.projects.localize_file(model_file_id)
             os.makedirs(install_path, exist_ok=True)
 
@@ -100,18 +102,18 @@ class ModelStorage:
 
         return install_path
 
-    def model_exists(self, model):
+    def model_exists(self, model, tag):
         """
         Return true if the model we have exists and its the latest version.
 
         Args:
             model (mixed): The Model instance or model file id.
-
+            tag: (str): The model tag.
         Returns:
             bool: True if we have the latest model.
         """
-        model_file_id = self.get_model_file_id(model)
-        install_path = self.get_model_install_path(model)
+        model_file_id = self.get_model_file_id(model, tag)
+        install_path = self.get_model_install_path(model, tag)
 
         if not os.path.exists(install_path):
             return False
@@ -133,18 +135,19 @@ class ModelStorage:
 
         return True
 
-    def save_model(self, src_dir, model, deploy):
+    def save_model(self, src_dir, model, tag, post_action):
         """
         Upload a directory containing model files to cloud storage.
 
         Args:
             src_dir (str): The source directory.
             model (Model): The Model instance.
-            deploy (bool): Launch an expand task to deploy the model using the deploy search.
+            tag (str): The model version tag.
+            post_action (str): handle the post action.
         Returns:
-            AnalysisModuleule: A AnalysisModuleule for utilizing the model.
+            AnalysisModule: A AnalysisModule for utilizing the model.
         """
-        file_id = self.get_model_file_id(model)
+        file_id = self.get_model_file_id(model, tag)
         version_file = src_dir + self.model_ver_file
         with open(version_file, 'w') as fp:
             fp.write("{}-{}\n".format(time.time(), str(uuid.uuid4())))
@@ -153,19 +156,23 @@ class ModelStorage:
             src_dir, tempfile.mkstemp(prefix="model_", suffix=".zip")[1])
         self.projects.store_file_by_id(version_file, os.path.dirname(file_id) + self.model_ver_file)
         self.projects.store_file_by_id(zip_file_path, file_id, precache=False)
+
         mod = self.publish_model(model)
-        if deploy:
-            self.app.models.deploy_model(model)
+
+        if post_action.lower() == "test":
+            self.app.models.test_model(model)
+        elif post_action.lower() == "apply":
+            self.app.models.apply_model(model)
+
         return mod
 
     def publish_model(self, model):
         """
         Publish the given model.  The model must have been trained before.  This
-        will make the model available for execution using a AnalysisModuleel
+        will make the model available for execution using a AnalysisModule.
 
         Args:
             model (Model): The Model instance or a unique Model id.
-
         Returns:
             AnalysisModule: A AnalysisModule which can be used to execute the model on Data.
         """

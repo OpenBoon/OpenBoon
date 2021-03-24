@@ -40,6 +40,7 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
 
         args = {
             "model_id": self.model_id,
+            "tag": "latest",
             "input_size": (321, 321)
         }
 
@@ -98,6 +99,7 @@ class TensorflowTransferLearningClassifierTestsVideo(PluginUnitTestCase):
 
         args = {
             "model_id": self.model_id,
+            "tag": "latest"
         }
 
         processor = self.init_processor(

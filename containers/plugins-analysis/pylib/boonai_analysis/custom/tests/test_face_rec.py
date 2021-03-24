@@ -45,7 +45,10 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
             }
         ])
         frame = Frame(asset)
-        processor = self.init_processor(KnnFaceRecognitionClassifier(), {"sensitivity": 100})
+        processor = self.init_processor(KnnFaceRecognitionClassifier(), {
+            "tag": "latest",
+            "sensitivity": 100
+        })
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.foo')
@@ -72,7 +75,7 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
         asset.set_attr('media.length', 648)
         asset.set_attr('media.type', 'video')
         frame = Frame(asset)
-        processor = self.init_processor(KnnFaceRecognitionClassifier())
+        processor = self.init_processor(KnnFaceRecognitionClassifier(), {'tag': 'latest'})
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.foo')
