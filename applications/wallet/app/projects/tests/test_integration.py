@@ -20,7 +20,7 @@ from rest_framework.response import Response
 from organizations.models import Organization
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
-from projects.utils import is_user_project_organization_owner
+from projects.utils import is_user_project_organization_owner, random_project_name
 from projects.views import BaseProjectViewSet
 from wallet.tests.utils import check_response
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
@@ -34,6 +34,10 @@ def mock_put_disable_project(*args, **kwargs):
 
 def mock_put_enable_project(*args, **kwargs):
     return {'type': 'project', 'id': '00000000-0000-0000-0000-000000000000', 'op': 'enable', 'success': True}  # noqa
+
+
+def test_random_project_name():
+    assert random_project_name()
 
 
 def test_project_view_user_does_not_belong_to_project(user, project):
