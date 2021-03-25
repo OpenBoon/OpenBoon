@@ -33,7 +33,6 @@ class OrganizationUserListSerializer(serializers.ModelSerializer):
 class OrganizationUserDetailSerializer(serializers.ModelSerializer):
     firstName = serializers.CharField(source='first_name')
     lastName = serializers.CharField(source='last_name')
-
     projects = serializers.SerializerMethodField()
 
     class Meta:
