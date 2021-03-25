@@ -25,6 +25,8 @@ const OrganizationsCard = ({ organization: { id, name, projectCount } }) => {
         <h3
           title={name}
           css={{
+            fontSize: typography.size.giant,
+            lineHeight: typography.height.giant,
             fontWeight: typography.weight.medium,
             paddingBottom: spacing.base,
             overflow: 'hidden',
