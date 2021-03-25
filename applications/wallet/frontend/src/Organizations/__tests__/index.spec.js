@@ -1,9 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import organizations from '../__mocks__/organizations'
-import mockUser from '../../User/__mocks__/user'
-
-import User from '../../User'
 
 import Organizations from '..'
 
@@ -11,11 +8,7 @@ describe('<Organizations />', () => {
   it('should render properly', () => {
     require('swr').__setMockUseSWRResponse({ data: organizations })
 
-    const component = TestRenderer.create(
-      <User initialUser={mockUser}>
-        <Organizations />
-      </User>,
-    )
+    const component = TestRenderer.create(<Organizations />)
 
     act(() => {
       component.root
@@ -37,11 +30,7 @@ describe('<Organizations />', () => {
   it('should render properly with no organizations', () => {
     require('swr').__setMockUseSWRResponse({ data: { results: [] } })
 
-    const component = TestRenderer.create(
-      <User initialUser={mockUser}>
-        <Organizations />
-      </User>,
-    )
+    const component = TestRenderer.create(<Organizations />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })
