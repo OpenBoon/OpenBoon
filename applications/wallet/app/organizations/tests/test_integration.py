@@ -95,6 +95,27 @@ class TestViews(object):
                                                                 'videoMinutes': 274},
                                           'userCount': 1}
 
+    def test_org_project_list_metrics_error(self, login, zmlp_project_user, api_client,
+                                            organization, monkeypatch):
+        mock_post_responses = [
+            {'aggregations': {'sum#video_seconds': {'value': 16406}}},
+            {"hits": {"total": {"value": 35}}},
+        ]
+
+        def mock_post(*args, **kwargs):
+            return mock_post_responses.pop()
+
+        monkeypatch.setattr(BoonClient, 'post', mock_post)
+        path = reverse('org-project-list', kwargs={'organization_pk': organization.id})
+
+        # User is an organization owner.
+        organization.owners.add(zmlp_project_user)
+        response = check_response(api_client.get(path))
+        assert response['results'][0]['mlUsageThisMonth'] == {'tier1': {'imageCount': -1,
+                                                                        'videoMinutes': -1},
+                                                              'tier2': {'imageCount': -1,
+                                                                        'videoMinutes': -1}}
+
     def test_org_project_create(self, login, zmlp_project_user, api_client, organization, monkeypatch):
         monkeypatch.setattr(Project, 'sync_with_zmlp', lambda x: None)
         path = reverse('org-project-list', kwargs={'organization_pk': organization.id})
