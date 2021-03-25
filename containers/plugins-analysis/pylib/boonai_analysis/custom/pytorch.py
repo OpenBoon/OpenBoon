@@ -8,11 +8,11 @@ from ..utils.pytorch import load_pytorch_image, load_pytorch_model
 from .base import CustomModelProcessor
 
 
-class PytorchImageClassifier(CustomModelProcessor):
+class PytorchTransferLearningTrainer(CustomModelProcessor):
     """A processor for loading and executing a uploaded Tensorflow image classifier"""
 
     def __init__(self):
-        super(PytorchImageClassifier, self).__init__()
+        super(PytorchTransferLearningTrainer, self).__init__()
         self.add_arg(Argument("input_size", "list", required=True,
                               toolTip="The input size", default=(224, 224)))
 
