@@ -21,6 +21,7 @@ User = get_user_model()
 
 
 class OrganizationViewSet(ListModelMixin, GenericViewSet):
+    """Viewset for getting info about Organizations."""
     serializer_class = OrganizationSerializer
 
     def get_queryset(self):
@@ -41,6 +42,7 @@ class BaseOrganizationOwnerViewset(GenericViewSet):
 
 
 class OrganizationProjectViewSet(ListModelMixin, BaseOrganizationOwnerViewset):
+    """Viewset for projects associated with an Organization."""
     serializer_class = ProjectDetailSerializer
     project_limits = {Plan.ACCESS: 1,
                       Plan.BUILD: 20,
@@ -63,6 +65,7 @@ class OrganizationProjectViewSet(ListModelMixin, BaseOrganizationOwnerViewset):
 
 
 class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, BaseOrganizationOwnerViewset):
+    """Viewset for users associated with an Organization via projects."""
     pagination_class = FromSizePagination
 
     def get_serializer_class(self):
@@ -89,6 +92,7 @@ class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, BaseOrganizati
 
 
 class OrganizationOwnerViewSet(ListModelMixin, BaseOrganizationOwnerViewset):
+    """Viewset for an Organization's owners."""
     serializer_class = OrganizationOwnerSerializer
 
     def get_queryset(self):

@@ -22,7 +22,8 @@ from rest_framework.viewsets import ViewSet, GenericViewSet
 
 from projects.models import Membership, Project
 from projects.permissions import ManagerUserPermissions
-from projects.serializers import ProjectSerializer, ProjectUserSerializer
+from projects.serializers import ProjectSerializer, ProjectUserSerializer, \
+    ProjectDetailSerializer
 from projects.utils import is_user_project_organization_owner
 from wallet.exceptions import InvalidRequestError
 from wallet.paginators import FromSizePagination
@@ -477,12 +478,16 @@ class ProjectViewSet(ListModelMixin,
                      GenericViewSet,
                      BaseProjectViewSet):
     """API endpoint that allows Projects to be viewed and created."""
-    serializer_class = ProjectSerializer
     project_pk_kwarg = 'pk'
 
     def get_queryset(self):
         user = self.request.user
         return Project.objects.filter(Q(users=user) | Q(organization__owners=user)).distinct()
+
+    def get_serializer_class(self):
+        action_map = {'list': ProjectSerializer,
+                      'retrieve': ProjectDetailSerializer}
+        return action_map[self.action]
 
     def destroy(self, request, *args, **kwargs):
         project = self.get_object()
