@@ -80,16 +80,26 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     )
 
 
+class UsageSerializer(serializers.Serializer):
+    imageCount = serializers.IntegerField(source='image_count')
+    videoMinutes = serializers.FloatField(source='video_minutes')
+
+
+class TieredMlUsageSerializer(serializers.Serializer):
+    tier1 = UsageSerializer(source='tier_1')
+    tier2 = UsageSerializer(source='tier_2')
+
+
 class ProjectDetailSerializer(serializers.ModelSerializer):
-    # mlUsageThisMonth = MlUsageThisMonthSerializer() #TODO
-    # totalStorageUsage = TotalStorageUsageSerializer() #TODO
-    numberOfUsers = serializers.SerializerMethodField('get_number_of_users')
+    mlUsageThisMonth = TieredMlUsageSerializer(source='ml_usage_this_month')
+    totalStorageUsage = UsageSerializer(source='total_storage_usage')
+    userCount = serializers.SerializerMethodField('get_user_count')
 
     class Meta:
         model = Project
-        fields = ['id', 'name', 'numberOfUsers']
+        fields = ['id', 'name', 'userCount', 'mlUsageThisMonth', 'totalStorageUsage']
 
-    def get_number_of_users(self, obj):
+    def get_user_count(self, obj):
         return obj.users.count()
 
 

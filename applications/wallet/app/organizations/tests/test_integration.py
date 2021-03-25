@@ -1,17 +1,18 @@
 import datetime
+import json
 from unittest.mock import patch, Mock
 
 import pytest
 import requests
 from boonsdk import BoonClient
 from django.contrib.auth.models import User
+from requests import Response
 from rest_framework.reverse import reverse
 
 from organizations.models import Organization, Plan
 from organizations.serializers import OrganizationSerializer
 from organizations.utils import random_organization_name
 from projects.models import Project, Membership
-from projects.serializers import ProjectDetailSerializer
 from wallet.tests.utils import check_response
 
 pytestmark = pytest.mark.django_db
@@ -54,7 +55,26 @@ class TestViews(object):
         assert organization_result == OrganizationSerializer(organization).data
         assert organization_result['projectCount'] == 1
 
-    def test_org_project_list(self, login, zmlp_project_user, api_client, organization):
+    def test_org_project_list(self, login, zmlp_project_user, api_client, organization,
+                              monkeypatch):
+        mock_post_responses = [
+            {'aggregations': {'sum#video_seconds': {'value': 16406}}},
+            {"hits": {"total": {"value": 35}}},
+        ]
+
+        def mock_post(*args, **kwargs):
+            return mock_post_responses.pop()
+
+        def mock_get(*args, **kwargs):
+            data = {"tier_1": {"image_count": 12, "video_minutes": 55.8},
+                    "tier_2": {"image_count": 30, "video_minutes": 6.571}}
+            response = Response()
+            response.status_code = 200
+            response._content = json.dumps(data).encode('utf-8')
+            return response
+
+        monkeypatch.setattr(requests, 'get', mock_get)
+        monkeypatch.setattr(BoonClient, 'post', mock_post)
         path = reverse('org-project-list', kwargs={'organization_pk': organization.id})
 
         # User is not an organization owner
@@ -64,7 +84,15 @@ class TestViews(object):
         organization.owners.add(zmlp_project_user)
         response = check_response(api_client.get(path))
         assert response['count'] == 1
-        assert response['results'][0] == ProjectDetailSerializer(organization.projects.first()).data
+        assert response['results'][0] == {'id': '6abc33f0-4acf-4196-95ff-4cbb7f640a06',
+                                          'mlUsageThisMonth': {'tier1': {'imageCount': 12,
+                                                                         'videoMinutes': 55.8},
+                                                               'tier2': {'imageCount': 30,
+                                                                         'videoMinutes': 6.571}},
+                                          'name': 'Test Project',
+                                          'totalStorageUsage': {'imageCount': 35,
+                                                                'videoMinutes': 274},
+                                          'userCount': 1}
 
     def test_org_project_create(self, login, zmlp_project_user, api_client, organization, monkeypatch):
         monkeypatch.setattr(Project, 'sync_with_zmlp', lambda x: None)

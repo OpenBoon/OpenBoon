@@ -13,7 +13,7 @@ from organizations.serializers import (OrganizationSerializer,
                                        OrganizationUserDetailSerializer,
                                        OrganizationOwnerSerializer)
 from projects.models import Project, Membership
-from projects.serializers import ProjectDetailSerializer
+from projects.serializers import ProjectDetailSerializer, ProjectSimpleSerializer
 from wallet.exceptions import InvalidRequestError, NotAllowedError
 from wallet.paginators import FromSizePagination
 
@@ -44,23 +44,22 @@ class OrganizationProjectViewSet(ListModelMixin, BaseOrganizationOwnerViewset):
     serializer_class = ProjectDetailSerializer
     project_limits = {Plan.ACCESS: 1,
                       Plan.BUILD: 20,
-                      Plan.CUSTOM_ENTERPRISE: 0}
+                      Plan.CUSTOM_ENTERPRISE: None}
 
     def get_queryset(self):
-        return Project.objects.filter(organization_id=self.organization,
-                                      organization__owners=self.request.user)
+        return Project.objects.filter(organization_id=self.organization)
 
     def create(self, request, *args, **kwargs):
         projects_limit = self.project_limits[self.organization.plan]
         if projects_limit and self.organization.projects.count() >= projects_limit:
-            message = 'You have exceeded the number of projects allowed on your.'
+            message = 'You have exceeded the number of projects allowed for your plan.'
             raise NotAllowedError({'detail': [message]})
         name = request.data.get('name')
         if not name:
             raise InvalidRequestError({'detail': ['"name" argument is missing.']})
         project = Project.objects.create(name=name, organization=self.organization)
         project.sync_with_zmlp()
-        return Response({'id': project.id, 'name': project.name})
+        return Response(ProjectSimpleSerializer(project).data)
 
 
 class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, BaseOrganizationOwnerViewset):
@@ -72,8 +71,7 @@ class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, BaseOrganizati
         return action_map[self.action]
 
     def get_queryset(self):
-        return User.objects.filter(
-            projects__organization=self.organization).distinct()
+        return User.objects.filter(projects__organization=self.organization).distinct()
 
     def get_serializer_context(self):
         context = {'organization': self.organization}
@@ -83,9 +81,10 @@ class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, BaseOrganizati
         user = self.get_object()
         memberships = Membership.objects.filter(
             user=user, project__organization=self.organization)
+        count = memberships.count()
         for membership in memberships:
             membership.delete_and_sync_with_zmlp(membership.project.get_admin_client())
-        message = f'Success, removed {user.email} from {memberships.count()} projects.'
+        message = f'Success, removed {user.email} from {count} projects.'
         return Response({'detail': [message]})
 
 
