@@ -4,14 +4,16 @@ const typography = {
     regular: 15,
     medium: 17,
     large: 18,
-    giant: 32,
+    giant: 21,
+    colossal: 32,
   },
   height: {
     small: '18px',
     regular: '19px',
     medium: '20px',
     large: '21px',
-    giant: '43px',
+    giant: '30px',
+    colossal: '43px',
   },
   weight: {
     regular: 400,

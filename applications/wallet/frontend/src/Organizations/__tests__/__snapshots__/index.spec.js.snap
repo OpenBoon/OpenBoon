@@ -1,0 +1,708 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Organizations /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Organizations Admin
+  </h2>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-width: 400px;
+}
+
+.emotion-2 {
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
+  background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+  padding-left: 40px;
+  background-color: #3b3b3b;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+DQogICAgPHBhdGggZmlsbD0iIzgwODA4MCIgZD0iTTEzLjg1NyAxMi4zMTRoLS44MjNsLS4zMDgtLjMwOGE2LjQzOCA2LjQzOCAwIDAwMS42NDUtNC4zMkE2LjY3MiA2LjY3MiAwIDAwNy42ODYgMSA2LjY3MiA2LjY3MiAwIDAwMSA3LjY4NmE2LjY3MiA2LjY3MiAwIDAwNi42ODYgNi42ODUgNi40MzggNi40MzggMCAwMDQuMzItMS42NDVsLjMwOC4zMDh2LjgyM0wxNy40NTcgMTkgMTkgMTcuNDU3bC01LjE0My01LjE0M3ptLTYuMTcxIDBhNC42MSA0LjYxIDAgMDEtNC42MjktNC42MjggNC42MSA0LjYxIDAgMDE0LjYyOS00LjYyOSA0LjYxIDQuNjEgMCAwMTQuNjI4IDQuNjI5IDQuNjEgNC42MSAwIDAxLTQuNjI4IDQuNjI4eiIvPg0KPC9zdmc+');
+  background-color: #3b3b3b;
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::placeholder {
+  font-style: italic;
+}
+
+.emotion-2:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-2:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #3A5DFF;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: normal;
+  color: #b3b3b3;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: normal;
+  color: #b3b3b3;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: normal;
+  color: #b3b3b3;
+}
+
+.emotion-2::placeholder {
+  font-style: normal;
+  color: #b3b3b3;
+}
+
+.emotion-3 {
+  padding-left: 16px;
+}
+
+.emotion-4 {
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-5 {
+  padding-left: 8px;
+}
+
+.emotion-6 {
+  background-color: #3b3b3b;
+  border-radius: 2px;
+  border: none;
+  width: 300px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <input
+        aria-label="Filter Organizations"
+        className="emotion-2"
+        onChange={[Function]}
+        placeholder="Filter Organizations"
+        type="search"
+        value=""
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <label
+        className="emotion-4"
+      >
+        Sort by
+        <div
+          className="emotion-5"
+        >
+          <select
+            className="emotion-6"
+            defaultValue="date"
+            disabled={false}
+            onChange={[Function]}
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select an option...
+            </option>
+            <option
+              value="name"
+            >
+              Name (A-Z)
+            </option>
+            <option
+              value="date"
+            >
+              Most Recently Created
+            </option>
+          </select>
+        </div>
+      </label>
+    </div>
+  </div>,
+  .emotion-0 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+<div
+    className="emotion-0"
+  >
+    Organizations: 
+    4
+  </div>,
+  .emotion-0 {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  padding-bottom: 32px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #3b3b3b;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  padding: 32px;
+  border: 1px solid transparent;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #4a4a4a;
+  border: 1px solid #808080;
+}
+
+.emotion-2 {
+  font-size: 21px;
+  line-height: 30px;
+  font-weight: 500;
+  padding-bottom: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-3 {
+  font-family: Roboto Condensed;
+  color: #b3b3b3;
+}
+
+<div
+    className="emotion-0"
+  >
+    <a
+      className="emotion-1"
+      href="/organizations/e8372289-f6d3-4248-91e7-f3f958867a45"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      <h3
+        className="emotion-2"
+        title="dvorak"
+      >
+        dvorak
+      </h3>
+      <div
+        className="emotion-3"
+      >
+        Projects: 
+        3
+      </div>
+    </a>
+    <a
+      className="emotion-1"
+      href="/organizations/76917058-b147-4556-987a-0a0f11e46d9b"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      <h3
+        className="emotion-2"
+        title="qwerty"
+      >
+        qwerty
+      </h3>
+      <div
+        className="emotion-3"
+      >
+        Projects: 
+        3
+      </div>
+    </a>
+    <a
+      className="emotion-1"
+      href="/organizations/a36195cc-19d7-4358-b0f8-0685b6d04ce5"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      <h3
+        className="emotion-2"
+        title="dvorak"
+      >
+        dvorak
+      </h3>
+      <div
+        className="emotion-3"
+      >
+        Projects: 
+        3
+      </div>
+    </a>
+    <a
+      className="emotion-1"
+      href="/organizations/e93cbadb-e5ae-4598-8395-4cf5b30c0e94"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      <h3
+        className="emotion-2"
+        title="azerty"
+      >
+        azerty
+      </h3>
+      <div
+        className="emotion-3"
+      >
+        Projects: 
+        3
+      </div>
+    </a>
+  </div>,
+]
+`;
+
+exports[`<Organizations /> should render properly 2`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Organizations Admin
+  </h2>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-width: 400px;
+}
+
+.emotion-2 {
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
+  background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+  padding-left: 40px;
+  background-color: #3b3b3b;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+DQogICAgPHBhdGggZmlsbD0iIzgwODA4MCIgZD0iTTEzLjg1NyAxMi4zMTRoLS44MjNsLS4zMDgtLjMwOGE2LjQzOCA2LjQzOCAwIDAwMS42NDUtNC4zMkE2LjY3MiA2LjY3MiAwIDAwNy42ODYgMSA2LjY3MiA2LjY3MiAwIDAwMSA3LjY4NmE2LjY3MiA2LjY3MiAwIDAwNi42ODYgNi42ODUgNi40MzggNi40MzggMCAwMDQuMzItMS42NDVsLjMwOC4zMDh2LjgyM0wxNy40NTcgMTkgMTkgMTcuNDU3bC01LjE0My01LjE0M3ptLTYuMTcxIDBhNC42MSA0LjYxIDAgMDEtNC42MjktNC42MjggNC42MSA0LjYxIDAgMDE0LjYyOS00LjYyOSA0LjYxIDQuNjEgMCAwMTQuNjI4IDQuNjI5IDQuNjEgNC42MSAwIDAxLTQuNjI4IDQuNjI4eiIvPg0KPC9zdmc+');
+  background-color: #3b3b3b;
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::placeholder {
+  font-style: italic;
+}
+
+.emotion-2:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-2:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #3A5DFF;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: normal;
+  color: #b3b3b3;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: normal;
+  color: #b3b3b3;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: normal;
+  color: #b3b3b3;
+}
+
+.emotion-2::placeholder {
+  font-style: normal;
+  color: #b3b3b3;
+}
+
+.emotion-3 {
+  padding-left: 16px;
+}
+
+.emotion-4 {
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-5 {
+  padding-left: 8px;
+}
+
+.emotion-6 {
+  background-color: #3b3b3b;
+  border-radius: 2px;
+  border: none;
+  width: 300px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <input
+        aria-label="Filter Organizations"
+        className="emotion-2"
+        onChange={[Function]}
+        placeholder="Filter Organizations"
+        type="search"
+        value="erty"
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <label
+        className="emotion-4"
+      >
+        Sort by
+        <div
+          className="emotion-5"
+        >
+          <select
+            className="emotion-6"
+            defaultValue="date"
+            disabled={false}
+            onChange={[Function]}
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select an option...
+            </option>
+            <option
+              value="name"
+            >
+              Name (A-Z)
+            </option>
+            <option
+              value="date"
+            >
+              Most Recently Created
+            </option>
+          </select>
+        </div>
+      </label>
+    </div>
+  </div>,
+  .emotion-0 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+<div
+    className="emotion-0"
+  >
+    Organizations: 
+    2
+  </div>,
+  .emotion-0 {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  padding-bottom: 32px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #3b3b3b;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  padding: 32px;
+  border: 1px solid transparent;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #4a4a4a;
+  border: 1px solid #808080;
+}
+
+.emotion-2 {
+  font-size: 21px;
+  line-height: 30px;
+  font-weight: 500;
+  padding-bottom: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-3 {
+  font-family: Roboto Condensed;
+  color: #b3b3b3;
+}
+
+<div
+    className="emotion-0"
+  >
+    <a
+      className="emotion-1"
+      href="/organizations/76917058-b147-4556-987a-0a0f11e46d9b"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      <h3
+        className="emotion-2"
+        title="qwerty"
+      >
+        qwerty
+      </h3>
+      <div
+        className="emotion-3"
+      >
+        Projects: 
+        3
+      </div>
+    </a>
+    <a
+      className="emotion-1"
+      href="/organizations/e93cbadb-e5ae-4598-8395-4cf5b30c0e94"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      <h3
+        className="emotion-2"
+        title="azerty"
+      >
+        azerty
+      </h3>
+      <div
+        className="emotion-3"
+      >
+        Projects: 
+        3
+      </div>
+    </a>
+  </div>,
+]
+`;
+
+exports[`<Organizations /> should render properly with no organizations 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Organizations Admin
+  </h2>,
+  .emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-1 {
+  color: #808080;
+  font-weight: 400;
+}
+
+<div
+    className="emotion-0"
+  >
+    <svg
+      data-file-name="noProject.svg"
+      width={250}
+    />
+    <h3
+      className="emotion-1"
+    >
+      You currently have no organizations
+    </h3>
+  </div>,
+]
+`;

@@ -126,7 +126,7 @@ Array [
   flex-direction: column;
   background-color: #3b3b3b;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 24px;
 }
 
@@ -149,7 +149,7 @@ Array [
   flex-direction: column;
   background-color: #3b3b3b;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 24px;
   padding-bottom: 48px;
 }
@@ -263,7 +263,7 @@ Array [
   flex-direction: column;
   background-color: #3b3b3b;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 24px;
   max-width: 440px;
 }

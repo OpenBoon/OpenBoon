@@ -5,34 +5,34 @@ import { colors, spacing } from '../Styles'
 
 import { useLocalStorage } from '../LocalStorage/helpers'
 
-import NoProject from '../NoProject'
+import NoOrganization from '../NoOrganization'
 import InputSearch, { VARIANTS as INPUT_SEARCH_VARIANTS } from '../Input/Search'
 import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
 
-import AccountCard from './Card'
+import OrganizationsCard from './Card'
 
 const MIN_WIDTH = 400
 
-const AccountContent = () => {
+const OrganizationsContent = () => {
   const {
-    data: { results: projects },
-  } = useSWR('/api/v1/projects/')
+    data: { results: organizations },
+  } = useSWR('/api/v1/organizations/')
 
   const [searchString, setSearchString] = useState('')
 
   const [sortBy, setSortBy] = useLocalStorage({
-    key: 'AccountContent.sortBy',
+    key: 'OrganizationsContent.sortBy',
     initialState: 'name',
   })
 
-  if (projects.length === 0) {
-    return <NoProject />
+  if (organizations.length === 0) {
+    return <NoOrganization />
   }
 
-  const sortedFilteredProjects = projects
-    .filter(({ name }) =>
-      name.toLowerCase().includes(searchString.toLowerCase()),
-    )
+  const sortedFilteredOrganizations = organizations
+    .filter(({ name }) => {
+      return name.toLowerCase().includes(searchString.toLowerCase())
+    })
     .sort((a, b) => {
       switch (sortBy) {
         case 'date': {
@@ -61,8 +61,8 @@ const AccountContent = () => {
       >
         <div css={{ flex: 1, maxWidth: MIN_WIDTH }}>
           <InputSearch
-            aria-label="Filter Projects"
-            placeholder="Filter Projects"
+            aria-label="Filter Organizations"
+            placeholder="Filter Organizations"
             value={searchString}
             onChange={({ value }) => {
               setSearchString(value)
@@ -91,7 +91,7 @@ const AccountContent = () => {
       </div>
 
       <div css={{ paddingTop: spacing.normal, paddingBottom: spacing.normal }}>
-        Projects: {sortedFilteredProjects.length}
+        Organizations: {sortedFilteredOrganizations.length}
       </div>
 
       <div
@@ -102,12 +102,15 @@ const AccountContent = () => {
           paddingBottom: spacing.spacious,
         }}
       >
-        {sortedFilteredProjects.map(({ id: projectId, name }) => (
-          <AccountCard key={projectId} projectId={projectId} name={name} />
+        {sortedFilteredOrganizations.map((organization) => (
+          <OrganizationsCard
+            key={organization.id}
+            organization={organization}
+          />
         ))}
       </div>
     </>
   )
 }
 
-export default AccountContent
+export default OrganizationsContent

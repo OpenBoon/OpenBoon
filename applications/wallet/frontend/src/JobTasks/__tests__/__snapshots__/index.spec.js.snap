@@ -260,7 +260,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
       <h3
         className="emotion-3"
       >
-        Number of 
         Tasks
         : 
         3
@@ -870,7 +869,6 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
       <h3
         className="emotion-3"
       >
-        Number of 
         Tasks
         : 
         0
