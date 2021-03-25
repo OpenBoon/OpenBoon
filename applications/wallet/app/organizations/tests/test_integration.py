@@ -56,6 +56,22 @@ class TestViews(object):
         assert organization_result['projectCount'] == 1
         assert organization_result['createdDate']
 
+    def test_organization_retrieve(self, login, zmlp_project_user, api_client, organization):
+        path = reverse('organization-detail', kwargs={'pk': organization.id})
+
+        # User is not an organization owner.
+        response = check_response(api_client.get(path), status=403)
+
+        # User is an organization owner.
+        organization.owners.add(zmlp_project_user)
+        response = check_response(api_client.get(path))
+        assert response['name'] == organization.name
+
+    def test_organization_retrieve_does_not_exist(self, login, zmlp_project_user, api_client,
+                                                  organization):
+        path = reverse('organization-detail', kwargs={'pk': '1'})
+        check_response(api_client.get(path), status=404)
+
     def test_org_project_list(self, login, zmlp_project_user, api_client, organization,
                               monkeypatch):
         mock_post_responses = [
