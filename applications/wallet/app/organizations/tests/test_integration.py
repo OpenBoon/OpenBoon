@@ -54,6 +54,7 @@ class TestViews(object):
         organization_result = response['results'][0]
         assert organization_result == OrganizationSerializer(organization).data
         assert organization_result['projectCount'] == 1
+        assert organization_result['createdDate']
 
     def test_org_project_list(self, login, zmlp_project_user, api_client, organization,
                               monkeypatch):

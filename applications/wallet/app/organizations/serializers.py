@@ -10,7 +10,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Organization
-        fields = ['id', 'name', 'plan', 'projectCount']
+        fields = ['id', 'name', 'plan', 'projectCount', 'createdDate', 'modifiedDate']
 
     def get_project_count(self, obj):
         return obj.projects.count()
