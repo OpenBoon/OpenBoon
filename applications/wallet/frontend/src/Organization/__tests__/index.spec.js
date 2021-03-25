@@ -8,14 +8,12 @@ import Organization from '..'
 // jest.mock('../../OrganizationUsers', () => 'OrganizationUsers')
 // jest.mock('../../OrganizationOwners', () => 'OrganizationOwners')
 
-const ORGANIZATION_ID = '82d5308b-67c2-1433-8fef-0a580a000956'
-
 describe('<Organization />', () => {
   it('should render properly for Projects', () => {
     require('next/router').__setUseRouter({
       pathname: '/organizations/[organizationId]',
       query: {
-        organizationId: ORGANIZATION_ID,
+        organizationId: organization.id,
       },
     })
 
@@ -29,7 +27,7 @@ describe('<Organization />', () => {
   it('should render properly for Users', () => {
     require('next/router').__setUseRouter({
       pathname: '/organizations/[organizationId]/users',
-      query: { organizationId: ORGANIZATION_ID },
+      query: { organizationId: organization.id },
     })
 
     require('swr').__setMockUseSWRResponse({ data: organization })
@@ -42,7 +40,7 @@ describe('<Organization />', () => {
   it('should render properly for Owners', () => {
     require('next/router').__setUseRouter({
       pathname: '/organizations/[organizationId]/owners',
-      query: { organizationId: ORGANIZATION_ID },
+      query: { organizationId: organization.id },
     })
 
     require('swr').__setMockUseSWRResponse({ data: organization })
