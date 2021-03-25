@@ -20,7 +20,7 @@ from wallet.paginators import FromSizePagination
 User = get_user_model()
 
 
-class OrganizationViewSet(ListModelMixin, GenericViewSet):
+class OrganizationViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     """Viewset for getting info about Organizations."""
     serializer_class = OrganizationSerializer
 
