@@ -4,7 +4,8 @@ import os
 from datetime import datetime
 
 import requests
-from boonsdk.client import BoonClient, BoonSdkNotFoundException, BoonSdkConnectionException
+from boonsdk.client import BoonClient, BoonSdkNotFoundException, \
+    BoonSdkConnectionException
 from django.conf import settings
 from django.db import models
 from django_cryptography.fields import encrypt
