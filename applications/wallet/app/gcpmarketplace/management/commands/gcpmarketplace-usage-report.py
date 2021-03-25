@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.management import BaseCommand
 
 from gcpmarketplace.models import MarketplaceEntitlement
-from gcpmarketplace.utils import get_service_control_api, get_procurement_api
+from gcpmarketplace.utils import get_service_control_api, get_procurement_api, sum_ml_usage
 
 sentry_sdk.init(
     dsn='https://5c1ab0d8be954c35b92283c1290e9924@o280392.ingest.sentry.io/5218609')
@@ -36,7 +36,8 @@ class UsageReporter():
     def _get_usage(self, entitlement, start_time, end_time):
         """Gives usage info by tiers on all projects associated with this entitlement."""
         entitlement = MarketplaceEntitlement.objects.get(name=entitlement['name'])
-        return entitlement.organization.get_ml_usage_for_time_period(start_time, end_time)
+        project_usage = entitlement.organization.get_ml_usage_for_time_period(start_time, end_time)
+        return sum_ml_usage(project_usage)
 
     def _report_usage(self, entitlement):
         """Sends usage information to marketplace for the given entitlement."""
