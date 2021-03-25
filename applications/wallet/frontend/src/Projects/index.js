@@ -10,6 +10,9 @@ const NO_PROJECT_ID_ROUTES = [
   '/account',
   '/account/password',
   '/organizations',
+  '/organizations/[organizationId]',
+  '/organizations/[organizationId]/users',
+  '/organizations/[organizationId]/owners',
 ]
 
 const Projects = ({ projectId, children }) => {
