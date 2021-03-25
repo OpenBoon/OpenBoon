@@ -158,7 +158,7 @@ enum class ModelType(
         "boonai_analysis.custom.PytorchImageClassifier",
         mapOf(),
         null,
-        "Upload a pre-trained Pytorch model to use for image classification.",
+        "Upload a pre-inained Pytorch model to use for image classification.",
         ModelObjective.LABEL_DETECTION,
         Provider.BOONAI,
         true,

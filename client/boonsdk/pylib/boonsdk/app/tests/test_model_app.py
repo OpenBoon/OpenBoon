@@ -248,3 +248,14 @@ class ModelAppTests(unittest.TestCase):
         assert props.provider == 'boonai'
         assert props.min_concepts == 1
         assert props.min_examples == 1
+
+    @patch.object(BoonClient, 'get')
+    def test_export_trained_model(self, get_patch):
+        data = b'some_data'
+        mockresponse = unittest.mock.Mock()
+        mockresponse.content = data
+        get_patch.return_value = mockresponse
+
+        model = Model(self.model_data)
+        size = self.app.models.export_trained_model(model, '/tmp/model.zip')
+        assert size == 9
