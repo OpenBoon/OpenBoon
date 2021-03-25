@@ -178,12 +178,13 @@ class ModelServiceImpl(
         val trainArgs = model.type.trainArgs.plus(
             mutableMapOf(
                 "model_id" to model.id.toString(),
-                "post_action" to (request.postAction?.name),
+                "post_action" to (request.postAction.name),
                 "tag" to "latest"
             )
         ).plus(request.args ?: emptyMap())
 
-        logger.info("Launching train job ${model.type.trainProcessor} $trainArgs")
+        logger.info("Training model ID ${model.id} $trainArgs")
+        logger.info("Launching train job ${model.type.trainProcessor} ${request.postAction}")
 
         val processor = ProcessorRef(
             model.type.trainProcessor, "boonai/plugins-train", trainArgs

@@ -90,7 +90,7 @@ class ModelApp:
         }
         return self.app.client.iter_paged_results('/api/v3/models/_search', body, limit, Model)
 
-    def train_model(self, model, post_action=PostTrainAction.NONE):
+    def train_model(self, model, post_action=PostTrainAction.NONE, **kwargs):
         """
         Train the given Model by kicking off a model training job.  If a post action is
         specified the training job will expand once training is complete.
@@ -102,9 +102,13 @@ class ModelApp:
             Job: A model training job.
         """
         model_id = as_id(model)
-        body = {
-            "post_action": str(post_action)
-        }
+        body = {}
+
+        if kwargs.get('deploy'):
+            body['postAction'] = PostTrainAction.APPLY.name
+        else:
+            body['postAction'] = str(post_action)
+
         return Job(self.app.client.post('/api/v4/models/{}/_train'.format(model_id), body))
 
     def apply_model(self, model, search=None):
@@ -245,6 +249,21 @@ class ModelApp:
                 Defaults to 0.2.
         """
         return TrainingSetDownloader(self.app, model, style, dst_dir, validation_split)
+
+    def export_trained_model(self, model, dst_file, tag='latest'):
+        """
+        Download a zip file containing the model.
+
+        Args:
+            model (Model): The Model instance.
+            dst_file (str): path to store the model file.
+            tag (str): The model version tag.
+
+        Returns:
+            (int) The size of the downloaded file.
+        """
+        file_id = model.file_id.replace('__TAG__', tag)
+        return self.app.client.download_file(file_id, dst_file)
 
     def get_model_type_info(self, model_type):
         """
