@@ -17,7 +17,7 @@ const ProjectCards = () => {
   } = useRouter()
 
   const {
-    data: { id, name },
+    data: { id, name, mlUsageThisMonth, totalStorageUsage },
   } = useSWR(`/api/v1/projects/${projectId}/`)
 
   return (
@@ -60,7 +60,10 @@ const ProjectCards = () => {
             Project ID: {id}
           </div>
 
-          <ProjectMetrics projectId={projectId} />
+          <ProjectMetrics
+            mlUsageThisMonth={mlUsageThisMonth}
+            totalStorageUsage={totalStorageUsage}
+          />
         </div>
 
         <ProjectQuickLinks projectId={projectId} />
