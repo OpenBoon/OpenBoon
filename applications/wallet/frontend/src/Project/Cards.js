@@ -45,7 +45,7 @@ const ProjectCards = () => {
             flexDirection: 'column',
             backgroundColor: colors.structure.smoke,
             boxShadow: constants.boxShadows.tableRow,
-            borderRadius: constants.borderRadius.small,
+            borderRadius: constants.borderRadius.medium,
             padding: spacing.comfy,
           }}
         >
