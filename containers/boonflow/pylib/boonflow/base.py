@@ -16,7 +16,8 @@ __all__ = [
     "FatalProcessorException",
     "ProcessorException",
     "BoonEnv",
-    "FileTypes"
+    "FileTypes",
+    "ModelTrainer"
 ]
 
 
@@ -40,7 +41,7 @@ class FileTypes:
     """A set of all supported file formats."""
 
 
-class UnsetArgumentValue(object):
+class UnsetArgumentValue:
     def __repr__(self):
         return self.__str__()
 
@@ -54,7 +55,7 @@ class UnsetArgumentValue(object):
         return 0
 
 
-class Argument(object):
+class Argument:
     """Describes an argument to a processor.
 
     Args:
@@ -85,6 +86,7 @@ class Argument(object):
         self.value = Argument.NOT_SET
         self.options = options
         self.regex = regex
+        self.settings = {}
 
         self.args = {}
 
@@ -101,7 +103,7 @@ class Argument(object):
                (self.name, self.type, self.value)
 
 
-class Frame(object):
+class Frame:
     """Frames are used to pass data between processors.
 
     Attributes:
@@ -120,7 +122,7 @@ class Frame(object):
         self.skip = False
 
 
-class ExpandFrame(object):
+class ExpandFrame:
     """When an Asset is broken down into child assets (pages, clips), the children
     are emitted as ExpandFrames which end up becoming new tasks.
     """
@@ -138,23 +140,23 @@ class ExpandFrame(object):
         self.copy_attrs = copy_attrs
 
 
-class Context(object):
+class Context:
     """The Context class contains to a processors's runtime environment. This
     includes a reactor instance, args, and global vars
     """
 
-    def __init__(self, reactor, args, global_args=None):
+    def __init__(self, reactor, args, settings=None):
         """
         Initialize a new context.
 
         Args:
-            reactor (:obj:`Reactor`): A reactor instance.
-            args (:obj:`dict`): A dict of ZPS script args
-            global_args (:obj:`dict`): A dict of global ZPS script args
+            reactor (Reactor): A reactor instance.
+            args (dict): A dict of ZPS script args
+            settings (dict): A dict of global ZPS script args
         """
         self.reactor = reactor
         self.args = args or {}
-        self.global_args = global_args or {}
+        self.settings = settings or {}
 
     def get_arg(self, name, def_value=Argument.NOT_SET):
         """Get the value of the named arg.
@@ -170,7 +172,7 @@ class Context(object):
         return self.args.get(name, def_value)
 
 
-class Processor(object):
+class Processor:
     """The base class for all Processors.
 
     There are currently two types of processors:
@@ -450,6 +452,53 @@ class AssetProcessor(Processor):
             raise BoonSdkException("No reactor set on processor")
         return self.reactor.add_expand_frame(parent_frame, expand_frame,
                                              batch_size, force)
+
+
+class ModelTrainer(AssetProcessor):
+    """
+    A base class for model training processors.
+    """
+
+    use_threads = False
+    """Do not use threads"""
+
+    file_types = None
+    """Set file types to None"""
+
+    def __init__(self):
+        super(ModelTrainer, self).__init__()
+        self.add_arg(Argument("model_id", "str", required=True))
+        self.add_arg(Argument("post_action", "str", required=True))
+        self.add_arg(Argument("tag", "str", required=True))
+        self.app_model = None
+
+    def load_app_model(self):
+        self.logger.info("Fetching model {}".format(self.arg_value('model_id')))
+        self.app_model = self.app.models.get_model(self.model_id)
+
+    def process(self, frame):
+        self.train()
+
+    def train(self):
+        """
+        Subclasses should implement this method with the training logic.
+        """
+        pass
+
+    @property
+    def model_id(self):
+        """The ID of the model to train."""
+        return self.arg_value("model_id")
+
+    @property
+    def post_action(self):
+        """The action to take after training is complete."""
+        return self.arg_value("post_action")
+
+    @property
+    def tag(self):
+        """The version tag of the model we're file we're training."""
+        return self.arg_value("tag")
 
 
 class BoonEnv:

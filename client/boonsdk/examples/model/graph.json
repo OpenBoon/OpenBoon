@@ -1,0 +1,56 @@
+{
+    "nodes": {
+        "switch_type": {
+            "node": "TopPredictionSwitch",
+            "args": {
+                "module": "document-type",
+                "labels": ["well-log", "perm-log"]
+            }
+        },
+        "well_log_ocr": {
+            "node": "boonai_analysis.graphx.nodes.OcrIn",
+            "args": {
+                "rect": [0.136, 0.05, 0.23, 0.107]
+            }
+        },
+        "permeability_ocr": {
+            "node": "boonai_analysis.graphx.nodes.OcrIn",
+            "args": {
+                "rect": [0.0, 0.338, 0.084, 1.0]
+            }
+        },
+        "isolate_ints": {
+            "node": "IsolateIntegers"
+        },
+        "cleanup": {
+            "node": "PruneEscapeChars"
+        },
+        "set_attr1": {
+            "node": "SetAttr",
+            "args": {
+                "field": "custom.well-number",
+                "join": ""
+            }
+        },
+        "set_attr2": {
+            "node": "SetAttr",
+            "args": {
+                "field": "custom.well-depth"
+            }
+        },
+        "debug1": {
+            "node": "Debug",
+            "args": {}
+        }
+    },
+    "edges": {
+        "switch_type": ["well_log_ocr", "permeability_ocr"],
+        "well_log_ocr": ["cleanup"],
+        "permeability_ocr": ["isolate_ints"],
+        "isolate_ints": ["set_attr2"],
+        "cleanup": ["set_attr1"],
+        "set_attr1": ["debug1"],
+        "set_attr2": ["debug1"]
+    }
+}
+

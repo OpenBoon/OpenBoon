@@ -118,7 +118,8 @@ class PytorchTransferLearningTrainerTests(PluginUnitTestCase):
         args = {
             'model_id': self.model_id,
             'epochs': 5,
-            'validation_split': 0.3
+            'validation_split': 0.3,
+            'tag': 'latest'
         }
 
         processor = PytorchTransferLearningTrainer()

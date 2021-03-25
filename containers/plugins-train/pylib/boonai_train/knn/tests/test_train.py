@@ -35,7 +35,9 @@ class KnnLabelDetectionTrainerTests(PluginUnitTestCase):
         upload_patch.return_value = StoredFile({"id": "12345"})
 
         args = {
-            'model_id': model_id
+            'model_id': model_id,
+            'tag': 'latest',
+            'post_action': 'none'
         }
 
         processor = self.init_processor(KnnLabelDetectionTrainer(), args)

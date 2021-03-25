@@ -319,9 +319,9 @@ class JobLaunchServiceImpl(
             "batchSize" to clampBatchSize(req.batchSize),
             "fileTypes" to FileExtResolver.resolve(req.fileTypes)
         )
-
         val mergedSettings = getDefaultJobSettings()
         settings?.let { mergedSettings.putAll(it) }
+        req.settings?.let { mergedSettings.putAll(it) }
 
         return ZpsScript(
             name, listOf(gen), null, pipeline.execute,

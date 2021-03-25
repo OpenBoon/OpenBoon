@@ -4,12 +4,9 @@ Pytorch specific utilities.
 import logging
 import os
 
-from boonflow import file_storage
-
-from PIL import Image
 import torch
+from PIL import Image
 from torchvision import transforms
-
 
 logger = logging.getLogger(__name__)
 
@@ -40,27 +37,25 @@ def load_pytorch_image(path, size=(224, 224)):
     return torch_image
 
 
-def load_pytorch_model(model):
+def load_pytorch_model(model_path):
     """
     Install the given Boon AI model into the local model cache and return
     the Keras model instance with its array of labels.
 
     Args:
-        model (Model): A boonai model instance.
-
+        model_path (str): A path to a pytorch model
     Returns:
         tuple: (Keras model instance, List[str] of labels)
     """
-    model_path = file_storage.models.install_model(model)
 
     trained_model = torch.load(model_path + '/model.pth')
     trained_model.eval()
 
     try:
-        with open(os.path.join(model_path, "labels.txt")) as fp:
+        with open(os.path.join(model_path, 'labels.txt')) as fp:
             labels = fp.read().splitlines()
     except FileNotFoundError:
-        logger.warning("failed to find labels.txt file for model {}".format(model))
+        logger.warning('failed to find labels.txt file for model')
         labels = []
 
     # return model and labels

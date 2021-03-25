@@ -1,23 +1,20 @@
+import copy
 import os
 import tempfile
+import time
 
 import matplotlib.pyplot as plt
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.optim import lr_scheduler
 from torchvision import datasets, models, transforms
-import copy
-import time
 
-
-import boonsdk
-from boonflow import AssetProcessor, Argument, file_storage
+from boonflow import ModelTrainer, Argument, file_storage
 from boonflow.training import download_labeled_images
 
 
-class PytorchTransferLearningTrainer(AssetProcessor):
+class PytorchTransferLearningTrainer(ModelTrainer):
     img_size = (224, 224)
     file_types = None
 
@@ -30,31 +27,23 @@ class PytorchTransferLearningTrainer(AssetProcessor):
     def __init__(self):
         super(PytorchTransferLearningTrainer, self).__init__()
 
-        # These are the base args
-        self.add_arg(Argument("model_id", "str", required=True,
-                              toolTip="The model Id"))
-        self.add_arg(Argument("deploy", "bool", default=False,
-                              toolTip="Automatically deploy the model onto assets."))
-
         # These can be set optionally.
         self.add_arg(Argument("epochs", "int", required=True, default=10,
                               toolTip="The number of training epochs"))
         self.add_arg(Argument("validation_split", "int", required=True, default=0.2,
                               toolTip="The number of training images vs test images"))
 
-        self.app = boonsdk.app_from_env()
-
         self.model = None
         self.labels = None
         self.base_dir = None
 
     def init(self):
-        self.app_model = self.app.models.get_model(self.arg_value('model_id'))
+        self.load_app_model()
         self.labels = self.app.models.get_label_counts(self.app_model)
         self.base_dir = tempfile.mkdtemp('pth-xfer-learning')
         self.check_labels()
 
-    def process(self, frame):
+    def train(self):
         download_labeled_images(self.app_model,
                                 "labels-standard",
                                 self.base_dir,
@@ -124,7 +113,8 @@ class PytorchTransferLearningTrainer(AssetProcessor):
 
         mod = file_storage.models.save_model(model_dir,
                                              self.app_model,
-                                             self.arg_value('deploy'))
+                                             self.tag,
+                                             self.post_action)
         self.reactor.emit_status('Published model: {}'.format(self.app_model.name))
         return mod
 

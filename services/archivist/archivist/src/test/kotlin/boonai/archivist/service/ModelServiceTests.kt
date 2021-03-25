@@ -10,8 +10,9 @@ import boonai.archivist.domain.ModOpType
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelFilter
+import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
-import boonai.archivist.domain.ModelTrainingArgs
+import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.UpdateAssetLabelsRequest
@@ -50,7 +51,7 @@ class ModelServiceTests : AbstractTest() {
         val mspec = ModelSpec(
             name,
             type,
-            deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
+            applySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
         return modelService.createModel(mspec)
     }
@@ -66,7 +67,7 @@ class ModelServiceTests : AbstractTest() {
         val mspec = ModelSpec(
             "faces",
             ModelType.FACE_RECOGNITION,
-            deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
+            applySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
         val model = modelService.createModel(mspec)
         assertEquals("faces", model.moduleName)
@@ -78,7 +79,7 @@ class ModelServiceTests : AbstractTest() {
             "faces",
             ModelType.FACE_RECOGNITION,
             moduleName = "foo",
-            deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
+            applySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
         val model = modelService.createModel(mspec)
         assertEquals("foo", model.moduleName)
@@ -96,7 +97,7 @@ class ModelServiceTests : AbstractTest() {
     @Test
     fun testTrainModel() {
         val model1 = create()
-        val job = modelService.trainModel(model1, ModelTrainingArgs())
+        val job = modelService.trainModel(model1, ModelTrainingRequest())
 
         assertEquals(model1.trainingJobName, job.name)
         assertEquals(JobState.InProgress, job.state)
@@ -139,7 +140,7 @@ class ModelServiceTests : AbstractTest() {
     @Test
     fun testPublishModel() {
         val model1 = create()
-        val mod = modelService.publishModel(model1)
+        val mod = modelService.publishModel(model1, ModelPublishRequest())
         assertEquals(getProjectId(), mod.projectId)
         assertEquals(model1.moduleName, mod.name)
         assertEquals("Boon AI", mod.provider)
@@ -151,7 +152,7 @@ class ModelServiceTests : AbstractTest() {
     @Test
     fun testPublishModelWithDepend() {
         val model1 = create(type = ModelType.FACE_RECOGNITION)
-        val mod = modelService.publishModel(model1)
+        val mod = modelService.publishModel(model1, ModelPublishRequest())
         assertEquals(ModOpType.DEPEND, mod.ops[0].type)
         assertEquals(ModOpType.APPEND, mod.ops[1].type)
         assertEquals(ModelType.FACE_RECOGNITION.dependencies, mod.ops[0].apply as List<String>)
@@ -160,8 +161,8 @@ class ModelServiceTests : AbstractTest() {
     @Test
     fun testPublishModelUpdate() {
         val model1 = create()
-        val mod1 = modelService.publishModel(model1)
-        val mod2 = modelService.publishModel(model1)
+        val mod1 = modelService.publishModel(model1, ModelPublishRequest())
+        val mod2 = modelService.publishModel(model1, ModelPublishRequest())
 
         assertEquals(mod1.id, mod2.id)
         assertEquals(mod1.name, mod2.name)
@@ -184,12 +185,12 @@ class ModelServiceTests : AbstractTest() {
         setupTestAsset()
 
         val model1 = create()
-        modelService.publishModel(model1)
+        modelService.publishModel(model1, ModelPublishRequest())
 
-        val rsp = modelService.deployModel(model1, ModelApplyRequest())
+        val rsp = modelService.applyModel(model1, ModelApplyRequest())
         val tasks = jobService.getTasks(rsp.job!!.id)
         val script = jobService.getZpsScript(tasks.list[0].id)
-        assertEquals("Deploying model: test", script.name)
+        assertEquals("Applying model: test", script.name)
         assertEquals(1, script.generate!!.size)
         assertEquals("boonai_core.core.generators.AssetSearchGenerator", script.generate!![0].className)
     }
@@ -199,9 +200,14 @@ class ModelServiceTests : AbstractTest() {
         setupTestAsset()
 
         val model1 = create()
-        modelService.publishModel(model1)
+        modelService.publishModel(model1, ModelPublishRequest())
 
-        val rsp = modelService.deployModel(model1, ModelApplyRequest(search = Model.matchAllSearch))
+        val rsp = modelService.applyModel(
+            model1,
+            ModelApplyRequest(
+                search = Model.matchAllSearch
+            )
+        )
         val tasks = jobService.getTasks(rsp.job!!.id)
         val script = jobService.getZpsScript(tasks.list[0].id)
 
@@ -321,7 +327,7 @@ class ModelServiceTests : AbstractTest() {
         val specs = dataSet(model)
 
         assetService.batchCreate(BatchCreateAssetsRequest(specs))
-        modelService.publishModel(model)
+        modelService.publishModel(model, ModelPublishRequest())
 
         assertNotNull(pipelineModService.findByName(model.moduleName, false))
 
@@ -348,7 +354,7 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testAcceptModelFileUpload() {
+    fun testAcceptModelFileUploadAndList() {
         val model = create(type = ModelType.TF_UPLOADED_CLASSIFIER)
         val mfp = Paths.get(
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
@@ -361,9 +367,12 @@ class ModelServiceTests : AbstractTest() {
     @Test
     fun testSetModelArgs() {
         val model = create(type = ModelType.TF_CLASSIFIER)
-        modelService.publishModel(model)
+        modelService.publishModel(model, ModelPublishRequest())
 
-        val module = modelService.setModelArgs(model, mapOf("input_size" to listOf(321, 321)))
+        val module = modelService.setModelArgs(
+            model,
+            ModelPublishRequest(args = mapOf("input_size" to listOf(321, 321)))
+        )
         val str = Json.prettyString(module)
         assertTrue(str.contains("\"input_size\" : [ 321, 321 ]"))
     }

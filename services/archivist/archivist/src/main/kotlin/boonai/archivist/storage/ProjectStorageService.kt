@@ -88,6 +88,7 @@ interface ProjectStorageService {
      */
     fun recursiveDelete(path: String)
 
+    fun listFiles(prefix: String): List<String>
     /**
      * Log the storage of a file.
      */
