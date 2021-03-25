@@ -39,8 +39,8 @@ const ProjectBoundary = () => {
           <h3
             css={{
               paddingTop: spacing.normal,
-              fontSize: typography.size.giant,
-              lineHeight: typography.height.giant,
+              fontSize: typography.size.colossal,
+              lineHeight: typography.height.colossal,
               fontWeight: typography.weight.bold,
               maxWidth: constants.paragraph.maxWidth,
             }}
