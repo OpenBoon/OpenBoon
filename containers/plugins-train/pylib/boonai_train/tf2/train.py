@@ -9,12 +9,11 @@ from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-import boonsdk
-from boonflow import AssetProcessor, Argument, file_storage
+from boonflow import ModelTrainer, Argument, file_storage
 from boonflow.training import download_labeled_images
 
 
-class TensorflowTransferLearningTrainer(AssetProcessor):
+class TensorflowTransferLearningTrainer(ModelTrainer):
     img_size = (224, 224)
     file_types = None
 
@@ -27,12 +26,6 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
     def __init__(self):
         super(TensorflowTransferLearningTrainer, self).__init__()
 
-        # These are the base args
-        self.add_arg(Argument("model_id", "str", required=True,
-                              toolTip="The model Id"))
-        self.add_arg(Argument("deploy", "bool", default=False,
-                              toolTip="Automatically deploy the model onto assets."))
-
         # These can be set optionally.
         self.add_arg(Argument("epochs", "int", required=True, default=10,
                               toolTip="The number of training epochs"))
@@ -43,19 +36,17 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         self.add_arg(Argument("fine_tune_epochs", "int", required=True, default=10,
                               toolTip="The number of fine-tuning epochs."))
 
-        self.app = boonsdk.app_from_env()
-
         self.model = None
         self.labels = None
         self.base_dir = None
 
     def init(self):
-        self.app_model = self.app.models.get_model(self.arg_value('model_id'))
+        self.load_app_model()
         self.labels = self.app.models.get_label_counts(self.app_model)
         self.base_dir = tempfile.mkdtemp('tf2-xfer-learning')
         self.check_labels()
 
-    def process(self, frame):
+    def train(self):
         download_labeled_images(self.app_model,
                                 "labels-standard",
                                 self.base_dir)
@@ -121,7 +112,7 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
         tf2_dir = os.path.dirname(os.path.realpath(__file__))
         shutil.copy2(os.path.join(tf2_dir, "predict.py"), model_dir)
-        mod = file_storage.models.save_model(model_dir,  self.app_model, self.arg_value('deploy'))
+        mod = file_storage.models.save_model(model_dir, self.app_model, self.tag, self.post_action)
         self.reactor.emit_status('Published model: {}'.format(self.app_model.name))
         return mod
 

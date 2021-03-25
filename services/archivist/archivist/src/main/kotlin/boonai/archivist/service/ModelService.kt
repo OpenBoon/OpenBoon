@@ -10,8 +10,9 @@ import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelApplyResponse
 import boonai.archivist.domain.ModelFilter
+import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
-import boonai.archivist.domain.ModelTrainingArgs
+import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.PipelineMod
 import boonai.archivist.domain.PipelineModSpec
 import boonai.archivist.domain.PipelineModUpdate
@@ -66,13 +67,14 @@ import kotlin.streams.toList
 
 interface ModelService {
     fun createModel(spec: ModelSpec): Model
-    fun trainModel(model: Model, args: ModelTrainingArgs): Job
+    fun trainModel(model: Model, request: ModelTrainingRequest): Job
     fun getModel(id: UUID): Model
     fun find(filter: ModelFilter): KPagedList<Model>
     fun findOne(filter: ModelFilter): Model
-    fun publishModel(model: Model, args: Map<String, Any>? = null): PipelineMod
-    fun setModelArgs(model: Model, args: Map<String, Any>): PipelineMod
-    fun deployModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
+    fun publishModel(model: Model, req: ModelPublishRequest): PipelineMod
+    fun setModelArgs(model: Model, req: ModelPublishRequest): PipelineMod
+    fun applyModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
+    fun testModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun deleteModel(model: Model)
     fun getLabelCounts(model: Model): Map<String, Long>
     fun wrapSearchToExcludeTrainingSet(model: Model, search: Map<String, Any>): Map<String, Any>
@@ -82,12 +84,11 @@ interface ModelService {
      * empty then remove the label.
      */
     fun updateLabel(model: Model, label: String, newLabel: String?): GenericBatchUpdateResponse
-
     fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod
-
     fun validateTensorflowModel(path: Path)
     fun validatePyTorchModel(path: Path)
     fun generateModuleName(spec: ModelSpec): String
+    fun getModelVersions(model: Model): Set<String>
 }
 
 @Service
@@ -124,7 +125,7 @@ class ModelServiceImpl(
         }
 
         val locator = ProjectFileLocator(
-            ProjectStorageEntity.MODELS, id.toString(), "model", "model.zip"
+            ProjectStorageEntity.MODELS, id.toString(), "__TAG__", "model.zip"
         )
 
         val model = Model(
@@ -136,7 +137,7 @@ class ModelServiceImpl(
             locator.getFileId(),
             "Training model: ${spec.name} - [${spec.type.objective}]",
             false,
-            spec.deploySearch, // VALIDATE THIS PARSES.
+            spec.applySearch, // VALIDATE THIS PARSES.
             time,
             time,
             actor.toString(),
@@ -170,16 +171,20 @@ class ModelServiceImpl(
         return modelJdbcDao.findOne(filter)
     }
 
-    override fun trainModel(model: Model, args: ModelTrainingArgs): Job {
-
+    override fun trainModel(model: Model, request: ModelTrainingRequest): Job {
+        /**
+         * The latest tag is always trained.
+         */
         val trainArgs = model.type.trainArgs.plus(
             mutableMapOf(
                 "model_id" to model.id.toString(),
-                "deploy" to args.deploy
+                "post_action" to (request.postAction.name),
+                "tag" to "latest"
             )
-        ).plus(args.args ?: emptyMap())
+        ).plus(request.args ?: emptyMap())
 
-        logger.info("Launching train job ${model.type.trainProcessor} $trainArgs")
+        logger.info("Training model ID ${model.id} $trainArgs")
+        logger.info("Launching train job ${model.type.trainProcessor} ${request.postAction}")
 
         val processor = ProcessorRef(
             model.type.trainProcessor, "boonai/plugins-train", trainArgs
@@ -191,11 +196,13 @@ class ModelServiceImpl(
         )
     }
 
-    override fun deployModel(model: Model, req: ModelApplyRequest): ModelApplyResponse {
-        val name = "Deploying model: ${model.name}"
-        var search = req.search ?: model.deploySearch
+    override fun applyModel(model: Model, req: ModelApplyRequest): ModelApplyResponse {
+        val name = "Applying model: ${model.name}"
+        var search = req.search ?: model.applySearch
 
-        if (!model.type.deployOnTrainingSet && !req.analyzeTrainingSet) {
+        val analyzeTrainingSet = req.analyzeTrainingSet ?: model.type.deployOnTrainingSet
+
+        if (!analyzeTrainingSet) {
             search = wrapSearchToExcludeTrainingSet(model, search)
         }
 
@@ -204,19 +211,23 @@ class ModelServiceImpl(
             return ModelApplyResponse(0, null)
         }
 
+        // Use global settings to override the model tag.
         val repro = ReprocessAssetSearchRequest(
             search,
-            listOf(model.moduleName),
+            listOf(model.getModuleName()),
             name = name,
             replace = true,
-            includeStandard = false
+            includeStandard = false,
+            settings = mapOf("${model.id}:tag" to req.tag)
         )
 
-        return if (req.jobId == null) {
+        val jobId = getZmlpActor().getAttr("jobId")
+
+        return if (jobId == null) {
             val rsp = jobLaunchService.launchJob(repro)
             ModelApplyResponse(count, rsp.job)
         } else {
-            val job = jobService.get(req.jobId, forClient = false)
+            val job = jobService.get(UUID.fromString(jobId), forClient = false)
             if (job.projectId != getProjectId()) {
                 throw IllegalArgumentException("Unknown job Id ${job.id}")
             }
@@ -226,9 +237,44 @@ class ModelServiceImpl(
         }
     }
 
-    override fun publishModel(model: Model, args: Map<String, Any>?): PipelineMod {
+    override fun testModel(model: Model, req: ModelApplyRequest): ModelApplyResponse {
+        val name = "Testing model: ${model.name}"
+        var search = testLabelSearch(model)
+
+        val count = assetSearchService.count(search)
+        if (count == 0L) {
+            return ModelApplyResponse(0, null)
+        }
+
+        // Use global settings to override the model tag.
+        val repro = ReprocessAssetSearchRequest(
+            testLabelSearch(model),
+            listOf(model.getModuleName()),
+            name = name,
+            replace = true,
+            includeStandard = false,
+            settings = mapOf("${model.id}:tag" to req.tag)
+        )
+
+        val jobId = getZmlpActor().getAttr("jobId")
+
+        return if (jobId == null) {
+            val rsp = jobLaunchService.launchJob(repro)
+            ModelApplyResponse(count, rsp.job)
+        } else {
+            val job = jobService.get(UUID.fromString(jobId), forClient = false)
+            if (job.projectId != getProjectId()) {
+                throw IllegalArgumentException("Unknown job Id ${job.id}")
+            }
+            val script = jobLaunchService.getReprocessTask(repro)
+            jobService.createTask(job, script)
+            ModelApplyResponse(count, job)
+        }
+    }
+
+    override fun publishModel(model: Model, req: ModelPublishRequest): PipelineMod {
         val mod = pipelineModService.findByName(model.moduleName, false)
-        val ops = buildModuleOps(model, args)
+        val ops = buildModuleOps(model, req)
 
         if (mod != null) {
             // Set version number to change checksum
@@ -256,11 +302,11 @@ class ModelServiceImpl(
         }
     }
 
-    override fun setModelArgs(model: Model, args: Map<String, Any>): PipelineMod {
-        val mod = pipelineModService.findByName(model.moduleName, false)
+    override fun setModelArgs(model: Model, req: ModelPublishRequest): PipelineMod {
+        val mod = pipelineModService.findByName(model.getModuleName(), false)
             ?: throw EmptyResultDataAccessException("Module not found, must be trained or published first", 1)
 
-        val ops = buildModuleOps(model, args)
+        val ops = buildModuleOps(model, req)
         val update = PipelineModUpdate(
             mod.name, mod.description, model.type.provider,
             mod.category, mod.type,
@@ -322,7 +368,7 @@ class ModelServiceImpl(
         )
     }
 
-    fun buildModuleOps(model: Model, args: Map<String, Any>?): List<ModOp> {
+    fun buildModuleOps(model: Model, req: ModelPublishRequest): List<ModOp> {
         val ops = mutableListOf<ModOp>()
 
         for (depend in model.type.dependencies) {
@@ -352,7 +398,7 @@ class ModelServiceImpl(
                                 "model_id" to model.id.toString(),
                                 "version" to System.currentTimeMillis()
                             )
-                        ).plus(args ?: emptyMap()),
+                        ).plus(req.args),
                         module = model.name
                     )
                 )
@@ -484,20 +530,18 @@ class ModelServiceImpl(
         Files.copy(inputStream, tmpFile, StandardCopyOption.REPLACE_EXISTING)
 
         try {
-
-            if (!model.type.uploadable) {
-                throw IllegalArgumentException("The model type ${model.type} does not support uploads")
-            }
-
             // Now store the file locally.
             val storage = ProjectStorageSpec(
-                model.getModelStorageLocator(), mapOf(),
+                model.getModelStorageLocator("latest"), mapOf(),
                 FileInputStream(tmpFile.toFile()), Files.size(tmpFile)
             )
             fileStorageService.store(storage)
 
             // Now we can publish the model.
-            return publishModel(model, mapOf("version" to System.currentTimeMillis()))
+            return publishModel(
+                model,
+                ModelPublishRequest(mapOf("version" to System.currentTimeMillis()))
+            )
         } finally {
             Files.delete(tmpFile)
         }
@@ -537,6 +581,13 @@ class ModelServiceImpl(
         }
     }
 
+    override fun getModelVersions(model: Model): Set<String> {
+        val files = fileStorageService.listFiles(
+            ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString()).getPath()
+        )
+        return files.map { it.split("/")[4] }.toSet()
+    }
+
     override fun validateTensorflowModel(path: Path) {
         val validTensorflowFiles = listOf(
             "labels.txt",
@@ -556,6 +607,30 @@ class ModelServiceImpl(
             "labels.txt"
         )
         validateModel(path, validTorchFiles)
+    }
+
+    fun testLabelSearch(model: Model): Map<String, Any> {
+        val wrapper =
+            """
+            {
+            	"bool": {
+                    "filter": {
+                        "nested" : {
+                            "path": "labels",
+                            "query" : {
+                                "bool": {
+                                    "filter": [
+                                        {"term": { "labels.modelId": "${model.id}" }},
+                                        {"term": { "labels.scope": "TEST"}}
+                                    ]
+                                }
+                            }
+                        }
+                    }
+            	}
+            }
+        """.trimIndent()
+        return mapOf("query" to Json.Mapper.readValue(wrapper, Json.GENERIC_MAP))
     }
 
     companion object {

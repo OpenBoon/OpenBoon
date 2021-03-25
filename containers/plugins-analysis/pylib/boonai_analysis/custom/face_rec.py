@@ -3,31 +3,27 @@ import pickle
 
 import numpy as np
 
-from boonflow import AssetProcessor, Argument, Prediction
+from boonflow import Argument, Prediction
 from boonflow.analysis import LabelDetectionAnalysis
 from boonai_analysis.utils.prechecks import Prechecks
-from boonflow import FileTypes, file_storage, proxy, clips, video
+from boonflow import file_storage, proxy, clips, video
 from boonai_analysis.boonai.faces import MtCnnFaceDetectionEngine
+from .base import CustomModelProcessor
 
 
-class KnnFaceRecognitionClassifier(AssetProcessor):
-
-    file_types = FileTypes.all
+class KnnFaceRecognitionClassifier(CustomModelProcessor):
 
     def __init__(self):
         super(KnnFaceRecognitionClassifier, self).__init__()
-
-        self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
         self.add_arg(Argument("sensitivity", "int", default=1200,
                               toolTip="How sensitive the model is to differences."))
 
-        self.app_model = None
         self.face_classifier = None
         self.labels = None
         self.detect_engine = None
 
     def init(self):
-        self.app_model = self.app.models.get_model(self.arg_value('model_id'))
+        self.load_app_model()
         self.face_classifier = self.load_model()
         self.detect_engine = MtCnnFaceDetectionEngine()
 
@@ -55,7 +51,7 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
         Returns:
             KNeighborsClassifier: The model.
         """
-        model_path = file_storage.models.install_model(self.app_model)
+        model_path = self.get_model_path()
         with open(os.path.join(model_path, 'face_classifier.pickle'), 'rb') as fp:
             face_classifier = pickle.load(fp)
         return face_classifier

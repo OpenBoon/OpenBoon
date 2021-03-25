@@ -135,7 +135,7 @@ class BoonClient(object):
 
     def upload_files(self, path, files, body, json_rsp=True):
         """
-        Upload an array of files and a reques to the given endpoint path.
+        Upload an array of files and a request to the given endpoint path.
 
         Args:
             path (str): The URL to upload to

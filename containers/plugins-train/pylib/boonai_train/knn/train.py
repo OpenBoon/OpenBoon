@@ -1,35 +1,27 @@
 import os
-import tempfile
 import pickle
-
-from boonflow import AssetProcessor, Argument, file_storage
+import tempfile
 
 import numpy as np
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cluster import KMeans
 from sklearn.metrics import pairwise_distances_argmin_min
+from sklearn.neighbors import KNeighborsClassifier
+
+from boonflow import ModelTrainer, Argument, file_storage
 
 
-class KnnLabelDetectionTrainer(AssetProcessor):
-
+class KnnLabelDetectionTrainer(ModelTrainer):
     file_types = None
 
     def __init__(self):
         super(KnnLabelDetectionTrainer, self).__init__()
-        self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
         self.add_arg(Argument("n_clusters", "int", required=False,
                               default=15, toolTip="Number of Clusters"))
 
-        self.add_arg(Argument("deploy", "bool", default=False,
-                              toolTip="Automatically deploy the model onto assets."))
-        self.app_model = None
-
     def init(self):
-        self.logger.info("Fetching model {}".format(self.arg_value('model_id')))
-        self.app_model = self.app.models.get_model(self.arg_value('model_id'))
+        self.load_app_model()
 
-    def process(self, frame):
-        self.reactor.emit_status("Searching Model Training Set")
+    def train(self):
 
         classifier_hashes = self.classifier_hashes()
 
@@ -176,6 +168,6 @@ class KnnLabelDetectionTrainer(AssetProcessor):
         with open(os.path.join(model_dir, 'knn_classifier.pickle'), 'wb') as fp:
             pickle.dump(classifier, fp)
 
-        pmod = file_storage.models.save_model(model_dir, self.app_model, self.arg_value('deploy'))
+        pmod = file_storage.models.save_model(model_dir, self.app_model, self.tag, self.post_action)
         self.reactor.emit_status("Published model {}".format(self.app_model.name))
         return pmod

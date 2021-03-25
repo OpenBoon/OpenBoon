@@ -33,6 +33,8 @@ from gcpmarketplace.views import signup_success, SignUpView
 from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet, JobTaskViewSet
 from models.views import ModelViewSet
 from modules.views import ModuleViewSet, ProviderViewSet
+from organizations.views import OrganizationViewSet, OrganizationProjectViewSet, \
+    OrganizationUserViewSet, OrganizationOwnerViewSet
 from permissions.views import PermissionViewSet
 from projects.views import ProjectViewSet, ProjectUserViewSet
 from registration.admin import UserAdmin
@@ -47,9 +49,15 @@ from wallet.views import WalletAPIRootView, UsageReportView
 
 router = routers.DefaultRouter()
 router.APIRootView = WalletAPIRootView
-router.register('projects', ProjectViewSet, basename='project')
 router.register('me/agreements', AgreementViewSet, basename='agreement')
 
+router.register('organizations', OrganizationViewSet, basename='organization')
+organizations_router = NestedSimpleRouter(router, 'organizations', lookup='organization')
+organizations_router.register('projects', OrganizationProjectViewSet, basename='org-project')
+organizations_router.register('users', OrganizationUserViewSet, basename='org-user')
+organizations_router.register('owners', OrganizationOwnerViewSet, basename='org-owner')
+
+router.register('projects', ProjectViewSet, basename='project')
 projects_router = NestedSimpleRouter(router, 'projects', lookup='project')
 projects_router.register('jobs', JobViewSet, basename='job')
 projects_router.register('tasks', TaskViewSet, basename='task')
@@ -106,6 +114,7 @@ urlpatterns = [
     path('admin/generate_usage_report', UsageReportView.as_view(), name='generate-usage-report'),
     path('api/v1/login/', LoginView.as_view(), name='api-login'),
     path('api/v1/', include(router.urls)),
+    path('api/v1/', include(organizations_router.urls)),
     path('api/v1/', include(projects_router.urls)),
     path('api/v1/', include(assets_files_router.urls)),
     path('api/v1/', include(assets_file_names_router.urls)),

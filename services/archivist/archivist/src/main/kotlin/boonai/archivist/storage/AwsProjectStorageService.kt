@@ -209,6 +209,10 @@ class AwsProjectStorageService constructor(
         }
     }
 
+    override fun listFiles(prefix: String): List<String> {
+        return s3Client.listObjects(properties.bucket, prefix).objectSummaries.map { it.key }
+    }
+
     override fun recursiveDelete(path: String) {
         logger.info("Recursive delete path:${properties.bucket}/$path")
 

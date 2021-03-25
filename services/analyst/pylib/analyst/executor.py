@@ -142,6 +142,7 @@ class ZpsExecutor(object):
         """
         processors = self.script.get("execute", [])
         assets = self.script.get("assets", [])
+        settings = self.script.get("settings", {})
 
         logger.info("running {} processors in execute, {} objects"
                     .format(len(processors), len(assets)))
@@ -164,7 +165,7 @@ class ZpsExecutor(object):
                     "status": "Running: {}".format(proc["className"])
                 })
 
-                assets = self.run_containerized_processor(proc, assets)
+                assets = self.run_containerized_processor(proc, assets, settings)
 
                 self.client.emit_event(self.task, "progress", {
                     "progress": int((idx + 1) / float(total_processors) * 100)
@@ -205,7 +206,7 @@ class ZpsExecutor(object):
         else:
             logger.info("keeping container {}".format(ref["image"]))
 
-    def run_containerized_processor(self, ref, assets):
+    def run_containerized_processor(self, ref, assets, settings):
         """
         Runs a given DocumentProcessor on a list of objects.
 
@@ -224,7 +225,7 @@ class ZpsExecutor(object):
             self.container.wait_for_container()
 
         if assets:
-            results = self.container.execute_processor_on_assets(ref, assets)
+            results = self.container.execute_processor_on_assets(ref, assets, settings)
         return results
 
     def kill(self, task_id, new_state, reason="manually killed"):
@@ -540,7 +541,7 @@ class DockerContainerWrapper(object):
             else:
                 self.client.emit_event(self.task, event_type, event["payload"])
 
-    def execute_processor(self, ref, asset):
+    def execute_processor(self, ref, asset, settings):
         """
         Execute a given Processor ref on an object.  In the case of
         a Generator, obj may be None.
@@ -552,13 +553,14 @@ class DockerContainerWrapper(object):
         Args:
             ref (dict): The Processor reference.
             asset (dict): The asset or possibly None.
-
+            settings (dict): A dict of settings.
         """
         request = {
             "type": "execute",
             "payload": {
                 "ref": ref,
-                "asset": asset
+                "asset": asset,
+                "settings": settings
             }
         }
         self.check_killed()
@@ -574,7 +576,7 @@ class DockerContainerWrapper(object):
                 # Echo back to archivist.
                 self.client.emit_event(self.task, event_type, event["payload"])
 
-    def execute_processor_on_assets(self, ref, assets):
+    def execute_processor_on_assets(self, ref, assets, settings):
         """
         Execute a given Processor ref on an object.  In the case of
         a Generator, obj may be None.
@@ -600,7 +602,8 @@ class DockerContainerWrapper(object):
             "type": "preprocess",
             "payload": {
                 "ref": ref,
-                "assets": assets
+                "assets": assets,
+                "settings": settings
             }
         }
         self.socket.send_json(preprocess)
@@ -617,7 +620,8 @@ class DockerContainerWrapper(object):
             "type": "execute",
             "payload": {
                 "ref": ref,
-                "assets": assets
+                "assets": assets,
+                "settings": settings
             }
         }
         self.socket.send_json(request)
