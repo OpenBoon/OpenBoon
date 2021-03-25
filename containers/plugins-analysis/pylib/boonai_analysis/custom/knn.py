@@ -1,30 +1,28 @@
 import os
 import pickle
 
-from boonflow import AssetProcessor, Argument, LabelDetectionAnalysis, Prediction
-from boonflow.proxy import get_video_proxy
-from boonflow.video import ShotBasedFrameExtractor, save_timeline
-from boonflow.clips import ClipTracker
-from boonflow.storage import file_storage
 from boonai_analysis.utils.prechecks import Prechecks
 from boonai_analysis.utils.simengine import SimilarityEngine
+from boonflow import Argument, LabelDetectionAnalysis, Prediction
+from boonflow.clips import ClipTracker
+from boonflow.proxy import get_video_proxy
+from boonflow.storage import file_storage
+from boonflow.video import ShotBasedFrameExtractor, save_timeline
+from .base import CustomModelProcessor
 
 
-class KnnLabelDetectionClassifier(AssetProcessor):
+class KnnLabelDetectionClassifier(CustomModelProcessor):
     def __init__(self):
         super(KnnLabelDetectionClassifier, self).__init__()
-
-        self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
         self.add_arg(Argument("sensitivity", "int", default=10000,
                               toolTip="How sensitive the model is to differences."))
 
-        self.app_model = None
         self.classifier = None
         self.labels = None
         self.simengine = None
 
     def init(self):
-        self.app_model = self.app.models.get_model(self.arg_value('model_id'))
+        self.load_app_model()
         self.classifier = self.load_model()
         self.simengine = SimilarityEngine()
 
@@ -111,8 +109,7 @@ class KnnLabelDetectionClassifier(AssetProcessor):
         Returns:
             KNeighborsClassifier: The model.
         """
-
-        model_path = file_storage.models.install_model(self.app_model)
+        model_path = self.get_model_path()
         with open(os.path.join(model_path, 'knn_classifier.pickle'), 'rb') as fp:
             classifier = pickle.load(fp)
         return classifier

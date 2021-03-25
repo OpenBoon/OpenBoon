@@ -8,7 +8,8 @@ __all__ = [
     'ModelType',
     'Label',
     'LabelScope',
-    'ModelTypeInfo'
+    'ModelTypeInfo',
+    'PostTrainAction'
 ]
 
 
@@ -48,6 +49,21 @@ class LabelScope(Enum):
 
     TEST = 2
     """The label marks the Asset as part of the Test set."""
+
+
+class PostTrainAction(Enum):
+    """
+    Actions to take after the model training process is complete.
+    """
+
+    NONE = 0
+    """No action is taken."""
+
+    APPLY = 1
+    """The model is applied to either a custom search or the default apply search."""
+
+    TEST = 2
+    """The model is applied to any asset with test labels."""
 
 
 class Model(BaseEntity):

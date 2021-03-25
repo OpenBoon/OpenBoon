@@ -199,8 +199,8 @@ def test_api_login_user_pass(api_client, user):
     response_data = response.json()
     assert response_data['email'] == 'user@fake.com'
     assert response_data['username'] == 'user'
-    assert response_data['firstName'] == ''
-    assert response_data['lastName'] == ''
+    assert response_data['firstName'] == 'fake'
+    assert response_data['lastName'] == 'user'
 
 
 def test_api_login_includes_projects(api_client, user, project, project2,
@@ -311,8 +311,8 @@ def test_api_login_google_oauth_existing_user(api_client, monkeypatch, user):
             'name': 'New Person',
             'picture': 'https://lh3.googleusercontent.com/a-/AAuE7mBr7AD-MLBUKTGiUs-'
                        'bMis5M5YNnhva_WeY7Oj8=s96-c',
-            'given_name': 'New',
-            'family_name': 'Person',
+            'given_name': 'fake',
+            'family_name': 'user',
             'locale': 'en',
             'iat': 1576801404,
             'exp': 1576805004,
@@ -323,8 +323,8 @@ def test_api_login_google_oauth_existing_user(api_client, monkeypatch, user):
                                HTTP_Authorization='Bearer skdhjflkjsdhfjks')
     assert response.status_code == 200
     user = User.objects.get(email='user@fake.com')
-    assert user.first_name == ''
-    assert user.last_name == ''
+    assert user.first_name == 'fake'
+    assert user.last_name == 'user'
     assert user.username == 'user'
 
 
@@ -355,15 +355,17 @@ def test_api_login_google_oauth_bad_issuer(api_client, monkeypatch, user):
     assert response.status_code == 401
 
 
-def test_get_me(login, api_client, project):
+def test_get_me(login, api_client, project, organization, zmlp_project_user):
+    organization.owners.add(zmlp_project_user)
     response = api_client.get(reverse('me'))
     assert response.status_code == 200
     response_data = response.json()
     assert response_data['email'] == 'user@fake.com'
     assert response_data['username'] == 'user'
-    assert response_data['firstName'] == ''
-    assert response_data['lastName'] == ''
-    assert response_data['roles'] == {str(project.id): ['ML_Tools', 'User_Admin']}
+    assert response_data['firstName'] == 'fake'
+    assert response_data['lastName'] == 'user'
+    assert response_data['organizations'] == [str(organization.id)]
+    assert response_data['roles'] == {str(project.id): ['ML_Tools', 'API_Keys', 'User_Admin']}
 
 
 def test_get_me_org_owner(api_client, project):

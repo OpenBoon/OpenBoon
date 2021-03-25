@@ -1,36 +1,31 @@
 from tensorflow.keras.applications.resnet_v2 import preprocess_input
 
 from boonai_analysis.utils.prechecks import Prechecks
-from boonflow import AssetProcessor, Argument, Prediction
-from boonflow import FileTypes, file_storage, proxy, clips, video
+from boonflow import Prediction
+from boonflow import file_storage, proxy, clips, video
 from boonflow.analysis import LabelDetectionAnalysis
 from boonflow.proxy import get_proxy_level_path
+from .base import CustomModelProcessor
 from ..utils.keras import load_keras_image, load_keras_model
 
 
-class TensorflowTransferLearningClassifier(AssetProcessor):
+class TensorflowTransferLearningClassifier(CustomModelProcessor):
     """Classifier for retrained saved model """
-
-    file_types = FileTypes.images | FileTypes.documents | FileTypes.videos
 
     def __init__(self):
         super(TensorflowTransferLearningClassifier, self).__init__()
 
-        self.add_arg(
-            Argument("model_id", "str", required=True, toolTip="The model Id")
-        )
-
-        self.app_model = None
         self.trained_model = None
         self.labels = None
 
     def init(self):
         """Init constructor """
         # get model by model id
-        self.app_model = self.app.models.get_model(self.arg_value("model_id"))
+        self.load_app_model()
 
         # unzip and extract needed files for trained model and labels
-        self.trained_model, self.labels = load_keras_model(self.app_model)
+        model_path = self.get_model_path()
+        self.trained_model, self.labels = load_keras_model(model_path)
 
     def process(self, frame):
         asset = frame.asset

@@ -170,6 +170,5 @@ class IndexTaskServiceTests : AbstractTest() {
         assertEquals(pred["score"], 0.991)
         assertEquals(pred["label"], "cats")
         assertEquals(pred["occurrences"], 1)
-        assertEquals(pred["count"], 1)
     }
 }

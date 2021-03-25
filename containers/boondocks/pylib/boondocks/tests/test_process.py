@@ -104,7 +104,7 @@ class ProcessorExecutorTests(unittest.TestCase):
             ]
         }
         self.pe.execute_preprocess(req)
-        assert self.pe.get_processor_wrapper(req["ref"]).instance.preprocess_ran
+        assert self.pe.get_processor_wrapper(req["ref"], {}).instance.preprocess_ran
 
     def test_execute_processor_and_raise_fatal(self):
         req = {
@@ -183,7 +183,7 @@ class ProcessorExecutorTests(unittest.TestCase):
             "image": TEST_IMAGE
         }
         frame = Frame(TestAsset())
-        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper = self.pe.get_processor_wrapper(ref, {})
         wrapper.apply_metrics(frame.asset, True, 10, None)
 
         metrics = frame.asset["metrics"]["pipeline"][0]
@@ -199,7 +199,7 @@ class ProcessorExecutorTests(unittest.TestCase):
             "image": TEST_IMAGE
         }
         frame = Frame(TestAsset())
-        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper = self.pe.get_processor_wrapper(ref, {})
         wrapper.apply_metrics(frame.asset, True, 10, None)
         wrapper.apply_metrics(frame.asset, False, 10, None)
         metrics = frame.asset["metrics"]["pipeline"][0]
@@ -232,12 +232,12 @@ class ProcessorExecutorTests(unittest.TestCase):
             "args": {},
             "image": TEST_IMAGE
         }
-        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper = self.pe.get_processor_wrapper(ref, {})
         assert wrapper is not None
         assert wrapper.instance is not None
         assert wrapper.ref == ref
 
-        wrapper2 = self.pe.get_processor_wrapper(ref)
+        wrapper2 = self.pe.get_processor_wrapper(ref, {})
         assert wrapper2.ref == wrapper.ref
 
     def test_new_processor_instance(self):
@@ -255,7 +255,7 @@ class ProcessorExecutorTests(unittest.TestCase):
             "args": {"raise_on_init": True},
             "image": TEST_IMAGE,
         }
-        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper = self.pe.get_processor_wrapper(ref, {})
         assert wrapper.instance is None
         errors = self.emitter.get_events("error")
         assert len(errors) == 1
@@ -268,7 +268,7 @@ class ProcessorExecutorTests(unittest.TestCase):
             "checksum": 122
         }
         frame = Frame(TestAsset())
-        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper = self.pe.get_processor_wrapper(ref, {})
 
         assert not wrapper.is_already_processed(frame.asset)
         wrapper.apply_metrics(frame.asset, True, 10, None)
@@ -286,7 +286,7 @@ class ProcessorExecutorTests(unittest.TestCase):
             "checksum": 122
         }
         frame = Frame(TestAsset())
-        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper = self.pe.get_processor_wrapper(ref, {})
 
         assert not wrapper.is_already_processed(frame.asset)
         wrapper.apply_metrics(frame.asset, True, 10, None)
@@ -303,7 +303,7 @@ class ProcessorExecutorTests(unittest.TestCase):
             "checksum": 122
         }
         frame = Frame(TestAsset())
-        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper = self.pe.get_processor_wrapper(ref, {})
 
         assert not wrapper.is_already_processed(frame.asset)
         wrapper.apply_metrics(frame.asset, True, 10, "warning")
@@ -319,7 +319,7 @@ class ProcessorExecutorTests(unittest.TestCase):
             "module": "Test Module"
         }
         frame = Frame(TestAsset(path='fake.jpg'))
-        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper = self.pe.get_processor_wrapper(ref, {})
         wrapper.process(frame)
         metric_post_mock.asset_called_once()
 
@@ -337,7 +337,7 @@ class ProcessorExecutorTests(unittest.TestCase):
             "module": "Test Module"
         }
         frame = Frame(TestAsset(path='fake.jpg'))
-        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper = self.pe.get_processor_wrapper(ref, {})
         wrapper.process(frame)
         metric_post_mock.asset_called_once()
 
@@ -351,7 +351,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         }
         frame = Frame(TestAsset(path='fake.jpg',
                                 attrs={'tmp.produced_analysis': ['module_1', 'module_2']}))
-        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper = self.pe.get_processor_wrapper(ref, {})
         wrapper.process(frame)
         post_mock.call_count == 2
         modules_called = [c[1]['json']['service'] for c in post_mock.call_args_list]
@@ -367,7 +367,7 @@ class ProcessorExecutorTests(unittest.TestCase):
             "module": "Test Module"
         }
         frame = Frame(TestAsset(path='fake.jpg'))
-        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper = self.pe.get_processor_wrapper(ref, {})
         wrapper.process(frame)
         metric_post_mock.asset_called_once()
 

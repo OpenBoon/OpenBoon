@@ -20,7 +20,7 @@ sentry_sdk.init('https://8d2c5bb15a2241349c05f8915e10a888@o280392.ingest.sentry.
 logger = logging.getLogger(__name__)
 
 
-class ProcessorExecutor(object):
+class ProcessorExecutor:
     """
     Handles execution of a single Processor on a single data object.
     """
@@ -40,13 +40,14 @@ class ProcessorExecutor(object):
         settings = request.get("settings", {})
 
         logger.info('Executing generator=\'{}\''.format(ref['className']))
-        wrapper = self.get_processor_wrapper(ref)
+        wrapper = self.get_processor_wrapper(ref, settings)
         wrapper.generate(settings)
 
     def execute_preprocess(self, request):
         assets = request.get("assets")
         ref = request["ref"]
-        wrapper = self.get_processor_wrapper(ref)
+        settings = request.get("settings", {})
+        wrapper = self.get_processor_wrapper(ref, settings)
         wrapper.preprocess([Asset(a) for a in assets])
 
     def execute_processor(self, request):
@@ -67,8 +68,9 @@ class ProcessorExecutor(object):
 
         ref = request["ref"]
         assets = request.get("assets")
+        settings = request.get("settings", {})
 
-        wrapper = self.get_processor_wrapper(ref)
+        wrapper = self.get_processor_wrapper(ref, settings)
 
         # Multi-thread
         if wrapper.instance:
@@ -132,7 +134,7 @@ class ProcessorExecutor(object):
         sha.update(json.dumps(ref, sort_keys=True, default=str).encode("utf-8"))
         return sha.hexdigest()
 
-    def get_processor_wrapper(self, ref):
+    def get_processor_wrapper(self, ref, settings):
         """
         Given a Processor reference, return an initialized ProcessorWrapper
 
@@ -146,7 +148,8 @@ class ProcessorExecutor(object):
         # Utilize the existing instance.
         key = self.get_processor_key(ref)
         if key not in self.processors:
-            wrapper = ProcessorWrapper(self.new_processor_instance(ref), ref, self.reactor)
+            wrapper = ProcessorWrapper(
+                self.new_processor_instance(ref), ref, self.reactor, settings)
             self.processors[key] = wrapper
 
             try:
@@ -227,7 +230,7 @@ class ProcessorWrapper(object):
 
     """
 
-    def __init__(self, instance, ref, reactor):
+    def __init__(self, instance, ref, reactor, settings):
         self.instance = instance
         self.ref = ref or {}
         self.reactor = reactor
@@ -240,6 +243,7 @@ class ProcessorWrapper(object):
             "total_time": 0
         }
         self.stat_lock = threading.RLock()
+        self.settings = settings
 
     @property
     def class_name(self):
@@ -257,7 +261,8 @@ class ProcessorWrapper(object):
         """
         if self.instance:
             self.instance.set_context(Context(self.reactor,
-                                              self.ref.get("args") or {}, {}))
+                                              self.ref.get("args"),
+                                              self.settings))
             self.instance.init()
 
     def generate(self, settings):

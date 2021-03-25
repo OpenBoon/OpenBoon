@@ -2,7 +2,7 @@ import logging
 import os
 import tempfile
 
-from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule
+from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule, PostTrainAction
 from ..training import TrainingSetDownloader
 from ..util import as_collection, as_id, zip_directory
 
@@ -90,46 +90,56 @@ class ModelApp:
         }
         return self.app.client.iter_paged_results('/api/v3/models/_search', body, limit, Model)
 
-    def train_model(self, model, deploy=False, **kwargs):
+    def train_model(self, model, post_action=PostTrainAction.NONE, **kwargs):
         """
-        Train the given Model by kicking off a model training job.
+        Train the given Model by kicking off a model training job.  If a post action is
+        specified the training job will expand once training is complete.
 
         Args:
-            model (Model): The Model instance or a unique Model id.
-            deploy (bool): Deploy the model on your production data immediately after training.
-            **kwargs (kwargs): Model training arguments which differ based on the model..
-
+            model (Model): The Model instance or a unique Model id
+            post_action (PostTrainAction): An action to take once the model is trained.
         Returns:
             Job: A model training job.
         """
         model_id = as_id(model)
-        body = {
-            'deploy': deploy,
-            'args': dict(kwargs)
-        }
-        return Job(self.app.client.post('/api/v3/models/{}/_train'.format(model_id), body))
+        body = {}
 
-    def deploy_model(self, model, search=None, file_types=None):
+        if kwargs.get('deploy'):
+            body['postAction'] = PostTrainAction.APPLY.name
+        else:
+            body['postAction'] = str(post_action)
+
+        return Job(self.app.client.post('/api/v4/models/{}/_train'.format(model_id), body))
+
+    def apply_model(self, model, search=None):
         """
-        Apply the model to the given search.
+        Apply the latest model.
 
         Args:
             model (Model): A Model instance or a model unique Id.
             search (dict): An arbitrary asset search, defaults to using the
-                deployment search associated with the model
-            file_types (list): An optional file type filer, can be combination of
-                "images", "documents", and "videos"
-
+                apply search associated with the model.
         Returns:
             Job: The Job that is hosting the reprocess task.
         """
         mid = as_id(model)
         body = {
-            "search": search,
-            "fileTypes": file_types,
-            "jobId": os.environ.get("BOONAI_JOB_ID")
+            "search": search
         }
-        return Job(self.app.client.post(f'/api/v3/models/{mid}/_deploy', body))
+        return Job(self.app.client.post(f'/api/v3/models/{mid}/_apply', body))
+
+    def test_model(self, model):
+        """
+        Apply the latest model to any asset with test labels.
+
+        Args:
+            model (Model): A Model instance or a model unique Id.
+
+        Returns:
+            Job: The Job that is hosting the reprocess task.
+        """
+        mid = as_id(model)
+        return Job(self.app.client.post(f'/api/v3/models/{mid}/_test', {}))
 
     def upload_trained_model(self, model, model_path, labels):
         """
@@ -240,6 +250,21 @@ class ModelApp:
         """
         return TrainingSetDownloader(self.app, model, style, dst_dir, validation_split)
 
+    def export_trained_model(self, model, dst_file, tag='latest'):
+        """
+        Download a zip file containing the model.
+
+        Args:
+            model (Model): The Model instance.
+            dst_file (str): path to store the model file.
+            tag (str): The model version tag.
+
+        Returns:
+            (int) The size of the downloaded file.
+        """
+        file_id = model.file_id.replace('__TAG__', tag)
+        return self.app.client.download_file(file_id, dst_file)
+
     def get_model_type_info(self, model_type):
         """
         Get additional properties concerning a specific model type.
@@ -261,3 +286,15 @@ class ModelApp:
             list: A list of ModelTypeInfo
         """
         return [ModelTypeInfo(info) for info in self.app.client.get('/api/v3/models/_types')]
+
+    def get_model_version_tags(self, model):
+        """
+        Return a list of model version tags.
+
+        Args:
+            model (Model): The model or unique model id.
+
+        Returns:
+            list: A list of model version tags.
+        """
+        return self.app.client.get('/api/v3/models/{}/_tags'.format(as_id(model)))

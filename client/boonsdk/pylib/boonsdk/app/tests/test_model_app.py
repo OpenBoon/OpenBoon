@@ -131,19 +131,38 @@ class ModelAppTests(unittest.TestCase):
         }
         post_patch.return_value = job_data
         model = Model(self.model_data)
-        job = self.app.models.train_model(model, foo='bar')
+        job = self.app.models.train_model(model)
         assert job_data['id'] == job.id
         assert job_data['name'] == job.name
 
+    @patch.object(BoonClient, 'get')
+    def test_get_model_version_tags(self, get_patch):
+        get_patch.return_value = ['model', 'latest']
+        model = Model(self.model_data)
+        tags = self.app.models.get_model_version_tags(model)
+        assert tags == ['model', 'latest']
+
     @patch.object(BoonClient, 'post')
-    def test_deploy_model(self, post_patch):
+    def test_apply_model(self, post_patch):
         job_data = {
             'id': '12345',
             'name': 'job-foo-bar'
         }
         post_patch.return_value = job_data
         model = Model(self.model_data)
-        mod = self.app.models.deploy_model(model)
+        mod = self.app.models.apply_model(model)
+        assert job_data['id'] == mod.id
+        assert job_data['name'] == mod.name
+
+    @patch.object(BoonClient, 'post')
+    def test_test_model(self, post_patch):
+        job_data = {
+            'id': '12345',
+            'name': 'job-foo-bar'
+        }
+        post_patch.return_value = job_data
+        model = Model(self.model_data)
+        mod = self.app.models.test_model(model)
         assert job_data['id'] == mod.id
         assert job_data['name'] == mod.name
 
@@ -229,3 +248,14 @@ class ModelAppTests(unittest.TestCase):
         assert props.provider == 'boonai'
         assert props.min_concepts == 1
         assert props.min_examples == 1
+
+    @patch.object(BoonClient, 'get')
+    def test_export_trained_model(self, get_patch):
+        data = b'some_data'
+        mockresponse = unittest.mock.Mock()
+        mockresponse.content = data
+        get_patch.return_value = mockresponse
+
+        model = Model(self.model_data)
+        size = self.app.models.export_trained_model(model, '/tmp/model.zip')
+        assert size == 9

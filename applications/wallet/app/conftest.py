@@ -20,7 +20,8 @@ def api_factory():
 
 @pytest.fixture
 def user(django_user_model, api_client):
-    user = django_user_model.objects.create_user('user', 'user@fake.com', 'letmein')
+    user = django_user_model.objects.create_user('user', 'user@fake.com', 'letmein',
+                                                 first_name='fake', last_name='user')
     return user
 
 
