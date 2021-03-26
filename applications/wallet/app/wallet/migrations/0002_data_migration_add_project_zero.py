@@ -20,12 +20,6 @@ def create_project_zero(apps, schema_editor):
                                                           name='Project Zero')
     project_zero.save()
 
-    if created:
-        logger.info('Created Project Zero for Boon AI platform.')
-    else:
-        logger.info('Project Zero already exists for Boon AI platform.')
-    return
-
     # Create the membership if it doesn't already exist
     user = User.objects.get(username=settings.SUPERUSER_EMAIL)
     membership = Membership.objects.get_or_create(user=user, project=project_zero,
