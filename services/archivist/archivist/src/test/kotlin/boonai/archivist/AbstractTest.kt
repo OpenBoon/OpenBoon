@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.data.redis.listener.RedisMessageListenerContainer
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.ActiveProfiles
@@ -87,6 +88,9 @@ abstract class AbstractTest {
 
     @Autowired
     internal lateinit var transactionEventManager: TransactionEventManager
+
+    @Autowired
+    internal lateinit var redisListener: RedisMessageListenerContainer
 
     @MockBean
     lateinit var authServerClient: AuthServerClient
