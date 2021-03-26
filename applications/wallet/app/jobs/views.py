@@ -56,7 +56,7 @@ def task_error_item_modifier(request, error):
 
 
 class JobViewSet(BaseProjectViewSet):
-    """CRUD operations for ZMLP or ZVI processing jobs."""
+    """CRUD operations for Boon AI processing jobs."""
     pagination_class = ZMLPFromSizePagination
     zmlp_root_api_path = '/api/v1/jobs/'
     serializer_class = JobSerializer
