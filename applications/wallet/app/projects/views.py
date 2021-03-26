@@ -1,19 +1,15 @@
 import logging
-import math
 import os
-from datetime import datetime
 
 import boonsdk
 import requests
 from boonsdk import BoonClient
-from boonsdk.client import BoonSdkConnectionException
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.db.models import Q
 from django.http import Http404, JsonResponse
 from rest_framework import status
-from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
@@ -497,81 +493,6 @@ class ProjectViewSet(ListModelMixin,
         project.save()
         project.sync_with_zmlp()
         return Response({'detail': [f'Success, Project "{project.name}" has been deleted.']})
-
-    @action(methods=['get'], detail=True)
-    def ml_usage_this_month(self, request, pk):
-        """Returns the ml module usage for the current month."""
-        today = datetime.today()
-        first_of_the_month = f'{today.year:04d}-{today.month:02d}-01'
-        path = os.path.join(settings.METRICS_API_URL, 'api/v1/apicalls/tiered_usage')
-        try:
-            response = requests.get(path, {'after': first_of_the_month, 'project': pk})
-            response.raise_for_status()
-        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
-            return Response({})
-        return Response(response.json())
-
-    @action(methods=['get'], detail=True)
-    def total_storage_usage(self, request, pk):
-        """Returns the video and image/document usage of currently live assets."""
-        path = 'api/v3/assets/_search'
-        response_body = {}
-
-        # Get Image/Document count
-        query = {
-            'track_total_hits': True,
-            'query': {
-                'bool': {
-                    'filter': [
-                        {'terms': {
-                            'media.type': ['image', 'document']
-                        }}
-                    ]
-                }
-            }
-        }
-        try:
-            response = request.client.post(path, query)
-        except (requests.exceptions.ConnectionError, BoonSdkConnectionException):
-            msg = (f'Unable to retrieve image/document count query for project {pk}.')
-            logger.warning(msg)
-        else:
-            response_body['image_count'] = response['hits']['total']['value']
-
-        # Get Aggregation for video minutes
-        query = {
-            'track_total_hits': True,
-            'query': {
-                'bool': {
-                    'filter': [
-                        {'terms': {
-                            'media.type': ['video']
-                        }}
-                    ]
-                }
-            },
-            'aggs': {
-                'video_seconds': {
-                    'sum': {
-                        'field': 'media.length'
-                    }
-                }
-            }
-        }
-        try:
-            response = request.client.post(path, query)
-        except (requests.exceptions.ConnectionError, BoonSdkConnectionException):
-            msg = (f'Unable to retrieve video seconds sum for project {pk}.')
-            logger.warning(msg)
-        else:
-            video_seconds = response['aggregations']['sum#video_seconds']['value']
-            response_body['video_hours'] = self._get_usage_hours_from_seconds(video_seconds)
-
-        return Response(response_body)
-
-    def _get_usage_hours_from_seconds(self, seconds):
-        """Converts seconds to hours and always rounds up."""
-        return math.ceil(seconds / 60 / 60)
 
 
 class ProjectUserViewSet(BaseProjectViewSet):
