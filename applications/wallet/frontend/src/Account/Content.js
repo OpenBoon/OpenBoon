@@ -91,7 +91,7 @@ const AccountContent = () => {
       </div>
 
       <div css={{ paddingTop: spacing.normal, paddingBottom: spacing.normal }}>
-        Number of Projects: {sortedFilteredProjects.length}
+        Projects: {sortedFilteredProjects.length}
       </div>
 
       <div

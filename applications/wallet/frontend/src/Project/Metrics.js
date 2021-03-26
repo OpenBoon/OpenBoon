@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import useSWR from 'swr'
 
 import { colors, spacing, typography, constants } from '../Styles'
 
@@ -11,27 +10,22 @@ import { formatUsage } from './helpers'
 const LARGE = 400
 const SMALL = 300
 
-const ProjectMetrics = ({ projectId }) => {
-  const {
-    data: {
-      tier_1: {
-        image_count: internalImageCount = -1,
-        video_minutes: internalVideoMinutes = -1,
-      } = {},
-      tier_2: {
-        image_count: externalImageCount = -1,
-        video_minutes: externalVideoMinutes = -1,
-      } = {},
-    } = {},
-  } = useSWR(`/api/v1/projects/${projectId}/ml_usage_this_month/`)
-
-  const {
-    data: {
-      image_count: totalImageCount = -1,
-      video_hours: totalVideoHours = -1,
-    } = {},
-  } = useSWR(`/api/v1/projects/${projectId}/total_storage_usage/`)
-
+const ProjectMetrics = ({
+  mlUsageThisMonth: {
+    tier1: {
+      imageCount: internalImageCount,
+      videoMinutes: internalVideoMinutes,
+    },
+    tier2: {
+      imageCount: externalImageCount,
+      videoMinutes: externalVideoMinutes,
+    },
+  },
+  totalStorageUsage: {
+    imageCount: totalImageCount,
+    videoMinutes: totalVideoMinutes,
+  },
+}) => {
   return (
     <div css={{ display: 'flex', flexWrap: 'wrap', gap: spacing.spacious }}>
       <div css={{ flex: 2 }}>
@@ -85,17 +79,17 @@ const ProjectMetrics = ({ projectId }) => {
                   css={{
                     display: 'flex',
                     alignItems: 'center',
-                    color: colors.graph.seafoam,
+                    color: colors.signal.canary.base,
                     paddingRight: spacing.small,
                   }}
                 >
-                  <DocumentsSvg
+                  <ImagesSvg
                     height={constants.icons.comfy}
                     css={{
                       paddingRight: spacing.base,
                     }}
                   />
-                  Documents*
+                  Images
                 </div>
                 <div
                   css={{
@@ -111,17 +105,17 @@ const ProjectMetrics = ({ projectId }) => {
                   css={{
                     display: 'flex',
                     alignItems: 'center',
-                    color: colors.signal.canary.base,
+                    color: colors.graph.seafoam,
                   }}
                 >
-                  <ImagesSvg
+                  <DocumentsSvg
                     height={constants.icons.comfy}
                     css={{
                       paddingLeft: spacing.small,
                       paddingRight: spacing.base,
                     }}
                   />
-                  Images
+                  Documents*
                 </div>
               </td>
               <td>{formatUsage({ number: internalImageCount })}</td>
@@ -195,17 +189,17 @@ const ProjectMetrics = ({ projectId }) => {
                   css={{
                     display: 'flex',
                     alignItems: 'center',
-                    color: colors.graph.seafoam,
                     paddingRight: spacing.small,
+                    color: colors.signal.canary.base,
                   }}
                 >
-                  <DocumentsSvg
+                  <ImagesSvg
                     height={constants.icons.comfy}
                     css={{
                       paddingRight: spacing.base,
                     }}
                   />
-                  Documents*
+                  Images
                 </div>
                 <div
                   css={{
@@ -221,17 +215,17 @@ const ProjectMetrics = ({ projectId }) => {
                   css={{
                     display: 'flex',
                     alignItems: 'center',
-                    color: colors.signal.canary.base,
+                    color: colors.graph.seafoam,
                   }}
                 >
-                  <ImagesSvg
+                  <DocumentsSvg
                     height={constants.icons.comfy}
                     css={{
                       paddingLeft: spacing.small,
                       paddingRight: spacing.base,
                     }}
                   />
-                  Images
+                  Documents*
                 </div>
               </td>
               <td>{formatUsage({ number: totalImageCount })}</td>
@@ -252,7 +246,7 @@ const ProjectMetrics = ({ projectId }) => {
                   Video Hours
                 </div>
               </td>
-              <td>{formatUsage({ number: totalVideoHours })}</td>
+              <td>{formatUsage({ number: totalVideoMinutes / 60 })}</td>
             </tr>
           </tbody>
         </table>
@@ -280,7 +274,20 @@ const ProjectMetrics = ({ projectId }) => {
 }
 
 ProjectMetrics.propTypes = {
-  projectId: PropTypes.string.isRequired,
+  mlUsageThisMonth: PropTypes.shape({
+    tier1: PropTypes.shape({
+      imageCount: PropTypes.number.isRequired,
+      videoMinutes: PropTypes.number.isRequired,
+    }).isRequired,
+    tier2: PropTypes.shape({
+      imageCount: PropTypes.number.isRequired,
+      videoMinutes: PropTypes.number.isRequired,
+    }).isRequired,
+  }).isRequired,
+  totalStorageUsage: PropTypes.shape({
+    imageCount: PropTypes.number.isRequired,
+    videoMinutes: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 export default ProjectMetrics

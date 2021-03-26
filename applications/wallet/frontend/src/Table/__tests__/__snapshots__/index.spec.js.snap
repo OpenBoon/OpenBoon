@@ -483,7 +483,6 @@ exports[`<Table /> should prefetch previous and next page 1`] = `
       <h3
         className="emotion-3"
       >
-        Number of 
         Stuff
         : 
         100
@@ -823,7 +822,6 @@ exports[`<Table /> should render properly without data 1`] = `
       <h3
         className="emotion-3"
       >
-        Number of 
         Stuff
         : 
         0
