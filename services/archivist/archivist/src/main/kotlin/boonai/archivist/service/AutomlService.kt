@@ -8,6 +8,7 @@ import boonai.archivist.domain.AutomlSession
 import boonai.archivist.domain.AutomlSessionSpec
 import boonai.archivist.domain.AutomlSessionState
 import boonai.archivist.domain.Model
+import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.Provider
 import boonai.archivist.repository.AutomlDao
 import boonai.archivist.repository.UUIDGen
@@ -95,10 +96,10 @@ class AutomlServiceImpl(
                         // Publish the model.
                         withAuth(InternalThreadAuthentication(session.projectId, setOf())) {
                             val model = modelService.getModel(session.modelId)
-                            modelService.publishModel(
-                                model,
+                            val req = ModelPublishRequest(
                                 mapOf("automl_model_id" to gmod.name)
                             )
+                            modelService.publishModel(model, req)
                         }
                     }
                 } catch (e: Exception) {

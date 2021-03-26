@@ -69,7 +69,7 @@ const TableContent = ({
             fontWeight: typography.weight.regular,
           }}
         >
-          Number of {legend}: {count}
+          {legend}: {count}
         </h3>
 
         {refreshButton && (

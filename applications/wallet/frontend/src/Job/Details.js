@@ -5,12 +5,13 @@ import { spacing, typography } from '../Styles'
 
 import Value, { VARIANTS } from '../Value'
 import ProgressBar from '../ProgressBar'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 
 import JobMenu from './Menu'
 
 const JobDetails = () => {
   const {
-    query: { projectId, jobId },
+    query: { projectId, jobId, action },
   } = useRouter()
 
   const { data: job, mutate: revalidate } = useSWR(
@@ -36,6 +37,12 @@ const JobDetails = () => {
       >
         Job: {name}
       </h3>
+
+      {!!action && (
+        <div css={{ display: 'flex' }}>
+          <FlashMessage variant={FLASH_VARIANTS.INFO}>{action}</FlashMessage>
+        </div>
+      )}
 
       <div css={{ display: 'flex', alignItems: 'center' }}>
         <JobMenu status={status} revalidate={revalidate} />

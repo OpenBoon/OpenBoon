@@ -50,7 +50,7 @@ const ModelAssetsContent = ({ filter, label }) => {
           paddingBottom: spacing.normal,
         }}
       >
-        Number of Assets: {count}
+        Assets: {count}
       </h3>
 
       <div

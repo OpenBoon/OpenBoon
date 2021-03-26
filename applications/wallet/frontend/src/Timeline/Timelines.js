@@ -107,12 +107,6 @@ const TimelineTimelines = ({
               </TimelineAccordion>
             )
           })}
-        <div
-          css={{
-            height: spacing.normal,
-            backgroundColor: colors.structure.coal,
-          }}
-        />
       </div>
 
       <div

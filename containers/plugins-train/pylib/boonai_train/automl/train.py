@@ -1,22 +1,19 @@
+from boonflow import ModelTrainer, FatalProcessorException
 from boonsdk import ModelType
-from boonflow import Argument, AssetProcessor, FatalProcessorException
 from .labels import AutomlLabelDetectionSession
 
 
-class AutoMLModelTrainer(AssetProcessor):
+class AutoMLModelTrainer(ModelTrainer):
     """Create Google AutoML Model"""
 
     def __init__(self):
         super(AutoMLModelTrainer, self).__init__()
-        self.add_arg(Argument("model_id", "string", required=True, toolTip="The model Id"))
-
-        self.app_model = None
         self.session = None
 
     def init(self):
-        self.app_model = self.app.models.get_model(self.arg_value('model_id'))
+        self.load_app_model()
 
-    def process(self, frame):
+    def train(self):
         # Check the type of model and use the correct session class.
         if self.app_model.type == ModelType.GCP_AUTOML_CLASSIFIER:
             session = AutomlLabelDetectionSession(self.app_model, self.reactor)

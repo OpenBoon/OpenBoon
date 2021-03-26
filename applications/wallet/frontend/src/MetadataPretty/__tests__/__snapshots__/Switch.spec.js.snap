@@ -1,5 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<MetadataPrettySwitch /> should render an empty row properly 1`] = `
+.emotion-0 {
+  padding: 12px;
+  padding-left: 16px;
+  color: #e0e0e0;
+  font-style: italic;
+}
+
+.emotion-0:not(:first-of-type) {
+  border-top: 1px solid #3b3b3b;
+}
+
+<div
+  className="emotion-0"
+>
+  empty
+</div>
+`;
+
 exports[`<MetadataPrettySwitch /> should render content detection properly 1`] = `
 Array [
   .emotion-0 {
@@ -320,6 +339,7 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
                 ]
               }
             />
+             
           </td>
           <td
             className="emotion-9"
@@ -358,6 +378,7 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
                 ]
               }
             />
+             
           </td>
           <td
             className="emotion-9"
@@ -1677,102 +1698,5 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
       </div>
     </div>
   </div>
-</div>
-`;
-
-exports[`<MetadataPrettySwitch /> should render single-label predictions properly 1`] = `
-.emotion-0 {
-  padding: 16px;
-  padding-bottom: 24px;
-}
-
-.emotion-0:not(:first-of-type) {
-  border-top: 4px solid #3b3b3b;
-}
-
-.emotion-1 {
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
-  padding-bottom: 16px;
-}
-
-.emotion-2 {
-  font-family: Roboto Condensed;
-  font-weight: 400;
-  text-transform: uppercase;
-  color: #808080;
-  padding: 0;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #3b3b3b;
-  text-align: left;
-}
-
-.emotion-2:last-of-type {
-  text-align: right;
-  white-space: nowrap;
-}
-
-.emotion-2:nth-last-of-type(2) {
-  width: 100%;
-}
-
-.emotion-4 td {
-  vertical-align: bottom;
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  padding: 8px;
-  padding-left: 0;
-  padding-right: 8px;
-  border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-5:last-of-type {
-  text-align: right;
-  padding-right: 0;
-}
-
-<div
-  className="emotion-0"
->
-  <div
-    className="emotion-1"
-  >
-    animal
-  </div>
-  <table>
-    <thead>
-      <tr>
-        <th
-          className="emotion-2"
-        >
-          label
-        </th>
-        <th
-          className="emotion-2"
-        >
-          confidence score
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        className="emotion-4"
-      >
-        <td
-          className="emotion-5"
-        >
-          Horse
-        </td>
-        <td
-          className="emotion-5"
-        >
-          0.998
-        </td>
-      </tr>
-    </tbody>
-  </table>
 </div>
 `;

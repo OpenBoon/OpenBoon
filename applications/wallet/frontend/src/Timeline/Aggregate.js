@@ -182,6 +182,11 @@ const TimelineAggregate = ({
                       backgroundColor: colors.structure.coal,
                       padding: spacing.mini,
                       cursor: 'pointer',
+                      ':hover': {
+                        div: {
+                          backgroundColor: colors.structure.white,
+                        },
+                      },
                     }}
                   >
                     <div

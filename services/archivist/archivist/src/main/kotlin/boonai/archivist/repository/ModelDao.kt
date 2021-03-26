@@ -90,7 +90,7 @@ class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
             rs.getString("str_file_id"),
             rs.getString("str_job_name"),
             rs.getBoolean("bool_trained"),
-            Json.Mapper.readValue(rs.getString("json_search_deploy"), Json.GENERIC_MAP),
+            Json.Mapper.readValue(rs.getString("json_apply_search"), Json.GENERIC_MAP),
             rs.getLong("time_created"),
             rs.getLong("time_modified"),
             rs.getString("actor_created"),

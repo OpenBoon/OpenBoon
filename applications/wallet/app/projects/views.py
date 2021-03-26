@@ -1,28 +1,27 @@
 import logging
 import os
-import math
-from datetime import datetime
-
-import requests
-from rest_framework.decorators import action
 
 import boonsdk
+import requests
+from boonsdk import BoonClient
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import transaction
+from django.db.models import Q
 from django.http import Http404, JsonResponse
 from rest_framework import status
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet, GenericViewSet
-from boonsdk import BoonClient
-from boonsdk.client import BoonSdkConnectionException
 
-from projects.clients import ZviClient
 from projects.models import Membership, Project
 from projects.permissions import ManagerUserPermissions
-from projects.serializers import ProjectSerializer, ProjectUserSerializer
+from projects.serializers import ProjectSerializer, ProjectUserSerializer, \
+    ProjectDetailSerializer
+from projects.utils import is_user_project_organization_owner
+from wallet.exceptions import InvalidRequestError
 from wallet.paginators import FromSizePagination
 from wallet.utils import validate_zmlp_data
 
@@ -48,34 +47,28 @@ class BaseProjectViewSet(ViewSet):
     """
     zmlp_root_api_path = ''
     zmlp_only = False
+    project_pk_kwarg = 'project_pk'
 
     def dispatch(self, request, *args, **kwargs):
         """Overrides the dispatch method to include an instance of an archivist client
         to the view.
 
         """
-        project = kwargs["project_pk"]
-        if self.zmlp_only and settings.PLATFORM != 'zmlp':
-            # This is needed to keep from returning terrible stacktraces on endpoints
-            # not meant for dual platform usage
-            raise Http404
-
-        try:
-            apikey = Membership.objects.get(user=request.user, project=kwargs['project_pk']).apikey
-        except Membership.DoesNotExist:
-            return JsonResponse(data={'detail': [f'{request.user.username} is not a member of '
-                                                 f'the project {project}']}, status=403)
-        except TypeError:
-            return JsonResponse(data={'detail': ['Unauthorized.']}, status=403)
-
-        # Attach some useful objects for interacting with ZMLP/ZVI to the request.
-        if settings.PLATFORM == 'zmlp':
+        if self.project_pk_kwarg in kwargs:
+            project = kwargs[self.project_pk_kwarg]
+            try:
+                if is_user_project_organization_owner(request.user, project):
+                    apikey = Project.objects.get(id=project).apikey
+                else:
+                    apikey = Membership.objects.get(user=request.user, project=project).apikey
+            except Membership.DoesNotExist:
+                return JsonResponse(data={'detail': [f'{request.user.username} is not a member of '
+                                                     f'the project {project}']}, status=403)
+            except TypeError:
+                return JsonResponse(data={'detail': ['Unauthorized.']}, status=403)
             request.app = boonsdk.BoonApp(apikey, settings.BOONAI_API_URL)
             request.client = BoonClient(apikey=apikey, server=settings.BOONAI_API_URL,
                                         project_id=project)
-        else:
-            request.client = ZviClient(apikey=apikey, server=settings.BOONAI_API_URL)
-
         return super().dispatch(request, *args, **kwargs)
 
     def get_serializer(self, *args, **kwargs):
@@ -478,125 +471,28 @@ class BaseProjectViewSet(ViewSet):
 
 class ProjectViewSet(ListModelMixin,
                      RetrieveModelMixin,
-                     GenericViewSet):
-    """
-    API endpoint that allows Projects to be viewed and created.
-
-    If a fresh project is being created, only the `name` argument needs to be sent. The ID
-    will be auto-generated.
-
-    **Note:** The POST to create against this endpoint is not supported for ZVI
-    configured instances. In that case, please create projects directly in the Django
-    Admin panel.
-    """
-    serializer_class = ProjectSerializer
-
-    def dispatch(self, request, *args, **kwargs):
-        """Overrides the dispatch method to include an instance of an archivist client
-        to the view.
-
-        Since this ProjectViewSet cannot inherit from the BaseProjectViewSet, this
-        replicates the often used functionality around the ZMLP App and Client.
-
-        """
-        if 'pk' in kwargs:
-            project = kwargs["pk"]
-
-            try:
-                apikey = Membership.objects.get(user=request.user, project=project).apikey
-            except Membership.DoesNotExist:
-                return JsonResponse(data={'detail': [f'{request.user.username} is not a member of '
-                                                     f'the project {project}']}, status=403)
-            except TypeError:
-                return JsonResponse(data={'detail': ['Unauthorized.']}, status=403)
-
-            # Attach some useful objects for interacting with ZMLP/ZVI to the request.
-            if settings.PLATFORM == 'zmlp':
-                request.app = boonsdk.BoonApp(apikey, settings.BOONAI_API_URL)
-                request.client = BoonClient(apikey=apikey, server=settings.BOONAI_API_URL,
-                                            project_id=project)
-            else:
-                request.client = ZviClient(apikey=apikey, server=settings.BOONAI_API_URL)
-
-        return super().dispatch(request, *args, **kwargs)
+                     GenericViewSet,
+                     BaseProjectViewSet):
+    """API endpoint that allows Projects to be viewed and created."""
+    project_pk_kwarg = 'pk'
 
     def get_queryset(self):
-        return self.request.user.projects.filter(isActive=True)
+        user = self.request.user
+        return Project.objects.filter(Q(users=user) | Q(organization__owners=user)).distinct()
 
-    @action(methods=['get'], detail=True)
-    def ml_usage_this_month(self, request, pk):
-        """Returns the ml module usage for the current month."""
-        today = datetime.today()
-        first_of_the_month = f'{today.year:04d}-{today.month:02d}-01'
-        path = os.path.join(settings.METRICS_API_URL, 'api/v1/apicalls/tiered_usage')
-        try:
-            response = requests.get(path, {'after': first_of_the_month, 'project': pk})
-            response.raise_for_status()
-        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
-            return Response({})
-        return Response(response.json())
+    def get_serializer_class(self):
+        action_map = {'list': ProjectSerializer,
+                      'retrieve': ProjectDetailSerializer}
+        return action_map[self.action]
 
-    @action(methods=['get'], detail=True)
-    def total_storage_usage(self, request, pk):
-        """Returns the video and image/document usage of currently live assets."""
-        path = 'api/v3/assets/_search'
-        response_body = {}
-
-        # Get Image/Document count
-        query = {
-            'track_total_hits': True,
-            'query': {
-                'bool': {
-                    'filter': [
-                        {'terms': {
-                            'media.type': ['image', 'document']
-                        }}
-                    ]
-                }
-            }
-        }
-        try:
-            response = request.client.post(path, query)
-        except (requests.exceptions.ConnectionError, BoonSdkConnectionException):
-            msg = (f'Unable to retrieve image/document count query for project {pk}.')
-            logger.warning(msg)
-        else:
-            response_body['image_count'] = response['hits']['total']['value']
-
-        # Get Aggregation for video minutes
-        query = {
-            'track_total_hits': True,
-            'query': {
-                'bool': {
-                    'filter': [
-                        {'terms': {
-                            'media.type': ['video']
-                        }}
-                    ]
-                }
-            },
-            'aggs': {
-                'video_seconds': {
-                    'sum': {
-                        'field': 'media.length'
-                    }
-                }
-            }
-        }
-        try:
-            response = request.client.post(path, query)
-        except (requests.exceptions.ConnectionError, BoonSdkConnectionException):
-            msg = (f'Unable to retrieve video seconds sum for project {pk}.')
-            logger.warning(msg)
-        else:
-            video_seconds = response['aggregations']['sum#video_seconds']['value']
-            response_body['video_hours'] = self._get_usage_hours_from_seconds(video_seconds)
-
-        return Response(response_body)
-
-    def _get_usage_hours_from_seconds(self, seconds):
-        """Converts seconds to hours and always rounds up."""
-        return math.ceil(seconds / 60 / 60)
+    def destroy(self, request, *args, **kwargs):
+        project = self.get_object()
+        if not project.organization.owners.filter(id=request.user.id).exists():
+            raise PermissionDenied({'detail': 'You must be an owner of project to delete it.'})
+        project.isActive = False
+        project.save()
+        project.sync_with_zmlp()
+        return Response({'detail': [f'Success, Project "{project.name}" has been deleted.']})
 
 
 class ProjectUserViewSet(BaseProjectViewSet):
@@ -655,8 +551,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
     def create(self, request, project_pk):
         batch = request.data.get('batch')
         if batch and request.data.get('email'):
-            return Response(data={'detail': ['Batch argument provided with single creation arguments.']},  # noqa
-                            status=status.HTTP_400_BAD_REQUEST)
+            raise InvalidRequestError({'detail': ['Batch argument provided with single creation arguments.']})
         elif batch:
             response_body = {'results': {'succeeded': [], 'failed': []}}
             for entry in batch:

@@ -1,5 +1,10 @@
 import logging
+import math
+import os
+from datetime import datetime
 
+import requests
+from boonsdk.client import BoonClient, BoonSdkNotFoundException, BoonSdkConnectionException
 from django.conf import settings
 from django.db import models
 from django_cryptography.fields import encrypt
@@ -9,7 +14,6 @@ from apikeys.utils import create_zmlp_api_key
 from roles.utils import get_permissions_for_roles
 from wallet.mixins import TimeStampMixin, UUIDMixin, ActiveMixin
 from wallet.utils import get_zmlp_superuser_client, convert_base64_to_json
-from boonsdk.client import BoonClient, BoonSdkNotFoundException
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +37,7 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
                                    related_name='projects')
     organization = models.ForeignKey('organizations.Organization', on_delete=models.SET_NULL,
                                      null=True, blank=True, related_name='projects')
+    apikey = encrypt(models.TextField(blank=True, editable=False, null=True))
 
     def __str__(self):
         return self.name
@@ -46,6 +51,10 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
 
         """
         return get_zmlp_superuser_client(project_id=str(self.id))
+
+    def get_admin_client(self):
+        """Returns a BoonClient with the admin api key associated with the project."""
+        return BoonClient(self.apikey, server=settings.BOONAI_API_URL)
 
     def sync_with_zmlp(self):
         """Tries to create a project in ZMLP with the same name and ID. This syncs the projects
@@ -74,6 +83,79 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
                 project_status_response = client.put(f'/api/v1/projects/{self.id}/_disable', {})
             if not project_status_response.get('success'):
                 raise IOError(f'Unable to sync project {self.id} status.')
+
+        # Create an apikey if one doesn't exist.
+        if not self.apikey:
+            name = f'wallet-project-key-{self.id}'
+            permissions = get_permissions_for_roles([r['name'] for r in settings.ROLES])
+            self.apikey = create_zmlp_api_key(client, name, permissions, internal=True)
+            self.save()
+
+    def ml_usage_this_month(self):
+        """Returns the ml module usage for the current month."""
+        today = datetime.today()
+        first_of_the_month = f'{today.year:04d}-{today.month:02d}-01'
+        path = os.path.join(settings.METRICS_API_URL, 'api/v1/apicalls/tiered_usage')
+        response = requests.get(path, {'after': first_of_the_month, 'project': self.id})
+        response.raise_for_status()
+        return response.json()
+
+    def total_storage_usage(self):
+        """Returns the video and image/document usage of currently live assets."""
+        path = 'api/v3/assets/_search'
+        client = self.get_admin_client()
+        usage = {}
+
+        # Get Image/Document count
+        query = {
+            'track_total_hits': True,
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'terms': {
+                            'media.type': ['image', 'document']
+                        }}
+                    ]
+                }
+            }
+        }
+        try:
+            response = client.post(path, query)
+        except (requests.exceptions.ConnectionError, BoonSdkConnectionException):
+            msg = (f'Unable to retrieve image/document count query for project {self.id}.')
+            logger.warning(msg)
+        else:
+            usage['image_count'] = response['hits']['total']['value']
+
+        # Get Aggregation for video minutes
+        query = {
+            'track_total_hits': True,
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'terms': {
+                            'media.type': ['video']
+                        }}
+                    ]
+                }
+            },
+            'aggs': {
+                'video_seconds': {
+                    'sum': {
+                        'field': 'media.length'
+                    }
+                }
+            }
+        }
+        try:
+            response = client.post(path, query)
+        except (requests.exceptions.ConnectionError, BoonSdkConnectionException):
+            msg = (f'Unable to retrieve video seconds sum for project {self.id}.')
+            logger.warning(msg)
+        else:
+            video_seconds = response['aggregations']['sum#video_seconds']['value']
+            usage['video_minutes'] = math.ceil(video_seconds / 60)
+        return usage
 
 
 class Membership(models.Model):

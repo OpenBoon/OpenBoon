@@ -20,7 +20,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash }, path }) => {
     filters: [
       {
         type: 'similarity',
-        attribute: `${path}${name}`,
+        attribute: `${path}.${name}`,
         values: { ids: [assetId] },
       },
     ],
@@ -142,7 +142,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash }, path }) => {
                     <AssetsThumbnail
                       asset={asset}
                       isActive
-                      attribute={`${path}${name}`}
+                      attribute={`${path}.${name}`}
                     />
                   </div>
                 ))}

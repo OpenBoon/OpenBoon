@@ -40,7 +40,8 @@ class PytorchModelImageClassifierTests(PluginUnitTestCase):
 
         args = {
             "model_id": self.model_id,
-            "input_size": (321, 321)
+            "input_size": (321, 321),
+            "tag": "latest"
         }
 
         flower_paths = [
@@ -64,7 +65,7 @@ class PytorchModelImageClassifierTests(PluginUnitTestCase):
             assert 'labels' == analysis['type']
 
 
-class PytorchVideoTransferLearningClassifierTests(PluginUnitTestCase):
+class PytorchImageClassifierTests(PluginUnitTestCase):
     model_id = "model-id-34568"
     base_dir = os.path.dirname(__file__)
     name = "pytorch_ants_and_bees"
@@ -100,6 +101,7 @@ class PytorchVideoTransferLearningClassifierTests(PluginUnitTestCase):
 
         args = {
             "model_id": self.model_id,
+            "tag": "latest",
             "input_size": (321, 321)
         }
 
