@@ -523,7 +523,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
     <h3
       className="emotion-2"
     >
-      Number of Assets: 
+      Assets: 
       574
     </h3>
   </div>

@@ -14,7 +14,7 @@ const STYLES = {
       display: 'flex',
       flexDirection: 'column',
       backgroundColor: colors.structure.lead,
-      borderRadius: constants.borderRadius.small,
+      borderRadius: constants.borderRadius.medium,
       padding: spacing.normal,
       paddingTop: spacing.base,
     },

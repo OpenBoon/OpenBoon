@@ -48,7 +48,7 @@ exports[`<ChartRange /> should render properly 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #252525;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 16px;
   padding-top: 8px;
 }
@@ -467,7 +467,7 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #252525;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 16px;
   padding-top: 8px;
 }

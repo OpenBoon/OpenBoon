@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from boonsdk.app import ModelApp
 from boonsdk.entity import Model
-from boonai_analysis.custom.pytorch import PytorchImageClassifier
+from boonai_analysis.custom.pytorch import PytorchTransferLearningClassifier
 from boonflow.base import Frame
 from boonflow.storage import file_storage
 from boonflow.testing import PluginUnitTestCase, TestAsset, test_path, get_prediction_labels
@@ -56,7 +56,7 @@ class PytorchModelImageClassifierTests(PluginUnitTestCase):
             frame = Frame(TestAsset(paths))
 
             processor = self.init_processor(
-                PytorchImageClassifier(), args
+                PytorchTransferLearningClassifier(), args
             )
             processor.process(frame)
             analysis = frame.asset.get_analysis(name)
@@ -106,7 +106,7 @@ class PytorchImageClassifierTests(PluginUnitTestCase):
         }
 
         processor = self.init_processor(
-            PytorchImageClassifier(), args
+            PytorchTransferLearningClassifier(), args
         )
         self.frame.asset.set_attr('media.type', 'video')
         processor.process(self.frame)

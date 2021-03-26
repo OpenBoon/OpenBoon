@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from rest_framework import status
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.generics import get_object_or_404
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -20,12 +22,18 @@ from wallet.paginators import FromSizePagination
 User = get_user_model()
 
 
-class OrganizationViewSet(ListModelMixin, GenericViewSet):
+class OrganizationViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     """Viewset for getting info about Organizations."""
     serializer_class = OrganizationSerializer
 
     def get_queryset(self):
         return Organization.objects.filter(owners=self.request.user)
+
+    def get_object(self):
+        organization = get_object_or_404(Organization.objects.all(), pk=self.kwargs["pk"])
+        if not organization.owners.filter(id=self.request.user.id).exists():
+            raise PermissionDenied
+        return organization
 
 
 class BaseOrganizationOwnerViewset(GenericViewSet):

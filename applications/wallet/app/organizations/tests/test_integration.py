@@ -54,6 +54,23 @@ class TestViews(object):
         organization_result = response['results'][0]
         assert organization_result == OrganizationSerializer(organization).data
         assert organization_result['projectCount'] == 1
+        assert organization_result['createdDate']
+
+    def test_organization_retrieve(self, login, zmlp_project_user, api_client, organization):
+        path = reverse('organization-detail', kwargs={'pk': organization.id})
+
+        # User is not an organization owner.
+        response = check_response(api_client.get(path), status=403)
+
+        # User is an organization owner.
+        organization.owners.add(zmlp_project_user)
+        response = check_response(api_client.get(path))
+        assert response['name'] == organization.name
+
+    def test_organization_retrieve_does_not_exist(self, login, zmlp_project_user, api_client,
+                                                  organization):
+        path = reverse('organization-detail', kwargs={'pk': '1'})
+        check_response(api_client.get(path), status=404)
 
     def test_org_project_list(self, login, zmlp_project_user, api_client, organization,
                               monkeypatch):
@@ -93,6 +110,27 @@ class TestViews(object):
                                           'totalStorageUsage': {'imageCount': 35,
                                                                 'videoMinutes': 274},
                                           'userCount': 1}
+
+    def test_org_project_list_metrics_error(self, login, zmlp_project_user, api_client,
+                                            organization, monkeypatch):
+        mock_post_responses = [
+            {'aggregations': {'sum#video_seconds': {'value': 16406}}},
+            {"hits": {"total": {"value": 35}}},
+        ]
+
+        def mock_post(*args, **kwargs):
+            return mock_post_responses.pop()
+
+        monkeypatch.setattr(BoonClient, 'post', mock_post)
+        path = reverse('org-project-list', kwargs={'organization_pk': organization.id})
+
+        # User is an organization owner.
+        organization.owners.add(zmlp_project_user)
+        response = check_response(api_client.get(path))
+        assert response['results'][0]['mlUsageThisMonth'] == {'tier1': {'imageCount': -1,
+                                                                        'videoMinutes': -1},
+                                                              'tier2': {'imageCount': -1,
+                                                                        'videoMinutes': -1}}
 
     def test_org_project_create(self, login, zmlp_project_user, api_client, organization, monkeypatch):
         monkeypatch.setattr(Project, 'sync_with_zmlp', lambda x: None)

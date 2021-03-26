@@ -1,0 +1,631 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Organization /> should render properly for Owners 1`] = `
+Array [
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-3 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-4 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <a
+        className="emotion-2"
+        href="/organizations"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Organization Admin
+      </a>
+      <span
+        className="emotion-3"
+      >
+        /
+      </span>
+    </div>
+    <h2
+      className="emotion-4"
+    >
+      Alpha
+    </h2>
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-3 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #3A5DFF;
+}
+
+.emotion-7 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-0"
+  >
+    <ul
+      className="emotion-1"
+    >
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Project Usage
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Users
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-7"
+          href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/owners"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Owners
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  "Owners",
+]
+`;
+
+exports[`<Organization /> should render properly for Projects 1`] = `
+Array [
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-3 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-4 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <a
+        className="emotion-2"
+        href="/organizations"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Organization Admin
+      </a>
+      <span
+        className="emotion-3"
+      >
+        /
+      </span>
+    </div>
+    <h2
+      className="emotion-4"
+    >
+      Alpha
+    </h2>
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-3 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #3A5DFF;
+}
+
+<nav
+    className="emotion-0"
+  >
+    <ul
+      className="emotion-1"
+    >
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Project Usage
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-5"
+          href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Users
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-5"
+          href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/owners"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Owners
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  "Project Usage",
+]
+`;
+
+exports[`<Organization /> should render properly for Users 1`] = `
+Array [
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-3 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-4 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <a
+        className="emotion-2"
+        href="/organizations"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Organization Admin
+      </a>
+      <span
+        className="emotion-3"
+      >
+        /
+      </span>
+    </div>
+    <h2
+      className="emotion-4"
+    >
+      Alpha
+    </h2>
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-3 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #3A5DFF;
+}
+
+.emotion-5 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-0"
+  >
+    <ul
+      className="emotion-1"
+    >
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Project Usage
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-5"
+          href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Users
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/owners"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Owners
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  "Users",
+]
+`;

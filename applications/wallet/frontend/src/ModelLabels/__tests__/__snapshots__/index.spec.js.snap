@@ -223,7 +223,6 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
       <h3
         className="emotion-3"
       >
-        Number of 
         Labels
         : 
         2
@@ -623,7 +622,6 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
       <h3
         className="emotion-3"
       >
-        Number of 
         Labels
         : 
         0
@@ -957,7 +955,6 @@ exports[`<ModelLabels /> should render properly with required assets per labels 
       <h3
         className="emotion-3"
       >
-        Number of 
         Labels
         : 
         2
