@@ -10,26 +10,24 @@ const OrganizationUsers = () => {
   } = useRouter()
 
   return (
-    <>
-      <Table
-        legend="Users"
-        url={`/api/v1/organizations/${organizationId}/users/`}
-        refreshKeys={[]}
-        columns={[
-          'User Email',
-          'First Name',
-          'Last Name',
-          'Projects',
-          '#Actions#',
-        ]}
-        expandColumn={0}
-        renderEmpty={<span />}
-        renderRow={({ result }) => {
-          return <OrganizationUsersRow key={result.id} user={result} />
-        }}
-        refreshButton={false}
-      />
-    </>
+    <Table
+      legend="Users"
+      url={`/api/v1/organizations/${organizationId}/users/`}
+      refreshKeys={[]}
+      columns={[
+        'User Email',
+        'First Name',
+        'Last Name',
+        'Projects',
+        '#Actions#',
+      ]}
+      expandColumn={0}
+      renderEmpty={<span />}
+      renderRow={({ result }) => {
+        return <OrganizationUsersRow key={result.id} user={result} />
+      }}
+      refreshButton={false}
+    />
   )
 }
 

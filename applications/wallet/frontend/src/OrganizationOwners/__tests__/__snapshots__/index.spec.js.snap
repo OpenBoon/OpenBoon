@@ -216,7 +216,7 @@ exports[`<OrganizationOwners /> should render properly with no owners 1`] = `
       <h3
         className="emotion-3"
       >
-        Projects
+        Owners
         : 
         0
       </h3>
@@ -476,7 +476,7 @@ exports[`<OrganizationOwners /> should render properly with owners 1`] = `
       <h3
         className="emotion-3"
       >
-        Projects
+        Owners
         : 
         5
       </h3>
