@@ -15,19 +15,16 @@ logger = logging.getLogger(__name__)
 
 
 def create_project_zero(apps, schema_editor):
-    # Regardless of Platform, create project zero (or get it for deployments where it may
-    # already exist
+    # Create project zero (or get it for deployments where it may already exist).
     project_zero, created = Project.objects.get_or_create(id='00000000-0000-0000-0000-000000000000',
                                                           name='Project Zero')
     project_zero.save()
 
-    # if this is zvi, stop
-    if settings.PLATFORM == 'zvi':
-        if created:
-            logger.info('Created Project Zero for ZVI platform.')
-        else:
-            logger.info('Project Zero already exists for ZVI platform.')
-        return
+    if created:
+        logger.info('Created Project Zero for Boon AI platform.')
+    else:
+        logger.info('Project Zero already exists for Boon AI platform.')
+    return
 
     # Create the membership if it doesn't already exist
     user = User.objects.get(username=settings.SUPERUSER_EMAIL)
