@@ -34,7 +34,12 @@ describe('<Table />', () => {
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: { count: 100, results: [] },
+      data: {
+        count: 100,
+        results: [],
+        previous: 'https://boonai.app/api/v1/stuff?from=0&size=20',
+        next: 'https://boonai.app/api/v1/stuff?from=40&size=20',
+      },
     })
 
     const component = TestRenderer.create(
@@ -87,8 +92,8 @@ describe('<Table />', () => {
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith(
-      '/[projectId]/jobs?sort=timeCreated:a&filter=apply',
-      `/${PROJECT_ID}/jobs?sort=timeCreated:a&filter=apply`,
+      '/[projectId]/jobs?filter=apply&sort=timeCreated:a',
+      `/${PROJECT_ID}/jobs?filter=apply&sort=timeCreated:a`,
     )
   })
 })
