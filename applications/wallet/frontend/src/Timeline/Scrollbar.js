@@ -7,6 +7,7 @@ import { getScroller } from '../Scroll/helpers'
 
 let origin
 let scrollbarOrigin
+let scrollbarScrollableWidth
 
 export const SCROLLBAR_CONTAINER_HEIGHT = 36
 
@@ -26,15 +27,6 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
       const percentScrolled =
         maxScrollLeft === 0 ? maxScrollLeft : node.scrollLeft / maxScrollLeft
 
-      const {
-        width: scrollbarWidth,
-      } = scrollbarRef.current.getBoundingClientRect()
-
-      const scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
-
-      // the max number of pixels the scrollbar thumb can travel
-      const scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
-
       scrollbarRef.current.style.left = `${
         percentScrolled * scrollbarScrollableWidth
       }px`
@@ -45,17 +37,10 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
   const handleMouseMove = ({ clientX }) => {
     const difference = clientX - origin
 
-    const {
-      width: scrollbarWidth,
-    } = scrollbarRef.current.getBoundingClientRect()
-
-    const scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
-
-    // the max number of pixels the scrollbar thumb can travel
-    const scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
-
-    const percentScrolled =
-      (scrollbarOrigin + difference) / scrollbarScrollableWidth
+    const portionScrolled =
+      scrollbarScrollableWidth === 0
+        ? 0
+        : (scrollbarOrigin + difference) / scrollbarScrollableWidth
 
     // the max number of pixels the ruler scroll left
     const rulerScrollableWidth =
@@ -64,7 +49,7 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
     horizontalScroller.emit({
       eventName: 'scroll',
       data: {
-        scrollX: rulerScrollableWidth * percentScrolled,
+        scrollX: rulerScrollableWidth * portionScrolled,
       },
     })
   }
@@ -85,10 +70,18 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
   }
 
   useEffect(() => {
+    const { width: scrollbarWidth = 0 } =
+      scrollbarRef.current?.getBoundingClientRect() || {}
+
+    const scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
+
+    // the max number of pixels the scrollbar thumb can travel
+    scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
+
     return () => {
       horizontalScrollerDeregister()
     }
-  }, [horizontalScrollerDeregister])
+  }, [horizontalScrollerDeregister, scrollbarRef, settings])
 
   return (
     <>
