@@ -91,7 +91,7 @@ class JobViewSet(BaseProjectViewSet):
         # Add the filter, if any
         filter = request.query_params.get('filter')
         if filter:
-            search_filter['wildCardNames'] = [filter]
+            search_filter['keywords'] = filter
 
         return self._zmlp_list_from_search(request, search_filter=search_filter,
                                            item_modifier=item_modifier)
