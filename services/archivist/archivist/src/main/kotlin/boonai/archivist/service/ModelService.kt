@@ -9,6 +9,7 @@ import boonai.archivist.domain.ModOpType
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelApplyResponse
+import boonai.archivist.domain.ModelCopyRequest
 import boonai.archivist.domain.ModelFilter
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
@@ -30,6 +31,7 @@ import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.getProjectId
 import boonai.archivist.security.getZmlpActor
 import boonai.archivist.storage.ProjectStorageService
+import boonai.archivist.util.FileUtils
 import boonai.archivist.util.randomString
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
@@ -55,6 +57,7 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import java.io.ByteArrayInputStream
 import java.io.FileInputStream
 import java.io.InputStream
 import java.nio.file.Files
@@ -89,6 +92,7 @@ interface ModelService {
     fun validatePyTorchModel(path: Path)
     fun generateModuleName(spec: ModelSpec): String
     fun getModelVersions(model: Model): Set<String>
+    fun copyModelTag(model: Model, req: ModelCopyRequest)
 }
 
 @Service
@@ -299,6 +303,17 @@ class ModelServiceImpl(
 
             modelJdbcDao.markAsReady(model.id, true)
             return pipelineModService.create(modspec)
+        }
+    }
+
+    override fun copyModelTag(model: Model, req: ModelCopyRequest) {
+        val modelStorage = ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString()).getPath()
+        var srcTagPath = "$modelStorage/${req.srcTag}"
+        var dstTagPath = "$modelStorage/${req.dstTag}"
+
+        for (file in fileStorageService.listFiles(srcTagPath)) {
+            val dstFile = "$dstTagPath/${FileUtils.filename(file)}"
+            fileStorageService.copy(file, dstFile)
         }
     }
 
@@ -530,12 +545,22 @@ class ModelServiceImpl(
         Files.copy(inputStream, tmpFile, StandardCopyOption.REPLACE_EXISTING)
 
         try {
-            // Now store the file locally.
-            val storage = ProjectStorageSpec(
+
+            // Now store the model zip
+            val modelFile = ProjectStorageSpec(
                 model.getModelStorageLocator("latest"), mapOf(),
                 FileInputStream(tmpFile.toFile()), Files.size(tmpFile)
             )
-            fileStorageService.store(storage)
+            fileStorageService.store(modelFile)
+
+            // Now store the version identifier
+            val version = "${(System.currentTimeMillis() / 1000).toInt()}-${UUID.randomUUID()}\n"
+            val versionBytes = version.toByteArray()
+            val versionFile = ProjectStorageSpec(
+                model.getModelVersionStorageLocator("latest"), mapOf(),
+                ByteArrayInputStream(versionBytes), versionBytes.size.toLong()
+            )
+            fileStorageService.store(versionFile)
 
             // Now we can publish the model.
             return publishModel(

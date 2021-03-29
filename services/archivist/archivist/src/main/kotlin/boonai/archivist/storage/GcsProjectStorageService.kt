@@ -29,6 +29,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
+import com.google.cloud.storage.CopyWriter
 
 @Service
 @Profile("gcs")
@@ -70,7 +71,7 @@ class GcsProjectStorageService constructor(
             spec.locator.name,
             spec.locator.category,
             spec.mimetype,
-            spec.size.toLong(),
+            spec.size,
             spec.attrs
         )
     }
@@ -88,6 +89,12 @@ class GcsProjectStorageService constructor(
         } catch (e: Exception) {
             ResponseEntity.noContent().build()
         }
+    }
+
+    override fun copy(src: String, dst: String): Long {
+        val srcBlob = gcs.get(properties.bucket, src)
+        val copyWriter: CopyWriter = srcBlob.copyTo(properties.bucket, dst)
+        return copyWriter.result.updateTime
     }
 
     override fun fetch(locator: ProjectStorageLocator): ByteArray {

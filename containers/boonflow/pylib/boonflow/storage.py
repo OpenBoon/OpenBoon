@@ -150,7 +150,7 @@ class ModelStorage:
         file_id = self.get_model_file_id(model, tag)
         version_file = src_dir + self.model_ver_file
         with open(version_file, 'w') as fp:
-            fp.write("{}-{}\n".format(time.time(), str(uuid.uuid4())))
+            fp.write("{}-{}\n".format(int(time.time()), str(uuid.uuid4())))
 
         zip_file_path = util.zip_directory(
             src_dir, tempfile.mkstemp(prefix="model_", suffix=".zip")[1])
