@@ -17,7 +17,7 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #252525;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 16px;
   padding-top: 8px;
 }
@@ -372,7 +372,7 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #252525;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 16px;
   padding-top: 8px;
 }
@@ -727,7 +727,7 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #252525;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 16px;
   padding-top: 8px;
 }

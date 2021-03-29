@@ -15,6 +15,7 @@ import { cleanup } from '../Filters/helpers'
 import Button, { VARIANTS } from '../Button'
 import CheckboxSwitch from '../Checkbox/Switch'
 import Resizeable from '../Resizeable'
+import Feature from '../Feature'
 
 import { reducer, INITIAL_STATE, ACTIONS } from './reducer'
 import { COLORS, GUIDE_WIDTH } from './helpers'
@@ -28,6 +29,7 @@ import TimelinePlayhead from './Playhead'
 import TimelineAggregate from './Aggregate'
 import TimelineSearchHits from './SearchHits'
 import TimelineTimelines from './Timelines'
+import TimelineScrollbar from './Scrollbar'
 import TimelineMetadata from './Metadata'
 import TimelineShortcuts from './Shortcuts'
 import TimelineResize from './Resize'
@@ -291,6 +293,11 @@ const Timeline = ({ videoRef, length }) => {
               settings={settings}
               dispatch={dispatch}
             />
+
+            <Feature flag="TimelineScrollbar" envs={[]}>
+              <TimelineScrollbar settings={settings} />
+            </Feature>
+
             <TimelineResize
               dispatch={dispatch}
               zoom={settings.zoom}

@@ -10,7 +10,8 @@ __all__ = [
     'get_proxy_level',
     'get_audio_proxy',
     'get_audio_proxy_uri',
-    'get_video_proxy'
+    'get_video_proxy',
+    'get_ocr_proxy_image'
 ]
 
 logger = logging.getLogger(__name__)
@@ -148,3 +149,20 @@ def calculate_normalized_bbox(img_width, img_height, poly):
         else:
             result.append(round(poly[idx] / float(img_height), 3))
     return result
+
+
+def get_ocr_proxy_image(asset):
+    """
+    Choose a proper proxy image effort OCR.
+
+    Args:
+        asset (Asset): The asset to look at.
+
+    Returns:
+        StoredFile: A StoredFile instance.
+    """
+    ocr_proxy = asset.get_files(category='ocr-proxy')
+    if ocr_proxy:
+        return file_storage.localize_file(ocr_proxy[0])
+    else:
+        return get_proxy_level_path(asset, 3)

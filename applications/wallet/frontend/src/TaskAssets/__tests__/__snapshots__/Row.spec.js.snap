@@ -164,6 +164,13 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
     \\"<span class=\\"__json-key__\\">taskId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"106e0f32-5d95-11ea-baea-364023b135f5\\"</span>,
     \\"<span class=\\"__json-key__\\">timeModified</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"2020-03-03T21:22:47.575195Z\\"</span>
   },
+  \\"<span class=\\"__json-key__\\">custom</span>\\": {
+    \\"<span class=\\"__json-key__\\">numbers</span>\\": [
+      <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1</span>,
+      <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">2</span>,
+      <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">3</span>
+    ]
+  },
   \\"<span class=\\"__json-key__\\">source</span>\\": {
     \\"<span class=\\"__json-key__\\">path</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"gs://zorroa-dev-data/image/TIFF_1MB.tiff\\"</span>,
     \\"<span class=\\"__json-key__\\">extension</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"tiff\\"</span>,
@@ -259,6 +266,14 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
         \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">213</span>
       },
       \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg\\"</span>
+    },
+    {
+      \\"<span class=\\"__json-key__\\">size</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1500</span>,
+      \\"<span class=\\"__json-key__\\">name</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"dlp.dat\\"</span>,
+      \\"<span class=\\"__json-key__\\">mimetype</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"application/octet-stream\\"</span>,
+      \\"<span class=\\"__json-key__\\">id</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"assets/josv8dw1_3lw_eGb1rMCE2K0WG4zGstB/gcp/dlp.dat\\"</span>,
+      \\"<span class=\\"__json-key__\\">category</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"gcp\\"</span>,
+      \\"<span class=\\"__json-key__\\">attrs</span>\\": {}
     }
   ],
   \\"<span class=\\"__json-key__\\">analysis</span>\\": {

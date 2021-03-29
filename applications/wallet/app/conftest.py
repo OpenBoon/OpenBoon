@@ -20,7 +20,8 @@ def api_factory():
 
 @pytest.fixture
 def user(django_user_model, api_client):
-    user = django_user_model.objects.create_user('user', 'user@fake.com', 'letmein')
+    user = django_user_model.objects.create_user('user', 'user@fake.com', 'letmein',
+                                                 first_name='fake', last_name='user')
     return user
 
 
@@ -33,7 +34,9 @@ def superuser(django_user_model, api_client):
 
 @pytest.fixture
 def organization(superuser):
-    return Organization.objects.create(name='Test Org', owner=superuser)
+    org = Organization.objects.create(name='Test Org')
+    org.owners.add(superuser)
+    return org
 
 
 @pytest.fixture

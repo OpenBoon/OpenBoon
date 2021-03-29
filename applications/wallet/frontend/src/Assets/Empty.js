@@ -29,8 +29,8 @@ const AssetsEmpty = ({ pathname, projectId, query, assetId }) => {
       <h2
         css={{
           paddingTop: spacing.normal,
-          fontSize: typography.size.giant,
-          lineHeight: typography.height.giant,
+          fontSize: typography.size.colossal,
+          lineHeight: typography.height.colossal,
         }}
       >
         {hasFilters

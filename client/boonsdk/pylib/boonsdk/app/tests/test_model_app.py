@@ -1,9 +1,12 @@
 import logging
-import unittest
 import tempfile
+import unittest
 from unittest.mock import patch
 
+import pytest
+
 from boonsdk import BoonClient, ModelType, Model
+from boonsdk.app import ModelApp
 from .util import get_boon_app
 
 logging.basicConfig(level=logging.DEBUG)
@@ -19,7 +22,7 @@ class ModelAppTests(unittest.TestCase):
         self.model_data = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'test',
-            'type': 'TF_CLASSIFIER',
+            'type': 'TF_UPLOADED_CLASSIFIER',
             'fileId': '/abc/123/345/foo.zip'
         }
 
@@ -29,22 +32,77 @@ class ModelAppTests(unittest.TestCase):
         model = self.app.models.get_model('12345')
         self.assert_model(model)
 
+    @patch.object(ModelApp, 'find_one_model')
+    def test_upload_trained_model_wrong_type(self, model_patch):
+        model_patch.return_value = Model({
+            'id': '12345',
+            'type': 'TF_CLASSIFIER',
+            'name': 'foo'
+        })
+
+        tmp_dir = tempfile.mkdtemp()
+        pytest.raises(ValueError,
+                      self.app.models.upload_trained_model,
+                      '12345', tmp_dir, ["dog", "cat"])
+
+    @patch.object(ModelApp, 'find_one_model')
     @patch.object(BoonClient, 'send_file')
-    def test_upload_trained_model_directory(self, post_patch):
-        post_patch.return_value = {'category': 'LabelDetection'}
+    def test_upload_trained_model_existing_labels(self, upload_patch, model_patch):
+        upload_patch.return_value = {'category': 'LabelDetection'}
+        model_patch.return_value = Model({
+            'id': '12345',
+            'type': 'TF_UPLOADED_CLASSIFIER',
+            'name': 'foo'
+        })
+
+        tmp_dir = tempfile.mkdtemp()
+        with open(f'{tmp_dir}/labels.txt', "w") as fp:
+            fp.write("cat\n")
+            fp.write("dog\n")
+
+        module = self.app.models.upload_trained_model('12345', tmp_dir, None)
+        assert module.category == 'LabelDetection'
+
+    @patch.object(ModelApp, 'find_one_model')
+    @patch.object(BoonClient, 'send_file')
+    def test_upload_trained_model(self, upload_patch, model_patch):
+        upload_patch.return_value = {'category': 'LabelDetection'}
+        model_patch.return_value = Model({
+            'id': '12345',
+            'type': 'TF_UPLOADED_CLASSIFIER',
+            'name': 'foo'
+        })
 
         tmp_dir = tempfile.mkdtemp()
         module = self.app.models.upload_trained_model('12345', tmp_dir, ["dog", "cat"])
         assert module.category == 'LabelDetection'
 
+    @patch.object(ModelApp, 'find_one_model')
     @patch.object(BoonClient, 'send_file')
-    def test_upload_trained_model_keras_inst(self, post_patch):
-        class MockKerasModel:
-            def save(self, path):
-                pass
-
+    def test_upload_trained_model_directory_tf(self, post_patch, model_patch):
         post_patch.return_value = {'category': 'LabelDetection'}
-        module = self.app.models.upload_trained_model('12345', MockKerasModel(), ["dog", "cat"])
+        model_patch.return_value = Model({
+            'id': '12345',
+            'type': 'TF_UPLOADED_CLASSIFIER',
+            'name': 'foo'
+        })
+
+        tmp_dir = tempfile.mkdtemp()
+        module = self.app.models.upload_trained_model("12345", tmp_dir, ["dog", "cat"])
+        assert module.category == 'LabelDetection'
+
+    @patch.object(ModelApp, 'find_one_model')
+    @patch.object(BoonClient, 'send_file')
+    def test_upload_trained_model_directory_pth(self, post_patch, model_patch):
+        post_patch.return_value = {'category': 'LabelDetection'}
+        model_patch.return_value = Model({
+            'id': '12345',
+            'type': 'PYTORCH_UPLOADED_CLASSIFIER',
+            'name': 'foo'
+        })
+
+        tmp_dir = tempfile.mkdtemp()
+        module = self.app.models.upload_trained_model("12345", tmp_dir, ["dog", "cat"])
         assert module.category == 'LabelDetection'
 
     @patch.object(BoonClient, 'post')
@@ -68,24 +126,43 @@ class ModelAppTests(unittest.TestCase):
     @patch.object(BoonClient, 'post')
     def test_train_model(self, post_patch):
         job_data = {
-            "id": "12345",
-            "name": "Train model"
+            'id': '12345',
+            'name': 'Train model'
         }
         post_patch.return_value = job_data
         model = Model(self.model_data)
-        job = self.app.models.train_model(model, foo='bar')
+        job = self.app.models.train_model(model)
         assert job_data['id'] == job.id
         assert job_data['name'] == job.name
 
+    @patch.object(BoonClient, 'get')
+    def test_get_model_version_tags(self, get_patch):
+        get_patch.return_value = ['model', 'latest']
+        model = Model(self.model_data)
+        tags = self.app.models.get_model_version_tags(model)
+        assert tags == ['model', 'latest']
+
     @patch.object(BoonClient, 'post')
-    def test_deploy_model(self, post_patch):
+    def test_apply_model(self, post_patch):
         job_data = {
-            "id": "12345",
-            "name": "job-foo-bar"
+            'id': '12345',
+            'name': 'job-foo-bar'
         }
         post_patch.return_value = job_data
         model = Model(self.model_data)
-        mod = self.app.models.deploy_model(model)
+        mod = self.app.models.apply_model(model)
+        assert job_data['id'] == mod.id
+        assert job_data['name'] == mod.name
+
+    @patch.object(BoonClient, 'post')
+    def test_test_model(self, post_patch):
+        job_data = {
+            'id': '12345',
+            'name': 'job-foo-bar'
+        }
+        post_patch.return_value = job_data
+        model = Model(self.model_data)
+        mod = self.app.models.test_model(model)
         assert job_data['id'] == mod.id
         assert job_data['name'] == mod.name
 
@@ -171,3 +248,14 @@ class ModelAppTests(unittest.TestCase):
         assert props.provider == 'boonai'
         assert props.min_concepts == 1
         assert props.min_examples == 1
+
+    @patch.object(BoonClient, 'get')
+    def test_export_trained_model(self, get_patch):
+        data = b'some_data'
+        mockresponse = unittest.mock.Mock()
+        mockresponse.content = data
+        get_patch.return_value = mockresponse
+
+        model = Model(self.model_data)
+        size = self.app.models.export_trained_model(model, '/tmp/model.zip')
+        assert size == 9

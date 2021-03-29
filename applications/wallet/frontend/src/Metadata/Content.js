@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
+import deepfilter from 'deep-filter'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
@@ -10,6 +12,7 @@ import Button, { VARIANTS } from '../Button'
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import JsonDisplay from '../JsonDisplay'
 import MetadataPretty from '../MetadataPretty'
+import InputSearch, { VARIANTS as INPUT_SEARCH_VARIANTS } from '../Input/Search'
 
 import { formatDisplayName } from './helpers'
 
@@ -29,6 +32,38 @@ const MetadataContent = ({ projectId, assetId }) => {
       },
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
+
+  const [searchString, setSearchString] = useState('')
+
+  const filteredMetadata = deepfilter(metadata, (value, prop) => {
+    if (!searchString) return true
+
+    // Ignore first level section (analysis, files, media, etc.)
+    if (Object.keys(metadata).includes(prop)) return true
+
+    const regex = new RegExp(searchString, 'img')
+
+    // Special case to filter processors
+    if (
+      typeof prop === 'number' &&
+      typeof value === 'object' &&
+      typeof value.processor === 'string'
+    ) {
+      return regex.test(value.processor)
+    }
+
+    // Filter entries that are an object because it means they
+    // are a section a.k.a. a module
+    if (
+      typeof prop === 'string' &&
+      typeof value === 'object' &&
+      !Array.isArray(value)
+    ) {
+      return regex.test(prop)
+    }
+
+    return true
+  })
 
   return (
     <>
@@ -141,8 +176,25 @@ const MetadataContent = ({ projectId, assetId }) => {
       </div>
 
       {displayOption === 'pretty' && (
+        <div
+          css={{
+            padding: spacing.base,
+            borderBottom: constants.borders.regular.smoke,
+          }}
+        >
+          <InputSearch
+            aria-label="Filter metadata fields"
+            placeholder="Filter metadata fields"
+            value={searchString}
+            onChange={({ value }) => setSearchString(value)}
+            variant={INPUT_SEARCH_VARIANTS.DARK}
+          />
+        </div>
+      )}
+
+      {displayOption === 'pretty' && (
         <div css={{ overflow: 'auto' }}>
-          {Object.keys(metadata)
+          {Object.keys(filteredMetadata)
             .sort()
             .map((section) => {
               const title = formatDisplayName({ name: section })
@@ -156,7 +208,10 @@ const MetadataContent = ({ projectId, assetId }) => {
                   isInitiallyOpen={false}
                   isResizeable={false}
                 >
-                  <MetadataPretty metadata={metadata} section={section} />
+                  <MetadataPretty
+                    metadata={filteredMetadata}
+                    section={section}
+                  />
                 </Accordion>
               )
             })}

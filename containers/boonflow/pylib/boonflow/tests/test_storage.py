@@ -358,18 +358,18 @@ class ModelStorageTests(TestCase):
     @patch.object(storage.ProjectStorage, 'localize_file')
     def test_install_model(self, post_patch):
         post_patch.return_value = os.path.dirname(__file__) + "/model.zip"
-        path = self.fs.models.install_model('asset/foo/fake/fake_model.zip')
+        path = self.fs.models.install_model('asset/foo/fake/fake_model.zip', 'latest')
         assert os.path.exists(path + "/fake_model.dat")
 
         # Attempt to install twice
-        path = self.fs.models.install_model('asset/foo/fake/fake_model.zip')
+        path = self.fs.models.install_model('asset/foo/fake/fake_model.zip', 'latest')
         assert os.path.exists(path + "/fake_model.dat")
 
     @patch.object(BoonClient, 'put')
     @patch('requests.put')
     @patch.object(BoonClient, 'post')
     @patch.object(storage.ModelStorage, 'publish_model')
-    @patch.object(ModelApp, 'deploy_model')
+    @patch.object(ModelApp, 'apply_model')
     def test_save_model(self, deploy_patch, publish_patch, post_patch, req_put_patch, put_patch):
         post_patch.return_value = {
             'uri': "http://localhost:9999/foo/bar/signed",
@@ -385,10 +385,10 @@ class ModelStorageTests(TestCase):
         publish_patch.return_value = AnalysisModule({
             'id': '12345'
         })
-        deploy_patch.return_value = Job({"id": "abcde"})
+        deploy_patch.return_value = Job({'id': 'abcde'})
 
         cur_dir = os.path.dirname(__file__) + '/extracted_model'
-        mod = self.fs.models.save_model(cur_dir, "foo/bar/bing/model.zip", deploy=True)
+        mod = self.fs.models.save_model(cur_dir, 'foo/bar/__TAG__/model.zip', 'latest', 'none')
 
         assert '12345' == mod.id
 

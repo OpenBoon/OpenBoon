@@ -233,7 +233,7 @@ class JobFilter(
     override fun build() {
 
         if (sort.isNullOrEmpty()) {
-            sort = listOf("runningTasks:desc", "waitingTasks:desc", "priority:asc", "timeCreated:asc")
+            sort = listOf("runningTasks:desc", "timeCreated:desc")
         }
 
         addToWhere("job.pk_project=?")

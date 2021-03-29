@@ -14,7 +14,7 @@ Array [
 <h3
     className="emotion-0"
   >
-    Number of Assets: 
+    Assets: 
     574
   </h3>,
   .emotion-0 {
@@ -745,7 +745,7 @@ Array [
 <h3
     className="emotion-0"
   >
-    Number of Assets: 
+    Assets: 
   </h3>,
   .emotion-0 {
   display: -webkit-box;

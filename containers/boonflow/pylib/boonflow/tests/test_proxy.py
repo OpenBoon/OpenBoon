@@ -124,3 +124,19 @@ class ProxyFunctionTests(TestCase):
 
         path = proxy.get_proxy_level_path(asset, 9)
         assert 'd64a279e098c9bda4a8156d9c60e3337f7d96b31.jpg' in path
+
+    @patch.object(TestAsset, 'get_files')
+    @patch('boonflow.proxy.file_storage.localize_file')
+    def test_get_ocr_proxy(self, storage_patch, get_files_patch):
+        image_path = test_path('images/set09/nvidia_manual_page.jpg')
+        storage_patch.return_value = image_path
+        asset = TestAsset(image_path)
+        asset.set_attr('files', [
+            {
+                'category': 'ocr-proxy',
+                'name': 'ocr-proxy.jpg',
+                'mimetype': 'image/jpeg'
+            }
+        ])
+        proxy.get_ocr_proxy_image(asset)
+        get_files_patch.assert_called_with(category='ocr-proxy')

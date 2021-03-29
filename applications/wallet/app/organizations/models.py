@@ -19,17 +19,16 @@ class Plan(models.TextChoices):
 
 
 class Organization(UUIDMixin, TimeStampMixin, ActiveMixin):
-    """An organization is a collection of projects with an owner. Currently this is only
-    used for billing purposes."""
+    """An organization is a collection of projects with owners that have full access."""
     name = models.CharField(max_length=144, unique=True, default=random_organization_name)
-    owner = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, blank=True)
+    owners = models.ManyToManyField(User, related_name='organizations')
     plan = models.CharField(max_length=24, choices=Plan.choices, default=Plan.ACCESS)
 
     def __str__(self):
         return self.name
 
     def __repr__(self):
-        return f"Organization(name='{self.name}', owner_id={self.owner_id})"
+        return f"Organization(name='{self.name}')"
 
     def save(self, *args, **kwargs):
         with transaction.atomic():
@@ -49,8 +48,7 @@ class Organization(UUIDMixin, TimeStampMixin, ActiveMixin):
             end_time (datetime): End of time window to look at.
 
         Returns:
-            (dict): A dictionary specifying the total image and video hour sums for
-                all tiers on all projects for this Org.
+            (dict): A dictionary with summed totals and usage per-project.
 
         """
         metrics_path = os.path.join(settings.METRICS_API_URL, 'api/v1/apicalls/tiered_usage')
@@ -65,17 +63,17 @@ class Organization(UUIDMixin, TimeStampMixin, ActiveMixin):
         projects = self.projects.filter(isActive=True)
 
         # Request tiered usage for each project from metrics
-        project_results = []
+        project_usage = {}
         for project in projects:
             response = requests.get(metrics_path, {'project': project.id,
                                                    'after': start_time,
                                                    'before': end_time})
-            project_results.append(response.json())
-
-        summed_tiers = {
-            'tier_1_image_count': sum([r['tier_1']['image_count'] for r in project_results]),
-            'tier_1_video_hours': int(sum([r['tier_1']['video_minutes'] for r in project_results])/60),
-            'tier_2_image_count': sum([r['tier_2']['image_count'] for r in project_results]),
-            'tier_2_video_hours': int(sum([r['tier_2']['video_minutes'] for r in project_results])/60)
-        }
-        return summed_tiers
+            response.raise_for_status()
+            results = response.json()
+            project_usage[str(project.id)] = {
+                'tier_1_image_count': results['tier_1']['image_count'],
+                'tier_1_video_hours': int(results['tier_1']['video_minutes'] / 60),
+                'tier_2_image_count': results['tier_2']['image_count'],
+                'tier_2_video_hours': int(results['tier_2']['video_minutes'] / 60)
+            }
+        return project_usage

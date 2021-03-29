@@ -16,11 +16,11 @@ describe('<MetadataCuesContent />', () => {
       <MetadataCuesContent
         metadata={{
           'gcp-label-detection': [
-            { label: 'cheese', score: 0.91 },
-            { label: 'pepperoni', score: 0.91 },
+            { content: 'cheese', score: 0.91 },
+            { content: 'pepperoni', score: 0.91 },
           ],
-          'gcp-object-detection': [{ label: 'food', score: 0.91 }],
-          'gcp-logo-detection': [{ label: 'boon', score: 0.91 }],
+          'gcp-object-detection': [{ content: 'food', score: 0.91 }],
+          'gcp-logo-detection': [{ content: 'boon', score: 0.91 }],
         }}
         width={300}
         height={500}

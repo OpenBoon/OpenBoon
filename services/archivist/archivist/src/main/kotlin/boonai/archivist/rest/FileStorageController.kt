@@ -31,7 +31,7 @@ class FileStorageController(
     val modelService: ModelService
 ) {
 
-    @ApiOperation("Store an additional file to an asset.")
+    @ApiOperation("Store an additional file to an asset.", hidden = true)
     // Only job runner keys can store files.
     @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
     @PostMapping(value = ["/api/v3/files/_upload"], consumes = ["multipart/form-data"])
@@ -55,7 +55,13 @@ class FileStorageController(
         @PathVariable category: String,
         @PathVariable name: String
     ): ResponseEntity<Resource> {
-        val locator = getValidLocator(entityType, entityId, category, name)
+        // In case this doesn't get replaced.
+        val cat = if (category == "__TAG__") {
+            "latest"
+        } else {
+            category
+        }
+        val locator = getValidLocator(entityType, entityId, cat, name)
         return projectStorageService.stream(locator)
     }
 

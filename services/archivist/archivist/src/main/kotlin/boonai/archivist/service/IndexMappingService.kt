@@ -27,19 +27,19 @@ class IndexMappingServiceImpl(
 
     override fun addFieldToIndex(field: Field, index: IndexRoute) {
         val client = indexRoutingService.getClusterRestClient(index)
-        addFieldToIndex(field.getEsField(), field.type, client)
+        addFieldToIndex(field.getPath(), field.type, client)
     }
 
     override fun addFieldToIndex(field: Field) {
         val client = indexRoutingService.getProjectRestClient()
-        addFieldToIndex(field.getEsField(), field.type, client)
+        addFieldToIndex(field.getPath(), field.type, client)
     }
 
     override fun addAllFieldsToIndex(index: IndexRoute) {
         val client = indexRoutingService.getClusterRestClient(index)
         for (field in fieldDao.getAllByProjectId(getProjectId())) {
-            logger.info("Adding field ${field.getEsField()} to index ${client.route.indexUrl}")
-            addFieldToIndex(field.getEsField(), field.type, client)
+            logger.info("Adding field ${field.getPath()} to index ${client.route.indexUrl}")
+            addFieldToIndex(field.getPath(), field.type, client)
         }
         client.refresh()
     }

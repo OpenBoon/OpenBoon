@@ -42,6 +42,7 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
 
         args = {
             "model_id": self.model_id,
+            "tag": "latest"
         }
 
         flower_paths = [
@@ -95,6 +96,7 @@ class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
 
         args = {
             "model_id": self.model_id,
+            "tag": "latest"
         }
 
         processor = self.init_processor(

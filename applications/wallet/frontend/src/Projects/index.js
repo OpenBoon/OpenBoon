@@ -5,7 +5,15 @@ import useSWR, { mutate } from 'swr'
 
 import ProjectBoundary from '../ProjectBoundary'
 
-const NO_PROJECT_ID_ROUTES = ['/icons', '/account', '/account/password']
+const NO_PROJECT_ID_ROUTES = [
+  '/icons',
+  '/account',
+  '/account/password',
+  '/organizations',
+  '/organizations/[organizationId]',
+  '/organizations/[organizationId]/users',
+  '/organizations/[organizationId]/owners',
+]
 
 const Projects = ({ projectId, children }) => {
   const { query: { projectId: routerProjectId } = {}, pathname } = useRouter()

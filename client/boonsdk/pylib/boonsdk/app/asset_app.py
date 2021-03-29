@@ -343,16 +343,16 @@ class AssetApp(object):
             raise ValueError("Must pass at least and add_labels or remove_labels argument")
         return self.app.client.put("/api/v3/assets/_batch_update_labels", body)
 
-    def update_custom_fields(self, asset, values):
+    def set_field_values(self, asset, values):
         """
         Set the values of custom metadata fields.
 
         Args:
             asset (Asset): The asset or unique Asset id.
-            values (dict): A dictionary of values.
+            values (dict): A dictionary of values keyed on the field path. (custom.foo)
 
         Returns:
-            dict: A status dictionary with failures or succcess
+            dict: A status dictionary with failures or success
         """
         body = {
             "update": {

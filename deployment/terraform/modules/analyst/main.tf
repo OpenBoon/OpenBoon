@@ -138,6 +138,10 @@ resource "kubernetes_deployment" "analyst" {
             name  = "ANALYST_TEMP"
             value = "/mnt/stateful_partition/var/tmp"
           }
+          env {
+            name  = "CLUSTER_TAG"
+            value = var.container-tag
+          }
           liveness_probe {
             initial_delay_seconds = 120
             period_seconds        = 5

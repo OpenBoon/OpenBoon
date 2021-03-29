@@ -7,7 +7,7 @@ import Pills from '../Pills'
 
 export const BBOX_SIZE = 56
 
-const COLUMNS = ['bbox', 'label', 'score']
+const COLUMNS = ['bbox', 'label', 'content', 'score']
 
 const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
   const predictionColumns = Object.keys(predictions[0])
@@ -78,7 +78,9 @@ const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
             {predictions.map((prediction) => {
               return (
                 <tr
-                  key={`${prediction.label}-${prediction.score}`}
+                  key={`${prediction.label || prediction.content}-${
+                    prediction.score
+                  }`}
                   css={{
                     td: {
                       verticalAlign: 'bottom',
@@ -106,6 +108,7 @@ const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
                             title={prediction.bbox}
                             src={prediction.b64_image}
                           />
+                          &nbsp;
                         </td>
                       )
                     }
@@ -174,7 +177,9 @@ MetadataPrettyPredictionsContent.propTypes = {
   name: PropTypes.string.isRequired,
   predictions: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
+      bbox: PropTypes.arrayOf(PropTypes.number),
+      label: PropTypes.string,
+      content: PropTypes.string,
       score: PropTypes.number.isRequired,
     }).isRequired,
   ).isRequired,

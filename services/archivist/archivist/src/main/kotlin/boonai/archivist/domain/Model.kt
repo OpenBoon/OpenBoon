@@ -158,7 +158,7 @@ enum class ModelType(
         "boonai_analysis.custom.PytorchImageClassifier",
         mapOf(),
         null,
-        "Upload a pre-trained Pytorch model to use for image classification.",
+        "Upload a pre-inained Pytorch model to use for image classification.",
         ModelObjective.LABEL_DETECTION,
         Provider.BOONAI,
         true,
@@ -184,31 +184,56 @@ enum class ModelType(
     }
 }
 
+enum class PostTrainAction {
+    /**
+     * Don't do anything.
+     */
+    NONE,
+
+    /**
+     * Apply the model to the apply search.
+     */
+    APPLY,
+
+    /**
+     * Run on test labels only.
+     */
+    TEST,
+
+    /**
+     * Deploy
+     */
+    DEPLOY
+}
+
 @ApiModel("ModelTrainingArgs", description = "Arguments set to the training processor.")
-class ModelTrainingArgs(
-
-    @ApiModelProperty("Set to true if the model should be published, defaults to true.")
-    val publish: Boolean = true,
-
-    @ApiModelProperty("Deploy the model to production.")
-    val deploy: Boolean = false,
+class ModelTrainingRequest(
 
     @ApiModelProperty("Additional training args passed to processor.")
-    val args: Map<String, Any>? = null
+    var args: Map<String, Any>? = null,
+
+    @ApiModelProperty("The action to take after training.")
+    var postAction: PostTrainAction = PostTrainAction.NONE
 )
 
-@ApiModel("ModelApplyRequest", description = "Arguments set to the training processor.")
+@ApiModel("ModelApplyRequest", description = "Arguments for applying a model to data.")
 class ModelApplyRequest(
 
-    @ApiModelProperty("A search to apply the model to. Defaults to the model deploy search.")
+    @ApiModelProperty("A search to apply the model to. Defaults to the model apply search.")
     val search: Map<String, Any>? = null,
 
     @ApiModelProperty("Don't filter the training set from the search.")
-    val analyzeTrainingSet: Boolean = false,
+    val analyzeTrainingSet: Boolean? = null,
 
-    // TODO move
-    @ApiModelProperty("Append the task to the given job, otherwise launch a new job.", hidden = true)
-    val jobId: UUID? = null
+    @ApiModelProperty("The version tag.")
+    var tag: String = "latest"
+)
+
+@ApiModel("ModelPublishRequest", description = "Argument for publishing a model to an analysis module.")
+class ModelPublishRequest(
+
+    @ApiModelProperty("Arguments for the analysis processor.")
+    var args: Map<String, Any> = emptyMap()
 )
 
 @ApiModel("ModelSpec", description = "Arguments required to create a new model")
@@ -224,7 +249,7 @@ class ModelSpec(
     val moduleName: String? = null,
 
     @ApiModelProperty("The search used to deploy the model.")
-    val deploySearch: Map<String, Any> = ModelSearch.MATCH_ALL
+    val applySearch: Map<String, Any> = ModelSearch.MATCH_ALL
 )
 
 @Entity
@@ -263,8 +288,8 @@ class Model(
     val ready: Boolean,
 
     @Type(type = "jsonb")
-    @Column(name = "json_search_deploy", columnDefinition = "JSON")
-    val deploySearch: Map<String, Any>,
+    @Column(name = "json_apply_search", columnDefinition = "JSON")
+    val applySearch: Map<String, Any>,
 
     @Column(name = "time_created")
     @ApiModelProperty("The time the Model was created.")
@@ -288,10 +313,19 @@ class Model(
         return Label(id, label, bbox = bbox)
     }
 
-    fun getModelStorageLocator(): ProjectFileLocator {
+    fun getModelStorageLocator(tag: String): ProjectFileLocator {
         return ProjectFileLocator(
-            ProjectStorageEntity.MODELS, id.toString(), "model", "model.zip"
+            ProjectStorageEntity.MODELS, id.toString(), tag, "model.zip"
         )
+    }
+
+    @JsonIgnore
+    fun getModuleName(tag: String? = null): String {
+        return if (tag == null) {
+            moduleName
+        } else {
+            "$moduleName:$tag"
+        }
     }
 
     override fun equals(other: Any?): Boolean {
