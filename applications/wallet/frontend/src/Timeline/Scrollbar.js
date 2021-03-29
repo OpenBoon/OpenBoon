@@ -20,15 +20,23 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
     callback: /* istanbul ignore next */ ({ node }) => {
       if (!scrollbarRef.current || !node) return
 
+      const { width: scrollbarWidth = 0 } =
+        scrollbarRef.current?.getBoundingClientRect() || {}
+
+      const scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
+
+      // the max number of pixels the scrollbar thumb can travel
+      scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
+
       // the scrollLeft value when the timeline is scrolled all the way to the end
       const maxScrollLeft = node.scrollWidth - node.offsetWidth
 
       // compute scrollLeft as a percentage to translate to scrollbar scrollLeft
-      const percentScrolled =
+      const fractionScrolled =
         maxScrollLeft === 0 ? maxScrollLeft : node.scrollLeft / maxScrollLeft
 
       scrollbarRef.current.style.left = `${
-        percentScrolled * scrollbarScrollableWidth
+        fractionScrolled * scrollbarScrollableWidth
       }px`
     },
   })
@@ -70,14 +78,6 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
   }
 
   useEffect(() => {
-    const { width: scrollbarWidth = 0 } =
-      scrollbarRef.current?.getBoundingClientRect() || {}
-
-    const scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
-
-    // the max number of pixels the scrollbar thumb can travel
-    scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
-
     return () => {
       horizontalScrollerDeregister()
     }
