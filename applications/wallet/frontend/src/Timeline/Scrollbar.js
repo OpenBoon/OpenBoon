@@ -37,7 +37,7 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
   const handleMouseMove = ({ clientX }) => {
     const difference = clientX - origin
 
-    const portionScrolled =
+    const fractionScrolled =
       scrollbarScrollableWidth === 0
         ? 0
         : (scrollbarOrigin + difference) / scrollbarScrollableWidth
@@ -49,7 +49,7 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
     horizontalScroller.emit({
       eventName: 'scroll',
       data: {
-        scrollX: rulerScrollableWidth * portionScrolled,
+        scrollX: rulerScrollableWidth * fractionScrolled,
       },
     })
   }
@@ -81,7 +81,7 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
     return () => {
       horizontalScrollerDeregister()
     }
-  }, [horizontalScrollerDeregister, scrollbarRef, settings])
+  }, [horizontalScrollerDeregister, scrollbarRef, settings.zoom])
 
   return (
     <>
