@@ -24,6 +24,7 @@ describe('<TaskError />', () => {
         jobId: JOB_ID,
         taskId: TASK_ID,
         errorId: ERROR_ID,
+        action: 'Retrying task.',
       },
     })
 

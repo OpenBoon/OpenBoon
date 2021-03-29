@@ -52,7 +52,6 @@ const Assets = () => {
 
       return `/api/v1/projects/${projectId}/searches/query/?query=${q}&from=${from}&size=${SIZE}`
     },
-    undefined,
     {
       suspense: false,
       revalidateOnFocus: false,

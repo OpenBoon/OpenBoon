@@ -5,6 +5,8 @@ import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.AutomlSessionSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.Model
+import boonai.archivist.domain.ModelApplyRequest
+import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.UpdateLabelRequest
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.test.assertEquals
@@ -133,6 +136,18 @@ class ModelControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(model.trainingJobName)))
+            .andReturn()
+    }
+
+    @Test
+    fun testTest() {
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_test")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(ModelApplyRequest()))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
     }
 
@@ -283,13 +298,14 @@ class ModelControllerTests : MockMvcTest() {
     fun testSetModelArguments() {
         val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_UPLOADED_CLASSIFIER)
         val model = modelService.createModel(modelSpec)
-        modelService.publishModel(model)
-        val arg = mapOf("foo" to "bar")
+        modelService.publishModel(model, ModelPublishRequest(args = mapOf("foo" to "bing")))
+
+        val req = ModelPublishRequest(args = mapOf("foo" to "bar"))
 
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v3/models/${model.id}/_set_args")
                 .headers(admin())
-                .content(Json.serialize(arg))
+                .content(Json.serialize(req))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -359,6 +375,32 @@ class ModelControllerTests : MockMvcTest() {
                 MockMvcResultMatchers.jsonPath(
                     "$.label",
                     CoreMatchers.equalTo(module.label)
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testGetTags() {
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_UPLOADED_CLASSIFIER)
+        val model = modelService.createModel(modelSpec)
+
+        val mfp = Paths.get(
+            "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
+        )
+        modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/models/${model.id}/_tags")
+                .headers(admin())
+                .content(Files.readAllBytes(mfp))
+                .contentType(MediaType.parseMediaType("application/zip"))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$[0]",
+                    CoreMatchers.equalTo("latest")
                 )
             )
             .andReturn()

@@ -9,6 +9,14 @@ const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = assets.results[0].id
 
 describe('<MetadataPrettySwitch />', () => {
+  it('should render an empty row properly', () => {
+    const component = TestRenderer.create(
+      <MetadataPrettySwitch name="" value="" path="files.attrs" />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render regular text values', () => {
     const component = TestRenderer.create(
       <MetadataPrettySwitch
@@ -39,18 +47,6 @@ describe('<MetadataPrettySwitch />', () => {
       <MetadataPrettySwitch
         name="boonai-label-detection"
         value={value}
-        path="analysis"
-      />,
-    )
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
-  it('should render single-label predictions properly', () => {
-    const component = TestRenderer.create(
-      <MetadataPrettySwitch
-        name="animal"
-        value={{ label: 'Horse', score: 0.998, type: 'single-label' }}
         path="analysis"
       />,
     )

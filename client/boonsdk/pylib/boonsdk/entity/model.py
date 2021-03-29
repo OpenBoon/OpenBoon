@@ -8,7 +8,8 @@ __all__ = [
     'ModelType',
     'Label',
     'LabelScope',
-    'ModelTypeInfo'
+    'ModelTypeInfo',
+    'PostTrainAction'
 ]
 
 
@@ -48,6 +49,21 @@ class LabelScope(Enum):
 
     TEST = 2
     """The label marks the Asset as part of the Test set."""
+
+
+class PostTrainAction(Enum):
+    """
+    Actions to take after the model training process is complete.
+    """
+
+    NONE = 0
+    """No action is taken."""
+
+    APPLY = 1
+    """The model is applied to either a custom search or the default apply search."""
+
+    TEST = 2
+    """The model is applied to any asset with test labels."""
 
 
 class Model(BaseEntity):
@@ -172,21 +188,12 @@ class Model(BaseEntity):
             dict: A search to pass to an asset search.
 
         """
-        prediction_term_map = {
-            ModelType.KNN_CLASSIFIER: f'{self.namespace}.label',
-            ModelType.FACE_RECOGNITION: f'{self.namespace}.predictions.label'
-        }
-        score_map = {ModelType.KNN_CLASSIFIER: f'{self.namespace}.score',
-                     ModelType.TF_CLASSIFIER: f'{self.namespace}.score',
-                     ModelType.FACE_RECOGNITION: f'{self.namespace}.predictions.score'}
-        if self.type not in prediction_term_map:
-            raise TypeError(f'Cannot create a confusion matrix search for {self.type} models.')
         search_query = {
             "size": 0,
             "query": {
                 "bool": {
                     "filter": [
-                        {"range": {score_map[self.type]: {"gte": min_score, "lte": max_score}}}
+                        {"range": {f'{self.namespace}.predictions.score': {"gte": min_score, "lte": max_score}}}  # noqa
                     ]
                 }
             },
@@ -213,7 +220,7 @@ class Model(BaseEntity):
                                             "aggs": {
                                                 "predictions": {
                                                     "terms": {
-                                                        "field": prediction_term_map[self.type]
+                                                        "field": f'{self.namespace}.predictions.label'  # noqa
                                                     }
                                                 }
                                             }

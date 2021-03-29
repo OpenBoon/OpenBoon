@@ -3,7 +3,7 @@
 import PropTypes from 'prop-types'
 import AutoSizer from 'react-virtualized-auto-sizer'
 
-import { colors, constants, typography } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import {
   formatPaddedSeconds,
@@ -80,7 +80,7 @@ const TimelineRuler = ({ videoRef, rulerRef, length, settings }) => {
                     <div
                       css={{
                         position: 'absolute',
-                        top: -MAJOR_TICK_HEIGHT,
+                        top: -(MAJOR_TICK_HEIGHT + spacing.mini),
                         userSelect: 'none',
                       }}
                     >

@@ -37,7 +37,7 @@ class KnnLabelDetectionClassifierTests(PluginUnitTestCase):
         asset = TestAsset()
         asset.set_attr('analysis.boonai-image-similarity.simhash', 'AAAAAAAA')
         frame = Frame(asset)
-        processor = self.init_processor(KnnLabelDetectionClassifier(), {})
+        processor = self.init_processor(KnnLabelDetectionClassifier(), {'tag': 'latest'})
         processor.process(frame)
 
         analysis = frame.asset.get_analysis('foo')
@@ -65,7 +65,7 @@ class KnnLabelDetectionClassifierTests(PluginUnitTestCase):
         asset.set_attr('media.length', 805)
         frame = Frame(asset)
 
-        processor = self.init_processor(KnnLabelDetectionClassifier(), {})
+        processor = self.init_processor(KnnLabelDetectionClassifier(), {'tag': 'latest'})
         processor.process(frame)
 
         analysis = frame.asset.get_analysis('foo')

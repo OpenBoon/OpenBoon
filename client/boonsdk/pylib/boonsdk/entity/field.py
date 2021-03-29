@@ -21,6 +21,6 @@ class CustomField(BaseEntity):
         return self._data['name']
 
     @property
-    def es_field_name(self):
-        """The full ES field name"""
-        return self._data['esField']
+    def path(self):
+        """The full path to the ES field."""
+        return self._data['path']

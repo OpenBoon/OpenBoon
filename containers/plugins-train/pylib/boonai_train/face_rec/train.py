@@ -1,30 +1,25 @@
 import os
-import tempfile
 import pickle
-
-from boonflow import AssetProcessor, Argument, file_storage
+import tempfile
 
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 
+from boonflow import ModelTrainer, file_storage
 
-class KnnFaceRecognitionTrainer(AssetProcessor):
 
+class KnnFaceRecognitionTrainer(ModelTrainer):
     file_types = None
 
     max_detections = 100
 
     def __init__(self):
         super(KnnFaceRecognitionTrainer, self).__init__()
-        self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
-        self.add_arg(Argument("deploy", "bool", default=False,
-                              toolTip="Automatically deploy the model onto assets."))
-        self.app_model = None
 
     def init(self):
-        self.app_model = self.app.models.get_model(self.arg_value('model_id'))
+        self.load_app_model()
 
-    def process(self, frame):
+    def train(self):
         self.reactor.write_event("status", {
             "status": "Searching for labels"
         })
@@ -111,7 +106,7 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
         with open(os.path.join(model_dir, 'face_classifier.pickle'), 'wb') as fp:
             pickle.dump(classifier, fp)
 
-        mod = file_storage.models.save_model(model_dir, self.app_model, self.arg_value('deploy'))
+        mod = file_storage.models.save_model(model_dir, self.app_model, self.tag, self.post_action)
         self.reactor.emit_status("Published model {}".format(self.app_model.name))
 
         return mod

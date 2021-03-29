@@ -18,13 +18,13 @@ requirements = [
 
 setup(
     name='boonsdk',
-    version="1.2.0",
+    version="1.2.1",
     description='Boon AI SDK',
     url='http://www.boonai.io',
     license='Apache2',
     package_dir={'': 'pylib'},
-    packages=['boonsdk', 'boonsdk.app', 'boonsdk.entity'],
-    scripts=[],
+    packages=['boonsdk', 'boonsdk.app', 'boonsdk.entity', 'boonsdk.tools.bt'],
+    scripts=['bin/bt'],
     author="Boon AI Team",
     author_email="support@boonai.io",
     keywords="machine learning artificial intelligence",

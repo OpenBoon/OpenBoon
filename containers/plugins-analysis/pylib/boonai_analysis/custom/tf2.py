@@ -1,26 +1,25 @@
 from tensorflow.keras.applications.resnet_v2 import preprocess_input
 
 from boonai_analysis.utils.prechecks import Prechecks
-from boonflow import AssetProcessor, Argument, file_storage
+from boonflow import Argument, file_storage
 from boonflow.analysis import LabelDetectionAnalysis
-from boonflow.proxy import get_proxy_level_path
-from boonflow.video import ShotBasedFrameExtractor, save_timeline
 from boonflow.clips import ClipTracker
+from boonflow.proxy import get_proxy_level_path
 from boonflow.proxy import get_video_proxy
+from boonflow.video import ShotBasedFrameExtractor, save_timeline
+from .base import CustomModelProcessor
 from ..utils.keras import load_keras_image, load_keras_model
 
 
-class TensorflowImageClassifier(AssetProcessor):
+class TensorflowImageClassifier(CustomModelProcessor):
     """A processor for loading and executing a uploaded Tensorflow image classifier"""
 
     def __init__(self):
         super(TensorflowImageClassifier, self).__init__()
 
-        self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
         self.add_arg(Argument("input_size", "list", required=True,
                               toolTip="The input size", default=(224, 224)))
 
-        self.app_model = None
         self.trained_model = None
         self.labels = None
         self.extract_type = "shot"
@@ -28,10 +27,11 @@ class TensorflowImageClassifier(AssetProcessor):
     def init(self):
         """Init constructor """
         # get model by model id
-        self.app_model = self.app.models.get_model(self.arg_value("model_id"))
+        self.load_app_model()
 
         # unzip and extract needed files for trained model and labels
-        self.trained_model, self.labels = load_keras_model(self.app_model)
+        model_path = self.get_model_path()
+        self.trained_model, self.labels = load_keras_model(model_path)
 
     def process(self, frame):
         asset = frame.asset

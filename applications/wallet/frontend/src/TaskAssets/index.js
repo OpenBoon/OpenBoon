@@ -47,7 +47,7 @@ const TaskAssets = () => {
             fontWeight: typography.weight.regular,
           }}
         >
-          Number of Assets: {count}
+          Assets: {count}
         </h3>
       </div>
 

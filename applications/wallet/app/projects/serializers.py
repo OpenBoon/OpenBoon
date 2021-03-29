@@ -3,6 +3,7 @@ import logging
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.relations import HyperlinkedIdentityField
+from sentry_sdk import capture_exception
 
 from wallet.utils import convert_base64_to_json
 from projects.models import Project
@@ -78,6 +79,46 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         view_name='model-list',
         lookup_url_kwarg='project_pk'
     )
+
+
+class UsageSerializer(serializers.Serializer):
+    imageCount = serializers.IntegerField(source='image_count')
+    videoMinutes = serializers.FloatField(source='video_minutes')
+
+
+class TieredMlUsageSerializer(serializers.Serializer):
+    tier1 = UsageSerializer(source='tier_1')
+    tier2 = UsageSerializer(source='tier_2')
+
+
+class ProjectDetailSerializer(serializers.ModelSerializer):
+    mlUsageThisMonth = serializers.SerializerMethodField('get_ml_usage_this_month')
+    totalStorageUsage = UsageSerializer(source='total_storage_usage')
+    userCount = serializers.SerializerMethodField('get_user_count')
+
+    class Meta:
+        model = Project
+        fields = ['id', 'name', 'userCount', 'mlUsageThisMonth', 'totalStorageUsage']
+
+    def get_user_count(self, obj):
+        return obj.users.count()
+
+    def get_ml_usage_this_month(self, obj):
+        try:
+            data = obj.ml_usage_this_month()
+        except Exception as e:
+            capture_exception(e)
+            data = {'tier_1': {'image_count': -1,
+                               'video_minutes': -1},
+                    'tier_2': {'image_count': -1,
+                               'video_minutes': -1}}
+        return TieredMlUsageSerializer(data).data
+
+
+class ProjectSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ['id', 'name']
 
 
 class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):

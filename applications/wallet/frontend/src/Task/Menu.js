@@ -55,6 +55,7 @@ const TaskMenu = ({ revalidate }) => {
                           jobId,
                           taskId,
                           refreshParam: Math.random(),
+                          action: 'Retrying task.',
                         },
                       },
                       asPath,
