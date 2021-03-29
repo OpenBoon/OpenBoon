@@ -115,6 +115,8 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -147,6 +149,8 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
 
 .emotion-17 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -517,6 +521,8 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -549,6 +555,8 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
 
 .emotion-17 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -847,6 +855,8 @@ exports[`<ModelLabels /> should render properly with required assets per labels 
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -879,6 +889,8 @@ exports[`<ModelLabels /> should render properly with required assets per labels 
 
 .emotion-17 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;

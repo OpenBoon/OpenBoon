@@ -2,6 +2,9 @@ import { useRouter } from 'next/router'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 import Tabs from '../Tabs'
+import OrganizationOwners from '../OrganizationOwners'
+import OrganizationProjects from '../OrganizationProjects'
+import OrganizationUsers from '../OrganizationUsers'
 
 import OrganizationDetails from './Details'
 
@@ -20,11 +23,17 @@ const Organization = () => {
         ]}
       />
 
-      {pathname === '/organizations/[organizationId]' && 'Project Usage'}
+      {pathname === '/organizations/[organizationId]' && (
+        <OrganizationProjects />
+      )}
 
-      {pathname === '/organizations/[organizationId]/users' && 'Users'}
+      {pathname === '/organizations/[organizationId]/users' && (
+        <OrganizationUsers />
+      )}
 
-      {pathname === '/organizations/[organizationId]/owners' && 'Owners'}
+      {pathname === '/organizations/[organizationId]/owners' && (
+        <OrganizationOwners />
+      )}
     </SuspenseBoundary>
   )
 }

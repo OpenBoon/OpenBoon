@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
+import { getRelativeUrl } from './helpers'
+
 const FetchAhead = ({ url }) => {
-  useSWR(url, {
+  const relativeUrl = getRelativeUrl({ url })
+
+  useSWR(relativeUrl, {
     suspense: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,

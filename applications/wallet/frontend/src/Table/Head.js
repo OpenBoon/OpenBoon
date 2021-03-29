@@ -39,6 +39,8 @@ const TableHead = ({ column, expandColumn }) => {
     <th
       css={{
         textAlign: 'left',
+        whiteSpace: 'pre-line',
+        verticalAlign: 'bottom',
         fontSize: typography.size.regular,
         lineHeight: typography.height.regular,
         fontWeight: typography.weight.medium,
