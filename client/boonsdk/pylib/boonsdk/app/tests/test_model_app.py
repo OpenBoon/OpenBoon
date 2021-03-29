@@ -259,3 +259,12 @@ class ModelAppTests(unittest.TestCase):
         model = Model(self.model_data)
         size = self.app.models.export_trained_model(model, '/tmp/model.zip')
         assert size == 9
+
+    @patch.object(BoonClient, 'post')
+    def test_approve_model(self, post_patch):
+        post_patch.return_value = {'success': True}
+        raw = {'id': '12345', 'type': 'TF_CLASSIFIER'}
+        model = Model(raw)
+
+        rsp = self.app.models.approve_model(model)
+        assert rsp['success']
