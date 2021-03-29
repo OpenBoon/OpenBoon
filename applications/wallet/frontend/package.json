@@ -132,10 +132,10 @@
     "focus-visible": "5.2.0",
     "next": "10.0.9",
     "prop-types": "15.7.2",
-    "react": "17.0.1",
+    "react": "17.0.2",
     "react-aria-modal": "4.0.0",
     "react-compound-slider": "3.3.1",
-    "react-dom": "17.0.1",
+    "react-dom": "17.0.2",
     "react-grid-layout": "1.2.4",
     "react-json-pretty": "2.2.0",
     "react-resizable": "2.0.0",
@@ -173,7 +173,7 @@
     "lint-staged": "10.5.4",
     "morgan": "1.10.0",
     "prettier": "2.2.1",
-    "react-test-renderer": "17.0.1",
+    "react-test-renderer": "17.0.2",
     "webpack-bundle-analyzer": "4.4.0"
   }
 }
