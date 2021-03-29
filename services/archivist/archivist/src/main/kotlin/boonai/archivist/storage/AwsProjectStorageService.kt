@@ -37,6 +37,8 @@ import org.springframework.stereotype.Service
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
+import com.amazonaws.services.s3.model.CopyObjectRequest
+import com.amazonaws.services.s3.model.CopyObjectResult
 
 @Configuration
 @Profile("aws")
@@ -139,6 +141,13 @@ class AwsProjectStorageService constructor(
         } catch (ex: AmazonS3Exception) {
             throw ProjectStorageException("Failed to fetch $path", ex)
         }
+    }
+
+    override fun copy(src: String, dst: String): Long {
+        logger.info("Copying $src to $dst")
+        val req = CopyObjectRequest(properties.bucket, src, properties.bucket, dst)
+        val res: CopyObjectResult = s3Client.copyObject(req)
+        return res.lastModifiedDate.time
     }
 
     override fun getNativeUri(locator: ProjectStorageLocator): String {

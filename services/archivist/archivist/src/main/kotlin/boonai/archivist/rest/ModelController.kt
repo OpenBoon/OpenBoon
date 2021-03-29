@@ -7,6 +7,7 @@ import boonai.archivist.domain.Job
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelApplyResponse
+import boonai.archivist.domain.ModelCopyRequest
 import boonai.archivist.domain.ModelFilter
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
@@ -127,6 +128,17 @@ class ModelController(
     @PreAuthorize("hasAuthority('AssetsImport')")
     fun test(@PathVariable id: UUID, @RequestBody req: ModelApplyRequest): ModelApplyResponse {
         return modelService.testModel(modelService.getModel(id), req)
+    }
+
+    @ApiOperation("Approve the latest model.")
+    @PostMapping("/api/v3/models/{id}/_approve")
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    fun approve(@PathVariable id: UUID): Any {
+        // For now we just copy latest to approved.
+        modelService.copyModelTag(
+            modelService.getModel(id), ModelCopyRequest("latest", "approved")
+        )
+        return HttpUtils.status("model", "copyTag", true)
     }
 
     @ApiOperation("Test the model and apply to given search.")

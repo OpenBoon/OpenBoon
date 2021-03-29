@@ -9,14 +9,19 @@ import boonai.archivist.domain.Label
 import boonai.archivist.domain.ModOpType
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
+import boonai.archivist.domain.ModelCopyRequest
 import boonai.archivist.domain.ModelFilter
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.ProcessorRef
+import boonai.archivist.domain.ProjectDirLocator
+import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.UpdateAssetLabelsRequest
 import boonai.archivist.security.getProjectId
+import boonai.archivist.storage.ProjectStorageService
+import boonai.archivist.util.FileUtils
 import boonai.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,6 +48,9 @@ class ModelServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var pipelineModService: PipelineModService
+
+    @Autowired
+    lateinit var fileStorageService: ProjectStorageService
 
     val testSearch =
         """{"query": {"term": { "source.filename": "large-brown-cat.jpg"} } }"""
@@ -178,6 +186,25 @@ class ModelServiceTests : AbstractTest() {
             op1[0].args?.get("version"),
             op2[0].args?.get("version")
         )
+    }
+
+    @Test
+    fun testCopyModel() {
+        val model = create(type = ModelType.TF_UPLOADED_CLASSIFIER)
+        val mfp = Paths.get(
+            "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
+        )
+
+        modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
+        modelService.copyModelTag(model, ModelCopyRequest("latest", "approved"))
+
+        val files = fileStorageService.listFiles(
+            ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString()).getPath() + "/approved"
+        )
+
+        val names = files.map { FileUtils.filename(it) }
+        assertTrue("model-version.txt" in names)
+        assertTrue("model.zip" in names)
     }
 
     @Test
