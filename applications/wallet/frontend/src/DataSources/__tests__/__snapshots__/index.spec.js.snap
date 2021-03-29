@@ -318,6 +318,8 @@ Array [
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -342,6 +344,8 @@ Array [
 
 .emotion-19 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -1193,6 +1197,8 @@ Array [
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -1217,6 +1223,8 @@ Array [
 
 .emotion-19 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -2076,6 +2084,8 @@ Array [
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -2100,6 +2110,8 @@ Array [
 
 .emotion-19 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -2590,6 +2602,8 @@ Array [
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -2614,6 +2628,8 @@ Array [
 
 .emotion-19 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
