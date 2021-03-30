@@ -26,14 +26,14 @@ def detail_api_return():
 
 class TestAssetViewSet:
 
-    def test_get_list(self, project, zvi_project_user, api_client, monkeypatch, list_api_return):
+    def test_get_list(self, project, zmlp_project_user, api_client, monkeypatch, list_api_return):
 
         def mock_api_response(*args, **kwargs):
             return list_api_return
 
         monkeypatch.setattr(BoonClient, 'post', mock_api_response)
-        api_client.force_authenticate(zvi_project_user)
-        api_client.force_login(zvi_project_user)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
         response = api_client.get(reverse('asset-list', kwargs={'project_pk': project.id}))
         assert response.status_code == 200
         content = response.json()
@@ -42,15 +42,15 @@ class TestAssetViewSet:
         assert 'next' in content
         assert 'previous' in content
 
-    def test_get_detail(self, project, zvi_project_user, api_client, monkeypatch,
+    def test_get_detail(self, project, zmlp_project_user, api_client, monkeypatch,
                         detail_api_return):
 
         def mock_api_response(*args, **kwargs):
             return detail_api_return
 
         monkeypatch.setattr(BoonClient, 'get', mock_api_response)
-        api_client.force_authenticate(zvi_project_user)
-        api_client.force_login(zvi_project_user)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
         id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
         response = api_client.get(reverse('asset-detail', kwargs={'project_pk': project.id,
                                                                   'pk': id}))
@@ -59,7 +59,7 @@ class TestAssetViewSet:
         assert content['id'] == id
         assert 'metadata' in content
 
-    def test_list_and_detail_resources_match(self, project, zvi_project_user, api_client,
+    def test_list_and_detail_resources_match(self, project, zmlp_project_user, api_client,
                                              monkeypatch, detail_api_return, list_api_return):
 
         def mock_list_response(*args, **kwargs):
@@ -69,8 +69,8 @@ class TestAssetViewSet:
             return detail_api_return
 
         monkeypatch.setattr(BoonClient, 'post', mock_list_response)
-        api_client.force_authenticate(zvi_project_user)
-        api_client.force_login(zvi_project_user)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
         response = api_client.get(reverse('asset-list', kwargs={'project_pk': project.id}))
         list_content = response.json()
 
@@ -430,15 +430,13 @@ class TestWebVttViewSet:
 
 class TestFileNameViewSet:
 
-    def test_get_proxy(self, project, zvi_project_user, api_client, monkeypatch):
+    def test_get_proxy(self, login, project, api_client, monkeypatch):
 
         def mock_streamer(*args, **kwargs):
             for x in range(0, 1024):
                 yield x
 
         monkeypatch.setattr(requests, 'get', mock_streamer)
-        api_client.force_authenticate(zvi_project_user)
-        api_client.force_login(zvi_project_user)
         asset_id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
         filename = 'TIFF_1MB.tiff'
         response = api_client.get(reverse('file_name-detail', kwargs={'project_pk': project.id,
@@ -468,7 +466,7 @@ class TestFileNameViewSet:
 
 
 class TestBoxImagesAction:
-    def test_box_images(self, project, monkeypatch, api_client, zvi_project_user,
+    def test_box_images(self, login, project, monkeypatch, api_client, zmlp_project_user,
                         detail_api_return):
         def mock_get_attr_with_box_images(*args, **kwargs):
             return {'count': 1, 'type': 'labels', 'predictions': [{'score': 0.882, 'bbox': [0.068, 0.079, 0.904, 0.739], 'label': 'laptop', 'b64_image': 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAoAAAAICAIAAABPmPnhAAAAI0lEQVQIHXXBAQEAAAABIP6PzgJV5CvyFfmKfEW+Il+Rr8g33SQX8fv7NasAAAAASUVORK5CYII='}, {'score': 0.882, 'bbox': [0.068, 0.079, 0.904, 0.739], 'label': 'laptop2', 'b64_image': 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAoAAAAICAIAAABPmPnhAAAAI0lEQVQIHXXBAQEAAAABIP6PzgJV5CvyFfmKfEW+Il+Rr8g33SQX8fv7NasAAAAASUVORK5CYII='}]}  # noqa
@@ -476,8 +474,6 @@ class TestBoxImagesAction:
         monkeypatch.setattr(AssetBoxImager, 'get_attr_with_box_images',
                             mock_get_attr_with_box_images)
         monkeypatch.setattr(BoonClient, 'get', lambda *args: detail_api_return)
-        api_client.force_authenticate(zvi_project_user)
-        api_client.force_login(zvi_project_user)
         asset_id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
         base_url = reverse('asset-box-images', kwargs={'project_pk': project.id, 'pk': asset_id})
         response = api_client.get(f'{base_url}?attr=analysis.zvi-object-detection')
