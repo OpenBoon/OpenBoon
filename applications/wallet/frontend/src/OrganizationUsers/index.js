@@ -23,8 +23,15 @@ const OrganizationUsers = () => {
       ]}
       expandColumn={0}
       renderEmpty={<span />}
-      renderRow={({ result }) => {
-        return <OrganizationUsersRow key={result.id} user={result} />
+      renderRow={({ result, revalidate }) => {
+        return (
+          <OrganizationUsersRow
+            key={result.id}
+            organizationId={organizationId}
+            user={result}
+            revalidate={revalidate}
+          />
+        )
       }}
       refreshButton={false}
     />

@@ -17,8 +17,15 @@ const OrganizationOwners = () => {
       columns={['Owner Email', 'First Name', 'Last Name', '#Actions#']}
       expandColumn={0}
       renderEmpty={<span />}
-      renderRow={({ result }) => {
-        return <OrganizationOwnersRow key={result.id} owner={result} />
+      renderRow={({ result, revalidate }) => {
+        return (
+          <OrganizationOwnersRow
+            key={result.id}
+            organizationId={organizationId}
+            owner={result}
+            revalidate={revalidate}
+          />
+        )
       }}
       refreshButton={false}
     />

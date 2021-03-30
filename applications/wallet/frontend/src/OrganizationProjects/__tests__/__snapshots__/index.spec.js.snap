@@ -512,6 +512,48 @@ exports[`<OrganizationProjects /> should render properly with projects 1`] = `
   padding: 12px 16px;
 }
 
+.emotion-23 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-24 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 6px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #191919;
+  background-color: transparent;
+  margin: -6px;
+}
+
+.emotion-24:hover,
+.emotion-24.focus-visible:focus {
+  color: #ffffff!important;
+}
+
 <div
   className="emotion-0"
 >
@@ -652,7 +694,24 @@ exports[`<OrganizationProjects /> should render properly with projects 1`] = `
               <td>
                 1
               </td>
-              <td />
+              <td>
+                <div
+                  className="emotion-23"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-24"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
             </tr>
             <tr>
               <td>
@@ -676,7 +735,24 @@ exports[`<OrganizationProjects /> should render properly with projects 1`] = `
               <td>
                 1
               </td>
-              <td />
+              <td>
+                <div
+                  className="emotion-23"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-24"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
             </tr>
             <tr>
               <td>
@@ -700,7 +776,24 @@ exports[`<OrganizationProjects /> should render properly with projects 1`] = `
               <td>
                 4
               </td>
-              <td />
+              <td>
+                <div
+                  className="emotion-23"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-24"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
