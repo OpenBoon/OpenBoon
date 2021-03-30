@@ -6,7 +6,7 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 import KebabSvg from '../Icons/kebab.svg'
-import SortSvg from '../Icons/sort.svg'
+import BackSvg from '../Icons/back.svg'
 
 import { getQueryString } from '../Fetch/helpers'
 
@@ -99,14 +99,14 @@ const TableHead = ({ column, expandColumn }) => {
                   color: colors.structure.white,
                   transform:
                     key === sortKey && isAscSort
-                      ? 'rotate(0deg)'
-                      : 'rotate(-180deg)',
+                      ? 'rotate(-90deg)'
+                      : 'rotate(90deg)',
                 },
               },
             }}
           >
             {label}
-            <SortSvg
+            <BackSvg
               height={constants.icons.small}
               css={{
                 marginLeft: spacing.small,
@@ -115,7 +115,9 @@ const TableHead = ({ column, expandColumn }) => {
                     ? colors.key.two
                     : colors.structure.transparent,
                 transform:
-                  key === sortKey && isAscSort ? 'rotate(-180deg)' : '',
+                  key === sortKey && isAscSort
+                    ? 'rotate(90deg)'
+                    : 'rotate(-90deg)',
               }}
             />
           </a>

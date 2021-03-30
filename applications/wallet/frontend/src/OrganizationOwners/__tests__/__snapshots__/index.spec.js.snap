@@ -245,7 +245,7 @@ exports[`<OrganizationOwners /> should hide the menu gear for the active user 1`
                 <div
                   className="emotion-8"
                 >
-                  Owner Email
+                  Owner Email
                 </div>
               </th>
               <th
@@ -254,7 +254,7 @@ exports[`<OrganizationOwners /> should hide the menu gear for the active user 1`
                 <div
                   className="emotion-8"
                 >
-                  First Name
+                  First Name
                 </div>
               </th>
               <th
@@ -263,7 +263,7 @@ exports[`<OrganizationOwners /> should hide the menu gear for the active user 1`
                 <div
                   className="emotion-8"
                 >
-                  Last Name
+                  Last Name
                 </div>
               </th>
               <th
@@ -665,7 +665,7 @@ exports[`<OrganizationOwners /> should render properly with no owners 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Owner Email
+                  Owner Email
                 </div>
               </th>
               <th
@@ -674,7 +674,7 @@ exports[`<OrganizationOwners /> should render properly with no owners 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  First Name
+                  First Name
                 </div>
               </th>
               <th
@@ -683,7 +683,7 @@ exports[`<OrganizationOwners /> should render properly with no owners 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Last Name
+                  Last Name
                 </div>
               </th>
               <th
@@ -967,7 +967,7 @@ exports[`<OrganizationOwners /> should render properly with owners 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Owner Email
+                  Owner Email
                 </div>
               </th>
               <th
@@ -976,7 +976,7 @@ exports[`<OrganizationOwners /> should render properly with owners 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  First Name
+                  First Name
                 </div>
               </th>
               <th
@@ -985,7 +985,7 @@ exports[`<OrganizationOwners /> should render properly with owners 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Last Name
+                  Last Name
                 </div>
               </th>
               <th

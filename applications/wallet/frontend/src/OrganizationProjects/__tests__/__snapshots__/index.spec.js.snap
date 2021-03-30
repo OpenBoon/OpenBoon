@@ -247,9 +247,9 @@ exports[`<OrganizationProjects /> should render properly with no projects 1`] = 
                 <div
                   className="emotion-8"
                 >
-                  Images & Docs* 
- Internal Modules 
- ML Usage
+                  Images & Docs* 
+ Internal Modules 
+ ML Usage
                 </div>
               </th>
               <th
@@ -258,9 +258,9 @@ exports[`<OrganizationProjects /> should render properly with no projects 1`] = 
                 <div
                   className="emotion-8"
                 >
-                  Images & Docs* 
- External Modules 
- ML Usage
+                  Images & Docs* 
+ External Modules 
+ ML Usage
                 </div>
               </th>
               <th
@@ -269,8 +269,8 @@ exports[`<OrganizationProjects /> should render properly with no projects 1`] = 
                 <div
                   className="emotion-8"
                 >
-                  Images & Docs* 
- Total Assets 
+                  Images & Docs* 
+ Total Assets 
  Stored
                 </div>
               </th>
@@ -281,8 +281,8 @@ exports[`<OrganizationProjects /> should render properly with no projects 1`] = 
                   className="emotion-8"
                 >
                   Video 
- Internal Modules 
- ML Usage
+ Internal Modules 
+ ML Usage
                 </div>
               </th>
               <th
@@ -292,8 +292,8 @@ exports[`<OrganizationProjects /> should render properly with no projects 1`] = 
                   className="emotion-8"
                 >
                   Video 
- External Modules 
- ML Usage
+ External Modules 
+ ML Usage
                 </div>
               </th>
               <th
@@ -303,7 +303,7 @@ exports[`<OrganizationProjects /> should render properly with no projects 1`] = 
                   className="emotion-8"
                 >
                   Video 
- Total Hours 
+ Total Hours 
  Stored
                 </div>
               </th>
@@ -597,9 +597,9 @@ exports[`<OrganizationProjects /> should render properly with projects 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Images & Docs* 
- Internal Modules 
- ML Usage
+                  Images & Docs* 
+ Internal Modules 
+ ML Usage
                 </div>
               </th>
               <th
@@ -608,9 +608,9 @@ exports[`<OrganizationProjects /> should render properly with projects 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Images & Docs* 
- External Modules 
- ML Usage
+                  Images & Docs* 
+ External Modules 
+ ML Usage
                 </div>
               </th>
               <th
@@ -619,8 +619,8 @@ exports[`<OrganizationProjects /> should render properly with projects 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Images & Docs* 
- Total Assets 
+                  Images & Docs* 
+ Total Assets 
  Stored
                 </div>
               </th>
@@ -631,8 +631,8 @@ exports[`<OrganizationProjects /> should render properly with projects 1`] = `
                   className="emotion-8"
                 >
                   Video 
- Internal Modules 
- ML Usage
+ Internal Modules 
+ ML Usage
                 </div>
               </th>
               <th
@@ -642,8 +642,8 @@ exports[`<OrganizationProjects /> should render properly with projects 1`] = `
                   className="emotion-8"
                 >
                   Video 
- External Modules 
- ML Usage
+ External Modules 
+ ML Usage
                 </div>
               </th>
               <th
@@ -653,7 +653,7 @@ exports[`<OrganizationProjects /> should render properly with projects 1`] = `
                   className="emotion-8"
                 >
                   Video 
- Total Hours 
+ Total Hours 
  Stored
                 </div>
               </th>

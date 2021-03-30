@@ -47,8 +47,8 @@ const ApiKeys = () => {
         url={`/api/v1/projects/${projectId}/api_keys/`}
         refreshKeys={[]}
         refreshButton={false}
-        columns={['API Key Name', 'Permissions', '#Actions#']}
-        expandColumn={0}
+        columns={['API Key Name', 'Permissions', '#Actions#']}
+        expandColumn={2}
         renderEmpty="No api keys"
         renderRow={({ result, revalidate }) => (
           <ApiKeysRow

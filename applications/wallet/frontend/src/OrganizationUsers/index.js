@@ -15,9 +15,9 @@ const OrganizationUsers = () => {
       url={`/api/v1/organizations/${organizationId}/users/`}
       refreshKeys={[]}
       columns={[
-        'User Email',
-        'First Name',
-        'Last Name',
+        'User Email',
+        'First Name',
+        'Last Name',
         'Projects',
         '#Actions#',
       ]}

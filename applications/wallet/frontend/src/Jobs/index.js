@@ -31,9 +31,9 @@ const Jobs = () => {
           { key: 'name', label: 'Job Name' },
           { key: 'priority', label: 'Priority' },
           { key: 'timeCreated', label: 'Created' },
-          '# Assets',
+          '# Assets',
           'Errors',
-          'Task Progress',
+          'Task Progress',
           '#Actions#',
         ]}
         expandColumn={2}

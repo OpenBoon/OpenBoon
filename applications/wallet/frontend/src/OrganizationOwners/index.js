@@ -14,7 +14,7 @@ const OrganizationOwners = () => {
       legend="Owners"
       url={`/api/v1/organizations/${organizationId}/owners/`}
       refreshKeys={[]}
-      columns={['Owner Email', 'First Name', 'Last Name', '#Actions#']}
+      columns={['Owner Email', 'First Name', 'Last Name', '#Actions#']}
       expandColumn={0}
       renderEmpty={<span />}
       renderRow={({ result, revalidate }) => {

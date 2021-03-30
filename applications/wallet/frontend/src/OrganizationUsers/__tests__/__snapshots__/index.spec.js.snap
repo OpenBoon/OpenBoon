@@ -238,7 +238,7 @@ exports[`<OrganizationUsers /> should render properly with no users 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  User Email
+                  User Email
                 </div>
               </th>
               <th
@@ -247,7 +247,7 @@ exports[`<OrganizationUsers /> should render properly with no users 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  First Name
+                  First Name
                 </div>
               </th>
               <th
@@ -256,7 +256,7 @@ exports[`<OrganizationUsers /> should render properly with no users 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Last Name
+                  Last Name
                 </div>
               </th>
               <th
@@ -549,7 +549,7 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  User Email
+                  User Email
                 </div>
               </th>
               <th
@@ -558,7 +558,7 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  First Name
+                  First Name
                 </div>
               </th>
               <th
@@ -567,7 +567,7 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Last Name
+                  Last Name
                 </div>
               </th>
               <th
