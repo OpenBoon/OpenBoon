@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from organizations.mixins import SortAndSearchUsersMixin
 from organizations.models import Organization, User, Plan
 from organizations.permissions import OrganizationOwnerPermissions
 from organizations.serializers import (OrganizationSerializer,
@@ -72,8 +73,10 @@ class OrganizationProjectViewSet(ListModelMixin, BaseOrganizationOwnerViewset):
         return Response(ProjectSimpleSerializer(project).data)
 
 
-class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, BaseOrganizationOwnerViewset):
+class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, SortAndSearchUsersMixin,
+                              BaseOrganizationOwnerViewset):
     """Viewset for users associated with an Organization via projects."""
+    serializer_class = OrganizationUserListSerializer
     pagination_class = FromSizePagination
 
     def get_serializer_class(self):
@@ -99,7 +102,8 @@ class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, BaseOrganizati
         return Response({'detail': [message]})
 
 
-class OrganizationOwnerViewSet(ListModelMixin, BaseOrganizationOwnerViewset):
+class OrganizationOwnerViewSet(ListModelMixin, SortAndSearchUsersMixin,
+                               BaseOrganizationOwnerViewset):
     """Viewset for an Organization's owners."""
     serializer_class = OrganizationOwnerSerializer
 

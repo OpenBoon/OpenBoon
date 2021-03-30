@@ -178,6 +178,17 @@ class TestViews(object):
             else:
                 assert user['projectCount'] == 3
 
+        # Search for user.
+        response = check_response(api_client.get(path, {'search': 'other'}))
+        assert response['count'] == 1
+        assert response['results'][0]['firstName'] == 'other'
+
+        # Sort users.
+        response = check_response(api_client.get(path, {'ordering': 'firstName'}))
+        assert response['results'][0]['firstName'] == 'fake'
+        response = check_response(api_client.get(path, {'ordering': '-firstName'}))
+        assert response['results'][0]['firstName'] == 'other'
+
     def test_org_user_retrieve(self, login, zmlp_project_user, api_client, organization, project):
         path = reverse('org-user-detail', kwargs={'organization_pk': organization.id,
                                                   'pk': zmlp_project_user.id})
@@ -229,6 +240,17 @@ class TestViews(object):
         assert response['count'] == 2
         for user in response['results']:
             assert user['email']
+
+        # Search for user.
+        response = check_response(api_client.get(path, {'search': 'fake.com'}))
+        assert response['count'] == 1
+        assert response['results'][0]['firstName'] == 'fake'
+
+        # Sort users.
+        response = check_response(api_client.get(path, {'ordering': 'firstName'}))
+        assert response['results'][0]['firstName'] == ''
+        response = check_response(api_client.get(path, {'ordering': '-firstName'}))
+        assert response['results'][0]['firstName'] == 'fake'
 
     def test_org_owner_destroy(self, login, zmlp_project_user, superuser, api_client,
                                organization, project):
