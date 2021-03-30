@@ -85,3 +85,11 @@ class ProjectApp(object):
         project_id = as_id(project)
         index_id = as_id(index)
         return self.app.client.put(f'/api/v1/projects/{project_id}/_index/{index_id}')
+
+    def delete_project(self, pid):
+        """
+        Hard Delete every project information
+        :param pid: Project Id
+        :return:
+        """
+        return self.app.client.delete(f"/api/v1/projects/{pid}")
