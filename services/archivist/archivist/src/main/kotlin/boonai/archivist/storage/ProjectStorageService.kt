@@ -54,6 +54,11 @@ interface ProjectStorageService {
     fun fetch(locator: ProjectStorageLocator): ByteArray
 
     /**
+     * Copy a file from src to dst.
+     */
+    fun copy(src: String, dst: String): Long
+
+    /**
      * Fetch the URI where the file is stored.
      */
     fun getNativeUri(locator: ProjectStorageLocator): String

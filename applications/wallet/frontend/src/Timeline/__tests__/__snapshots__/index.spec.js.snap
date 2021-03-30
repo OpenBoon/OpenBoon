@@ -607,6 +607,11 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   border-radius: 4px;
 }
 
+.emotion-18:hover,
+.emotion-18:active {
+  background-color: #808080;
+}
+
 <div
   style={
     Object {
@@ -863,7 +868,11 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
             className="emotion-17"
           >
             <div
+              aria-label="Timeline Scrollbar"
               className="emotion-18"
+              onMouseDown={[Function]}
+              role="button"
+              tabIndex="-1"
             />
           </div>
         </div>
@@ -1270,6 +1279,11 @@ exports[`<Timeline /> should render properly 1`] = `
   height: 100%;
   background-color: #3b3b3b;
   border-radius: 4px;
+}
+
+.emotion-23:hover,
+.emotion-23:active {
+  background-color: #808080;
 }
 
 <div
@@ -2596,7 +2610,11 @@ exports[`<Timeline /> should render properly 1`] = `
             className="emotion-22"
           >
             <div
+              aria-label="Timeline Scrollbar"
               className="emotion-23"
+              onMouseDown={[Function]}
+              role="button"
+              tabIndex="-1"
             />
           </div>
         </div>
@@ -2995,6 +3013,11 @@ exports[`<Timeline /> should render properly 2`] = `
   height: 100%;
   background-color: #3b3b3b;
   border-radius: 4px;
+}
+
+.emotion-23:hover,
+.emotion-23:active {
+  background-color: #808080;
 }
 
 <div
@@ -4321,7 +4344,11 @@ exports[`<Timeline /> should render properly 2`] = `
             className="emotion-22"
           >
             <div
+              aria-label="Timeline Scrollbar"
               className="emotion-23"
+              onMouseDown={[Function]}
+              role="button"
+              tabIndex="-1"
             />
           </div>
         </div>

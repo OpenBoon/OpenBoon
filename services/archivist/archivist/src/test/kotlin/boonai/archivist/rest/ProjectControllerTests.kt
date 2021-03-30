@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.Date
+import kotlin.test.assertEquals
 
 class ProjectControllerTests : MockMvcTest() {
 
@@ -66,6 +67,24 @@ class ProjectControllerTests : MockMvcTest() {
             .andExpect(jsonPath("$.timeCreated", CoreMatchers.anything()))
             .andExpect(jsonPath("$.timeModified", CoreMatchers.anything()))
             .andReturn()
+    }
+
+    @Test
+    fun testDelete() {
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/api/v1/projects/${testProject.id}")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andReturn()
+
+        assertEquals(
+            0,
+            jdbc.queryForObject(
+                "SELECT COUNT(*) FROM project where pk_project=?", Int::class.java, testProject.id
+            )
+        )
     }
 
     @Test

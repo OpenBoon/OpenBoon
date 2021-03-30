@@ -206,7 +206,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  "Owners",
+  <OrganizationOwners />,
 ]
 `;
 
@@ -416,7 +416,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  "Project Usage",
+  <OrganizationProjects />,
 ]
 `;
 
@@ -626,6 +626,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  "Users",
+  <OrganizationUsers />,
 ]
 `;
