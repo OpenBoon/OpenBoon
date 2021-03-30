@@ -197,6 +197,7 @@ sdk-unit-tests:
       changes:
         - "client/boonsdk/**/*"
         - "client/boonlab/**/*"
+        - "client/boonczar/**/*"
         - "containers/boonflow/**/*"
         - "containers/boondocks/**/*"
     # MR to QA with any change
