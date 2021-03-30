@@ -6,8 +6,6 @@ import boonczar
 
 from boonsdk.client import BoonClient
 
-from client.boonczar.pylib import boonczar
-
 
 class ProjectAppTests(unittest.TestCase):
 
