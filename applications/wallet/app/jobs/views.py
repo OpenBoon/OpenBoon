@@ -66,7 +66,7 @@ class JobViewSet(BoonAISortArgsMixin,
         """Lists all jobs in the job queue.
 
         Accepts an optional `ordering` query parameter. The value can be a comma-separated list of
-        fields to sort on, with each field set to ascending (fieldname on it's own) or descending
+        fields to sort on, with each field set to ascending (fieldname on its own) or descending
         (field name prepended with a "-").
 
         Also accepts a `search` query parameter, which will do a wildcard search against
