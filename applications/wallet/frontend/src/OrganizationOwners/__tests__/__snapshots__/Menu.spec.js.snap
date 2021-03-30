@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<OrganizationUsersMenu /> should render properly 1`] = `
+exports[`<OrganizationOwnersMenu /> should render properly 1`] = `
 .emotion-0 {
   position: relative;
   height: 100%;

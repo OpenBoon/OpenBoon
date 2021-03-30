@@ -1,18 +1,18 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import OrganizationUsersMenu from '../Menu'
+import OrganizationOwnersMenu from '../Menu'
 
 const ORGANIZATION_ID = '42869703-fb62-4988-a0d1-e59b15caff06'
 const OWNER_ID = 42
 
-describe('<OrganizationUsersMenu />', () => {
+describe('<OrganizationOwnersMenu />', () => {
   it('should render properly', async () => {
     const mockFn = jest.fn()
 
     fetch.mockResponseOnce('{}')
 
     const component = TestRenderer.create(
-      <OrganizationUsersMenu
+      <OrganizationOwnersMenu
         organizationId={ORGANIZATION_ID}
         ownerId={OWNER_ID}
         revalidate={mockFn}
