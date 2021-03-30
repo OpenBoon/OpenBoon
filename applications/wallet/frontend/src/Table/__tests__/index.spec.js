@@ -64,7 +64,7 @@ describe('<Table />', () => {
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
-      query: { projectId: PROJECT_ID, sort: 'timeCreated:a' },
+      query: { projectId: PROJECT_ID, sort: 'timeCreated' },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -92,8 +92,8 @@ describe('<Table />', () => {
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith(
-      '/[projectId]/jobs?filter=apply&sort=timeCreated:a',
-      `/${PROJECT_ID}/jobs?filter=apply&sort=timeCreated:a`,
+      '/[projectId]/jobs?filter=apply&sort=timeCreated',
+      `/${PROJECT_ID}/jobs?filter=apply&sort=timeCreated`,
     )
   })
 })

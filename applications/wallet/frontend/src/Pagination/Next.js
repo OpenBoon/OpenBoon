@@ -15,7 +15,7 @@ const PaginationNext = ({ currentPage, totalPages }) => {
 
   const queryParam = getQueryString({
     query: query.query,
-    sort: query.sort,
+    ordering: query.sort,
     filter: query.filter,
     page: currentPage + 1,
   })

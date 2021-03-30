@@ -31,7 +31,12 @@ const TableContent = ({
 
   const parsedPage = parseInt(page, 10)
   const from = parsedPage * SIZE - SIZE
-  const queryParam = getQueryString({ from, size: SIZE, sort, filter })
+  const queryParam = getQueryString({
+    from,
+    size: SIZE,
+    ordering: sort,
+    filter,
+  })
 
   const {
     data: { count = 0, results, previous, next },

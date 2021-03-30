@@ -20,9 +20,10 @@ const TableHead = ({ column, expandColumn }) => {
     query: { sort = '' },
   } = useRouter()
 
-  const [sortKey, sortDirection] = sort.split(':')
-  const newSortDirection = key === sortKey && sortDirection === 'a' ? 'd' : 'a'
-  const newSort = `${key}:${newSortDirection}`
+  const sortKey = sort.replace(/^-/, '')
+  const isAscSort = sort === sortKey
+  const newSortDirection = key === sortKey && isAscSort ? '-' : ''
+  const newSort = `${newSortDirection}${key}`
 
   const queryParam = getQueryString({
     query: query.query,
@@ -97,7 +98,7 @@ const TableHead = ({ column, expandColumn }) => {
                 svg: {
                   color: colors.structure.white,
                   transform:
-                    key === sortKey && sortDirection === 'a'
+                    key === sortKey && isAscSort
                       ? 'rotate(0deg)'
                       : 'rotate(-180deg)',
                 },
@@ -114,9 +115,7 @@ const TableHead = ({ column, expandColumn }) => {
                     ? colors.key.two
                     : colors.structure.transparent,
                 transform:
-                  key === sortKey && sortDirection === 'a'
-                    ? 'rotate(-180deg)'
-                    : '',
+                  key === sortKey && isAscSort ? 'rotate(-180deg)' : '',
               }}
             />
           </a>
