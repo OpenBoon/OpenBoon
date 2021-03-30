@@ -103,21 +103,6 @@ def project_zero_user(superuser, project_zero_membership):
 
 
 @pytest.fixture
-def zvi_project_membership(project, user):
-    apikey = b"""{"userId": "00000000-7b0b-480e-8c36-f06f04aed2f1",
-    "user": "admin",
-    "key": "65950f84a6f97c111be559f54666308c719210468c3476e9bae813484bc703ce",
-    "server": "https://dev.zorroa.com/"}"""
-    apikey = b64encode(apikey).decode('utf-8')
-    return Membership.objects.create(user=user, project=project, apikey=apikey)
-
-
-@pytest.fixture
-def zvi_project_user(user, zvi_project_membership):
-    return user
-
-
-@pytest.fixture
 def login(api_client, zmlp_project_user):
     api_client.force_authenticate(zmlp_project_user)
     api_client.force_login(zmlp_project_user)
