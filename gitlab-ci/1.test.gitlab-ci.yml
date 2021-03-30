@@ -139,6 +139,7 @@ backend-py-lint:
       changes:
         - "client/boonsdk/**/*.py"
         - "client/boonlab/**/*.py"
+        - "client/boonczar/**/*.py"
         - "containers/**/*.py"
         - "services/analyst/**/*.py"
         - "services/mlbbq/**/*.py"
