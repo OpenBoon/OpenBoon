@@ -5,7 +5,7 @@ from boonflow import AssetProcessor
 from boonflow.proxy import get_proxy_level_path
 
 
-class RegionalColorSimilarity(AssetProcessor):
+class TiledColorSimilarity(AssetProcessor):
     """
     Creates a similarity hash which describes the HSV values for a 100x100 image.
 
@@ -44,4 +44,4 @@ class RegionalColorSimilarity(AssetProcessor):
             'type': 'similarity',
             'simhash': simhash
         }
-        asset.add_analysis("boonai-regional-color-similarity", struct)
+        asset.add_analysis("boonai-tiled-color-similarity", struct)
