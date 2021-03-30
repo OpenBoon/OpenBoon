@@ -26,7 +26,7 @@ const TableContent = ({
   refreshButton,
 }) => {
   const {
-    query: { page = 1, sort, filter = '' },
+    query: { page = 1, sort, search = '' },
   } = useRouter()
 
   const parsedPage = parseInt(page, 10)
@@ -35,7 +35,7 @@ const TableContent = ({
     from,
     size: SIZE,
     ordering: sort,
-    filter,
+    search,
   })
 
   const {

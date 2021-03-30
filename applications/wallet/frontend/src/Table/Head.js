@@ -28,7 +28,7 @@ const TableHead = ({ column, expandColumn }) => {
   const queryParam = getQueryString({
     query: query.query,
     sort: newSort,
-    filter: query.filter,
+    search: query.search,
   })
   const href = `${pathname}${queryParam}`
   const as = href

@@ -21,7 +21,7 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
   const queryParam = getQueryString({
     query: query.query,
     ordering: query.sort,
-    filter: query.filter,
+    search: query.search,
     page: queryParamPage === 1 ? '' : queryParamPage,
   })
   const href = `${pathname}${queryParam}`

@@ -81,7 +81,7 @@ describe('<Table />', () => {
         expandColumn={2}
         renderEmpty="Empty"
         renderRow={noop}
-        filterLabel="Job Name"
+        searchLabel="Job Name"
       />,
     )
 
@@ -92,8 +92,8 @@ describe('<Table />', () => {
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith(
-      '/[projectId]/jobs?filter=apply&sort=timeCreated',
-      `/${PROJECT_ID}/jobs?filter=apply&sort=timeCreated`,
+      '/[projectId]/jobs?search=apply&sort=timeCreated',
+      `/${PROJECT_ID}/jobs?search=apply&sort=timeCreated`,
     )
   })
 })

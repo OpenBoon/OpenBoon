@@ -20,7 +20,7 @@ const PaginationJump = ({ currentPage, totalPages, direction }) => {
   const queryParam = getQueryString({
     query: query.query,
     ordering: query.sort,
-    filter: query.filter,
+    search: query.search,
     page: isPrev ? '' : totalPages,
   })
   const href = `${pathname}${queryParam}`
