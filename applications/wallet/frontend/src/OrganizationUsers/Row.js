@@ -1,7 +1,11 @@
 import PropTypes from 'prop-types'
 
+import OrganizationUsersMenu from './Menu'
+
 const OrganizationUsersRow = ({
-  user: { email, firstName, lastName, projectCount },
+  organizationId,
+  user: { id, email, firstName, lastName, projectCount },
+  revalidate,
 }) => {
   return (
     <tr>
@@ -9,12 +13,19 @@ const OrganizationUsersRow = ({
       <td>{firstName}</td>
       <td>{lastName}</td>
       <td>{projectCount}</td>
-      <td />
+      <td>
+        <OrganizationUsersMenu
+          organizationId={organizationId}
+          userId={id}
+          revalidate={revalidate}
+        />
+      </td>
     </tr>
   )
 }
 
 OrganizationUsersRow.propTypes = {
+  organizationId: PropTypes.string.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number.isRequired,
     email: PropTypes.string.isRequired,
@@ -22,6 +33,7 @@ OrganizationUsersRow.propTypes = {
     lastName: PropTypes.string.isRequired,
     projectCount: PropTypes.number.isRequired,
   }).isRequired,
+  revalidate: PropTypes.func.isRequired,
 }
 
 export default OrganizationUsersRow

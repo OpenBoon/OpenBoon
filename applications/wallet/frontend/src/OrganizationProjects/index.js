@@ -16,18 +16,24 @@ const OrganizationProjects = () => {
       refreshKeys={[]}
       columns={[
         'Project Name',
-        'Images & Docs* \n Internal Modules \n ML Usage',
-        'Images & Docs* \n External Modules \n ML Usage',
-        'Images & Docs* \n Total Assets \n Stored',
-        'Video \n Internal Modules \n ML Usage',
-        'Video \n External Modules \n ML Usage',
-        'Video \n Total Hours \n Stored',
+        'Images & Docs* \n Internal Modules \n ML Usage',
+        'Images & Docs* \n External Modules \n ML Usage',
+        'Images & Docs* \n Total Assets \n Stored',
+        'Video \n Internal Modules \n ML Usage',
+        'Video \n External Modules \n ML Usage',
+        'Video \n Total Hours \n Stored',
         '#Actions#',
       ]}
       expandColumn={0}
       renderEmpty={<span />}
-      renderRow={({ result }) => {
-        return <OrganizationProjectsRow key={result.id} project={result} />
+      renderRow={({ result, revalidate }) => {
+        return (
+          <OrganizationProjectsRow
+            key={result.id}
+            project={result}
+            revalidate={revalidate}
+          />
+        )
       }}
       refreshButton={false}
     />

@@ -19,10 +19,10 @@ const TaskErrors = ({ parentUrl }) => {
       refreshKeys={[parentUrl]}
       refreshButton={false}
       columns={[
-        'Error Type',
+        'Error Type',
         'Phase',
         'Message',
-        'File Name',
+        'File Name',
         'Processor',
         'Time',
         '#Actions#',
