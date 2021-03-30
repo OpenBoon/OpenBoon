@@ -50,3 +50,21 @@ class ActiveMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class BoonAISortArgsMixin():
+    """Converts Django style ordering arguments into BoonAI sort query args."""
+
+    def get_boonai_sort_args(self, request):
+        sort = request.query_params.get('ordering')
+        if sort:
+            fields = sort.split(',')
+            sort_args = []
+            for field in fields:
+                cleaned_field = field.lstrip('-')
+                if field == cleaned_field:
+                    sort_args.append(f'{field}:a')
+                else:
+                    sort_args.append(f'{cleaned_field}:d')
+            return sort_args
+        return None

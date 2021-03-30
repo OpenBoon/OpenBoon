@@ -46,7 +46,7 @@ class TestJobViewSet:
 
         monkeypatch.setattr(BoonClient, 'post', mock_api_response)
         url = reverse('job-list', kwargs={'project_pk': project.id})
-        response = api_client.get(url, {'sort': 'timeCreated:a'})
+        response = api_client.get(url, {'ordering': 'timeCreated'})
         assert response.status_code == 200
 
     def test_get_list_with_double_sort(self, login, project, api_client, monkeypatch):
@@ -58,7 +58,7 @@ class TestJobViewSet:
 
         monkeypatch.setattr(BoonClient, 'post', mock_api_response)
         url = reverse('job-list', kwargs={'project_pk': project.id})
-        response = api_client.get(url, {'sort': 'timeCreated:a,timeUpdated:d'})
+        response = api_client.get(url, {'ordering': 'timeCreated,-timeUpdated'})
         assert response.status_code == 200
 
     def test_get_list_with_filter(self, login, project, api_client, monkeypatch):
