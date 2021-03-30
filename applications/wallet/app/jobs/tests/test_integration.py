@@ -70,7 +70,7 @@ class TestJobViewSet:
 
         monkeypatch.setattr(BoonClient, 'post', mock_api_response)
         url = reverse('job-list', kwargs={'project_pk': project.id})
-        quoted = urllib.parse.urlencode({'filter': 'my test 4: you'})
+        quoted = urllib.parse.urlencode({'search': 'my test 4: you'})
         url = f'{url}?{quoted}'
         response = api_client.get(url)
         assert response.status_code == 200
@@ -85,7 +85,7 @@ class TestJobViewSet:
         monkeypatch.setattr(BoonClient, 'post', mock_api_response)
         url = reverse('job-list', kwargs={'project_pk': project.id})
 
-        response = api_client.get(url, {'filter': 'my test 4: you'})
+        response = api_client.get(url, {'search': 'my test 4: you'})
         assert response.status_code == 200
 
     def test_get_detail_zmlp(self, zmlp_project_user, project, api_client, monkeypatch, job_pk):

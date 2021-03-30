@@ -69,7 +69,7 @@ class JobViewSet(BoonAISortArgsMixin,
         fields to sort on, with each field set to ascending (fieldname on it's own) or descending
         (field name prepended with a "-").
 
-        Also accepts a `filter` query parameter, which will do a wildcard search against
+        Also accepts a `search` query parameter, which will do a wildcard search against
         all potential job names.
 
         Example:
@@ -91,7 +91,7 @@ class JobViewSet(BoonAISortArgsMixin,
             search_filter['sort'] = sort_args
 
         # Add the filter, if any
-        filter = request.query_params.get('filter')
+        filter = request.query_params.get('search')
         if filter:
             search_filter['keywords'] = filter
 
