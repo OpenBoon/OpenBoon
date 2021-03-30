@@ -63,11 +63,11 @@ const DataSources = () => {
         refreshButton={false}
         columns={[
           'Name',
-          'Source Type',
+          'Source Type',
           'Path',
-          'Date Created',
-          'Date Modified',
-          'File Types',
+          'Date Created',
+          'Date Modified',
+          'File Types',
           '#Actions#',
         ]}
         expandColumn={3}
