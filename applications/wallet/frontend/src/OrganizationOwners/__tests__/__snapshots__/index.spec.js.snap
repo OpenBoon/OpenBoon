@@ -1042,7 +1042,24 @@ exports[`<OrganizationOwners /> should render properly with owners 1`] = `
               <td>
                 Adminson
               </td>
-              <td />
+              <td>
+                <div
+                  className="emotion-15"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-16"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
             </tr>
             <tr>
               <td>

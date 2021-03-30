@@ -28,7 +28,7 @@ describe('<OrganizationOwners />', () => {
     })
 
     const component = TestRenderer.create(
-      <User initialUser={{ ...mockUser, email: 'software@zorroa.com' }}>
+      <User initialUser={mockUser}>
         <OrganizationOwners />
       </User>,
     )
@@ -47,7 +47,7 @@ describe('<OrganizationOwners />', () => {
     })
 
     const component = TestRenderer.create(
-      <User initialUser={{ ...mockUser, email: 'software@zorroa.com' }}>
+      <User initialUser={mockUser}>
         <OrganizationOwners />
       </User>,
     )
