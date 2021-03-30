@@ -46,7 +46,7 @@ const Jobs = () => {
             revalidate={revalidate}
           />
         )}
-        filterLabel="Job Name"
+        searchLabel="Job Name"
       />
     </>
   )
