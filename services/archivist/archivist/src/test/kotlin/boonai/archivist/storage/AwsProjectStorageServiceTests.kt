@@ -81,6 +81,19 @@ class AwsProjectStorageServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testCopy() {
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
+        val result = projectStorageService.store(spec)
+
+        val loc2 = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", "test", "bob.txt")
+
+        projectStorageService.copy(loc.getPath(), loc2.getPath())
+        val bytes = projectStorageService.fetch(loc2)
+        assertEquals(result.size, bytes.size.toLong())
+    }
+
+    @Test
     fun testStream() {
         val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())

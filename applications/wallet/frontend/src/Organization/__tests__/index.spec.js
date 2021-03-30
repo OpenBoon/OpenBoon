@@ -4,9 +4,9 @@ import organization from '../__mocks__/organization'
 
 import Organization from '..'
 
-// jest.mock('../../OrganizationProjects', () => 'OrganizationProjects')
-// jest.mock('../../OrganizationUsers', () => 'OrganizationUsers')
-// jest.mock('../../OrganizationOwners', () => 'OrganizationOwners')
+jest.mock('../../OrganizationProjects', () => 'OrganizationProjects')
+jest.mock('../../OrganizationUsers', () => 'OrganizationUsers')
+jest.mock('../../OrganizationOwners', () => 'OrganizationOwners')
 
 describe('<Organization />', () => {
   it('should render properly for Projects', () => {

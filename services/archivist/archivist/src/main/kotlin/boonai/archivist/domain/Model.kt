@@ -313,10 +313,17 @@ class Model(
         return Label(id, label, bbox = bbox)
     }
 
-    fun getModelStorageLocator(tag: String): ProjectFileLocator {
+    fun getModelFileLocator(tag: String, name: String): ProjectFileLocator {
         return ProjectFileLocator(
-            ProjectStorageEntity.MODELS, id.toString(), tag, "model.zip"
+            ProjectStorageEntity.MODELS, id.toString(), tag, name
         )
+    }
+    fun getModelStorageLocator(tag: String): ProjectFileLocator {
+        return getModelFileLocator(tag, "model.zip")
+    }
+
+    fun getModelVersionStorageLocator(tag: String): ProjectFileLocator {
+        return getModelFileLocator(tag, "model-version.txt")
     }
 
     @JsonIgnore
@@ -488,4 +495,14 @@ class UpdateLabelRequest(
 
     @ApiModelProperty("The name of the new label or null/empty string if the label should be removed.")
     val newLabel: String? = null
+)
+
+@ApiModel("ModelCopyRequest", description = "Request to copy a model from 1 tag to another.")
+class ModelCopyRequest(
+
+    @ApiModelProperty("The tag to copy")
+    val srcTag: String,
+
+    @ApiModelProperty("The destination tag")
+    val dstTag: String
 )

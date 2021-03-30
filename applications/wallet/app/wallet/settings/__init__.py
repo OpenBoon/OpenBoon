@@ -199,7 +199,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'wallet.paginators.FromSizePagination',
     'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer'],
-    'PAGE_SIZE': 50,
+    # The Frontend currently assumes a page size of 20 - notify them if this value changes.
+    'PAGE_SIZE': 20,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
     ],
@@ -231,7 +232,6 @@ REST_AUTH_SERIALIZERS = {
 
 # General Application Configuration
 BOONAI_API_URL = os.environ.get('BOONAI_API_URL', 'archivist')
-PLATFORM = os.environ.get('PLATFORM', 'zmlp')
 INCEPTION_KEY_B64 = os.environ.get('INCEPTION_KEY_B64')
 METRICS_API_URL = os.environ.get('METRICS_API_URL', 'http://metrics')
 

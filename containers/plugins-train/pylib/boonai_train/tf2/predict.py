@@ -86,7 +86,7 @@ def main(args):
     predictions = predict(path=args.img_path, trained_model=trained_model, labels=labels)
 
     for prediction in predictions:
-        print("Label: {0}, Prediction: {1}".format(prediction[0], prediction[1]))
+        print("Label: {0}, Score: {1}".format(prediction[0], prediction[1]))
 
 
 def parse_args(main_args):

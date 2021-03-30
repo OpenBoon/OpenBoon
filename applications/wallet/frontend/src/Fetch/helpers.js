@@ -4,6 +4,7 @@ import camelCase from 'camelcase'
 export const getQueryString = (params = {}) => {
   const queryString = Object.keys(params)
     .filter((p) => params[p] || params[p] === 0)
+    .sort()
     .map((p) => `${p}=${params[p]}`)
     .join('&')
 
@@ -100,4 +101,14 @@ export const parseResponse = async ({ response }) => {
   } catch (error) {
     return { global: 'Something went wrong. Please try again.' }
   }
+}
+
+export const getRelativeUrl = ({ url }) => {
+  if (!url.includes('://')) {
+    return url
+  }
+
+  const { pathname, search } = new URL(url)
+
+  return decodeURIComponent(`${pathname}${search}`)
 }

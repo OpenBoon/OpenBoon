@@ -1,8 +1,6 @@
 import pytest
-from django.urls import reverse
-from django.test import override_settings
-
 from boonsdk import BoonClient
+from django.urls import reverse
 
 pytestmark = pytest.mark.django_db
 
@@ -22,8 +20,6 @@ def data():
 
 
 class TestPermission:
-
-    @override_settings(PLATFORM='zmlp')
     def test_get_list(self, data, zmlp_project_user, project, api_client, monkeypatch):
 
         def mock_api_response(*args, **kwargs):

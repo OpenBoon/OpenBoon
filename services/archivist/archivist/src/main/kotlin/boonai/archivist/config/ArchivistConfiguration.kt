@@ -23,8 +23,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.web.servlet.HandlerExceptionResolver
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
-import redis.clients.jedis.JedisPool
-import redis.clients.jedis.JedisPoolConfig
+
 import java.io.File
 import java.io.IOException
 import java.util.Properties
@@ -39,25 +38,6 @@ class ArchivistConfiguration {
     @Bean
     fun transactionEventManager(): TransactionEventManager {
         return TransactionEventManager()
-    }
-
-    @Bean
-    fun redisClient(): JedisPool {
-        val props = properties()
-        val host = props.getString("archivist.redis.host")
-        val port = props.getInt("archivist.redis.port")
-
-        val config = JedisPoolConfig()
-        config.maxTotal = 128
-        config.maxIdle = 128
-        config.minIdle = 16
-        config.testWhileIdle = true
-        config.minEvictableIdleTimeMillis = 60000L
-        config.timeBetweenEvictionRunsMillis = 3000L
-        config.numTestsPerEvictionRun = 3
-        config.blockWhenExhausted = true
-
-        return JedisPool(config, host, port, 10000)
     }
 
     @Bean
