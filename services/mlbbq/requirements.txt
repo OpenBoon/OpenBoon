@@ -1,6 +1,6 @@
 flask
 requests
-mxnet==1.7.0.post1
+mxnet==1.8.0.post0
 numpy
 opencv-python-headless
 gevent
