@@ -15,7 +15,7 @@ describe('<Jobs />', () => {
   it('should render properly with no jobs', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
-      query: { projectId: PROJECT_ID, sort: 'timeCreated:a' },
+      query: { projectId: PROJECT_ID, sort: 'timeCreated' },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -38,8 +38,8 @@ describe('<Jobs />', () => {
 
   it('should render properly with jobs', () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/jobs?sort=timeCreated:d',
-      query: { projectId: PROJECT_ID, sort: 'timeCreated:d' },
+      pathname: '/[projectId]/jobs',
+      query: { projectId: PROJECT_ID, sort: '-timeCreated' },
     })
 
     require('swr').__setMockUseSWRResponse({

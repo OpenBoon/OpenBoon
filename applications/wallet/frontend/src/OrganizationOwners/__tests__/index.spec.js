@@ -1,6 +1,9 @@
 import TestRenderer from 'react-test-renderer'
 
 import organizationOwners from '../__mocks__/organizationOwners'
+import mockUser from '../../User/__mocks__/user'
+
+import User from '../../User'
 
 import OrganizationOwners from '..'
 
@@ -24,7 +27,11 @@ describe('<OrganizationOwners />', () => {
       },
     })
 
-    const component = TestRenderer.create(<OrganizationOwners />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <OrganizationOwners />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -39,7 +46,25 @@ describe('<OrganizationOwners />', () => {
       data: organizationOwners,
     })
 
-    const component = TestRenderer.create(<OrganizationOwners />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <OrganizationOwners />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should hide the menu gear for the active user', () => {
+    require('swr').__setMockUseSWRResponse({
+      data: organizationOwners,
+    })
+
+    const component = TestRenderer.create(
+      <User initialUser={{ ...mockUser, email: 'software@zorroa.com' }}>
+        <OrganizationOwners />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })

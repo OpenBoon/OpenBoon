@@ -11,16 +11,16 @@ import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 
 import TableContent from './Content'
 
-const Table = ({ role, filterLabel, ...props }) => {
+const Table = ({ role, searchLabel, ...props }) => {
   const {
     pathname,
     query,
-    query: { filter = '' },
+    query: { search = '' },
   } = useRouter()
 
   return (
     <div css={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {!!filterLabel && (
+      {!!searchLabel && (
         <div
           css={{
             display: 'flex',
@@ -37,14 +37,14 @@ const Table = ({ role, filterLabel, ...props }) => {
             }}
           >
             <InputSearch
-              aria-label={`Filter ${filterLabel}`}
-              placeholder={`Filter ${filterLabel}`}
-              value={filter}
+              aria-label={`Filter ${searchLabel}`}
+              placeholder={`Filter ${searchLabel}`}
+              value={search}
               onChange={({ value }) => {
                 const queryParamFilter = getQueryString({
                   query: query.query,
                   sort: query.sort,
-                  filter: value,
+                  search: value,
                 })
                 const href = `${pathname}${queryParamFilter}`
                 const as = href
@@ -69,12 +69,12 @@ const Table = ({ role, filterLabel, ...props }) => {
 
 Table.defaultProps = {
   role: null,
-  filterLabel: '',
+  searchLabel: '',
 }
 
 Table.propTypes = {
   role: PropTypes.oneOf(Object.keys(ROLES)),
-  filterLabel: PropTypes.string,
+  searchLabel: PropTypes.string,
 }
 
 export { Table as default, ROLES }
