@@ -269,10 +269,16 @@ class TestProjectUserGet:
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert response.json() == {'detail': ['You do not have permission to manage users.']}
 
-    def test_paginated_list(self, project, zmlp_project_user, zmlp_project_membership,
+    def test_list_organization_owner(self, user, project, organization, api_client):
+        api_client.force_authenticate(user)
+        api_client.force_login(user)
+        path = reverse('projectuser-list', kwargs={'project_pk': project.id})
+        check_response(api_client.get(path), status=403)
+        organization.owners.add(user)
+        check_response(api_client.get(path))
+
+    def test_paginated_list(self, project, login, zmlp_project_membership,
                             api_client, django_user_model, zmlp_apikey):
-        api_client.force_authenticate(zmlp_project_user)
-        api_client.force_login(zmlp_project_user)
         make_users_for_project(project, 5, django_user_model, zmlp_apikey)
         uri = reverse('projectuser-list', kwargs={'project_pk': project.id})
         response = api_client.get(f'{uri}?from=0&size=2')

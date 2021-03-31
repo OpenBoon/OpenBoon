@@ -274,7 +274,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Error Type
+                  Error Type
                 </div>
               </th>
               <th
@@ -301,7 +301,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  File Name
+                  File Name
                 </div>
               </th>
               <th
@@ -1055,7 +1055,7 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Error Type
+                  Error Type
                 </div>
               </th>
               <th
@@ -1082,7 +1082,7 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  File Name
+                  File Name
                 </div>
               </th>
               <th

@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types'
+
 import { formatUsage } from '../Project/helpers'
+
+import OrganizationProjectsMenu from './Menu'
 
 const OrganizationProjectsRow = ({
   project: {
+    id,
     name,
     mlUsageThisMonth: {
       tier1: {
@@ -19,6 +23,7 @@ const OrganizationProjectsRow = ({
       videoMinutes: totalVideoMinutes,
     },
   },
+  revalidate,
 }) => {
   return (
     <tr>
@@ -29,7 +34,9 @@ const OrganizationProjectsRow = ({
       <td>{formatUsage({ number: internalVideoMinutes / 60 })}</td>
       <td>{formatUsage({ number: externalVideoMinutes / 60 })}</td>
       <td>{formatUsage({ number: totalVideoMinutes / 60 })}</td>
-      <td />
+      <td>
+        <OrganizationProjectsMenu projectId={id} revalidate={revalidate} />
+      </td>
     </tr>
   )
 }
@@ -53,6 +60,7 @@ OrganizationProjectsRow.propTypes = {
       videoMinutes: PropTypes.number.isRequired,
     }).isRequired,
   }).isRequired,
+  revalidate: PropTypes.func.isRequired,
 }
 
 export default OrganizationProjectsRow
