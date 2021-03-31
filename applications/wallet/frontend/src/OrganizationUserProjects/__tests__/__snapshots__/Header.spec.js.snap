@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OrganizationUserProjectsHeader /> should render properly 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-3 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-7 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <a
+      className="emotion-2"
+      href="/organizations"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      Organization Admin
+    </a>
+    <span
+      className="emotion-3"
+    >
+      /
+    </span>
+  </div>
+  <div
+    className="emotion-1"
+  >
+    <a
+      className="emotion-2"
+      href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      Alpha
+    </a>
+    <span
+      className="emotion-3"
+    >
+      /
+    </span>
+  </div>
+  <h2
+    className="emotion-7"
+  >
+    User Projects
+  </h2>
+</div>
+`;

@@ -474,11 +474,20 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
 }
 
 .emotion-17 {
+  cursor: pointer;
+}
+
+.emotion-18:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-19 {
   position: relative;
   height: 100%;
 }
 
-.emotion-18 {
+.emotion-20 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -510,8 +519,8 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
   margin: -6px;
 }
 
-.emotion-18:hover,
-.emotion-18.focus-visible:focus {
+.emotion-20:hover,
+.emotion-20.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -594,9 +603,19 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr
+              className="emotion-17"
+              onClick={[Function]}
+            >
               <td>
-                software@zorroa.com
+                <a
+                  className="emotion-18"
+                  href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users/1"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  software@zorroa.com
+                </a>
               </td>
               <td>
                 Admin
@@ -609,11 +628,11 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -626,9 +645,19 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-17"
+              onClick={[Function]}
+            >
               <td>
-                zach@zorroa.com
+                <a
+                  className="emotion-18"
+                  href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users/3"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  zach@zorroa.com
+                </a>
               </td>
               <td>
                 Zach
@@ -641,11 +670,11 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -658,9 +687,19 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-17"
+              onClick={[Function]}
+            >
               <td>
-                joanna@zorroa.com
+                <a
+                  className="emotion-18"
+                  href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users/5"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  joanna@zorroa.com
+                </a>
               </td>
               <td>
                 Joanna
@@ -673,11 +712,11 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -690,9 +729,19 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-17"
+              onClick={[Function]}
+            >
               <td>
-                mrc@zorroa.com
+                <a
+                  className="emotion-18"
+                  href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users/12"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  mrc@zorroa.com
+                </a>
               </td>
               <td>
                 Matt
@@ -705,11 +754,11 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -722,9 +771,19 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-17"
+              onClick={[Function]}
+            >
               <td>
-                jbuhler@zorroa.com
+                <a
+                  className="emotion-18"
+                  href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users/14"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  jbuhler@zorroa.com
+                </a>
               </td>
               <td>
                 Juan
@@ -737,11 +796,11 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -754,9 +813,19 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              className="emotion-17"
+              onClick={[Function]}
+            >
               <td>
-                ryan@zorroa.com
+                <a
+                  className="emotion-18"
+                  href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users/18"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  ryan@zorroa.com
+                </a>
               </td>
               <td>
                 Ryan
@@ -769,11 +838,11 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-19"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-20"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"

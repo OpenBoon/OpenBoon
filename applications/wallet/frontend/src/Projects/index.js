@@ -12,6 +12,7 @@ const NO_PROJECT_ID_ROUTES = [
   '/organizations',
   '/organizations/[organizationId]',
   '/organizations/[organizationId]/users',
+  '/organizations/[organizationId]/users/[userId]',
   '/organizations/[organizationId]/owners',
 ]
 
