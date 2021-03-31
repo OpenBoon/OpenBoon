@@ -1,16 +1,22 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
+import Router from 'next/router'
 
-import { fetcher } from '../Fetch/helpers'
+import { fetcher, getQueryString } from '../Fetch/helpers'
 
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 import Modal from '../Modal'
 
-const OrganizationProjectsMenu = ({ projectId, revalidate }) => {
+const OrganizationProjectsMenu = ({
+  organizationId,
+  projectId,
+  revalidate,
+}) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   return (
     <>
@@ -29,6 +35,7 @@ const OrganizationProjectsMenu = ({ projectId, revalidate }) => {
                   </Button>
                 </Link>
               </li>
+
               <li>
                 <Link href={`/${projectId}/users`} passHref>
                   <Button
@@ -40,6 +47,7 @@ const OrganizationProjectsMenu = ({ projectId, revalidate }) => {
                   </Button>
                 </Link>
               </li>
+
               <li>
                 <Link href={`/${projectId}/api-keys`} passHref>
                   <Button
@@ -51,6 +59,7 @@ const OrganizationProjectsMenu = ({ projectId, revalidate }) => {
                   </Button>
                 </Link>
               </li>
+
               <li>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
@@ -68,22 +77,34 @@ const OrganizationProjectsMenu = ({ projectId, revalidate }) => {
           </div>
         )}
       </Menu>
+
       {isDeleteModalOpen && (
         <Modal
           title="Delete Project"
           message="Deleting this project will remove it and all its content from the system. Deletion will be permanent and irreversible after 30 days."
-          action="Delete Permanently"
+          action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
           onCancel={() => {
             setDeleteModalOpen(false)
           }}
           onConfirm={async () => {
-            setDeleteModalOpen(false)
+            setIsDeleting(true)
 
             await fetcher(`/api/v1/projects/${projectId}/`, {
               method: 'DELETE',
             })
 
+            setDeleteModalOpen(false)
+
             revalidate()
+
+            const queryString = getQueryString({
+              action: 'delete-project-success',
+            })
+
+            Router.push(
+              `/organizations/[organizationId]${queryString}`,
+              `/organizations/${organizationId}`,
+            )
           }}
         />
       )}
@@ -92,6 +113,7 @@ const OrganizationProjectsMenu = ({ projectId, revalidate }) => {
 }
 
 OrganizationProjectsMenu.propTypes = {
+  organizationId: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
