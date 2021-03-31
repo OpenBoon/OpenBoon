@@ -10,6 +10,7 @@ let scrollbarOrigin
 let scrollbarScrollableWidth
 
 export const SCROLLBAR_CONTAINER_HEIGHT = 36
+const RESIZE_HANDLE_SIZE = 20
 
 const TimelineScrollbar = ({ settings, rulerRef }) => {
   const horizontalScroller = getScroller({ namespace: 'Timeline' })
@@ -72,6 +73,15 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
   const handleMouseDown = ({ clientX }) => {
     origin = clientX
     scrollbarOrigin = scrollbarRef.current.offsetLeft
+    if (!scrollbarScrollableWidth) {
+      const { width: scrollbarWidth = 0 } =
+        scrollbarRef.current?.getBoundingClientRect() || {}
+
+      const scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
+
+      // the max number of pixels the scrollbar thumb can travel
+      scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
+    }
 
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', handleMouseUp)
@@ -121,19 +131,42 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
         >
           <div
             ref={scrollbarRef}
-            role="button"
-            tabIndex="-1"
-            aria-label="Timeline Scrollbar"
             css={{
+              display: 'flex',
               position: 'absolute',
               width: `${100 / (settings.zoom / 100)}%`,
               height: '100%',
               backgroundColor: colors.structure.smoke,
               borderRadius: constants.borderRadius.medium,
-              ':hover, :active': { backgroundColor: colors.structure.steel },
             }}
-            onMouseDown={handleMouseDown}
-          />
+          >
+            <div
+              css={{
+                backgroundColor: colors.structure.steel,
+                width: RESIZE_HANDLE_SIZE,
+                borderTopLeftRadius: constants.borderRadius.medium,
+                borderBottomLeftRadius: constants.borderRadius.medium,
+              }}
+            />
+            <div
+              role="button"
+              tabIndex="-1"
+              aria-label="Timeline Scrollbar"
+              onMouseDown={handleMouseDown}
+              css={{
+                flex: 1,
+                ':hover, :active': { backgroundColor: colors.structure.steel },
+              }}
+            />
+            <div
+              css={{
+                backgroundColor: colors.structure.steel,
+                width: RESIZE_HANDLE_SIZE,
+                borderTopRightRadius: constants.borderRadius.medium,
+                borderBottomRightRadius: constants.borderRadius.medium,
+              }}
+            />
+          </div>
         </div>
       </div>
     </>
