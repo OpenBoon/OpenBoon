@@ -12,7 +12,7 @@ const ORGANIZATION_ID = '42869703-fb62-4988-a0d1-e59b15caff06'
 const USER_ID = 42
 
 describe('<OrganizationUserProjects />', () => {
-  it('should render properly with no users', () => {
+  it('should render properly with no projects', () => {
     require('next/router').__setUseRouter({
       pathname: '/organizations/[organizationId]/users/[userId]',
       query: { organizationId: ORGANIZATION_ID, userId: USER_ID },
@@ -32,7 +32,7 @@ describe('<OrganizationUserProjects />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly with users', () => {
+  it('should render properly with projects', () => {
     require('next/router').__setUseRouter({
       pathname: '/organizations/[organizationId]/users/[userId]',
       query: { organizationId: ORGANIZATION_ID, userId: USER_ID },

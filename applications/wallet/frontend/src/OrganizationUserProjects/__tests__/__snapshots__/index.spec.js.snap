@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<OrganizationUserProjects /> should render properly with no users 1`] = `
+exports[`<OrganizationUserProjects /> should render properly with no projects 1`] = `
 Array [
   <OrganizationUserProjectsHeader />,
   <OrganizationUserProjectsDetails />,
@@ -290,7 +290,7 @@ Array [
 ]
 `;
 
-exports[`<OrganizationUserProjects /> should render properly with users 1`] = `
+exports[`<OrganizationUserProjects /> should render properly with projects 1`] = `
 Array [
   <OrganizationUserProjectsHeader />,
   <OrganizationUserProjectsDetails />,
