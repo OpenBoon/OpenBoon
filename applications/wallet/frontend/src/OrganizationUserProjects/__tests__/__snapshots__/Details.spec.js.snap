@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OrganizationUserProjectsDetails /> should render properly 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 24px;
+  padding-left: 0;
+}
+
+.emotion-1 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 17px;
+  line-height: 23px;
+}
+
+<div
+  className="emotion-0"
+>
+  <ul
+    className="emotion-1"
+  >
+    <li>
+      <strong>
+        User:
+      </strong>
+       
+      Admin
+       
+      Adminson
+    </li>
+    <li>
+      <strong>
+        Email:
+      </strong>
+       
+      software@zorroa.com
+    </li>
+  </ul>
+</div>
+`;
