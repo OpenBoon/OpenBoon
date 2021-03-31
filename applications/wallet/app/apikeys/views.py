@@ -7,6 +7,7 @@ from boonsdk.client import BoonSdkDuplicateException
 from apikeys.serializers import ApikeySerializer
 from apikeys.utils import create_zmlp_api_key
 from projects.views import BaseProjectViewSet
+from wallet.exceptions import DuplicateError
 from wallet.paginators import ZMLPFromSizePagination
 
 
@@ -33,7 +34,7 @@ class ApikeyViewSet(BaseProjectViewSet):
                                          internal=serializer.validated_data.get('internal', False))
         except BoonSdkDuplicateException:
             msg = 'An API Key with this name already exists. Please choose another.'
-            return Response(status=status.HTTP_409_CONFLICT, data={'name': [msg]})
+            raise DuplicateError({'name': [msg]})
         slim_key = {'accessKey': apikey['accessKey'],
                     'secretKey': apikey['secretKey']}
         return Response(status=status.HTTP_201_CREATED, data=slim_key)
