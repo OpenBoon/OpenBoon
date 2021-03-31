@@ -73,21 +73,20 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
   const handleMouseDown = ({ clientX }) => {
     origin = clientX
     scrollbarOrigin = scrollbarRef.current.offsetLeft
-    if (!scrollbarScrollableWidth) {
-      const { width: scrollbarWidth = 0 } =
-        scrollbarRef.current?.getBoundingClientRect() || {}
-
-      const scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
-
-      // the max number of pixels the scrollbar thumb can travel
-      scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
-    }
 
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', handleMouseUp)
   }
 
   useEffect(() => {
+    const { width: scrollbarWidth = 0 } =
+      scrollbarRef.current?.getBoundingClientRect() || {}
+
+    const scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
+
+    // the max number of pixels the scrollbar thumb can travel
+    scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
+
     return () => {
       horizontalScrollerDeregister()
     }
