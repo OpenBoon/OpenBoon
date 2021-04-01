@@ -17,7 +17,7 @@ from organizations.serializers import (OrganizationSerializer,
                                        OrganizationOwnerSerializer)
 from projects.models import Project, Membership
 from projects.serializers import ProjectDetailSerializer, ProjectSimpleSerializer
-from wallet.exceptions import InvalidRequestError, NotAllowedError
+from wallet.exceptions import InvalidRequestError, NotAllowedError, DuplicateError
 from wallet.paginators import FromSizePagination
 
 User = get_user_model()
@@ -68,7 +68,9 @@ class OrganizationProjectViewSet(ListModelMixin, BaseOrganizationOwnerViewset):
         name = request.data.get('name')
         if not name:
             raise InvalidRequestError({'detail': ['"name" argument is missing.']})
-        project = Project.objects.create(name=name, organization=self.organization)
+        project, created = Project.objects.get_or_create(name=name, organization=self.organization)
+        if not created:
+            raise DuplicateError({'name': ['A project with that name already exists.']})
         project.sync_with_zmlp()
         return Response(ProjectSimpleSerializer(project).data)
 
