@@ -292,7 +292,7 @@ class AssetSearchServiceTests : AbstractTest() {
     }
 
     @Test
-    fun textExcludeLabeled() {
+    fun textExcludeTrainingSetsFilter() {
         val mspec = ModelSpec(
             "animals",
             ModelType.KNN_CLASSIFIER
@@ -314,9 +314,43 @@ class AssetSearchServiceTests : AbstractTest() {
         val results = assetSearchService.search(
             mapOf(
                 "size" to 10,
-                "query" to mapOf("match_all" to mapOf<String, Any>()), "exclude_labeled" to true
+                "query" to mapOf("match_all" to mapOf<String, Any>()), "exclude_training_sets" to true
             )
         )
         assertEquals(results.hits.totalHits.value, 1)
+    }
+
+    @Test
+    fun textTrainingSetFilter() {
+        val mspec = ModelSpec(
+            "animals",
+            ModelType.KNN_CLASSIFIER
+        )
+
+        val model = modelService.createModel(mspec)
+        val dataSet = listOf(
+            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("cat")),
+            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("horse")),
+            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
+            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("zanzibar"))
+        )
+
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(dataSet, state = AssetState.Analyzed)
+        )
+        refreshElastic()
+
+        val results = assetSearchService.search(
+            mapOf(
+                "size" to 10,
+                "query" to mapOf("match_all" to mapOf<String, Any>()),
+                "training_set" to mapOf(
+                    "modelId" to model.id.toString(),
+                    "labels" to listOf("horse"),
+                    "scopes" to listOf("TRAIN")
+                )
+            )
+        )
+        assertEquals(2, results.hits.totalHits.value)
     }
 }
