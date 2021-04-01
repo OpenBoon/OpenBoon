@@ -13,10 +13,10 @@ from organizations.models import Organization, User, Plan
 from organizations.permissions import OrganizationOwnerPermissions
 from organizations.serializers import (OrganizationSerializer,
                                        OrganizationUserListSerializer,
-                                       OrganizationUserDetailSerializer,
-                                       OrganizationOwnerSerializer)
+                                       UserProjectSerializer)
 from projects.models import Project, Membership
 from projects.serializers import ProjectDetailSerializer, ProjectSimpleSerializer
+from registration.serializers import SimpleUserSerializer
 from wallet.exceptions import InvalidRequestError, NotAllowedError, DuplicateError
 from wallet.paginators import FromSizePagination
 
@@ -83,15 +83,14 @@ class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, SortAndSearchU
 
     def get_serializer_class(self):
         action_map = {'list': OrganizationUserListSerializer,
-                      'retrieve': OrganizationUserDetailSerializer}
+                      'retrieve': SimpleUserSerializer}
         return action_map[self.action]
 
     def get_queryset(self):
         return User.objects.filter(projects__organization=self.organization).distinct()
 
     def get_serializer_context(self):
-        context = {'organization': self.organization}
-        return context
+        return {'organization': self.organization}
 
     def destroy(self, request, *args, **kwargs):
         user = self.get_object()
@@ -104,10 +103,20 @@ class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, SortAndSearchU
         return Response({'detail': [message]})
 
 
+class OrganizationUserProjectViewSet(ListModelMixin, BaseOrganizationOwnerViewset):
+    serializer_class = UserProjectSerializer
+
+    def get_queryset(self):
+        return Project.objects.filter(organization=self.organization, users=self.kwargs.get('user_pk'))
+
+    def get_serializer_context(self):
+        return {'user_id': self.kwargs.get('user_pk')}
+
+
 class OrganizationOwnerViewSet(ListModelMixin, SortAndSearchUsersMixin,
                                BaseOrganizationOwnerViewset):
     """Viewset for an Organization's owners."""
-    serializer_class = OrganizationOwnerSerializer
+    serializer_class = SimpleUserSerializer
 
     def get_queryset(self):
         return self.organization.owners.all()
