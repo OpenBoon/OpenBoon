@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OrganizationProjectsAdd /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    Create a New Project
+  </h3>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-1 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-3 {
+  position: relative;
+}
+
+.emotion-4 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid #c92300;
+  border-width: 2px;
+}
+
+.emotion-4:focus,
+.emotion-4 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+}
+
+.emotion-6 {
+  color: #c92300;
+  font-style: italic;
+  white-space: pre-line;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-7 button,
+.emotion-7 a {
+  margin-right: 16px;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited,
+.emotion-8 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-8:hover,
+.emotion-8 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-8[aria-disabled=true],
+.emotion-8 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-1"
+    >
+      <label
+        className="emotion-2"
+        htmlFor="name"
+      >
+        Project Name
+      </label>
+      <div
+        className="emotion-3"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-4"
+          disabled={false}
+          id="name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value="Project Name"
+        />
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <span
+          className="emotion-6"
+        >
+          Name already in use
+        </span>
+         
+      </div>
+    </div>
+    <div
+      className="emotion-7"
+    >
+      <button
+        className="emotion-8"
+        onClick={[Function]}
+        type="submit"
+      >
+        Create Project
+      </button>
+    </div>
+  </form>,
+]
+`;
