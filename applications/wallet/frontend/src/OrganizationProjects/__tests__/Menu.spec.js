@@ -2,6 +2,7 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import OrganizationProjectsMenu from '../Menu'
 
+const ORGANIZATION_ID = '42869703-fb62-4988-a0d1-e59b15caff06'
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
 describe('<OrganizationProjectsMenu />', () => {
@@ -11,7 +12,11 @@ describe('<OrganizationProjectsMenu />', () => {
     fetch.mockResponseOnce('{}')
 
     const component = TestRenderer.create(
-      <OrganizationProjectsMenu projectId={PROJECT_ID} revalidate={mockFn} />,
+      <OrganizationProjectsMenu
+        organizationId={ORGANIZATION_ID}
+        projectId={PROJECT_ID}
+        revalidate={mockFn}
+      />,
     )
 
     // Open Menu
