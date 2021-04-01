@@ -103,7 +103,7 @@ class TestApikey:
             reverse('apikey-list', kwargs={'project_pk': project.id}), body)
         assert response.status_code == 409
         assert response.json() == {
-            'name': ['An API Key with this name already exists. Please choose another.']
+            'name': ['An API Key with this name already exists.']
         }
 
     def test_delete_detail(self, zmlp_project_user, project, api_client, monkeypatch, detail_data):

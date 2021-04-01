@@ -155,6 +155,16 @@ class TestViews(object):
         project = Project.objects.get(name='project_1')
         assert project.organization == organization
 
+        # Create a duplicate project in the organization.
+        response = check_response(api_client.post(path, data={'name': 'project_1'}), status=409)
+        assert response == {'name': ['A project with that name already exists.']}
+
+        # Create a project with the same name in a different organization.
+        org2 = Organization.objects.create(name='org2')
+        org2.owners.add(zmlp_project_user)
+        path2 = reverse('org-project-list', kwargs={'organization_pk': org2.id})
+        check_response(api_client.post(path2, data={'name': 'project_1'}))
+
     def test_org_user_list(self, login, zmlp_project_user, api_client, organization, project):
         path = reverse('org-user-list', kwargs={'organization_pk': organization.id})
 
