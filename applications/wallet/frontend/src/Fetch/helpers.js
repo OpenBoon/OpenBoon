@@ -67,10 +67,8 @@ export const getPathname = ({ pathname }) => {
     })
 }
 
-export const revalidate = async ({ key, paginated, from = 0, size = 20 }) => {
-  const url = paginated ? `${key}?from=${from}&size=${size}` : key
-
-  return mutate(url, async () => fetcher(url))
+export const revalidate = async ({ key }) => {
+  return mutate(key, async () => fetcher(key))
 }
 
 export const parseResponse = async ({ response }) => {

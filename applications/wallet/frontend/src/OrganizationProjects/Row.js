@@ -5,6 +5,7 @@ import { formatUsage } from '../Project/helpers'
 import OrganizationProjectsMenu from './Menu'
 
 const OrganizationProjectsRow = ({
+  organizationId,
   project: {
     id,
     name,
@@ -35,13 +36,18 @@ const OrganizationProjectsRow = ({
       <td>{formatUsage({ number: externalVideoMinutes / 60 })}</td>
       <td>{formatUsage({ number: totalVideoMinutes / 60 })}</td>
       <td>
-        <OrganizationProjectsMenu projectId={id} revalidate={revalidate} />
+        <OrganizationProjectsMenu
+          organizationId={organizationId}
+          projectId={id}
+          revalidate={revalidate}
+        />
       </td>
     </tr>
   )
 }
 
 OrganizationProjectsRow.propTypes = {
+  organizationId: PropTypes.string.isRequired,
   project: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
