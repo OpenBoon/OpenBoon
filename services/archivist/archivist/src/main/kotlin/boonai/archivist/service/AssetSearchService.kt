@@ -2,6 +2,7 @@ package boonai.archivist.service
 
 import boonai.archivist.security.getProjectId
 import boonai.common.util.Json
+import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.ClearScrollResponse
 import org.elasticsearch.action.search.SearchResponse
@@ -107,6 +108,8 @@ class AssetSearchServiceImpl : AssetSearchService {
 
     override fun mapToSearchSourceBuilder(search: Map<String, Any>): SearchSourceBuilder {
 
+        val excludeLabeled = search.getOrDefault("exclude_labeled", false) as Boolean
+
         // Filters out search options that are not supported.
         val searchSource = search.filterKeys { it in allowedSearchProperties }
         val parser = XContentFactory.xContent(XContentType.JSON).createParser(
@@ -116,6 +119,15 @@ class AssetSearchServiceImpl : AssetSearchService {
 
         val outerQuery = QueryBuilders.boolQuery()
         outerQuery.filter(QueryBuilders.termQuery("system.state", "Analyzed"))
+
+        if (excludeLabeled) {
+            outerQuery.mustNot(
+                QueryBuilders.nestedQuery(
+                    "labels",
+                    QueryBuilders.boolQuery().filter(QueryBuilders.existsQuery("labels.modelId")), ScoreMode.None
+                )
+            )
+        }
 
         val ssb = SearchSourceBuilder.fromXContent(parser)
         if (ssb.query() != null) {

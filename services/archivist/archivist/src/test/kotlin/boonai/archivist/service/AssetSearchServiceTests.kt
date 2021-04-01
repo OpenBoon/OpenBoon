@@ -2,7 +2,10 @@ package boonai.archivist.service
 
 import boonai.archivist.AbstractTest
 import boonai.archivist.domain.AssetSpec
+import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
+import boonai.archivist.domain.ModelSpec
+import boonai.archivist.domain.ModelType
 import boonai.common.util.Json
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.builder.SearchSourceBuilder
@@ -18,6 +21,9 @@ class AssetSearchServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var assetSearchService: AssetSearchService
+
+    @Autowired
+    lateinit var modelService: ModelService
 
     @Before
     fun setUp() {
@@ -283,5 +289,34 @@ class AssetSearchServiceTests : AbstractTest() {
             """
         val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
         assertEquals(0, rsp.hits.hits.size)
+    }
+
+    @Test
+    fun textExcludeLabeled() {
+        val mspec = ModelSpec(
+            "animals",
+            ModelType.KNN_CLASSIFIER
+        )
+
+        val model = modelService.createModel(mspec)
+        val dataSet = listOf(
+            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("horse")),
+            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("horse")),
+            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
+            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("zanzibar"))
+        )
+
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(dataSet, state = AssetState.Analyzed)
+        )
+        refreshElastic()
+
+        val results = assetSearchService.search(
+            mapOf(
+                "size" to 10,
+                "query" to mapOf("match_all" to mapOf<String, Any>()), "exclude_labeled" to true
+            )
+        )
+        assertEquals(results.hits.totalHits.value, 1)
     }
 }
