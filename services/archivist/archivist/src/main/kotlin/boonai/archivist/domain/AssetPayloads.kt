@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty
 import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
-
 @ApiModel("TrainingSetQuery", description = "A simple query for a training set.")
 class TrainingSetQuery(
     @ApiModelProperty("The model Id")
