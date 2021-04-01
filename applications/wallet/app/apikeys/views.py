@@ -33,7 +33,7 @@ class ApikeyViewSet(BaseProjectViewSet):
                                          serializer.validated_data['permissions'], encode_b64=False,
                                          internal=serializer.validated_data.get('internal', False))
         except BoonSdkDuplicateException:
-            msg = 'An API Key with this name already exists. Please choose another.'
+            msg = 'An API Key with this name already exists.'
             raise DuplicateError({'name': [msg]})
         slim_key = {'accessKey': apikey['accessKey'],
                     'secretKey': apikey['secretKey']}
