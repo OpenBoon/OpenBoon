@@ -214,9 +214,26 @@ class TestViews(object):
         response = check_response(api_client.get(path))
         assert response['id'] == zmlp_project_user.id
         assert response['email'] == zmlp_project_user.email
-        assert response['projects'] == [{'id': project.id, 'name': 'Test Project',
-                                         'roles': ['ML_Tools', 'User_Admin']},
-                                        {'id': str(other_project.id), 'name': '1', 'roles': []}]
+
+    def test_org_user_project_retrieve(self, login, zmlp_project_user, api_client, organization, project):
+        path = reverse('org-user-project-list', kwargs={'organization_pk': organization.id,
+                                                        'user_pk': zmlp_project_user.id})
+
+        # User is not an organization owner
+        check_response(api_client.get(path), status=403)
+
+        # User is an organization owner.
+        organization.owners.add(zmlp_project_user)
+        other_project = Project.objects.create(name='1', organization=organization)
+        other_project.users.add(zmlp_project_user)
+        Project.objects.create(name='should_not_be_in_response')
+        response = check_response(api_client.get(path))
+        assert response['count'] == 2
+        expected = [{'id': project.id, 'name': 'Test Project',
+                     'roles': ['ML_Tools', 'User_Admin']},
+                    {'id': str(other_project.id), 'name': '1', 'roles': []}]
+        for project in expected:
+            assert project in response['results']
 
     def test_org_user_destroy(self, login, zmlp_project_user, organization, project, api_client,
                               monkeypatch):
