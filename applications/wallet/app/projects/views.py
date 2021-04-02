@@ -87,7 +87,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
         # Need to handle pagination
         # If the project doesn't exist or user is not a member a 403 is returned
         project = self.get_project_object(project_pk)
-        users = project.users.all()
+        users = User.objects.filter(Q(memberships__project=project) | Q(organizations=project.organization)).distinct()
         paginated_users = self.paginate_queryset(users)
         if paginated_users is not None:
             serializer = self.get_serializer(paginated_users, many=True)
