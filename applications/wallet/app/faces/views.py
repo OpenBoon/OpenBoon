@@ -8,7 +8,7 @@ from boonsdk.client import BoonSdkNotFoundException
 from assets.utils import AssetBoxImager
 from assets.views import AssetViewSet
 from faces.serializers import UpdateFaceLabelsSerializer, FaceAssetSerializer
-from projects.views import BaseProjectViewSet
+from projects.viewsets import BaseProjectViewSet
 from wallet.mixins import CamelCaseRendererMixin
 from wallet.paginators import ZMLPFromSizePagination
 
@@ -24,7 +24,6 @@ def predictions_match(left, right):
 
 
 class FaceViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
-    zmlp_only = True
     zmlp_root_api_path = 'api/v3/assets/'
     detection_attr = 'analysis.boonai-face-detection'
     model_name = 'console'
