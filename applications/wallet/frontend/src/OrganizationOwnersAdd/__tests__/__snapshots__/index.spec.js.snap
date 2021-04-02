@@ -1,0 +1,1354 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OrganizationOwnersAdd /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    Add Owners(s) to Organization
+  </h3>,
+  .emotion-0 {
+  padding-top: 12px;
+}
+
+.emotion-1 {
+  display: block;
+  color: #808080;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 16px;
+}
+
+.emotion-3 {
+  width: 470px;
+  font-size: 15px;
+  line-height: 19px;
+  color: #ffffff;
+  background-color: #2e2e2e;
+  border-radius: 2px;
+  padding: 12px;
+  border: none;
+  resize: none;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
+  color: #6088FE;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.emotion-5:active {
+  opacity: 0;
+  -webkit-transition: opacity .3s ease;
+  transition: opacity .3s ease;
+}
+
+<div
+    className="emotion-0"
+  >
+    <label
+      className="emotion-1"
+      htmlFor="copyLink"
+    >
+      A user must have an account to be added. Accounts can be created here:
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        className="emotion-3"
+        id="copyLink"
+        readOnly={true}
+        type="text"
+        value="http://localhost/create-account"
+      />
+      <div
+        className="emotion-4"
+      >
+        <button
+          className="emotion-5"
+          onClick={[Function]}
+          type="button"
+        >
+          Copy Link
+        </button>
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-1 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-3 {
+  position: relative;
+}
+
+.emotion-4 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-4:focus,
+.emotion-4 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-6 button,
+.emotion-6 a {
+  margin-right: 16px;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-1"
+    >
+      <label
+        className="emotion-2"
+        htmlFor="emails"
+      >
+        Email(s)
+      </label>
+      <div
+        className="emotion-3"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-4"
+          disabled={false}
+          id="emails"
+          name="emails"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-5"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-7"
+        onClick={[Function]}
+        type="submit"
+      >
+        Add
+      </button>
+    </div>
+  </form>,
+]
+`;
+
+exports[`<OrganizationOwnersAdd /> should render properly 2`] = `
+Array [
+  .emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    Add Owners(s) to Organization
+  </h3>,
+  .emotion-0 {
+  padding-top: 12px;
+}
+
+.emotion-1 {
+  display: block;
+  color: #808080;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 16px;
+}
+
+.emotion-3 {
+  width: 470px;
+  font-size: 15px;
+  line-height: 19px;
+  color: #ffffff;
+  background-color: #2e2e2e;
+  border-radius: 2px;
+  padding: 12px;
+  border: none;
+  resize: none;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
+  color: #6088FE;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.emotion-5:active {
+  opacity: 0;
+  -webkit-transition: opacity .3s ease;
+  transition: opacity .3s ease;
+}
+
+<div
+    className="emotion-0"
+  >
+    <label
+      className="emotion-1"
+      htmlFor="copyLink"
+    >
+      A user must have an account to be added. Accounts can be created here:
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        className="emotion-3"
+        id="copyLink"
+        readOnly={true}
+        type="text"
+        value="http://localhost/create-account"
+      />
+      <div
+        className="emotion-4"
+      >
+        <button
+          className="emotion-5"
+          onClick={[Function]}
+          type="button"
+        >
+          Copy Link
+        </button>
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-1 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-3 {
+  position: relative;
+}
+
+.emotion-4 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-4:focus,
+.emotion-4 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-6 button,
+.emotion-6 a {
+  margin-right: 16px;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-1"
+    >
+      <label
+        className="emotion-2"
+        htmlFor="emails"
+      >
+        Email(s)
+      </label>
+      <div
+        className="emotion-3"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-4"
+          disabled={false}
+          id="emails"
+          name="emails"
+          onChange={[Function]}
+          type="text"
+          value="jane@email.com"
+        />
+      </div>
+      <div
+        className="emotion-5"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <button
+        className="emotion-7"
+        onClick={[Function]}
+        type="submit"
+      >
+        Add
+      </button>
+    </div>
+  </form>,
+]
+`;
+
+exports[`<OrganizationOwnersAdd /> should render properly 3`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-2 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-2 a:hover {
+  color: #3A5DFF;
+}
+
+.emotion-3 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-4 {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  color: #808080;
+}
+
+.emotion-5 {
+  padding-top: 12px;
+}
+
+.emotion-6 {
+  display: block;
+  color: #808080;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 16px;
+}
+
+.emotion-8 {
+  width: 470px;
+  font-size: 15px;
+  line-height: 19px;
+  color: #ffffff;
+  background-color: #2e2e2e;
+  border-radius: 2px;
+  padding: 12px;
+  border: none;
+  resize: none;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited,
+.emotion-10 .noop {
+  color: #6088FE;
+}
+
+.emotion-10:hover,
+.emotion-10 .noop {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.emotion-10:active {
+  opacity: 0;
+  -webkit-transition: opacity .3s ease;
+  transition: opacity .3s ease;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-15 {
+  padding-top: 12px;
+  color: #808080;
+}
+
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-16 button,
+.emotion-16 a {
+  margin-right: 16px;
+}
+
+.emotion-17 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-17,
+.emotion-17:hover,
+.emotion-17:visited,
+.emotion-17 .noop {
+  background-color: #808080;
+}
+
+.emotion-17:hover,
+.emotion-17 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-17[aria-disabled=true],
+.emotion-17 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-18 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-18,
+.emotion-18:hover,
+.emotion-18:visited,
+.emotion-18 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-18:hover,
+.emotion-18 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div>
+  <div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#c92300"
+        data-file-name="warning.svg"
+        height={20}
+      />
+      <div
+        className="emotion-2"
+        role="alert"
+      >
+        Owner(s) not added.
+      </div>
+    </div>
+  </div>
+  <h3
+    className="emotion-3"
+  >
+    Owner(s) that Need an Account
+  </h3>
+  <div
+    className="emotion-4"
+  >
+    danny@zorroa.com
+  </div>
+  <div
+    className="emotion-5"
+  >
+    <label
+      className="emotion-6"
+      htmlFor="copyLink"
+    >
+      A user must have an account to be added. Accounts can be created here:
+    </label>
+    <div
+      className="emotion-7"
+    >
+      <input
+        className="emotion-8"
+        id="copyLink"
+        readOnly={true}
+        type="text"
+        value="http://localhost/create-account"
+      />
+      <div
+        className="emotion-9"
+      >
+        <button
+          className="emotion-10"
+          onClick={[Function]}
+          type="button"
+        >
+          Copy Link
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-12"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-2"
+        role="alert"
+      >
+        Owner(s) added.
+      </div>
+    </div>
+  </div>
+  <h3
+    className="emotion-3"
+  >
+    Owner(s) Added
+  </h3>
+  <div
+    className="emotion-15"
+  >
+    tester@fake.com
+  </div>
+  <div
+    className="emotion-16"
+  >
+    <button
+      className="emotion-17"
+      onClick={[Function]}
+      type="button"
+    >
+      Add More Owner(s)
+    </button>
+    <a
+      className="emotion-18"
+      href="/organizations/76917058-b147-4556-987a-0a0f11e46d9b/owners"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      View All
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<OrganizationOwnersAdd /> should render properly 4`] = `
+Array [
+  .emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    Add Owners(s) to Organization
+  </h3>,
+  .emotion-0 {
+  padding-top: 12px;
+}
+
+.emotion-1 {
+  display: block;
+  color: #808080;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 16px;
+}
+
+.emotion-3 {
+  width: 470px;
+  font-size: 15px;
+  line-height: 19px;
+  color: #ffffff;
+  background-color: #2e2e2e;
+  border-radius: 2px;
+  padding: 12px;
+  border: none;
+  resize: none;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
+  color: #6088FE;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.emotion-5:active {
+  opacity: 0;
+  -webkit-transition: opacity .3s ease;
+  transition: opacity .3s ease;
+}
+
+<div
+    className="emotion-0"
+  >
+    <label
+      className="emotion-1"
+      htmlFor="copyLink"
+    >
+      A user must have an account to be added. Accounts can be created here:
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        className="emotion-3"
+        id="copyLink"
+        readOnly={true}
+        type="text"
+        value="http://localhost/create-account"
+      />
+      <div
+        className="emotion-4"
+      >
+        <button
+          className="emotion-5"
+          onClick={[Function]}
+          type="button"
+        >
+          Copy Link
+        </button>
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-1 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-3 {
+  position: relative;
+}
+
+.emotion-4 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-4:focus,
+.emotion-4 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-6 button,
+.emotion-6 a {
+  margin-right: 16px;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-1"
+    >
+      <label
+        className="emotion-2"
+        htmlFor="emails"
+      >
+        Email(s)
+      </label>
+      <div
+        className="emotion-3"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-4"
+          disabled={false}
+          id="emails"
+          name="emails"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-5"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-7"
+        onClick={[Function]}
+        type="submit"
+      >
+        Add
+      </button>
+    </div>
+  </form>,
+]
+`;

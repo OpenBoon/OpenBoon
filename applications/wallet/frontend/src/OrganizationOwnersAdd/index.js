@@ -1,6 +1,5 @@
 import { useReducer } from 'react'
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
 
 import { spacing } from '../Styles'
 
@@ -8,19 +7,16 @@ import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import FlashMessageErrors from '../FlashMessage/Errors'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
-import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
-import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
+import ProjectUsersAddCopyLink from '../ProjectUsersAdd/CopyLink'
 
 import { onSubmit } from './helpers'
 
-import ProjectUsersAddFormResponse from './FormResponse'
-import ProjectUsersAddCopyLink from './CopyLink'
+import OrganizationOwnersAddResponse from './Response'
 
 const INITIAL_STATE = {
   emails: '',
-  roles: {},
   succeeded: [],
   failed: [],
   isLoading: false,
@@ -29,21 +25,17 @@ const INITIAL_STATE = {
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-const ProjectUsersAddForm = () => {
+const OrganizationOwnersAdd = () => {
   const {
-    query: { projectId },
+    query: { organizationId },
   } = useRouter()
-
-  const {
-    data: { results: roles },
-  } = useSWR(`/api/v1/projects/${projectId}/roles/`)
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   if (state.succeeded.length > 0 || state.failed.length > 0) {
     return (
-      <ProjectUsersAddFormResponse
-        projectId={projectId}
+      <OrganizationOwnersAddResponse
+        organizationId={organizationId}
         succeeded={state.succeeded}
         failed={state.failed}
         roles={state.roles}
@@ -59,7 +51,7 @@ const ProjectUsersAddForm = () => {
         styles={{ paddingTop: spacing.base, paddingBottom: spacing.base }}
       />
 
-      <SectionTitle>Add User(s) to Project</SectionTitle>
+      <SectionTitle>Add Owners(s) to Organization</SectionTitle>
 
       <ProjectUsersAddCopyLink />
 
@@ -76,26 +68,11 @@ const ProjectUsersAddForm = () => {
           errorMessage={state.errors.emails}
         />
 
-        <CheckboxGroup
-          legend="Add Roles"
-          description=""
-          onClick={(role) => dispatch({ roles: { ...state.roles, ...role } })}
-          options={roles.map(({ name, description }) => ({
-            value: name,
-            label: name.replace('_', ' '),
-            icon: '',
-            legend: description,
-            initialValue: false,
-            isDisabled: false,
-          }))}
-          variant={CHECKBOX_VARIANTS.PRIMARY}
-        />
-
         <ButtonGroup>
           <Button
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
-            onClick={() => onSubmit({ projectId, dispatch, state })}
+            onClick={() => onSubmit({ organizationId, dispatch, state })}
             isDisabled={!state.emails || state.isLoading}
           >
             {state.isLoading ? 'Adding...' : 'Add'}
@@ -106,4 +83,4 @@ const ProjectUsersAddForm = () => {
   )
 }
 
-export default ProjectUsersAddForm
+export default OrganizationOwnersAdd

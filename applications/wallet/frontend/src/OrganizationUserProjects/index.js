@@ -29,7 +29,7 @@ const OrganizationUserProjects = () => {
           return (
             <OrganizationUserProjectsRow
               key={result.id}
-              userId={userId}
+              userId={parseInt(userId, 10)}
               project={result}
               revalidate={revalidate}
             />

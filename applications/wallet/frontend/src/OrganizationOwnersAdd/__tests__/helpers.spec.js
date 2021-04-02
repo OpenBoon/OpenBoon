@@ -1,35 +1,30 @@
-import projectUsersAdd from '../__mocks__/projectUsersAdd'
+import organizationOwnersAdd from '../__mocks__/organizationOwnersAdd'
 
 import { onSubmit } from '../helpers'
 
-const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
+const ORGANIZATION_ID = '42869703-fb62-4988-a0d1-e59b15caff06'
 
 describe('<ProjectUsersAdd /> helpers', () => {
   describe('onSubmit()', () => {
     it('should call the API', async () => {
       const mockFn = jest.fn()
 
-      fetch.mockResponseOnce(JSON.stringify(projectUsersAdd), {
+      fetch.mockResponseOnce(JSON.stringify(organizationOwnersAdd), {
         headers: { 'content-type': 'application/json' },
       })
 
       await onSubmit({
         dispatch: mockFn,
-        projectId: PROJECT_ID,
+        organizationId: ORGANIZATION_ID,
         state: {
           emails: 'jane@zorroa.com, joe@zorroa.com',
-          roles: {
-            ML_Tools: true,
-            API_Keys: false,
-            User_Admin: true,
-          },
         },
       })
 
       expect(fetch.mock.calls.length).toEqual(1)
 
       expect(fetch.mock.calls[0][0]).toEqual(
-        '/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/users/',
+        `/api/v1/organizations/${ORGANIZATION_ID}/owners/`,
       )
 
       expect(fetch.mock.calls[0][1]).toEqual({
@@ -39,21 +34,12 @@ describe('<ProjectUsersAdd /> helpers', () => {
           'X-CSRFToken': 'CSRF_TOKEN',
         },
         body: JSON.stringify({
-          batch: [
-            {
-              email: 'jane@zorroa.com',
-              roles: ['ML_Tools', 'User_Admin'],
-            },
-            {
-              email: 'joe@zorroa.com',
-              roles: ['ML_Tools', 'User_Admin'],
-            },
-          ],
+          emails: ['jane@zorroa.com', 'joe@zorroa.com'],
         }),
       })
 
       expect(mockFn).toHaveBeenCalledWith({
-        ...projectUsersAdd.results,
+        ...organizationOwnersAdd.results,
         isLoading: false,
       })
     })
@@ -67,21 +53,16 @@ describe('<ProjectUsersAdd /> helpers', () => {
 
       await onSubmit({
         dispatch: mockFn,
-        projectId: PROJECT_ID,
+        organizationId: ORGANIZATION_ID,
         state: {
           emails: 'jane@zorroa.com, joe@zorroa.com',
-          roles: {
-            ML_Tools: true,
-            API_Keys: false,
-            User_Admin: true,
-          },
         },
       })
 
       expect(fetch.mock.calls.length).toEqual(1)
 
       expect(fetch.mock.calls[0][0]).toEqual(
-        '/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/users/',
+        `/api/v1/organizations/${ORGANIZATION_ID}/owners/`,
       )
 
       expect(mockFn).toHaveBeenCalledWith({
