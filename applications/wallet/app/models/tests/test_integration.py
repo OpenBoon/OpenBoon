@@ -19,7 +19,7 @@ pytestmark = pytest.mark.django_db
 def model_fields():
     return ['id', 'name', 'type', 'moduleName', 'fileId', 'trainingJobName',
             'unappliedChanges', 'deploySearch', 'timeCreated', 'timeModified', 'actorCreated',
-            'actorModified', 'url']
+            'actorModified', 'url', 'projectId']
 
 
 class TestGetModelTypeRestrictions:
@@ -164,13 +164,12 @@ class TestModelViewSetCreate:
         monkeypatch.setattr(BoonClient, 'post', mock_response)
         response = api_client.post(path, body)
         content = check_response(response, status.HTTP_201_CREATED)
-        results = content['results']
-        assert results['name'] == 'Test Model'
-        assert results['type'] == 'ZVI_KNN_CLASSIFIER'
+        assert content['name'] == 'Test Model'
+        assert content['type'] == 'ZVI_KNN_CLASSIFIER'
         fields = ['id', 'projectId', 'type', 'name', 'moduleName', 'fileId', 'trainingJobName',
                   'ready', 'deploySearch', 'timeCreated', 'timeModified', 'actorCreated',
                   'actorModified']
-        assert set(fields) == set(results.keys())
+        assert set(fields) == set(content.keys())
 
 
 class TestModelViewSetActions:

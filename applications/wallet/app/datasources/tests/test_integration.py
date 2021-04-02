@@ -198,7 +198,7 @@ def test_datasource_viewset_retrieve(api_client, monkeypatch, zmlp_project_user,
 def test_datasource_viewset_delete(api_client, monkeypatch, zmlp_project_user, project, login):
 
     def mock_delete_response(*args, **kwargs):
-        return {'detail': 'success'}  # noqa
+        return {'success': True}
 
     monkeypatch.setattr(BoonClient, 'delete', mock_delete_response)
     response = api_client.delete(reverse('datasource-detail',
