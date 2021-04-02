@@ -12,8 +12,8 @@ from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 DestroyLabelSerializer, ModelDetailSerializer,
                                 ConfusionMatrixSerializer)
 from models.utils import ConfusionMatrix
-from projects.viewsets import BaseProjectViewSet, ZmlpListMixin, ZmlpRetrieveMixin, \
-    ListViewType, ZmlpDestroyMixin, ZmlpCreateMixin
+from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpRetrieveMixin,
+                               ListViewType, ZmlpDestroyMixin, ZmlpCreateMixin)
 from wallet.paginators import ZMLPFromSizePagination
 from wallet.utils import validate_zmlp_data
 from boonsdk.client import BoonSdkNotFoundException
