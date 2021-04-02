@@ -82,7 +82,7 @@ Array [
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
-      Add an Organization Owner
+      Add Organization Owner(s)
     </a>
   </div>,
   .emotion-0 {
@@ -594,7 +594,7 @@ Array [
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
-      Add an Organization Owner
+      Add Organization Owner(s)
     </a>
   </div>,
   .emotion-0 {
@@ -974,7 +974,7 @@ Array [
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
-      Add an Organization Owner
+      Add Organization Owner(s)
     </a>
   </div>,
   .emotion-0 {

@@ -1,7 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import organizationOwnersAdd from '../__mocks__/organizationOwnersAdd'
-import roles from '../../Roles/__mocks__/roles'
 
 import OrganizationOwnersAdd from '..'
 
@@ -17,14 +16,6 @@ describe('<OrganizationOwnersAdd />', () => {
       pathname: '/orgainzations/[organizationId]/owners/add',
       query: { organizationId: PROJECT_ID },
     })
-
-    require('swr').__setMockUseSWRResponse({
-      data: roles,
-    })
-
-    const mockOnCopy = jest.fn()
-
-    require('../../Copy/helpers').__setMockOnCopy(mockOnCopy)
 
     const component = TestRenderer.create(<OrganizationOwnersAdd />)
 
@@ -62,15 +53,6 @@ describe('<OrganizationOwnersAdd />', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
-
-    // Copy Key to clipboard
-    act(() => {
-      component.root
-        .findByProps({ children: 'Copy Link' })
-        .props.onClick({ preventDefault: noop })
-    })
-
-    expect(mockOnCopy).toHaveBeenCalledWith({ copyRef: { current: null } })
 
     // Reset form
     act(() => {

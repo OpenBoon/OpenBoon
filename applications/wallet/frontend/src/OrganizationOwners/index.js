@@ -26,7 +26,7 @@ const OrganizationOwners = () => {
       >
         <Link href={`/organizations/${organizationId}/owners/add`} passHref>
           <Button variant={VARIANTS.PRIMARY_SMALL}>
-            Add an Organization Owner
+            Add Organization Owner(s)
           </Button>
         </Link>
       </div>

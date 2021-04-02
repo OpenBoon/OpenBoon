@@ -4,7 +4,7 @@ import { onSubmit } from '../helpers'
 
 const ORGANIZATION_ID = '42869703-fb62-4988-a0d1-e59b15caff06'
 
-describe('<ProjectUsersAdd /> helpers', () => {
+describe('<OrganizationOwnersAdd /> helpers', () => {
   describe('onSubmit()', () => {
     it('should call the API', async () => {
       const mockFn = jest.fn()
