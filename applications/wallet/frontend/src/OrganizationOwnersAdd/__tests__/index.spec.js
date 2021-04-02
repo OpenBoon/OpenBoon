@@ -11,7 +11,7 @@ const noop = () => () => {}
 describe('<OrganizationOwnersAdd />', () => {
   it('should render properly', async () => {
     require('next/router').__setUseRouter({
-      pathname: '/orgainzations/[organizationId]/owners/add',
+      pathname: '/organizations/[organizationId]/owners/add',
       query: { organizationId: PROJECT_ID },
     })
 
