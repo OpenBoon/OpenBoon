@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from jobs.serializers import JobSerializer, TaskErrorSerializer, TaskSerializer
-from projects.views import BaseProjectViewSet
+from projects.viewsets import BaseProjectViewSet
 from searches.serializers import SearchAssetSerializer
 from searches.views import search_asset_modifier
 from wallet.mixins import CamelCaseRendererMixin, BoonAISortArgsMixin

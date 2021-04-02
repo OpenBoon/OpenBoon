@@ -18,7 +18,7 @@ from organizations.models import Organization
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
 from projects.utils import is_user_project_organization_owner, random_project_name
-from projects.views import BaseProjectViewSet
+from projects.viewsets import BaseProjectViewSet
 from wallet.tests.utils import check_response
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
 

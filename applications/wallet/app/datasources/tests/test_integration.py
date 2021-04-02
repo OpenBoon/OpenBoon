@@ -61,7 +61,7 @@ def test_datasource_viewset_create(api_client, monkeypatch, project, zmlp_projec
     monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json()['credentials'] == []
     assert response.json()['name'] == 'cats'
     assert response.json()['jobId'] == '1'
@@ -80,7 +80,7 @@ def test_datasource_viewset_create_gcp_creds(api_client, monkeypatch, project,
     monkeypatch.setattr(BoonClient, 'post', mock_zmlp_create_datasource_post_response)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json()['name'] == 'cats'
 
 
@@ -97,7 +97,7 @@ def test_datasource_viewset_create_aws_creds(api_client, monkeypatch, project,
     monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json()['name'] == 'cats'
 
 
@@ -115,7 +115,7 @@ def test_datasource_viewset_create_azure_creds(api_client, monkeypatch, project,
     monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json()['name'] == 'cats'
 
 
@@ -132,7 +132,7 @@ def test_datasource_viewset_create_null_credentials(api_client, monkeypatch, pro
     monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
-    assert response.status_code == 200
+    assert response.status_code == 201
     response_data = copy(data)
     response_data['fileTypes'] = response_data['file_types']
     del response_data['file_types']
@@ -198,7 +198,7 @@ def test_datasource_viewset_retrieve(api_client, monkeypatch, zmlp_project_user,
 def test_datasource_viewset_delete(api_client, monkeypatch, zmlp_project_user, project, login):
 
     def mock_delete_response(*args, **kwargs):
-        return {'detail': 'success'}  # noqa
+        return {'success': True}
 
     monkeypatch.setattr(BoonClient, 'delete', mock_delete_response)
     response = api_client.delete(reverse('datasource-detail',

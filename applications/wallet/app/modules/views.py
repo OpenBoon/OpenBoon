@@ -1,26 +1,21 @@
 from rest_framework.response import Response
 
 from modules.models import Provider
-from projects.views import BaseProjectViewSet
+from projects.viewsets import BaseProjectViewSet, ZmlpListMixin, ListViewType
 from wallet.paginators import ZMLPFromSizePagination
 from modules.serializers import ModuleSerializer, ProviderSerializer
 from wallet.utils import validate_zmlp_data
 
 
-class ModuleViewSet(BaseProjectViewSet):
-
-    zmlp_only = True
+class ModuleViewSet(ZmlpListMixin,
+                    BaseProjectViewSet):
     zmlp_root_api_path = '/api/v1/pipeline-mods/'
     pagination_class = ZMLPFromSizePagination
     serializer_class = ModuleSerializer
-
-    def list(self, request, project_pk):
-        return self._zmlp_list_from_search(request)
+    list_type = ListViewType.SEARCH
 
 
 class ProviderViewSet(BaseProjectViewSet):
-
-    zmlp_only = True
     zmlp_root_api_path = '/api/v1/pipeline-mods/'
     pagination_class = ZMLPFromSizePagination
     serializer_class = ModuleSerializer
