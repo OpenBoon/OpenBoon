@@ -1,10 +1,12 @@
 import logging
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.relations import HyperlinkedIdentityField
 from sentry_sdk import capture_exception
 
+from projects.utils import is_user_project_organization_owner
 from wallet.utils import convert_base64_to_json
 from projects.models import Project
 
@@ -142,10 +144,17 @@ class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
             return f'{current_url}{obj.id}/'
 
     def get_permissions(self, obj):
+        if is_user_project_organization_owner(obj, self.context['view'].kwargs['project_pk']):
+            permissions = []
+            for role in settings.ROLES:
+                permissions += role['permissions']
+            return permissions
         membership = self._get_membership_obj(obj)
         return self._get_decoded_permissions(membership.apikey)
 
     def get_roles(self, obj):
+        if is_user_project_organization_owner(obj, self.context['view'].kwargs['project_pk']):
+            return ['Organization_Owner']
         membership = self._get_membership_obj(obj)
         return membership.roles
 
