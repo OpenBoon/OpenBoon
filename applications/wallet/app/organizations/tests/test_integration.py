@@ -151,7 +151,7 @@ class TestViews(object):
         check_response(api_client.post(path), status=400)
 
         # Create a new project in the organization.
-        check_response(api_client.post(path, data={'name': 'project_1'}))
+        check_response(api_client.post(path, data={'name': 'project_1'}), status=201)
         project = Project.objects.get(name='project_1')
         assert project.organization == organization
 
@@ -163,7 +163,7 @@ class TestViews(object):
         org2 = Organization.objects.create(name='org2')
         org2.owners.add(zmlp_project_user)
         path2 = reverse('org-project-list', kwargs={'organization_pk': org2.id})
-        check_response(api_client.post(path2, data={'name': 'project_1'}))
+        check_response(api_client.post(path2, data={'name': 'project_1'}), status=201)
 
     def test_org_user_list(self, login, zmlp_project_user, api_client, organization, project):
         path = reverse('org-user-list', kwargs={'organization_pk': organization.id})

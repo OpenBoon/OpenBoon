@@ -9,7 +9,8 @@ from rest_framework.response import Response
 
 from assets.serializers import AssetSerializer
 from assets.utils import AssetBoxImager, get_best_fullscreen_file_data
-from projects.views import BaseProjectViewSet
+from projects.viewsets import BaseProjectViewSet, ZmlpRetrieveMixin, ZmlpDestroyMixin, \
+    ZmlpListMixin, ListViewType
 from searches.utils import FilterBuddy
 from wallet.paginators import ZMLPFromSizePagination
 
@@ -28,28 +29,16 @@ def asset_modifier(request, item):
         item['metadata']['files'] = []
 
 
-class AssetViewSet(BaseProjectViewSet):
-    zmlp_only = True
+class AssetViewSet(ZmlpListMixin,
+                   ZmlpRetrieveMixin,
+                   ZmlpDestroyMixin,
+                   BaseProjectViewSet):
     zmlp_root_api_path = 'api/v3/assets/'
     pagination_class = ZMLPFromSizePagination
     serializer_class = AssetSerializer
-
-    def list(self, request, project_pk):
-        return self._zmlp_list_from_es(request, item_modifier=asset_modifier)
-
-    def retrieve(self, request, project_pk, pk):
-        return self._zmlp_retrieve(request, pk, item_modifier=asset_modifier)
-
-    def destroy(self, request, project_pk, pk):
-        path = f'{self.zmlp_root_api_path}/{pk}'
-        response = request.client.delete(path)
-        if response.get('success'):
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        else:
-            # This may never be used as it doesn't seem like the ZMLP endpoint ever
-            # returns a non-success response.
-            return Response(data={'detail': ['Unable to delete asset.']},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    list_type = ListViewType.ES
+    list_modifier = staticmethod(asset_modifier)
+    retrieve_modifier = staticmethod(asset_modifier)
 
     @action(detail=True, methods=['get'])
     def box_images(self, request, project_pk, pk):
@@ -257,7 +246,6 @@ class AssetViewSet(BaseProjectViewSet):
 
 
 class WebVttViewSet(BaseProjectViewSet):
-    zmlp_only = True
     zmlp_root_api_path = 'api/v3/assets'
     lookup_value_regex = '[^/]+'
 
@@ -274,11 +262,10 @@ class WebVttViewSet(BaseProjectViewSet):
 
 
 class FileCategoryViewSet(BaseProjectViewSet):
-    zmlp_only = True
+    pass
 
 
 class FileNameViewSet(BaseProjectViewSet):
-    zmlp_only = True
     zmlp_root_api_path = 'api/v3/files'
     lookup_value_regex = '[^/]+'
 
