@@ -8,6 +8,7 @@ jest.mock('../../OrganizationProjects', () => 'OrganizationProjects')
 jest.mock('../../OrganizationUsers', () => 'OrganizationUsers')
 jest.mock('../../OrganizationOwners', () => 'OrganizationOwners')
 jest.mock('../../OrganizationProjectsAdd', () => 'OrganizationProjectsAdd')
+jest.mock('../../OrganizationOwnersAdd', () => 'OrganizationOwnersAdd')
 
 describe('<Organization />', () => {
   it('should render properly for Projects', () => {
@@ -59,6 +60,22 @@ describe('<Organization />', () => {
     require('next/router').__setUseRouter({
       pathname: '/organizations/[organizationId]/projects/add',
       query: { organizationId: organization.id },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: organization })
+
+    const component = TestRenderer.create(<Organization />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly for Add Owners', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/organizations/[organizationId]/owners/add',
+      query: {
+        organizationId: organization.id,
+        action: 'remove-owner-success',
+      },
     })
 
     require('swr').__setMockUseSWRResponse({ data: organization })

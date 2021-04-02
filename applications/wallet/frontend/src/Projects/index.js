@@ -15,6 +15,7 @@ const NO_PROJECT_ID_ROUTES = [
   '/organizations/[organizationId]/users',
   '/organizations/[organizationId]/users/[userId]',
   '/organizations/[organizationId]/owners',
+  '/organizations/[organizationId]/owners/add',
 ]
 
 const Projects = ({ projectId, children }) => {
