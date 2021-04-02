@@ -51,7 +51,7 @@ const OrganizationOwnersAdd = () => {
         styles={{ paddingTop: spacing.base, paddingBottom: spacing.base }}
       />
 
-      <SectionTitle>Add Owners(s) to Organization</SectionTitle>
+      <SectionTitle>Add Owner(s) to Organization</SectionTitle>
 
       <ProjectUsersAddCopyLink />
 
