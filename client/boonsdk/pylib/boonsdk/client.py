@@ -419,23 +419,23 @@ class BoonClient(object):
 
     def __sign_request(self):
         if not self.apikey:
-            raise RuntimeError("Unable to make request, no ApiKey has been specified.")
+            raise RuntimeError('Unable to make request, no ApiKey has been specified.')
         claims = {
             'aud': self.server,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60),
-            'accessKey': self.apikey["accessKey"],
+            'accessKey': self.apikey['accessKey'],
         }
 
-        if os.environ.get("BOONAI_TASK_ID"):
-            claims['taskId'] = os.environ.get("BOONAI_TASK_ID")
-            claims['jobId'] = os.environ.get("BOONAI_JOB_ID")
+        if os.environ.get('BOONAI_TASK_ID'):
+            claims['taskId'] = os.environ.get('BOONAI_TASK_ID')
+            claims['jobId'] = os.environ.get('BOONAI_JOB_ID')
 
         if self.project_id:
-            claims["projectId"] = self.project_id
+            claims['projectId'] = self.project_id
         return jwt.encode(claims, self.apikey['secretKey'], algorithm='HS512')
 
 
-class SearchResult(object):
+class SearchResult:
     """
     A utility class for wrapping various search result formats
     that come back from the Boon AI servers.
