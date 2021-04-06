@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
-import { colors, spacing, constants } from '../Styles'
+import { colors, spacing, constants, typography } from '../Styles'
 
 import Bouncer, { ROLES } from '../Bouncer'
 
@@ -17,7 +17,7 @@ const ProjectCards = () => {
   } = useRouter()
 
   const {
-    data: { id, name, mlUsageThisMonth, totalStorageUsage },
+    data: { id, name, organizationName, mlUsageThisMonth, totalStorageUsage },
   } = useSWR(`/api/v1/projects/${projectId}/`)
 
   return (
@@ -49,7 +49,15 @@ const ProjectCards = () => {
             padding: spacing.comfy,
           }}
         >
-          <h3 css={{ paddingBottom: spacing.base }}>Project: {name}</h3>
+          <h3
+            css={{
+              paddingBottom: spacing.base,
+              fontSize: typography.size.giant,
+              lineHeight: typography.height.giant,
+            }}
+          >
+            {name}
+          </h3>
 
           <div
             css={{
@@ -57,7 +65,8 @@ const ProjectCards = () => {
               paddingBottom: spacing.spacious,
             }}
           >
-            Project ID: {id}
+            Organization: {organizationName} / Project ID:&nbsp;
+            <span css={{ textTransform: 'uppercase' }}>{id}</span>
           </div>
 
           <ProjectMetrics
