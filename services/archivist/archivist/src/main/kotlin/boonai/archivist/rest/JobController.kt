@@ -31,7 +31,6 @@ import java.util.UUID
 
 @PreAuthorize("hasAuthority('DataQueueManage')")
 @RestController
-@Timed
 @Api(tags = ["Job"], description = "Operations for interacting with jobs.")
 class JobController @Autowired constructor(
     val jobService: JobService,

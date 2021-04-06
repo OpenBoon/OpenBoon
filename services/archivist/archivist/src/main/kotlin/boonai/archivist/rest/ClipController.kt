@@ -34,7 +34,6 @@ import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletResponse
 
 @RestController
-@Timed
 @Api(tags = ["Timeline"], description = "Operations for interacting with Timelines")
 class ClipController @Autowired constructor(
     val assetService: AssetService,

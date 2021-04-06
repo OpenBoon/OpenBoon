@@ -21,7 +21,6 @@ import java.util.UUID
 
 @PreAuthorize("hasAuthority('DataQueueManage')")
 @RestController
-@Timed
 @Api(tags = ["Task Error"], description = "Operations for interacting with Task Errors.")
 class TaskErrorController @Autowired constructor(val jobService: JobService) {
 

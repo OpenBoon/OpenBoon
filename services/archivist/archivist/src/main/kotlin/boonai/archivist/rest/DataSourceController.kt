@@ -28,7 +28,6 @@ import java.util.UUID
 
 @PreAuthorize("hasAuthority('DataSourceManage')")
 @RestController
-@Timed
 class DataSourceController(
     val dataSourceService: DataSourceService,
     val dataSourceJdbcDao: DataSourceJdbcDao,

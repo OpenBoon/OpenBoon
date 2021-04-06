@@ -47,7 +47,6 @@ import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletResponse
 
 @RestController
-@Timed
 @Api(
     tags = ["Asset"],
     description = "Operations for interacting with Assets including CRUD, streaming, proxies and more."

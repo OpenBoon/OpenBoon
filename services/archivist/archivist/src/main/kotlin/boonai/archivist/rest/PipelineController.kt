@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse
 
 @PreAuthorize("hasAuthority('ProjectManage')")
 @RestController
-@Timed
 @Api(tags = ["Pipeline"], description = "Operations for interacting with Pipelines.")
 class PipelineController @Autowired constructor(
     val pipelineService: PipelineService,

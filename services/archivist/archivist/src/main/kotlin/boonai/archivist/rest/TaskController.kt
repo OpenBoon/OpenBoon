@@ -35,7 +35,6 @@ import java.util.concurrent.ExecutionException
 
 @PreAuthorize("hasAuthority('DataQueueManage')")
 @RestController
-@Timed
 @Api(tags = ["Task"], description = "Operations for interacting with Tasks.")
 class TaskController @Autowired constructor(
     val jobService: JobService,

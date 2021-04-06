@@ -21,7 +21,6 @@ import springfox.documentation.annotations.ApiIgnore
 import java.io.IOException
 
 @RestController
-@Timed
 @ApiIgnore
 class AnalystClusterController @Autowired constructor(
     val analystService: AnalystService,
