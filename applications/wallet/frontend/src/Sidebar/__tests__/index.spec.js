@@ -2,8 +2,6 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import mockUser from '../../User/__mocks__/user'
 
-import User from '../../User'
-
 import Sidebar from '..'
 
 const noop = () => () => {}
@@ -17,13 +15,12 @@ describe('<Sidebar />', () => {
     })
 
     const component = TestRenderer.create(
-      <User initialUser={mockUser}>
-        <Sidebar
-          projectId={PROJECT_ID}
-          isSidebarOpen={false}
-          setSidebarOpen={noop}
-        />
-      </User>,
+      <Sidebar
+        projectId={PROJECT_ID}
+        user={{ ...mockUser, firstName: '', lastName: '' }}
+        isSidebarOpen={false}
+        setSidebarOpen={noop}
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -35,9 +32,12 @@ describe('<Sidebar />', () => {
     })
 
     const component = TestRenderer.create(
-      <User initialUser={mockUser}>
-        <Sidebar projectId={PROJECT_ID} isSidebarOpen setSidebarOpen={noop} />
-      </User>,
+      <Sidebar
+        projectId={PROJECT_ID}
+        user={{ ...mockUser, organizations: [] }}
+        isSidebarOpen
+        setSidebarOpen={noop}
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -47,7 +47,12 @@ describe('<Sidebar />', () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
-      <Sidebar projectId={PROJECT_ID} isSidebarOpen setSidebarOpen={mockFn} />,
+      <Sidebar
+        projectId={PROJECT_ID}
+        user={{ ...mockUser, organizations: ['azerty', 'qwerty'] }}
+        isSidebarOpen
+        setSidebarOpen={mockFn}
+      />,
     )
 
     act(() => {
@@ -63,7 +68,12 @@ describe('<Sidebar />', () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
-      <Sidebar projectId={PROJECT_ID} isSidebarOpen setSidebarOpen={mockFn} />,
+      <Sidebar
+        projectId={PROJECT_ID}
+        user={mockUser}
+        isSidebarOpen
+        setSidebarOpen={mockFn}
+      />,
     )
 
     act(() => {
@@ -89,6 +99,7 @@ describe('<Sidebar />', () => {
     const component = TestRenderer.create(
       <Sidebar
         projectId={PROJECT_ID}
+        user={mockUser}
         isSidebarOpen
         setSidebarOpen={mockSetSidebarOpen}
       />,
