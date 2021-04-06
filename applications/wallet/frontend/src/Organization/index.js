@@ -9,6 +9,7 @@ import OrganizationOwners from '../OrganizationOwners'
 import OrganizationProjects from '../OrganizationProjects'
 import OrganizationUsers from '../OrganizationUsers'
 import OrganizationProjectsAdd from '../OrganizationProjectsAdd'
+import OrganizationOwnersAdd from '../OrganizationOwnersAdd'
 
 import OrganizationDetails from './Details'
 
@@ -25,8 +26,9 @@ const Organization = () => {
       {!!action && (
         <div css={{ display: 'flex', paddingTop: spacing.base }}>
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Project {action === 'add-project-success' && 'created'}
-            {action === 'delete-project-success' && 'deleted'}.
+            {action === 'add-project-success' && 'Project created.'}
+            {action === 'delete-project-success' && 'Project deleted.'}
+            {action === 'remove-owner-success' && 'Owner removed.'}
           </FlashMessage>
         </div>
       )}
@@ -35,14 +37,18 @@ const Organization = () => {
         tabs={[
           { title: 'Project Usage', href: '/organizations/[organizationId]' },
           { title: 'Users', href: '/organizations/[organizationId]/users' },
-          {
-            title: 'Owners',
-            href: '/organizations/[organizationId]/owners',
-          },
+          { title: 'Owners', href: '/organizations/[organizationId]/owners' },
           pathname === '/organizations/[organizationId]/projects/add'
             ? {
                 title: 'Create Project',
                 href: '/organizations/[organizationId]/projects/add',
+                isSelected: true,
+              }
+            : {},
+          pathname === '/organizations/[organizationId]/owners/add'
+            ? {
+                title: 'Add Owner(s)',
+                href: '/organizations/[organizationId]/owners/add',
                 isSelected: true,
               }
             : {},
@@ -63,6 +69,10 @@ const Organization = () => {
 
       {pathname === '/organizations/[organizationId]/projects/add' && (
         <OrganizationProjectsAdd />
+      )}
+
+      {pathname === '/organizations/[organizationId]/owners/add' && (
+        <OrganizationOwnersAdd />
       )}
     </SuspenseBoundary>
   )

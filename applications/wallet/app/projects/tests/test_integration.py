@@ -256,8 +256,11 @@ class TestProjectUserGet:
         response = api_client.get(reverse('projectuser-list', kwargs={'project_pk': project_pk}))
         assert response.status_code == status.HTTP_200_OK
         content = response.json()
-        assert content['results'][0]['id'] == zmlp_project_membership.user.id
-        assert content['results'][0]['roles'] == ['ML_Tools', 'User_Admin']
+        assert content['count'] == 2
+        assert content['results'][0]['email'] == 'software@zorroa.com'
+        assert content['results'][0]['roles'] == ['Organization_Owner']
+        assert content['results'][1]['email'] == 'user@fake.com'
+        assert content['results'][1]['roles'] == ['ML_Tools', 'User_Admin']
 
     def test_list_no_permissions(self, zmlp_project_membership, api_client):
         zmlp_project_membership.roles = []
@@ -284,7 +287,7 @@ class TestProjectUserGet:
         response = api_client.get(f'{uri}?from=0&size=2')
         assert response.status_code == status.HTTP_200_OK
         content = response.json()
-        assert content['count'] == 6
+        assert content['count'] == 7
         assert len(content['results']) == 2
         assert 'next' in content
         assert content['next'] is not None

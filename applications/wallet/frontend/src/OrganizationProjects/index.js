@@ -1,12 +1,15 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import { spacing } from '../Styles'
+import { spacing, typography, colors } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 import Table from '../Table'
 
+import { getCurrentPeriod } from './helpers'
+
 import OrganizationProjectsRow from './Row'
+import OrganizationProjectsAggregate from './Aggregate'
 
 const OrganizationProjects = () => {
   const {
@@ -18,17 +21,29 @@ const OrganizationProjects = () => {
       <div
         css={{
           display: 'flex',
+          flexWrap: 'wrap',
           alignItems: 'flex-end',
           justifyContent: 'space-between',
           paddingBottom: spacing.normal,
         }}
       >
-        <div>Total Module Usage &amp; Storage / Current Billing Cycle:</div>
+        <div
+          css={{
+            fontWeight: typography.weight.medium,
+            fontSize: typography.size.medium,
+            height: typography.height.medium,
+          }}
+        >
+          Total Module Usage &amp; Storage / Current Billing Cycle:{' '}
+          {getCurrentPeriod({ date: new Date() })}
+        </div>
 
         <Link href={`/organizations/${organizationId}/projects/add`} passHref>
           <Button variant={VARIANTS.PRIMARY_SMALL}>Create a New Project</Button>
         </Link>
       </div>
+
+      <OrganizationProjectsAggregate />
 
       <Table
         legend="Projects"
@@ -58,6 +73,19 @@ const OrganizationProjects = () => {
         }}
         refreshButton={false}
       />
+
+      <div
+        css={{
+          fontSize: typography.size.small,
+          lineHeight: typography.height.small,
+          color: colors.structure.zinc,
+          paddingBottom: spacing.base,
+        }}
+      >
+        *pages are processed &amp; counted as individual assets
+        <br />
+        **usage is being calculated and is currently unavailable
+      </div>
     </>
   )
 }

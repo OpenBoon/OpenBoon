@@ -5,6 +5,7 @@ import { colors, spacing, typography, constants } from '../Styles'
 import ImagesSvg from '../Icons/images.svg'
 import DocumentsSvg from '../Icons/documents.svg'
 import VideosSvg from '../Icons/videos.svg'
+
 import { formatUsage } from './helpers'
 
 const LARGE = 400

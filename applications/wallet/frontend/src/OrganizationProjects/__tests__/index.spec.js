@@ -5,6 +5,7 @@ import organizationProjects from '../__mocks__/organizationProjects'
 import OrganizationProjects from '..'
 
 jest.mock('../../Pagination', () => 'Pagination')
+jest.mock('../helpers')
 
 const ORGANIZATION_ID = '42869703-fb62-4988-a0d1-e59b15caff06'
 
