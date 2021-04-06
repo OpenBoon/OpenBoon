@@ -28,12 +28,13 @@ export const onSubmit = async ({
   dispatch({ isLoading: true, errors: {} })
 
   try {
-    const {
-      results: { id: modelId },
-    } = await fetcher(`/api/v1/projects/${projectId}/models/`, {
-      method: 'POST',
-      body: JSON.stringify({ type, name, moduleName }),
-    })
+    const { id: modelId } = await fetcher(
+      `/api/v1/projects/${projectId}/models/`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ type, name, moduleName }),
+      },
+    )
 
     await revalidate({
       key: `/api/v1/projects/${projectId}/models/`,
