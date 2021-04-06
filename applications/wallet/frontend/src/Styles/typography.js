@@ -1,5 +1,6 @@
 const typography = {
   size: {
+    invisible: 11,
     small: 14,
     regular: 15,
     medium: 17,
@@ -8,6 +9,7 @@ const typography = {
     colossal: 32,
   },
   height: {
+    invisible: '15px',
     small: '18px',
     regular: '19px',
     medium: '20px',
