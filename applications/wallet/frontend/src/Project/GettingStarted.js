@@ -75,7 +75,16 @@ const ProjectGettingStarted = ({ projectId }) => {
         maxWidth: MAX_WIDTH,
       }}
     >
-      <h3 css={{ paddingBottom: spacing.base }}>Getting Started</h3>
+      <h3
+        css={{
+          paddingBottom: spacing.comfy,
+          fontSize: typography.size.giant,
+          lineHeight: typography.height.giant,
+        }}
+      >
+        Getting Started
+      </h3>
+
       {STEPS.map(({ step, title, module, content, cta, link }) => (
         <div
           key={step}
@@ -92,7 +101,6 @@ const ProjectGettingStarted = ({ projectId }) => {
                 fontWeight: typography.weight.regular,
                 fontSize: typography.size.medium,
                 lineHeight: typography.height.medium,
-                color: colors.key.two,
               }}
             >
               <span css={{ fontWeight: typography.weight.bold }}>
@@ -100,6 +108,7 @@ const ProjectGettingStarted = ({ projectId }) => {
               </span>
               {title}
             </h4>
+
             <h5
               css={{
                 fontSize: typography.size.regular,
@@ -109,11 +118,13 @@ const ProjectGettingStarted = ({ projectId }) => {
                 paddingTop: spacing.normal,
                 display: 'flex',
                 alignItems: 'center',
+                color: colors.structure.zinc,
                 svg: { marginRight: spacing.base },
               }}
             >
               {module}
             </h5>
+
             <p
               css={{
                 margin: 0,
@@ -124,6 +135,7 @@ const ProjectGettingStarted = ({ projectId }) => {
             >
               {content}
             </p>
+
             <div
               css={{
                 display: 'flex',

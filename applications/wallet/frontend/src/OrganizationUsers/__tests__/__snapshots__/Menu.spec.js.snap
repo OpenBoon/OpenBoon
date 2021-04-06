@@ -33,7 +33,7 @@ exports[`<OrganizationUsersMenu /> should render properly 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #191919;
+  color: #808080;
   background-color: transparent;
   margin: -6px;
 }

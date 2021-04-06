@@ -7,6 +7,7 @@ import { fetcher } from '../Fetch/helpers'
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
+import ButtonExternal from '../Button/External'
 import Modal from '../Modal'
 
 const OrganizationUserProjectsMenu = ({ userId, projectId, revalidate }) => {
@@ -25,7 +26,7 @@ const OrganizationUserProjectsMenu = ({ userId, projectId, revalidate }) => {
                     onBlur={onBlur}
                     onClick={onClick}
                   >
-                    View Project
+                    <ButtonExternal>View Project</ButtonExternal>
                   </Button>
                 </Link>
               </li>
@@ -37,7 +38,7 @@ const OrganizationUserProjectsMenu = ({ userId, projectId, revalidate }) => {
                     onBlur={onBlur}
                     onClick={onClick}
                   >
-                    Edit Roles
+                    <ButtonExternal>Edit Roles</ButtonExternal>
                   </Button>
                 </Link>
               </li>

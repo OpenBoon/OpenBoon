@@ -67,7 +67,8 @@ const ProjectQuickLinks = ({ projectId }) => {
         boxShadow: constants.boxShadows.tableRow,
         borderRadius: constants.borderRadius.medium,
         padding: spacing.comfy,
-        paddingBottom: spacing.giant,
+        paddingTop: spacing.spacious,
+        paddingBottom: spacing.colossal,
       }}
     >
       <h3 css={{ paddingBottom: spacing.comfy }}>Quick Links</h3>
