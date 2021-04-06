@@ -51,11 +51,6 @@ def test_project_view_user_does_not_belong_to_project(user, project):
     assert response.status_code == 403
 
 
-def test_is_user_project_organization_owner_no_org(user):
-    project = Project.objects.create(name='no-org')
-    assert not is_user_project_organization_owner(user, project)
-
-
 def test_is_user_project_organization_owner_false(user, project):
     assert not is_user_project_organization_owner(user, project)
 
@@ -155,7 +150,7 @@ def test_project_serializer_list(project, project2):
     assert [entry['id'] for entry in data] == [project.id, project2.id]
 
 
-def test_project_sync_with_zmlp(monkeypatch, project_zero_user, data):
+def test_project_sync_with_zmlp(monkeypatch, project_zero_user, organization, data):
     def mock_get_project(*args, **kwargs):
         return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'ESSENTIALS'}  # noqa
 
@@ -177,7 +172,7 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user, data):
     monkeypatch.setattr(BoonClient, 'post', mock_post_true)
     monkeypatch.setattr(BoonClient, 'put', mock_put_enable_project)
     monkeypatch.setattr('projects.models.create_zmlp_api_key', mock_create_zmlp_api_key)
-    project = Project.objects.create(name='test', id=uuid4())
+    project = Project.objects.create(name='test', id=uuid4(), organization=organization)
     project.sync_with_zmlp()
 
     # Test a disabled project.
@@ -293,11 +288,13 @@ class TestProjectUserGet:
         assert content['next'] is not None
         assert 'previous' in content
 
-    def test_list_bad_project(self, project, zmlp_project_user, zmlp_project_membership, api_client):  # noqa
+    def test_list_bad_project(self, project, zmlp_project_user, zmlp_project_membership, api_client,
+                              organization):  # noqa
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         new_project = Project.objects.create(id='0820a307-c3dd-460e-a9c4-0e5f582e09c3',
-                                             name='New Test Project')
+                                             name='New Test Project',
+                                             organization=organization)
         response = api_client.get(reverse('projectuser-list', kwargs={'project_pk': new_project.id}))  # noqa
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
