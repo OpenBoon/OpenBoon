@@ -107,6 +107,7 @@ class TestViews(object):
                                                                'tier2': {'imageCount': 30,
                                                                          'videoMinutes': 6.571}},
                                           'name': 'Test Project',
+                                          'organizationName': 'Test Org',
                                           'totalStorageUsage': {'imageCount': 35,
                                                                 'videoMinutes': 274},
                                           'userCount': 1}

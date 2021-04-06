@@ -117,10 +117,11 @@ def test_project_serializer_detail(project):
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                        'permissions', 'tasks', 'datasources', 'taskerrors',
                        'modules', 'providers', 'searches', 'faces', 'visualizations',
-                       'models', 'createdDate', 'modifiedDate']
+                       'models', 'createdDate', 'modifiedDate', 'organizationName']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
+    assert data['organizationName'] == project.organization.name
     assert datetime.fromisoformat(data['createdDate'].replace('Z', '+00:00')) == project.createdDate
     assert datetime.fromisoformat(data['modifiedDate'].replace('Z', '+00:00')) == project.modifiedDate
     assert data['url'] == f'/api/v1/projects/{project.id}/'
