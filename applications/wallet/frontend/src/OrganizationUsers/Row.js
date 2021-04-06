@@ -1,22 +1,39 @@
 import PropTypes from 'prop-types'
+import Link from 'next/link'
+
+import { onRowClickRouterPush } from '../Table/helpers'
 
 import OrganizationUsersMenu from './Menu'
 
 const OrganizationUsersRow = ({
   organizationId,
-  user: { id, email, firstName, lastName, projectCount },
+  user: { id: userId, email, firstName, lastName, projectCount },
   revalidate,
 }) => {
   return (
-    <tr>
-      <td>{email}</td>
+    <tr
+      css={{ cursor: 'pointer' }}
+      onClick={onRowClickRouterPush(
+        '/organizations/[organizationId]/users/[userId]',
+        `/organizations/${organizationId}/users/${userId}`,
+      )}
+    >
+      <td>
+        <Link
+          href="/organizations/[organizationId]/users/[userId]"
+          as={`/organizations/${organizationId}/users/${userId}`}
+          passHref
+        >
+          <a css={{ ':hover': { textDecoration: 'none' } }}>{email}</a>
+        </Link>
+      </td>
       <td>{firstName}</td>
       <td>{lastName}</td>
       <td>{projectCount}</td>
       <td>
         <OrganizationUsersMenu
           organizationId={organizationId}
-          userId={id}
+          userId={userId}
           revalidate={revalidate}
         />
       </td>

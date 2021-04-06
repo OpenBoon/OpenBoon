@@ -93,14 +93,14 @@ exports[`<Sidebar /> should render properly closed 1`] = `
 
 .emotion-10 {
   color: #ffffff;
-  background-color: #0074f5;
-  border-radius: 8px;
+  background-color: #d6680b;
+  border-radius: 32px;
   font-size: 11px;
-  line-height: 15.399999999999999px;
+  line-height: 15px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.2px;
-  padding: 2px;
+  padding: 1px;
   padding-left: 6px;
   padding-right: 6px;
   margin-left: 8px;
@@ -115,7 +115,32 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   background-color: #3b3b3b;
 }
 
-.emotion-22 {
+.emotion-24 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 32px;
+  color: #252525;
+  background-color: #808080;
+  font-weight: 700;
+  font-size: 11px;
+  margin-right: 12px;
+}
+
+.emotion-25 {
   position: fixed;
   top: 0;
   left: 0;
@@ -277,7 +302,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
       >
         <a
           className="emotion-3"
-          href="/account"
+          href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -285,6 +310,23 @@ exports[`<Sidebar /> should render properly closed 1`] = `
             data-file-name="gear.svg"
             height={20}
           />
+          Organization Admin
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/account"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          <div
+            className="emotion-24"
+          >
+            
+          </div>
           Account
         </a>
       </li>
@@ -292,7 +334,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   </nav>
   <div
     aria-label="Close Sidebar Menu"
-    className="emotion-22"
+    className="emotion-25"
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"
@@ -394,14 +436,14 @@ exports[`<Sidebar /> should render properly opened 1`] = `
 
 .emotion-10 {
   color: #ffffff;
-  background-color: #0074f5;
-  border-radius: 8px;
+  background-color: #d6680b;
+  border-radius: 32px;
   font-size: 11px;
-  line-height: 15.399999999999999px;
+  line-height: 15px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.2px;
-  padding: 2px;
+  padding: 1px;
   padding-left: 6px;
   padding-right: 6px;
   margin-left: 8px;
@@ -417,6 +459,31 @@ exports[`<Sidebar /> should render properly opened 1`] = `
 }
 
 .emotion-22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 32px;
+  color: #252525;
+  background-color: #808080;
+  font-weight: 700;
+  font-size: 11px;
+  margin-right: 12px;
+}
+
+.emotion-23 {
   position: fixed;
   top: 0;
   left: 0;
@@ -582,10 +649,11 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          <svg
-            data-file-name="gear.svg"
-            height={20}
-          />
+          <div
+            className="emotion-22"
+          >
+            JD
+          </div>
           Account
         </a>
       </li>
@@ -593,7 +661,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   </nav>
   <div
     aria-label="Close Sidebar Menu"
-    className="emotion-22"
+    className="emotion-23"
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"

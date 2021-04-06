@@ -72,8 +72,8 @@ const ProjectUsersAddForm = () => {
           type="text"
           value={state.emails}
           onChange={({ target: { value } }) => dispatch({ emails: value })}
-          hasError={state.errors.name !== undefined}
-          errorMessage={state.errors.name}
+          hasError={state.errors.emails !== undefined}
+          errorMessage={state.errors.emails}
         />
 
         <CheckboxGroup
