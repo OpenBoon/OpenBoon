@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 DEFAULT_SERVER = 'https://api.boonai.app'
 
 
-class BoonClient(object):
+class BoonClient:
     """
     BoonClient is used to communicate to a Boon AI API server.
     """
@@ -275,6 +275,25 @@ class BoonClient(object):
                 JSON response
          """
         return self._make_request('delete', path, body, is_json)
+
+    def patch(self, path, body=None, is_json=True):
+        """
+         Performs a patch request.
+
+         Args:
+             path (str): An archivist URI path.
+             body (object): The request body which will be serialized to json.
+             is_json (bool): Set to true to specify a JSON return value
+
+         Returns:
+             object: The http response object or an object deserialized from
+             the response json if the ``json`` argument is true.
+
+         Raises:
+             Exception: An error occurred making the request or parsing the
+                JSON response
+         """
+        return self._make_request('patch', path, body, is_json)
 
     def iter_paged_results(self, url, req, limit, cls):
         """
