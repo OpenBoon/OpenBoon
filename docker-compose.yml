@@ -65,15 +65,6 @@ services:
     depends_on:
       - pubsub
 
-  boonhook:
-    image: boonai/boonhook:latest
-    ports:
-      - "9191:9191"
-    build:
-      context: client/boonhook
-    depends_on:
-      - pubsub
-
   eshq:
     image: elastichq/elasticsearch-hq
     ports:
