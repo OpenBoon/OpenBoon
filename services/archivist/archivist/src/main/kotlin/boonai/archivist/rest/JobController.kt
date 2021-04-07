@@ -11,7 +11,6 @@ import boonai.archivist.service.DependService
 import boonai.archivist.service.JobService
 import boonai.archivist.util.HttpUtils
 import boonai.common.util.Json
-import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam

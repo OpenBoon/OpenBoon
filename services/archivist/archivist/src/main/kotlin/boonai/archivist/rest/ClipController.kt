@@ -11,7 +11,6 @@ import boonai.archivist.service.AssetService
 import boonai.archivist.service.ClipService
 import boonai.archivist.util.HttpUtils
 import boonai.archivist.util.RawByteArrayOutputStream
-import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import org.elasticsearch.common.xcontent.ToXContent
 import org.elasticsearch.common.xcontent.XContentFactory

@@ -8,7 +8,6 @@ import boonai.archivist.service.AnalystService
 import boonai.archivist.service.DispatchQueueManager
 import boonai.archivist.service.DispatcherService
 import boonai.archivist.util.HttpUtils
-import io.micrometer.core.annotation.Timed
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus

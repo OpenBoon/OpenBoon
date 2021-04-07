@@ -18,7 +18,6 @@ import boonai.archivist.service.JobLaunchService
 import boonai.archivist.util.RawByteArrayOutputStream
 import boonai.archivist.util.RestUtils
 import boonai.common.service.logging.LogObject
-import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
