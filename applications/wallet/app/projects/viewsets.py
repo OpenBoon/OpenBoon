@@ -73,6 +73,11 @@ class ZmlpRetrieveMixin(object):
         return self._zmlp_retrieve(request, pk, item_modifier=self.retrieve_modifier)
 
 
+class ZmlpUpdateMixin(object):
+    def update(self, request, project_pk, pk):
+        self._zmlp_update(request, pk)
+
+
 class ZmlpDestroyMixin(object):
     def destroy(self, request, project_pk, pk):
         return self._zmlp_destroy(request, pk)
