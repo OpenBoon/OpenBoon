@@ -30,7 +30,7 @@ const Modal = ({ title, message, action, onCancel, onConfirm }) => {
       >
         <header
           css={{
-            backgroundColor: colors.structure.black,
+            backgroundColor: colors.structure.coal,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -69,10 +69,11 @@ const Modal = ({ title, message, action, onCancel, onConfirm }) => {
           >
             {message}
           </div>
+
           <div
             css={{
               display: 'flex',
-              justifyContent: 'flex-end',
+              justifyContent: 'center',
               paddingTop: spacing.spacious,
               button: {
                 height: BUTTON_HEIGHT,
@@ -91,6 +92,7 @@ const Modal = ({ title, message, action, onCancel, onConfirm }) => {
             >
               Cancel
             </Button>
+
             <Button
               variant={VARIANTS.WARNING}
               onClick={onConfirm}

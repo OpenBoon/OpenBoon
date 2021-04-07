@@ -14,7 +14,7 @@ exports[`<Modal /> should render properly 1`] = `
 }
 
 .emotion-1 {
-  background-color: #000000;
+  background-color: #191919;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -56,10 +56,10 @@ exports[`<Modal /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  -webkit-justify-content: flex-end;
-  justify-content: flex-end;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   padding-top: 32px;
 }
 

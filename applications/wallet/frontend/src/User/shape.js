@@ -6,6 +6,7 @@ const userShape = {
   email: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
+  organizations: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 export default userShape

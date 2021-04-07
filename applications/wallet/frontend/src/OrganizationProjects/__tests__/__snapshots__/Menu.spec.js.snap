@@ -33,7 +33,7 @@ exports[`<OrganizationProjectsMenu /> should render properly 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #191919;
+  color: #808080;
   background-color: transparent;
   margin: -6px;
 }
@@ -109,6 +109,27 @@ exports[`<OrganizationProjectsMenu /> should render properly 1`] = `
   background-color: #4a4a4a;
 }
 
+.emotion-4 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-5 {
+  -webkit-transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  transform: rotate(135deg);
+  opacity: 0.5;
+  margin-top: -2px;
+  margin-right: -4px;
+}
+
 <div
   className="emotion-0"
 >
@@ -137,7 +158,16 @@ exports[`<OrganizationProjectsMenu /> should render properly 1`] = `
             onClick={[Function]}
             onMouseEnter={[Function]}
           >
-            View Project
+            <div
+              className="emotion-4"
+            >
+              View Project
+              <svg
+                className="emotion-5"
+                data-file-name="back.svg"
+                height={20}
+              />
+            </div>
           </a>
         </li>
         <li>
@@ -148,7 +178,16 @@ exports[`<OrganizationProjectsMenu /> should render properly 1`] = `
             onClick={[Function]}
             onMouseEnter={[Function]}
           >
-            Manage Users
+            <div
+              className="emotion-4"
+            >
+              Manage Users
+              <svg
+                className="emotion-5"
+                data-file-name="back.svg"
+                height={20}
+              />
+            </div>
           </a>
         </li>
         <li>
@@ -159,7 +198,16 @@ exports[`<OrganizationProjectsMenu /> should render properly 1`] = `
             onClick={[Function]}
             onMouseEnter={[Function]}
           >
-            Manage API Keys
+            <div
+              className="emotion-4"
+            >
+              Manage API Keys
+              <svg
+                className="emotion-5"
+                data-file-name="back.svg"
+                height={20}
+              />
+            </div>
           </a>
         </li>
         <li>
