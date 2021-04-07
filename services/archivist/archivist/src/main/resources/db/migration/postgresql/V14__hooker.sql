@@ -3,7 +3,7 @@ CREATE TABLE webhook(
     pk_webhook UUID PRIMARY KEY,
     pk_project UUID NOT NULL REFERENCES project(pk_project) ON DELETE CASCADE,
     url TEXT NOT NULL,
-    secret_token TEXT NOT NULL,
+    secret_key TEXT NOT NULL,
     triggers TEXT NOT NULL,
     active BOOLEAN NOT NULL,
     time_created BIGINT NOT NULL,

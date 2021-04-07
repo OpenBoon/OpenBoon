@@ -51,12 +51,13 @@ class CustomWebHookDaoImpl : CustomWebHookDao, AbstractDao() {
     }
 
     override fun update(id: UUID, spec: WebHookUpdate): Boolean {
-        val triggers = spec.triggers.map { it.ordinal }.joinToString(",")
-        return jdbc.update(
-            "UPDATE webhook SET url=?, secret_token=?, " +
+        val triggers = spec.triggers.map { it.ordinal }.sortedBy { it }.joinToString(",")
+        val count = jdbc.update(
+            "UPDATE webhook SET url=?, secret_key=?, " +
                 "triggers=?, active=? WHERE pk_project=? AND pk_webhook=?",
-            spec.url, spec.secretToken, triggers, spec.active, getProjectId(), id
-        ) == 1
+            spec.url, spec.secretKey, triggers, spec.active, getProjectId(), id
+        )
+        return count == 1
     }
 
     companion object {
@@ -66,10 +67,10 @@ class CustomWebHookDaoImpl : CustomWebHookDao, AbstractDao() {
 
         private val MAPPER = RowMapper { rs, _ ->
             WebHook(
-                rs.getObject("pk_field") as UUID,
+                rs.getObject("pk_webhook") as UUID,
                 rs.getObject("pk_project") as UUID,
                 rs.getString("url"),
-                rs.getString("secret_token"),
+                rs.getString("secret_key"),
                 rs.getString("triggers").split(",").map { TriggerType.values()[it.toInt()] }.toTypedArray(),
                 rs.getBoolean("active"),
                 rs.getLong("time_created"),

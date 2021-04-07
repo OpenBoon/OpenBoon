@@ -1,6 +1,8 @@
 package boonai.archivist.domain
 
 import boonai.archivist.repository.KDaoFilter
+import boonai.archivist.security.getProjectId
+import boonai.archivist.util.JdbcUtils
 import com.fasterxml.jackson.annotation.JsonIgnore
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
@@ -14,9 +16,9 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 enum class TriggerType {
-    AssetAnalyzed,
-    AssetModified,
-    AssetDeleted
+    ASSET_ANALYZED,
+    ASSET_MODIFIED,
+    ASSET_DELETED
 }
 
 @Converter
@@ -36,7 +38,7 @@ class WebHookSpec(
     val url: String,
 
     @ApiModelProperty("The secret token used by the webhook server to validate the request")
-    val secretToken: String,
+    val secretKey: String,
 
     @ApiModelProperty("The triggers the webhook should fire on.")
     val triggers: Array<TriggerType>,
@@ -48,12 +50,26 @@ class WebHookUpdate(
     val url: String,
 
     @ApiModelProperty("The secret token used by the webhook server to validate the request")
-    val secretToken: String,
+    val secretKey: String,
 
     @ApiModelProperty("The triggers the webhook should fire on.")
     val triggers: Array<TriggerType>,
 
     val active: Boolean
+)
+
+class WebHookPatch(
+
+    @ApiModelProperty("The remote URL for the web hook.")
+    val url: String? = null,
+
+    @ApiModelProperty("The secret token used by the webhook server to validate the request")
+    val secretKey: String? = null,
+
+    @ApiModelProperty("The triggers the webhook should fire on.")
+    val triggers: Array<TriggerType>? = null,
+
+    val active: Boolean? = null
 )
 
 @Entity
@@ -72,8 +88,8 @@ class WebHook(
     @Column(name = "url")
     val url: String,
 
-    @Column(name = "secret_token")
-    val secretToken: String,
+    @Column(name = "secret_key")
+    val secretKey: String,
 
     @Convert(converter = TriggerConverter::class)
     @Column(name = "triggers")
@@ -99,20 +115,35 @@ class WebHook(
     val actorModified: String
 )
 
-class WebHookFilter : KDaoFilter() {
-
-    @ApiModelProperty("WebHook IDs to match.")
-    val ids: List<UUID>? = null
+class WebHookFilter constructor(
+    val ids: List<UUID>? = null,
+    val urls: List<String>? = null
+) : KDaoFilter() {
 
     @JsonIgnore
     override val sortMap: Map<String, String> =
         mapOf(
             "id" to "webhook.pk_webhook",
+            "url" to "webhook.url",
             "timeCreated" to "webhook.time_created",
-            "timeModified" to "webhook.time_modified"
+            "timeModified" to "webhook.time_modified",
+            "triggers" to "webhook.triggers",
+            "active" to "webhook.active"
         )
 
     @JsonIgnore
     override fun build() {
+        addToWhere("webhook.pk_project=?")
+        addToValues(getProjectId())
+
+        ids?.let {
+            addToWhere(JdbcUtils.inClause("webhook.pk_webhook", it.size))
+            addToValues(it)
+        }
+
+        urls?.let {
+            addToWhere(JdbcUtils.inClause("webhook.url", it.size))
+            addToValues(it)
+        }
     }
 }
