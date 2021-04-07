@@ -20,13 +20,20 @@ class ProjectInline(admin.TabularInline):
         return False
 
 
+def org_owners(obj):
+    users = obj.owners.all()
+    if users:
+        return ','.join([o.username for o in users])
+    else:
+        return 'No Owners'
+org_owners.short_description = 'Owners'
+
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ['name', 'plan', 'owners', 'isActive']
+    list_display = ['name', 'plan', org_owners, 'isActive']
     list_filter = ['plan', 'owners', 'isActive']
     search_fields = ['name', 'id']
     fields = ['name', 'owners', 'plan', 'isActive']
     inlines = [ProjectInline]
 
-    def owners(self, obj):
-        return ','.join([o.username for o in object.owners.all()])
+
