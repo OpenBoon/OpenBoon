@@ -301,6 +301,9 @@ ROLES = [
      'description': 'Allows adding and removing users as well as managing their roles. This '
                     'includes adding and removing their own roles.',
      'permissions': ['ProjectManage']},
+    {'name': 'Webhooks',
+     'description': 'Allows creating, editing and deleting webhooks.',
+     'permissions': ['WebhooksCreate']} # TODO: Add the correct permissions.
 ]
 
 # The registered email address of the superuser for this instance.
