@@ -26,7 +26,10 @@ def org_owners(obj):
         return ','.join([o.username for o in users])
     else:
         return 'No Owners'
+
+
 org_owners.short_description = 'Owners'
+
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
@@ -35,5 +38,3 @@ class OrganizationAdmin(admin.ModelAdmin):
     search_fields = ['name', 'id']
     fields = ['name', 'owners', 'plan', 'isActive']
     inlines = [ProjectInline]
-
-

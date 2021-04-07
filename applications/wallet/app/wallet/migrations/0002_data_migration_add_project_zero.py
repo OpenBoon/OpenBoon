@@ -2,15 +2,12 @@
 
 import logging
 
-import backoff
-import requests
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import migrations
 from wallet.utils import sync_project_with_zmlp, sync_membership_with_zmlp
 
 
-User = get_user_model()
 logger = logging.getLogger(__name__)
 
 
@@ -31,16 +28,6 @@ def create_project_zero(apps, schema_editor):
     # Sync Project Zero to Zmlp
     sync_project_with_zmlp(project_zero)
     sync_membership_with_zmlp(membership)
-
-
-# @backoff.on_exception(backoff.expo, requests.exceptions.ConnectionError, max_time=300)
-# def sync_project(project_zero, membership):
-#     try:
-#         import pdb; pdb.set_trace()
-#         project_zero.sync_with_zmlp()
-#         membership.sync_with_zmlp(project_zero.get_zmlp_super_client())
-#     except Exception:
-#         raise requests.exceptions.ConnectionError()
 
 
 class Migration(migrations.Migration):
