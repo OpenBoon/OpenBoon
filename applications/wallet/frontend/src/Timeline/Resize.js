@@ -19,15 +19,15 @@ const TimelineResize = ({ dispatch, zoom, videoRef, rulerRef }) => {
 
   const [nextScrollLeft, setNextScrollLeft] = useState(0)
 
-  useEffect(() => {
-    scroller.emit({
-      eventName: 'scroll',
-      data: {
-        scrollX: nextScrollLeft,
-        scrollY: 0,
-      },
-    })
-  }, [nextScrollLeft, scroller])
+  // useEffect(() => {
+  //   scroller.emit({
+  //     eventName: 'scroll',
+  //     data: {
+  //       scrollX: nextScrollLeft,
+  //       scrollY: 0,
+  //     },
+  //   })
+  // }, [nextScrollLeft, scroller])
 
   return (
     <div
@@ -51,9 +51,8 @@ const TimelineResize = ({ dispatch, zoom, videoRef, rulerRef }) => {
       <Button
         aria-label="Zoom Out"
         onClick={() => {
-          dispatch({ type: ACTIONS.DECREMENT })
-
           const nextZoom = zoom - 100
+          dispatch({ type: ACTIONS.DECREMENT, payload: { value: nextZoom } })
 
           const scrollLeft = getNextScrollLeft({
             videoRef,
@@ -82,8 +81,8 @@ const TimelineResize = ({ dispatch, zoom, videoRef, rulerRef }) => {
       <Button
         aria-label="Zoom In"
         onClick={() => {
-          dispatch({ type: ACTIONS.INCREMENT })
           const nextZoom = zoom + 100
+          dispatch({ type: ACTIONS.INCREMENT, payload: { value: nextZoom } })
 
           const scrollLeft = getNextScrollLeft({
             videoRef,

@@ -5,29 +5,39 @@ import { colors, constants, spacing, zIndex } from '../Styles'
 
 import { getScroller } from '../Scroll/helpers'
 
+import { getNextScrollLeft } from './helpers'
+import { ACTIONS } from './reducer'
+
 let origin
 let scrollbarOrigin
+let scrollbarTrackWidth
 let scrollbarScrollableWidth
+let nextScrollLeft
+let newScrollbarScrollableWidth
 
 export const SCROLLBAR_CONTAINER_HEIGHT = 36
 const RESIZE_HANDLE_SIZE = 20
 
-const TimelineScrollbar = ({ settings, rulerRef }) => {
+const TimelineScrollbar = ({ settings, rulerRef, dispatch }) => {
   const horizontalScroller = getScroller({ namespace: 'Timeline' })
   const scrollbarRef = useRef()
+
+  const setScrollbarScrollableWidth = () => {
+    const { width: scrollbarWidth = 0 } =
+      scrollbarRef.current?.getBoundingClientRect() || {}
+
+    scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
+
+    // the max number of pixels the scrollbar thumb can travel
+    scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
+  }
 
   const horizontalScrollerDeregister = horizontalScroller.register({
     eventName: 'scroll',
     callback: /* istanbul ignore next */ ({ node }) => {
       if (!scrollbarRef.current || !node) return
 
-      const { width: scrollbarWidth = 0 } =
-        scrollbarRef.current?.getBoundingClientRect() || {}
-
-      const scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
-
-      // the max number of pixels the scrollbar thumb can travel
-      scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
+      setScrollbarScrollableWidth()
 
       // the scrollLeft value when the timeline is scrolled all the way to the end
       const maxScrollLeft = node.scrollWidth - node.offsetWidth
@@ -74,23 +84,83 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
     origin = clientX
     scrollbarOrigin = scrollbarRef.current.offsetLeft
 
+    setScrollbarScrollableWidth()
+
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', handleMouseUp)
   }
 
+  /* istanbul ignore next */
+  const onRightHandleMouseMove = ({ clientX }) => {
+    const difference = clientX - origin
+
+    newScrollbarScrollableWidth = scrollbarScrollableWidth - difference
+
+    const zoom = 100 / (1 - newScrollbarScrollableWidth / scrollbarTrackWidth)
+
+    console.log(zoom)
+    dispatch({
+      type: ACTIONS.ZOOM,
+      payload: { value: zoom },
+    })
+
+    const fractionScrolled =
+      newScrollbarScrollableWidth === 0
+        ? 0
+        : scrollbarOrigin / newScrollbarScrollableWidth
+
+    // the max number of pixels the ruler scroll left
+    const rulerScrollableWidth =
+      rulerRef.current.scrollWidth - rulerRef.current.offsetWidth
+
+    // const nextWidth =
+    //   (rulerRef.current.scrollWidth / settings.zoom) * zoom -
+    //   rulerRef.current.offsetWidth
+
+    const rulerFraction =
+      rulerRef.current.scrollLeft /
+      (rulerRef.current.scrollWidth - rulerRef.current.offsetWidth)
+
+    nextScrollLeft =
+      rulerScrollableWidth * Math.min(1, Math.max(0, fractionScrolled))
+
+    // // keep scrollbarOrigin in place
+    // horizontalScroller.emit({
+    //   eventName: 'scroll',
+    //   data: {
+    //     scrollX: nextScrollLeft,
+    //   },
+    // })
+  }
+
+  /* istanbul ignore next */
+  const onRightHandleMouseUp = () => {
+    document.removeEventListener('mousemove', onRightHandleMouseMove)
+    document.removeEventListener('mouseup', onRightHandleMouseUp)
+  }
+
+  /* istanbul ignore next */
+  const onRightHandleMouseDown = ({ clientX }) => {
+    origin = clientX
+    scrollbarOrigin = scrollbarRef.current.offsetLeft
+
+    setScrollbarScrollableWidth()
+
+    document.addEventListener('mousemove', onRightHandleMouseMove)
+    document.addEventListener('mouseup', onRightHandleMouseUp)
+  }
+
   useEffect(() => {
-    const { width: scrollbarWidth = 0 } =
-      scrollbarRef.current?.getBoundingClientRect() || {}
-
-    const scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
-
-    // the max number of pixels the scrollbar thumb can travel
-    scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
-
     return () => {
       horizontalScrollerDeregister()
     }
-  }, [horizontalScrollerDeregister, scrollbarRef, settings.zoom])
+  }, [
+    horizontalScrollerDeregister,
+    scrollbarRef,
+    settings.zoom,
+    horizontalScroller,
+    rulerRef,
+  ])
 
   return (
     <>
@@ -158,12 +228,17 @@ const TimelineScrollbar = ({ settings, rulerRef }) => {
               }}
             />
             <div
+              role="button"
+              tabIndex="-1"
+              aria-label="Timeline Scrollbar Resize Handle"
               css={{
                 backgroundColor: colors.structure.steel,
                 width: RESIZE_HANDLE_SIZE,
                 borderTopRightRadius: constants.borderRadius.medium,
                 borderBottomRightRadius: constants.borderRadius.medium,
+                ':hover, :active': { backgroundColor: colors.structure.pebble },
               }}
+              onMouseDown={onRightHandleMouseDown}
             />
           </div>
         </div>
@@ -183,6 +258,7 @@ TimelineScrollbar.propTypes = {
       scrollWidth: PropTypes.number,
     }),
   }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default TimelineScrollbar
