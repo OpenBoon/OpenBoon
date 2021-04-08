@@ -111,7 +111,7 @@ class WebhookControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.page.size", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.page.totalCount", CoreMatchers.equalTo(1)))
             .andReturn()
     }
 }

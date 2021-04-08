@@ -190,7 +190,7 @@ sdk-unit-tests:
     - pytest
     - cd ../../services/swivel
     - pip install -r requirements.txt
-    - pytest test.py
+    - pytest tests.py
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
