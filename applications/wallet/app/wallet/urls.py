@@ -46,12 +46,13 @@ from searches.views import SearchViewSet
 from supportadmin.admin import support_admin_site
 from visualizations.views import VisualizationViewSet
 from wallet.views import WalletAPIRootView, UsageReportView
-from webhooks.views import ProjectWebhooksViewSet, WebhooksViewSet
+from webhooks.views import ProjectWebhooksViewSet, WebhooksViewSet, TriggersViewSet
 
 router = routers.DefaultRouter()
 router.APIRootView = WalletAPIRootView
 router.register('me/agreements', AgreementViewSet, basename='agreement')
 router.register('webhooks', WebhooksViewSet, basename='webhook-util')
+router.register('webhooks/triggers', TriggersViewSet, basename='webhook-util-trigger')
 
 router.register('organizations', OrganizationViewSet, basename='organization')
 organizations_router = NestedSimpleRouter(router, 'organizations', lookup='organization')

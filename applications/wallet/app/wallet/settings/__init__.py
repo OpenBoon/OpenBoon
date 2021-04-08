@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'subscriptions',
     'supportadmin',
     'wallet',
+    'webhooks',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

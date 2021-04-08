@@ -3,6 +3,7 @@ from boonsdk import BoonClient
 from rest_framework.reverse import reverse
 
 from wallet.tests.utils import check_response
+from webhooks.models import Trigger
 
 pytestmark = pytest.mark.django_db
 
@@ -22,4 +23,15 @@ def test_webhook_util_test(login, api_client, monkeypatch):
     path = reverse('webhook-util-test')
     data = {'url': 'https://boonai.app/treble',
             'trigger': 'asset_analyzed'}
-    response = check_response(api_client.post(path, data))
+    check_response(api_client.post(path, data))
+
+
+def test_webhook_util_trigger_list(login, api_client):
+    Trigger.objects.create(name='test', displayName='Test', description='Test Trigger')
+    path = reverse('webhook-util-trigger-list')
+    response = check_response(api_client.get(path))
+    assert response == {'count': 1, 'next': None, 'previous': None,
+                        'results': [{'description': 'Test Trigger',
+                                     'displayName': 'Test',
+                                     'id': 1,
+                                     'name': 'test'}]}

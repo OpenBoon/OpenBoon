@@ -1,13 +1,16 @@
 from rest_framework.decorators import action
+from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from rest_framework.viewsets import ViewSet
+from rest_framework.viewsets import ViewSet, GenericViewSet
 
 from projects.viewsets import (ZmlpDestroyMixin, ZmlpRetrieveMixin, ZmlpListMixin,
                                BaseProjectViewSet, ZmlpCreateMixin, ListViewType,
                                ZmlpUpdateMixin)
 from wallet.utils import get_zmlp_superuser_client
-from webhooks.serializers import WebhookSerializer, WebhookTestSerializer
+from webhooks.models import Trigger
+from webhooks.serializers import WebhookSerializer, WebhookTestSerializer, \
+    TriggerSerializer
 
 
 class ProjectWebhooksViewSet(ZmlpCreateMixin,
@@ -29,11 +32,6 @@ class WebhooksViewSet(ViewSet):
             'test': reverse('webhook-util-test', request=request)
         })
 
-    @action(detail=False, methods=['get'])
-    def triggers(self, request):
-        # TODO: Get the triggers
-        return Response({'detail': ['Success']})
-
     @action(detail=False, methods=['post'])
     def test(self, request):
         serializer = WebhookTestSerializer(data=request.data)
@@ -42,4 +40,7 @@ class WebhooksViewSet(ViewSet):
         return Response({'detail': ['Successfully sent test webhook payload.']})
 
 
-
+class TriggersViewSet(ListModelMixin,
+                      GenericViewSet):
+    queryset = Trigger.objects.all()
+    serializer_class = TriggerSerializer
