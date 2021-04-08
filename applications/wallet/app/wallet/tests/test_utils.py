@@ -20,6 +20,7 @@ class TestValidateZmlpData:
         with pytest.raises(InvalidZmlpDataError):
             validate_zmlp_data(serializer)
 
+
 class TestConversions:
 
     def test_convert_json(self):
