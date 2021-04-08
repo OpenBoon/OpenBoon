@@ -8,10 +8,10 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from jobs.serializers import JobSerializer, TaskErrorSerializer, TaskSerializer
-from projects.views import BaseProjectViewSet
+from projects.viewsets import BaseProjectViewSet
 from searches.serializers import SearchAssetSerializer
 from searches.views import search_asset_modifier
-from wallet.mixins import CamelCaseRendererMixin
+from wallet.mixins import CamelCaseRendererMixin, BoonAISortArgsMixin
 from wallet.paginators import ZMLPFromSizePagination
 from wallet.utils import validate_zmlp_data
 
@@ -55,8 +55,9 @@ def task_error_item_modifier(request, error):
     error['jobName'] = request.client.get(f'/api/v1/jobs/{error["jobId"]}')['name']
 
 
-class JobViewSet(BaseProjectViewSet):
-    """CRUD operations for ZMLP or ZVI processing jobs."""
+class JobViewSet(BoonAISortArgsMixin,
+                 BaseProjectViewSet):
+    """CRUD operations for Boon AI processing jobs."""
     pagination_class = ZMLPFromSizePagination
     zmlp_root_api_path = '/api/v1/jobs/'
     serializer_class = JobSerializer
@@ -64,14 +65,15 @@ class JobViewSet(BaseProjectViewSet):
     def list(self, request, project_pk):
         """Lists all jobs in the job queue.
 
-        Accepts an optional `sort` query parameter. The value can be a comma-separated list of
-        fields to sort on, with each field set to ascending (a) or descending (d).
+        Accepts an optional `ordering` query parameter. The value can be a comma-separated list of
+        fields to sort on, with each field set to ascending (fieldname on its own) or descending
+        (field name prepended with a "-").
 
-        Also accepts a `filter` query parameter, which will do a wildcard search against
+        Also accepts a `search` query parameter, which will do a wildcard search against
         all potential job names.
 
         Example:
-            ?sort=timeCreated:a,priority:d
+            ?ordering=timeCreated,-priority
 
         Return:
             (Response): Paginated contents of the listed jobs.
@@ -84,14 +86,14 @@ class JobViewSet(BaseProjectViewSet):
 
         search_filter = {}
         # Add the sort, if any
-        sort = request.query_params.get('sort')
-        if sort:
-            search_filter['sort'] = sort.split(',')
+        sort_args = self.get_boonai_sort_args(request)
+        if sort_args:
+            search_filter['sort'] = sort_args
 
         # Add the filter, if any
-        filter = request.query_params.get('filter')
+        filter = request.query_params.get('search')
         if filter:
-            search_filter['wildCardNames'] = [filter]
+            search_filter['keywords'] = filter
 
         return self._zmlp_list_from_search(request, search_filter=search_filter,
                                            item_modifier=item_modifier)

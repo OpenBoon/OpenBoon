@@ -298,3 +298,17 @@ class ModelApp:
             list: A list of model version tags.
         """
         return self.app.client.get('/api/v3/models/{}/_tags'.format(as_id(model)))
+
+    def approve_model(self, model):
+        """
+        Copies your latest model to the approved model version tag, which
+        allows you to train and test your model with no interruption to
+        the Analysis Module being used by file ingestion services.
+
+        Args:
+            model (Model): The model or unique model id.
+
+        Returns:
+            dict: A status dict.
+        """
+        return self.app.client.post('/api/v3/models/{}/_approve'.format(as_id(model)))

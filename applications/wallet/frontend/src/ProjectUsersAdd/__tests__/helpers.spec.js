@@ -62,7 +62,7 @@ describe('<ProjectUsersAdd /> helpers', () => {
       const mockFn = jest.fn()
 
       fetch.mockRejectOnce({
-        json: () => Promise.resolve({ name: ["This email doesn't work."] }),
+        json: () => Promise.resolve({ emails: ["This email doesn't work."] }),
       })
 
       await onSubmit({
@@ -86,7 +86,7 @@ describe('<ProjectUsersAdd /> helpers', () => {
 
       expect(mockFn).toHaveBeenCalledWith({
         isLoading: false,
-        errors: { name: "This email doesn't work." },
+        errors: { emails: "This email doesn't work." },
       })
     })
   })

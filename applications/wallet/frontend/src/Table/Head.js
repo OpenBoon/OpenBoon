@@ -6,7 +6,7 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 import KebabSvg from '../Icons/kebab.svg'
-import SortSvg from '../Icons/sort.svg'
+import BackSvg from '../Icons/back.svg'
 
 import { getQueryString } from '../Fetch/helpers'
 
@@ -20,14 +20,15 @@ const TableHead = ({ column, expandColumn }) => {
     query: { sort = '' },
   } = useRouter()
 
-  const [sortKey, sortDirection] = sort.split(':')
-  const newSortDirection = key === sortKey && sortDirection === 'a' ? 'd' : 'a'
-  const newSort = `${key}:${newSortDirection}`
+  const sortKey = sort.replace(/^-/, '')
+  const isAscSort = sort === sortKey
+  const newSortDirection = key === sortKey && isAscSort ? '-' : ''
+  const newSort = `${newSortDirection}${key}`
 
   const queryParam = getQueryString({
     query: query.query,
     sort: newSort,
-    filter: query.filter,
+    search: query.search,
   })
   const href = `${pathname}${queryParam}`
   const as = href
@@ -39,6 +40,8 @@ const TableHead = ({ column, expandColumn }) => {
     <th
       css={{
         textAlign: 'left',
+        whiteSpace: 'pre-line',
+        verticalAlign: 'bottom',
         fontSize: typography.size.regular,
         lineHeight: typography.height.regular,
         fontWeight: typography.weight.medium,
@@ -95,15 +98,15 @@ const TableHead = ({ column, expandColumn }) => {
                 svg: {
                   color: colors.structure.white,
                   transform:
-                    key === sortKey && sortDirection === 'a'
-                      ? 'rotate(0deg)'
-                      : 'rotate(-180deg)',
+                    key === sortKey && isAscSort
+                      ? 'rotate(-90deg)'
+                      : 'rotate(90deg)',
                 },
               },
             }}
           >
             {label}
-            <SortSvg
+            <BackSvg
               height={constants.icons.small}
               css={{
                 marginLeft: spacing.small,
@@ -112,9 +115,9 @@ const TableHead = ({ column, expandColumn }) => {
                     ? colors.key.two
                     : colors.structure.transparent,
                 transform:
-                  key === sortKey && sortDirection === 'a'
-                    ? 'rotate(-180deg)'
-                    : '',
+                  key === sortKey && isAscSort
+                    ? 'rotate(90deg)'
+                    : 'rotate(-90deg)',
               }}
             />
           </a>

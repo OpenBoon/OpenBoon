@@ -40,6 +40,11 @@ def organization(superuser):
 
 
 @pytest.fixture
+def organization2():
+    return Organization.objects.create(name='Test Org 2')
+
+
+@pytest.fixture
 def project(organization):
     return Project.objects.create(id='6abc33f0-4acf-4196-95ff-4cbb7f640a06',
                                   name='Test Project',
@@ -85,9 +90,9 @@ def zmlp_project_user(user, zmlp_project_membership):
 
 
 @pytest.fixture
-def project_zero():
+def project_zero(organization):
     return Project.objects.create(id='00000000-0000-0000-0000-000000000000',
-                                  name='Project Zero')
+                                  name='Project Zero', organization=organization)
 
 
 @pytest.fixture
@@ -100,21 +105,6 @@ def project_zero_membership(project_zero, superuser, zmlp_apikey):
 @pytest.fixture
 def project_zero_user(superuser, project_zero_membership):
     return superuser
-
-
-@pytest.fixture
-def zvi_project_membership(project, user):
-    apikey = b"""{"userId": "00000000-7b0b-480e-8c36-f06f04aed2f1",
-    "user": "admin",
-    "key": "65950f84a6f97c111be559f54666308c719210468c3476e9bae813484bc703ce",
-    "server": "https://dev.zorroa.com/"}"""
-    apikey = b64encode(apikey).decode('utf-8')
-    return Membership.objects.create(user=user, project=project, apikey=apikey)
-
-
-@pytest.fixture
-def zvi_project_user(user, zvi_project_membership):
-    return user
 
 
 @pytest.fixture

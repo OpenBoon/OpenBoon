@@ -2,7 +2,9 @@ import { forwardRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Router from 'next/router'
 
-import { colors, spacing, zIndex, constants } from '../Styles'
+import { colors, spacing, zIndex, constants, typography } from '../Styles'
+
+import userShape from '../User/shape'
 
 import BetaBadge from '../BetaBadge'
 
@@ -21,7 +23,15 @@ import SidebarOverlay from './Overlay'
 const WIDTH = 240
 
 const Sidebar = forwardRef(
-  ({ projectId, isSidebarOpen, setSidebarOpen }, ref) => {
+  (
+    {
+      projectId,
+      user: { firstName, lastName, organizations },
+      isSidebarOpen,
+      setSidebarOpen,
+    },
+    ref,
+  ) => {
     useEffect(() => {
       const handleRouteChange = () => {
         setSidebarOpen(false)
@@ -116,8 +126,40 @@ const Sidebar = forwardRef(
               Account Overview
             </SidebarLink>
 
+            {organizations.length > 0 && (
+              <SidebarLink
+                projectId={projectId}
+                href={`/organizations${
+                  organizations.length === 1 ? `/${organizations[0]}` : ''
+                }`}
+              >
+                <GearSvg height={constants.icons.regular} />
+                Organization Admin
+              </SidebarLink>
+            )}
+
             <SidebarLink projectId={projectId} href="/account">
-              <GearSvg height={constants.icons.regular} />
+              <div
+                css={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  border: 0,
+                  padding: 0,
+                  width: constants.icons.regular,
+                  height: constants.icons.regular,
+                  borderRadius: constants.borderRadius.round,
+                  color: colors.structure.lead,
+                  backgroundColor: colors.structure.steel,
+                  fontWeight: typography.weight.bold,
+                  fontSize: typography.size.invisible,
+                  marginRight: spacing.moderate,
+                }}
+              >
+                {`${firstName ? firstName[0] : ''}${
+                  lastName ? lastName[0] : ''
+                }`}
+              </div>
               Account
             </SidebarLink>
           </ul>
@@ -133,6 +175,7 @@ const Sidebar = forwardRef(
 
 Sidebar.propTypes = {
   projectId: PropTypes.string.isRequired,
+  user: PropTypes.shape(userShape).isRequired,
   isSidebarOpen: PropTypes.bool.isRequired,
   setSidebarOpen: PropTypes.func.isRequired,
 }

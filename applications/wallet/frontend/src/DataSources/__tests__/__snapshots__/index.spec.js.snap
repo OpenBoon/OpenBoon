@@ -318,6 +318,8 @@ Array [
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -342,6 +344,8 @@ Array [
 
 .emotion-19 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -420,7 +424,7 @@ Array [
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #191919;
+  color: #808080;
   background-color: transparent;
   margin: -6px;
 }
@@ -473,7 +477,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    Source Type
+                    Source Type
                   </div>
                 </th>
                 <th
@@ -491,7 +495,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    Date Created
+                    Date Created
                   </div>
                 </th>
                 <th
@@ -500,7 +504,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    Date Modified
+                    Date Modified
                   </div>
                 </th>
                 <th
@@ -509,7 +513,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    File Types
+                    File Types
                   </div>
                 </th>
                 <th
@@ -1193,6 +1197,8 @@ Array [
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -1217,6 +1223,8 @@ Array [
 
 .emotion-19 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -1295,7 +1303,7 @@ Array [
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #191919;
+  color: #808080;
   background-color: transparent;
   margin: -6px;
 }
@@ -1348,7 +1356,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    Source Type
+                    Source Type
                   </div>
                 </th>
                 <th
@@ -1366,7 +1374,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    Date Created
+                    Date Created
                   </div>
                 </th>
                 <th
@@ -1375,7 +1383,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    Date Modified
+                    Date Modified
                   </div>
                 </th>
                 <th
@@ -1384,7 +1392,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    File Types
+                    File Types
                   </div>
                 </th>
                 <th
@@ -2076,6 +2084,8 @@ Array [
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -2100,6 +2110,8 @@ Array [
 
 .emotion-19 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -2196,7 +2208,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    Source Type
+                    Source Type
                   </div>
                 </th>
                 <th
@@ -2214,7 +2226,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    Date Created
+                    Date Created
                   </div>
                 </th>
                 <th
@@ -2223,7 +2235,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    Date Modified
+                    Date Modified
                   </div>
                 </th>
                 <th
@@ -2232,7 +2244,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    File Types
+                    File Types
                   </div>
                 </th>
                 <th
@@ -2590,6 +2602,8 @@ Array [
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -2614,6 +2628,8 @@ Array [
 
 .emotion-19 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -2692,7 +2708,7 @@ Array [
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #191919;
+  color: #808080;
   background-color: transparent;
   margin: -6px;
 }
@@ -2745,7 +2761,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    Source Type
+                    Source Type
                   </div>
                 </th>
                 <th
@@ -2763,7 +2779,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    Date Created
+                    Date Created
                   </div>
                 </th>
                 <th
@@ -2772,7 +2788,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    Date Modified
+                    Date Modified
                   </div>
                 </th>
                 <th
@@ -2781,7 +2797,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    File Types
+                    File Types
                   </div>
                 </th>
                 <th

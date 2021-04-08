@@ -46,7 +46,7 @@ class TestJobViewSet:
 
         monkeypatch.setattr(BoonClient, 'post', mock_api_response)
         url = reverse('job-list', kwargs={'project_pk': project.id})
-        response = api_client.get(url, {'sort': 'timeCreated:a'})
+        response = api_client.get(url, {'ordering': 'timeCreated'})
         assert response.status_code == 200
 
     def test_get_list_with_double_sort(self, login, project, api_client, monkeypatch):
@@ -58,19 +58,19 @@ class TestJobViewSet:
 
         monkeypatch.setattr(BoonClient, 'post', mock_api_response)
         url = reverse('job-list', kwargs={'project_pk': project.id})
-        response = api_client.get(url, {'sort': 'timeCreated:a,timeUpdated:d'})
+        response = api_client.get(url, {'ordering': 'timeCreated,-timeUpdated'})
         assert response.status_code == 200
 
     def test_get_list_with_filter(self, login, project, api_client, monkeypatch):
 
         def mock_api_response(*args, **kwargs):
-            assert args[-1]['wildCardNames'] == ['my test 4: you']
+            assert args[-1]['keywords'] == 'my test 4: you'
             response = {"list": [{"id": "82d53089-67c2-1433-8fef-0a580a000955", "organizationId": "00000000-9998-8888-7777-666666666666", "name": "test-whitespace.json", "state": "Active", "assetCounts": {"assetCreatedCount": 0, "assetReplacedCount": 0, "assetWarningCount": 0, "assetErrorCount": 4}, "taskCounts": {"tasksTotal": 1, "tasksWaiting": 0, "tasksRunning": 0, "tasksSuccess": 0, "tasksFailure": 1, "tasksSkipped": 0, "tasksQueued": 0}, "createdUser": {"id": "00000000-7b0b-480e-8c36-f06f04aed2f1", "username": "admin", "email": "admin@zorroa.com", "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0", "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53", "organizationId": "00000000-9998-8888-7777-666666666666"}, "timeStarted": 1573090540886, "timeUpdated": 1573090536003, "timeCreated": 1573090536003, "priority": 100, "paused": False, "timePauseExpired": -1, "maxRunningTasks": 1024, "jobId": "82d53089-67c2-1433-8fef-0a580a000955"}, {"id": "82d53089-67c2-1433-8fef-0a580a000955", "organizationId": "00000000-9998-8888-7777-666666666666", "name": "test-whitespace.json", "state": "Active", "assetCounts": {"assetCreatedCount": 0, "assetReplacedCount": 0, "assetWarningCount": 0, "assetErrorCount": 4, "assetTotalCount": 19}, "taskCounts": {"tasksTotal": 1, "tasksWaiting": 0, "tasksRunning": 0, "tasksSuccess": 0, "tasksFailure": 1, "tasksSkipped": 0, "tasksQueued": 0}, "createdUser": {"id": "00000000-7b0b-480e-8c36-f06f04aed2f1", "username": "admin", "email": "admin@zorroa.com", "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0", "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53", "organizationId": "00000000-9998-8888-7777-666666666666"}, "timeStarted": 1573090540886, "timeUpdated": 1573090536003, "timeCreated": 1573090536003, "priority": 100, "paused": False, "timePauseExpired": -1, "maxRunningTasks": 1024, "jobId": "82d53089-67c2-1433-8fef-0a580a000955"}], "page": {"from": 0, "size": 50, "totalCount": 0}}  # noqa
             return response
 
         monkeypatch.setattr(BoonClient, 'post', mock_api_response)
         url = reverse('job-list', kwargs={'project_pk': project.id})
-        quoted = urllib.parse.urlencode({'filter': 'my test 4: you'})
+        quoted = urllib.parse.urlencode({'search': 'my test 4: you'})
         url = f'{url}?{quoted}'
         response = api_client.get(url)
         assert response.status_code == 200
@@ -78,14 +78,14 @@ class TestJobViewSet:
     def test_get_list_with_single_filter(self, login, project, api_client, monkeypatch):
 
         def mock_api_response(*args, **kwargs):
-            assert args[-1]['wildCardNames'] == ['my test 4: you']
+            assert args[-1]['keywords'] == 'my test 4: you'
             response = {"list": [{"id": "82d53089-67c2-1433-8fef-0a580a000955", "organizationId": "00000000-9998-8888-7777-666666666666", "name": "test-whitespace.json", "state": "Active", "assetCounts": {"assetCreatedCount": 0, "assetReplacedCount": 0, "assetWarningCount": 0, "assetErrorCount": 4}, "taskCounts": {"tasksTotal": 1, "tasksWaiting": 0, "tasksRunning": 0, "tasksSuccess": 0, "tasksFailure": 1, "tasksSkipped": 0, "tasksQueued": 0}, "createdUser": {"id": "00000000-7b0b-480e-8c36-f06f04aed2f1", "username": "admin", "email": "admin@zorroa.com", "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0", "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53", "organizationId": "00000000-9998-8888-7777-666666666666"}, "timeStarted": 1573090540886, "timeUpdated": 1573090536003, "timeCreated": 1573090536003, "priority": 100, "paused": False, "timePauseExpired": -1, "maxRunningTasks": 1024, "jobId": "82d53089-67c2-1433-8fef-0a580a000955"}, {"id": "82d53089-67c2-1433-8fef-0a580a000955", "organizationId": "00000000-9998-8888-7777-666666666666", "name": "test-whitespace.json", "state": "Active", "assetCounts": {"assetCreatedCount": 0, "assetReplacedCount": 0, "assetWarningCount": 0, "assetErrorCount": 4, "assetTotalCount": 19}, "taskCounts": {"tasksTotal": 1, "tasksWaiting": 0, "tasksRunning": 0, "tasksSuccess": 0, "tasksFailure": 1, "tasksSkipped": 0, "tasksQueued": 0}, "createdUser": {"id": "00000000-7b0b-480e-8c36-f06f04aed2f1", "username": "admin", "email": "admin@zorroa.com", "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0", "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53", "organizationId": "00000000-9998-8888-7777-666666666666"}, "timeStarted": 1573090540886, "timeUpdated": 1573090536003, "timeCreated": 1573090536003, "priority": 100, "paused": False, "timePauseExpired": -1, "maxRunningTasks": 1024, "jobId": "82d53089-67c2-1433-8fef-0a580a000955"}], "page": {"from": 0, "size": 50, "totalCount": 0}}  # noqa
             return response
 
         monkeypatch.setattr(BoonClient, 'post', mock_api_response)
         url = reverse('job-list', kwargs={'project_pk': project.id})
 
-        response = api_client.get(url, {'filter': 'my test 4: you'})
+        response = api_client.get(url, {'search': 'my test 4: you'})
         assert response.status_code == 200
 
     def test_get_detail_zmlp(self, zmlp_project_user, project, api_client, monkeypatch, job_pk):

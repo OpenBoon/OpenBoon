@@ -8,15 +8,16 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from organizations.mixins import SortAndSearchUsersMixin
 from organizations.models import Organization, User, Plan
 from organizations.permissions import OrganizationOwnerPermissions
 from organizations.serializers import (OrganizationSerializer,
                                        OrganizationUserListSerializer,
-                                       OrganizationUserDetailSerializer,
-                                       OrganizationOwnerSerializer)
+                                       UserProjectSerializer)
 from projects.models import Project, Membership
 from projects.serializers import ProjectDetailSerializer, ProjectSimpleSerializer
-from wallet.exceptions import InvalidRequestError, NotAllowedError
+from registration.serializers import SimpleUserSerializer
+from wallet.exceptions import InvalidRequestError, NotAllowedError, DuplicateError
 from wallet.paginators import FromSizePagination
 
 User = get_user_model()
@@ -67,26 +68,29 @@ class OrganizationProjectViewSet(ListModelMixin, BaseOrganizationOwnerViewset):
         name = request.data.get('name')
         if not name:
             raise InvalidRequestError({'detail': ['"name" argument is missing.']})
-        project = Project.objects.create(name=name, organization=self.organization)
+        project, created = Project.objects.get_or_create(name=name, organization=self.organization)
+        if not created:
+            raise DuplicateError({'name': ['A project with that name already exists.']})
         project.sync_with_zmlp()
-        return Response(ProjectSimpleSerializer(project).data)
+        return Response(ProjectSimpleSerializer(project).data, status=status.HTTP_201_CREATED)
 
 
-class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, BaseOrganizationOwnerViewset):
+class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, SortAndSearchUsersMixin,
+                              BaseOrganizationOwnerViewset):
     """Viewset for users associated with an Organization via projects."""
+    serializer_class = OrganizationUserListSerializer
     pagination_class = FromSizePagination
 
     def get_serializer_class(self):
         action_map = {'list': OrganizationUserListSerializer,
-                      'retrieve': OrganizationUserDetailSerializer}
+                      'retrieve': SimpleUserSerializer}
         return action_map[self.action]
 
     def get_queryset(self):
         return User.objects.filter(projects__organization=self.organization).distinct()
 
     def get_serializer_context(self):
-        context = {'organization': self.organization}
-        return context
+        return {'organization': self.organization}
 
     def destroy(self, request, *args, **kwargs):
         user = self.get_object()
@@ -99,9 +103,20 @@ class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, BaseOrganizati
         return Response({'detail': [message]})
 
 
-class OrganizationOwnerViewSet(ListModelMixin, BaseOrganizationOwnerViewset):
+class OrganizationUserProjectViewSet(ListModelMixin, BaseOrganizationOwnerViewset):
+    serializer_class = UserProjectSerializer
+
+    def get_queryset(self):
+        return Project.objects.filter(organization=self.organization, users=self.kwargs.get('user_pk'))
+
+    def get_serializer_context(self):
+        return {'user_id': self.kwargs.get('user_pk')}
+
+
+class OrganizationOwnerViewSet(ListModelMixin, SortAndSearchUsersMixin,
+                               BaseOrganizationOwnerViewset):
     """Viewset for an Organization's owners."""
-    serializer_class = OrganizationOwnerSerializer
+    serializer_class = SimpleUserSerializer
 
     def get_queryset(self):
         return self.organization.owners.all()

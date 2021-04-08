@@ -52,6 +52,7 @@ const Layout = ({ user, logout, children }) => {
 
       <Sidebar
         projectId={user.projectId}
+        user={user}
         isSidebarOpen={isSidebarOpen}
         setSidebarOpen={setSidebarOpen}
         ref={sidebarRef}

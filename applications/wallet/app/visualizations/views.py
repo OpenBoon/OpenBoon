@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from projects.views import BaseProjectViewSet
+from projects.viewsets import BaseProjectViewSet
 from searches.utils import FieldUtility, FilterBuddy
 from .utils import VizBuddy
 from wallet.mixins import CamelCaseRendererMixin
@@ -10,8 +10,6 @@ from wallet.mixins import CamelCaseRendererMixin
 
 class VisualizationViewSet(CamelCaseRendererMixin,
                            BaseProjectViewSet):
-
-    zmlp_only = True
     pagination_class = None
     serializer_class = None
     field_utility = FieldUtility()
