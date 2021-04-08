@@ -181,10 +181,8 @@ class GcsProjectStorageService constructor(
             Storage.BlobListOption.pageSize(100)
         )
 
-        for (blob in blobs.iterateAll()) {
-            gcs.delete(blob.blobId)
-            logDeleteEvent(blob.name)
-        }
+        logDeleteEvent(path)
+        gcs.delete(blobs.values.map { it.blobId })
     }
 
     override fun listFiles(prefix: String): List<String> {
