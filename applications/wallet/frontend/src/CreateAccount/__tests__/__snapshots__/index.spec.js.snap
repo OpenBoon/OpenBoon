@@ -1567,24 +1567,10 @@ exports[`<CreateAccount /> should render properly when there is no token 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
+  padding-top: 16px;
 }
 
 .emotion-10 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-bottom: 8px;
-}
-
-.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1598,6 +1584,20 @@ exports[`<CreateAccount /> should render properly when there is no token 2`] = `
   padding: 12px;
   padding-left: 16px;
   padding-right: 16px;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .emotion-13 {
@@ -1910,34 +1910,34 @@ exports[`<CreateAccount /> should render properly when there is no token 2`] = `
         </div>
       </div>
     </div>
-    <form
-      action=""
+    <div
       className="emotion-9"
-      method="post"
-      onSubmit={[Function]}
     >
       <div
         className="emotion-10"
       >
+        <svg
+          color="#c92300"
+          data-file-name="warning.svg"
+          height={20}
+        />
         <div
-          className="emotion-11"
+          className="emotion-8"
+          role="alert"
         >
-          <svg
-            color="#c92300"
-            data-file-name="warning.svg"
-            height={20}
-          />
-          <div
-            className="emotion-8"
-            role="alert"
-          >
-            Password not strong enough.
+          Password not strong enough.
 This password is too short. It must contain at least 8 characters.
 This password is too common.
 This password is entirely numeric.
-          </div>
         </div>
       </div>
+    </div>
+    <form
+      action=""
+      className="emotion-12"
+      method="post"
+      onSubmit={[Function]}
+    >
       <h3
         className="emotion-13"
       >

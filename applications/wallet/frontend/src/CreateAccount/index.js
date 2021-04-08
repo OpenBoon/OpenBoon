@@ -75,12 +75,12 @@ const CreateAccount = () => {
           </FlashMessage>
         </div>
 
-        <Form>
-          <FlashMessageErrors
-            errors={state.errors}
-            styles={{ paddingBottom: spacing.base }}
-          />
+        <FlashMessageErrors
+          errors={state.errors}
+          styles={{ paddingTop: spacing.normal }}
+        />
 
+        <Form>
           {action === 'account-activation-expired' && (
             <>
               <div
