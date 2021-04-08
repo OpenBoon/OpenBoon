@@ -25,7 +25,7 @@ def validate_webhook_request_headers(headers, secret_key):
 
 class WebHookTrigger(Enum):
     """
-    ProjectTiers determine which features are available to a project.s
+    Different types of WebHook Triggers.
     """
 
     ASSET_ANALYZED = 0
