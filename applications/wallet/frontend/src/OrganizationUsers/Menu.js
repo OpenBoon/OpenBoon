@@ -34,6 +34,7 @@ const OrganizationUsersMenu = ({ organizationId, userId, revalidate }) => {
           </div>
         )}
       </Menu>
+
       {isRemoveModalOpen && (
         <Modal
           title="Remove User From All Projects"

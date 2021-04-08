@@ -36,6 +36,7 @@ const OrganizationOwnersMenu = ({ organizationId, ownerId, revalidate }) => {
           </div>
         )}
       </Menu>
+
       {isRemoveModalOpen && (
         <Modal
           title="Remove Owner from Organization"

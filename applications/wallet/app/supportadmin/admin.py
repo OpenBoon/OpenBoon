@@ -96,9 +96,9 @@ class SupportProjectAdmin(NoDeleteMixin, ProjectAdmin):
 
 class SupportAdminSite(AdminSite):
     """Stripped down admin site that is safe for the support team to use."""
-    site_header = "ZVI Administration Console"
-    site_title = "ZVI Administration Console"
-    index_title = "Welcome to the ZVI Administration Console."
+    site_header = "Boon AI Administration Console"
+    site_title = "Boon AI Administration Console"
+    index_title = "Welcome to the Boon AI Administration Console."
 
 
 support_admin_site = SupportAdminSite(name='support_admin')

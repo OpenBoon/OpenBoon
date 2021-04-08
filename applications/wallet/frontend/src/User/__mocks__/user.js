@@ -15,6 +15,7 @@ const user = {
     ],
     'e93cbadb-e5ae-4598-8395-4cf5b30c0e94': [],
   },
+  organizations: ['42869703-fb62-4988-a0d1-e59b15caff06'],
   isActive: true,
   isStaff: true,
   isSuperuser: false,
