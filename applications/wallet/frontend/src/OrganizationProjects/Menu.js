@@ -8,6 +8,7 @@ import { fetcher, getQueryString } from '../Fetch/helpers'
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
+import ButtonExternal from '../Button/External'
 import Modal from '../Modal'
 
 const OrganizationProjectsMenu = ({
@@ -31,7 +32,7 @@ const OrganizationProjectsMenu = ({
                     onBlur={onBlur}
                     onClick={onClick}
                   >
-                    View Project
+                    <ButtonExternal>View Project</ButtonExternal>
                   </Button>
                 </Link>
               </li>
@@ -43,7 +44,7 @@ const OrganizationProjectsMenu = ({
                     onBlur={onBlur}
                     onClick={onClick}
                   >
-                    Manage Users
+                    <ButtonExternal>Manage Users</ButtonExternal>
                   </Button>
                 </Link>
               </li>
@@ -55,7 +56,7 @@ const OrganizationProjectsMenu = ({
                     onBlur={onBlur}
                     onClick={onClick}
                   >
-                    Manage API Keys
+                    <ButtonExternal>Manage API Keys</ButtonExternal>
                   </Button>
                 </Link>
               </li>

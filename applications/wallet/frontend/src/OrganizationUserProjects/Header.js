@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
 import Breadcrumbs from '../Breadcrumbs'
+import OrganizationBadge from '../Organization/Badge'
 
 const OrganizationUserProjectsHeader = () => {
   const {
@@ -26,9 +27,15 @@ const OrganizationUserProjectsHeader = () => {
             title: organization.name,
             href: `/organizations/${organizationId}`,
           },
-          { title: 'User Projects', href: false },
+          {
+            title: 'Users',
+            href: `/organizations/${organizationId}/users`,
+          },
+          { title: 'Projects', href: false },
         ]}
       />
+
+      <OrganizationBadge>{organization.plan}</OrganizationBadge>
     </>
   )
 }

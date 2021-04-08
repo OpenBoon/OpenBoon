@@ -108,7 +108,7 @@ class TestApikey:
 
     def test_delete_detail(self, zmlp_project_user, project, api_client, monkeypatch, detail_data):
         def mock_api_response(*args, **kwargs):
-            return {}
+            return {'success': True}
 
         monkeypatch.setattr(BoonClient, 'delete', mock_api_response)
         api_client.force_authenticate(zmlp_project_user)

@@ -4,6 +4,8 @@ import useSWR from 'swr'
 
 import Breadcrumbs from '../Breadcrumbs'
 
+import OrganizationBadge from './Badge'
+
 import { getTitle } from './helpers'
 
 const OrganizationDetails = () => {
@@ -30,6 +32,8 @@ const OrganizationDetails = () => {
           { title: organization.name, href: false },
         ]}
       />
+
+      <OrganizationBadge>{organization.plan}</OrganizationBadge>
     </>
   )
 }

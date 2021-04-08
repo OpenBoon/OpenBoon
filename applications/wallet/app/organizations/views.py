@@ -72,7 +72,7 @@ class OrganizationProjectViewSet(ListModelMixin, BaseOrganizationOwnerViewset):
         if not created:
             raise DuplicateError({'name': ['A project with that name already exists.']})
         project.sync_with_zmlp()
-        return Response(ProjectSimpleSerializer(project).data)
+        return Response(ProjectSimpleSerializer(project).data, status=status.HTTP_201_CREATED)
 
 
 class OrganizationUserViewSet(ListModelMixin, RetrieveModelMixin, SortAndSearchUsersMixin,

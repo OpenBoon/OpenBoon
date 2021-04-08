@@ -40,6 +40,11 @@ def organization(superuser):
 
 
 @pytest.fixture
+def organization2():
+    return Organization.objects.create(name='Test Org 2')
+
+
+@pytest.fixture
 def project(organization):
     return Project.objects.create(id='6abc33f0-4acf-4196-95ff-4cbb7f640a06',
                                   name='Test Project',
@@ -85,9 +90,9 @@ def zmlp_project_user(user, zmlp_project_membership):
 
 
 @pytest.fixture
-def project_zero():
+def project_zero(organization):
     return Project.objects.create(id='00000000-0000-0000-0000-000000000000',
-                                  name='Project Zero')
+                                  name='Project Zero', organization=organization)
 
 
 @pytest.fixture

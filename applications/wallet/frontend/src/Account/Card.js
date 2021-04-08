@@ -45,7 +45,7 @@ const LINKS = [
   },
 ]
 
-const AccountCard = ({ projectId, name }) => {
+const AccountCard = ({ projectId, name, organizationName }) => {
   return (
     <div
       css={{
@@ -64,21 +64,33 @@ const AccountCard = ({ projectId, name }) => {
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis',
+          fontSize: typography.size.giant,
+          lineHeight: typography.height.giant,
         }}
       >
-        Project: {name}
+        {name}
       </h3>
 
       <div
         css={{
           color: colors.structure.zinc,
-          paddingBottom: spacing.base,
           fontFamily: typography.family.condensed,
           fontWeight: typography.weight.regular,
-          textTransform: 'uppercase',
         }}
       >
-        ID: {projectId}
+        Organization: {organizationName}
+      </div>
+
+      <div
+        css={{
+          color: colors.structure.zinc,
+          paddingBottom: spacing.normal,
+          fontFamily: typography.family.condensed,
+          fontWeight: typography.weight.regular,
+        }}
+      >
+        Project ID:&nbsp;
+        <span css={{ textTransform: 'uppercase' }}>{projectId}</span>
       </div>
 
       <div css={{ display: 'flex' }}>
@@ -133,6 +145,7 @@ const AccountCard = ({ projectId, name }) => {
 AccountCard.propTypes = {
   projectId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  organizationName: PropTypes.string.isRequired,
 }
 
 export default AccountCard

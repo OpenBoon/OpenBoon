@@ -107,6 +107,7 @@ class TestViews(object):
                                                                'tier2': {'imageCount': 30,
                                                                          'videoMinutes': 6.571}},
                                           'name': 'Test Project',
+                                          'organizationName': 'Test Org',
                                           'totalStorageUsage': {'imageCount': 35,
                                                                 'videoMinutes': 274},
                                           'userCount': 1}
@@ -151,7 +152,7 @@ class TestViews(object):
         check_response(api_client.post(path), status=400)
 
         # Create a new project in the organization.
-        check_response(api_client.post(path, data={'name': 'project_1'}))
+        check_response(api_client.post(path, data={'name': 'project_1'}), status=201)
         project = Project.objects.get(name='project_1')
         assert project.organization == organization
 
@@ -163,7 +164,7 @@ class TestViews(object):
         org2 = Organization.objects.create(name='org2')
         org2.owners.add(zmlp_project_user)
         path2 = reverse('org-project-list', kwargs={'organization_pk': org2.id})
-        check_response(api_client.post(path2, data={'name': 'project_1'}))
+        check_response(api_client.post(path2, data={'name': 'project_1'}), status=201)
 
     def test_org_user_list(self, login, zmlp_project_user, api_client, organization, project):
         path = reverse('org-user-list', kwargs={'organization_pk': organization.id})
@@ -199,7 +200,8 @@ class TestViews(object):
         response = check_response(api_client.get(path, {'ordering': '-firstName'}))
         assert response['results'][0]['firstName'] == 'other'
 
-    def test_org_user_retrieve(self, login, zmlp_project_user, api_client, organization, project):
+    def test_org_user_retrieve(self, login, zmlp_project_user, api_client, organization,
+                               organization2, project):
         path = reverse('org-user-detail', kwargs={'organization_pk': organization.id,
                                                   'pk': zmlp_project_user.id})
 
@@ -210,12 +212,13 @@ class TestViews(object):
         organization.owners.add(zmlp_project_user)
         other_project = Project.objects.create(name='1', organization=organization)
         other_project.users.add(zmlp_project_user)
-        Project.objects.create(name='should_not_be_in_response')
+        Project.objects.create(name='should_not_be_in_response', organization=organization2)
         response = check_response(api_client.get(path))
         assert response['id'] == zmlp_project_user.id
         assert response['email'] == zmlp_project_user.email
 
-    def test_org_user_project_retrieve(self, login, zmlp_project_user, api_client, organization, project):
+    def test_org_user_project_retrieve(self, login, zmlp_project_user, api_client, organization,
+                                       organization2, project):
         path = reverse('org-user-project-list', kwargs={'organization_pk': organization.id,
                                                         'user_pk': zmlp_project_user.id})
 
@@ -226,7 +229,7 @@ class TestViews(object):
         organization.owners.add(zmlp_project_user)
         other_project = Project.objects.create(name='1', organization=organization)
         other_project.users.add(zmlp_project_user)
-        Project.objects.create(name='should_not_be_in_response')
+        Project.objects.create(name='should_not_be_in_response', organization=organization2)
         response = check_response(api_client.get(path))
         assert response['count'] == 2
         expected = [{'id': project.id, 'name': 'Test Project',

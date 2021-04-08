@@ -28,6 +28,7 @@ const OrganizationUserProjectsDetails = () => {
         <li>
           <strong>User:</strong> {user.firstName} {user.lastName}
         </li>
+
         <li>
           <strong>Email:</strong> {user.email}
         </li>

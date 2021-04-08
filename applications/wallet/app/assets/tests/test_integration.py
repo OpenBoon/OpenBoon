@@ -94,7 +94,7 @@ class TestAssetViewSet:
         monkeypatch.setattr(BoonClient, 'delete', mock_response)
         response = api_client.delete(reverse('asset-detail', kwargs={'project_pk': project.id,
                                                                      'pk': id}))
-        check_response(response, status.HTTP_204_NO_CONTENT)
+        check_response(response)
 
     def test_bad_delete(self, login, project, api_client, monkeypatch):
         id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
@@ -109,7 +109,7 @@ class TestAssetViewSet:
         response = api_client.delete(reverse('asset-detail', kwargs={'project_pk': project.id,
                                                                      'pk': id}))
         content = check_response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
-        assert content['detail'] == ['Unable to delete asset.']
+        assert content['detail'] == ['Resource deletion failed.']
 
     def test_signed_url(self, login, project, api_client, monkeypatch):
 

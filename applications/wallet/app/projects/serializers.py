@@ -1,23 +1,33 @@
 import logging
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.relations import HyperlinkedIdentityField
 from sentry_sdk import capture_exception
 
+from projects.utils import is_user_project_organization_owner
 from wallet.utils import convert_base64_to_json
 from projects.models import Project
 
 logger = logging.getLogger(__name__)
 
 
-class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+class ProjectOrganizationNameSerializer(serializers.Serializer):
+    organizationName = serializers.SerializerMethodField('get_organization_name')
+
+    def get_organization_name(self, obj):
+        return obj.organization.name
+
+
+class ProjectSerializer(ProjectOrganizationNameSerializer,
+                        serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Project
         fields = ('id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                   'permissions', 'tasks', 'taskerrors', 'datasources',
                   'modules', 'providers', 'searches', 'faces', 'visualizations',
-                  'models', 'createdDate', 'modifiedDate')
+                  'models', 'createdDate', 'modifiedDate', 'organizationName')
 
     jobs = HyperlinkedIdentityField(
         view_name='job-list',
@@ -91,14 +101,16 @@ class TieredMlUsageSerializer(serializers.Serializer):
     tier2 = UsageSerializer(source='tier_2')
 
 
-class ProjectDetailSerializer(serializers.ModelSerializer):
+class ProjectDetailSerializer(ProjectOrganizationNameSerializer,
+                              serializers.ModelSerializer):
     mlUsageThisMonth = serializers.SerializerMethodField('get_ml_usage_this_month')
     totalStorageUsage = UsageSerializer(source='total_storage_usage')
     userCount = serializers.SerializerMethodField('get_user_count')
 
     class Meta:
         model = Project
-        fields = ['id', 'name', 'userCount', 'mlUsageThisMonth', 'totalStorageUsage']
+        fields = ['id', 'name', 'userCount', 'mlUsageThisMonth', 'totalStorageUsage',
+                  'organizationName']
 
     def get_user_count(self, obj):
         return obj.users.count()
@@ -115,10 +127,11 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
         return TieredMlUsageSerializer(data).data
 
 
-class ProjectSimpleSerializer(serializers.ModelSerializer):
+class ProjectSimpleSerializer(ProjectOrganizationNameSerializer,
+                              serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'organizationName']
 
 
 class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
@@ -142,10 +155,17 @@ class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
             return f'{current_url}{obj.id}/'
 
     def get_permissions(self, obj):
+        if is_user_project_organization_owner(obj, self.context['view'].kwargs['project_pk']):
+            permissions = []
+            for role in settings.ROLES:
+                permissions += role['permissions']
+            return permissions
         membership = self._get_membership_obj(obj)
         return self._get_decoded_permissions(membership.apikey)
 
     def get_roles(self, obj):
+        if is_user_project_organization_owner(obj, self.context['view'].kwargs['project_pk']):
+            return ['Organization_Owner']
         membership = self._get_membership_obj(obj)
         return membership.roles
 
