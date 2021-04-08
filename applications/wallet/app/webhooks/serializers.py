@@ -5,8 +5,9 @@ from webhooks.models import Trigger
 
 class WebhookSerializer(serializers.Serializer):
     id = serializers.UUIDField()
+    projectId = serializers.UUIDField()
     url = serializers.URLField()
-    secret_token = serializers.CharField()
+    secretKey = serializers.CharField()
     triggers = serializers.ListSerializer(child=serializers.CharField())
     active = serializers.BooleanField
     timeCreated = serializers.IntegerField(required=False)
