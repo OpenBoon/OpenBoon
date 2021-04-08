@@ -34,9 +34,6 @@ class WebHookTrigger(Enum):
     ASSET_MODIFIED = 1
     """Emitted if an Asset is modified"""
 
-    ASSET_DELETED = 2
-    """Emitted if an Asset is deleted"""
-
 
 class WebHook(BaseEntity):
     """

@@ -17,8 +17,7 @@ import javax.persistence.Table
 
 enum class TriggerType {
     ASSET_ANALYZED,
-    ASSET_MODIFIED,
-    ASSET_DELETED
+    ASSET_MODIFIED
 }
 
 @Converter
