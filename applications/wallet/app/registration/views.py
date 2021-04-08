@@ -101,7 +101,7 @@ Response Codes:
                                          ipAddress=get_ip_from_request(request))
 
         # Email the user a link to activate their account.
-        subject = 'Welcome To ZVI - Please Activate Your Account.'
+        subject = 'Welcome To Boon AI - Please Activate Your Account.'
         html = render_to_string('registration/activation-email.html',
                                 context={'fqdn': settings.FQDN,
                                          'token': token.token,
