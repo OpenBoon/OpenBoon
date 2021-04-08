@@ -202,7 +202,7 @@ sdk-unit-tests:
         - "client/boonlab/**/*"
         - "containers/boonflow/**/*"
         - "containers/boondocks/**/*"
-        - "services/swivel/*"
+        - "services/swivel/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
 
@@ -264,6 +264,7 @@ boonai-services-build-artifacts:
         - "services/officer/**/*"
         - "services/reporter/**/*"
         - "services/jvm-common/**/*"
+        - "services/swivel/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
 
@@ -294,6 +295,7 @@ elasticsearch-push-to-local-registry:
         - "services/mlbbq/**/*"
         - "services/officer/**/*"
         - "services/reporter/**/*"
+        - "services/swivel/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
 
