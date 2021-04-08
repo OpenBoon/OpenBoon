@@ -89,7 +89,11 @@ class ProjectApp(object):
     def delete_project(self, pid):
         """
         Hard Delete every project information
-        :param pid: Project Id
-        :return:
+
+        Args:
+            pid: Project Id
+
+        Returns:
+
         """
         return self.app.client.delete(f"/api/v1/projects/{pid}")
