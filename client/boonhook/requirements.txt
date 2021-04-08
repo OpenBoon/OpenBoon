@@ -1,0 +1,4 @@
+flask
+gevent
+PyJWT>=2.0
+boonsdk

@@ -11,7 +11,6 @@ import boonai.archivist.service.DispatcherService
 import boonai.archivist.service.JobService
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.HttpUtils
-import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
@@ -35,7 +34,6 @@ import java.util.concurrent.ExecutionException
 
 @PreAuthorize("hasAuthority('DataQueueManage')")
 @RestController
-@Timed
 @Api(tags = ["Task"], description = "Operations for interacting with Tasks.")
 class TaskController @Autowired constructor(
     val jobService: JobService,
