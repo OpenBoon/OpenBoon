@@ -32,7 +32,7 @@ class WebHookTrigger(Enum):
     """Emitted the first time an asset is Analyzed"""
 
     ASSET_MODIFIED = 1
-    """Emitted if an Asset is modified"""
+    """Emitted if an Asset is reanalyzed or manually edited via a custom field."""
 
 
 class WebHook(BaseEntity):
@@ -45,16 +45,20 @@ class WebHook(BaseEntity):
 
     @property
     def url(self):
+        """The URL where the WebHook is hosted."""
         return self._data['url']
 
     @property
     def secret_key(self):
+        """A secret key the endpoint will use to validate requeests."""
         return self._data['secret_key']
 
     @property
     def active(self):
+        """True if the WebHook is active."""
         return self._data['active']
 
     @property
     def triggers(self):
+        """A list of WebHookTriggers the hook will fire on."""
         return [WebHookTrigger(t) for t in self._data['triggers']]
