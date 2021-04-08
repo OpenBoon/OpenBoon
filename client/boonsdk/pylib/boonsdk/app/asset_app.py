@@ -5,6 +5,7 @@ from collections import namedtuple
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job, VideoClip
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery, SearchScroller
 from ..util import as_collection, as_id_collection, as_id
+from ..filters import apply_search_filters
 
 
 class AssetApp(object):
@@ -212,7 +213,7 @@ class AssetApp(object):
         }
         return self.app.client.delete("/api/v3/assets/_batch_delete", body)
 
-    def search(self, search=None, fetch_source=True):
+    def search(self, search=None, fetch_source=True, filters=None):
         """
         Perform an asset search using the ElasticSearch query DSL.
 
@@ -222,15 +223,17 @@ class AssetApp(object):
 
         Args:
             search (dict): The ElasticSearch search to execute.
-            fetch_source: (bool): If true, the full JSON document for each asset is returned.
+            fetch_source (bool): If true, the full JSON document for each asset is returned.
+            filters (list): A list of additional search filters.
         Returns:
             AssetSearchResult - an AssetSearchResult instance.
         """
         if not fetch_source:
             search['_source'] = False
+        apply_search_filters(search, filters)
         return AssetSearchResult(self.app, search)
 
-    def scroll_search(self, search=None, timeout="1m"):
+    def scroll_search(self, search=None, timeout="1m", filters=None):
         """
         Perform an asset scrolled search using the ElasticSearch query DSL.
 
@@ -241,11 +244,13 @@ class AssetApp(object):
         Args:
             search (dict): The ElasticSearch search to execute
             timeout (str): The scroll timeout.  Defaults to 1 minute.
+            filters (list): A list of Asset search filters.
         Returns:
             AssetSearchScroll - an AssetSearchScroller instance which is a generator
                 by nature.
 
         """
+        apply_search_filters(search, filters)
         return AssetSearchScroller(self.app, search, timeout)
 
     def reprocess_search(self, search, modules):
