@@ -1,13 +1,36 @@
 import pytest
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
-from wallet.utils import sync_project_with_zmlp, sync_membership_with_zmlp
+from wallet.utils import (sync_project_with_zmlp, sync_membership_with_zmlp,
+                          convert_json_to_base64, convert_base64_to_json,
+                          validate_zmlp_data)
 from boonsdk import BoonClient
 from boonsdk.client import BoonSdkNotFoundException
 from projects.models import Project
+from wallet.exceptions import InvalidZmlpDataError
 
 
 pytestmark = pytest.mark.django_db
+
+
+class TestValidateZmlpData:
+
+    def test_raises(self):
+        serializer = Mock(is_valid=Mock(return_value=False))
+        with pytest.raises(InvalidZmlpDataError):
+            validate_zmlp_data(serializer)
+
+class TestConversions:
+
+    def test_convert_json(self):
+        data = {'test': 'testing'}
+        converted = convert_json_to_base64(data)
+        assert convert_base64_to_json(converted) == data
+
+    def test_convert_base64(self):
+        data = b'eyJ0ZXN0IjogInRlc3RpbmcifQ=='
+        converted = convert_base64_to_json(data)
+        assert converted == {'test': 'testing'}
 
 
 class TestSyncProject:
