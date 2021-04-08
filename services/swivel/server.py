@@ -145,10 +145,20 @@ def create_localdev_env(project, sub):
 
 @app.route('/health')
 def health():
-    if queue.full():
+    if GlobalQueue.mqueue.full():
         return 'ERROR_QUEUE_FULL', 400
     else:
         return 'OK', 200
+
+
+class GlobalQueue:
+    """
+    Stores a global copy of the managed queue.
+    """
+    # Setup a multiprocessing producer/consumer queue
+    queue_size = int(os.environ.get('SWIVEL_QUEUE_SIZE', '10000'))
+    manager = multiprocessing.Manager()
+    mqueue = manager.Queue(queue_size)
 
 
 if __name__ == '__main__':
@@ -159,16 +169,11 @@ if __name__ == '__main__':
     if 'PUBSUB_EMULATOR_HOST' in os.environ:
         create_localdev_env(project_name, sub_name)
 
-    # Setup a multiprocessing producer/consumer queue
-    manager = multiprocessing.Manager()
-
-    queue_size = int(os.environ.get('SWIVEL_QUEUE_SIZE', '10000'))
-    mqueue = manager.Queue(queue_size)
     poller = multiprocessing.Process(multiprocessing.Process(
-        target=message_poller, args=(mqueue, project_name, sub_name)).start())
+        target=message_poller, args=(GlobalQueue.mqueue, project_name, sub_name)).start())
 
     threads = int(os.environ.get('SWIVEL_THREADS', '10'))
-    pool = multiprocessing.Pool(threads, webhook_worker, (mqueue,))
+    pool = multiprocessing.Pool(threads, webhook_worker, (GlobalQueue.mqueue,))
 
     # Disables all these flask endpoint logs because the health check
     # fills the logs with garbage.
