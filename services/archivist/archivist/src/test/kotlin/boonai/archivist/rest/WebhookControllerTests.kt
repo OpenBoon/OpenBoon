@@ -25,13 +25,13 @@ class WebhookControllerTests : MockMvcTest() {
 
     @Before
     fun initialize() {
-        val spec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.ASSET_DELETED))
+        val spec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.ASSET_MODIFIED))
         webhook = webHookService.createWebHook(spec)
     }
 
     @Test
     fun testCreate() {
-        val testSpec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.ASSET_DELETED))
+        val testSpec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.ASSET_MODIFIED))
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/webhooks")
