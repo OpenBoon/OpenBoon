@@ -13,7 +13,7 @@ def get_google_credentials():
 
 def get_procurement_api():
     return build('cloudcommerceprocurement', 'v1', cache_discovery=False,
-                 credentials=get_google_credentials())
+                 static_discovery=False, credentials=get_google_credentials())
 
 
 def get_service_control_api():

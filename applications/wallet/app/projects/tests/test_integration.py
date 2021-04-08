@@ -1,18 +1,15 @@
 import base64
 import copy
 from datetime import datetime
-from unittest.mock import Mock, patch
 from uuid import uuid4
 
 import pytest
-import requests
 from boonsdk import BoonClient
-from boonsdk.client import (BoonSdkInvalidRequestException, BoonSdkNotFoundException,
-                            BoonSdkConnectionException)
+from boonsdk.client import BoonSdkInvalidRequestException, BoonSdkNotFoundException
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
-from django.test import RequestFactory, override_settings
+from django.test import RequestFactory
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.response import Response
@@ -21,7 +18,7 @@ from organizations.models import Organization
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
 from projects.utils import is_user_project_organization_owner, random_project_name
-from projects.views import BaseProjectViewSet
+from projects.viewsets import BaseProjectViewSet
 from wallet.tests.utils import check_response
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
 
@@ -52,11 +49,6 @@ def test_project_view_user_does_not_belong_to_project(user, project):
     view.kwargs = {'project_pk': project.id}
     response = view.dispatch(view.request, *view.args, **view.kwargs)
     assert response.status_code == 403
-
-
-def test_is_user_project_organization_owner_no_org(user):
-    project = Project.objects.create(name='no-org')
-    assert not is_user_project_organization_owner(user, project)
 
 
 def test_is_user_project_organization_owner_false(user, project):
@@ -125,10 +117,11 @@ def test_project_serializer_detail(project):
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                        'permissions', 'tasks', 'datasources', 'taskerrors',
                        'modules', 'providers', 'searches', 'faces', 'visualizations',
-                       'models', 'createdDate', 'modifiedDate']
+                       'models', 'createdDate', 'modifiedDate', 'organizationName']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
+    assert data['organizationName'] == project.organization.name
     assert datetime.fromisoformat(data['createdDate'].replace('Z', '+00:00')) == project.createdDate
     assert datetime.fromisoformat(data['modifiedDate'].replace('Z', '+00:00')) == project.modifiedDate
     assert data['url'] == f'/api/v1/projects/{project.id}/'
@@ -158,7 +151,7 @@ def test_project_serializer_list(project, project2):
     assert [entry['id'] for entry in data] == [project.id, project2.id]
 
 
-def test_project_sync_with_zmlp(monkeypatch, project_zero_user, data):
+def test_project_sync_with_zmlp(monkeypatch, project_zero_user, organization, data):
     def mock_get_project(*args, **kwargs):
         return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'ESSENTIALS'}  # noqa
 
@@ -180,7 +173,7 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user, data):
     monkeypatch.setattr(BoonClient, 'post', mock_post_true)
     monkeypatch.setattr(BoonClient, 'put', mock_put_enable_project)
     monkeypatch.setattr('projects.models.create_zmlp_api_key', mock_create_zmlp_api_key)
-    project = Project.objects.create(name='test', id=uuid4())
+    project = Project.objects.create(name='test', id=uuid4(), organization=organization)
     project.sync_with_zmlp()
 
     # Test a disabled project.
@@ -250,89 +243,8 @@ def make_users_for_project(project, count, user_model, apikey):
     return users
 
 
-class TestMlUsageThisMonth:
-
-    @patch('requests.get')
-    def test_get(self, requests_mock, project, api_client, login):
-        requests_mock.return_value = Mock(json=Mock(return_value={'key': 'value'}))
-        url = reverse('project-ml-usage-this-month', kwargs={'pk': project.id})
-        response = api_client.get(url)
-        assert response.status_code == 200
-        assert response.json() == {'key': 'value'}
-        assert requests_mock.called
-        assert requests_mock.call_args[0][0] == 'http://metrics/api/v1/apicalls/tiered_usage'
-
-    @patch('requests.get')
-    def test_get_connection_error(self, requests_mock, project, api_client, login):
-        requests_mock.side_effect = requests.exceptions.ConnectionError()
-        url = reverse('project-ml-usage-this-month', kwargs={'pk': project.id})
-        response = api_client.get(url)
-        assert response.status_code == 200
-        assert response.json() == {}
-
-    @patch('requests.get')
-    def test_get_bad_status(self, requests_mock, project, api_client, login):
-        response = requests.models.Response()
-        response.status_code = 400
-        requests_mock.return_value = response
-        url = reverse('project-ml-usage-this-month', kwargs={'pk': project.id})
-        response = api_client.get(url)
-        assert response.status_code == 200
-        assert response.json() == {}
-
-
-class TestTotalStorageUsage:
-
-    @patch.object(BoonClient, 'post')
-    def test_get(self, client_mock, project, api_client, login):
-        mock_responses = [{'hits': {'total': {'value': 1000}}},
-                          {'aggregations': {'sum#video_seconds': {'value': 3601}}}]
-        client_mock.side_effect = mock_responses
-        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
-        response = api_client.get(url)
-        assert response.status_code == 200
-        assert response.json() == {'image_count': 1000, 'video_hours': 2}
-
-    @patch.object(BoonClient, 'post')
-    def test_get_image_error(self, client_mock, project, api_client, login):
-        mock_responses = [requests.exceptions.ConnectionError(),
-                          {'aggregations': {'sum#video_seconds': {'value': 3601}}}]
-        client_mock.side_effect = mock_responses
-        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
-        response = api_client.get(url)
-        assert response.status_code == 200
-        assert response.json() == {'video_hours': 2}
-
-    @patch.object(BoonClient, 'post')
-    def test_get_video_error(self, client_mock, project, api_client, login):
-        mock_responses = [{'hits': {'total': {'value': 1000}}},
-                          requests.exceptions.ConnectionError()]
-        client_mock.side_effect = mock_responses
-        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
-        response = api_client.get(url)
-        assert response.status_code == 200
-        assert response.json() == {'image_count': 1000}
-
-    @patch.object(BoonClient, 'post')
-    def test_get_connection_error(self, client_mock, project, api_client, login):
-        client_mock.side_effect = requests.exceptions.ConnectionError()
-        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
-        response = api_client.get(url)
-        assert response.status_code == 200
-        assert response.json() == {}
-
-    @patch.object(BoonClient, 'post')
-    def test_get_zmlp_connection_exception(self, client_mock, project, api_client, login):
-        client_mock.side_effect = BoonSdkConnectionException()
-        url = reverse('project-total-storage-usage', kwargs={'pk': project.id})
-        response = api_client.get(url)
-        assert response.status_code == 200
-        assert response.json() == {}
-
-
 class TestProjectUserGet:
 
-    @override_settings(PLATFORM='zmlp')
     def test_list(self, zmlp_project_membership, api_client):
         api_client.force_authenticate(zmlp_project_membership.user)
         api_client.force_login(zmlp_project_membership.user)
@@ -340,8 +252,11 @@ class TestProjectUserGet:
         response = api_client.get(reverse('projectuser-list', kwargs={'project_pk': project_pk}))
         assert response.status_code == status.HTTP_200_OK
         content = response.json()
-        assert content['results'][0]['id'] == zmlp_project_membership.user.id
-        assert content['results'][0]['roles'] == ['ML_Tools', 'User_Admin']
+        assert content['count'] == 2
+        assert content['results'][0]['email'] == 'software@zorroa.com'
+        assert content['results'][0]['roles'] == ['Organization_Owner']
+        assert content['results'][1]['email'] == 'user@fake.com'
+        assert content['results'][1]['roles'] == ['ML_Tools', 'User_Admin']
 
     def test_list_no_permissions(self, zmlp_project_membership, api_client):
         zmlp_project_membership.roles = []
@@ -353,32 +268,37 @@ class TestProjectUserGet:
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert response.json() == {'detail': ['You do not have permission to manage users.']}
 
-    @override_settings(PLATFORM='zmlp')
-    def test_paginated_list(self, project, zmlp_project_user, zmlp_project_membership,
+    def test_list_organization_owner(self, user, project, organization, api_client):
+        api_client.force_authenticate(user)
+        api_client.force_login(user)
+        path = reverse('projectuser-list', kwargs={'project_pk': project.id})
+        check_response(api_client.get(path), status=403)
+        organization.owners.add(user)
+        check_response(api_client.get(path))
+
+    def test_paginated_list(self, project, login, zmlp_project_membership,
                             api_client, django_user_model, zmlp_apikey):
-        api_client.force_authenticate(zmlp_project_user)
-        api_client.force_login(zmlp_project_user)
         make_users_for_project(project, 5, django_user_model, zmlp_apikey)
         uri = reverse('projectuser-list', kwargs={'project_pk': project.id})
         response = api_client.get(f'{uri}?from=0&size=2')
         assert response.status_code == status.HTTP_200_OK
         content = response.json()
-        assert content['count'] == 6
+        assert content['count'] == 7
         assert len(content['results']) == 2
         assert 'next' in content
         assert content['next'] is not None
         assert 'previous' in content
 
-    @override_settings(PLATFORM='zmlp')
-    def test_list_bad_project(self, project, zmlp_project_user, zmlp_project_membership, api_client):  # noqa
+    def test_list_bad_project(self, project, zmlp_project_user, zmlp_project_membership, api_client,
+                              organization):  # noqa
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         new_project = Project.objects.create(id='0820a307-c3dd-460e-a9c4-0e5f582e09c3',
-                                             name='New Test Project')
+                                             name='New Test Project',
+                                             organization=organization)
         response = api_client.get(reverse('projectuser-list', kwargs={'project_pk': new_project.id}))  # noqa
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
-    @override_settings(PLATFORM='zmlp')
     def test_retrieve(self, project, zmlp_project_user, zmlp_project_membership, api_client):
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
@@ -393,7 +313,6 @@ class TestProjectUserGet:
                                           'AssetsRead', 'AssetsImport']
         assert content['roles'] == ['ML_Tools', 'User_Admin']
 
-    @override_settings(PLATFORM='zmlp')
     def test_with_bad_apikey(self, project, zmlp_project_user, zmlp_project_membership,
                              api_client, monkeypatch):
         monkeypatch.setattr(BoonClient, '_BoonClient__load_apikey', lambda x, y: {})
@@ -408,7 +327,6 @@ class TestProjectUserGet:
         content = response.json()
         assert content['permissions'] == []
 
-    @override_settings(PLATFORM='zmlp')
     def test_retrieve_bad_user_pk(self, project, zmlp_project_user, zmlp_project_membership,
                                   api_client):
         api_client.force_authenticate(zmlp_project_user)
@@ -420,7 +338,6 @@ class TestProjectUserGet:
         content = response.json()
         assert content['detail'] == ['Not found.']
 
-    @override_settings(PLATFORM='zmlp')
     def test_retrieve_non_member_user(self, project, zmlp_project_user, zmlp_project_membership,
                                       api_client, django_user_model):
         user = django_user_model.objects.create_user('newGuy', 'newGuy@fake.com', 'letmein')
@@ -436,7 +353,6 @@ class TestProjectUserGet:
 
 class TestProjectUserDelete:
 
-    @override_settings(PLATFORM='zmlp')
     def test_destroy(self, project, zmlp_project_user, zmlp_project_membership, api_client,
                      monkeypatch, django_user_model, zmlp_apikey):
 
@@ -454,7 +370,6 @@ class TestProjectUserDelete:
         with pytest.raises(Membership.DoesNotExist):
             user.memberships.get(project=project.id)
 
-    @override_settings(PLATFORM='zmlp')
     def test_non_member_user(self, project, zmlp_project_user, zmlp_project_membership,
                              api_client, django_user_model):
         user = django_user_model.objects.create_user('newGuy', 'newGuy@fake.com', 'letmein')
@@ -467,7 +382,6 @@ class TestProjectUserDelete:
         content = response.json()
         assert content['detail'] == ['Not found.']
 
-    @override_settings(PLATFORM='zmlp')
     def test_bad_apikey(self, project, zmlp_project_user, zmlp_project_membership,
                         api_client, django_user_model):
         user = make_users_for_project(project, 1, django_user_model,
@@ -479,7 +393,6 @@ class TestProjectUserDelete:
                                                      'pk': user.id}))
         assert response.status_code == status.HTTP_200_OK
 
-    @override_settings(PLATFORM='zmlp')
     def test_incomplete_apikey(self, project, zmlp_project_user, zmlp_project_membership,
                                api_client, django_user_model):
         user = make_users_for_project(project, 1, django_user_model,
@@ -491,7 +404,6 @@ class TestProjectUserDelete:
                                                      'pk': user.id}))
         assert response.status_code == status.HTTP_200_OK
 
-    @override_settings(PLATFORM='zmlp')
     def test_failed_zmlp_delete(self, project, zmlp_project_user, django_user_model,
                                 zmlp_project_membership, api_client, monkeypatch,
                                 zmlp_apikey):
@@ -513,7 +425,6 @@ class TestProjectUserDelete:
 
 class TestProjectUserPost:
 
-    @override_settings(PLATFORM='zmlp')
     def test_stop_deleting_yourself(self, project, zmlp_project_user,
                                     zmlp_project_membership, api_client, monkeypatch):
         api_client.force_authenticate(zmlp_project_user)
@@ -525,7 +436,6 @@ class TestProjectUserPost:
         content = response.json()
         assert content['detail'] == ['Cannot remove yourself from a project.']
 
-    @override_settings(PLATFORM='zmlp')
     def test_create(self, project, zmlp_project_user, zmlp_project_membership,
                     api_client, monkeypatch, django_user_model, data, api_key):
 
@@ -547,7 +457,6 @@ class TestProjectUserPost:
         decoded_apikey = convert_base64_to_json(membership.apikey)
         assert decoded_apikey['secretKey'] == api_key['secretKey']
 
-    @override_settings(PLATFORM='zmlp')
     def test_create_already_exists(self, project, zmlp_project_user,
                                    zmlp_project_membership,
                                    api_client, monkeypatch, django_user_model, data,
@@ -568,7 +477,6 @@ class TestProjectUserPost:
             reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_200_OK
 
-    @override_settings(PLATFORM='zmlp')
     def test_create_already_exists_batch(self, project, zmlp_project_user,
                                          zmlp_project_membership,
                                          api_client, monkeypatch, django_user_model, data,
@@ -592,7 +500,6 @@ class TestProjectUserPost:
         assert len(results['succeeded']) == 1
         assert not results['failed']
 
-    @override_settings(PLATFORM='zmlp')
     def test_create_already_exists_different_roles(self, project, zmlp_project_user,
                                                    zmlp_project_membership,
                                                    api_client, monkeypatch,
@@ -614,7 +521,6 @@ class TestProjectUserPost:
             reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == 409
 
-    @override_settings(PLATFORM='zmlp')
     def test_create_batch(self, project, zmlp_project_user, zmlp_project_membership,
                           api_client, monkeypatch, django_user_model, data, api_key):
 
@@ -651,7 +557,6 @@ class TestProjectUserPost:
         assert content['failed'][0]['roles'] == ['ML_Tools']
         assert content['failed'][0]['body']['detail'] == ['No user with the given email.']
 
-    @override_settings(PLATFORM='zmlp')
     def test_create_mixed_args(self, project, zmlp_project_user, zmlp_project_membership,
                                api_client, monkeypatch, django_user_model, data):
 
@@ -670,7 +575,6 @@ class TestProjectUserPost:
         content = response.json()
         assert content['detail'] == ['Batch argument provided with single creation arguments.']
 
-    @override_settings(PLATFORM='zmlp')
     def test_missing_email(self, project, zmlp_project_user, zmlp_project_membership, api_client):
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
@@ -680,7 +584,6 @@ class TestProjectUserPost:
         content = response.json()
         assert content['detail'] == ['Email and Roles are required.']
 
-    @override_settings(PLATFORM='zmlp')
     def test_missing_permissions(self, project, zmlp_project_user, zmlp_project_membership,
                                  api_client):
         api_client.force_authenticate(zmlp_project_user)
@@ -691,7 +594,6 @@ class TestProjectUserPost:
         content = response.json()
         assert content['detail'] == ['Email and Roles are required.']
 
-    @override_settings(PLATFORM='zmlp')
     def test_nonexistent_user(self, project, zmlp_project_user, zmlp_project_membership,
                               api_client):
         api_client.force_authenticate(zmlp_project_user)
@@ -703,7 +605,6 @@ class TestProjectUserPost:
         content = response.json()
         assert content['detail'] == ['No user with the given email.']
 
-    @override_settings(PLATFORM='zmlp')
     def test_bad_zmlp_response(self, project, zmlp_project_user, monkeypatch, data,
                                zmlp_project_membership, api_client, django_user_model):
 
@@ -723,7 +624,6 @@ class TestProjectUserPost:
 
 class TestProjectUserPut:
 
-    @override_settings(PLATFORM='zmlp')
     def test_edit_perms(self, project, zmlp_project_user, monkeypatch, data,
                         zmlp_project_membership, api_client, django_user_model):
 
@@ -759,7 +659,6 @@ class TestProjectUserPut:
         assert decoded_apikey['secretKey'] == 'secret'
         assert membership.roles == ['User_Admin']
 
-    @override_settings(PLATFORM='zmlp')
     def test_no_permissions(self, project, zmlp_project_user, data, zmlp_project_membership,
                             api_client):
         api_client.force_authenticate(zmlp_project_user)
@@ -772,7 +671,6 @@ class TestProjectUserPut:
         content = response.json()
         assert content['detail'] == ['Roles must be supplied.']
 
-    @override_settings(PLATFORM='zmlp')
     def test_no_new_key(self, project, zmlp_project_user, monkeypatch, data,
                         zmlp_project_membership, api_client, django_user_model):
 
@@ -804,7 +702,6 @@ class TestProjectUserPut:
         content = response.json()
         assert content['detail'] == ['Invalid request.']
 
-    @override_settings(PLATFORM='zmlp')
     def test_cannot_delete(self, project, zmlp_project_user, monkeypatch, data,
                            zmlp_project_membership, api_client, django_user_model):
 
@@ -837,7 +734,6 @@ class TestProjectUserPut:
         content = response.json()
         assert content['detail'] == ['Invalid request.']
 
-    @override_settings(PLATFORM='zmlp')
     def test_server_error(self, project, zmlp_project_user, monkeypatch, data,
                           zmlp_project_membership, api_client, django_user_model):
 
@@ -870,7 +766,6 @@ class TestProjectUserPut:
         content = response.json()
         assert content['detail'] == ['Error deleting apikey.']
 
-    @override_settings(PLATFORM='zmlp')
     def test_inception_key(self, project, zmlp_project_user, monkeypatch, inception_key,
                            zmlp_project_membership, api_client, django_user_model):
 

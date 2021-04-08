@@ -143,7 +143,7 @@ Input.defaultProps = {
 Input.propTypes = {
   id: PropTypes.string.isRequired,
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
-  type: PropTypes.oneOf(['text', 'password', 'number']).isRequired,
+  type: PropTypes.oneOf(['text', 'password', 'number', 'email']).isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,

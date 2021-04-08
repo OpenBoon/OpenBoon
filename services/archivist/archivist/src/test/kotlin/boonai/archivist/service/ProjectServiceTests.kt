@@ -9,6 +9,7 @@ import boonai.archivist.domain.ProjectStorageCategory
 import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.ProjectTier
+import boonai.archivist.domain.IndexRouteFilter
 import boonai.archivist.repository.IndexRouteDao
 import boonai.archivist.security.getProjectId
 import boonai.common.service.storage.SystemStorageException
@@ -23,6 +24,7 @@ import org.springframework.dao.EmptyResultDataAccessException
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 class ProjectServiceTests : AbstractTest() {
@@ -165,7 +167,7 @@ class ProjectServiceTests : AbstractTest() {
         val obj1 = systemStorageService.fetchObject("projects/${getProjectId()}/test1.json", Map::class.java)
         val obj2 = systemStorageService.fetchObject("projects/${getProjectId()}/test2.json", Map::class.java)
 
-        projectService.deleteProjectSystemStorage(project)
+        projectService.deleteProjectSystemStorage(project.id)
 
         assertEquals(true, obj1.isNotEmpty())
         assertEquals(true, obj2.isNotEmpty())
@@ -182,11 +184,46 @@ class ProjectServiceTests : AbstractTest() {
         val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         val result = projectStorageService.store(spec)
-        projectService.deleteProjectStorage(project)
+        projectService.deleteProjectStorage(project.id)
 
         assertEquals(true, result.size > 0)
         assertThrows<ProjectStorageException> {
             projectStorageService.fetch(loc)
+        }
+    }
+
+    @Test
+    fun testDeleteProject() {
+
+        // Verifying Project Index Routing Size
+        var allProjectIndex = indexRoutingService.getAll(IndexRouteFilter(projectIds = listOf(getProjectId())))
+        assertNotEquals(0, allProjectIndex.size())
+
+        projectService.delete(project)
+
+        allProjectIndex = indexRoutingService.getAll(IndexRouteFilter(projectIds = listOf(getProjectId())))
+        assertEquals(0, allProjectIndex.size())
+
+        val listOfTables = listOf(
+            "index_route",
+            "project_quota",
+            "project_quota_time_series",
+            "processor",
+            "module",
+            "credentials",
+            "pipeline",
+            "automl",
+            "model",
+            "job",
+            "datasource",
+            "project"
+
+        )
+        listOfTables.forEach {
+            assertEquals(
+                0,
+                jdbc.queryForObject("SELECT COUNT(*) FROM $it where pk_project=?", Int::class.java, getProjectId())
+            )
         }
     }
 }

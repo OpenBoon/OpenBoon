@@ -2,6 +2,7 @@ import copy
 import os
 import tempfile
 import time
+import shutil
 
 import matplotlib.pyplot as plt
 import torch
@@ -102,6 +103,13 @@ class PytorchTransferLearningTrainer(ModelTrainer):
         os.makedirs(model_dir)
 
         torch.save(self.model, model_dir + '/model.pth')
+
+        # Copy over the example tool.
+        cwd = os.path.dirname(os.path.realpath(__file__))
+        shutil.copy2(f'{cwd}/tool/predict.py', model_dir)
+        shutil.copy2(f'{cwd}/tool/requirements.txt', model_dir)
+
+        # copy over labels.
         with open(model_dir + '/labels.txt', 'w') as fp:
             for label in labels:
                 fp.write('{}\n'.format(label))

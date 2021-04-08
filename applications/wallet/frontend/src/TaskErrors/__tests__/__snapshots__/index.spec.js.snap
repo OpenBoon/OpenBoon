@@ -115,6 +115,8 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -139,6 +141,8 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
 
 .emotion-19 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -226,7 +230,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #191919;
+  color: #808080;
   background-color: transparent;
   margin: -6px;
 }
@@ -270,7 +274,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Error Type
+                  Error Type
                 </div>
               </th>
               <th
@@ -297,7 +301,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  File Name
+                  File Name
                 </div>
               </th>
               <th
@@ -920,6 +924,8 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -944,6 +950,8 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
 
 .emotion-19 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -1047,7 +1055,7 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Error Type
+                  Error Type
                 </div>
               </th>
               <th
@@ -1074,7 +1082,7 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  File Name
+                  File Name
                 </div>
               </th>
               <th

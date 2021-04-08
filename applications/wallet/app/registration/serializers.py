@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_auth.serializers import PasswordResetSerializer
 from rest_framework import serializers
 
@@ -37,7 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
     organizations = serializers.SerializerMethodField()
 
     class Meta:
-        model = User
+        model = get_user_model()
         depth = 1
         fields = ['id', 'username', 'first_name', 'last_name', 'email', 'last_login',
                   'date_joined', 'roles', 'agreed_to_policies_date', 'organizations']
@@ -66,3 +66,12 @@ class UserSerializer(serializers.ModelSerializer):
         if len(agreements) == 0:
             return '00000000'
         return agreements[0].policiesDate
+
+
+class SimpleUserSerializer(serializers.ModelSerializer):
+    firstName = serializers.CharField(source='first_name')
+    lastName = serializers.CharField(source='last_name')
+
+    class Meta:
+        model = get_user_model()
+        fields = ['id', 'firstName', 'lastName', 'email']

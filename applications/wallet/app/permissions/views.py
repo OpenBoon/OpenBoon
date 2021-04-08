@@ -1,14 +1,11 @@
 from permissions.serializers import PermissionSerializer
-from projects.views import BaseProjectViewSet
+from projects.viewsets import BaseProjectViewSet, ZmlpListMixin, ListViewType
 from wallet.paginators import ZMLPFromSizePagination
 
 
-class PermissionViewSet(BaseProjectViewSet):
-
+class PermissionViewSet(ZmlpListMixin,
+                        BaseProjectViewSet):
     serializer_class = PermissionSerializer
     pagination_class = ZMLPFromSizePagination
     zmlp_root_api_path = '/auth/v1/permissions'
-    zmlp_only = True
-
-    def list(self, request, project_pk):
-        return self._zmlp_list_from_root(request)
+    list_type = ListViewType.ROOT

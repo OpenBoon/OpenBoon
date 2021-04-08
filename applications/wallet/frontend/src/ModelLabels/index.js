@@ -19,9 +19,9 @@ const ModelLabels = ({ requiredAssetsPerLabel }) => {
       refreshButton={false}
       columns={[
         'Label',
-        '# Required',
-        '# Labeled',
-        '# Remaining',
+        '# Required',
+        '# Labeled',
+        '# Remaining',
         '#Checkmark#',
         '#Actions#',
       ]}

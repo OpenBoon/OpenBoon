@@ -294,6 +294,8 @@ Array [
 
 .emotion-14 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -338,20 +340,28 @@ Array [
 
 .emotion-15:hover svg {
   color: #ffffff;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .emotion-16 {
   margin-left: 4px;
   color: transparent;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 
 .emotion-25 {
   margin-left: 4px;
   color: #6088FE;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 
 .emotion-27 {
@@ -360,6 +370,8 @@ Array [
 
 .emotion-32 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -579,7 +591,7 @@ Array [
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #191919;
+  color: #808080;
   background-color: transparent;
   margin: -6px;
 }
@@ -818,7 +830,7 @@ Array [
                     Status
                     <svg
                       className="emotion-16"
-                      data-file-name="sort.svg"
+                      data-file-name="back.svg"
                       height={18}
                     />
                   </a>
@@ -834,7 +846,7 @@ Array [
                     Job Name
                     <svg
                       className="emotion-16"
-                      data-file-name="sort.svg"
+                      data-file-name="back.svg"
                       height={18}
                     />
                   </a>
@@ -850,7 +862,7 @@ Array [
                     Priority
                     <svg
                       className="emotion-16"
-                      data-file-name="sort.svg"
+                      data-file-name="back.svg"
                       height={18}
                     />
                   </a>
@@ -866,7 +878,7 @@ Array [
                     Created
                     <svg
                       className="emotion-25"
-                      data-file-name="sort.svg"
+                      data-file-name="back.svg"
                       height={18}
                     />
                   </a>
@@ -877,7 +889,7 @@ Array [
                   <div
                     className="emotion-27"
                   >
-                    # Assets
+                    # Assets
                   </div>
                 </th>
                 <th
@@ -895,7 +907,7 @@ Array [
                   <div
                     className="emotion-27"
                   >
-                    Task Progress
+                    Task Progress
                   </div>
                 </th>
                 <th
@@ -2141,6 +2153,8 @@ Array [
 
 .emotion-14 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -2185,15 +2199,19 @@ Array [
 
 .emotion-15:hover svg {
   color: #ffffff;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .emotion-16 {
   margin-left: 4px;
   color: transparent;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 
 .emotion-24 {
@@ -2222,19 +2240,19 @@ Array [
 
 .emotion-24:hover svg {
   color: #ffffff;
-  -webkit-transform: rotate(0deg);
-  -moz-transform: rotate(0deg);
-  -ms-transform: rotate(0deg);
-  transform: rotate(0deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 
 .emotion-25 {
   margin-left: 4px;
   color: #6088FE;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .emotion-27 {
@@ -2243,6 +2261,8 @@ Array [
 
 .emotion-32 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -2389,7 +2409,7 @@ Array [
                     Status
                     <svg
                       className="emotion-16"
-                      data-file-name="sort.svg"
+                      data-file-name="back.svg"
                       height={18}
                     />
                   </a>
@@ -2405,7 +2425,7 @@ Array [
                     Job Name
                     <svg
                       className="emotion-16"
-                      data-file-name="sort.svg"
+                      data-file-name="back.svg"
                       height={18}
                     />
                   </a>
@@ -2421,7 +2441,7 @@ Array [
                     Priority
                     <svg
                       className="emotion-16"
-                      data-file-name="sort.svg"
+                      data-file-name="back.svg"
                       height={18}
                     />
                   </a>
@@ -2437,7 +2457,7 @@ Array [
                     Created
                     <svg
                       className="emotion-25"
-                      data-file-name="sort.svg"
+                      data-file-name="back.svg"
                       height={18}
                     />
                   </a>
@@ -2448,7 +2468,7 @@ Array [
                   <div
                     className="emotion-27"
                   >
-                    # Assets
+                    # Assets
                   </div>
                 </th>
                 <th
@@ -2466,7 +2486,7 @@ Array [
                   <div
                     className="emotion-27"
                   >
-                    Task Progress
+                    Task Progress
                   </div>
                 </th>
                 <th

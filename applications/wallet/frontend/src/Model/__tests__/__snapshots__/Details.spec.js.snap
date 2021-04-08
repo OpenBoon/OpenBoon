@@ -666,6 +666,8 @@ Array [
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -698,6 +700,8 @@ Array [
 
 .emotion-17 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -802,7 +806,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    # Required
+                    # Required
                   </div>
                 </th>
                 <th
@@ -811,7 +815,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    # Labeled
+                    # Labeled
                   </div>
                 </th>
                 <th
@@ -820,7 +824,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    # Remaining
+                    # Remaining
                   </div>
                 </th>
                 <th
@@ -2862,6 +2866,8 @@ Array [
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -2894,6 +2900,8 @@ Array [
 
 .emotion-17 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -2998,7 +3006,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    # Required
+                    # Required
                   </div>
                 </th>
                 <th
@@ -3007,7 +3015,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    # Labeled
+                    # Labeled
                   </div>
                 </th>
                 <th
@@ -3016,7 +3024,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    # Remaining
+                    # Remaining
                   </div>
                 </th>
                 <th
@@ -3768,6 +3776,8 @@ Array [
 
 .emotion-7 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -3800,6 +3810,8 @@ Array [
 
 .emotion-17 {
   text-align: left;
+  white-space: pre-line;
+  vertical-align: bottom;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
@@ -3904,7 +3916,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    # Required
+                    # Required
                   </div>
                 </th>
                 <th
@@ -3913,7 +3925,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    # Labeled
+                    # Labeled
                   </div>
                 </th>
                 <th
@@ -3922,7 +3934,7 @@ Array [
                   <div
                     className="emotion-8"
                   >
-                    # Remaining
+                    # Remaining
                   </div>
                 </th>
                 <th

@@ -3,25 +3,28 @@ package boonai.archivist.service
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import boonai.archivist.config.ApplicationProperties
-import boonai.archivist.domain.ArchivistException
-import boonai.archivist.domain.IndexRoute
-import boonai.archivist.domain.IndexRouteFilter
-import boonai.archivist.domain.IndexRouteSimpleSpec
-import boonai.archivist.domain.Pipeline
-import boonai.archivist.domain.PipelineMode
-import boonai.archivist.domain.PipelineSpec
 import boonai.archivist.domain.Project
+import boonai.archivist.domain.ProjectSpec
 import boonai.archivist.domain.ProjectFilter
-import boonai.archivist.domain.ProjectNameUpdate
 import boonai.archivist.domain.ProjectQuotaCounters
 import boonai.archivist.domain.ProjectQuotas
 import boonai.archivist.domain.ProjectQuotasTimeSeriesEntry
-import boonai.archivist.domain.ProjectSize
-import boonai.archivist.domain.ProjectSpec
+import boonai.archivist.domain.ProjectNameUpdate
 import boonai.archivist.domain.ProjectTier
+import boonai.archivist.domain.ProjectSize
+import boonai.archivist.domain.IndexRoute
+import boonai.archivist.domain.IndexRouteSimpleSpec
+import boonai.archivist.domain.Pipeline
+import boonai.archivist.domain.PipelineSpec
+import boonai.archivist.domain.IndexRouteFilter
+import boonai.archivist.domain.ArchivistException
+import boonai.archivist.domain.PipelineMode
+import boonai.archivist.queue.publisher.IndexRoutingPublisher
+import boonai.archivist.queue.publisher.ProjectPublisher
 import boonai.archivist.repository.KPagedList
-import boonai.archivist.repository.ProjectCustomDao
 import boonai.archivist.repository.ProjectDao
+import boonai.archivist.repository.ProjectCustomDao
+import boonai.archivist.repository.ProjectDeleteDao
 import boonai.archivist.repository.ProjectQuotasDao
 import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.InternalThreadAuthentication
@@ -124,12 +127,17 @@ interface ProjectService {
     /**
      * Delete System Storage files of a Project
      */
-    fun deleteProjectSystemStorage(project: Project)
+    fun deleteProjectSystemStorage(projectId: UUID)
 
     /**
      * Delete Project related storage
      */
-    fun deleteProjectStorage(project: Project)
+    fun deleteProjectStorage(projectId: UUID)
+
+    /**
+     * Delete Project
+     */
+    fun delete(project: Project)
 }
 
 @Service
@@ -142,7 +150,10 @@ class ProjectServiceImpl constructor(
     val systemStorageService: SystemStorageService,
     var projectStorageService: ProjectStorageService,
     val properties: ApplicationProperties,
-    val txEvent: TransactionEventManager
+    val txEvent: TransactionEventManager,
+    val projectDeleteDao: ProjectDeleteDao,
+    val projectPublisher: ProjectPublisher,
+    val indexRoutingPublisher: IndexRoutingPublisher
 ) : ProjectService {
 
     @Autowired
@@ -277,11 +288,11 @@ class ProjectServiceImpl constructor(
         )
     }
 
-    override fun deleteProjectSystemStorage(project: Project) {
+    override fun deleteProjectSystemStorage(projectId: UUID) {
         systemStorageService.recursiveDelete(
-            "projects/${project.id}"
+            "projects/$projectId"
         )
-        logger.info("Deleting System Storage of Project: ${project.name}")
+        logger.info("Deleting System Storage of Project: $projectId")
     }
 
     override fun setEnabled(projectId: UUID, value: Boolean) {
@@ -409,9 +420,22 @@ class ProjectServiceImpl constructor(
         return indexRoutingService.setIndexRoute(project, route)
     }
 
-    override fun deleteProjectStorage(project: Project) {
-        projectStorageService.recursiveDelete("projects/${project.id}")
-        logger.warn("Deleted Project ${project.id} storage files")
+    override fun deleteProjectStorage(projectId: UUID) {
+        projectStorageService.recursiveDelete("projects/$projectId")
+        logger.warn("Deleted Project $projectId storage files")
+    }
+
+    @Transactional
+    override fun delete(project: Project) {
+
+        logger.warn("Deleting Project ${project.id}")
+        indexRoutingService.closeAndDeleteProjectIndexes(project.id)
+        projectDeleteDao.deleteProjectRelatedObjects(project.id)
+
+        // Publishing to Redis Queue
+        projectPublisher.deleteApiKey(project.id)
+        projectPublisher.deleteStorage(project.id)
+        projectPublisher.deleteSystemStorage(project.id)
     }
 
     // This gets called alot so hold onto the values for a while.

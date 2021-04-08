@@ -26,27 +26,18 @@ const TableContent = ({
   refreshButton,
 }) => {
   const {
-    query: { page = 1, sort, filter = '' },
+    query: { page = 1, sort, search = '' },
   } = useRouter()
 
   const parsedPage = parseInt(page, 10)
   const from = parsedPage * SIZE - SIZE
-  const queryParam = getQueryString({ from, size: SIZE, sort, filter })
-  const queryParamPlus = getQueryString({
-    from: from + SIZE,
-    size: SIZE,
-    sort,
-    filter,
-  })
-  const queryParamMinus = getQueryString({
-    from: from - SIZE,
-    size: SIZE,
-    sort,
-    filter,
-  })
+  const queryParam =
+    page > 1
+      ? getQueryString({ from, size: SIZE, ordering: sort, search })
+      : getQueryString({ ordering: sort, search })
 
   const {
-    data: { count = 0, results },
+    data: { count = 0, results, previous, next },
     mutate: revalidate,
   } = useSWR(`${url}${queryParam}`)
 
@@ -175,13 +166,9 @@ const TableContent = ({
           />
         )}
 
-        {count > 0 && parsedPage < Math.ceil(count / SIZE) && (
-          <FetchAhead url={`${url}${queryParamPlus}`} />
-        )}
+        {previous && <FetchAhead url={previous} />}
 
-        {count > 0 && parsedPage > 1 && (
-          <FetchAhead url={`${url}${queryParamMinus}`} />
-        )}
+        {next && <FetchAhead url={next} />}
 
         {count > 0 && <div>&nbsp;</div>}
       </div>

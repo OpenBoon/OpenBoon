@@ -4,6 +4,7 @@ import camelCase from 'camelcase'
 export const getQueryString = (params = {}) => {
   const queryString = Object.keys(params)
     .filter((p) => params[p] || params[p] === 0)
+    .sort()
     .map((p) => `${p}=${params[p]}`)
     .join('&')
 
@@ -66,10 +67,8 @@ export const getPathname = ({ pathname }) => {
     })
 }
 
-export const revalidate = async ({ key, paginated, from = 0, size = 20 }) => {
-  const url = paginated ? `${key}?from=${from}&size=${size}` : key
-
-  return mutate(url, async () => fetcher(url))
+export const revalidate = async ({ key }) => {
+  return mutate(key, async () => fetcher(key))
 }
 
 export const parseResponse = async ({ response }) => {
@@ -100,4 +99,14 @@ export const parseResponse = async ({ response }) => {
   } catch (error) {
     return { global: 'Something went wrong. Please try again.' }
   }
+}
+
+export const getRelativeUrl = ({ url }) => {
+  if (!url.includes('://')) {
+    return url
+  }
+
+  const { pathname, search } = new URL(url)
+
+  return decodeURIComponent(`${pathname}${search}`)
 }
