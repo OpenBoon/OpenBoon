@@ -53,3 +53,7 @@ class ServerTests(unittest.TestCase):
         token = server.generate_token(mock_msg)
         claims = jwt.decode(token, 'terminator2000', algorithms=['HS256'])
         assert claims['asset_id'] == '12345'
+
+    def test_health(self):
+        health = server.health()
+        assert health == ('OK', 200)
