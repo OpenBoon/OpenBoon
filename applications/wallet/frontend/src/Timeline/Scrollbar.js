@@ -5,14 +5,12 @@ import { colors, constants, spacing, zIndex } from '../Styles'
 
 import { getScroller } from '../Scroll/helpers'
 
-import { getNextScrollLeft } from './helpers'
 import { ACTIONS } from './reducer'
 
 let origin
 let scrollbarOrigin
 let scrollbarTrackWidth
 let scrollbarScrollableWidth
-let nextScrollLeft
 let newScrollbarScrollableWidth
 
 export const SCROLLBAR_CONTAINER_HEIGHT = 36
@@ -98,39 +96,10 @@ const TimelineScrollbar = ({ settings, rulerRef, dispatch }) => {
 
     const zoom = 100 / (1 - newScrollbarScrollableWidth / scrollbarTrackWidth)
 
-    console.log(zoom)
     dispatch({
       type: ACTIONS.ZOOM,
       payload: { value: zoom },
     })
-
-    const fractionScrolled =
-      newScrollbarScrollableWidth === 0
-        ? 0
-        : scrollbarOrigin / newScrollbarScrollableWidth
-
-    // the max number of pixels the ruler scroll left
-    const rulerScrollableWidth =
-      rulerRef.current.scrollWidth - rulerRef.current.offsetWidth
-
-    // const nextWidth =
-    //   (rulerRef.current.scrollWidth / settings.zoom) * zoom -
-    //   rulerRef.current.offsetWidth
-
-    const rulerFraction =
-      rulerRef.current.scrollLeft /
-      (rulerRef.current.scrollWidth - rulerRef.current.offsetWidth)
-
-    nextScrollLeft =
-      rulerScrollableWidth * Math.min(1, Math.max(0, fractionScrolled))
-
-    // // keep scrollbarOrigin in place
-    // horizontalScroller.emit({
-    //   eventName: 'scroll',
-    //   data: {
-    //     scrollX: nextScrollLeft,
-    //   },
-    // })
   }
 
   /* istanbul ignore next */
