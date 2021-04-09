@@ -6,6 +6,7 @@ import boonai.archivist.domain.WebHookPatch
 import boonai.archivist.domain.WebHookSpec
 import boonai.archivist.domain.WebHookUpdate
 import boonai.archivist.repository.KPagedList
+import boonai.archivist.service.WebHookPublisherService
 import boonai.archivist.service.WebHookService
 import boonai.archivist.util.HttpUtils
 import io.swagger.annotations.ApiOperation
@@ -22,7 +23,10 @@ import java.util.UUID
 
 @PreAuthorize("hasAuthority('AssetsImport')")
 @RestController
-class WebHookController constructor(val webHookService: WebHookService) {
+class WebHookController constructor(
+    val webHookService: WebHookService,
+    val webHookPublisherService: WebHookPublisherService
+) {
 
     @PostMapping(value = ["/api/v3/webhooks"])
     fun create(@RequestBody spec: WebHookSpec): WebHook {
@@ -38,6 +42,19 @@ class WebHookController constructor(val webHookService: WebHookService) {
     @GetMapping(value = ["/api/v3/webhooks/{id}"])
     fun get(@PathVariable id: UUID): WebHook {
         return webHookService.getWebHook(id)
+    }
+
+    @PostMapping(value = ["/api/v3/webhooks/{id}/_test"])
+    fun test(@PathVariable id: UUID): Any {
+        val wb = webHookService.getWebHook(id)
+        webHookPublisherService.testWebHook(wb)
+        return HttpUtils.status("webhook", "_test", true)
+    }
+
+    @PostMapping(value = ["/api/v3/webhooks/_test"])
+    fun craftTest(@RequestBody spec: WebHookSpec): Any {
+        webHookPublisherService.testWebHook(spec)
+        return HttpUtils.status("webhook", "_test", true)
     }
 
     @PutMapping(value = ["/api/v3/webhooks/{id}"])

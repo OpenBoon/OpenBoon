@@ -4,6 +4,7 @@ import boonai.archivist.config.ApplicationProperties
 import boonai.archivist.domain.Asset
 import boonai.archivist.domain.TriggerType
 import boonai.archivist.domain.WebHook
+import boonai.archivist.domain.WebHookSpec
 import boonai.archivist.security.getProjectId
 import boonai.common.util.Json
 import com.google.api.gax.core.CredentialsProvider
@@ -21,14 +22,20 @@ import com.google.pubsub.v1.PubsubMessage
 import io.grpc.ManagedChannelBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
+import org.springframework.util.StreamUtils
+import java.nio.charset.Charset
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
 interface WebHookPublisherService {
     fun emitMessage(asset: Asset, hook: WebHook, trigger: TriggerType)
+    fun emitMessage(assetId: String, dataString: String, url: String, key: String, trigger: TriggerType)
     fun handleAssetTriggers(asset: Asset, trigger: TriggerType)
+    fun testWebHook(wb: WebHook)
+    fun testWebHook(spec: WebHookSpec)
 }
 
 @Service
@@ -67,17 +74,40 @@ class WebHookPublisherServiceImpl constructor(
     }
 
     override fun emitMessage(asset: Asset, hook: WebHook, trigger: TriggerType) {
-        val dataString = ByteString.copyFromUtf8(Json.serializeToString(asset))
+        val dataString = Json.serializeToString(asset)
+        emitMessage(asset.id, dataString, hook.url, hook.secretKey, trigger)
+    }
 
+    override fun emitMessage(assetId: String, dataString: String, url: String, key: String, trigger: TriggerType) {
+        logger.info("Emitting $trigger for assetId $assetId to $url")
+        val bytes = ByteString.copyFromUtf8(dataString)
         val pubsubMessage = PubsubMessage.newBuilder()
-            .setData(dataString)
+            .setData(bytes)
             .putAttributes("trigger", trigger.name)
-            .putAttributes("asset_id", asset.id)
-            .putAttributes("project_id", hook.projectId.toString())
-            .putAttributes("url", hook.url)
-            .putAttributes("secret_key", hook.secretKey)
+            .putAttributes("asset_id", assetId)
+            .putAttributes("project_id", getProjectId().toString())
+            .putAttributes("url", url)
+            .putAttributes("secret_key", key)
             .build()
         publisher.publish(pubsubMessage)
+    }
+
+    override fun testWebHook(wb: WebHook) {
+        for (trig in wb.triggers) {
+            val payload = ClassPathResource("webhooks/${trig.name}.json").inputStream.use {
+                StreamUtils.copyToString(it, Charset.defaultCharset())
+            }
+            emitMessage("00000000-0000-0000-0000-000000000000", payload, wb.url, wb.secretKey, trig)
+        }
+    }
+
+    override fun testWebHook(spec: WebHookSpec) {
+        for (trig in spec.triggers) {
+            val payload = ClassPathResource("webhooks/${trig.name}.json").inputStream.use {
+                StreamUtils.copyToString(it, Charset.defaultCharset())
+            }
+            emitMessage("00000000-0000-0000-0000-000000000000", payload, spec.url, spec.secretKey, trig)
+        }
     }
 
     private fun createPublisher(): Publisher {
