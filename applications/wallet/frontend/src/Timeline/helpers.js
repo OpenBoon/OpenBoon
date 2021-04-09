@@ -164,14 +164,21 @@ export const gotoNextHit = ({ videoRef, timelines, settings }) => () => {
 
 export const getNextScrollLeft = ({ videoRef, rulerRef, zoom, nextZoom }) => {
   const { currentTime = 0, duration = 0 } = videoRef.current || {}
-  const { scrollWidth = 0, scrollLeft = 0 } = rulerRef.current || {}
+  const { scrollWidth = 0, scrollLeft = 0, offsetWidth = 0 } =
+    rulerRef.current || {}
 
   const playheadLeftOffset = (currentTime / duration) * scrollWidth - scrollLeft
 
+  const isPlayheadOutOfView =
+    playheadLeftOffset < 0 || playheadLeftOffset > offsetWidth
+
+  const centeredPoint = (scrollLeft + offsetWidth / 2) / scrollWidth
+
   const nextScrollWidth = (scrollWidth / zoom) * nextZoom + GUIDE_WIDTH / 2
 
-  const nextScrollLeft =
-    (currentTime / duration) * nextScrollWidth - playheadLeftOffset
+  const nextScrollLeft = isPlayheadOutOfView
+    ? centeredPoint * nextScrollWidth - offsetWidth / 2
+    : (currentTime / duration) * nextScrollWidth - playheadLeftOffset
 
   return nextScrollLeft
 }

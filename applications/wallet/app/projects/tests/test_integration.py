@@ -18,7 +18,7 @@ from organizations.models import Organization
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
 from projects.utils import is_user_project_organization_owner, random_project_name
-from projects.views import BaseProjectViewSet
+from projects.viewsets import BaseProjectViewSet
 from wallet.tests.utils import check_response
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
 
@@ -51,11 +51,6 @@ def test_project_view_user_does_not_belong_to_project(user, project):
     assert response.status_code == 403
 
 
-def test_is_user_project_organization_owner_no_org(user):
-    project = Project.objects.create(name='no-org')
-    assert not is_user_project_organization_owner(user, project)
-
-
 def test_is_user_project_organization_owner_false(user, project):
     assert not is_user_project_organization_owner(user, project)
 
@@ -85,11 +80,13 @@ def test_projects_delete(login, api_client, zmlp_project_user, organization, pro
     assert not Project.all_objects.get(id=project.id).isActive
 
 
-def test_projects_view_with_projects(project, zmlp_project_user, api_client):
+def test_projects_view_with_projects(organization, zmlp_project_user, api_client):
     api_client.force_authenticate(zmlp_project_user)
+    for i in range(1, 25):
+        Project.objects.create(name=str(i), organization=organization).users.add(zmlp_project_user)
     response = api_client.get(reverse('project-list')).json()
-    assert response['count'] == 1
-    assert response['results'][0]['name'] == project.name
+    assert response['count'] == 25
+    assert len(response['results']) == 25
 
 
 def test_projects_view_with_org_owner(project, zmlp_project_user, api_client):
@@ -122,10 +119,11 @@ def test_project_serializer_detail(project):
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                        'permissions', 'tasks', 'datasources', 'taskerrors',
                        'modules', 'providers', 'searches', 'faces', 'visualizations',
-                       'models', 'createdDate', 'modifiedDate']
+                       'models', 'createdDate', 'modifiedDate', 'organizationName']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
+    assert data['organizationName'] == project.organization.name
     assert datetime.fromisoformat(data['createdDate'].replace('Z', '+00:00')) == project.createdDate
     assert datetime.fromisoformat(data['modifiedDate'].replace('Z', '+00:00')) == project.modifiedDate
     assert data['url'] == f'/api/v1/projects/{project.id}/'
@@ -155,7 +153,7 @@ def test_project_serializer_list(project, project2):
     assert [entry['id'] for entry in data] == [project.id, project2.id]
 
 
-def test_project_sync_with_zmlp(monkeypatch, project_zero_user, data):
+def test_project_sync_with_zmlp(monkeypatch, project_zero_user, organization, data):
     def mock_get_project(*args, **kwargs):
         return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'ESSENTIALS'}  # noqa
 
@@ -177,7 +175,7 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user, data):
     monkeypatch.setattr(BoonClient, 'post', mock_post_true)
     monkeypatch.setattr(BoonClient, 'put', mock_put_enable_project)
     monkeypatch.setattr('projects.models.create_zmlp_api_key', mock_create_zmlp_api_key)
-    project = Project.objects.create(name='test', id=uuid4())
+    project = Project.objects.create(name='test', id=uuid4(), organization=organization)
     project.sync_with_zmlp()
 
     # Test a disabled project.
@@ -256,8 +254,11 @@ class TestProjectUserGet:
         response = api_client.get(reverse('projectuser-list', kwargs={'project_pk': project_pk}))
         assert response.status_code == status.HTTP_200_OK
         content = response.json()
-        assert content['results'][0]['id'] == zmlp_project_membership.user.id
-        assert content['results'][0]['roles'] == ['ML_Tools', 'User_Admin']
+        assert content['count'] == 2
+        assert content['results'][0]['email'] == 'software@zorroa.com'
+        assert content['results'][0]['roles'] == ['Organization_Owner']
+        assert content['results'][1]['email'] == 'user@fake.com'
+        assert content['results'][1]['roles'] == ['ML_Tools', 'User_Admin']
 
     def test_list_no_permissions(self, zmlp_project_membership, api_client):
         zmlp_project_membership.roles = []
@@ -269,26 +270,34 @@ class TestProjectUserGet:
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert response.json() == {'detail': ['You do not have permission to manage users.']}
 
-    def test_paginated_list(self, project, zmlp_project_user, zmlp_project_membership,
+    def test_list_organization_owner(self, user, project, organization, api_client):
+        api_client.force_authenticate(user)
+        api_client.force_login(user)
+        path = reverse('projectuser-list', kwargs={'project_pk': project.id})
+        check_response(api_client.get(path), status=403)
+        organization.owners.add(user)
+        check_response(api_client.get(path))
+
+    def test_paginated_list(self, project, login, zmlp_project_membership,
                             api_client, django_user_model, zmlp_apikey):
-        api_client.force_authenticate(zmlp_project_user)
-        api_client.force_login(zmlp_project_user)
         make_users_for_project(project, 5, django_user_model, zmlp_apikey)
         uri = reverse('projectuser-list', kwargs={'project_pk': project.id})
         response = api_client.get(f'{uri}?from=0&size=2')
         assert response.status_code == status.HTTP_200_OK
         content = response.json()
-        assert content['count'] == 6
+        assert content['count'] == 7
         assert len(content['results']) == 2
         assert 'next' in content
         assert content['next'] is not None
         assert 'previous' in content
 
-    def test_list_bad_project(self, project, zmlp_project_user, zmlp_project_membership, api_client):  # noqa
+    def test_list_bad_project(self, project, zmlp_project_user, zmlp_project_membership, api_client,
+                              organization):  # noqa
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         new_project = Project.objects.create(id='0820a307-c3dd-460e-a9c4-0e5f582e09c3',
-                                             name='New Test Project')
+                                             name='New Test Project',
+                                             organization=organization)
         response = api_client.get(reverse('projectuser-list', kwargs={'project_pk': new_project.id}))  # noqa
         assert response.status_code == status.HTTP_403_FORBIDDEN
 

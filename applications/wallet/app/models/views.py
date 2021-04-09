@@ -12,7 +12,8 @@ from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 DestroyLabelSerializer, ModelDetailSerializer,
                                 ConfusionMatrixSerializer)
 from models.utils import ConfusionMatrix
-from projects.views import BaseProjectViewSet
+from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpRetrieveMixin,
+                               ListViewType, ZmlpDestroyMixin, ZmlpCreateMixin)
 from wallet.paginators import ZMLPFromSizePagination
 from wallet.utils import validate_zmlp_data
 from boonsdk.client import BoonSdkNotFoundException
@@ -81,49 +82,22 @@ def detail_item_modifier(request, item):
                                                                 min_examples)
 
 
-class ModelViewSet(BaseProjectViewSet):
+class ModelViewSet(ZmlpCreateMixin,
+                   ZmlpListMixin,
+                   ZmlpRetrieveMixin,
+                   ZmlpDestroyMixin,
+                   BaseProjectViewSet):
     serializer_class = ModelSerializer
     pagination_class = ZMLPFromSizePagination
     zmlp_root_api_path = '/api/v3/models'
-    zmlp_only = True
+    list_type = ListViewType.SEARCH
+    list_modifier = staticmethod(item_modifier)
+    retrieve_modifier = staticmethod(detail_item_modifier)
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return ModelDetailSerializer
         return self.serializer_class
-
-    def list(self, request, project_pk):
-        """List all of the Models for this project."""
-        return self._zmlp_list_from_search(request, item_modifier=item_modifier)
-
-    def retrieve(self, request, project_pk, pk):
-        """Retrieve the details for this specific model."""
-        return self._zmlp_retrieve(request, pk=pk, item_modifier=detail_item_modifier)
-
-    def destroy(self, request, project_pk, pk):
-        """Deletes a model."""
-        return self._zmlp_destroy(request, pk)
-
-    def create(self, request, project_pk):
-        """Create a model for this project.
-
-        Body:
-            {
-                "name": "Model Name",
-                "type": "Model Type"
-            }
-
-        Args:
-            request: The DRF Request object.
-            project_pk: The contextual project id for this endpoint.
-
-        Returns:
-            (Response): Returns a 201 if the model was created.
-        """
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        response = request.client.post(self.zmlp_root_api_path, serializer.validated_data)
-        return Response(status=status.HTTP_201_CREATED, data={'results': response})
 
     @action(methods=['get'], detail=False)
     def all(self, request, project_pk):

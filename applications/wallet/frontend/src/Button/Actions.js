@@ -15,7 +15,7 @@ const ButtonActions = ({ onBlur, onClick, style }) => {
       className="actions"
       variant={VARIANTS.NEUTRAL}
       style={{
-        color: colors.structure.coal,
+        color: colors.structure.steel,
         padding: spacing.moderate / 2,
         margin: -spacing.moderate / 2,
         ':hover, &.focus-visible:focus': {

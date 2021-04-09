@@ -205,7 +205,7 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #191919;
+  color: #808080;
   background-color: transparent;
   margin: -6px;
 }
@@ -258,7 +258,7 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  # Required
+                  # Required
                 </div>
               </th>
               <th
@@ -267,7 +267,7 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  # Labeled
+                  # Labeled
                 </div>
               </th>
               <th
@@ -276,7 +276,7 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  # Remaining
+                  # Remaining
                 </div>
               </th>
               <th
@@ -661,7 +661,7 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  # Required
+                  # Required
                 </div>
               </th>
               <th
@@ -670,7 +670,7 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  # Labeled
+                  # Labeled
                 </div>
               </th>
               <th
@@ -679,7 +679,7 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  # Remaining
+                  # Remaining
                 </div>
               </th>
               <th
@@ -945,7 +945,7 @@ exports[`<ModelLabels /> should render properly with required assets per labels 
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #191919;
+  color: #808080;
   background-color: transparent;
   margin: -6px;
 }
@@ -998,7 +998,7 @@ exports[`<ModelLabels /> should render properly with required assets per labels 
                 <div
                   className="emotion-8"
                 >
-                  # Required
+                  # Required
                 </div>
               </th>
               <th
@@ -1007,7 +1007,7 @@ exports[`<ModelLabels /> should render properly with required assets per labels 
                 <div
                   className="emotion-8"
                 >
-                  # Labeled
+                  # Labeled
                 </div>
               </th>
               <th
@@ -1016,7 +1016,7 @@ exports[`<ModelLabels /> should render properly with required assets per labels 
                 <div
                   className="emotion-8"
                 >
-                  # Remaining
+                  # Remaining
                 </div>
               </th>
               <th

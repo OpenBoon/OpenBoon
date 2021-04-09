@@ -107,9 +107,41 @@ class TestViews(object):
                                                                'tier2': {'imageCount': 30,
                                                                          'videoMinutes': 6.571}},
                                           'name': 'Test Project',
+                                          'organizationName': 'Test Org',
                                           'totalStorageUsage': {'imageCount': 35,
                                                                 'videoMinutes': 274},
                                           'userCount': 1}
+
+    def test_org_project_list_many_projects(self, login, zmlp_project_user, api_client,
+                                            organization, monkeypatch):
+        mock_post_responses = [
+            {'aggregations': {'sum#video_seconds': {'value': 16406}}},
+            {"hits": {"total": {"value": 35}}},
+        ]
+        post_number = 0
+
+        def mock_post(*args, **kwargs):
+            nonlocal post_number
+            post_number += 1
+            return mock_post_responses[post_number % 2]
+
+        def mock_get(*args, **kwargs):
+            data = {"tier_1": {"image_count": 12, "video_minutes": 55.8},
+                    "tier_2": {"image_count": 30, "video_minutes": 6.571}}
+            response = Response()
+            response.status_code = 200
+            response._content = json.dumps(data).encode('utf-8')
+            return response
+
+        monkeypatch.setattr(requests, 'get', mock_get)
+        monkeypatch.setattr(BoonClient, 'post', mock_post)
+        path = reverse('org-project-list', kwargs={'organization_pk': organization.id})
+        organization.owners.add(zmlp_project_user)
+        for i in range(1, 25):
+            Project.objects.create(name=str(i), organization=organization)
+        response = check_response(api_client.get(path))
+        assert response['count'] == 25
+        assert len(response['results']) == 25
 
     def test_org_project_list_metrics_error(self, login, zmlp_project_user, api_client,
                                             organization, monkeypatch):
@@ -151,9 +183,19 @@ class TestViews(object):
         check_response(api_client.post(path), status=400)
 
         # Create a new project in the organization.
-        check_response(api_client.post(path, data={'name': 'project_1'}))
+        check_response(api_client.post(path, data={'name': 'project_1'}), status=201)
         project = Project.objects.get(name='project_1')
         assert project.organization == organization
+
+        # Create a duplicate project in the organization.
+        response = check_response(api_client.post(path, data={'name': 'project_1'}), status=409)
+        assert response == {'name': ['A project with that name already exists.']}
+
+        # Create a project with the same name in a different organization.
+        org2 = Organization.objects.create(name='org2')
+        org2.owners.add(zmlp_project_user)
+        path2 = reverse('org-project-list', kwargs={'organization_pk': org2.id})
+        check_response(api_client.post(path2, data={'name': 'project_1'}), status=201)
 
     def test_org_user_list(self, login, zmlp_project_user, api_client, organization, project):
         path = reverse('org-user-list', kwargs={'organization_pk': organization.id})
@@ -189,7 +231,8 @@ class TestViews(object):
         response = check_response(api_client.get(path, {'ordering': '-firstName'}))
         assert response['results'][0]['firstName'] == 'other'
 
-    def test_org_user_retrieve(self, login, zmlp_project_user, api_client, organization, project):
+    def test_org_user_retrieve(self, login, zmlp_project_user, api_client, organization,
+                               organization2, project):
         path = reverse('org-user-detail', kwargs={'organization_pk': organization.id,
                                                   'pk': zmlp_project_user.id})
 
@@ -200,13 +243,31 @@ class TestViews(object):
         organization.owners.add(zmlp_project_user)
         other_project = Project.objects.create(name='1', organization=organization)
         other_project.users.add(zmlp_project_user)
-        Project.objects.create(name='should_not_be_in_response')
+        Project.objects.create(name='should_not_be_in_response', organization=organization2)
         response = check_response(api_client.get(path))
         assert response['id'] == zmlp_project_user.id
         assert response['email'] == zmlp_project_user.email
-        assert response['projects'] == [{'id': project.id, 'name': 'Test Project',
-                                         'roles': ['ML_Tools', 'User_Admin']},
-                                        {'id': str(other_project.id), 'name': '1', 'roles': []}]
+
+    def test_org_user_project_retrieve(self, login, zmlp_project_user, api_client, organization,
+                                       organization2, project):
+        path = reverse('org-user-project-list', kwargs={'organization_pk': organization.id,
+                                                        'user_pk': zmlp_project_user.id})
+
+        # User is not an organization owner
+        check_response(api_client.get(path), status=403)
+
+        # User is an organization owner.
+        organization.owners.add(zmlp_project_user)
+        other_project = Project.objects.create(name='1', organization=organization)
+        other_project.users.add(zmlp_project_user)
+        Project.objects.create(name='should_not_be_in_response', organization=organization2)
+        response = check_response(api_client.get(path))
+        assert response['count'] == 2
+        expected = [{'id': project.id, 'name': 'Test Project',
+                     'roles': ['ML_Tools', 'User_Admin']},
+                    {'id': str(other_project.id), 'name': '1', 'roles': []}]
+        for project in expected:
+            assert project in response['results']
 
     def test_org_user_destroy(self, login, zmlp_project_user, organization, project, api_client,
                               monkeypatch):

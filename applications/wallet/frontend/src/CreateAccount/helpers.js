@@ -1,6 +1,6 @@
 import Router from 'next/router'
 
-import { getCsrfToken } from '../Fetch/helpers'
+import { getCsrfToken, parseResponse } from '../Fetch/helpers'
 import { CURRENT_POLICIES_DATE } from '../Policies/helpers'
 
 const BASE_HEADER = {
@@ -33,10 +33,9 @@ export const onRegister = async ({
 
     Router.push('/create-account-success', '/')
   } catch (response) {
-    dispatch({
-      isLoading: false,
-      error: 'Something went wrong. Please try again.',
-    })
+    const errors = await parseResponse({ response })
+
+    dispatch({ isLoading: false, errors })
   }
 }
 

@@ -238,7 +238,7 @@ exports[`<OrganizationUsers /> should render properly with no users 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  User Email
+                  User Email
                 </div>
               </th>
               <th
@@ -247,7 +247,7 @@ exports[`<OrganizationUsers /> should render properly with no users 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  First Name
+                  First Name
                 </div>
               </th>
               <th
@@ -256,7 +256,7 @@ exports[`<OrganizationUsers /> should render properly with no users 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Last Name
+                  Last Name
                 </div>
               </th>
               <th
@@ -473,6 +473,57 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
   padding: 12px 16px;
 }
 
+.emotion-17 {
+  cursor: pointer;
+}
+
+.emotion-18:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-19 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-20 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 6px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  margin: -6px;
+}
+
+.emotion-20:hover,
+.emotion-20.focus-visible:focus {
+  color: #ffffff!important;
+}
+
 <div
   className="emotion-0"
 >
@@ -507,7 +558,7 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  User Email
+                  User Email
                 </div>
               </th>
               <th
@@ -516,7 +567,7 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  First Name
+                  First Name
                 </div>
               </th>
               <th
@@ -525,7 +576,7 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Last Name
+                  Last Name
                 </div>
               </th>
               <th
@@ -552,9 +603,19 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr
+              className="emotion-17"
+              onClick={[Function]}
+            >
               <td>
-                software@zorroa.com
+                <a
+                  className="emotion-18"
+                  href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users/1"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  software@zorroa.com
+                </a>
               </td>
               <td>
                 Admin
@@ -565,11 +626,38 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
               <td>
                 2
               </td>
-              <td />
-            </tr>
-            <tr>
               <td>
-                zach@zorroa.com
+                <div
+                  className="emotion-19"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-20"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-17"
+              onClick={[Function]}
+            >
+              <td>
+                <a
+                  className="emotion-18"
+                  href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users/3"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  zach@zorroa.com
+                </a>
               </td>
               <td>
                 Zach
@@ -580,11 +668,38 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
               <td>
                 1
               </td>
-              <td />
-            </tr>
-            <tr>
               <td>
-                joanna@zorroa.com
+                <div
+                  className="emotion-19"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-20"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-17"
+              onClick={[Function]}
+            >
+              <td>
+                <a
+                  className="emotion-18"
+                  href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users/5"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  joanna@zorroa.com
+                </a>
               </td>
               <td>
                 Joanna
@@ -595,11 +710,38 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
               <td>
                 1
               </td>
-              <td />
-            </tr>
-            <tr>
               <td>
-                mrc@zorroa.com
+                <div
+                  className="emotion-19"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-20"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-17"
+              onClick={[Function]}
+            >
+              <td>
+                <a
+                  className="emotion-18"
+                  href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users/12"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  mrc@zorroa.com
+                </a>
               </td>
               <td>
                 Matt
@@ -610,11 +752,38 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
               <td>
                 3
               </td>
-              <td />
-            </tr>
-            <tr>
               <td>
-                jbuhler@zorroa.com
+                <div
+                  className="emotion-19"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-20"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-17"
+              onClick={[Function]}
+            >
+              <td>
+                <a
+                  className="emotion-18"
+                  href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users/14"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  jbuhler@zorroa.com
+                </a>
               </td>
               <td>
                 Juan
@@ -625,11 +794,38 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
               <td>
                 3
               </td>
-              <td />
-            </tr>
-            <tr>
               <td>
-                ryan@zorroa.com
+                <div
+                  className="emotion-19"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-20"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-17"
+              onClick={[Function]}
+            >
+              <td>
+                <a
+                  className="emotion-18"
+                  href="/organizations/42869703-fb62-4988-a0d1-e59b15caff06/users/18"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  ryan@zorroa.com
+                </a>
               </td>
               <td>
                 Ryan
@@ -640,7 +836,24 @@ exports[`<OrganizationUsers /> should render properly with users 1`] = `
               <td>
                 1
               </td>
-              <td />
+              <td>
+                <div
+                  className="emotion-19"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-20"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>

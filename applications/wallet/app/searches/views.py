@@ -13,7 +13,7 @@ from boonsdk.search import AssetSearchScroller
 
 from assets.utils import get_asset_style, get_video_length, get_thumbnail_and_video_urls
 from assets.views import asset_modifier
-from projects.views import BaseProjectViewSet
+from projects.viewsets import BaseProjectViewSet
 from searches.models import Search
 from searches.serializers import SearchSerializer, SearchAssetSerializer
 from wallet.paginators import FromSizePagination, ZMLPFromSizePagination
@@ -49,7 +49,6 @@ class SearchViewSet(CreateModelMixin,
                     BaseProjectViewSet,
                     GenericViewSet):
 
-    zmlp_only = True
     pagination_class = FromSizePagination
     serializer_class = SearchSerializer
     field_utility = FieldUtility()
