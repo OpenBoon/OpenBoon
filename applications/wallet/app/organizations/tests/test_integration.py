@@ -49,6 +49,7 @@ class TestViews(object):
 
         # User is an organization owner.
         organization.owners.add(zmlp_project_user)
+        Project.objects.create(name='inactive', organization=organization, isActive=False)
         response = check_response(api_client.get(path))
         assert response['count'] == 1
         organization_result = response['results'][0]
