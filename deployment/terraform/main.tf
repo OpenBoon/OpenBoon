@@ -245,6 +245,7 @@ module "archivist" {
   es-backup-bucket-name        = module.elasticsearch.backup-bucket-name
   log-bucket-name              = google_storage_bucket.access-logs.name
   deep-video-analysis-enabled  = var.deep-video-analysis-enabled
+  swivel-pubsub-topic-name     = module.swivel.pubsub-topic-name
 }
 
 module "auth-server" {
@@ -383,4 +384,11 @@ module "metrics" {
   superuser-last-name          = var.metrics-superuser-last-name
   django-log-level             = var.metrics-django-log-level
   log-requests                 = var.metrics-log-requests
+}
+
+module "swivel" {
+  source            = "./modules/swivel"
+  project           = var.project
+  image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
+  container-tag     = var.container-tag
 }

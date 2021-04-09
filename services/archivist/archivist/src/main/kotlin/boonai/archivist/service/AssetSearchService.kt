@@ -1,7 +1,10 @@
 package boonai.archivist.service
 
+import boonai.archivist.domain.TrainingSetQuery
 import boonai.archivist.security.getProjectId
 import boonai.common.util.Json
+import com.fasterxml.jackson.module.kotlin.convertValue
+import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.ClearScrollResponse
 import org.elasticsearch.action.search.SearchResponse
@@ -22,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.Response
+import org.elasticsearch.index.query.BoolQueryBuilder
 import java.lang.IllegalArgumentException
 
 interface AssetSearchService {
@@ -105,7 +109,49 @@ class AssetSearchServiceImpl : AssetSearchService {
         return Json.Mapper.readValue(Strings.toString(ssb, true, true), Json.GENERIC_MAP)
     }
 
+    fun handleSpecialFilters(search: Map<String, Any>): BoolQueryBuilder {
+
+        val outerQuery = QueryBuilders.boolQuery()
+        outerQuery.filter(QueryBuilders.termQuery("system.state", "Analyzed"))
+
+        // exclude training sets
+        val excludeLabeled = search.getOrDefault("exclude_training_sets", false) as Boolean
+        if (excludeLabeled) {
+            outerQuery.mustNot(
+                QueryBuilders.nestedQuery(
+                    "labels",
+                    QueryBuilders.boolQuery().filter(QueryBuilders.existsQuery("labels.modelId")), ScoreMode.None
+                )
+            )
+        }
+
+        // Training set query
+        if (search.containsKey("training_set")) {
+            val tsq = Json.Mapper.convertValue<TrainingSetQuery>(search.getValue("training_set"))
+            val innerBool = QueryBuilders.boolQuery()
+            innerBool.filter(QueryBuilders.termQuery("labels.modelId", tsq.modelId.toString()))
+            if (tsq.scopes != null) {
+                innerBool.filter(QueryBuilders.termsQuery("labels.scope", tsq.scopes.map { it.toString() }))
+            }
+            if (tsq.labels != null) {
+                innerBool.filter(QueryBuilders.termsQuery("labels.label", tsq.labels.map { it }))
+            }
+
+            outerQuery.filter(
+                QueryBuilders.nestedQuery(
+                    "labels",
+                    innerBool,
+                    ScoreMode.None
+                )
+            )
+        }
+
+        return outerQuery
+    }
+
     override fun mapToSearchSourceBuilder(search: Map<String, Any>): SearchSourceBuilder {
+
+        val outerQuery = handleSpecialFilters(search)
 
         // Filters out search options that are not supported.
         val searchSource = search.filterKeys { it in allowedSearchProperties }
@@ -113,9 +159,6 @@ class AssetSearchServiceImpl : AssetSearchService {
             xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION,
             Json.serializeToString(searchSource)
         )
-
-        val outerQuery = QueryBuilders.boolQuery()
-        outerQuery.filter(QueryBuilders.termQuery("system.state", "Analyzed"))
 
         val ssb = SearchSourceBuilder.fromXContent(parser)
         if (ssb.query() != null) {

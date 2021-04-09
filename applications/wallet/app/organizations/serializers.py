@@ -13,7 +13,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'plan', 'projectCount', 'createdDate', 'modifiedDate']
 
     def get_project_count(self, obj):
-        return obj.projects.count()
+        return obj.projects.filter(isActive=True).count()
 
 
 class OrganizationUserListSerializer(serializers.ModelSerializer):
@@ -27,7 +27,7 @@ class OrganizationUserListSerializer(serializers.ModelSerializer):
 
     def get_project_count(self, obj):
         organization = self.context.get('organization')
-        return organization.projects.filter(users=obj).distinct().count()
+        return organization.projects.filter(users=obj, isActive=True).distinct().count()
 
 
 class UserProjectSerializer(serializers.ModelSerializer):
