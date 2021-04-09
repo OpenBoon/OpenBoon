@@ -177,6 +177,21 @@ describe('<Fetch /> helpers', () => {
       })
     })
 
+    it('should handle other errors properly', async () => {
+      const errors = await parseResponse({
+        response: {
+          json: () =>
+            Promise.resolve({
+              errors: ['Something went wrong. Please try again.'],
+            }),
+        },
+      })
+
+      expect(errors).toEqual({
+        global: 'Something went wrong. Please try again.',
+      })
+    })
+
     it('should handle empty response', async () => {
       const errors = await parseResponse({
         response: {

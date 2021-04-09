@@ -78,7 +78,19 @@ describe('<CreateAccount />', () => {
     })
 
     // Mock Failure
-    fetch.mockResponseOnce('Invalid email', { status: 400 })
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        detail: ['Password not strong enough.'],
+        errors: [
+          'This password is too short. It must contain at least 8 characters.',
+          'This password is too common.',
+          'This password is entirely numeric.',
+        ],
+      }),
+      {
+        status: 422,
+      },
+    )
 
     // Click Submit
     await act(async () => {
@@ -86,6 +98,8 @@ describe('<CreateAccount />', () => {
         .findByProps({ children: 'Save' })
         .props.onClick({ preventDefault: noop })
     })
+
+    expect(component.toJSON()).toMatchSnapshot()
 
     // Mock Success
     fetch.mockResponseOnce(JSON.stringify({ detail: 'Account Created' }))

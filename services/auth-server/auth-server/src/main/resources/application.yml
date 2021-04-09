@@ -45,19 +45,3 @@ management:
       exposure:
         include: metrics,info,health,prometheus
       base-path: /monitor
-
-#Swagger info
-swagger:
-  isPublic: true
-  title: Boon AI API Key Server
-  description: Validates Boon AI API keys
-  version: 1.0.0
-
-  termOfService: http://www.boonai.io
-
-  contactCompanyName: Boon AI
-  contactCompanyWebsite: http://www.boonai.io
-  contactCompanySupportEmail: support@boonai.io
-  restBasePackage: boonai.autserver.rest
-  licenseName: Commercial
-  licenseUrl: http://www.boonai.io
