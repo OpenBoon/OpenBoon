@@ -4,14 +4,14 @@ from webhooks.models import Trigger
 
 
 class WebhookSerializer(serializers.Serializer):
-    id = serializers.UUIDField()
-    projectId = serializers.UUIDField()
+    id = serializers.UUIDField(required=False)
+    projectId = serializers.UUIDField(required=False)
     url = serializers.URLField()
     secretKey = serializers.CharField()
     triggers = serializers.ListSerializer(child=serializers.CharField())
-    active = serializers.BooleanField
+    active = serializers.BooleanField(required=False)
     timeCreated = serializers.IntegerField(required=False)
-    timeUpdated = serializers.IntegerField(required=False)
+    timeModified = serializers.IntegerField(required=False)
 
 
 class WebhookTestSerializer(serializers.Serializer):
