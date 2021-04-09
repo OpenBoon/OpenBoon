@@ -12,6 +12,7 @@ from rest_framework.viewsets import ViewSet
 
 from projects.models import Project, Membership
 from projects.utils import is_user_project_organization_owner
+from wallet.paginators import ZMLPFromSizePagination
 from wallet.utils import validate_zmlp_data
 
 
@@ -42,6 +43,7 @@ class ListViewType(Enum):
 class ZmlpListMixin(object):
     list_type = None
     list_filter = None
+    pagination_class = ZMLPFromSizePagination
 
     @staticmethod
     def list_modifier(request, item):
