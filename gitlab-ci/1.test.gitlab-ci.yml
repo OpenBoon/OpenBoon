@@ -120,7 +120,7 @@ metrics-backend-test-suite:
     # Merged to Development with Backend changes
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
-        - "services/metrics/app/**/*"
+        - "services/metrics/**/*"
 
 ## Backend Python Lint
 backend-py-lint:
