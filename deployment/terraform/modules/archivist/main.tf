@@ -251,6 +251,14 @@ resource "kubernetes_deployment" "archivist" {
             name  = "SA_KEY_DATE"
             value = var.sql-service-account-key-date
           }
+          env {
+            name  = "GCLOUD_PROJECT"
+            value = var.project
+          }
+          env {
+            name  = "BOONAI_WEBHOOKS_TOPICNAME"
+            value = var.swivel-pubsub-topic-name
+          }
         }
       }
     }

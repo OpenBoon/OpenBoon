@@ -8,7 +8,7 @@ from unittest.mock import patch
 import pytest
 
 from boonsdk import Asset, BoonClient, app_from_env, \
-    FileImport, FileUpload, StoredFile, BoonSdkException, Model
+    FileImport, FileUpload, StoredFile, BoonSdkException, Model, TrainingSetFilter
 from .util import get_test_file
 
 
@@ -228,6 +228,18 @@ class AssetAppTests(unittest.TestCase):
         rsp = self.app.assets.search(search=search)
         path = rsp.raw_response['hits']['hits'][0]['_source']['source']['path']
         assert path == 'https://i.imgur.com/SSN26nN.jpg'
+
+    @patch.object(BoonClient, 'post')
+    def test_search_with_filters(self, post_patch):
+        post_patch.return_value = self.mock_search_result
+        search = {
+            'query': {'match_all': {}}
+        }
+        filt = TrainingSetFilter('abc123')
+        rsp = self.app.assets.search(search=search, filters=filt)
+        path = rsp.raw_response['hits']['hits'][0]['_source']['source']['path']
+        assert path == 'https://i.imgur.com/SSN26nN.jpg'
+        assert 'training_set' in post_patch.call_args[0][1]
 
     @patch.object(BoonClient, 'post')
     def test_search_iter(self, post_patch):

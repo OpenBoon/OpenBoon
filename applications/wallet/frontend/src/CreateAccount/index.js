@@ -8,6 +8,7 @@ import { constants, spacing } from '../Styles'
 import Navbar from '../Navbar'
 import PageTitle from '../PageTitle'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import FlashMessageErrors from '../FlashMessage/Errors'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
@@ -25,7 +26,7 @@ const INITIAL_STATE = {
   confirmPassword: '',
   isChecked: false,
   isLoading: false,
-  error: '',
+  errors: {},
 }
 
 export const noop = () => () => {}
@@ -74,15 +75,12 @@ const CreateAccount = () => {
           </FlashMessage>
         </div>
 
-        <Form>
-          {!!state.error && (
-            <div css={{ display: 'flex', paddingBottom: spacing.base }}>
-              <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-                {state.error}
-              </FlashMessage>
-            </div>
-          )}
+        <FlashMessageErrors
+          errors={state.errors}
+          styles={{ paddingTop: spacing.normal }}
+        />
 
+        <Form>
           {action === 'account-activation-expired' && (
             <>
               <div
@@ -109,8 +107,8 @@ const CreateAccount = () => {
             type="text"
             value={state.firstName}
             onChange={({ target: { value } }) => dispatch({ firstName: value })}
-            hasError={false}
-            errorMessage=""
+            hasError={state.errors.firstName !== undefined}
+            errorMessage={state.errors.firstName}
           />
 
           <Input
@@ -120,8 +118,8 @@ const CreateAccount = () => {
             type="text"
             value={state.lastName}
             onChange={({ target: { value } }) => dispatch({ lastName: value })}
-            hasError={false}
-            errorMessage=""
+            hasError={state.errors.lastName !== undefined}
+            errorMessage={state.errors.lastName}
           />
 
           <Input
@@ -131,8 +129,8 @@ const CreateAccount = () => {
             type="text"
             value={state.email}
             onChange={({ target: { value } }) => dispatch({ email: value })}
-            hasError={false}
-            errorMessage=""
+            hasError={state.errors.email !== undefined}
+            errorMessage={state.errors.email}
           />
 
           <SectionTitle>Password</SectionTitle>
@@ -144,8 +142,8 @@ const CreateAccount = () => {
             type="password"
             value={state.password}
             onChange={({ target: { value } }) => dispatch({ password: value })}
-            hasError={false}
-            errorMessage=""
+            hasError={state.errors.password !== undefined}
+            errorMessage={state.errors.password}
           />
 
           <Input
@@ -157,8 +155,8 @@ const CreateAccount = () => {
             onChange={({ target: { value } }) =>
               dispatch({ confirmPassword: value })
             }
-            hasError={false}
-            errorMessage=""
+            hasError={state.errors.confirmPassword !== undefined}
+            errorMessage={state.errors.confirmPassword}
           />
 
           <PoliciesForm dispatch={dispatch} />
