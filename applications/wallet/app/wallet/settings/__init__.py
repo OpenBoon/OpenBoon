@@ -304,7 +304,7 @@ ROLES = [
      'permissions': ['ProjectManage']},
     {'name': 'Webhooks',
      'description': 'Allows creating, editing and deleting webhooks.',
-     'permissions': ['WebhooksCreate']} # TODO: Add the correct permissions.
+     'permissions': ['AssetsImport']}
 ]
 
 # The registered email address of the superuser for this instance.

@@ -221,7 +221,7 @@ class BaseProjectViewSet(ViewSet):
         current_url = request.build_absolute_uri(request.path)
         items = content['list']
         for item in items:
-            item['url'] = f'{current_url}{item["id"]}/'
+            item['link'] = f'{current_url}{item["id"]}/'
             if item_modifier:
                 item_modifier(request, item)
 
@@ -277,7 +277,7 @@ class BaseProjectViewSet(ViewSet):
         current_url = request.build_absolute_uri(request.path)
         items = aggregated_content['list']
         for item in items:
-            item['url'] = f'{current_url}{item["id"]}/'
+            item['link'] = f'{current_url}{item["id"]}/'
             if item_modifier:
                 item_modifier(request, item)
 

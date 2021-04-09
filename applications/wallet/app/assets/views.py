@@ -34,7 +34,6 @@ class AssetViewSet(ZmlpListMixin,
                    ZmlpDestroyMixin,
                    BaseProjectViewSet):
     zmlp_root_api_path = 'api/v3/assets/'
-    pagination_class = ZMLPFromSizePagination
     serializer_class = AssetSerializer
     list_type = ListViewType.ES
     list_modifier = staticmethod(asset_modifier)

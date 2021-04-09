@@ -83,7 +83,6 @@ Below are examples of all 3.
 
 """
     serializer_class = DataSourceSerializer
-    pagination_class = ZMLPFromSizePagination
     zmlp_root_api_path = '/api/v1/data-sources/'
     list_type = ListViewType.SEARCH
 

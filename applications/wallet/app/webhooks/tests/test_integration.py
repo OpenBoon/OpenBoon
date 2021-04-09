@@ -12,6 +12,7 @@ pytestmark = pytest.mark.django_db
 def zmlp_webhook_response():
     return {'id': '02c93950-58bc-4a37-bfc7-d5945e080658', 'projectId': '1a0cbcd6-cf49-4992-a858-7966400082da', 'url': 'https://boonai.app/rattletrap', 'secretKey': 'secret', 'triggers': ['ASSET_ANALYZED'], 'active': True, 'timeCreated': 1617922719690, 'timeModified': 1617922719690, 'actorCreated': 'de19584d-56b7-4faa-8fcf-6c639ae7fd22/webhooks', 'actorModified': 'de19584d-56b7-4faa-8fcf-6c639ae7fd22/webhooks'}  # noqa
 
+
 def test_webhook_util_list(login, api_client):
     response = check_response(api_client.get(reverse('webhook-util-list')))
     assert response == {'test': 'http://testserver/api/v1/webhooks/test/',
@@ -63,7 +64,18 @@ def test_webhooks_list(login, api_client, monkeypatch, project, zmlp_webhook_res
     monkeypatch.setattr(BoonClient, 'post', lambda *args, **kwargs: zmlp_post_response)
     path = reverse('webhook-list', kwargs={'project_pk': project.id})
     response = check_response(api_client.get(path))
-    assert response == {}
+    assert response == {'count': 1,
+                        'next': None,
+                        'previous': None,
+                        'results': [{'active': True,
+                                     'id': '02c93950-58bc-4a37-bfc7-d5945e080658',
+                                     'projectId': '1a0cbcd6-cf49-4992-a858-7966400082da',
+                                     'secretKey': 'secret',
+                                     'timeCreated': 1617922719690,
+                                     'timeModified': 1617922719690,
+                                     'triggers': ['ASSET_ANALYZED'],
+                                     'url': 'https://boonai.app/rattletrap',
+                                     'link': 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/webhooks/02c93950-58bc-4a37-bfc7-d5945e080658/'}]}
 
 
 def test_webhooks_retrieve(login, api_client, monkeypatch, project, zmlp_webhook_response):

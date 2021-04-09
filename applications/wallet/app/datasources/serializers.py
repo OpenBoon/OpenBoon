@@ -13,7 +13,7 @@ class DataSourceSerializer(serializers.Serializer):
     projectId = serializers.UUIDField(default="")
     timeCreated = serializers.IntegerField(default=0)
     timeModified = serializers.IntegerField(default=0)
-    url = serializers.CharField(required=False)
+    link = serializers.CharField(required=False)
     jobId = serializers.CharField(required=False)
 
 

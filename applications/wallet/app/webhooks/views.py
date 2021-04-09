@@ -9,8 +9,7 @@ from projects.viewsets import (ZmlpDestroyMixin, ZmlpRetrieveMixin, ZmlpListMixi
                                ZmlpUpdateMixin)
 from wallet.utils import get_zmlp_superuser_client
 from webhooks.models import Trigger
-from webhooks.serializers import WebhookSerializer, WebhookTestSerializer, \
-    TriggerSerializer
+from webhooks.serializers import WebhookSerializer, WebhookTestSerializer, TriggerSerializer
 
 
 class ProjectWebhooksViewSet(ZmlpCreateMixin,

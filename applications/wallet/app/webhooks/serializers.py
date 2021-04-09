@@ -12,6 +12,7 @@ class WebhookSerializer(serializers.Serializer):
     active = serializers.BooleanField(required=False)
     timeCreated = serializers.IntegerField(required=False)
     timeModified = serializers.IntegerField(required=False)
+    link = serializers.CharField(required=False)
 
 
 class WebhookTestSerializer(serializers.Serializer):

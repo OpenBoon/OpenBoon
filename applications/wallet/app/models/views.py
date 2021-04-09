@@ -88,7 +88,6 @@ class ModelViewSet(ZmlpCreateMixin,
                    ZmlpDestroyMixin,
                    BaseProjectViewSet):
     serializer_class = ModelSerializer
-    pagination_class = ZMLPFromSizePagination
     zmlp_root_api_path = '/api/v3/models'
     list_type = ListViewType.SEARCH
     list_modifier = staticmethod(item_modifier)
