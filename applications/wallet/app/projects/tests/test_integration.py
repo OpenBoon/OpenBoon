@@ -80,11 +80,13 @@ def test_projects_delete(login, api_client, zmlp_project_user, organization, pro
     assert not Project.all_objects.get(id=project.id).isActive
 
 
-def test_projects_view_with_projects(project, zmlp_project_user, api_client):
+def test_projects_view_with_projects(organization, zmlp_project_user, api_client):
     api_client.force_authenticate(zmlp_project_user)
+    for i in range(1, 25):
+        Project.objects.create(name=str(i), organization=organization).users.add(zmlp_project_user)
     response = api_client.get(reverse('project-list')).json()
-    assert response['count'] == 1
-    assert response['results'][0]['name'] == project.name
+    assert response['count'] == 25
+    assert len(response['results']) == 25
 
 
 def test_projects_view_with_org_owner(project, zmlp_project_user, api_client):

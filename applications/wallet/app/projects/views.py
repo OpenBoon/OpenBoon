@@ -17,7 +17,7 @@ from projects.serializers import ProjectSerializer, ProjectUserSerializer, \
     ProjectDetailSerializer
 from projects.viewsets import BaseProjectViewSet
 from wallet.exceptions import InvalidRequestError
-from wallet.paginators import FromSizePagination
+from wallet.paginators import FromSizePagination, NoPagination
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -29,6 +29,7 @@ class ProjectViewSet(ListModelMixin,
                      BaseProjectViewSet):
     """API endpoint that allows Projects to be viewed and created."""
     project_pk_kwarg = 'pk'
+    pagination_class = NoPagination
 
     def get_queryset(self):
         user = self.request.user
