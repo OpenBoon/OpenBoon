@@ -1,7 +1,5 @@
 package boonai.archivist.service
 
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
 import boonai.archivist.config.ApplicationProperties
 import boonai.archivist.domain.Asset
 import boonai.archivist.domain.AssetIdBuilder
@@ -31,6 +29,7 @@ import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.ResolvedPipeline
 import boonai.archivist.domain.Task
+import boonai.archivist.domain.TriggerType
 import boonai.archivist.domain.UpdateAssetLabelsRequest
 import boonai.archivist.domain.UpdateAssetRequest
 import boonai.archivist.domain.UpdateAssetsByQueryRequest
@@ -49,6 +48,8 @@ import boonai.common.service.logging.event
 import boonai.common.service.logging.warnEvent
 import boonai.common.service.security.getZmlpActor
 import boonai.common.util.Json
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -70,10 +71,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 import java.util.UUID
 import java.util.concurrent.TimeUnit
-import org.springframework.web.util.UriComponentsBuilder
 
 /**
  * AssetService contains the entry points for Asset CRUD operations. In general
@@ -235,7 +236,10 @@ class AssetServiceImpl : AssetService {
     lateinit var modelJdbcDao: ModelJdbcDao
 
     @Autowired
-    private final lateinit var clipService: ClipService
+    lateinit var clipService: ClipService
+
+    @Autowired
+    lateinit var webHookPublisher: WebHookPublisherService
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -443,7 +447,7 @@ class AssetServiceImpl : AssetService {
         val bulkRequest = BulkRequest()
 
         batch.update.forEach { (id, data) ->
-            val new_data = mapOf(
+            val newData = mapOf(
                 "custom" to
                     data.map { (k, v) ->
                         val key = if (k.startsWith("custom.")) {
@@ -454,10 +458,11 @@ class AssetServiceImpl : AssetService {
                         key to v
                     }.toMap()
             )
-            bulkRequest.add(rest.newUpdateRequest(id).doc(new_data).retryOnConflict(10))
+            bulkRequest.add(rest.newUpdateRequest(id).doc(newData).retryOnConflict(10))
         }
 
         val rsp = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
+
         return BatchUpdateResponse(
             rsp.filter {
                 it.isFailed
@@ -565,6 +570,19 @@ class AssetServiceImpl : AssetService {
                     postTimelines.remove(it.id)
                 } else {
                     indexedIds.add(it.id)
+                }
+            }
+
+            // Send the webhooks.s
+            for (assetId in indexedIds) {
+                if (assetId in stateChangedIds) {
+                    webHookPublisher.handleAssetTriggers(
+                        Asset(assetId, docs.getValue(assetId)), TriggerType.ASSET_ANALYZED
+                    )
+                } else {
+                    webHookPublisher.handleAssetTriggers(
+                        Asset(assetId, docs.getValue(assetId)), TriggerType.ASSET_MODIFIED
+                    )
                 }
             }
 
