@@ -23,14 +23,6 @@ def test_webhook_util_list_logged_out(api_client, logout):
     check_response(api_client.get(reverse('webhook-util-list')), status=403)
 
 
-def test_webhook_util_test(login, api_client, monkeypatch):
-    monkeypatch.setattr(BoonClient, 'post', lambda *args: None)
-    path = reverse('webhook-util-test')
-    data = {'url': 'https://boonai.app/treble',
-            'trigger': 'asset_analyzed'}
-    check_response(api_client.post(path, data))
-
-
 def test_webhook_util_trigger_list(login, api_client):
     Trigger.objects.create(name='test', displayName='Test', description='Test Trigger')
     path = reverse('webhook-util-trigger-list')
@@ -113,7 +105,6 @@ def test_webhooks_update(login, api_client, monkeypatch, project):
                         'timeModified': 1617922719690,
                         'triggers': ['ASSET_ANALYZED'],
                         'url': 'https://boonai.app/rattletrap'}
-    # TODO: Figure out if we should send back the object or a message?
 
 
 def test_webhooks_delete(login, api_client, monkeypatch, project):
@@ -122,3 +113,23 @@ def test_webhooks_delete(login, api_client, monkeypatch, project):
     path = reverse('webhook-detail', kwargs={'project_pk': project.id, 'pk': 1})
     response = check_response(api_client.delete(path))
     assert response == {'details': ['Successfully deleted resource.']}
+
+
+def test_webhooks_test_success(login, api_client, monkeypatch):
+    zmlp_post_response = {'type': 'webhook', 'op': '_test', 'success': True}
+    monkeypatch.setattr(BoonClient, 'post', lambda *args, **kwargs: zmlp_post_response)
+    path = reverse('webhook-util-test')
+    body = {'url': 'https://boonai.app/rattletrap',
+            'secretKey': 'secret',
+            'triggers': ['asset_analyzed']}
+    check_response(api_client.post(path, body))
+
+
+def test_webhooks_test_failure(login, api_client, monkeypatch):
+    zmlp_post_response = {'type': 'webhook', 'op': '_test', 'success': False}
+    monkeypatch.setattr(BoonClient, 'post', lambda *args, **kwargs: zmlp_post_response)
+    path = reverse('webhook-util-test')
+    body = {'url': 'https://boonai.app/rattletrap',
+            'secretKey': 'secret',
+            'triggers': ['asset_analyzed']}
+    check_response(api_client.post(path, body), status=500)

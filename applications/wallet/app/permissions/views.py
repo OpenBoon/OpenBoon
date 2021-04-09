@@ -1,6 +1,5 @@
 from permissions.serializers import PermissionSerializer
 from projects.viewsets import BaseProjectViewSet, ZmlpListMixin, ListViewType
-from wallet.paginators import ZMLPFromSizePagination
 
 
 class PermissionViewSet(ZmlpListMixin,

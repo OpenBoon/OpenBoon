@@ -6,9 +6,9 @@ from django.db import migrations, models
 def add_triggers(apps, schema_editor):
     Trigger = apps.get_model('webhooks', 'Trigger')
     Trigger.objects.bulk_create([
-        Trigger(name='asset_analyzed', displayName='Asset Analyzed',
+        Trigger(name='ASSET_ANALYZED', displayName='Asset Analyzed',
                 description='Asset is added to the Boon AI with initial analysis.'),
-        Trigger(name='asset_modified', displayName='Asset Modified',
+        Trigger(name='ASSET_MODIFIED', displayName='Asset Modified',
                 description='Asset is modified through additional analysis or manual editing.')
     ], ignore_conflicts=True)
 

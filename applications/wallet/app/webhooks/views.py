@@ -7,9 +7,10 @@ from rest_framework.viewsets import ViewSet, GenericViewSet
 from projects.viewsets import (ZmlpDestroyMixin, ZmlpRetrieveMixin, ZmlpListMixin,
                                BaseProjectViewSet, ZmlpCreateMixin, ListViewType,
                                ZmlpUpdateMixin)
+from wallet.exceptions import InvalidZmlpDataError
 from wallet.utils import get_zmlp_superuser_client
 from webhooks.models import Trigger
-from webhooks.serializers import WebhookSerializer, WebhookTestSerializer, TriggerSerializer
+from webhooks.serializers import WebhookSerializer, TriggerSerializer
 
 
 class ProjectWebhooksViewSet(ZmlpCreateMixin,
@@ -33,9 +34,12 @@ class WebhooksViewSet(ViewSet):
 
     @action(detail=False, methods=['post'])
     def test(self, request):
-        serializer = WebhookTestSerializer(data=request.data)
+        serializer = WebhookSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        get_zmlp_superuser_client().post('/api/v1/webhooks/test', serializer.validated_data)
+        response = get_zmlp_superuser_client().post('/api/v3/webhooks/_test',
+                                                    serializer.validated_data)
+        if not response.get('success'):
+            raise InvalidZmlpDataError({'detail': ['Failed to send test webhook payload.']})
         return Response({'detail': ['Successfully sent test webhook payload.']})
 
 
