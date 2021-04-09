@@ -112,6 +112,37 @@ class TestViews(object):
                                                                 'videoMinutes': 274},
                                           'userCount': 1}
 
+    def test_org_project_list_many_projects(self, login, zmlp_project_user, api_client,
+                                            organization, monkeypatch):
+        mock_post_responses = [
+            {'aggregations': {'sum#video_seconds': {'value': 16406}}},
+            {"hits": {"total": {"value": 35}}},
+        ]
+        post_number = 0
+
+        def mock_post(*args, **kwargs):
+            nonlocal post_number
+            post_number += 1
+            return mock_post_responses[post_number % 2]
+
+        def mock_get(*args, **kwargs):
+            data = {"tier_1": {"image_count": 12, "video_minutes": 55.8},
+                    "tier_2": {"image_count": 30, "video_minutes": 6.571}}
+            response = Response()
+            response.status_code = 200
+            response._content = json.dumps(data).encode('utf-8')
+            return response
+
+        monkeypatch.setattr(requests, 'get', mock_get)
+        monkeypatch.setattr(BoonClient, 'post', mock_post)
+        path = reverse('org-project-list', kwargs={'organization_pk': organization.id})
+        organization.owners.add(zmlp_project_user)
+        for i in range(1, 25):
+            Project.objects.create(name=str(i), organization=organization)
+        response = check_response(api_client.get(path))
+        assert response['count'] == 25
+        assert len(response['results']) == 25
+
     def test_org_project_list_metrics_error(self, login, zmlp_project_user, api_client,
                                             organization, monkeypatch):
         mock_post_responses = [
