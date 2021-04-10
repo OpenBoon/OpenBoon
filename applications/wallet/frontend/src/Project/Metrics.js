@@ -5,6 +5,7 @@ import { colors, spacing, typography, constants } from '../Styles'
 import ImagesSvg from '../Icons/images.svg'
 import DocumentsSvg from '../Icons/documents.svg'
 import VideosSvg from '../Icons/videos.svg'
+
 import { formatUsage } from './helpers'
 
 const LARGE = 400
@@ -56,14 +57,14 @@ const ProjectMetrics = ({
             <tr>
               <th>File Type</th>
               <th>
-                ML Usage
-                <br />
                 Internal Modules
+                <br />
+                ML Usage
               </th>
               <th>
-                ML Usage
-                <br />
                 External Modules
+                <br />
+                ML Usage
               </th>
             </tr>
           </thead>
@@ -118,8 +119,12 @@ const ProjectMetrics = ({
                   Documents*
                 </div>
               </td>
-              <td>{formatUsage({ number: internalImageCount })}</td>
-              <td>{formatUsage({ number: externalImageCount })}</td>
+              <td css={{ fontWeight: typography.weight.medium }}>
+                {formatUsage({ number: internalImageCount })}
+              </td>
+              <td css={{ fontWeight: typography.weight.medium }}>
+                {formatUsage({ number: externalImageCount })}
+              </td>
             </tr>
             <tr>
               <td>
@@ -137,8 +142,12 @@ const ProjectMetrics = ({
                   Video Hours
                 </div>
               </td>
-              <td>{formatUsage({ number: internalVideoMinutes / 60 })}</td>
-              <td>{formatUsage({ number: externalVideoMinutes / 60 })}</td>
+              <td css={{ fontWeight: typography.weight.medium }}>
+                {formatUsage({ number: internalVideoMinutes / 60 })}
+              </td>
+              <td css={{ fontWeight: typography.weight.medium }}>
+                {formatUsage({ number: externalVideoMinutes / 60 })}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -228,7 +237,9 @@ const ProjectMetrics = ({
                   Documents*
                 </div>
               </td>
-              <td>{formatUsage({ number: totalImageCount })}</td>
+              <td css={{ fontWeight: typography.weight.medium }}>
+                {formatUsage({ number: totalImageCount })}
+              </td>
             </tr>
             <tr>
               <td>
@@ -246,7 +257,9 @@ const ProjectMetrics = ({
                   Video Hours
                 </div>
               </td>
-              <td>{formatUsage({ number: totalVideoMinutes / 60 })}</td>
+              <td css={{ fontWeight: typography.weight.medium }}>
+                {formatUsage({ number: totalVideoMinutes / 60 })}
+              </td>
             </tr>
           </tbody>
         </table>

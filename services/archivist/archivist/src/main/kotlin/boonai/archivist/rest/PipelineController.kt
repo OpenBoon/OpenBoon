@@ -10,7 +10,6 @@ import boonai.archivist.service.PipelineResolverService
 import boonai.archivist.service.PipelineService
 import boonai.archivist.util.HttpUtils
 import boonai.common.util.Json
-import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
@@ -30,7 +29,6 @@ import javax.servlet.http.HttpServletResponse
 
 @PreAuthorize("hasAuthority('ProjectManage')")
 @RestController
-@Timed
 @Api(tags = ["Pipeline"], description = "Operations for interacting with Pipelines.")
 class PipelineController @Autowired constructor(
     val pipelineService: PipelineService,

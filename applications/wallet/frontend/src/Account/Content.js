@@ -102,9 +102,16 @@ const AccountContent = () => {
           paddingBottom: spacing.spacious,
         }}
       >
-        {sortedFilteredProjects.map(({ id: projectId, name }) => (
-          <AccountCard key={projectId} projectId={projectId} name={name} />
-        ))}
+        {sortedFilteredProjects.map(
+          ({ id: projectId, name, organizationName }) => (
+            <AccountCard
+              key={projectId}
+              projectId={projectId}
+              name={name}
+              organizationName={organizationName}
+            />
+          ),
+        )}
       </div>
     </>
   )

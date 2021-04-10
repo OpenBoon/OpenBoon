@@ -246,12 +246,10 @@ const ModelDetails = () => {
 
                   await revalidate({
                     key: `/api/v1/projects/${projectId}/models/`,
-                    paginated: true,
                   })
 
                   await revalidate({
                     key: `/api/v1/projects/${projectId}/models/all/`,
-                    paginated: false,
                   })
 
                   Router.push(

@@ -32,12 +32,15 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
     all_objects = models.Manager()
     objects = ActiveProjectManager()
 
-    name = models.CharField(max_length=144, unique=True)
+    name = models.CharField(max_length=144)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='projects.Membership',
                                    related_name='projects')
-    organization = models.ForeignKey('organizations.Organization', on_delete=models.SET_NULL,
-                                     null=True, blank=True, related_name='projects')
+    organization = models.ForeignKey('organizations.Organization', on_delete=models.PROTECT,
+                                     related_name='projects')
     apikey = encrypt(models.TextField(blank=True, editable=False, null=True))
+
+    class Meta:
+        unique_together = (('name', 'organization'))
 
     def __str__(self):
         return self.name

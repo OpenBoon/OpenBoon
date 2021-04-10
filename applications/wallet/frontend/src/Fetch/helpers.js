@@ -67,10 +67,8 @@ export const getPathname = ({ pathname }) => {
     })
 }
 
-export const revalidate = async ({ key, paginated, from = 0, size = 20 }) => {
-  const url = paginated ? `${key}?from=${from}&size=${size}` : key
-
-  return mutate(url, async () => fetcher(url))
+export const revalidate = async ({ key }) => {
+  return mutate(key, async () => fetcher(key))
 }
 
 export const parseResponse = async ({ response }) => {
@@ -82,11 +80,17 @@ export const parseResponse = async ({ response }) => {
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
       if (errorKey === 'detail') {
         acc.global = acc.global
-          ? [acc.global, errors.detail].join('\n')
+          ? [acc.global, ...errors.detail].join('\n')
           : errors.detail.join('\n')
       }
 
-      if (errorKey !== 'detail') {
+      if (errorKey === 'errors') {
+        acc.global = acc.global
+          ? [acc.global, ...errors.errors].join('\n')
+          : errors.errors.join('\n')
+      }
+
+      if (errorKey !== 'detail' && errorKey !== 'errors') {
         acc[errorKey] = errors[errorKey].join('\n')
       }
 
