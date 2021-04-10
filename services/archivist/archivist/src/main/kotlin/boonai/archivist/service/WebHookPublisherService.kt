@@ -94,6 +94,7 @@ class WebHookPublisherServiceImpl constructor(
 
     override fun testWebHook(wb: WebHook) {
         for (trig in wb.triggers) {
+            webHookService.validateUrl(wb.url)
             val payload = ClassPathResource("webhooks/${trig.name}.json").inputStream.use {
                 StreamUtils.copyToString(it, Charset.defaultCharset())
             }
@@ -103,6 +104,7 @@ class WebHookPublisherServiceImpl constructor(
 
     override fun testWebHook(spec: WebHookSpec) {
         for (trig in spec.triggers) {
+            webHookService.validateUrl(spec.url)
             val payload = ClassPathResource("webhooks/${trig.name}.json").inputStream.use {
                 StreamUtils.copyToString(it, Charset.defaultCharset())
             }

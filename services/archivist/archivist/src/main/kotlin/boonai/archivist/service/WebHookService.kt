@@ -26,6 +26,7 @@ interface WebHookService {
     fun update(id: UUID, hook: WebHookUpdate): Boolean
     fun findWebHooks(filter: WebHookFilter): KPagedList<WebHook>
     fun findOneWebHook(filter: WebHookFilter): WebHook
+    fun validateUrl(url: String)
 }
 
 @Service
@@ -95,7 +96,7 @@ class WebHookServiceImpl constructor(
     /**
      * Make sure we're not using any invalid IP addresses.
      */
-    fun validateUrl(url: String) {
+    override fun validateUrl(url: String) {
 
         if (url.length > 512) {
             throw InvalidRequestException("WebHook URL is too long")
