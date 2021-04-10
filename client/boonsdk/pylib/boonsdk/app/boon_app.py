@@ -3,13 +3,14 @@ import logging
 import os
 
 from . import AssetApp, DataSourceApp, ProjectApp, \
-    JobApp, ModelApp, AnalysisModuleApp, VideoClipApp, CustomFieldApp
+    JobApp, ModelApp, AnalysisModuleApp, VideoClipApp, CustomFieldApp, \
+    WebHookApp
 from ..client import BoonClient, DEFAULT_SERVER
 
 logger = logging.getLogger(__name__)
 
 
-class BoonApp(object):
+class BoonApp:
     """
     Exposes the main Boon AI API.
 
@@ -33,6 +34,7 @@ class BoonApp(object):
         self.analysis = AnalysisModuleApp(self)
         self.clips = VideoClipApp(self)
         self.fields = CustomFieldApp(self)
+        self.webhooks = WebHookApp(self)
 
 
 def app_from_env():

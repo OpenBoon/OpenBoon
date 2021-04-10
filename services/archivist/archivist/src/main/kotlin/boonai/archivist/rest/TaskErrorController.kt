@@ -5,7 +5,6 @@ import boonai.archivist.domain.TaskErrorFilter
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.service.JobService
 import boonai.archivist.util.HttpUtils
-import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
@@ -21,7 +20,6 @@ import java.util.UUID
 
 @PreAuthorize("hasAuthority('DataQueueManage')")
 @RestController
-@Timed
 @Api(tags = ["Task Error"], description = "Operations for interacting with Task Errors.")
 class TaskErrorController @Autowired constructor(val jobService: JobService) {
 

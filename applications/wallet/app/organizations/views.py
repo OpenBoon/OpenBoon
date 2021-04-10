@@ -18,7 +18,7 @@ from projects.models import Project, Membership
 from projects.serializers import ProjectDetailSerializer, ProjectSimpleSerializer
 from registration.serializers import SimpleUserSerializer
 from wallet.exceptions import InvalidRequestError, NotAllowedError, DuplicateError
-from wallet.paginators import FromSizePagination
+from wallet.paginators import FromSizePagination, NoPagination
 
 User = get_user_model()
 
@@ -52,6 +52,7 @@ class BaseOrganizationOwnerViewset(GenericViewSet):
 
 class OrganizationProjectViewSet(ListModelMixin, BaseOrganizationOwnerViewset):
     """Viewset for projects associated with an Organization."""
+    pagination_class = NoPagination
     serializer_class = ProjectDetailSerializer
     project_limits = {Plan.ACCESS: 1,
                       Plan.BUILD: 20,
