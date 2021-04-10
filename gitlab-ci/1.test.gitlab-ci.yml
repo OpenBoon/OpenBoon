@@ -124,7 +124,7 @@ metrics-backend-test-suite:
 
 ## Backend Python Lint
 backend-py-lint:
-  image: python:3.7.5
+  image: python:3.9.4
   stage: pretest
   allow_failure: false
   script:
@@ -169,7 +169,7 @@ backend-kotlin-lint:
 # Testing other containers requires building containers
 # Testing analyst requires it can pull plugin containers.
 sdk-unit-tests:
-  image: python:3.8.5
+  image: python:3.9.4
   stage: test
   allow_failure: false
   script:
