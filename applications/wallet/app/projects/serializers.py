@@ -27,7 +27,8 @@ class ProjectSerializer(ProjectOrganizationNameSerializer,
         fields = ('id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                   'permissions', 'tasks', 'taskerrors', 'datasources',
                   'modules', 'providers', 'searches', 'faces', 'visualizations',
-                  'models', 'createdDate', 'modifiedDate', 'organizationName')
+                  'models', 'createdDate', 'modifiedDate', 'organizationName',
+                  'webhooks')
 
     jobs = HyperlinkedIdentityField(
         view_name='job-list',
@@ -87,6 +88,10 @@ class ProjectSerializer(ProjectOrganizationNameSerializer,
     )
     models = HyperlinkedIdentityField(
         view_name='model-list',
+        lookup_url_kwarg='project_pk'
+    )
+    webhooks = HyperlinkedIdentityField(
+        view_name='webhook-list',
         lookup_url_kwarg='project_pk'
     )
 

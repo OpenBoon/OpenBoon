@@ -226,6 +226,9 @@ BROWSABLE = os.environ.get('BROWSABLE')
 if BROWSABLE == 'true':
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append(
         'rest_framework.renderers.BrowsableAPIRenderer')
+    REST_FRAMEWORK['DEFAULT_PARSER_CLASSES'].append(
+        'rest_framework.parsers.FormParser'
+    )
 
 REST_AUTH_SERIALIZERS = {
     'PASSWORD_RESET_SERIALIZER': 'registration.serializers.PasswordResetSerializer'

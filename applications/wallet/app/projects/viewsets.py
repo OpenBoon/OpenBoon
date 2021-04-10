@@ -496,7 +496,7 @@ class BaseProjectViewSet(ViewSet):
         """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        response = request.client.put(f'{self.zmlp_root_api_path}{pk}', serializer.data)
+        response = request.client.put(os.path.join(self.zmlp_root_api_path, pk), serializer.data)
         if 'success' in response and not response['success']:
             return Response({'detail': ['There was an issue updating the resource.']}, status=500)
         return Response(serializer.validated_data)

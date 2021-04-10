@@ -20,7 +20,7 @@ class ProjectWebhooksViewSet(ZmlpCreateMixin,
                              ZmlpDestroyMixin,
                              BaseProjectViewSet):
     serializer_class = WebhookSerializer
-    zmlp_root_api_path = '/api/v3/webhooks'
+    zmlp_root_api_path = '/api/v3/webhooks/'
     list_type = ListViewType.SEARCH
     list_query = {'sort': ['timeCreated:desc']}
 
