@@ -119,9 +119,9 @@
   "dependencies": {
     "@emotion/babel-preset-css-prop": "11.2.0",
     "@emotion/react": "11.1.5",
-    "@reach/combobox": "0.14.0",
-    "@reach/listbox": "0.14.0",
-    "@reach/skip-nav": "0.14.0",
+    "@reach/combobox": "0.15.0",
+    "@reach/listbox": "0.15.0",
+    "@reach/skip-nav": "0.15.0",
     "@sentry/browser": "6.2.5",
     "@svgr/webpack": "5.5.0",
     "@tippyjs/react": "4.2.5",
