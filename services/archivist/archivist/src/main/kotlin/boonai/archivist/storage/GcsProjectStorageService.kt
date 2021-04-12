@@ -185,7 +185,7 @@ class GcsProjectStorageService constructor(
         val storageFileId: List<List<BlobId>> = blobs.values.map { it.blobId }.chunked(10000)
 
         storageFileId.forEachIndexed { index, element ->
-            logDeleteEvent(path, index, storageFileId.size)
+            logDeleteEvent(path, index + 1, storageFileId.size)
             gcs.delete(element)
         }
     }
