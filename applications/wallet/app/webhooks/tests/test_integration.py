@@ -112,7 +112,7 @@ def test_webhooks_delete(login, api_client, monkeypatch, project):
     monkeypatch.setattr(BoonClient, 'delete', lambda *args, **kwargs: zmlp_delete_response)
     path = reverse('webhook-detail', kwargs={'project_pk': project.id, 'pk': 1})
     response = check_response(api_client.delete(path))
-    assert response == {'details': ['Successfully deleted resource.']}
+    assert response == {'detail': ['Successfully deleted resource.']}
 
 
 def test_webhooks_test_success(login, api_client, monkeypatch):

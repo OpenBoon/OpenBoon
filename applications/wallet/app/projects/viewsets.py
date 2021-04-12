@@ -479,7 +479,7 @@ class BaseProjectViewSet(ViewSet):
         response = request.client.delete(os.path.join(self.zmlp_root_api_path, pk))
         if 'success' in response and not response['success']:
             return Response({'detail': ['Resource deletion failed.']}, status=500)
-        return Response({'details': ['Successfully deleted resource.']})
+        return Response({'detail': ['Successfully deleted resource.']})
 
     def _zmlp_update(self, request, pk):
         """The result of this method can be returned for the update method of a concrete
