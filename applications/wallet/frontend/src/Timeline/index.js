@@ -296,7 +296,8 @@ const Timeline = ({ videoRef, length }) => {
 
             <Feature flag="TimelineScrollbar" envs={[]}>
               <TimelineScrollbar
-                settings={settings}
+                width={settings.width}
+                zoom={settings.zoom}
                 videoRef={videoRef}
                 rulerRef={rulerRef}
                 dispatch={dispatch}

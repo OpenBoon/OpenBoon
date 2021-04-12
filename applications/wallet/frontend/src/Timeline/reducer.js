@@ -107,21 +107,20 @@ export const reducer = (
     case ACTIONS.INCREMENT:
       return {
         ...state,
-        zoom: value,
+        zoom: state.zoom + 100,
       }
 
-    case ACTIONS.DECREMENT: {
-      return {
-        ...state,
-        zoom: value < 100 ? 100 : value,
-      }
-    }
+    case ACTIONS.DECREMENT:
+      if (state.zoom > 100) {
+        const zoom = state.zoom - 100
 
-    case ACTIONS.ZOOM:
-      return {
-        ...state,
-        zoom: value < 100 ? 100 : value,
+        return {
+          ...state,
+          zoom,
+        }
       }
+
+      return state
 
     default:
       return state

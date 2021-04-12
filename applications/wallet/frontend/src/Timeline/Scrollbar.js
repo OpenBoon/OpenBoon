@@ -5,37 +5,32 @@ import { colors, constants, spacing, zIndex } from '../Styles'
 
 import { getScroller } from '../Scroll/helpers'
 
-import { ACTIONS } from './reducer'
+import { setScrollbarScrollableWidth } from './helpers'
 
 let origin
 let scrollbarOrigin
-let scrollbarTrackWidth
 let scrollbarScrollableWidth
-let newScrollbarScrollableWidth
+let manualScrollbarTrackWidth
+let manualScrollbarWidth
+const scrollbarZoom = 100
 
 export const SCROLLBAR_CONTAINER_HEIGHT = 36
 const RESIZE_HANDLE_SIZE = 20
 
-const TimelineScrollbar = ({ settings, rulerRef, dispatch }) => {
+const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
   const horizontalScroller = getScroller({ namespace: 'Timeline' })
+  const scrollbarTrackRef = useRef()
   const scrollbarRef = useRef()
-
-  const setScrollbarScrollableWidth = () => {
-    const { width: scrollbarWidth = 0 } =
-      scrollbarRef.current?.getBoundingClientRect() || {}
-
-    scrollbarTrackWidth = scrollbarWidth * (settings.zoom / 100)
-
-    // the max number of pixels the scrollbar thumb can travel
-    scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
-  }
 
   const horizontalScrollerDeregister = horizontalScroller.register({
     eventName: 'scroll',
     callback: /* istanbul ignore next */ ({ node }) => {
       if (!scrollbarRef.current || !node) return
 
-      setScrollbarScrollableWidth()
+      scrollbarScrollableWidth = setScrollbarScrollableWidth({
+        scrollbarRef,
+        zoom,
+      })
 
       // the scrollLeft value when the timeline is scrolled all the way to the end
       const maxScrollLeft = node.scrollWidth - node.offsetWidth
@@ -82,7 +77,10 @@ const TimelineScrollbar = ({ settings, rulerRef, dispatch }) => {
     origin = clientX
     scrollbarOrigin = scrollbarRef.current.offsetLeft
 
-    setScrollbarScrollableWidth()
+    scrollbarScrollableWidth = setScrollbarScrollableWidth({
+      scrollbarRef,
+      zoom,
+    })
 
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', handleMouseUp)
@@ -92,14 +90,14 @@ const TimelineScrollbar = ({ settings, rulerRef, dispatch }) => {
   const onRightHandleMouseMove = ({ clientX }) => {
     const difference = clientX - origin
 
-    newScrollbarScrollableWidth = scrollbarScrollableWidth - difference
+    const newZoom =
+      ((manualScrollbarWidth + difference) / manualScrollbarTrackWidth) * 100
 
-    const zoom = 100 / (1 - newScrollbarScrollableWidth / scrollbarTrackWidth)
+    const minZoom = ((RESIZE_HANDLE_SIZE * 2) / manualScrollbarTrackWidth) * 100
 
-    dispatch({
-      type: ACTIONS.ZOOM,
-      payload: { value: zoom },
-    })
+    const clampedZoom = Math.max(minZoom, Math.min(100, newZoom))
+
+    scrollbarRef.current.style.width = `${clampedZoom}%`
   }
 
   /* istanbul ignore next */
@@ -113,7 +111,20 @@ const TimelineScrollbar = ({ settings, rulerRef, dispatch }) => {
     origin = clientX
     scrollbarOrigin = scrollbarRef.current.offsetLeft
 
-    setScrollbarScrollableWidth()
+    const { width: scrollbarWidth = 0 } =
+      scrollbarRef.current?.getBoundingClientRect() || {}
+
+    manualScrollbarWidth = scrollbarWidth
+
+    const { width: trackWidth = 0 } =
+      scrollbarTrackRef.current?.getBoundingClientRect() || {}
+
+    manualScrollbarTrackWidth = trackWidth
+
+    scrollbarScrollableWidth = setScrollbarScrollableWidth({
+      scrollbarRef,
+      zoom,
+    })
 
     document.addEventListener('mousemove', onRightHandleMouseMove)
     document.addEventListener('mouseup', onRightHandleMouseUp)
@@ -123,13 +134,7 @@ const TimelineScrollbar = ({ settings, rulerRef, dispatch }) => {
     return () => {
       horizontalScrollerDeregister()
     }
-  }, [
-    horizontalScrollerDeregister,
-    scrollbarRef,
-    settings.zoom,
-    horizontalScroller,
-    rulerRef,
-  ])
+  }, [horizontalScrollerDeregister])
 
   return (
     <>
@@ -137,8 +142,8 @@ const TimelineScrollbar = ({ settings, rulerRef, dispatch }) => {
         css={{
           height: SCROLLBAR_CONTAINER_HEIGHT,
           backgroundColor: colors.structure.soot,
-          marginLeft: -settings.width,
-          width: settings.width,
+          marginLeft: -width,
+          width,
         }}
       />
       <div
@@ -158,6 +163,7 @@ const TimelineScrollbar = ({ settings, rulerRef, dispatch }) => {
         }}
       >
         <div
+          ref={scrollbarTrackRef}
           css={{
             position: 'relative',
             width: '100%',
@@ -172,7 +178,7 @@ const TimelineScrollbar = ({ settings, rulerRef, dispatch }) => {
             css={{
               display: 'flex',
               position: 'absolute',
-              width: `${100 / (settings.zoom / 100)}%`,
+              width: `${scrollbarZoom}%`,
               height: '100%',
               backgroundColor: colors.structure.smoke,
               borderRadius: constants.borderRadius.medium,
@@ -217,17 +223,14 @@ const TimelineScrollbar = ({ settings, rulerRef, dispatch }) => {
 }
 
 TimelineScrollbar.propTypes = {
-  settings: PropTypes.shape({
-    width: PropTypes.number.isRequired,
-    zoom: PropTypes.number.isRequired,
-  }).isRequired,
+  width: PropTypes.number.isRequired,
+  zoom: PropTypes.number.isRequired,
   rulerRef: PropTypes.shape({
     current: PropTypes.shape({
       offsetWidth: PropTypes.number,
       scrollWidth: PropTypes.number,
     }),
   }).isRequired,
-  dispatch: PropTypes.func.isRequired,
 }
 
 export default TimelineScrollbar

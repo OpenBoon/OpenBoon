@@ -182,3 +182,15 @@ export const getNextScrollLeft = ({ videoRef, rulerRef, zoom, nextZoom }) => {
 
   return nextScrollLeft
 }
+
+export const setScrollbarScrollableWidth = ({ scrollbarRef, zoom }) => {
+  const { width: scrollbarWidth = 0 } =
+    scrollbarRef.current?.getBoundingClientRect() || {}
+
+  const scrollbarTrackWidth = scrollbarWidth * (zoom / 100)
+
+  // the max number of pixels the scrollbar thumb can travel
+  const scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
+
+  return scrollbarScrollableWidth
+}
