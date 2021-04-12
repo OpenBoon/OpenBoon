@@ -19,7 +19,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,t
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 RUN apt-get install -y --no-install-recommends build-essential libjpeg-dev libpng-dev cmake \
-    libtiff-dev libopencv-dev python3-opencv libsm6 lsb-release curl
+    libtiff-dev libopencv-dev python3-opencv libsm6 lsb-release curl libopenblas-dev
 
 # Auto-updating pip sometimes causes issues.
 RUN pip3 install -U pip
