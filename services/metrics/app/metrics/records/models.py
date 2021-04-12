@@ -1,7 +1,8 @@
 from django.db import models
+from psqlextra.models import PostgresModel
 
 
-class ApiCall(models.Model):
+class ApiCall(PostgresModel):
     """Represents a registered API Call for billing purposes"""
 
     project = models.UUIDField()
