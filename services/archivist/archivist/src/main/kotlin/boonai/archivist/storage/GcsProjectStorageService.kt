@@ -182,7 +182,12 @@ class GcsProjectStorageService constructor(
         )
 
         logDeleteEvent(path)
-        gcs.delete(blobs.values.map { it.blobId })
+        val storageFileId: List<List<BlobId>> = blobs.values.map { it.blobId }.chunked(10000)
+
+        storageFileId.forEachIndexed { index, element ->
+            logDeleteEvent(path, index, storageFileId.size)
+            gcs.delete(element)
+        }
     }
 
     override fun listFiles(prefix: String): List<String> {
