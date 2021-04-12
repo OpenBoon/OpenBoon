@@ -93,6 +93,7 @@ const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
     const newZoom =
       ((manualScrollbarWidth + difference) / manualScrollbarTrackWidth) * 100
 
+    // prevent handles from overlapping
     const minZoom = ((RESIZE_HANDLE_SIZE * 2) / manualScrollbarTrackWidth) * 100
 
     const clampedZoom = Math.max(minZoom, Math.min(100, newZoom))
