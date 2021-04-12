@@ -29,6 +29,37 @@ class WebHookApp:
         }
         return WebHook(self.app.client.post('/api/v3/webhooks', body))
 
+    def pretest_webhook(self, url, secret_key, triggers):
+        """
+        Will send text data through the webhook system so your endpoint can be
+        developed before the webhook is created.
+
+        Args:
+            url (str): The HTTP/HTTPS endpoint for the webhook.
+            secret_key (str): A secret key used to cryptographically sign the WebHook payload.
+            triggers (list(WebHookTrigger)): A list of triggers the WebHook is interested in.
+
+        Returns:
+            dict: A status dict.
+        """
+        body = {
+            'url': url,
+            'secretKey': secret_key,
+            'triggers': [t.name for t in as_collection(triggers)]
+        }
+        return self.app.client.post('/api/v3/webhooks/_test', body)
+
+    def test_webhook(self, webhook):
+        """
+        Sends tests data to the webhook endpoint.
+
+        Args:
+            webhook (str): A WebHook or it's unique ID.
+        Returns:
+            dict: A status dict
+        """
+        return self.app.client.post(f'/api/v3/webhooks/{as_id(webhook)}/_test')
+
     def delete_webhook(self, webhook):
         """
         Delete a webhook.

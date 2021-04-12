@@ -114,4 +114,32 @@ class WebhookControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.page.totalCount", CoreMatchers.equalTo(1)))
             .andReturn()
     }
+
+    @Test
+    fun testTestSpec() {
+        val spec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.ASSET_ANALYZED))
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/webhooks/_test")
+                .headers(admin())
+                .content(Json.serialize(spec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+    }
+
+    @Test
+    fun testTestHook() {
+        val spec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.ASSET_ANALYZED))
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/webhooks/${webhook.id}/_test")
+                .headers(admin())
+                .content(Json.serialize(spec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+    }
 }
