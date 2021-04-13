@@ -198,7 +198,7 @@ describe('<Timeline /> helpers', () => {
     })
   })
 
-  describe('setScrollbarScrollableWidth', () => {
+  describe('getScrollbarScrollableWidth', () => {
     it('should properly calculate the scrollable width', () => {
       expect(getScrollbarScrollableWidth({ scrollbarRef: {}, zoom: 100 })).toBe(
         0,
