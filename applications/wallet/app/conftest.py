@@ -111,3 +111,8 @@ def project_zero_user(superuser, project_zero_membership):
 def login(api_client, zmlp_project_user):
     api_client.force_authenticate(zmlp_project_user)
     api_client.force_login(zmlp_project_user)
+
+
+@pytest.fixture
+def logout(api_client):
+    api_client.logout()

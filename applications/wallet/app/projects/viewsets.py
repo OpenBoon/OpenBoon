@@ -12,6 +12,7 @@ from rest_framework.viewsets import ViewSet
 
 from projects.models import Project, Membership
 from projects.utils import is_user_project_organization_owner
+from wallet.paginators import ZMLPFromSizePagination
 from wallet.utils import validate_zmlp_data
 
 
@@ -42,6 +43,7 @@ class ListViewType(Enum):
 class ZmlpListMixin(object):
     list_type = None
     list_filter = None
+    pagination_class = ZMLPFromSizePagination
 
     @staticmethod
     def list_modifier(request, item):
@@ -71,6 +73,11 @@ class ZmlpRetrieveMixin(object):
 
     def retrieve(self, request, project_pk, pk):
         return self._zmlp_retrieve(request, pk, item_modifier=self.retrieve_modifier)
+
+
+class ZmlpUpdateMixin(object):
+    def update(self, request, project_pk, pk):
+        return self._zmlp_update(request, pk)
 
 
 class ZmlpDestroyMixin(object):
@@ -214,7 +221,7 @@ class BaseProjectViewSet(ViewSet):
         current_url = request.build_absolute_uri(request.path)
         items = content['list']
         for item in items:
-            item['url'] = f'{current_url}{item["id"]}/'
+            item['link'] = f'{current_url}{item["id"]}/'
             if item_modifier:
                 item_modifier(request, item)
 
@@ -270,7 +277,7 @@ class BaseProjectViewSet(ViewSet):
         current_url = request.build_absolute_uri(request.path)
         items = aggregated_content['list']
         for item in items:
-            item['url'] = f'{current_url}{item["id"]}/'
+            item['link'] = f'{current_url}{item["id"]}/'
             if item_modifier:
                 item_modifier(request, item)
 
@@ -472,7 +479,7 @@ class BaseProjectViewSet(ViewSet):
         response = request.client.delete(os.path.join(self.zmlp_root_api_path, pk))
         if 'success' in response and not response['success']:
             return Response({'detail': ['Resource deletion failed.']}, status=500)
-        return Response(response)
+        return Response({'detail': ['Successfully deleted resource.']})
 
     def _zmlp_update(self, request, pk):
         """The result of this method can be returned for the update method of a concrete
@@ -487,14 +494,12 @@ class BaseProjectViewSet(ViewSet):
             Response: DRF Response that can be used directly by viewset action method.
 
         """
-        update_serializer = self.get_serializer(data=request.data)
-        update_serializer.is_valid(raise_exception=True)
-        zmlp_response = request.client.put(f'{self.zmlp_root_api_path}{pk}',
-                                           update_serializer.data)
-        response_serializer = self.get_serializer(data=zmlp_response)
-        if not response_serializer.is_valid():
-            Response({'detail': response_serializer.errors}, status=500)
-        return Response(response_serializer.validated_data)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        response = request.client.put(os.path.join(self.zmlp_root_api_path, pk), serializer.data)
+        if 'success' in response and not response['success']:
+            return Response({'detail': ['There was an issue updating the resource.']}, status=500)
+        return Response(serializer.validated_data)
 
     def _get_content(self, response):
         """Returns the content of Response from the ZVI or ZMLP and as a dict."""

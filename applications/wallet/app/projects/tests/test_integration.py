@@ -119,7 +119,7 @@ def test_project_serializer_detail(project):
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                        'permissions', 'tasks', 'datasources', 'taskerrors',
                        'modules', 'providers', 'searches', 'faces', 'visualizations',
-                       'models', 'createdDate', 'modifiedDate', 'organizationName']
+                       'models', 'createdDate', 'modifiedDate', 'organizationName', 'webhooks']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
@@ -142,6 +142,7 @@ def test_project_serializer_detail(project):
     assert data['faces'] == f'/api/v1/projects/{project.id}/faces/'
     assert data['visualizations'] == f'/api/v1/projects/{project.id}/visualizations/'
     assert data['models'] == f'/api/v1/projects/{project.id}/models/'
+    assert data['webhooks'] == f'/api/v1/projects/{project.id}/webhooks/'
 
 
 def test_project_serializer_list(project, project2):

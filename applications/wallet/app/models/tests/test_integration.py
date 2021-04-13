@@ -19,7 +19,7 @@ pytestmark = pytest.mark.django_db
 def model_fields():
     return ['id', 'name', 'type', 'moduleName', 'fileId', 'trainingJobName',
             'unappliedChanges', 'deploySearch', 'timeCreated', 'timeModified', 'actorCreated',
-            'actorModified', 'url', 'projectId']
+            'actorModified', 'link', 'projectId']
 
 
 class TestGetModelTypeRestrictions:
@@ -126,7 +126,7 @@ class TestModelViewSetRetrieve:
         response = api_client.get(path)
         content = check_response(response)
         assert content['id'] == model_id
-        model_fields.remove('url')
+        model_fields.remove('link')
         model_fields.extend(['runningJobId', 'modelTypeRestrictions'])
         assert set(model_fields) == set(content.keys())
         restrictions = content['modelTypeRestrictions']
@@ -146,9 +146,7 @@ class TestModelViewSetDestroy:
                                                'pk': model_id})
         monkeypatch.setattr(BoonClient, 'delete', mock_response)
         response = api_client.delete(path)
-        content = check_response(response)
-        assert content['id'] == model_id
-        assert content['success']
+        check_response(response)
 
 
 class TestModelViewSetCreate:

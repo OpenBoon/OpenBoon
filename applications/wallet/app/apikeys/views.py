@@ -9,7 +9,6 @@ from apikeys.utils import create_zmlp_api_key
 from projects.viewsets import (ZmlpListMixin, ZmlpDestroyMixin, ZmlpRetrieveMixin,
                                BaseProjectViewSet, ListViewType)
 from wallet.exceptions import DuplicateError
-from wallet.paginators import ZMLPFromSizePagination
 
 
 @method_decorator(cache_control(max_age=0, no_store=True), name='dispatch')
@@ -18,7 +17,6 @@ class ApikeyViewSet(ZmlpListMixin,
                     ZmlpDestroyMixin,
                     BaseProjectViewSet):
     serializer_class = ApikeySerializer
-    pagination_class = ZMLPFromSizePagination
     zmlp_root_api_path = '/auth/v1/apikey/'
     list_type = ListViewType.SEARCH
     list_filter = {'sort': ['timeCreated:desc']}
