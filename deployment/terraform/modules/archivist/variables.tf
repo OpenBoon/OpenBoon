@@ -34,7 +34,11 @@ variable "analyst-shared-key" {
 variable "es-backup-bucket-name" {
 }
 
-variable "log-bucket-name" {}
+variable "log-bucket-name" {
+}
+
+variable "swivel-pubsub-topic-name" {
+}
 
 variable "data-bucket-name" {
   default = "archivist-data"

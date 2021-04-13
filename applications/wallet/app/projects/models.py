@@ -13,7 +13,8 @@ from multiselectfield import MultiSelectField
 from apikeys.utils import create_zmlp_api_key
 from roles.utils import get_permissions_for_roles
 from wallet.mixins import TimeStampMixin, UUIDMixin, ActiveMixin
-from wallet.utils import get_zmlp_superuser_client, convert_base64_to_json
+from wallet.utils import get_zmlp_superuser_client, convert_base64_to_json, \
+    sync_project_with_zmlp, sync_membership_with_zmlp
 
 logger = logging.getLogger(__name__)
 
@@ -65,34 +66,7 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
         correctly.
 
         """
-        client = self.get_zmlp_super_client()
-
-        # Get or create the ZMLP project.
-        try:
-            project = client.get('/api/v1/project')
-        except BoonSdkNotFoundException:
-            body = {'name': self.name, 'id': str(self.id)}
-            project = client.post('/api/v1/projects', body)
-
-        # Sync the project name.
-        if self.name != project['name']:
-            client.put('/api/v1/project/_rename', {'name': self.name})
-
-        # Sync the project status.
-        if self.isActive != project['enabled']:
-            if self.isActive:
-                project_status_response = client.put(f'/api/v1/projects/{self.id}/_enable', {})
-            else:
-                project_status_response = client.put(f'/api/v1/projects/{self.id}/_disable', {})
-            if not project_status_response.get('success'):
-                raise IOError(f'Unable to sync project {self.id} status.')
-
-        # Create an apikey if one doesn't exist.
-        if not self.apikey:
-            name = f'wallet-project-key-{self.id}'
-            permissions = get_permissions_for_roles([r['name'] for r in settings.ROLES])
-            self.apikey = create_zmlp_api_key(client, name, permissions, internal=True)
-            self.save()
+        sync_project_with_zmlp(self)
 
     def ml_usage_this_month(self):
         """Returns the ml module usage for the current month."""
@@ -195,61 +169,7 @@ class Membership(models.Model):
                 match.
 
         """
-        apikey_name = self._get_api_key_name()
-        wallet_desired_permissions = get_permissions_for_roles(self.roles)
-        if not client:
-            client = self.project.get_zmlp_super_client()
-
-        if not self.apikey:
-            self.apikey = create_zmlp_api_key(client, apikey_name, wallet_desired_permissions,
-                                              internal=True)
-            self.save()
-        else:
-            # Check to make sure Wallet roles/permissions currently match
-            apikey_json = convert_base64_to_json(self.apikey)
-            try:
-                apikey_id = apikey_json['id']
-            except (TypeError, KeyError):
-                # If there's no id, just recreate it.
-                self.apikey = create_zmlp_api_key(client, apikey_name, wallet_desired_permissions,
-                                                  internal=True)
-                self.save()
-                return
-            else:
-                apikey_permissions = apikey_json.get('permissions', [])
-                internally_consistent = set(apikey_permissions) == set(wallet_desired_permissions)
-
-            # Check to make sure the key still matches what's in ZMLP
-            externally_consistent = True
-            try:
-                response = client.get(f'/auth/v1/apikey/{apikey_id}')
-            except BoonSdkNotFoundException:
-                logger.warning(f'The API Key {apikey_id} for user f{self.user.id} could not be '
-                               f'found in ZMLP, it will be recreated.')
-                externally_consistent = False
-                zmlp_permissions = []
-            else:
-                zmlp_permissions = response.get('permissions', [])
-            # Compare Wallet and ZMLP permissions
-            if set(wallet_desired_permissions) != set(zmlp_permissions):
-                externally_consistent = False
-
-            # Recreate the key in ZMLP, delete the old one, and save the new one
-            if not internally_consistent or not externally_consistent or force:
-                if apikey_json.get('name') == 'admin-key':
-                    raise ValueError('Modifying the admin-key is not allowed.')
-                new_apikey = create_zmlp_api_key(client, apikey_name, wallet_desired_permissions,
-                                                 internal=True)
-                try:
-                    response = client.delete(f'/auth/v1/apikey/{apikey_id}')
-                    if not response.status_code == 200:
-                        raise IOError(f'There was an error deleting {apikey_id}')
-                except BoonSdkNotFoundException:
-                    logger.warning(
-                        f'Tried to delete API Key {apikey_id} for user f{self.user.id} '
-                        f'while updating permissions. The API key could not be found.')
-                self.apikey = new_apikey
-                self.save()
+        sync_membership_with_zmlp(self, client, force)
 
     def destroy_zmlp_api_key(self, client):
         """Destroys the ZMLP API key associated with this membership.

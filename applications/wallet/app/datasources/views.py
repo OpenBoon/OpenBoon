@@ -3,17 +3,17 @@ import os
 import uuid
 from functools import lru_cache
 
+from boonsdk import DataSource
+from boonsdk.client import BoonSdkDuplicateException
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from boonsdk import DataSource
-from boonsdk.client import BoonSdkDuplicateException
 
-from datasources.serializers import DataSourceSerializer, CreateDataSourceSerializer, \
-    AzureCredentialSerializer, AwsCredentialSerializer, GcpCredentialSerializer
-from projects.viewsets import BaseProjectViewSet, ZmlpListMixin, ZmlpRetrieveMixin, \
-    ZmlpDestroyMixin, ListViewType
-from wallet.paginators import ZMLPFromSizePagination
+from datasources.serializers import (DataSourceSerializer, CreateDataSourceSerializer,
+                                     AzureCredentialSerializer, AwsCredentialSerializer,
+                                     GcpCredentialSerializer)
+from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpRetrieveMixin,
+                               ZmlpDestroyMixin, ListViewType)
 from wallet.utils import validate_zmlp_data
 
 
@@ -83,7 +83,6 @@ Below are examples of all 3.
 
 """
     serializer_class = DataSourceSerializer
-    pagination_class = ZMLPFromSizePagination
     zmlp_root_api_path = '/api/v1/data-sources/'
     list_type = ListViewType.SEARCH
 

@@ -78,35 +78,6 @@ class MultipleWebSecurityConfig {
         }
     }
 
-    @Configuration
-    @EnableGlobalMethodSecurity(securedEnabled = true)
-    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
-    class SwaggerConfigSecurity : WebSecurityConfigurerAdapter() {
-
-        @Value("\${swagger.isPublic}")
-        var isPublic: Boolean = true
-
-        override fun configure(http: HttpSecurity) {
-            http
-                .antMatcher("/**")
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .csrf().disable()
-
-            if (isPublic) {
-                http.authorizeRequests()
-                    .antMatchers("/v2/api-docs").permitAll()
-                    .antMatchers("/swagger-ui.html").permitAll()
-                    .antMatchers("/error").permitAll()
-            } else {
-                http.authorizeRequests()
-                    .antMatchers("/v2/api-docs").denyAll()
-                    .antMatchers("/swagger-ui.html").denyAll()
-                    .antMatchers("/error").denyAll()
-            }
-        }
-    }
-
     @Value("\${management.endpoints.password}")
     lateinit var monitorPassword: String
 

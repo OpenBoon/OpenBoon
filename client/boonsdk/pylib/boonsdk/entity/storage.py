@@ -1,5 +1,5 @@
 
-class StoredFile(object):
+class StoredFile:
     """
     The StoredFile class represents a supporting file that has been stored in ZVI.
     """

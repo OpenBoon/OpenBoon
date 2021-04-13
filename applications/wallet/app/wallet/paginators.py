@@ -48,3 +48,8 @@ class ZMLPFromSizePagination(FromSizePagination):
             return []
 
         return content
+
+
+class NoPagination(FromSizePagination):
+    """Sets an arbitrarily high page size to simulate no pagination."""
+    default_limit = 10000

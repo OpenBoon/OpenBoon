@@ -126,7 +126,7 @@ def sync_project_with_zmlp(project):
         project.save()
 
 
-def sync_membership_with_zmlp(membership, force=False):
+def sync_membership_with_zmlp(membership, client=None, force=False):
     """Helper to sync a membership with ZMLP. Necessary for data migrations, where
     model methods are not available. This should reflect the same code that exists in
     the Membership.sync_with_zmlp method."""
@@ -135,7 +135,8 @@ def sync_membership_with_zmlp(membership, force=False):
 
     apikey_name = f'{membership.user.email}_{membership.project_id}'
     wallet_desired_permissions = get_permissions_for_roles(membership.roles)
-    client = get_zmlp_superuser_client(project_id=str(membership.project.id))
+    if not client:
+        client = membership.project.get_zmlp_super_client()
 
     if not membership.apikey:
         membership.apikey = create_zmlp_api_key(client, apikey_name,

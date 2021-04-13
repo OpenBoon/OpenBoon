@@ -49,7 +49,7 @@ python-services-push-latest:
   variables:
     CONTAINERS: >
       reporter plugins-train ml-bbq analyst plugins-analysis plugins-models plugins-core
-      boondocks boonflow boonlab boonsdk py3-base
+      boondocks boonflow boonlab boonsdk py3-base swivel
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -61,6 +61,7 @@ python-services-push-latest:
         - "containers/**/*"
         - "services/analyst/**/*"
         - "services/mlbbq/**/*"
+        - "services/swivel/**/*"
 
 python-services-push-qa:
   extends: python-services-push-latest
@@ -148,7 +149,7 @@ boonai-dockerhub-push-prod:
     CONTAINERS: >
       archivist officer elasticsearch auth-server api-gateway py3-base boonsdk boonlab boonflow
       boondocks plugins-models plugins-core plugins-analysis analyst ml-bbq plugins-train
-      wallet reporter metrics
+      wallet reporter metrics swivel
   before_script:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"

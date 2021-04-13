@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 DEFAULT_SERVER = 'https://api.boonai.app'
 
 
-class BoonClient(object):
+class BoonClient:
     """
     BoonClient is used to communicate to a Boon AI API server.
     """
@@ -276,6 +276,25 @@ class BoonClient(object):
          """
         return self._make_request('delete', path, body, is_json)
 
+    def patch(self, path, body=None, is_json=True):
+        """
+         Performs a patch request.
+
+         Args:
+             path (str): An archivist URI path.
+             body (object): The request body which will be serialized to json.
+             is_json (bool): Set to true to specify a JSON return value
+
+         Returns:
+             object: The http response object or an object deserialized from
+             the response json if the ``json`` argument is true.
+
+         Raises:
+             Exception: An error occurred making the request or parsing the
+                JSON response
+         """
+        return self._make_request('patch', path, body, is_json)
+
     def iter_paged_results(self, url, req, limit, cls):
         """
         Handles paging through the results of the standard _search
@@ -419,23 +438,23 @@ class BoonClient(object):
 
     def __sign_request(self):
         if not self.apikey:
-            raise RuntimeError("Unable to make request, no ApiKey has been specified.")
+            raise RuntimeError('Unable to make request, no ApiKey has been specified.')
         claims = {
             'aud': self.server,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60),
-            'accessKey': self.apikey["accessKey"],
+            'accessKey': self.apikey['accessKey'],
         }
 
-        if os.environ.get("BOONAI_TASK_ID"):
-            claims['taskId'] = os.environ.get("BOONAI_TASK_ID")
-            claims['jobId'] = os.environ.get("BOONAI_JOB_ID")
+        if os.environ.get('BOONAI_TASK_ID'):
+            claims['taskId'] = os.environ.get('BOONAI_TASK_ID')
+            claims['jobId'] = os.environ.get('BOONAI_JOB_ID')
 
         if self.project_id:
-            claims["projectId"] = self.project_id
+            claims['projectId'] = self.project_id
         return jwt.encode(claims, self.apikey['secretKey'], algorithm='HS512')
 
 
-class SearchResult(object):
+class SearchResult:
     """
     A utility class for wrapping various search result formats
     that come back from the Boon AI servers.
