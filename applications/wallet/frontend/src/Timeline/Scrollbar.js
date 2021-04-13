@@ -1,53 +1,17 @@
 import PropTypes from 'prop-types'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 
 import { colors, constants, spacing, zIndex } from '../Styles'
 
-import { getScroller } from '../Scroll/helpers'
-
-import { getScrollbarScrollableWidth } from './helpers'
-
 import TimelineScrollbarThumb from './ScrollbarThumb'
 import TimelineScrollbarRightHandle from './ScrollbarRightHandle'
-
-let scrollbarScrollableWidth
 
 export const SCROLLBAR_CONTAINER_HEIGHT = 36
 const RESIZE_HANDLE_SIZE = 20
 
 const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
-  const horizontalScroller = getScroller({ namespace: 'Timeline' })
   const scrollbarTrackRef = useRef()
   const scrollbarRef = useRef()
-
-  const horizontalScrollerDeregister = horizontalScroller.register({
-    eventName: 'scroll',
-    callback: /* istanbul ignore next */ ({ node }) => {
-      if (!scrollbarRef.current || !node) return
-
-      scrollbarScrollableWidth = getScrollbarScrollableWidth({
-        scrollbarRef,
-        zoom,
-      })
-
-      // the scrollLeft value when the timeline is scrolled all the way to the end
-      const maxScrollLeft = node.scrollWidth - node.offsetWidth
-
-      // compute scrollLeft as a percentage to translate to scrollbar scrollLeft
-      const fractionScrolled =
-        maxScrollLeft === 0 ? maxScrollLeft : node.scrollLeft / maxScrollLeft
-
-      scrollbarRef.current.style.left = `${
-        fractionScrolled * scrollbarScrollableWidth
-      }px`
-    },
-  })
-
-  useEffect(() => {
-    return () => {
-      horizontalScrollerDeregister()
-    }
-  }, [horizontalScrollerDeregister])
 
   return (
     <>

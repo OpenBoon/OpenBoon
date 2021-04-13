@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+import { useEffect } from 'react'
+
 import { colors } from '../Styles'
 
 import { getScroller } from '../Scroll/helpers'
@@ -14,6 +16,36 @@ export const SCROLLBAR_CONTAINER_HEIGHT = 36
 
 const TimelineScrollbarThumb = ({ zoom, scrollbarRef, rulerRef }) => {
   const horizontalScroller = getScroller({ namespace: 'Timeline' })
+
+  const horizontalScrollerDeregister = horizontalScroller.register({
+    eventName: 'scroll',
+    callback: /* istanbul ignore next */ ({ node }) => {
+      if (!scrollbarRef.current || !node) return
+
+      scrollbarScrollableWidth = getScrollbarScrollableWidth({
+        scrollbarRef,
+        zoom,
+      })
+
+      // the scrollLeft value when the timeline is scrolled all the way to the end
+      const maxScrollLeft = node.scrollWidth - node.offsetWidth
+
+      // compute scrollLeft as a percentage to translate to scrollbar scrollLeft
+      const fractionScrolled =
+        maxScrollLeft === 0 ? maxScrollLeft : node.scrollLeft / maxScrollLeft
+
+      /* eslint-disable no-param-reassign */
+      scrollbarRef.current.style.left = `${
+        fractionScrolled * scrollbarScrollableWidth
+      }px`
+    },
+  })
+
+  useEffect(() => {
+    return () => {
+      horizontalScrollerDeregister()
+    }
+  }, [horizontalScrollerDeregister])
 
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
@@ -73,7 +105,10 @@ const TimelineScrollbarThumb = ({ zoom, scrollbarRef, rulerRef }) => {
 TimelineScrollbarThumb.propTypes = {
   zoom: PropTypes.number.isRequired,
   scrollbarRef: PropTypes.shape({
-    current: PropTypes.shape({ offsetLeft: PropTypes.number }),
+    current: PropTypes.shape({
+      offsetLeft: PropTypes.number,
+      style: PropTypes.shape({ left: PropTypes.string }),
+    }),
   }).isRequired,
   rulerRef: PropTypes.shape({
     current: PropTypes.shape({
