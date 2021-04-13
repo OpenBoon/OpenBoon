@@ -175,7 +175,7 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user, organization, da
     monkeypatch.setattr(BoonClient, 'get', mock_get_project)
     monkeypatch.setattr(BoonClient, 'post', mock_post_true)
     monkeypatch.setattr(BoonClient, 'put', mock_put_enable_project)
-    monkeypatch.setattr('projects.models.create_zmlp_api_key', mock_create_zmlp_api_key)
+    monkeypatch.setattr('apikeys.utils.create_zmlp_api_key', mock_create_zmlp_api_key)
     project = Project.objects.create(name='test', id=uuid4(), organization=organization)
     project.sync_with_zmlp()
 
