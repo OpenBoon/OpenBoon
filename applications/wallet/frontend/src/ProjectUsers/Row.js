@@ -23,13 +23,14 @@ const ProjectUsersRow = ({
         <Pills>{roles}</Pills>
       </td>
       <td>
-        {email !== currentUserEmail && (
-          <ProjectUsersMenu
-            projectId={projectId}
-            userId={userId}
-            revalidate={revalidate}
-          />
-        )}
+        {email !== currentUserEmail &&
+          !roles.includes('Organization_Owner') && (
+            <ProjectUsersMenu
+              projectId={projectId}
+              userId={userId}
+              revalidate={revalidate}
+            />
+          )}
       </td>
     </tr>
   )

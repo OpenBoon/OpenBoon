@@ -1,6 +1,8 @@
 import json
 import os
 
+from boonsdk.client import BoonSdkNotFoundException
+from boonsdk.entity.model import LabelScope
 from django.http import Http404, HttpResponse
 from rest_framework import status
 from rest_framework.decorators import action
@@ -14,10 +16,7 @@ from models.serializers import (ModelSerializer, ModelTypeSerializer,
 from models.utils import ConfusionMatrix
 from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpRetrieveMixin,
                                ListViewType, ZmlpDestroyMixin, ZmlpCreateMixin)
-from wallet.paginators import ZMLPFromSizePagination
 from wallet.utils import validate_zmlp_data
-from boonsdk.client import BoonSdkNotFoundException
-from boonsdk.entity.model import LabelScope
 
 
 def get_model_type_restrictions(label_counts, min_concepts, min_examples):
@@ -88,7 +87,6 @@ class ModelViewSet(ZmlpCreateMixin,
                    ZmlpDestroyMixin,
                    BaseProjectViewSet):
     serializer_class = ModelSerializer
-    pagination_class = ZMLPFromSizePagination
     zmlp_root_api_path = '/api/v3/models'
     list_type = ListViewType.SEARCH
     list_modifier = staticmethod(item_modifier)

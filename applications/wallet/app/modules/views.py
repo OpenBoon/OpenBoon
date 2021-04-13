@@ -10,7 +10,6 @@ from wallet.utils import validate_zmlp_data
 class ModuleViewSet(ZmlpListMixin,
                     BaseProjectViewSet):
     zmlp_root_api_path = '/api/v1/pipeline-mods/'
-    pagination_class = ZMLPFromSizePagination
     serializer_class = ModuleSerializer
     list_type = ListViewType.SEARCH
 
