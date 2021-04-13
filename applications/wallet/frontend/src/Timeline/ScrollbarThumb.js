@@ -12,7 +12,7 @@ let scrollbarScrollableWidth
 
 export const SCROLLBAR_CONTAINER_HEIGHT = 36
 
-const TimelineScrollbarThumb = ({ scrollbarRef, zoom, rulerRef }) => {
+const TimelineScrollbarThumb = ({ zoom, scrollbarRef, rulerRef }) => {
   const horizontalScroller = getScroller({ namespace: 'Timeline' })
 
   /* istanbul ignore next */
@@ -71,10 +71,10 @@ const TimelineScrollbarThumb = ({ scrollbarRef, zoom, rulerRef }) => {
 }
 
 TimelineScrollbarThumb.propTypes = {
+  zoom: PropTypes.number.isRequired,
   scrollbarRef: PropTypes.shape({
     current: PropTypes.shape({ offsetLeft: PropTypes.number }),
   }).isRequired,
-  zoom: PropTypes.number.isRequired,
   rulerRef: PropTypes.shape({
     current: PropTypes.shape({
       offsetWidth: PropTypes.number,
