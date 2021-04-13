@@ -121,6 +121,20 @@ interface ProjectStorageService {
     }
 
     /**
+     * Log the delete of a batch of files.
+     */
+    fun logDeleteEvent(path: String, part: Int, numberOfParts: Int) {
+        logger.event(
+            LogObject.PROJECT_STORAGE, LogAction.DELETE,
+            mapOf(
+                "path" to path,
+                "part" to part,
+                "numberOfParts" to numberOfParts
+            )
+        )
+    }
+
+    /**
      * Log the signing of a cloud storage URL.
      */
     fun logSignEvent(path: String, mediaType: String, forWrite: Boolean) {
