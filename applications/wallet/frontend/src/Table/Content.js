@@ -162,7 +162,7 @@ const TableContent = ({
         {count > 0 && (
           <Pagination
             currentPage={parsedPage}
-            totalPages={Math.ceil(count / SIZE)}
+            totalPages={Math.ceil(count / Math.max(SIZE, results.length))}
           />
         )}
 
