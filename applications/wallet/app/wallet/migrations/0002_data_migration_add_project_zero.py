@@ -16,8 +16,11 @@ logger = logging.getLogger(__name__)
 
 def create_project_zero(apps, schema_editor):
     # Create project zero (or get it for deployments where it may already exist).
+    Organization = apps.get_model('organizations', 'Organization')
+    org, created = Organization.all_objects.get_or_create(name='Boon AI')
     project_zero, created = Project.objects.get_or_create(id='00000000-0000-0000-0000-000000000000',
-                                                          name='Project Zero')
+                                                          name='Project Zero',
+                                                          organization_id=org.id)
     project_zero.save()
 
     # Create the membership if it doesn't already exist
@@ -42,7 +45,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('wallet', '0001_data_migration_add_superuser'),
-        ('projects', '0004_auto_20200810_2320'),
+        ('projects', '0011_auto_20210410_0146'),
     ]
 
     operations = [

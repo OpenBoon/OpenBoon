@@ -80,8 +80,8 @@ class JobViewSet(BoonAISortArgsMixin,
         """
 
         def item_modifier(request, job):
-            job['actions'] = self._get_action_links(request, job['url'], detail=True)
-            job['tasks'] = f'{job["url"]}tasks/'
+            job['actions'] = self._get_action_links(request, job['link'], detail=True)
+            job['tasks'] = f'{job["link"]}tasks/'
             job['assetCounts'] = set_asset_total_count(job['assetCounts'])
 
         search_filter = {}
