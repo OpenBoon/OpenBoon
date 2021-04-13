@@ -54,7 +54,7 @@ class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         (ApiCall.objects.on_conflict(['service', 'asset_id', 'project'], ConflictAction.UPDATE).
-         insert(**serializer.validated_data))
+         insert(**serializer.data))
 
     @action(detail=False, methods=['get'],
             renderer_classes=api_settings.DEFAULT_RENDERER_CLASSES+[ReportCSVRenderer])

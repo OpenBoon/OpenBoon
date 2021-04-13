@@ -1,9 +1,10 @@
 from django.db import models
-from psqlextra.models import PostgresModel
+from psqlextra.manager import PostgresManager
 
 
-class ApiCall(PostgresModel):
+class ApiCall(models.Model):
     """Represents a registered API Call for billing purposes"""
+    objects = PostgresManager()
 
     project = models.UUIDField()
     service = models.CharField(max_length=64)
