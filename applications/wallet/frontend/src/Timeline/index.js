@@ -298,9 +298,7 @@ const Timeline = ({ videoRef, length }) => {
               <TimelineScrollbar
                 width={settings.width}
                 zoom={settings.zoom}
-                videoRef={videoRef}
                 rulerRef={rulerRef}
-                dispatch={dispatch}
               />
             </Feature>
 

@@ -5,14 +5,12 @@ import { colors, constants, spacing, zIndex } from '../Styles'
 
 import { getScroller } from '../Scroll/helpers'
 
-import { setScrollbarScrollableWidth } from './helpers'
+import { getScrollbarScrollableWidth } from './helpers'
 
-let origin
-let scrollbarOrigin
+import TimelineScrollbarThumb from './ScrollbarThumb'
+import TimelineScrollbarRightHandle from './ScrollbarRightHandle'
+
 let scrollbarScrollableWidth
-let manualScrollbarTrackWidth
-let manualScrollbarWidth
-const scrollbarZoom = 100
 
 export const SCROLLBAR_CONTAINER_HEIGHT = 36
 const RESIZE_HANDLE_SIZE = 20
@@ -27,7 +25,7 @@ const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
     callback: /* istanbul ignore next */ ({ node }) => {
       if (!scrollbarRef.current || !node) return
 
-      scrollbarScrollableWidth = setScrollbarScrollableWidth({
+      scrollbarScrollableWidth = getScrollbarScrollableWidth({
         scrollbarRef,
         zoom,
       })
@@ -44,92 +42,6 @@ const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
       }px`
     },
   })
-
-  /* istanbul ignore next */
-  const handleMouseMove = ({ clientX }) => {
-    const difference = clientX - origin
-
-    const fractionScrolled =
-      scrollbarScrollableWidth === 0
-        ? 0
-        : (scrollbarOrigin + difference) / scrollbarScrollableWidth
-
-    // the max number of pixels the ruler scroll left
-    const rulerScrollableWidth =
-      rulerRef.current.scrollWidth - rulerRef.current.offsetWidth
-
-    horizontalScroller.emit({
-      eventName: 'scroll',
-      data: {
-        scrollX: rulerScrollableWidth * fractionScrolled,
-      },
-    })
-  }
-
-  /* istanbul ignore next */
-  const handleMouseUp = () => {
-    document.removeEventListener('mousemove', handleMouseMove)
-    document.removeEventListener('mouseup', handleMouseUp)
-  }
-
-  /* istanbul ignore next */
-  const handleMouseDown = ({ clientX }) => {
-    origin = clientX
-    scrollbarOrigin = scrollbarRef.current.offsetLeft
-
-    scrollbarScrollableWidth = setScrollbarScrollableWidth({
-      scrollbarRef,
-      zoom,
-    })
-
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp)
-  }
-
-  /* istanbul ignore next */
-  const onRightHandleMouseMove = ({ clientX }) => {
-    const difference = clientX - origin
-
-    const newZoom =
-      ((manualScrollbarWidth + difference) / manualScrollbarTrackWidth) * 100
-
-    // prevent handles from overlapping
-    const minZoom = ((RESIZE_HANDLE_SIZE * 2) / manualScrollbarTrackWidth) * 100
-
-    const clampedZoom = Math.max(minZoom, Math.min(100, newZoom))
-
-    scrollbarRef.current.style.width = `${clampedZoom}%`
-  }
-
-  /* istanbul ignore next */
-  const onRightHandleMouseUp = () => {
-    document.removeEventListener('mousemove', onRightHandleMouseMove)
-    document.removeEventListener('mouseup', onRightHandleMouseUp)
-  }
-
-  /* istanbul ignore next */
-  const onRightHandleMouseDown = ({ clientX }) => {
-    origin = clientX
-    scrollbarOrigin = scrollbarRef.current.offsetLeft
-
-    const { width: scrollbarWidth = 0 } =
-      scrollbarRef.current?.getBoundingClientRect() || {}
-
-    manualScrollbarWidth = scrollbarWidth
-
-    const { width: trackWidth = 0 } =
-      scrollbarTrackRef.current?.getBoundingClientRect() || {}
-
-    manualScrollbarTrackWidth = trackWidth
-
-    scrollbarScrollableWidth = setScrollbarScrollableWidth({
-      scrollbarRef,
-      zoom,
-    })
-
-    document.addEventListener('mousemove', onRightHandleMouseMove)
-    document.addEventListener('mouseup', onRightHandleMouseUp)
-  }
 
   useEffect(() => {
     return () => {
@@ -179,7 +91,7 @@ const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
             css={{
               display: 'flex',
               position: 'absolute',
-              width: `${scrollbarZoom}%`,
+              width: '100%',
               height: '100%',
               backgroundColor: colors.structure.smoke,
               borderRadius: constants.borderRadius.medium,
@@ -193,28 +105,14 @@ const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
                 borderBottomLeftRadius: constants.borderRadius.medium,
               }}
             />
-            <div
-              role="button"
-              tabIndex="-1"
-              aria-label="Timeline Scrollbar"
-              onMouseDown={handleMouseDown}
-              css={{
-                flex: 1,
-                ':hover, :active': { backgroundColor: colors.structure.steel },
-              }}
+            <TimelineScrollbarThumb
+              scrollbarRef={scrollbarRef}
+              zoom={zoom}
+              rulerRef={rulerRef}
             />
-            <div
-              role="button"
-              tabIndex="-1"
-              aria-label="Timeline Scrollbar Resize Handle"
-              css={{
-                backgroundColor: colors.structure.steel,
-                width: RESIZE_HANDLE_SIZE,
-                borderTopRightRadius: constants.borderRadius.medium,
-                borderBottomRightRadius: constants.borderRadius.medium,
-                ':hover, :active': { backgroundColor: colors.structure.pebble },
-              }}
-              onMouseDown={onRightHandleMouseDown}
+            <TimelineScrollbarRightHandle
+              scrollbarRef={scrollbarRef}
+              scrollbarTrackRef={scrollbarTrackRef}
             />
           </div>
         </div>

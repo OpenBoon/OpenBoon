@@ -183,7 +183,7 @@ export const getNextScrollLeft = ({ videoRef, rulerRef, zoom, nextZoom }) => {
   return nextScrollLeft
 }
 
-export const setScrollbarScrollableWidth = ({ scrollbarRef, zoom }) => {
+export const getScrollbarScrollableWidth = ({ scrollbarRef, zoom }) => {
   const { width: scrollbarWidth = 0 } =
     scrollbarRef.current?.getBoundingClientRect() || {}
 

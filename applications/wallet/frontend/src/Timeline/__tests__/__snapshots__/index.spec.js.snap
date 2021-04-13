@@ -632,6 +632,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
 .emotion-21 {
   background-color: #808080;
   width: 20px;
+  border: 0;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
@@ -909,12 +910,12 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 role="button"
                 tabIndex="-1"
               />
-              <div
+              <button
                 aria-label="Timeline Scrollbar Resize Handle"
                 className="emotion-21"
                 onMouseDown={[Function]}
-                role="button"
                 tabIndex="-1"
+                type="button"
               />
             </div>
           </div>
@@ -1349,6 +1350,7 @@ exports[`<Timeline /> should render properly 1`] = `
 .emotion-26 {
   background-color: #808080;
   width: 20px;
+  border: 0;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
@@ -2694,12 +2696,12 @@ exports[`<Timeline /> should render properly 1`] = `
                 role="button"
                 tabIndex="-1"
               />
-              <div
+              <button
                 aria-label="Timeline Scrollbar Resize Handle"
                 className="emotion-26"
                 onMouseDown={[Function]}
-                role="button"
                 tabIndex="-1"
+                type="button"
               />
             </div>
           </div>
@@ -3126,6 +3128,7 @@ exports[`<Timeline /> should render properly 2`] = `
 .emotion-26 {
   background-color: #808080;
   width: 20px;
+  border: 0;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
@@ -4471,12 +4474,12 @@ exports[`<Timeline /> should render properly 2`] = `
                 role="button"
                 tabIndex="-1"
               />
-              <div
+              <button
                 aria-label="Timeline Scrollbar Resize Handle"
                 className="emotion-26"
                 onMouseDown={[Function]}
-                role="button"
                 tabIndex="-1"
+                type="button"
               />
             </div>
           </div>

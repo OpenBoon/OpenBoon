@@ -5,7 +5,7 @@ import {
   gotoPreviousHit,
   gotoNextHit,
   getNextScrollLeft,
-  setScrollbarScrollableWidth,
+  getScrollbarScrollableWidth,
 } from '../helpers'
 
 const noop = () => () => {}
@@ -200,7 +200,7 @@ describe('<Timeline /> helpers', () => {
 
   describe('setScrollbarScrollableWidth', () => {
     it('should properly calculate the scrollable width', () => {
-      expect(setScrollbarScrollableWidth({ scrollbarRef: {}, zoom: 100 })).toBe(
+      expect(getScrollbarScrollableWidth({ scrollbarRef: {}, zoom: 100 })).toBe(
         0,
       )
     })
