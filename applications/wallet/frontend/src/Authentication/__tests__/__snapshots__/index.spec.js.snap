@@ -49,6 +49,7 @@ exports[`<Authentication /> should render properly when user is logged in 1`] = 
               "ML_Tools",
               "User_Admin",
               "API_Keys",
+              "Webhooks",
             ],
             "e93cbadb-e5ae-4598-8395-4cf5b30c0e94": Array [],
           },
