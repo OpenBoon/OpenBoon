@@ -181,9 +181,12 @@ class GcsProjectStorageService constructor(
             Storage.BlobListOption.pageSize(100)
         )
 
-        for (blob in blobs.iterateAll()) {
-            gcs.delete(blob.blobId)
-            logDeleteEvent(blob.name)
+        logDeleteEvent(path)
+        val storageFileId: List<List<BlobId>> = blobs.values.map { it.blobId }.chunked(10000)
+
+        storageFileId.forEachIndexed { index, element ->
+            logDeleteEvent(path, index + 1, storageFileId.size)
+            gcs.delete(element)
         }
     }
 
