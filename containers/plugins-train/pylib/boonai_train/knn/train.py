@@ -70,8 +70,9 @@ class KnnLabelDetectionTrainer(ModelTrainer):
             closest, _ = pairwise_distances_argmin_min(kmeans.cluster_centers_, x)
 
             for n, i in enumerate(closest):
-                self.app.assets.update_labels(assets[i].id,
-                                              self.app_model.make_label(str(n)))
+                self.app.assets.update_labels(
+                    assets[i].id,
+                    self.app_model.make_label('auto group ' + str(n)))
 
             classifier_hashes = self.classifier_hashes()
 
