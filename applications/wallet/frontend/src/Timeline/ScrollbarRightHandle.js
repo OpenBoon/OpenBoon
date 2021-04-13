@@ -11,7 +11,7 @@ const RESIZE_HANDLE_SIZE = 20
 
 const TimelineScrollbarRightHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
   /* istanbul ignore next */
-  const onRightHandleMouseMove = ({ clientX }) => {
+  const handleMouseMove = ({ clientX }) => {
     const difference = clientX - origin
 
     const newZoom =
@@ -27,13 +27,13 @@ const TimelineScrollbarRightHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
   }
 
   /* istanbul ignore next */
-  const onRightHandleMouseUp = () => {
-    document.removeEventListener('mousemove', onRightHandleMouseMove)
-    document.removeEventListener('mouseup', onRightHandleMouseUp)
+  const handleMouseUp = () => {
+    document.removeEventListener('mousemove', handleMouseMove)
+    document.removeEventListener('mouseup', handleMouseUp)
   }
 
   /* istanbul ignore next */
-  const onRightHandleMouseDown = ({ clientX }) => {
+  const handleMouseDown = ({ clientX }) => {
     origin = clientX
 
     const { width: scrollbarWidth = 0 } =
@@ -46,8 +46,8 @@ const TimelineScrollbarRightHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
 
     manualScrollbarTrackWidth = trackWidth
 
-    document.addEventListener('mousemove', onRightHandleMouseMove)
-    document.addEventListener('mouseup', onRightHandleMouseUp)
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleMouseUp)
   }
 
   return (
@@ -63,7 +63,7 @@ const TimelineScrollbarRightHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
         borderBottomRightRadius: constants.borderRadius.medium,
         ':hover, :active': { backgroundColor: colors.structure.pebble },
       }}
-      onMouseDown={onRightHandleMouseDown}
+      onMouseDown={handleMouseDown}
     />
   )
 }
