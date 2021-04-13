@@ -23,7 +23,7 @@ def create_project_zero(apps, schema_editor):
     user = User.objects.get(username=settings.SUPERUSER_EMAIL)
     Membership = apps.get_model('projects', 'Membership')
     membership = Membership.objects.get_or_create(user=user, project=project_zero,
-                                                  roles=[r['name'] for r in settings.ROLES])[0]
+                                                  roles=['User_Admin'])[0]
 
     # Sync Project Zero to Zmlp
     sync_project_with_zmlp(project_zero)

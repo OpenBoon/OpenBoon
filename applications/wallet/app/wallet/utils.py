@@ -136,7 +136,7 @@ def sync_membership_with_zmlp(membership, client=None, force=False):
     apikey_name = f'{membership.user.email}_{membership.project_id}'
     wallet_desired_permissions = get_permissions_for_roles(membership.roles)
     if not client:
-        client = membership.project.get_zmlp_super_client()
+        client = get_zmlp_superuser_client(project_id=membership.project_id)
 
     if not membership.apikey:
         membership.apikey = create_zmlp_api_key(client, apikey_name,
