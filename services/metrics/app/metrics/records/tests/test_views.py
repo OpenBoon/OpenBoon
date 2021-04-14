@@ -26,10 +26,14 @@ class TestAPICallsViewSet:
         assert response.status_code == 200
         content = response.json()
         assert content['id'] == 1
-        assert 'created_date' in content
-        assert 'modified_date' in content
+        created_date = content['created_date']
+        modified_date = content['modified_date']
+
+        # Make sure upserting works.
         response = api_client.post(reverse('apicalls-list'), body)
         assert response.status_code == 200
+        assert response.json()['created_date'] == created_date
+        assert response.json()['modified_date'] > modified_date
 
     def test_get_single_record(self, api_client, single_record):
         url = reverse('apicalls-detail', kwargs={'pk': single_record.id})
