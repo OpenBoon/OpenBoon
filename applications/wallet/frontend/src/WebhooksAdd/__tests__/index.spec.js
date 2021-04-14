@@ -30,8 +30,6 @@ describe('<WebhooksAdd />', () => {
       </User>,
     )
 
-    expect(component.toJSON()).toMatchSnapshot()
-
     // Input URL
     act(() => {
       component.root
@@ -73,6 +71,37 @@ describe('<WebhooksAdd />', () => {
     })
 
     // Mock Failure
+    fetch.mockResponseOnce(
+      JSON.stringify({ detail: ['Something went wrong.'] }),
+      {
+        status: 500,
+      },
+    )
+
+    // Send Test
+    await act(async () => {
+      component.root
+        .findAllByProps({ children: 'Send Test' })[0]
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Mock Success
+    fetch.mockResponseOnce(JSON.stringify({}), {
+      headers: { 'content-type': 'application/json' },
+    })
+
+    // Send Test Again
+    await act(async () => {
+      component.root
+        .findAllByProps({ children: 'Send Test' })[0]
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Mock Submit Failure
     fetch.mockResponseOnce(JSON.stringify({ url: ['URL already in use'] }), {
       status: 400,
     })
@@ -86,7 +115,7 @@ describe('<WebhooksAdd />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Mock Success
+    // Mock Submit Success
     fetch.mockResponseOnce(JSON.stringify({}), {
       headers: { 'content-type': 'application/json' },
     })
