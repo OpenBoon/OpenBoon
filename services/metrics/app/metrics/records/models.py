@@ -72,6 +72,3 @@ class ApiCall(models.Model):
         unique_together = (
             ('service', 'asset_id', 'project')
         )
-
-    def save(self, *args, **kwargs):
-        super(ApiCall, self).save(*args, **kwargs)
