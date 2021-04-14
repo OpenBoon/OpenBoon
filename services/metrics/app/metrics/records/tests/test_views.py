@@ -23,13 +23,13 @@ class TestAPICallsViewSet:
                 'image_count': 1,
                 'video_minutes': 0.0}
         response = api_client.post(reverse('apicalls-list'), body)
-        assert response.status_code == 201
+        assert response.status_code == 200
         content = response.json()
         assert content['id'] == 1
         assert 'created_date' in content
         assert 'modified_date' in content
         response = api_client.post(reverse('apicalls-list'), body)
-        assert response.status_code == 201
+        assert response.status_code == 200
 
     def test_get_single_record(self, api_client, single_record):
         url = reverse('apicalls-detail', kwargs={'pk': single_record.id})
