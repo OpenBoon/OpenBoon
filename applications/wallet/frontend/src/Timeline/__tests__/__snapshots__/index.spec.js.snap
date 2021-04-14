@@ -914,7 +914,6 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 aria-label="Timeline Scrollbar Resize Handle"
                 className="emotion-21"
                 onMouseDown={[Function]}
-                tabIndex="-1"
                 type="button"
               />
             </div>
@@ -2700,7 +2699,6 @@ exports[`<Timeline /> should render properly 1`] = `
                 aria-label="Timeline Scrollbar Resize Handle"
                 className="emotion-26"
                 onMouseDown={[Function]}
-                tabIndex="-1"
                 type="button"
               />
             </div>
@@ -4478,7 +4476,6 @@ exports[`<Timeline /> should render properly 2`] = `
                 aria-label="Timeline Scrollbar Resize Handle"
                 className="emotion-26"
                 onMouseDown={[Function]}
-                tabIndex="-1"
                 type="button"
               />
             </div>

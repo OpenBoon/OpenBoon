@@ -6,8 +6,10 @@ import { colors, constants, spacing, zIndex } from '../Styles'
 import TimelineScrollbarThumb from './ScrollbarThumb'
 import TimelineScrollbarRightHandle from './ScrollbarRightHandle'
 
-export const SCROLLBAR_CONTAINER_HEIGHT = 36
-const RESIZE_HANDLE_SIZE = 20
+import {
+  SCROLLBAR_CONTAINER_HEIGHT,
+  SCROLLBAR_RESIZE_HANDLE_SIZE,
+} from './helpers'
 
 const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
   const scrollbarTrackRef = useRef()
@@ -64,7 +66,7 @@ const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
             <div
               css={{
                 backgroundColor: colors.structure.steel,
-                width: RESIZE_HANDLE_SIZE,
+                width: SCROLLBAR_RESIZE_HANDLE_SIZE,
                 borderTopLeftRadius: constants.borderRadius.medium,
                 borderBottomLeftRadius: constants.borderRadius.medium,
               }}

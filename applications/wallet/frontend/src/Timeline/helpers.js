@@ -6,6 +6,8 @@ export const MINOR_TICK_HEIGHT = 12
 export const TICK_WIDTH = 2
 export const HALF_SECOND = 0.5
 export const MIN_TICK_SPACING = 32
+export const SCROLLBAR_CONTAINER_HEIGHT = 36
+export const SCROLLBAR_RESIZE_HANDLE_SIZE = 20
 
 export const COLORS = [
   colors.graph.magenta,

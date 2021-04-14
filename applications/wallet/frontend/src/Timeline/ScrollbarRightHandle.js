@@ -2,25 +2,24 @@ import PropTypes from 'prop-types'
 
 import { colors, constants } from '../Styles'
 
-let origin
-let manualScrollbarTrackWidth
-let manualScrollbarWidth
+import { SCROLLBAR_RESIZE_HANDLE_SIZE } from './helpers'
 
-export const SCROLLBAR_CONTAINER_HEIGHT = 36
-const RESIZE_HANDLE_SIZE = 20
+let origin
+let scrollbarTrackWidth
+let scrollbarWidth
 
 const TimelineScrollbarRightHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
     const difference = clientX - origin
 
-    const newZoom =
-      ((manualScrollbarWidth + difference) / manualScrollbarTrackWidth) * 100
+    const newZoom = ((scrollbarWidth + difference) / scrollbarTrackWidth) * 100
 
     // prevent handles from overlapping
-    const minZoom = ((RESIZE_HANDLE_SIZE * 2) / manualScrollbarTrackWidth) * 100
+    const minZoom =
+      ((SCROLLBAR_RESIZE_HANDLE_SIZE * 2) / scrollbarTrackWidth) * 100
 
-    const clampedZoom = Math.max(minZoom, Math.min(100, newZoom))
+    const clampedZoom = Math.max(minZoom, Math.min(newZoom, 100))
 
     /* eslint-disable no-param-reassign */
     scrollbarRef.current.style.width = `${clampedZoom}%`
@@ -36,15 +35,10 @@ const TimelineScrollbarRightHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
   const handleMouseDown = ({ clientX }) => {
     origin = clientX
 
-    const { width: scrollbarWidth = 0 } =
-      scrollbarRef.current?.getBoundingClientRect() || {}
+    scrollbarWidth = scrollbarRef.current?.getBoundingClientRect().width || 0
 
-    manualScrollbarWidth = scrollbarWidth
-
-    const { width: trackWidth = 0 } =
-      scrollbarTrackRef.current?.getBoundingClientRect() || {}
-
-    manualScrollbarTrackWidth = trackWidth
+    scrollbarTrackWidth =
+      scrollbarTrackRef.current?.getBoundingClientRect().width || 0
 
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', handleMouseUp)
@@ -53,11 +47,10 @@ const TimelineScrollbarRightHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
   return (
     <button
       type="button"
-      tabIndex="-1"
       aria-label="Timeline Scrollbar Resize Handle"
       css={{
         backgroundColor: colors.structure.steel,
-        width: RESIZE_HANDLE_SIZE,
+        width: SCROLLBAR_RESIZE_HANDLE_SIZE,
         border: 0,
         borderTopRightRadius: constants.borderRadius.medium,
         borderBottomRightRadius: constants.borderRadius.medium,
@@ -72,7 +65,10 @@ TimelineScrollbarRightHandle.propTypes = {
   scrollbarRef: PropTypes.shape({
     current: PropTypes.shape({
       offsetLeft: PropTypes.number,
-      style: PropTypes.shape({ width: PropTypes.string }),
+      style: PropTypes.shape({
+        left: PropTypes.string,
+        width: PropTypes.string,
+      }),
     }),
   }).isRequired,
   scrollbarTrackRef: PropTypes.shape({

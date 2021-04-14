@@ -6,9 +6,11 @@ import { colors, constants, zIndex } from '../Styles'
 
 import { getScroller } from '../Scroll/helpers'
 
-import { SCROLLBAR_CONTAINER_HEIGHT } from './Scrollbar'
-
-import { updatePlayheadPosition, GUIDE_WIDTH } from './helpers'
+import {
+  updatePlayheadPosition,
+  GUIDE_WIDTH,
+  SCROLLBAR_CONTAINER_HEIGHT,
+} from './helpers'
 
 const HEIGHT = 12
 const WIDTH = 10
