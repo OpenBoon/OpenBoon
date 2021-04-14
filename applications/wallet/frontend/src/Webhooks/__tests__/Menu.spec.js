@@ -98,7 +98,7 @@ describe('<WebhooksMenu />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Select Delete
+    // Select Activate
     await act(async () => {
       component.root.findByProps({ children: 'Activate' }).props.onClick()
     })
