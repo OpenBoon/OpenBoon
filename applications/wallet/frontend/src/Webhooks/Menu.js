@@ -9,7 +9,7 @@ import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 import Modal from '../Modal'
 
-const WebhooksMenu = ({ projectId, webhookId, revalidate }) => {
+const WebhooksMenu = ({ projectId, webhook, revalidate }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -19,6 +19,31 @@ const WebhooksMenu = ({ projectId, webhookId, revalidate }) => {
         {({ onBlur, onClick }) => (
           <div>
             <ul>
+              <li>
+                <Button
+                  variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
+                  onClick={async () => {
+                    onClick()
+
+                    await fetcher(
+                      `/api/v1/projects/${projectId}/webhooks/${webhook.id}/`,
+                      {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                          ...webhook,
+                          active: !webhook.active,
+                        }),
+                      },
+                    )
+
+                    await revalidate()
+                  }}
+                >
+                  {webhook.active ? 'Deactivate' : 'Activate'}
+                </Button>
+              </li>
+
               <li>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
@@ -48,7 +73,7 @@ const WebhooksMenu = ({ projectId, webhookId, revalidate }) => {
             setIsDeleting(true)
 
             await fetcher(
-              `/api/v1/projects/${projectId}/webhooks/${webhookId}/`,
+              `/api/v1/projects/${projectId}/webhooks/${webhook.id}/`,
               { method: 'DELETE' },
             )
 
@@ -67,7 +92,12 @@ const WebhooksMenu = ({ projectId, webhookId, revalidate }) => {
 
 WebhooksMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
-  webhookId: PropTypes.string.isRequired,
+  webhook: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    triggers: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    active: PropTypes.bool.isRequired,
+  }).isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 

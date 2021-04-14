@@ -10,7 +10,8 @@ import WebhooksMenu from './Menu'
 
 const WebhooksRow = ({
   projectId,
-  webhook: { id: webhookId, url, triggers, active },
+  webhook,
+  webhook: { url, triggers, active },
   revalidate,
 }) => {
   return (
@@ -43,7 +44,7 @@ const WebhooksRow = ({
       <td>
         <WebhooksMenu
           projectId={projectId}
-          webhookId={webhookId}
+          webhook={webhook}
           revalidate={revalidate}
         />
       </td>
