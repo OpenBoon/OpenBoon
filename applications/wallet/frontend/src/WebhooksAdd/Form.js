@@ -12,12 +12,13 @@ import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import SectionSubTitle from '../SectionSubTitle'
 import FlashMessageErrors from '../FlashMessage/Errors'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 
-import { onSubmit } from './helpers'
+import { onSubmit, onTest } from './helpers'
 
 const INITIAL_STATE = {
   url: '',
@@ -27,6 +28,7 @@ const INITIAL_STATE = {
   active: false,
   isLoading: false,
   errors: {},
+  testSent: '',
 }
 
 const reducer = (state, action) => ({ ...state, ...action })
@@ -48,6 +50,12 @@ const WebhooksAddForm = () => {
         errors={state.errors}
         styles={{ marginTop: -spacing.base, paddingBottom: spacing.normal }}
       />
+
+      {!!state.testSent && (
+        <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+          &quot;{state.testSent}&quot; test has been sent.
+        </FlashMessage>
+      )}
 
       <SectionTitle>Add Webhook Endpoint URL</SectionTitle>
 
@@ -174,6 +182,14 @@ const WebhooksAddForm = () => {
                 <Button
                   variant={BUTTON_VARIANTS.SECONDARY_SMALL}
                   isDisabled={!state.url}
+                  onClick={() => {
+                    onTest({
+                      dispatch,
+                      projectId,
+                      trigger,
+                      state,
+                    })
+                  }}
                 >
                   Send Test
                 </Button>

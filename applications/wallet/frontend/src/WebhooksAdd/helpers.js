@@ -12,7 +12,7 @@ export const onSubmit = async ({
   projectId,
   state: { url, secretKey, triggers: t, active },
 }) => {
-  dispatch({ isLoading: true, errors: {} })
+  dispatch({ isLoading: true, testSent: '', errors: {} })
 
   try {
     const triggers = Object.keys(t).filter((key) => t[key])
@@ -35,5 +35,27 @@ export const onSubmit = async ({
     const errors = await parseResponse({ response })
 
     dispatch({ isLoading: false, errors })
+  }
+}
+
+export const onTest = async ({
+  dispatch,
+  projectId,
+  trigger,
+  state: { url, secretKey },
+}) => {
+  dispatch({ testSent: '', errors: {} })
+
+  try {
+    await fetcher(`/api/v1/projects/${projectId}/webhooks/test/`, {
+      method: 'PUT',
+      body: JSON.stringify({ url, secretKey, triggers: [trigger.name] }),
+    })
+
+    dispatch({ testSent: trigger.displayName, errors: {} })
+  } catch (response) {
+    const errors = await parseResponse({ response })
+
+    dispatch({ errors })
   }
 }
