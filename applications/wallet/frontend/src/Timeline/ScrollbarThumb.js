@@ -12,8 +12,6 @@ let origin
 let scrollbarOrigin
 let scrollbarScrollableWidth
 
-export const SCROLLBAR_CONTAINER_HEIGHT = 36
-
 const TimelineScrollbarThumb = ({ zoom, scrollbarRef, rulerRef }) => {
   const horizontalScroller = getScroller({ namespace: 'Timeline' })
 
