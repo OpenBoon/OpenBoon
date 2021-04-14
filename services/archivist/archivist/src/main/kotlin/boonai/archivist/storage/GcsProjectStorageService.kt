@@ -197,7 +197,7 @@ class GcsProjectStorageService constructor(
             // Check if everything was deleted
             if (!success) {
                 attempt += 1
-                logger.warn("Something went wrong o GCS deleting $path. Retry $attempt of $maxNumberOfAttempts")
+                logger.warn("Something went wrong on GCS deleting $path. Retry $attempt of $maxNumberOfAttempts")
             } else {
                 logger.info("Path completely deleted from GCS: $path")
                 break
