@@ -10,7 +10,6 @@ class ApiCallSerializer(serializers.ModelSerializer):
         validators = []
 
 
-
 class ReportSerializer(serializers.Serializer):
     project = serializers.UUIDField()
     service = serializers.CharField()
