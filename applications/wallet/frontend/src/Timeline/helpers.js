@@ -6,6 +6,8 @@ export const MINOR_TICK_HEIGHT = 12
 export const TICK_WIDTH = 2
 export const HALF_SECOND = 0.5
 export const MIN_TICK_SPACING = 32
+export const SCROLLBAR_CONTAINER_HEIGHT = 36
+export const SCROLLBAR_RESIZE_HANDLE_SIZE = 20
 
 export const COLORS = [
   colors.graph.magenta,
@@ -181,4 +183,16 @@ export const getNextScrollLeft = ({ videoRef, rulerRef, zoom, nextZoom }) => {
     : (currentTime / duration) * nextScrollWidth - playheadLeftOffset
 
   return nextScrollLeft
+}
+
+export const getScrollbarScrollableWidth = ({ scrollbarRef, zoom }) => {
+  const { width: scrollbarWidth = 0 } =
+    scrollbarRef.current?.getBoundingClientRect() || {}
+
+  const scrollbarTrackWidth = scrollbarWidth * (zoom / 100)
+
+  // the max number of pixels the scrollbar thumb can travel
+  const scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
+
+  return scrollbarScrollableWidth
 }
