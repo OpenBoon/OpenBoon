@@ -8,7 +8,7 @@ import boonai.archivist.domain.ProjectStorageCategory
 import boonai.archivist.domain.ProjectStorageSpec
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import java.util.UUID
