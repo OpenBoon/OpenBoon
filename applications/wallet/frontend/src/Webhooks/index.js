@@ -23,10 +23,13 @@ const Webhooks = () => {
 
       <PageTitle>Webhooks</PageTitle>
 
-      {action === 'delete-webhook-success' && (
+      {!!action && (
         <div css={{ display: 'flex', paddingTop: spacing.base }}>
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Webhook deleted.
+            Webhook
+            {action === 'add-webhook-success' && ' created.'}
+            {action === 'edit-webhook-success' && ' edited.'}
+            {action === 'delete-webhook-success' && ' deleted.'}
           </FlashMessage>
         </div>
       )}

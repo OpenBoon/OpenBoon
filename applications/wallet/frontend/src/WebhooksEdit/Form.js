@@ -2,6 +2,7 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { v4 as uuidv4 } from 'uuid'
+import Link from 'next/link'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
@@ -18,7 +19,9 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 
-import { onSubmit, onTest } from './helpers'
+import { onTest } from '../WebhooksAdd/helpers'
+
+import { onSubmit } from './helpers'
 
 const INITIAL_STATE = {
   url: '',
@@ -33,16 +36,24 @@ const INITIAL_STATE = {
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-const WebhooksAddForm = () => {
+const WebhooksEditForm = () => {
   const {
-    query: { projectId },
+    query: { projectId, webhookId },
   } = useRouter()
 
   const {
     data: { results: triggers },
   } = useSWR(`/api/v1/webhooks/triggers/`)
 
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+  const { data: webhook } = useSWR(
+    `/api/v1/projects/${projectId}/webhooks/${webhookId}/`,
+  )
+
+  const [state, dispatch] = useReducer(reducer, {
+    ...INITIAL_STATE,
+    ...webhook,
+    triggers: webhook.triggers.reduce((acc, t) => ({ ...acc, [t]: true }), {}),
+  })
 
   return (
     <Form>
@@ -217,17 +228,25 @@ const WebhooksAddForm = () => {
       </div>
 
       <ButtonGroup>
+        <Link
+          href="/[projectId]/webhooks"
+          as={`/${projectId}/webhooks`}
+          passHref
+        >
+          <Button variant={BUTTON_VARIANTS.SECONDARY}>Cancel</Button>
+        </Link>
+
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() => onSubmit({ dispatch, projectId, state })}
+          onClick={() => onSubmit({ dispatch, projectId, webhookId, state })}
           isDisabled={!state.url || !state.secretKey || state.isLoading}
         >
-          {state.isLoading ? 'Creating...' : 'Create Webhook'}
+          {state.isLoading ? 'Saving...' : 'Save Webhook'}
         </Button>
       </ButtonGroup>
     </Form>
   )
 }
 
-export default WebhooksAddForm
+export default WebhooksEditForm
