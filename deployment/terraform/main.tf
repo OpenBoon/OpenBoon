@@ -384,6 +384,7 @@ module "metrics" {
   superuser-last-name          = var.metrics-superuser-last-name
   django-log-level             = var.metrics-django-log-level
   log-requests                 = var.metrics-log-requests
+  redis-host                   = module.redis.ip-address
 }
 
 module "swivel" {
