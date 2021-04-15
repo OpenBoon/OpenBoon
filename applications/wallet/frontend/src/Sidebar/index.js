@@ -7,12 +7,14 @@ import { colors, spacing, zIndex, constants, typography } from '../Styles'
 import userShape from '../User/shape'
 
 import BetaBadge from '../BetaBadge'
+import Feature, { ENVS } from '../Feature'
 
 import DashboardSvg from '../Icons/dashboard.svg'
 import DataSourcesSvg from '../Icons/datasources.svg'
 import JobQueueSvg from '../Icons/jobQueue.svg'
 import ModelsSvg from '../Icons/models.svg'
 import VisualizerSvg from '../Icons/visualizer.svg'
+import WebhooksSvg from '../Icons/webhooks.svg'
 import KeySvg from '../Icons/key.svg'
 import UsersSvg from '../Icons/users.svg'
 import GearSvg from '../Icons/gear.svg'
@@ -100,6 +102,13 @@ const Sidebar = forwardRef(
               <VisualizerSvg height={constants.icons.regular} />
               Visualizer
             </SidebarLink>
+
+            <Feature flag="webhooks" envs={[ENVS.DEV]}>
+              <SidebarLink projectId={projectId} href="/[projectId]/webhooks">
+                <WebhooksSvg height={constants.icons.regular} />
+                Webhooks
+              </SidebarLink>
+            </Feature>
 
             <SidebarLink projectId={projectId} href="/[projectId]/api-keys">
               <KeySvg height={constants.icons.regular} />
