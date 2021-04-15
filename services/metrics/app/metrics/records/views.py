@@ -1,16 +1,17 @@
 from dateparser import parse as parse_date
 from django.db.models import Sum, Q, Value as V
 from django.db.models.functions import Coalesce
-from rest_framework import viewsets, status
+from rest_framework import viewsets
 from rest_framework.decorators import action, renderer_classes
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
 from metrics.records.models import ApiCall
-from metrics.records.serializers import ApiCallSerializer, ReportSerializer, TieredUsageSerializer
+from metrics.records.serializers import ApiCallSerializer, ReportSerializer, \
+    TieredUsageSerializer
 from metrics.records.tasks import upsert_api_call
-from .renderers import ReportCSVRenderer
 from .mixins import CSVFileMixin
+from .renderers import ReportCSVRenderer
 
 
 class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
