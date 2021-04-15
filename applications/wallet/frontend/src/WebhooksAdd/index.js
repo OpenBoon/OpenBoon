@@ -10,7 +10,7 @@ const WebhooksAdd = () => {
   return (
     <>
       <Head>
-        <title>Create Webhooks</title>
+        <title>Create Webhook</title>
       </Head>
 
       <PageTitle>Webhooks</PageTitle>
