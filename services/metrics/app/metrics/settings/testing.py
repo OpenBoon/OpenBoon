@@ -1,7 +1,7 @@
 import os
 from metrics.settings import *  # noqa
 
-
+TESTING = True
 # Uses the postgres database run by the zmlp docker compose env.
 DATABASES = {
     'default': {

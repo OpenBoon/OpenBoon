@@ -16,4 +16,7 @@ python3 ./app/manage.py migrate --no-input
 gunicorn -c python:gunicornconfig metrics.wsgi &
 
 # Start nginx gateway server
-nginx -g "daemon off;"
+nginx -g "daemon off;" &
+
+# Start the celery worker for processing DB inserts.
+celery -A metrics.records.tasks worker --loglevel=INFO
