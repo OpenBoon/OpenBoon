@@ -28,10 +28,10 @@ class WebHookTrigger(Enum):
     Different types of WebHook Triggers.
     """
 
-    ASSET_ANALYZED = 0
+    AssetAnalyzed = 0
     """Emitted the first time an asset is Analyzed"""
 
-    ASSET_MODIFIED = 1
+    AssetModified = 1
     """Emitted if an Asset is reanalyzed or manually edited via a custom field."""
 
 
