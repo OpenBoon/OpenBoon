@@ -23,6 +23,8 @@ requests = "*"
 pyopenssl = "*"
 pyjwt = ">=2.0"
 backoff = "*"
+celery = {extras = ["redis"], version = "*"}
+sentry-sdk = "*"
 
 [requires]
 python_version = "3.7"
