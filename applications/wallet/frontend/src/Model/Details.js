@@ -262,7 +262,7 @@ const ModelDetails = () => {
           </ButtonGroup>
         </div>
 
-        <Feature flag="ModelMatrixShortcut" envs={[ENVS.QA]}>
+        <Feature flag="model-matrix-shortcut-feature-flag" envs={[ENVS.QA]}>
           <ModelMatrixLink projectId={projectId} modelId={modelId} />
         </Feature>
       </div>

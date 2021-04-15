@@ -103,7 +103,7 @@ const Sidebar = forwardRef(
               Visualizer
             </SidebarLink>
 
-            <Feature flag="webhooks" envs={[ENVS.DEV]}>
+            <Feature flag="webhooks-feature-flag" envs={[ENVS.DEV]}>
               <SidebarLink projectId={projectId} href="/[projectId]/webhooks">
                 <WebhooksSvg height={constants.icons.regular} />
                 Webhooks

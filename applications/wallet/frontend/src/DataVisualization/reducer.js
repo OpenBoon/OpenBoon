@@ -25,7 +25,7 @@ export const TYPES = [
     type: 'histogram',
     icon: <HistogramSvg height={constants.icons.moderate} />,
     legend: 'Shows the distribution of assets within value groups.',
-    flag: 'histogram',
+    flag: 'histogram-feature-flag',
     envs: [ENVS.QA],
   },
 ]
