@@ -3,4 +3,4 @@ from django.contrib import admin
 from webhooks.models import Trigger
 
 
-admin.register(Trigger)
+admin.site.register(Trigger)
