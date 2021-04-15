@@ -23,17 +23,15 @@ class TestAPICallsViewSet:
                 'image_count': 1,
                 'video_minutes': 0.0}
         response = api_client.post(reverse('apicalls-list'), body)
-        assert response.status_code == 200
-        content = response.json()
-        assert content['id'] == 1
-        created_date = content['created_date']
-        modified_date = content['modified_date']
+        assert response.status_code == 201
+        first_api_call = ApiCall.objects.first()
 
         # Make sure upserting works.
         response = api_client.post(reverse('apicalls-list'), body)
-        assert response.status_code == 200
-        assert response.json()['created_date'] == created_date
-        assert response.json()['modified_date'] > modified_date
+        assert response.status_code == 201
+        second_api_call = ApiCall.objects.get(id=first_api_call.id)
+        assert first_api_call.created_date == second_api_call.created_date
+        assert first_api_call.modified_date < second_api_call.modified_date
 
     def test_get_single_record(self, api_client, single_record):
         url = reverse('apicalls-detail', kwargs={'pk': single_record.id})
