@@ -10,6 +10,7 @@ import {
 export const onSubmit = async ({
   dispatch,
   projectId,
+  webhookId,
   state: { url, secretKey, triggers: t, active },
 }) => {
   dispatch({ isLoading: true, testSent: '', errors: {} })
@@ -17,8 +18,8 @@ export const onSubmit = async ({
   try {
     const triggers = Object.keys(t).filter((key) => t[key])
 
-    await fetcher(`/api/v1/projects/${projectId}/webhooks/`, {
-      method: 'POST',
+    await fetcher(`/api/v1/projects/${projectId}/webhooks/${webhookId}/`, {
+      method: 'PUT',
       body: JSON.stringify({ url, secretKey, triggers, active }),
     })
 
@@ -26,8 +27,12 @@ export const onSubmit = async ({
       key: `/api/v1/projects/${projectId}/webhooks/`,
     })
 
+    await revalidate({
+      key: `/api/v1/projects/${projectId}/webhooks/${webhookId}/`,
+    })
+
     const queryString = getQueryString({
-      action: 'add-webhook-success',
+      action: 'edit-webhook-success',
     })
 
     Router.push(`/[projectId]/webhooks${queryString}`, `/${projectId}/webhooks`)
@@ -35,26 +40,5 @@ export const onSubmit = async ({
     const errors = await parseResponse({ response })
 
     dispatch({ isLoading: false, errors })
-  }
-}
-
-export const onTest = async ({
-  dispatch,
-  trigger,
-  state: { url, secretKey },
-}) => {
-  dispatch({ testSent: '', errors: {} })
-
-  try {
-    await fetcher(`/api/v1/webhooks/test/`, {
-      method: 'POST',
-      body: JSON.stringify({ url, secretKey, triggers: [trigger.name] }),
-    })
-
-    dispatch({ testSent: trigger.displayName, errors: {} })
-  } catch (response) {
-    const errors = await parseResponse({ response })
-
-    dispatch({ errors })
   }
 }

@@ -1,22 +1,38 @@
 import PropTypes from 'prop-types'
+import Link from 'next/link'
 
 import { colors, constants } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 
 import Pills from '../Pills'
+import { onRowClickRouterPush } from '../Table/helpers'
 
 import WebhooksMenu from './Menu'
 
 const WebhooksRow = ({
   projectId,
   webhook,
-  webhook: { url, triggers, active },
+  webhook: { id: webhookId, url, triggers, active },
   revalidate,
 }) => {
   return (
-    <tr>
-      <td>{url}</td>
+    <tr
+      css={{ cursor: 'pointer' }}
+      onClick={onRowClickRouterPush(
+        '/[projectId]/webhooks/[webhookId]/edit',
+        `/${projectId}/webhooks/${webhookId}/edit`,
+      )}
+    >
+      <td>
+        <Link
+          href="/[projectId]/webhooks/[webhookId]/edit"
+          as={`/${projectId}/webhooks/${webhookId}/edit`}
+          passHref
+        >
+          <a css={{ ':hover': { textDecoration: 'none' } }}>{url}</a>
+        </Link>
+      </td>
 
       <td>
         <Pills>
