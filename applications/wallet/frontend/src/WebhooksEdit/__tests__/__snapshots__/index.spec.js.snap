@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<WebhooksAdd /> should render properly 1`] = `
+exports[`<WebhooksEdit /> should render properly 1`] = `
 Array [
   .emotion-0 {
   font-size: 18px;
@@ -126,6 +126,18 @@ Array [
           onMouseEnter={[Function]}
         >
           Create Webhook
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/webhooks/undefined/edit"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Edit Webhook
         </a>
       </li>
     </ul>
@@ -420,8 +432,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: #3A5DFF;
-  border: 2px solid #3A5DFF;
+  background-color: transparent;
+  border: 2px solid #808080;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -450,7 +462,7 @@ Array [
 .emotion-33 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 0;
 }
 
 .emotion-34 {
@@ -536,8 +548,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #808080;
+  background-color: #3A5DFF;
+  border: 2px solid #3A5DFF;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -545,7 +557,7 @@ Array [
 .emotion-45 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 0;
+  opacity: 100;
 }
 
 .emotion-53 {
@@ -619,18 +631,69 @@ Array [
 .emotion-62:hover,
 .emotion-62:visited,
 .emotion-62 .noop {
-  background-color: #3A5DFF;
+  background-color: #808080;
 }
 
 .emotion-62:hover,
 .emotion-62 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #6088FE;
+  background-color: #b3b3b3;
 }
 
 .emotion-62[aria-disabled=true],
 .emotion-62 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-63 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-63,
+.emotion-63:hover,
+.emotion-63:visited,
+.emotion-63 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-63:hover,
+.emotion-63 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-63[aria-disabled=true],
+.emotion-63 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -799,7 +862,7 @@ Array [
             >
               <input
                 className="emotion-31"
-                defaultChecked={true}
+                defaultChecked={false}
                 onClick={[Function]}
                 type="checkbox"
                 value="ASSET_ANALYZED"
@@ -856,7 +919,7 @@ Array [
             >
               <input
                 className="emotion-43"
-                defaultChecked={false}
+                defaultChecked={true}
                 onClick={[Function]}
                 type="checkbox"
                 value="ASSET_MODIFIED"
@@ -921,7 +984,7 @@ Array [
         >
           <input
             className="emotion-31"
-            defaultChecked={true}
+            defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="active"
@@ -950,19 +1013,27 @@ Array [
     <div
       className="emotion-61"
     >
-      <button
+      <a
         className="emotion-62"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/webhooks"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Cancel
+      </a>
+      <button
+        className="emotion-63"
         onClick={[Function]}
         type="submit"
       >
-        Create Webhook
+        Save Webhook
       </button>
     </div>
   </form>,
 ]
 `;
 
-exports[`<WebhooksAdd /> should render properly 2`] = `
+exports[`<WebhooksEdit /> should render properly 2`] = `
 Array [
   .emotion-0 {
   font-size: 18px;
@@ -1088,6 +1159,18 @@ Array [
           onMouseEnter={[Function]}
         >
           Create Webhook
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/webhooks/undefined/edit"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Edit Webhook
         </a>
       </li>
     </ul>
@@ -1373,8 +1456,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: #3A5DFF;
-  border: 2px solid #3A5DFF;
+  background-color: transparent;
+  border: 2px solid #808080;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -1403,7 +1486,7 @@ Array [
 .emotion-32 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 0;
 }
 
 .emotion-33 {
@@ -1489,8 +1572,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #808080;
+  background-color: #3A5DFF;
+  border: 2px solid #3A5DFF;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -1498,7 +1581,7 @@ Array [
 .emotion-44 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 0;
+  opacity: 100;
 }
 
 .emotion-52 {
@@ -1572,18 +1655,69 @@ Array [
 .emotion-61:hover,
 .emotion-61:visited,
 .emotion-61 .noop {
-  background-color: #3A5DFF;
+  background-color: #808080;
 }
 
 .emotion-61:hover,
 .emotion-61 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #6088FE;
+  background-color: #b3b3b3;
 }
 
 .emotion-61[aria-disabled=true],
 .emotion-61 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-62 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-62,
+.emotion-62:hover,
+.emotion-62:visited,
+.emotion-62 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-62:hover,
+.emotion-62 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-62[aria-disabled=true],
+.emotion-62 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1750,7 +1884,7 @@ Array [
             >
               <input
                 className="emotion-30"
-                defaultChecked={true}
+                defaultChecked={false}
                 onClick={[Function]}
                 type="checkbox"
                 value="ASSET_ANALYZED"
@@ -1807,7 +1941,7 @@ Array [
             >
               <input
                 className="emotion-42"
-                defaultChecked={false}
+                defaultChecked={true}
                 onClick={[Function]}
                 type="checkbox"
                 value="ASSET_MODIFIED"
@@ -1872,7 +2006,7 @@ Array [
         >
           <input
             className="emotion-30"
-            defaultChecked={true}
+            defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="active"
@@ -1901,19 +2035,27 @@ Array [
     <div
       className="emotion-60"
     >
-      <button
+      <a
         className="emotion-61"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/webhooks"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Cancel
+      </a>
+      <button
+        className="emotion-62"
         onClick={[Function]}
         type="submit"
       >
-        Create Webhook
+        Save Webhook
       </button>
     </div>
   </form>,
 ]
 `;
 
-exports[`<WebhooksAdd /> should render properly 3`] = `
+exports[`<WebhooksEdit /> should render properly 3`] = `
 Array [
   .emotion-0 {
   font-size: 18px;
@@ -2039,6 +2181,18 @@ Array [
           onMouseEnter={[Function]}
         >
           Create Webhook
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/webhooks/undefined/edit"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Edit Webhook
         </a>
       </li>
     </ul>
@@ -2319,8 +2473,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: #3A5DFF;
-  border: 2px solid #3A5DFF;
+  background-color: transparent;
+  border: 2px solid #808080;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -2349,7 +2503,7 @@ Array [
 .emotion-31 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 0;
 }
 
 .emotion-32 {
@@ -2435,8 +2589,8 @@ Array [
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #808080;
+  background-color: #3A5DFF;
+  border: 2px solid #3A5DFF;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -2444,7 +2598,7 @@ Array [
 .emotion-43 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 0;
+  opacity: 100;
 }
 
 .emotion-51 {
@@ -2518,18 +2672,69 @@ Array [
 .emotion-60:hover,
 .emotion-60:visited,
 .emotion-60 .noop {
-  background-color: #3A5DFF;
+  background-color: #808080;
 }
 
 .emotion-60:hover,
 .emotion-60 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #6088FE;
+  background-color: #b3b3b3;
 }
 
 .emotion-60[aria-disabled=true],
 .emotion-60 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-61 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-61,
+.emotion-61:hover,
+.emotion-61:visited,
+.emotion-61 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-61:hover,
+.emotion-61 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-61[aria-disabled=true],
+.emotion-61 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -2684,7 +2889,7 @@ Array [
             >
               <input
                 className="emotion-29"
-                defaultChecked={true}
+                defaultChecked={false}
                 onClick={[Function]}
                 type="checkbox"
                 value="ASSET_ANALYZED"
@@ -2741,7 +2946,7 @@ Array [
             >
               <input
                 className="emotion-41"
-                defaultChecked={false}
+                defaultChecked={true}
                 onClick={[Function]}
                 type="checkbox"
                 value="ASSET_MODIFIED"
@@ -2806,7 +3011,7 @@ Array [
         >
           <input
             className="emotion-29"
-            defaultChecked={true}
+            defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="active"
@@ -2835,12 +3040,20 @@ Array [
     <div
       className="emotion-59"
     >
-      <button
+      <a
         className="emotion-60"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/webhooks"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Cancel
+      </a>
+      <button
+        className="emotion-61"
         onClick={[Function]}
         type="submit"
       >
-        Create Webhook
+        Save Webhook
       </button>
     </div>
   </form>,

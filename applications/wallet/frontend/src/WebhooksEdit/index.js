@@ -4,13 +4,13 @@ import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 
-import WebhooksAddForm from './Form'
+import WebhooksEditForm from './Form'
 
-const WebhooksAdd = () => {
+const WebhooksEdit = () => {
   return (
     <>
       <Head>
-        <title>Create Webhooks</title>
+        <title>Edit Webhook</title>
       </Head>
 
       <PageTitle>Webhooks</PageTitle>
@@ -19,14 +19,18 @@ const WebhooksAdd = () => {
         tabs={[
           { title: 'View all', href: '/[projectId]/webhooks' },
           { title: 'Create Webhook', href: '/[projectId]/webhooks/add' },
+          {
+            title: 'Edit Webhook',
+            href: '/[projectId]/webhooks/[webhookId]/edit',
+          },
         ]}
       />
 
       <SuspenseBoundary role={ROLES.Webhooks}>
-        <WebhooksAddForm />
+        <WebhooksEditForm />
       </SuspenseBoundary>
     </>
   )
 }
 
-export default WebhooksAdd
+export default WebhooksEdit
