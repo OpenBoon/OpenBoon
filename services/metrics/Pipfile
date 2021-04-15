@@ -23,6 +23,9 @@ requests = "*"
 pyopenssl = "*"
 pyjwt = ">=2.0"
 backoff = "*"
+django-postgres-extra = "*"
+importlib-metadata = "*"
+typing-extensions = "*"
 
 [requires]
 python_version = "3.7"
