@@ -20,6 +20,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 
 VERSION = '0.1.0'
 ENVIRONMENT = os.environ.get('ENVIRONMENT', 'localdev')
+TESTING = False
 
 sentry_sdk.init(
     dsn="https://8cfff0e24f534ce2b470301f7029ee6d@o280392.ingest.sentry.io/5721699",
