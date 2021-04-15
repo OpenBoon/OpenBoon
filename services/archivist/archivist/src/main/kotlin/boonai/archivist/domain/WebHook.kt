@@ -17,7 +17,9 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 enum class TriggerType {
+    @ApiModelProperty("Emitted on the first time the Asset is Analyzed")
     AssetAnalyzed,
+    @ApiModelProperty("Emitted on manual editing or reprocessing of Asset")
     AssetModified
 }
 
@@ -70,6 +72,7 @@ class WebHookPatch(
     @ApiModelProperty("The triggers the webhook should fire on.")
     val triggers: Array<TriggerType>? = null,
 
+    @ApiModelProperty("Determines if the hook is enabled or not.")
     val active: Boolean? = null
 )
 
