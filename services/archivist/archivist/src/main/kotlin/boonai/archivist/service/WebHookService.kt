@@ -41,6 +41,9 @@ class WebHookServiceImpl constructor(
         val time = System.currentTimeMillis()
         val actor = getZmlpActor().toString()
         spec.triggers.sortBy { it.ordinal }
+        if (spec.triggers.isEmpty()) {
+            throw InvalidRequestException("You must have at least 1 trigger.")
+        }
         validateUrl(spec.url)
 
         val hook = WebHook(

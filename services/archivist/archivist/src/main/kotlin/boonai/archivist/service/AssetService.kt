@@ -577,11 +577,11 @@ class AssetServiceImpl : AssetService {
             for (assetId in indexedIds) {
                 if (assetId in stateChangedIds) {
                     webHookPublisher.handleAssetTriggers(
-                        Asset(assetId, docs.getValue(assetId)), TriggerType.ASSET_ANALYZED
+                        Asset(assetId, docs.getValue(assetId)), TriggerType.AssetAnalyzed
                     )
                 } else {
                     webHookPublisher.handleAssetTriggers(
-                        Asset(assetId, docs.getValue(assetId)), TriggerType.ASSET_MODIFIED
+                        Asset(assetId, docs.getValue(assetId)), TriggerType.AssetModified
                     )
                 }
             }

@@ -1,10 +1,12 @@
 package boonai.archivist.repository
 
+import boonai.archivist.domain.InvalidRequestException
 import boonai.archivist.domain.TriggerType
 import boonai.archivist.domain.WebHook
 import boonai.archivist.domain.WebHookFilter
 import boonai.archivist.domain.WebHookUpdate
 import boonai.common.service.security.getProjectId
+import com.google.common.base.Splitter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -51,6 +53,9 @@ class CustomWebHookDaoImpl : CustomWebHookDao, AbstractDao() {
     }
 
     override fun update(id: UUID, spec: WebHookUpdate): Boolean {
+        if (spec.triggers.isEmpty()) {
+            throw InvalidRequestException("Your webhook must have triggers")
+        }
         val triggers = spec.triggers.map { it.ordinal }.sortedBy { it }.joinToString(",")
         val count = jdbc.update(
             "UPDATE webhook SET url=?, secret_key=?, " +
@@ -66,12 +71,14 @@ class CustomWebHookDaoImpl : CustomWebHookDao, AbstractDao() {
         const val COUNT = "SELECT COUNT(1) FROM webhook"
 
         private val MAPPER = RowMapper { rs, _ ->
+            val triggers = Splitter.on(',').trimResults().omitEmptyStrings().split(rs.getString("triggers"))
+
             WebHook(
                 rs.getObject("pk_webhook") as UUID,
                 rs.getObject("pk_project") as UUID,
                 rs.getString("url"),
                 rs.getString("secret_key"),
-                rs.getString("triggers").split(",").map { TriggerType.values()[it.toInt()] }.toTypedArray(),
+                triggers.map { TriggerType.values()[it.toInt()] }.toTypedArray(),
                 rs.getBoolean("active"),
                 rs.getLong("time_created"),
                 rs.getLong("time_modified"),
