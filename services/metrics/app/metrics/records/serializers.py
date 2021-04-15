@@ -7,6 +7,7 @@ class ApiCallSerializer(serializers.ModelSerializer):
         model = ApiCall
         fields = ['id', 'project', 'service', 'asset_id', 'asset_path', 'image_count',
                   'video_minutes', 'created_date', 'modified_date']
+        validators = []
 
 
 class ReportSerializer(serializers.Serializer):

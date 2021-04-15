@@ -218,18 +218,18 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.11.981</version>
+            <version>1.11.999</version>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sqs</artifactId>
-            <version>1.11.981</version>
+            <version>1.11.999</version>
         </dependency>
 
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sns</artifactId>
-            <version>1.11.981</version>
+            <version>1.11.999</version>
         </dependency>
         <dependency>
             <groupId>io.minio</groupId>
@@ -300,13 +300,13 @@
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-pubsub</artifactId>
-            <version>1.112.0</version>
+            <version>1.112.1</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-automl</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.1</version>
         </dependency>
 
         <dependency>
@@ -337,7 +337,7 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-words</artifactId>
-            <version>21.3</version>
+            <version>21.4</version>
             <classifier>jdk17</classifier>
         </dependency>
 
@@ -350,7 +350,7 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-diagram</artifactId>
-            <version>21.3</version>
+            <version>21.4</version>
             <classifier>jdk16</classifier>
         </dependency>
 

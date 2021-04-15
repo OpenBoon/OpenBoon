@@ -1,7 +1,8 @@
 from dateparser import parse as parse_date
 from django.db.models import Sum, Q, Value as V
 from django.db.models.functions import Coalesce
-from rest_framework import viewsets
+from psqlextra.query import ConflictAction
+from rest_framework import viewsets, status
 from rest_framework.decorators import action, renderer_classes
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
@@ -54,6 +55,16 @@ class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
             return f'billing_report_{after}_to_{before}.csv'
         else:
             return self.filename
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        upserter = ApiCall.objects.on_conflict(['service', 'asset_id', 'project'],
+                                               ConflictAction.UPDATE)
+        api_call = upserter.insert_and_get(**serializer.data)
+        serializer = self.get_serializer(api_call)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @action(detail=False, methods=['get'],
             renderer_classes=api_settings.DEFAULT_RENDERER_CLASSES+[ReportCSVRenderer])

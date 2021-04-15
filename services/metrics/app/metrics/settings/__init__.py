@@ -61,7 +61,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.postgres',
     'django.contrib.staticfiles',
+    'psqlextra',
     'rest_framework',
     'health_check',
     'health_check.db'
@@ -107,7 +109,7 @@ WSGI_APPLICATION = 'metrics.wsgi.application'
 # Postgres is required for the type of aggregations that we run
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'psqlextra.backend',
         'NAME': 'metrics',
         'USER': os.environ.get('PG_DB_USER', 'metrics'),
         'PASSWORD': os.environ.get('PG_DB_PASSWORD', 'admin'),
