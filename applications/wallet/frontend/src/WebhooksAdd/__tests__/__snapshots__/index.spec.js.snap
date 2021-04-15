@@ -1,0 +1,2848 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<WebhooksAdd /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Webhooks
+  </h2>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-3 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #3A5DFF;
+}
+
+.emotion-5 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-0"
+  >
+    <ul
+      className="emotion-1"
+    >
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/webhooks"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-5"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/webhooks/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create Webhook
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: -8px;
+  padding-bottom: 16px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-3 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-3 a:hover {
+  color: #3A5DFF;
+}
+
+.emotion-4 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+}
+
+.emotion-6 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-7 {
+  color: #c92300;
+}
+
+.emotion-8 {
+  position: relative;
+}
+
+.emotion-9 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-9:focus,
+.emotion-9 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-9:hover,
+.emotion-9 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-10 {
+  padding-top: 8px;
+}
+
+.emotion-12 {
+  margin: 0;
+  padding-top: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-13 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-14 {
+  padding-top: 8px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-19 {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-20 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #b3b3b3;
+  background-color: transparent;
+  outline-offset: -2px;
+}
+
+.emotion-20:hover {
+  color: #3A5DFF;
+}
+
+.emotion-22 {
+  position: absolute;
+  left: 100%;
+  padding-left: 8px;
+  padding-top: 8px;
+}
+
+.emotion-23 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-23,
+.emotion-23:hover,
+.emotion-23:visited,
+.emotion-23 .noop {
+  color: #6088FE;
+}
+
+.emotion-23:hover,
+.emotion-23 .noop {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.emotion-26 {
+  margin-right: -84px;
+  padding-top: 16px;
+  padding-bottom: 32px;
+}
+
+.emotion-27 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+  padding-top: 16px;
+}
+
+.emotion-28 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-29 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-left: 0;
+  padding-bottom: 16px;
+}
+
+.emotion-30 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-31 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: #3A5DFF;
+  border: 2px solid #3A5DFF;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-32 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+}
+
+.emotion-33 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+}
+
+.emotion-34 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 12px;
+}
+
+.emotion-35 {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 700;
+}
+
+.emotion-36 {
+  padding-left: 0;
+  color: #b3b3b3;
+}
+
+.emotion-37 {
+  padding-left: 16px;
+}
+
+.emotion-38 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-38,
+.emotion-38:hover,
+.emotion-38:visited,
+.emotion-38 .noop {
+  background-color: #808080;
+}
+
+.emotion-38:hover,
+.emotion-38 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-38[aria-disabled=true],
+.emotion-38 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-43 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-45 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-53 {
+  padding-top: 16px;
+}
+
+.emotion-53 span {
+  font-weight: 400;
+}
+
+.emotion-54 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 0;
+  padding-bottom: 16px;
+}
+
+.emotion-61 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-61 button,
+.emotion-61 a {
+  margin-right: 16px;
+}
+
+.emotion-62 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-62,
+.emotion-62:hover,
+.emotion-62:visited,
+.emotion-62 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-62:hover,
+.emotion-62 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-62[aria-disabled=true],
+.emotion-62 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-2"
+      >
+        <svg
+          color="#c92300"
+          data-file-name="warning.svg"
+          height={20}
+        />
+        <div
+          className="emotion-3"
+          role="alert"
+        >
+          Something went wrong.
+        </div>
+      </div>
+    </div>
+    <h3
+      className="emotion-4"
+    >
+      Add Webhook Endpoint URL
+    </h3>
+    <div
+      className="emotion-5"
+    >
+      <label
+        className="emotion-6"
+        htmlFor="url"
+      >
+        Payload URL
+        <span
+          className="emotion-7"
+        >
+           *
+        </span>
+      </label>
+      <div
+        className="emotion-8"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-9"
+          disabled={false}
+          id="url"
+          name="url"
+          onChange={[Function]}
+          type="text"
+          value="127.0.0.1"
+        />
+      </div>
+      <div
+        className="emotion-10"
+      >
+         
+      </div>
+    </div>
+    <h3
+      className="emotion-4"
+    >
+      Create Secret Token
+    </h3>
+    <p
+      className="emotion-12"
+    >
+      You can add your own token or we can generate one for you. You can modify this token at anytime.
+    </p>
+    <div
+      className="emotion-13"
+    >
+      <div
+        className="emotion-14"
+      >
+        <label
+          className="emotion-6"
+          htmlFor="secretKey"
+        >
+          Secret Token
+          <span
+            className="emotion-7"
+          >
+             *
+          </span>
+        </label>
+        <div
+          className="emotion-8"
+        >
+          <input
+            className="emotion-9"
+            disabled={false}
+            id="secretKey"
+            name="secretKey"
+            onChange={[Function]}
+            type="text"
+            value="super-secret-token"
+          />
+          <div
+            className="emotion-19"
+          >
+            <button
+              aria-label="Hide Token"
+              className="emotion-20"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                data-file-name="visible.svg"
+                height={20}
+              />
+            </button>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-22"
+      >
+        <button
+          className="emotion-23"
+          onClick={[Function]}
+          type="button"
+        >
+          Generate Token
+        </button>
+      </div>
+    </div>
+    <h3
+      className="emotion-4"
+    >
+      Triggers
+    </h3>
+    <p
+      className="emotion-12"
+    >
+      You can test the triggers or modify them at any time. A trigger does not have to be active to test it.
+    </p>
+    <div
+      className="emotion-26"
+    >
+      <div
+        className="emotion-27"
+      >
+        <div
+          className="emotion-28"
+        >
+          <label
+            className="emotion-29"
+          >
+            <div
+              className="emotion-30"
+            >
+              <input
+                className="emotion-31"
+                defaultChecked={true}
+                onClick={[Function]}
+                type="checkbox"
+                value="ASSET_ANALYZED"
+              />
+              <div
+                className="emotion-32"
+              >
+                <svg
+                  className="emotion-33"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </div>
+            <div
+              className="emotion-34"
+            >
+              <span
+                className="emotion-35"
+              >
+                Asset Analyzed
+              </span>
+              <span
+                className="emotion-36"
+              >
+                Asset is added to the Boon AI with initial analysis.
+              </span>
+            </div>
+          </label>
+        </div>
+        <div
+          className="emotion-37"
+        >
+          <button
+            className="emotion-38"
+            onClick={[Function]}
+            type="button"
+          >
+            Send Test
+          </button>
+        </div>
+      </div>
+      <div
+        className="emotion-27"
+      >
+        <div
+          className="emotion-28"
+        >
+          <label
+            className="emotion-29"
+          >
+            <div
+              className="emotion-30"
+            >
+              <input
+                className="emotion-43"
+                defaultChecked={false}
+                onClick={[Function]}
+                type="checkbox"
+                value="ASSET_MODIFIED"
+              />
+              <div
+                className="emotion-32"
+              >
+                <svg
+                  className="emotion-45"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </div>
+            <div
+              className="emotion-34"
+            >
+              <span
+                className="emotion-35"
+              >
+                Asset Modified
+              </span>
+              <span
+                className="emotion-36"
+              >
+                Asset is modified through additional analysis or manual editing.
+              </span>
+            </div>
+          </label>
+        </div>
+        <div
+          className="emotion-37"
+        >
+          <button
+            className="emotion-38"
+            onClick={[Function]}
+            type="button"
+          >
+            Send Test
+          </button>
+        </div>
+      </div>
+    </div>
+    <h3
+      className="emotion-4"
+    >
+      Activate Webhook
+    </h3>
+    <p
+      className="emotion-12"
+    >
+      You can modify activation at anytime.
+    </p>
+    <div
+      className="emotion-53"
+    >
+      <label
+        className="emotion-54"
+      >
+        <div
+          className="emotion-30"
+        >
+          <input
+            className="emotion-31"
+            defaultChecked={true}
+            onClick={[Function]}
+            type="checkbox"
+            value="active"
+          />
+          <div
+            className="emotion-32"
+          >
+            <svg
+              className="emotion-33"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-34"
+        >
+          <span
+            className="emotion-35"
+          >
+            Activate Webhook
+          </span>
+        </div>
+      </label>
+    </div>
+    <div
+      className="emotion-61"
+    >
+      <button
+        className="emotion-62"
+        onClick={[Function]}
+        type="submit"
+      >
+        Create Webhook
+      </button>
+    </div>
+  </form>,
+]
+`;
+
+exports[`<WebhooksAdd /> should render properly 2`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Webhooks
+  </h2>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-3 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #3A5DFF;
+}
+
+.emotion-5 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-0"
+  >
+    <ul
+      className="emotion-1"
+    >
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/webhooks"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-5"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/webhooks/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create Webhook
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-2 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-2 a:hover {
+  color: #3A5DFF;
+}
+
+.emotion-3 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-4 {
+  padding-top: 8px;
+}
+
+.emotion-5 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-6 {
+  color: #c92300;
+}
+
+.emotion-7 {
+  position: relative;
+}
+
+.emotion-8 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-8:focus,
+.emotion-8 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-8:hover,
+.emotion-8 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-9 {
+  padding-top: 8px;
+}
+
+.emotion-11 {
+  margin: 0;
+  padding-top: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-12 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-13 {
+  padding-top: 8px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-18 {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-19 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #b3b3b3;
+  background-color: transparent;
+  outline-offset: -2px;
+}
+
+.emotion-19:hover {
+  color: #3A5DFF;
+}
+
+.emotion-21 {
+  position: absolute;
+  left: 100%;
+  padding-left: 8px;
+  padding-top: 8px;
+}
+
+.emotion-22 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-22,
+.emotion-22:hover,
+.emotion-22:visited,
+.emotion-22 .noop {
+  color: #6088FE;
+}
+
+.emotion-22:hover,
+.emotion-22 .noop {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.emotion-25 {
+  margin-right: -84px;
+  padding-top: 16px;
+  padding-bottom: 32px;
+}
+
+.emotion-26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+  padding-top: 16px;
+}
+
+.emotion-27 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-28 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-left: 0;
+  padding-bottom: 16px;
+}
+
+.emotion-29 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-30 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: #3A5DFF;
+  border: 2px solid #3A5DFF;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-31 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+}
+
+.emotion-32 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+}
+
+.emotion-33 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 12px;
+}
+
+.emotion-34 {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 700;
+}
+
+.emotion-35 {
+  padding-left: 0;
+  color: #b3b3b3;
+}
+
+.emotion-36 {
+  padding-left: 16px;
+}
+
+.emotion-37 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-37,
+.emotion-37:hover,
+.emotion-37:visited,
+.emotion-37 .noop {
+  background-color: #808080;
+}
+
+.emotion-37:hover,
+.emotion-37 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-37[aria-disabled=true],
+.emotion-37 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-42 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-44 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-52 {
+  padding-top: 16px;
+}
+
+.emotion-52 span {
+  font-weight: 400;
+}
+
+.emotion-53 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 0;
+  padding-bottom: 16px;
+}
+
+.emotion-60 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-60 button,
+.emotion-60 a {
+  margin-right: 16px;
+}
+
+.emotion-61 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-61,
+.emotion-61:hover,
+.emotion-61:visited,
+.emotion-61 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-61:hover,
+.emotion-61 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-61[aria-disabled=true],
+.emotion-61 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-2"
+        role="alert"
+      >
+        "
+        Asset Analyzed
+        " test has been sent.
+      </div>
+    </div>
+    <h3
+      className="emotion-3"
+    >
+      Add Webhook Endpoint URL
+    </h3>
+    <div
+      className="emotion-4"
+    >
+      <label
+        className="emotion-5"
+        htmlFor="url"
+      >
+        Payload URL
+        <span
+          className="emotion-6"
+        >
+           *
+        </span>
+      </label>
+      <div
+        className="emotion-7"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-8"
+          disabled={false}
+          id="url"
+          name="url"
+          onChange={[Function]}
+          type="text"
+          value="127.0.0.1"
+        />
+      </div>
+      <div
+        className="emotion-9"
+      >
+         
+      </div>
+    </div>
+    <h3
+      className="emotion-3"
+    >
+      Create Secret Token
+    </h3>
+    <p
+      className="emotion-11"
+    >
+      You can add your own token or we can generate one for you. You can modify this token at anytime.
+    </p>
+    <div
+      className="emotion-12"
+    >
+      <div
+        className="emotion-13"
+      >
+        <label
+          className="emotion-5"
+          htmlFor="secretKey"
+        >
+          Secret Token
+          <span
+            className="emotion-6"
+          >
+             *
+          </span>
+        </label>
+        <div
+          className="emotion-7"
+        >
+          <input
+            className="emotion-8"
+            disabled={false}
+            id="secretKey"
+            name="secretKey"
+            onChange={[Function]}
+            type="text"
+            value="super-secret-token"
+          />
+          <div
+            className="emotion-18"
+          >
+            <button
+              aria-label="Hide Token"
+              className="emotion-19"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                data-file-name="visible.svg"
+                height={20}
+              />
+            </button>
+          </div>
+        </div>
+        <div
+          className="emotion-9"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-21"
+      >
+        <button
+          className="emotion-22"
+          onClick={[Function]}
+          type="button"
+        >
+          Generate Token
+        </button>
+      </div>
+    </div>
+    <h3
+      className="emotion-3"
+    >
+      Triggers
+    </h3>
+    <p
+      className="emotion-11"
+    >
+      You can test the triggers or modify them at any time. A trigger does not have to be active to test it.
+    </p>
+    <div
+      className="emotion-25"
+    >
+      <div
+        className="emotion-26"
+      >
+        <div
+          className="emotion-27"
+        >
+          <label
+            className="emotion-28"
+          >
+            <div
+              className="emotion-29"
+            >
+              <input
+                className="emotion-30"
+                defaultChecked={true}
+                onClick={[Function]}
+                type="checkbox"
+                value="ASSET_ANALYZED"
+              />
+              <div
+                className="emotion-31"
+              >
+                <svg
+                  className="emotion-32"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </div>
+            <div
+              className="emotion-33"
+            >
+              <span
+                className="emotion-34"
+              >
+                Asset Analyzed
+              </span>
+              <span
+                className="emotion-35"
+              >
+                Asset is added to the Boon AI with initial analysis.
+              </span>
+            </div>
+          </label>
+        </div>
+        <div
+          className="emotion-36"
+        >
+          <button
+            className="emotion-37"
+            onClick={[Function]}
+            type="button"
+          >
+            Send Test
+          </button>
+        </div>
+      </div>
+      <div
+        className="emotion-26"
+      >
+        <div
+          className="emotion-27"
+        >
+          <label
+            className="emotion-28"
+          >
+            <div
+              className="emotion-29"
+            >
+              <input
+                className="emotion-42"
+                defaultChecked={false}
+                onClick={[Function]}
+                type="checkbox"
+                value="ASSET_MODIFIED"
+              />
+              <div
+                className="emotion-31"
+              >
+                <svg
+                  className="emotion-44"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </div>
+            <div
+              className="emotion-33"
+            >
+              <span
+                className="emotion-34"
+              >
+                Asset Modified
+              </span>
+              <span
+                className="emotion-35"
+              >
+                Asset is modified through additional analysis or manual editing.
+              </span>
+            </div>
+          </label>
+        </div>
+        <div
+          className="emotion-36"
+        >
+          <button
+            className="emotion-37"
+            onClick={[Function]}
+            type="button"
+          >
+            Send Test
+          </button>
+        </div>
+      </div>
+    </div>
+    <h3
+      className="emotion-3"
+    >
+      Activate Webhook
+    </h3>
+    <p
+      className="emotion-11"
+    >
+      You can modify activation at anytime.
+    </p>
+    <div
+      className="emotion-52"
+    >
+      <label
+        className="emotion-53"
+      >
+        <div
+          className="emotion-29"
+        >
+          <input
+            className="emotion-30"
+            defaultChecked={true}
+            onClick={[Function]}
+            type="checkbox"
+            value="active"
+          />
+          <div
+            className="emotion-31"
+          >
+            <svg
+              className="emotion-32"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-33"
+        >
+          <span
+            className="emotion-34"
+          >
+            Activate Webhook
+          </span>
+        </div>
+      </label>
+    </div>
+    <div
+      className="emotion-60"
+    >
+      <button
+        className="emotion-61"
+        onClick={[Function]}
+        type="submit"
+      >
+        Create Webhook
+      </button>
+    </div>
+  </form>,
+]
+`;
+
+exports[`<WebhooksAdd /> should render properly 3`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Webhooks
+  </h2>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-3 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #3A5DFF;
+}
+
+.emotion-5 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-0"
+  >
+    <ul
+      className="emotion-1"
+    >
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/webhooks"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-5"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/webhooks/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create Webhook
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-1 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-2 {
+  padding-top: 8px;
+}
+
+.emotion-3 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-4 {
+  color: #c92300;
+}
+
+.emotion-5 {
+  position: relative;
+}
+
+.emotion-6 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid #c92300;
+  border-width: 2px;
+}
+
+.emotion-6:focus,
+.emotion-6 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-6:hover,
+.emotion-6 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-7 {
+  padding-top: 8px;
+}
+
+.emotion-8 {
+  color: #c92300;
+  font-style: italic;
+  white-space: pre-line;
+}
+
+.emotion-10 {
+  margin: 0;
+  padding-top: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-11 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-12 {
+  padding-top: 8px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-16 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-16:focus,
+.emotion-16 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-16:hover,
+.emotion-16 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-17 {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-18 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #b3b3b3;
+  background-color: transparent;
+  outline-offset: -2px;
+}
+
+.emotion-18:hover {
+  color: #3A5DFF;
+}
+
+.emotion-20 {
+  position: absolute;
+  left: 100%;
+  padding-left: 8px;
+  padding-top: 8px;
+}
+
+.emotion-21 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-21,
+.emotion-21:hover,
+.emotion-21:visited,
+.emotion-21 .noop {
+  color: #6088FE;
+}
+
+.emotion-21:hover,
+.emotion-21 .noop {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.emotion-24 {
+  margin-right: -84px;
+  padding-top: 16px;
+  padding-bottom: 32px;
+}
+
+.emotion-25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+  padding-top: 16px;
+}
+
+.emotion-26 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-27 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-left: 0;
+  padding-bottom: 16px;
+}
+
+.emotion-28 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-29 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: #3A5DFF;
+  border: 2px solid #3A5DFF;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-30 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+}
+
+.emotion-31 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+}
+
+.emotion-32 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 12px;
+}
+
+.emotion-33 {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 700;
+}
+
+.emotion-34 {
+  padding-left: 0;
+  color: #b3b3b3;
+}
+
+.emotion-35 {
+  padding-left: 16px;
+}
+
+.emotion-36 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-36,
+.emotion-36:hover,
+.emotion-36:visited,
+.emotion-36 .noop {
+  background-color: #808080;
+}
+
+.emotion-36:hover,
+.emotion-36 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-36[aria-disabled=true],
+.emotion-36 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-41 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-43 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-51 {
+  padding-top: 16px;
+}
+
+.emotion-51 span {
+  font-weight: 400;
+}
+
+.emotion-52 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 0;
+  padding-bottom: 16px;
+}
+
+.emotion-59 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-59 button,
+.emotion-59 a {
+  margin-right: 16px;
+}
+
+.emotion-60 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-60,
+.emotion-60:hover,
+.emotion-60:visited,
+.emotion-60 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-60:hover,
+.emotion-60 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-60[aria-disabled=true],
+.emotion-60 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <h3
+      className="emotion-1"
+    >
+      Add Webhook Endpoint URL
+    </h3>
+    <div
+      className="emotion-2"
+    >
+      <label
+        className="emotion-3"
+        htmlFor="url"
+      >
+        Payload URL
+        <span
+          className="emotion-4"
+        >
+           *
+        </span>
+      </label>
+      <div
+        className="emotion-5"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-6"
+          disabled={false}
+          id="url"
+          name="url"
+          onChange={[Function]}
+          type="text"
+          value="127.0.0.1"
+        />
+      </div>
+      <div
+        className="emotion-7"
+      >
+        <span
+          className="emotion-8"
+        >
+          URL already in use
+        </span>
+         
+      </div>
+    </div>
+    <h3
+      className="emotion-1"
+    >
+      Create Secret Token
+    </h3>
+    <p
+      className="emotion-10"
+    >
+      You can add your own token or we can generate one for you. You can modify this token at anytime.
+    </p>
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-12"
+      >
+        <label
+          className="emotion-3"
+          htmlFor="secretKey"
+        >
+          Secret Token
+          <span
+            className="emotion-4"
+          >
+             *
+          </span>
+        </label>
+        <div
+          className="emotion-5"
+        >
+          <input
+            className="emotion-16"
+            disabled={false}
+            id="secretKey"
+            name="secretKey"
+            onChange={[Function]}
+            type="text"
+            value="super-secret-token"
+          />
+          <div
+            className="emotion-17"
+          >
+            <button
+              aria-label="Hide Token"
+              className="emotion-18"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                data-file-name="visible.svg"
+                height={20}
+              />
+            </button>
+          </div>
+        </div>
+        <div
+          className="emotion-7"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-20"
+      >
+        <button
+          className="emotion-21"
+          onClick={[Function]}
+          type="button"
+        >
+          Generate Token
+        </button>
+      </div>
+    </div>
+    <h3
+      className="emotion-1"
+    >
+      Triggers
+    </h3>
+    <p
+      className="emotion-10"
+    >
+      You can test the triggers or modify them at any time. A trigger does not have to be active to test it.
+    </p>
+    <div
+      className="emotion-24"
+    >
+      <div
+        className="emotion-25"
+      >
+        <div
+          className="emotion-26"
+        >
+          <label
+            className="emotion-27"
+          >
+            <div
+              className="emotion-28"
+            >
+              <input
+                className="emotion-29"
+                defaultChecked={true}
+                onClick={[Function]}
+                type="checkbox"
+                value="ASSET_ANALYZED"
+              />
+              <div
+                className="emotion-30"
+              >
+                <svg
+                  className="emotion-31"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </div>
+            <div
+              className="emotion-32"
+            >
+              <span
+                className="emotion-33"
+              >
+                Asset Analyzed
+              </span>
+              <span
+                className="emotion-34"
+              >
+                Asset is added to the Boon AI with initial analysis.
+              </span>
+            </div>
+          </label>
+        </div>
+        <div
+          className="emotion-35"
+        >
+          <button
+            className="emotion-36"
+            onClick={[Function]}
+            type="button"
+          >
+            Send Test
+          </button>
+        </div>
+      </div>
+      <div
+        className="emotion-25"
+      >
+        <div
+          className="emotion-26"
+        >
+          <label
+            className="emotion-27"
+          >
+            <div
+              className="emotion-28"
+            >
+              <input
+                className="emotion-41"
+                defaultChecked={false}
+                onClick={[Function]}
+                type="checkbox"
+                value="ASSET_MODIFIED"
+              />
+              <div
+                className="emotion-30"
+              >
+                <svg
+                  className="emotion-43"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </div>
+            <div
+              className="emotion-32"
+            >
+              <span
+                className="emotion-33"
+              >
+                Asset Modified
+              </span>
+              <span
+                className="emotion-34"
+              >
+                Asset is modified through additional analysis or manual editing.
+              </span>
+            </div>
+          </label>
+        </div>
+        <div
+          className="emotion-35"
+        >
+          <button
+            className="emotion-36"
+            onClick={[Function]}
+            type="button"
+          >
+            Send Test
+          </button>
+        </div>
+      </div>
+    </div>
+    <h3
+      className="emotion-1"
+    >
+      Activate Webhook
+    </h3>
+    <p
+      className="emotion-10"
+    >
+      You can modify activation at anytime.
+    </p>
+    <div
+      className="emotion-51"
+    >
+      <label
+        className="emotion-52"
+      >
+        <div
+          className="emotion-28"
+        >
+          <input
+            className="emotion-29"
+            defaultChecked={true}
+            onClick={[Function]}
+            type="checkbox"
+            value="active"
+          />
+          <div
+            className="emotion-30"
+          >
+            <svg
+              className="emotion-31"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-32"
+        >
+          <span
+            className="emotion-33"
+          >
+            Activate Webhook
+          </span>
+        </div>
+      </label>
+    </div>
+    <div
+      className="emotion-59"
+    >
+      <button
+        className="emotion-60"
+        onClick={[Function]}
+        type="submit"
+      >
+        Create Webhook
+      </button>
+    </div>
+  </form>,
+]
+`;
