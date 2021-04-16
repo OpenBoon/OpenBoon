@@ -61,18 +61,23 @@ const OrganizationProjectsAggregate = () => {
   )
 
   return (
-    <div css={{ display: 'flex', flexWrap: 'wrap' }}>
+    <div
+      css={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: spacing.comfy,
+        paddingBottom: spacing.comfy,
+      }}
+    >
       <div
         css={{
           flex: 1,
           backgroundColor: colors.structure.iron,
           borderRadius: constants.borderRadius.medium,
           padding: spacing.comfy,
-          marginRight: spacing.comfy,
           boxShadow: constants.boxShadows.tableRow,
           minWidth: MIN_WIDTH,
           maxWidth: MAX_WIDTH,
-          marginBottom: spacing.normal,
         }}
       >
         <div
@@ -211,7 +216,6 @@ const OrganizationProjectsAggregate = () => {
           boxShadow: constants.boxShadows.tableRow,
           minWidth: MIN_WIDTH,
           maxWidth: MAX_WIDTH,
-          marginBottom: spacing.normal,
         }}
       >
         <div

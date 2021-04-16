@@ -8,7 +8,7 @@ const webhooks = {
       projectId: '4b89213b-ce4f-4588-9593-2a20c5a2761f',
       url: 'https://zorroa.atlassian.net/browse/MAIN-51',
       secretKey: '41f64488-fec9-4730-9abe-37c6b47f00cd',
-      triggers: ['ASSET_ANALYZED', 'ASSET_MODIFIED'],
+      triggers: ['AssetAnalyzed', 'AssetModified'],
       active: true,
       timeCreated: 1618338675405,
       timeModified: 1618338675405,
