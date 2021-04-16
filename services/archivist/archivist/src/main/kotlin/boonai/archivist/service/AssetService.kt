@@ -604,10 +604,23 @@ class AssetServiceImpl : AssetService {
                 }
             }
 
+            deleteTemporaryAssets(indexedIds, docs)
             BatchIndexResponse(indexedIds, failedAssets)
         } else {
             BatchIndexResponse(emptyList(), failedAssets)
         }
+    }
+
+    private fun deleteTemporaryAssets(
+        indexedIds: MutableList<String>,
+        docs: Map<String, MutableMap<String, Any>>
+    ) {
+        val temporaryAssets = indexedIds.filter { id ->
+            docs[id]?.let {
+                Asset(id, it).getAttr("aux.delete-after-processing") as Boolean?
+            } ?: false
+        }
+        batchDelete(temporaryAssets.toSet())
     }
 
     override fun batchDelete(ids: Set<String>): BatchDeleteAssetResponse {
