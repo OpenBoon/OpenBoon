@@ -10,7 +10,9 @@ exports[`<Modal /> should render properly 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   width: 480px;
-  height: 200px;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 0 8px 5px rgba(0, 0, 0, 0.5);
 }
 
 .emotion-1 {
