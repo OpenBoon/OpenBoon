@@ -83,6 +83,7 @@ const TimelineResize = ({ dispatch, zoom, videoRef, rulerRef }) => {
         aria-label="Zoom In"
         onClick={() => {
           dispatch({ type: ACTIONS.INCREMENT })
+
           const nextZoom = zoom + 100
 
           const scrollLeft = getNextScrollLeft({

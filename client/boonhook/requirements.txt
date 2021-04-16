@@ -1,4 +1,4 @@
 flask
 gevent
-PyJWT>=2.0
+PyJWT==2.0.1
 boonsdk

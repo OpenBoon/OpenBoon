@@ -183,6 +183,14 @@ resource "kubernetes_deployment" "metrics" {
             name  = "SA_KEY_DATE"
             value = var.sql-service-account-key-date
           }
+          env {
+            name  = "REDIS_HOST"
+            value = var.redis-host
+          }
+          env {
+            name  = "DJANGO_SETTINGS_MODULE"
+            value = "metrics.settings"
+          }
         }
       }
     }

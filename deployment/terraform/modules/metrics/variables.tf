@@ -15,6 +15,9 @@ variable "image-pull-secret" {
 variable "environment" {
 }
 
+variable "redis-host" {
+}
+
 variable "container-tag" {
   default = "latest"
 }

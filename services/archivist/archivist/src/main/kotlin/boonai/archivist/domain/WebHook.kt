@@ -4,6 +4,7 @@ import boonai.archivist.repository.KDaoFilter
 import boonai.archivist.security.getProjectId
 import boonai.archivist.util.JdbcUtils
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.google.common.base.Splitter
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
@@ -16,8 +17,10 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 enum class TriggerType {
-    ASSET_ANALYZED,
-    ASSET_MODIFIED
+    @ApiModelProperty("Emitted on the first time the Asset is Analyzed")
+    AssetAnalyzed,
+    @ApiModelProperty("Emitted on manual editing or reprocessing of Asset")
+    AssetModified
 }
 
 @Converter
@@ -27,7 +30,8 @@ class TriggerConverter : AttributeConverter<Array<TriggerType>, String> {
     }
 
     override fun convertToEntityAttribute(dbData: String): Array<TriggerType> {
-        return dbData.split(",").map { TriggerType.values()[it.toInt()] }.toTypedArray()
+        val triggers = Splitter.on(',').trimResults().omitEmptyStrings().split(dbData)
+        return triggers.map { TriggerType.values()[it.toInt()] }.toTypedArray()
     }
 }
 
@@ -68,6 +72,7 @@ class WebHookPatch(
     @ApiModelProperty("The triggers the webhook should fire on.")
     val triggers: Array<TriggerType>? = null,
 
+    @ApiModelProperty("Determines if the hook is enabled or not.")
     val active: Boolean? = null
 )
 

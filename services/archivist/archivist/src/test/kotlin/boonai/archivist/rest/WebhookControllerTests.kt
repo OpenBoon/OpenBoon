@@ -25,13 +25,13 @@ class WebhookControllerTests : MockMvcTest() {
 
     @Before
     fun initialize() {
-        val spec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.ASSET_MODIFIED))
+        val spec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.AssetModified))
         webhook = webHookService.createWebHook(spec)
     }
 
     @Test
     fun testCreate() {
-        val testSpec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.ASSET_MODIFIED))
+        val testSpec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.AssetModified))
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/webhooks")
@@ -117,7 +117,7 @@ class WebhookControllerTests : MockMvcTest() {
 
     @Test
     fun testTestSpec() {
-        val spec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.ASSET_ANALYZED))
+        val spec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.AssetAnalyzed))
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/webhooks/_test")
                 .headers(admin())
@@ -131,7 +131,7 @@ class WebhookControllerTests : MockMvcTest() {
 
     @Test
     fun testTestHook() {
-        val spec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.ASSET_ANALYZED))
+        val spec = WebHookSpec("http://boonai.app", "abc123", arrayOf(TriggerType.AssetAnalyzed))
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/webhooks/${webhook.id}/_test")
                 .headers(admin())

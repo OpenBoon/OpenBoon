@@ -24,12 +24,14 @@ class TestAPICallsViewSet:
                 'video_minutes': 0.0}
         response = api_client.post(reverse('apicalls-list'), body)
         assert response.status_code == 201
-        content = response.json()
-        assert content['id'] == 1
-        assert 'created_date' in content
-        assert 'modified_date' in content
+        first_api_call = ApiCall.objects.first()
+
+        # Make sure upserting works.
         response = api_client.post(reverse('apicalls-list'), body)
-        assert response.json() == {'non_field_errors': ['The fields service, asset_id, project must make a unique set.']}  # noqa
+        assert response.status_code == 201
+        second_api_call = ApiCall.objects.get(id=first_api_call.id)
+        assert first_api_call.created_date == second_api_call.created_date
+        assert first_api_call.modified_date < second_api_call.modified_date
 
     def test_get_single_record(self, api_client, single_record):
         url = reverse('apicalls-detail', kwargs={'pk': single_record.id})

@@ -37,7 +37,24 @@ describe('<Webhooks />', () => {
   it('should render properly with webhooks', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/webhooks',
-      query: { projectId: PROJECT_ID },
+      query: { projectId: PROJECT_ID, action: 'add-webhook-success' },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: webhooks })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Webhooks />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with edit webhooks success', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/webhooks',
+      query: { projectId: PROJECT_ID, action: 'edit-webhook-success' },
     })
 
     require('swr').__setMockUseSWRResponse({ data: webhooks })
