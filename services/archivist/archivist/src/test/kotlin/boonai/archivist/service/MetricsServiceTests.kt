@@ -4,6 +4,7 @@ import boonai.archivist.AbstractTest
 import boonai.archivist.domain.JobSpec
 import boonai.archivist.domain.emptyZpsScripts
 import boonai.common.service.logging.MeterRegistryHolder
+import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -14,6 +15,7 @@ class MetricsServiceTests : AbstractTest() {
     lateinit var jobService: JobService
 
     @Test
+    @Ignore
     fun testPendingTasksGauge() {
         var pending = MeterRegistryHolder.meterRegistry.get("tasks.pending")
         var max = MeterRegistryHolder.meterRegistry.get("tasks.max_running")

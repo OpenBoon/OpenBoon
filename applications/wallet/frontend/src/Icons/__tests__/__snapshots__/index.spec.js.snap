@@ -1234,6 +1234,22 @@ exports[`<Icons /> should render properly 1`] = `
         />
       </div>
     </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./webhooks.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="webhooks.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
   </div>
 </div>
 `;

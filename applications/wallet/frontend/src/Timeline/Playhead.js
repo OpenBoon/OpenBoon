@@ -1,14 +1,19 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useRef, useCallback } from 'react'
 import PropTypes from 'prop-types'
+import getConfig from 'next/config'
 
 import { colors, constants, zIndex } from '../Styles'
 
+import { ENVS } from '../Feature'
+
 import { getScroller } from '../Scroll/helpers'
 
-import { SCROLLBAR_CONTAINER_HEIGHT } from './Scrollbar'
-
-import { updatePlayheadPosition, GUIDE_WIDTH } from './helpers'
+import {
+  updatePlayheadPosition,
+  GUIDE_WIDTH,
+  SCROLLBAR_CONTAINER_HEIGHT,
+} from './helpers'
 
 const HEIGHT = 12
 const WIDTH = 10
@@ -18,6 +23,10 @@ let originX
 let originLeft
 
 const TimelinePlayhead = ({ videoRef, rulerRef, zoom, followPlayhead }) => {
+  const {
+    publicRuntimeConfig: { ENVIRONMENT },
+  } = getConfig()
+
   const playheadRef = useRef()
   const frameRef = useRef()
 
@@ -121,7 +130,9 @@ const TimelinePlayhead = ({ videoRef, rulerRef, zoom, followPlayhead }) => {
         position: 'absolute',
         marginTop: 0,
         top: constants.timeline.rulerRowHeight - HEIGHT,
-        bottom: SCROLLBAR_CONTAINER_HEIGHT,
+        bottom: [ENVS.LOCAL, ENVS.DEV].includes(ENVIRONMENT)
+          ? SCROLLBAR_CONTAINER_HEIGHT
+          : 0,
         marginLeft: -(WIDTH / 2) + constants.borderWidths.regular / 2,
         width: WIDTH,
         display: 'flex',

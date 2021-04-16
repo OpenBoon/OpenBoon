@@ -130,16 +130,18 @@ class ProjectUserViewSet(BaseProjectViewSet):
             return Response(data={'detail': ['Roles must be supplied.']},
                             status=status.HTTP_400_BAD_REQUEST)
         membership = self.get_object(pk, project_pk)
-        if membership.roles != new_roles:
-            membership.roles = new_roles
-            try:
-                membership.sync_with_zmlp(request.client)
-            except IOError:
-                return Response(data={'detail': ['Error deleting apikey.']},
-                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            except ValueError:
-                return Response(data={'detail': ['Unable to modify the admin key.']},
-                                status=status.HTTP_400_BAD_REQUEST)
+        with transaction.atomic():
+            if membership.roles != new_roles:
+                membership.roles = new_roles
+                try:
+                    membership.sync_with_zmlp(request.client)
+                except IOError:
+                    return Response(data={'detail': ['Error deleting apikey.']},
+                                    status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                except ValueError:
+                    return Response(data={'detail': ['Unable to modify the admin key.']},
+                                    status=status.HTTP_400_BAD_REQUEST)
+                membership.save()
         serializer = self.get_serializer(membership.user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
