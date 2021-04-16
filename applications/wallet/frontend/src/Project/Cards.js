@@ -63,6 +63,7 @@ const ProjectCards = () => {
             css={{
               color: colors.structure.zinc,
               paddingBottom: spacing.spacious,
+              fontFamily: typography.family.condensed,
             }}
           >
             Organization: {organizationName} / Project ID:&nbsp;
