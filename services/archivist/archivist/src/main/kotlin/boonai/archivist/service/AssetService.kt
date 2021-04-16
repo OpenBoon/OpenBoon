@@ -617,7 +617,7 @@ class AssetServiceImpl : AssetService {
     ) {
         val temporaryAssets = indexedIds.filter { id ->
             docs[id]?.let {
-                Asset(id, it).getAttr("aux.delete-after-processing") as Boolean?
+                Asset(id, it).getAttr("aux.transient") as Boolean?
             } ?: false
         }
         batchDelete(temporaryAssets.toSet())
