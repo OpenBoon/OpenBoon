@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Simple script that handles the startup of the servers. The first argument is the
 # hostname of the postgres instance to wait for.
+set -e
 
 # Wait for postgres database to be ready.
 until pg_isready -h $PG_HOST; do
