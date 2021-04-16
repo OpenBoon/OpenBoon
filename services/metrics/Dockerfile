@@ -21,8 +21,12 @@ COPY services/metrics/app /service/metrics/app
 WORKDIR /service/metrics/app
 RUN python3 ./manage.py collectstatic --no-input
 
-# Start servers
+# Copy server scripts
 COPY services/metrics/gunicornconfig.py /service/metrics/gunicornconfig.py
 COPY services/metrics/start-servers.sh /service/metrics/start-servers.sh
 WORKDIR /
+
+# Create a boonai user so nothing runs as root.
+RUN groupadd -r boonai && useradd --no-log-init -r -m -g boonai boonai
+
 ENTRYPOINT ["sh", "/service/metrics/start-servers.sh"]

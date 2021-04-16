@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Simple script that handles the startup of the servers. The first argument is the
 # hostname of the postgres instance to wait for.
+set -e
 
 # Wait for postgres database to be ready.
 until pg_isready -h $PG_DB_HOST; do
@@ -19,4 +20,4 @@ gunicorn -c python:gunicornconfig metrics.wsgi &
 nginx -g "daemon off;" &
 
 # Start the celery worker for processing DB inserts.
-celery -A metrics.records.tasks worker --loglevel=INFO
+celery -A metrics.records.tasks worker --loglevel=INFO --uid=boonai --gid=boonai
