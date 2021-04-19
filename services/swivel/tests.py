@@ -11,7 +11,6 @@ import server
 
 mock_msg = {
     'url': 'http://foobar:5000',
-    'asset_id': '12345',
     'project_id': 'abcdefg',
     'secret_key': 'terminator2000',
     'trigger': 'ASSET_ANALYZED',
@@ -47,12 +46,17 @@ class ServerTests(unittest.TestCase):
 
         post_patch.return_value = Response()
         rsp = server.call_webhook(mock_msg)
+        headers = post_patch.call_args_list[0][1]['headers']
+        assert 'X-BoonAI-Signature-256' in headers
+        assert 'X-BoonAI-Trigger' in headers
+        assert 'X-BoonAI-ProjectId' in headers
+        assert 'Content-Type' in headers
         assert rsp.status_code == 999
 
     def test_genertate_token(self):
         token = server.generate_token(mock_msg)
         claims = jwt.decode(token, 'terminator2000', algorithms=['HS256'])
-        assert claims['asset_id'] == '12345'
+        assert 'exp' in claims
 
     def test_health(self):
         health = server.health()
