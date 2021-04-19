@@ -7,7 +7,6 @@ import { colors, spacing, zIndex, constants, typography } from '../Styles'
 import userShape from '../User/shape'
 
 import BetaBadge from '../BetaBadge'
-import Feature, { ENVS } from '../Feature'
 
 import DashboardSvg from '../Icons/dashboard.svg'
 import DataSourcesSvg from '../Icons/datasources.svg'
@@ -103,12 +102,10 @@ const Sidebar = forwardRef(
               Visualizer
             </SidebarLink>
 
-            <Feature flag="webhooks-feature-flag" envs={[ENVS.DEV]}>
-              <SidebarLink projectId={projectId} href="/[projectId]/webhooks">
-                <WebhooksSvg height={constants.icons.regular} />
-                Webhooks
-              </SidebarLink>
-            </Feature>
+            <SidebarLink projectId={projectId} href="/[projectId]/webhooks">
+              <WebhooksSvg height={constants.icons.regular} />
+              Webhooks
+            </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/api-keys">
               <KeySvg height={constants.icons.regular} />
