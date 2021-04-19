@@ -6,8 +6,7 @@ wallet-integration-test-suite:
     - cd applications/wallet/cypress
     - npm ci
   script:
-    - npm run cli -- --browser chrome --headless --record --group Frontend --spec 'integration/frontend/**/*'
-    - npm run cli -- --browser chrome --headless --record --group Backend --spec 'integration/backend/**/*'
+    - npm run cli -- --browser chrome --headless --record --spec 'integration/**/*'
   artifacts:
     when: always
     paths:
