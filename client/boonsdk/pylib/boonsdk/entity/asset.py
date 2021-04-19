@@ -252,7 +252,7 @@ class FileImport(object):
         self.page = page
         self.label = label
         self.tmp = tmp
-        self.aux = self.build_aux_dict(transient)
+        self.aux = self.__build_aux_dict(transient)
 
     def __build_aux_dict(self, transient):
         return {
