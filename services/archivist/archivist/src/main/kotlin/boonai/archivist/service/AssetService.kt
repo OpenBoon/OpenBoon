@@ -894,7 +894,7 @@ class AssetServiceImpl : AssetService {
             asset.setAttr(key, v)
         }
 
-        spec.aux?.forEach{ (k, v) ->
+        spec.aux?.forEach { (k, v) ->
             val key = if (k.startsWith("aux.")) {
                 k
             } else {
