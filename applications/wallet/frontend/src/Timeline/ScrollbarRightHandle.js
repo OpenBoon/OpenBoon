@@ -7,13 +7,15 @@ import { SCROLLBAR_RESIZE_HANDLE_SIZE } from './helpers'
 let origin
 let scrollbarTrackWidth
 let scrollbarWidth
+let scrollbarOffsetLeft
 
 const TimelineScrollbarRightHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
     const difference = clientX - origin
 
-    const newZoom = ((scrollbarWidth + difference) / scrollbarTrackWidth) * 100
+    const newZoom =
+      ((scrollbarWidth + difference * 2) / scrollbarTrackWidth) * 100
 
     // prevent handles from overlapping
     const minZoom =
@@ -21,8 +23,11 @@ const TimelineScrollbarRightHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
 
     const clampedZoom = Math.max(minZoom, Math.min(newZoom, 100))
 
+    const newOffsetLeft = Math.max(0, scrollbarOffsetLeft - difference)
+
     /* eslint-disable no-param-reassign */
     scrollbarRef.current.style.width = `${clampedZoom}%`
+    scrollbarRef.current.style.left = `${newOffsetLeft}px`
   }
 
   /* istanbul ignore next */
@@ -34,6 +39,8 @@ const TimelineScrollbarRightHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
   /* istanbul ignore next */
   const handleMouseDown = ({ clientX }) => {
     origin = clientX
+
+    scrollbarOffsetLeft = scrollbarRef.current?.offsetLeft
 
     scrollbarWidth = scrollbarRef.current?.getBoundingClientRect().width || 0
 
