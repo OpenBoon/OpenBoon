@@ -573,7 +573,6 @@ class AssetServiceImpl : AssetService {
                 }
             }
 
-            // Send the webhooks.s
             for (assetId in indexedIds) {
                 if (assetId in stateChangedIds) {
                     webHookPublisher.handleAssetTriggers(

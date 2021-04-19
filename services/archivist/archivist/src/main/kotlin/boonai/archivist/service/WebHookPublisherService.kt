@@ -5,8 +5,10 @@ import boonai.archivist.domain.Asset
 import boonai.archivist.domain.TriggerType
 import boonai.archivist.domain.WebHook
 import boonai.archivist.domain.WebHookSpec
+import boonai.archivist.repository.ProjectDao
 import boonai.archivist.security.getProjectId
 import boonai.common.util.Json
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.api.gax.core.CredentialsProvider
 import com.google.api.gax.core.NoCredentialsProvider
 import com.google.api.gax.grpc.GrpcTransportChannel
@@ -32,10 +34,10 @@ import javax.annotation.PostConstruct
 
 interface WebHookPublisherService {
     fun emitMessage(asset: Asset, hook: WebHook, trigger: TriggerType)
-    fun emitMessage(assetId: String, dataString: String, url: String, key: String, trigger: TriggerType)
     fun handleAssetTriggers(asset: Asset, trigger: TriggerType)
     fun testWebHook(wb: WebHook)
     fun testWebHook(spec: WebHookSpec)
+    fun makeAssetPayload(asset: Asset, trigger: TriggerType) : String
 }
 
 @Service
@@ -45,6 +47,9 @@ class WebHookPublisherServiceImpl constructor(
 
     @Autowired
     lateinit var properties: ApplicationProperties
+
+    @Autowired
+    lateinit var projectDao: ProjectDao
 
     lateinit var publisher: Publisher
 
@@ -74,17 +79,15 @@ class WebHookPublisherServiceImpl constructor(
     }
 
     override fun emitMessage(asset: Asset, hook: WebHook, trigger: TriggerType) {
-        val dataString = Json.serializeToString(asset)
+        val dataString = makeAssetPayload(asset, trigger)
         emitMessage(asset.id, dataString, hook.url, hook.secretKey, trigger)
     }
 
-    override fun emitMessage(assetId: String, dataString: String, url: String, key: String, trigger: TriggerType) {
-        logger.info("Emitting $trigger for assetId $assetId to $url")
+    fun emitMessage(assetId: String, dataString: String, url: String, key: String, trigger: TriggerType) {
         val bytes = ByteString.copyFromUtf8(dataString)
         val pubsubMessage = PubsubMessage.newBuilder()
             .setData(bytes)
             .putAttributes("trigger", trigger.name)
-            .putAttributes("asset_id", assetId)
             .putAttributes("project_id", getProjectId().toString())
             .putAttributes("url", url)
             .putAttributes("secret_key", key)
@@ -95,21 +98,33 @@ class WebHookPublisherServiceImpl constructor(
     override fun testWebHook(wb: WebHook) {
         for (trig in wb.triggers) {
             webHookService.validateUrl(wb.url)
-            val payload = ClassPathResource("webhooks/${trig.name}.json").inputStream.use {
-                StreamUtils.copyToString(it, Charset.defaultCharset())
+            val asset = ClassPathResource("webhooks/${trig.name}.json").inputStream.use {
+                Json.Mapper.readValue<Asset>(it)
             }
-            emitMessage("00000000-0000-0000-0000-000000000000", payload, wb.url, wb.secretKey, trig)
+            emitMessage("00000000-0000-0000-0000-000000000000",
+                makeAssetPayload(asset, trig), wb.url, wb.secretKey, trig)
         }
     }
 
     override fun testWebHook(spec: WebHookSpec) {
         for (trig in spec.triggers) {
             webHookService.validateUrl(spec.url)
-            val payload = ClassPathResource("webhooks/${trig.name}.json").inputStream.use {
-                StreamUtils.copyToString(it, Charset.defaultCharset())
+            val asset = ClassPathResource("webhooks/${trig.name}.json").inputStream.use {
+                Json.Mapper.readValue<Asset>(it)
             }
-            emitMessage("00000000-0000-0000-0000-000000000000", payload, spec.url, spec.secretKey, trig)
+            emitMessage("00000000-0000-0000-0000-000000000000",
+                makeAssetPayload(asset, trig), spec.url, spec.secretKey, trig)
         }
+    }
+
+    override fun makeAssetPayload(asset: Asset, trigger: TriggerType) : String {
+        val project = projectDao.getById(getProjectId())
+        val payload = mapOf(
+            "asset" to asset,
+            "trigger" to trigger.name,
+            "project" to mapOf("id" to project.id, "name" to project.name)
+        )
+        return Json.serializeToString(payload)
     }
 
     private fun createPublisher(): Publisher {
