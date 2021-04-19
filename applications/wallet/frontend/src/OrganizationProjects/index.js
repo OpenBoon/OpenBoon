@@ -24,23 +24,27 @@ const OrganizationProjects = () => {
           flexWrap: 'wrap',
           alignItems: 'flex-end',
           justifyContent: 'space-between',
-          paddingBottom: spacing.normal,
         }}
       >
         <div
           css={{
             fontWeight: typography.weight.medium,
             fontSize: typography.size.medium,
-            height: typography.height.medium,
+            lineHeight: typography.height.medium,
+            paddingBottom: spacing.normal,
           }}
         >
           Total Module Usage &amp; Storage / Current Billing Cycle:{' '}
           {getCurrentPeriod({ date: new Date() })}
         </div>
 
-        <Link href={`/organizations/${organizationId}/projects/add`} passHref>
-          <Button variant={VARIANTS.PRIMARY_SMALL}>Create a New Project</Button>
-        </Link>
+        <div css={{ paddingBottom: spacing.normal }}>
+          <Link href={`/organizations/${organizationId}/projects/add`} passHref>
+            <Button variant={VARIANTS.PRIMARY_SMALL}>
+              Create a New Project
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <OrganizationProjectsAggregate />
@@ -80,6 +84,7 @@ const OrganizationProjects = () => {
           lineHeight: typography.height.small,
           color: colors.structure.zinc,
           paddingBottom: spacing.base,
+          fontFamily: typography.family.condensed,
         }}
       >
         *pages are processed &amp; counted as individual assets

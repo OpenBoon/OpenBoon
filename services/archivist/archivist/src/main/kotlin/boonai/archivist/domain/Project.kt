@@ -70,7 +70,7 @@ class ProjectNameUpdate(
  */
 @Entity
 @Table(name = "project")
-@ApiModel("Project", description = "A ZMLP Project")
+@ApiModel("Project", description = "A BoonAI Project")
 class Project(
     @Id
     @Column(name = "pk_project")
@@ -129,6 +129,20 @@ class Project(
         return id.hashCode()
     }
 }
+
+/**
+ * Only used when you need a small project object.
+ */
+@Entity
+@Table(name = "project")
+class MiniProject(
+    @Id
+    @Column(name = "pk_project")
+    val id: UUID,
+
+    @Column(name = "str_name")
+    val name: String
+)
 
 @ApiModel("Project Filter", description = "Search filter for finding Projects")
 class ProjectFilter(
