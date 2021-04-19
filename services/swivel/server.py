@@ -5,6 +5,7 @@ import multiprocessing
 import os
 import time
 import queue
+import urllib3
 
 import backoff
 import jwt
@@ -15,6 +16,8 @@ from google.cloud import pubsub_v1
 
 logger = logging.getLogger('swivel')
 logging.basicConfig(level=logging.INFO)
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 app = Flask(__name__)
 
@@ -27,7 +30,8 @@ def message_poller(xqueue, project, sub):
 
     Args:
         xqueue (Queue): A multiprocessing queue.
-
+        project (str): Gcloud project
+        sub (str): Pubsub/subscription.
     """
     def callback(msg):
         try:
@@ -36,7 +40,6 @@ def message_poller(xqueue, project, sub):
             xqueue.put({
                 'url': msg.attributes['url'],
                 'trigger': msg.attributes['trigger'],
-                'asset_id': msg.attributes['asset_id'],
                 'project_id': msg.attributes['project_id'],
                 'secret_key': msg.attributes['secret_key'],
                 'data': msg.data
@@ -92,7 +95,9 @@ def call_webhook(msg):
 
     headers = {
         'X-BoonAI-Signature-256': generate_token(msg),
-        'X-BoonAI-Trigger': msg['trigger']
+        'X-BoonAI-Trigger': msg['trigger'],
+        'X-BoonAI-ProjectId': msg['project_id'],
+        'Content-Type': 'application/json'
     }
     rsp = requests.post(url, data=msg['data'], headers=headers, verify=False, timeout=3)
     logger.info(f'web hook status=[{rsp.status_code}] url={url}')
@@ -110,10 +115,7 @@ def generate_token(msg):
         str:  A JWT token.
     """
     claims = {
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60),
-        'asset_id': msg['asset_id'],
-        'project_id': msg['project_id'],
-        'trigger': msg['trigger']
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60)
     }
 
     return jwt.encode(claims, msg['secret_key'], algorithm='HS256')
@@ -145,10 +147,7 @@ def create_localdev_env(project, sub):
 
 @app.route('/health')
 def health():
-    if GlobalQueue.mqueue.full():
-        return 'ERROR_QUEUE_FULL', 400
-    else:
-        return 'OK', 200
+    return 'OK', 200
 
 
 class GlobalQueue:
