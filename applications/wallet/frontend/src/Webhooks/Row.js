@@ -35,17 +35,7 @@ const WebhooksRow = ({
       </td>
 
       <td>
-        <Pills>
-          {triggers.map((trigger) => {
-            return trigger
-              .toLowerCase()
-              .split('_')
-              .map((word) => {
-                return `${word[0].toUpperCase()}${word.substring(1)}`
-              })
-              .join(' ')
-          })}
-        </Pills>
+        <Pills>{triggers}</Pills>
       </td>
 
       <td>

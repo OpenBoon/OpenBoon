@@ -34,6 +34,7 @@ the `CYPRESS_` prefix added to variables of the same name. For instance
 
 ### Assumptions
 
+- there should be a `not-cypress@zorroa.com` User
 - there should be a `cypress@zorroa.com` User
 - this User should have access to a `Cypress` Project
 - this Project should have at least one Asset in the Visualizer (recommended

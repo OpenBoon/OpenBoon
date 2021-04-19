@@ -1,15 +1,14 @@
 {
-  "asset": {
-    "id": "00000000-0000-0000-0000-000000000000",
-    "document": {
-      "source": {
-        "path": "gs://zorroa-public/datasets/flowers/tulips/9030467406_05e93ff171_n.jpg",
-        "extension": "jpg",
-        "filename": "9030467406_05e93ff171_n.jpg",
-        "checksum": 420790922,
-        "mimetype": "image/jpeg",
-        "filesize": 59051
-      }
+
+  "id": "00000000-0000-0000-0000-000000000000",
+  "document": {
+    "source": {
+      "path": "gs://zorroa-public/datasets/flowers/tulips/9030467406_05e93ff171_n.jpg",
+      "extension": "jpg",
+      "filename": "9030467406_05e93ff171_n.jpg",
+      "checksum": 420790922,
+      "mimetype": "image/jpeg",
+      "filesize": 59051
     }
   }
 }

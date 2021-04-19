@@ -57,14 +57,18 @@ const WebhooksAddForm = () => {
         </FlashMessage>
       )}
 
-      <SectionTitle>Webhook Endpoint URL</SectionTitle>
+      <SectionTitle>Webhook URL</SectionTitle>
+
+      <SectionSubTitle>
+        The HTTP endpoint to your webhook service.
+      </SectionSubTitle>
 
       <Input
         autoFocus
         isRequired
         id="url"
         variant={INPUT_VARIANTS.SECONDARY}
-        label="Payload URL"
+        label="Webhook URL"
         type="text"
         value={state.url}
         onChange={({ target: { value } }) => dispatch({ url: value })}
@@ -75,8 +79,8 @@ const WebhooksAddForm = () => {
       <SectionTitle>Secret Token</SectionTitle>
 
       <SectionSubTitle>
-        You can add your own token or we can generate one for you. You can
-        modify this token at anytime.
+        You can enter your own secret token, or the system will generate one for
+        you. You can change the token at any time.
       </SectionSubTitle>
 
       <div
@@ -137,11 +141,12 @@ const WebhooksAddForm = () => {
         </div>
       </div>
 
-      <SectionTitle>Triggers</SectionTitle>
+      <SectionTitle>Trigger Event</SectionTitle>
 
       <SectionSubTitle>
-        You can test the triggers or modify them at any time. A trigger does not
-        have to be active to test it.
+        You can specify one or more events that trigger the webhook. Note that
+        you do not have to activate a trigger event to test it. You can change
+        these settings at any time.
       </SectionSubTitle>
 
       <div
@@ -196,7 +201,10 @@ const WebhooksAddForm = () => {
 
       <SectionTitle>Activate Webhook</SectionTitle>
 
-      <SectionSubTitle>You can modify activation at anytime.</SectionSubTitle>
+      <SectionSubTitle>
+        Select this checkbox to activate the trigger events that you selected in
+        the preceding section. You can change this setting at any time.
+      </SectionSubTitle>
 
       <div
         css={{

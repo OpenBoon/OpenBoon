@@ -1,12 +1,13 @@
 package boonai.archivist.repository
 
 import boonai.archivist.domain.IndexRoute
+import boonai.archivist.domain.MiniProject
 import boonai.archivist.domain.Pipeline
 import boonai.archivist.domain.Project
 import boonai.archivist.domain.ProjectFilter
 import boonai.archivist.domain.ProjectTier
 import boonai.archivist.security.getZmlpActor
-import boonai.archivist.util.JdbcUtils
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -15,6 +16,9 @@ import java.util.UUID
 @Repository
 interface ProjectDao : JpaRepository<Project, UUID> {
     fun getByName(name: String): Project
+
+    @Cacheable("miniproject")
+    fun getById(projectId: UUID): MiniProject
 }
 
 interface ProjectCustomDao {
@@ -112,14 +116,6 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
             "SET pk_pipeline_default=?, time_modified=?, actor_modified=? WHERE pk_project=?"
         const val SET_INDEX = "UPDATE project " +
             "SET pk_index_route=?, time_modified=?, actor_modified=? WHERE pk_project=?"
-
-        val INSERT_SETTINGS = JdbcUtils.insert(
-            "project_settings",
-            "pk_project_settings",
-            "pk_project",
-            "pk_pipeline_default",
-            "pk_index_route_default"
-        )
 
         private val MAPPER = RowMapper { rs, _ ->
             Project(
