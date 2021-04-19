@@ -58,7 +58,6 @@ class ProjectDaoTests : AbstractTest() {
     @Autowired
     lateinit var dataSourceService: DataSourceService
 
-
     @Test
     fun testGetMiniProject() {
         val minip = projectDao.getById(getProjectId())

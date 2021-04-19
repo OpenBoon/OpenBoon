@@ -26,8 +26,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
-import org.springframework.util.StreamUtils
-import java.nio.charset.Charset
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
@@ -37,7 +35,7 @@ interface WebHookPublisherService {
     fun handleAssetTriggers(asset: Asset, trigger: TriggerType)
     fun testWebHook(wb: WebHook)
     fun testWebHook(spec: WebHookSpec)
-    fun makeAssetPayload(asset: Asset, trigger: TriggerType) : String
+    fun makeAssetPayload(asset: Asset, trigger: TriggerType): String
 }
 
 @Service
@@ -101,8 +99,10 @@ class WebHookPublisherServiceImpl constructor(
             val asset = ClassPathResource("webhooks/${trig.name}.json").inputStream.use {
                 Json.Mapper.readValue<Asset>(it)
             }
-            emitMessage("00000000-0000-0000-0000-000000000000",
-                makeAssetPayload(asset, trig), wb.url, wb.secretKey, trig)
+            emitMessage(
+                "00000000-0000-0000-0000-000000000000",
+                makeAssetPayload(asset, trig), wb.url, wb.secretKey, trig
+            )
         }
     }
 
@@ -112,12 +112,14 @@ class WebHookPublisherServiceImpl constructor(
             val asset = ClassPathResource("webhooks/${trig.name}.json").inputStream.use {
                 Json.Mapper.readValue<Asset>(it)
             }
-            emitMessage("00000000-0000-0000-0000-000000000000",
-                makeAssetPayload(asset, trig), spec.url, spec.secretKey, trig)
+            emitMessage(
+                "00000000-0000-0000-0000-000000000000",
+                makeAssetPayload(asset, trig), spec.url, spec.secretKey, trig
+            )
         }
     }
 
-    override fun makeAssetPayload(asset: Asset, trigger: TriggerType) : String {
+    override fun makeAssetPayload(asset: Asset, trigger: TriggerType): String {
         val project = projectDao.getById(getProjectId())
         val payload = mapOf(
             "asset" to asset,
