@@ -1,5 +1,5 @@
 describe('ProjectUsers', function () {
-  const USER_EMAIL = 'software@zorroa.com'
+  const USER_EMAIL = 'not-cypress@zorroa.com'
 
   it('can be added', function () {
     cy.login()
