@@ -56,6 +56,8 @@ exports[`<OrganizationUsersMenu /> should render properly 1`] = `
 }
 
 .emotion-2 ul {
+  max-height: 50vh;
+  overflow: scroll;
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
