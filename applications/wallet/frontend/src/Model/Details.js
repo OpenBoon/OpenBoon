@@ -26,8 +26,6 @@ import ModelAssetsDropdown from '../ModelAssets/Dropdown'
 import ModelLabels from '../ModelLabels'
 import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
-import Feature, { ENVS } from '../Feature'
-
 import ModelMatrixLink from './MatrixLink'
 
 import { onTrain } from './helpers'
@@ -262,9 +260,7 @@ const ModelDetails = () => {
           </ButtonGroup>
         </div>
 
-        <Feature flag="model-matrix-shortcut-feature-flag" envs={[ENVS.QA]}>
-          <ModelMatrixLink projectId={projectId} modelId={modelId} />
-        </Feature>
+        <ModelMatrixLink projectId={projectId} modelId={modelId} />
       </div>
 
       <Tabs
