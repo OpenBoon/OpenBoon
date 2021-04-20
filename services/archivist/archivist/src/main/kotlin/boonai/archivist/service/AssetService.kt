@@ -615,7 +615,7 @@ class AssetServiceImpl : AssetService {
     private fun deleteTemporaryAssets(
         indexedIds: MutableList<String>,
         docs: Map<String, MutableMap<String, Any>>
-    ) : BatchDeleteAssetResponse {
+    ): BatchDeleteAssetResponse {
         val temporaryAssets = indexedIds.filter { id ->
             docs[id]?.let {
                 Asset(id, it).getAttr("aux.transient") as Boolean?
