@@ -1,7 +1,6 @@
 import base64
 import binascii
 import datetime
-import decimal
 import json
 import logging
 import os
@@ -16,6 +15,7 @@ import requests
 
 from .entity.exception import BoonSdkException
 from .entity.storage import StoredFile
+from .util import to_json
 
 logger = logging.getLogger(__name__)
 
@@ -481,47 +481,6 @@ class SearchResult:
 
     def __getitem__(self, idx):
         return self.items[idx]
-
-
-def to_json(obj, indent=None):
-    """
-    Convert the given object to a JSON string using
-    the BoonSdkJsonEncoder.
-
-    Args:
-        obj (mixed): any json serializable python object.
-        indent (int): The indentation level for the json, or None for compact.
-    Returns:
-        str: The serialized object
-
-    """
-    val = json.dumps(obj, cls=BoonSdkJsonEncoder, indent=indent)
-    if logger.getEffectiveLevel() == logging.DEBUG:
-        logger.debug("json: %s" % val)
-    return val
-
-
-class BoonSdkJsonEncoder(json.JSONEncoder):
-    """
-    JSON encoder for with Boon AI specific serialization defaults.
-    """
-
-    def default(self, obj):
-        if hasattr(obj, 'for_json'):
-            return obj.for_json()
-        elif isinstance(obj, (set, frozenset)):
-            return list(obj)
-        elif isinstance(obj, datetime.datetime):
-            return obj.isoformat()
-        elif isinstance(obj, datetime.date):
-            return obj.isoformat()
-        elif isinstance(obj, datetime.time):
-            return obj.isoformat()
-        elif isinstance(obj, decimal.Decimal):
-            return float(obj)
-
-        # Let the base class default method raise the TypeError
-        return json.JSONEncoder.default(self, obj)
 
 
 class BoonClientException(BoonSdkException):

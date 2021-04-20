@@ -10,8 +10,7 @@ import base64
 from enum import Enum
 from boonflow import FatalProcessorException
 from boonflow.storage import file_storage, StorageException
-from boonsdk.client import BoonSdkJsonEncoder
-from boonsdk.util import as_id
+from boonsdk.util import as_id, BoonSdkJsonEncoder
 
 logger = logging.getLogger(__name__)
 
