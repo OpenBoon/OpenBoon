@@ -2,27 +2,61 @@ import PropTypes from 'prop-types'
 
 import { colors, constants } from '../Styles'
 
-import { SCROLLBAR_RESIZE_HANDLE_SIZE } from './helpers'
+import {
+  SCROLLBAR_RESIZE_HANDLE_SIZE,
+  SCROLLBAR_TRACK_MARGIN_WIDTH,
+} from './helpers'
 
 let origin
 let scrollbarTrackWidth
 let scrollbarWidth
+let scrollbarOffsetLeft
+let scrollbarRight
+let maxScrollbarRight
+let pointerToRightEdgeDiff
 
 const TimelineScrollbarRightHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
-    const difference = clientX - origin
+    const rightDifference = clientX - origin
 
-    const newZoom = ((scrollbarWidth + difference) / scrollbarTrackWidth) * 100
+    // clamp left handle difference when it touches left edge of track
+    const leftDifference = Math.min(scrollbarOffsetLeft, rightDifference)
 
-    // prevent handles from overlapping
-    const minZoom =
-      ((SCROLLBAR_RESIZE_HANDLE_SIZE * 2) / scrollbarTrackWidth) * 100
+    const newWidth = scrollbarWidth + rightDifference + leftDifference
 
-    const clampedZoom = Math.max(minZoom, Math.min(newZoom, 100))
+    // width when the scrollbar thumb is 0
+    const minWidth = SCROLLBAR_RESIZE_HANDLE_SIZE * 2
+
+    const maxWidth = scrollbarTrackWidth - SCROLLBAR_TRACK_MARGIN_WIDTH * 2
+
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, newWidth))
+
+    // calculate when right handle is touching right edge of the track
+    const isMaxExpandedToRight =
+      scrollbarRight + rightDifference > maxScrollbarRight
+
+    // the distance the pointer drags the handle
+    // beyond the right edge of the track
+    const displacedLeftOffset = isMaxExpandedToRight
+      ? clientX + pointerToRightEdgeDiff - maxScrollbarRight
+      : 0
+
+    const minWidthLeftOffset =
+      scrollbarWidth / 2 - SCROLLBAR_RESIZE_HANDLE_SIZE + scrollbarOffsetLeft
+
+    // prevent scroll when scrollbar is at minWidth
+    const newOffsetLeft =
+      clampedWidth === minWidth
+        ? minWidthLeftOffset
+        : Math.max(
+            0,
+            scrollbarOffsetLeft - rightDifference - displacedLeftOffset,
+          )
 
     /* eslint-disable no-param-reassign */
-    scrollbarRef.current.style.width = `${clampedZoom}%`
+    scrollbarRef.current.style.width = `${clampedWidth}px`
+    scrollbarRef.current.style.left = `${newOffsetLeft}px`
   }
 
   /* istanbul ignore next */
@@ -35,10 +69,24 @@ const TimelineScrollbarRightHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
   const handleMouseDown = ({ clientX }) => {
     origin = clientX
 
-    scrollbarWidth = scrollbarRef.current?.getBoundingClientRect().width || 0
+    scrollbarOffsetLeft = scrollbarRef.current?.offsetLeft
 
-    scrollbarTrackWidth =
-      scrollbarTrackRef.current?.getBoundingClientRect().width || 0
+    const {
+      width: sbWidth = 0,
+      right: sbRight = 0,
+    } = scrollbarRef.current?.getBoundingClientRect()
+
+    scrollbarWidth = sbWidth
+    scrollbarRight = sbRight
+
+    const {
+      width: trackWidth = 0,
+      right: trackRight = 0,
+    } = scrollbarTrackRef.current?.getBoundingClientRect()
+
+    scrollbarTrackWidth = trackWidth
+    maxScrollbarRight = trackRight - SCROLLBAR_TRACK_MARGIN_WIDTH
+    pointerToRightEdgeDiff = scrollbarRight - clientX
 
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', handleMouseUp)
