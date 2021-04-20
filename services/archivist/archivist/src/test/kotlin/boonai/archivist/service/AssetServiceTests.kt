@@ -613,8 +613,7 @@ class AssetServiceTests : AbstractTest() {
 
         // Max + 1
         val batchCreate = BatchCreateAssetsRequest(
-            assets =
-                (0..maxBatchSize).map { AssetSpec("gs://cat/large-brown-cat-$it.jpg") }
+            assets = (0..maxBatchSize).map { AssetSpec("gs://cat/large-brown-cat-$it.jpg") }
 
         )
         val createRsp = assetService.batchCreate(batchCreate)
@@ -643,6 +642,7 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(2, indexRsp.indexed.size)
 
         assertNotNull(assetService.getAsset(createRsp.created[1]))
+        assertEquals(1, indexRsp.transient!!.deleted.size)
         assertThrows<EmptyResultDataAccessException> {
             assetService.getAsset(createRsp.created[0])
         }

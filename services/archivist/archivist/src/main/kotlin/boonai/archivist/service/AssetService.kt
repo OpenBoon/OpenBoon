@@ -604,8 +604,9 @@ class AssetServiceImpl : AssetService {
                 }
             }
 
-            deleteTemporaryAssets(indexedIds, docs)
-            BatchIndexResponse(indexedIds, failedAssets)
+            indexRoutingService.getProjectRestClient().refresh()
+            val transientResponse = deleteTemporaryAssets(indexedIds, docs)
+            BatchIndexResponse(indexedIds, failedAssets, transientResponse)
         } else {
             BatchIndexResponse(emptyList(), failedAssets)
         }
@@ -614,13 +615,13 @@ class AssetServiceImpl : AssetService {
     private fun deleteTemporaryAssets(
         indexedIds: MutableList<String>,
         docs: Map<String, MutableMap<String, Any>>
-    ) {
+    ) : BatchDeleteAssetResponse {
         val temporaryAssets = indexedIds.filter { id ->
             docs[id]?.let {
                 Asset(id, it).getAttr("aux.transient") as Boolean?
             } ?: false
         }
-        batchDelete(temporaryAssets.toSet())
+        return batchDelete(temporaryAssets.toSet())
     }
 
     override fun batchDelete(ids: Set<String>): BatchDeleteAssetResponse {
