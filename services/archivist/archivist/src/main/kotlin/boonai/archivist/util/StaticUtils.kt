@@ -1,5 +1,6 @@
 package boonai.archivist.util
 
+import boonai.archivist.domain.InvalidRequestException
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationFeature
@@ -7,6 +8,8 @@ import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.math.BigDecimal
+import java.net.InetAddress
+import java.net.URI
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.time.Instant
@@ -89,4 +92,29 @@ fun formatDuration(seconds: Double): String {
         dur.nano / 1000000
     )
     return if (seconds < 0) "-$positive" else positive
+}
+
+fun validateUrl(url: String, testMode: Boolean) {
+
+    if (url.length > 512) {
+        throw InvalidRequestException("WebHook URL is too long")
+    }
+
+    val uri = try {
+        URI.create(url)
+    } catch (e: Exception) {
+        throw InvalidRequestException("Improperly formed webhook URL.")
+    }
+
+    if (uri.scheme !in listOf("http", "https")) {
+        throw InvalidRequestException("Improperly formed webhook URL, must be http or https.")
+    }
+
+    // If we're not using a pubsub emulator then we gotta check address.
+    if (!testMode) {
+        val addr = InetAddress.getByName(uri.host)
+        if (addr.isSiteLocalAddress || addr.isLoopbackAddress) {
+            throw InvalidRequestException("You cannot set a webhook URL to a non-public IP address")
+        }
+    }
 }

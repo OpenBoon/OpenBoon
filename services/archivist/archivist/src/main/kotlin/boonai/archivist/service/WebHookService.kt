@@ -9,12 +9,11 @@ import boonai.archivist.repository.CustomWebHookDao
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.repository.WebHookDao
 import boonai.archivist.security.getProjectId
+import boonai.archivist.util.validateUrl
 import boonai.common.service.security.getZmlpActor
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.net.InetAddress
-import java.net.URI
 import java.util.UUID
 
 interface WebHookService {
@@ -41,10 +40,12 @@ class WebHookServiceImpl constructor(
         val time = System.currentTimeMillis()
         val actor = getZmlpActor().toString()
         spec.triggers.sortBy { it.ordinal }
+
         if (spec.triggers.isEmpty()) {
             throw InvalidRequestException("You must have at least 1 trigger.")
         }
-        validateUrl(spec.url)
+
+        this.validateUrl(spec.url)
 
         val hook = WebHook(
             id,
@@ -100,28 +101,8 @@ class WebHookServiceImpl constructor(
      * Make sure we're not using any invalid IP addresses.
      */
     override fun validateUrl(url: String) {
-
-        if (url.length > 512) {
-            throw InvalidRequestException("WebHook URL is too long")
-        }
-
-        val uri = try {
-            URI.create(url)
-        } catch (e: Exception) {
-            throw InvalidRequestException("Improperly formed webhook URL.")
-        }
-
-        if (uri.scheme !in listOf("http", "https")) {
-            throw InvalidRequestException("Improperly formed webhook URL, must be http or https.")
-        }
-
-        // If we're not using a pubsub emulator then we gotta check address.
-        if (System.getenv("PUBSUB_EMULATOR_HOST") == null) {
-            val addr = InetAddress.getByName(uri.host)
-            if (addr.isSiteLocalAddress || addr.isLoopbackAddress) {
-                throw InvalidRequestException("You cannot set a webhook URL to a non-public IP address")
-            }
-        }
+        val testMode = System.getenv("PUBSUB_EMULATOR_HOST") != null
+        return validateUrl(url, testMode)
     }
 
     companion object {

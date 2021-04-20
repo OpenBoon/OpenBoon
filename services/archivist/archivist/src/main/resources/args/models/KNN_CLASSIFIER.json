@@ -1,0 +1,9 @@
+{
+  "args": {
+    "n_clusters": {
+      "type": "integer",
+      "defaultValue": 15,
+      "description": "If no labels are setup, this many automatic cluster groups will be created. "
+    }
+  }
+}
