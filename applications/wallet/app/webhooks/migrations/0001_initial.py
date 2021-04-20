@@ -7,9 +7,10 @@ def add_triggers(apps, schema_editor):
     Trigger = apps.get_model('webhooks', 'Trigger')
     Trigger.objects.bulk_create([
         Trigger(name='AssetAnalyzed', displayName='Asset Analyzed',
-                description='Asset is added to the Boon AI with initial analysis.'),
+                description='A webhook is triggered when an asset is added with initial analysis.'),
         Trigger(name='AssetModified', displayName='Asset Modified',
-                description='Asset is modified through additional analysis or manual editing.')
+                description='A webhook is triggered when an asset is modified through '
+                            'analysis or manually.')
     ], ignore_conflicts=True)
 
 
