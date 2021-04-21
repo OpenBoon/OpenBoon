@@ -1,6 +1,7 @@
 import logging
 import tempfile
 import unittest
+import uuid
 from unittest.mock import patch
 
 import pytest
@@ -26,8 +27,24 @@ class ModelAppTests(unittest.TestCase):
             'fileId': '/abc/123/345/foo.zip'
         }
 
+        self.arg_schema = {
+            "args": {
+                "n_clusters": {
+                    "type": "integer",
+                    "defaultValue": 15,
+                    "description": "Cluster groups"
+                }
+            }
+        }
+
     @patch.object(BoonClient, 'get')
     def test_get_model(self, get_patch):
+        get_patch.return_value = self.model_data
+        model = self.app.models.get_model(str(uuid.uuid4()))
+        self.assert_model(model)
+
+    @patch.object(BoonClient, 'post')
+    def test_get_model_by_name(self, get_patch):
         get_patch.return_value = self.model_data
         model = self.app.models.get_model('12345')
         self.assert_model(model)
@@ -202,12 +219,13 @@ class ModelAppTests(unittest.TestCase):
 
     @patch.object(BoonClient, 'get')
     def test_download_labeled_images(self, get_patch):
-        raw = {'id': '12345', 'type': 'TF_CLASSIFIER'}
+        mid = str(uuid.uuid4())
+        raw = {'id': mid, 'type': 'TF_CLASSIFIER'}
         model = Model(raw)
         get_patch.return_value = raw
         dl = self.app.models.download_labeled_images(model, 'objects_coco', '/tmp/dstest')
         assert '/tmp/dstest' == dl.dst_dir
-        assert '12345' == dl.model.id
+        assert mid == dl.model.id
 
     @patch.object(BoonClient, 'get')
     def test_get_model_type_info(self, get_patch):
@@ -268,3 +286,30 @@ class ModelAppTests(unittest.TestCase):
 
         rsp = self.app.models.approve_model(model)
         assert rsp['success']
+
+    @patch.object(BoonClient, 'get')
+    def test_get_model_type_training_args(self, get_patch):
+        get_patch.return_value = self.arg_schema
+        rsp = self.app.models.get_model_type_training_args(ModelType.KNN_CLASSIFIER)
+        assert rsp == self.arg_schema
+
+    @patch.object(BoonClient, 'get')
+    def test_get_model_training_args(self, get_patch):
+        get_patch.return_value = {"n_clusters": 5}
+        model = Model({'id': '12345', 'type': 'TF_CLASSIFIER'})
+        rsp = self.app.models.get_training_args(model)
+        assert rsp == {"n_clusters": 5}
+
+    @patch.object(BoonClient, 'patch')
+    def test_set_training_arg(self, get_patch):
+        get_patch.return_value = {"n_clusters": 3}
+        model = Model({'id': '12345', 'type': 'TF_CLASSIFIER'})
+        rsp = self.app.models.set_training_arg(model, 'n_clusters', 3)
+        assert rsp == {"n_clusters": 3}
+
+    @patch.object(BoonClient, 'put')
+    def test_set_training_args(self, put_patch):
+        put_patch.return_value = {"n_clusters": 5}
+        model = Model({'id': '12345', 'type': 'TF_CLASSIFIER'})
+        rsp = self.app.models.set_training_args(model, {"n_clusters": 5})
+        assert rsp == {"n_clusters": 5}

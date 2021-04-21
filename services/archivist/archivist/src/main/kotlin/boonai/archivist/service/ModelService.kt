@@ -1,5 +1,7 @@
 package boonai.archivist.service
 
+import boonai.archivist.domain.ArgSchema
+import boonai.archivist.domain.Asset
 import boonai.archivist.domain.Category
 import boonai.archivist.domain.FileType
 import boonai.archivist.domain.GenericBatchUpdateResponse
@@ -14,6 +16,7 @@ import boonai.archivist.domain.ModelFilter
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelTrainingRequest
+import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.PipelineMod
 import boonai.archivist.domain.PipelineModSpec
 import boonai.archivist.domain.PipelineModUpdate
@@ -75,14 +78,17 @@ interface ModelService {
     fun find(filter: ModelFilter): KPagedList<Model>
     fun findOne(filter: ModelFilter): Model
     fun publishModel(model: Model, req: ModelPublishRequest): PipelineMod
-    fun setModelArgs(model: Model, req: ModelPublishRequest): PipelineMod
     fun applyModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun testModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun deleteModel(model: Model)
     fun getLabelCounts(model: Model): Map<String, Long>
     fun wrapSearchToExcludeTrainingSet(model: Model, search: Map<String, Any>): Map<String, Any>
+    fun setTrainingArgs(model: Model, args: Map<String, Any>)
+    fun patchTrainingArgs(model: Model, patch: Map<String, Any>)
+    fun getTrainingArgSchema(type: ModelType): ArgSchema
 
     /**
+     *
      * Update a give label to a new label name.  If the new label name is null or
      * empty then remove the label.
      */
@@ -105,7 +111,8 @@ class ModelServiceImpl(
     val pipelineModService: PipelineModService,
     val indexRoutingService: IndexRoutingService,
     val assetSearchService: AssetSearchService,
-    val fileStorageService: ProjectStorageService
+    val fileStorageService: ProjectStorageService,
+    val argValidationService: ArgValidationService
 ) : ModelService {
 
     override fun generateModuleName(spec: ModelSpec): String {
@@ -118,7 +125,6 @@ class ModelServiceImpl(
         val time = System.currentTimeMillis()
         val id = UUIDGen.uuid1.generate()
         val actor = getZmlpActor()
-
         val moduleName = generateModuleName(spec)
 
         if (moduleName.trim().isEmpty() || !moduleName.matches(modelNameRegex)) {
@@ -132,6 +138,8 @@ class ModelServiceImpl(
             ProjectStorageEntity.MODELS, id.toString(), "__TAG__", "model.zip"
         )
 
+        argValidationService.validateArgsUnknownOnly("models/${spec.type.name}", spec.trainingArgs)
+
         val model = Model(
             id,
             getProjectId(),
@@ -142,6 +150,7 @@ class ModelServiceImpl(
             "Training model: ${spec.name} - [${spec.type.objective}]",
             false,
             spec.applySearch, // VALIDATE THIS PARSES.
+            spec.trainingArgs,
             time,
             time,
             actor.toString(),
@@ -176,16 +185,16 @@ class ModelServiceImpl(
     }
 
     override fun trainModel(model: Model, request: ModelTrainingRequest): Job {
-        /**
-         * The latest tag is always trained.
-         */
-        val trainArgs = model.type.trainArgs.plus(
-            mutableMapOf(
+
+        val trainArgs = argValidationService.buildArgs(
+            getTrainingArgSchema(model.type), model.trainingArgs
+        ).plus(
+            mapOf<String, Any?>(
                 "model_id" to model.id.toString(),
                 "post_action" to (request.postAction.name),
                 "tag" to "latest"
             )
-        ).plus(request.args ?: emptyMap())
+        )
 
         logger.info("Training model ID ${model.id} $trainArgs")
         logger.info("Launching train job ${model.type.trainProcessor} ${request.postAction}")
@@ -317,19 +326,21 @@ class ModelServiceImpl(
         }
     }
 
-    override fun setModelArgs(model: Model, req: ModelPublishRequest): PipelineMod {
-        val mod = pipelineModService.findByName(model.getModuleName(), false)
-            ?: throw EmptyResultDataAccessException("Module not found, must be trained or published first", 1)
+    override fun setTrainingArgs(model: Model, args: Map<String, Any>) {
+        argValidationService.validateArgs("models/${model.type.name}", args)
+        model.trainingArgs = args
+    }
 
-        val ops = buildModuleOps(model, req)
-        val update = PipelineModUpdate(
-            mod.name, mod.description, model.type.provider,
-            mod.category, mod.type,
-            listOf(FileType.Documents, FileType.Images),
-            ops
-        )
-        pipelineModService.update(mod.id, update)
-        return pipelineModService.get(mod.id)
+    override fun patchTrainingArgs(model: Model, patch: Map<String, Any>) {
+        val args = Asset(model.trainingArgs.toMutableMap())
+        for ((k, v) in patch) {
+            args.setAttr(k, v)
+        }
+        model.trainingArgs = args.document
+    }
+
+    override fun getTrainingArgSchema(type: ModelType): ArgSchema {
+        return argValidationService.getArgSchema("models/${type.name}")
     }
 
     override fun deleteModel(model: Model) {
@@ -408,11 +419,9 @@ class ModelServiceImpl(
                     ProcessorRef(
                         model.type.classifyProcessor,
                         StandardContainers.ANALYSIS,
-                        model.type.classifyArgs.plus(
-                            mapOf(
-                                "model_id" to model.id.toString(),
-                                "version" to System.currentTimeMillis()
-                            )
+                        mutableMapOf(
+                            "model_id" to model.id.toString(),
+                            "version" to System.currentTimeMillis()
                         ).plus(req.args),
                         module = model.name
                     )

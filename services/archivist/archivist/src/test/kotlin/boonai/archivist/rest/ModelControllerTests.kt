@@ -6,7 +6,6 @@ import boonai.archivist.domain.AutomlSessionSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
-import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.UpdateLabelRequest
@@ -326,30 +325,95 @@ class ModelControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testSetModelArguments() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_UPLOADED_CLASSIFIER)
+    fun testSetModelTrainingArguments() {
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_CLASSIFIER)
         val model = modelService.createModel(modelSpec)
-        modelService.publishModel(model, ModelPublishRequest(args = mapOf("foo" to "bing")))
-
-        val req = ModelPublishRequest(args = mapOf("foo" to "bar"))
+        val args = mapOf("epochs" to 20)
 
         mvc.perform(
-            MockMvcRequestBuilders.put("/api/v3/models/${model.id}/_set_args")
+            MockMvcRequestBuilders.put("/api/v3/models/${model.id}/_training_args")
                 .headers(admin())
-                .content(Json.serialize(req))
+                .content(Json.serialize(args))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
-                    "$.category",
-                    CoreMatchers.equalTo("Custom Models")
+                    "$.epochs",
+                    CoreMatchers.equalTo(20)
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testPatchModelTrainingArguments() {
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_CLASSIFIER)
+        val model = modelService.createModel(modelSpec)
+        val args = mapOf("epochs" to 20)
+
+        mvc.perform(
+            MockMvcRequestBuilders.patch("/api/v3/models/${model.id}/_training_args")
+                .headers(admin())
+                .content(Json.serialize(args))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.epochs",
+                    CoreMatchers.equalTo(20)
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testGetModelArgSchema() {
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_CLASSIFIER)
+        val model = modelService.createModel(modelSpec)
+        val args = mapOf("epochs" to 20)
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/models/_types/${model.type}/_training_args")
+                .headers(admin())
+                .content(Json.serialize(args))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.args.epochs.type",
+                    CoreMatchers.equalTo("Integer")
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testGetResolvedArgs() {
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_CLASSIFIER)
+        val model = modelService.createModel(modelSpec)
+        val args = mapOf("epochs" to 20)
+
+        modelService.setTrainingArgs(model, args)
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/models/${model.id}/_training_args")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.epochs",
+                    CoreMatchers.equalTo(20)
                 )
             )
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
-                    "$.ops[0].apply[0].args.foo",
-                    CoreMatchers.equalTo("bar")
+                    "$.validation_split",
+                    CoreMatchers.equalTo(0.2)
                 )
             )
             .andReturn()
