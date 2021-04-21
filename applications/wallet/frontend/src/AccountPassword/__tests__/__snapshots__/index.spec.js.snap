@@ -385,6 +385,7 @@ Array [
           className="emotion-4"
         >
           <input
+            autoComplete="off"
             autoFocus={true}
             className="emotion-5"
             disabled={false}
@@ -414,6 +415,7 @@ Array [
           className="emotion-4"
         >
           <input
+            autoComplete="off"
             className="emotion-5"
             disabled={false}
             id="newPassword"
@@ -442,6 +444,7 @@ Array [
           className="emotion-4"
         >
           <input
+            autoComplete="off"
             className="emotion-5"
             disabled={false}
             id="confirmPassword"

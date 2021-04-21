@@ -194,6 +194,7 @@ exports[`<LabelEdit /> should render properly 1`] = `
       className="emotion-3"
     >
       <input
+        autoComplete="off"
         autoFocus={true}
         className="emotion-4"
         disabled={false}

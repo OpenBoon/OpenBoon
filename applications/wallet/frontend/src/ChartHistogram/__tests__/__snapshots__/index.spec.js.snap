@@ -1088,6 +1088,7 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
             className="emotion-24"
           >
             <input
+              autoComplete="off"
               className="emotion-25"
               disabled={false}
               id="values"

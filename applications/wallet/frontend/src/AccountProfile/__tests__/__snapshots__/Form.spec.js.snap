@@ -407,6 +407,7 @@ Array [
         className="emotion-3"
       >
         <input
+          autoComplete="off"
           autoFocus={true}
           className="emotion-4"
           disabled={false}
@@ -436,6 +437,7 @@ Array [
         className="emotion-3"
       >
         <input
+          autoComplete="off"
           className="emotion-4"
           disabled={false}
           id="lastName"

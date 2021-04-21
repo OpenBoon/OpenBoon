@@ -96,6 +96,7 @@ const Input = ({
             ...BORDER_STYLES({ hasError }),
           }}
           disabled={isDisabled}
+          autoComplete="off"
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...props}
         />
