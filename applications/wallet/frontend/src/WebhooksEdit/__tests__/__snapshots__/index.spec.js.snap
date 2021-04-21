@@ -760,6 +760,7 @@ Array [
           className="emotion-10"
         >
           <input
+            autoComplete="off"
             autoFocus={true}
             className="emotion-11"
             disabled={false}
@@ -808,6 +809,7 @@ Array [
           className="emotion-10"
         >
           <input
+            autoComplete="off"
             className="emotion-11"
             disabled={false}
             id="secretKey"
@@ -1808,6 +1810,7 @@ Array [
           className="emotion-10"
         >
           <input
+            autoComplete="off"
             autoFocus={true}
             className="emotion-11"
             disabled={false}
@@ -1856,6 +1859,7 @@ Array [
           className="emotion-10"
         >
           <input
+            autoComplete="off"
             className="emotion-11"
             disabled={false}
             id="secretKey"
@@ -2823,6 +2827,7 @@ Array [
           className="emotion-7"
         >
           <input
+            autoComplete="off"
             autoFocus={true}
             className="emotion-8"
             disabled={false}
@@ -2876,6 +2881,7 @@ Array [
           className="emotion-7"
         >
           <input
+            autoComplete="off"
             className="emotion-18"
             disabled={false}
             id="secretKey"
