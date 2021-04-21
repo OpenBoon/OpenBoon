@@ -9,15 +9,17 @@ import requests
 from flask import Flask, jsonify
 from gevent.pywsgi import WSGIServer
 
-from .simhash import get_similarity_hash, SimilarityModel
+from boonai_analysis.utils.simengine import SimilarityEngine
 
 app = Flask(__name__)
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('mlbbq')
 
 auth_url = os.environ.get("BOONAI_SECURITY_AUTHSERVER_URL", "http://auth-server:9090")
 auth_endpoint = "{}/auth/v1/auth-token".format(auth_url)
 
-SimilarityModel.load()
+
+class Resources:
+    simengine = SimilarityEngine()
 
 
 def main():
@@ -28,26 +30,29 @@ def main():
                         action="store_true")
 
     args = parser.parse_args()
-    if os.environ.get("BOONAI_DEBUG") or args.verbose:
-        logging.basicConfig(level=logging.DEBUG)
-    else:
-        logging.basicConfig(level=logging.INFO)
 
     flask_log = logging.getLogger('werkzeug')
     flask_log.disabled = True
     app.logger.disabled = True
 
+    if os.environ.get("BOONAI_DEBUG") or args.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
+
     print("Listening on port {}".format(args.port))
-    server = WSGIServer(('0.0.0.0', int(args.port)), app)
+    server = WSGIServer(('0.0.0.0', int(args.port)), app, log=None)
     server.serve_forever()
 
 
 @app.route('/ml/v1/sim-hash', methods=['POST'])
 def get_similarity_hashes():
-    authenticate(flask.request.headers.get("Authorization"))
+    user = authenticate(flask.request.headers.get("Authorization"))
     files = flask.request.files.getlist("files")
+    logger.info(f"Calculating {len(files)} simhash(s) for {user['name']}")
     try:
-        return jsonify([get_similarity_hash(imgdata.stream) for imgdata in files])
+        return jsonify([Resources.simengine.calculate_simhash(
+            imgdata.stream) for imgdata in files])
     except Exception as e:
         logger.exception("Failed to calculate similarity hash {}".format(e))
 
@@ -67,4 +72,8 @@ def authenticate(token):
     """
     rsp = requests.post(auth_endpoint, headers={"Authorization": token})
     if rsp.status_code != 200:
-        raise Exception("Access denied")
+        flask.abort(403, description="Access is denied")
+    actor = rsp.json()
+    if 'AssetsRead' not in actor['permissions']:
+        flask.abort(403, description="Access is denied")
+    return actor

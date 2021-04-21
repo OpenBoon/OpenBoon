@@ -1560,6 +1560,8 @@ Array [
 }
 
 .emotion-3 ul {
+  max-height: 50vh;
+  overflow: scroll;
   list-style-type: none;
   padding: 0;
   padding-top: 4px;

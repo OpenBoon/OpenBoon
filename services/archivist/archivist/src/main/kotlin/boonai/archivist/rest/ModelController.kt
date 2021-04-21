@@ -1,5 +1,6 @@
 package boonai.archivist.rest
 
+import boonai.archivist.domain.ArgSchema
 import boonai.archivist.domain.AutomlSession
 import boonai.archivist.domain.AutomlSessionSpec
 import boonai.archivist.domain.GenericBatchUpdateResponse
@@ -17,6 +18,7 @@ import boonai.archivist.domain.PipelineMod
 import boonai.archivist.domain.PostTrainAction
 import boonai.archivist.domain.UpdateLabelRequest
 import boonai.archivist.repository.KPagedList
+import boonai.archivist.service.ArgValidationService
 import boonai.archivist.service.AutomlService
 import boonai.archivist.service.ModelService
 import boonai.archivist.util.HttpUtils
@@ -25,6 +27,7 @@ import io.swagger.annotations.ApiParam
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -36,7 +39,8 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 class ModelController(
     val modelService: ModelService,
-    val automlService: AutomlService
+    val automlService: AutomlService,
+    val argValidationService: ArgValidationService
 ) {
 
     @PreAuthorize("hasAuthority('AssetsImport')")
@@ -101,11 +105,35 @@ class ModelController(
         return modelService.publishModel(model, req ?: ModelPublishRequest())
     }
 
-    @ApiOperation("Set model arguments")
-    @PutMapping("/api/v3/models/{id}/_set_args")
-    fun setModelArguments(@PathVariable id: UUID, @RequestBody req: ModelPublishRequest): PipelineMod {
+    @ApiOperation("Set model training arguments")
+    @PutMapping("/api/v3/models/{id}/_training_args")
+    fun setTrainingArguments(@PathVariable id: UUID, @RequestBody args: Map<String, Any>): Any {
         val model = modelService.getModel(id)
-        return modelService.setModelArgs(model, req)
+        modelService.setTrainingArgs(model, args)
+        return model.trainingArgs
+    }
+
+    @ApiOperation("Set model training arguments")
+    @PatchMapping("/api/v3/models/{id}/_training_args")
+    fun patchTrainingArguments(@PathVariable id: UUID, @RequestBody args: Map<String, Any>): Any {
+        val model = modelService.getModel(id)
+        modelService.patchTrainingArgs(model, args)
+        return model.trainingArgs
+    }
+
+    @ApiOperation("Set model training arguments")
+    @GetMapping("/api/v3/models/{id}/_training_args")
+    fun resolveTrainingArguments(@PathVariable id: UUID): Any {
+        val model = modelService.getModel(id)
+        return argValidationService.buildArgs(
+            modelService.getTrainingArgSchema(model.type), model.trainingArgs
+        )
+    }
+
+    @ApiOperation("Get model training argument schema")
+    @GetMapping("/api/v3/models/_types/{type}/_training_args")
+    fun getTrainingArgumentSchema(@PathVariable type: String): ArgSchema {
+        return modelService.getTrainingArgSchema(ModelType.valueOf(type.toUpperCase()))
     }
 
     @ApiOperation("Delete a model")

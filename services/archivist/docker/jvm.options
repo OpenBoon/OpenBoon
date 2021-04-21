@@ -4,3 +4,4 @@
 -XX:+DisableExplicitGC
 -XX:+AlwaysPreTouch
 -XX:G1HeapRegionSize=16m
+-Xverify:none

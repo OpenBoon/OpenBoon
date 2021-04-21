@@ -1,13 +1,10 @@
-FROM boonai/py3-base
+FROM boonai/plugins-analysis
 USER root
 
 RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
     libgomp1 \
     libquadmath0 \
      --no-install-recommends
-
-WORKDIR /models
-RUN curl https://storage.googleapis.com/zorroa-public/models/resnet.tar.gz | tar -xz
 
 RUN mkdir /service
 COPY . /service
@@ -24,4 +21,3 @@ ENV PYTHONPATH="/service/pylib"
 USER mlbbq
 EXPOSE 8282
 ENTRYPOINT ["/service/bin/server.py"]
-

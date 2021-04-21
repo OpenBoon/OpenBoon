@@ -135,7 +135,6 @@ class MultipleWebSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/error").permitAll()
                 .and()
                 .csrf().disable()

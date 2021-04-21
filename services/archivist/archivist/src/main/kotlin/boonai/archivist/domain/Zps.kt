@@ -147,7 +147,7 @@ class ProcessorRef(
     var image: String,
 
     @ApiModelProperty("Args to pass to the Processor.")
-    var args: Map<String, Any>? = mutableMapOf(),
+    var args: Map<String, Any?>? = mutableMapOf(),
 
     @ApiModelProperty("List of Processor Refs to execute as part of this Processor Ref.")
     var execute: List<ProcessorRef>? = null,
