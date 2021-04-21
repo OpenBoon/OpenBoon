@@ -4,7 +4,7 @@ import tempfile
 
 from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule, PostTrainAction
 from ..training import TrainingSetDownloader
-from ..util import as_collection, as_id, zip_directory
+from ..util import as_collection, as_id, zip_directory, is_valid_uuid
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +47,10 @@ class ModelApp:
         Returns:
             Model: The model.
         """
-        return Model(self.app.client.get("/api/v3/models/{}".format(as_id(id))))
+        if is_valid_uuid(as_id(id)):
+            return Model(self.app.client.get("/api/v3/models/{}".format(as_id(id))))
+        else:
+            return self.find_one_model(name=id)
 
     def find_one_model(self, id=None, name=None, type=None):
         """
@@ -278,6 +281,18 @@ class ModelApp:
         type_name = getattr(model_type, 'name', str(model_type))
         return ModelTypeInfo(self.app.client.get(f'/api/v3/models/_types/{type_name}'))
 
+    def get_model_type_training_args(self, model_type):
+        """
+        Return a dictionary describing the available training args for a given Model.
+
+        Args:
+            model_type: (ModelType): A Model or ModelType object.
+        Returns:
+            dict: A dict describing the argument structure.
+        """
+        mtype = getattr(model_type, 'type', model_type).name
+        return self.app.client.get(f'/api/v3/models/_types/{mtype}/_training_args')
+
     def get_all_model_type_info(self):
         """
         Get all available ModelTypeInfo options.
@@ -312,3 +327,51 @@ class ModelApp:
             dict: A status dict.
         """
         return self.app.client.post('/api/v3/models/{}/_approve'.format(as_id(model)))
+
+    def set_training_args(self, model, args):
+        """
+        Replaces the training args for a a given model. Training args allow you to override
+        certain training options. You can get the full list of args by calling
+        the get_training_arg_schema() method.
+
+        Args:
+            model (Model): The model or unique model id.
+            args: (dict): A dictionary of arguments.
+
+        Returns:
+            dict: The new args
+        """
+        return self.app.client.put(f'/api/v3/models/{as_id(model)}/_training_args', args)
+
+    def set_training_arg(self, model, key, value):
+        """
+        Set a single training arg for a given mode. Training args allow you to override.
+        Certain training options. You can get the full list of args by calling
+        the get_training_arg_schema() method.
+
+        Args:
+            model: (Model): The model or unique model id.
+            key: (str): The field name.
+            value (mixed): A valid valu for the given arg.
+
+        Returns:
+           dict: The new args
+        """
+        body = {
+            key: value
+        }
+        return self.app.client.patch(f'/api/v3/models/{as_id(model)}/_training_args', body)
+
+    def get_training_args(self, model):
+        """
+        Get the resolved model training args.  This is a dictionary of values
+        which include both manually set and overridden values.
+
+        Args:
+            model (Model): The model or unique model id.
+
+        Returns:
+            dict: The resolved args
+
+        """
+        return self.app.client.get(f'/api/v3/models/{as_id(model)}/_training_args')

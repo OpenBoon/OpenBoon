@@ -5,7 +5,7 @@ import threading
 
 import zmq
 
-from boonsdk.client import BoonSdkJsonEncoder
+from boonsdk.util import BoonSdkJsonEncoder
 from .process import ProcessorExecutor
 from .reactor import Reactor
 
