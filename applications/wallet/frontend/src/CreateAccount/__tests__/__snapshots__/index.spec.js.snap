@@ -168,8 +168,8 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-13 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -883,8 +883,8 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 }
 
 .emotion-10 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -1601,8 +1601,8 @@ exports[`<CreateAccount /> should render properly when there is no token 2`] = `
 }
 
 .emotion-13 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }

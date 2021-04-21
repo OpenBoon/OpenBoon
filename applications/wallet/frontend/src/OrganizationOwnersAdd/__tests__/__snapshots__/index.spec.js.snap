@@ -3,8 +3,8 @@
 exports[`<OrganizationOwnersAdd /> should render properly 1`] = `
 Array [
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -319,8 +319,8 @@ Array [
 exports[`<OrganizationOwnersAdd /> should render properly 2`] = `
 Array [
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -679,8 +679,8 @@ exports[`<OrganizationOwnersAdd /> should render properly 3`] = `
 }
 
 .emotion-3 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -1040,8 +1040,8 @@ exports[`<OrganizationOwnersAdd /> should render properly 3`] = `
 exports[`<OrganizationOwnersAdd /> should render properly 4`] = `
 Array [
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
