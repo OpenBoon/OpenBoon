@@ -150,6 +150,17 @@ def health():
     return 'OK', 200
 
 
+@app.route('/queue')
+def queue():
+    """
+    Returns the size of the queue.
+
+    Returns:
+        tuple (str, int): The size of the queue.
+    """
+    return str(GlobalQueue.mqueue.qsize()), 200
+
+
 class GlobalQueue:
     """
     Stores a global copy of the managed queue.
