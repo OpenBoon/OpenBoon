@@ -151,7 +151,7 @@ def health():
 
 
 @app.route('/queue')
-def queue():
+def get_queue_size():
     """
     Returns the size of the queue.
 
