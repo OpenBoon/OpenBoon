@@ -24,20 +24,20 @@ const TimelineScrollbarHandle = ({
   const handleMouseMove = ({ clientX }) => {
     const direction = isLeft ? -1 : 1
 
-    const activeHandledifference = (clientX - origin) * direction
+    const selectedHandleDifference = (clientX - origin) * direction
 
-    const maxInactiveHandleDifference = isLeft
+    const maxSelectedHandleDifference = isLeft
       ? maxScrollbarRight - scrollbarRight
       : scrollbarOffsetLeft
 
-    // clamp inactive handle difference when active handle touches edge of track
-    const inactiveHandleDifference = Math.min(
-      maxInactiveHandleDifference,
-      activeHandledifference,
+    // clamp opposite handle difference when selected handle touches edge of track
+    const oppositeHandleDifference = Math.min(
+      maxSelectedHandleDifference,
+      selectedHandleDifference,
     )
 
     const newWidth =
-      scrollbarWidth + activeHandledifference + inactiveHandleDifference
+      scrollbarWidth + selectedHandleDifference + oppositeHandleDifference
 
     // width when the scrollbar thumb is 0
     const minWidth = SCROLLBAR_RESIZE_HANDLE_SIZE * 2
@@ -48,7 +48,7 @@ const TimelineScrollbarHandle = ({
 
     // calculate when right handle is touching right edge of the track
     const isMaxExpandedToRight =
-      scrollbarRight + activeHandledifference > maxScrollbarRight
+      scrollbarRight + selectedHandleDifference > maxScrollbarRight
 
     // the distance the pointer drags the handle
     // beyond the right edge of the track
@@ -61,7 +61,7 @@ const TimelineScrollbarHandle = ({
       scrollbarWidth / 2 - SCROLLBAR_RESIZE_HANDLE_SIZE + scrollbarOffsetLeft
 
     const computedOffsetLeft =
-      scrollbarOffsetLeft - activeHandledifference - displacedOffset
+      scrollbarOffsetLeft - selectedHandleDifference - displacedOffset
 
     // prevent scroll when scrollbar is at minWidth
     const newOffsetLeft =
