@@ -37,7 +37,7 @@ class ClipAnalysisProcessor(AssetProcessor):
 
         jpg_file = tempfile.mkstemp(".jpg")[1]
         extract_thumbnail_from_video(video_path, jpg_file, clip.start, psize)
-        simhash = self.sim.calculate_hash(jpg_file)
+        simhash = self.sim.calculate_simhash(jpg_file)
 
         prx = file_storage.projects.store_file(jpg_file, clip, "proxy", "proxy.jpg",
                                                {"width": psize[0], "height": psize[1]})
@@ -151,7 +151,7 @@ def analyze_timelines(app, sim, asset_id, timelines):
             current_time = clip.start
 
             extract_thumbnail_from_video(video_path, jpg_file, current_time, psize)
-            simhash = sim.calculate_hash(jpg_file)
+            simhash = sim.calculate_simhash(jpg_file)
 
         # If the clip has a bbox then we'll burn it into the proxy.
         if clip.bbox:

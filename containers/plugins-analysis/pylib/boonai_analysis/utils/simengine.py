@@ -1,8 +1,10 @@
+import os
+from collections import namedtuple
+from threading import Lock
+
 import cv2
 import mxnet
 import numpy as np
-from collections import namedtuple
-from threading import Lock
 
 Batch = namedtuple('Batch', ['data'])
 
@@ -11,7 +13,7 @@ class SimilarityEngine:
     """
     Calculates similarity hashes using MXNET Resnet152.
     """
-    default_model_path = "/models/resnet-152"
+    default_model_path = os.environ.get("SIMHASH_MODEL_PATH", "/models/resnet-152")
 
     def __init__(self, model_path=None):
         if not model_path:
@@ -19,28 +21,29 @@ class SimilarityEngine:
         self.mod = self._load_model(model_path)
         self.lock = Lock()
 
-    def calculate_hash(self, path):
+    def calculate_simhash(self, obj):
         """
         Calculate a similarity hash using the given file path.
 
         Args:
-            path (str): Path to the file.
+            obj (mixed): Path to the file or open file handle.
         Returns:
             str: The hash itself.
         """
-        return "".join([chr(item) for item in self.calculate_nparray_hash(path)])
+        img = self.load_image(obj)
+        return "".join([chr(item) for item in self.calculate_raw_simhash(img)])
 
-    def calculate_nparray_hash(self, path):
+    def calculate_raw_simhash(self, obj):
         """
-        Calculate a similarity hash using the given file path.
+        Calculate a raw nparray hash using the given cv image.
 
         Args:
-            path (str): Path to the file.
+            obj (mixed): A prepped nparray, file path, or file handle.
 
         Returns:
             numpy array: A numpy array of integers
         """
-        img = self._load_image(path)
+        img = self.load_image(obj)
         with self.lock:
             self.mod.forward(Batch([img]))
             features = self.mod.get_outputs()[0].asnumpy()
@@ -61,18 +64,16 @@ class SimilarityEngine:
         """
         return np.asarray([ord(c) for c in simhash], dtype=np.float64)
 
-    def _load_image(self, path):
+    def prep_cvimage(self, img):
         """
-        Load an image into a numpy array and prep it for mxnet.
+        Prep a CvImage for similarity and return a np array.
 
         Args:
-            path (str):
+            img:
 
         Returns:
-            NpArray: A numpy array.
-
+            nparray: A prepped np array.
         """
-        img = cv2.imread(path)
         img = cv2.resize(img, (224, 224))
         if img.shape == (224, 224):
             img = cv2.cvtColor(img, cv2.CV_GRAY2RGB)
@@ -80,6 +81,25 @@ class SimilarityEngine:
         img = np.swapaxes(img, 1, 2)
         img = img[np.newaxis, :]
         return mxnet.nd.array(img)
+
+    def load_image(self, obj):
+        """
+        Load an image representation as an nparray image.
+
+        Args:
+            obj (mixed): file path, or file handle.
+
+        Returns:
+            nparray: A loaded and prepped nparray
+        """
+        if isinstance(obj, str):
+            img = cv2.imread(obj)
+        elif getattr(obj, 'read', None):
+            img = cv2.imdecode(np.fromstring(obj.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+        else:
+            return obj
+
+        return self.prep_cvimage(img)
 
     def _load_model(self, path):
         """
