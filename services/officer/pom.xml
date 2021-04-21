@@ -76,7 +76,7 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-slides</artifactId>
-            <version>21.3</version>
+            <version>21.4</version>
             <classifier>jdk16</classifier>
         </dependency>
 
