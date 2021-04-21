@@ -94,7 +94,7 @@ services:
     image: boonai/ml-bbq:latest
     depends_on:
       - jvm-common
-      - plugins-models
+      - plugins-analysis
     ports:
       - "8282:8282"
     build:
