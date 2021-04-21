@@ -150,6 +150,17 @@ def health():
     return 'OK', 200
 
 
+@app.route('/queue')
+def get_queue_size():
+    """
+    Returns the size of the queue.
+
+    Returns:
+        tuple (str, int): The size of the queue.
+    """
+    return str(GlobalQueue.mqueue.qsize()), 200
+
+
 class GlobalQueue:
     """
     Stores a global copy of the managed queue.
@@ -176,14 +187,14 @@ if __name__ == '__main__':
 
     # Disables all these flask endpoint logs because the health check
     # fills the logs with garbage.
-    # flask_log = logging.getLogger('werkzeug')
-    # flask_log.disabled = True
-    # app.logger.disabled = True
+    flask_log = logging.getLogger('werkzeug')
+    flask_log.disabled = True
+    app.logger.disabled = True
 
     port = int(os.environ.get("SWIVEL_PORT", "5000"))
     logger.info(f'Swivel Listening on port: {port}')
     logger.info(f'GCP Project: {project_name}')
     logger.info(f'Subscription: {sub_name}')
 
-    server = WSGIServer(('0.0.0.0', port), app)
+    server = WSGIServer(('0.0.0.0', port), app, log=None)
     server.serve_forever()
