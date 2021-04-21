@@ -4,8 +4,7 @@ import { useRef } from 'react'
 import { colors, constants, spacing, zIndex } from '../Styles'
 
 import TimelineScrollbarThumb from './ScrollbarThumb'
-import TimelineScrollbarLeftHandle from './ScrollbarLeftHandle'
-import TimelineScrollbarRightHandle from './ScrollbarRightHandle'
+import TimelineScrollbarHandle from './ScrollbarHandle'
 
 import { SCROLLBAR_CONTAINER_HEIGHT } from './helpers'
 
@@ -61,18 +60,20 @@ const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
               borderRadius: constants.borderRadius.medium,
             }}
           >
-            <TimelineScrollbarLeftHandle
+            <TimelineScrollbarHandle
               scrollbarRef={scrollbarRef}
               scrollbarTrackRef={scrollbarTrackRef}
+              isLeft
             />
             <TimelineScrollbarThumb
               scrollbarRef={scrollbarRef}
               zoom={zoom}
               rulerRef={rulerRef}
             />
-            <TimelineScrollbarRightHandle
+            <TimelineScrollbarHandle
               scrollbarRef={scrollbarRef}
               scrollbarTrackRef={scrollbarTrackRef}
+              isLeft={false}
             />
           </div>
         </div>

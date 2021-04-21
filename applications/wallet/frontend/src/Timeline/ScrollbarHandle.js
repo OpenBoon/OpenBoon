@@ -13,19 +13,31 @@ let scrollbarWidth
 let scrollbarOffsetLeft
 let scrollbarRight
 let maxScrollbarRight
+let pointerToRightEdgeDiff
 
-const TimelineScrollbarLeftHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
+const TimelineScrollbarHandle = ({
+  scrollbarRef,
+  scrollbarTrackRef,
+  isLeft,
+}) => {
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
-    const leftDifference = origin - clientX
+    const direction = isLeft ? -1 : 1
 
-    // clamp right handle difference when it touches right edge of track
-    const rightDifference = Math.min(
-      maxScrollbarRight - scrollbarRight,
-      leftDifference,
+    const activeHandledifference = (clientX - origin) * direction
+
+    const maxInactiveHandleDifference = isLeft
+      ? maxScrollbarRight - scrollbarRight
+      : scrollbarOffsetLeft
+
+    // clamp inactive handle difference when active handle touches edge of track
+    const inactiveHandleDifference = Math.min(
+      maxInactiveHandleDifference,
+      activeHandledifference,
     )
 
-    const newWidth = scrollbarWidth + leftDifference + rightDifference
+    const newWidth =
+      scrollbarWidth + activeHandledifference + inactiveHandleDifference
 
     // width when the scrollbar thumb is 0
     const minWidth = SCROLLBAR_RESIZE_HANDLE_SIZE * 2
@@ -34,14 +46,28 @@ const TimelineScrollbarLeftHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
 
     const clampedWidth = Math.max(minWidth, Math.min(maxWidth, newWidth))
 
+    // calculate when right handle is touching right edge of the track
+    const isMaxExpandedToRight =
+      scrollbarRight + activeHandledifference > maxScrollbarRight
+
+    // the distance the pointer drags the handle
+    // beyond the right edge of the track
+    const displacedOffset =
+      isMaxExpandedToRight && !isLeft
+        ? clientX + pointerToRightEdgeDiff - maxScrollbarRight
+        : 0
+
     const minWidthLeftOffset =
       scrollbarWidth / 2 - SCROLLBAR_RESIZE_HANDLE_SIZE + scrollbarOffsetLeft
+
+    const computedOffsetLeft =
+      scrollbarOffsetLeft - activeHandledifference - displacedOffset
 
     // prevent scroll when scrollbar is at minWidth
     const newOffsetLeft =
       clampedWidth === minWidth
         ? minWidthLeftOffset
-        : Math.max(0, scrollbarOffsetLeft - leftDifference)
+        : Math.max(0, computedOffsetLeft)
 
     /* eslint-disable no-param-reassign */
     scrollbarRef.current.style.width = `${clampedWidth}px`
@@ -75,6 +101,7 @@ const TimelineScrollbarLeftHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
 
     scrollbarTrackWidth = trackWidth
     maxScrollbarRight = trackRight - SCROLLBAR_TRACK_MARGIN_WIDTH
+    pointerToRightEdgeDiff = scrollbarRight - clientX
 
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', handleMouseUp)
@@ -88,8 +115,11 @@ const TimelineScrollbarLeftHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
         backgroundColor: colors.structure.steel,
         width: SCROLLBAR_RESIZE_HANDLE_SIZE,
         border: 0,
-        borderTopLeftRadius: constants.borderRadius.medium,
-        borderBottomLeftRadius: constants.borderRadius.medium,
+        [isLeft ? 'borderTopLeftRadius' : 'borderTopRightRadius']: constants
+          .borderRadius.medium,
+        [isLeft
+          ? 'borderBottomLeftRadius'
+          : 'borderBottomRightRadius']: constants.borderRadius.medium,
         ':hover, :active': { backgroundColor: colors.structure.pebble },
       }}
       onMouseDown={handleMouseDown}
@@ -97,7 +127,7 @@ const TimelineScrollbarLeftHandle = ({ scrollbarRef, scrollbarTrackRef }) => {
   )
 }
 
-TimelineScrollbarLeftHandle.propTypes = {
+TimelineScrollbarHandle.propTypes = {
   scrollbarRef: PropTypes.shape({
     current: PropTypes.shape({
       offsetLeft: PropTypes.number,
@@ -112,6 +142,7 @@ TimelineScrollbarLeftHandle.propTypes = {
       getBoundingClientRect: PropTypes.func.isRequired,
     }),
   }).isRequired,
+  isLeft: PropTypes.bool.isRequired,
 }
 
-export default TimelineScrollbarLeftHandle
+export default TimelineScrollbarHandle
