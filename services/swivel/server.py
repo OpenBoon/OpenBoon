@@ -176,14 +176,14 @@ if __name__ == '__main__':
 
     # Disables all these flask endpoint logs because the health check
     # fills the logs with garbage.
-    # flask_log = logging.getLogger('werkzeug')
-    # flask_log.disabled = True
-    # app.logger.disabled = True
+    flask_log = logging.getLogger('werkzeug')
+    flask_log.disabled = True
+    app.logger.disabled = True
 
     port = int(os.environ.get("SWIVEL_PORT", "5000"))
     logger.info(f'Swivel Listening on port: {port}')
     logger.info(f'GCP Project: {project_name}')
     logger.info(f'Subscription: {sub_name}')
 
-    server = WSGIServer(('0.0.0.0', port), app)
+    server = WSGIServer(('0.0.0.0', port), app, log=None)
     server.serve_forever()
