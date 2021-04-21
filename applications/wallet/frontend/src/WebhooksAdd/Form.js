@@ -25,7 +25,7 @@ const INITIAL_STATE = {
   secretKey: uuidv4(),
   showKey: false,
   triggers: {},
-  active: false,
+  active: true,
   isLoading: false,
   errors: {},
   testSent: '',
@@ -45,16 +45,18 @@ const WebhooksAddForm = () => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   return (
-    <Form>
+    <Form style={{ width: 'auto', maxWidth: constants.paragraph.maxWidth }}>
       <FlashMessageErrors
         errors={state.errors}
         styles={{ marginTop: -spacing.base, paddingBottom: spacing.normal }}
       />
 
       {!!state.testSent && (
-        <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-          &quot;{state.testSent}&quot; test has been sent.
-        </FlashMessage>
+        <div css={{ display: 'flex' }}>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            &quot;{state.testSent}&quot; test has been sent.
+          </FlashMessage>
+        </div>
       )}
 
       <SectionTitle>Webhook URL</SectionTitle>
@@ -63,24 +65,26 @@ const WebhooksAddForm = () => {
         The HTTP endpoint to your webhook service.
       </SectionSubTitle>
 
-      <Input
-        autoFocus
-        isRequired
-        id="url"
-        variant={INPUT_VARIANTS.SECONDARY}
-        label="Webhook URL"
-        type="text"
-        value={state.url}
-        onChange={({ target: { value } }) => dispatch({ url: value })}
-        hasError={state.errors.url !== undefined}
-        errorMessage={state.errors.url}
-      />
+      <div css={{ maxWidth: constants.form.maxWidth }}>
+        <Input
+          autoFocus
+          isRequired
+          id="url"
+          variant={INPUT_VARIANTS.SECONDARY}
+          label="Webhook URL"
+          type="text"
+          value={state.url}
+          onChange={({ target: { value } }) => dispatch({ url: value })}
+          hasError={state.errors.url !== undefined}
+          errorMessage={state.errors.url}
+        />
+      </div>
 
-      <SectionTitle>Secret Token</SectionTitle>
+      <SectionTitle>Secret Key</SectionTitle>
 
       <SectionSubTitle>
-        You can enter your own secret token, or the system will generate one for
-        you. You can change the token at any time.
+        You can enter your own secret key, or the system will generate one for
+        you. You can change the key at any time.
       </SectionSubTitle>
 
       <div
@@ -88,6 +92,7 @@ const WebhooksAddForm = () => {
           position: 'relative',
           display: 'flex',
           alignItems: 'center',
+          maxWidth: constants.form.maxWidth,
         }}
       >
         <Input
@@ -95,7 +100,7 @@ const WebhooksAddForm = () => {
           id="secretKey"
           variant={INPUT_VARIANTS.SECONDARY}
           style={{ flex: 1 }}
-          label="Secret Token"
+          label="Secret Key"
           type={state.showKey ? 'text' : 'password'}
           value={state.secretKey}
           onChange={({ target: { value } }) => dispatch({ secretKey: value })}
@@ -103,7 +108,7 @@ const WebhooksAddForm = () => {
           errorMessage={state.errors.secretKey}
           after={
             <Button
-              aria-label={state.showKey ? 'Hide Token' : 'Show Token'}
+              aria-label={state.showKey ? 'Hide Key' : 'Show Key'}
               variant={BUTTON_VARIANTS.NEUTRAL}
               onClick={() => dispatch({ showKey: !state.showKey })}
               style={{
@@ -136,7 +141,7 @@ const WebhooksAddForm = () => {
               dispatch({ secretKey: uuidv4() })
             }}
           >
-            Generate Token
+            Generate Key
           </Button>
         </div>
       </div>
@@ -151,7 +156,6 @@ const WebhooksAddForm = () => {
 
       <div
         css={{
-          marginRight: -spacing.enormous,
           paddingTop: spacing.normal,
           paddingBottom: spacing.spacious,
         }}

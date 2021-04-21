@@ -131,8 +131,8 @@ Array [
     </ul>
   </nav>,
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -809,8 +809,8 @@ Array [
     </ul>
   </nav>,
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -1549,8 +1549,8 @@ Array [
 }
 
 .emotion-3 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -2061,8 +2061,8 @@ Array [
     </ul>
   </nav>,
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }

@@ -38,7 +38,7 @@ const WebhooksRow = ({
         <Pills>{triggers}</Pills>
       </td>
 
-      <td>
+      <td css={{ textAlign: 'center' }}>
         {active && (
           <CheckmarkSvg
             height={constants.icons.regular}
