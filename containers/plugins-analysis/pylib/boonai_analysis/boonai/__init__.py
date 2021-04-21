@@ -2,6 +2,6 @@
 from .labels import ZviLabelDetectionProcessor
 from .objects import ZviObjectDetectionProcessor
 from .ocr import ZviOcrProcessor
-from .similarity import ZviSimilarityProcessor
+from .similarity import HSVSimilarityProcessor, ZviSimilarityProcessor
 from .faces import ZviFaceDetectionProcessor
 from .clips import TimelineAnalysisProcessor, ClipAnalysisProcessor, MultipleTimelineAnalysisProcessor

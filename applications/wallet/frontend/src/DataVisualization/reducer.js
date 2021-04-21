@@ -6,8 +6,6 @@ import FacetSvg from '../Icons/facet.svg'
 import RangeSvg from '../Icons/range.svg'
 import HistogramSvg from '../Icons/histogram.svg'
 
-import { ENVS } from '../Feature'
-
 export const TYPES = [
   {
     type: 'facet',
@@ -25,8 +23,6 @@ export const TYPES = [
     type: 'histogram',
     icon: <HistogramSvg height={constants.icons.moderate} />,
     legend: 'Shows the distribution of assets within value groups.',
-    flag: 'histogram-feature-flag',
-    envs: [ENVS.QA],
   },
 ]
 

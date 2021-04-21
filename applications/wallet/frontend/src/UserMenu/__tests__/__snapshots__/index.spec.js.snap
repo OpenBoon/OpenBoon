@@ -236,6 +236,8 @@ exports[`<UserMenu /> should render properly 2`] = `
 }
 
 .emotion-6 ul {
+  max-height: 50vh;
+  overflow: scroll;
   list-style-type: none;
   padding: 0;
   padding-top: 4px;

@@ -764,6 +764,8 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
 }
 
 .emotion-4 ul {
+  max-height: 50vh;
+  overflow: scroll;
   list-style-type: none;
   padding: 0;
   padding-top: 4px;

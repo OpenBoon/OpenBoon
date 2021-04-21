@@ -70,13 +70,13 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-pdf</artifactId>
-            <version>21.3</version>
+            <version>21.4</version>
         </dependency>
 
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-slides</artifactId>
-            <version>21.3</version>
+            <version>21.4</version>
             <classifier>jdk16</classifier>
         </dependency>
 
@@ -90,7 +90,7 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-cells</artifactId>
-            <version>21.3</version>
+            <version>21.4</version>
         </dependency>
 
         <dependency>
@@ -134,7 +134,7 @@
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
-            <version>3.15.2</version>
+            <version>3.15.4</version>
         </dependency>
 
         <dependency>
@@ -231,7 +231,7 @@
             <plugin>
               <groupId>org.pitest</groupId>
               <artifactId>pitest-maven</artifactId>
-              <version>1.6.4</version>
+              <version>1.6.5</version>
             </plugin>
         </plugins>
     </build>

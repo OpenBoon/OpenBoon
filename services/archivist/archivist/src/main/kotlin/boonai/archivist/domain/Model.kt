@@ -24,9 +24,7 @@ import javax.persistence.Table
 enum class ModelType(
     val label: String,
     val trainProcessor: String,
-    val trainArgs: Map<String, Any>,
     val classifyProcessor: String,
-    val classifyArgs: Map<String, Any>,
     val moduleName: String?,
     val description: String,
     val objective: String,
@@ -41,14 +39,12 @@ enum class ModelType(
     KNN_CLASSIFIER(
         "K-Nearest Neighbors Classifier",
         "boonai_train.knn.KnnLabelDetectionTrainer",
-        mapOf(),
         "boonai_analysis.custom.KnnLabelDetectionClassifier",
-        mapOf(),
         null,
-        "Classify images or documents using a KNN classifier.  This type of model generates " +
-            "a single prediction which can be used to quickly organize assets into general groups." +
+        "Classify images, documents and video clips using a KNN classifier.  This type of model " +
+            "can work great with just a single labeled example." +
             "If no labels are provided, the model automatically generates numbered groups of " +
-            "similar images. These groups can be renamed and edited in subsequent training passes.",
+            "similar assets. These groups can be renamed and edited in subsequent training passes.",
         ModelObjective.LABEL_DETECTION,
         Provider.BOONAI,
         true,
@@ -56,16 +52,12 @@ enum class ModelType(
         0,
         listOf(),
         true,
-        false
+        false,
     ),
     TF_CLASSIFIER(
         "Tensorflow Transfer Learning Classifier",
         "boonai_train.tf2.TensorflowTransferLearningTrainer",
-        mapOf(
-            "train-test-ratio" to 4
-        ),
         "boonai_analysis.custom.TensorflowTransferLearningClassifier",
-        mapOf(),
         null,
         "Classify images or documents using a custom strained CNN deep learning algorithm.  This type of model" +
             "generates multiple predictions and can be trained to identify very specific features. " +
@@ -77,14 +69,12 @@ enum class ModelType(
         10,
         listOf(),
         true,
-        false
+        false,
     ),
     FACE_RECOGNITION(
         "Face Recognition",
         "boonai_train.face_rec.KnnFaceRecognitionTrainer",
-        mapOf(),
         "boonai_analysis.custom.KnnFaceRecognitionClassifier",
-        mapOf(),
         "boonai-face-recognition",
         "Label faces detected by the boonai-face-detection module, and classify them with a KNN model. ",
         ModelObjective.FACE_RECOGNITION,
@@ -99,9 +89,7 @@ enum class ModelType(
     GCP_AUTOML_CLASSIFIER(
         "Google AutoML Classifier",
         "boonai_train.automl.AutoMLModelTrainer",
-        mapOf(),
         "boonai_analysis.automl.AutoMLVisionClassifier",
-        mapOf(),
         null,
         "Train an image classifier using Google Cloud AutoML.",
         ModelObjective.LABEL_DETECTION,
@@ -116,9 +104,7 @@ enum class ModelType(
     TF_UPLOADED_CLASSIFIER(
         "Imported Tensorflow Image Classifier",
         "None",
-        mapOf(),
         "boonai_analysis.custom.TensorflowImageClassifier",
-        mapOf(),
         null,
         "Upload a pre-trained Tensorflow model to use for image classification.",
         ModelObjective.LABEL_DETECTION,
@@ -133,11 +119,7 @@ enum class ModelType(
     PYTORCH_CLASSIFIER(
         "Pytorch Transfer Learning Classifier",
         "boonai_train.pytorch.PytorchTransferLearningTrainer",
-        mapOf(
-            "train-test-ratio" to 4
-        ),
         "boonai_analysis.custom.PytorchTransferLearningClassifier",
-        mapOf(),
         null,
         "Classify images or documents using a custom trained CNN deep learning algorithm.  This type of model" +
             "generates multiple predictions and can be trained to identify very specific features. " +
@@ -154,9 +136,7 @@ enum class ModelType(
     PYTORCH_UPLOADED_CLASSIFIER(
         "Imported Pytorch Image Classifier",
         "None",
-        mapOf(),
         "boonai_analysis.custom.PytorchImageClassifier",
-        mapOf(),
         null,
         "Upload a pre-inained Pytorch model to use for image classification.",
         ModelObjective.LABEL_DETECTION,
@@ -209,9 +189,6 @@ enum class PostTrainAction {
 @ApiModel("ModelTrainingArgs", description = "Arguments set to the training processor.")
 class ModelTrainingRequest(
 
-    @ApiModelProperty("Additional training args passed to processor.")
-    var args: Map<String, Any>? = null,
-
     @ApiModelProperty("The action to take after training.")
     var postAction: PostTrainAction = PostTrainAction.NONE
 )
@@ -249,7 +226,10 @@ class ModelSpec(
     val moduleName: String? = null,
 
     @ApiModelProperty("The search used to deploy the model.")
-    val applySearch: Map<String, Any> = ModelSearch.MATCH_ALL
+    val applySearch: Map<String, Any> = ModelSearch.MATCH_ALL,
+
+    @ApiModelProperty("Training arguments")
+    val trainingArgs: Map<String, Any> = emptyMap()
 )
 
 @Entity
@@ -290,6 +270,10 @@ class Model(
     @Type(type = "jsonb")
     @Column(name = "json_apply_search", columnDefinition = "JSON")
     val applySearch: Map<String, Any>,
+
+    @Type(type = "jsonb")
+    @Column(name = "json_train_args", columnDefinition = "JSON")
+    var trainingArgs: Map<String, Any>,
 
     @Column(name = "time_created")
     @ApiModelProperty("The time the Model was created.")
