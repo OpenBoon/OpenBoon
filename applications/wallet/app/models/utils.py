@@ -39,13 +39,14 @@ class ConfusionMatrix(object):
     @property
     def labels(self):
         if not self._labels:
-            self._data_frame, self._labels = self.__get_data_frame_and_labels()
+            labels = list(self.data_frame['True']) + list(self.data_frame['Predicted'])
+            self._labels = sorted(set(labels))
         return self._labels
 
     @property
     def data_frame(self):
         if self._data_frame is None:
-            self._data_frame, self._labels = self.__get_data_frame_and_labels()
+            self._data_frame = self.__get_data_frame()
         return self._data_frame
 
     @property
@@ -67,7 +68,7 @@ class ConfusionMatrix(object):
         return confusion_matrix(true_list, prediction_list,
                                 sample_weight=count_list, normalize=normalize)
 
-    def __get_data_frame_and_labels(self):
+    def __get_data_frame(self):
         """Gets a pandas data frame and a list of labels that can be used to build the
         confusion matrixs.
 
@@ -88,19 +89,14 @@ class ConfusionMatrix(object):
         buckets_dict = self.__get_dict_from_agg_results(aggs)
         filtered_buckets_dict = self.__get_dict_from_agg_results(filtered_aggs)
         data = []
-        labels = set()
         for truth in buckets_dict:
             for prediction in buckets_dict[truth]:
-                labels.add(prediction)
                 try:
                     count = filtered_buckets_dict[truth][prediction]
                 except KeyError:
                     count = 0
                 data.append((truth, prediction, count))
-
-        labels = list(labels)
-        labels.sort()
-        return pd.DataFrame(data, columns=['True', 'Predicted', 'Number']), labels
+        return pd.DataFrame(data, columns=['True', 'Predicted', 'Number'])
 
     def __get_confusion_matrix_aggregations(self, full_matrix=False):
         """Testing seam to allow mocking calls to ZMLP. Performs an ES search with
