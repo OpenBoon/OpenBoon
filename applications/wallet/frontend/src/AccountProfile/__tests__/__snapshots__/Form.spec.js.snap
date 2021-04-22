@@ -3,8 +3,8 @@
 exports[`<AccountProfileForm /> should render properly when a user cancels 1`] = `
 Array [
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -103,8 +103,8 @@ Array [
 exports[`<AccountProfileForm /> should render properly when a user edits their name 1`] = `
 Array [
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -203,8 +203,8 @@ Array [
 exports[`<AccountProfileForm /> should render properly when a user edits their name 2`] = `
 Array [
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -407,6 +407,7 @@ Array [
         className="emotion-3"
       >
         <input
+          autoComplete="off"
           autoFocus={true}
           className="emotion-4"
           disabled={false}
@@ -436,6 +437,7 @@ Array [
         className="emotion-3"
       >
         <input
+          autoComplete="off"
           className="emotion-4"
           disabled={false}
           id="lastName"
@@ -542,8 +544,8 @@ Array [
     </div>
   </div>,
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
