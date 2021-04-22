@@ -215,20 +215,28 @@ class Model(BaseEntity):
                             "filter": {
                                 "bool": {
                                     "must": [
-                                        {"term": {"labels.modelId": self.id}}
+                                        {
+                                            "term": {
+                                                "labels.modelId": self.id
+                                            }
+                                        }
                                     ]
                                 }
                             },
                             "aggs": {
                                 "labels": {
-                                    "terms": {"field": "labels.label"},
+                                    "terms": {
+                                        "field": "labels.label",
+                                        "size": 1000
+                                    },
                                     "aggs": {
                                         "predictions_by_label": {
                                             "reverse_nested": {},
                                             "aggs": {
                                                 "predictions": {
                                                     "terms": {
-                                                        "field": f'{self.namespace}.predictions.label'  # noqa
+                                                        "field": f'{self.namespace}.predictions.label',  # noqa
+                                                        "size": 1000
                                                     }
                                                 }
                                             }
