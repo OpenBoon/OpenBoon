@@ -365,6 +365,7 @@ Array [
         className="emotion-6"
       >
         <input
+          autoComplete="off"
           autoFocus={true}
           className="emotion-7"
           disabled={false}
@@ -394,6 +395,7 @@ Array [
         className="emotion-6"
       >
         <input
+          autoComplete="off"
           className="emotion-7"
           disabled={false}
           id="moduleName"
@@ -790,6 +792,7 @@ Array [
         className="emotion-6"
       >
         <input
+          autoComplete="off"
           autoFocus={true}
           className="emotion-7"
           disabled={false}
@@ -819,6 +822,7 @@ Array [
         className="emotion-6"
       >
         <input
+          autoComplete="off"
           className="emotion-7"
           disabled={false}
           id="moduleName"

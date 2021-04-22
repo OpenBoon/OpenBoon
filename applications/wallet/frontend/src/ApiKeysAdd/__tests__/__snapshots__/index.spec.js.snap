@@ -403,6 +403,7 @@ Array [
         className="emotion-3"
       >
         <input
+          autoComplete="off"
           autoFocus={true}
           className="emotion-4"
           disabled={false}
@@ -1105,8 +1106,8 @@ Array [
 }
 
 .emotion-3 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -1863,6 +1864,7 @@ Array [
         className="emotion-3"
       >
         <input
+          autoComplete="off"
           autoFocus={true}
           className="emotion-4"
           disabled={false}

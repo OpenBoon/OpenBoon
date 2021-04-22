@@ -325,6 +325,7 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
         className="emotion-4"
       >
         <input
+          autoComplete="off"
           autoFocus={true}
           className="emotion-5"
           disabled={false}
@@ -354,6 +355,7 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
         className="emotion-4"
       >
         <input
+          autoComplete="off"
           className="emotion-5"
           disabled={false}
           id="newPassword"
@@ -382,6 +384,7 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
         className="emotion-4"
       >
         <input
+          autoComplete="off"
           className="emotion-5"
           disabled={false}
           id="confirmPassword"
