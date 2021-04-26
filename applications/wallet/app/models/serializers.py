@@ -14,7 +14,7 @@ class ModelSerializer(serializers.Serializer):
     timeModified = serializers.IntegerField(required=False)
     actorCreated = serializers.CharField(required=False)
     actorModified = serializers.CharField(required=False)
-    url = serializers.CharField(required=False)
+    link = serializers.CharField(required=False)
     projectId = serializers.CharField(required=False)
     ready = serializers.BooleanField(required=False)
 

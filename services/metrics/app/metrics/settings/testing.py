@@ -1,11 +1,11 @@
 import os
 from metrics.settings import *  # noqa
 
-
+TESTING = True
 # Uses the postgres database run by the zmlp docker compose env.
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'psqlextra.backend',
         'NAME': 'metrics',
         'USER': os.environ.get('PG_DB_USER', 'admin'),
         'PASSWORD': os.environ.get('PG_DB_PASSWORD', 'admin'),

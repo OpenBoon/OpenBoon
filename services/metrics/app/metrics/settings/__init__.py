@@ -11,11 +11,23 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 
+import sentry_sdk
 from django.core.management.utils import get_random_secret_key
 from pathlib import Path
 
+from sentry_sdk.integrations.celery import CeleryIntegration
+from sentry_sdk.integrations.django import DjangoIntegration
+
 VERSION = '0.1.0'
 ENVIRONMENT = os.environ.get('ENVIRONMENT', 'localdev')
+TESTING = False
+
+sentry_sdk.init(
+    dsn="https://8cfff0e24f534ce2b470301f7029ee6d@o280392.ingest.sentry.io/5721699",
+    integrations=[DjangoIntegration(), CeleryIntegration()],
+    environment=ENVIRONMENT
+)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -50,7 +62,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.postgres',
     'django.contrib.staticfiles',
+    'psqlextra',
     'rest_framework',
     'health_check',
     'health_check.db'
@@ -96,7 +110,7 @@ WSGI_APPLICATION = 'metrics.wsgi.application'
 # Postgres is required for the type of aggregations that we run
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'psqlextra.backend',
         'NAME': 'metrics',
         'USER': os.environ.get('PG_DB_USER', 'metrics'),
         'PASSWORD': os.environ.get('PG_DB_PASSWORD', 'admin'),
@@ -191,3 +205,6 @@ LOGGING = {
         },
     },
 }
+
+# Celery Settings
+REDIS_HOST = os.environ.get('REDIS_HOST', 'redis')

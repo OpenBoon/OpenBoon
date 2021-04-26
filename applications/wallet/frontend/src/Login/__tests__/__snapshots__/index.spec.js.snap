@@ -492,6 +492,7 @@ exports[`<Login /> should render error 1`] = `
         className="emotion-19"
       >
         <input
+          autoComplete="off"
           autoFocus={true}
           className="emotion-20"
           disabled={false}
@@ -526,6 +527,7 @@ exports[`<Login /> should render error 1`] = `
         className="emotion-19"
       >
         <input
+          autoComplete="off"
           className="emotion-20"
           disabled={false}
           id="password"
@@ -1025,6 +1027,7 @@ exports[`<Login /> should render password changed 1`] = `
         className="emotion-14"
       >
         <input
+          autoComplete="off"
           autoFocus={true}
           className="emotion-15"
           disabled={false}
@@ -1054,6 +1057,7 @@ exports[`<Login /> should render password changed 1`] = `
         className="emotion-14"
       >
         <input
+          autoComplete="off"
           className="emotion-15"
           disabled={false}
           id="password"
@@ -1548,6 +1552,7 @@ exports[`<Login /> should render properly 1`] = `
         className="emotion-14"
       >
         <input
+          autoComplete="off"
           autoFocus={true}
           className="emotion-15"
           disabled={false}
@@ -1577,6 +1582,7 @@ exports[`<Login /> should render properly 1`] = `
         className="emotion-14"
       >
         <input
+          autoComplete="off"
           className="emotion-15"
           disabled={false}
           id="password"
@@ -2071,6 +2077,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
         className="emotion-14"
       >
         <input
+          autoComplete="off"
           autoFocus={true}
           className="emotion-15"
           disabled={false}
@@ -2100,6 +2107,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
         className="emotion-14"
       >
         <input
+          autoComplete="off"
           className="emotion-15"
           disabled={false}
           id="password"

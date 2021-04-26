@@ -53,3 +53,57 @@ exports[`<TimelinePlayhead /> should render properly 1`] = `
   />
 </div>
 `;
+
+exports[`<TimelinePlayhead /> should render properly in prod environment 1`] = `
+.emotion-0 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: col-resize;
+  position: absolute;
+  margin-top: 0;
+  top: 32px;
+  bottom: 0;
+  margin-left: -4.5px;
+  width: 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.emotion-1 {
+  border-style: solid;
+  border-width: 12px 10px 0 10px;
+  border-color: #0074f5 transparent transparent transparent;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  width: 2px;
+  background-color: #0074f5;
+}
+
+<div
+  className="emotion-0"
+  onMouseDown={[Function]}
+>
+  <div
+    className="emotion-1"
+  />
+  <div
+    className="emotion-2"
+  />
+</div>
+`;

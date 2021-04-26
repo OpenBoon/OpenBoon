@@ -614,8 +614,14 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
 .emotion-19 {
   background-color: #808080;
   width: 20px;
+  border: 0;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
+}
+
+.emotion-19:hover,
+.emotion-19:active {
+  background-color: #e0e0e0;
 }
 
 .emotion-20 {
@@ -632,8 +638,14 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
 .emotion-21 {
   background-color: #808080;
   width: 20px;
+  border: 0;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
+}
+
+.emotion-21:hover,
+.emotion-21:active {
+  background-color: #e0e0e0;
 }
 
 <div
@@ -894,8 +906,11 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
             <div
               className="emotion-18"
             >
-              <div
+              <button
+                aria-label="Timeline Scrollbar Resize Handle"
                 className="emotion-19"
+                onMouseDown={[Function]}
+                type="button"
               />
               <div
                 aria-label="Timeline Scrollbar"
@@ -904,8 +919,11 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 role="button"
                 tabIndex="-1"
               />
-              <div
+              <button
+                aria-label="Timeline Scrollbar Resize Handle"
                 className="emotion-21"
+                onMouseDown={[Function]}
+                type="button"
               />
             </div>
           </div>
@@ -1322,8 +1340,14 @@ exports[`<Timeline /> should render properly 1`] = `
 .emotion-24 {
   background-color: #808080;
   width: 20px;
+  border: 0;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
+}
+
+.emotion-24:hover,
+.emotion-24:active {
+  background-color: #e0e0e0;
 }
 
 .emotion-25 {
@@ -1340,8 +1364,14 @@ exports[`<Timeline /> should render properly 1`] = `
 .emotion-26 {
   background-color: #808080;
   width: 20px;
+  border: 0;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
+}
+
+.emotion-26:hover,
+.emotion-26:active {
+  background-color: #e0e0e0;
 }
 
 <div
@@ -2670,8 +2700,11 @@ exports[`<Timeline /> should render properly 1`] = `
             <div
               className="emotion-23"
             >
-              <div
+              <button
+                aria-label="Timeline Scrollbar Resize Handle"
                 className="emotion-24"
+                onMouseDown={[Function]}
+                type="button"
               />
               <div
                 aria-label="Timeline Scrollbar"
@@ -2680,8 +2713,11 @@ exports[`<Timeline /> should render properly 1`] = `
                 role="button"
                 tabIndex="-1"
               />
-              <div
+              <button
+                aria-label="Timeline Scrollbar Resize Handle"
                 className="emotion-26"
+                onMouseDown={[Function]}
+                type="button"
               />
             </div>
           </div>
@@ -3090,8 +3126,14 @@ exports[`<Timeline /> should render properly 2`] = `
 .emotion-24 {
   background-color: #808080;
   width: 20px;
+  border: 0;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
+}
+
+.emotion-24:hover,
+.emotion-24:active {
+  background-color: #e0e0e0;
 }
 
 .emotion-25 {
@@ -3108,8 +3150,14 @@ exports[`<Timeline /> should render properly 2`] = `
 .emotion-26 {
   background-color: #808080;
   width: 20px;
+  border: 0;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
+}
+
+.emotion-26:hover,
+.emotion-26:active {
+  background-color: #e0e0e0;
 }
 
 <div
@@ -4438,8 +4486,11 @@ exports[`<Timeline /> should render properly 2`] = `
             <div
               className="emotion-23"
             >
-              <div
+              <button
+                aria-label="Timeline Scrollbar Resize Handle"
                 className="emotion-24"
+                onMouseDown={[Function]}
+                type="button"
               />
               <div
                 aria-label="Timeline Scrollbar"
@@ -4448,8 +4499,11 @@ exports[`<Timeline /> should render properly 2`] = `
                 role="button"
                 tabIndex="-1"
               />
-              <div
+              <button
+                aria-label="Timeline Scrollbar Resize Handle"
                 className="emotion-26"
+                onMouseDown={[Function]}
+                type="button"
               />
             </div>
           </div>

@@ -23,6 +23,11 @@ requests = "*"
 pyopenssl = "*"
 pyjwt = ">=2.0"
 backoff = "*"
+celery = {extras = ["redis"], version = "*"}
+sentry-sdk = "*"
+django-postgres-extra = "*"
+importlib-metadata = "*"
+typing-extensions = "*"
 
 [requires]
 python_version = "3.7"

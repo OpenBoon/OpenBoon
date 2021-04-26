@@ -62,6 +62,7 @@ exports[`<Input /> should render properly with an error and disabled 1`] = `
     className="emotion-2"
   >
     <input
+      autoComplete="off"
       autoFocus={true}
       className="emotion-3"
       disabled={true}

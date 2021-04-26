@@ -17,6 +17,12 @@ services:
     ports:
       - 6379:6379
 
+  pubsub:
+    image: google/cloud-sdk
+    ports:
+      - '8085:8085'
+    command: ["gcloud", "beta", "emulators", "pubsub", "start", "--host-port", "0.0.0.0:8085"]
+
   # MinIO object storage service.
   minio:
     image: "minio/minio:RELEASE.2020-02-07T23-28-16Z"
@@ -48,6 +54,19 @@ services:
       MINIO_URL: http://minio:9000
       MINIO_DEFAULT_PROTOCOL: http
 
+  swivel:
+    image: boonai/swivel:latest
+    ports:
+      - "8888:5000"
+    build:
+      context: services/swivel
+    environment:
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GCLOUD_PROJECT: localdev
+      SWIVEL_SUBSCRIPTION: webhooks
+    depends_on:
+      - pubsub
+
   eshq:
     image: elastichq/elasticsearch-hq
     ports:
@@ -75,7 +94,7 @@ services:
     image: boonai/ml-bbq:latest
     depends_on:
       - jvm-common
-      - plugins-models
+      - plugins-analysis
     ports:
       - "8282:8282"
     build:
@@ -121,7 +140,9 @@ services:
       ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
       ARCHIVIST_DEEP_VIDEO_ANALYSIS_ENABLED: "true"
       BOONAI_SECURITY_AUTHSERVER_SERVICEKEY: ewogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiCn0KCg==
-      JAVA_OPTS: "-Xms1g -Xmx1g -XX:+UseG1GC -XX:InitiatingHeapOccupancyPercent=70 -XX:G1HeapRegionSize=16m"
+      JAVA_OPTS: "-Xms1g -Xmx1g -XX:+UseG1GC -XX:InitiatingHeapOccupancyPercent=70 -XX:G1HeapRegionSize=16m -Xverify:none"
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GCLOUD_PROJECT: localdev
     build:
       context: services/archivist
     volumes:

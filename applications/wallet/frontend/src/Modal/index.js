@@ -8,7 +8,6 @@ import Button, { VARIANTS } from '../Button'
 import CrossSvg from '../Icons/cross.svg'
 
 const BUTTON_HEIGHT = 40
-const MODAL_HEIGHT = 200
 const MODAL_WIDTH = 480
 
 const Modal = ({ title, message, action, onCancel, onConfirm }) => {
@@ -25,7 +24,9 @@ const Modal = ({ title, message, action, onCancel, onConfirm }) => {
           display: 'flex',
           flexDirection: 'column',
           width: MODAL_WIDTH,
-          height: MODAL_HEIGHT,
+          borderRadius: constants.borderRadius.small,
+          overflow: 'hidden',
+          boxShadow: constants.boxShadows.modal,
         }}
       >
         <header

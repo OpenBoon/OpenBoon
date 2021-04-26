@@ -24,7 +24,7 @@ const Organization = () => {
       <OrganizationDetails key={pathname} />
 
       {!!action && (
-        <div css={{ display: 'flex', paddingTop: spacing.base }}>
+        <div css={{ display: 'flex', paddingTop: spacing.normal }}>
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
             {action === 'add-project-success' && 'Project created.'}
             {action === 'delete-project-success' && 'Project deleted.'}

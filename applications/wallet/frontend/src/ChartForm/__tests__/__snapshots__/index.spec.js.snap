@@ -312,6 +312,7 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
             className="emotion-9"
           >
             <input
+              autoComplete="off"
               className="emotion-10"
               disabled={false}
               id="values"
@@ -667,6 +668,7 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
             className="emotion-9"
           >
             <input
+              autoComplete="off"
               className="emotion-10"
               disabled={false}
               id="values"
@@ -1022,6 +1024,7 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
             className="emotion-9"
           >
             <input
+              autoComplete="off"
               className="emotion-10"
               disabled={false}
               id="values"

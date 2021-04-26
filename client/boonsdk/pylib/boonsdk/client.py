@@ -1,7 +1,6 @@
 import base64
 import binascii
 import datetime
-import decimal
 import json
 import logging
 import os
@@ -16,13 +15,14 @@ import requests
 
 from .entity.exception import BoonSdkException
 from .entity.storage import StoredFile
+from .util import to_json
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_SERVER = 'https://api.boonai.app'
 
 
-class BoonClient(object):
+class BoonClient:
     """
     BoonClient is used to communicate to a Boon AI API server.
     """
@@ -276,6 +276,25 @@ class BoonClient(object):
          """
         return self._make_request('delete', path, body, is_json)
 
+    def patch(self, path, body=None, is_json=True):
+        """
+         Performs a patch request.
+
+         Args:
+             path (str): An archivist URI path.
+             body (object): The request body which will be serialized to json.
+             is_json (bool): Set to true to specify a JSON return value
+
+         Returns:
+             object: The http response object or an object deserialized from
+             the response json if the ``json`` argument is true.
+
+         Raises:
+             Exception: An error occurred making the request or parsing the
+                JSON response
+         """
+        return self._make_request('patch', path, body, is_json)
+
     def iter_paged_results(self, url, req, limit, cls):
         """
         Handles paging through the results of the standard _search
@@ -419,23 +438,23 @@ class BoonClient(object):
 
     def __sign_request(self):
         if not self.apikey:
-            raise RuntimeError("Unable to make request, no ApiKey has been specified.")
+            raise RuntimeError('Unable to make request, no ApiKey has been specified.')
         claims = {
             'aud': self.server,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60),
-            'accessKey': self.apikey["accessKey"],
+            'accessKey': self.apikey['accessKey'],
         }
 
-        if os.environ.get("BOONAI_TASK_ID"):
-            claims['taskId'] = os.environ.get("BOONAI_TASK_ID")
-            claims['jobId'] = os.environ.get("BOONAI_JOB_ID")
+        if os.environ.get('BOONAI_TASK_ID'):
+            claims['taskId'] = os.environ.get('BOONAI_TASK_ID')
+            claims['jobId'] = os.environ.get('BOONAI_JOB_ID')
 
         if self.project_id:
-            claims["projectId"] = self.project_id
+            claims['projectId'] = self.project_id
         return jwt.encode(claims, self.apikey['secretKey'], algorithm='HS512')
 
 
-class SearchResult(object):
+class SearchResult:
     """
     A utility class for wrapping various search result formats
     that come back from the Boon AI servers.
@@ -462,47 +481,6 @@ class SearchResult(object):
 
     def __getitem__(self, idx):
         return self.items[idx]
-
-
-def to_json(obj, indent=None):
-    """
-    Convert the given object to a JSON string using
-    the BoonSdkJsonEncoder.
-
-    Args:
-        obj (mixed): any json serializable python object.
-        indent (int): The indentation level for the json, or None for compact.
-    Returns:
-        str: The serialized object
-
-    """
-    val = json.dumps(obj, cls=BoonSdkJsonEncoder, indent=indent)
-    if logger.getEffectiveLevel() == logging.DEBUG:
-        logger.debug("json: %s" % val)
-    return val
-
-
-class BoonSdkJsonEncoder(json.JSONEncoder):
-    """
-    JSON encoder for with Boon AI specific serialization defaults.
-    """
-
-    def default(self, obj):
-        if hasattr(obj, 'for_json'):
-            return obj.for_json()
-        elif isinstance(obj, (set, frozenset)):
-            return list(obj)
-        elif isinstance(obj, datetime.datetime):
-            return obj.isoformat()
-        elif isinstance(obj, datetime.date):
-            return obj.isoformat()
-        elif isinstance(obj, datetime.time):
-            return obj.isoformat()
-        elif isinstance(obj, decimal.Decimal):
-            return float(obj)
-
-        # Let the base class default method raise the TypeError
-        return json.JSONEncoder.default(self, obj)
 
 
 class BoonClientException(BoonSdkException):

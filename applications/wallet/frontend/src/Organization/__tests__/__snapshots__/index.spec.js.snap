@@ -123,7 +123,7 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 8px;
+  padding-top: 16px;
 }
 
 .emotion-1 {
@@ -932,7 +932,7 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 8px;
+  padding-top: 16px;
 }
 
 .emotion-1 {
@@ -1237,7 +1237,7 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 8px;
+  padding-top: 16px;
 }
 
 .emotion-1 {

@@ -2,6 +2,7 @@ from enum import Enum
 
 from .base import BaseEntity
 from ..util import as_id
+from ..filters import TrainingSetFilter
 
 __all__ = [
     'Model',
@@ -103,6 +104,13 @@ class Model(BaseEntity):
         Adding new labels will set ready to false.
         """
         return self._data['ready']
+
+    @property
+    def training_args(self):
+        """
+        A dictionary of manually set training arguments.
+        """
+        return self._data['trainingArgs']
 
     def make_label(self, label, bbox=None, simhash=None, scope=None):
         """
@@ -207,20 +215,28 @@ class Model(BaseEntity):
                             "filter": {
                                 "bool": {
                                     "must": [
-                                        {"term": {"labels.modelId": self.id}}
+                                        {
+                                            "term": {
+                                                "labels.modelId": self.id
+                                            }
+                                        }
                                     ]
                                 }
                             },
                             "aggs": {
                                 "labels": {
-                                    "terms": {"field": "labels.label"},
+                                    "terms": {
+                                        "field": "labels.label",
+                                        "size": 1000
+                                    },
                                     "aggs": {
                                         "predictions_by_label": {
                                             "reverse_nested": {},
                                             "aggs": {
                                                 "predictions": {
                                                     "terms": {
-                                                        "field": f'{self.namespace}.predictions.label'  # noqa
+                                                        "field": f'{self.namespace}.predictions.label',  # noqa
+                                                        "size": 1000
                                                     }
                                                 }
                                             }
@@ -243,6 +259,19 @@ class Model(BaseEntity):
              ['bool']
              ['must'].append({"term": {"labels.scope": "TEST"}}))
         return search_query
+
+    def asset_search_filter(self, scopes=None, labels=None):
+        """
+        Create and return a TrainingSetFilter for filtering Assets by this particular label.
+
+        Args:
+            scopes (list): A optional list of LabelScopes to filter by.
+            labels (list): A optional list of labels to filter by.
+
+        Returns:
+            TrainingSetFilter: A preconfigured TrainingSetFilter
+        """
+        return TrainingSetFilter(self.id, scopes=scopes, labels=labels)
 
 
 class ModelTypeInfo:
@@ -326,3 +355,12 @@ class Label:
             'simhash': self.simhash,
             'scope': self.scope.name
         }
+
+    def asset_search_filter(self):
+        """
+        Create and return a TrainingSetFilter for filtering Assts by this particular label.
+
+        Returns:
+            TrainingSetFilter: A preconfigured TrainingSetFilter
+        """
+        return TrainingSetFilter(self.model_id, scopes=[self.scope], labels=[self.label])

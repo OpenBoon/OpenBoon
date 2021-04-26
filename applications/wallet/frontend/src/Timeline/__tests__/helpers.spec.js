@@ -4,6 +4,8 @@ import {
   getRulerLayout,
   gotoPreviousHit,
   gotoNextHit,
+  getNextScrollLeft,
+  getScrollbarScrollableWidth,
 } from '../helpers'
 
 const noop = () => () => {}
@@ -178,6 +180,29 @@ describe('<Timeline /> helpers', () => {
       })()
 
       expect(videoRef.current.currentTime).toBe(10)
+    })
+  })
+
+  describe('getNextScrollLeft', () => {
+    it('should zoom around visible midpoint when playhead is out of view', () => {
+      const nextScrollLeft = getNextScrollLeft({
+        videoRef: { current: { currentTime: 0, duration: 10 } },
+        rulerRef: {
+          current: { scrollWidth: 100, scrollLeft: 25, offsetWidth: 50 },
+        },
+        zoom: 100,
+        nextZoom: 200,
+      })
+
+      expect(nextScrollLeft).toBe(75.5)
+    })
+  })
+
+  describe('getScrollbarScrollableWidth', () => {
+    it('should properly calculate the scrollable width', () => {
+      expect(getScrollbarScrollableWidth({ scrollbarRef: {}, zoom: 100 })).toBe(
+        0,
+      )
     })
   })
 })

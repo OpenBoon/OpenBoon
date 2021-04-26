@@ -13,6 +13,7 @@ import DataSourcesSvg from '../Icons/datasources.svg'
 import JobQueueSvg from '../Icons/jobQueue.svg'
 import ModelsSvg from '../Icons/models.svg'
 import VisualizerSvg from '../Icons/visualizer.svg'
+import WebhooksSvg from '../Icons/webhooks.svg'
 import KeySvg from '../Icons/key.svg'
 import UsersSvg from '../Icons/users.svg'
 import GearSvg from '../Icons/gear.svg'
@@ -99,6 +100,11 @@ const Sidebar = forwardRef(
             <SidebarLink projectId={projectId} href="/[projectId]/visualizer">
               <VisualizerSvg height={constants.icons.regular} />
               Visualizer
+            </SidebarLink>
+
+            <SidebarLink projectId={projectId} href="/[projectId]/webhooks">
+              <WebhooksSvg height={constants.icons.regular} />
+              Webhooks
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/api-keys">

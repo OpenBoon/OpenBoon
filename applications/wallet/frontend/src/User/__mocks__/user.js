@@ -12,6 +12,7 @@ const user = {
       'ML_Tools',
       'User_Admin',
       'API_Keys',
+      'Webhooks',
     ],
     'e93cbadb-e5ae-4598-8395-4cf5b30c0e94': [],
   },

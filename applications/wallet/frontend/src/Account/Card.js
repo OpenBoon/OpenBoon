@@ -5,10 +5,13 @@ import { colors, spacing, constants, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
+import Feature, { ENVS } from '../Feature'
+
 import DataSourcesSvg from '../Icons/datasources.svg'
 import JobQueueSvg from '../Icons/jobQueue.svg'
 import ModelsSvg from '../Icons/models.svg'
 import VisualizerSvg from '../Icons/visualizer.svg'
+import WebhooksSvg from '../Icons/webhooks.svg'
 import KeySvg from '../Icons/key.svg'
 import UsersSvg from '../Icons/users.svg'
 
@@ -32,6 +35,11 @@ const LINKS = [
     url: 'visualizer',
     title: 'Visualizer',
     icon: <VisualizerSvg height={constants.icons.regular} />,
+  },
+  {
+    url: 'webhooks',
+    title: 'Webhooks',
+    icon: <WebhooksSvg height={constants.icons.regular} />,
   },
   {
     url: 'api-keys',
@@ -115,28 +123,38 @@ const AccountCard = ({ projectId, name, organizationName }) => {
       </div>
 
       <div css={{ display: 'flex', gap: spacing.normal }}>
-        {LINKS.map(({ url, title, icon }) => {
-          return (
-            <Link key={url} href={`/${projectId}/${url}`} passHref>
-              <Button
-                title={title}
-                aria-label={title}
-                variant={VARIANTS.ICON}
-                css={{
-                  color: colors.structure.white,
-                  '&,&:hover,&:visited': {
-                    backgroundColor: colors.structure.steel,
-                  },
-                  '&:hover': {
-                    backgroundColor: colors.structure.zinc,
-                  },
-                }}
-              >
-                {icon}
-              </Button>
-            </Link>
-          )
-        })}
+        {LINKS.map(
+          ({
+            url,
+            title,
+            icon,
+            flag = '',
+            envs = [...Object.values(ENVS)],
+          }) => {
+            return (
+              <Feature key={url} flag={flag} envs={envs}>
+                <Link href={`/${projectId}/${url}`} passHref>
+                  <Button
+                    title={title}
+                    aria-label={title}
+                    variant={VARIANTS.ICON}
+                    css={{
+                      color: colors.structure.white,
+                      '&,&:hover,&:visited': {
+                        backgroundColor: colors.structure.steel,
+                      },
+                      '&:hover': {
+                        backgroundColor: colors.structure.zinc,
+                      },
+                    }}
+                  >
+                    {icon}
+                  </Button>
+                </Link>
+              </Feature>
+            )
+          },
+        )}
       </div>
     </div>
   )

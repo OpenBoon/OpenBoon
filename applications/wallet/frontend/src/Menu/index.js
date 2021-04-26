@@ -34,6 +34,8 @@ const Menu = ({ button, children, open, style }) => {
             minWidth: WIDTH,
             fontFamily: typography.family.regular,
             ul: {
+              maxHeight: '50vh',
+              overflow: 'scroll',
               listStyleType: 'none',
               padding: 0,
               paddingTop: spacing.small,

@@ -19,6 +19,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('organizations', '0004_auto_20210317_2308'),
         ('projects', '0009_auto_20210331_2321'),
+        ('wallet',  '0002_data_migration_add_project_zero')
     ]
 
     operations = [

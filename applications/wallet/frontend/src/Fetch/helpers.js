@@ -80,11 +80,17 @@ export const parseResponse = async ({ response }) => {
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
       if (errorKey === 'detail') {
         acc.global = acc.global
-          ? [acc.global, errors.detail].join('\n')
+          ? [acc.global, ...errors.detail].join('\n')
           : errors.detail.join('\n')
       }
 
-      if (errorKey !== 'detail') {
+      if (errorKey === 'errors') {
+        acc.global = acc.global
+          ? [acc.global, ...errors.errors].join('\n')
+          : errors.errors.join('\n')
+      }
+
+      if (errorKey !== 'detail' && errorKey !== 'errors') {
         acc[errorKey] = errors[errorKey].join('\n')
       }
 
