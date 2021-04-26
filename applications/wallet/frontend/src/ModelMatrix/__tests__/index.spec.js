@@ -55,7 +55,7 @@ describe('<ModelMatrix />', () => {
     // Select a cell
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Dahlia / Dahlia: 0%' })
+        .findByProps({ 'aria-label': 'pink / pink: 0%' })
         .props.onClick()
     })
 
@@ -80,7 +80,7 @@ describe('<ModelMatrix />', () => {
     // Select a different cell
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Dahlia / Sacred Lotus: 0' })
+        .findByProps({ 'aria-label': 'pink / red: 0' })
         .props.onClick()
     })
 
@@ -92,35 +92,35 @@ describe('<ModelMatrix />', () => {
     // Deselect a cell
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Dahlia / Sacred Lotus: 0' })
+        .findByProps({ 'aria-label': 'pink / red: 0' })
         .props.onClick()
     })
 
     // Reselect cell
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Dahlia / Sacred Lotus: 0' })
+        .findByProps({ 'aria-label': 'pink / red: 0' })
         .props.onClick()
     })
 
     // Deselect cell
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Dahlia / Sacred Lotus: 0' })
+        .findByProps({ 'aria-label': 'pink / red: 0' })
         .props.onClick()
     })
 
     // Hover label
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Prediction Label: Dahlia' })
+        .findByProps({ 'aria-label': 'Prediction Label: pink' })
         .props.onMouseEnter()
     })
 
     // Hover label
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Prediction Label: Dahlia' })
+        .findByProps({ 'aria-label': 'Prediction Label: pink' })
         .props.onMouseLeave()
     })
   })
