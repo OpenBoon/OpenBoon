@@ -270,6 +270,7 @@ const ProjectMetrics = ({
           lineHeight: typography.height.small,
           color: colors.structure.zinc,
           paddingBottom: spacing.base,
+          fontFamily: typography.family.condensed,
         }}
       >
         *pages are processed &amp; counted as individual assets

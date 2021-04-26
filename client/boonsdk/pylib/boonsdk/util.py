@@ -4,6 +4,8 @@ import uuid
 import decimal
 import zipfile
 import os
+import json
+import datetime
 
 
 def is_valid_uuid(val):
@@ -192,3 +194,55 @@ def denormalize_bbox(img_width, img_height, poly):
         else:
             result.append(int(poly[idx] * img_height))
     return result
+
+
+def to_json(obj, indent=None):
+    """
+    Convert the given object to a JSON string using
+    the BoonSdkJsonEncoder.
+
+    Args:
+        obj (mixed): any json serializable python object.
+        indent (int): The indentation level for the json, or None for compact.
+    Returns:
+        str: The serialized object
+
+    """
+    return json.dumps(obj, cls=BoonSdkJsonEncoder, indent=indent)
+
+
+def print_json(obj, indent=2):
+    """
+    Convert the given object to a JSON string and print to stdout.
+
+    Args:
+        obj (mixed): any json serializable python object.
+        indent (int): The indentation level for the json, or None for compact.
+    Returns:
+        str: The serialized object
+
+    """
+    print(json.dumps(obj, cls=BoonSdkJsonEncoder, indent=indent))
+
+
+class BoonSdkJsonEncoder(json.JSONEncoder):
+    """
+    JSON encoder for with Boon AI specific serialization defaults.
+    """
+
+    def default(self, obj):
+        if hasattr(obj, 'for_json'):
+            return obj.for_json()
+        elif isinstance(obj, (set, frozenset)):
+            return list(obj)
+        elif isinstance(obj, datetime.datetime):
+            return obj.isoformat()
+        elif isinstance(obj, datetime.date):
+            return obj.isoformat()
+        elif isinstance(obj, datetime.time):
+            return obj.isoformat()
+        elif isinstance(obj, decimal.Decimal):
+            return float(obj)
+
+        # Let the base class default method raise the TypeError
+        return json.JSONEncoder.default(self, obj)

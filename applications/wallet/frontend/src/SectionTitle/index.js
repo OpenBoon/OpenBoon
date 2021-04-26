@@ -6,8 +6,8 @@ const SectionTitle = ({ children }) => {
   return (
     <h3
       css={{
-        fontSize: typography.size.medium,
-        lineHeight: typography.height.medium,
+        fontSize: typography.size.giant,
+        lineHeight: typography.height.giant,
         fontWeight: typography.weight.medium,
         paddingTop: spacing.normal,
       }}

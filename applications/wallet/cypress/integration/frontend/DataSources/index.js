@@ -34,8 +34,7 @@ describe('DataSources', function () {
 
     cy.contains('Delete Permanently').click()
 
-    // TODO: uncomment me after this MR has been merged
-    // cy.contains('Data source deleted.')
+    cy.contains('Data source deleted.')
 
     cy.contains(dataSourceName).should('not.exist')
   })

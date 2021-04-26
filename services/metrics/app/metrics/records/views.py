@@ -7,9 +7,11 @@ from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
 from metrics.records.models import ApiCall
-from metrics.records.serializers import ApiCallSerializer, ReportSerializer, TieredUsageSerializer
-from .renderers import ReportCSVRenderer
+from metrics.records.serializers import ApiCallSerializer, ReportSerializer, \
+    TieredUsageSerializer
+from metrics.records.tasks import upsert_api_call
 from .mixins import CSVFileMixin
+from .renderers import ReportCSVRenderer
 
 
 class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
@@ -22,6 +24,9 @@ class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
     permission_classes = []
     renderer_classes(api_settings.DEFAULT_RENDERER_CLASSES + [ReportCSVRenderer])
     filename = 'billing_report.csv'
+
+    def perform_create(self, serializer):
+        upsert_api_call.delay(serializer.data)
 
     def get_queryset(self):
         queryset = ApiCall.objects.all()
@@ -143,13 +148,13 @@ class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
             service__in=ApiCall.free_modules
         ).aggregate(
             image_count=Coalesce(Sum('image_count'), V(0)),
-            video_minutes=Coalesce(Sum('video_minutes'), V(0))
+            video_minutes=Coalesce(Sum('video_minutes'), V(0.0))
         )
         tier_2_agg = queryset.filter(
             service__in=ApiCall.tier_2_modules
         ).aggregate(
             image_count=Coalesce(Sum('image_count'), V(0)),
-            video_minutes=Coalesce(Sum('video_minutes'), V(0))
+            video_minutes=Coalesce(Sum('video_minutes'), V(0.0))
         )
         tiered_usage = {'tier_1': tier_1_agg,
                         'tier_2': tier_2_agg}

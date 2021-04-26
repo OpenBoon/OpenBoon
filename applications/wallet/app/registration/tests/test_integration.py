@@ -365,7 +365,8 @@ def test_get_me(login, api_client, project, organization, zmlp_project_user):
     assert response_data['firstName'] == 'fake'
     assert response_data['lastName'] == 'user'
     assert response_data['organizations'] == [str(organization.id)]
-    assert response_data['roles'] == {str(project.id): ['ML_Tools', 'API_Keys', 'User_Admin']}
+    assert response_data['roles'] == {str(project.id): ['ML_Tools', 'API_Keys', 'User_Admin',
+                                                        'Webhooks']}
 
 
 def test_get_me_org_owner(api_client, project):
@@ -378,7 +379,8 @@ def test_get_me_org_owner(api_client, project):
     assert response_data['username'] == 'superuser'
     assert response_data['firstName'] == ''
     assert response_data['lastName'] == ''
-    assert response_data['roles'] == {str(project.id): ['ML_Tools', 'API_Keys', 'User_Admin']}
+    assert response_data['roles'] == {str(project.id): ['ML_Tools', 'API_Keys', 'User_Admin',
+                                                        'Webhooks']}
 
 
 def test_patch_me(login, api_client):

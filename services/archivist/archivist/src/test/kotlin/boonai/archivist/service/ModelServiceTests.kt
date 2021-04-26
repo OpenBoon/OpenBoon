@@ -392,16 +392,14 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testSetModelArgs() {
+    fun testSetTrainingArgs() {
         val model = create(type = ModelType.TF_CLASSIFIER)
         modelService.publishModel(model, ModelPublishRequest())
 
-        val module = modelService.setModelArgs(
+        modelService.setTrainingArgs(
             model,
-            ModelPublishRequest(args = mapOf("input_size" to listOf(321, 321)))
+            mapOf("epochs" to 20)
         )
-        val str = Json.prettyString(module)
-        assertTrue(str.contains("\"input_size\" : [ 321, 321 ]"))
     }
 
     fun assertModel(model: Model) {

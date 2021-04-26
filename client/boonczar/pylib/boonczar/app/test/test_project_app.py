@@ -30,6 +30,15 @@ class ProjectAppTests(unittest.TestCase):
         project = self.project_app.get_project('1234')
         assert_project(project)
 
+    @patch.object(BoonClient, 'delete')
+    @patch.object(boonczar.app, 'project_app')
+    def test_delete_project(self, project_app, delete):
+        project_app.get_project.return_value = None
+        delete.return_value = None
+        self.project_app.delete_project('12345')
+        project = project_app.get_project('12345')
+        self.assertIsNone(project)
+
 
 def assert_project(project):
     assert project.id == mock_project['id']

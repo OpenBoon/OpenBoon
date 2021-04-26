@@ -176,14 +176,32 @@ class GcsProjectStorageService constructor(
 
     override fun recursiveDelete(path: String) {
         val bucket = gcs.get(properties.bucket)
-        val blobs = bucket.list(
-            Storage.BlobListOption.prefix(path),
-            Storage.BlobListOption.pageSize(100)
-        )
 
-        for (blob in blobs.iterateAll()) {
-            gcs.delete(blob.blobId)
-            logDeleteEvent(blob.name)
+        var attempt = 0
+        val maxNumberOfAttempts = 10
+
+        while (attempt < maxNumberOfAttempts) {
+            val blobs = bucket.list(
+                Storage.BlobListOption.prefix(path),
+            )
+
+            logDeleteEvent(path)
+            val storageFileId: List<List<BlobId>> = blobs.iterateAll().map { it.blobId }.chunked(10000)
+            var success = true
+
+            storageFileId.forEachIndexed { index, element ->
+                logDeleteEvent(path, index + 1, storageFileId.size)
+                success = success && gcs.delete(element).all { it }
+            }
+
+            // Check if everything was deleted
+            if (!success) {
+                attempt += 1
+                logger.warn("Something went wrong on GCS deleting $path. Retry $attempt of $maxNumberOfAttempts")
+            } else {
+                logger.info("Path completely deleted from GCS: $path")
+                break
+            }
         }
     }
 

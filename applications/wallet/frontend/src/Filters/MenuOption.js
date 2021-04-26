@@ -35,7 +35,6 @@ const FiltersMenuOption = ({ option, label, filters, onClick }) => {
         }}
       >
         <Checkbox
-          key={option}
           variant={CHECKBOX_VARIANTS.SMALL}
           option={{
             value: option,

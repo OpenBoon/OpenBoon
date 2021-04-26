@@ -66,7 +66,7 @@ class KnnLabelDetectionClassifier(CustomModelProcessor):
         analysis = LabelDetectionAnalysis(save_pred_attrs=False, collapse_labels=True)
 
         for time_ms, path in extractor:
-            simraw = self.simengine.calculate_nparray_hash(path)
+            simraw = self.simengine.calculate_raw_simhash(path)
             pred = self.predict(simraw)
             clip_tracker.append_predictions(time_ms, [pred])
             analysis.add_prediction(pred)

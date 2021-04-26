@@ -1,0 +1,7 @@
+flask
+requests
+gevent
+google-cloud-pubsub
+backoff
+pyOpenSSL
+PyJWT==2.0.1

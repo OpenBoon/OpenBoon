@@ -12,7 +12,6 @@ from assets.utils import AssetBoxImager, get_best_fullscreen_file_data
 from projects.viewsets import BaseProjectViewSet, ZmlpRetrieveMixin, ZmlpDestroyMixin, \
     ZmlpListMixin, ListViewType
 from searches.utils import FilterBuddy
-from wallet.paginators import ZMLPFromSizePagination
 
 
 def asset_modifier(request, item):
@@ -34,7 +33,6 @@ class AssetViewSet(ZmlpListMixin,
                    ZmlpDestroyMixin,
                    BaseProjectViewSet):
     zmlp_root_api_path = 'api/v3/assets/'
-    pagination_class = ZMLPFromSizePagination
     serializer_class = AssetSerializer
     list_type = ListViewType.ES
     list_modifier = staticmethod(asset_modifier)

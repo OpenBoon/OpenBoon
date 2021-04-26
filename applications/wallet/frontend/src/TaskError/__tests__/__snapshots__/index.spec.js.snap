@@ -122,8 +122,8 @@ Array [
     </h2>
   </div>,
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -773,8 +773,8 @@ Array [
     </h2>
   </div>,
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -1398,8 +1398,8 @@ Array [
     </h2>
   </div>,
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }
@@ -1560,6 +1560,8 @@ Array [
 }
 
 .emotion-3 ul {
+  max-height: 50vh;
+  overflow: scroll;
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
@@ -2107,8 +2109,8 @@ Array [
     </h2>
   </div>,
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 21px;
+  line-height: 30px;
   font-weight: 500;
   padding-top: 16px;
 }

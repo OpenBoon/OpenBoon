@@ -1,8 +1,10 @@
 from django.db import models
+from psqlextra.manager import PostgresManager
 
 
 class ApiCall(models.Model):
     """Represents a registered API Call for billing purposes"""
+    objects = PostgresManager()
 
     project = models.UUIDField()
     service = models.CharField(max_length=64)
@@ -70,6 +72,3 @@ class ApiCall(models.Model):
         unique_together = (
             ('service', 'asset_id', 'project')
         )
-
-    def save(self, *args, **kwargs):
-        super(ApiCall, self).save(*args, **kwargs)

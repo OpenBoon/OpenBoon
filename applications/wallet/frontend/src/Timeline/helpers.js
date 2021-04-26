@@ -6,6 +6,9 @@ export const MINOR_TICK_HEIGHT = 12
 export const TICK_WIDTH = 2
 export const HALF_SECOND = 0.5
 export const MIN_TICK_SPACING = 32
+export const SCROLLBAR_CONTAINER_HEIGHT = 36
+export const SCROLLBAR_RESIZE_HANDLE_SIZE = 20
+export const SCROLLBAR_TRACK_MARGIN_WIDTH = 1
 
 export const COLORS = [
   colors.graph.magenta,
@@ -164,14 +167,33 @@ export const gotoNextHit = ({ videoRef, timelines, settings }) => () => {
 
 export const getNextScrollLeft = ({ videoRef, rulerRef, zoom, nextZoom }) => {
   const { currentTime = 0, duration = 0 } = videoRef.current || {}
-  const { scrollWidth = 0, scrollLeft = 0 } = rulerRef.current || {}
+  const { scrollWidth = 0, scrollLeft = 0, offsetWidth = 0 } =
+    rulerRef.current || {}
 
   const playheadLeftOffset = (currentTime / duration) * scrollWidth - scrollLeft
 
+  const isPlayheadOutOfView =
+    playheadLeftOffset < 0 || playheadLeftOffset > offsetWidth
+
+  const centeredPoint = (scrollLeft + offsetWidth / 2) / scrollWidth
+
   const nextScrollWidth = (scrollWidth / zoom) * nextZoom + GUIDE_WIDTH / 2
 
-  const nextScrollLeft =
-    (currentTime / duration) * nextScrollWidth - playheadLeftOffset
+  const nextScrollLeft = isPlayheadOutOfView
+    ? centeredPoint * nextScrollWidth - offsetWidth / 2
+    : (currentTime / duration) * nextScrollWidth - playheadLeftOffset
 
   return nextScrollLeft
+}
+
+export const getScrollbarScrollableWidth = ({ scrollbarRef, zoom }) => {
+  const { width: scrollbarWidth = 0 } =
+    scrollbarRef.current?.getBoundingClientRect() || {}
+
+  const scrollbarTrackWidth = scrollbarWidth * (zoom / 100)
+
+  // the max number of pixels the scrollbar thumb can travel
+  const scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
+
+  return scrollbarScrollableWidth
 }

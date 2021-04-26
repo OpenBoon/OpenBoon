@@ -139,6 +139,7 @@ Array [
 .emotion-4 {
   color: #b3b3b3;
   padding-bottom: 32px;
+  font-family: Roboto Condensed;
 }
 
 .emotion-5 {
@@ -302,6 +303,7 @@ Array [
   line-height: 18px;
   color: #b3b3b3;
   padding-bottom: 8px;
+  font-family: Roboto Condensed;
 }
 
 .emotion-34 {

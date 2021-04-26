@@ -1,0 +1,19 @@
+{
+  "args": {
+    "validation_split": {
+      "type": "float",
+      "defaultValue": 0.2,
+      "description": "The ratio of images to use for validation vs training"
+    },
+    "epochs": {
+      "type": "integer",
+      "defaultValue": 10,
+      "description": "The number of training passes using the full data set."
+    },
+    "fine_tune_epochs": {
+      "type": "integer",
+      "defaultValue": 10,
+      "description": "The number of fine tuning passes using the full data set."
+    }
+  }
+}

@@ -80,11 +80,13 @@ def test_projects_delete(login, api_client, zmlp_project_user, organization, pro
     assert not Project.all_objects.get(id=project.id).isActive
 
 
-def test_projects_view_with_projects(project, zmlp_project_user, api_client):
+def test_projects_view_with_projects(organization, zmlp_project_user, api_client):
     api_client.force_authenticate(zmlp_project_user)
+    for i in range(1, 25):
+        Project.objects.create(name=str(i), organization=organization).users.add(zmlp_project_user)
     response = api_client.get(reverse('project-list')).json()
-    assert response['count'] == 1
-    assert response['results'][0]['name'] == project.name
+    assert response['count'] == 25
+    assert len(response['results']) == 25
 
 
 def test_projects_view_with_org_owner(project, zmlp_project_user, api_client):
@@ -117,7 +119,7 @@ def test_project_serializer_detail(project):
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                        'permissions', 'tasks', 'datasources', 'taskerrors',
                        'modules', 'providers', 'searches', 'faces', 'visualizations',
-                       'models', 'createdDate', 'modifiedDate', 'organizationName']
+                       'models', 'createdDate', 'modifiedDate', 'organizationName', 'webhooks']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
@@ -140,6 +142,7 @@ def test_project_serializer_detail(project):
     assert data['faces'] == f'/api/v1/projects/{project.id}/faces/'
     assert data['visualizations'] == f'/api/v1/projects/{project.id}/visualizations/'
     assert data['models'] == f'/api/v1/projects/{project.id}/models/'
+    assert data['webhooks'] == f'/api/v1/projects/{project.id}/webhooks/'
 
 
 def test_project_serializer_list(project, project2):
@@ -172,7 +175,7 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user, organization, da
     monkeypatch.setattr(BoonClient, 'get', mock_get_project)
     monkeypatch.setattr(BoonClient, 'post', mock_post_true)
     monkeypatch.setattr(BoonClient, 'put', mock_put_enable_project)
-    monkeypatch.setattr('projects.models.create_zmlp_api_key', mock_create_zmlp_api_key)
+    monkeypatch.setattr('apikeys.utils.create_zmlp_api_key', mock_create_zmlp_api_key)
     project = Project.objects.create(name='test', id=uuid4(), organization=organization)
     project.sync_with_zmlp()
 
