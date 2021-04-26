@@ -127,7 +127,7 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
   border-radius: 2px;
   margin-bottom: 8px;
   display: grid;
-  grid-template: repeat(11, 1fr)/repeat(11, 1fr);
+  grid-template: repeat(3, 1fr)/repeat(3, 1fr);
 }
 
 .emotion-3 {
@@ -135,70 +135,30 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
   background-color: rgb(255,255,255);
 }
 
-.emotion-14 {
-  padding-bottom: 100%;
-  background-color: rgb(215,238,255);
-}
-
-.emotion-15 {
-  padding-bottom: 100%;
-  background-color: rgb(0,69,147);
-}
-
-.emotion-25 {
-  padding-bottom: 100%;
-  background-color: rgb(174,221,255);
-}
-
-.emotion-26 {
-  padding-bottom: 100%;
-  background-color: rgb(0,98,187);
-}
-
-.emotion-36 {
-  padding-bottom: 100%;
-  background-color: rgb(134,205,255);
-}
-
-.emotion-37 {
-  padding-bottom: 100%;
-  background-color: rgb(0,128,227);
-}
-
-.emotion-47 {
-  padding-bottom: 100%;
-  background-color: rgb(93,188,255);
-}
-
-.emotion-48 {
-  padding-bottom: 100%;
-  background-color: rgb(12,154,255);
-}
-
-.emotion-58 {
-  padding-bottom: 100%;
-  background-color: rgb(53,171,255);
-}
-
-.emotion-113 {
+.emotion-5 {
   padding-bottom: 100%;
   background-color: rgb(0,39,107);
 }
 
-.emotion-124 {
+.emotion-6 {
+  padding-bottom: 100%;
+  background-color: rgb(53,171,255);
+}
+
+.emotion-12 {
   width: 200px;
 }
 
-.emotion-125 {
+.emotion-13 {
   font-weight: 700;
   padding-bottom: 16px;
 }
 
-.emotion-126 {
+.emotion-14 {
   font-weight: 400;
 }
 
-.emotion-127 {
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -232,22 +192,22 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
   width: min-content;
 }
 
-.emotion-127,
-.emotion-127:hover,
-.emotion-127:visited,
-.emotion-127 .noop {
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited,
+.emotion-15 .noop {
   background-color: #808080;
 }
 
-.emotion-127:hover,
-.emotion-127 .noop {
+.emotion-15:hover,
+.emotion-15 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-127[aria-disabled=true],
-.emotion-127 .noop {
+.emotion-15[aria-disabled=true],
+.emotion-15 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -268,349 +228,13 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
         className="emotion-3"
       />
       <div
-        className="emotion-3"
+        className="emotion-5"
       />
       <div
-        className="emotion-3"
+        className="emotion-6"
       />
       <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-14"
-      />
-      <div
-        className="emotion-15"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-25"
-      />
-      <div
-        className="emotion-26"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-36"
-      />
-      <div
-        className="emotion-37"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-47"
-      />
-      <div
-        className="emotion-48"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-58"
-      />
-      <div
-        className="emotion-58"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-48"
-      />
-      <div
-        className="emotion-47"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-37"
-      />
-      <div
-        className="emotion-36"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-26"
-      />
-      <div
-        className="emotion-25"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-15"
-      />
-      <div
-        className="emotion-14"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-113"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
-      />
-      <div
-        className="emotion-3"
+        className="emotion-6"
       />
       <div
         className="emotion-3"
@@ -627,24 +251,24 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
     </div>
   </div>
   <div
-    className="emotion-124"
+    className="emotion-12"
   >
     <div
-      className="emotion-125"
+      className="emotion-13"
     >
       Confusion Matrix 
       <br />
       Overall Accuracy:
        
       <span
-        className="emotion-126"
+        className="emotion-14"
       >
-        70
+        60
         %
       </span>
     </div>
     <a
-      className="emotion-127"
+      className="emotion-15"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/matrix"
       onClick={[Function]}
       onMouseEnter={[Function]}
