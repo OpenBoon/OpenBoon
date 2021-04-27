@@ -11,10 +11,12 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.listener.PatternTopic
 import org.springframework.data.redis.listener.RedisMessageListenerContainer
 import org.springframework.data.redis.serializer.GenericToStringSerializer
+import org.springframework.scheduling.annotation.EnableScheduling
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
 
 @Configuration
+@EnableScheduling
 class RedisConfiguration {
 
     @Autowired
