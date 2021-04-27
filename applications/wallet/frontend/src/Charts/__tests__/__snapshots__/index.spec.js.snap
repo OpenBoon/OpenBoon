@@ -679,6 +679,7 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
                   className="emotion-19"
                 >
                   <input
+                    autoComplete="off"
                     className="emotion-20"
                     disabled={false}
                     id="values"
