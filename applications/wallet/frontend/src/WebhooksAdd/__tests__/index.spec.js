@@ -37,10 +37,10 @@ describe('<WebhooksAdd />', () => {
         .props.onChange({ target: { value: '127.0.0.1' } })
     })
 
-    // Generate Token
+    // Generate Key
     act(() => {
       component.root
-        .findByProps({ children: 'Generate Token' })
+        .findByProps({ children: 'Generate Key' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -52,7 +52,7 @@ describe('<WebhooksAdd />', () => {
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Show Token' })
+        .findByProps({ 'aria-label': 'Show Key' })
         .props.onClick({ preventDefault: noop })
     })
 

@@ -385,11 +385,15 @@ Array [
 }
 
 .emotion-19 {
+  text-align: center;
+}
+
+.emotion-20 {
   position: relative;
   height: 100%;
 }
 
-.emotion-20 {
+.emotion-21 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -421,8 +425,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-20:hover,
-.emotion-20.focus-visible:focus {
+.emotion-21:hover,
+.emotion-21.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -522,7 +526,9 @@ Array [
                      Asset Modified
                   </span>
                 </td>
-                <td>
+                <td
+                  className="emotion-19"
+                >
                   <svg
                     color="#009f22"
                     data-file-name="checkmark.svg"
@@ -531,11 +537,11 @@ Array [
                 </td>
                 <td>
                   <div
-                    className="emotion-19"
+                    className="emotion-20"
                   >
                     <button
                       aria-label="Toggle Actions Menu"
-                      className="actions emotion-20"
+                      className="actions emotion-21"
                       onBlur={[Function]}
                       onClick={[Function]}
                       type="button"
@@ -1438,11 +1444,15 @@ Array [
 }
 
 .emotion-19 {
+  text-align: center;
+}
+
+.emotion-20 {
   position: relative;
   height: 100%;
 }
 
-.emotion-20 {
+.emotion-21 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1474,8 +1484,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-20:hover,
-.emotion-20.focus-visible:focus {
+.emotion-21:hover,
+.emotion-21.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -1575,7 +1585,9 @@ Array [
                      Asset Modified
                   </span>
                 </td>
-                <td>
+                <td
+                  className="emotion-19"
+                >
                   <svg
                     color="#009f22"
                     data-file-name="checkmark.svg"
@@ -1584,11 +1596,11 @@ Array [
                 </td>
                 <td>
                   <div
-                    className="emotion-19"
+                    className="emotion-20"
                   >
                     <button
                       aria-label="Toggle Actions Menu"
-                      className="actions emotion-20"
+                      className="actions emotion-21"
                       onBlur={[Function]}
                       onClick={[Function]}
                       type="button"

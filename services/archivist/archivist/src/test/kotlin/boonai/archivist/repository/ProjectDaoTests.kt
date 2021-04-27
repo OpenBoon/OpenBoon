@@ -35,6 +35,9 @@ class ProjectDaoTests : AbstractTest() {
     lateinit var projectCustomDao: ProjectCustomDao
 
     @Autowired
+    lateinit var projectDao: ProjectDao
+
+    @Autowired
     lateinit var projectDeleteDao: ProjectDeleteDao
 
     @Autowired
@@ -54,6 +57,13 @@ class ProjectDaoTests : AbstractTest() {
 
     @Autowired
     lateinit var dataSourceService: DataSourceService
+
+    @Test
+    fun testGetMiniProject() {
+        val minip = projectDao.getById(getProjectId())
+        assertEquals(getProjectId(), minip.id)
+        assertEquals("unittest", minip.name)
+    }
 
     @Test
     fun testUpdateDefaultPipeline() {

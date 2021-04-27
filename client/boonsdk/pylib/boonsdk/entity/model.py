@@ -105,6 +105,13 @@ class Model(BaseEntity):
         """
         return self._data['ready']
 
+    @property
+    def training_args(self):
+        """
+        A dictionary of manually set training arguments.
+        """
+        return self._data['trainingArgs']
+
     def make_label(self, label, bbox=None, simhash=None, scope=None):
         """
         Make an instance of a Label which can be used to label assets.
@@ -208,20 +215,28 @@ class Model(BaseEntity):
                             "filter": {
                                 "bool": {
                                     "must": [
-                                        {"term": {"labels.modelId": self.id}}
+                                        {
+                                            "term": {
+                                                "labels.modelId": self.id
+                                            }
+                                        }
                                     ]
                                 }
                             },
                             "aggs": {
                                 "labels": {
-                                    "terms": {"field": "labels.label"},
+                                    "terms": {
+                                        "field": "labels.label",
+                                        "size": 1000
+                                    },
                                     "aggs": {
                                         "predictions_by_label": {
                                             "reverse_nested": {},
                                             "aggs": {
                                                 "predictions": {
                                                     "terms": {
-                                                        "field": f'{self.namespace}.predictions.label'  # noqa
+                                                        "field": f'{self.namespace}.predictions.label',  # noqa
+                                                        "size": 1000
                                                     }
                                                 }
                                             }

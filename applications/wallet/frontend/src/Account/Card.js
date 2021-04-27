@@ -40,8 +40,6 @@ const LINKS = [
     url: 'webhooks',
     title: 'Webhooks',
     icon: <WebhooksSvg height={constants.icons.regular} />,
-    flag: 'webhooks-feature-flag',
-    envs: [ENVS.DEV],
   },
   {
     url: 'api-keys',

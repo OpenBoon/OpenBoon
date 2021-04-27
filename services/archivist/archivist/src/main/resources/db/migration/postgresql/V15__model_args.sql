@@ -1,0 +1,2 @@
+
+ALTER TABLE model ADD COLUMN json_train_args JSONB NOT NULL DEFAULT '{}';
