@@ -126,12 +126,15 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
                   }: ${value}${settings.isNormalized ? '%' : ''}`}
                   css={{
                     width: cellDimension,
-                    height: '100%',
+                    height: cellDimension,
+                    padding: 0,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     backgroundColor: getColor({ percent }),
-                    border: isSelected ? constants.borders.keyOneLarge : 'none',
+                    border: isSelected
+                      ? constants.borders.keyOneLarge
+                      : constants.borders.large.transparent,
                     color:
                       percent > CONTRAST_THRESHOLD
                         ? colors.structure.white
