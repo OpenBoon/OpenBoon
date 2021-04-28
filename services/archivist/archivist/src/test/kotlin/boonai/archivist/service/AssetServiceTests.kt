@@ -633,7 +633,7 @@ class AssetServiceTests : AbstractTest() {
 
         // Delete only the first
         var assets = assetService.getAll(createRsp.created)
-        assets[0].setAttr("aux.transient", true)
+        assets[0].setAttr("tmp.transient", true)
 
         val batchIndex = assets.associate { it.id to it.document }
         val indexRsp = assetService.batchIndex(batchIndex)

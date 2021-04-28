@@ -251,12 +251,13 @@ class FileImport(object):
         self.custom = custom or {}
         self.page = page
         self.label = label
-        self.tmp = tmp
-        self.aux = self.__build_aux_dict(transient)
+        self.tmp = self.__build_tmp_dict(transient)
 
-    def __build_aux_dict(self, transient):
+    def __build_tmp_dict(self, transient):
+        if self.tmp:
+            self.tmp['transient'] = transient
         return {
-            "transient": transient
+            'transient': transient
         }
 
     def for_json(self):
