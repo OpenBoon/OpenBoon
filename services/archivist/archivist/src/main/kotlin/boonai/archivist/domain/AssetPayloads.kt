@@ -224,7 +224,10 @@ class BatchIndexResponse(
     val indexed: List<String>,
 
     @ApiModelProperty("A list of failures")
-    val failed: List<BatchIndexFailure>
+    val failed: List<BatchIndexFailure>,
+
+    @ApiModelProperty("Transient deletion status")
+    val transient: BatchDeleteAssetResponse? = null
 )
 
 @ApiModel(
