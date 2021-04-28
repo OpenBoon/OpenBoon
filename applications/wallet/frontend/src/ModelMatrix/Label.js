@@ -15,9 +15,12 @@ const ModelMatrixLabel = ({ cellDimension, label }) => {
     >
       <div
         css={{
-          minWidth: cellDimension,
+          minWidth: constants.borderWidths.large * 2,
+          width: cellDimension,
           maxWidth: cellDimension,
-          padding: spacing.normal,
+          padding: cellDimension < spacing.normal * 2 ? 0 : spacing.normal,
+          paddingTop: spacing.normal,
+          paddingBottom: spacing.normal,
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
@@ -38,6 +41,7 @@ const ModelMatrixLabel = ({ cellDimension, label }) => {
             backgroundColor: colors.structure.lead,
             zIndex: zIndex.layout.interactive,
             boxShadow: constants.boxShadows.default,
+            whiteSpace: 'nowrap',
           }}
         >
           {label}
