@@ -75,6 +75,9 @@ class AssetSpec(
     @ApiModelProperty("Temp unindexed attributes that get removed after the asset is processed.")
     var tmp: Map<String, Any>? = null,
 
+    @ApiModelProperty("Auxiliary pre known attributes")
+    var aux: Map<String, Any>? = null,
+
 ) {
     @JsonIgnore
     fun getChecksumValue(): Int? {
