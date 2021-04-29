@@ -25,7 +25,7 @@ class Command(BaseCommand):
             if not project.isActive:
                 project.isActive = True
                 project.save()
-            project.sync_with_zmlp()
+            project.sync_with_zmlp(create=True)
             user = User.objects.get_or_create(username=options['admin_user'])[0]
             permissions = []
             for role in settings.ROLES:

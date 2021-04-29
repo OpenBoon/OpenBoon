@@ -166,7 +166,7 @@ class TestViews(object):
                                                                         'videoMinutes': -1}}
 
     def test_org_project_create(self, login, zmlp_project_user, api_client, organization, monkeypatch):
-        monkeypatch.setattr(Project, 'sync_with_zmlp', lambda x: None)
+        monkeypatch.setattr(Project, 'sync_with_zmlp', lambda *args, **kwargs: None)
         path = reverse('org-project-list', kwargs={'organization_pk': organization.id})
 
         # User is not an organization owner
