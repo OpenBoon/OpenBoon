@@ -17,7 +17,7 @@ const AssetVideo = ({
 
   return (
     <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <div css={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
+      <div css={{ flex: 1, display: 'flex', flexDirection: 'row', height: 0 }}>
         <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <div
             css={{
