@@ -254,8 +254,6 @@ class FileImport(object):
         self.tmp = self.__build_tmp_dict(transient)
 
     def __build_tmp_dict(self, transient):
-        if self.tmp:
-            self.tmp['transient'] = transient
         return {
             'transient': transient
         }
