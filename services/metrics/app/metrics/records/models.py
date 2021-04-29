@@ -72,3 +72,6 @@ class ApiCall(models.Model):
         unique_together = (
             ('service', 'asset_id', 'project')
         )
+        indexes = [
+            models.Index(fields=['service', 'project', 'created_date'])
+        ]
