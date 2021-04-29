@@ -33,8 +33,10 @@ import boonai.archivist.util.FileUtils
 import boonai.common.util.Json
 import org.elasticsearch.client.ResponseException
 import org.junit.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.mock.web.MockMultipartFile
 import java.io.File
 import java.lang.IllegalArgumentException
@@ -611,12 +613,39 @@ class AssetServiceTests : AbstractTest() {
 
         // Max + 1
         val batchCreate = BatchCreateAssetsRequest(
-            assets =
-                (0..maxBatchSize).map { AssetSpec("gs://cat/large-brown-cat-$it.jpg") }
+            assets = (0..maxBatchSize).map { AssetSpec("gs://cat/large-brown-cat-$it.jpg") }
 
         )
         val createRsp = assetService.batchCreate(batchCreate)
         assetService.batchDelete(createRsp.created.toSet())
+    }
+
+    @Test
+    fun testBatchIndexAssetsWithTemporaryAssets() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
+                AssetSpec("gs://cats/large-brown-not-deleted-cat.jpg")
+            )
+        )
+
+        val createRsp = assetService.batchCreate(batchCreate)
+
+        // Delete only the first
+        var assets = assetService.getAll(createRsp.created)
+        assets[0].setAttr("aux.transient", true)
+
+        val batchIndex = assets.associate { it.id to it.document }
+        val indexRsp = assetService.batchIndex(batchIndex)
+
+        assertTrue(indexRsp.failed.isEmpty())
+        assertEquals(2, indexRsp.indexed.size)
+
+        assertNotNull(assetService.getAsset(createRsp.created[1]))
+        assertEquals(1, indexRsp.transient!!.deleted.size)
+        assertThrows<EmptyResultDataAccessException> {
+            assetService.getAsset(createRsp.created[0])
+        }
     }
 
     @Test
