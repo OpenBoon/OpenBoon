@@ -82,6 +82,7 @@ const Timeline = ({ videoRef, length }) => {
     namespace: 'Timeline',
     isWheelEmitter: true,
     isWheelListener: true,
+    isScrollEmitter: true,
     isScrollListener: true,
   })
 
