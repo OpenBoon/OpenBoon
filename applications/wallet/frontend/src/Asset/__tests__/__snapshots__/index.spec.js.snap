@@ -185,6 +185,7 @@ exports[`<Asset /> should handle no query 1`] = `
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
+  height: 0;
 }
 
 .emotion-12 {
@@ -985,6 +986,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
+  height: 0;
 }
 
 .emotion-12 {

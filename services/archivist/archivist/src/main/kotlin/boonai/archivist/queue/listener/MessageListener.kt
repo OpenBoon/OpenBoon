@@ -1,16 +1,21 @@
 package boonai.archivist.queue.listener
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import redis.clients.jedis.JedisPool
 import java.util.Base64
 import org.springframework.data.redis.connection.Message
 import org.springframework.data.redis.connection.MessageListener
 import org.springframework.data.redis.listener.Topic
+import org.springframework.stereotype.Service
+import redis.clients.jedis.Jedis
+import java.lang.Exception
 
+@Service
 abstract class MessageListener : MessageListener {
-
-    private val expirationTimeSeconds = 1800L
-    private val expirationTimeMillis = expirationTimeSeconds * 1000L
 
     @Autowired
     lateinit var jedisPool: JedisPool
@@ -46,12 +51,45 @@ abstract class MessageListener : MessageListener {
         if (isAccomplished(taskState)) {
             return
         }
+
+        // Store backup info in redis
+        cache.hset(runningTasksKey, blockCode, getTaskInfo(channel, content))
+
         // Otherwise run
-        getOptMap()[extractOpt(channel)]?.let {
-            cache.setex(taskState, expirationTimeSeconds.toInt(), QueueState.RUNNING.name)
-            it(content)
+        val statusRefreshCoroutine = runRefreshCoroutine(cache, taskState, blockCode)
+        try {
+            getOptMap()[extractOpt(channel)]?.let {
+                it(content)
+            }
+        } catch (ex: Exception) {
+            logger.error(ex.localizedMessage)
+        } finally {
+            // Stop refresh coroutine
+            statusRefreshCoroutine.cancel()
+            // Update Redis status
+            cache.set(taskState, QueueState.ACCOMPLISHED.name)
+            cache.hdel(runningTasksKey, blockCode)
         }
-        cache.set(taskState, QueueState.ACCOMPLISHED.name)
+    }
+
+    /**
+     * This method allow that jobs that would exceed processing time keep running
+     */
+    private fun runRefreshCoroutine(cache: Jedis, taskState: String, blockCode: String) = GlobalScope.launch {
+        while (isActive) {
+            cache.expire(taskState, expirationTimeSeconds.toInt())
+            cache.expire(blockCode, expirationTimeSeconds.toInt())
+            Thread.sleep(expirationTimeMillis / 2)
+        }
+    }
+
+    private fun getTaskInfo(channel: String, content: String): String {
+        return boonai.common.util.Json.serializeToString(
+            mapOf(
+                "channel" to channel,
+                "content" to content
+            )
+        )
     }
 
     private fun isAccomplished(encodedState: String) =
@@ -64,11 +102,19 @@ abstract class MessageListener : MessageListener {
         return channel.substringAfter("*/", "/")
     }
 
-    private fun getEncodedState(channel: String, content: String): String {
-        return Base64.getEncoder().encodeToString("$channel $content".toByteArray())
-    }
+    companion object {
+        const val expirationTimeSeconds = 1800L
+        const val expirationTimeMillis = expirationTimeSeconds * 1000L
+        const val checkTimeMillis = expirationTimeMillis / 2
+        const val runningTasksKey = "running-tasks"
+        val logger = LoggerFactory.getLogger(MessageListener::class.java)
 
-    private fun getBlockCode(channel: String, content: String): String {
-        return Base64.getEncoder().encodeToString("$channel $content ${QueueState.BLOCK}".toByteArray())
+        fun getEncodedState(channel: String, content: String): String {
+            return Base64.getEncoder().encodeToString("$channel $content".toByteArray())
+        }
+
+        fun getBlockCode(channel: String, content: String): String {
+            return Base64.getEncoder().encodeToString("$channel $content ${QueueState.BLOCK}".toByteArray())
+        }
     }
 }

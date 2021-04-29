@@ -233,12 +233,13 @@ class FileImport(object):
     An FileImport is used to import a new file and metadata into Boon AI.
     """
 
-    def __init__(self, uri, custom=None, page=None, label=None, tmp=None):
+    def __init__(self, uri, transient=False, custom=None, page=None, label=None, tmp=None):
         """
         Construct an FileImport instance which can point to a remote URI.
 
         Args:
             uri (str): a URI locator to the file asset.
+            transient (bool): File will be deleted after processing
             custom (dict): Values for custom metadata fields.
             page (int): The specific page to import if any.
             label (Label): An optional Label which will add the file to
@@ -251,6 +252,12 @@ class FileImport(object):
         self.page = page
         self.label = label
         self.tmp = tmp
+        self.aux = self.__build_aux_dict(transient)
+
+    def __build_aux_dict(self, transient):
+        return {
+            "transient": transient
+        }
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
@@ -266,7 +273,8 @@ class FileImport(object):
             "custom": self.custom,
             "page": self.page,
             "label": self.label,
-            "tmp": self.tmp
+            "tmp": self.tmp,
+            "aux": self.aux
         }
 
     def __setitem__(self, field, value):
@@ -281,19 +289,20 @@ class FileUpload(FileImport):
     FileUpload instances point to a local file that will be uploaded for analysis.
     """
 
-    def __init__(self, path, custom=None, page=None, label=None):
+    def __init__(self, path, transient=False, custom=None, page=None, label=None):
         """
         Create a new FileUpload instance.
 
         Args:
             path (str): A path to a file, the file must exist.
+            transient (bool): File will be deleted after processing
             custom (dict): Values for pre-created custom metadata fields.
             page (int): The specific page to import if any.
             label (Label): An optional Label which will add the file to
                 a Model training set.
         """
         super(FileUpload, self).__init__(
-            os.path.normpath(os.path.abspath(path)), custom, page, label)
+            os.path.normpath(os.path.abspath(path)), transient, custom, page, label)
 
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))
@@ -311,7 +320,8 @@ class FileUpload(FileImport):
             "uri": self.uri,
             "page": self.page,
             "label": self.label,
-            "custom": self.custom
+            "custom": self.custom,
+            "aux": self.aux
         }
 
 
