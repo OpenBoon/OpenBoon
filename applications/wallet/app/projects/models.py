@@ -59,13 +59,16 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
         """Returns a BoonClient with the admin api key associated with the project."""
         return BoonClient(self.apikey, server=settings.BOONAI_API_URL)
 
-    def sync_with_zmlp(self):
+    def sync_with_zmlp(self, create=False):
         """Tries to create a project in ZMLP with the same name and ID. This syncs the projects
         between the Wallet DB and ZMLP and is a necessary step for any project to function
         correctly.
 
+        Args:
+            create (Bool): If True and the project does not exist in ZMLP then it will be created.
+
         """
-        sync_project_with_zmlp(self)
+        sync_project_with_zmlp(self, create)
 
     def ml_usage_this_month(self):
         """Returns the ml module usage for the current month."""

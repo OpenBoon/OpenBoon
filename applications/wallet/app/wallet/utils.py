@@ -6,6 +6,7 @@ import logging
 from boonsdk.client import BoonSdkNotFoundException, BoonSdkRequestException
 from django.conf import settings
 from boonsdk import BoonClient
+from sentry_sdk import capture_message
 
 from wallet.exceptions import InvalidZmlpDataError
 
@@ -89,10 +90,16 @@ def convert_json_to_base64(json_obj):
     return encoded_str
 
 
-def sync_project_with_zmlp(project):
+def sync_project_with_zmlp(project, create=False):
     """Helper to sync a project with ZMLP. Necessary for data migrations, where
     model methods are not available. This should reflect the same code that exists in
-    the Project.sync_with_zmlp method."""
+    the Project.sync_with_zmlp method.
+
+    Args:
+        project (Project): Project to sync with ZMLP.
+        create (Bool): If True and the project does not exist on ZMLP it will be created.
+
+    """
     from apikeys.utils import create_zmlp_api_key
     from roles.utils import get_permissions_for_roles
 
@@ -102,8 +109,13 @@ def sync_project_with_zmlp(project):
     try:
         zmlp_project = client.get('/api/v1/project')
     except (BoonSdkNotFoundException, BoonSdkRequestException):
-        body = {'name': project.name, 'id': str(project.id)}
-        zmlp_project = client.post('/api/v1/projects', body)
+        if create:
+            body = {'name': project.name, 'id': str(project.id)}
+            zmlp_project = client.post('/api/v1/projects', body)
+            project.apikey = None
+        else:
+            capture_message(f'Tried to sync ZMLP project {project.name} ({project.id}) but it does not exist.')
+            return
 
     # Sync the project name.
     if project.name != zmlp_project['name']:
