@@ -6,13 +6,13 @@ class ApiCall(models.Model):
     """Represents a registered API Call for billing purposes"""
     objects = PostgresManager()
 
-    project = models.UUIDField(db_index=True)
-    service = models.CharField(max_length=64, db_index=True)
-    asset_id = models.CharField(max_length=32, db_index=True)
+    project = models.UUIDField()
+    service = models.CharField(max_length=64)
+    asset_id = models.CharField(max_length=32)
     asset_path = models.CharField(max_length=255, blank=True, default='')
     image_count = models.IntegerField(blank=True, default=0)
     video_minutes = models.FloatField(blank=True, default=0.0)
-    created_date = models.DateTimeField(auto_now_add=True, db_index=True)
+    created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
     # List of module pricing tiers. Any new module added to the platform needs to be
@@ -72,3 +72,6 @@ class ApiCall(models.Model):
         unique_together = (
             ('service', 'asset_id', 'project')
         )
+        indexes = [
+            models.Index(fields=['service', 'project', 'created_date'])
+        ]
