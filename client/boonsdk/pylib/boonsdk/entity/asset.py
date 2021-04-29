@@ -273,7 +273,6 @@ class FileImport(object):
             "page": self.page,
             "label": self.label,
             "tmp": self.tmp,
-            "aux": self.aux
         }
 
     def __setitem__(self, field, value):
@@ -320,7 +319,7 @@ class FileUpload(FileImport):
             "page": self.page,
             "label": self.label,
             "custom": self.custom,
-            "aux": self.aux
+            "tmp": self.tmp
         }
 
 
