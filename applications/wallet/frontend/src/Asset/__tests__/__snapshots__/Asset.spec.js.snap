@@ -234,6 +234,7 @@ exports[`<AssetAsset /> should render properly in QuickView 1`] = `
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
+  height: 0;
 }
 
 .emotion-5 {
