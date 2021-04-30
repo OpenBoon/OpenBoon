@@ -43,6 +43,7 @@ class BoonClient:
         self.project_id = kwargs.get('project_id', os.environ.get("BOONAI_PROJECT"))
         self.max_retries = kwargs.get('max_retries', 3)
         self.verify = True
+        self.token_override = None
 
     def stream(self, url, dst):
         """
@@ -58,8 +59,7 @@ class BoonClient:
                                         headers=self.headers(), stream=True)
 
                 if not response.ok:
-                    raise BoonClientException(
-                        "Failed to stream asset: %s, %s" % (url, response))
+                    raise BoonClientException("Failed to stream asset: %s, %s" % (url, response))
 
                 for block in response.iter_content(1024):
                     handle.write(block)
@@ -410,7 +410,7 @@ class BoonClient:
             dict: An http header struct.
 
         """
-        header = {'Authorization': "Bearer {}".format(self.__sign_request())}
+        header = {'Authorization': self.sign_request()}
 
         if content_type:
             header['Content-Type'] = content_type
@@ -436,7 +436,7 @@ class BoonClient:
 
         return key_data
 
-    def __sign_request(self):
+    def sign_request(self):
         if not self.apikey:
             raise RuntimeError('Unable to make request, no ApiKey has been specified.')
         claims = {
@@ -451,7 +451,7 @@ class BoonClient:
 
         if self.project_id:
             claims['projectId'] = self.project_id
-        return jwt.encode(claims, self.apikey['secretKey'], algorithm='HS512')
+        return "Bearer {}".format(jwt.encode(claims, self.apikey['secretKey'], algorithm='HS512'))
 
 
 class SearchResult:

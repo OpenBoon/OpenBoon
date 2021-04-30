@@ -1,7 +1,11 @@
 import logging
 import os
 
-from boonsdk import app_from_env, BoonSdkException
+from flask import request
+
+from boonsdk import BoonApp, BoonClient, app_from_env
+from boonsdk import BoonSdkException
+
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +21,9 @@ __all__ = [
     "ProcessorException",
     "BoonEnv",
     "FileTypes",
-    "ModelTrainer"
+    "ModelTrainer",
+    "Singleton",
+    "app_instance"
 ]
 
 
@@ -207,7 +213,7 @@ class Processor:
         self.execute_refs = []
         self.reactor = None
         self.expressions = {}
-        self.app = app_from_env()
+        self.app = app_instance()
         self.logger = logging.getLogger(self.__class__.__name__)
 
     def full_class_name(self):
@@ -557,6 +563,50 @@ class BoonEnv:
             list: list of credentials types.
         """
         return os.environ.get("BOONAI_CREDENTIALS_TYPES", "").split(",")
+
+
+class Singleton(type):
+    """A Metaclass for Singletons, used for where we want to cache a single instance."""
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+
+class FlaskBoonClient(BoonClient):
+    """
+    A BoonAI client that automatically uses an Authorization header
+    from a Flask request to make additional requests.
+    """
+    def __init__(self, client):
+        super(FlaskBoonClient, self).__init__(None, client.server)
+
+    def sign_request(self):
+        return request.headers.get("Authorization")
+
+    def headers(self, content_type="application/json"):
+        headers = super().headers()
+        headers['X-BoonAI-Experimental-XXX'] = "8E5B551A8F51477489B1CC0FFD65C1C5"
+        return headers
+
+
+def app_instance():
+    """
+    Create an app instance by first attempting to detect a flask request, then
+    falling back on the environment.  The BOONFLOW_IN_FLASK environment variable
+    must be set for the Flask integration to work.
+
+    Returns:
+        BoonApp: The configured BoonApp
+    """
+    if os.environ.get("BOONFLOW_IN_FLASK"):
+        app = BoonApp(apikey=None)
+        app.client = FlaskBoonClient(app.client)
+        return app
+    else:
+        return app_from_env()
 
 
 class ProcessorException(BoonSdkException):
