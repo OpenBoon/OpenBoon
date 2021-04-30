@@ -26,7 +26,7 @@ def create_project_zero(apps, schema_editor):
                                                   roles=['User_Admin', 'ML_Tools', 'API_Keys'])[0]
 
     # Sync Project Zero to Zmlp
-    sync_project_with_zmlp(project_zero)
+    sync_project_with_zmlp(project_zero, create=True)
     sync_membership_with_zmlp(membership)
 
 

@@ -57,7 +57,7 @@ class TestSyncProject:
         put_mock.side_effect = ({}, {'success': True})
         create_key_mock.return_value = 'asdf'
 
-        sync_project_with_zmlp(project)
+        sync_project_with_zmlp(project, create=True)
 
         project = Project.objects.get(id=project.id)
         assert project.apikey == 'asdf'
@@ -78,7 +78,7 @@ class TestSyncProject:
         create_key_mock.return_value = 'asdf'
 
         with pytest.raises(IOError):
-            sync_project_with_zmlp(project)
+            sync_project_with_zmlp(project, create=True)
 
 
 class TestSyncMembership:
