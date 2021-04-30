@@ -202,6 +202,18 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user, organization, da
         project.sync_with_zmlp(create=True)
 
 
+def test_project_cycle_api_key(monkeypatch, login, project):
+    def mock_sync_with_zmlp(project, **kwargs):
+        project.apikey = 'new'
+
+    monkeypatch.setattr(BoonClient, 'delete', lambda *args, **kwargs: {})
+    monkeypatch.setattr(Project, 'sync_with_zmlp', mock_sync_with_zmlp)
+    apikey = project.apikey
+    project.cycle_api_key()
+    assert project.apikey != apikey
+    assert project.apikey == 'new'
+
+
 def test_project_managers(project):
     assert Project.objects.all().count() == 1
     assert str(project.id) == str(Project.objects.first().id)

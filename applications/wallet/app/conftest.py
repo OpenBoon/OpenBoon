@@ -48,7 +48,8 @@ def organization2():
 def project(organization):
     return Project.objects.create(id='6abc33f0-4acf-4196-95ff-4cbb7f640a06',
                                   name='Test Project',
-                                  organization=organization)
+                                  organization=organization,
+                                  apikey='eyJpZCI6ICJiZGU2NTRkZi0zMzQ2LTRiOWQtOGYxNC0zMDk2NzMwODI0NjAiLCAicHJvamVjdElkIjogIjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsICJhY2Nlc3NLZXkiOiAiRzl2WTFJaFhSSzdTekRENUdkWnludyIsICJuYW1lIjogIkFkbWluIENvbnNvbGUgR2VuZXJhdGVkIEtleSAtIDU4ZDIwNzUyLTQ1MTQtNDgwZC1iYTZmLTU4NTg2ZWYwM2ZlOSAtIHdhbGxldC1wcm9qZWN0LWtleS0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCAicGVybWlzc2lvbnMiOiBbIkFzc2V0c0RlbGV0ZSIsICJEYXRhU291cmNlTWFuYWdlIiwgIkRhdGFRdWV1ZU1hbmFnZSIsICJBc3NldHNJbXBvcnQiLCAiUHJvamVjdE1hbmFnZSIsICJBc3NldHNSZWFkIl0sICJ0aW1lQ3JlYXRlZCI6IDE2MTkwMzczODU5NDMsICJ0aW1lTW9kaWZpZWQiOiAxNjE5MDM3Mzg1OTQzLCAiYWN0b3JDcmVhdGVkIjogIjQzMzhhODNmLWE5MjAtNDBhYi1hMjUxLWExMjNiMTdkZjFiYS9hZG1pbi1rZXkiLCAiYWN0b3JNb2RpZmllZCI6ICI0MzM4YTgzZi1hOTIwLTQwYWItYTI1MS1hMTIzYjE3ZGYxYmEvYWRtaW4ta2V5IiwgImVuYWJsZWQiOiB0cnVlLCAic3lzdGVtS2V5IjogZmFsc2UsICJoaWRkZW4iOiB0cnVlLCAic2VjcmV0S2V5IjogIlN3V2NwWjdLeUtOMzJ5OE11V0V5ekEifQ==')
 
 
 @pytest.fixture

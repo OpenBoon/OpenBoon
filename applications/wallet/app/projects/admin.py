@@ -14,9 +14,15 @@ def sync_project_with_zmlp(modeladmin, request, queryset):
             membership.sync_with_zmlp(client)
 
 
+def cycle_api_key(modeladmin, request, queryset):
+    """Admin action that cycles out the api key associated with the project."""
+    for project in queryset:
+        project.cycle_api_key()
+
+
 @admin.register(Project)
 class ProjectAdmin(ModelAdmin):
-    actions = [sync_project_with_zmlp]
+    actions = [sync_project_with_zmlp, cycle_api_key]
     list_display = ('name', 'id', 'organization', 'isActive')
     list_filter = ('isActive', 'organization')
     search_fields = ('name', 'id')
