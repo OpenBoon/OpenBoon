@@ -1,6 +1,7 @@
 import base64
 import copy
 from datetime import datetime
+from unittest.mock import patch
 from uuid import uuid4
 
 import pytest
@@ -185,15 +186,32 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user, organization, da
     monkeypatch.setattr(BoonClient, 'put', mock_put_enable_project)
     project.sync_with_zmlp()
 
-    # Test a sync when the project already exists in zmlp.
+    # Test a sync when the project doesn't exists in zmlp and gets created.
     monkeypatch.setattr(BoonClient, 'get', mock_get_project_exists)
     monkeypatch.setattr(BoonClient, 'post', mock_get_project)
-    project.sync_with_zmlp()
+    project.sync_with_zmlp(create=True)
+
+    # Test a sync when the project doesn't exist and create == False.
+    with patch('wallet.utils.capture_message') as capture_mock:
+        project.sync_with_zmlp(create=False)
+        assert capture_mock.call_count == 1
 
     # Test failed status sync.
     monkeypatch.setattr(BoonClient, 'put', mock_put_failed_enable)
     with pytest.raises(IOError):
-        project.sync_with_zmlp()
+        project.sync_with_zmlp(create=True)
+
+
+def test_project_cycle_api_key(monkeypatch, login, project):
+    def mock_sync_with_zmlp(project, **kwargs):
+        project.apikey = 'new'
+
+    monkeypatch.setattr(BoonClient, 'delete', lambda *args, **kwargs: {})
+    monkeypatch.setattr(Project, 'sync_with_zmlp', mock_sync_with_zmlp)
+    apikey = project.apikey
+    project.cycle_api_key()
+    assert project.apikey != apikey
+    assert project.apikey == 'new'
 
 
 def test_project_managers(project):
