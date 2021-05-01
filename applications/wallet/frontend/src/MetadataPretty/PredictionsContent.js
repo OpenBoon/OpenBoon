@@ -1,15 +1,34 @@
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 import Pills from '../Pills'
+import Button, { VARIANTS } from '../Button'
+
+import {
+  ACTIONS as FILTER_ACTIONS,
+  dispatch as filterDispatch,
+} from '../Filters/helpers'
 
 export const BBOX_SIZE = 56
 
 const COLUMNS = ['bbox', 'label', 'content', 'score']
 
-const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
+export const FILTER_TYPES = { labels: 'labelConfidence', text: 'textContent' }
+
+const MetadataPrettyPredictionsContent = ({
+  path,
+  name,
+  type,
+  predictions,
+}) => {
+  const {
+    pathname,
+    query: { projectId, assetId, query },
+  } = useRouter()
+
   const predictionColumns = Object.keys(predictions[0])
 
   // filter from COLUMNS which holds the module column names in the correct order
@@ -41,7 +60,31 @@ const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
             paddingBottom: spacing.normal,
           }}
         >
-          {name}
+          {(path && type && (
+            <Button
+              aria-label="Add Filter"
+              variant={VARIANTS.NEUTRAL}
+              onClick={() => {
+                filterDispatch({
+                  type: FILTER_ACTIONS.ADD_VALUE,
+                  payload: {
+                    pathname,
+                    projectId,
+                    assetId,
+                    filter: {
+                      type: FILTER_TYPES[type],
+                      attribute: `${path}.${name}`,
+                      values: {},
+                    },
+                    query,
+                  },
+                })
+              }}
+            >
+              {name}
+            </Button>
+          )) ||
+            name}
         </div>
 
         <table>
@@ -173,8 +216,15 @@ const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
   )
 }
 
+MetadataPrettyPredictionsContent.defaultProps = {
+  path: undefined,
+  type: undefined,
+}
+
 MetadataPrettyPredictionsContent.propTypes = {
+  path: PropTypes.string,
   name: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['labels', 'text']),
   predictions: PropTypes.arrayOf(
     PropTypes.shape({
       bbox: PropTypes.arrayOf(PropTypes.number),
