@@ -35,7 +35,6 @@ const MetadataPrettyPredictions = ({
             aria-label="Add Filter"
             variant={VARIANTS.NEUTRAL}
             style={{
-              fontFamily: 'inherit',
               fontSize: 'inherit',
               lineHeight: 'inherit',
             }}

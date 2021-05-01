@@ -64,6 +64,10 @@ const MetadataPrettyPredictionsContent = ({
             <Button
               aria-label="Add Filter"
               variant={VARIANTS.NEUTRAL}
+              style={{
+                fontSize: 'inherit',
+                lineHeight: 'inherit',
+              }}
               onClick={() => {
                 filterDispatch({
                   type: FILTER_ACTIONS.ADD_VALUE,

@@ -44,14 +44,16 @@ const MetadataPrettySimilarity = ({ name, value: { simhash }, path }) => {
           padding: spacing.normal,
           paddingBottom: spacing.base,
           fontFamily: typography.family.mono,
-          fontSize: typography.size.small,
-          lineHeight: typography.height.small,
           color: colors.structure.white,
         }}
       >
         <Button
           aria-label="Add Filter"
           variant={VARIANTS.NEUTRAL}
+          style={{
+            fontSize: typography.size.small,
+            lineHeight: typography.height.small,
+          }}
           onClick={() => {
             filterDispatch({
               type: FILTER_ACTIONS.APPLY_SIMILARITY,

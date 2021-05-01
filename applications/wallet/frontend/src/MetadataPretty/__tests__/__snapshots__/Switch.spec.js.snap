@@ -254,8 +254,8 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
   border-radius: 2px;
   padding: 0;
   white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
+  font-size: inherit;
+  line-height: inherit;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -476,8 +476,8 @@ Array [
   border-radius: 2px;
   padding: 0;
   white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
+  font-size: inherit;
+  line-height: inherit;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -764,7 +764,6 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  font-family: inherit;
 }
 
 <div
@@ -1095,8 +1094,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   padding: 16px;
   padding-bottom: 8px;
   font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
   color: #ffffff;
 }
 
@@ -1122,8 +1119,8 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   border-radius: 2px;
   padding: 0;
   white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
+  font-size: 14px;
+  line-height: 18px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -1704,8 +1701,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
   padding: 16px;
   padding-bottom: 8px;
   font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
   color: #ffffff;
 }
 
@@ -1731,8 +1726,8 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
   border-radius: 2px;
   padding: 0;
   white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
+  font-size: 14px;
+  line-height: 18px;
   font-weight: 500;
   border: none;
   cursor: pointer;
