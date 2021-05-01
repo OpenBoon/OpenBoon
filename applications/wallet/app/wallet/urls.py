@@ -117,8 +117,8 @@ admin.site.enable_nav_sidebar = False
 support_admin_site.enable_nav_sidebar = False
 
 urlpatterns = [
-    path('admin/', support_admin_site.urls),
     path('admin/generate_usage_report', UsageReportView.as_view(), name='generate-usage-report'),
+    path('admin/', support_admin_site.urls),
     path('api/v1/login/', LoginView.as_view(), name='api-login'),
     path('api/v1/', include(router.urls)),
     path('api/v1/', include(organizations_router.urls)),
