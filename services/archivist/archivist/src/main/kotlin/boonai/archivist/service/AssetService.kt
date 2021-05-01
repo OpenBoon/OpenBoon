@@ -510,6 +510,7 @@ class AssetServiceImpl : AssetService {
         val stateChangedIds = mutableSetOf<String>()
         val failedAssets = mutableListOf<BatchIndexFailure>()
         val postTimelines = mutableMapOf<String, List<String>>()
+        val tempAssets = mutableListOf<String>()
 
         docs.forEach { (id, doc) ->
             val asset = Asset(id, doc)
@@ -518,6 +519,11 @@ class AssetServiceImpl : AssetService {
                 val timelines = asset.getAttr("tmp.timelines", Json.LIST_OF_STRING)
                 timelines?.let {
                     postTimelines[id] = timelines
+                }
+
+                asset.getAttr("tmp.transient", Boolean::class.java)?.let {
+                    if (it)
+                        tempAssets.add(id)
                 }
 
                 prepAssetForUpdate(asset)
@@ -604,7 +610,7 @@ class AssetServiceImpl : AssetService {
             }
 
             indexRoutingService.getProjectRestClient().refresh()
-            val transientResponse = deleteTemporaryAssets(indexedIds, docs)
+            val transientResponse = deleteTemporaryAssets(indexedIds.intersect(tempAssets))
             BatchIndexResponse(indexedIds, failedAssets, transientResponse)
         } else {
             BatchIndexResponse(emptyList(), failedAssets)
@@ -612,15 +618,9 @@ class AssetServiceImpl : AssetService {
     }
 
     private fun deleteTemporaryAssets(
-        indexedIds: MutableList<String>,
-        docs: Map<String, MutableMap<String, Any>>
+        indexedIds: Set<String>
     ): BatchDeleteAssetResponse {
-        val temporaryAssets = indexedIds.filter { id ->
-            docs[id]?.let {
-                Asset(id, it).getAttr("aux.transient") as Boolean?
-            } ?: false
-        }
-        return batchDelete(temporaryAssets.toSet())
+        return batchDelete(indexedIds.toSet())
     }
 
     override fun batchDelete(ids: Set<String>): BatchDeleteAssetResponse {
@@ -890,15 +890,6 @@ class AssetServiceImpl : AssetService {
                 k
             } else {
                 "tmp.$k"
-            }
-            asset.setAttr(key, v)
-        }
-
-        spec.aux?.forEach { (k, v) ->
-            val key = if (k.startsWith("aux.")) {
-                k
-            } else {
-                "aux.$k"
             }
             asset.setAttr(key, v)
         }
