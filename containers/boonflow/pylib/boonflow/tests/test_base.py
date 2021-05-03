@@ -17,7 +17,7 @@ class TestBaseClasses(TestCase):
     def tearDown(self):
         try:
             del os.environ['BOONFLOW_IN_FLASK']
-        except:
+        except Exception:
             pass
 
     def test_get_available_credentials_types(self):
