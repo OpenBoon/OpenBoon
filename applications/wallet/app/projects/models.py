@@ -70,6 +70,17 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
         """
         sync_project_with_zmlp(self, create)
 
+    def cycle_api_key(self):
+        """Cycles out the apikey associated with the Project."""
+        if self.apikey:
+            apikey_id = convert_base64_to_json(self.apikey)['id']
+            try:
+                self.get_zmlp_super_client().delete(f'/auth/v1/apikey/{apikey_id}')
+            except BoonSdkNotFoundException:
+                pass
+            self.apikey = None
+        self.sync_with_zmlp()
+
     def ml_usage_this_month(self):
         """Returns the ml module usage for the current month."""
         today = datetime.today()

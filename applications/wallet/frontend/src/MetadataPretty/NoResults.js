@@ -37,7 +37,7 @@ const MetadataPrettyNoResults = ({ name }) => {
 }
 
 MetadataPrettyNoResults.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.node.isRequired,
 }
 
 export default MetadataPrettyNoResults

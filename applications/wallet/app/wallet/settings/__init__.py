@@ -42,6 +42,9 @@ REACT_APP_DIR = os.path.join(BASE_DIR, '..', 'frontend')
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '4*-c#z+_^gwef_ai&!5vfxf_al_#o^lx(4u70@q#n057a&65j$'
 
+# Default primary key field.
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ.get('DEBUG') == 'true':
     DEBUG = True
