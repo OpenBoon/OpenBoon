@@ -5,6 +5,7 @@ import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.BatchCreateAssetsResponse
 import boonai.archivist.domain.BatchDeleteAssetResponse
 import boonai.archivist.domain.BatchDeleteAssetsRequest
+import boonai.archivist.domain.BatchIndexAssetsEvent
 import boonai.archivist.domain.BatchUpdateCustomFieldsRequest
 import boonai.archivist.domain.BatchUpdateResponse
 import boonai.archivist.domain.BatchUploadAssetsRequest
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestPart
@@ -229,6 +232,21 @@ class AssetController @Autowired constructor(
         val asset = assetService.getAsset(id)
         clipService.streamWebvttByTimeline(asset, timeline, response.outputStream)
         response.flushBuffer()
+    }
+
+    @PreAuthorize("hasAuthority('AssetsImport')")
+
+    @RequestMapping("/api/v3/assets/_batch_index", method = [RequestMethod.PUT])
+    fun batchIndexAssets(
+        @RequestHeader("X-BoonAI-Experimental-XXX") code: String?,
+        @RequestBody(required = true) batch: BatchIndexAssetsEvent
+    ): Any {
+
+        // Only MLBBQ knows the secret code!
+        if (code != "8E5B551A8F51477489B1CC0FFD65C1C5") {
+            throw AccessDeniedException("Access Denied")
+        }
+        return assetService.batchIndex(batch.assets, setAnalyzed = false, refresh = true)
     }
 
     companion object {

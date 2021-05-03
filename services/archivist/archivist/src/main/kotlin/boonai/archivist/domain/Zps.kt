@@ -118,6 +118,13 @@ class ZpsScript(
     }
 }
 
+class ApplyModulesToAssetRequest(
+    @ApiModelProperty("The ID of the Asset.")
+    val assetId: String,
+    @ApiModelProperty("The modules to apply.")
+    val modules: List<String>
+)
+
 class ZpsError(
     var id: String? = null,
     var path: String? = null,
@@ -162,7 +169,10 @@ class ProcessorRef(
     val env: Map<String, String>? = null,
 
     @ApiModelProperty("The Pipeline module which added this processor.")
-    var module: String? = "standard"
+    var module: String? = "standard",
+
+    @ApiModelProperty("The Processor name to use for the checksum")
+    var checksumName: String? = null
 
 ) {
     /**
@@ -170,7 +180,7 @@ class ProcessorRef(
      */
     fun getChecksum(): Long {
         val checksum: Checksum = Adler32()
-        checksum.update(className.toByteArray())
+        checksum.update((checksumName ?: className).toByteArray())
         checksum.update(Json.serialize(args ?: mapOf<String, Any>()))
         return checksum.value
     }

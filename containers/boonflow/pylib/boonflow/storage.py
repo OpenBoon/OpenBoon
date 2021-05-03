@@ -15,11 +15,12 @@ from urllib.parse import urlparse
 import backoff
 import requests
 
-from boonsdk import app_from_env, Asset, StoredFile, AnalysisModule, \
+from boonsdk import Asset, StoredFile, AnalysisModule, \
     BoonSdkException, util
-from .base import BoonEnv
+from .base import BoonEnv, app_instance
 from .cloud import get_cached_google_storage_client, \
     get_cached_aws_client, get_cached_azure_storage_client
+
 
 __all__ = [
     'file_storage',
@@ -616,7 +617,7 @@ class FileCache(object):
         shutil.rmtree(self.root)
 
 
-class FileStorage(object):
+class FileStorage:
     """
     The FileStorage class handles storing, retrieving and caching files
     from various sources.
@@ -624,7 +625,7 @@ class FileStorage(object):
     """
 
     def __init__(self):
-        self.app = app_from_env()
+        self.app = app_instance()
         self.cache = FileCache(self.app)
         self.projects = ProjectStorage(self.app, self.cache)
         self.assets = AssetStorage(self.app, self.projects)

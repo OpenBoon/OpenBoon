@@ -2,7 +2,7 @@ from PIL import Image
 import numpy as np
 from facenet_pytorch import MTCNN, InceptionResnetV1
 
-from boonflow import AssetProcessor
+from boonflow import AssetProcessor, Singleton
 from boonflow.proxy import get_proxy_level_path, calculate_normalized_bbox
 from boonflow.analysis import LabelDetectionAnalysis
 from boonflow import FileTypes
@@ -28,16 +28,10 @@ class ZviFaceDetectionProcessor(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
         p_path = get_proxy_level_path(asset, 3)
-
-        analysis = LabelDetectionAnalysis()
-        for i, elem in enumerate(self.engine.detect(p_path)):
-            analysis.add_label_and_score('face{}'.format(i),
-                                         elem['score'], bbox=elem['bbox'], simhash=elem['simhash'])
-
-        asset.add_analysis(self.namespace, analysis)
+        asset.add_analysis(self.namespace,  self.engine.get_analysis(p_path))
 
 
-class MtCnnFaceDetectionEngine:
+class MtCnnFaceDetectionEngine(metaclass=Singleton):
     """
     A class for sharing the MTCNN face detection algorithm.
     """
@@ -64,3 +58,10 @@ class MtCnnFaceDetectionEngine:
             result.append({'bbox': rect, 'score': item[1], 'simhash': f_hash})
 
         return result
+
+    def get_analysis(self, obj):
+        analysis = LabelDetectionAnalysis()
+        for i, elem in enumerate(self.detect(obj)):
+            analysis.add_label_and_score('face{}'.format(i),
+                                         elem['score'], bbox=elem['bbox'], simhash=elem['simhash'])
+        return analysis

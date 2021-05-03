@@ -7,7 +7,7 @@ import traceback
 logger = logging.getLogger(__name__)
 
 
-class Reactor(object):
+class Reactor:
     """
     The Reactor is used to write cluster events like errors and expands
     back to a listening service like an Analyst.

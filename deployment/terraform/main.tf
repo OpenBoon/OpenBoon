@@ -326,6 +326,7 @@ module "ml-bbq" {
   source                 = "./modules/ml-bbq"
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
   auth-server-url        = "http://${module.auth-server.ip-address}"
+  archivist-url          = "http://${module.archivist.ip-address}"
   container-cluster-name = module.gke-cluster.name
   container-tag          = var.container-tag
 }
