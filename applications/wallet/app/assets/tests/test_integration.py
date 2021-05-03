@@ -424,8 +424,8 @@ class TestWebVttViewSet:
                                                                    'asset_pk': asset_id,
                                                                    'pk': webvtt}))
         assert isinstance(response, StreamingHttpResponse)
-        assert response._headers['cache-control'] == ('Cache-Control', 'max-age=86400, private')
-        assert 'expires' in response._headers
+        assert response.get('cache-control') == 'max-age=86400, private'
+        assert 'expires' in response.headers
 
 
 class TestFileNameViewSet:
@@ -444,8 +444,8 @@ class TestFileNameViewSet:
                                                                       'category_pk': 'proxy',
                                                                       'pk': filename}))
         assert isinstance(response, StreamingHttpResponse)
-        assert response._headers['cache-control'] == ('Cache-Control', 'max-age=86400, private')
-        assert 'expires' in response._headers
+        assert response.get('cache-control') == 'max-age=86400, private'
+        assert 'expires' in response.headers
 
     def test_get_signed_url(self, project, api_client, monkeypatch, login):
 

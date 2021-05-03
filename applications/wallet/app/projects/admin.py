@@ -1,10 +1,26 @@
+from boonsdk.client import BoonSdkNotFoundException
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
+from django.db import transaction
 
 from projects.models import Project, Membership
 from wallet.utils import get_zmlp_superuser_client
 
 
+@admin.action(description='Hard delete selected projects.')
+def hard_delete_project(modeladmin, request, queryset):
+    """Issues a delete request to ZMLP and removes the project from Wallet."""
+    for project in queryset:
+        with transaction.atomic():
+            client = get_zmlp_superuser_client()
+            try:
+                client.delete(f'/api/v1/projects/{project.id}')
+            except BoonSdkNotFoundException:
+                pass
+            project.delete()
+
+
+@admin.action(description='Sync selected projects with ZMLP.')
 def sync_project_with_zmlp(modeladmin, request, queryset):
     """Admin action that syncs a Wallet project with ZMLP."""
     for project in queryset:
@@ -14,6 +30,7 @@ def sync_project_with_zmlp(modeladmin, request, queryset):
             membership.sync_with_zmlp(client)
 
 
+@admin.action(description='Cycle API keys for selected projects.')
 def cycle_api_key(modeladmin, request, queryset):
     """Admin action that cycles out the api key associated with the project."""
     for project in queryset:
@@ -22,10 +39,16 @@ def cycle_api_key(modeladmin, request, queryset):
 
 @admin.register(Project)
 class ProjectAdmin(ModelAdmin):
-    actions = [sync_project_with_zmlp, cycle_api_key]
+    actions = [sync_project_with_zmlp, cycle_api_key, hard_delete_project]
     list_display = ('name', 'id', 'organization', 'isActive')
     list_filter = ('isActive', 'organization')
     search_fields = ('name', 'id')
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions
 
     def save_model(self, request, obj, form, change):
         """Creates a new project in the database as well as ZMLP."""

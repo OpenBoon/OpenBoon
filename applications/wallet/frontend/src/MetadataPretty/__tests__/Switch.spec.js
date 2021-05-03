@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import bboxAsset, { boxImagesResponse } from '../../Asset/__mocks__/bboxAsset'
 import assets from '../../Assets/__mocks__/assets'
@@ -55,6 +55,15 @@ describe('<MetadataPrettySwitch />', () => {
   })
 
   it('should render label with no predictions properly', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: { assetId: ASSET_ID, projectId: PROJECT_ID },
+    })
+
     const component = TestRenderer.create(
       <MetadataPrettySwitch
         name="boonai-label-detection"
@@ -64,9 +73,39 @@ describe('<MetadataPrettySwitch />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ children: 'boonai-label-detection' })
+        .props.onClick()
+    })
+
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'labelConfidence',
+          attribute: 'analysis.boonai-label-detection',
+          values: {},
+        },
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?assetId=${ASSET_ID}&query=${query}`,
+      `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}&query=${query}`,
+    )
   })
 
   it('should render label detection with box images properly', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: { assetId: ASSET_ID, projectId: PROJECT_ID },
+    })
+
     require('swr').__setMockUseSWRResponse({
       data: boxImagesResponse,
     })
@@ -81,6 +120,27 @@ describe('<MetadataPrettySwitch />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ children: 'boonai-object-detection' })
+        .props.onClick()
+    })
+
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'labelConfidence',
+          attribute: 'analysis.boonai-object-detection',
+          values: {},
+        },
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?assetId=${ASSET_ID}&query=${query}`,
+      `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}&query=${query}`,
+    )
   })
 
   it('should render content detection properly', () => {
@@ -114,11 +174,16 @@ describe('<MetadataPrettySwitch />', () => {
   })
 
   it('should render similarity detection properly', () => {
-    require('swr').__setMockUseSWRResponse({ data: assets })
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
 
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { assetId: ASSET_ID, projectId: PROJECT_ID },
     })
+
+    require('swr').__setMockUseSWRResponse({ data: assets })
 
     const value = bboxAsset.metadata.analysis['boonai-image-similarity']
 
@@ -131,6 +196,30 @@ describe('<MetadataPrettySwitch />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ children: 'boonai-image-similarity' })
+        .props.onClick()
+    })
+
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'similarity',
+          attribute: 'analysis.boonai-image-similarity',
+          values: {
+            ids: [ASSET_ID],
+            minScore: 0.75,
+          },
+        },
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?assetId=${ASSET_ID}&query=${query}`,
+      `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}&query=${query}`,
+    )
   })
 
   it('should render similarity detection with no data properly', () => {

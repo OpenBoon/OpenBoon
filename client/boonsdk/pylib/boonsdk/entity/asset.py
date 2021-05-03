@@ -251,12 +251,11 @@ class FileImport(object):
         self.custom = custom or {}
         self.page = page
         self.label = label
-        self.tmp = tmp
-        self.aux = self.__build_aux_dict(transient)
+        self.tmp = self.__build_tmp_dict(transient)
 
-    def __build_aux_dict(self, transient):
+    def __build_tmp_dict(self, transient):
         return {
-            "transient": transient
+            'transient': transient
         }
 
     def for_json(self):
@@ -274,7 +273,6 @@ class FileImport(object):
             "page": self.page,
             "label": self.label,
             "tmp": self.tmp,
-            "aux": self.aux
         }
 
     def __setitem__(self, field, value):
@@ -321,7 +319,7 @@ class FileUpload(FileImport):
             "page": self.page,
             "label": self.label,
             "custom": self.custom,
-            "aux": self.aux
+            "tmp": self.tmp
         }
 
 
