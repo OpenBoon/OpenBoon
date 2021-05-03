@@ -11,6 +11,15 @@ logging.basicConfig(level=logging.DEBUG)
 
 class TestBaseClasses(TestCase):
 
+    def setUp(self):
+        os.environ['BOONFLOW_IN_FLASK'] = "yes"
+
+    def tearDown(self):
+        try:
+            del os.environ['BOONFLOW_IN_FLASK']
+        except:
+            pass
+
     def test_get_available_credentials_types(self):
         os.environ["BOONAI_CREDENTIALS_TYPES"] = "GCP,AWS"
         try:
@@ -27,4 +36,4 @@ class TestBaseClasses(TestCase):
         request_ctx.push()
 
         sdk = base.app_instance()
-        assert sdk.client.token_override == 'Bearer XXXXX'
+        'Bearer XXXXX' in sdk.client.headers().values()
