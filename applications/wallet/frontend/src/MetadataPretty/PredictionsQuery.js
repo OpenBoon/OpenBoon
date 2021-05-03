@@ -6,7 +6,7 @@ import MetadataPrettyPredictionsContent, {
   BBOX_SIZE,
 } from './PredictionsContent'
 
-const MetadataPrettyPredictionsQuery = ({ name, path }) => {
+const MetadataPrettyPredictionsQuery = ({ path, name, type }) => {
   const attr = `${path}.${name}&width=${BBOX_SIZE}`
 
   const {
@@ -20,13 +20,19 @@ const MetadataPrettyPredictionsQuery = ({ name, path }) => {
   const { predictions } = data[name]
 
   return (
-    <MetadataPrettyPredictionsContent name={name} predictions={predictions} />
+    <MetadataPrettyPredictionsContent
+      path={path}
+      name={name}
+      type={type}
+      predictions={predictions}
+    />
   )
 }
 
 MetadataPrettyPredictionsQuery.propTypes = {
-  name: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['labels', 'text']).isRequired,
 }
 
 export default MetadataPrettyPredictionsQuery

@@ -121,7 +121,10 @@ export const dispatch = ({ type, payload }) => {
      * => idempotent
      */
     case ACTIONS.ADD_VALUE: {
-      const { pathname, projectId, assetId, filter, query: q } = payload
+      const { pathname: p, projectId, assetId, filter, query: q } = payload
+
+      // From Asset details page, go back to Visualizer when adding a Filter
+      const pathname = p.replace('/[assetId]', '')
 
       const filters = decode({ query: q })
 
