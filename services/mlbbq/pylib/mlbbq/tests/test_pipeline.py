@@ -57,4 +57,4 @@ def test_pipeline(proxy_patch, auth_patch, post_patch, client):
     assert rsp.status_code == 200
 
     result = rsp.get_json()
-    assert result['asset']['analysis']['boonai-face-detection']['count'] == 1
+    assert result['document']['analysis']['boonai-face-detection']['count'] == 1

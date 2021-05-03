@@ -32,12 +32,13 @@ class BBQExecutor:
             wrapper.init()
             wrappers.append(wrapper)
 
-        results = {}
+        results = []
         for asset in self.pipeline.get("assets", []):
             frame = Frame(Asset(asset))
             for wrapper in wrappers:
+                logger.info('Applying {} to {}'.format(wrapper.ref['className'], frame.asset.id))
                 wrapper.process(frame)
-            results[frame.asset.id] = frame.asset.for_json().get('document')
+            results.append(frame.asset.for_json())
         return results
 
 
@@ -46,24 +47,23 @@ def setup_endpoints(app):
     def execute_pipeline():
         check_write_access()
 
-        app = app_instance()
-        req = json.loads(flask.request.data)
-
-        # Get the ZpsScript necessary for processing the request.
-        script = app.client.post('/api/v3/pipelines/resolver/_apply_modules_script', req)
-
         try:
+            app = app_instance()
+            req = json.loads(flask.request.data)
+
+            # Get the ZpsScript necessary for processing the request.
+            script = app.client.post('/api/v3/pipelines/resolver/_apply_modules_to_asset', req)
+
             exec = BBQExecutor(script)
             result = exec.execute()
 
             if req.get('index'):
-                logger.info("indexing assets {}".format(result.keys()))
-                body = {'assets': result}
+                logger.info('indexing assets {}'.format(result[0]['id']))
+                body = {'assets': {result[0]['id']: result[0]['document']}}
                 app.client.put('/api/v3/assets/_batch_index', body)
 
-            return flask.jsonify({'asset': result[req['assetId']]})
+            return flask.jsonify(result[0])
 
-        except Exception as e:
-            print(e)
-            logger.error('Failed to execute pipeline', e)
+        except Exception:
+            logger.exception('Failed to execute pipeline')
             flask.abort(500, description='Unexpected server side exception')

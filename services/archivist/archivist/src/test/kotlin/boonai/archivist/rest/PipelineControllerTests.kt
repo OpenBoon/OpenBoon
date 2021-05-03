@@ -1,6 +1,9 @@
 package boonai.archivist.rest
 
 import boonai.archivist.MockMvcTest
+import boonai.archivist.domain.ApplyModulesToAssetRequest
+import boonai.archivist.domain.AssetSpec
+import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.Category
 import boonai.archivist.domain.ModOp
 import boonai.archivist.domain.ModOpType
@@ -230,49 +233,31 @@ class PipelineControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testResolve() {
-
-        mvc.perform(
-            get("/api/v1/pipelines/${pl.id}/_resolve")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(status().isOk)
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$.execute[0].className",
-                    CoreMatchers.equalTo("boonai_core.core.PreCacheSourceFileProcessor")
-                )
-            )
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$.execute[1].args.extract_doc_pages",
-                    CoreMatchers.equalTo(true)
-                )
-            )
-            .andReturn()
-    }
-
-    @Test
-    fun testResolveModular() {
+    fun testResolveApplyModulesToAsset() {
         pipelineModService.updateStandardMods()
+        val spec = AssetSpec("gs://cats/large-brown-cat.jpg")
+        val create = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+
+        refreshElastic()
+        var asset = assetService.getAsset(assetService.batchCreate(create).created[0])
+        val req = ApplyModulesToAssetRequest(
+            asset.id,
+            modules = listOf("boonai-face-detection")
+        )
+
         mvc.perform(
-            post("/api/v1/pipelines/_resolve_modular")
+            post("/api/v3/pipelines/resolver/_apply_modules_to_asset")
                 .headers(admin())
+                .content(Json.serialize(req))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(listOf("gcp-video-text-detection")))
         )
             .andExpect(status().isOk)
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$.execute[0].className",
-                    CoreMatchers.equalTo("boonai_core.core.PreCacheSourceFileProcessor")
-                )
-            )
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$.execute[5].className",
-                    CoreMatchers.equalTo("boonai_analysis.google.AsyncVideoIntelligenceProcessor")
+                    CoreMatchers.equalTo("boonai_analysis.boonai.ZviFaceDetectionProcessor")
                 )
             )
             .andReturn()
