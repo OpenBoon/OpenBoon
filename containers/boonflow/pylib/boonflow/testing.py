@@ -6,6 +6,7 @@ import tempfile
 import time
 import unittest
 import uuid
+import pytest
 from urllib.parse import urlparse
 
 import requests
@@ -292,6 +293,7 @@ class TestReactor(object):
         print(f"Emit event: '{event}'  payload: '{payload}'")
 
 
+@pytest.mark.skip(reason='not a test')
 def test_path(rel_path=""):
     """
     Return the absolute path to the given test file.
