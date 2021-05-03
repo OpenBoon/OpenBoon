@@ -68,6 +68,14 @@ resource "kubernetes_deployment" "ml-bbq" {
             name  = "BOONAI_SECURITY_AUTHSERVER_URL"
             value = var.auth-server-url
           }
+          env {
+            name  = "BOONFLOW_IN_FLASK"
+            value = "yes"
+          }
+          env {
+            name  = "BOONAI_SERVER"
+            value = var.archivist-url
+          }
           liveness_probe {
             initial_delay_seconds = 120
             period_seconds        = 5
@@ -148,4 +156,3 @@ resource "kubernetes_service" "ml-bbq" {
     type = "ClusterIP"
   }
 }
-
