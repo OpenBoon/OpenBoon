@@ -43,7 +43,8 @@ class BBQExecutor:
 
 
 def setup_endpoints(app):
-    @app.route('/ml/v1/apply-modules', methods=['PUT', 'POST'])
+
+    @app.route('/ml/v1/pipelines/apply-modules-to-asset', methods=['PUT', 'POST'])
     def execute_pipeline():
         check_write_access()
 
