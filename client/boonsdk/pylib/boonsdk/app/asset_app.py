@@ -482,7 +482,7 @@ class AssetApp(object):
             'modules': as_collection(modules),
             'index': index
         }
-        return Asset(self.app.client.post('/ml/v1/apply-modules', body))
+        return Asset(self.app.client.post('/ml/v1/pipelines/apply-modules-to-asset', body))
 
 
 """
