@@ -53,7 +53,7 @@ def test_pipeline(proxy_patch, auth_patch, post_patch, client):
         "index": False
     }
 
-    rsp = client.post("/ml/v1/apply-modules", data=json.dumps(req), content_type='application/json')
+    rsp = client.post("/ml/v1/pipelines/apply-modules-to-asset", data=json.dumps(req), content_type='application/json')
     assert rsp.status_code == 200
 
     result = rsp.get_json()
