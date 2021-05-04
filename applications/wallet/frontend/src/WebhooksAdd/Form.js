@@ -18,7 +18,7 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 
-import { onSubmit, onTest } from './helpers'
+import { generateSecretKey, onSubmit, onTest } from './helpers'
 
 const INITIAL_STATE = {
   url: '',
@@ -29,6 +29,7 @@ const INITIAL_STATE = {
   isLoading: false,
   errors: {},
   testSent: '',
+  disableSecretKeyButton: false,
 }
 
 const reducer = (state, action) => ({ ...state, ...action })
@@ -137,9 +138,8 @@ const WebhooksAddForm = () => {
         >
           <Button
             variant={BUTTON_VARIANTS.LINK}
-            onClick={() => {
-              dispatch({ secretKey: uuidv4() })
-            }}
+            isDisabled={state.disableSecretKeyButton}
+            onClick={generateSecretKey({ state, dispatch })}
           >
             Generate Key
           </Button>
