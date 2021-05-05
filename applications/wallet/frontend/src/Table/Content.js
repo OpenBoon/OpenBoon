@@ -4,6 +4,8 @@ import useSWR from 'swr'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import NoJobsSvg from '../Icons/noJobs.svg'
+
 import { getQueryString } from '../Fetch/helpers'
 
 import FetchAhead from '../Fetch/Ahead'
@@ -148,7 +150,18 @@ const TableContent = ({
             <tbody>
               {count === 0 ? (
                 <TableException numColumns={columns.length}>
-                  {renderEmpty}
+                  <div
+                    css={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      fontSize: typography.size.large,
+                      lineHeight: typography.height.large,
+                    }}
+                  >
+                    <NoJobsSvg width={200} />
+                    {renderEmpty}
+                  </div>
                 </TableException>
               ) : (
                 results.map((result) => renderRow({ result, revalidate }))

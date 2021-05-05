@@ -49,7 +49,7 @@ const ApiKeys = () => {
         refreshButton={false}
         columns={['API Key Name', 'Permissions', '#Actions#']}
         expandColumn={2}
-        renderEmpty="No api keys"
+        renderEmpty="There are currently no api keys."
         renderRow={({ result, revalidate }) => (
           <ApiKeysRow
             key={result.id}

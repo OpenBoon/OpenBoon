@@ -3,7 +3,6 @@ import { PropTypes } from 'prop-types'
 
 import Table from '../Table'
 
-import ModelLabelsEmpty from './Empty'
 import ModelLabelsRow from './Row'
 
 const ModelLabels = ({ requiredAssetsPerLabel }) => {
@@ -26,7 +25,7 @@ const ModelLabels = ({ requiredAssetsPerLabel }) => {
         '#Actions#',
       ]}
       expandColumn={1}
-      renderEmpty={<ModelLabelsEmpty />}
+      renderEmpty="There are currently no labels for this model."
       renderRow={({ result, revalidate }) => (
         <ModelLabelsRow
           key={result.label}

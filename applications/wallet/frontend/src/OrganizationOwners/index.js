@@ -37,7 +37,7 @@ const OrganizationOwners = () => {
         refreshKeys={[]}
         columns={['Owner Email', 'First Name', 'Last Name', '#Actions#']}
         expandColumn={0}
-        renderEmpty={<span />}
+        renderEmpty="There are currently no owners of this organization."
         renderRow={({ result, revalidate }) => {
           return (
             <OrganizationOwnersRow

@@ -814,6 +814,22 @@ exports[`<Table /> should render properly without data 1`] = `
   line-height: 19px;
 }
 
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 18px;
+  line-height: 21px;
+}
+
 <div
   className="emotion-0"
 >
@@ -863,7 +879,15 @@ exports[`<Table /> should render properly without data 1`] = `
                 <div
                   className="emotion-10"
                 >
-                  Empty
+                  <div
+                    className="emotion-11"
+                  >
+                    <svg
+                      data-file-name="noJobs.svg"
+                      width={200}
+                    />
+                    Empty
+                  </div>
                 </div>
               </td>
             </tr>
