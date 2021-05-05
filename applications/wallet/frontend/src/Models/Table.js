@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 
 import Table, { ROLES } from '../Table'
 
-import ModelsEmpty from './Empty'
 import ModelsRow from './Row'
 
 const ModelsTable = ({ projectId, modelTypes }) => {
@@ -15,7 +14,7 @@ const ModelsTable = ({ projectId, modelTypes }) => {
       refreshButton={false}
       columns={['Name', 'Type', 'Module']}
       expandColumn={0}
-      renderEmpty={<ModelsEmpty />}
+      renderEmpty="There are currently no custom models."
       renderRow={({ result }) => (
         <ModelsRow
           key={result.id}

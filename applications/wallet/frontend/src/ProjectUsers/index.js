@@ -51,7 +51,7 @@ const ProjectUsers = () => {
         refreshButton={false}
         columns={['Email', 'Roles', '#Actions#']}
         expandColumn={2}
-        renderEmpty="No users"
+        renderEmpty="There are currently no users for this project."
         renderRow={({ result, revalidate }) => (
           <ProjectUsersRow
             key={result.id}

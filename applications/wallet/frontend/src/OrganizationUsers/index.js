@@ -22,7 +22,7 @@ const OrganizationUsers = () => {
         '#Actions#',
       ]}
       expandColumn={0}
-      renderEmpty={<span />}
+      renderEmpty="There are currently no users in this organization."
       renderRow={({ result, revalidate }) => {
         return (
           <OrganizationUsersRow
