@@ -96,11 +96,13 @@ services:
       - jvm-common
       - plugins-analysis
     ports:
-      - "8282:8282"
+      - 8282:8282
     build:
       context: services/mlbbq
     environment:
       BOONAI_SECURITY_AUTHSERVER_URL : http://auth-server:9090
+      BOONAI_SERVER: http://archivist:8080
+      BOONFLOW_IN_FLASK: indeed
 
   # Auth server
   auth-server:
@@ -129,6 +131,7 @@ services:
       - minio
       - jvm-common
       - redis
+      - ml-bbq
     environment:
       SENTRY_ENVIRONMENT: localdev
       BOONAI_STORAGE_PROJECT_ACCESSKEY: qwerty123

@@ -109,7 +109,7 @@
         <dependency>
             <groupId>com.vladmihalcea</groupId>
             <artifactId>hibernate-types-52</artifactId>
-            <version>2.10.3</version>
+            <version>2.10.4</version>
         </dependency>
 
         <dependency>
@@ -173,7 +173,7 @@
         <dependency>
             <groupId>com.google.cloud.sql</groupId>
             <artifactId>postgres-socket-factory</artifactId>
-            <version>1.2.2</version>
+            <version>1.2.3</version>
             <exclusions>
                 <exclusion>
                     <groupId>mysql</groupId>
@@ -185,19 +185,19 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.11.1001</version>
+            <version>1.11.1012</version>
         </dependency>
 
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sqs</artifactId>
-            <version>1.11.1001</version>
+            <version>1.11.1012</version>
         </dependency>
 
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sns</artifactId>
-            <version>1.11.1001</version>
+            <version>1.11.1012</version>
         </dependency>
         <dependency>
             <groupId>io.minio</groupId>
@@ -261,7 +261,7 @@
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-automl</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
         </dependency>
 
         <dependency>

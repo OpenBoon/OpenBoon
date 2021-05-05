@@ -5,6 +5,9 @@ variable "image-pull-secret" {
 variable "auth-server-url" {
 }
 
+variable "archivist-url" {
+}
+
 variable "container-cluster-name" {
 }
 

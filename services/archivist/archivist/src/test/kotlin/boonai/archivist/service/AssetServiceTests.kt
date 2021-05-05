@@ -642,7 +642,7 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(2, indexRsp.indexed.size)
 
         assertNotNull(assetService.getAsset(createRsp.created[1]))
-        assertEquals(1, indexRsp.transient!!.deleted.size)
+        assertEquals(1, indexRsp.transient.size)
         assertThrows<EmptyResultDataAccessException> {
             assetService.getAsset(createRsp.created[0])
         }

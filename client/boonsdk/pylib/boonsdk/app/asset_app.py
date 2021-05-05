@@ -463,6 +463,27 @@ class AssetApp(object):
         """
         return SimilarityQuery(self.get_sim_hashes(images), min_score)
 
+    def apply_modules(self, asset, modules, index=True):
+        """
+        Apply a list of modules to a single Asset and return the new state of
+        the Asset.  If the 'save' argument is true (default), the resulting asset will be
+        saved back to your index.
+
+        Args:
+            asset (Asset): The Asset or the asset's unique ID.
+            modules (list): A list of modules to apply, there are some limitations.
+            index (bool): Index the results.
+
+        Returns:
+            The Asset with additional modules added.
+        """
+        body = {
+            'assetId': as_id(asset),
+            'modules': as_collection(modules),
+            'index': index
+        }
+        return Asset(self.app.client.post('/ml/v1/pipelines/apply-modules-to-asset', body))
+
 
 """
 A named tuple to define a ReprocessSearchResponse

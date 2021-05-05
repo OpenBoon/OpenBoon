@@ -425,3 +425,10 @@ class AssetAppTests(unittest.TestCase):
             assert clip.asset_id == '12345'
             assert clip.timeline == 'foo'
             assert clip.track == 'bar'
+
+    @patch.object(BoonClient, 'post')
+    def test_apply_modules(self, post_patch):
+        post_patch.return_value = {'id': "12345", "document": {"source": {"path": "/foo/bar.jpg"}}}
+        res = self.app.assets.apply_modules('12345', ['boonai-face-detection'])
+        assert '12345' == res.id
+        assert "/foo/bar.jpg" == res.uri

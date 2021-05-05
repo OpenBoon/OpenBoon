@@ -11,6 +11,11 @@ const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
 const noop = () => () => {}
 
+jest.mock('../helpers', () => ({
+  ...jest.requireActual('../helpers'),
+  generateSecretKey: () => () => 'some-random-key',
+}))
+
 describe('<WebhooksAdd />', () => {
   it('should render properly', async () => {
     const mockRouterPush = jest.fn()

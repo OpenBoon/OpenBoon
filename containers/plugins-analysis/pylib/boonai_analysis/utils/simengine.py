@@ -6,10 +6,12 @@ import cv2
 import mxnet
 import numpy as np
 
+from boonflow import Singleton
+
 Batch = namedtuple('Batch', ['data'])
 
 
-class SimilarityEngine:
+class SimilarityEngine(metaclass=Singleton):
     """
     Calculates similarity hashes using MXNET Resnet152.
     """

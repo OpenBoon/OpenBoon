@@ -1,6 +1,7 @@
 package boonai.archivist.service
 
 import boonai.archivist.config.ApplicationProperties
+import boonai.archivist.config.ArchivistConfiguration
 import boonai.archivist.domain.Asset
 import boonai.archivist.domain.AssetIdBuilder
 import boonai.archivist.domain.AssetIterator
@@ -144,7 +145,11 @@ interface AssetService {
      * @return An ES [BulkResponse] which contains the result of the operation.
      *
      */
-    fun batchIndex(docs: Map<String, MutableMap<String, Any>>, setAnalyzed: Boolean = false): BatchIndexResponse
+    fun batchIndex(
+        docs: Map<String, MutableMap<String, Any>>,
+        setAnalyzed: Boolean = false,
+        refresh: Boolean = false
+    ): BatchIndexResponse
 
     /**
      * Reindex a single asset.  The fully composed asset metadata must be provided,
@@ -492,7 +497,11 @@ class AssetServiceImpl : AssetService {
         return rest.client.lowLevelClient.performRequest(request)
     }
 
-    override fun batchIndex(docs: Map<String, MutableMap<String, Any>>, setAnalyzed: Boolean): BatchIndexResponse {
+    override fun batchIndex(
+        docs: Map<String, MutableMap<String, Any>>,
+        setAnalyzed: Boolean,
+        refresh: Boolean
+    ): BatchIndexResponse {
         if (docs.isEmpty()) {
             throw IllegalArgumentException("Nothing to batch index.")
         }
@@ -505,6 +514,9 @@ class AssetServiceImpl : AssetService {
 
         val rest = indexRoutingService.getProjectRestClient()
         val bulk = BulkRequest()
+        if (refresh) {
+            bulk.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+        }
 
         // A set of IDs where the stat changed to Analyzed.
         val stateChangedIds = mutableSetOf<String>()
@@ -521,9 +533,9 @@ class AssetServiceImpl : AssetService {
                     postTimelines[id] = timelines
                 }
 
-                asset.getAttr("tmp.transient", Boolean::class.java)?.let {
-                    if (it)
-                        tempAssets.add(id)
+                val tmpAsset = asset.getAttr("tmp.transient", Boolean::class.java) ?: false
+                if (tmpAsset) {
+                    tempAssets.add(id)
                 }
 
                 prepAssetForUpdate(asset)
@@ -532,11 +544,15 @@ class AssetServiceImpl : AssetService {
                     stateChangedIds.add(id)
                 }
 
-                bulk.add(
-                    rest.newIndexRequest(id)
-                        .source(doc)
-                        .opType(DocWriteRequest.OpType.INDEX)
-                )
+                if (tmpAsset) {
+                    bulk.add(rest.newDeleteRequest(id))
+                } else {
+                    bulk.add(
+                        rest.newIndexRequest(id)
+                            .source(doc)
+                            .opType(DocWriteRequest.OpType.INDEX)
+                    )
+                }
             } catch (ex: Exception) {
                 failedAssets.add(
                     BatchIndexFailure(id, asset.getAttr("source.path"), ex.message ?: "Unknown error")
@@ -591,7 +607,7 @@ class AssetServiceImpl : AssetService {
                 }
             }
 
-            // To increment ingest counters we need to know if the state changed.
+            // To increment ingest counters we need to know if the state changed.3
             if (stateChangedIds.isNotEmpty()) {
                 incrementProjectIngestCounters(stateChangedIds.intersect(indexedIds), docs)
             }
@@ -609,11 +625,12 @@ class AssetServiceImpl : AssetService {
                 }
             }
 
-            indexRoutingService.getProjectRestClient().refresh()
-            val transientResponse = deleteTemporaryAssets(indexedIds.intersect(tempAssets))
-            BatchIndexResponse(indexedIds, failedAssets, transientResponse)
+            // Delete assocated files with the transient assets.
+            deleteAssociatedFiles(tempAssets)
+
+            BatchIndexResponse(indexedIds, failedAssets, tempAssets)
         } else {
-            BatchIndexResponse(emptyList(), failedAssets)
+            BatchIndexResponse(emptyList(), failedAssets, emptyList())
         }
     }
 
@@ -639,7 +656,6 @@ class AssetServiceImpl : AssetService {
             RequestOptions.DEFAULT
         )
 
-        val projectId = getProjectId()
         val failures = rsp.bulkFailures.map { it.id }
         val removed = ids.subtract(failures).toList()
 
@@ -659,24 +675,33 @@ class AssetServiceImpl : AssetService {
         }
         projectService.incrementQuotaCounters(projectQuotaCounters)
 
-        // Background removal of files into a co-routine.
-        GlobalScope.launch(Dispatchers.IO + CoroutineAuthentication(SecurityContextHolder.getContext())) {
-            logger.info("Removing files for ${removed.size} assets")
-            for (assetId in removed) {
-                try {
-                    projectStorageService.recursiveDelete(
-                        ProjectDirLocator(ProjectStorageEntity.ASSETS, assetId, projectId)
-                    )
-                } catch (ex: ProjectStorageException) {
-                    logger.warn("Failed to delete files asset $assetId", ex)
+        if (removed.isNotEmpty()) {
+            if (ArchivistConfiguration.unittest) {
+                deleteAssociatedFiles(removed)
+            } else {
+                GlobalScope.launch(Dispatchers.IO + CoroutineAuthentication(SecurityContextHolder.getContext())) {
+                    deleteAssociatedFiles(removed)
                 }
             }
-
-            logger.info("Removing Clips related to removed assets")
-            clipService.deleteClips(removed)
         }
-
         return BatchDeleteAssetResponse(removed, failures)
+    }
+
+    fun deleteAssociatedFiles(assetIds: List<String>) {
+        val projectId = getProjectId()
+        // This will fail in tests because the indexRoute is not committed.
+
+        logger.info("Removing files for ${assetIds.size} assets")
+        for (assetId in assetIds) {
+            try {
+                projectStorageService.recursiveDelete(
+                    ProjectDirLocator(ProjectStorageEntity.ASSETS, assetId, projectId)
+                )
+            } catch (ex: ProjectStorageException) {
+                logger.warn("Failed to delete files asset $assetId", ex)
+            }
+        }
+        clipService.deleteClips(assetIds)
     }
 
     /**
@@ -1098,9 +1123,6 @@ class AssetServiceImpl : AssetService {
             counters.count(Asset(it, docs.getValue(it)))
         }
         projectService.incrementQuotaCounters(counters)
-    }
-
-    fun handleYoutubeVideo(path: String) {
     }
 
     /**

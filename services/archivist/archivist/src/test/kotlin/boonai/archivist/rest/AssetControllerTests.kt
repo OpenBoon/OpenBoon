@@ -462,4 +462,29 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.content().contentType("text/vtt"))
             .andReturn()
     }
+
+    @Test
+    fun testBatchIndexAssets() {
+        val createRsp = assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                listOf(
+                    AssetSpec("https://i.imgur.com/SSN26nN.jpg"),
+                    AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
+                )
+            )
+        )
+
+        val asset = assetService.getAll(createRsp.created)[0]
+        val batchIndex = mapOf("assets" to mapOf(asset.id to asset.document))
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/assets/_batch_index")
+                .header("X-BoonAI-Experimental-XXX", "8E5B551A8F51477489B1CC0FFD65C1C5")
+                .content(Json.serialize(batchIndex))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .headers(admin())
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
 }

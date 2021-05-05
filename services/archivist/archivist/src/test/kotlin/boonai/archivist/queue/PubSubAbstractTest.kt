@@ -12,7 +12,7 @@ import org.springframework.data.redis.connection.Message
 import org.springframework.data.redis.listener.Topic
 import java.util.concurrent.Phaser
 
-class PubSubAbstractTest : AbstractTest() {
+abstract class PubSubAbstractTest : AbstractTest() {
 
     @Autowired
     lateinit var indexRoutingPublisher: IndexRoutingPublisher
