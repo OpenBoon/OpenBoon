@@ -195,11 +195,11 @@ class MultipleWebSecurityConfig {
     @Autowired
     fun analystFilterRegistration(analystAuthenticationFilter: AnalystAuthenticationFilter):
         FilterRegistrationBean<AnalystAuthenticationFilter> {
-            val bean = FilterRegistrationBean<AnalystAuthenticationFilter>()
-            bean.filter = analystAuthenticationFilter
-            bean.isEnabled = false
-            return bean
-        }
+        val bean = FilterRegistrationBean<AnalystAuthenticationFilter>()
+        bean.filter = analystAuthenticationFilter
+        bean.isEnabled = false
+        return bean
+    }
 
     companion object {
         private val logger = LoggerFactory.getLogger(MultipleWebSecurityConfig::class.java)
