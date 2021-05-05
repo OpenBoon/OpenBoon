@@ -15,7 +15,7 @@ describe('<WebhooksAdd /> helpers', () => {
         disableSecretKeyButton: true,
       })
 
-      expect(mockDispatch).toHaveBeenCalledTimes(17)
+      expect(mockDispatch).toHaveBeenCalledTimes(57)
 
       expect(mockDispatch).toHaveBeenCalledWith({
         disableSecretKeyButton: false,

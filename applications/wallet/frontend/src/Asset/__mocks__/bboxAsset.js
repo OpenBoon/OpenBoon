@@ -131,7 +131,7 @@ const bboxAsset = {
           },
           {
             score: 0.86,
-            label: 'banana',
+            label: 'cherry',
           },
         ],
       },

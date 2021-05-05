@@ -1,7 +1,7 @@
 const fields = {
   analysis: {
     boonai: { tinyProxy: ['facet', 'text', 'exists'] },
-    'boonai-image-similarity': { simhash: ['similarity', 'exists'] },
+    'boonai-image-similarity': ['similarity', 'exists'],
     'boonai-object-detection': { predictions: [], count: ['range', 'exists'] },
     'boonai-face-detection': ['labelConfidence', 'exists'],
   },
