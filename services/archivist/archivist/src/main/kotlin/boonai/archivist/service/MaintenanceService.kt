@@ -158,7 +158,6 @@ class MaintenanceServiceImpl @Autowired constructor(
     }
 
     override fun runAll() {
-        // TODO: cluster lock
         handleExpiredJobs()
         handleUnresponsiveAnalysts()
         handleOrphanTasks()
