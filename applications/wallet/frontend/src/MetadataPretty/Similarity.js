@@ -4,16 +4,21 @@ import useSWR from 'swr'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import { encode } from '../Filters/helpers'
+import {
+  encode,
+  ACTIONS as FILTER_ACTIONS,
+  dispatch as filterDispatch,
+} from '../Filters/helpers'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 import AssetsThumbnail from '../Assets/Thumbnail'
+import Button, { VARIANTS } from '../Button'
 
 const THUMBNAIL_SIZE = 100
 
 const MetadataPrettySimilarity = ({ name, value: { simhash }, path }) => {
   const {
-    query: { projectId, assetId },
+    query: { projectId, assetId, query: q },
   } = useRouter()
 
   const query = encode({
@@ -39,12 +44,31 @@ const MetadataPrettySimilarity = ({ name, value: { simhash }, path }) => {
           padding: spacing.normal,
           paddingBottom: spacing.base,
           fontFamily: typography.family.mono,
-          fontSize: typography.size.small,
-          lineHeight: typography.height.small,
           color: colors.structure.white,
         }}
       >
-        {name}
+        <Button
+          aria-label="Add Filter"
+          variant={VARIANTS.NEUTRAL}
+          style={{
+            fontSize: typography.size.small,
+            lineHeight: typography.height.small,
+          }}
+          onClick={() => {
+            filterDispatch({
+              type: FILTER_ACTIONS.APPLY_SIMILARITY,
+              payload: {
+                projectId,
+                thumbnailId: assetId,
+                assetId,
+                query: q,
+                attribute: `${path}.${name}`,
+              },
+            })
+          }}
+        >
+          {name}
+        </Button>
       </div>
 
       <div

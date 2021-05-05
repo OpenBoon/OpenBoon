@@ -24,7 +24,8 @@ requirements = [
     "pdoc3",
     "requests",
     "xmltodict",
-    "youtube-dl"
+    "youtube-dl",
+    "flask"
 ]
 
 setup(

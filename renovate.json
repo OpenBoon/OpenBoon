@@ -6,10 +6,7 @@
     "schedule": ["before 5am on Monday"]
   },
   "python": {
-    "schedule": ["before 5am on Tuesday"],
-    "lockFileMaintenance": {
-      "enabled": true
-    }
+    "schedule": ["before 5am on Tuesday"]
   },
   "java": {
     "schedule": ["before 5am on Wednesday"]

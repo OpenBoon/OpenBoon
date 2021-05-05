@@ -220,7 +220,7 @@ class ProcessorExecutor:
         self.reactor.write_event("warning", {"message": msg})
 
 
-class ProcessorWrapper(object):
+class ProcessorWrapper:
     """
     Wraps a given Processor instance to provide:
 
@@ -540,26 +540,23 @@ class ProcessorWrapper(object):
             }
             sentry_sdk.set_context('billing_metric', body)
             try:
+                # Attention: please only log internal messages stuff to debug.  This way it shows
+                # up in GCP logs but not in the users log or affects their job.
                 response = requests.post(url, json=body)
+                if not response.ok:
+                    duplicate_msg = 'The fields service, asset_id, project must make a unique set.'
+                    if duplicate_msg not in response.json().get('non_field_errors'):
+                        msg = (f'Unable to register billing metrics. {response.status_code}: '
+                               f'{response.reason}')
+                        logger.debug(msg)
+                        sentry_sdk.capture_message(msg)
+                        msg = f'Metric missed: {body}'
+                        logger.debug(msg)
             except requests.exceptions.ConnectionError as e:
                 msg = ('Unable to register billing metrics, could not connect to metrics service.')
-                logger.warning(msg)
                 sentry_sdk.capture_message(msg)
                 sentry_sdk.capture_exception(e)
-                msg = f'Metric missed: {body}'
-                logger.warning(msg)
-
-            if not response.ok:
-                duplicate_msg = 'The fields service, asset_id, project must make a unique set.'
-                if duplicate_msg in response.json().get('non_field_errors'):
-                    logger.info(f'Duplicate metric skipped for {asset.id}: {service}')
-                else:
-                    msg = (f'Unable to register billing metrics. {response.status_code}: '
-                           f'{response.reason}')
-                    logger.warning(msg)
-                    sentry_sdk.capture_message(msg)
-                    msg = f'Metric missed: {body}'
-                    logger.warning(msg)
+                logger.debug(msg)
 
     def _get_count_and_minutes(self, asset):
         """Helper to return total images and number of video minutes for an asset.

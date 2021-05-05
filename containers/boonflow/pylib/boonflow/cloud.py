@@ -2,15 +2,14 @@ import logging
 
 import boto3
 import google.auth
+from azure.storage.blob import BlobServiceClient
 from google.auth.exceptions import DefaultCredentialsError
 from google.cloud import storage as gcs
 from google.oauth2 import service_account
-from azure.storage.blob import BlobServiceClient
 
-from boonsdk import app_from_env
 from boonsdk.client import BoonSdkNotFoundException
 from boonsdk.util import memoize
-from .base import BoonEnv
+from .base import BoonEnv, app_instance
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +28,7 @@ def get_credentials_blob(creds_type):
     job_id = BoonEnv.get_job_id()
 
     if creds_type in creds and job_id:
-        app = app_from_env()
+        app = app_instance()
         try:
             return app.client.get(
                 '/api/v1/jobs/{}/_credentials/{}'.format(job_id, creds_type))

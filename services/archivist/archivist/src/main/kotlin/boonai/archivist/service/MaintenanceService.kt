@@ -74,11 +74,6 @@ class MaintenanceConfiguration {
     lateinit var taskOrphanTime: String
 
     /**
-     * The amount of time before a shared link is removed.
-     */
-    lateinit var sharedLinksExpireTime: String
-
-    /**
      * Return a [Duration] instance from the analystInactivityTimeDown property.
      */
     fun getAnalystDownInactivityTime(): Duration {
@@ -97,13 +92,6 @@ class MaintenanceConfiguration {
      */
     fun getTaskOrphanTime(): Duration {
         return Duration.parse("PT${taskOrphanTime.toUpperCase()}")
-    }
-
-    /**
-     * Return a [Duration] instance describing the shared link expire time.
-     */
-    fun getSharedLinkExpiredTime(): Duration {
-        return Duration.parse("PT${sharedLinksExpireTime.toUpperCase()}")
     }
 }
 
@@ -170,7 +158,6 @@ class MaintenanceServiceImpl @Autowired constructor(
     }
 
     override fun runAll() {
-        // TODO: cluster lock
         handleExpiredJobs()
         handleUnresponsiveAnalysts()
         handleOrphanTasks()

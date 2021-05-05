@@ -633,7 +633,7 @@ class AssetServiceTests : AbstractTest() {
 
         // Delete only the first
         var assets = assetService.getAll(createRsp.created)
-        assets[0].setAttr("aux.transient", true)
+        assets[0].setAttr("tmp.transient", true)
 
         val batchIndex = assets.associate { it.id to it.document }
         val indexRsp = assetService.batchIndex(batchIndex)
@@ -642,7 +642,7 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(2, indexRsp.indexed.size)
 
         assertNotNull(assetService.getAsset(createRsp.created[1]))
-        assertEquals(1, indexRsp.transient!!.deleted.size)
+        assertEquals(1, indexRsp.transient.size)
         assertThrows<EmptyResultDataAccessException> {
             assetService.getAsset(createRsp.created[0])
         }

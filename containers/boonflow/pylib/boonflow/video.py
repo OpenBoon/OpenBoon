@@ -9,7 +9,7 @@ import shutil
 
 from datetime import datetime
 
-import boonsdk
+from .base import app_instance
 
 logger = logging.getLogger(__name__)
 
@@ -291,5 +291,5 @@ def save_timeline(asset, timeline):
     new_timelines.append(timeline.name)
     asset.set_attr('tmp.timelines', new_timelines)
 
-    app = boonsdk.app_from_env()
+    app = app_instance()
     return app.clips.create_clips(timeline)

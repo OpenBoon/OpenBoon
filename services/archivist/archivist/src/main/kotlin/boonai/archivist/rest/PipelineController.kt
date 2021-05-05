@@ -1,13 +1,14 @@
 package boonai.archivist.rest
 
+import boonai.archivist.domain.ApplyModulesToAssetRequest
 import boonai.archivist.domain.Pipeline
 import boonai.archivist.domain.PipelineFilter
 import boonai.archivist.domain.PipelineSpec
 import boonai.archivist.domain.PipelineUpdate
-import boonai.archivist.domain.ResolvedPipeline
+import boonai.archivist.domain.ZpsScript
 import boonai.archivist.repository.KPagedList
-import boonai.archivist.service.PipelineResolverService
 import boonai.archivist.service.PipelineService
+import boonai.archivist.service.ZpsBuilderService
 import boonai.archivist.util.HttpUtils
 import boonai.common.util.Json
 import io.swagger.annotations.Api
@@ -32,7 +33,7 @@ import javax.servlet.http.HttpServletResponse
 @Api(tags = ["Pipeline"], description = "Operations for interacting with Pipelines.")
 class PipelineController @Autowired constructor(
     val pipelineService: PipelineService,
-    val pipeineResolverService: PipelineResolverService
+    val zpsBuilderService: ZpsBuilderService
 ) {
 
     @ApiOperation("Get a Pipeline.")
@@ -85,18 +86,9 @@ class PipelineController @Autowired constructor(
         return HttpUtils.deleted("pipelines", id, pipelineService.delete(id))
     }
 
-    @ApiOperation("Resolve a Pipeline to its list of processors.")
-    @GetMapping(value = ["/api/v1/pipelines/{id}/_resolve"])
-    fun resolve(@ApiParam("UUID of the Pipeline.") @PathVariable id: UUID): ResolvedPipeline {
-        return pipeineResolverService.resolve(id)
-    }
-
-    @ApiOperation("Resolve a Pipeline to its list of processors.")
-    @PostMapping(value = ["/api/v1/pipelines/_resolve_modular"])
-    fun resolveStandard(
-        @ApiParam("A List of module names") @RequestBody(required = false)
-        modules: List<String>?
-    ): ResolvedPipeline {
-        return pipeineResolverService.resolveModular(modules ?: listOf())
+    @ApiOperation("Build a pipeline script to apply the given modules.")
+    @PostMapping(value = ["/api/v3/pipelines/resolver/_apply_modules_to_asset"])
+    fun resolveApplyModulesScript(@RequestBody req: ApplyModulesToAssetRequest): ZpsScript {
+        return zpsBuilderService.buildApplyModulesToAssetScript(req)
     }
 }
