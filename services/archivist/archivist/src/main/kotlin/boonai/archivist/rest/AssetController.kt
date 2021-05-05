@@ -84,16 +84,16 @@ class AssetController @Autowired constructor(
     fun scroll(@RequestBody(required = false) scroll: Map<String, String>, output: ServletOutputStream):
         ResponseEntity<Resource> {
 
-            val rsp = assetSearchService.scroll(scroll)
-            val output = RawByteArrayOutputStream(1024 * 64)
-            XContentFactory.jsonBuilder(output).use {
-                rsp.toXContent(it, ToXContent.EMPTY_PARAMS)
-            }
-
-            return ResponseEntity.ok()
-                .contentLength(output.size().toLong())
-                .body(InputStreamResource(output.toInputStream()))
+        val rsp = assetSearchService.scroll(scroll)
+        val output = RawByteArrayOutputStream(1024 * 64)
+        XContentFactory.jsonBuilder(output).use {
+            rsp.toXContent(it, ToXContent.EMPTY_PARAMS)
         }
+
+        return ResponseEntity.ok()
+            .contentLength(output.size().toLong())
+            .body(InputStreamResource(output.toInputStream()))
+    }
 
     @PreAuthorize("hasAuthority('AssetsRead')")
     @DeleteMapping("/api/v3/assets/_search/scroll")
@@ -128,15 +128,15 @@ class AssetController @Autowired constructor(
     @PostMapping("/api/v3/assets/_batch_create")
     fun batchCreate(@RequestBody request: BatchCreateAssetsRequest):
         BatchCreateAssetsResponse {
-            return assetService.batchCreate(request)
-        }
+        return assetService.batchCreate(request)
+    }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
     @PutMapping("/api/v3/assets/_batch_update_custom_fields")
     fun batchUpdateCustomFields(@RequestBody request: BatchUpdateCustomFieldsRequest):
         BatchUpdateResponse {
-            return assetService.batchUpdateCustomFields(request)
-        }
+        return assetService.batchUpdateCustomFields(request)
+    }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
     @ApiOperation("Create or reprocess assets via a file upload.")
