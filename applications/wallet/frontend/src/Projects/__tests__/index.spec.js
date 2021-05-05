@@ -117,7 +117,7 @@ describe('<Projects />', () => {
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: { results: [] },
+      data: {},
     })
 
     const component = TestRenderer.create(
