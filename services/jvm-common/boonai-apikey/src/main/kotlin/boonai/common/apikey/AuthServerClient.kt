@@ -98,12 +98,13 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         while (true) {
             tries += 1
             try {
-                val rsp = client.newCall(request).execute()
-                if (rsp.isSuccessful) {
-                    val body = rsp.body() ?: throw AuthServerClientException("Invalid APIKey")
-                    return Mapper.readValue(body.byteStream())
-                } else {
-                    throw AuthServerClientException("Invalid APIKey")
+                client.newCall(request).execute().use { rsp ->
+                    if (rsp.isSuccessful) {
+                        val body = rsp.body() ?: throw AuthServerClientException("Invalid APIKey")
+                        return Mapper.readValue(body.byteStream())
+                    } else {
+                        throw AuthServerClientException("Invalid APIKey")
+                    }
                 }
             } catch (e: InterruptedIOException) {
                 logger.warn("Authentication timed out($tries), retrying....")
@@ -146,9 +147,11 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         val req = signRequest(Request.Builder().url("$baseUri/$path".replace("//", "/")), projectId)
             .post(rbody)
             .build()
-        val rsp = client.newCall(req).execute()
-        if (rsp.code() >= 400) {
-            throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")
+
+        client.newCall(req).execute().use { rsp ->
+            if (rsp.code() >= 400) {
+                throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")
+            }
         }
     }
 
@@ -165,12 +168,14 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         val req = signRequest(Request.Builder().url("$baseUri/$path".replace("//", "/")), projectId)
             .post(rbody)
             .build()
-        val rsp = client.newCall(req).execute()
-        if (rsp.code() >= 400) {
-            throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")
+
+        client.newCall(req).execute().use { rsp ->
+            if (rsp.code() >= 400) {
+                throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")
+            }
+            val body = rsp.body() ?: throw AuthServerClientException("AuthServerClient failure, null response body")
+            return Mapper.readValue(body.byteStream())
         }
-        val body = rsp.body() ?: throw AuthServerClientException("AuthServerClient failure, null response body")
-        return Mapper.readValue(body.byteStream())
     }
 
     private inline fun <reified T> delete(path: String, body: Map<String, Any>? = null, projectId: UUID? = null): T {
@@ -178,23 +183,27 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         val req = signRequest(Request.Builder().url("$baseUri/$path".replace("//", "/")), projectId)
             .delete(rbody)
             .build()
-        val rsp = client.newCall(req).execute()
-        if (rsp.code() >= 400) {
-            throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")
+
+        client.newCall(req).execute().use { rsp ->
+            if (rsp.code() >= 400) {
+                throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")
+            }
+            val body = rsp.body() ?: throw AuthServerClientException("AuthServerClient failure, null response body")
+            return Mapper.readValue(body.byteStream())
         }
-        val body = rsp.body() ?: throw AuthServerClientException("AuthServerClient failure, null response body")
-        return Mapper.readValue(body.byteStream())
     }
 
     private inline fun <reified T> get(path: String, projectId: UUID? = null): T {
         val req = signRequest(Request.Builder().url("$baseUri/$path".replace("//", "/")), projectId)
             .build()
-        val rsp = client.newCall(req).execute()
-        if (rsp.code() >= 400) {
-            throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")
+
+        client.newCall(req).execute().use { rsp ->
+            if (rsp.code() >= 400) {
+                throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")
+            }
+            val body = rsp.body() ?: throw AuthServerClientException("AuthServerClient failure, null response body")
+            return Mapper.readValue(body.byteStream())
         }
-        val body = rsp.body() ?: throw AuthServerClientException("AuthServerClient failure, null response body")
-        return Mapper.readValue(body.byteStream())
     }
 
     /**
