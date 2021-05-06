@@ -104,7 +104,19 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   display: flex;
 }
 
-.emotion-13 {
+.emotion-14 {
+  padding-top: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -113,20 +125,20 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   margin-left: 8px;
 }
 
-.emotion-13:hover div,
-.emotion-13:focus-within div {
+.emotion-15:hover div,
+.emotion-15:focus-within div {
   visibility: visible;
   opacity: 1;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
 }
 
-.emotion-13:hover button,
-.emotion-13:focus-within button {
+.emotion-15:hover button,
+.emotion-15:focus-within button {
   color: #ffffff;
 }
 
-.emotion-14 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -137,7 +149,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   color: #808080;
 }
 
-.emotion-15 {
+.emotion-17 {
   position: absolute;
   left: -10px;
   top: 28px;
@@ -157,12 +169,12 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   z-index: 1;
 }
 
-.emotion-15:hover {
+.emotion-17:hover {
   visibility: visible;
   opacity: 1;
 }
 
-.emotion-16:before {
+.emotion-18:before {
   content: ' ';
   position: absolute;
   top: -6px;
@@ -172,32 +184,32 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   border-right: 6px solid transparent;
 }
 
-.emotion-17 {
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-18 {
-  font-size: 15px;
-  line-height: 19px;
-  padding-bottom: 8px;
-}
-
 .emotion-19 {
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-20 {
+  font-size: 15px;
+  line-height: 19px;
   padding-bottom: 8px;
 }
 
-.emotion-22 {
+.emotion-21 {
+  padding-bottom: 8px;
+}
+
+.emotion-24 {
   clear: both;
   padding-bottom: 16px;
   color: #b3b3b3;
 }
 
-.emotion-23 {
+.emotion-25 {
   clear: both;
 }
 
-.emotion-24 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -211,7 +223,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   padding-bottom: 16px;
 }
 
-.emotion-25 {
+.emotion-27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -219,7 +231,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   position: relative;
 }
 
-.emotion-26 {
+.emotion-28 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -230,7 +242,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   cursor: pointer;
 }
 
-.emotion-27 {
+.emotion-29 {
   position: absolute;
   top: 0;
   left: 0;
@@ -251,13 +263,13 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   cursor: pointer;
 }
 
-.emotion-28 path {
+.emotion-30 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-29 {
+.emotion-31 {
   padding-left: 24px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -269,7 +281,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   align-items: center;
 }
 
-.emotion-30 {
+.emotion-32 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -280,19 +292,19 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   padding-left: 16px;
 }
 
-.emotion-31 {
+.emotion-33 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-40 {
+.emotion-42 {
   padding-left: 0;
   color: #b3b3b3;
 }
 
-.emotion-43 {
+.emotion-45 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -303,51 +315,51 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   cursor: pointer;
 }
 
-.emotion-45 path {
+.emotion-47 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
 }
 
-.emotion-49 {
+.emotion-51 {
   height: 8px;
 }
 
-.emotion-51 {
+.emotion-53 {
   margin: 0;
   padding-top: 8px;
   color: #b3b3b3;
 }
 
-.emotion-52 {
+.emotion-54 {
   padding-top: 16px;
 }
 
-.emotion-53 {
+.emotion-55 {
   border-radius: 2px;
   background-color: #3b3b3b;
 }
 
-.emotion-53:hover summary svg {
+.emotion-55:hover summary svg {
   opacity: 1;
 }
 
-.emotion-54 {
+.emotion-56 {
   list-style-type: none;
   padding: 16px;
   background-color: #3b3b3b;
 }
 
-.emotion-54::-webkit-details-marker {
+.emotion-56::-webkit-details-marker {
   display: none;
 }
 
-.emotion-54:hover {
+.emotion-56:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-55 {
+.emotion-57 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -358,7 +370,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   align-items: center;
 }
 
-.emotion-56 {
+.emotion-58 {
   color: #808080;
   -webkit-transform: rotate(-180deg);
   -moz-transform: rotate(-180deg);
@@ -366,7 +378,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   transform: rotate(-180deg);
 }
 
-.emotion-57 {
+.emotion-59 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -380,20 +392,20 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   font-weight: 700;
 }
 
-.emotion-58 {
+.emotion-60 {
   border-top: 1px solid #4a4a4a;
   padding: 32px;
   padding-top: 16px;
 }
 
-.emotion-59 {
+.emotion-61 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
   padding-bottom: 16px;
 }
 
-.emotion-60 {
+.emotion-62 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -405,7 +417,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   padding-top: 8px;
 }
 
-.emotion-60 li {
+.emotion-62 li {
   width: 33%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -418,23 +430,23 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   padding-right: 40px;
 }
 
-.emotion-60 svg {
+.emotion-62 svg {
   color: #6088FE;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
 }
 
-.emotion-60 span {
+.emotion-62 span {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-61 {
+.emotion-63 {
   padding-top: 16px;
 }
 
-.emotion-66 {
+.emotion-68 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -442,7 +454,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   padding-left: 16px;
 }
 
-.emotion-68 {
+.emotion-70 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
@@ -450,7 +462,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   max-width: 600px;
 }
 
-.emotion-69 {
+.emotion-71 {
   border: none;
   padding: 0;
   margin: 0;
@@ -458,7 +470,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   padding-bottom: 32px;
 }
 
-.emotion-70 {
+.emotion-72 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -467,76 +479,76 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   font-weight: 500;
 }
 
-.emotion-71 {
+.emotion-73 {
   clear: both;
 }
 
-.emotion-72 {
+.emotion-74 {
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-72 th,
-.emotion-72 td {
+.emotion-74 th,
+.emotion-74 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-72 th:first-of-type,
-.emotion-72 td:first-of-type {
+.emotion-74 th:first-of-type,
+.emotion-74 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-72 th:nth-of-type(2),
-.emotion-72 td:nth-of-type(2) {
+.emotion-74 th:nth-of-type(2),
+.emotion-74 td:nth-of-type(2) {
   min-width: 300px;
 }
 
-.emotion-72 th:nth-of-type(3),
-.emotion-72 td:nth-of-type(3) {
+.emotion-74 th:nth-of-type(3),
+.emotion-74 td:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-72 th {
+.emotion-74 th {
   color: #b3b3b3;
   font-weight: 500;
   white-space: nowrap;
 }
 
-.emotion-72 td {
+.emotion-74 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
 }
 
-.emotion-72 td:first-of-type {
+.emotion-74 td:first-of-type {
   border: none;
 }
 
-.emotion-72 td:nth-of-type(2) {
+.emotion-74 td:nth-of-type(2) {
   font-family: Roboto Mono;
 }
 
-.emotion-72 tr:hover td {
+.emotion-74 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-72 tr:hover+tr td {
+.emotion-74 tr:hover+tr td {
   border-top-color: transparent;
 }
 
-.emotion-72 tr:last-of-type td {
+.emotion-74 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-72 tr:last-of-type td:first-of-type {
+.emotion-74 tr:last-of-type td:first-of-type {
   border: none;
 }
 
-.emotion-73 {
+.emotion-75 {
   cursor: pointer;
 }
 
-.emotion-74 {
+.emotion-76 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -545,18 +557,18 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   -moz-user-select: none;
 }
 
-.emotion-79 {
+.emotion-81 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-80 {
+.emotion-82 {
   margin-right: 16px;
 }
 
-.emotion-122 {
+.emotion-124 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -565,12 +577,12 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   padding-bottom: 16px;
 }
 
-.emotion-122 button,
-.emotion-122 a {
+.emotion-124 button,
+.emotion-124 a {
   margin-right: 16px;
 }
 
-.emotion-123 {
+.emotion-125 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -601,27 +613,27 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   background-color: transparent;
 }
 
-.emotion-123,
-.emotion-123:hover,
-.emotion-123:visited,
-.emotion-123 .noop {
+.emotion-125,
+.emotion-125:hover,
+.emotion-125:visited,
+.emotion-125 .noop {
   background-color: #808080;
 }
 
-.emotion-123:hover,
-.emotion-123 .noop {
+.emotion-125:hover,
+.emotion-125 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-123[aria-disabled=true],
-.emotion-123 .noop {
+.emotion-125[aria-disabled=true],
+.emotion-125 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-124 {
+.emotion-126 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -652,22 +664,22 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   background-color: transparent;
 }
 
-.emotion-124,
-.emotion-124:hover,
-.emotion-124:visited,
-.emotion-124 .noop {
+.emotion-126,
+.emotion-126:hover,
+.emotion-126:visited,
+.emotion-126 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-124:hover,
-.emotion-124 .noop {
+.emotion-126:hover,
+.emotion-126 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-124[aria-disabled=true],
-.emotion-124 .noop {
+.emotion-126[aria-disabled=true],
+.emotion-126 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -689,7 +701,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     <h3
       className="emotion-3"
     >
-      STEP 1: Data Source Name 
+      STEP 1: Data Source Name
     </h3>
     <div
       className="emotion-4"
@@ -737,103 +749,112 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     <legend
       className="emotion-12"
     >
-      STEP 2: Edit File Types
-      <div
-        className="emotion-13"
+      <h3
+        className="emotion-3"
       >
-        <button
-          aria-details="SupportedFile Types"
-          aria-label="Supported File Types"
-          className="emotion-14"
-          type="button"
-        >
-          <svg
-            data-file-name="help.svg"
-            height={20}
-          />
-        </button>
+        STEP 2: Edit File Types
+      </h3>
+       
+      <div
+        className="emotion-14"
+      >
         <div
           className="emotion-15"
-          id="SupportedFile Types"
-          role="tooltip"
         >
-          <div
+          <button
+            aria-details="SupportedFile Types"
+            aria-label="Supported File Types"
             className="emotion-16"
-          />
+            type="button"
+          >
+            <svg
+              data-file-name="help.svg"
+              height={20}
+            />
+          </button>
           <div
             className="emotion-17"
+            id="SupportedFile Types"
+            role="tooltip"
           >
-            <h3
+            <div
               className="emotion-18"
-            >
-              Supported File Types
-            </h3>
+            />
             <div
               className="emotion-19"
             >
-              <h4>
-                Images
-                :
-              </h4>
-              GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
-            </div>
-            <div
-              className="emotion-19"
-            >
-              <h4>
-                Documents
-                :
-              </h4>
-              PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
-            </div>
-            <div
-              className="emotion-19"
-            >
-              <h4>
-                Videos
-                :
-              </h4>
-              MP4, M4V, MOV, MPG, MPEG, OGG
+              <h3
+                className="emotion-20"
+              >
+                Supported File Types
+              </h3>
+              <div
+                className="emotion-21"
+              >
+                <h4>
+                  Images
+                  :
+                </h4>
+                GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
+              </div>
+              <div
+                className="emotion-21"
+              >
+                <h4>
+                  Documents
+                  :
+                </h4>
+                PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
+              </div>
+              <div
+                className="emotion-21"
+              >
+                <h4>
+                  Videos
+                  :
+                </h4>
+                MP4, M4V, MOV, MPG, MPEG, OGG
+              </div>
             </div>
           </div>
         </div>
       </div>
     </legend>
     <div
-      className="emotion-22"
+      className="emotion-24"
     >
       <div>
         You can change the file types to import. You must select at least one file type.
       </div>
     </div>
     <div
-      className="emotion-23"
+      className="emotion-25"
     />
     <label
-      className="emotion-24"
+      className="emotion-26"
     >
       <div
-        className="emotion-25"
+        className="emotion-27"
       >
         <input
-          className="emotion-26"
+          className="emotion-28"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
           value="Images"
         />
         <div
-          className="emotion-27"
+          className="emotion-29"
         >
           <svg
-            className="emotion-28"
+            className="emotion-30"
             data-file-name="checkmark.svg"
             height={20}
           />
         </div>
       </div>
       <div
-        className="emotion-29"
+        className="emotion-31"
       >
         <svg
           color="#ebb52e"
@@ -842,40 +863,40 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
         />
       </div>
       <div
-        className="emotion-30"
+        className="emotion-32"
       >
         <span
-          className="emotion-31"
+          className="emotion-33"
         >
           Image Files
         </span>
       </div>
     </label>
     <label
-      className="emotion-24"
+      className="emotion-26"
     >
       <div
-        className="emotion-25"
+        className="emotion-27"
       >
         <input
-          className="emotion-26"
+          className="emotion-28"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
           value="Documents"
         />
         <div
-          className="emotion-27"
+          className="emotion-29"
         >
           <svg
-            className="emotion-28"
+            className="emotion-30"
             data-file-name="checkmark.svg"
             height={20}
           />
         </div>
       </div>
       <div
-        className="emotion-29"
+        className="emotion-31"
       >
         <svg
           color="#00bdc1"
@@ -884,45 +905,45 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
         />
       </div>
       <div
-        className="emotion-30"
+        className="emotion-32"
       >
         <span
-          className="emotion-31"
+          className="emotion-33"
         >
           Documents (PDF & MS Office)
         </span>
         <span
-          className="emotion-40"
+          className="emotion-42"
         >
           Pages will be processed and counted as individual assets
         </span>
       </div>
     </label>
     <label
-      className="emotion-24"
+      className="emotion-26"
     >
       <div
-        className="emotion-25"
+        className="emotion-27"
       >
         <input
-          className="emotion-43"
+          className="emotion-45"
           defaultChecked={true}
           onClick={[Function]}
           type="checkbox"
           value="Videos"
         />
         <div
-          className="emotion-27"
+          className="emotion-29"
         >
           <svg
-            className="emotion-45"
+            className="emotion-47"
             data-file-name="checkmark.svg"
             height={20}
           />
         </div>
       </div>
       <div
-        className="emotion-29"
+        className="emotion-31"
       >
         <svg
           color="#8f89e7"
@@ -931,10 +952,10 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
         />
       </div>
       <div
-        className="emotion-30"
+        className="emotion-32"
       >
         <span
-          className="emotion-31"
+          className="emotion-33"
         >
           Video Files
         </span>
@@ -942,7 +963,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     </label>
   </fieldset>
   <div
-    className="emotion-49"
+    className="emotion-51"
   />
   <h3
     className="emotion-3"
@@ -950,47 +971,47 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     STEP 3: Edit Analysis Modules
   </h3>
   <p
-    className="emotion-51"
+    className="emotion-53"
   >
     You can change the analysis modules to be applied to the file types selected in step 2.
   </p>
   <div
-    className="emotion-52"
+    className="emotion-54"
   >
     <details
-      className="emotion-53"
+      className="emotion-55"
       onToggle={[Function]}
       open={true}
     >
       <summary
         aria-label="Boon AI Automatic Analysis"
-        className="emotion-54"
+        className="emotion-56"
       >
         <div
-          className="emotion-55"
+          className="emotion-57"
         >
           <svg
-            className="emotion-56"
+            className="emotion-58"
             data-file-name="chevron.svg"
             height={20}
           />
           <span
-            className="emotion-57"
+            className="emotion-59"
           >
             Boon AI Automatic Analysis
           </span>
         </div>
       </summary>
       <div
-        className="emotion-58"
+        className="emotion-60"
       >
         <p
-          className="emotion-59"
+          className="emotion-61"
         >
           The following basic analysis is applied to all data sets.
         </p>
         <ul
-          className="emotion-60"
+          className="emotion-62"
         >
           <li>
             <svg
@@ -1033,27 +1054,27 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     </details>
   </div>
   <div
-    className="emotion-61"
+    className="emotion-63"
   >
     <details
-      className="emotion-53"
+      className="emotion-55"
       onToggle={[Function]}
       open={true}
     >
       <summary
         aria-label="zorroa"
-        className="emotion-54"
+        className="emotion-56"
       >
         <div
-          className="emotion-55"
+          className="emotion-57"
         >
           <svg
-            className="emotion-56"
+            className="emotion-58"
             data-file-name="chevron.svg"
             height={20}
           />
           <span
-            className="emotion-66"
+            className="emotion-68"
           >
             <img
               alt="zorroa"
@@ -1064,26 +1085,26 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
         </div>
       </summary>
       <div
-        className="emotion-58"
+        className="emotion-60"
       >
         <p
-          className="emotion-68"
+          className="emotion-70"
         >
           These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
         </p>
         <fieldset
-          className="emotion-69"
+          className="emotion-71"
         >
           <legend
-            className="emotion-70"
+            className="emotion-72"
           >
             Visual Intelligence
           </legend>
           <div
-            className="emotion-71"
+            className="emotion-73"
           />
           <table
-            className="emotion-72"
+            className="emotion-74"
           >
             <thead>
               <tr>
@@ -1103,28 +1124,28 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
             </thead>
             <tbody>
               <tr
-                className="emotion-73"
+                className="emotion-75"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-74"
+                    className="emotion-76"
                   >
                     <div
-                      className="emotion-25"
+                      className="emotion-27"
                     >
                       <input
-                        className="emotion-43"
+                        className="emotion-45"
                         defaultChecked={true}
                         onClick={[Function]}
                         type="checkbox"
                         value="gcp-label-detection"
                       />
                       <div
-                        className="emotion-27"
+                        className="emotion-29"
                       >
                         <svg
-                          className="emotion-45"
+                          className="emotion-47"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
@@ -1147,16 +1168,16 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
                 <td>
                   <div
-                    className="emotion-79"
+                    className="emotion-81"
                   >
                     <svg
-                      className="emotion-80"
+                      className="emotion-82"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
-                      className="emotion-80"
+                      className="emotion-82"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -1170,28 +1191,28 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
               </tr>
               <tr
-                className="emotion-73"
+                className="emotion-75"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-74"
+                    className="emotion-76"
                   >
                     <div
-                      className="emotion-25"
+                      className="emotion-27"
                     >
                       <input
-                        className="emotion-26"
+                        className="emotion-28"
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
                         value="gcp-object-detection"
                       />
                       <div
-                        className="emotion-27"
+                        className="emotion-29"
                       >
                         <svg
-                          className="emotion-28"
+                          className="emotion-30"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
@@ -1214,16 +1235,16 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
                 <td>
                   <div
-                    className="emotion-79"
+                    className="emotion-81"
                   >
                     <svg
-                      className="emotion-80"
+                      className="emotion-82"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
-                      className="emotion-80"
+                      className="emotion-82"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -1237,28 +1258,28 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
               </tr>
               <tr
-                className="emotion-73"
+                className="emotion-75"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-74"
+                    className="emotion-76"
                   >
                     <div
-                      className="emotion-25"
+                      className="emotion-27"
                     >
                       <input
-                        className="emotion-26"
+                        className="emotion-28"
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
                         value="boonai-label-detection"
                       />
                       <div
-                        className="emotion-27"
+                        className="emotion-29"
                       >
                         <svg
-                          className="emotion-28"
+                          className="emotion-30"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
@@ -1281,16 +1302,16 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
                 <td>
                   <div
-                    className="emotion-79"
+                    className="emotion-81"
                   >
                     <svg
-                      className="emotion-80"
+                      className="emotion-82"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
-                      className="emotion-80"
+                      className="emotion-82"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -1304,28 +1325,28 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
               </tr>
               <tr
-                className="emotion-73"
+                className="emotion-75"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-74"
+                    className="emotion-76"
                   >
                     <div
-                      className="emotion-25"
+                      className="emotion-27"
                     >
                       <input
-                        className="emotion-26"
+                        className="emotion-28"
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
                         value="boonai-object-detection"
                       />
                       <div
-                        className="emotion-27"
+                        className="emotion-29"
                       >
                         <svg
-                          className="emotion-28"
+                          className="emotion-30"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
@@ -1348,16 +1369,16 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
                 <td>
                   <div
-                    className="emotion-79"
+                    className="emotion-81"
                   >
                     <svg
-                      className="emotion-80"
+                      className="emotion-82"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
-                      className="emotion-80"
+                      className="emotion-82"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -1374,18 +1395,18 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
           </table>
         </fieldset>
         <fieldset
-          className="emotion-69"
+          className="emotion-71"
         >
           <legend
-            className="emotion-70"
+            className="emotion-72"
           >
             Zorroa Timeline Extraction
           </legend>
           <div
-            className="emotion-71"
+            className="emotion-73"
           />
           <table
-            className="emotion-72"
+            className="emotion-74"
           >
             <thead>
               <tr>
@@ -1405,28 +1426,28 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
             </thead>
             <tbody>
               <tr
-                className="emotion-73"
+                className="emotion-75"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-74"
+                    className="emotion-76"
                   >
                     <div
-                      className="emotion-25"
+                      className="emotion-27"
                     >
                       <input
-                        className="emotion-26"
+                        className="emotion-28"
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
                         value="boonai-video-shot-clips"
                       />
                       <div
-                        className="emotion-27"
+                        className="emotion-29"
                       >
                         <svg
-                          className="emotion-28"
+                          className="emotion-30"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
@@ -1449,16 +1470,16 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
                 </td>
                 <td>
                   <div
-                    className="emotion-79"
+                    className="emotion-81"
                   >
                     <svg
-                      className="emotion-80"
+                      className="emotion-82"
                       color="transparent"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
-                      className="emotion-80"
+                      className="emotion-82"
                       color="transparent"
                       data-file-name="documents.svg"
                       height={24}
@@ -1478,10 +1499,10 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     </details>
   </div>
   <div
-    className="emotion-122"
+    className="emotion-124"
   >
     <a
-      className="emotion-123"
+      className="emotion-125"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -1490,7 +1511,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
     </a>
     <button
       aria-disabled={true}
-      className="emotion-124"
+      className="emotion-126"
       onClick={[Function]}
       type="submit"
     >
@@ -1598,7 +1619,19 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   display: flex;
 }
 
-.emotion-12 {
+.emotion-13 {
+  padding-top: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1607,20 +1640,20 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   margin-left: 8px;
 }
 
-.emotion-12:hover div,
-.emotion-12:focus-within div {
+.emotion-14:hover div,
+.emotion-14:focus-within div {
   visibility: visible;
   opacity: 1;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
 }
 
-.emotion-12:hover button,
-.emotion-12:focus-within button {
+.emotion-14:hover button,
+.emotion-14:focus-within button {
   color: #ffffff;
 }
 
-.emotion-13 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1631,7 +1664,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-14 {
+.emotion-16 {
   position: absolute;
   left: -10px;
   top: 28px;
@@ -1651,12 +1684,12 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   z-index: 1;
 }
 
-.emotion-14:hover {
+.emotion-16:hover {
   visibility: visible;
   opacity: 1;
 }
 
-.emotion-15:before {
+.emotion-17:before {
   content: ' ';
   position: absolute;
   top: -6px;
@@ -1666,32 +1699,32 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   border-right: 6px solid transparent;
 }
 
-.emotion-16 {
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-17 {
-  font-size: 15px;
-  line-height: 19px;
-  padding-bottom: 8px;
-}
-
 .emotion-18 {
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-19 {
+  font-size: 15px;
+  line-height: 19px;
   padding-bottom: 8px;
 }
 
-.emotion-21 {
+.emotion-20 {
+  padding-bottom: 8px;
+}
+
+.emotion-23 {
   clear: both;
   padding-bottom: 16px;
   color: #b3b3b3;
 }
 
-.emotion-22 {
+.emotion-24 {
   clear: both;
 }
 
-.emotion-23 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1705,7 +1738,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-24 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1713,7 +1746,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   position: relative;
 }
 
-.emotion-25 {
+.emotion-27 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -1724,7 +1757,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-26 {
+.emotion-28 {
   position: absolute;
   top: 0;
   left: 0;
@@ -1745,13 +1778,13 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-27 path {
+.emotion-29 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-28 {
+.emotion-30 {
   padding-left: 24px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1763,7 +1796,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-29 {
+.emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1774,19 +1807,19 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   padding-left: 16px;
 }
 
-.emotion-30 {
+.emotion-32 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-39 {
+.emotion-41 {
   padding-left: 0;
   color: #b3b3b3;
 }
 
-.emotion-42 {
+.emotion-44 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -1797,51 +1830,51 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-44 path {
+.emotion-46 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
 }
 
-.emotion-48 {
+.emotion-50 {
   height: 8px;
 }
 
-.emotion-50 {
+.emotion-52 {
   margin: 0;
   padding-top: 8px;
   color: #b3b3b3;
 }
 
-.emotion-51 {
+.emotion-53 {
   padding-top: 16px;
 }
 
-.emotion-52 {
+.emotion-54 {
   border-radius: 2px;
   background-color: #3b3b3b;
 }
 
-.emotion-52:hover summary svg {
+.emotion-54:hover summary svg {
   opacity: 1;
 }
 
-.emotion-53 {
+.emotion-55 {
   list-style-type: none;
   padding: 16px;
   background-color: #3b3b3b;
 }
 
-.emotion-53::-webkit-details-marker {
+.emotion-55::-webkit-details-marker {
   display: none;
 }
 
-.emotion-53:hover {
+.emotion-55:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-54 {
+.emotion-56 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1852,7 +1885,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-55 {
+.emotion-57 {
   color: #808080;
   -webkit-transform: rotate(-180deg);
   -moz-transform: rotate(-180deg);
@@ -1860,7 +1893,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   transform: rotate(-180deg);
 }
 
-.emotion-56 {
+.emotion-58 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1874,20 +1907,20 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   font-weight: 700;
 }
 
-.emotion-57 {
+.emotion-59 {
   border-top: 1px solid #4a4a4a;
   padding: 32px;
   padding-top: 16px;
 }
 
-.emotion-58 {
+.emotion-60 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
   padding-bottom: 16px;
 }
 
-.emotion-59 {
+.emotion-61 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1899,7 +1932,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   padding-top: 8px;
 }
 
-.emotion-59 li {
+.emotion-61 li {
   width: 33%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1912,23 +1945,23 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   padding-right: 40px;
 }
 
-.emotion-59 svg {
+.emotion-61 svg {
   color: #6088FE;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
 }
 
-.emotion-59 span {
+.emotion-61 span {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-60 {
+.emotion-62 {
   padding-top: 16px;
 }
 
-.emotion-65 {
+.emotion-67 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1936,7 +1969,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   padding-left: 16px;
 }
 
-.emotion-67 {
+.emotion-69 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
@@ -1944,7 +1977,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   max-width: 600px;
 }
 
-.emotion-68 {
+.emotion-70 {
   border: none;
   padding: 0;
   margin: 0;
@@ -1952,7 +1985,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   padding-bottom: 32px;
 }
 
-.emotion-69 {
+.emotion-71 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -1961,76 +1994,76 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   font-weight: 500;
 }
 
-.emotion-70 {
+.emotion-72 {
   clear: both;
 }
 
-.emotion-71 {
+.emotion-73 {
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-71 th,
-.emotion-71 td {
+.emotion-73 th,
+.emotion-73 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-71 th:first-of-type,
-.emotion-71 td:first-of-type {
+.emotion-73 th:first-of-type,
+.emotion-73 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-71 th:nth-of-type(2),
-.emotion-71 td:nth-of-type(2) {
+.emotion-73 th:nth-of-type(2),
+.emotion-73 td:nth-of-type(2) {
   min-width: 300px;
 }
 
-.emotion-71 th:nth-of-type(3),
-.emotion-71 td:nth-of-type(3) {
+.emotion-73 th:nth-of-type(3),
+.emotion-73 td:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-71 th {
+.emotion-73 th {
   color: #b3b3b3;
   font-weight: 500;
   white-space: nowrap;
 }
 
-.emotion-71 td {
+.emotion-73 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
 }
 
-.emotion-71 td:first-of-type {
+.emotion-73 td:first-of-type {
   border: none;
 }
 
-.emotion-71 td:nth-of-type(2) {
+.emotion-73 td:nth-of-type(2) {
   font-family: Roboto Mono;
 }
 
-.emotion-71 tr:hover td {
+.emotion-73 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-71 tr:hover+tr td {
+.emotion-73 tr:hover+tr td {
   border-top-color: transparent;
 }
 
-.emotion-71 tr:last-of-type td {
+.emotion-73 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-71 tr:last-of-type td:first-of-type {
+.emotion-73 tr:last-of-type td:first-of-type {
   border: none;
 }
 
-.emotion-72 {
+.emotion-74 {
   cursor: pointer;
 }
 
-.emotion-73 {
+.emotion-75 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -2039,18 +2072,18 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   -moz-user-select: none;
 }
 
-.emotion-78 {
+.emotion-80 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-79 {
+.emotion-81 {
   margin-right: 16px;
 }
 
-.emotion-121 {
+.emotion-123 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2059,12 +2092,12 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-121 button,
-.emotion-121 a {
+.emotion-123 button,
+.emotion-123 a {
   margin-right: 16px;
 }
 
-.emotion-122 {
+.emotion-124 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2095,27 +2128,27 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-122,
-.emotion-122:hover,
-.emotion-122:visited,
-.emotion-122 .noop {
+.emotion-124,
+.emotion-124:hover,
+.emotion-124:visited,
+.emotion-124 .noop {
   background-color: #808080;
 }
 
-.emotion-122:hover,
-.emotion-122 .noop {
+.emotion-124:hover,
+.emotion-124 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-122[aria-disabled=true],
-.emotion-122 .noop {
+.emotion-124[aria-disabled=true],
+.emotion-124 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-123 {
+.emotion-125 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2146,22 +2179,22 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-123,
-.emotion-123:hover,
-.emotion-123:visited,
-.emotion-123 .noop {
+.emotion-125,
+.emotion-125:hover,
+.emotion-125:visited,
+.emotion-125 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-123:hover,
-.emotion-123 .noop {
+.emotion-125:hover,
+.emotion-125 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-123[aria-disabled=true],
-.emotion-123 .noop {
+.emotion-125[aria-disabled=true],
+.emotion-125 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -2183,7 +2216,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
     <h3
       className="emotion-3"
     >
-      STEP 1: Data Source Name 
+      STEP 1: Data Source Name
     </h3>
     <div
       className="emotion-4"
@@ -2226,103 +2259,112 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
     <legend
       className="emotion-11"
     >
-      STEP 2: Edit File Types
-      <div
-        className="emotion-12"
+      <h3
+        className="emotion-3"
       >
-        <button
-          aria-details="SupportedFile Types"
-          aria-label="Supported File Types"
-          className="emotion-13"
-          type="button"
-        >
-          <svg
-            data-file-name="help.svg"
-            height={20}
-          />
-        </button>
+        STEP 2: Edit File Types
+      </h3>
+       
+      <div
+        className="emotion-13"
+      >
         <div
           className="emotion-14"
-          id="SupportedFile Types"
-          role="tooltip"
         >
-          <div
+          <button
+            aria-details="SupportedFile Types"
+            aria-label="Supported File Types"
             className="emotion-15"
-          />
+            type="button"
+          >
+            <svg
+              data-file-name="help.svg"
+              height={20}
+            />
+          </button>
           <div
             className="emotion-16"
+            id="SupportedFile Types"
+            role="tooltip"
           >
-            <h3
+            <div
               className="emotion-17"
-            >
-              Supported File Types
-            </h3>
+            />
             <div
               className="emotion-18"
             >
-              <h4>
-                Images
-                :
-              </h4>
-              GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
-            </div>
-            <div
-              className="emotion-18"
-            >
-              <h4>
-                Documents
-                :
-              </h4>
-              PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
-            </div>
-            <div
-              className="emotion-18"
-            >
-              <h4>
-                Videos
-                :
-              </h4>
-              MP4, M4V, MOV, MPG, MPEG, OGG
+              <h3
+                className="emotion-19"
+              >
+                Supported File Types
+              </h3>
+              <div
+                className="emotion-20"
+              >
+                <h4>
+                  Images
+                  :
+                </h4>
+                GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
+              </div>
+              <div
+                className="emotion-20"
+              >
+                <h4>
+                  Documents
+                  :
+                </h4>
+                PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
+              </div>
+              <div
+                className="emotion-20"
+              >
+                <h4>
+                  Videos
+                  :
+                </h4>
+                MP4, M4V, MOV, MPG, MPEG, OGG
+              </div>
             </div>
           </div>
         </div>
       </div>
     </legend>
     <div
-      className="emotion-21"
+      className="emotion-23"
     >
       <div>
         You can change the file types to import. You must select at least one file type.
       </div>
     </div>
     <div
-      className="emotion-22"
+      className="emotion-24"
     />
     <label
-      className="emotion-23"
+      className="emotion-25"
     >
       <div
-        className="emotion-24"
+        className="emotion-26"
       >
         <input
-          className="emotion-25"
+          className="emotion-27"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
           value="Images"
         />
         <div
-          className="emotion-26"
+          className="emotion-28"
         >
           <svg
-            className="emotion-27"
+            className="emotion-29"
             data-file-name="checkmark.svg"
             height={20}
           />
         </div>
       </div>
       <div
-        className="emotion-28"
+        className="emotion-30"
       >
         <svg
           color="#ebb52e"
@@ -2331,40 +2373,40 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
         />
       </div>
       <div
-        className="emotion-29"
+        className="emotion-31"
       >
         <span
-          className="emotion-30"
+          className="emotion-32"
         >
           Image Files
         </span>
       </div>
     </label>
     <label
-      className="emotion-23"
+      className="emotion-25"
     >
       <div
-        className="emotion-24"
+        className="emotion-26"
       >
         <input
-          className="emotion-25"
+          className="emotion-27"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
           value="Documents"
         />
         <div
-          className="emotion-26"
+          className="emotion-28"
         >
           <svg
-            className="emotion-27"
+            className="emotion-29"
             data-file-name="checkmark.svg"
             height={20}
           />
         </div>
       </div>
       <div
-        className="emotion-28"
+        className="emotion-30"
       >
         <svg
           color="#00bdc1"
@@ -2373,45 +2415,45 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
         />
       </div>
       <div
-        className="emotion-29"
+        className="emotion-31"
       >
         <span
-          className="emotion-30"
+          className="emotion-32"
         >
           Documents (PDF & MS Office)
         </span>
         <span
-          className="emotion-39"
+          className="emotion-41"
         >
           Pages will be processed and counted as individual assets
         </span>
       </div>
     </label>
     <label
-      className="emotion-23"
+      className="emotion-25"
     >
       <div
-        className="emotion-24"
+        className="emotion-26"
       >
         <input
-          className="emotion-42"
+          className="emotion-44"
           defaultChecked={true}
           onClick={[Function]}
           type="checkbox"
           value="Videos"
         />
         <div
-          className="emotion-26"
+          className="emotion-28"
         >
           <svg
-            className="emotion-44"
+            className="emotion-46"
             data-file-name="checkmark.svg"
             height={20}
           />
         </div>
       </div>
       <div
-        className="emotion-28"
+        className="emotion-30"
       >
         <svg
           color="#8f89e7"
@@ -2420,10 +2462,10 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
         />
       </div>
       <div
-        className="emotion-29"
+        className="emotion-31"
       >
         <span
-          className="emotion-30"
+          className="emotion-32"
         >
           Video Files
         </span>
@@ -2431,7 +2473,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
     </label>
   </fieldset>
   <div
-    className="emotion-48"
+    className="emotion-50"
   />
   <h3
     className="emotion-3"
@@ -2439,47 +2481,47 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
     STEP 3: Edit Analysis Modules
   </h3>
   <p
-    className="emotion-50"
+    className="emotion-52"
   >
     You can change the analysis modules to be applied to the file types selected in step 2.
   </p>
   <div
-    className="emotion-51"
+    className="emotion-53"
   >
     <details
-      className="emotion-52"
+      className="emotion-54"
       onToggle={[Function]}
       open={true}
     >
       <summary
         aria-label="Boon AI Automatic Analysis"
-        className="emotion-53"
+        className="emotion-55"
       >
         <div
-          className="emotion-54"
+          className="emotion-56"
         >
           <svg
-            className="emotion-55"
+            className="emotion-57"
             data-file-name="chevron.svg"
             height={20}
           />
           <span
-            className="emotion-56"
+            className="emotion-58"
           >
             Boon AI Automatic Analysis
           </span>
         </div>
       </summary>
       <div
-        className="emotion-57"
+        className="emotion-59"
       >
         <p
-          className="emotion-58"
+          className="emotion-60"
         >
           The following basic analysis is applied to all data sets.
         </p>
         <ul
-          className="emotion-59"
+          className="emotion-61"
         >
           <li>
             <svg
@@ -2522,27 +2564,27 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
     </details>
   </div>
   <div
-    className="emotion-60"
+    className="emotion-62"
   >
     <details
-      className="emotion-52"
+      className="emotion-54"
       onToggle={[Function]}
       open={true}
     >
       <summary
         aria-label="zorroa"
-        className="emotion-53"
+        className="emotion-55"
       >
         <div
-          className="emotion-54"
+          className="emotion-56"
         >
           <svg
-            className="emotion-55"
+            className="emotion-57"
             data-file-name="chevron.svg"
             height={20}
           />
           <span
-            className="emotion-65"
+            className="emotion-67"
           >
             <img
               alt="zorroa"
@@ -2553,26 +2595,26 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
         </div>
       </summary>
       <div
-        className="emotion-57"
+        className="emotion-59"
       >
         <p
-          className="emotion-67"
+          className="emotion-69"
         >
           These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
         </p>
         <fieldset
-          className="emotion-68"
+          className="emotion-70"
         >
           <legend
-            className="emotion-69"
+            className="emotion-71"
           >
             Visual Intelligence
           </legend>
           <div
-            className="emotion-70"
+            className="emotion-72"
           />
           <table
-            className="emotion-71"
+            className="emotion-73"
           >
             <thead>
               <tr>
@@ -2592,28 +2634,28 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
             </thead>
             <tbody>
               <tr
-                className="emotion-72"
+                className="emotion-74"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-73"
+                    className="emotion-75"
                   >
                     <div
-                      className="emotion-24"
+                      className="emotion-26"
                     >
                       <input
-                        className="emotion-42"
+                        className="emotion-44"
                         defaultChecked={true}
                         onClick={[Function]}
                         type="checkbox"
                         value="gcp-label-detection"
                       />
                       <div
-                        className="emotion-26"
+                        className="emotion-28"
                       >
                         <svg
-                          className="emotion-44"
+                          className="emotion-46"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
@@ -2636,16 +2678,16 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
                 <td>
                   <div
-                    className="emotion-78"
+                    className="emotion-80"
                   >
                     <svg
-                      className="emotion-79"
+                      className="emotion-81"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
-                      className="emotion-79"
+                      className="emotion-81"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -2659,28 +2701,28 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-72"
+                className="emotion-74"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-73"
+                    className="emotion-75"
                   >
                     <div
-                      className="emotion-24"
+                      className="emotion-26"
                     >
                       <input
-                        className="emotion-25"
+                        className="emotion-27"
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
                         value="gcp-object-detection"
                       />
                       <div
-                        className="emotion-26"
+                        className="emotion-28"
                       >
                         <svg
-                          className="emotion-27"
+                          className="emotion-29"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
@@ -2703,16 +2745,16 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
                 <td>
                   <div
-                    className="emotion-78"
+                    className="emotion-80"
                   >
                     <svg
-                      className="emotion-79"
+                      className="emotion-81"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
-                      className="emotion-79"
+                      className="emotion-81"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -2726,28 +2768,28 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-72"
+                className="emotion-74"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-73"
+                    className="emotion-75"
                   >
                     <div
-                      className="emotion-24"
+                      className="emotion-26"
                     >
                       <input
-                        className="emotion-25"
+                        className="emotion-27"
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
                         value="boonai-label-detection"
                       />
                       <div
-                        className="emotion-26"
+                        className="emotion-28"
                       >
                         <svg
-                          className="emotion-27"
+                          className="emotion-29"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
@@ -2770,16 +2812,16 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
                 <td>
                   <div
-                    className="emotion-78"
+                    className="emotion-80"
                   >
                     <svg
-                      className="emotion-79"
+                      className="emotion-81"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
-                      className="emotion-79"
+                      className="emotion-81"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -2793,28 +2835,28 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-72"
+                className="emotion-74"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-73"
+                    className="emotion-75"
                   >
                     <div
-                      className="emotion-24"
+                      className="emotion-26"
                     >
                       <input
-                        className="emotion-25"
+                        className="emotion-27"
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
                         value="boonai-object-detection"
                       />
                       <div
-                        className="emotion-26"
+                        className="emotion-28"
                       >
                         <svg
-                          className="emotion-27"
+                          className="emotion-29"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
@@ -2837,16 +2879,16 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
                 <td>
                   <div
-                    className="emotion-78"
+                    className="emotion-80"
                   >
                     <svg
-                      className="emotion-79"
+                      className="emotion-81"
                       color="#ebb52e"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
-                      className="emotion-79"
+                      className="emotion-81"
                       color="#00bdc1"
                       data-file-name="documents.svg"
                       height={24}
@@ -2863,18 +2905,18 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
           </table>
         </fieldset>
         <fieldset
-          className="emotion-68"
+          className="emotion-70"
         >
           <legend
-            className="emotion-69"
+            className="emotion-71"
           >
             Zorroa Timeline Extraction
           </legend>
           <div
-            className="emotion-70"
+            className="emotion-72"
           />
           <table
-            className="emotion-71"
+            className="emotion-73"
           >
             <thead>
               <tr>
@@ -2894,28 +2936,28 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
             </thead>
             <tbody>
               <tr
-                className="emotion-72"
+                className="emotion-74"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-73"
+                    className="emotion-75"
                   >
                     <div
-                      className="emotion-24"
+                      className="emotion-26"
                     >
                       <input
-                        className="emotion-25"
+                        className="emotion-27"
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
                         value="boonai-video-shot-clips"
                       />
                       <div
-                        className="emotion-26"
+                        className="emotion-28"
                       >
                         <svg
-                          className="emotion-27"
+                          className="emotion-29"
                           data-file-name="checkmark.svg"
                           height={20}
                         />
@@ -2938,16 +2980,16 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
                 </td>
                 <td>
                   <div
-                    className="emotion-78"
+                    className="emotion-80"
                   >
                     <svg
-                      className="emotion-79"
+                      className="emotion-81"
                       color="transparent"
                       data-file-name="images.svg"
                       height={24}
                     />
                     <svg
-                      className="emotion-79"
+                      className="emotion-81"
                       color="transparent"
                       data-file-name="documents.svg"
                       height={24}
@@ -2967,10 +3009,10 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
     </details>
   </div>
   <div
-    className="emotion-121"
+    className="emotion-123"
   >
     <a
-      className="emotion-122"
+      className="emotion-124"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -2978,7 +3020,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
       Cancel
     </a>
     <button
-      className="emotion-123"
+      className="emotion-125"
       onClick={[Function]}
       type="submit"
     >

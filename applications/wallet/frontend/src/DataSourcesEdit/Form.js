@@ -69,7 +69,7 @@ const DataSourcesEditForm = ({ initialState }) => {
             paddingBottom: spacing.comfy,
           }}
         >
-          <SectionTitle>STEP 1: Data Source Name </SectionTitle>
+          <SectionTitle>STEP 1: Data Source Name</SectionTitle>
 
           <Input
             id="name"
@@ -92,31 +92,39 @@ const DataSourcesEditForm = ({ initialState }) => {
         <CheckboxGroup
           legend={
             <>
-              STEP 2: Edit File Types
-              <Toggletip openToThe="right" label="Supported File Types">
-                <div
-                  css={{
-                    fontSize: typography.size.regular,
-                    lineHeight: typography.height.regular,
-                  }}
-                >
-                  <h3
+              <SectionTitle>STEP 2: Edit File Types</SectionTitle>{' '}
+              <div
+                css={{
+                  paddingTop: spacing.normal,
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <Toggletip openToThe="right" label="Supported File Types">
+                  <div
                     css={{
                       fontSize: typography.size.regular,
                       lineHeight: typography.height.regular,
-                      paddingBottom: spacing.base,
                     }}
                   >
-                    Supported File Types
-                  </h3>
-                  {FILE_TYPES.map(({ value, extensions }) => (
-                    <div key={value} css={{ paddingBottom: spacing.base }}>
-                      <h4>{value}:</h4>
-                      {extensions}
-                    </div>
-                  ))}
-                </div>
-              </Toggletip>
+                    <h3
+                      css={{
+                        fontSize: typography.size.regular,
+                        lineHeight: typography.height.regular,
+                        paddingBottom: spacing.base,
+                      }}
+                    >
+                      Supported File Types
+                    </h3>
+                    {FILE_TYPES.map(({ value, extensions }) => (
+                      <div key={value} css={{ paddingBottom: spacing.base }}>
+                        <h4>{value}:</h4>
+                        {extensions}
+                      </div>
+                    ))}
+                  </div>
+                </Toggletip>
+              </div>
             </>
           }
           description={
