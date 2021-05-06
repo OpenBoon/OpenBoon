@@ -24,7 +24,7 @@ const OrganizationUserProjects = () => {
         refreshKeys={[]}
         columns={['Project Name', 'Roles', '#Actions#']}
         expandColumn={2}
-        renderEmpty={<span />}
+        renderEmpty="This user has no project in this organization."
         renderRow={({ result, revalidate }) => {
           return (
             <OrganizationUserProjectsRow

@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 
 import Table, { ROLES } from '../Table'
 
-import TaskErrorsEmpty from './Empty'
 import TaskErrorsRow from './Row'
 
 const TaskErrors = ({ parentUrl }) => {
@@ -28,7 +27,12 @@ const TaskErrors = ({ parentUrl }) => {
         '#Actions#',
       ]}
       expandColumn={0}
-      renderEmpty={<TaskErrorsEmpty />}
+      renderEmpty={
+        <>
+          <div>This job has no errors.</div>
+          <div>Any new error will appear here.</div>
+        </>
+      }
       renderRow={({ result, revalidate }) => (
         <TaskErrorsRow
           key={result.id}

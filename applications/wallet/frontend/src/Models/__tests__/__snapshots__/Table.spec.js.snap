@@ -568,9 +568,7 @@ exports[`<ModelsTable /> should render properly without models 1`] = `
                       data-file-name="noJobs.svg"
                       width={200}
                     />
-                    <div>
-                      There are currently no custom models.
-                    </div>
+                    There are currently no custom models.
                   </div>
                 </div>
               </td>

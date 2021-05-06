@@ -34,10 +34,48 @@ Array [
   border-top: 4px solid #3b3b3b;
 }
 
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
 <div
     className="emotion-0"
   >
-    boonai-text-detection
+    <button
+      aria-label="Add Filter"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
+    >
+      boonai-text-detection
+    </button>
   </div>,
   .emotion-0 {
   padding: 8px 16px;
@@ -188,10 +226,48 @@ Array [
   border-top: 4px solid #3b3b3b;
 }
 
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
 <div
     className="emotion-0"
   >
-    boonai-text-detection
+    <button
+      aria-label="Add Filter"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
+    >
+      boonai-text-detection
+    </button>
   </div>,
   .emotion-0 {
   width: 100%;
@@ -307,7 +383,39 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
   object-fit: contain;
 }
 
-.emotion-10:last-of-type {
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  text-align: inherit;
+}
+
+.emotion-11:last-of-type {
   text-align: right;
   padding-right: 0;
 }
@@ -379,13 +487,18 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
             />
              
           </td>
-          <td
-            className="emotion-10"
-          >
-            banana
+          <td>
+            <button
+              aria-label="Add Filter"
+              className="emotion-10"
+              onClick={[Function]}
+              type="button"
+            >
+              banana
+            </button>
           </td>
           <td
-            className="emotion-10"
+            className="emotion-11"
           >
             0.824
           </td>
@@ -418,13 +531,18 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
             />
              
           </td>
-          <td
-            className="emotion-10"
-          >
-            frog
+          <td>
+            <button
+              aria-label="Add Filter"
+              className="emotion-10"
+              onClick={[Function]}
+              type="button"
+            >
+              frog
+            </button>
           </td>
           <td
-            className="emotion-10"
+            className="emotion-11"
           >
             0.924
           </td>
@@ -516,7 +634,39 @@ Array [
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-6:last-of-type {
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  text-align: inherit;
+}
+
+.emotion-7:last-of-type {
   text-align: right;
   padding-right: 0;
 }
@@ -555,13 +705,18 @@ Array [
         <tr
           className="emotion-5"
         >
-          <td
-            className="emotion-6"
-          >
-            tailed_frog
+          <td>
+            <button
+              aria-label="Add Filter"
+              className="emotion-6"
+              onClick={[Function]}
+              type="button"
+            >
+              tailed_frog
+            </button>
           </td>
           <td
-            className="emotion-6"
+            className="emotion-7"
           >
             0.96
           </td>
@@ -569,13 +724,18 @@ Array [
         <tr
           className="emotion-5"
         >
-          <td
-            className="emotion-6"
-          >
-            banana
+          <td>
+            <button
+              aria-label="Add Filter"
+              className="emotion-6"
+              onClick={[Function]}
+              type="button"
+            >
+              cherry
+            </button>
           </td>
           <td
-            className="emotion-6"
+            className="emotion-7"
           >
             0.86
           </td>

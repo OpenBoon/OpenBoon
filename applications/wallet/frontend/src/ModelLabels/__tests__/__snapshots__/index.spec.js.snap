@@ -725,9 +725,7 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
                       data-file-name="noJobs.svg"
                       width={200}
                     />
-                    <div>
-                      There are currently no labels for this model.
-                    </div>
+                    There are currently no labels for this model.
                   </div>
                 </div>
               </td>

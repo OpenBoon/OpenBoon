@@ -179,6 +179,29 @@ describe('<FilterReset />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should not switch from exists back to similarity', () => {
+    const filters = [
+      { attribute: 'analysis.boonai-image-similarity', type: 'exists' },
+    ]
+    const mockFn = jest.fn()
+
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
+    const component = TestRenderer.create(
+      <FilterReset
+        pathname="/[projectId]/visualizer"
+        projectId={PROJECT_ID}
+        assetId={ASSET_ID}
+        filters={filters}
+        filter={filters[0]}
+        filterIndex={0}
+        onReset={mockFn}
+      />,
+    )
+
+    expect(component.toJSON()).toBeNull()
+  })
+
   it('should maintain "ids" when resetting', () => {
     const filters = [
       {
