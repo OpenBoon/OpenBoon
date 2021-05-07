@@ -235,11 +235,13 @@ def test_reaper(project, monkeypatch):
     monkeypatch.setattr(BoonClient, 'delete', lambda *args: None)
     reap_projects()
     assert Project.objects.filter(id=project.id).exists()
-    project.isActive = False
-    project.modifiedDate = datetime.now() - timedelta(31)
-    project.save()
+    modifed_date = datetime.now() - timedelta(31)
+
+    # Must use "update" here to prevent the modifiedDate from being auto-updated by the save function.
+    Project.all_objects.filter(id=project.id).update(modifiedDate=modifed_date, isActive=False)
+
     reap_projects()
-    assert not Project.objects.filter(id=project.id).exists()
+    assert not Project.all_objects.filter(id=project.id).exists()
 
 
 @pytest.fixture
