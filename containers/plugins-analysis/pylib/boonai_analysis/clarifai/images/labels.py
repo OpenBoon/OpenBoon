@@ -1,12 +1,15 @@
 import backoff
 from clarifai.errors import ApiError
+from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
+from clarifai_grpc.grpc.api import service_pb2_grpc, service_pb2, resources_pb2
+from clarifai_grpc.grpc.api.status import status_code_pb2
 
 from boonflow import AssetProcessor, FileTypes
 from boonflow.analysis import LabelDetectionAnalysis
 from boonflow.proxy import get_proxy_level_path
 
 from boonai_analysis.clarifai.util import get_clarifai_app, \
-    not_a_quota_exception, model_map, log_backoff_exception
+    not_a_quota_exception, model_map, model_id_map, log_backoff_exception
 
 __all__ = [
     'ClarifaiLabelDetectionProcessor',
@@ -31,11 +34,13 @@ class AbstractClarifaiProcessor(AssetProcessor):
     def __init__(self, model):
         super(AbstractClarifaiProcessor, self).__init__()
         self.clarifai = None
+        self.auth = None
         self.model = model
+        self.model_id = model_id_map[model]
         self.attribute = 'clarifai-{}'.format(model_map[model])
 
     def init(self):
-        self.clarifai = get_clarifai_app()
+        self.clarifai, self.auth = get_clarifai_app()
 
     def process(self, frame):
         asset = frame.asset
@@ -43,12 +48,12 @@ class AbstractClarifaiProcessor(AssetProcessor):
 
         model = getattr(self.clarifai.public_models, self.model)
         response = self.predict(model, p_path)
-        labels = response['outputs'][0]['data'].get('concepts')
+        labels = response.outputs[0].data.concepts
         if not labels:
             return
 
         analysis = LabelDetectionAnalysis()
-        [analysis.add_label_and_score(label['name'], label['value']) for label in labels]
+        [analysis.add_label_and_score(label.name, label.value) for label in labels]
         asset.add_analysis(self.attribute, analysis)
 
     @backoff.on_exception(backoff.expo,
@@ -61,13 +66,33 @@ class AbstractClarifaiProcessor(AssetProcessor):
         Make a prediction from the filename for a given model
 
         Args:
-            model: (Clarifai.Model) CLarifai Model type
+            model: (Clarifai.Model) Clarifai Model type
             p_path: (str) image path
 
         Returns:
             (dict) prediction response
         """
-        return model.predict_by_filename(p_path)
+        with open(p_path, "rb") as f:
+            file_bytes = f.read()
+            response = self.clarifai.PostModelOutputs(
+                service_pb2.PostModelOutputsRequest(
+                    model_id=self.model_id,
+                    inputs=[
+                        resources_pb2.Input(
+                            data=resources_pb2.Data(
+                                image=resources_pb2.Image(
+                                    base64=file_bytes
+                                )
+                            )
+                        )
+                    ]
+                ),
+                metadata=self.auth
+            )
+        if response.status.code != status_code_pb2.SUCCESS:
+            raise Exception("Post model outputs failed, status: " + response.status.description)
+
+        return response
 
     def emit_status(self, msg):
         """
