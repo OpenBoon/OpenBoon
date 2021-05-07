@@ -1,6 +1,6 @@
 import base64
 import copy
-from datetime import datetime
+from datetime import datetime, timedelta
 from unittest.mock import patch
 from uuid import uuid4
 
@@ -16,6 +16,7 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from organizations.models import Organization
+from projects.management.commands.projectreaper import reap_projects
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
 from projects.utils import is_user_project_organization_owner, random_project_name
@@ -221,6 +222,24 @@ def test_project_managers(project):
     project.save()
     assert Project.objects.all().count() == 0
     assert Project.all_objects.all().count() == 1
+
+
+def test_hard_delete(project, monkeypatch):
+    monkeypatch.setattr(BoonClient, 'delete', lambda *args: None)
+    _id = project.id
+    project.hard_delete()
+    assert not Project.objects.filter(id=_id).exists()
+
+
+def test_reaper(project, monkeypatch):
+    monkeypatch.setattr(BoonClient, 'delete', lambda *args: None)
+    reap_projects()
+    assert Project.objects.filter(id=project.id).exists()
+    project.isActive = False
+    project.modifiedDate = datetime.now() - timedelta(31)
+    project.save()
+    reap_projects()
+    assert not Project.objects.filter(id=project.id).exists()
 
 
 @pytest.fixture
