@@ -2,7 +2,7 @@ version: "3.6"
 services:
   # Postgres instance used for local development servers.
   postgres:
-    image: "postgres:9.6.20"
+    image: "postgres:9.6.21"
     ports:
       - "5432:5432"
     volumes:
