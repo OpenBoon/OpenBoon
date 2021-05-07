@@ -394,3 +394,19 @@ module "swivel" {
   image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
   container-tag     = var.container-tag
 }
+
+module "project-reaper" {
+  source                       = "./modules/project-reaper"
+  project                      = var.project
+  image-pull-secret            = kubernetes_secret.dockerhub.metadata[0].name
+  pg_host                      = module.postgres.ip-address
+  sql-instance-name            = module.postgres.instance-name
+  sql-connection-name          = module.postgres.connection-name
+  sql-service-account-key-date = module.postgres.sql-service-account-key-date
+  zmlp-api-url                 = "http://${module.api-gateway.ip-address}"
+  fqdn                         = var.wallet-domains[0]
+  environment                  = var.environment
+  inception-key-b64            = local.inception-key-b64
+  pg_password                  = module.wallet.pg_password
+  container-tag                = var.container-tag
+}
