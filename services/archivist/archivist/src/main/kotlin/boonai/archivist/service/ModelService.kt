@@ -82,17 +82,9 @@ interface ModelService {
     fun testModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun deleteModel(model: Model)
     fun getLabelCounts(model: Model): Map<String, Long>
-    fun wrapSearchToExcludeTrainingSet(model: Model, search: Map<String, Any>): Map<String, Any>
     fun setTrainingArgs(model: Model, args: Map<String, Any>)
     fun patchTrainingArgs(model: Model, patch: Map<String, Any>)
     fun getTrainingArgSchema(type: ModelType): ArgSchema
-
-    /**
-     *
-     * Update a give label to a new label name.  If the new label name is null or
-     * empty then remove the label.
-     */
-    fun updateLabel(model: Model, label: String, newLabel: String?): GenericBatchUpdateResponse
     fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod
     fun validateTensorflowModel(path: Path)
     fun validatePyTorchModel(path: Path)
@@ -462,89 +454,6 @@ class ModelServiceImpl(
         return result
     }
 
-    @Transactional(propagation = Propagation.SUPPORTS)
-    override fun getLabelCounts(model: Model): Map<String, Long> {
-        val rest = indexRoutingService.getProjectRestClient()
-        val modelIdFilter = QueryBuilders.termQuery("labels.modelId", model.id.toString())
-        val query = QueryBuilders.nestedQuery(
-            "labels",
-            modelIdFilter, ScoreMode.None
-        )
-        val agg = AggregationBuilders.nested("nested_labels", "labels")
-            .subAggregation(
-                AggregationBuilders.filter("filtered", modelIdFilter)
-                    .subAggregation(
-                        AggregationBuilders.terms("labels")
-                            .field("labels.label")
-                            .size(1000)
-                            .order(BucketOrder.key(true))
-                    )
-            )
-
-        val req = rest.newSearchBuilder()
-        req.source.query(query)
-        req.source.aggregation(agg)
-        req.source.size(0)
-        req.source.fetchSource(false)
-
-        val rsp = rest.client.search(req.request, RequestOptions.DEFAULT)
-        val buckets = rsp.aggregations.get<Nested>("nested_labels")
-            .aggregations.get<Filter>("filtered")
-            .aggregations.get<Terms>("labels")
-
-        // Use a LinkedHashMap to maintain sort on the labels.
-        val result = LinkedHashMap<String, Long>()
-        buckets.buckets.forEach {
-            result[it.keyAsString] = it.docCount
-        }
-        return result
-    }
-
-    @Transactional(propagation = Propagation.SUPPORTS)
-    override fun updateLabel(model: Model, label: String, newLabel: String?): GenericBatchUpdateResponse {
-        val rest = indexRoutingService.getProjectRestClient()
-
-        val innerQuery = QueryBuilders.boolQuery()
-        innerQuery.filter().add(QueryBuilders.termQuery("labels.modelId", model.id.toString()))
-        innerQuery.filter().add(QueryBuilders.termQuery("labels.label", label))
-
-        val query = QueryBuilders.nestedQuery(
-            "labels", innerQuery, ScoreMode.None
-        )
-
-        val req = rest.newUpdateByQueryRequest()
-        req.setQuery(query)
-        req.isRefresh = true
-        req.batchSize = 400
-        req.isAbortOnVersionConflict = true
-
-        req.script = if (newLabel.isNullOrEmpty()) {
-            Script(
-                ScriptType.INLINE,
-                "painless",
-                DELETE_LABEL_SCRIPT,
-                mapOf(
-                    "label" to label,
-                    "modelId" to model.id.toString()
-                )
-            )
-        } else {
-            Script(
-                ScriptType.INLINE,
-                "painless",
-                RENAME_LABEL_SCRIPT,
-                mapOf(
-                    "oldLabel" to label,
-                    "newLabel" to newLabel,
-                    "modelId" to model.id.toString()
-                )
-            )
-        }
-
-        val response: BulkByScrollResponse = rest.client.updateByQuery(req, RequestOptions.DEFAULT)
-        return GenericBatchUpdateResponse(response.updated)
-    }
-
     override fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod {
         if (!model.type.uploadable) {
             throw IllegalArgumentException("The model type ${model.type} does not support uploads")
@@ -643,29 +552,6 @@ class ModelServiceImpl(
         validateModel(path, validTorchFiles)
     }
 
-    fun testLabelSearch(model: Model): Map<String, Any> {
-        val wrapper =
-            """
-            {
-            	"bool": {
-                    "filter": {
-                        "nested" : {
-                            "path": "labels",
-                            "query" : {
-                                "bool": {
-                                    "filter": [
-                                        {"term": { "labels.modelId": "${model.id}" }},
-                                        {"term": { "labels.scope": "TEST"}}
-                                    ]
-                                }
-                            }
-                        }
-                    }
-            	}
-            }
-        """.trimIndent()
-        return mapOf("query" to Json.Mapper.readValue(wrapper, Json.GENERIC_MAP))
-    }
 
     companion object {
 
