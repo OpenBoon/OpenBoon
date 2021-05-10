@@ -1,5 +1,9 @@
 {
   "private": true,
+  "engines": {
+    "node": ">= 16",
+    "npm": ">= 7"
+  },
   "scripts": {
     "analyze": "ANALYZE=true next build",
     "build": "next build",
@@ -8,7 +12,6 @@
     "dev:staging": "STAGING=true node -r esm devServer.js",
     "lint": "eslint '{pages,src}/**/*.js'",
     "prod": "next build && next start",
-    "size": "rimraf .next && next build && bundlesize",
     "start": "next start",
     "test": "TZ=UTC jest --watch --notify --verbose --no-cache",
     "test:cover": "TZ=UTC jest --coverage --verbose --no-cache",
@@ -69,53 +72,6 @@
       "npm run test:hook"
     ]
   },
-  "bundlesize": [
-    {
-      "//": "dependencies",
-      "path": ".next/static/chunks/commons**.js",
-      "maxSize": "10 kB"
-    },
-    {
-      "//": "framework",
-      "path": ".next/static/chunks/framework**.js",
-      "maxSize": "42 kB"
-    },
-    {
-      "//": "main runtime",
-      "path": ".next/static/chunks/main**.js",
-      "maxSize": "7 kB"
-    },
-    {
-      "//": "polyfill",
-      "path": ".next/static/chunks/polyfill**.js",
-      "maxSize": "32 kB"
-    },
-    {
-      "//": "webpack runtime",
-      "path": ".next/static/chunks/webpack**.js",
-      "maxSize": "1 kB"
-    },
-    {
-      "//": "chunks",
-      "path": ".next/static/chunks/!(commons|framework|main|polyfill|webpack)*.js",
-      "maxSize": "28 kB"
-    },
-    {
-      "//": "app.js",
-      "path": ".next/static/chunks/pages/_app**.js",
-      "maxSize": "26 kB"
-    },
-    {
-      "//": "error page",
-      "path": ".next/static/chunks/pages/_error**.js",
-      "maxSize": "2 kB"
-    },
-    {
-      "//": "all pages",
-      "path": ".next/static/chunks/pages/**/!(_app|_error)*.js",
-      "maxSize": "40 kB"
-    }
-  ],
   "dependencies": {
     "@emotion/babel-preset-css-prop": "11.2.0",
     "@emotion/react": "11.1.5",
@@ -155,7 +111,6 @@
     "babel-jest": "26.6.3",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-macros": "3.0.1",
-    "bundlesize": "0.18.1",
     "eslint": "7.25.0",
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-prettier": "8.3.0",
