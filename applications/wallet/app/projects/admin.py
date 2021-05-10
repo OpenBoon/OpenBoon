@@ -1,4 +1,3 @@
-from boonsdk.client import BoonSdkNotFoundException
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 from django.db import transaction
@@ -12,12 +11,7 @@ def hard_delete_project(modeladmin, request, queryset):
     """Issues a delete request to ZMLP and removes the project from Wallet."""
     for project in queryset:
         with transaction.atomic():
-            client = get_zmlp_superuser_client()
-            try:
-                client.delete(f'/api/v1/projects/{project.id}')
-            except BoonSdkNotFoundException:
-                pass
-            project.delete()
+            project.hard_delete()
 
 
 @admin.action(description='Sync selected projects with ZMLP.')
