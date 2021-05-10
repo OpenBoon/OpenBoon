@@ -1,6 +1,6 @@
 FROM nginx:mainline
 RUN apt-get -y update && apt-get -y upgrade \
-    && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+    && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
     && apt-get -y install nodejs python3 python3-pip postgresql libsm6 libxrender-dev libxext6
 
 # Set up Node.js
