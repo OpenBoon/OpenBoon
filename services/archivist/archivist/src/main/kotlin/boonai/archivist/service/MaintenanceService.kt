@@ -121,7 +121,8 @@ class ResumePausedJobsScheduler @Autowired constructor(
 
     override fun scheduler(): Scheduler {
         return Scheduler.newFixedDelaySchedule(
-            Random.nextLong(1000, 20000), 5000, TimeUnit.MILLISECONDS)
+            Random.nextLong(1000, 20000), 5000, TimeUnit.MILLISECONDS
+        )
     }
 
     companion object {
@@ -190,7 +191,7 @@ class MaintenanceServiceImpl @Autowired constructor(
                 listOf(Tag.of("event", "analyst_down"))
             )
             analystService.getUnresponsive(AnalystState.Up, downDuration).forEach {
-                if(analystService.setState(it, AnalystState.Down)) {
+                if (analystService.setState(it, AnalystState.Down)) {
                     analystService.setTaskId(it, null)
                 }
                 downCounter.increment()
