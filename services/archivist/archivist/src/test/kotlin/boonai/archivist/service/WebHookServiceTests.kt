@@ -11,6 +11,8 @@ import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class WebHookServiceTests : AbstractTest() {
 
@@ -33,6 +35,14 @@ class WebHookServiceTests : AbstractTest() {
         assertEquals(spec.url, hook.url)
         assertEquals(spec.secretKey, hook.secretKey)
         assertEquals(spec.triggers, hook.triggers)
+        assertTrue(hook.active)
+    }
+
+    @Test
+    fun testCreateDisabled() {
+        val spec = WebHookSpec("http://boonai.app:8080", "abc123", arrayOf(TriggerType.AssetAnalyzed), false)
+        val hook = webHookService.createWebHook(spec)
+        assertFalse(hook.active)
     }
 
     @Test(expected = InvalidRequestException::class)

@@ -53,7 +53,7 @@ class WebHookServiceImpl constructor(
             spec.url,
             spec.secretKey,
             spec.triggers,
-            true,
+            spec.active,
             time,
             time,
             actor,
