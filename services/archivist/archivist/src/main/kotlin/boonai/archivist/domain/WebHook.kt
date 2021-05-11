@@ -45,6 +45,9 @@ class WebHookSpec(
 
     @ApiModelProperty("The triggers the webhook should fire on.")
     val triggers: Array<TriggerType>,
+
+    @ApiModelProperty("Determines if the webhook is active or not.")
+    var active: Boolean = true
 )
 
 class WebHookUpdate(
@@ -58,6 +61,7 @@ class WebHookUpdate(
     @ApiModelProperty("The triggers the webhook should fire on.")
     val triggers: Array<TriggerType>,
 
+    @ApiModelProperty("Determines if the webhook is active or not.")
     val active: Boolean
 )
 
