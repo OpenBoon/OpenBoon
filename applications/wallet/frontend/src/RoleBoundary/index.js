@@ -17,7 +17,7 @@ const RoleBoundary = () => {
           boxShadow: constants.boxShadows.default,
         }}
       >
-        <LockSvg width={200} color={colors.structure.steel} />
+        <LockSvg width={150} color={colors.structure.steel} />
 
         <h3
           css={{
