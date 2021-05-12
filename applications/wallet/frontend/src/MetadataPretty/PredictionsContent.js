@@ -10,6 +10,7 @@ import Button, { VARIANTS } from '../Button'
 import {
   ACTIONS as FILTER_ACTIONS,
   dispatch as filterDispatch,
+  decode,
 } from '../Filters/helpers'
 
 export const BBOX_SIZE = 56
@@ -39,6 +40,12 @@ const MetadataPrettyPredictionsContent = ({
   const tags = predictions
     .flatMap((prediction) => prediction.tags)
     .filter((tag) => !!tag)
+
+  const attribute = `${path}.${name}`
+  const filters = decode({ query })
+
+  const { values: { min = 0, max = 1 } = {} } =
+    filters.find((f) => f.attribute === attribute) || {}
 
   return (
     <>
@@ -77,7 +84,7 @@ const MetadataPrettyPredictionsContent = ({
                     assetId,
                     filter: {
                       type: FILTER_TYPES[type],
-                      attribute: `${path}.${name}`,
+                      attribute,
                       values: {},
                     },
                     query,
@@ -156,6 +163,45 @@ const MetadataPrettyPredictionsContent = ({
                             src={prediction.b64_image}
                           />
                           &nbsp;
+                        </td>
+                      )
+                    }
+
+                    if (column === 'label') {
+                      return (
+                        <td key={column}>
+                          <Button
+                            aria-label="Add Filter"
+                            variant={VARIANTS.NEUTRAL}
+                            style={{
+                              fontSize: 'inherit',
+                              lineHeight: 'inherit',
+                              whiteSpace: 'inherit',
+                              textAlign: 'inherit',
+                            }}
+                            onClick={() => {
+                              filterDispatch({
+                                type: FILTER_ACTIONS.ADD_VALUE,
+                                payload: {
+                                  pathname,
+                                  projectId,
+                                  assetId,
+                                  filter: {
+                                    type: FILTER_TYPES[type],
+                                    attribute,
+                                    values: {
+                                      labels: [prediction.label],
+                                      min,
+                                      max,
+                                    },
+                                  },
+                                  query,
+                                },
+                              })
+                            }}
+                          >
+                            {prediction.label}
+                          </Button>
                         </td>
                       )
                     }

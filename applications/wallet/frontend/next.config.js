@@ -9,6 +9,9 @@ const {
 } = process.env
 
 module.exports = {
+  future: {
+    webpack5: true,
+  },
   productionBrowserSourceMaps: true,
   reactStrictMode: true,
   env: {

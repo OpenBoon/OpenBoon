@@ -70,6 +70,14 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
         """
         sync_project_with_zmlp(self, create)
 
+    def hard_delete(self):
+        """Deletes the project permanently from Wallet and ZMLP. BE CAREFUL!"""
+        try:
+            get_zmlp_superuser_client().delete(f'/api/v1/projects/{self.id}')
+        except BoonSdkNotFoundException:
+            pass
+        self.delete()
+
     def cycle_api_key(self):
         """Cycles out the apikey associated with the Project."""
         if self.apikey:

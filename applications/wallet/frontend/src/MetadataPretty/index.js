@@ -20,7 +20,7 @@ const MetadataPretty = ({ metadata, section }) => {
   }
 
   return (
-    <MetadataPrettySwitch name="" value={metadata[section]} path={section} />
+    <MetadataPrettySwitch path={section} name="" value={metadata[section]} />
   )
 }
 

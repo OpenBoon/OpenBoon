@@ -17,7 +17,11 @@ const FilterLabelConfidenceContent = ({
   assetId,
   filters,
   filter,
-  filter: { type, attribute },
+  filter: {
+    type,
+    attribute,
+    values: { min, max },
+  },
   filterIndex,
 }) => {
   const [searchString, setSearchString] = useState('')
@@ -40,6 +44,7 @@ const FilterLabelConfidenceContent = ({
   return (
     <>
       <FilterLabelConfidenceSlider
+        key={`${min}-${max}`}
         pathname={pathname}
         projectId={projectId}
         assetId={assetId}

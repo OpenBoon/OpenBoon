@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 
 import Table, { ROLES } from '../Table'
 
-import JobTasksEmpty from './Empty'
 import JobTasksRow from './Row'
 
 const JobTasks = () => {
@@ -19,7 +18,12 @@ const JobTasks = () => {
       refreshButton
       columns={['State', 'Description', 'Started', 'Duration', 'Errors']}
       expandColumn={2}
-      renderEmpty={<JobTasksEmpty />}
+      renderEmpty={
+        <>
+          <div>This job has no tasks.</div>
+          <div>Any new task will appear here.</div>
+        </>
+      }
       renderRow={({ result }) => (
         <JobTasksRow
           key={result.id}

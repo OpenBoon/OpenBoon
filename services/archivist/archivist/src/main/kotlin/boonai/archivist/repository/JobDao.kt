@@ -317,7 +317,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
             "AND " +
             "job.int_state IN (?,?,?) " +
             "AND " +
-            "job_count.time_updated < ? "
+            "job_count.time_updated < ? " +
+            "ORDER BY job.pk_job"
 
         private const val ASSET_COUNTS_INC = "UPDATE " +
             "job_stat " +

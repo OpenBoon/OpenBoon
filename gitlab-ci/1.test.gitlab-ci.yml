@@ -26,14 +26,14 @@ wallet-integration-test-suite:
 ## Wallet Frontend CI Tests
 wallet-frontend-test-suite:
   stage: test
-  image: node:12
+  image: node:16
   before_script:
     - cd applications/wallet/frontend
     - npm ci
   script:
     - npm run lint
     - npm run test:cover
-    - npm run size
+    - npm run build
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -54,7 +54,7 @@ wallet-backend-test-suite:
   stage: test
   image: mc706/pipenv-3.7
   services:
-    - name: postgres:9.6.9
+    - name: postgres:9.6.21
       alias: postgres
   variables:
     POSTGRES_PASSWORD: a8fnnbe934j
@@ -88,7 +88,7 @@ metrics-backend-test-suite:
   stage: test
   image: mc706/pipenv-3.7
   services:
-      - name: postgres:9.6.9
+      - name: postgres:9.6.21
         alias: postgres
   variables:
     DJANGO_SETTINGS_MODULE: metrics.settings.testing

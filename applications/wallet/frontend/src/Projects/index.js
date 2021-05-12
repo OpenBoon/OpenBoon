@@ -22,7 +22,7 @@ const Projects = ({ projectId, children }) => {
   const { query: { projectId: routerProjectId } = {}, pathname } = useRouter()
 
   const {
-    data: { results: projects },
+    data: { results: projects = [] },
   } = useSWR('/api/v1/projects/')
 
   useEffect(() => {

@@ -64,7 +64,7 @@ const OrganizationProjects = () => {
           '#Actions#',
         ]}
         expandColumn={0}
-        renderEmpty={<span />}
+        renderEmpty="There are currently no projects in this organization."
         renderRow={({ result, revalidate }) => {
           return (
             <OrganizationProjectsRow

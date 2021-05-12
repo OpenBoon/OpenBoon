@@ -28,6 +28,10 @@ const FilterReset = ({
     filter.attribute.split('.').reduce((acc, cur) => acc && acc[cur], fields) ||
     []
 
+  if (filter.type === 'exists' && options.includes('similarity')) {
+    return null
+  }
+
   return (
     <div
       css={{

@@ -1,14 +1,57 @@
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
+import Button, { VARIANTS } from '../Button'
+
+import {
+  ACTIONS as FILTER_ACTIONS,
+  dispatch as filterDispatch,
+} from '../Filters/helpers'
 
 import MetadataPrettyNoResults from './NoResults'
 
-const MetadataPrettyContent = ({ name, value: { content } }) => {
+const MetadataPrettyContent = ({ path, name, value: { content } }) => {
+  const {
+    pathname,
+    query: { projectId, assetId, query },
+  } = useRouter()
+
   if (!content) {
-    return <MetadataPrettyNoResults name={name} />
+    return (
+      <MetadataPrettyNoResults
+        name={
+          <Button
+            aria-label="Add Filter"
+            variant={VARIANTS.NEUTRAL}
+            style={{
+              fontSize: 'inherit',
+              lineHeight: 'inherit',
+            }}
+            onClick={() => {
+              filterDispatch({
+                type: FILTER_ACTIONS.ADD_VALUE,
+                payload: {
+                  pathname,
+                  projectId,
+                  assetId,
+                  filter: {
+                    type: 'textContent',
+                    attribute: `${path}.${name}`,
+                    values: {},
+                  },
+                  query,
+                },
+              })
+            }}
+          >
+            {name}
+          </Button>
+        }
+      />
+    )
   }
 
   return (
@@ -26,7 +69,32 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
           color: colors.structure.white,
         }}
       >
-        {name}
+        <Button
+          aria-label="Add Filter"
+          variant={VARIANTS.NEUTRAL}
+          style={{
+            fontSize: 'inherit',
+            lineHeight: 'inherit',
+          }}
+          onClick={() => {
+            filterDispatch({
+              type: FILTER_ACTIONS.ADD_VALUE,
+              payload: {
+                pathname,
+                projectId,
+                assetId,
+                filter: {
+                  type: 'textContent',
+                  attribute: `${path}.${name}`,
+                  values: {},
+                },
+                query,
+              },
+            })
+          }}
+        >
+          {name}
+        </Button>
       </div>
 
       <div
@@ -81,6 +149,7 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
 }
 
 MetadataPrettyContent.propTypes = {
+  path: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.shape({
     content: PropTypes.string.isRequired,

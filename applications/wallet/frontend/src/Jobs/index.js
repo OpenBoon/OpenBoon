@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import PageTitle from '../PageTitle'
 import Table, { ROLES } from '../Table'
 
-import JobsEmpty from './Empty'
 import JobsRow from './Row'
 
 const Jobs = () => {
@@ -37,7 +36,12 @@ const Jobs = () => {
           '#Actions#',
         ]}
         expandColumn={2}
-        renderEmpty={<JobsEmpty />}
+        renderEmpty={
+          <>
+            <div>There are currently no jobs in the queue.</div>
+            <div>Any new job will appear here.</div>
+          </>
+        }
         renderRow={({ result, revalidate }) => (
           <JobsRow
             key={result.id}
