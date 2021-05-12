@@ -43,7 +43,7 @@ wallet-deploy-development:
   extends: .deploy
   variables:
     PROJECT: zvi-dev
-    DEPLOYMENTS: wallet
+    DEPLOYMENTS: wallet project-reaper
     SA_JSON: ${DEV_SA_JSON}
   environment:
     name: dev
@@ -83,7 +83,7 @@ deploy-qa:
   variables:
     PROJECT: zvi-qa
     SA_JSON: ${QA_SA_JSON}
-    DEPLOYMENTS: analyst api-gateway archivist auth-server metrics ml-bbq officer reporter wallet swivel
+    DEPLOYMENTS: analyst api-gateway archivist auth-server metrics ml-bbq officer reporter wallet swivel project-reaper
     STATEFUL_SETS: elasticsearch-master elasticsearch-data
   stage: deploy
   environment:
