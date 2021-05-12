@@ -68,7 +68,7 @@ abstract class MessageListener : MessageListener {
             cache.hset(runningTasksKey, blockCode, getTaskInfo(channel, content))
 
             // Otherwise run
-            val statusRefreshCoroutine = runRefreshCoroutine(cache, taskState, blockCode)
+            val statusRefreshCoroutine = runRefreshCoroutine(taskState, blockCode)
             try {
                 getOptMap()[extractOpt(channel)]?.let {
                     it(content)
@@ -88,10 +88,12 @@ abstract class MessageListener : MessageListener {
     /**
      * This method allow that jobs that would exceed processing time keep running
      */
-    private fun runRefreshCoroutine(cache: Jedis, taskState: String, blockCode: String) = GlobalScope.launch {
+    private fun runRefreshCoroutine(taskState: String, blockCode: String) = GlobalScope.launch {
         while (isActive) {
-            cache.expire(taskState, expirationTimeSeconds.toInt())
-            cache.expire(blockCode, expirationTimeSeconds.toInt())
+            jedisPool.resource.use { cache ->
+                cache.expire(taskState, expirationTimeSeconds.toInt())
+                cache.expire(blockCode, expirationTimeSeconds.toInt())
+            }
             Thread.sleep(expirationTimeMillis / 2)
         }
     }
