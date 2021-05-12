@@ -33,42 +33,44 @@ abstract class MessageListener : MessageListener {
     override fun onMessage(msg: Message, p1: ByteArray?) {
         val channel = String(msg.channel)
         val content = String(msg.body)
-        val cache = jedisPool.resource
         val taskState = getEncodedState(channel, content)
         val blockCode = getBlockCode(channel, content)
 
-        // If it's running in other service wait
-        while (cache.incr(blockCode) != 1L && !isAccomplished(taskState))
-            Thread.sleep(expirationTimeMillis / 2)
+        jedisPool.resource.use { cache ->
+            // If it's running in other service wait
+            while (cache.incr(blockCode) != 1L && !isAccomplished(taskState))
+                Thread.sleep(expirationTimeMillis / 2)
 
-        // If it dies somewhere the others process will have the chance to process
-        cache.expire(blockCode, expirationTimeSeconds.toInt())
+            // If it dies somewhere the others process will have the chance to process
+            cache.expire(blockCode, expirationTimeSeconds.toInt())
 
-        while (isRunning(taskState))
-            Thread.sleep(expirationTimeMillis)
+            while (isRunning(taskState))
+                Thread.sleep(expirationTimeMillis)
 
-        // If someone already processed it, then exit
-        if (isAccomplished(taskState)) {
-            return
-        }
-
-        // Store backup info in redis
-        cache.hset(runningTasksKey, blockCode, getTaskInfo(channel, content))
-
-        // Otherwise run
-        val statusRefreshCoroutine = runRefreshCoroutine(cache, taskState, blockCode)
-        try {
-            getOptMap()[extractOpt(channel)]?.let {
-                it(content)
+            // If someone already processed it, then exit
+            if (isAccomplished(taskState)) {
+                return
             }
-        } catch (ex: Exception) {
-            logger.error(ex.localizedMessage)
-        } finally {
-            // Stop refresh coroutine
-            statusRefreshCoroutine.cancel()
-            // Update Redis status
-            cache.set(taskState, QueueState.ACCOMPLISHED.name)
-            cache.hdel(runningTasksKey, blockCode)
+
+            // Store backup info in redis
+            cache.hset(runningTasksKey, blockCode, getTaskInfo(channel, content))
+
+            // Otherwise run
+            val statusRefreshCoroutine = runRefreshCoroutine(cache, taskState, blockCode)
+            try {
+                getOptMap()[extractOpt(channel)]?.let {
+                    it(content)
+                }
+            } catch (ex: Exception) {
+                logger.error(ex.localizedMessage)
+            } finally {
+                // Stop refresh coroutine
+                statusRefreshCoroutine.cancel()
+                // Update Redis status
+                cache.set(taskState, QueueState.ACCOMPLISHED.name)
+                cache.hdel(runningTasksKey, blockCode)
+            }
+
         }
     }
 
@@ -92,11 +94,17 @@ abstract class MessageListener : MessageListener {
         )
     }
 
-    private fun isAccomplished(encodedState: String) =
-        jedisPool.resource.get(encodedState) == QueueState.ACCOMPLISHED.name
+    private fun isAccomplished(encodedState: String) : Boolean {
+        return jedisPool.resource.use {
+            it.get(encodedState) == QueueState.ACCOMPLISHED.name
+        }
+    }
 
-    private fun isRunning(encodedState: String) =
-        jedisPool.resource.get(encodedState) == QueueState.RUNNING.name
+    private fun isRunning(encodedState: String) : Boolean {
+        return jedisPool.resource.use {
+            it.get(encodedState) == QueueState.RUNNING.name
+        }
+    }
 
     private fun extractOpt(channel: String): String {
         return channel.substringAfter("*/", "/")
