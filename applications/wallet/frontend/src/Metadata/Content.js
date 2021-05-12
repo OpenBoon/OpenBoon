@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
-import deepfilter from 'deep-filter'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
@@ -14,7 +13,7 @@ import JsonDisplay from '../JsonDisplay'
 import MetadataPretty from '../MetadataPretty'
 import InputSearch, { VARIANTS as INPUT_SEARCH_VARIANTS } from '../Input/Search'
 
-import { formatDisplayName } from './helpers'
+import { filter, formatDisplayName } from './helpers'
 
 const DISPLAY_OPTIONS = ['pretty', 'raw json']
 
@@ -35,35 +34,7 @@ const MetadataContent = ({ projectId, assetId }) => {
 
   const [searchString, setSearchString] = useState('')
 
-  const filteredMetadata = deepfilter(metadata, (value, prop) => {
-    if (!searchString) return true
-
-    // Ignore first level section (analysis, files, media, etc.)
-    if (Object.keys(metadata).includes(prop)) return true
-
-    const regex = new RegExp(searchString, 'img')
-
-    // Special case to filter processors
-    if (
-      typeof prop === 'number' &&
-      typeof value === 'object' &&
-      typeof value.processor === 'string'
-    ) {
-      return regex.test(value.processor)
-    }
-
-    // Filter entries that are an object because it means they
-    // are a section a.k.a. a module
-    if (
-      typeof prop === 'string' &&
-      typeof value === 'object' &&
-      !Array.isArray(value)
-    ) {
-      return regex.test(prop)
-    }
-
-    return true
-  })
+  const filteredMetadata = filter({ metadata, searchString })
 
   return (
     <>
