@@ -31,7 +31,8 @@ def test_webhook_util_trigger_list(login, api_client):
                         'results': [{'description': 'Test Trigger',
                                      'displayName': 'Test',
                                      'id': 1,
-                                     'name': 'test'}]}
+                                     'name': 'test',
+                                     'sort_index': 10}]}
 
 
 def test_webhooks_create(login, api_client, monkeypatch, project, zmlp_webhook_response):
@@ -133,3 +134,11 @@ def test_webhooks_test_failure(login, api_client, monkeypatch):
             'secretKey': 'secret',
             'triggers': ['asset_analyzed']}
     check_response(api_client.post(path, body), status=500)
+
+
+def test_trigger_sort_order():
+    Trigger.objects.create(name='three', displayName='three', sort_index=3)
+    Trigger.objects.create(name='one', displayName='one', sort_index=1)
+    Trigger.objects.create(name='two', displayName='two', sort_index=2)
+    trigger_order = [t.name for t in Trigger.objects.all()]
+    assert trigger_order == ['one', 'two', 'three']
