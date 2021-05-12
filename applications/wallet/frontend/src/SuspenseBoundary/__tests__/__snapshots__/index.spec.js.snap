@@ -53,7 +53,7 @@ exports[`<SuspenseBoundary /> should not render the child with no roles 1`] = `
     <svg
       color="#808080"
       data-file-name="lock.svg"
-      width={200}
+      width={150}
     />
     <h3
       className="emotion-2"
