@@ -1,5 +1,6 @@
 package boonai.archivist.queue.listener
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -87,7 +88,7 @@ abstract class MessageListener : MessageListener {
     /**
      * This method allow that jobs that would exceed processing time keep running
      */
-    private fun runRefreshCoroutine(taskState: String, blockCode: String) = GlobalScope.launch {
+    private fun runRefreshCoroutine(taskState: String, blockCode: String) = GlobalScope.launch(Dispatchers.IO) {
         while (isActive) {
             jedisPool.resource.use { cache ->
                 cache.expire(taskState, expirationTimeSeconds.toInt())
