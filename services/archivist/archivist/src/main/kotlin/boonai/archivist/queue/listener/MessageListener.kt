@@ -41,8 +41,7 @@ abstract class MessageListener : MessageListener {
             jedisPool.resource.use { cache ->
                 if (cache.incr(blockCode) != 1L && !isAccomplished(cache, taskState)) {
                     Thread.sleep(expirationTimeMillis / 2)
-                }
-                else{
+                } else {
                     waiting = false
                 }
             }
@@ -107,11 +106,11 @@ abstract class MessageListener : MessageListener {
         )
     }
 
-    private fun isAccomplished(cache: Jedis, encodedState: String) : Boolean {
+    private fun isAccomplished(cache: Jedis, encodedState: String): Boolean {
         return cache.get(encodedState) == QueueState.ACCOMPLISHED.name
     }
 
-    private fun isRunning(cache: Jedis,  encodedState: String) : Boolean {
+    private fun isRunning(cache: Jedis, encodedState: String): Boolean {
         return cache.get(encodedState) == QueueState.RUNNING.name
     }
 
