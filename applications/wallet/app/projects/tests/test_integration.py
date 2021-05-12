@@ -93,18 +93,24 @@ def test_projects_view_with_projects(organization, zmlp_project_user, api_client
 
 def test_projects_view_with_org_owner(project, zmlp_project_user, api_client):
     api_client.force_authenticate(zmlp_project_user)
-    organization = Organization.objects.create()
-    organization.owners.add(zmlp_project_user)
-    org_project = Project.objects.create(name='org project', organization=organization)
+    organization_2 = Organization.objects.create()
+    organization_2.owners.add(zmlp_project_user)
+    org_project = Project.objects.create(name='z', organization=organization_2)
 
     # Adding users to project to test for a bad query regression.
     org_project.users.add(User.objects.create(username='user1'))
     org_project.users.add(User.objects.create(username='user2'))
     org_project.users.add(User.objects.create(username='user3'))
 
+    # Add another project to help validate projects default to alphabetical order.
+    project_z = Project.objects.create(name='aa', organization=project.organization)
+    Membership.objects.create(user=zmlp_project_user, project=project_z, apikey='sdfs',
+                              roles=['ML_Tools', 'User_Admin'])
+
     response = api_client.get(reverse('project-list')).json()
-    assert response['count'] == 2
-    assert set([r['name'] for r in response['results']]) == {project.name, org_project.name}
+    assert response['count'] == 3
+    project_order = [r['name'] for r in response['results']]
+    assert project_order == ['aa', 'Test Project', 'z']
 
 
 def test_projects_view_inactive_projects(project, zmlp_project_user, api_client):

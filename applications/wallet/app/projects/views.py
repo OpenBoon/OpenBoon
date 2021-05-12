@@ -3,6 +3,7 @@ import logging
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.db.models import Q
+from django.db.models.functions import Lower
 from django.http import Http404
 from rest_framework import status
 from rest_framework.exceptions import PermissionDenied
@@ -33,7 +34,8 @@ class ProjectViewSet(ListModelMixin,
 
     def get_queryset(self):
         user = self.request.user
-        return Project.objects.filter(Q(users=user) | Q(organization__owners=user)).distinct()
+        return (Project.objects.filter(Q(users=user) | Q(organization__owners=user))
+                .order_by(Lower('name')).distinct())
 
     def get_serializer_class(self):
         action_map = {'list': ProjectSerializer,
