@@ -36,19 +36,31 @@ abstract class MessageListener : MessageListener {
         val taskState = getEncodedState(channel, content)
         val blockCode = getBlockCode(channel, content)
 
-        jedisPool.resource.use { cache ->
-            // If it's running in other service wait
-            while (cache.incr(blockCode) != 1L && !isAccomplished(taskState))
-                Thread.sleep(expirationTimeMillis / 2)
+        var waiting = true
+        while (waiting) {
+            jedisPool.resource.use { cache ->
+                if (cache.incr(blockCode) != 1L && !isAccomplished(cache, taskState)) {
+                    Thread.sleep(expirationTimeMillis / 2)
+                }
+                else{
+                    waiting = false
+                }
+            }
+        }
 
+        jedisPool.resource.use { cache ->
             // If it dies somewhere the others process will have the chance to process
             cache.expire(blockCode, expirationTimeSeconds.toInt())
 
-            while (isRunning(taskState))
+            while (isRunning(cache, taskState)) {
                 Thread.sleep(expirationTimeMillis)
+            }
+        }
+
+        jedisPool.resource.use { cache ->
 
             // If someone already processed it, then exit
-            if (isAccomplished(taskState)) {
+            if (isAccomplished(cache, taskState)) {
                 return
             }
 
@@ -70,7 +82,6 @@ abstract class MessageListener : MessageListener {
                 cache.set(taskState, QueueState.ACCOMPLISHED.name)
                 cache.hdel(runningTasksKey, blockCode)
             }
-
         }
     }
 
@@ -94,16 +105,12 @@ abstract class MessageListener : MessageListener {
         )
     }
 
-    private fun isAccomplished(encodedState: String) : Boolean {
-        return jedisPool.resource.use {
-            it.get(encodedState) == QueueState.ACCOMPLISHED.name
-        }
+    private fun isAccomplished(cache: Jedis, encodedState: String) : Boolean {
+        return cache.get(encodedState) == QueueState.ACCOMPLISHED.name
     }
 
-    private fun isRunning(encodedState: String) : Boolean {
-        return jedisPool.resource.use {
-            it.get(encodedState) == QueueState.RUNNING.name
-        }
+    private fun isRunning(cache: Jedis,  encodedState: String) : Boolean {
+        return cache.get(encodedState) == QueueState.RUNNING.name
     }
 
     private fun extractOpt(channel: String): String {
