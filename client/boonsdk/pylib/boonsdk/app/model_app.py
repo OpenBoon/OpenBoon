@@ -1,11 +1,12 @@
 import logging
 import os
 import tempfile
+import zipfile
 
 from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule, PostTrainAction
 from ..training import TrainingSetDownloader
 from ..util import as_collection, as_id, zip_directory, is_valid_uuid
-
+from shutil import copyfile
 logger = logging.getLogger(__name__)
 
 __all__ = [
@@ -189,6 +190,47 @@ class ModelApp:
 
         os.unlink(zip_file_path)
         return rsp
+
+    def download_and_unzip_model(self, model, model_path):
+        """
+        Download a trained model from BoonAI storage
+        :param model: The model object or it's unique ID.
+        :param model_path: The path to a directory that will be downloaded the files
+        :return: a dict containing server download response
+        """
+
+        mid = as_id(model)
+        model = self.find_one_model(id=mid)
+        # check the model types.
+        if model.type not in (ModelType.TF_UPLOADED_CLASSIFIER,
+                              ModelType.PYTORCH_UPLOADED_CLASSIFIER):
+            raise ValueError(f'Invalid model type for upload: {model.type}')
+
+        mid = as_id(model)
+
+        file_name = 'model.zip'
+        rsp = self.app.client.stream("/api/v3/models/{}/_download".format(mid), "{}/{}".format(model_path, file_name))
+
+        def unzip_model_files(model_path, file_name):
+            os.chdir(model_path)
+            zip_ref = zipfile.ZipFile(file_name)
+
+            # extract to the model path
+            tmp_dir = tempfile.mkdtemp()
+            zip_ref.extractall(tmp_dir)
+
+            # copying only files
+            for root, dirs, files in os.walk(tmp_dir):
+                for file in files:
+                    path_file = os.path.join(root, file)
+                    copyfile(path_file, "{}/{}".format(model_path, file))
+
+            zip_ref.close()
+            os.remove(file_name)
+
+        unzip_model_files(model_path, file_name)
+
+        return model_path
 
     def get_label_counts(self, model):
         """

@@ -2,13 +2,15 @@ import logging
 import tempfile
 import unittest
 import uuid
+import os
+from shutil import copyfile
 from unittest.mock import patch
 
 import pytest
 
 from boonsdk import BoonClient, ModelType, Model
 from boonsdk.app import ModelApp
-from .util import get_boon_app
+from .util import get_boon_app, get_test_file
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -121,6 +123,30 @@ class ModelAppTests(unittest.TestCase):
         tmp_dir = tempfile.mkdtemp()
         module = self.app.models.upload_trained_model("12345", tmp_dir, ["dog", "cat"])
         assert module.category == 'LabelDetection'
+
+    @patch.object(ModelApp, 'find_one_model')
+    @patch.object(BoonClient, 'stream')
+    def test_download_and_unzip_model_file(self, get_patch, model_patch):
+        zip_file_loc = get_test_file("models/tflite/model.zip")
+        zip_file_loc_copy = get_test_file("models/tflite/model_test.zip")
+        tf_lite_model_file = get_test_file("models/tflite/mobilenet_v1_1.0_224_quant.tflite")
+        tf_lite_label_file = get_test_file("models/tflite/labels_mobilenet_quant_v1_224.txt")
+        get_patch.return_value = zip_file_loc_copy
+        model_patch.return_value = Model({
+            'id': '12345',
+            'type': 'PYTORCH_UPLOADED_CLASSIFIER',
+            'name': 'foo'
+        })
+
+        copyfile(zip_file_loc_copy, zip_file_loc)
+
+        self.app.models.download_model("12345", get_test_file("models/tflite"))
+
+        assert os.path.exists(tf_lite_model_file)
+        assert os.path.exists(tf_lite_label_file)
+
+        os.remove(tf_lite_label_file)
+        os.remove(tf_lite_model_file)
 
     @patch.object(BoonClient, 'post')
     def test_find_one_model(self, post_patch):
