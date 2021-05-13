@@ -209,7 +209,7 @@ exports[`<PanelContent /> should render properly to the right 1`] = `
   padding: 1px;
   padding-left: 6px;
   padding-right: 6px;
-  margin-left: 8px;
+  margin-right: 8px;
 }
 
 .emotion-4 {
@@ -292,12 +292,12 @@ exports[`<PanelContent /> should render properly to the right 1`] = `
     <h2
       className="emotion-2"
     >
-      
       <span
         className="emotion-3"
       >
         beta
       </span>
+      
     </h2>
     <button
       aria-label="Close Panel"
