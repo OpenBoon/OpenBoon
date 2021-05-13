@@ -188,6 +188,12 @@ class ModelController(
         return modelService.publishModelFileUpload(modelService.getModel(id), req.inputStream)
     }
 
+    @ApiOperation("Download the model zip file.")
+    @GetMapping(value = ["/api/v3/models/{id}/_download"])
+    fun download(@ApiParam("ModelId") @PathVariable id: UUID): Any {
+        return modelService.downloadModelFile(modelService.getModel(id))
+    }
+
     @ApiOperation("Rename label")
     @PutMapping("/api/v3/models/{id}/labels")
     fun renameLabels(

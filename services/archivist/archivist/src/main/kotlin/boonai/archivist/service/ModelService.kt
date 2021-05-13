@@ -56,7 +56,9 @@ import org.elasticsearch.search.aggregations.bucket.filter.Filter
 import org.elasticsearch.search.aggregations.bucket.nested.Nested
 import org.elasticsearch.search.aggregations.bucket.terms.Terms
 import org.slf4j.LoggerFactory
+import org.springframework.core.io.Resource
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -99,6 +101,7 @@ interface ModelService {
     fun generateModuleName(spec: ModelSpec): String
     fun getModelVersions(model: Model): Set<String>
     fun copyModelTag(model: Model, req: ModelCopyRequest)
+    fun downloadModelFile(model: Model): ResponseEntity<Resource>
 }
 
 @Service
@@ -579,6 +582,10 @@ class ModelServiceImpl(
         } finally {
             Files.delete(tmpFile)
         }
+    }
+
+    override fun downloadModelFile(model: Model): ResponseEntity<Resource> {
+        return fileStorageService.stream(model.getModelStorageLocator("latest"))
     }
 
     fun validateModel(path: Path, allowedFiles: List<Any>) {
