@@ -1,7 +1,10 @@
 from django.db import models
 
+from wallet.mixins import SortIndexMixin
 
-class Provider(models.Model):
+
+class Provider(SortIndexMixin,
+               models.Model):
     """Provides display details for pipeline module providers."""
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
@@ -11,10 +14,6 @@ class Provider(models.Model):
                   'images, use the "copy image" button after converting '
                   'and paste results above. If you have an svg you can use '
                   'https://base64.guru/converter/encode/image/svg')
-    sort_index = models.IntegerField(blank=False, null=False, default=10)
-
-    class Meta:
-        ordering = ['sort_index']
 
     def __str__(self):
         return self.name
