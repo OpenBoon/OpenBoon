@@ -49,7 +49,7 @@ const Webhooks = () => {
         refreshButton={false}
         columns={['URL', 'Triggers', 'Active', '#Actions#']}
         expandColumn={1}
-        renderEmpty="No webhook"
+        renderEmpty="There are currently no webhooks for this project."
         renderRow={({ result, revalidate }) => (
           <WebhooksRow
             key={result.id}

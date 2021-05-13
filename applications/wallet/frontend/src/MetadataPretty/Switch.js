@@ -11,7 +11,7 @@ import MetadataPrettyContent from './Content'
 import MetadataPrettySimilarity from './Similarity'
 import MetadataPrettyRow from './Row'
 
-const MetadataPrettySwitch = ({ name, value, path }) => {
+const MetadataPrettySwitch = ({ path, name, value }) => {
   // Sort Analysis modules alphabetically
   const sortedValue =
     path === 'analysis'
@@ -33,7 +33,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
         }}
       >
         {Object.entries(attribute).map(([k, v]) => (
-          <MetadataPrettySwitch key={k} name={k} value={v} path={path} />
+          <MetadataPrettySwitch key={k} path={path} name={k} value={v} />
         ))}
       </div>
     ))
@@ -44,14 +44,16 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
       case 'labels':
         return (
           <MetadataPrettyPredictions
+            path={path}
             name={name}
             value={sortedValue}
-            path={path}
           />
         )
 
       case 'content':
-        return <MetadataPrettyContent name={name} value={sortedValue} />
+        return (
+          <MetadataPrettyContent path={path} name={name} value={sortedValue} />
+        )
 
       case 'similarity':
         return (
@@ -64,9 +66,9 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
           >
             <SuspenseBoundary isTransparent>
               <MetadataPrettySimilarity
+                path={path}
                 name={name}
                 value={sortedValue}
-                path={path}
               />
             </SuspenseBoundary>
           </div>
@@ -105,13 +107,13 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
               {Object.entries(sortedValue).map(([k, v]) => (
                 <MetadataPrettySwitch
                   key={k}
+                  path={`${path.toLowerCase()}${name ? '.' : ''}${name}`}
                   name={k}
                   value={v}
-                  path={`${path.toLowerCase()}${name ? '.' : ''}${name}`}
                 />
               ))}
               {Object.entries(sortedValue).length === 0 && (
-                <MetadataPrettyRow name="" value="" path={path} />
+                <MetadataPrettyRow path={path} name="" value="" />
               )}
             </div>
           </>
@@ -119,10 +121,11 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
     }
   }
 
-  return <MetadataPrettyRow name={name} value={sortedValue} path={path} />
+  return <MetadataPrettyRow path={path} name={name} value={sortedValue} />
 }
 
 MetadataPrettySwitch.propTypes = {
+  path: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([
     PropTypes.string,
@@ -130,7 +133,6 @@ MetadataPrettySwitch.propTypes = {
     PropTypes.shape({}),
     PropTypes.array,
   ]).isRequired,
-  path: PropTypes.string.isRequired,
 }
 
 export default MetadataPrettySwitch

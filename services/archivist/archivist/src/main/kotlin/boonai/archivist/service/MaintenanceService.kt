@@ -14,6 +14,7 @@ import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
 import java.time.Duration
 import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 
 /**
  * Created by chambers on 4/21/16.
@@ -111,7 +112,6 @@ class ResumePausedJobsScheduler @Autowired constructor(
     }
 
     override fun runOneIteration() {
-        // TODO cluster lock
         try {
             jobDao.resumePausedJobs()
         } catch (e: Exception) {
@@ -119,13 +119,13 @@ class ResumePausedJobsScheduler @Autowired constructor(
         }
     }
 
-    override fun scheduler(): AbstractScheduledService.Scheduler {
-        return AbstractScheduledService.Scheduler.newFixedDelaySchedule(60, 5, TimeUnit.SECONDS)
+    override fun scheduler(): Scheduler {
+        return Scheduler.newFixedDelaySchedule(
+            Random.nextLong(1000, 20000), 5000, TimeUnit.MILLISECONDS
+        )
     }
 
     companion object {
-
-        private const val lockName = "resume-jobs"
 
         private val logger = LoggerFactory.getLogger(ResumePausedJobsScheduler::class.java)
     }
@@ -191,8 +191,9 @@ class MaintenanceServiceImpl @Autowired constructor(
                 listOf(Tag.of("event", "analyst_down"))
             )
             analystService.getUnresponsive(AnalystState.Up, downDuration).forEach {
-                analystService.setState(it, AnalystState.Down)
-                analystService.setTaskId(it, null)
+                if (analystService.setState(it, AnalystState.Down)) {
+                    analystService.setTaskId(it, null)
+                }
                 downCounter.increment()
             }
         } catch (e: Exception) {
@@ -232,16 +233,11 @@ class MaintenanceServiceImpl @Autowired constructor(
         }
     }
 
-    override fun scheduler(): AbstractScheduledService.Scheduler {
-        return AbstractScheduledService.Scheduler.newFixedDelaySchedule(1, 1, TimeUnit.MINUTES)
+    override fun scheduler(): Scheduler {
+        return Scheduler.newFixedDelaySchedule(Random.nextLong(2000, 60000), 1000, TimeUnit.MILLISECONDS)
     }
 
     companion object {
-
-        /**
-         * The Name of the cluster lock to take before executing.
-         */
-        private const val lockName = "maintenance"
 
         /**
          * The Name of the meter for counting events.

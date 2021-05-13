@@ -71,7 +71,7 @@ const DataSources = () => {
           '#Actions#',
         ]}
         expandColumn={3}
-        renderEmpty="No data sources"
+        renderEmpty="There are currently no data sources."
         renderRow={({ result, revalidate }) => (
           <DataSourcesRow
             key={result.id}

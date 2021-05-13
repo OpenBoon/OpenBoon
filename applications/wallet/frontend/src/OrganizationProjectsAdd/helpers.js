@@ -24,6 +24,14 @@ export const onSubmit = async ({
       key: `/api/v1/organizations/${organizationId}/projects/`,
     })
 
+    await revalidate({
+      key: `/api/v1/me/`,
+    })
+
+    await revalidate({
+      key: `/api/v1/projects/`,
+    })
+
     const queryString = getQueryString({ action: 'add-project-success' })
 
     Router.push(
