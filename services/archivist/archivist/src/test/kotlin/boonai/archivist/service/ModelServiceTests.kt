@@ -409,6 +409,16 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testFailDownloadNotExistingModelFile() {
+        val model = create(type = ModelType.TF_UPLOADED_CLASSIFIER)
+
+        val downloadModelFile = modelService.downloadModelFile(model)
+
+        assertNotNull(downloadModelFile)
+        assertEquals(HttpStatus.NO_CONTENT, downloadModelFile.statusCode)
+    }
+
+    @Test
     fun testSetTrainingArgs() {
         val model = create(type = ModelType.TF_CLASSIFIER)
         modelService.publishModel(model, ModelPublishRequest())
