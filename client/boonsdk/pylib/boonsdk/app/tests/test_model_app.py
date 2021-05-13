@@ -140,7 +140,7 @@ class ModelAppTests(unittest.TestCase):
 
         copyfile(zip_file_loc_copy, zip_file_loc)
 
-        self.app.models.download_model("12345", get_test_file("models/tflite"))
+        self.app.models.download_and_unzip_model("12345", get_test_file("models/tflite"))
 
         assert os.path.exists(tf_lite_model_file)
         assert os.path.exists(tf_lite_label_file)
