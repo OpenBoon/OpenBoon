@@ -209,7 +209,8 @@ class ModelApp:
         mid = as_id(model)
 
         file_name = 'model.zip'
-        self.app.client.stream("/api/v3/models/{}/_download".format(mid), "{}/{}".format(model_path, file_name))
+        self.app.client.stream("/api/v3/models/{}/_download".format(mid),
+                               "{}/{}".format(model_path, file_name))
 
         def unzip_model_files(model_path, file_name):
             os.chdir(model_path)
