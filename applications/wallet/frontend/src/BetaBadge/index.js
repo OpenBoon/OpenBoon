@@ -1,8 +1,10 @@
+import PropTypes from 'prop-types'
+
 import { colors, constants, spacing, typography } from '../Styles'
 
 const LETTER_SPACING = 0.2
 
-const BetaBadge = () => {
+const BetaBadge = ({ isLeft }) => {
   return (
     <span
       css={{
@@ -17,12 +19,16 @@ const BetaBadge = () => {
         padding: spacing.hairline,
         paddingLeft: spacing.mini * 3,
         paddingRight: spacing.mini * 3,
-        marginLeft: spacing.base,
+        [isLeft ? 'marginRight' : 'marginLeft']: spacing.base,
       }}
     >
       beta
     </span>
   )
+}
+
+BetaBadge.propTypes = {
+  isLeft: PropTypes.bool.isRequired,
 }
 
 export default BetaBadge

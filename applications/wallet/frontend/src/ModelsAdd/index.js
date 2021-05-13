@@ -16,7 +16,7 @@ const Models = () => {
 
       <PageTitle>
         Custom Models
-        <BetaBadge />
+        <BetaBadge isLeft={false} />
       </PageTitle>
 
       <Tabs
