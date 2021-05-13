@@ -3,6 +3,8 @@ import Link from 'next/link'
 
 import { onRowClickRouterPush } from '../Table/helpers'
 
+import ModelsMenu from './Menu'
+
 const ModelsRow = ({
   projectId,
   model: { id: modelId, name, type, moduleName },
@@ -33,6 +35,10 @@ const ModelsRow = ({
       <td>{label}</td>
 
       <td>{moduleName}</td>
+
+      <td>
+        <ModelsMenu projectId={projectId} modelId={modelId} />
+      </td>
     </tr>
   )
 }
