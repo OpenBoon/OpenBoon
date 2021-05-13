@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import useSWR from 'swr'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import { constants, spacing, typography } from '../Styles'
@@ -12,20 +12,19 @@ import FilterSvg from '../Icons/filter.svg'
 import PenSvg from '../Icons/pen.svg'
 
 import { encode } from '../Filters/helpers'
-import { fetcher, revalidate } from '../Fetch/helpers'
 import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
 import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../Panel'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
-import Modal from '../Modal'
 import Tabs from '../Tabs'
 import ModelAssets from '../ModelAssets'
 import ModelAssetsDropdown from '../ModelAssets/Dropdown'
 import ModelLabels from '../ModelLabels'
 import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
+import ModelDeleteModal from './DeleteModal'
 import ModelMatrixLink from './MatrixLink'
 
 import { onTrain } from './helpers'
@@ -41,7 +40,6 @@ const ModelDetails = () => {
   const [error, setError] = useState('')
 
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
 
   const [, setLeftOpeningPanel] = useLocalStorage({
     key: 'leftOpeningPanelSettings',
@@ -226,37 +224,12 @@ const ModelDetails = () => {
               Delete
             </Button>
 
-            {isDeleteModalOpen && (
-              <Modal
-                title="Delete Model"
-                message="Deleting this model cannot be undone."
-                action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
-                onCancel={() => {
-                  setDeleteModalOpen(false)
-                }}
-                onConfirm={async () => {
-                  setIsDeleting(true)
-
-                  await fetcher(
-                    `/api/v1/projects/${projectId}/models/${modelId}/`,
-                    { method: 'DELETE' },
-                  )
-
-                  await revalidate({
-                    key: `/api/v1/projects/${projectId}/models/`,
-                  })
-
-                  await revalidate({
-                    key: `/api/v1/projects/${projectId}/models/all/`,
-                  })
-
-                  Router.push(
-                    '/[projectId]/models?action=delete-model-success',
-                    `/${projectId}/models`,
-                  )
-                }}
-              />
-            )}
+            <ModelDeleteModal
+              projectId={projectId}
+              modelId={modelId}
+              isDeleteModalOpen={isDeleteModalOpen}
+              setDeleteModalOpen={setDeleteModalOpen}
+            />
           </ButtonGroup>
         </div>
 
