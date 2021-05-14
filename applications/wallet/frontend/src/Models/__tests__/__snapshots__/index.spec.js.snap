@@ -30,18 +30,18 @@ Array [
   padding: 1px;
   padding-left: 6px;
   padding-right: 6px;
-  margin-left: 8px;
+  margin-right: 8px;
 }
 
 <h2
     className="emotion-0"
   >
-    Custom Models
     <span
       className="emotion-1"
     >
       beta
     </span>
+    Custom Models
   </h2>,
   .emotion-0 {
   display: -webkit-box;
@@ -302,18 +302,18 @@ Array [
   padding: 1px;
   padding-left: 6px;
   padding-right: 6px;
-  margin-left: 8px;
+  margin-right: 8px;
 }
 
 <h2
     className="emotion-0"
   >
-    Custom Models
     <span
       className="emotion-1"
     >
       beta
     </span>
+    Custom Models
   </h2>,
   .emotion-0 {
   display: -webkit-box;

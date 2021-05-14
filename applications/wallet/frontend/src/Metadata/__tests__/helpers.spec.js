@@ -1,4 +1,6 @@
-import { formatDisplayName, formatDisplayValue } from '../helpers'
+import asset from '../../Asset/__mocks__/asset'
+
+import { formatDisplayName, formatDisplayValue, filter } from '../helpers'
 
 describe('<Metadata /> helpers', () => {
   describe('formatDisplayName()', () => {
@@ -36,6 +38,37 @@ describe('<Metadata /> helpers', () => {
           value: '2020-04-23T17:45:23.523104',
         }),
       ).toEqual('2020-04-23 17:45 UTC')
+    })
+  })
+
+  describe('filter()', () => {
+    it('should find an analysis module', () => {
+      const filteredMetadata = filter({
+        metadata: asset.metadata,
+        searchString: 'defects',
+      })
+
+      expect(filteredMetadata.analysis).toEqual({
+        'knn-surface-defects': asset.metadata.analysis['knn-surface-defects'],
+      })
+    })
+
+    it('should filter all metadata', () => {
+      const filteredMetadata = filter({
+        metadata: asset.metadata,
+        searchString: 'no results',
+      })
+
+      expect(filteredMetadata.analysis).toEqual({})
+    })
+
+    it('should handle any characters', () => {
+      const filteredMetadata = filter({
+        metadata: asset.metadata,
+        searchString: '[',
+      })
+
+      expect(filteredMetadata.analysis).toEqual(asset.metadata.analysis)
     })
   })
 })
