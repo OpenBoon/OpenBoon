@@ -94,7 +94,7 @@ const Sidebar = forwardRef(
             <SidebarLink projectId={projectId} href="/[projectId]/models">
               <ModelsSvg height={constants.icons.regular} />
               Custom Models
-              <BetaBadge />
+              <BetaBadge isLeft={false} />
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/visualizer">

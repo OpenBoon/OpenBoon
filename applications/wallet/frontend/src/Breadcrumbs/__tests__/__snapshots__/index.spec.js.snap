@@ -19,6 +19,34 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
 }
 
 .emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 {
+  color: #ffffff;
+  background-color: #d6680b;
+  border-radius: 32px;
+  font-size: 11px;
+  line-height: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding: 1px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-right: 8px;
+}
+
+.emotion-4 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -28,13 +56,13 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-2:hover {
+.emotion-4:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-3 {
+.emotion-5 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -50,8 +78,17 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
   <div
     className="emotion-1"
   >
-    <a
+    <div
       className="emotion-2"
+    >
+      <span
+        className="emotion-3"
+      >
+        beta
+      </span>
+    </div>
+    <a
+      className="emotion-4"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/bread"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -59,12 +96,17 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
       Bread
     </a>
     <span
-      className="emotion-3"
+      className="emotion-5"
     >
       /
     </span>
   </div>
   <PageTitle>
+    <span
+      className="emotion-3"
+    >
+      beta
+    </span>
     Crumb
   </PageTitle>
 </div>

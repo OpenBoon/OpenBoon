@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import { spacing, typography, colors } from '../Styles'
 
+import BetaBadge from '../BetaBadge'
 import PageTitle from '../PageTitle'
 
 const BASE_STYLE = {
@@ -21,12 +22,25 @@ const Breadcrumbs = ({ crumbs }) => {
 
   return (
     <div css={{ display: 'flex', flexShrink: 0 }}>
-      {crumbs.map(({ title, href }, index) => {
+      {crumbs.map(({ title, href, isBeta = false }, index) => {
         const isLastCrumb = index === crumbs.length - 1
 
         if (!isLastCrumb) {
           return (
             <div key={title} css={{ display: 'flex' }}>
+              {isBeta && (
+                <div
+                  css={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    paddingTop: spacing.comfy,
+                    paddingBottom: spacing.normal,
+                  }}
+                >
+                  <BetaBadge isLeft />
+                </div>
+              )}
+
               <Link
                 href={href}
                 as={href
@@ -53,7 +67,12 @@ const Breadcrumbs = ({ crumbs }) => {
             </div>
           )
         }
-        return <PageTitle key={title}>{title}</PageTitle>
+        return (
+          <PageTitle key={title}>
+            {isBeta && <BetaBadge isLeft />}
+            {title}
+          </PageTitle>
+        )
       })}
     </div>
   )
@@ -64,6 +83,7 @@ Breadcrumbs.propTypes = {
     PropTypes.shape({
       title: PropTypes.string.isRequired,
       href: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+      isBeta: PropTypes.bool,
     }),
   ).isRequired,
 }

@@ -17,7 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.version>1.4.32</kotlin.version>
         <kotlin.comiler.jvmTarget>1.8</kotlin.comiler.jvmTarget>
-        <ktor.version>1.5.3</ktor.version>
+        <ktor.version>1.5.4</ktor.version>
     </properties>
 
     <repositories>
@@ -83,7 +83,7 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-words</artifactId>
-            <version>21.4</version>
+            <version>21.5</version>
             <classifier>jdk17</classifier>
         </dependency>
 
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-diagram</artifactId>
-            <version>21.4</version>
+            <version>21.5</version>
             <classifier>jdk16</classifier>
         </dependency>
 
@@ -140,7 +140,7 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
-            <version>1.6.6</version>
+            <version>1.7.0</version>
         </dependency>
 
         <dependency>
@@ -216,7 +216,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.4.4</version>
+                <version>2.4.5</version>
                 <executions>
                     <execution>
                         <goals>
@@ -231,7 +231,7 @@
             <plugin>
               <groupId>org.pitest</groupId>
               <artifactId>pitest-maven</artifactId>
-              <version>1.6.5</version>
+              <version>1.6.6</version>
             </plugin>
         </plugins>
     </build>
