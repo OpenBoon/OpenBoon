@@ -1,4 +1,4 @@
-FROM maven:3.8-jdk-11
+FROM maven:3.6-jdk-11
 
 RUN mkdir /build
 COPY ./ /build
