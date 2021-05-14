@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM maven:3.8-jdk-11-slim as build
+FROM maven:3.6-jdk-11-slim as build
 
 RUN mkdir /build
 COPY . /build
