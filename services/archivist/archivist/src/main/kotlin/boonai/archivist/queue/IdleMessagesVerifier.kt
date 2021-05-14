@@ -22,7 +22,7 @@ class IdleMessagesVerifier {
     @Scheduled(fixedRate = MessageListener.checkTimeMillis)
     fun findIdleIncompletedTasks() {
 
-        jedisPool.resource.use { cache->
+        jedisPool.resource.use { cache ->
 
             val runningTasks = cache.hgetAll(MessageListener.runningTasksKey)
 
