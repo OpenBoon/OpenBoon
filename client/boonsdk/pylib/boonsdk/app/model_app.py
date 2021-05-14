@@ -5,8 +5,9 @@ import zipfile
 
 from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule, PostTrainAction
 from ..training import TrainingSetDownloader
-from ..util import as_collection, as_id, zip_directory, is_valid_uuid
 from shutil import copyfile
+from ..util import as_collection, as_id, zip_directory, is_valid_uuid
+
 logger = logging.getLogger(__name__)
 
 __all__ = [
@@ -207,10 +208,12 @@ class ModelApp:
             raise ValueError(f'Invalid model type for upload: {model.type}')
 
         mid = as_id(model)
-
         file_name = 'model.zip'
-        self.app.client.stream("/api/v3/models/{}/_download".format(mid),
-                               "{}/{}".format(model_path, file_name))
+        download_path = self.app.client.stream("/api/v3/models/{}/_download".format(mid),
+                                               "{}/{}".format(model_path, file_name))
+
+        if not os.path.isfile(download_path):
+            raise FileNotFoundError(f"The model {model.id} does not have an available model file.")
 
         def unzip_model_files(model_path, file_name):
             os.chdir(model_path)

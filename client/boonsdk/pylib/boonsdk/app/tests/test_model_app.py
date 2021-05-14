@@ -148,6 +148,20 @@ class ModelAppTests(unittest.TestCase):
         os.remove(tf_lite_label_file)
         os.remove(tf_lite_model_file)
 
+    @patch.object(ModelApp, 'find_one_model')
+    @patch.object(BoonClient, 'stream')
+    def test_download_and_unzip_model_file_not_existing_model(self, get_patch, model_patch):
+        zip_file_loc = get_test_file("models/not_exists.tflite")
+        get_patch.return_value = zip_file_loc
+        model_patch.return_value = Model({
+            'id': '12345',
+            'type': 'PYTORCH_UPLOADED_CLASSIFIER',
+            'name': 'foo'
+        })
+
+        with pytest.raises(FileNotFoundError):
+            self.app.models.download_and_unzip_model("12345", get_test_file("models/tflite"))
+
     @patch.object(BoonClient, 'post')
     def test_find_one_model(self, post_patch):
         post_patch.return_value = self.model_data
