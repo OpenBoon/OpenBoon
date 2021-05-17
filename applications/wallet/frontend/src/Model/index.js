@@ -25,7 +25,7 @@ const Model = () => {
 
       <Breadcrumbs
         crumbs={[
-          { title: 'Custom Models', href: '/[projectId]/models' },
+          { title: 'Custom Models', href: '/[projectId]/models', isBeta: true },
           { title: 'Model Details', href: false },
         ]}
       />

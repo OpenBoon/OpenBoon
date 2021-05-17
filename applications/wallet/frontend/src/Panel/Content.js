@@ -45,8 +45,8 @@ const PanelContent = ({
             alignItems: 'center',
           }}
         >
+          {isBeta && <BetaBadge isLeft />}
           {title}
-          {isBeta && <BetaBadge />}
         </h2>
         <Button
           aria-label="Close Panel"

@@ -21,23 +21,25 @@ class IdleMessagesVerifier {
 
     @Scheduled(fixedRate = MessageListener.checkTimeMillis)
     fun findIdleIncompletedTasks() {
-        val cache = jedisPool.resource
 
-        val runningTasks = cache.hgetAll(MessageListener.runningTasksKey)
+        jedisPool.resource.use { cache ->
 
-        runningTasks?.forEach { (key, value) ->
+            val runningTasks = cache.hgetAll(MessageListener.runningTasksKey)
 
-            val contentMap = Json.Mapper.readValue(value, Map::class.java)
-            val channel = contentMap["channel"] as String
-            val content = contentMap["content"] as String
+            runningTasks?.forEach { (key, value) ->
 
-            val existBlockCode = cache.exists(MessageListener.getBlockCode(channel, content))
-            val encodedState = cache.get(MessageListener.getEncodedState(channel, content))
+                val contentMap = Json.Mapper.readValue(value, Map::class.java)
+                val channel = contentMap["channel"] as String
+                val content = contentMap["content"] as String
 
-            // If there is no blocking code and has not been accomplished
-            if (!existBlockCode && encodedState == null) {
-                logger.info("Idle tasks found, rerunning")
-                redisTemplate.convertAndSend(channel, content)
+                val existBlockCode = cache.exists(MessageListener.getBlockCode(channel, content))
+                val encodedState = cache.get(MessageListener.getEncodedState(channel, content))
+
+                // If there is no blocking code and has not been accomplished
+                if (!existBlockCode && encodedState == null) {
+                    logger.info("Idle tasks found, rerunning")
+                    redisTemplate.convertAndSend(channel, content)
+                }
             }
         }
     }

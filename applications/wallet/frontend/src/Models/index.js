@@ -43,8 +43,8 @@ const Models = () => {
       </Head>
 
       <PageTitle>
+        <BetaBadge isLeft />
         Custom Models
-        <BetaBadge />
       </PageTitle>
 
       {action === 'add-model-success' && (

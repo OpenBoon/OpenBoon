@@ -1,4 +1,4 @@
-FROM maven:3.6-jdk-11-slim as mvn_build
+FROM maven:3.8-jdk-11-slim as mvn_build
 COPY es-similarity es-similarity
 COPY pom.xml pom.xml
 RUN mvn clean install -q -Dmaven.test.skip=true

@@ -34,7 +34,7 @@ const ProjectBoundary = () => {
             boxShadow: constants.boxShadows.default,
           }}
         >
-          <LockSvg width={200} color={colors.structure.steel} />
+          <LockSvg width={150} color={colors.structure.steel} />
 
           <h3
             css={{
@@ -60,7 +60,7 @@ const ProjectBoundary = () => {
             Please request permission from the project owner.
           </p>
 
-          <div>
+          <div css={{ paddingTop: spacing.normal }}>
             <Link href="/" passHref>
               <Button variant={VARIANTS.PRIMARY}>Go to Dashboard</Button>
             </Link>

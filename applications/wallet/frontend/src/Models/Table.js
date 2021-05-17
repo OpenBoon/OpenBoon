@@ -12,7 +12,7 @@ const ModelsTable = ({ projectId, modelTypes }) => {
       url={`/api/v1/projects/${projectId}/models/`}
       refreshKeys={[]}
       refreshButton={false}
-      columns={['Name', 'Type', 'Module']}
+      columns={['Name', 'Type', 'Module', '#Actions#']}
       expandColumn={0}
       renderEmpty="There are currently no custom models."
       renderRow={({ result }) => (
