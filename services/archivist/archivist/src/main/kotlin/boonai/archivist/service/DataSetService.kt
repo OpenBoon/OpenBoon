@@ -1,16 +1,22 @@
 package boonai.archivist.service
 
+import boonai.archivist.clients.EsRestClient
 import boonai.archivist.domain.DataSet
 import boonai.archivist.domain.DataSetSpec
 import boonai.archivist.domain.DataSetUpdate
 import boonai.archivist.domain.GenericBatchUpdateResponse
-import boonai.archivist.domain.Model
+import boonai.archivist.domain.LabelSet
 import boonai.archivist.repository.DataSetDao
 import boonai.archivist.repository.UUIDGen
+import boonai.archivist.security.CoroutineAuthentication
 import boonai.archivist.security.getProjectId
 import boonai.archivist.security.getZmlpActor
 import boonai.common.util.Json
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.apache.lucene.search.join.ScoreMode
+import org.elasticsearch.action.ActionListener
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.reindex.BulkByScrollResponse
@@ -23,6 +29,7 @@ import org.elasticsearch.search.aggregations.bucket.nested.Nested
 import org.elasticsearch.search.aggregations.bucket.terms.Terms
 import org.slf4j.LoggerFactory
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -34,11 +41,13 @@ interface DataSetService {
     fun getDataSet(id: UUID): DataSet
     fun getDataSet(name: String): DataSet
     fun updateDataSet(dataSet: DataSet, update: DataSetUpdate)
+    fun deleteDataSet(dataSet: DataSet)
 
     fun getLabelCounts(dataSet: DataSet): Map<String, Long>
     fun updateLabel(dataSet: DataSet, label: String, newLabel: String?): GenericBatchUpdateResponse
 
-    fun getTestLabelSearch(): Map<String, Any>
+    fun buildTestLabelSearch(labelSet: LabelSet): Map<String, Any>
+    fun wrapSearchToExcludeTrainingSet(labelSet: LabelSet, search: Map<String, Any>): Map<String, Any>
 }
 
 @Service
@@ -80,7 +89,18 @@ class DataSetServiceImpl(
             ?: throw EmptyResultDataAccessException("The DataSet $name does not exist", 1)
     }
 
+    override fun deleteDataSet(dataSet: DataSet) {
+        dataSetDao.delete(dataSet)
+
+        val rest = indexRoutingService.getProjectRestClient()
+        GlobalScope.launch(Dispatchers.IO + CoroutineAuthentication(SecurityContextHolder.getContext())) {
+            removeAllLabels(rest, dataSet)
+        }
+    }
+
     override fun updateDataSet(dataSet: DataSet, update: DataSetUpdate) {
+        // Note you can't change type because different types have
+        // different label requirements.
         dataSet.name = update.name
         dataSet.timeModified = System.currentTimeMillis()
         dataSet.actorModified = getZmlpActor().toString()
@@ -149,7 +169,7 @@ class DataSetServiceImpl(
                 DELETE_LABEL_SCRIPT,
                 mapOf(
                     "label" to label,
-                    "modelId" to dataSet.id.toString()
+                    "dataSetId" to dataSet.id.toString()
                 )
             )
         } else {
@@ -160,7 +180,7 @@ class DataSetServiceImpl(
                 mapOf(
                     "oldLabel" to label,
                     "newLabel" to newLabel,
-                    "modelId" to dataSet.id.toString()
+                    "dataSetId" to dataSet.id.toString()
                 )
             )
         }
@@ -169,7 +189,7 @@ class DataSetServiceImpl(
         return GenericBatchUpdateResponse(response.updated)
     }
 
-    fun testLabelSearch(model: Model): Map<String, Any> {
+    override fun buildTestLabelSearch(labelSet: LabelSet): Map<String, Any> {
         val wrapper =
             """
             {
@@ -180,7 +200,7 @@ class DataSetServiceImpl(
                             "query" : {
                                 "bool": {
                                     "filter": [
-                                        {"term": { "labels.modelId": "${model.id}" }},
+                                        {"term": { "labels.dataSetId": "${labelSet.dataSetId()}" }},
                                         {"term": { "labels.scope": "TEST"}}
                                     ]
                                 }
@@ -191,6 +211,72 @@ class DataSetServiceImpl(
             }
         """.trimIndent()
         return mapOf("query" to Json.Mapper.readValue(wrapper, Json.GENERIC_MAP))
+    }
+
+    override fun wrapSearchToExcludeTrainingSet(lableSet: LabelSet, search: Map<String, Any>): Map<String, Any> {
+        val emptySearch = mapOf("match_all" to mapOf<String, Any>())
+        val query = Json.serializeToString(search.getOrDefault("query", emptySearch))
+
+        val wrapper =
+            """
+            {
+                "bool": {
+                    "must": $query,
+                    "must_not": {
+                        "nested" : {
+                            "path": "labels",
+                            "query" : {
+                                "bool": {
+                                    "filter": [
+                                        {"term": { "labels.dataSetId": "${lableSet.dataSetId()}" }},
+                                        {"term": { "labels.scope": "TRAIN"}}
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            """.trimIndent()
+        val result = search.toMutableMap()
+        result["query"] = Json.Mapper.readValue(wrapper, Json.GENERIC_MAP)
+        return result
+    }
+
+    fun removeAllLabels(rest: EsRestClient, dataSet: DataSet) {
+
+        logger.info("Removing all labels for ${dataSet.name}")
+        val innerQuery = QueryBuilders.boolQuery()
+        innerQuery.filter().add(QueryBuilders.termQuery("labels.dataSetId", dataSet.id.toString()))
+
+        val query = QueryBuilders.nestedQuery("labels", innerQuery, ScoreMode.None)
+        val req = rest.newUpdateByQueryRequest()
+        req.setQuery(query)
+        req.isRefresh = false
+        req.batchSize = 400
+        req.isAbortOnVersionConflict = false
+        req.script = Script(
+            ScriptType.INLINE,
+            "painless",
+            DELETE_DS_SCRIPT,
+            mapOf(
+                "dataSetId" to dataSet.id.toString()
+            )
+        )
+
+        rest.client.updateByQueryAsync(
+            req, RequestOptions.DEFAULT,
+            object : ActionListener<BulkByScrollResponse> {
+
+                override fun onFailure(e: java.lang.Exception?) {
+                    logger.error("Failed to remove labels for DataSet: ${dataSet.id}", e)
+                }
+
+                override fun onResponse(response: BulkByScrollResponse?) {
+                    logger.info("Removed ${response?.updated} labels from DataSet: ${dataSet.id}")
+                }
+            }
+        )
     }
 
     companion object {
@@ -204,7 +290,7 @@ class DataSetServiceImpl(
             """
             for (int i = 0; i < ctx._source['labels'].length; ++i) {
                if (ctx._source['labels'][i]['label'] == params.oldLabel &&
-                   ctx._source['labels'][i]['modelId'] == params.modelId) {
+                   ctx._source['labels'][i]['dataSetId'] == params.dataSetId) {
                        ctx._source['labels'][i]['label'] = params.newLabel;
                        break;
                }
@@ -219,7 +305,7 @@ class DataSetServiceImpl(
             int index = -1;
             for (int i = 0; i < ctx._source['labels'].length; ++i) {
                if (ctx._source['labels'][i]['label'] == params.label &&
-                   ctx._source['labels'][i]['modelId'] == params.modelId) {
+                   ctx._source['labels'][i]['dataSetId'] == params.dataSetId) {
                    index = i;
                    break;
                }
@@ -232,7 +318,7 @@ class DataSetServiceImpl(
         /**
          * A painless script which renames a label.
          */
-        private val DELETE_MODEL_SCRIPT =
+        private val DELETE_DS_SCRIPT =
             """
             int index = -1;
             for (int i = 0; i < ctx._source['labels'].length; ++i) {

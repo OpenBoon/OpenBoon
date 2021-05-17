@@ -10,4 +10,5 @@ interface DataSetDao : JpaRepository<DataSet, UUID> {
 
     fun getOneByProjectIdAndId(projectId: UUID, id: UUID): DataSet?
     fun getOneByProjectIdAndName(projectId: UUID, name: String): DataSet?
+    fun existsByProjectIdAndId(projectId: UUID, id: UUID): Boolean
 }

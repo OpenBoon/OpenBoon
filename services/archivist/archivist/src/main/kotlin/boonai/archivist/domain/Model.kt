@@ -1,7 +1,6 @@
 package boonai.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.core.type.TypeReference
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType
 import boonai.archivist.repository.KDaoFilter
 import boonai.archivist.security.getProjectId
@@ -11,7 +10,6 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
-import java.math.BigDecimal
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -222,6 +220,9 @@ class ModelSpec(
     @ApiModelProperty("The type of mode")
     val type: ModelType,
 
+    @ApiModelProperty("An associated DataSet")
+    val dataSetId: UUID? = null,
+
     @ApiModelProperty("A model tag used to generate a PipelineMod name.")
     val moduleName: String? = null,
 
@@ -245,6 +246,9 @@ class Model(
 
     @Column(name = "pk_project")
     val projectId: UUID,
+
+    @Column(name = "pk_dataset", nullable = true)
+    val dataSetId: UUID?,
 
     @Column(name = "int_type")
     val type: ModelType,
@@ -291,10 +295,11 @@ class Model(
     @ApiModelProperty("The key that last made the last modification to this Model")
     val actorModified: String
 
-) {
+) : LabelSet {
+
     @JsonIgnore
-    fun getLabel(label: String, bbox: List<BigDecimal>? = null): Label {
-        return Label(id, label, bbox = bbox)
+    override fun dataSetId(): UUID? {
+        return dataSetId
     }
 
     fun getModelFileLocator(tag: String, name: String): ProjectFileLocator {
@@ -417,47 +422,6 @@ object ModelSearch {
         """,
             Json.GENERIC_MAP
         )
-    }
-}
-
-@ApiModel("Label", description = "A Label which denotes a ground truth classification.")
-class Label(
-    @ApiModelProperty("The ID of the Model")
-    val modelId: UUID,
-    @ApiModelProperty("The label for the Asset")
-    val label: String,
-    @ApiModelProperty("The scope of the label.")
-    val scope: LabelScope = LabelScope.TRAIN,
-    bbox: List<BigDecimal>? = null,
-    @ApiModelProperty("An an optional simhash for the label")
-    val simhash: String? = null
-
-) {
-
-    @ApiModelProperty("An optional bounding box")
-    val bbox: List<BigDecimal>? = bbox?.map { it.setScale(3, java.math.RoundingMode.HALF_UP) }
-
-    companion object {
-        val SET_OF: TypeReference<MutableSet<Label>> = object :
-            TypeReference<MutableSet<Label>>() {}
-
-        val LIST_OF: TypeReference<List<Label>> = object :
-            TypeReference<List<Label>>() {}
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is Label) return false
-
-        if (modelId != other.modelId) return false
-        if (bbox != other.bbox) return false
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = modelId.hashCode()
-        result = 31 * result + (bbox?.hashCode() ?: 0)
-        return result
     }
 }
 

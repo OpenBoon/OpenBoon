@@ -35,7 +35,7 @@ import boonai.archivist.domain.UpdateAssetLabelsRequest
 import boonai.archivist.domain.UpdateAssetRequest
 import boonai.archivist.domain.UpdateAssetsByQueryRequest
 import boonai.archivist.domain.ZpsScript
-import boonai.archivist.repository.ModelDao
+import boonai.archivist.repository.DataSetDao
 import boonai.archivist.repository.ModelJdbcDao
 import boonai.archivist.security.CoroutineAuthentication
 import boonai.archivist.security.getProjectId
@@ -235,7 +235,7 @@ class AssetServiceImpl : AssetService {
     lateinit var jobLaunchService: JobLaunchService
 
     @Autowired
-    lateinit var modelDao: ModelDao
+    lateinit var dataSetDao: DataSetDao
 
     @Autowired
     lateinit var modelJdbcDao: ModelJdbcDao
@@ -928,9 +928,9 @@ class AssetServiceImpl : AssetService {
             derivePage(asset, spec)
 
             if (spec.label != null) {
-                if (!modelDao.existsByProjectIdAndId(projectId, spec.label.modelId)) {
+                if (!dataSetDao.existsByProjectIdAndId(projectId, spec.label.dataSetId)) {
                     throw java.lang.IllegalArgumentException(
-                        "The Model Id ${spec.label.modelId} does not exist."
+                        "The DataSet ${spec.label.dataSetId} does not exist."
                     )
                 }
                 asset.addLabels(listOf(spec.label))
@@ -1057,15 +1057,15 @@ class AssetServiceImpl : AssetService {
         val allAssetIds = (req.add?.keys ?: setOf()) + (req.remove?.keys ?: setOf())
         val addLabels = mutableSetOf<UUID>()
         req.add?.values?.forEach { labels ->
-            addLabels.addAll(labels.map { it.modelId })
+            addLabels.addAll(labels.map { it.dataSetId })
         }
 
         // Validate the models we're adding are legit.
         val projectId = getProjectId()
         val models = mutableSetOf<UUID>()
         addLabels.forEach {
-            if (!modelDao.existsByProjectIdAndId(projectId, it)) {
-                throw IllegalArgumentException("ModelId $it not found")
+            if (!dataSetDao.existsByProjectIdAndId(projectId, it)) {
+                throw IllegalArgumentException("DataSet $it not found")
             } else {
                 models.add(it)
             }

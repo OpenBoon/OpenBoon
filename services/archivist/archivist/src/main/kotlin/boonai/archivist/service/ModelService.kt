@@ -4,7 +4,6 @@ import boonai.archivist.domain.ArgSchema
 import boonai.archivist.domain.Asset
 import boonai.archivist.domain.Category
 import boonai.archivist.domain.FileType
-import boonai.archivist.domain.GenericBatchUpdateResponse
 import boonai.archivist.domain.Job
 import boonai.archivist.domain.ModOp
 import boonai.archivist.domain.ModOpType
@@ -39,26 +38,12 @@ import boonai.archivist.util.randomString
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
-import boonai.common.util.Json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.apache.lucene.search.join.ScoreMode
-import org.elasticsearch.action.ActionListener
-import org.elasticsearch.client.RequestOptions
-import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.index.reindex.BulkByScrollResponse
-import org.elasticsearch.script.Script
-import org.elasticsearch.script.ScriptType
-import org.elasticsearch.search.aggregations.AggregationBuilders
-import org.elasticsearch.search.aggregations.BucketOrder
-import org.elasticsearch.search.aggregations.bucket.filter.Filter
-import org.elasticsearch.search.aggregations.bucket.nested.Nested
-import org.elasticsearch.search.aggregations.bucket.terms.Terms
 import org.slf4j.LoggerFactory
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.io.ByteArrayInputStream
 import java.io.FileInputStream
@@ -81,7 +66,6 @@ interface ModelService {
     fun applyModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun testModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun deleteModel(model: Model)
-    fun getLabelCounts(model: Model): Map<String, Long>
     fun setTrainingArgs(model: Model, args: Map<String, Any>)
     fun patchTrainingArgs(model: Model, patch: Map<String, Any>)
     fun getTrainingArgSchema(type: ModelType): ArgSchema
@@ -104,7 +88,8 @@ class ModelServiceImpl(
     val indexRoutingService: IndexRoutingService,
     val assetSearchService: AssetSearchService,
     val fileStorageService: ProjectStorageService,
-    val argValidationService: ArgValidationService
+    val argValidationService: ArgValidationService,
+    val dataSetService: DataSetService
 ) : ModelService {
 
     override fun generateModuleName(spec: ModelSpec): String {
@@ -135,6 +120,7 @@ class ModelServiceImpl(
         val model = Model(
             id,
             getProjectId(),
+            spec.dataSetId,
             spec.type,
             spec.name,
             moduleName,
@@ -207,8 +193,8 @@ class ModelServiceImpl(
 
         val analyzeTrainingSet = req.analyzeTrainingSet ?: model.type.deployOnTrainingSet
 
-        if (!analyzeTrainingSet) {
-            search = wrapSearchToExcludeTrainingSet(model, search)
+        if (!analyzeTrainingSet && model.dataSetId != null) {
+            search = dataSetService.wrapSearchToExcludeTrainingSet(model, search)
         }
 
         val count = assetSearchService.count(search)
@@ -244,7 +230,7 @@ class ModelServiceImpl(
 
     override fun testModel(model: Model, req: ModelApplyRequest): ModelApplyResponse {
         val name = "Testing model: ${model.name}"
-        var search = testLabelSearch(model)
+        var search = dataSetService.buildTestLabelSearch(model)
 
         val count = assetSearchService.count(search)
         if (count == 0L) {
@@ -253,7 +239,7 @@ class ModelServiceImpl(
 
         // Use global settings to override the model tag.
         val repro = ReprocessAssetSearchRequest(
-            testLabelSearch(model),
+            dataSetService.buildTestLabelSearch(model),
             listOf(model.getModuleName()),
             name = name,
             replace = true,
@@ -351,39 +337,6 @@ class ModelServiceImpl(
                 logger.error("Failed to delete files associated with model: ${model.id}")
             }
         }
-
-        val rest = indexRoutingService.getProjectRestClient()
-        val innerQuery = QueryBuilders.boolQuery()
-        innerQuery.filter().add(QueryBuilders.termQuery("labels.modelId", model.id.toString()))
-
-        val query = QueryBuilders.nestedQuery("labels", innerQuery, ScoreMode.None)
-        val req = rest.newUpdateByQueryRequest()
-        req.setQuery(query)
-        req.isRefresh = false
-        req.batchSize = 400
-        req.isAbortOnVersionConflict = false
-        req.script = Script(
-            ScriptType.INLINE,
-            "painless",
-            DELETE_MODEL_SCRIPT,
-            mapOf(
-                "modelId" to model.id.toString()
-            )
-        )
-
-        rest.client.updateByQueryAsync(
-            req, RequestOptions.DEFAULT,
-            object : ActionListener<BulkByScrollResponse> {
-
-                override fun onFailure(e: java.lang.Exception?) {
-                    logger.error("Failed to remove labels for model: ${model.id}", e)
-                }
-
-                override fun onResponse(response: BulkByScrollResponse?) {
-                    logger.info("Removed ${response?.updated} labels from model: ${model.id}")
-                }
-            }
-        )
     }
 
     fun buildModuleOps(model: Model, req: ModelPublishRequest): List<ModOp> {
@@ -422,36 +375,6 @@ class ModelServiceImpl(
         )
 
         return ops
-    }
-
-    override fun wrapSearchToExcludeTrainingSet(model: Model, search: Map<String, Any>): Map<String, Any> {
-        val emptySearch = mapOf("match_all" to mapOf<String, Any>())
-        val query = Json.serializeToString(search.getOrDefault("query", emptySearch))
-
-        val wrapper =
-            """
-            {
-            	"bool": {
-            		"must": $query,
-                    "must_not": {
-                        "nested" : {
-                            "path": "labels",
-                            "query" : {
-                                "bool": {
-                                    "filter": [
-                                        {"term": { "labels.modelId": "${model.id}" }},
-                                        {"term": { "labels.scope": "TRAIN"}}
-                                    ]
-                                }
-                            }
-                        }
-                    }
-            	}
-            }
-        """.trimIndent()
-        val result = search.toMutableMap()
-        result["query"] = Json.Mapper.readValue(wrapper, Json.GENERIC_MAP)
-        return result
     }
 
     override fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod {
@@ -552,60 +475,10 @@ class ModelServiceImpl(
         validateModel(path, validTorchFiles)
     }
 
-
     companion object {
 
         private val logger = LoggerFactory.getLogger(ModelServiceImpl::class.java)
 
         private val modelNameRegex = Regex("^[a-z0-9_\\-\\s]{2,}$", RegexOption.IGNORE_CASE)
-
-        /**
-         * A painless script which renames a label.
-         */
-        private val RENAME_LABEL_SCRIPT =
-            """
-            for (int i = 0; i < ctx._source['labels'].length; ++i) {
-               if (ctx._source['labels'][i]['label'] == params.oldLabel &&
-                   ctx._source['labels'][i]['modelId'] == params.modelId) {
-                       ctx._source['labels'][i]['label'] = params.newLabel;
-                       break;
-               }
-            }
-            """.trimIndent()
-
-        /**
-         * A painless script which renames a label.
-         */
-        private val DELETE_LABEL_SCRIPT =
-            """
-            int index = -1;
-            for (int i = 0; i < ctx._source['labels'].length; ++i) {
-               if (ctx._source['labels'][i]['label'] == params.label &&
-                   ctx._source['labels'][i]['modelId'] == params.modelId) {
-                   index = i;
-                   break;
-               }
-            }
-            if (index > -1) {
-               ctx._source['labels'].remove(index)
-            }
-            """.trimIndent()
-
-        /**
-         * A painless script which renames a label.
-         */
-        private val DELETE_MODEL_SCRIPT =
-            """
-            int index = -1;
-            for (int i = 0; i < ctx._source['labels'].length; ++i) {
-               if (ctx._source['labels'][i]['modelId'] == params.modelId) {
-                   index = i;
-                   break;
-               }
-            }
-            if (index > -1) {
-               ctx._source['labels'].remove(index)
-            }
-            """.trimIndent()
     }
 }

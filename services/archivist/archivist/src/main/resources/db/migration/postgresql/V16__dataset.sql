@@ -24,3 +24,5 @@ SELECT pk_model,
        actor_created,
        actor_modified
 FROM model;
+
+ALTER TABLE model ADD COLUMN pk_dataset UUID REFERENCES dataset ON DELETE SET NULL;

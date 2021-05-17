@@ -4,8 +4,10 @@ import boonai.archivist.AbstractTest
 import boonai.archivist.domain.Asset
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
+import boonai.archivist.domain.DataSet
+import boonai.archivist.domain.DataSetSpec
+import boonai.archivist.domain.DataSetType
 import boonai.archivist.domain.JobState
-import boonai.archivist.domain.Label
 import boonai.archivist.domain.ModOpType
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
@@ -18,7 +20,6 @@ import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectStorageEntity
-import boonai.archivist.domain.UpdateAssetLabelsRequest
 import boonai.archivist.security.getProjectId
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.FileUtils
@@ -41,10 +42,10 @@ class ModelServiceTests : AbstractTest() {
     lateinit var modelService: ModelService
 
     @Autowired
-    lateinit var jobService: JobService
+    lateinit var dataSetService: DataSetService
 
     @Autowired
-    lateinit var assetSearchService: AssetSearchService
+    lateinit var jobService: JobService
 
     @Autowired
     lateinit var pipelineModService: PipelineModService
@@ -55,10 +56,11 @@ class ModelServiceTests : AbstractTest() {
     val testSearch =
         """{"query": {"term": { "source.filename": "large-brown-cat.jpg"} } }"""
 
-    fun create(name: String = "test", type: ModelType = ModelType.TF_CLASSIFIER): Model {
+    fun create(name: String = "test", type: ModelType = ModelType.TF_CLASSIFIER, ds: DataSet? = null): Model {
         val mspec = ModelSpec(
             name,
             type,
+            dataSetId = ds?.id,
             applySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
         return modelService.createModel(mspec)
@@ -225,8 +227,8 @@ class ModelServiceTests : AbstractTest() {
     @Test
     fun testDeployModelCustomSearch() {
         setupTestAsset()
-
-        val model1 = create()
+        val ds = dataSetService.createDataSet(DataSetSpec("cats", DataSetType.Classification))
+        val model1 = create(ds = ds)
         modelService.publishModel(model1, ModelPublishRequest())
 
         val rsp = modelService.applyModel(
@@ -239,30 +241,9 @@ class ModelServiceTests : AbstractTest() {
         val script = jobService.getZpsScript(tasks.list[0].id)
 
         val scriptstr = Json.prettyString(script)
+        println(scriptstr)
         assertTrue("\"match_all\" : { }" in scriptstr)
-        assertTrue("modelId" in scriptstr)
-    }
-
-    @Test
-    fun excludeLabeledAssetsFromSearch() {
-        val model = create()
-
-        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg", label = model.getLabel("husky"))
-        val rsp = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
-        val asset = assetService.getAsset(rsp.created[0])
-        assetService.index(asset.id, asset.document, true)
-        refreshIndex()
-
-        val counts = modelService.getLabelCounts(model)
-        assertEquals(1, counts["husky"])
-
-        assertEquals(1, assetSearchService.count(Model.matchAllSearch))
-        assertEquals(
-            0,
-            assetSearchService.count(
-                modelService.wrapSearchToExcludeTrainingSet(model, Model.matchAllSearch)
-            )
-        )
+        assertTrue("dataSetId" in scriptstr)
     }
 
     fun setupTestAsset(): Asset {
@@ -279,90 +260,9 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
-    fun getLabelCounts() {
-        val model1 = create("test1")
-        val model2 = create("test2")
-
-        val rsp = assetService.batchCreate(
-            BatchCreateAssetsRequest(dataSet(model1))
-        )
-
-        assetService.updateLabels(
-            UpdateAssetLabelsRequest(
-                // Validate adding 2 identical labels only adds 1
-                mapOf(
-                    rsp.created[0] to listOf(
-                        Label(model2.id, "house"),
-                    ),
-                    rsp.created[1] to listOf(
-                        Label(model2.id, "tree"),
-                    )
-                )
-            )
-        )
-
-        val counts = modelService.getLabelCounts(model1)
-        assertEquals(4, counts.size)
-        assertEquals(1, counts["ant"])
-        assertEquals(1, counts["horse"])
-        assertEquals(1, counts["beaver"])
-        assertEquals(1, counts["zanzibar"])
-
-        val keys = counts.keys.toList()
-        assertEquals("ant", keys[0])
-        assertEquals("zanzibar", keys[3])
-    }
-
-    @Test
-    fun testRenameLabel() {
-        val model = create()
-        val specs = dataSet(model)
-
-        assetService.batchCreate(
-            BatchCreateAssetsRequest(specs)
-        )
-        modelService.updateLabel(model, "beaver", "horse")
-        refreshElastic()
-        val counts = modelService.getLabelCounts(model)
-        assertEquals(1, counts["ant"])
-        assertEquals(2, counts["horse"])
-        assertEquals(null, counts["beaver"])
-        assertEquals(1, counts["zanzibar"])
-    }
-
-    @Test
-    fun testRenameLabelToNullForDelete() {
-        val model = create()
-        val specs = dataSet(model)
-
-        assetService.batchCreate(
-            BatchCreateAssetsRequest(specs)
-        )
-        modelService.updateLabel(model, "horse", null)
-        refreshElastic()
-
-        val counts = modelService.getLabelCounts(model)
-        assertEquals(1, counts["ant"])
-        assertEquals(null, counts["horse"])
-        assertEquals(1, counts["beaver"])
-        assertEquals(1, counts["zanzibar"])
-    }
-
-    @Test
     fun testDeleteModel() {
         val model = create()
-        val specs = dataSet(model)
-
-        assetService.batchCreate(BatchCreateAssetsRequest(specs))
-        modelService.publishModel(model, ModelPublishRequest())
-
-        assertNotNull(pipelineModService.findByName(model.moduleName, false))
-
         modelService.deleteModel(model)
-        Thread.sleep(2000)
-
-        val counts = modelService.getLabelCounts(model)
-        assertTrue(counts.isEmpty())
         assertNull(pipelineModService.findByName(model.moduleName, false))
     }
 
@@ -408,15 +308,6 @@ class ModelServiceTests : AbstractTest() {
         assertEquals("test", model.moduleName)
         assertTrue(model.fileId.endsWith("model.zip"))
         assertFalse(model.ready)
-    }
-
-    fun dataSet(model: Model): List<AssetSpec> {
-        return listOf(
-            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("beaver")),
-            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("ant")),
-            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
-            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("zanzibar"))
-        )
     }
 
     @Test

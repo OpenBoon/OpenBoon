@@ -45,5 +45,8 @@ enum class Permission(val internal: Boolean) {
     DataSourceManage(false),
 
     @ApiModelProperty("Provides ability to manage jobs and tasks.")
-    DataQueueManage(false);
+    DataQueueManage(false),
+
+    @ApiModelProperty("Ability to train and manage models and datasets.")
+    ModelTraining(false);
 }
