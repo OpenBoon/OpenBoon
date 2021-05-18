@@ -1,7 +1,7 @@
 import argparse
 import logging
 
-from . import field, model, asset
+from . import field, model, asset, dataset
 
 
 def main():
@@ -16,6 +16,7 @@ def main():
     field.add_subparser(subparsers)
     model.add_subparser(subparsers)
     asset.add_subparser(subparsers)
+    dataset.add_subparser(subparsers)
 
     # Parse the args and set up the archivist client.
     args = parser.parse_args()

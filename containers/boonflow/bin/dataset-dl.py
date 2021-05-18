@@ -18,7 +18,7 @@ def main():
     logging.basicConfig(level=logging.INFO)
 
     parser = argparse.ArgumentParser(description='Download some files')
-    parser.add_argument('model', help="The Model Id")
+    parser.add_argument('dataset', help="The DataSete Id")
     parser.add_argument('style', help="The style to write the dataset into.")
     parser.add_argument('dst_dir', help="The dir to download to.")
     parser.add_argument('-t', '--threads', type=int, default=8,

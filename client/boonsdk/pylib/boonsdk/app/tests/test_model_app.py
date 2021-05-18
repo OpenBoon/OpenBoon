@@ -183,50 +183,6 @@ class ModelAppTests(unittest.TestCase):
         assert job_data['id'] == mod.id
         assert job_data['name'] == mod.name
 
-    def assert_model(self, model):
-        assert self.model_data['id'] == model.id
-        assert self.model_data['name'] == model.name
-        assert self.model_data['type'] == model.type.name
-        assert self.model_data['fileId'] == model.file_id
-
-    @patch.object(BoonClient, 'get')
-    def test_get_label_counts(self, get_patch):
-        value = {
-            'dog': 1,
-            'cat': 2
-        }
-        get_patch.return_value = value
-        rsp = self.app.models.get_label_counts(Model({'id': 'foo'}))
-        assert value == rsp
-
-    @patch.object(BoonClient, 'put')
-    def test_rename_label(self, put_patch):
-        value = {
-            'updated': 1
-        }
-        put_patch.return_value = value
-        rsp = self.app.models.rename_label(Model({'id': 'foo'}), 'dog', 'cat')
-        assert value == rsp
-
-    @patch.object(BoonClient, 'delete')
-    def test_delete_label(self, put_patch):
-        value = {
-            'updated': 1
-        }
-        put_patch.return_value = value
-        rsp = self.app.models.delete_label(Model({'id': 'foo'}), 'dog')
-        assert value == rsp
-
-    @patch.object(BoonClient, 'get')
-    def test_download_labeled_images(self, get_patch):
-        mid = str(uuid.uuid4())
-        raw = {'id': mid, 'type': 'TF_CLASSIFIER'}
-        model = Model(raw)
-        get_patch.return_value = raw
-        dl = self.app.models.download_labeled_images(model, 'objects_coco', '/tmp/dstest')
-        assert '/tmp/dstest' == dl.dst_dir
-        assert mid == dl.model.id
-
     @patch.object(BoonClient, 'get')
     def test_get_model_type_info(self, get_patch):
         raw = {
