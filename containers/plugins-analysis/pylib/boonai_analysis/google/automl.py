@@ -103,6 +103,3 @@ class AutoMLModelClassifier(AssetProcessor):
         # Get input and output tensors.
         self.input_details = self.interpreter.get_input_details()
         self.output_details = self.interpreter.get_output_details()
-
-
-

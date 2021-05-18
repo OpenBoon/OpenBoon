@@ -13,7 +13,6 @@ from boonflow.base import Frame
 from boonflow.testing import PluginUnitTestCase, TestAsset, test_path
 import tempfile
 
-
 logging.basicConfig()
 
 
@@ -86,6 +85,7 @@ class AutoMLModelClassifierTests(PluginUnitTestCase):
 
         os.unlink("labels_mobilenet_quant_v1_224.txt")
         os.unlink("mobilenet_v1_1.0_224_quant.tflite")
+
 
 class MockAutoMLClient:
 

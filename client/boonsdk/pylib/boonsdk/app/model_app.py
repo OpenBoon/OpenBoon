@@ -2,7 +2,7 @@ import logging
 import os
 import zipfile
 
-from tempfile import mkdtemp
+from tempfile import mkdtemp, mkstemp
 from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule, PostTrainAction
 from ..training import TrainingSetDownloader
 from shutil import copyfile
@@ -182,7 +182,7 @@ class ModelApp:
                               ModelType.PYTORCH_UPLOADED_CLASSIFIER):
             raise ValueError(f'Invalid model type for upload: {model.type}')
 
-        model_file = tempfile.mkstemp(prefix="model_", suffix=".zip")[1]
+        model_file = mkstemp(prefix="model_", suffix=".zip")[1]
         zip_file_path = zip_directory(model_path, model_file)
         mid = as_id(model)
 
