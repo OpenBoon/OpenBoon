@@ -70,7 +70,7 @@ class ModelAppTests(unittest.TestCase):
         upload_patch.return_value = {'category': 'LabelDetection'}
         model_patch.return_value = Model({
             'id': '12345',
-            'type': '"TF_UPLOADED_CLASSIFIER"',
+            'type': 'TF_UPLOADED_CLASSIFIER',
             'name': 'foo'
         })
 
