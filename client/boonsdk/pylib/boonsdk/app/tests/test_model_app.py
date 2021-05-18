@@ -70,7 +70,7 @@ class ModelAppTests(unittest.TestCase):
         upload_patch.return_value = {'category': 'LabelDetection'}
         model_patch.return_value = Model({
             'id': '12345',
-            'type': 'TF_UPLOADED_CLASSIFIER',
+            'type': '"TF_UPLOADED_CLASSIFIER"',
             'name': 'foo'
         })
 
@@ -134,7 +134,7 @@ class ModelAppTests(unittest.TestCase):
         get_patch.return_value = zip_file_loc_copy
         model_patch.return_value = Model({
             'id': '12345',
-            'type': 'PYTORCH_UPLOADED_CLASSIFIER',
+            'type': "GCP_AUTOML_CLASSIFIER",
             'name': 'foo'
         })
 
@@ -155,7 +155,7 @@ class ModelAppTests(unittest.TestCase):
         get_patch.return_value = zip_file_loc
         model_patch.return_value = Model({
             'id': '12345',
-            'type': 'PYTORCH_UPLOADED_CLASSIFIER',
+            'type': 'GCP_AUTOML_CLASSIFIER',
             'name': 'foo'
         })
 

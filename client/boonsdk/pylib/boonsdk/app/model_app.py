@@ -1,8 +1,8 @@
 import logging
 import os
-import tempfile
 import zipfile
 
+from tempfile import mkdtemp
 from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule, PostTrainAction
 from ..training import TrainingSetDownloader
 from shutil import copyfile
@@ -203,8 +203,7 @@ class ModelApp:
         mid = as_id(model)
         model = self.find_one_model(id=mid)
         # check the model types.
-        if model.type not in (ModelType.TF_UPLOADED_CLASSIFIER,
-                              ModelType.PYTORCH_UPLOADED_CLASSIFIER):
+        if model.type is not ModelType.GCP_AUTOML_CLASSIFIER:
             raise ValueError(f'Invalid model type for upload: {model.type}')
 
         mid = as_id(model)
@@ -220,7 +219,7 @@ class ModelApp:
             zip_ref = zipfile.ZipFile(file_name)
 
             # extract to the model path
-            tmp_dir = tempfile.mkdtemp()
+            tmp_dir = mkdtemp()
             zip_ref.extractall(tmp_dir)
 
             # copying only files
@@ -234,7 +233,7 @@ class ModelApp:
 
         unzip_model_files(model_path, file_name)
 
-        return model_path
+        return download_path
 
     def get_label_counts(self, model):
         """
