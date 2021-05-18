@@ -116,7 +116,7 @@ class AssetApp(object):
                                             file_paths, body)
 
     def batch_upload_directory(self, path, file_types=None,
-                               batch_size=50, modules=None, callback=None):
+                               batch_size=50, max_batches=None, modules=None, callback=None):
         """
         Recursively upload all files in the given directory path.
 
@@ -141,6 +141,7 @@ class AssetApp(object):
             file_types (list): a list of file extensions and/or
                 categories(documents, images, videos)
             batch_size (int) The number of files to upload per batch.
+            max_batches (int) The max number of batches to upload.
             modules (list): An array of modules to apply to the files.
             callback (func): A function to call for every batch
 
@@ -148,6 +149,9 @@ class AssetApp(object):
             dict: A dictionary containing batch operation counters.
         """
         batch = []
+        batch_count = 0
+        max_batches_reached = False
+
         totals = {
             "file_count": 0,
             "file_size": 0,
@@ -178,8 +182,12 @@ class AssetApp(object):
                 batch.append(os.path.abspath(os.path.join(root, fname)))
                 if len(batch) >= batch_size:
                     process_batch()
+                    batch_count += 1
+                    if max_batches and batch_count >= max_batches:
+                        max_batches_reached = True
+                        break
 
-        if batch:
+        if batch and not max_batches_reached:
             process_batch()
 
         return totals
