@@ -352,7 +352,10 @@ class ModelFilter(
     val names: List<String>? = null,
 
     @ApiModelProperty("The Model types to match")
-    val types: List<ModelType>? = null
+    val types: List<ModelType>? = null,
+
+    @ApiModelProperty("The DataSets assigned to model")
+    val dataSetIds: List<UUID>? = null
 
 ) : KDaoFilter() {
     @JsonIgnore
@@ -380,6 +383,11 @@ class ModelFilter(
             addToValues(it)
         }
 
+        dataSetIds?.let {
+            addToWhere(JdbcUtils.inClause("model.pk_dataset", it.size))
+            addToValues(it)
+        }
+
         names?.let {
             addToWhere(JdbcUtils.inClause("model.str_name", it.size))
             addToValues(it)
@@ -390,11 +398,6 @@ class ModelFilter(
             addToValues(it.map { t -> t.ordinal })
         }
     }
-}
-
-enum class LabelScope {
-    TRAIN,
-    TEST
 }
 
 object ModelSearch {
@@ -411,7 +414,7 @@ object ModelSearch {
                             "path": "labels",
                             "query" : {
                                 "term": { 
-                                    "labels.scope": "${LabelScope.TEST.name}" ,
+                                    "labels.scope": "${LabelScope.Test.name}" ,
                                     "labels.modelId": "${model.id}"
                                  }
                             }

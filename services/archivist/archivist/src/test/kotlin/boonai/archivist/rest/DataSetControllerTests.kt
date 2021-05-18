@@ -146,6 +146,50 @@ class DataSetControllerTests : MockMvcTest() {
         assertEquals(3, labels.size)
     }
 
+    @Test
+    fun testFindOne() {
+        val filter =
+            """
+            {
+                "names": ["${dataSet.name}"],
+                "ids": ["${dataSet.id}"]
+            }
+            """
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/datasets/_find_one")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(filter)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.type", CoreMatchers.equalTo(dataSet.type.name)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(dataSet.name)))
+            .andReturn()
+    }
+
+    @Test
+    fun testSearch() {
+
+        val filter =
+            """
+            {
+                "names": ["${dataSet.name}"],
+                "ids": ["${dataSet.id}"]
+            }
+            """
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/models/_search")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(filter)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].type", CoreMatchers.equalTo(dataSet.type.name)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name", CoreMatchers.equalTo(dataSet.name)))
+            .andReturn()
+    }
+
+
     fun dataSet(ds: DataSet): List<AssetSpec> {
         return listOf(
             AssetSpec("https://i.imgur.com/12abc.jpg", label = ds.makeLabel("beaver")),

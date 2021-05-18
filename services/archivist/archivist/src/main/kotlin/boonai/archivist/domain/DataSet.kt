@@ -1,5 +1,8 @@
 package boonai.archivist.domain
 
+import boonai.archivist.repository.KDaoFilter
+import boonai.archivist.security.getProjectId
+import boonai.archivist.util.JdbcUtils
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.core.type.TypeReference
 import io.swagger.annotations.ApiModel
@@ -104,6 +107,17 @@ class DataSet(
     }
 }
 
+enum class LabelScope {
+    /**
+     * Label is used for Training
+     */
+    Train,
+    /**
+     * Label is used for Testing
+     */
+    Test
+}
+
 @ApiModel("Label", description = "A Label which denotes a ground truth classification.")
 class Label(
     @ApiModelProperty("The ID of the Model")
@@ -111,7 +125,7 @@ class Label(
     @ApiModelProperty("The label for the Asset")
     val label: String,
     @ApiModelProperty("The scope of the label.")
-    val scope: LabelScope = LabelScope.TRAIN,
+    val scope: LabelScope = LabelScope.Train,
     bbox: List<BigDecimal>? = null,
     @ApiModelProperty("An an optional simhash for the label")
     val simhash: String? = null
@@ -142,5 +156,50 @@ class Label(
         var result = dataSetId.hashCode()
         result = 31 * result + (bbox?.hashCode() ?: 0)
         return result
+    }
+}
+
+class DataSetFilter(
+
+    val ids: List<UUID>? = null,
+
+    val names: List<String>? = null,
+
+    val types: List<DataSetType>? = null
+
+) : KDaoFilter() {
+    @JsonIgnore
+    override val sortMap: Map<String, String> = mapOf(
+        "name" to "dataset.str_name",
+        "timeCreated" to "dataset.time_created",
+        "timeModified" to "dataset.time_modified",
+        "id" to "dataset.pk_model",
+        "type" to "dataset.int_type"
+    )
+
+    @JsonIgnore
+    override fun build() {
+
+        if (sort.isNullOrEmpty()) {
+            sort = listOf("timeCreated:desc")
+        }
+
+        addToWhere("dataset.pk_project=?")
+        addToValues(getProjectId())
+
+        ids?.let {
+            addToWhere(JdbcUtils.inClause("dataset.pk_dataset", it.size))
+            addToValues(it)
+        }
+
+        names?.let {
+            addToWhere(JdbcUtils.inClause("dataset.str_name", it.size))
+            addToValues(it)
+        }
+
+        types?.let {
+            addToWhere(JdbcUtils.inClause("dataset.int_type", it.size))
+            addToValues(it.map { t -> t.ordinal })
+        }
     }
 }

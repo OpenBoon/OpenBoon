@@ -2,11 +2,14 @@ package boonai.archivist.service
 
 import boonai.archivist.clients.EsRestClient
 import boonai.archivist.domain.DataSet
+import boonai.archivist.domain.DataSetFilter
 import boonai.archivist.domain.DataSetSpec
 import boonai.archivist.domain.DataSetUpdate
 import boonai.archivist.domain.GenericBatchUpdateResponse
 import boonai.archivist.domain.LabelSet
 import boonai.archivist.repository.DataSetDao
+import boonai.archivist.repository.DataSetJdbcDao
+import boonai.archivist.repository.KPagedList
 import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.CoroutineAuthentication
 import boonai.archivist.security.getProjectId
@@ -42,6 +45,8 @@ interface DataSetService {
     fun getDataSet(name: String): DataSet
     fun updateDataSet(dataSet: DataSet, update: DataSetUpdate)
     fun deleteDataSet(dataSet: DataSet)
+    fun findOne(filter: DataSetFilter): DataSet
+    fun find(filter: DataSetFilter): KPagedList<DataSet>
 
     fun getLabelCounts(dataSet: DataSet): Map<String, Long>
     fun updateLabel(dataSet: DataSet, label: String, newLabel: String?): GenericBatchUpdateResponse
@@ -54,6 +59,7 @@ interface DataSetService {
 @Transactional
 class DataSetServiceImpl(
     val dataSetDao: DataSetDao,
+    val dataSetJdbcDao: DataSetJdbcDao,
     val indexRoutingService: IndexRoutingService,
     val assetSearchService: AssetSearchService
 ) : DataSetService {
@@ -79,14 +85,26 @@ class DataSetServiceImpl(
         return ds
     }
 
+    @Transactional(readOnly = true)
     override fun getDataSet(id: UUID): DataSet {
         return dataSetDao.getOneByProjectIdAndId(getProjectId(), id)
             ?: throw EmptyResultDataAccessException("The DataSet $id does not exist", 1)
     }
 
+    @Transactional(readOnly = true)
     override fun getDataSet(name: String): DataSet {
         return dataSetDao.getOneByProjectIdAndName(getProjectId(), name)
             ?: throw EmptyResultDataAccessException("The DataSet $name does not exist", 1)
+    }
+
+    @Transactional(readOnly = true)
+    override fun find(filter: DataSetFilter): KPagedList<DataSet> {
+        return dataSetJdbcDao.find(filter)
+    }
+
+    @Transactional(readOnly = true)
+    override fun findOne(filter: DataSetFilter): DataSet {
+        return dataSetJdbcDao.findOne(filter)
     }
 
     override fun deleteDataSet(dataSet: DataSet) {

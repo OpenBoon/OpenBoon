@@ -1,9 +1,11 @@
 package boonai.archivist.rest
 
 import boonai.archivist.domain.DataSet
+import boonai.archivist.domain.DataSetFilter
 import boonai.archivist.domain.DataSetSpec
 import boonai.archivist.domain.GenericBatchUpdateResponse
 import boonai.archivist.domain.UpdateLabelRequest
+import boonai.archivist.repository.KPagedList
 import boonai.archivist.service.DataSetService
 import boonai.archivist.util.HttpUtils
 import io.swagger.annotations.ApiOperation
@@ -67,5 +69,15 @@ class DataSetCotroller(
     fun getLabels(@PathVariable id: UUID): Map<String, Long> {
         val ds = dataSetService.getDataSet(id)
         return dataSetService.getLabelCounts(ds)
+    }
+
+    @PostMapping("/api/v3/datasets/_search")
+    fun find(@RequestBody(required = false) filter: DataSetFilter?): KPagedList<DataSet> {
+        return dataSetService.find(filter ?: DataSetFilter())
+    }
+
+    @PostMapping("/api/v3/datasets/_find_one")
+    fun findOne(@RequestBody(required = false) filter: DataSetFilter?): DataSet {
+        return dataSetService.findOne(filter ?: DataSetFilter())
     }
 }
