@@ -29,7 +29,7 @@ const AccountContent = () => {
     return <NoProject />
   }
 
-  const sortedFilteredProjects = projects
+  const sortedFilteredProjects = [...projects]
     .filter(({ name }) =>
       name.toLowerCase().includes(searchString.toLowerCase()),
     )
@@ -43,8 +43,8 @@ const AccountContent = () => {
 
         case 'name':
         default: {
-          if (a.name < b.name) return -1
-          if (a.name > b.name) return 1
+          if (a.name.toLowerCase() < b.name.toLowerCase()) return -1
+          if (a.name.toLowerCase() > b.name.toLowerCase()) return 1
           return 0
         }
       }
