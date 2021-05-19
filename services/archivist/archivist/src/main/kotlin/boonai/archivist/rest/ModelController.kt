@@ -9,10 +9,12 @@ import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelApplyResponse
 import boonai.archivist.domain.ModelCopyRequest
 import boonai.archivist.domain.ModelFilter
+import boonai.archivist.domain.ModelPatchRequest
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.ModelType
+import boonai.archivist.domain.ModelUpdateRequest
 import boonai.archivist.domain.PipelineMod
 import boonai.archivist.domain.PostTrainAction
 import boonai.archivist.repository.KPagedList
@@ -189,5 +191,17 @@ class ModelController(
     ): AutomlSession {
         val model = modelService.getModel(id)
         return automlService.createSession(model, spec)
+    }
+
+    @PutMapping(value = ["/api/v3/models/{id}"])
+    fun update(@PathVariable id: UUID, @RequestBody spec: ModelUpdateRequest): Any {
+        modelService.updateModel(id, spec)
+        return HttpUtils.updated("Model", id, true)
+    }
+
+    @PatchMapping(value = ["/api/v3/models/{id}"])
+    fun patch(@PathVariable id: UUID, @RequestBody spec: ModelPatchRequest): Any {
+        modelService.patchModel(id, spec)
+        return HttpUtils.updated("Model", id, true)
     }
 }

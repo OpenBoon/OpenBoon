@@ -2,10 +2,15 @@ package boonai.archivist.rest
 
 import boonai.archivist.MockMvcTest
 import boonai.archivist.domain.AutomlSessionSpec
+import boonai.archivist.domain.DataSetSpec
+import boonai.archivist.domain.DataSetType
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
+import boonai.archivist.domain.ModelPatchRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelType
+import boonai.archivist.domain.ModelUpdateRequest
+import boonai.archivist.service.DataSetService
 import boonai.archivist.service.ModelService
 import boonai.archivist.service.PipelineModService
 import boonai.common.util.Json
@@ -24,6 +29,9 @@ class ModelControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var modelService: ModelService
+
+    @Autowired
+    lateinit var dataSetService: DataSetService
 
     @Autowired
     lateinit var pipelineModService: PipelineModService
@@ -122,6 +130,9 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testTrain() {
+        val ds = dataSetService.createDataSet(DataSetSpec("bob", DataSetType.Classification))
+        modelService.patchModel(model.id, ModelPatchRequest(dataSetId = ds.id))
+
         val body = mapOf<String, Any>()
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_train")
@@ -434,6 +445,38 @@ class ModelControllerTests : MockMvcTest() {
                     CoreMatchers.equalTo("latest")
                 )
             )
+            .andReturn()
+    }
+
+    @Test
+    fun testPatch() {
+        val ds = dataSetService.createDataSet(DataSetSpec("stuff", DataSetType.Classification))
+        val patch = ModelPatchRequest(name = "mongo", dataSetId = ds.dataSetId())
+
+        mvc.perform(
+            MockMvcRequestBuilders.patch("/api/v3/models/${model.id}")
+                .headers(admin())
+                .content(Json.serialize(patch))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+    }
+
+    @Test
+    fun testUpdate() {
+        val ds = dataSetService.createDataSet(DataSetSpec("stuff", DataSetType.Classification))
+        val update = ModelUpdateRequest(name = "mongo", dataSetId = ds.dataSetId())
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/models/${model.id}")
+                .headers(admin())
+                .content(Json.serialize(update))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
             .andReturn()
     }
 }

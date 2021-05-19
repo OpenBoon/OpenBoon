@@ -12,10 +12,12 @@ import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelApplyResponse
 import boonai.archivist.domain.ModelCopyRequest
 import boonai.archivist.domain.ModelFilter
+import boonai.archivist.domain.ModelPatchRequest
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.ModelType
+import boonai.archivist.domain.ModelUpdateRequest
 import boonai.archivist.domain.PipelineMod
 import boonai.archivist.domain.PipelineModSpec
 import boonai.archivist.domain.PipelineModUpdate
@@ -75,6 +77,8 @@ interface ModelService {
     fun generateModuleName(spec: ModelSpec): String
     fun getModelVersions(model: Model): Set<String>
     fun copyModelTag(model: Model, req: ModelCopyRequest)
+    fun updateModel(id: UUID, update: ModelUpdateRequest): Model
+    fun patchModel(id: UUID, update: ModelPatchRequest): Model
 }
 
 @Service
@@ -146,6 +150,24 @@ class ModelServiceImpl(
         return modelDao.saveAndFlush(model)
     }
 
+    override fun updateModel(id: UUID, update: ModelUpdateRequest): Model {
+        val model = getModel(id)
+        model.name = update.name
+        model.dataSetId = update.dataSetId
+        model.timeModified = System.currentTimeMillis()
+        model.actorModified = getZmlpActor().toString()
+        return model
+    }
+
+    override fun patchModel(id: UUID, update: ModelPatchRequest): Model {
+        val model = getModel(id)
+        update.name?.let { model.name = it }
+        update.dataSetId?.let { model.dataSetId = it }
+        model.timeModified = System.currentTimeMillis()
+        model.actorModified = getZmlpActor().toString()
+        return model
+    }
+
     @Transactional(readOnly = true)
     override fun getModel(id: UUID): Model {
         return modelDao.getOneByProjectIdAndId(getProjectId(), id)
@@ -163,6 +185,14 @@ class ModelServiceImpl(
     }
 
     override fun trainModel(model: Model, request: ModelTrainingRequest): Job {
+
+        if (!model.type.trainable) {
+            throw IllegalStateException("This model type cannot be trained")
+        }
+
+        if (model.dataSetId == null) {
+            throw IllegalStateException("The model must have an assigned DataSet to be trained.")
+        }
 
         val trainArgs = argValidationService.buildArgs(
             getTrainingArgSchema(model.type), model.trainingArgs

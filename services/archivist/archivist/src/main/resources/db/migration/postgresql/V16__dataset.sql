@@ -26,3 +26,4 @@ SELECT pk_model,
 FROM model;
 
 ALTER TABLE model ADD COLUMN pk_dataset UUID REFERENCES dataset ON DELETE SET NULL;
+CREATE INDEX model_pk_dataset_idx ON model (pk_dataset);

@@ -106,12 +106,13 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testTrainModel() {
-        val model1 = create()
+        val ds = dataSetService.createDataSet(DataSetSpec("frogs", DataSetType.Classification))
+        val model1 = create(ds = ds)
         val job = modelService.trainModel(model1, ModelTrainingRequest())
 
         assertEquals(model1.trainingJobName, job.name)
         assertEquals(JobState.InProgress, job.state)
-        assertEquals(1, job.priority)
+        assertEquals(100, job.priority)
     }
 
     @Test(expected = EmptyResultDataAccessException::class)

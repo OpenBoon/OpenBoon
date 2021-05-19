@@ -233,6 +233,24 @@ class ModelSpec(
     val trainingArgs: Map<String, Any> = emptyMap()
 )
 
+class ModelUpdateRequest(
+
+    @ApiModelProperty("Name of the model")
+    val name: String,
+
+    @ApiModelProperty("The DataSet the model points to.")
+    val dataSetId: UUID?
+)
+
+class ModelPatchRequest(
+
+    @ApiModelProperty("Name of the model")
+    val name: String? = null,
+
+    @ApiModelProperty("The DataSet the model points to.")
+    val dataSetId: UUID? = null
+)
+
 @Entity
 @Table(name = "model")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType::class)
@@ -248,14 +266,14 @@ class Model(
     val projectId: UUID,
 
     @Column(name = "pk_dataset", nullable = true)
-    val dataSetId: UUID?,
+    var dataSetId: UUID?,
 
     @Column(name = "int_type")
     val type: ModelType,
 
     @Column(name = "str_name")
     @ApiModelProperty("A name for the model, like 'bob's tree classifier'.")
-    val name: String,
+    var name: String,
 
     @Column(name = "str_module")
     @ApiModelProperty("The name of the pipeline module and analysis namespace.")
@@ -285,7 +303,7 @@ class Model(
 
     @Column(name = "time_modified")
     @ApiModelProperty("The last time the Model was modified.")
-    val timeModified: Long,
+    var timeModified: Long,
 
     @Column(name = "actor_created")
     @ApiModelProperty("The key which created this Model")
@@ -293,7 +311,7 @@ class Model(
 
     @Column(name = "actor_modified")
     @ApiModelProperty("The key that last made the last modification to this Model")
-    val actorModified: String
+    var actorModified: String
 
 ) : LabelSet {
 
@@ -414,7 +432,7 @@ object ModelSearch {
                             "path": "labels",
                             "query" : {
                                 "term": { 
-                                    "labels.scope": "${LabelScope.Test.name}" ,
+                                    "labels.scope": "${LabelScope.TEST.name}" ,
                                     "labels.modelId": "${model.id}"
                                  }
                             }
@@ -436,16 +454,6 @@ class ModelApplyResponse(
 
     @ApiModelProperty("The ID of the job that is processing Assets.")
     val job: Job? = null
-)
-
-@ApiModel("Update Label Request", description = "Update or remove a given label.")
-class UpdateLabelRequest(
-
-    @ApiModelProperty("The name of the old label")
-    val label: String,
-
-    @ApiModelProperty("The name of the new label or null/empty string if the label should be removed.")
-    val newLabel: String? = null
 )
 
 @ApiModel("ModelCopyRequest", description = "Request to copy a model from 1 tag to another.")

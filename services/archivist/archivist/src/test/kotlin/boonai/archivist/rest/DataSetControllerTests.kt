@@ -126,7 +126,7 @@ class DataSetControllerTests : MockMvcTest() {
         val body = UpdateLabelRequest("ant", "")
 
         mvc.perform(
-            MockMvcRequestBuilders.put("/api/v3/models/${dataSet.id}/labels")
+            MockMvcRequestBuilders.put("/api/v3/datasets/${dataSet.id}/labels")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(body))
@@ -178,7 +178,7 @@ class DataSetControllerTests : MockMvcTest() {
             }
             """
         mvc.perform(
-            MockMvcRequestBuilders.post("/api/v3/models/_search")
+            MockMvcRequestBuilders.post("/api/v3/datasets/_search")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(filter)
@@ -188,7 +188,6 @@ class DataSetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name", CoreMatchers.equalTo(dataSet.name)))
             .andReturn()
     }
-
 
     fun dataSet(ds: DataSet): List<AssetSpec> {
         return listOf(

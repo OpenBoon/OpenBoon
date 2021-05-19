@@ -111,12 +111,22 @@ enum class LabelScope {
     /**
      * Label is used for Training
      */
-    Train,
+    TRAIN,
     /**
      * Label is used for Testing
      */
-    Test
+    TEST
 }
+
+@ApiModel("Update Label Request", description = "Update or remove a given label.")
+class UpdateLabelRequest(
+
+    @ApiModelProperty("The name of the old label")
+    val label: String,
+
+    @ApiModelProperty("The name of the new label or null/empty string if the label should be removed.")
+    val newLabel: String? = null
+)
 
 @ApiModel("Label", description = "A Label which denotes a ground truth classification.")
 class Label(
@@ -125,7 +135,7 @@ class Label(
     @ApiModelProperty("The label for the Asset")
     val label: String,
     @ApiModelProperty("The scope of the label.")
-    val scope: LabelScope = LabelScope.Train,
+    val scope: LabelScope = LabelScope.TRAIN,
     bbox: List<BigDecimal>? = null,
     @ApiModelProperty("An an optional simhash for the label")
     val simhash: String? = null
