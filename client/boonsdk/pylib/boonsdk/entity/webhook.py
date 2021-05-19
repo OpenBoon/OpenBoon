@@ -37,8 +37,7 @@ class WebHookTrigger(Enum):
 
 class WebHook(BaseEntity):
     """
-    WebHooks deliver data to your application as it happens in BoonAI.  You must host an
-    HTTP endpoint on your end to utilize a web hook.
+    Properties of a WebHook
     """
     def __init__(self, data):
         super(WebHook, self).__init__(data)
@@ -50,7 +49,7 @@ class WebHook(BaseEntity):
 
     @property
     def secret_key(self):
-        """A secret key the endpoint will use to validate requeests."""
+        """A secret key the endpoint will use to validate requests."""
         return self._data['secret_key']
 
     @property

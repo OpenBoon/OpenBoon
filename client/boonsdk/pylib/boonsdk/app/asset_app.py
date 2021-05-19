@@ -9,6 +9,7 @@ from ..filters import apply_search_filters
 
 
 class AssetApp(object):
+    """Methods for managing Assets"""
 
     def __init__(self, app):
         self.app = app
@@ -21,40 +22,8 @@ class AssetApp(object):
             files (list of FileImport): The list of files to import as Assets.
             modules (list): A list of Pipeline Modules to apply to the data.
 
-        Notes:
-            Example return value:
-                {
-                  "bulkResponse" : {
-                    "took" : 15,
-                    "errors" : false,
-                    "items" : [ {
-                      "create" : {
-                        "_index" : "yvqg1901zmu5bw9q",
-                        "_type" : "_doc",
-                        "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
-                        "_version" : 1,
-                        "result" : "created",
-                        "forced_refresh" : true,
-                        "_shards" : {
-                          "total" : 1,
-                          "successful" : 1,
-                          "failed" : 0
-                        },
-                        "_seq_no" : 0,
-                        "_primary_term" : 1,
-                        "status" : 201
-                      }
-                    } ]
-                  },
-                  "failed" : [ ],
-                  "created" : [ "dd0KZtqyec48n1q1fniqVMV5yllhRRGx" ],
-                  "jobId" : "ba310246-1f87-1ece-b67c-be3f79a80d11"
-                }
-
         Returns:
-            dict: A dictionary containing an ES bulk response, failed files,
-            and created asset ids.
-
+            dict: A dictionary containing failed files and created asset ids.
         """
         body = {
             "assets": files,
@@ -72,39 +41,8 @@ class AssetApp(object):
             files (list of FileUpload):
             modules (list): A list of Pipeline Modules to apply to the data.
 
-        Notes:
-            Example return value:
-                {
-                  "bulkResponse" : {
-                    "took" : 15,
-                    "errors" : false,
-                    "items" : [ {
-                      "create" : {
-                        "_index" : "yvqg1901zmu5bw9q",
-                        "_type" : "_doc",
-                        "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
-                        "_version" : 1,
-                        "result" : "created",
-                        "forced_refresh" : true,
-                        "_shards" : {
-                          "total" : 1,
-                          "successful" : 1,
-                          "failed" : 0
-                        },
-                        "_seq_no" : 0,
-                        "_primary_term" : 1,
-                        "status" : 201
-                      }
-                    } ]
-                  },
-                  "failed" : [ ],
-                  "created" : [ "dd0KZtqyec48n1q1fniqVMV5yllhRRGx" ],
-                  "jobId" : "ba310246-1f87-1ece-b67c-be3f79a80d11"
-                }
-
         Returns:
-            dict: A dictionary containing an ES bulk response, failed files,
-            and created asset ids.
+            dict: A dictionary containing failed files and created asset ids.
         """
         files = as_collection(files)
         file_paths = [f.uri for f in files]
@@ -123,18 +61,6 @@ class AssetApp(object):
         This method takes an optional callback function which takes two
         arguments, files and response.  This callback is called for
         each batch of files submitted.
-
-        Examples:
-
-            def batch_callback(files, response):
-                print("--processed files--")
-                for path in files:
-                    print(path)
-                print("--boonsdk response--")
-                pprint.pprint(rsp)
-
-            app.assets.batch_upload_directory("/home", file_types=['images'],
-                callback=batch_callback)
 
         Args:
             path (str): A file path to a directory.
@@ -379,9 +305,9 @@ class AssetApp(object):
         Set the values of custom metadata fields.
 
         Examples:
-            {
-                "asset-id1": {"shoe": "nike"},
-                "asset-id2": {"country": "New Zealand"}
+            { \
+                "asset-id1": {"shoe": "nike"}, \
+                "asset-id2": {"country": "New Zealand"} \
             }
 
         Args:

@@ -10,3 +10,4 @@ from .clip import *
 from .storage import StoredFile
 from .webhook import WebHook, WebHookTrigger
 from .dataset import *
+from .field import *
