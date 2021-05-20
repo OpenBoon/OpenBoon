@@ -11,3 +11,6 @@ The Job system is used for scalable batch processing of Assets.
 
 .. autoclass:: boonsdk.Task
     :members:
+
+.. autoclass:: boonsdk.TaskError
+    :members:

@@ -8,3 +8,6 @@ BoonAI allows you to train models using DataSets, or deploy pre-trained models.
 
 .. autoclass:: boonsdk.Model
     :members:
+
+.. autoclass:: boonsdk.ModelType
+    :members:

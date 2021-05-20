@@ -11,3 +11,6 @@ own start and stop points. Thumbnail images are automatically created for manual
 
 .. autoclass:: boonsdk.VideoClip
     :members:
+
+.. autoclass:: boonsdk.TimelineBuilder
+    :members:

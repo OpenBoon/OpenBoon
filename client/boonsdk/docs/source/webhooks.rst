@@ -11,4 +11,7 @@ and details about why the webhook was fired.
 .. autoclass:: boonsdk.WebHook
     :members:
 
+.. autoclass:: boonsdk.WebHookTrigger
+    :members:
+
 .. autofunction:: boonsdk.entity.webhook.validate_webhook_request_headers
