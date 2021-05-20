@@ -4,7 +4,7 @@ import os
 
 from . import AssetApp, DataSourceApp, ProjectApp, \
     JobApp, ModelApp, AnalysisModuleApp, VideoClipApp, CustomFieldApp, \
-    WebHookApp
+    WebHookApp, FileStorageApp
 from ..client import BoonClient, DEFAULT_SERVER
 
 logger = logging.getLogger(__name__)
@@ -35,6 +35,7 @@ class BoonApp:
         self.clips = VideoClipApp(self)
         self.fields = CustomFieldApp(self)
         self.webhooks = WebHookApp(self)
+        self.filestorage = FileStorageApp(self)
 
 
 def app_from_env():

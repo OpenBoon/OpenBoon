@@ -8,3 +8,4 @@ from .analysis_app import AnalysisModuleApp
 from .clip_app import VideoClipApp
 from .field_app import CustomFieldApp
 from .webhook_app import WebHookApp
+from .filestorage_app import FileStorageApp
