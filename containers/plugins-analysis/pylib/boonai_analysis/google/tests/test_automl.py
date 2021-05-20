@@ -20,34 +20,6 @@ class AutoMLModelClassifierTests(PluginUnitTestCase):
     model = "ICN94225947477147648"
     test_img = test_path("training/test_dsy.jpg")
 
-    # @patch("boonai_analysis.google.automl.automl.PredictionServiceClient")
-    # @patch.object(ModelApp, "get_model")
-    # @patch("boonai_analysis.google.automl.get_proxy_level_path")
-    # def test_predict(self, proxy_patch, model_patch, client_patch):
-    #     name = "flowers"
-    #     model_patch.return_value = Model(
-    #         {
-    #             "id": self.model,
-    #             "type": "GCP_AUTOML_CLASSIFIER",
-    #             "fileId": "models/{}/foo/bar".format(self.model),
-    #             "name": name,
-    #             "moduleName": name
-    #         }
-    #     )
-    #     client_patch.return_value = MockAutoMLClient()
-    #
-    #     args = {"model_id": self.model, "automl_model_id": MockAutoMLClient()}
-    #
-    #     proxy_patch.return_value = self.test_img
-    #     frame = Frame(TestAsset(self.test_img))
-    #
-    #     processor = self.init_processor(AutoMLModelClassifier(), args)
-    #     processor.process(frame)
-    #
-    #     for result in processor.predictions.payload:
-    #         assert result.display_name == "daisy"
-    #         assert result.classification.score == approx(0.99, 0.01)
-
     @patch("boonai_analysis.google.automl.get_proxy_level_path")
     @patch.object(tempfile, "mkdtemp")
     @patch.object(BoonClient, 'stream')

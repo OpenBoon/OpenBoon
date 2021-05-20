@@ -85,9 +85,18 @@ class AutoMLModelClassifier(AssetProcessor):
         })
 
     def __normalize_tf_score(self, score):
+        """
+        Normalize the result of a tf model prediction that is between 0-1000
+        :param score:
+        :return:
+        """
         return score/1000 if score else 0
 
     def __load_interpreters(self):
+        """
+        Prepare model tensors and load labels array from file
+        :return:
+        """
         tflite_file = glob(f"{self.model_dir}/*.tflite")[0]
         label_file = glob(f"{self.model_dir}/labels*.txt")[0]
 
