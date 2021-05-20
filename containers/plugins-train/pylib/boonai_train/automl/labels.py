@@ -1,10 +1,9 @@
 import logging
 import tempfile
 
-from google.cloud import automl, storage
+from google.cloud import automl
 
 import boonsdk
-import os
 from boonflow import file_storage
 from boonflow.cloud import get_gcp_project_id
 
@@ -73,8 +72,8 @@ class AutomlLabelDetectionSession:
         # Create a model with the model metadata in the region.
         response = self.client.create_model(self.project_location, model)
 
-        export_model_location = self.app.filestorage.get_cloud_location("models", self.model.id, "export",
-                                                                        "model.tflite")
+        export_model_location = self.app.filestorage.get_cloud_location("models", self.model.id,
+                                                                        "export", "model.tflite")
 
         self._export_model(export_model_location, model.name)
 
@@ -82,7 +81,8 @@ class AutomlLabelDetectionSession:
 
     def _export_model(self, model_location, model_name):
 
-        output_config = automl.ModelExportOutputConfig(gcs_destination=model_location, model_format="tflite")
+        output_config = automl.ModelExportOutputConfig(gcs_destination=model_location,
+                                                       model_format="tflite")
         request = automl.ExportModelRequest(name=model_name, output_config=output_config)
         self.client.export_model(request=request)
 

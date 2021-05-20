@@ -14,10 +14,11 @@ class BoonSdkFileStorageTests(unittest.TestCase):
 
     @patch.object(BoonClient, 'get')
     def test_get_cloud_location(self, get_patch):
-        get_patch.return_value = {"uri": "http://cloud/bucket/project/project_id/entity/12345/category/filename.zip",
-                                  "mediaType": "application/zip"}
+        uri = "https://cloud/bucket/project/project_id/entity/12345/category/filename.zip"
+        media_type = "application/zip"
+        get_patch.return_value = {"uri": uri,
+                                  "mediaType": media_type}
 
         rsp = self.app.filestorage.get_cloud_location("entity", "12345", "category", "filename.zip")
-        assert rsp["uri"] == "http://cloud/bucket/project/project_id/entity/12345/category/filename.zip"
-        assert rsp['mediaType'] == "application/zip"
-
+        assert rsp["uri"] == uri
+        assert rsp['mediaType'] == media_type
