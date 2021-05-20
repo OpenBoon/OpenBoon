@@ -220,7 +220,8 @@ class Model(BaseEntity):
 
     def asset_search_filter(self, scopes=None, labels=None):
         """
-        Create and return a TrainingSetFilter for filtering Assets by this particular label.
+        Create and return a TrainingSetFilter for filtering Assets by the DataSet assigned
+        to this model.
 
         Args:
             scopes (list): A optional list of LabelScopes to filter by.
@@ -229,7 +230,9 @@ class Model(BaseEntity):
         Returns:
             TrainingSetFilter: A preconfigured TrainingSetFilter
         """
-        return TrainingSetFilter(self.id, scopes=scopes, labels=labels)
+        if not self.dataset_id:
+            raise ValueError('This model does not have an attached DataSet')
+        return TrainingSetFilter(self.dataset_id, scopes=scopes, labels=labels)
 
 
 class ModelTypeInfo:

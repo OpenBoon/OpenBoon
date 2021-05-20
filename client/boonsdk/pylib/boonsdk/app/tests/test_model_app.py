@@ -269,3 +269,9 @@ class ModelAppTests(unittest.TestCase):
         model = Model({'id': '12345', 'type': 'TF_CLASSIFIER'})
         rsp = self.app.models.set_training_args(model, {"n_clusters": 5})
         assert rsp == {"n_clusters": 5}
+
+    def assert_model(self, model):
+        assert self.model_data['id'] == model.id
+        assert self.model_data['name'] == model.name
+        assert self.model_data['type'] == model.type.name
+        assert self.model_data['fileId'] == model.file_id

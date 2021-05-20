@@ -27,7 +27,13 @@ class AnalysisModuleAppTests(unittest.TestCase):
     @patch.object(BoonClient, 'get')
     def test_get_analyis_module(self, get_patch):
         get_patch.return_value = self.obj_data
-        plmod = self.app.analysis.get_analysis_module('12345')
+        plmod = self.app.analysis.get_analysis_module('CDBB4626-AE99-400A-9AC9-33F717247693')
+        self.assert_pipeline_mod(plmod)
+
+    @patch.object(BoonClient, 'post')
+    def test_get_analyis_by_name(self, post_patch):
+        post_patch.return_value = self.obj_data
+        plmod = self.app.analysis.get_analysis_module('dogs')
         self.assert_pipeline_mod(plmod)
 
     @patch.object(BoonClient, 'post')

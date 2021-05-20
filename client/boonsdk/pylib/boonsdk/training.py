@@ -288,7 +288,7 @@ class TrainingSetDownloader:
             train/<label>/<img file>
             validate/<label>/<img file>
         """
-        self.labels = self.app.models.get_label_counts(self.model)
+        self.labels = self.app.datasets.get_label_counts(self.model)
 
         # This is layout #1, we need to add darknet layout for object detection.
         dirs = (self.SET_TRAIN, self.SET_VALIDATION)

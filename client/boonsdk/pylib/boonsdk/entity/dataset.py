@@ -31,6 +31,19 @@ class DataSet(BaseEntity):
     def __init__(self, data):
         super(DataSet, self).__init__(data)
 
+    @staticmethod
+    def as_id(obj):
+        """
+        Extract a DataSet ID from the given object, if one exists.
+
+        Args:
+            obj (mixed): A DataSet, Model with assigned DataSet, or DataSet unique Id.
+
+        Returns:
+            str: The DataSet id.
+        """
+        return getattr(obj, 'dataset_id', as_id(obj))
+
     @property
     def name(self):
         """The name of the DataSet"""
@@ -56,15 +69,46 @@ class DataSet(BaseEntity):
         """
         return Label(self, label, bbox=bbox, simhash=simhash, scope=scope)
 
+    def asset_search_filter(self, scopes=None, labels=None):
+        """
+        Create and return a TrainingSetFilter for filtering Assets by this particular label.
+
+        Args:
+            scopes (list): A optional list of LabelScopes to filter by.
+            labels (list): A optional list of labels to filter by.
+
+        Returns:
+            TrainingSetFilter: A preconfigured TrainingSetFilter
+        """
+        return TrainingSetFilter(self.id, scopes=scopes, labels=labels)
+
+    def make_label_from_prediction(self, prediction, scope=None, label=None):
+        """
+        Make a label from a prediction.  This will copy the bbox
+        and simhash from the prediction, if any.
+
+        Args:
+            prediction (dict): A prediction from an analysis namespace.s
+            scope (LabelScope): The scope of the image, can be TEST or TRAIN.
+                Defaults to TRAIN.
+            label (str): Override the label on the prediction.
+        Returns:
+            Label: A new label
+        """
+        return Label(self, label or prediction.get('label'),
+                     bbox=prediction.get('bbox'),
+                     simhash=prediction.get('simhash'),
+                     scope=scope)
+
 
 class LabelScope(Enum):
     """
     Types of label scopes
     """
-    Train = 0
+    TRAIN = 0
     """The label marks the Asset as part of the Training set."""
 
-    Test = 1
+    TEST = 1
     """The label marks the Asset as part of the Test set."""
 
 
@@ -108,39 +152,6 @@ class Label:
             'simhash': self.simhash,
             'scope': self.scope.name
         }
-
-    def make_label(self, label, bbox=None, simhash=None, scope=None):
-        """
-        Make an instance of a Label which can be used to label assets.
-
-        Args:
-            label (str): The label name.
-            bbox (list[float]): A open bounding box.
-            simhash (str): An associated simhash, if any.
-            scope (LabelScope): The scope of the image, can be TEST or TRAIN.
-                Defaults to TRAIN.
-        Returns:
-            Label: The new label.
-        """
-        return Label(self, label, bbox=bbox, simhash=simhash, scope=scope)
-
-    def make_label_from_prediction(self, label, prediction, scope=None):
-        """
-        Make a label from a prediction.  This will copy the bbox
-        and simhash from the prediction, if any.
-
-        Args:
-            label (str): A name for the prediction.
-            prediction (dict): A prediction from an analysis namespace.s
-            scope (LabelScope): The scope of the image, can be TEST or TRAIN.
-                Defaults to TRAIN.
-        Returns:
-            Label: A new label
-        """
-        return Label(self, label,
-                     bbox=prediction.get('bbox'),
-                     simhash=prediction.get('simhash'),
-                     scope=scope)
 
     def asset_search_filter(self):
         """

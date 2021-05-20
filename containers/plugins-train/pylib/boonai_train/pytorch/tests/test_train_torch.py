@@ -3,7 +3,7 @@ import os
 import shutil
 from unittest.mock import patch
 
-from boonsdk.app import ModelApp
+from boonsdk.app import ModelApp, DataSetApp
 from boonsdk.entity import Model, StoredFile, AnalysisModule
 from boonai_train.pytorch import PytorchTransferLearningTrainer
 from boonflow import file_storage, Frame
@@ -90,7 +90,7 @@ class PytorchTransferLearningTrainerTests(PluginUnitTestCase):
 
     @patch.object(file_storage.models, 'publish_model')
     @patch.object(ModelApp, 'get_model')
-    @patch.object(ModelApp, 'get_label_counts')
+    @patch.object(DataSetApp, 'get_label_counts')
     @patch('boonai_train.pytorch.train.download_labeled_images', download_images)
     @patch.object(file_storage.models, 'save_model')
     @patch.object(file_storage.projects, 'store_file')

@@ -1,7 +1,7 @@
 import logging
 
 from ..entity import DataSet
-from ..util import as_id, is_valid_uuid, as_collection, as_name_collection
+from ..util import is_valid_uuid, as_collection, as_name_collection
 
 logger = logging.getLogger(__name__)
 
@@ -45,10 +45,11 @@ class DataSetApp:
         Returns:
             DataSet: The DataSet
         """
-        if is_valid_uuid(as_id(id)):
-            return DataSet(self.app.client.get("/api/v3/datasets/{}".format(as_id(id))))
+        ds = DataSet.as_id(id)
+        if is_valid_uuid(ds):
+            return DataSet(self.app.client.get(f'/api/v3/datasets/{ds}'))
         else:
-            return self.find_one_dataset(name=id)
+            return self.find_one_dataset(name=ds)
 
     def find_one_dataset(self, id=None, name=None, type=None):
         """
@@ -103,7 +104,7 @@ class DataSetApp:
         Returns:
             dict: A status dict
         """
-        ds = as_id(dataset)
+        ds = DataSet.as_id(dataset)
         return self.app.client.delete(f'/api/v3/datasets/{ds}')
 
     def get_label_counts(self, dataset):
@@ -111,13 +112,13 @@ class DataSetApp:
         Get a dictionary of the labels and how many times they occur.
 
         Args:
-            dataset (DataSet): The DataSet or its unique Id.
+            dataset (DataSet): The DataSet, it's unique Id, or a model with a DataSet.
 
         Returns:
             dict: a dictionary of label name to occurrence count.
-
         """
-        return self.app.client.get('/api/v3/datasets/{}/_label_counts'.format(as_id(dataset)))
+        ds = DataSet.as_id(dataset)
+        return self.app.client.get(f'/api/v3/datasets/{ds}/_label_counts')
 
     def rename_label(self, dataset, old_label, new_label):
         """
@@ -132,11 +133,12 @@ class DataSetApp:
             dict: a dictionary containing the number of assets updated.
 
         """
+        ds = DataSet.as_id(dataset)
         body = {
             "label": old_label,
             "newLabel": new_label
         }
-        return self.app.client.put('/api/v3/datasets/{}/labels'.format(as_id(dataset)), body)
+        return self.app.client.put(f'/api/v3/datasets/{ds}/labels', body)
 
     def delete_label(self, dataset, label):
         """
@@ -150,7 +152,8 @@ class DataSetApp:
             dict: a dictionary containing the number of assets updated.
 
         """
+        ds = DataSet.as_id(dataset)
         body = {
             "label": label
         }
-        return self.app.client.delete('/api/v3/datasets/{}/labels'.format(as_id(dataset)), body)
+        return self.app.client.delete(f'/api/v3/datasets/{ds}/labels', body)
