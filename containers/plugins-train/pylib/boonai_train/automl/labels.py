@@ -1,9 +1,10 @@
 import logging
 import tempfile
 
-from google.cloud import automl
+from google.cloud import automl, storage
 
 import boonsdk
+import os
 from boonflow import file_storage
 from boonflow.cloud import get_gcp_project_id
 
@@ -20,6 +21,7 @@ class AutomlLabelDetectionSession:
     This class currently only handle multi-class (single labels) model training, not
     multi-label or objects.
     """
+
     def __init__(self, model, reactor=None):
         self.model = model
         self.reactor = reactor
@@ -27,7 +29,6 @@ class AutomlLabelDetectionSession:
         self.app = boonsdk.app_from_env()
         self.client = automl.AutoMlClient()
         self.project_location = self.client.location_path(get_gcp_project_id(), "us-central1")
-
         # Can only be 32 chars
         self.display_name = self.model.id.replace("-", "")
 
@@ -71,7 +72,19 @@ class AutomlLabelDetectionSession:
 
         # Create a model with the model metadata in the region.
         response = self.client.create_model(self.project_location, model)
+
+        export_model_location = self.app.filestorage.get_cloud_location("models", self.model.id, "export",
+                                                                        "model.tflite")
+
+        self._export_model(export_model_location, model.name)
+
         return response.operation.name
+
+    def _export_model(self, model_location, model_name):
+
+        output_config = automl.ModelExportOutputConfig(gcs_destination=model_location, model_format="tflite")
+        request = automl.ExportModelRequest(name=model_name, output_config=output_config)
+        self.client.export_model(request=request)
 
     def _create_automl_dataset(self):
         """
