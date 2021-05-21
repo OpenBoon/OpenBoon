@@ -5,6 +5,7 @@ CREATE TABLE dataset
     str_name       TEXT   NOT NULL,
     int_type       SMALLINT NOT NULL,
     str_descr      TEXT NOT NULL,
+    int_model_count INTEGER NOT NULL DEFAULT 0,
     time_created   BIGINT NOT NULL,
     time_modified  BIGINT NOT NULL,
     actor_created  TEXT   NOT NULL,
@@ -29,3 +30,39 @@ FROM model;
 
 ALTER TABLE model ADD COLUMN pk_dataset UUID REFERENCES dataset ON DELETE SET NULL;
 CREATE INDEX model_pk_dataset_idx ON model (pk_dataset);
+
+
+UPDATE model SET pk_dataset = pk_model;
+
+
+CREATE FUNCTION after_model_update() RETURNS trigger
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF OLD.pk_dataset != NEW.pk_dataset THEN
+        IF NEW.pk_dataset IS NOT NULL THEN
+            UPDATE dataset SET int_model_count=int_model_count+1 WHERE pk_dataset = NEW.pk_dataset;
+        END IF;
+        IF OLD.pk_dataset IS NOT NULL THEN
+            UPDATE dataset SET int_model_count=int_model_count-1 WHERE pk_dataset = OLD.pk_dataset;
+        END IF;
+    END IF;
+    RETURN NEW;
+END
+$$;
+
+CREATE TRIGGER trig_after_model_update AFTER UPDATE ON model FOR EACH ROW EXECUTE PROCEDURE after_model_update();
+
+---
+CREATE FUNCTION after_model_insert() RETURNS trigger
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NEW.pk_dataset IS NOT NULL THEN
+        UPDATE dataset SET int_model_count=int_model_count+1 WHERE pk_dataset = NEW.pk_dataset;
+    END IF;
+    RETURN NEW;
+END
+$$;
+
+CREATE TRIGGER trig_after_model_insert AFTER INSERT ON model FOR EACH ROW EXECUTE PROCEDURE after_model_insert();

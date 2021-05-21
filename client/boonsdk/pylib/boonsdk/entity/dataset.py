@@ -54,6 +54,11 @@ class DataSet(BaseEntity):
         return DataSetType[self._data['type']]
 
     @property
+    def model_count(self):
+        """The number of models using this DataSet"""
+        return self._data['modelCount']
+
+    @property
     def description(self):
         """Description"""
         return self._data['description']

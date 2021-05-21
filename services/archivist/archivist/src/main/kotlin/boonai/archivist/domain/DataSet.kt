@@ -70,6 +70,9 @@ class DataSet(
     @Column(name = "str_descr")
     val description: String,
 
+    @Column(name = "int_model_count")
+    val modelCount: Int,
+
     @Column(name = "time_created")
     @ApiModelProperty("The time the DataSet was created.")
     val timeCreated: Long,

@@ -232,6 +232,13 @@ class ModelServiceTests : AbstractTest() {
         val model1 = create(ds = ds)
         modelService.publishModel(model1, ModelPublishRequest())
 
+        assertEquals(
+            1,
+            jdbc.queryForObject(
+                "SELECT int_model_count FROM dataset WHERE pk_dataset=?", Int::class.java, ds.id
+            )
+        )
+
         val rsp = modelService.applyModel(
             model1,
             ModelApplyRequest(
@@ -242,7 +249,6 @@ class ModelServiceTests : AbstractTest() {
         val script = jobService.getZpsScript(tasks.list[0].id)
 
         val scriptstr = Json.prettyString(script)
-        println(scriptstr)
         assertTrue("\"match_all\" : { }" in scriptstr)
         assertTrue("dataSetId" in scriptstr)
     }
