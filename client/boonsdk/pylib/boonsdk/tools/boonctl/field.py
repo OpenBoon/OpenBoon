@@ -5,7 +5,7 @@ app = boonsdk.app_from_env()
 
 
 def add_subparser(subparsers):
-    subparser = subparsers.add_parser("field", help='Manage Custom Fields')
+    subparser = subparsers.add_parser("fields", help='Manage Custom Fields')
     commands = subparser.add_subparsers()
 
     list_cmd = commands.add_parser('list', help='List all.')

@@ -6,7 +6,7 @@ app = boonsdk.app_from_env()
 
 
 def add_subparser(subparsers):
-    subparser = subparsers.add_parser("model", help='Manage custom models')
+    subparser = subparsers.add_parser("models", help='Manage custom models')
     commands = subparser.add_subparsers()
 
     list_cmd = commands.add_parser('list', help='List models')

@@ -5,7 +5,7 @@ app = boonsdk.app_from_env()
 
 
 def add_subparser(subparsers):
-    subparser = subparsers.add_parser("asset", help='Manage Assets')
+    subparser = subparsers.add_parser("assets", help='Manage Assets')
     commands = subparser.add_subparsers()
 
     set_value = commands.add_parser('set-field-value', help='Set the value of a custom field.')
