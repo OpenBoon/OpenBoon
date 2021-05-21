@@ -58,6 +58,7 @@ class DataSetJdbcDaoImpl : AbstractDao(), DataSetJdbcDao {
             rs.getObject("pk_project") as UUID,
             rs.getString("str_name"),
             DataSetType.values()[rs.getInt("int_type")],
+            rs.getString("str_desc"),
             rs.getLong("time_created"),
             rs.getLong("time_modified"),
             rs.getString("actor_created"),

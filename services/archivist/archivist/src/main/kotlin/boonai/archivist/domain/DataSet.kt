@@ -35,7 +35,8 @@ class DataSetUpdate(
  */
 class DataSetSpec(
     val name: String,
-    val type: DataSetType
+    val type: DataSetType,
+    var description: String = ""
 )
 
 /**
@@ -65,6 +66,9 @@ class DataSet(
 
     @Column(name = "int_type")
     val type: DataSetType,
+
+    @Column(name = "str_descr")
+    val description: String,
 
     @Column(name = "time_created")
     @ApiModelProperty("The time the DataSet was created.")

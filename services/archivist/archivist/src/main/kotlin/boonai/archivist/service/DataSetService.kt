@@ -75,6 +75,7 @@ class DataSetServiceImpl(
             actor.projectId,
             spec.name,
             spec.type,
+            spec.description,
             time,
             time,
             actor.toString(),

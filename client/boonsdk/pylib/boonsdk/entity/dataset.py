@@ -1,9 +1,8 @@
 from enum import Enum
 
 from .base import BaseEntity
-from ..util import as_id
 from ..filters import TrainingSetFilter
-
+from ..util import as_id
 
 __all__ = [
     'LabelScope',
@@ -53,6 +52,11 @@ class DataSet(BaseEntity):
     def type(self):
         """The type of DataSet"""
         return DataSetType[self._data['type']]
+
+    @property
+    def description(self):
+        """Description"""
+        return self._data['description']
 
     def make_label(self, label, bbox=None, simhash=None, scope=None):
         """

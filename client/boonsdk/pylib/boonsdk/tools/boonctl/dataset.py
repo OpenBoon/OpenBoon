@@ -14,6 +14,7 @@ def add_subparser(subparsers):
     create_cmd.add_argument('name', metavar='NAME', help='The DataSet name')
     create_cmd.add_argument('type', metavar='TYPE', help='The DataSet type',
                             choices=['classify', 'detect', 'recognize'])
+    create_cmd.add_argument('-d', '--descr', metavar='DESCRIPTION', help='A description')
     create_cmd.set_defaults(func=create)
 
     info_cmd = commands.add_parser('info', help='Get Info about a DataSet')
@@ -36,6 +37,7 @@ def show_info(ds):
     labels = app.datasets.get_label_counts(ds)
     print(f'ID:   {ds.id}')
     print(f'Name: {ds.name}')
+    print(f'Description: {ds.description}')
     print(f'Created By: {ds.actor_created}')
     print(f'Created Date: {ds.time_created}')
     print('\nLabels: ')

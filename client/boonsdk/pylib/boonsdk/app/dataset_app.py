@@ -18,20 +18,22 @@ class DataSetApp:
     def __init__(self, app):
         self.app = app
 
-    def create_dataset(self, name, type):
+    def create_dataset(self, name, type, description=''):
         """
         Create a new DataSet.
 
         Args:
             name (str): A unique name.
             type (DataSetType): The type of dataset.
+            description (str): The description for the DataSet if any.
 
         Returns:
             DataSet: The newly created DataSet.
         """
         body = {
             'name': name,
-            'type': getattr(type, 'name', str(type))
+            'type': getattr(type, 'name', str(type)),
+            'description': description
         }
         return DataSet(self.app.client.post('/api/v3/datasets', body))
 

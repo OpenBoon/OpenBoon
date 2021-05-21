@@ -31,7 +31,8 @@ class DataSetServiceTests : AbstractTest() {
     fun create(name: String = "test", type: DataSetType = DataSetType.Classification): DataSet {
         val mspec = DataSetSpec(
             name,
-            type
+            type,
+            "A Test DS"
         )
         return dataSetService.createDataSet(mspec)
     }
@@ -47,10 +48,11 @@ class DataSetServiceTests : AbstractTest() {
 
     @Test
     fun testCreate() {
-        val spec = DataSetSpec("pets", DataSetType.Classification)
+        val spec = DataSetSpec("pets", DataSetType.Classification, "TEST")
         val ds = dataSetService.createDataSet(spec)
         assertEquals("pets", ds.name)
         assertEquals(DataSetType.Classification, ds.type)
+        assertEquals("TEST", ds.description)
     }
 
     @Test
