@@ -216,6 +216,10 @@ exports[`<Projects /> should render an access denied screen if the url projectId
 }
 
 .emotion-16 {
+  padding-top: 16px;
+}
+
+.emotion-17 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -246,22 +250,22 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   background-color: transparent;
 }
 
-.emotion-16,
-.emotion-16:hover,
-.emotion-16:visited,
-.emotion-16 .noop {
+.emotion-17,
+.emotion-17:hover,
+.emotion-17:visited,
+.emotion-17 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-16:hover,
-.emotion-16 .noop {
+.emotion-17:hover,
+.emotion-17 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-16[aria-disabled=true],
-.emotion-16 .noop {
+.emotion-17[aria-disabled=true],
+.emotion-17 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -344,7 +348,7 @@ exports[`<Projects /> should render an access denied screen if the url projectId
         <svg
           color="#808080"
           data-file-name="lock.svg"
-          width={200}
+          width={150}
         />
         <h3
           className="emotion-14"
@@ -358,9 +362,11 @@ exports[`<Projects /> should render an access denied screen if the url projectId
         >
           Please request permission from the project owner.
         </p>
-        <div>
+        <div
+          className="emotion-16"
+        >
           <a
-            className="emotion-16"
+            className="emotion-17"
             href="/"
             onClick={[Function]}
             onMouseEnter={[Function]}

@@ -29,7 +29,7 @@ const OrganizationsContent = () => {
     return <NoOrganization />
   }
 
-  const sortedFilteredOrganizations = organizations
+  const sortedFilteredOrganizations = [...organizations]
     .filter(({ name }) => {
       return name.toLowerCase().includes(searchString.toLowerCase())
     })
@@ -43,8 +43,8 @@ const OrganizationsContent = () => {
 
         case 'name':
         default: {
-          if (a.name < b.name) return -1
-          if (a.name > b.name) return 1
+          if (a.name.toLowerCase() < b.name.toLowerCase()) return -1
+          if (a.name.toLowerCase() > b.name.toLowerCase()) return 1
           return 0
         }
       }

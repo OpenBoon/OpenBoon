@@ -7,6 +7,7 @@ Array [
       Array [
         Object {
           "href": "/[projectId]/models",
+          "isBeta": true,
           "title": "Custom Models",
         },
         Object {
@@ -701,6 +702,7 @@ Array [
       Array [
         Object {
           "href": "/[projectId]/models",
+          "isBeta": true,
           "title": "Custom Models",
         },
         Object {
@@ -1485,6 +1487,7 @@ Array [
       Array [
         Object {
           "href": "/[projectId]/models",
+          "isBeta": true,
           "title": "Custom Models",
         },
         Object {

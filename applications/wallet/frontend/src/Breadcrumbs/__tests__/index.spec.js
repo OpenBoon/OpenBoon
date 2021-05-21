@@ -15,8 +15,8 @@ describe('<Breadcrumbs />', () => {
     const component = TestRenderer.create(
       <Breadcrumbs
         crumbs={[
-          { title: 'Bread', href: '/[projectId]/bread' },
-          { title: 'Crumb', href: false },
+          { title: 'Bread', href: '/[projectId]/bread', isBeta: true },
+          { title: 'Crumb', href: false, isBeta: true },
         ]}
       />,
     )
