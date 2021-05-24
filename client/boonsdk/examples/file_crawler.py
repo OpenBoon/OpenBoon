@@ -21,6 +21,8 @@ def main():
     parser.add_argument('-m', '--module', action='append', help='Module to apply to the upload')
     parser.add_argument('-b', '--batch-size', type=int,
                         default=50, help='The number of assets to upload per batch')
+    parser.add_argument('-n', '--max-batches', type=int,
+                        default=0, help='The number of batches to upload, default to unlimited')
     parser.add_argument('-t', '--file-types', action='append',
                         help='The file types to filter by, default all supported types')
 
@@ -32,6 +34,7 @@ def main():
                                           file_types=args.file_types,
                                           modules=modules,
                                           batch_size=args.batch_size,
+                                          max_batches=args.max_batches,
                                           callback=callback_function)
 
 

@@ -5,18 +5,18 @@ import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.BatchDeleteAssetsRequest
-import boonai.archivist.domain.TimelineClipSpec
+import boonai.archivist.domain.DataSetSpec
+import boonai.archivist.domain.DataSetType
 import boonai.archivist.domain.FieldSpec
 import boonai.archivist.domain.Label
-import boonai.archivist.domain.ModelSpec
-import boonai.archivist.domain.ModelType
+import boonai.archivist.domain.TimelineClipSpec
 import boonai.archivist.domain.TimelineSpec
 import boonai.archivist.domain.TrackSpec
 import boonai.archivist.domain.UpdateAssetLabelsRequest
 import boonai.archivist.service.AssetSearchService
 import boonai.archivist.service.ClipService
+import boonai.archivist.service.DataSetService
 import boonai.archivist.service.FieldService
-import boonai.archivist.service.ModelService
 import boonai.archivist.service.PipelineModService
 import boonai.archivist.util.bbox
 import boonai.common.util.Json
@@ -41,7 +41,7 @@ class AssetControllerTests : MockMvcTest() {
     lateinit var pipelineModService: PipelineModService
 
     @Autowired
-    lateinit var modelService: ModelService
+    lateinit var dataSetService: DataSetService
 
     @Autowired
     lateinit var clipService: ClipService
@@ -119,12 +119,12 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdateLabels() {
-        val ds = modelService.createModel(ModelSpec("test", ModelType.KNN_CLASSIFIER))
+        val ds = dataSetService.createDataSet(DataSetSpec("test", DataSetType.Classification))
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
 
         val req = UpdateAssetLabelsRequest(
-            add = mapOf(created.created[0] to listOf(ds.getLabel("cat")))
+            add = mapOf(created.created[0] to listOf(ds.makeLabel("cat")))
         )
 
         mvc.perform(
@@ -141,14 +141,14 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdateLabelsWithBbox() {
-        val ds = modelService.createModel(ModelSpec("test", ModelType.KNN_CLASSIFIER))
+        val ds = dataSetService.createDataSet(DataSetSpec("test", DataSetType.Classification))
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
 
         val req = UpdateAssetLabelsRequest(
             add = mapOf(
                 created.created[0] to
-                    listOf(ds.getLabel("cat", bbox = bbox(0.0, 0.0, 0.1, 0.1)))
+                    listOf(ds.makeLabel("cat", bbox = bbox(0.0, 0.0, 0.1, 0.1)))
             )
         )
 
@@ -166,7 +166,7 @@ class AssetControllerTests : MockMvcTest() {
         val req2 = UpdateAssetLabelsRequest(
             add = mapOf(
                 created.created[0] to
-                    listOf(ds.getLabel("dog", bbox = bbox(0.1, 0.1, 0.3, 0.3)))
+                    listOf(ds.makeLabel("dog", bbox = bbox(0.1, 0.1, 0.3, 0.3)))
             )
         )
 

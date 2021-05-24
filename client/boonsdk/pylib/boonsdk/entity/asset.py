@@ -228,7 +228,7 @@ class DocumentMixin(object):
         return self.get_attr(field)
 
 
-class FileImport(object):
+class FileImport:
     """
     An FileImport is used to import a new file and metadata into Boon AI.
     """

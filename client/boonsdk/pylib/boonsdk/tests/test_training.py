@@ -24,7 +24,11 @@ class TrainingSetDownloaderTests(unittest.TestCase):
     @patch.object(ModelApp, 'get_model')
     @patch.object(BoonClient, 'get')
     def test_setup_labels_std_base_dir(self, get_patch, get_model_patch):
-        get_model_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
+        get_model_patch.return_value = Model({
+            'id': '12345',
+            'type': 'ZVI_LABEL_DETECTION',
+            'dataSetId': '124423'})
+
         get_patch.return_value = {
             'goats': 100,
             'hobbits': 12,
@@ -54,7 +58,9 @@ class TrainingSetDownloaderTests(unittest.TestCase):
     @patch.object(BoonClient, 'get')
     def test_build_labels_std_format(
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
-        get_ds_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
+        get_ds_patch.return_value = Model({'id': '12345',
+                                           'type': 'ZVI_LABEL_DETECTION',
+                                           'dataSetId': 'abc221'})
         get_patch.return_value = {
             'goats': 100,
             'hobbits': 12,

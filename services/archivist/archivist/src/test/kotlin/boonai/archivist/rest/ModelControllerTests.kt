@@ -1,14 +1,16 @@
 package boonai.archivist.rest
 
 import boonai.archivist.MockMvcTest
-import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.AutomlSessionSpec
-import boonai.archivist.domain.BatchCreateAssetsRequest
+import boonai.archivist.domain.DataSetSpec
+import boonai.archivist.domain.DataSetType
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
+import boonai.archivist.domain.ModelPatchRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelType
-import boonai.archivist.domain.UpdateLabelRequest
+import boonai.archivist.domain.ModelUpdateRequest
+import boonai.archivist.service.DataSetService
 import boonai.archivist.service.ModelService
 import boonai.archivist.service.PipelineModService
 import boonai.common.util.Json
@@ -22,12 +24,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
-import kotlin.test.assertEquals
 
 class ModelControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var modelService: ModelService
+
+    @Autowired
+    lateinit var dataSetService: DataSetService
 
     @Autowired
     lateinit var pipelineModService: PipelineModService
@@ -126,6 +130,9 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testTrain() {
+        val ds = dataSetService.createDataSet(DataSetSpec("bob", DataSetType.Classification))
+        modelService.patchModel(model.id, ModelPatchRequest(dataSetId = ds.id))
+
         val body = mapOf<String, Any>()
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_train")
@@ -198,67 +205,7 @@ class ModelControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testRenameLabel() {
-        val specs = dataSet(model)
-        assetService.batchCreate(
-            BatchCreateAssetsRequest(specs)
-        )
-
-        val body = UpdateLabelRequest("ant", "horse")
-
-        mvc.perform(
-            MockMvcRequestBuilders.put("/api/v3/models/${model.id}/labels")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(body))
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$.updated",
-                    CoreMatchers.equalTo(1)
-                )
-            )
-            .andReturn()
-    }
-
-    @Test
-    fun testDeleteLabel() {
-        val specs = dataSet(model)
-        assetService.batchCreate(
-            BatchCreateAssetsRequest(specs)
-        )
-
-        val body = UpdateLabelRequest("ant", "")
-
-        mvc.perform(
-            MockMvcRequestBuilders.put("/api/v3/models/${model.id}/labels")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(body))
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$.updated",
-                    CoreMatchers.equalTo(1)
-                )
-            )
-            .andReturn()
-
-        authenticate()
-        val labels = modelService.getLabelCounts(model)
-        assertEquals(null, labels["ant"])
-        assertEquals(3, labels.size)
-    }
-
-    @Test
     fun testDeleteModel() {
-        val specs = dataSet(model)
-        assetService.batchCreate(
-            BatchCreateAssetsRequest(specs)
-        )
-
         mvc.perform(
             MockMvcRequestBuilders.delete("/api/v3/models/${model.id}")
                 .headers(admin())
@@ -501,12 +448,35 @@ class ModelControllerTests : MockMvcTest() {
             .andReturn()
     }
 
-    fun dataSet(model: Model): List<AssetSpec> {
-        return listOf(
-            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("beaver")),
-            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("ant")),
-            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
-            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("dog"))
+    @Test
+    fun testPatch() {
+        val ds = dataSetService.createDataSet(DataSetSpec("stuff", DataSetType.Classification))
+        val patch = ModelPatchRequest(name = "mongo", dataSetId = ds.dataSetId())
+
+        mvc.perform(
+            MockMvcRequestBuilders.patch("/api/v3/models/${model.id}")
+                .headers(admin())
+                .content(Json.serialize(patch))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+    }
+
+    @Test
+    fun testUpdate() {
+        val ds = dataSetService.createDataSet(DataSetSpec("stuff", DataSetType.Classification))
+        val update = ModelUpdateRequest(name = "mongo", dataSetId = ds.dataSetId())
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/models/${model.id}")
+                .headers(admin())
+                .content(Json.serialize(update))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
     }
 }

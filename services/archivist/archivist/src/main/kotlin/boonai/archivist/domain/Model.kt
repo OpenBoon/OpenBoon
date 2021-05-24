@@ -1,7 +1,6 @@
 package boonai.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.core.type.TypeReference
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType
 import boonai.archivist.repository.KDaoFilter
 import boonai.archivist.security.getProjectId
@@ -11,7 +10,6 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
-import java.math.BigDecimal
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -222,6 +220,9 @@ class ModelSpec(
     @ApiModelProperty("The type of mode")
     val type: ModelType,
 
+    @ApiModelProperty("An associated DataSet")
+    val dataSetId: UUID? = null,
+
     @ApiModelProperty("A model tag used to generate a PipelineMod name.")
     val moduleName: String? = null,
 
@@ -230,6 +231,24 @@ class ModelSpec(
 
     @ApiModelProperty("Training arguments")
     val trainingArgs: Map<String, Any> = emptyMap()
+)
+
+class ModelUpdateRequest(
+
+    @ApiModelProperty("Name of the model")
+    val name: String,
+
+    @ApiModelProperty("The DataSet the model points to.")
+    val dataSetId: UUID?
+)
+
+class ModelPatchRequest(
+
+    @ApiModelProperty("Name of the model")
+    val name: String? = null,
+
+    @ApiModelProperty("The DataSet the model points to.")
+    val dataSetId: UUID? = null
 )
 
 @Entity
@@ -246,12 +265,15 @@ class Model(
     @Column(name = "pk_project")
     val projectId: UUID,
 
+    @Column(name = "pk_dataset", nullable = true)
+    var dataSetId: UUID?,
+
     @Column(name = "int_type")
     val type: ModelType,
 
     @Column(name = "str_name")
     @ApiModelProperty("A name for the model, like 'bob's tree classifier'.")
-    val name: String,
+    var name: String,
 
     @Column(name = "str_module")
     @ApiModelProperty("The name of the pipeline module and analysis namespace.")
@@ -281,7 +303,7 @@ class Model(
 
     @Column(name = "time_modified")
     @ApiModelProperty("The last time the Model was modified.")
-    val timeModified: Long,
+    var timeModified: Long,
 
     @Column(name = "actor_created")
     @ApiModelProperty("The key which created this Model")
@@ -289,12 +311,13 @@ class Model(
 
     @Column(name = "actor_modified")
     @ApiModelProperty("The key that last made the last modification to this Model")
-    val actorModified: String
+    var actorModified: String
 
-) {
+) : LabelSet {
+
     @JsonIgnore
-    fun getLabel(label: String, bbox: List<BigDecimal>? = null): Label {
-        return Label(id, label, bbox = bbox)
+    override fun dataSetId(): UUID? {
+        return dataSetId
     }
 
     fun getModelFileLocator(tag: String, name: String): ProjectFileLocator {
@@ -347,7 +370,10 @@ class ModelFilter(
     val names: List<String>? = null,
 
     @ApiModelProperty("The Model types to match")
-    val types: List<ModelType>? = null
+    val types: List<ModelType>? = null,
+
+    @ApiModelProperty("The DataSets assigned to model")
+    val dataSetIds: List<UUID>? = null
 
 ) : KDaoFilter() {
     @JsonIgnore
@@ -375,6 +401,11 @@ class ModelFilter(
             addToValues(it)
         }
 
+        dataSetIds?.let {
+            addToWhere(JdbcUtils.inClause("model.pk_dataset", it.size))
+            addToValues(it)
+        }
+
         names?.let {
             addToWhere(JdbcUtils.inClause("model.str_name", it.size))
             addToValues(it)
@@ -385,11 +416,6 @@ class ModelFilter(
             addToValues(it.map { t -> t.ordinal })
         }
     }
-}
-
-enum class LabelScope {
-    TRAIN,
-    TEST
 }
 
 object ModelSearch {
@@ -420,47 +446,6 @@ object ModelSearch {
     }
 }
 
-@ApiModel("Label", description = "A Label which denotes a ground truth classification.")
-class Label(
-    @ApiModelProperty("The ID of the Model")
-    val modelId: UUID,
-    @ApiModelProperty("The label for the Asset")
-    val label: String,
-    @ApiModelProperty("The scope of the label.")
-    val scope: LabelScope = LabelScope.TRAIN,
-    bbox: List<BigDecimal>? = null,
-    @ApiModelProperty("An an optional simhash for the label")
-    val simhash: String? = null
-
-) {
-
-    @ApiModelProperty("An optional bounding box")
-    val bbox: List<BigDecimal>? = bbox?.map { it.setScale(3, java.math.RoundingMode.HALF_UP) }
-
-    companion object {
-        val SET_OF: TypeReference<MutableSet<Label>> = object :
-            TypeReference<MutableSet<Label>>() {}
-
-        val LIST_OF: TypeReference<List<Label>> = object :
-            TypeReference<List<Label>>() {}
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is Label) return false
-
-        if (modelId != other.modelId) return false
-        if (bbox != other.bbox) return false
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = modelId.hashCode()
-        result = 31 * result + (bbox?.hashCode() ?: 0)
-        return result
-    }
-}
-
 @ApiModel("ModelApplyResponse", description = "The response to applying a model, either for testing or productions")
 class ModelApplyResponse(
 
@@ -469,16 +454,6 @@ class ModelApplyResponse(
 
     @ApiModelProperty("The ID of the job that is processing Assets.")
     val job: Job? = null
-)
-
-@ApiModel("Update Label Request", description = "Update or remove a given label.")
-class UpdateLabelRequest(
-
-    @ApiModelProperty("The name of the old label")
-    val label: String,
-
-    @ApiModelProperty("The name of the new label or null/empty string if the label should be removed.")
-    val newLabel: String? = null
 )
 
 @ApiModel("ModelCopyRequest", description = "Request to copy a model from 1 tag to another.")

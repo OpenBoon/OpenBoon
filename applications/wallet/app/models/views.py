@@ -2,7 +2,7 @@ import json
 import os
 
 from boonsdk.client import BoonSdkNotFoundException
-from boonsdk.entity.model import LabelScope
+from boonsdk import LabelScope
 from django.http import Http404, HttpResponse
 from rest_framework import status
 from rest_framework.decorators import action

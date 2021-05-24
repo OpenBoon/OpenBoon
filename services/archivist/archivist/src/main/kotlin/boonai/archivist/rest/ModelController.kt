@@ -3,20 +3,20 @@ package boonai.archivist.rest
 import boonai.archivist.domain.ArgSchema
 import boonai.archivist.domain.AutomlSession
 import boonai.archivist.domain.AutomlSessionSpec
-import boonai.archivist.domain.GenericBatchUpdateResponse
 import boonai.archivist.domain.Job
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelApplyResponse
 import boonai.archivist.domain.ModelCopyRequest
 import boonai.archivist.domain.ModelFilter
+import boonai.archivist.domain.ModelPatchRequest
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.ModelType
+import boonai.archivist.domain.ModelUpdateRequest
 import boonai.archivist.domain.PipelineMod
 import boonai.archivist.domain.PostTrainAction
-import boonai.archivist.domain.UpdateLabelRequest
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.service.ArgValidationService
 import boonai.archivist.service.AutomlService
@@ -176,36 +176,10 @@ class ModelController(
         return modelService.getModelVersions(modelService.getModel(id))
     }
 
-    @ApiOperation("Get the labels for the model")
-    @GetMapping(value = ["/api/v3/models/{id}/_label_counts"])
-    fun getLabels(@ApiParam("ModelId") @PathVariable id: UUID): Map<String, Long> {
-        return modelService.getLabelCounts(modelService.getModel(id))
-    }
-
     @ApiOperation("Upload the model zip file.")
     @PostMapping(value = ["/api/v3/models/{id}/_upload"])
     fun upload(@ApiParam("ModelId") @PathVariable id: UUID, req: HttpServletRequest): Any {
         return modelService.publishModelFileUpload(modelService.getModel(id), req.inputStream)
-    }
-
-    @ApiOperation("Rename label")
-    @PutMapping("/api/v3/models/{id}/labels")
-    fun renameLabels(
-        @ApiParam("ModelId") @PathVariable id: UUID,
-        @RequestBody req: UpdateLabelRequest
-    ): GenericBatchUpdateResponse {
-        val model = modelService.getModel(id)
-        return modelService.updateLabel(model, req.label, req.newLabel)
-    }
-
-    @ApiOperation("Delete label")
-    @DeleteMapping("/api/v3/models/{id}/labels")
-    fun deleteLabels(
-        @ApiParam("ModelId") @PathVariable id: UUID,
-        @RequestBody req: UpdateLabelRequest
-    ): GenericBatchUpdateResponse {
-        val model = modelService.getModel(id)
-        return modelService.updateLabel(model, req.label, null)
     }
 
     @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
@@ -217,5 +191,17 @@ class ModelController(
     ): AutomlSession {
         val model = modelService.getModel(id)
         return automlService.createSession(model, spec)
+    }
+
+    @PutMapping(value = ["/api/v3/models/{id}"])
+    fun update(@PathVariable id: UUID, @RequestBody spec: ModelUpdateRequest): Any {
+        modelService.updateModel(id, spec)
+        return HttpUtils.updated("Model", id, true)
+    }
+
+    @PatchMapping(value = ["/api/v3/models/{id}"])
+    fun patch(@PathVariable id: UUID, @RequestBody spec: ModelPatchRequest): Any {
+        modelService.patchModel(id, spec)
+        return HttpUtils.updated("Model", id, true)
     }
 }

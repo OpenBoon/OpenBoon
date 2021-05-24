@@ -226,7 +226,7 @@ class JobLaunchServiceImpl(
             listOf(processor), settings = mergedSettings
         )
 
-        val spec = JobSpec(name, listOf(script), replace = true, priority = JobPriority.Interactive)
+        val spec = JobSpec(name, listOf(script), replace = true, priority = JobPriority.Standard)
         return launchJob(spec)
     }
 
@@ -234,7 +234,7 @@ class JobLaunchServiceImpl(
         val script = getTimelineAnalysisScript(assetId, timeline)
         val spec = JobSpec(
             "VideoClip Analysis for Asset: $assetId",
-            listOf(script), replace = false, priority = JobPriority.Interactive
+            listOf(script), replace = false, priority = JobPriority.Standard
         )
         return jobService.create(spec)
     }
@@ -243,7 +243,7 @@ class JobLaunchServiceImpl(
         val script = getClipAnalysisScript(clip.id)
         val spec = JobSpec(
             "VideoClip Analysis for Clip: ${clip.id}",
-            listOf(script), replace = false, priority = JobPriority.Interactive
+            listOf(script), replace = false, priority = JobPriority.Standard
         )
         return jobService.create(spec)
     }
