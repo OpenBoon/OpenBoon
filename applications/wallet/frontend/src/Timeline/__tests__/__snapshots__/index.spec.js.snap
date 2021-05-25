@@ -840,6 +840,11 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
           </div>
         </div>
         <TimelineAggregate
+          aggregateZoomRef={
+            Object {
+              "current": undefined,
+            }
+          }
           dispatch={[Function]}
           length={18}
           settings={
@@ -880,6 +885,11 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
             }
           }
           timelines={Array []}
+          tracksZoomRef={
+            Object {
+              "current": undefined,
+            }
+          }
           videoRef={
             Object {
               "current": Object {
@@ -1884,6 +1894,11 @@ exports[`<Timeline /> should render properly 1`] = `
           </div>
         </div>
         <TimelineAggregate
+          aggregateZoomRef={
+            Object {
+              "current": undefined,
+            }
+          }
           dispatch={[Function]}
           length={18}
           settings={
@@ -2681,6 +2696,11 @@ exports[`<Timeline /> should render properly 1`] = `
                 ],
               },
             ]
+          }
+          tracksZoomRef={
+            Object {
+              "current": undefined,
+            }
           }
           videoRef={
             Object {
@@ -3670,6 +3690,11 @@ exports[`<Timeline /> should render properly 2`] = `
           </div>
         </div>
         <TimelineAggregate
+          aggregateZoomRef={
+            Object {
+              "current": undefined,
+            }
+          }
           dispatch={[Function]}
           length={18}
           settings={
@@ -4467,6 +4492,11 @@ exports[`<Timeline /> should render properly 2`] = `
                 ],
               },
             ]
+          }
+          tracksZoomRef={
+            Object {
+              "current": undefined,
+            }
           }
           videoRef={
             Object {
