@@ -36,7 +36,7 @@
         <boonai-common.version>1.0.0</boonai-common.version>
         <elasticsearch.version>7.6.2</elasticsearch.version>
         <spring-boot.version>2.4.5</spring-boot.version>
-        <kotlin.version>1.4.32</kotlin.version>
+        <kotlin.version>1.5.10</kotlin.version>
     </properties>
 
     <dependencies>
@@ -83,7 +83,7 @@
         <dependency>
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>kotlinx-coroutines-core</artifactId>
-            <version>1.4.3-native-mt</version>
+            <version>1.5.0-native-mt</version>
         </dependency>
 
         <dependency>
