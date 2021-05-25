@@ -167,6 +167,114 @@ Array [
   background-color: #808080;
 }
 
+.emotion-14 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-14 div {
+  margin-left: 0;
+}
+
+.emotion-14 button {
+  margin-right: 0;
+}
+
+.emotion-15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  margin-left: 8px;
+}
+
+.emotion-15:hover div,
+.emotion-15:focus-within div {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-15:hover button,
+.emotion-15:focus-within button {
+  color: #ffffff;
+}
+
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-17 {
+  position: absolute;
+  right: -10px;
+  top: 28px;
+  color: #191919;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 12px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 400px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+  z-index: 1;
+}
+
+.emotion-17:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.emotion-18:before {
+  content: ' ';
+  position: absolute;
+  top: -6px;
+  right: 14px;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.emotion-19 {
+  font-size: 15px;
+  line-height: 19px;
+  padding: 8px;
+}
+
+.emotion-20 {
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-21 {
+  font-size: 15px;
+  line-height: 19px;
+  padding-top: 16px;
+}
+
 <div
     className="emotion-0"
   >
@@ -265,6 +373,66 @@ Array [
         >
           Delete
         </button>
+        <div
+          className="emotion-14"
+        >
+          <div
+            className="emotion-15"
+          >
+            <button
+              aria-details="TrainingOptions"
+              aria-label="Training Options"
+              className="emotion-16"
+              type="button"
+            >
+              <svg
+                data-file-name="help.svg"
+                height={20}
+              />
+            </button>
+            <div
+              className="emotion-17"
+              id="TrainingOptions"
+              role="tooltip"
+            >
+              <div
+                className="emotion-18"
+              />
+              <div
+                className="emotion-19"
+              >
+                <h3
+                  className="emotion-20"
+                >
+                  Train Model
+                </h3>
+                Train a model without applying it to your assets.
+                <h3
+                  className="emotion-21"
+                >
+                  Train & Test
+                </h3>
+                Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
+                <h3
+                  className="emotion-21"
+                >
+                  Train & Apply
+                </h3>
+                Train and apply the model to all the assets in the project.
+                <h3
+                  className="emotion-21"
+                >
+                  Delete
+                </h3>
+                Delete a model. This action cannot be undone.
+                <br />
+                <i>
+                  Note: Labels that you added to your assets, either manually or through training, remain attached.
+                </i>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <ModelMatrixLink
@@ -1078,6 +1246,114 @@ Array [
   background-color: #808080;
 }
 
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-11 div {
+  margin-left: 0;
+}
+
+.emotion-11 button {
+  margin-right: 0;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  margin-left: 8px;
+}
+
+.emotion-12:hover div,
+.emotion-12:focus-within div {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-12:hover button,
+.emotion-12:focus-within button {
+  color: #ffffff;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-14 {
+  position: absolute;
+  right: -10px;
+  top: 28px;
+  color: #191919;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 12px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 400px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+  z-index: 1;
+}
+
+.emotion-14:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.emotion-15:before {
+  content: ' ';
+  position: absolute;
+  top: -6px;
+  right: 14px;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.emotion-16 {
+  font-size: 15px;
+  line-height: 19px;
+  padding: 8px;
+}
+
+.emotion-17 {
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-18 {
+  font-size: 15px;
+  line-height: 19px;
+  padding-top: 16px;
+}
+
 <div
     className="emotion-0"
   >
@@ -1173,6 +1449,66 @@ Array [
         >
           Delete
         </button>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <button
+              aria-details="TrainingOptions"
+              aria-label="Training Options"
+              className="emotion-13"
+              type="button"
+            >
+              <svg
+                data-file-name="help.svg"
+                height={20}
+              />
+            </button>
+            <div
+              className="emotion-14"
+              id="TrainingOptions"
+              role="tooltip"
+            >
+              <div
+                className="emotion-15"
+              />
+              <div
+                className="emotion-16"
+              >
+                <h3
+                  className="emotion-17"
+                >
+                  Train Model
+                </h3>
+                Train a model without applying it to your assets.
+                <h3
+                  className="emotion-18"
+                >
+                  Train & Test
+                </h3>
+                Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
+                <h3
+                  className="emotion-18"
+                >
+                  Train & Apply
+                </h3>
+                Train and apply the model to all the assets in the project.
+                <h3
+                  className="emotion-18"
+                >
+                  Delete
+                </h3>
+                Delete a model. This action cannot be undone.
+                <br />
+                <i>
+                  Note: Labels that you added to your assets, either manually or through training, remain attached.
+                </i>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <ModelMatrixLink
@@ -1794,6 +2130,114 @@ Array [
   background-color: #808080;
 }
 
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-11 div {
+  margin-left: 0;
+}
+
+.emotion-11 button {
+  margin-right: 0;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  margin-left: 8px;
+}
+
+.emotion-12:hover div,
+.emotion-12:focus-within div {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-12:hover button,
+.emotion-12:focus-within button {
+  color: #ffffff;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-14 {
+  position: absolute;
+  right: -10px;
+  top: 28px;
+  color: #191919;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 12px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 400px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+  z-index: 1;
+}
+
+.emotion-14:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.emotion-15:before {
+  content: ' ';
+  position: absolute;
+  top: -6px;
+  right: 14px;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.emotion-16 {
+  font-size: 15px;
+  line-height: 19px;
+  padding: 8px;
+}
+
+.emotion-17 {
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-18 {
+  font-size: 15px;
+  line-height: 19px;
+  padding-top: 16px;
+}
+
 <div
     className="emotion-0"
   >
@@ -1889,6 +2333,66 @@ Array [
         >
           Delete
         </button>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <button
+              aria-details="TrainingOptions"
+              aria-label="Training Options"
+              className="emotion-13"
+              type="button"
+            >
+              <svg
+                data-file-name="help.svg"
+                height={20}
+              />
+            </button>
+            <div
+              className="emotion-14"
+              id="TrainingOptions"
+              role="tooltip"
+            >
+              <div
+                className="emotion-15"
+              />
+              <div
+                className="emotion-16"
+              >
+                <h3
+                  className="emotion-17"
+                >
+                  Train Model
+                </h3>
+                Train a model without applying it to your assets.
+                <h3
+                  className="emotion-18"
+                >
+                  Train & Test
+                </h3>
+                Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
+                <h3
+                  className="emotion-18"
+                >
+                  Train & Apply
+                </h3>
+                Train and apply the model to all the assets in the project.
+                <h3
+                  className="emotion-18"
+                >
+                  Delete
+                </h3>
+                Delete a model. This action cannot be undone.
+                <br />
+                <i>
+                  Note: Labels that you added to your assets, either manually or through training, remain attached.
+                </i>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <ModelMatrixLink
@@ -2368,6 +2872,114 @@ Array [
   background-color: #808080;
 }
 
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-11 div {
+  margin-left: 0;
+}
+
+.emotion-11 button {
+  margin-right: 0;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  margin-left: 8px;
+}
+
+.emotion-12:hover div,
+.emotion-12:focus-within div {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-12:hover button,
+.emotion-12:focus-within button {
+  color: #ffffff;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-14 {
+  position: absolute;
+  right: -10px;
+  top: 28px;
+  color: #191919;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 12px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 400px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+  z-index: 1;
+}
+
+.emotion-14:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.emotion-15:before {
+  content: ' ';
+  position: absolute;
+  top: -6px;
+  right: 14px;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.emotion-16 {
+  font-size: 15px;
+  line-height: 19px;
+  padding: 8px;
+}
+
+.emotion-17 {
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-18 {
+  font-size: 15px;
+  line-height: 19px;
+  padding-top: 16px;
+}
+
 <div
     className="emotion-0"
   >
@@ -2463,6 +3075,66 @@ Array [
         >
           Delete
         </button>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <button
+              aria-details="TrainingOptions"
+              aria-label="Training Options"
+              className="emotion-13"
+              type="button"
+            >
+              <svg
+                data-file-name="help.svg"
+                height={20}
+              />
+            </button>
+            <div
+              className="emotion-14"
+              id="TrainingOptions"
+              role="tooltip"
+            >
+              <div
+                className="emotion-15"
+              />
+              <div
+                className="emotion-16"
+              >
+                <h3
+                  className="emotion-17"
+                >
+                  Train Model
+                </h3>
+                Train a model without applying it to your assets.
+                <h3
+                  className="emotion-18"
+                >
+                  Train & Test
+                </h3>
+                Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
+                <h3
+                  className="emotion-18"
+                >
+                  Train & Apply
+                </h3>
+                Train and apply the model to all the assets in the project.
+                <h3
+                  className="emotion-18"
+                >
+                  Delete
+                </h3>
+                Delete a model. This action cannot be undone.
+                <br />
+                <i>
+                  Note: Labels that you added to your assets, either manually or through training, remain attached.
+                </i>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <ModelMatrixLink
@@ -3276,6 +3948,114 @@ Array [
   background-color: #808080;
 }
 
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-11 div {
+  margin-left: 0;
+}
+
+.emotion-11 button {
+  margin-right: 0;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  margin-left: 8px;
+}
+
+.emotion-12:hover div,
+.emotion-12:focus-within div {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-12:hover button,
+.emotion-12:focus-within button {
+  color: #ffffff;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-14 {
+  position: absolute;
+  right: -10px;
+  top: 28px;
+  color: #191919;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 12px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 400px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+  z-index: 1;
+}
+
+.emotion-14:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.emotion-15:before {
+  content: ' ';
+  position: absolute;
+  top: -6px;
+  right: 14px;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.emotion-16 {
+  font-size: 15px;
+  line-height: 19px;
+  padding: 8px;
+}
+
+.emotion-17 {
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-18 {
+  font-size: 15px;
+  line-height: 19px;
+  padding-top: 16px;
+}
+
 <div
     className="emotion-0"
   >
@@ -3371,6 +4151,66 @@ Array [
         >
           Delete
         </button>
+        <div
+          className="emotion-11"
+        >
+          <div
+            className="emotion-12"
+          >
+            <button
+              aria-details="TrainingOptions"
+              aria-label="Training Options"
+              className="emotion-13"
+              type="button"
+            >
+              <svg
+                data-file-name="help.svg"
+                height={20}
+              />
+            </button>
+            <div
+              className="emotion-14"
+              id="TrainingOptions"
+              role="tooltip"
+            >
+              <div
+                className="emotion-15"
+              />
+              <div
+                className="emotion-16"
+              >
+                <h3
+                  className="emotion-17"
+                >
+                  Train Model
+                </h3>
+                Train a model without applying it to your assets.
+                <h3
+                  className="emotion-18"
+                >
+                  Train & Test
+                </h3>
+                Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
+                <h3
+                  className="emotion-18"
+                >
+                  Train & Apply
+                </h3>
+                Train and apply the model to all the assets in the project.
+                <h3
+                  className="emotion-18"
+                >
+                  Delete
+                </h3>
+                Delete a model. This action cannot be undone.
+                <br />
+                <i>
+                  Note: Labels that you added to your assets, either manually or through training, remain attached.
+                </i>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <ModelMatrixLink
