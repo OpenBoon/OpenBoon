@@ -224,7 +224,6 @@ TimelineControls.propTypes = {
     filter: PropTypes.string.isRequired,
     width: PropTypes.number.isRequired,
     timelines: PropTypes.shape({}).isRequired,
-    zoom: PropTypes.number.isRequired,
   }).isRequired,
   setFollowPlayhead: PropTypes.func.isRequired,
 }
