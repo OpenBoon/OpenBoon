@@ -344,7 +344,7 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-cells</artifactId>
-            <version>21.4</version>
+            <version>21.5</version>
         </dependency>
 
         <dependency>
