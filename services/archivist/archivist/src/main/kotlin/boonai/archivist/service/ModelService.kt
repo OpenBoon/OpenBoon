@@ -40,6 +40,9 @@ import boonai.archivist.util.randomString
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
+import com.google.cloud.ServiceOptions
+import com.google.cloud.pubsub.v1.Publisher
+import com.google.pubsub.v1.ProjectTopicName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -72,8 +75,6 @@ interface ModelService {
     fun patchTrainingArgs(model: Model, patch: Map<String, Any>)
     fun getTrainingArgSchema(type: ModelType): ArgSchema
     fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod
-    fun validateTensorflowModel(path: Path)
-    fun validatePyTorchModel(path: Path)
     fun generateModuleName(spec: ModelSpec): String
     fun getModelVersions(model: Model): Set<String>
     fun copyModelTag(model: Model, req: ModelCopyRequest)
@@ -96,6 +97,15 @@ class ModelServiceImpl(
     val dataSetService: DataSetService
 ) : ModelService {
 
+    private val publisher: Publisher
+    private val topicId = "model-events"
+
+    init {
+        val topicName = ProjectTopicName.of(ServiceOptions.getDefaultProjectId(), topicId)
+        publisher = Publisher.newBuilder(topicName).build()
+        logger.info("Initialized Pub/Sub publisher on $topicId topic.")
+    }
+
     override fun generateModuleName(spec: ModelSpec): String {
         return spec.moduleName ?: "${spec.name}"
             .replace(Regex("[\\s\\n\\r\\t]+", RegexOption.MULTILINE), "-")
@@ -116,7 +126,7 @@ class ModelServiceImpl(
         }
 
         val locator = ProjectFileLocator(
-            ProjectStorageEntity.MODELS, id.toString(), "__TAG__", "model.zip"
+            ProjectStorageEntity.MODELS, id.toString(), "__TAG__", spec.type.fileName
         )
 
         argValidationService.validateArgsUnknownOnly("models/${spec.type.name}", spec.trainingArgs)
@@ -335,7 +345,7 @@ class ModelServiceImpl(
     }
 
     override fun setTrainingArgs(model: Model, args: Map<String, Any>) {
-        argValidationService.validateArgs("models/${model.type.name}", args)
+        argValidationService.validateArgs("training/${model.type.name}", args)
         model.trainingArgs = args
     }
 
@@ -348,7 +358,7 @@ class ModelServiceImpl(
     }
 
     override fun getTrainingArgSchema(type: ModelType): ArgSchema {
-        return argValidationService.getArgSchema("models/${type.name}")
+        return argValidationService.getArgSchema("training/${type.name}")
     }
 
     override fun deleteModel(model: Model) {
@@ -412,12 +422,13 @@ class ModelServiceImpl(
             throw IllegalArgumentException("The model type ${model.type} does not support uploads")
         }
 
-        val tmpFile = Files.createTempFile(randomString(32), "model.zip")
+
+        val tmpFile = Files.createTempFile(randomString(32), model.type.fileName)
         Files.copy(inputStream, tmpFile, StandardCopyOption.REPLACE_EXISTING)
 
         try {
 
-            // Now store the model zip
+            // Now store the model file
             val modelFile = ProjectStorageSpec(
                 model.getModelStorageLocator("latest"), mapOf(),
                 FileInputStream(tmpFile.toFile()), Files.size(tmpFile)
@@ -484,7 +495,7 @@ class ModelServiceImpl(
         return files.map { it.split("/")[4] }.toSet()
     }
 
-    override fun validateTensorflowModel(path: Path) {
+    fun validateTensorflowModel(path: Path) {
         val validTensorflowFiles = listOf(
             "labels.txt",
             "saved_model.pb",
@@ -495,14 +506,6 @@ class ModelServiceImpl(
             "variables/variables.index"
         )
         validateModel(path, validTensorflowFiles)
-    }
-
-    override fun validatePyTorchModel(path: Path) {
-        val validTorchFiles = listOf(
-            "model.pth",
-            "labels.txt"
-        )
-        validateModel(path, validTorchFiles)
     }
 
     companion object {

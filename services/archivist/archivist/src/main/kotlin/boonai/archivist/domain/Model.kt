@@ -32,7 +32,8 @@ enum class ModelType(
     val minExamples: Int,
     val dependencies: List<String>,
     val trainable: Boolean,
-    val uploadable: Boolean
+    val uploadable: Boolean,
+    val fileName: String = "model.zip"
 ) {
     KNN_CLASSIFIER(
         "K-Nearest Neighbors Classifier",
@@ -131,12 +132,12 @@ enum class ModelType(
         true,
         false
     ),
-    PYTORCH_UPLOADED_CLASSIFIER(
-        "Imported Pytorch Image Classifier",
+    PYTORCH_MODEL_ARCHIVE(
+        "A Pytorch Model Archive of image_classifier, image_segmenter, object_detector, or text_classifier. ",
         "None",
-        "boonai_analysis.custom.PytorchImageClassifier",
+        "boonai_analysis.custom.PytorchModelArchive",
         null,
-        "Upload a pre-inained Pytorch model to use for image classification.",
+        "Upload a pre-trained Pytorch Model Archive",
         ModelObjective.LABEL_DETECTION,
         Provider.BOONAI,
         true,
@@ -144,7 +145,8 @@ enum class ModelType(
         0,
         listOf(),
         false,
-        true
+        true,
+        "model.mar"
     );
 
     fun asMap(): Map<String, Any> {
@@ -326,7 +328,7 @@ class Model(
         )
     }
     fun getModelStorageLocator(tag: String): ProjectFileLocator {
-        return getModelFileLocator(tag, "model.zip")
+        return getModelFileLocator(tag, type.fileName)
     }
 
     fun getModelVersionStorageLocator(tag: String): ProjectFileLocator {

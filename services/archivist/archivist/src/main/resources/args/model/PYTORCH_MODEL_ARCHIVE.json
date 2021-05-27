@@ -1,0 +1,11 @@
+{
+  "args": {
+    "handler": {
+      "type": "string",
+      "defaultValue": "image_classifier",
+      "description": "The handler type for this model.",
+      "options": ["image_classifier", "object_detector", "image_segmentor", "text_classifier"],
+      "reference": "https://pytorch.org/serve/default_handlers.html"
+    }
+  }
+}
