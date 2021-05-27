@@ -1,5 +1,5 @@
 from boonsdk.entity import Project, ProjectTier
-from boonsdk.util import as_id
+from boonsdk.util import as_id, is_valid_uuid, as_id_collection, as_collection
 from ..entity import IndexSize, Index
 
 __all__ = [
@@ -9,7 +9,8 @@ __all__ = [
 
 class ProjectApp(object):
 
-    def __init__(self, app):
+    def __init__(self, bz, app):
+        self.bz = bz
         self.app = app
 
     def create_project(self, name, tier=ProjectTier.ESSENTIALS, size=IndexSize.SMALL, pid=None):
@@ -35,15 +36,36 @@ class ProjectApp(object):
 
     def get_project(self, pid):
         """
-        Get a project by it's unique Id.
+        Get a project by it's unique Id or name.
 
         Args:
-            pid (str): The project Id.
+            pid (str): The project Id or nam,e
 
         Returns:
             Project
         """
-        return Project(self.app.client.get(f'/api/v1/projects/{pid}'))
+        _id = as_id(pid)
+        if is_valid_uuid(_id):
+            return Project(self.app.client.get(f'/api/v1/projects/{_id}'))
+        else:
+            return self.find_one_project(name=pid)
+
+    def find_one_project(self, id=None, name=None, limit=0):
+        """
+
+        Args:
+            id:
+            name:
+            limit:
+
+        Returns:
+
+        """
+        body = {
+            "ids": as_id_collection(id),
+            "names": as_collection(name)
+        }
+        return Project(self.app.client.post('/api/v1/projects/_findOne', body))
 
     def find_projects(self, limit=0):
         """

@@ -37,7 +37,7 @@ class IndexMappingServiceImpl(
 
     override fun addAllFieldsToIndex(index: IndexRoute) {
         val client = indexRoutingService.getClusterRestClient(index)
-        for (field in fieldDao.getAllByProjectId(getProjectId())) {
+        for (field in fieldDao.getAllByProjectId(index.projectId)) {
             logger.info("Adding field ${field.getPath()} to index ${client.route.indexUrl}")
             addFieldToIndex(field.getPath(), field.type, client)
         }
