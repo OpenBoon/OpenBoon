@@ -50,15 +50,15 @@ class ProjectApp(object):
         else:
             return self.find_one_project(name=pid)
 
-    def find_one_project(self, id=None, name=None, limit=0):
+    def find_one_project(self, id=None, name=None):
         """
+        Find a single project.
 
         Args:
-            id:
-            name:
-            limit:
-
+            id (str): A project Id or list of Ids.
+            name (str): A project name or list of names.
         Returns:
+            Project: The matching project.
 
         """
         body = {
