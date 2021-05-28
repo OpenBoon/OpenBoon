@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -85,6 +85,10 @@ const Timeline = ({ videoRef, length }) => {
     isScrollEmitter: true,
     isScrollListener: true,
   })
+
+  const rulerZoomRef = useRef()
+  const aggregateZoomRef = useRef()
+  const tracksZoomRef = useRef()
 
   return (
     <Resizeable
@@ -257,7 +261,7 @@ const Timeline = ({ videoRef, length }) => {
               <TimelineFilterTracks settings={settings} dispatch={dispatch} />
 
               <div ref={rulerRef} css={{ flex: 1, overflow: 'hidden' }}>
-                <div css={{ width: `${settings.zoom}%` }}>
+                <div ref={rulerZoomRef} css={{ width: `${settings.zoom}%` }}>
                   <TimelineRuler
                     videoRef={videoRef}
                     rulerRef={rulerRef}
@@ -269,6 +273,7 @@ const Timeline = ({ videoRef, length }) => {
             </div>
 
             <TimelineAggregate
+              aggregateZoomRef={aggregateZoomRef}
               videoRef={videoRef}
               length={length}
               timelineHeight={size}
@@ -288,6 +293,7 @@ const Timeline = ({ videoRef, length }) => {
             )}
 
             <TimelineTimelines
+              tracksZoomRef={tracksZoomRef}
               videoRef={videoRef}
               length={length}
               timelines={timelines}
@@ -300,6 +306,9 @@ const Timeline = ({ videoRef, length }) => {
                 width={settings.width}
                 zoom={settings.zoom}
                 rulerRef={rulerRef}
+                rulerZoomRef={rulerZoomRef}
+                aggregateZoomRef={aggregateZoomRef}
+                tracksZoomRef={tracksZoomRef}
               />
             </Feature>
 

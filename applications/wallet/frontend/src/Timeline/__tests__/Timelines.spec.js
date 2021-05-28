@@ -14,6 +14,7 @@ describe('<TimelineTimelines />', () => {
 
     const component = TestRenderer.create(
       <TimelineTimelines
+        tracksZoomRef={{ current: undefined }}
         videoRef={{ current: { duration: 18 } }}
         length={18}
         timelines={timelines}
@@ -52,6 +53,7 @@ describe('<TimelineTimelines />', () => {
 
     const component = TestRenderer.create(
       <TimelineTimelines
+        tracksZoomRef={{ current: undefined }}
         videoRef={{ current: { duration: 18 } }}
         length={18}
         timelines={timelines}

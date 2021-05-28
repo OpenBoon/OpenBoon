@@ -18,6 +18,9 @@ let pointerToRightEdgeDiff
 const TimelineScrollbarHandle = ({
   scrollbarRef,
   scrollbarTrackRef,
+  rulerZoomRef,
+  aggregateZoomRef,
+  tracksZoomRef,
   isLeft,
 }) => {
   /* istanbul ignore next */
@@ -72,6 +75,12 @@ const TimelineScrollbarHandle = ({
     /* eslint-disable no-param-reassign */
     scrollbarRef.current.style.width = `${clampedWidth}px`
     scrollbarRef.current.style.left = `${newOffsetLeft}px`
+
+    const newZoom = (1 / (clampedWidth / maxWidth)) * 100
+
+    rulerZoomRef.current.style.width = `${newZoom}%`
+    aggregateZoomRef.current.style.width = `${newZoom}%`
+    tracksZoomRef.current.style.width = `${newZoom}%`
   }
 
   /* istanbul ignore next */
@@ -86,18 +95,14 @@ const TimelineScrollbarHandle = ({
 
     scrollbarOffsetLeft = scrollbarRef.current?.offsetLeft
 
-    const {
-      width: sbWidth = 0,
-      right: sbRight = 0,
-    } = scrollbarRef.current?.getBoundingClientRect()
+    const { width: sbWidth = 0, right: sbRight = 0 } =
+      scrollbarRef.current?.getBoundingClientRect()
 
     scrollbarWidth = sbWidth
     scrollbarRight = sbRight
 
-    const {
-      width: trackWidth = 0,
-      right: trackRight = 0,
-    } = scrollbarTrackRef.current?.getBoundingClientRect()
+    const { width: trackWidth = 0, right: trackRight = 0 } =
+      scrollbarTrackRef.current?.getBoundingClientRect()
 
     scrollbarTrackWidth = trackWidth
     maxScrollbarRight = trackRight - SCROLLBAR_TRACK_MARGIN_WIDTH
@@ -115,11 +120,10 @@ const TimelineScrollbarHandle = ({
         backgroundColor: colors.structure.steel,
         width: SCROLLBAR_RESIZE_HANDLE_SIZE,
         border: 0,
-        [isLeft ? 'borderTopLeftRadius' : 'borderTopRightRadius']: constants
-          .borderRadius.medium,
-        [isLeft
-          ? 'borderBottomLeftRadius'
-          : 'borderBottomRightRadius']: constants.borderRadius.medium,
+        [isLeft ? 'borderTopLeftRadius' : 'borderTopRightRadius']:
+          constants.borderRadius.medium,
+        [isLeft ? 'borderBottomLeftRadius' : 'borderBottomRightRadius']:
+          constants.borderRadius.medium,
         ':hover, :active': { backgroundColor: colors.structure.pebble },
       }}
       onMouseDown={handleMouseDown}
@@ -140,6 +144,27 @@ TimelineScrollbarHandle.propTypes = {
   scrollbarTrackRef: PropTypes.shape({
     current: PropTypes.shape({
       getBoundingClientRect: PropTypes.func.isRequired,
+    }),
+  }).isRequired,
+  rulerZoomRef: PropTypes.shape({
+    current: PropTypes.shape({
+      style: PropTypes.shape({
+        width: PropTypes.string,
+      }),
+    }),
+  }).isRequired,
+  aggregateZoomRef: PropTypes.shape({
+    current: PropTypes.shape({
+      style: PropTypes.shape({
+        width: PropTypes.string,
+      }),
+    }),
+  }).isRequired,
+  tracksZoomRef: PropTypes.shape({
+    current: PropTypes.shape({
+      style: PropTypes.shape({
+        width: PropTypes.string,
+      }),
     }),
   }).isRequired,
   isLeft: PropTypes.bool.isRequired,

@@ -8,7 +8,14 @@ import TimelineScrollbarHandle from './ScrollbarHandle'
 
 import { SCROLLBAR_CONTAINER_HEIGHT } from './helpers'
 
-const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
+const TimelineScrollbar = ({
+  width,
+  zoom,
+  rulerRef,
+  rulerZoomRef,
+  aggregateZoomRef,
+  tracksZoomRef,
+}) => {
   const scrollbarTrackRef = useRef()
   const scrollbarRef = useRef()
 
@@ -63,6 +70,9 @@ const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
             <TimelineScrollbarHandle
               scrollbarRef={scrollbarRef}
               scrollbarTrackRef={scrollbarTrackRef}
+              rulerZoomRef={rulerZoomRef}
+              aggregateZoomRef={aggregateZoomRef}
+              tracksZoomRef={tracksZoomRef}
               isLeft
             />
             <TimelineScrollbarThumb
@@ -73,6 +83,9 @@ const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
             <TimelineScrollbarHandle
               scrollbarRef={scrollbarRef}
               scrollbarTrackRef={scrollbarTrackRef}
+              rulerZoomRef={rulerZoomRef}
+              aggregateZoomRef={aggregateZoomRef}
+              tracksZoomRef={tracksZoomRef}
               isLeft={false}
             />
           </div>
@@ -89,6 +102,27 @@ TimelineScrollbar.propTypes = {
     current: PropTypes.shape({
       offsetWidth: PropTypes.number,
       scrollWidth: PropTypes.number,
+    }),
+  }).isRequired,
+  rulerZoomRef: PropTypes.shape({
+    current: PropTypes.shape({
+      style: PropTypes.shape({
+        width: PropTypes.string,
+      }),
+    }),
+  }).isRequired,
+  aggregateZoomRef: PropTypes.shape({
+    current: PropTypes.shape({
+      style: PropTypes.shape({
+        width: PropTypes.string,
+      }),
+    }),
+  }).isRequired,
+  tracksZoomRef: PropTypes.shape({
+    current: PropTypes.shape({
+      style: PropTypes.shape({
+        width: PropTypes.string,
+      }),
     }),
   }).isRequired,
 }
