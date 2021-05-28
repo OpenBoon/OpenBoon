@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
-import useClipboard from 'react-use-clipboard'
 
 import { typography } from '../Styles'
 
@@ -18,9 +17,6 @@ const MetadataPrettyLabelsMenu = ({
     pathname,
     query: { projectId, id, assetId, query },
   } = useRouter()
-
-  const [, copySimhash] = useClipboard(simhash)
-  const [, copyModelId] = useClipboard(modelId)
 
   return (
     <Menu open="bottom-left" button={ButtonActions}>
@@ -54,26 +50,30 @@ const MetadataPrettyLabelsMenu = ({
                 Add Model/Label Filter
               </Button>
             </li>
+
             <li>
               <Button
                 variant={VARIANTS.MENU_ITEM}
                 onBlur={onBlur}
-                onClick={() => {
+                onClick={async () => {
+                  await navigator.clipboard.writeText(modelId)
+
                   onClick()
-                  copyModelId()
                 }}
               >
                 Copy Model ID
               </Button>
             </li>
+
             {simhash && (
               <li>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
                   onBlur={onBlur}
-                  onClick={() => {
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(simhash)
+
                     onClick()
-                    copySimhash()
                   }}
                 >
                   Copy Simhash

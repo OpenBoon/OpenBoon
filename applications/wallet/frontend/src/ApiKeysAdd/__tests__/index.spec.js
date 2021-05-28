@@ -10,8 +10,6 @@ import ApiKeysAdd from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
-jest.mock('../../Copy/helpers')
-
 const noop = () => () => {}
 
 describe('<ApiKeysAdd />', () => {
@@ -25,9 +23,9 @@ describe('<ApiKeysAdd />', () => {
       data: permissions,
     })
 
-    const mockOnCopy = jest.fn()
+    const mockCopyFn = jest.fn()
 
-    require('../../Copy/helpers').__setMockOnCopy(mockOnCopy)
+    window.navigator.clipboard.writeText = mockCopyFn
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
@@ -65,14 +63,7 @@ describe('<ApiKeysAdd />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Copy Key to clipboard
-    act(() => {
-      component.root
-        .findByProps({ children: 'Copy Key' })
-        .props.onClick({ preventDefault: noop })
-    })
-
-    expect(mockOnCopy).toHaveBeenCalledWith({ copyRef: { current: null } })
+    expect(mockCopyFn).toHaveBeenCalledWith(JSON.stringify(apiKey))
 
     // Reset form
     act(() => {

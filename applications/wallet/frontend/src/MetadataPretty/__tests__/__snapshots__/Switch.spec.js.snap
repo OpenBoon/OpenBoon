@@ -80,7 +80,6 @@ Array [
   .emotion-0 {
   padding: 8px 16px;
   padding-bottom: 0;
-  min-height: 20px;
   width: 100%;
   font-family: Roboto Condensed;
   text-transform: uppercase;
@@ -104,6 +103,10 @@ Array [
   color: #b3b3b3;
 }
 
+.emotion-1 svg {
+  opacity: 0;
+}
+
 .emotion-1:hover {
   background-color: #0074f538;
   color: #ffffff;
@@ -120,9 +123,7 @@ Array [
 }
 
 .emotion-3 {
-  min-width: 36px;
-  padding-top: 12px;
-  padding-right: 16px;
+  position: relative;
 }
 
 .emotion-4 {
@@ -154,7 +155,6 @@ Array [
   cursor: pointer;
   color: #808080;
   background-color: transparent;
-  padding: 0;
 }
 
 .emotion-4:hover,
@@ -176,10 +176,6 @@ Array [
   color: #808080;
 }
 
-.emotion-4 svg {
-  opacity: 0;
-}
-
 <div
     className="emotion-0"
   >
@@ -195,9 +191,10 @@ Array [
         className="emotion-3"
       >
         <button
+          aria-label="Copy Content to Clipboard"
           className="emotion-4"
           onClick={[Function]}
-          title="Copy to Clipboard"
+          title="Copy Content to Clipboard"
           type="button"
         >
           <svg
@@ -748,6 +745,10 @@ Array [
   padding-top: 0;
 }
 
+.emotion-0 svg {
+  opacity: 0;
+}
+
 .emotion-0:hover {
   background-color: #0074f538;
 }
@@ -761,20 +762,25 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-2 {
-  min-height: 20px;
   width: 100%;
   font-family: Roboto Condensed;
   text-transform: uppercase;
   color: #808080;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 16px;
   padding-bottom: 8px;
 }
 
 .emotion-3 {
+  position: relative;
+}
+
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -803,33 +809,28 @@ Array [
   cursor: pointer;
   color: #808080;
   background-color: transparent;
-  padding: 0;
 }
 
-.emotion-3:hover,
-.emotion-3.focus-visible:focus,
-.emotion-3 .noop {
+.emotion-4:hover,
+.emotion-4.focus-visible:focus,
+.emotion-4 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg,
-.emotion-3 .noop svg {
+.emotion-4:hover svg,
+.emotion-4.focus-visible:focus svg,
+.emotion-4 .noop svg {
   opacity: 1;
 }
 
-.emotion-3[aria-disabled=true],
-.emotion-3 .noop {
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
   color: #808080;
 }
 
-.emotion-3 svg {
-  opacity: 0;
-}
-
-.emotion-4 {
+.emotion-5 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -852,26 +853,31 @@ Array [
       >
         tags
       </div>
-      <button
+      <div
         className="emotion-3"
-        onClick={[Function]}
-        title="Copy to Clipboard"
-        type="button"
       >
-        <svg
-          data-file-name="copy.svg"
-          height={20}
-        />
-      </button>
+        <button
+          aria-label="Copy Tags to Clipboard"
+          className="emotion-4"
+          onClick={[Function]}
+          title="Copy Tags to Clipboard"
+          type="button"
+        >
+          <svg
+            data-file-name="copy.svg"
+            height={20}
+          />
+        </button>
+      </div>
     </div>
     <div>
       <span
-        className="emotion-4"
+        className="emotion-5"
       >
         frog
       </span>
       <span
-        className="emotion-4"
+        className="emotion-5"
       >
         banana
       </span>
@@ -961,6 +967,11 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  color: #808080;
+}
+
+.emotion-0 svg {
+  opacity: 0;
 }
 
 .emotion-0:not(:first-of-type) {
@@ -969,19 +980,15 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
 
 .emotion-0:hover {
   background-color: #0074f538;
-}
-
-.emotion-0:hover div {
   color: #ffffff;
 }
 
-.emotion-0:hover div svg {
+.emotion-0:hover svg {
   opacity: 1;
 }
 
 .emotion-1 {
   font-family: Roboto Condensed;
-  color: #808080;
   padding: 12px;
   padding-left: 16px;
   padding-right: 8px;
@@ -1003,13 +1010,22 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
 }
 
 .emotion-3 {
-  width: 36px;
-  padding-top: 12px;
-  padding-left: 8px;
-  padding-right: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-right: 8px;
 }
 
 .emotion-4 {
+  position: relative;
+}
+
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1038,30 +1054,25 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   cursor: pointer;
   color: #808080;
   background-color: transparent;
-  padding: 0;
 }
 
-.emotion-4:hover,
-.emotion-4.focus-visible:focus,
-.emotion-4 .noop {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-4:hover svg,
-.emotion-4.focus-visible:focus svg,
-.emotion-4 .noop svg {
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg,
+.emotion-5 .noop svg {
   opacity: 1;
 }
 
-.emotion-4[aria-disabled=true],
-.emotion-4 .noop {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #808080;
-}
-
-.emotion-4 svg {
-  opacity: 0;
 }
 
 <div
@@ -1085,17 +1096,22 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   <div
     className="emotion-3"
   >
-    <button
+    <div
       className="emotion-4"
-      onClick={[Function]}
-      title="Copy to Clipboard"
-      type="button"
     >
-      <svg
-        data-file-name="copy.svg"
-        height={20}
-      />
-    </button>
+      <button
+        aria-label="Copy Value to Clipboard"
+        className="emotion-5"
+        onClick={[Function]}
+        title="Copy Value to Clipboard"
+        type="button"
+      >
+        <svg
+          data-file-name="copy.svg"
+          height={20}
+        />
+      </button>
+    </div>
   </div>
 </div>
 `;
@@ -1106,6 +1122,11 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  color: #808080;
+}
+
+.emotion-0 svg {
+  opacity: 0;
 }
 
 .emotion-0:not(:first-of-type) {
@@ -1114,19 +1135,15 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
 
 .emotion-0:hover {
   background-color: #0074f538;
-}
-
-.emotion-0:hover div {
   color: #ffffff;
 }
 
-.emotion-0:hover div svg {
+.emotion-0:hover svg {
   opacity: 1;
 }
 
 .emotion-1 {
   font-family: Roboto Condensed;
-  color: #808080;
   padding: 12px;
   padding-left: 16px;
   padding-right: 8px;
@@ -1148,13 +1165,22 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
 }
 
 .emotion-3 {
-  width: 36px;
-  padding-top: 12px;
-  padding-left: 8px;
-  padding-right: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-right: 8px;
 }
 
 .emotion-4 {
+  position: relative;
+}
+
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1183,30 +1209,25 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   cursor: pointer;
   color: #808080;
   background-color: transparent;
-  padding: 0;
 }
 
-.emotion-4:hover,
-.emotion-4.focus-visible:focus,
-.emotion-4 .noop {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-4:hover svg,
-.emotion-4.focus-visible:focus svg,
-.emotion-4 .noop svg {
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg,
+.emotion-5 .noop svg {
   opacity: 1;
 }
 
-.emotion-4[aria-disabled=true],
-.emotion-4 .noop {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #808080;
-}
-
-.emotion-4 svg {
-  opacity: 0;
 }
 
 <div
@@ -1230,17 +1251,22 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   <div
     className="emotion-3"
   >
-    <button
+    <div
       className="emotion-4"
-      onClick={[Function]}
-      title="Copy to Clipboard"
-      type="button"
     >
-      <svg
-        data-file-name="copy.svg"
-        height={20}
-      />
-    </button>
+      <button
+        aria-label="Copy Value to Clipboard"
+        className="emotion-5"
+        onClick={[Function]}
+        title="Copy Value to Clipboard"
+        type="button"
+      >
+        <svg
+          data-file-name="copy.svg"
+          height={20}
+        />
+      </button>
+    </div>
   </div>
 </div>
 `;
@@ -1291,7 +1317,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
 .emotion-3 {
   padding: 8px 16px;
   padding-bottom: 0;
-  min-height: 20px;
   width: 100%;
   font-family: Roboto Condensed;
   text-transform: uppercase;
@@ -1307,6 +1332,17 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
+  padding-left: 16px;
+  padding-right: 12px;
+}
+
+.emotion-5 svg {
+  opacity: 0;
 }
 
 .emotion-5:hover {
@@ -1318,7 +1354,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
 }
 
 .emotion-6 {
-  padding: 12px 16px;
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -1328,9 +1363,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
 }
 
 .emotion-7 {
-  min-width: 36px;
-  padding-top: 12px;
-  padding-right: 16px;
+  position: relative;
 }
 
 .emotion-8 {
@@ -1362,7 +1395,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   cursor: pointer;
   color: #808080;
   background-color: transparent;
-  padding: 0;
 }
 
 .emotion-8:hover,
@@ -1382,10 +1414,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
 .emotion-8[aria-disabled=true],
 .emotion-8 .noop {
   color: #808080;
-}
-
-.emotion-8 svg {
-  opacity: 0;
 }
 
 .emotion-9 {
@@ -1622,9 +1650,10 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
         className="emotion-7"
       >
         <button
+          aria-label="Copy Simhash to Clipboard"
           className="emotion-8"
           onClick={[Function]}
-          title="Copy to Clipboard"
+          title="Copy Simhash to Clipboard"
           type="button"
         >
           <svg
@@ -1898,7 +1927,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
 .emotion-3 {
   padding: 8px 16px;
   padding-bottom: 0;
-  min-height: 20px;
   width: 100%;
   font-family: Roboto Condensed;
   text-transform: uppercase;
@@ -1914,6 +1942,17 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
+  padding-left: 16px;
+  padding-right: 12px;
+}
+
+.emotion-5 svg {
+  opacity: 0;
 }
 
 .emotion-5:hover {
@@ -1925,7 +1964,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
 }
 
 .emotion-6 {
-  padding: 12px 16px;
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -1935,9 +1973,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
 }
 
 .emotion-7 {
-  min-width: 36px;
-  padding-top: 12px;
-  padding-right: 16px;
+  position: relative;
 }
 
 .emotion-8 {
@@ -1969,7 +2005,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
   cursor: pointer;
   color: #808080;
   background-color: transparent;
-  padding: 0;
 }
 
 .emotion-8:hover,
@@ -1989,10 +2024,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
 .emotion-8[aria-disabled=true],
 .emotion-8 .noop {
   color: #808080;
-}
-
-.emotion-8 svg {
-  opacity: 0;
 }
 
 <div
@@ -2031,9 +2062,10 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
         className="emotion-7"
       >
         <button
+          aria-label="Copy Simhash to Clipboard"
           className="emotion-8"
           onClick={[Function]}
-          title="Copy to Clipboard"
+          title="Copy Simhash to Clipboard"
           type="button"
         >
           <svg
