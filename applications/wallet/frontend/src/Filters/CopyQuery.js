@@ -1,11 +1,9 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-import useClipboard from 'react-use-clipboard'
 
-import CopySvg from '../Icons/copy.svg'
-import CheckmarkSvg from '../Icons/checkmark.svg'
+import { spacing } from '../Styles'
 
-import { spacing, constants, colors } from '../Styles'
+import ButtonCopy from '../Button/Copy'
 
 import { cleanup } from './helpers'
 
@@ -26,37 +24,21 @@ const FiltersCopyQuery = () => {
     },
   )
 
-  const [isCopied, setCopied] = useClipboard(JSON.stringify(results), {
-    successDuration: 1000,
-  })
-
   return (
-    <button
-      type="button"
-      aria-label="Copy Search Query"
-      title="Copy Search Query"
-      onClick={setCopied}
+    <div
       css={{
-        paddingLeft: spacing.moderate,
-        paddingRight: spacing.moderate,
-        margin: 0,
-        border: 'none',
-        borderRadius: constants.borderRadius.small,
-        backgroundColor: colors.structure.transparent,
-        color: colors.structure.steel,
-        ':hover, &.focus-visible:focus': {
-          cursor: 'pointer',
-          backgroundColor: colors.structure.mattGrey,
-          color: colors.structure.white,
-        },
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: spacing.small,
       }}
     >
-      {isCopied ? (
-        <CheckmarkSvg height={constants.icons.regular} color={colors.key.one} />
-      ) : (
-        <CopySvg height={constants.icons.regular} />
-      )}
-    </button>
+      <ButtonCopy
+        title="Search Query"
+        value={JSON.stringify(results)}
+        offset={100}
+      />
+    </div>
   )
 }
 

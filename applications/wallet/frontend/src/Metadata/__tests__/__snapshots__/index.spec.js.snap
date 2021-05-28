@@ -36,13 +36,15 @@ Array [
   min-height: -moz-fit-content;
   min-height: fit-content;
   border-bottom: 1px solid #3b3b3b;
+  color: #808080;
+}
+
+.emotion-0 svg {
+  opacity: 0;
 }
 
 .emotion-0:hover {
   background-color: #0074f538;
-}
-
-.emotion-0:hover div {
   color: #ffffff;
 }
 
@@ -52,7 +54,6 @@ Array [
 
 .emotion-1 {
   font-family: Roboto Condensed;
-  color: #808080;
   padding: 16px;
   padding-right: 8px;
 }
@@ -71,12 +72,22 @@ Array [
 }
 
 .emotion-3 {
-  width: 36px;
-  padding: 16px;
-  padding-left: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-right: 8px;
 }
 
 .emotion-4 {
+  position: relative;
+}
+
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -105,30 +116,25 @@ Array [
   cursor: pointer;
   color: #808080;
   background-color: transparent;
-  padding: 0;
 }
 
-.emotion-4:hover,
-.emotion-4.focus-visible:focus,
-.emotion-4 .noop {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-4:hover svg,
-.emotion-4.focus-visible:focus svg,
-.emotion-4 .noop svg {
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg,
+.emotion-5 .noop svg {
   opacity: 1;
 }
 
-.emotion-4[aria-disabled=true],
-.emotion-4 .noop {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #808080;
-}
-
-.emotion-4 svg {
-  opacity: 0;
 }
 
 <div
@@ -148,17 +154,22 @@ Array [
     <div
       className="emotion-3"
     >
-      <button
+      <div
         className="emotion-4"
-        onClick={[Function]}
-        title="Copy to Clipboard"
-        type="button"
       >
-        <svg
-          data-file-name="copy.svg"
-          height={20}
-        />
-      </button>
+        <button
+          aria-label="Copy Asset ID to Clipboard"
+          className="emotion-5"
+          onClick={[Function]}
+          title="Copy Asset ID to Clipboard"
+          type="button"
+        >
+          <svg
+            data-file-name="copy.svg"
+            height={20}
+          />
+        </button>
+      </div>
     </div>
   </div>,
   .emotion-0 {
@@ -1105,13 +1116,15 @@ Array [
   min-height: -moz-fit-content;
   min-height: fit-content;
   border-bottom: 1px solid #3b3b3b;
+  color: #808080;
+}
+
+.emotion-0 svg {
+  opacity: 0;
 }
 
 .emotion-0:hover {
   background-color: #0074f538;
-}
-
-.emotion-0:hover div {
   color: #ffffff;
 }
 
@@ -1121,7 +1134,6 @@ Array [
 
 .emotion-1 {
   font-family: Roboto Condensed;
-  color: #808080;
   padding: 16px;
   padding-right: 8px;
 }
@@ -1140,12 +1152,22 @@ Array [
 }
 
 .emotion-3 {
-  width: 36px;
-  padding: 16px;
-  padding-left: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-right: 8px;
 }
 
 .emotion-4 {
+  position: relative;
+}
+
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1174,30 +1196,25 @@ Array [
   cursor: pointer;
   color: #808080;
   background-color: transparent;
-  padding: 0;
 }
 
-.emotion-4:hover,
-.emotion-4.focus-visible:focus,
-.emotion-4 .noop {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-4:hover svg,
-.emotion-4.focus-visible:focus svg,
-.emotion-4 .noop svg {
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg,
+.emotion-5 .noop svg {
   opacity: 1;
 }
 
-.emotion-4[aria-disabled=true],
-.emotion-4 .noop {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #808080;
-}
-
-.emotion-4 svg {
-  opacity: 0;
 }
 
 <div
@@ -1217,17 +1234,22 @@ Array [
     <div
       className="emotion-3"
     >
-      <button
+      <div
         className="emotion-4"
-        onClick={[Function]}
-        title="Copy to Clipboard"
-        type="button"
       >
-        <svg
-          data-file-name="copy.svg"
-          height={20}
-        />
-      </button>
+        <button
+          aria-label="Copy Asset ID to Clipboard"
+          className="emotion-5"
+          onClick={[Function]}
+          title="Copy Asset ID to Clipboard"
+          type="button"
+        >
+          <svg
+            data-file-name="copy.svg"
+            height={20}
+          />
+        </button>
+      </div>
     </div>
   </div>,
   .emotion-0 {
