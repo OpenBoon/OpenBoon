@@ -263,4 +263,19 @@ class FileStorageControllerTests : MockMvcTest() {
             .andExpect(jsonPath("$.size", CoreMatchers.equalTo(97221)))
             .andReturn()
     }
+
+    @Test
+    fun testGetCloudStorageLocation() {
+        val entity = ProjectStorageEntity.MODELS
+        val modelId = "123"
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/files/_locate/$entity/$modelId")
+                .headers(job())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$", CoreMatchers.equalTo("s3://project-storage-test/projects/00000000-0000-0000-0000-000000000000/models/123")))
+            .andReturn()
+    }
 }
