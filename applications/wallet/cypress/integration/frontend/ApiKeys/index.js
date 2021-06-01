@@ -1,5 +1,5 @@
 describe('Api Keys', function () {
-  it('can be created and deleted', function () {
+  it.skip('can be created and deleted', function () {
     const apiKeyName = `cypress-frontend-${Date.now()}`
 
     cy.login()
@@ -32,8 +32,7 @@ describe('Api Keys', function () {
 
     cy.contains('Delete Permanently').click()
 
-    // TODO: uncomment me after this MR has been merged
-    // cy.contains('API Key deleted.')
+    cy.contains('API Key deleted.')
 
     cy.contains(apiKeyName).should('not.exist')
   })
