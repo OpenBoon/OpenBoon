@@ -1,6 +1,10 @@
 package boonai.archivist.rest
 
-import boonai.archivist.domain.*
+import boonai.archivist.domain.ProjectDirLocator
+import boonai.archivist.domain.ProjectStorageEntity
+import boonai.archivist.domain.ProjectStorageRequest
+import boonai.archivist.domain.ProjectStorageSpec
+import boonai.archivist.domain.ProjectFileLocator
 import boonai.archivist.service.AssetService
 import boonai.archivist.service.ModelService
 import boonai.archivist.storage.ProjectStorageService
