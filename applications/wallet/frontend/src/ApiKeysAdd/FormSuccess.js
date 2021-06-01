@@ -21,8 +21,13 @@ const ApiKeysAddFormSuccess = ({
 }) => {
   useEffect(() => {
     const copy = async () => {
-      await navigator.clipboard.writeText(JSON.stringify(apikey))
+      try {
+        await navigator.clipboard.writeText(JSON.stringify(apikey))
+      } catch (e) {
+        // ignore
+      }
     }
+
     copy()
   }, [apikey])
 
