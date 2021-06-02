@@ -27,7 +27,8 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
 
         session = AutomlLabelDetectionSession(self.model)
         dataset = session._create_automl_dataset()
-        self.assertEquals("projects/123456/locations/us-central1/datasets/ICN123456789123456789", dataset.name)
+        self.assertEquals("projects/123456/locations/us-central1/datasets/ICN123456789123456789"
+                          , dataset.name)
 
     @patch.object(AutomlLabelDetectionSession, '_create_automl_dataset')
     @patch("google.cloud.automl.AutoMlClient")
