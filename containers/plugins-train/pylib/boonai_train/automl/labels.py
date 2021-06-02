@@ -27,7 +27,7 @@ class AutomlLabelDetectionSession:
 
         self.app = boonsdk.app_from_env()
         self.client = automl.AutoMlClient()
-        self.project_location = self.client.location_path(get_gcp_project_id(), "us-central1")
+        self.project_location = f"projects/{get_gcp_project_id()}/locations/us-central1"
         # Can only be 32 chars
         self.display_name = self.model.id.replace("-", "")
 
@@ -40,11 +40,12 @@ class AutomlLabelDetectionSession:
         Returns:
             dict: A Boon AI AutoML session.
         """
+
         dataset = self._create_automl_dataset()
+
         self._import_images_into_dataset(dataset)
 
-        op_name = self._train_automl_model()
-        return self._create_automl_session(dataset, op_name)
+        return self._train_automl_model()
 
     def _train_automl_model(self, dataset):
         """
@@ -56,42 +57,46 @@ class AutomlLabelDetectionSession:
         Returns:
             str: The training job name.
         """
+
+        self.model_name = '{}_model'.format(self.display_name)
+
         # Leave model unset to use the default base model provided by Google
         # train_budget_milli_node_hours: The actual train_cost will be equal or
         # less than this value.
         # https://cloud.google.com/automl/docs/reference/rpc/google.cloud.automl.v1#imageclassificationmodelmetadata
         metadata = automl.types.ImageClassificationModelMetadata(
-            train_budget_milli_node_hours=24000
+            train_budget_milli_node_hours=24000,
+            model_type="mobile-low-latency-1"
         )
-        model = automl.types.Model(
-            display_name=self.display_name,
+        automl_model_request = automl.types.Model(
+            display_name=self.model_name,
             dataset_id=dataset.name,
             image_classification_model_metadata=metadata,
         )
 
+        self.emit_status(f'Training AutoML exportable Model {self.model_name}')
+
         # Create a model with the model metadata in the region.
-        response = self.client.create_model(self.project_location, model)
+        automl_model = self.client.create_model(parent=self.project_location, model=automl_model_request).result()
+        self._export_model(automl_model)
 
-        export_model_location = self.app.filestorage.get_cloud_location("models", self.model.id,
-                                                                        "export", "model.tflite")
+        return automl_model
 
-        self._export_model(export_model_location, model.name)
+    def _export_model(self, automl_model):
+        export_model_location = file_storage.projects.get_directory_location('models', self.model.id)
+        gcs_destination = automl.GcsDestination(output_uri_prefix=export_model_location)
+        output_config = automl.ModelExportOutputConfig(gcs_destination=gcs_destination, model_format="tflite")
+        request = automl.ExportModelRequest(name=automl_model.name, output_config=output_config)
 
-        return response.operation.name
-
-    def _export_model(self, model_location, model_name):
-
-        output_config = automl.ModelExportOutputConfig(gcs_destination=model_location,
-                                                       model_format="tflite")
-        request = automl.ExportModelRequest(name=model_name, output_config=output_config)
-        self.client.export_model(request=request)
+        self.emit_status(f'Exporting Model {self.model.name} to {gcs_destination}')
+        self.client.export_model(request=request).result()
 
     def _create_automl_dataset(self):
         """
         Create a new Google AutoML dataset. The DataSet is empty at this point.
 
         Returns:
-            DataSet: A google AutoML dataset istance.
+            DataSet: A google AutoML dataset instance.
         """
         self.emit_status(f'Creating AutoML DataSet {self.display_name}')
 
@@ -102,7 +107,7 @@ class AutomlLabelDetectionSession:
             display_name=self.display_name,
             image_classification_dataset_metadata=metadata,
         )
-        rsp = self.client.create_dataset(self.project_location, spec)
+        rsp = self.client.create_dataset(parent=self.project_location, dataset=spec)
         return rsp.result()
 
     def _import_images_into_dataset(self, dataset):
@@ -133,7 +138,7 @@ class AutomlLabelDetectionSession:
         """
         self.emit_status(f'Building labels file for {self.display_name}')
 
-        csv_file = tempfile.mkstemp(".csv")
+        _, csv_file = tempfile.mkstemp(".csv")
         query = self.model.get_label_search()
 
         with open(csv_file, "w") as fp:
@@ -199,25 +204,6 @@ class AutomlLabelDetectionSession:
             if ds_label.get('modelId') == self.model.id:
                 return ds_label
         return None
-
-    def _create_automl_session(self, dataset, op_name):
-        """
-        Registers the dataset and training job op with the
-        Archivist.
-
-        Args:
-            dataset (DataSet): The AutoML Dataset
-            op_name (str): The training job op.
-
-        Returns:
-
-        """
-        self.emit_status(f'Registering training op {op_name}')
-        body = {
-            "automlDataSet": dataset.name,
-            "automlTrainingJob": op_name
-        }
-        return self.app.client.post(f'/api/v1/models/{self.model.id}/_automl', body)
 
     def emit_status(self, msg):
         """

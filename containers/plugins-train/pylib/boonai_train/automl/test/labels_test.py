@@ -1,6 +1,6 @@
 import logging
-from unittest.mock import patch
 
+from unittest.mock import patch
 from boonsdk import Model
 from boonai_train.automl.labels import AutomlLabelDetectionSession
 from boonflow import file_storage
@@ -18,34 +18,30 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
         })
 
     @patch("google.cloud.automl.AutoMlClient")
+    @patch.object(AutomlLabelDetectionSession, '_create_automl_dataset')
     @patch('boonai_train.automl.labels.get_gcp_project_id')
-    def test_create_instance(self, get_proj_patch, client_patch):
-        client_patch.return_value = MockAutoMlClient
-        get_proj_patch.return_value = "boonai-dev"
-
-        dsimp = AutomlLabelDetectionSession(self.model)
-        self.assertEquals('projects/boonai-dev/locations/us-central1', dsimp.project_location)
-
-    @patch("google.cloud.automl.AutoMlClient")
-    @patch('boonai_train.automl.labels.get_gcp_project_id')
-    def test_create_automl_dataset(self, get_proj_patch, client_patch):
-        client_patch.return_value = MockAutoMlClient
-        get_proj_patch.return_value = "boonai-dev"
+    def test_create_automl_dataset(self, get_proj_patch, client_patch, automlclient):
+        client_patch.return_value = MockAutoMlDataset()
+        get_proj_patch.return_value = MockAutoMlClient()
+        automlclient.return_value = None
 
         session = AutomlLabelDetectionSession(self.model)
         dataset = session._create_automl_dataset()
-        self.assertEquals("test", dataset.name)
+        self.assertEquals("projects/123456/locations/us-central1/datasets/ICN123456789123456789", dataset.name)
 
+    @patch.object(AutomlLabelDetectionSession, '_create_automl_dataset')
     @patch("google.cloud.automl.AutoMlClient")
     @patch.object(AutomlLabelDetectionSession, '_store_labels_file')
     @patch('boonai_train.automl.labels.get_gcp_project_id')
     def test_import_labels_into_dataset(self,
                                         get_proj_patch,
                                         store_labels_patch,
-                                        client_patch):
+                                        client_patch,
+                                        dataset_patch):
         get_proj_patch.return_value = "boonai-dev"
         store_labels_patch.return_value = "gs://foo/bar/labels.csv"
         client_patch.return_value = MockAutoMlClient
+        dataset_patch.return_value = MockAutoMlDataset()
 
         session = AutomlLabelDetectionSession(self.model)
         dataset = session._create_automl_dataset()
@@ -98,6 +94,26 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
     def test_store_labels_file(self):
         pass
 
+    @patch("google.cloud.automl.AutoMlClient.export_model.result")
+    @patch.object(AutomlLabelDetectionSession, 'emit_status')
+    @patch('boonai_train.automl.labels.get_gcp_project_id')
+    @patch("google.cloud.automl.AutoMlClient")
+    @patch.object(file_storage.projects, 'get_directory_location')
+    def test_export_model(self, directory_loc_patch,
+                          automl_patch,
+                          project_id_patch,
+                          emit_status_patch,
+                          export_patch):
+        directory_loc_patch.return_value = 'cloud/location/directory/path'
+        automl_patch.return_value = MockAutoMlClient()
+        project_id_patch.return_value = "boonai-dev"
+        emit_status_patch.return_value = None
+        export_patch.return_value = None
+
+        automl_model = MockAutoMlModel()
+        mock_automl = AutomlLabelDetectionSession(self.model)
+        mock_automl._export_model(automl_model)
+
 
 class MockAutoMlClient:
 
@@ -105,10 +121,29 @@ class MockAutoMlClient:
         return 'projects/boonai-dev/locations/us-central1'
 
     def create_dataset(self, *args):
-        return MockCreateDataSetResult()
+        return Result()
 
     def import_data(self, *args):
         return MockImportDataResult()
+
+    def export_model(self, request=None):
+        return Result()
+
+
+class MockAutoMlDataset:
+
+    def __init__(self):
+        self.name = "projects/123456/locations/us-central1/datasets/ICN123456789123456789"
+        self.display_name = "dataset_name"
+        self.example_count = 20
+
+
+class MockAutoMlModel:
+
+    def __init__(self):
+        self.name = "projects/123456/locations/us-central1/models/ICN987654321"
+        self.display_name = "model_exportable"
+        self.dataset_id = "ICN123456789123456789"
 
 
 class MockImportDataResult:
@@ -116,7 +151,7 @@ class MockImportDataResult:
         return self
 
 
-class MockCreateDataSetResult:
+class Result:
 
     def result(self):
         return self
