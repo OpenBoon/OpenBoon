@@ -77,15 +77,20 @@ class AutomlLabelDetectionSession:
         self.emit_status(f'Training AutoML exportable Model {self.model_name}')
 
         # Create a model with the model metadata in the region.
-        automl_model = self.client.create_model(parent=self.project_location, model=automl_model_request).result()
+        automl_model = self.client.create_model(
+            parent=self.project_location,
+            model=automl_model_request).result()
         self._export_model(automl_model)
 
         return automl_model
 
     def _export_model(self, automl_model):
-        export_model_location = file_storage.projects.get_directory_location('models', self.model.id)
+        export_model_location = file_storage.projects\
+            .get_directory_location('models', self.model.id)
+
         gcs_destination = automl.GcsDestination(output_uri_prefix=export_model_location)
-        output_config = automl.ModelExportOutputConfig(gcs_destination=gcs_destination, model_format="tflite")
+        output_config = automl.ModelExportOutputConfig(
+            gcs_destination=gcs_destination, model_format="tflite")
         request = automl.ExportModelRequest(name=automl_model.name, output_config=output_config)
 
         self.emit_status(f'Exporting Model {self.model.name} to {gcs_destination}')
