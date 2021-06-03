@@ -2,9 +2,10 @@ import logging
 import os
 
 from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule, PostTrainAction
-from ..training import TrainingSetDownloader
-from ..util import as_collection, as_id, zip_directory, is_valid_uuid
 from tempfile import mkstemp
+from ..util import as_collection, as_id, \
+    zip_directory, is_valid_uuid, as_name_collection, as_id_collection
+
 logger = logging.getLogger(__name__)
 
 __all__ = [
@@ -51,25 +52,27 @@ class ModelApp:
         else:
             return self.find_one_model(name=id)
 
-    def find_one_model(self, id=None, name=None, type=None):
+    def find_one_model(self, id=None, name=None, type=None, dataSet=None):
         """
         Find a single Model based on various properties.
 
         Args:
             id (str): The ID or list of Ids.
-            name (str): The model name or list of names.
-            type (str): The model type or list of types.
+            name (str): The Model name or list of names.
+            type (str): The Model type or list of types.
+            dataSet(str): DataSets or unique DataSet Ids.
         Returns:
             Model: the matching Model.
         """
         body = {
             'names': as_collection(name),
             'ids': as_collection(id),
-            'types': as_collection(type)
+            'dataSetIds': as_id_collection(dataSet),
+            'types': as_name_collection(type)
         }
         return Model(self.app.client.post("/api/v3/models/_find_one", body))
 
-    def find_models(self, id=None, name=None, type=None, limit=None, sort=None):
+    def find_models(self, id=None, name=None, type=None, dataSet=None, limit=None, sort=None):
         """
         Find a single Model based on various properties.
 
@@ -77,8 +80,9 @@ class ModelApp:
             id (str): The ID or list of Ids.
             name (str): The model name or list of names.
             type (str): The model type or list of types.
+            dataSet(str): DataSets or unique DataSet Ids.
             limit (int): Limit results to the given size.
-            sort (list): An arary of properties to sort by. Example: ["name:asc"]
+            sort (list): An array of properties to sort by. Example: ["name:asc"]
 
         Returns:
             generator: A generator which will return matching Models when iterated.
@@ -87,7 +91,8 @@ class ModelApp:
         body = {
             'names': as_collection(name),
             'ids': as_collection(id),
-            'types': as_collection(type),
+            'dataSetIds': as_id_collection(dataSet),
+            'types': as_name_collection(type),
             'sort': sort
         }
         return self.app.client.iter_paged_results('/api/v3/models/_search', body, limit, Model)
@@ -188,69 +193,6 @@ class ModelApp:
 
         os.unlink(zip_file_path)
         return rsp
-
-    def get_label_counts(self, model):
-        """
-        Get a dictionary of the labels and how many times they occur.
-
-        Args:
-            model (Model): The Model or its unique Id.
-
-        Returns:
-            dict: a dictionary of label name to occurrence count.
-
-        """
-        return self.app.client.get('/api/v3/models/{}/_label_counts'.format(as_id(model)))
-
-    def rename_label(self, model, old_label, new_label):
-        """
-        Rename a the given label to a new label name.  The new label can already exist.
-
-        Args:
-            model (Model): The Model or its unique Id.
-            old_label (str): The old label name.
-            new_label (str): The new label name.
-
-        Returns:
-            dict: a dictionary containing the number of assets updated.
-
-        """
-        body = {
-            "label": old_label,
-            "newLabel": new_label
-        }
-        return self.app.client.put('/api/v3/models/{}/labels'.format(as_id(model)), body)
-
-    def delete_label(self, model, label):
-        """
-        Removes the label from all Assets.
-
-        Args:
-            model (Model): The Model or its unique Id.
-            label (str): The label name to remove.
-
-        Returns:
-            dict: a dictionary containing the number of assets updated.
-
-        """
-        body = {
-            "label": label
-        }
-        return self.app.client.delete('/api/v3/models/{}/labels'.format(as_id(model)), body)
-
-    def download_labeled_images(self, model, style, dst_dir, validation_split=0.2):
-        """
-        Get a TrainingSetDownloader instance which can be used to download all the
-        labeled images for a Model to local disk.
-
-        Args:
-            model (Model): The Model or its unique ID.
-            style (str): The structure style to build: labels_std, objects_keras, objects_coco
-            dst_dir (str): The destination dir to write the Assets into.
-            validation_split (float): The ratio of training images to validation images.
-                Defaults to 0.2.
-        """
-        return TrainingSetDownloader(self.app, model, style, dst_dir, validation_split)
 
     def export_trained_model(self, model, dst_file, tag='latest'):
         """

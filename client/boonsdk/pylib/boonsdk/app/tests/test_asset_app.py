@@ -8,7 +8,7 @@ from unittest.mock import patch
 import pytest
 
 from boonsdk import Asset, BoonClient, app_from_env, \
-    FileImport, FileUpload, StoredFile, BoonSdkException, Model, TrainingSetFilter
+    FileImport, FileUpload, StoredFile, BoonSdkException, DataSet, TrainingSetFilter
 from .util import get_test_file
 
 
@@ -388,8 +388,8 @@ class AssetAppTests(unittest.TestCase):
             'op': '_batch_update_labels',
             'success': True
         }
-        label1 = Model({"id": "abc123"}).make_label("test1")
-        label2 = Model({"id": "abc123"}).make_label("test2")
+        label1 = DataSet({"id": "abc123"}).make_label("test1")
+        label2 = DataSet({"id": "abc123"}).make_label("test2")
         rsp = self.app.assets.update_labels(["12345"], add_labels=[label1], remove_labels=[label2])
         assert put_patch.return_value == rsp
 

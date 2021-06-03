@@ -18,8 +18,9 @@ import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
+import WebhooksAddKeyControls from '../WebhooksAdd/KeyControls'
 
-import { generateSecretKey, onTest } from '../WebhooksAdd/helpers'
+import { onTest } from '../WebhooksAdd/helpers'
 
 import { onSubmit } from './helpers'
 
@@ -33,6 +34,7 @@ const INITIAL_STATE = {
   errors: {},
   testSent: '',
   disableSecretKeyButton: false,
+  isCopied: false,
 }
 
 const reducer = (state, action) => ({ ...state, ...action })
@@ -139,22 +141,7 @@ const WebhooksEditForm = () => {
           }
         />
 
-        <div
-          css={{
-            position: 'absolute',
-            left: '100%',
-            paddingLeft: spacing.base,
-            paddingTop: spacing.base,
-          }}
-        >
-          <Button
-            variant={BUTTON_VARIANTS.LINK}
-            isDisabled={state.disableSecretKeyButton}
-            onClick={generateSecretKey({ state, dispatch })}
-          >
-            Generate Key
-          </Button>
-        </div>
+        <WebhooksAddKeyControls state={state} dispatch={dispatch} />
       </div>
 
       <SectionTitle>Trigger Event</SectionTitle>

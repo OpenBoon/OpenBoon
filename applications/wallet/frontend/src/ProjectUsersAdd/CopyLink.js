@@ -1,13 +1,9 @@
-import { useRef } from 'react'
-
 import { spacing, colors, constants, typography } from '../Styles'
 
-import Button, { VARIANTS } from '../Button'
-
-import { onCopy } from '../Copy/helpers'
+import ButtonCopy from '../Button/Copy'
 
 const ProjectUsersAddCopyLink = () => {
-  const copyRef = useRef()
+  const LINK = `${window.location.origin}/create-account`
 
   return (
     <div css={{ paddingTop: spacing.moderate }}>
@@ -28,10 +24,9 @@ const ProjectUsersAddCopyLink = () => {
         }}
       >
         <input
-          ref={copyRef}
           id="copyLink"
           type="text"
-          value={`${window.location.origin}/create-account`}
+          value={LINK}
           readOnly
           css={{
             width: constants.form.maxWidth,
@@ -45,6 +40,7 @@ const ProjectUsersAddCopyLink = () => {
             resize: 'none',
           }}
         />
+
         <div
           css={{
             display: 'flex',
@@ -53,18 +49,7 @@ const ProjectUsersAddCopyLink = () => {
             paddingRight: spacing.small,
           }}
         >
-          <Button
-            variant={VARIANTS.LINK}
-            style={{
-              '&:active': {
-                opacity: 0,
-                transition: 'opacity .3s ease',
-              },
-            }}
-            onClick={() => onCopy({ copyRef })}
-          >
-            Copy Link
-          </Button>
+          <ButtonCopy title="Link" value={LINK} offset={50} />
         </div>
       </div>
     </div>

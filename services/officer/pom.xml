@@ -15,7 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.4.32</kotlin.version>
+        <kotlin.version>1.5.10</kotlin.version>
         <kotlin.comiler.jvmTarget>1.8</kotlin.comiler.jvmTarget>
         <ktor.version>1.5.4</ktor.version>
     </properties>
@@ -70,13 +70,13 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-pdf</artifactId>
-            <version>21.4</version>
+            <version>21.5</version>
         </dependency>
 
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-slides</artifactId>
-            <version>21.4</version>
+            <version>21.5</version>
             <classifier>jdk16</classifier>
         </dependency>
 
@@ -90,7 +90,7 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-cells</artifactId>
-            <version>21.4</version>
+            <version>21.5</version>
         </dependency>
 
         <dependency>
@@ -121,7 +121,7 @@
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-storage</artifactId>
-            <version>1.113.16</version>
+            <version>1.114.0</version>
         </dependency>
 
         <dependency>
@@ -134,7 +134,7 @@
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
-            <version>3.15.4</version>
+            <version>3.15.5</version>
         </dependency>
 
         <dependency>
@@ -146,7 +146,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-epoll</artifactId>
-            <version>4.1.53.Final</version>
+            <version>4.1.65.Final</version>
             <classifier>linux-x86_64</classifier>
         </dependency>
 

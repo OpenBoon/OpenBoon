@@ -10,8 +10,6 @@ import ProjectUsersAdd from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
-jest.mock('../../Copy/helpers')
-
 const noop = () => () => {}
 
 describe('<ProjectUsersAdd />', () => {
@@ -25,9 +23,9 @@ describe('<ProjectUsersAdd />', () => {
       data: roles,
     })
 
-    const mockOnCopy = jest.fn()
+    const mockCopyFn = jest.fn()
 
-    require('../../Copy/helpers').__setMockOnCopy(mockOnCopy)
+    window.navigator.clipboard.writeText = mockCopyFn
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
@@ -78,13 +76,13 @@ describe('<ProjectUsersAdd />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     // Copy Key to clipboard
-    act(() => {
+    await act(async () => {
       component.root
-        .findByProps({ children: 'Copy Link' })
+        .findByProps({ 'aria-label': 'Copy Link to Clipboard' })
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockOnCopy).toHaveBeenCalledWith({ copyRef: { current: null } })
+    expect(mockCopyFn).toHaveBeenCalledWith('http://localhost/create-account')
 
     // Reset form
     act(() => {

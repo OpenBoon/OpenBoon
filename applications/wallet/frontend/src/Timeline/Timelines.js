@@ -40,7 +40,6 @@ const TimelineTimelines = ({
         display: 'flex',
         overflow: 'hidden',
         marginLeft: -settings.width,
-        borderTop: constants.borders.regular.smoke,
       }}
     >
       <div
@@ -49,6 +48,7 @@ const TimelineTimelines = ({
           zIndex: zIndex.timeline.tracks,
           backgroundColor: colors.structure.coal,
           borderRight: constants.borders.regular.smoke,
+          borderTop: constants.borders.regular.smoke,
         }}
       >
         {filteredTimelines
@@ -115,6 +115,7 @@ const TimelineTimelines = ({
           flex: 1,
           overflow: 'hidden',
           height: 'fit-content',
+          borderTop: constants.borders.regular.smoke,
         }}
       >
         <div css={{ width: `${settings.zoom}%` }}>

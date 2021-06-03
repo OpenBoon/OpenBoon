@@ -6,7 +6,7 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import { useLocalStorage } from '../LocalStorage/helpers'
 
-import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
+import ButtonCopy from '../Button/Copy'
 import Button, { VARIANTS } from '../Button'
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import JsonDisplay from '../JsonDisplay'
@@ -54,10 +54,12 @@ const MetadataContent = ({ projectId, assetId }) => {
           // compensates for unexcepted height compression in Safari
           minHeight: 'fit-content',
           borderBottom: constants.borders.regular.smoke,
+          color: colors.structure.steel,
+          svg: { opacity: 0 },
           ':hover': {
             backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
+            color: colors.structure.white,
             div: {
-              color: colors.structure.white,
               svg: { opacity: 1 },
             },
           },
@@ -66,7 +68,6 @@ const MetadataContent = ({ projectId, assetId }) => {
         <div
           css={{
             fontFamily: typography.family.condensed,
-            color: colors.structure.steel,
             padding: spacing.normal,
             paddingRight: spacing.base,
           }}
@@ -92,12 +93,12 @@ const MetadataContent = ({ projectId, assetId }) => {
 
         <div
           css={{
-            width: COPY_SIZE + spacing.normal,
-            padding: spacing.normal,
-            paddingLeft: spacing.base,
+            display: 'flex',
+            alignItems: 'center',
+            paddingRight: spacing.base,
           }}
         >
-          <ButtonCopy value={assetId} />
+          <ButtonCopy title="Asset ID" value={assetId} offset={100} />
         </div>
       </div>
 

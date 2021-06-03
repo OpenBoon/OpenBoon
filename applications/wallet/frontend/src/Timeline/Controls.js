@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 import { colors, spacing, constants } from '../Styles'
@@ -19,37 +19,46 @@ const TimelineControls = ({
   settings,
   setFollowPlayhead,
 }) => {
-  const currentTimeRef = useRef()
   const frameRef = useRef()
   const isPausedRef = useRef(true)
 
   const [, setTick] = useState()
 
   const video = videoRef.current
-  const currentTime = currentTimeRef.current
 
   /* istanbul ignore next */
-  useEffect(() => {
-    const animate = () => {
-      if (currentTime && video) {
-        currentTime.innerHTML = formatPaddedSeconds({
-          seconds: video?.currentTime,
-        })
+  const onMount = useCallback(
+    (node) => {
+      const animate = () => {
+        if (node && video) {
+          // eslint-disable-next-line no-param-reassign
+          node.innerHTML = formatPaddedSeconds({
+            seconds: video?.currentTime,
+          })
 
-        if (isPausedRef.current !== video?.paused) {
-          isPausedRef.current = video?.paused
+          if (isPausedRef.current !== video?.paused) {
+            isPausedRef.current = video?.paused
 
-          setTick(performance.now())
+            setTick(performance.now())
+          }
         }
+
+        frameRef.current = requestAnimationFrame(animate)
       }
 
       frameRef.current = requestAnimationFrame(animate)
-    }
 
-    frameRef.current = requestAnimationFrame(animate)
+      if (frameRef.current && !node) {
+        cancelAnimationFrame(frameRef.current)
+        frameRef.current = null
+      }
 
-    return () => cancelAnimationFrame(frameRef.current)
-  }, [video, currentTime])
+      if (!frameRef.current && node) {
+        animate()
+      }
+    },
+    [video],
+  )
 
   return (
     <div
@@ -175,7 +184,7 @@ const TimelineControls = ({
         }}
       >
         <div
-          ref={currentTimeRef}
+          ref={onMount}
           css={{
             backgroundColor: colors.structure.coal,
             padding: spacing.small,
@@ -224,7 +233,6 @@ TimelineControls.propTypes = {
     filter: PropTypes.string.isRequired,
     width: PropTypes.number.isRequired,
     timelines: PropTypes.shape({}).isRequired,
-    zoom: PropTypes.number.isRequired,
   }).isRequired,
   setFollowPlayhead: PropTypes.func.isRequired,
 }

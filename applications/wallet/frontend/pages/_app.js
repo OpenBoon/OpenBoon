@@ -29,6 +29,7 @@ if (ENABLE_SENTRY === 'true') {
     ignoreErrors: [
       'ResizeObserver loop limit exceeded',
       'The play() request was interrupted by a call to pause()',
+      'NotAllowedError: Write permission denied.',
     ],
   })
 }

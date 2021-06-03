@@ -5,7 +5,10 @@ import { colors, constants } from '../Styles'
 import {
   SCROLLBAR_RESIZE_HANDLE_SIZE,
   SCROLLBAR_TRACK_MARGIN_WIDTH,
+  setIgnore,
 } from './helpers'
+
+import { ACTIONS } from './reducer'
 
 let origin
 let scrollbarTrackWidth
@@ -18,7 +21,9 @@ let pointerToRightEdgeDiff
 const TimelineScrollbarHandle = ({
   scrollbarRef,
   scrollbarTrackRef,
+  horizontalScroller,
   isLeft,
+  dispatch,
 }) => {
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
@@ -44,7 +49,7 @@ const TimelineScrollbarHandle = ({
 
     const maxWidth = scrollbarTrackWidth - SCROLLBAR_TRACK_MARGIN_WIDTH * 2
 
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, newWidth))
+    const clampedWidth = Math.max(minWidth, Math.min(newWidth, maxWidth))
 
     // calculate when right handle is touching right edge of the track
     const isMaxExpandedToRight =
@@ -70,34 +75,45 @@ const TimelineScrollbarHandle = ({
         : Math.max(0, computedOffsetLeft)
 
     /* eslint-disable no-param-reassign */
-    scrollbarRef.current.style.width = `${clampedWidth}px`
-    scrollbarRef.current.style.left = `${newOffsetLeft}px`
+    scrollbarRef.current.style.width = `${(clampedWidth / maxWidth) * 100}%`
+    scrollbarRef.current.style.left = `${(newOffsetLeft / maxWidth) * 100}%`
+
+    const newZoom = (1 / (clampedWidth / maxWidth)) * 100
+
+    dispatch({ type: ACTIONS.ZOOM, payload: { value: newZoom } })
+
+    horizontalScroller.emit({
+      eventName: 'scroll',
+      data: {
+        scrollX: (newZoom * newOffsetLeft) / 100,
+        scrollY: 0,
+      },
+    })
   }
 
   /* istanbul ignore next */
   const handleMouseUp = () => {
+    setIgnore({ value: false })
     document.removeEventListener('mousemove', handleMouseMove)
     document.removeEventListener('mouseup', handleMouseUp)
   }
 
   /* istanbul ignore next */
   const handleMouseDown = ({ clientX }) => {
+    setIgnore({ value: true })
+
     origin = clientX
 
     scrollbarOffsetLeft = scrollbarRef.current?.offsetLeft
 
-    const {
-      width: sbWidth = 0,
-      right: sbRight = 0,
-    } = scrollbarRef.current?.getBoundingClientRect()
+    const { width: sbWidth = 0, right: sbRight = 0 } =
+      scrollbarRef.current?.getBoundingClientRect()
 
     scrollbarWidth = sbWidth
     scrollbarRight = sbRight
 
-    const {
-      width: trackWidth = 0,
-      right: trackRight = 0,
-    } = scrollbarTrackRef.current?.getBoundingClientRect()
+    const { width: trackWidth = 0, right: trackRight = 0 } =
+      scrollbarTrackRef.current?.getBoundingClientRect()
 
     scrollbarTrackWidth = trackWidth
     maxScrollbarRight = trackRight - SCROLLBAR_TRACK_MARGIN_WIDTH
@@ -115,11 +131,10 @@ const TimelineScrollbarHandle = ({
         backgroundColor: colors.structure.steel,
         width: SCROLLBAR_RESIZE_HANDLE_SIZE,
         border: 0,
-        [isLeft ? 'borderTopLeftRadius' : 'borderTopRightRadius']: constants
-          .borderRadius.medium,
-        [isLeft
-          ? 'borderBottomLeftRadius'
-          : 'borderBottomRightRadius']: constants.borderRadius.medium,
+        [isLeft ? 'borderTopLeftRadius' : 'borderTopRightRadius']:
+          constants.borderRadius.medium,
+        [isLeft ? 'borderBottomLeftRadius' : 'borderBottomRightRadius']:
+          constants.borderRadius.medium,
         ':hover, :active': { backgroundColor: colors.structure.pebble },
       }}
       onMouseDown={handleMouseDown}
@@ -142,7 +157,11 @@ TimelineScrollbarHandle.propTypes = {
       getBoundingClientRect: PropTypes.func.isRequired,
     }),
   }).isRequired,
+  horizontalScroller: PropTypes.shape({
+    emit: PropTypes.func.isRequired,
+  }).isRequired,
   isLeft: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default TimelineScrollbarHandle

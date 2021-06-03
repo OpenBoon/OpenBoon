@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
+import ButtonCopy from '../Button/Copy'
 import Pills from '../Pills'
 import Button, { VARIANTS } from '../Button'
 
@@ -232,29 +232,31 @@ const MetadataPrettyPredictionsContent = ({
           css={{
             padding: spacing.normal,
             paddingTop: 0,
+            svg: { opacity: 0 },
             ':hover': {
               backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
               svg: { opacity: 1 },
             },
           }}
         >
-          <div css={{ display: 'flex' }}>
+          <div css={{ display: 'flex', alignItems: 'center' }}>
             <div
               css={{
-                minHeight: COPY_SIZE,
                 width: '100%',
                 fontFamily: typography.family.condensed,
                 textTransform: 'uppercase',
                 color: colors.structure.steel,
-                borderTop: constants.borders.regular.smoke,
-                paddingTop: spacing.normal,
                 paddingBottom: spacing.base,
               }}
             >
               tags
             </div>
 
-            <ButtonCopy value={JSON.stringify(tags)} />
+            <ButtonCopy
+              title="Tags"
+              value={JSON.stringify(tags)}
+              offset={100}
+            />
           </div>
 
           <div>

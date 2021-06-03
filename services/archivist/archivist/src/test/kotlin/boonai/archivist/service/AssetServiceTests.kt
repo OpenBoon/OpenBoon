@@ -7,13 +7,13 @@ import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.BatchUpdateCustomFieldsRequest
 import boonai.archivist.domain.BatchUploadAssetsRequest
+import boonai.archivist.domain.DataSetSpec
+import boonai.archivist.domain.DataSetType
 import boonai.archivist.domain.FieldSpec
-import boonai.archivist.domain.Label
 import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.InternalTask
 import boonai.archivist.domain.JobSpec
-import boonai.archivist.domain.ModelSpec
-import boonai.archivist.domain.ModelType
+import boonai.archivist.domain.Label
 import boonai.archivist.domain.ProcessorMetric
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectFileLocator
@@ -39,7 +39,6 @@ import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.mock.web.MockMultipartFile
 import java.io.File
-import java.lang.IllegalArgumentException
 import java.math.BigDecimal
 import java.util.UUID
 import kotlin.test.assertEquals
@@ -57,7 +56,7 @@ class AssetServiceTests : AbstractTest() {
     lateinit var jobService: JobService
 
     @Autowired
-    lateinit var modelService: ModelService
+    lateinit var dataSetService: DataSetService
 
     @Autowired
     lateinit var dispatcherService: DispatcherService
@@ -299,11 +298,10 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testBatchCreateAssetsWithLabel() {
-        val ds = modelService.createModel(
-            ModelSpec(
+        val ds = dataSetService.createDataSet(
+            DataSetSpec(
                 "THB Characters",
-                ModelType.TF_CLASSIFIER,
-                moduleName = "thb-chars"
+                DataSetType.Classification
             )
         )
 
@@ -826,7 +824,7 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testUpdateLabels() {
-        val ds = modelService.createModel(ModelSpec("test", ModelType.TF_CLASSIFIER))
+        val ds = dataSetService.createDataSet(DataSetSpec("test", DataSetType.Classification))
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
         )

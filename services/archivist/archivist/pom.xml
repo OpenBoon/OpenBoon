@@ -109,7 +109,7 @@
         <dependency>
             <groupId>com.vladmihalcea</groupId>
             <artifactId>hibernate-types-52</artifactId>
-            <version>2.10.4</version>
+            <version>2.11.1</version>
         </dependency>
 
         <dependency>
@@ -185,19 +185,19 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.11.1018</version>
+            <version>1.11.1028</version>
         </dependency>
 
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sqs</artifactId>
-            <version>1.11.1018</version>
+            <version>1.11.1028</version>
         </dependency>
 
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sns</artifactId>
-            <version>1.11.1018</version>
+            <version>1.11.1028</version>
         </dependency>
         <dependency>
             <groupId>io.minio</groupId>
@@ -267,7 +267,7 @@
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
-            <version>5.7.0</version>
+            <version>5.7.2</version>
         </dependency>
     </dependencies>
 

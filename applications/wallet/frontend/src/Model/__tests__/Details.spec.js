@@ -91,7 +91,7 @@ describe('<ModelDetails />', () => {
 
     await act(async () => {
       component.root
-        .findByProps({ children: 'Train & Apply' })
+        .findByProps({ children: 'Train & Apply', href: false })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
@@ -343,7 +343,7 @@ describe('<ModelDetails />', () => {
     // Open Delete Modal
     act(() => {
       component.root
-        .findByProps({ children: 'Delete' })
+        .findByProps({ children: 'Delete', href: false })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
@@ -357,7 +357,7 @@ describe('<ModelDetails />', () => {
     // Open Delete Modal
     act(() => {
       component.root
-        .findByProps({ children: 'Delete' })
+        .findByProps({ children: 'Delete', href: false })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 

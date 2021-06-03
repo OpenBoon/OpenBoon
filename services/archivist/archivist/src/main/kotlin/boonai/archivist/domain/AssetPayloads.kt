@@ -8,8 +8,8 @@ import java.util.UUID
 
 @ApiModel("TrainingSetQuery", description = "A simple query for a training set.")
 class TrainingSetQuery(
-    @ApiModelProperty("The model Id")
-    val modelId: UUID,
+    @ApiModelProperty("The DataSet Id")
+    val dataSetId: UUID,
     @ApiModelProperty("LabelScopes to filer by.")
     val scopes: List<LabelScope>?,
     @ApiModelProperty("Labels to filter by.")
