@@ -1,4 +1,4 @@
-import { useMemo, useState, useRef } from 'react'
+import { useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -15,7 +15,6 @@ import { cleanup } from '../Filters/helpers'
 import Button, { VARIANTS } from '../Button'
 import CheckboxSwitch from '../Checkbox/Switch'
 import Resizeable from '../Resizeable'
-import Feature from '../Feature'
 
 import { reducer, INITIAL_STATE, ACTIONS } from './reducer'
 import { COLORS, GUIDE_WIDTH } from './helpers'
@@ -32,7 +31,6 @@ import TimelineTimelines from './Timelines'
 import TimelineScrollbar from './Scrollbar'
 import TimelineMetadata from './Metadata'
 import TimelineShortcuts from './Shortcuts'
-import TimelineResize from './Resize'
 
 const TIMELINE_HEIGHT = 200
 const SEPARATOR_WIDTH = 2
@@ -85,10 +83,6 @@ const Timeline = ({ videoRef, length }) => {
     isScrollEmitter: true,
     isScrollListener: true,
   })
-
-  const rulerZoomRef = useRef()
-  const aggregateZoomRef = useRef()
-  const tracksZoomRef = useRef()
 
   return (
     <Resizeable
@@ -261,7 +255,7 @@ const Timeline = ({ videoRef, length }) => {
               <TimelineFilterTracks settings={settings} dispatch={dispatch} />
 
               <div ref={rulerRef} css={{ flex: 1, overflow: 'hidden' }}>
-                <div ref={rulerZoomRef} css={{ width: `${settings.zoom}%` }}>
+                <div css={{ width: `${settings.zoom}%` }}>
                   <TimelineRuler
                     videoRef={videoRef}
                     rulerRef={rulerRef}
@@ -273,7 +267,6 @@ const Timeline = ({ videoRef, length }) => {
             </div>
 
             <TimelineAggregate
-              aggregateZoomRef={aggregateZoomRef}
               videoRef={videoRef}
               length={length}
               timelineHeight={size}
@@ -293,7 +286,6 @@ const Timeline = ({ videoRef, length }) => {
             )}
 
             <TimelineTimelines
-              tracksZoomRef={tracksZoomRef}
               videoRef={videoRef}
               length={length}
               timelines={timelines}
@@ -301,22 +293,11 @@ const Timeline = ({ videoRef, length }) => {
               dispatch={dispatch}
             />
 
-            <Feature flag="timeline-scrollbar-feature-flag" envs={[]}>
-              <TimelineScrollbar
-                width={settings.width}
-                zoom={settings.zoom}
-                rulerRef={rulerRef}
-                rulerZoomRef={rulerZoomRef}
-                aggregateZoomRef={aggregateZoomRef}
-                tracksZoomRef={tracksZoomRef}
-              />
-            </Feature>
-
-            <TimelineResize
-              dispatch={dispatch}
-              zoom={settings.zoom}
-              videoRef={videoRef}
+            <TimelineScrollbar
               rulerRef={rulerRef}
+              width={settings.width}
+              initialZoom={settings.zoom}
+              dispatch={dispatch}
             />
           </div>
         </div>

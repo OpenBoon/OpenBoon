@@ -21,7 +21,6 @@ const WIDTH = GUIDE_WIDTH + spacing.mini * 2
 const OFFSET = (WIDTH + constants.borderWidths.regular) / 2
 
 const TimelineAggregate = ({
-  aggregateZoomRef,
   videoRef,
   length,
   timelineHeight,
@@ -146,7 +145,6 @@ const TimelineAggregate = ({
       </div>
       <div ref={aggregateRef} css={{ flex: 1, overflow: 'hidden' }}>
         <div
-          ref={aggregateZoomRef}
           css={{
             width: `${settings.zoom}%`,
             height: '100%',
@@ -209,13 +207,6 @@ const TimelineAggregate = ({
 }
 
 TimelineAggregate.propTypes = {
-  aggregateZoomRef: PropTypes.shape({
-    current: PropTypes.shape({
-      style: PropTypes.shape({
-        width: PropTypes.string,
-      }),
-    }),
-  }).isRequired,
   videoRef: PropTypes.shape({
     current: PropTypes.shape({
       pause: PropTypes.func,
