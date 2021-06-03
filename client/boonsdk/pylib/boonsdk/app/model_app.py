@@ -4,7 +4,7 @@ import os
 from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule, PostTrainAction
 from ..training import TrainingSetDownloader
 from ..util import as_collection, as_id, zip_directory, is_valid_uuid
-
+from tempfile import mkstemp
 logger = logging.getLogger(__name__)
 
 __all__ = [
