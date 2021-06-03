@@ -10,7 +10,6 @@ import TimelineAccordion, { COLOR_TAB_WIDTH } from './Accordion'
 import TimelineTracks from './Tracks'
 
 const TimelineTimelines = ({
-  tracksZoomRef,
   videoRef,
   length,
   timelines,
@@ -41,7 +40,6 @@ const TimelineTimelines = ({
         display: 'flex',
         overflow: 'hidden',
         marginLeft: -settings.width,
-        borderTop: constants.borders.regular.smoke,
       }}
     >
       <div
@@ -50,6 +48,7 @@ const TimelineTimelines = ({
           zIndex: zIndex.timeline.tracks,
           backgroundColor: colors.structure.coal,
           borderRight: constants.borders.regular.smoke,
+          borderTop: constants.borders.regular.smoke,
         }}
       >
         {filteredTimelines
@@ -116,9 +115,10 @@ const TimelineTimelines = ({
           flex: 1,
           overflow: 'hidden',
           height: 'fit-content',
+          borderTop: constants.borders.regular.smoke,
         }}
       >
-        <div ref={tracksZoomRef} css={{ width: `${settings.zoom}%` }}>
+        <div css={{ width: `${settings.zoom}%` }}>
           {filteredTimelines
             .filter(({ timeline }) => {
               return settings.timelines[timeline]?.isVisible !== false
@@ -143,13 +143,6 @@ const TimelineTimelines = ({
 }
 
 TimelineTimelines.propTypes = {
-  tracksZoomRef: PropTypes.shape({
-    current: PropTypes.shape({
-      style: PropTypes.shape({
-        width: PropTypes.string,
-      }),
-    }),
-  }).isRequired,
   videoRef: PropTypes.shape({
     current: PropTypes.shape({}),
   }).isRequired,

@@ -1,12 +1,22 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, zIndex } from '../Styles'
+
+import { useScroller } from '../Scroll/helpers'
 
 import { filterTimelines } from './helpers'
 
 import TimelineTracks from './Tracks'
 
 const TimelineSearchHits = ({ videoRef, length, timelines, settings }) => {
+  const tracksRef = useScroller({
+    namespace: 'Timeline',
+    isWheelEmitter: true,
+    isWheelListener: true,
+    isScrollEmitter: true,
+    isScrollListener: true,
+  })
+
   const filteredTimelines = filterTimelines({ timelines, settings })
 
   const aggregate = {}
@@ -36,16 +46,18 @@ const TimelineSearchHits = ({ videoRef, length, timelines, settings }) => {
           width: settings.width,
           padding: spacing.base,
           paddingLeft: spacing.normal,
+          backgroundColor: colors.structure.soot,
+          zIndex: zIndex.timeline.tracks,
         }}
       >
         Search Hits ({Object.keys(aggregate).length})
       </div>
 
       <div
+        ref={tracksRef}
         css={{
           flex: 1,
-          overflowY: 'hidden',
-          overflowX: 'overlay',
+          overflow: 'hidden',
         }}
       >
         <div css={{ width: `${settings.zoom}%` }}>
