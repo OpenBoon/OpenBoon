@@ -14,8 +14,9 @@
     "prod": "next build && next start",
     "start": "next start",
     "test": "TZ=UTC jest --watch --notify --verbose --no-cache",
-    "test:cover": "TZ=UTC jest --coverage --verbose --no-cache",
-    "test:hook": "TZ=UTC jest --bail --findRelatedTests --no-cache"
+    "test:cover": "TZ=UTC jest --coverage",
+    "test:hook": "TZ=UTC jest --bail --findRelatedTests --no-cache",
+    "test:decache": "jest --clearCache"
   },
   "browserslist": [
     "last 1 Chrome version",
