@@ -27,7 +27,6 @@ import boonai.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
-import org.springframework.http.HttpStatus
 import java.io.FileInputStream
 import java.nio.file.Paths
 import kotlin.test.assertEquals
@@ -297,32 +296,6 @@ class ModelServiceTests : AbstractTest() {
 
         val module = modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
         assertEquals("Custom Models", module.category)
-    }
-
-    @Test
-    fun testDownloadModelFile() {
-
-        val model = create(type = ModelType.TF_UPLOADED_CLASSIFIER)
-        val mfp = Paths.get(
-            "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
-        )
-
-        modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
-        val downloadModelFile = modelService.downloadModelFile(model)
-
-        assertNotNull(downloadModelFile)
-        assertEquals(HttpStatus.OK, downloadModelFile.statusCode)
-        assertEquals(mfp.toFile().length(), downloadModelFile.body.contentLength())
-    }
-
-    @Test
-    fun testFailDownloadNotExistingModelFile() {
-        val model = create(type = ModelType.TF_UPLOADED_CLASSIFIER)
-
-        val downloadModelFile = modelService.downloadModelFile(model)
-
-        assertNotNull(downloadModelFile)
-        assertEquals(HttpStatus.NO_CONTENT, downloadModelFile.statusCode)
     }
 
     @Test
