@@ -34,78 +34,55 @@ describe('<DataSourcesAdd />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Input invalid name
     act(() => {
+      // Input invalid name
       component.root
         .findByProps({ id: 'name' })
         .props.onChange({ target: { value: '' } })
-    })
 
-    // Input valid name
-    act(() => {
+      // Input valid name
       component.root
         .findByProps({ id: 'name' })
         .props.onChange({ target: { value: 'My Data Source' } })
-    })
 
-    // Input source
-    act(() => {
+      // Input source
       component.root
         .findByProps({ label: 'Source Type' })
         .props.onChange({ value: 'AWS' })
-    })
 
-    expect(component.toJSON()).toMatchSnapshot()
-
-    // Input source
-    act(() => {
+      // Input source
       component.root
         .findByProps({ label: 'Source Type' })
         .props.onChange({ value: 'AZURE' })
-    })
 
-    expect(component.toJSON()).toMatchSnapshot()
-
-    // Input source
-    act(() => {
+      // Input source
       component.root
         .findByProps({ label: 'Source Type' })
         .props.onChange({ value: 'GCP' })
     })
 
-    expect(component.toJSON()).toMatchSnapshot()
-
-    // Input invalid uri
     act(() => {
+      // Input invalid uri
       component.root
         .findByProps({ id: 'uri' })
         .props.onChange({ target: { value: 'fooBar://zorroa-dev-data/' } })
-    })
-
-    // Input invalid uri
-    act(() => {
+      // Input invalid uri
       component.root
         .findByProps({ id: 'uri' })
         .props.onChange({ target: { value: 'gs://' } })
-    })
 
-    // Input valid uri
-    // No credentials required
-    act(() => {
+      // Input valid uri
+      // No credentials required
       component.root
         .findByProps({ id: 'uri' })
         .props.onChange({ target: { value: 'gs://zorroa-dev-data' } })
-    })
 
-    // Un-Select file type
-    act(() => {
+      // Un-Select file type
       component.root
         .findByProps({ type: 'checkbox', value: 'Images' })
         .props.onClick()
-    })
 
-    // Select module
-    act(() => {
+      // Select module
       component.root
         .findByProps({ type: 'checkbox', value: 'boonai-label-detection' })
         .props.onClick({ preventDefault: noop })

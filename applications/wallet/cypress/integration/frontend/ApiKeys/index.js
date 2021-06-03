@@ -1,5 +1,5 @@
 describe('Api Keys', function () {
-  it.skip('can be created and deleted', function () {
+  it('can be created and deleted', function () {
     const apiKeyName = `cypress-frontend-${Date.now()}`
 
     cy.login()
