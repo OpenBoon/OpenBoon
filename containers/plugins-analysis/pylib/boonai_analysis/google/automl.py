@@ -1,11 +1,12 @@
-from glob import glob
-import tempfile
 from numpy import argsort
 from cv2 import imread, resize
+from urllib.parse import urlparse
 
 from boonflow import Argument, AssetProcessor
 from boonflow.proxy import get_proxy_level_path
 from boonflow.analysis import LabelDetectionAnalysis
+from boonflow.cloud import get_cached_google_storage_client
+from boonflow import file_storage
 
 import tensorflow as tf
 
@@ -18,23 +19,44 @@ class AutoMLModelClassifier(AssetProcessor):
         self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
 
         self.app_model = None
-        self.automl_model_id = None
         self.predictions = []
         self.analysis = None
+        self.storage_client = get_cached_google_storage_client()
 
-        self.model_dir = None
+        self.model_file = None
+        self.label_file = None
+        self.labels = None
+        self.display_name = None
+
         self.input_details = None
         self.output_details = None
-        self.labels = None
 
     def init(self):
         """Init constructor """
         self.app_model = self.app.models.get_model(self.arg_value("model_id"))
-        self.automl_model_id = self.arg_value("automl_model_id")
+        self.display_name = self.app_model.id.replace("-", "")
 
-        self.model_dir = tempfile.mkdtemp()
-        self.app.models.download_and_unzip_model(self.app_model, self.model_dir)
+        self.download_model()
         self.__load_interpreters()
+
+    def download_model(self):
+        dir_url = file_storage.projects.get_directory_location('models', self.app_model.id)
+        parsed_uri = urlparse(dir_url)
+
+        blobs = self.storage_client \
+            .list_blobs(bucket_or_name=parsed_uri.netloc,
+                        prefix=f"model-export/icn/tflite-{self.display_name}")
+
+        model_blob = None
+        label_blob = None
+        for blob in blobs:
+            if blob.name.endswith('model.tflite'):
+                model_blob = blob
+            if blob.name.endswith('dict.txt'):
+                label_blob = blob
+
+        self.model_file = file_storage.localize_file(model_blob.name)
+        self.label_file = file_storage.localize_file(label_blob.name)
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -54,7 +76,7 @@ class AutoMLModelClassifier(AssetProcessor):
         for result in self.predictions:
             self.analysis.add_label_and_score(result['label'], result['score'])
 
-        asset.add_analysis(self.app_model.module_name, self.analysis)
+        asset.add_analysis(self.app_model.name, self.analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path
@@ -90,23 +112,22 @@ class AutoMLModelClassifier(AssetProcessor):
         :param score:
         :return:
         """
-        return score/1000 if score else 0
+        return score / 1000 if score else 0
 
     def __load_interpreters(self):
         """
         Prepare model tensors and load labels array from file
         :return:
         """
-        tflite_file = glob(f"{self.model_dir}/*.tflite")[0]
-        label_file = glob(f"{self.model_dir}/labels*.txt")[0]
 
-        if not tflite_file or not label_file:
+        if not self.model_file or not self.label_file:
             raise FileNotFoundError("Model files not found")
 
-        self.labels = open(label_file, "r").read().splitlines()
+        with open(self.label_file, "r") as infile:
+            self.labels = infile.read().splitlines()
 
         # Load the TFLite model and allocate tensors.
-        self.interpreter = tf.lite.Interpreter(model_path=tflite_file)
+        self.interpreter = tf.lite.Interpreter(model_path=self.model_file)
         self.interpreter.allocate_tensors()
 
         # Get input and output tensors.

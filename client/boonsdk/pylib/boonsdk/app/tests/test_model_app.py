@@ -126,30 +126,6 @@ class ModelAppTests(unittest.TestCase):
 
     @patch.object(ModelApp, 'find_one_model')
     @patch.object(BoonClient, 'stream')
-    def test_download_and_unzip_model_file(self, get_patch, model_patch):
-        zip_file_loc = get_test_file("models/tflite/model.zip")
-        zip_file_loc_copy = get_test_file("models/tflite/model_test.zip")
-        tf_lite_model_file = get_test_file("models/tflite/mobilenet_v1_1.0_224_quant.tflite")
-        tf_lite_label_file = get_test_file("models/tflite/labels_mobilenet_quant_v1_224.txt")
-        get_patch.return_value = zip_file_loc_copy
-        model_patch.return_value = Model({
-            'id': '12345',
-            'type': "GCP_AUTOML_CLASSIFIER",
-            'name': 'foo'
-        })
-
-        copyfile(zip_file_loc_copy, zip_file_loc)
-
-        self.app.models.download_and_unzip_model("12345", get_test_file("models/tflite"))
-
-        assert os.path.exists(tf_lite_model_file)
-        assert os.path.exists(tf_lite_label_file)
-
-        os.remove(tf_lite_label_file)
-        os.remove(tf_lite_model_file)
-
-    @patch.object(ModelApp, 'find_one_model')
-    @patch.object(BoonClient, 'stream')
     def test_download_and_unzip_model_file_not_existing_model(self, get_patch, model_patch):
         zip_file_loc = get_test_file("models/not_exists.tflite")
         get_patch.return_value = zip_file_loc

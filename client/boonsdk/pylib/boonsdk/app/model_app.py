@@ -192,49 +192,6 @@ class ModelApp:
         os.unlink(zip_file_path)
         return rsp
 
-    def download_and_unzip_model(self, model, model_path):
-        """
-        Download a trained model from BoonAI storage
-        :param model: The model object or it's unique ID.
-        :param model_path: The path to a directory that will be downloaded the files
-        :return: a dict containing server download response
-        """
-
-        mid = as_id(model)
-        model = self.find_one_model(id=mid)
-        # check the model types.
-        if model.type is not ModelType.GCP_AUTOML_CLASSIFIER:
-            raise ValueError(f'Invalid model type for upload: {model.type}')
-
-        mid = as_id(model)
-        file_name = 'model.zip'
-        download_path = self.app.client.stream("/api/v3/models/{}/_download".format(mid),
-                                               "{}/{}".format(model_path, file_name))
-
-        if not os.path.isfile(download_path):
-            raise FileNotFoundError(f"The model {model.id} does not have an available model file.")
-
-        def unzip_model_files(model_path, file_name):
-            os.chdir(model_path)
-            zip_ref = zipfile.ZipFile(file_name)
-
-            # extract to the model path
-            tmp_dir = mkdtemp()
-            zip_ref.extractall(tmp_dir)
-
-            # copying only files
-            for root, dirs, files in os.walk(tmp_dir):
-                for file in files:
-                    path_file = os.path.join(root, file)
-                    copyfile(path_file, "{}/{}".format(model_path, file))
-
-            zip_ref.close()
-            os.remove(file_name)
-
-        unzip_model_files(model_path, file_name)
-
-        return download_path
-
     def get_label_counts(self, model):
         """
         Get a dictionary of the labels and how many times they occur.
