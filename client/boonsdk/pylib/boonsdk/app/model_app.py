@@ -1,11 +1,8 @@
 import logging
 import os
-import zipfile
 
-from tempfile import mkdtemp, mkstemp
 from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule, PostTrainAction
 from ..training import TrainingSetDownloader
-from shutil import copyfile
 from ..util import as_collection, as_id, zip_directory, is_valid_uuid
 
 logger = logging.getLogger(__name__)

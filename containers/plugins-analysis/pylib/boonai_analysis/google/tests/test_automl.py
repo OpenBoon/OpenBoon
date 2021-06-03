@@ -19,7 +19,11 @@ class AutoMLModelClassifierTests(PluginUnitTestCase):
     @patch("boonai_analysis.google.automl.get_proxy_level_path")
     @patch.object(ModelApp, 'find_one_model')
     @patch.object(ModelApp, "get_model")
-    def test_predict(self, model_patch, find_model, proxy_patch, directory_location_patch, gs_patch):
+    def test_predict(self, model_patch,
+                     find_model,
+                     proxy_patch,
+                     directory_location_patch,
+                     gs_patch):
         frame = Frame(TestAsset(self.test_img))
         ml_client = MockAutoMLClient()
         args = {"model_id": ml_client.id, "automl_model_id": ml_client}
@@ -40,8 +44,9 @@ class AutoMLModelClassifierTests(PluginUnitTestCase):
 
 class MockGsClient:
     def list_blobs(self, *args, **kwargs):
-        label_file_name = 'model-export_icn_tflite-model_exportable_2-2021-05-28T21_55_41.973132Z_dict.txt'
-        model_file_name = 'model-export_icn_tflite-model_exportable_2-2021-05-28T21_55_41.973132Z_model.tflite'
+        base = 'model-export_icn_tflite-model_exportable_2-2021-05-28T21_55_41.973132Z_'
+        label_file_name = '%sdict.txt' % base
+        model_file_name = '%smodel.tflite' % base
         return [MockBlob(test_path(f"models/tflite/{model_file_name}")),
                 MockBlob(test_path(f"models/tflite/{label_file_name}"))]
 

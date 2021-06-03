@@ -2,15 +2,13 @@ import logging
 import tempfile
 import unittest
 import uuid
-import os
-from shutil import copyfile
 from unittest.mock import patch
 
 import pytest
 
 from boonsdk import BoonClient, ModelType, Model
 from boonsdk.app import ModelApp
-from .util import get_boon_app, get_test_file
+from .util import get_boon_app
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -123,20 +121,6 @@ class ModelAppTests(unittest.TestCase):
         tmp_dir = tempfile.mkdtemp()
         module = self.app.models.upload_trained_model("12345", tmp_dir, ["dog", "cat"])
         assert module.category == 'LabelDetection'
-
-    @patch.object(ModelApp, 'find_one_model')
-    @patch.object(BoonClient, 'stream')
-    def test_download_and_unzip_model_file_not_existing_model(self, get_patch, model_patch):
-        zip_file_loc = get_test_file("models/not_exists.tflite")
-        get_patch.return_value = zip_file_loc
-        model_patch.return_value = Model({
-            'id': '12345',
-            'type': 'GCP_AUTOML_CLASSIFIER',
-            'name': 'foo'
-        })
-
-        with pytest.raises(FileNotFoundError):
-            self.app.models.download_and_unzip_model("12345", get_test_file("models/tflite"))
 
     @patch.object(BoonClient, 'post')
     def test_find_one_model(self, post_patch):
