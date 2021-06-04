@@ -19,8 +19,8 @@ class ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestC
     def tearDown(self):
         del os.environ['CLARIFAI_KEY']
 
-    @patch("boonai_analysis.clarifai.video.bboxes.video.save_timeline", return_value={})
-    @patch('boonai_analysis.clarifai.video.bboxes.proxy.get_video_proxy')
+    @patch("boonai_analysis.clarifai.util.video.save_timeline", return_value={})
+    @patch('boonai_analysis.clarifai.util.proxy.get_video_proxy')
     def run_process(self, proxy_path_patch, _, video_path, detector, attr, assertions):
         proxy_path_patch.return_value = video_path
 
@@ -43,7 +43,7 @@ class ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestC
             video_path=test_path('video/julia_roberts.mp4'),
             detector=bboxes.ClarifaiVideoFaceDetectionProcessor(),
             attr='clarifai-face-detection',
-            assertions={'labels': ['face'], 'count': 1}
+            assertions={'labels': ['BINARY_POSITIVE'], 'count': 1}
         )
 
     def test_logo_process(self):

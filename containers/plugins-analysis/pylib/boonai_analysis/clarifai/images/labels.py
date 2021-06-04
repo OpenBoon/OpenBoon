@@ -1,12 +1,8 @@
-import backoff
-from clarifai.errors import ApiError
-
-from boonflow import AssetProcessor, FileTypes
+from boonai_analysis.clarifai.util import AbstractClarifaiProcessor
 from boonflow.analysis import LabelDetectionAnalysis
 from boonflow.proxy import get_proxy_level_path
 
-from boonai_analysis.clarifai.util import get_clarifai_app, \
-    not_a_quota_exception, model_map, log_backoff_exception
+from boonflow import FileTypes
 
 __all__ = [
     'ClarifaiLabelDetectionProcessor',
@@ -17,122 +13,96 @@ __all__ = [
     'ClarifaiExplicitDetectionProcessor',
     'ClarifaiModerationDetectionProcessor',
     'ClarifaiTexturesDetectionProcessor',
+    'ClarifaiAgeDetectionProcessor',
+    'ClarifaiGenderDetectionProcessor',
+    'ClarifaiEthnicityDetectionProcessor',
+    'ClarifaiRoomTypesDetectionProcessor'
 ]
 
 
-class AbstractClarifaiProcessor(AssetProcessor):
-    """
-        This base class is used for all Clarifai features.  Subclasses
-        only have to implement the "predict(asset, image) method.
-        """
-
+class AbstractClarifaiLabelProcessor(AbstractClarifaiProcessor):
     file_types = FileTypes.images | FileTypes.documents
-
-    def __init__(self, model):
-        super(AbstractClarifaiProcessor, self).__init__()
-        self.clarifai = None
-        self.model = model
-        self.attribute = 'clarifai-{}'.format(model_map[model])
-
-    def init(self):
-        self.clarifai = get_clarifai_app()
 
     def process(self, frame):
         asset = frame.asset
         p_path = get_proxy_level_path(asset, 1)
-
-        model = getattr(self.clarifai.public_models, self.model)
-        response = self.predict(model, p_path)
-        labels = response['outputs'][0]['data'].get('concepts')
-        if not labels:
+        response = self.predict(p_path)
+        concepts = response.outputs[0].data.concepts
+        if not concepts:
             return
-
         analysis = LabelDetectionAnalysis()
-        [analysis.add_label_and_score(label['name'], label['value']) for label in labels]
+        for concept in concepts:
+            analysis.add_label_and_score(concept.name, concept.value)
         asset.add_analysis(self.attribute, analysis)
 
-    @backoff.on_exception(backoff.expo,
-                          ApiError,
-                          max_time=3600,
-                          giveup=not_a_quota_exception,
-                          on_backoff=log_backoff_exception)
-    def predict(self, model, p_path):
-        """
-        Make a prediction from the filename for a given model
 
-        Args:
-            model: (Clarifai.Model) CLarifai Model type
-            p_path: (str) image path
-
-        Returns:
-            (dict) prediction response
-        """
-        return model.predict_by_filename(p_path)
-
-    def emit_status(self, msg):
-        """
-        Emit a status back to the Archivist.
-
-        Args:
-            msg (str): The message to emit.
-
-        """
-        if not self.reactor:
-            return
-        self.reactor.emit_status(msg)
-
-
-class ClarifaiLabelDetectionProcessor(AbstractClarifaiProcessor):
+class ClarifaiLabelDetectionProcessor(AbstractClarifaiLabelProcessor):
     """ Clarifai label detection"""
+    attribute_name = 'label-detection'
+    model_id = 'fedcc08b2b72481aa17d4b8153570cc1'
 
-    def __init__(self):
-        super(ClarifaiLabelDetectionProcessor, self).__init__('general_model')
 
-
-class ClarifaiFoodDetectionProcessor(AbstractClarifaiProcessor):
+class ClarifaiFoodDetectionProcessor(AbstractClarifaiLabelProcessor):
     """ Clarifai food detection"""
+    attribute_name = 'food-detection'
+    model_id = 'bd367be194cf45149e75f01d59f77ba7'
 
-    def __init__(self):
-        super(ClarifaiFoodDetectionProcessor, self).__init__('food_model')
 
-
-class ClarifaiTravelDetectionProcessor(AbstractClarifaiProcessor):
+class ClarifaiTravelDetectionProcessor(AbstractClarifaiLabelProcessor):
     """ Clarifai travel detection"""
+    attribute_name = 'travel-detection'
+    model_id = '79fbfbae4e30492b85ab2a8758273d76'
 
-    def __init__(self):
-        super(ClarifaiTravelDetectionProcessor, self).__init__('travel_model')
 
-
-class ClarifaiApparelDetectionProcessor(AbstractClarifaiProcessor):
+class ClarifaiApparelDetectionProcessor(AbstractClarifaiLabelProcessor):
     """ Clarifai apparel detection"""
+    attribute_name = 'apparel-detection'
+    model_id = 'e0be3b9d6a454f0493ac3a30784001ff'
 
-    def __init__(self):
-        super(ClarifaiApparelDetectionProcessor, self).__init__('apparel_model')
 
-
-class ClarifaiWeddingDetectionProcessor(AbstractClarifaiProcessor):
+class ClarifaiWeddingDetectionProcessor(AbstractClarifaiLabelProcessor):
     """ Clarifai wedding detection"""
+    attribute_name = 'wedding-detection'
+    model_id = 'c386b7a870114f4a87477c0824499348'
 
-    def __init__(self):
-        super(ClarifaiWeddingDetectionProcessor, self).__init__('wedding_model')
 
-
-class ClarifaiExplicitDetectionProcessor(AbstractClarifaiProcessor):
+class ClarifaiExplicitDetectionProcessor(AbstractClarifaiLabelProcessor):
     """ Clarifai explicit detection"""
+    attribute_name = 'nsfw-detection'
+    model_id = 'e9576d86d2004ed1a38ba0cf39ecb4b1'
 
-    def __init__(self):
-        super(ClarifaiExplicitDetectionProcessor, self).__init__('nsfw_model')
 
-
-class ClarifaiModerationDetectionProcessor(AbstractClarifaiProcessor):
+class ClarifaiModerationDetectionProcessor(AbstractClarifaiLabelProcessor):
     """ Clarifai moderation detection"""
+    attribute_name = 'unsafe-detection'
+    model_id = 'd16f390eb32cad478c7ae150069bd2c6'
 
-    def __init__(self):
-        super(ClarifaiModerationDetectionProcessor, self).__init__('moderation_model')
 
-
-class ClarifaiTexturesDetectionProcessor(AbstractClarifaiProcessor):
+class ClarifaiTexturesDetectionProcessor(AbstractClarifaiLabelProcessor):
     """ Clarifai textures detection"""
+    attribute_name = 'texture-detection'
+    model_id = 'fbefb47f9fdb410e8ce14f24f54b47ff'
 
-    def __init__(self):
-        super(ClarifaiTexturesDetectionProcessor, self).__init__('textures_and_patterns_model')
+
+class ClarifaiAgeDetectionProcessor(AbstractClarifaiLabelProcessor):
+    """ Clarifai age detection"""
+    attribute_name = 'age-detection'
+    model_id = '36f90889189ad96c516d134bc713004d'
+
+
+class ClarifaiGenderDetectionProcessor(AbstractClarifaiLabelProcessor):
+    """ Clarifai gender detection"""
+    attribute_name = 'gender-detection'
+    model_id = 'af40a692dfe6040f23ca656f4e144fc2'
+
+
+class ClarifaiEthnicityDetectionProcessor(AbstractClarifaiLabelProcessor):
+    """ Clarifai ethnicity detection"""
+    attribute_name = 'ethnicity-detection'
+    model_id = '93c277ec3940fba661491fda4d3ccfa0'
+
+
+class ClarifaiRoomTypesDetectionProcessor(AbstractClarifaiLabelProcessor):
+    """ Clarifai room types detection"""
+    attribute_name = 'room-types-detection'
+    model_id = 'def7f8f57be14c468d22d3a8601c421e'
