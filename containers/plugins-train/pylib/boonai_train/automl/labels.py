@@ -178,7 +178,9 @@ class AutomlLabelDetectionSession:
     def _delete_train_resources(self):
         self.emit_status('Deleting model and dataset used for training')
         self.client.delete_model(automl.DeleteModelRequest(name=self.model.name)).result()
-        self.client.delete_dataset(automl.DeleteDatasetRequest(name=self.automl_dataset.name)).result()
+
+        ds_del_request = automl.DeleteDatasetRequest(name=self.automl_dataset.name)
+        self.client.delete_dataset(ds_del_request).result()
 
     def _get_img_proxy_uri(self, asset):
         """
