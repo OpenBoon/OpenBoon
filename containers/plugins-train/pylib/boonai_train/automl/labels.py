@@ -176,7 +176,7 @@ class AutomlLabelDetectionSession:
         return file_storage.projects.get_native_uri(ref)
 
     def _delete_train_resources(self):
-        self.emit_status(f'Deleting model and dataset used for training')
+        self.emit_status('Deleting model and dataset used for training')
         self.client.delete_model(automl.DeleteModelRequest(name=self.model.name)).result()
         self.client.delete_dataset(automl.DeleteDatasetRequest(name=self.automl_dataset.name)).result()
 
