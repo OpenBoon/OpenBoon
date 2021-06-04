@@ -31,6 +31,9 @@ class AutomlLabelDetectionSession:
         # Can only be 32 chars
         self.display_name = self.model.id.replace("-", "")
 
+        self.automl_dataset = None
+        self.automl_model = None
+
     def train(self):
         """
         Train the AutoML model. This method builds a dataSet and kicks off
@@ -41,11 +44,15 @@ class AutomlLabelDetectionSession:
             dict: A Boon AI AutoML session.
         """
 
-        dataset = self._create_automl_dataset()
+        self.automl_dataset = self._create_automl_dataset()
 
-        self._import_images_into_dataset(dataset)
+        self._import_images_into_dataset(self.automl_dataset)
 
-        return self._train_automl_model()
+        self.automl_model = self._train_automl_model(self.automl_dataset)
+
+        self._export_model(self.automl_model)
+
+        self._delete_train_resources()
 
     def _train_automl_model(self, dataset):
         """
@@ -80,7 +87,6 @@ class AutomlLabelDetectionSession:
         automl_model = self.client.create_model(
             parent=self.project_location,
             model=automl_model_request).result()
-        self._export_model(automl_model)
 
         return automl_model
 
@@ -168,6 +174,11 @@ class AutomlLabelDetectionSession:
             csv_file, self.model, "automl", "labels.csv")
 
         return file_storage.projects.get_native_uri(ref)
+
+    def _delete_train_resources(self):
+        self.emit_status(f'Deleting model and dataset used for training')
+        self.client.delete_model(automl.DeleteModelRequest(self.model.name)).result()
+        self.client.delete_dataset(automl.DeleteDatasetRequest(self.automl_dataset.name)).result()
 
     def _get_img_proxy_uri(self, asset):
         """
