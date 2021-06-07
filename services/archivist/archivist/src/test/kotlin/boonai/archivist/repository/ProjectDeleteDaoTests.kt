@@ -12,12 +12,8 @@ import boonai.archivist.domain.Provider
 import boonai.archivist.domain.Category
 import boonai.archivist.domain.ModelObjective
 import boonai.archivist.domain.FileType
-import boonai.archivist.domain.ModelSpec
-import boonai.archivist.domain.ModelType
-import boonai.archivist.domain.AutomlSessionSpec
 import boonai.archivist.domain.DataSourceSpec
 import boonai.archivist.security.getProjectId
-import boonai.archivist.service.AutomlService
 import boonai.archivist.service.CredentialsService
 import boonai.archivist.service.JobService
 import boonai.archivist.service.PipelineModService
@@ -42,9 +38,6 @@ class ProjectDeleteDaoTests : AbstractTest() {
     lateinit var pipelineModService: PipelineModService
 
     @Autowired
-    lateinit var automlService: AutomlService
-
-    @Autowired
     lateinit var modelService: ModelService
 
     @Autowired
@@ -54,7 +47,6 @@ class ProjectDeleteDaoTests : AbstractTest() {
     fun testDeleteProjectRelatedObjects() {
         createJobAndTasks()
         createPipelineAndModule()
-        createAutoMl()
         createDataSource()
 
         val indexRoute = indexRoutingService.findOne(IndexRouteFilter(projectIds = listOf(getProjectId())))
@@ -125,18 +117,6 @@ class ProjectDeleteDaoTests : AbstractTest() {
         pipelineModService.create(modSpec)
         modularSpec.modules = listOf(modSpec.name)
         pipelineService.create(modularSpec)
-    }
-
-    private fun createAutoMl() {
-        val modelSpec = ModelSpec("animals", ModelType.GCP_AUTOML_CLASSIFIER)
-        val model = modelService.createModel(modelSpec)
-
-        val automlSpec = AutomlSessionSpec(
-            "project/foo/region/us-central/datasets/foo",
-            "/foo/bar"
-        )
-
-        automlService.createSession(model, automlSpec)
     }
 
     private fun createDataSource() {
