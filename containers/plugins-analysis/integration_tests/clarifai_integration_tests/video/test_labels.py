@@ -19,8 +19,8 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     def tearDown(self):
         del os.environ['CLARIFAI_KEY']
 
-    @patch("boonai_analysis.clarifai.video.labels.video.save_timeline", return_value={})
-    @patch('boonai_analysis.clarifai.video.labels.proxy.get_video_proxy')
+    @patch("boonai_analysis.clarifai.util.video.save_timeline", return_value={})
+    @patch('boonai_analysis.clarifai.util.proxy.get_video_proxy')
     def run_process(self, proxy_path_patch, _, video_path, detector, attr, assertions):
         proxy_path_patch.return_value = video_path
 
