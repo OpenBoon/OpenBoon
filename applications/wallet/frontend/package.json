@@ -124,7 +124,7 @@
     "http-proxy-middleware": "2.0.0",
     "husky": "4.3.8",
     "import-all.macro": "3.1.0",
-    "jest": "27.0.3",
+    "jest": "27.0.4",
     "jest-fetch-mock": "3.0.3",
     "lint-staged": "11.0.0",
     "morgan": "1.10.0",
