@@ -1121,10 +1121,10 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
   padding-top: 16px;
   padding-bottom: 16px;
 }
@@ -1155,6 +1155,10 @@ Array [
 }
 
 .emotion-9 {
+  position: relative;
+}
+
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1174,86 +1178,42 @@ Array [
   -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 4px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 400;
+  font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #808080;
   background-color: transparent;
 }
 
-.emotion-9,
-.emotion-9:hover,
-.emotion-9:visited,
-.emotion-9 .noop {
-  color: #6088FE;
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.emotion-9:hover,
-.emotion-9 .noop {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
 }
 
-.emotion-9:active {
-  opacity: 0;
-  -webkit-transition: opacity .3s ease;
-  transition: opacity .3s ease;
-}
-
-.emotion-10 {
-  padding: 4px;
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
   color: #808080;
 }
 
 .emotion-11 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
   padding: 4px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 400;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
+  color: #808080;
 }
 
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited,
-.emotion-11 .noop {
-  color: #6088FE;
-}
-
-.emotion-11:hover,
-.emotion-11 .noop {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.emotion-12 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1262,60 +1222,9 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-12 button,
-.emotion-12 a {
+.emotion-13 button,
+.emotion-13 a {
   margin-right: 16px;
-}
-
-.emotion-13 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-13,
-.emotion-13:hover,
-.emotion-13:visited,
-.emotion-13 .noop {
-  background-color: #808080;
-}
-
-.emotion-13:hover,
-.emotion-13 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-13[aria-disabled=true],
-.emotion-13 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
 }
 
 .emotion-14 {
@@ -1353,18 +1262,69 @@ Array [
 .emotion-14:hover,
 .emotion-14:visited,
 .emotion-14 .noop {
-  background-color: #3A5DFF;
+  background-color: #808080;
 }
 
 .emotion-14:hover,
 .emotion-14 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #6088FE;
+  background-color: #b3b3b3;
 }
 
 .emotion-14[aria-disabled=true],
 .emotion-14 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-15 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited,
+.emotion-15 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-15:hover,
+.emotion-15 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-15[aria-disabled=true],
+.emotion-15 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1417,20 +1377,29 @@ Array [
       <div
         className="emotion-8"
       >
-        <button
+        <div
           className="emotion-9"
-          onClick={[Function]}
-          type="button"
         >
-          Copy Key
-        </button>
+          <button
+            aria-label="Copy API Key to Clipboard"
+            className="emotion-10"
+            onClick={[Function]}
+            title="Copy API Key to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
         <span
-          className="emotion-10"
+          className="emotion-11"
         >
           |
         </span>
         <a
-          className="emotion-11"
+          className="emotion-10"
           download="api-key-name.json"
           href="data:application/octet-stream;charset=utf-8;base64,eyJpZCI6IjE2ZmJhOWI3LWY1ODQtNGQwMS1iMmEyLTYyMTk0OTQxNTQ5ZCIsInByb2plY3RJZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImFjY2Vzc0tleSI6IlJ5QXRwT005R29Cc2VGQTVXdkdKTXp6Z1BuOUZERFd3Iiwic2VjcmV0S2V5IjoiZmZmYTlkODgxMDhlYWQzMTQxNWUwNTU0YWY3OTllZjhlYzg3ODdmM2YyNjFlM2IxNjE3YjViYWNjZTA2NzJlMzljMjIwZDQ0MmUzMGQ5NWE0OTcyM2FkZDc1ZmQzOWMzYjYxZjNiMDUzMmQ2NDU3YzAyYzkzNjk1YTlkMzcwYjMyOWFmNjk2ZWU3ZDhmODFiYzhiNjBkNWI0ZmVkODA3N2Y3YTQ1NGIwNTYzOTc0NjE0MzE5YTNkMTc3MzA4YzE3YzJjMjkxMDA2NDAzYzBlNjE4NjA1OWU1NzljZWYyYWMiLCJuYW1lIjoiTXkgTmV3IEFQSSBLZXkiLCJwZXJtaXNzaW9ucyI6WyJBcGlLZXlNYW5hZ2UiXSwidmFsaWRhdGlvbktleSI6eyJpZCI6IjE2ZmJhOWI3LWY1ODQtNGQwMS1iMmEyLTYyMTk0OTQxNTQ5ZCIsInByb2plY3RJZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImFjY2Vzc0tleSI6IlJ5QXRwT005R29Cc2VGQTVXdkdKTXp6Z1BuOUZERFd3Iiwic2VjcmV0S2V5IjoiZmZmYTlkODgxMDhlYWQzMTQxNWUwNTU0YWY3OTllZjhlYzg3ODdmM2YyNjFlM2IxNjE3YjViYWNjZTA2NzJlMzljMjIwZDQ0MmUzMGQ5NWE0OTcyM2FkZDc1ZmQzOWMzYjYxZjNiMDUzMmQ2NDU3YzAyYzkzNjk1YTlkMzcwYjMyOWFmNjk2ZWU3ZDhmODFiYzhiNjBkNWI0ZmVkODA3N2Y3YTQ1NGIwNTYzOTc0NjE0MzE5YTNkMTc3MzA4YzE3YzJjMjkxMDA2NDAzYzBlNjE4NjA1OWU1NzljZWYyYWMiLCJuYW1lIjoiTXkgTmV3IEFQSSBLZXkiLCJwZXJtaXNzaW9ucyI6WyJBcGlLZXlNYW5hZ2UiXSwiZ3JhbnRlZEF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJBcGlLZXlNYW5hZ2UifV19fQ=="
         >
@@ -1439,17 +1408,17 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-12"
+      className="emotion-13"
     >
       <button
-        className="emotion-13"
+        className="emotion-14"
         onClick={[Function]}
         type="button"
       >
         Create Another Key
       </button>
       <a
-        className="emotion-14"
+        className="emotion-15"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
         onClick={[Function]}
         onMouseEnter={[Function]}

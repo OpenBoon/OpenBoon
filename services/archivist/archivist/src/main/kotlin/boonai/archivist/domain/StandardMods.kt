@@ -339,6 +339,30 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
+            "clarifai-weapon-detection",
+            "Identify and classify weapons in images and videos.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModelObjective.EXPLICIT_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "boonai_analysis.clarifai.ClarifaiWeaponDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "boonai_analysis.clarifai.ClarifaiVideoWeaponDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
             "clarifai-logo-detection",
             "Identify up to 500 company brands and logos.",
             Provider.CLARIFAI,
@@ -429,6 +453,70 @@ fun getStandardModules(): List<PipelineModSpec> {
                             "boonai_analysis.clarifai.ClarifaiVideoTexturesDetectionProcessor",
                             StandardContainers.ANALYSIS
                         )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "clarifai-room-types-detection",
+            "Classify images based on the environment in which they were taken. Recognize common scenes in rooms and around homes.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "boonai_analysis.clarifai.ClarifaiRoomTypesDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "boonai_analysis.clarifai.ClarifaiVideoRoomTypesDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "clarifai-demographics-detection",
+            "Predict age, gender, and multicultural appearance for each detected face based on facial characteristics.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "boonai_analysis.clarifai.ClarifaiGenderDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "boonai_analysis.clarifai.ClarifaiEthnicityDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "boonai_analysis.clarifai.ClarifaiAgeDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "boonai_analysis.clarifai.ClarifaiVideoGenderDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "boonai_analysis.clarifai.ClarifaiVideoEthnicityDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        ),
+                        ProcessorRef(
+                            "boonai_analysis.clarifai.ClarifaiVideoAgeDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        ),
                     )
                 )
             ),

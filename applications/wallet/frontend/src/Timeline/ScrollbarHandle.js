@@ -5,7 +5,10 @@ import { colors, constants } from '../Styles'
 import {
   SCROLLBAR_RESIZE_HANDLE_SIZE,
   SCROLLBAR_TRACK_MARGIN_WIDTH,
+  setIgnore,
 } from './helpers'
+
+import { ACTIONS } from './reducer'
 
 let origin
 let scrollbarTrackWidth
@@ -18,10 +21,9 @@ let pointerToRightEdgeDiff
 const TimelineScrollbarHandle = ({
   scrollbarRef,
   scrollbarTrackRef,
-  rulerZoomRef,
-  aggregateZoomRef,
-  tracksZoomRef,
+  horizontalScroller,
   isLeft,
+  dispatch,
 }) => {
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
@@ -47,7 +49,7 @@ const TimelineScrollbarHandle = ({
 
     const maxWidth = scrollbarTrackWidth - SCROLLBAR_TRACK_MARGIN_WIDTH * 2
 
-    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, newWidth))
+    const clampedWidth = Math.max(minWidth, Math.min(newWidth, maxWidth))
 
     // calculate when right handle is touching right edge of the track
     const isMaxExpandedToRight =
@@ -73,24 +75,33 @@ const TimelineScrollbarHandle = ({
         : Math.max(0, computedOffsetLeft)
 
     /* eslint-disable no-param-reassign */
-    scrollbarRef.current.style.width = `${clampedWidth}px`
-    scrollbarRef.current.style.left = `${newOffsetLeft}px`
+    scrollbarRef.current.style.width = `${(clampedWidth / maxWidth) * 100}%`
+    scrollbarRef.current.style.left = `${(newOffsetLeft / maxWidth) * 100}%`
 
     const newZoom = (1 / (clampedWidth / maxWidth)) * 100
 
-    rulerZoomRef.current.style.width = `${newZoom}%`
-    aggregateZoomRef.current.style.width = `${newZoom}%`
-    tracksZoomRef.current.style.width = `${newZoom}%`
+    dispatch({ type: ACTIONS.ZOOM, payload: { value: newZoom } })
+
+    horizontalScroller.emit({
+      eventName: 'scroll',
+      data: {
+        scrollX: (newZoom * newOffsetLeft) / 100,
+        scrollY: 0,
+      },
+    })
   }
 
   /* istanbul ignore next */
   const handleMouseUp = () => {
+    setIgnore({ value: false })
     document.removeEventListener('mousemove', handleMouseMove)
     document.removeEventListener('mouseup', handleMouseUp)
   }
 
   /* istanbul ignore next */
   const handleMouseDown = ({ clientX }) => {
+    setIgnore({ value: true })
+
     origin = clientX
 
     scrollbarOffsetLeft = scrollbarRef.current?.offsetLeft
@@ -146,28 +157,11 @@ TimelineScrollbarHandle.propTypes = {
       getBoundingClientRect: PropTypes.func.isRequired,
     }),
   }).isRequired,
-  rulerZoomRef: PropTypes.shape({
-    current: PropTypes.shape({
-      style: PropTypes.shape({
-        width: PropTypes.string,
-      }),
-    }),
-  }).isRequired,
-  aggregateZoomRef: PropTypes.shape({
-    current: PropTypes.shape({
-      style: PropTypes.shape({
-        width: PropTypes.string,
-      }),
-    }),
-  }).isRequired,
-  tracksZoomRef: PropTypes.shape({
-    current: PropTypes.shape({
-      style: PropTypes.shape({
-        width: PropTypes.string,
-      }),
-    }),
+  horizontalScroller: PropTypes.shape({
+    emit: PropTypes.func.isRequired,
   }).isRequired,
   isLeft: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default TimelineScrollbarHandle

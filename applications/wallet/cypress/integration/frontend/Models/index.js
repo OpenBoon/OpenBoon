@@ -1,5 +1,5 @@
 describe('Models', function () {
-  it('can be created and deleted', function () {
+  it.skip('can be created and deleted', function () {
     const modelName = `cypress-frontend-${Date.now()}`
 
     cy.login()

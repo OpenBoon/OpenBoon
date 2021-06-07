@@ -1,136 +1,71 @@
-import backoff
 import logging
-from clarifai.errors import ApiError
 
 from boonai_analysis.clarifai.images import bboxes as bboxes_images
-from boonai_analysis.clarifai.util import not_a_quota_exception, model_map, log_backoff_exception
-from boonai_analysis.utils.prechecks import Prechecks
-from boonflow import AssetProcessor, FileTypes, file_storage, proxy, clips, video
+from boonai_analysis.clarifai.util import AbstractClarifaiVideoProcessor
 from boonflow.analysis import LabelDetectionAnalysis
 
 logger = logging.getLogger(__name__)
 
 __all__ = [
     'ClarifaiVideoFaceDetectionProcessor',
-    'ClarifaiVideoLogoDetectionProcessor'
+    'ClarifaiVideoLogoDetectionProcessor',
+    'ClarifaiVideoWeaponDetectionProcessor',
+    'ClarifaiVideoCelebrityDetectionProcessor'
 ]
 
 
-class AbstractClarifaiVideoProcessor(AssetProcessor):
+class AbstractClarifaiVideoBboxProcessor(AbstractClarifaiVideoProcessor):
     """
     This base class is used for all Microsoft Computer Vision features.  Subclasses
     only have to implement the "predict(asset, image) method.
     """
-
-    file_types = FileTypes.videos
-
-    def __init__(self, model):
-        super(AbstractClarifaiVideoProcessor, self).__init__()
-        self.image_client = None
-        self.model = model
-        self.attribiute = 'clarifai-{}'.format(model_map[model])
-
-    def process(self, frame):
-        asset = frame.asset
-        asset_id = asset.id
-        final_time = asset.get_attr('media.length')
-
-        if not Prechecks.is_valid_video_length(asset):
-            return
-
-        video_proxy = proxy.get_video_proxy(asset)
-        if not video_proxy:
-            self.logger.warning(f'No video could be found for {asset_id}')
-            return
-
-        local_path = file_storage.localize_file(video_proxy)
-
-        extractor = video.ShotBasedFrameExtractor(local_path)
-        clip_tracker = clips.ClipTracker(asset, self.attribiute)
-        model = getattr(self.image_client.clarifai.public_models, self.model)
-
-        analysis, clip_tracker = self.set_analysis(extractor, clip_tracker, model)
-        asset.add_analysis(self.attribiute, analysis)
-        timeline = clip_tracker.build_timeline(final_time)
-        video.save_timeline(asset, timeline)
-
-    def set_analysis(self, extractor, clip_tracker, model):
+    def set_analysis(self, extractor, clip_tracker):
         """ Set up ClipTracker and Asset Detection Analysis
 
         Args:
             extractor: ShotBasedFrameExtractor
             clip_tracker: ClipTracker
-            model: Clarifai.PublicModel
 
         Returns:
             (tuple): asset detection analysis, clip_tracker
         """
         analysis = LabelDetectionAnalysis(collapse_labels=True)
-
         for time_ms, path in extractor:
-            response = self.predict(model, path)
+            response = self.predict(path)
             try:
-                concepts = response['outputs'][0]['data'].get('regions')
+                regions = response.outputs[0].data.regions
             except KeyError:
                 continue
-            if not concepts:
+            if not regions:
                 continue
-            for concept in concepts:
-                c = concept['data'].get('concepts')[0]
-                pred = {c['name']: c['value']}
-                clip_tracker.append(time_ms, pred)
-                analysis.add_label_and_score(c['name'], c['value'])
-
+            for region in regions:
+                concept = region.data.concepts[0]
+                prediction = {concept.name: concept.value}
+                clip_tracker.append(time_ms, prediction)
+                analysis.add_label_and_score(concept.name, concept.value)
         return analysis, clip_tracker
 
-    @backoff.on_exception(backoff.expo,
-                          ApiError,
-                          max_time=3600,
-                          giveup=not_a_quota_exception,
-                          on_backoff=log_backoff_exception)
-    def predict(self, model, p_path):
-        """
-        Make a prediction from the filename for a given model
 
-        Args:
-            model: (Clarifai.Model) CLarifai Model type
-            p_path: (str) image path
-
-        Returns:
-            (dict) prediction response
-        """
-        return model.predict_by_filename(p_path)
-
-    def emit_status(self, msg):
-        """
-        Emit a status back to the Archivist.
-
-        Args:
-            msg (str): The message to emit.
-
-        """
-        if not self.reactor:
-            return
-        self.reactor.emit_status(msg)
-
-
-class ClarifaiVideoFaceDetectionProcessor(AbstractClarifaiVideoProcessor):
+class ClarifaiVideoFaceDetectionProcessor(AbstractClarifaiVideoBboxProcessor):
     """ Clarifai face detection"""
-
-    def __init__(self):
-        super(ClarifaiVideoFaceDetectionProcessor, self).__init__('face_detection_model')
-
-    def init(self):
-        self.image_client = bboxes_images.ClarifaiFaceDetectionProcessor()
-        self.image_client.init()
+    attribute_name = 'face-detection'
+    model_id = 'f76196b43bbd45c99b4f3cd8e8b40a8a'
+    image_client_class = bboxes_images.ClarifaiFaceDetectionProcessor
 
 
-class ClarifaiVideoLogoDetectionProcessor(AbstractClarifaiVideoProcessor):
+class ClarifaiVideoLogoDetectionProcessor(AbstractClarifaiVideoBboxProcessor):
     """ Clarifai logo detection"""
+    attribute_name = 'logo-detection'
+    image_client_class = bboxes_images.ClarifaiLogoDetectionProcessor
 
-    def __init__(self):
-        super(ClarifaiVideoLogoDetectionProcessor, self).__init__('logo_model')
 
-    def init(self):
-        self.image_client = bboxes_images.ClarifaiLogoDetectionProcessor()
-        self.image_client.init()
+class ClarifaiVideoWeaponDetectionProcessor(AbstractClarifaiVideoBboxProcessor):
+    """ Clarifai weapon detection"""
+    attribute_name = 'weapon-detection'
+    image_client_class = bboxes_images.ClarifaiWeaponDetectionProcessor
+
+
+class ClarifaiVideoCelebrityDetectionProcessor(AbstractClarifaiVideoBboxProcessor):
+    """ Clarifai celebrity detection"""
+    attribute_name = 'celebrity-detection'
+    image_client_class = bboxes_images.ClarifaiCelebrityDetectionProcessor

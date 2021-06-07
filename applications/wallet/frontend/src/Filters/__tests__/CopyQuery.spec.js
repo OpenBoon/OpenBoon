@@ -5,10 +5,10 @@ import FiltersCopyQuery from '../CopyQuery'
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
 describe('<FiltersCopyQuery />', () => {
-  it('should copy properly', () => {
+  it('should copy properly', async () => {
     const mockCopyFn = jest.fn()
 
-    require('react-use-clipboard').__setMockCopyFn(mockCopyFn)
+    window.navigator.clipboard.writeText = mockCopyFn
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
@@ -36,24 +36,14 @@ describe('<FiltersCopyQuery />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    act(() => {
+    await act(async () => {
       component.root
-        .findByProps({ 'aria-label': 'Copy Search Query' })
+        .findByProps({ 'aria-label': 'Copy Search Query to Clipboard' })
         .props.onClick()
     })
 
     expect(mockCopyFn).toHaveBeenCalledWith(
       '{"query":{"bool":{"must":[{"simple_query_string":{"query":"cat"}}]}}}',
     )
-  })
-
-  it('should render properly after copy click', () => {
-    require('react-use-clipboard').__setMockIsCopied(true)
-
-    require('swr').__setMockUseSWRResponse({})
-
-    const component = TestRenderer.create(<FiltersCopyQuery />)
-
-    expect(component.toJSON()).toMatchSnapshot()
   })
 })

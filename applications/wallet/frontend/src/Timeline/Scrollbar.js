@@ -1,23 +1,43 @@
 import PropTypes from 'prop-types'
-import { useRef } from 'react'
+import { useMemo, useRef, useEffect } from 'react'
 
 import { colors, constants, spacing, zIndex } from '../Styles'
+
+import { getScroller } from '../Scroll/helpers'
 
 import TimelineScrollbarThumb from './ScrollbarThumb'
 import TimelineScrollbarHandle from './ScrollbarHandle'
 
-import { SCROLLBAR_CONTAINER_HEIGHT } from './helpers'
+import { SCROLLBAR_CONTAINER_HEIGHT, getIgnore } from './helpers'
 
-const TimelineScrollbar = ({
-  width,
-  zoom,
-  rulerRef,
-  rulerZoomRef,
-  aggregateZoomRef,
-  tracksZoomRef,
-}) => {
+const TimelineScrollbar = ({ rulerRef, width, initialZoom, dispatch }) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const zoom = useMemo(() => initialZoom, [])
+
   const scrollbarTrackRef = useRef()
   const scrollbarRef = useRef()
+
+  const horizontalScroller = getScroller({ namespace: 'Timeline' })
+
+  const horizontalScrollerDeregister = horizontalScroller.register({
+    eventName: 'scroll',
+    callback: /* istanbul ignore next */ ({
+      node: { scrollLeft, scrollWidth } = {},
+    }) => {
+      const ignore = getIgnore()
+
+      if (ignore || !scrollbarRef.current || !scrollLeft || !scrollWidth) return
+
+      /* eslint-disable no-param-reassign */
+      scrollbarRef.current.style.left = `${(scrollLeft / scrollWidth) * 100}%`
+    },
+  })
+
+  useEffect(() => {
+    return () => {
+      horizontalScrollerDeregister()
+    }
+  }, [horizontalScrollerDeregister])
 
   return (
     <>
@@ -61,7 +81,7 @@ const TimelineScrollbar = ({
             css={{
               display: 'flex',
               position: 'absolute',
-              width: '100%',
+              width: `${(100 / zoom) * 100}%`,
               height: '100%',
               backgroundColor: colors.structure.smoke,
               borderRadius: constants.borderRadius.medium,
@@ -70,23 +90,22 @@ const TimelineScrollbar = ({
             <TimelineScrollbarHandle
               scrollbarRef={scrollbarRef}
               scrollbarTrackRef={scrollbarTrackRef}
-              rulerZoomRef={rulerZoomRef}
-              aggregateZoomRef={aggregateZoomRef}
-              tracksZoomRef={tracksZoomRef}
+              horizontalScroller={horizontalScroller}
               isLeft
+              dispatch={dispatch}
             />
             <TimelineScrollbarThumb
-              scrollbarRef={scrollbarRef}
-              zoom={zoom}
               rulerRef={rulerRef}
+              scrollbarRef={scrollbarRef}
+              scrollbarTrackRef={scrollbarTrackRef}
+              horizontalScroller={horizontalScroller}
             />
             <TimelineScrollbarHandle
               scrollbarRef={scrollbarRef}
               scrollbarTrackRef={scrollbarTrackRef}
-              rulerZoomRef={rulerZoomRef}
-              aggregateZoomRef={aggregateZoomRef}
-              tracksZoomRef={tracksZoomRef}
+              horizontalScroller={horizontalScroller}
               isLeft={false}
+              dispatch={dispatch}
             />
           </div>
         </div>
@@ -96,35 +115,15 @@ const TimelineScrollbar = ({
 }
 
 TimelineScrollbar.propTypes = {
-  width: PropTypes.number.isRequired,
-  zoom: PropTypes.number.isRequired,
   rulerRef: PropTypes.shape({
     current: PropTypes.shape({
       offsetWidth: PropTypes.number,
       scrollWidth: PropTypes.number,
     }),
   }).isRequired,
-  rulerZoomRef: PropTypes.shape({
-    current: PropTypes.shape({
-      style: PropTypes.shape({
-        width: PropTypes.string,
-      }),
-    }),
-  }).isRequired,
-  aggregateZoomRef: PropTypes.shape({
-    current: PropTypes.shape({
-      style: PropTypes.shape({
-        width: PropTypes.string,
-      }),
-    }),
-  }).isRequired,
-  tracksZoomRef: PropTypes.shape({
-    current: PropTypes.shape({
-      style: PropTypes.shape({
-        width: PropTypes.string,
-      }),
-    }),
-  }).isRequired,
+  width: PropTypes.number.isRequired,
+  initialZoom: PropTypes.number.isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default TimelineScrollbar

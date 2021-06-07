@@ -1,9 +1,5 @@
 import { useEffect } from 'react'
 import PropTypes from 'prop-types'
-/**
- * There's currently a false-positive bug in this ESLint rule:
- */
-/* eslint-disable-next-line import/no-extraneous-dependencies */
 import Tippy from '@tippyjs/react/headless'
 
 import { colors, constants, spacing, typography } from '../Styles'

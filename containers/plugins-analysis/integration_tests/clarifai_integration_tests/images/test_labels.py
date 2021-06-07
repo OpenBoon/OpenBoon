@@ -50,6 +50,14 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
             assertions={'labels': ['beer'], 'count': 20}
         )
 
+    def test_food_ingredient_process(self):
+        self.run_process(
+            image_path=test_path('images/set02/beer_kettle_01.jpg'),
+            detector=labels.ClarifaiFoodIngredientDetectionProcessor(),
+            attr='clarifai-food-ingredient-detection',
+            assertions={'labels': ['chocolate'], 'count': 20}
+        )
+
     def test_apparel_process(self):
         self.run_process(
             image_path=test_path('images/face-recognition/face2.jpg'),

@@ -64,10 +64,10 @@ describe('<MetadataPrettyLabelsMenu />', () => {
     )
   })
 
-  it('should copy modelId', () => {
+  it('should copy modelId', async () => {
     const mockCopyFn = jest.fn()
 
-    require('react-use-clipboard').__setMockCopyFn(mockCopyFn)
+    window.navigator.clipboard.writeText = mockCopyFn
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
@@ -96,17 +96,17 @@ describe('<MetadataPrettyLabelsMenu />', () => {
     })
 
     // Select Copy Model ID
-    act(() => {
+    await act(async () => {
       component.root.findByProps({ children: 'Copy Model ID' }).props.onClick()
     })
 
     expect(mockCopyFn).toHaveBeenCalledWith(MODEL_ID)
   })
 
-  it('should copy simhash', () => {
+  it('should copy simhash', async () => {
     const mockCopyFn = jest.fn()
 
-    require('react-use-clipboard').__setMockCopyFn(mockCopyFn)
+    window.navigator.clipboard.writeText = mockCopyFn
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
@@ -135,7 +135,7 @@ describe('<MetadataPrettyLabelsMenu />', () => {
     })
 
     // Select Copy Simhash
-    act(() => {
+    await act(async () => {
       component.root.findByProps({ children: 'Copy Simhash' }).props.onClick()
     })
 
