@@ -93,7 +93,8 @@ class TestDatasetsViewsets:
     def test_create_too_many_args(self, login, api_client, project, monkeypatch):
 
         def mock_response(*args, **kwargs):
-            raise BoonSdkSecurityException({'message': f'You do not have permission to perform this action.'})
+            raise BoonSdkSecurityException({'message': 'You do not have permission '
+                                                       'to perform this action.'})
 
         path = reverse('dataset-list', kwargs={'project_pk': project.id})
         monkeypatch.setattr(BoonClient, 'post', mock_response)
