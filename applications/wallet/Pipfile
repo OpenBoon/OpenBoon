@@ -43,6 +43,8 @@ pyjwt = ">=2.0"
 importlib-metadata = "*"
 django-filter = "*"
 boonsdk = {path = "./../../client/boonsdk"}
+celery = "*"
+django-celery-beat = "*"
 
 [requires]
 python_version = "3.7"

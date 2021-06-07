@@ -22,6 +22,10 @@ python3 ./app/manage.py migrate --no-input
 # Start django server.
 gunicorn -c python:gunicornconfig wallet.wsgi &
 
+# Start celery queue
+celery -A wallet worker --loglevel=info &
+celery -A wallet beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler &
+
 # Start node server.
 cd frontend
 npm start &
