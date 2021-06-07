@@ -1,5 +1,5 @@
 from django.urls import reverse
-from boonsdk.client import BoonClient, BoonSdkNotFoundException
+from boonsdk.client import BoonClient, BoonSdkNotFoundException, BoonSdkSecurityException
 from rest_framework import status
 
 from wallet.tests.utils import check_response
@@ -52,6 +52,22 @@ class TestDatasetsViewsets:
         assert content['name'] == 'My New Dataset'
         assert content['type'] == 'Detection'
 
+    def test_create_no_project_id(self, login, api_client, project, monkeypatch):
+
+        def mock_response(*args, **kwargs):
+            return {'id': '274179cc-2122-167c-9a8a-0242ac12000c', 'projectId': '00000000-0000-0000-0000-000000000000', 'name': 'My New Dataset', 'type': 'Detection', 'description': 'My detection dataset.', 'modelCount': 0, 'timeCreated': 1622748735068, 'timeModified': 1622748735068, 'actorCreated': 'd9140c2b-64ed-48b7-a7ee-d164821b4c50/Admin Console Generated Key - a97c8d61-b839-4600-8135-25051b9da0bc - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'actorModified': 'd9140c2b-64ed-48b7-a7ee-d164821b4c50/Admin Console Generated Key - a97c8d61-b839-4600-8135-25051b9da0bc - software@zorroa.com_00000000-0000-0000-0000-000000000000'}  # noqa
+
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
+        path = reverse('dataset-list', kwargs={'project_pk': project.id})
+        body = {'name': 'My New Dataset',
+                'type': 'Detection',
+                'description': 'My detection dataset.'}
+        response = api_client.post(path, body)
+        content = check_response(response, status=status.HTTP_201_CREATED)
+        assert content['id'] == '274179cc-2122-167c-9a8a-0242ac12000c'
+        assert content['name'] == 'My New Dataset'
+        assert content['type'] == 'Detection'
+
     def test_create_wrong_project_id(self, login, api_client, project, monkeypatch):
         wrong_id = '00000000-0000-0000-0000-000000000011'
 
@@ -75,7 +91,12 @@ class TestDatasetsViewsets:
         assert content['name'] == ['This field is required.']
 
     def test_create_too_many_args(self, login, api_client, project, monkeypatch):
+
+        def mock_response(*args, **kwargs):
+            raise BoonSdkSecurityException({'message': f'You do not have permission to perform this action.'})
+
         path = reverse('dataset-list', kwargs={'project_pk': project.id})
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
         body = {'projectId': project.id,
                 'name': 'My New Dataset',
                 'type': 'Detection',

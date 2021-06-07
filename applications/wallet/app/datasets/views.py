@@ -23,8 +23,6 @@ class DatasetsViewSet(ZmlpCreateMixin,
         if request.data.get('projectId') is not None and request.data.get('projectId') != project_pk:
             msg = 'Invalid request. You can only create datasets for the current project context.'
             raise InvalidRequestError(detail={'detail': [msg]})
-        else:
-            request.data['projectId'] = project_pk
 
         return super(DatasetsViewSet, self).create(request, project_pk)
 
@@ -33,7 +31,5 @@ class DatasetsViewSet(ZmlpCreateMixin,
     #     if request.data.get('projectId') is not None and request.data.get('projectId') != project_pk:
     #         msg = 'Invalid request. You can only update datasets for the current project context.'
     #         raise InvalidRequestError(detail={'detail': [msg]})
-    #     else:
-    #         request.data['projectId'] = project_pk
     #
     #     return super(DatasetsViewSet, self).update(request, project_pk, pk)
