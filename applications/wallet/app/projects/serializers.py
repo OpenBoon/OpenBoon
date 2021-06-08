@@ -25,7 +25,7 @@ class ProjectSerializer(ProjectOrganizationNameSerializer,
     class Meta:
         model = Project
         fields = ('id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
-                  'permissions', 'tasks', 'taskerrors', 'datasources',
+                  'permissions', 'tasks', 'taskerrors', 'datasources', 'datasets',
                   'modules', 'providers', 'searches', 'faces', 'visualizations',
                   'models', 'createdDate', 'modifiedDate', 'organizationName',
                   'webhooks')
@@ -64,6 +64,10 @@ class ProjectSerializer(ProjectOrganizationNameSerializer,
     )
     datasources = HyperlinkedIdentityField(
         view_name='datasource-list',
+        lookup_url_kwarg='project_pk',
+    )
+    datasets = HyperlinkedIdentityField(
+        view_name='dataset-list',
         lookup_url_kwarg='project_pk',
     )
     modules = HyperlinkedIdentityField(
