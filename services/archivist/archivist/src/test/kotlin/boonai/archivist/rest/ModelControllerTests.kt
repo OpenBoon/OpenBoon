@@ -241,30 +241,6 @@ class ModelControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testDownloadModel() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_UPLOADED_CLASSIFIER)
-        val model = modelService.createModel(modelSpec)
-
-        val mfp = Paths.get(
-            "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
-        )
-
-        modelService.publishModelFileUpload(model, Files.readAllBytes(mfp).inputStream())
-
-        mvc.perform(
-            MockMvcRequestBuilders.get("/api/v3/models/${model.id}/_download")
-                .headers(admin())
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(
-                MockMvcResultMatchers
-                    .content()
-                    .contentType(MediaType.parseMediaType("application/zip"))
-            )
-            .andReturn()
-    }
-
-    @Test
     fun testApproveLatestModelTag() {
         val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_UPLOADED_CLASSIFIER)
         val model = modelService.createModel(modelSpec)
