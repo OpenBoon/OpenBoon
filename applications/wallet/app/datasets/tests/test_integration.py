@@ -1,7 +1,13 @@
-from django.urls import reverse
+from unittest.mock import Mock, patch
+
+import pytest
+from boonsdk import LabelScope
+from boonsdk.app import AssetApp
 from boonsdk.client import BoonClient, BoonSdkNotFoundException, BoonSdkSecurityException
+from django.urls import reverse
 from rest_framework import status
 
+from datasets.views import DatasetsViewSet
 from wallet.tests.utils import check_response
 
 
@@ -144,3 +150,123 @@ class TestDatasetsViewsets:
     #
     # def test_update_type_not_allowed(self, login, api_client, project, monkeypatch):
     #     pass
+
+    def test_destroy_label(self, login, project, api_client, monkeypatch):
+        def mock_response(*args, **kwargs):
+            return {'updated': 1}
+
+        dataset_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+        monkeypatch.setattr(BoonClient, 'delete', mock_response)
+        path = reverse('dataset-destroy-label', kwargs={'project_pk': project.id,
+                                                        'pk': dataset_id})
+        response = api_client.delete(path, {'label': 'Dog'})
+        content = check_response(response)
+        assert content == {'updated': 1}
+
+    def test_rename_label(self, login, project, api_client, monkeypatch):
+        def mock_response(*args, **kwargs):
+            return {'updated': 26}
+
+        dataset_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+        monkeypatch.setattr(BoonClient, 'put', mock_response)
+        path = reverse('dataset-rename-label', kwargs={'project_pk': project.id,
+                                                       'pk': dataset_id})
+        response = api_client.put(path, {'label': 'Dog', 'newLabel': 'Cat'})
+        content = check_response(response)
+        assert content == {'updated': 26}
+
+    def test_get_labels(self, login, project, api_client, monkeypatch):
+
+        def mock_response(*args, **kwargs):
+            return {'Mountains': 8}
+
+        dataset_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+        path = reverse('dataset-get-labels', kwargs={'project_pk': project.id,
+                                                     'pk': dataset_id})
+        monkeypatch.setattr(BoonClient, 'get', mock_response)
+        response = api_client.get(path)
+        content = check_response(response)
+        assert content == {'count': 1,
+                           'results': [{'label': 'Mountains', 'count': 8}]}
+
+
+class TestLabelingEndpoints:
+
+    @pytest.fixture
+    def add_body(self):
+        return {
+            "addLabels": [
+                {"assetId": "eicS1V9d1hBpOGFC0Zo1TB1OSt0Yrrtl",
+                 "label": "Mountains",
+                 "scope": "TRAIN"},
+                {"assetId": "vKZkTwYjd0zSPpPipAVS5BkLakSeOjzH",
+                 "label": "Mountains",
+                 "scope": "TEST"}
+            ]
+        }
+
+    @pytest.fixture
+    def remove_body(self):
+        return {
+            "removeLabels": [
+                {"assetId": "eicS1V9d1hBpOGFC0Zo1TB1OSt0Yrrtl",
+                 "label": "Mountains",
+                 "scope": "TRAIN"
+                 },
+                {"assetId": "vKZkTwYjd0zSPpPipAVS5BkLakSeOjzH",
+                 "label": "Mountains",
+                 "scope": "TEST"
+                 }
+            ]
+        }
+
+    def test_add_labels(self, login, project, api_client, add_body):
+        dataset_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+        make_label_mock = Mock(return_value=Mock())
+        dataset = Mock(make_label=make_label_mock)
+        path = reverse('dataset-add-labels', kwargs={'project_pk': project.id,
+                                                     'pk': dataset_id})
+        with patch.object(DatasetsViewSet, '_get_dataset', return_value=dataset) as get_model:
+            with patch.object(AssetApp, 'get_asset'):
+                with patch.object(AssetApp, 'update_labels') as update_labels:
+                    response = api_client.post(path, add_body)
+                    check_response(response, status=status.HTTP_201_CREATED)
+        get_model.assert_called_once()
+        assert update_labels.call_count == 2
+        dataset.make_label.assert_called_with('Mountains', bbox=None,
+                                              scope=LabelScope.TEST, simhash=None)
+
+    def test_update_labels(self, login, project, api_client, add_body, remove_body):
+        add_body.update(remove_body)
+        body = add_body
+        dataset_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+        make_label_mock = Mock(return_value=Mock())
+        dataset = Mock(make_label=make_label_mock)
+        path = reverse('dataset-update-labels', kwargs={'project_pk': project.id,
+                                                        'pk': dataset_id})
+        with patch.object(DatasetsViewSet, '_get_dataset', return_value=dataset) as get_model:
+            with patch.object(AssetApp, 'get_asset'):
+                with patch.object(AssetApp, 'update_labels') as update_labels:
+                    response = api_client.post(path, body)
+                    check_response(response, status=status.HTTP_200_OK)
+        get_model.assert_called_once()
+        # This is due to the mocked calls being condensed down to 1 "asset"
+        assert update_labels.call_count == 1
+        dataset.make_label.assert_called_with('Mountains', bbox=None,
+                                              scope=LabelScope.TEST, simhash=None)
+
+    def test_delete_labels(self, login, project, api_client, remove_body):
+        dataset_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+        make_label_mock = Mock(return_value=Mock())
+        dataset = Mock(make_label=make_label_mock)
+        path = reverse('dataset-delete-labels', kwargs={'project_pk': project.id,
+                                                        'pk': dataset_id})
+        with patch.object(DatasetsViewSet, '_get_dataset', return_value=dataset) as get_model:
+            with patch.object(AssetApp, 'get_asset'):
+                with patch.object(AssetApp, 'update_labels') as update_labels:
+                    response = api_client.delete(path, remove_body)
+                    check_response(response)
+        get_model.assert_called_once()
+        assert update_labels.call_count == 2
+        dataset.make_label.assert_called_with('Mountains', bbox=None,
+                                              scope=LabelScope.TEST, simhash=None)
