@@ -189,6 +189,23 @@ class DataSetControllerTests : MockMvcTest() {
             .andReturn()
     }
 
+    @Test
+    fun testGetTypes() {
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/datasets/_types")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$[0].name",
+                    CoreMatchers.equalTo("Classification")
+                )
+            )
+            .andReturn()
+    }
+
     fun dataSet(ds: DataSet): List<AssetSpec> {
         return listOf(
             AssetSpec("https://i.imgur.com/12abc.jpg", label = ds.makeLabel("beaver")),

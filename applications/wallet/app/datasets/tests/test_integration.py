@@ -189,6 +189,19 @@ class TestDatasetsViewsets:
         assert content == {'count': 1,
                            'results': [{'label': 'Mountains', 'count': 8}]}
 
+    def test_dataset_types(self, login, project, api_client, monkeypatch):
+
+        def mock_response(*args, **kwargs):
+            return [{'name': 'Classifier', 'label': 'Classifier', 'description': 'Used to classify assets.'}]  # noqa
+
+        path = reverse('dataset-dataset-types', kwargs={'project_pk': project.id})
+        monkeypatch.setattr(BoonClient, 'get', mock_response)
+        response = api_client.get(path)
+        content = check_response(response)
+        results = content['results']
+        assert len(results) == 1
+        assert results[0]['name'] == 'Classifier'
+
 
 class TestLabelingEndpoints:
 
