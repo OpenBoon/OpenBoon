@@ -38,7 +38,7 @@ class ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestC
             image_path=test_path('images/set01/faces.jpg'),
             detector=bboxes.ClarifaiFaceDetectionProcessor(),
             attr='clarifai-face-detection',
-            assertions={'labels': ['face'], 'count': 2}
+            assertions={'labels': ['BINARY_POSITIVE'], 'count': 2}
         )
 
     def test_logo_process(self):
