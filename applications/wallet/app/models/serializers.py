@@ -1,6 +1,12 @@
 from rest_framework import serializers
 
 
+class SimpleModelSerializer(serializers.Serializer):
+    id = serializers.UUIDField(required=False)
+    name = serializers.CharField()
+    type = serializers.CharField()
+
+
 class ModelSerializer(serializers.Serializer):
     id = serializers.UUIDField(required=False)
     name = serializers.CharField()
