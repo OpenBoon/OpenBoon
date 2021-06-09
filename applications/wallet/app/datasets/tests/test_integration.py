@@ -15,10 +15,14 @@ class TestDatasetsViewsets:
 
     def test_list(self, login, api_client, project, monkeypatch):
 
-        def mock_response(*args, **kwargs):
+        def mock_post_response(*args, **kwargs):
             return {'list': [{'id': 'ed756d9e-0106-1fb2-adab-0242ac12000e', 'projectId': '00000000-0000-0000-0000-000000000000', 'name': 'Testingerer', 'type': 'Classification', 'description': 'My second testing dataset.', 'modelCount': 0, 'timeCreated': 1622668587793, 'timeModified': 1622668587793, 'actorCreated': 'd9140c2b-64ed-48b7-a7ee-d164821b4c50/Admin Console Generated Key - a97c8d61-b839-4600-8135-25051b9da0bc - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'actorModified': 'd9140c2b-64ed-48b7-a7ee-d164821b4c50/Admin Console Generated Key - a97c8d61-b839-4600-8135-25051b9da0bc - software@zorroa.com_00000000-0000-0000-0000-000000000000'}, {'id': 'ed756d9d-0106-1fb2-adab-0242ac12000e', 'projectId': '00000000-0000-0000-0000-000000000000', 'name': 'Testing', 'type': 'Classification', 'description': 'My first testing dataset.', 'modelCount': 0, 'timeCreated': 1622668561506, 'timeModified': 1622668561506, 'actorCreated': 'd9140c2b-64ed-48b7-a7ee-d164821b4c50/Admin Console Generated Key - a97c8d61-b839-4600-8135-25051b9da0bc - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'actorModified': 'd9140c2b-64ed-48b7-a7ee-d164821b4c50/Admin Console Generated Key - a97c8d61-b839-4600-8135-25051b9da0bc - software@zorroa.com_00000000-0000-0000-0000-000000000000'}], 'page': {'from': 0, 'size': 20, 'disabled': False, 'totalCount': 2}}  # noqa
 
-        monkeypatch.setattr(BoonClient, 'post', mock_response)
+        def mock_get_response(*args, **kwargs):
+            return {'cat': 2, 'horse': 3}
+
+        monkeypatch.setattr(BoonClient, 'post', mock_post_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_response)
         path = reverse('dataset-list', kwargs={'project_pk': project.id})
         response = api_client.get(path)
         content = check_response(response)
@@ -26,6 +30,7 @@ class TestDatasetsViewsets:
         item = content['results'][0]
         assert item['name'] == 'Testingerer'
         assert item['type'] == 'Classification'
+        assert item['conceptCount'] == 2
 
     def test_detail(self, login, api_client, project, monkeypatch):
         dataset_id = 'ed756d9e-0106-1fb2-adab-0242ac12000e'

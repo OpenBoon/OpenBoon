@@ -230,7 +230,7 @@ class BaseProjectViewSet(ViewSet):
         else:
             serializer = self.get_serializer(data=items, many=True)
         validate_zmlp_data(serializer)
-        content['list'] = serializer.validated_data
+        content['list'] = serializer.data
         paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(content, request)
         return paginator.get_paginated_response(content['list'])

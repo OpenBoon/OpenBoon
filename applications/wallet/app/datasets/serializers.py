@@ -1,7 +1,9 @@
+import os
+
 from rest_framework import serializers
 
 
-class DatasetSerializer(serializers.Serializer):
+class DatasetDetailSerializer(serializers.Serializer):
     id = serializers.UUIDField(required=False, allow_null=True)
     projectId = serializers.UUIDField(required=False)
     name = serializers.CharField(required=True)
@@ -10,6 +12,17 @@ class DatasetSerializer(serializers.Serializer):
     modelCount = serializers.IntegerField(required=False)
     timeCreated = serializers.IntegerField(default=0)
     timeModified = serializers.IntegerField(default=0)
+
+
+class DatasetSerializer(DatasetDetailSerializer):
+    conceptCount = serializers.SerializerMethodField(method_name='get_concept_count')
+
+    def get_concept_count(self, dataset):
+        zmlp_root_api_path = self.context['view'].zmlp_root_api_path
+        client = self.context['request'].client
+        path = os.path.join(zmlp_root_api_path, str(dataset['id']), '_label_counts')
+        label_counts = client.get(path)
+        return len(label_counts)
 
 
 class DatasetTypeSerializer(serializers.Serializer):
