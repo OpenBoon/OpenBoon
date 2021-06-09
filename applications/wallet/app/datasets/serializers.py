@@ -12,6 +12,12 @@ class DatasetSerializer(serializers.Serializer):
     timeModified = serializers.IntegerField(default=0)
 
 
+class DatasetTypeSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    label = serializers.CharField()
+    description = serializers.CharField()
+
+
 class LabelSerializer(serializers.Serializer):
     assetId = serializers.CharField()
     label = serializers.CharField()

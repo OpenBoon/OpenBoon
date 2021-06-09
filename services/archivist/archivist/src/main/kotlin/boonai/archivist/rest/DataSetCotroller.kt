@@ -3,6 +3,7 @@ package boonai.archivist.rest
 import boonai.archivist.domain.DataSet
 import boonai.archivist.domain.DataSetFilter
 import boonai.archivist.domain.DataSetSpec
+import boonai.archivist.domain.DataSetType
 import boonai.archivist.domain.GenericBatchUpdateResponse
 import boonai.archivist.domain.UpdateLabelRequest
 import boonai.archivist.repository.KPagedList
@@ -79,5 +80,11 @@ class DataSetCotroller(
     @PostMapping("/api/v3/datasets/_find_one")
     fun findOne(@RequestBody(required = false) filter: DataSetFilter?): DataSet {
         return dataSetService.findOne(filter ?: DataSetFilter())
+    }
+
+    @ApiOperation("Get Information about all dataset types.")
+    @GetMapping(value = ["/api/v3/datasets/_types"])
+    fun getTypes(): Any {
+        return DataSetType.values().map { it.asMap() }
     }
 }

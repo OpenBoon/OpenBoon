@@ -7,14 +7,16 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from datasets.serializers import (DatasetSerializer, RemoveLabelsSerializer, AddLabelsSerializer,
+from datasets.serializers import (DatasetSerializer, RemoveLabelsSerializer,
+                                  AddLabelsSerializer,
                                   UpdateLabelsSerializer, DestroyLabelSerializer,
-                                  RenameLabelSerializer)
+                                  RenameLabelSerializer, DatasetTypeSerializer)
 from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpCreateMixin,
                                # ZmlpUpdateMixin, # TODO: Put back in once updating Datasets is supported
                                ZmlpDestroyMixin, ZmlpRetrieveMixin,
                                ListViewType)
 from wallet.exceptions import InvalidRequestError
+from wallet.utils import validate_zmlp_data
 
 
 class DatasetsViewSet(ZmlpCreateMixin,
@@ -179,6 +181,16 @@ class DatasetsViewSet(ZmlpCreateMixin,
         serializer = RenameLabelSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(request.client.put(path, serializer.validated_data))
+
+    @action(methods=['get'], detail=False)
+    def dataset_types(self, request, project_pk):
+        """Get the available dataset types from boonsdk."""
+        path = f'{self.zmlp_root_api_path}/_types'
+        dataset_types = request.client.get(path)
+        serializer = DatasetTypeSerializer(data=dataset_types, many=True,
+                                           context=self.get_serializer_context())
+        validate_zmlp_data(serializer)
+        return Response({'results': serializer.data})
 
     def _get_dataset(self, app, dataset_id):
         """Gets the dataset for the given ID"""
