@@ -1,0 +1,507 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Datasets /> should let the user know a dataset was deleted 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-1 {
+  color: #ffffff;
+  background-color: #d6680b;
+  border-radius: 32px;
+  font-size: 11px;
+  line-height: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding: 1px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-right: 8px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    <span
+      className="emotion-1"
+    >
+      beta
+    </span>
+    Datasets
+  </h2>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-2 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-2 a:hover {
+  color: #3A5DFF;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-2"
+        role="alert"
+      >
+        Dataset deleted.
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-3 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #3A5DFF;
+}
+
+<nav
+    className="emotion-0"
+  >
+    <ul
+      className="emotion-1"
+    >
+      <li
+        className="emotion-2"
+      >
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/datasets"
+          href="/[projectId]/datasets"
+          passHref={true}
+        >
+          <a
+            className="emotion-3"
+            onClick={[Function]}
+          >
+            View all
+          </a>
+        </Link>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/add"
+          href="/[projectId]/datasets/add"
+          passHref={true}
+        >
+          <a
+            className="emotion-5"
+            onClick={[Function]}
+          >
+            Create New Dataset
+          </a>
+        </Link>
+      </li>
+    </ul>
+  </nav>,
+  <DatasetsTable
+    datasetTypes={
+      Array [
+        Object {
+          "description": "Use when labeling detected faces.",
+          "label": "Face Recognition",
+          "name": "FaceRecognition",
+        },
+        Object {
+          "description": "Use when classifying the asset.",
+          "label": "Classification",
+          "name": "Classification",
+        },
+        Object {
+          "description": "Use when training for objects.",
+          "label": "Object Detection",
+          "name": "ObjectDetection",
+        },
+      ]
+    }
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+]
+`;
+
+exports[`<Datasets /> should let the user start labeling 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-1 {
+  color: #ffffff;
+  background-color: #d6680b;
+  border-radius: 32px;
+  font-size: 11px;
+  line-height: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding: 1px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-right: 8px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    <span
+      className="emotion-1"
+    >
+      beta
+    </span>
+    Datasets
+  </h2>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-2 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-2 a:hover {
+  color: #3A5DFF;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-2"
+        role="alert"
+      >
+        Dataset created.
+         
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+          href="/[projectId]/visualizer"
+          passHref={true}
+        >
+          <a
+            onClick={[Function]}
+          >
+            Start Labeling
+          </a>
+        </Link>
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-3 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #3A5DFF;
+}
+
+<nav
+    className="emotion-0"
+  >
+    <ul
+      className="emotion-1"
+    >
+      <li
+        className="emotion-2"
+      >
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/datasets"
+          href="/[projectId]/datasets"
+          passHref={true}
+        >
+          <a
+            className="emotion-3"
+            onClick={[Function]}
+          >
+            View all
+          </a>
+        </Link>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/add"
+          href="/[projectId]/datasets/add"
+          passHref={true}
+        >
+          <a
+            className="emotion-5"
+            onClick={[Function]}
+          >
+            Create New Dataset
+          </a>
+        </Link>
+      </li>
+    </ul>
+  </nav>,
+  <DatasetsTable
+    datasetTypes={
+      Array [
+        Object {
+          "description": "Use when labeling detected faces.",
+          "label": "Face Recognition",
+          "name": "FaceRecognition",
+        },
+        Object {
+          "description": "Use when classifying the asset.",
+          "label": "Classification",
+          "name": "Classification",
+        },
+        Object {
+          "description": "Use when training for objects.",
+          "label": "Object Detection",
+          "name": "ObjectDetection",
+        },
+      ]
+    }
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+]
+`;
