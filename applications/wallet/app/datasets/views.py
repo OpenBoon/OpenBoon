@@ -10,9 +10,9 @@ from rest_framework.response import Response
 from datasets.serializers import (DatasetSerializer, RemoveLabelsSerializer,
                                   AddLabelsSerializer,
                                   UpdateLabelsSerializer, DestroyLabelSerializer,
-                                  RenameLabelSerializer, DatasetTypeSerializer)
+                                  RenameLabelSerializer, DatasetDetailSerializer,
+                                  DatasetTypeSerializer)
 from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpCreateMixin,
-                               # ZmlpUpdateMixin, # TODO: Put back in once updating Datasets is supported
                                ZmlpDestroyMixin, ZmlpRetrieveMixin,
                                ListViewType)
 from wallet.exceptions import InvalidRequestError
@@ -26,17 +26,20 @@ class DatasetsViewSet(ZmlpCreateMixin,
                       # ZmlpUpdateMixin,  # TODO: Put back in once updating Datasets is supported
                       BaseProjectViewSet):
 
-    serializer_class = DatasetSerializer
     zmlp_root_api_path = '/api/v3/datasets'
     list_type = ListViewType.SEARCH
     list_modifier = None
     retrieve_modifier = None
 
+    def get_serializer_class(self):
+        if self.action in ['retrieve', 'create']:
+            return DatasetDetailSerializer
+        return DatasetSerializer
+
     def create(self, request, project_pk):
         if request.data.get('projectId') is not None and request.data.get('projectId') != project_pk:
             msg = 'Invalid request. You can only create datasets for the current project context.'
             raise InvalidRequestError(detail={'detail': [msg]})
-
         return super(DatasetsViewSet, self).create(request, project_pk)
 
     # TODO: Put back in once updating Datasets is supported
