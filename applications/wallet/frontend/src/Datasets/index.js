@@ -13,9 +13,9 @@ import PageTitle from '../PageTitle'
 import BetaBadge from '../BetaBadge'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
-import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
+import Table, { ROLES } from '../Table'
 
-import DatasetsContent from './Content'
+import DatasetsRow from './Row'
 
 const Datasets = () => {
   const {
@@ -89,9 +89,24 @@ const Datasets = () => {
         ]}
       />
 
-      <SuspenseBoundary role={ROLES.ML_Tools}>
-        <DatasetsContent projectId={projectId} />
-      </SuspenseBoundary>
+      <Table
+        role={ROLES.ML_Tools}
+        legend="Datasets"
+        url={`/api/v1/projects/${projectId}/datasets/`}
+        refreshKeys={[]}
+        refreshButton={false}
+        columns={['Name', 'Type', 'Linked Models', '#Actions#']}
+        expandColumn={0}
+        renderEmpty="There are currently no datasets."
+        renderRow={({ result, revalidate }) => (
+          <DatasetsRow
+            key={result.id}
+            projectId={projectId}
+            dataset={result}
+            revalidate={revalidate}
+          />
+        )}
+      />
     </>
   )
 }

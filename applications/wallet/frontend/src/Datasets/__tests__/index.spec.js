@@ -2,7 +2,6 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import mockUser from '../../User/__mocks__/user'
 import datasets from '../__mocks__/datasets'
-import datasetTypes from '../../DatasetTypes/__mocks__/datasetTypes'
 
 import User from '../../User'
 
@@ -12,7 +11,6 @@ const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const DATASET_ID = datasets.results[0].id
 
 jest.mock('next/link', () => 'Link')
-jest.mock('../Table', () => 'DatasetsTable')
 
 describe('<Datasets />', () => {
   it('should let the user start labeling', async () => {
@@ -25,7 +23,7 @@ describe('<Datasets />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: datasetTypes })
+    require('swr').__setMockUseSWRResponse({ data: datasets })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
@@ -61,7 +59,7 @@ describe('<Datasets />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: datasetTypes })
+    require('swr').__setMockUseSWRResponse({ data: {} })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
