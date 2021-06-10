@@ -1,0 +1,97 @@
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+
+import { spacing } from '../Styles'
+
+import Breadcrumbs from '../Breadcrumbs'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
+import Tabs from '../Tabs'
+
+import DatasetConcepts from '../DatasetConcepts'
+import ConceptEdit from '../ConceptEdit'
+
+import DatasetDetails from './Details'
+
+const Dataset = () => {
+  const {
+    pathname,
+    query: { projectId, datasetId, edit = '', action },
+  } = useRouter()
+
+  return (
+    <>
+      <Head>
+        <title>Dataset Details</title>
+      </Head>
+
+      <Breadcrumbs
+        crumbs={[
+          {
+            title: 'Custom Datasets',
+            href: '/[projectId]/datasets',
+            isBeta: true,
+          },
+          { title: 'Dataset Details', href: false },
+        ]}
+      />
+
+      {!!action && (
+        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            {action === 'edit-concept-success' && 'Concept updated.'}
+            {action === 'delete-concept-success' && 'Concept deleted.'}
+          </FlashMessage>
+        </div>
+      )}
+
+      <SuspenseBoundary role={ROLES.ML_Tools}>
+        <DatasetDetails
+          key={pathname}
+          projectId={projectId}
+          datasetId={datasetId}
+        />
+
+        <Tabs
+          tabs={[
+            {
+              title: 'Concepts',
+              href: '/[projectId]/datasets/[datasetId]',
+              isSelected: edit ? false : undefined,
+            },
+            {
+              title: 'Labels',
+              href: '/[projectId]/datasets/[datasetId]/labels',
+              isSelected: edit ? false : undefined,
+            },
+            {
+              title: 'Linked Models',
+              href: '/[projectId]/datasets/[datasetId]/models',
+              isSelected: edit ? false : undefined,
+            },
+            edit
+              ? {
+                  title: 'Edit Concept',
+                  href: '/[projectId]/datasets/[datasetId]',
+                  isSelected: true,
+                }
+              : {},
+          ]}
+        />
+
+        {pathname === '/[projectId]/datasets/[datasetId]' &&
+          (edit ? (
+            <ConceptEdit
+              projectId={projectId}
+              datasetId={datasetId}
+              label={edit}
+            />
+          ) : (
+            <DatasetConcepts />
+          ))}
+      </SuspenseBoundary>
+    </>
+  )
+}
+
+export default Dataset
