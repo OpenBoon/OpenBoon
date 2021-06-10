@@ -6,6 +6,7 @@ import boonai.archivist.domain.ProjectStorageLocator
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.service.IndexRoutingService
 import boonai.archivist.util.FileUtils
+import boonai.archivist.util.loadGcpCredentials
 import boonai.common.util.Json
 import com.google.auth.oauth2.ComputeEngineCredentials
 import com.google.auth.oauth2.GoogleCredentials
@@ -39,7 +40,7 @@ class GcsProjectStorageService constructor(
 ) : ProjectStorageService {
 
     val options: StorageOptions = StorageOptions.newBuilder()
-        .setCredentials(loadCredentials()).build()
+        .setCredentials(loadGcpCredentials()).build()
     val gcs: Storage = options.service
 
     @PostConstruct
@@ -208,18 +209,6 @@ class GcsProjectStorageService constructor(
 
     fun getBlobId(locator: ProjectStorageLocator): BlobId {
         return BlobId.of(properties.bucket, locator.getPath())
-    }
-
-    private fun loadCredentials(): GoogleCredentials {
-        val credsFile = Paths.get("/secrets/gcs/credentials.json")
-
-        return if (Files.exists(credsFile)) {
-            logger.info("Loading credentials from: {}", credsFile)
-            GoogleCredentials.fromStream(FileInputStream(credsFile.toFile()))
-        } else {
-            logger.info("Using default ComputeEngineCredentials")
-            ComputeEngineCredentials.create()
-        }
     }
 
     companion object {
