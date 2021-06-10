@@ -186,13 +186,26 @@ class TestDatasetsViewsets:
             return {'Mountains': 8}
 
         dataset_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
-        path = reverse('dataset-get-labels', kwargs={'project_pk': project.id,
-                                                     'pk': dataset_id})
+        path = reverse('dataset-get-labels', kwargs={'project_pk': project.id, 'pk': dataset_id})
         monkeypatch.setattr(BoonClient, 'get', mock_response)
         response = api_client.get(path)
         content = check_response(response)
         assert content == {'count': 1,
                            'results': [{'label': 'Mountains', 'count': 8}]}
+
+    def test_get_models(self, login, project, api_client, monkeypatch):
+        dataset_id = '0db0a87e-42a7-11d5-91ea-fea0e31b3bfe'
+
+        def mock_response(*args, **kwargs):
+            return {'list': [{'id': '0db0a87e-42a7-11d5-91ea-fea0e31b3bfe', 'projectId': '1c4e7b80-1ca0-4296-b051-3b8d05947eef', 'dataSetId': '0db0a87e-42a7-11d5-91ea-fea0e31b3bfe', 'type': 'FACE_RECOGNITION', 'name': 'console', 'moduleName': 'zvi-face-recognition', 'fileId': 'models/0db0a87e-42a7-11d5-91ea-fea0e31b3bfe/__TAG__/model.zip', 'trainingJobName': 'Training model: console - [Face Recognition]', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'timeCreated': 1610674842169, 'timeModified': 1610674842169, 'actorCreated': '6909b66f-f163-4661-b481-9f9ded3dfbb9/Admin Console Generated Key - b274724e-17d9-4e15-9aeb-ace0af564d64 - danny@zorroa.com_1c4e7b80-1ca0-4296-b051-3b8d05947eef', 'actorModified': '6909b66f-f163-4661-b481-9f9ded3dfbb9/Admin Console Generated Key - b274724e-17d9-4e15-9aeb-ace0af564d64 - danny@zorroa.com_1c4e7b80-1ca0-4296-b051-3b8d05947eef'}], 'page': {'from': 0, 'size': 50, 'disabled': False, 'totalCount': 1}}  # noqa
+
+        path = reverse('dataset-get-models', kwargs={'project_pk': project.id, 'pk': dataset_id})
+        monkeypatch.setattr(BoonClient, 'post', mock_response)
+        response = api_client.get(path)
+        content = check_response(response)
+        assert content['count'] == 1
+        assert content['results'][0]['name'] == 'console'
+        assert content['results'][0]['type'] == 'FACE_RECOGNITION'
 
     def test_dataset_types(self, login, project, api_client, monkeypatch):
 

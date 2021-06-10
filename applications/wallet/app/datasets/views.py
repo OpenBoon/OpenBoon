@@ -12,6 +12,7 @@ from datasets.serializers import (DatasetSerializer, RemoveLabelsSerializer,
                                   UpdateLabelsSerializer, DestroyLabelSerializer,
                                   RenameLabelSerializer, DatasetDetailSerializer,
                                   DatasetTypeSerializer)
+from models.serializers import SimpleModelSerializer
 from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpCreateMixin,
                                ZmlpDestroyMixin, ZmlpRetrieveMixin,
                                ListViewType)
@@ -61,6 +62,13 @@ class DatasetsViewSet(ZmlpCreateMixin,
         data = {'count': len(labels),
                 'results': labels}
         return Response(status=status.HTTP_200_OK, data=data)
+
+    @action(methods=['get'], detail=True)
+    def get_models(self, request, project_pk, pk):
+        """Get the list of used labels and their counts for the given dataset."""
+        return self._zmlp_list_from_search_all_pages(request, base_url='/api/v3/models',
+                                                     search_filter={'dataSetIds': [pk]},
+                                                     serializer_class=SimpleModelSerializer)
 
     @action(methods=['post'], detail=True)
     def add_labels(self, request, project_pk, pk):
