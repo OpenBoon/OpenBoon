@@ -18,14 +18,12 @@ import com.google.api.client.http.HttpRequestFactory
 import com.google.api.client.http.HttpResponse
 import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.auth.http.HttpCredentialsAdapter
-import com.google.auth.oauth2.GoogleCredentials
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.google.pubsub.v1.PubsubMessage
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
-import java.io.FileInputStream
 import java.io.InputStream
 import java.util.UUID
 import javax.annotation.PostConstruct
@@ -63,7 +61,7 @@ class ModelDeployServiceImpl(
 
         /**
          * Store the uploaded model file.
-          */
+         */
         val modelFile = ProjectStorageSpec(
             model.getModelStorageLocator("latest"), mapOf(),
             inputStream, 0

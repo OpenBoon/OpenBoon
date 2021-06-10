@@ -36,7 +36,6 @@ import boonai.archivist.security.getZmlpActor
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.FileUtils
 import boonai.archivist.util.createPubSubPublisher
-import boonai.archivist.util.randomString
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event

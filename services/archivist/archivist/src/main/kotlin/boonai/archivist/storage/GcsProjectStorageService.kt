@@ -8,8 +8,6 @@ import boonai.archivist.service.IndexRoutingService
 import boonai.archivist.util.FileUtils
 import boonai.archivist.util.loadGcpCredentials
 import boonai.common.util.Json
-import com.google.auth.oauth2.ComputeEngineCredentials
-import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.CopyWriter
@@ -24,10 +22,7 @@ import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import java.io.FileInputStream
 import java.nio.channels.Channels
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
