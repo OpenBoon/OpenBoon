@@ -88,6 +88,7 @@ class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
             ModelType.values()[rs.getInt("int_type")],
             rs.getString("str_name"),
             rs.getString("str_module"),
+            rs.getString("str_endpoint"),
             rs.getString("str_file_id"),
             rs.getString("str_job_name"),
             rs.getBoolean("bool_trained"),

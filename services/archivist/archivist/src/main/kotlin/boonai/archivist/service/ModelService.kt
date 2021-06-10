@@ -25,7 +25,6 @@ import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectFileLocator
 import boonai.archivist.domain.ProjectStorageEntity
-import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.ReprocessAssetSearchRequest
 import boonai.archivist.domain.StandardContainers
 import boonai.archivist.repository.KPagedList
@@ -36,13 +35,17 @@ import boonai.archivist.security.getProjectId
 import boonai.archivist.security.getZmlpActor
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.FileUtils
+import boonai.archivist.util.createPubSubPublisher
 import boonai.archivist.util.randomString
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
-import com.google.cloud.ServiceOptions
+import com.google.api.core.ApiFutureCallback
+import com.google.api.core.ApiFutures
+import com.google.api.gax.rpc.ApiException
 import com.google.cloud.pubsub.v1.Publisher
-import com.google.pubsub.v1.ProjectTopicName
+import com.google.common.util.concurrent.MoreExecutors
+import com.google.pubsub.v1.PubsubMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -50,16 +53,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.io.ByteArrayInputStream
-import java.io.FileInputStream
-import java.io.InputStream
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.StandardCopyOption
 import java.util.UUID
-import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
-import kotlin.streams.toList
 
 interface ModelService {
     fun createModel(spec: ModelSpec): Model
@@ -74,12 +68,12 @@ interface ModelService {
     fun setTrainingArgs(model: Model, args: Map<String, Any>)
     fun patchTrainingArgs(model: Model, patch: Map<String, Any>)
     fun getTrainingArgSchema(type: ModelType): ArgSchema
-    fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod
     fun generateModuleName(spec: ModelSpec): String
     fun getModelVersions(model: Model): Set<String>
     fun copyModelTag(model: Model, req: ModelCopyRequest)
     fun updateModel(id: UUID, update: ModelUpdateRequest): Model
     fun patchModel(id: UUID, update: ModelPatchRequest): Model
+    fun postToModelEventTopic(msg: PubsubMessage)
 }
 
 @Service
@@ -101,15 +95,13 @@ class ModelServiceImpl(
     private val topicId = "model-events"
 
     init {
-        val topicName = ProjectTopicName.of(ServiceOptions.getDefaultProjectId(), topicId)
-        publisher = Publisher.newBuilder(topicName).build()
-        logger.info("Initialized Pub/Sub publisher on $topicId topic.")
+        publisher = createPubSubPublisher(topicId)
     }
 
     override fun generateModuleName(spec: ModelSpec): String {
         return spec.moduleName ?: "${spec.name}"
             .replace(Regex("[\\s\\n\\r\\t]+", RegexOption.MULTILINE), "-")
-            .toLowerCase()
+            .lowercase()
     }
 
     override fun createModel(spec: ModelSpec): Model {
@@ -129,7 +121,7 @@ class ModelServiceImpl(
             ProjectStorageEntity.MODELS, id.toString(), "__TAG__", spec.type.fileName
         )
 
-        argValidationService.validateArgsUnknownOnly("models/${spec.type.name}", spec.trainingArgs)
+        argValidationService.validateArgsUnknownOnly("training/${spec.type.name}", spec.trainingArgs)
 
         val model = Model(
             id,
@@ -138,6 +130,7 @@ class ModelServiceImpl(
             spec.type,
             spec.name,
             moduleName,
+            null,
             locator.getFileId(),
             "Training model: ${spec.name} - [${spec.type.objective}]",
             false,
@@ -210,7 +203,8 @@ class ModelServiceImpl(
             mapOf<String, Any?>(
                 "model_id" to model.id.toString(),
                 "post_action" to (request.postAction.name),
-                "tag" to "latest"
+                "tag" to "latest",
+                "work_bucket" to "gs://${System.getenv("GCLOUD_PROJECT")}-training/${model.id}"
             )
         )
 
@@ -320,7 +314,7 @@ class ModelServiceImpl(
         } else {
             val modspec = PipelineModSpec(
                 model.moduleName,
-                "Make predictions with your custom trained '${model.name}' model.",
+                model.type.description,
                 model.type.provider,
                 Category.TRAINED,
                 model.type.objective,
@@ -417,77 +411,6 @@ class ModelServiceImpl(
         return ops
     }
 
-    override fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod {
-        if (!model.type.uploadable) {
-            throw IllegalArgumentException("The model type ${model.type} does not support uploads")
-        }
-
-
-        val tmpFile = Files.createTempFile(randomString(32), model.type.fileName)
-        Files.copy(inputStream, tmpFile, StandardCopyOption.REPLACE_EXISTING)
-
-        try {
-
-            // Now store the model file
-            val modelFile = ProjectStorageSpec(
-                model.getModelStorageLocator("latest"), mapOf(),
-                FileInputStream(tmpFile.toFile()), Files.size(tmpFile)
-            )
-            fileStorageService.store(modelFile)
-
-            // Now store the version identifier
-            val version = "${(System.currentTimeMillis() / 1000).toInt()}-${UUID.randomUUID()}\n"
-            val versionBytes = version.toByteArray()
-            val versionFile = ProjectStorageSpec(
-                model.getModelVersionStorageLocator("latest"), mapOf(),
-                ByteArrayInputStream(versionBytes), versionBytes.size.toLong()
-            )
-            fileStorageService.store(versionFile)
-
-            // Now we can publish the model.
-            return publishModel(
-                model,
-                ModelPublishRequest(mapOf("version" to System.currentTimeMillis()))
-            )
-        } finally {
-            Files.delete(tmpFile)
-        }
-    }
-
-    fun validateModel(path: Path, allowedFiles: List<Any>) {
-
-        val zipFile = ZipFile(path.toFile())
-        val files = zipFile.stream()
-            .map(ZipEntry::getName)
-            .map { it }.toList()
-
-        if (!files.contains("labels.txt")) {
-            throw IllegalArgumentException("The model zip must contain a labels.txt file")
-        }
-
-        files.forEach { fileName ->
-            var matched = false
-
-            for (pattern in allowedFiles) {
-                if (pattern is Regex) {
-                    if (pattern.matches(fileName)) {
-                        matched = true
-                        break
-                    }
-                } else if (pattern is String) {
-                    if (pattern.toString() == fileName) {
-                        matched = true
-                        break
-                    }
-                }
-            }
-
-            if (!matched) {
-                throw IllegalArgumentException("'$fileName' is not an expected Tensorflow model file.")
-            }
-        }
-    }
-
     override fun getModelVersions(model: Model): Set<String> {
         val files = fileStorageService.listFiles(
             ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString()).getPath()
@@ -495,17 +418,25 @@ class ModelServiceImpl(
         return files.map { it.split("/")[4] }.toSet()
     }
 
-    fun validateTensorflowModel(path: Path) {
-        val validTensorflowFiles = listOf(
-            "labels.txt",
-            "saved_model.pb",
-            "tfhub_module.pb",
-            "assets/",
-            "variables/",
-            Regex("^variables/variables.data-[\\d]+-of-[\\d]+$"),
-            "variables/variables.index"
+    override fun postToModelEventTopic(msg: PubsubMessage) {
+        val modelId = msg.attributesMap.getValue("modelId")
+        val future = publisher.publish(msg)
+
+        ApiFutures.addCallback(
+            future,
+            object : ApiFutureCallback<String?> {
+                override fun onFailure(ex: Throwable) {
+                    if (ex is ApiException) {
+                        logger.error("Error publishing model-event for model '$modelId'", ex)
+                    }
+                }
+
+                override fun onSuccess(messageId: String?) {
+                    logger.info("Published model event $modelId")
+                }
+            },
+            MoreExecutors.directExecutor()
         )
-        validateModel(path, validTensorflowFiles)
     }
 
     companion object {

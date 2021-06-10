@@ -1,7 +1,6 @@
 package boonai.archivist.rest
 
 import boonai.archivist.MockMvcTest
-import boonai.archivist.domain.AutomlSessionSpec
 import boonai.archivist.domain.DataSetSpec
 import boonai.archivist.domain.DataSetType
 import boonai.archivist.domain.Model
@@ -11,6 +10,7 @@ import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.ModelUpdateRequest
 import boonai.archivist.service.DataSetService
+import boonai.archivist.service.ModelDeployService
 import boonai.archivist.service.ModelService
 import boonai.archivist.service.PipelineModService
 import boonai.common.util.Json
@@ -29,6 +29,9 @@ class ModelControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var modelService: ModelService
+
+    @Autowired
+    lateinit var modelDeployServic: ModelDeployService
 
     @Autowired
     lateinit var dataSetService: DataSetService
@@ -223,7 +226,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testUploadModel() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_UPLOADED_CLASSIFIER)
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_SAVED_MODEL)
         val model = modelService.createModel(modelSpec)
 
         val mfp = Paths.get(
@@ -242,12 +245,12 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testApproveLatestModelTag() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_UPLOADED_CLASSIFIER)
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_SAVED_MODEL)
         val model = modelService.createModel(modelSpec)
         val mfp = Paths.get(
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
         )
-        modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
+        modelDeployServic.deployUploadedModel(model, FileInputStream(mfp.toFile()))
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_approve")
@@ -367,39 +370,6 @@ class ModelControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testCreateAutomlSession() {
-
-        val modelSpec = ModelSpec("Dog Breeds 2", ModelType.GCP_AUTOML_CLASSIFIER)
-        val model = modelService.createModel(modelSpec)
-
-        val automlSpec = AutomlSessionSpec(
-            "project/foo/region/us-central/datasets/foo",
-            "a_training_job"
-        )
-
-        mvc.perform(
-            MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_automl")
-                .headers(admin())
-                .content(Json.serialize(automlSpec))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$.automlDataSet",
-                    CoreMatchers.equalTo(automlSpec.automlDataSet)
-                )
-            )
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$.automlTrainingJob",
-                    CoreMatchers.equalTo(automlSpec.automlTrainingJob)
-                )
-            )
-            .andReturn()
-    }
-
-    @Test
     fun testGetType() {
         val module = ModelType.TF_CLASSIFIER
         mvc.perform(
@@ -424,13 +394,13 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testGetTags() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_UPLOADED_CLASSIFIER)
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_SAVED_MODEL)
         val model = modelService.createModel(modelSpec)
 
         val mfp = Paths.get(
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
         )
-        modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
+        modelDeployServic.deployUploadedModel(model, FileInputStream(mfp.toFile()))
 
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/models/${model.id}/_tags")

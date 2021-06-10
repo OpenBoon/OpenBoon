@@ -6,6 +6,7 @@ import boonai.archivist.repository.KDaoFilter
 import boonai.archivist.security.getProjectId
 import boonai.archivist.util.JdbcUtils
 import boonai.common.util.Json
+import com.google.cloud.ServiceOptions
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.annotations.Type
@@ -100,7 +101,7 @@ enum class ModelType(
         true,
         false
     ),
-    TF_UPLOADED_CLASSIFIER(
+    TF_SAVED_MODEL(
         "Imported Tensorflow Image Classifier",
         "None",
         "boonai_analysis.custom.TensorflowImageClassifier",
@@ -133,7 +134,7 @@ enum class ModelType(
         false
     ),
     PYTORCH_MODEL_ARCHIVE(
-        "A Pytorch Model Archive of image_classifier, image_segmenter, object_detector, or text_classifier. ",
+        "A Pytorch Model Archive. image_classifier, image_segmenter, object_detector, or text_classifier. ",
         "None",
         "boonai_analysis.custom.PytorchModelArchive",
         null,
@@ -281,6 +282,9 @@ class Model(
     @ApiModelProperty("The name of the pipeline module and analysis namespace.")
     val moduleName: String,
 
+    @Column(name = "str_endpoint")
+    val endpoint: String?,
+
     @Column(name = "str_file_id")
     val fileId: String,
 
@@ -322,6 +326,11 @@ class Model(
         return dataSetId
     }
 
+    @JsonIgnore
+    fun imageName(): String {
+        return "gcr.io/$GCP_PROJECT/models/$id"
+    }
+
     fun getModelFileLocator(tag: String, name: String): ProjectFileLocator {
         return ProjectFileLocator(
             ProjectStorageEntity.MODELS, id.toString(), tag, name
@@ -359,6 +368,9 @@ class Model(
 
     companion object {
         val matchAllSearch = mapOf<String, Any>("query" to mapOf("match_all" to emptyMap<String, Any>()))
+
+        // Need this fo cloud container registry
+        val GCP_PROJECT = ServiceOptions.getDefaultProjectId() ?: "localdev"
     }
 }
 
