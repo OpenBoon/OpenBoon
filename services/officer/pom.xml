@@ -17,7 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.version>1.5.10</kotlin.version>
         <kotlin.comiler.jvmTarget>1.8</kotlin.comiler.jvmTarget>
-        <ktor.version>1.5.4</ktor.version>
+        <ktor.version>1.6.0</ktor.version>
     </properties>
 
     <repositories>
@@ -121,7 +121,7 @@
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-storage</artifactId>
-            <version>1.114.0</version>
+            <version>1.115.0</version>
         </dependency>
 
         <dependency>
@@ -146,7 +146,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-epoll</artifactId>
-            <version>4.1.65.Final</version>
+            <version>4.1.53.Final</version>
             <classifier>linux-x86_64</classifier>
         </dependency>
 

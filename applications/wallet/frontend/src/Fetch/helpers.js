@@ -36,7 +36,7 @@ export const fetcher = async (url, options = {}) => {
     ...options,
   })
 
-  if ([401, 403].includes(response.status)) {
+  if (response.status === 401) {
     mutate('/api/v1/me/', {}, false)
   }
 
