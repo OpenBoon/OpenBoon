@@ -1,11 +1,13 @@
 import logging
 import tempfile
+import boonsdk
+import uuid
 
 from google.cloud import automl
-
-import boonsdk
+from urllib.parse import urlparse
 from boonflow import file_storage
-from boonflow.cloud import get_gcp_project_id
+from boonflow.cloud import get_gcp_project_id, get_google_storage_client
+
 
 logger = logging.getLogger(__name__)
 
@@ -21,9 +23,10 @@ class AutomlLabelDetectionSession:
     multi-label or objects.
     """
 
-    def __init__(self, model, reactor=None):
+    def __init__(self, model, reactor=None, training_bucket=None):
         self.model = model
         self.reactor = reactor
+        self.training_bucket = training_bucket
 
         self.app = boonsdk.app_from_env()
         self.client = automl.AutoMlClient()
@@ -53,6 +56,24 @@ class AutomlLabelDetectionSession:
         self._export_model(self.automl_model)
 
         self._delete_train_resources()
+
+    def _move_asset_to_temp_bucket(self, asset):
+
+        # get proxy uri
+        asset_uri = self._get_img_proxy_uri(asset)
+        storage_client = get_google_storage_client()
+
+        parse_source = urlparse(asset_uri)
+        bucket_source = storage_client.get_bucket(parse_source.netloc)
+        blob_source = bucket_source.blob(parse_source.path[1:])
+
+        parse_destination = urlparse(self.training_bucket)
+        bucket_destination = storage_client.get_bucket(parse_destination.netloc)
+
+        blob_to = bucket_source.copy_blob(blob_source,
+                                          bucket_destination,
+                                          f'{self.model.id}/assets/{asset.id}/{uuid.uuid4().hex}')
+        return f'gs://{bucket_destination.name}/{blob_to.name}'
 
     def _train_automl_model(self, dataset):
         """
@@ -165,10 +186,11 @@ class AutomlLabelDetectionSession:
                 if scope == "TEST":
                     test = "TEST"
 
-                # get proxy uri
-                proxy_uri = self._get_img_proxy_uri(asset)
-                if proxy_uri:
-                    fp.write(f"{test}{proxy_uri},{tag}\n")
+                # move asset to temp bucket
+                tmp_uri = self._move_asset_to_temp_bucket(asset)
+
+                if tmp_uri:
+                    fp.write(f"{test}{tmp_uri},{tag}\n")
 
         ref = file_storage.projects.store_file(
             csv_file, self.model, "automl", "labels.csv")

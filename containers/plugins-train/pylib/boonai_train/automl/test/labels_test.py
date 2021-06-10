@@ -115,6 +115,43 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
         mock_automl = AutomlLabelDetectionSession(self.model)
         mock_automl._export_model(automl_model)
 
+    @patch('google.cloud.storage.Client')
+    @patch.object(AutomlLabelDetectionSession, '_get_img_proxy_uri')
+    @patch('boonai_train.automl.labels.get_gcp_project_id')
+    @patch("google.cloud.automl.AutoMlClient")
+    def test_move_asset_to_temp_bucket(self,
+                                       automl_patch,
+                                       project_id_patch,
+                                       img_proxy_patch,
+                                       gs_client_patch):
+        automl_patch.return_value = MockAutoMlClient
+        project_id_patch.return_value = "boonai-dev"
+        img_proxy_patch.return_value = "gs://bucket/project/asset"
+        gs_client_patch.return_value = MockGoogleStorageClient
+
+        test_asset = TestAsset()
+        mock_automl = AutomlLabelDetectionSession(self.model,
+                                                  training_bucket='gs://destination-bucket/')
+        copied_url = mock_automl._move_asset_to_temp_bucket(test_asset)
+
+        assert copied_url == 'gs://Bucket/copied-value'
+
+
+class MockBucket:
+    def __init__(self, name):
+        self.name = name
+
+    def blob(self, value):
+        return MockBlob(value)
+
+    def copy_blob(self, *args):
+        return MockBlob('copied-value')
+
+
+class MockBlob:
+    def __init__(self, name):
+        self.name = name
+
 
 class MockAutoMlClient:
 
@@ -150,6 +187,11 @@ class MockAutoMlModel:
 class MockImportDataResult:
     def result(self):
         return self
+
+
+class MockGoogleStorageClient:
+    def get_bucket(self):
+        return MockBucket('Bucket')
 
 
 class Result:
