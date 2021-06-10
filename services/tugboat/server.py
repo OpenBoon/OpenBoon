@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 import logging
+import multiprocessing
 import os
 import shutil
+import subprocess
 import tempfile
 import time
-import queue
-import urllib3
-import json
-import subprocess
-import multiprocessing
+import yaml
 
-from google.cloud import pubsub_v1
+import urllib3
 from flask import Flask
+from google.cloud import pubsub_v1
 
 logger = logging.getLogger('swivel')
 logging.basicConfig(level=logging.INFO)
@@ -21,97 +20,136 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 app = Flask(__name__)
 
 
-@app.route("/")
-def hello_world():
-    name = os.environ.get("NAME", "World")
-    return "Hello {}!".format(name)
+@app.route('/health')
+def health():
+    return 'OK', 200
 
 
-def message_poller(project, sub):
+def message_poller(sub):
     """
-    Polls for messages from PubSub.  Takes a managed multiprocessing queue to store
-    the message in before calling the webhook described by the message.  Once
-    the message is in the queue it gets acked.
+    Polls for messages from PubSub and kicks off a model deployment job.
 
     Args:
-        project (str): Gcloud project
-        sub (str): Pubsub/subscription.
+        sub (str): PubSub/subscription.
     """
-    publisher = pubsub_v1.PublisherClient()
-    topic_path = publisher.topic_path(project, 'model-events')
-
     def callback(msg):
-        if msg.attributes['type'] == "model-upload":
-            spec = {
-                msg.attributes['image'],
-                msg.attributes['service']
-            }
-            build = build_and_deploy(spec)
-            msg = {
-                "type": "model-deploy",
-                "modelId":  msg.attributes['modelId'],
-                "buildId": build['buildId']
-            }
-            publisher.publish(topic_path, json.dumps(msg).encode())
+        try:
+            if msg.attributes['type'] == "model-upload":
+                spec = dict(msg.attributes)
+                build_and_deploy(spec)
+        except Exception as e:
+            logger.error("Error handling pubsub message, ", e)
+        finally:
+            msg.ack()
 
-        msg.ack()
-
+    project_name = os.environ['GCLOUD_PROJECT']
     subscriber = pubsub_v1.SubscriberClient()
-    subscription_path = subscriber.subscription_path(project, sub)
+    subscription_path = subscriber.subscription_path(project_name, sub)
     streaming_pull_future = subscriber.subscribe(subscription_path, callback=callback)
-
 
     while True:
         with subscriber:
             try:
                 streaming_pull_future.result()
             except Exception as e:
-                logger.warning('Unexpected error polling pus/sub, reconnecting', e)
+                logger.warning('Unexpected error polling pus/sub, reconnecting...', e)
                 time.sleep(5)
+
 
 def build_and_deploy(spec):
     """
-    Build and deploy the container.
+    Build and deploy a container which has the uploaded model file.
 
     Args:
         spec (dict): Tne spec for the container.
-
-
     """
+    logger.info(f'Building {spec}')
+    model_type = spec['modelType']
+    tmlp_path = os.environ.get('TEMPLATE_PATH', '/app/tmpl')
+    if model_type == 'PYTORCH_MODEL_ARCHIVE':
+        tmpl = f'{tmlp_path}/torch'
+    elif model_type == 'TF_SAVED_MODEL':
+        tmpl = f'{tmlp_path}/tf'
+    else:
+        logger.error(f'The model type {model_type} has no template')
+        return
+
+    # Copy the model and the template into a temp dir.
+    # Then submit the temp dir to be built.
     d = tempfile.mkdtemp()
     try:
-        shutil.copytree("/app/tmpl/torch", d, dirs_exist_ok=True)
+        shutil.copytree(tmpl, d, dirs_exist_ok=True)
         download_model(spec['modelFile'], d)
-        copy_template(spec, d)
-        subprocess.check_call(['gcloud', 'builds', 'submit', d])
+        submit_build(spec, d)
     finally:
         shutil.rmtree(d)
 
 
-def copy_template(spec, build_dir):
+def submit_build(spec, path):
     """
-    Copy the Cloud Build template and replace some values.
+    Submit a build to google cloud build. The submission is async how the function may
+    need time to package up the files.
 
     Args:
-        spec:
-        build_dir:
-
-    Returns:
+        spec (dict): The spec for the build.
+        path (str): The path to the files that make up the build.
 
     """
-    with open('cloudbuild.yaml', 'r') as fp:
-        data = fp.read()
+    img = spec['image']
+    modelId = spec['modelId']
 
-    data = data.replace('PROJECT_ID', os.environ['GCLOUD_PROJECT'])
-    data = data.replace('IMAGE', spec['image'])
-    data = data.replace('SERVICE_NAME', spec['service'])
-    data = data.replace('REGION', 'us-central1')
+    build = {
+        'steps': [
+            {
+                'name': 'gcr.io/cloud-builders/docker',
+                'args': ['build', '-t', img, '.']
+            },
+            {
+                'name': 'gcr.io/cloud-builders/docker',
+                'args':  ['push', img]
+            },
+            {
+                'name': 'gcr.io/google.com/cloudsdktool/cloud-sdk',
+                'entrypoint': 'gcloud',
+                'args': ['run', 'deploy', modelId, '--image', img,
+                         '--region', 'us-central1',
+                         '--platform', 'managed',
+                         '--ingress', 'internal',
+                         '--clear-vpc-connector',
+                         '--memory=2Gi',
+                         '--max-instances', '4',
+                         '--labels', f'model-id={modelId}']
+            }
+        ],
+        'images': [
+            img
+        ],
+        'name': f'model-{modelId}-{time.time()}'
+    }
 
-    with open(os.path.join(build_dir, 'cloudbuild.yaml', 'w')) as fp:
-        fp.write(data)
+    build_file = f'{path}/cloudbuild.yaml'
+    with open(build_file, 'w') as fp:
+        yaml.dump(build, fp)
+
+    subprocess.check_call([
+        'gcloud',
+        'builds',
+        'submit',
+        '--async',
+        '--config',
+        build_file,
+        path
+    ])
 
 
 def download_model(src_uri, dst):
+    """
+    Download the model file uploaded by the user.
+
+    Args:
+        src_uri (str): The URI for the model.
+        dst (str): The local path to copy the model into.
+    """
     subprocess.check_call(['gsutil', 'cp', src_uri, dst])
 
 
@@ -139,37 +177,11 @@ def create_localdev_env(project, sub):
     logger.info(f'Creating test environment sub: {subscription_path}')
 
 
-# Message a new model was uploaded comes in.
-# {
-#    "modelId": "blah",
-#    "projectId": "blah",
-#    "modelFile": "blah",
-#    "modelType": "blah"
-#    "moduleName" "blah",
-#    "serviceNane", "blah blah",
-#    "memory": "2g",
-#    "cpu": 1
-# }
-
-#  gcloud run deploy --image gcr.io/zvi-dev/test --platform managed --ingress='internal' --clear-vpc-connector
-#  gcloud run services describe test --platform managed --region  us-central1 --format 'value(status.url)'
-
-
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
 
-    project_name = os.environ['GCLOUD_PROJECT']
-    sub_name = os.environ['MODEL_EVENT_SUBSCRIPTION']
-
+    sub_name = "tugboat-model-events"
     poller = multiprocessing.Process(multiprocessing.Process(
-        target=message_poller, args=(project_name, sub_name)).start())
+        target=message_poller, args=(sub_name,)).start())
 
     # Disables all these flask endpoint logs because the health check
     # fills the logs with garbage.
