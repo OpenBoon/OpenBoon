@@ -42,7 +42,6 @@ class ProjectListenerTest : PubSubAbstractTest() {
         allProjectIndex = indexRoutingService.getAll(IndexRouteFilter(projectIds = listOf(getProjectId())))
         assertEquals(0, allProjectIndex.size())
 
-
         ProjectDeleteDao.tables.forEach {
             assertEquals(
                 0,
