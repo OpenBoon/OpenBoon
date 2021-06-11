@@ -28,13 +28,13 @@ class ModelType(Enum):
     GCP_AUTOML_CLASSIFIER = 3
     """Train a Google AutoML vision model."""
 
-    TF_UPLOADED_CLASSIFIER = 4
+    TF_SAVED_MODEL = 4
     """Provide your own custom Tensorflow2/Keras model"""
 
     PYTORCH_CLASSIFIER = 5
     """Retrain ResNet50 with your own labels, using Pytorch."""
 
-    PYTORCH_UPLOADED_CLASSIFIER = 6
+    PYTORCH_MODEL_ARCHIVE = 6
     """Provide your own custom Pytorch model"""
 
 
