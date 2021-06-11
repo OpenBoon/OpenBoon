@@ -25,6 +25,7 @@ import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectFileLocator
 import boonai.archivist.domain.ProjectStorageEntity
+import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.ReprocessAssetSearchRequest
 import boonai.archivist.domain.StandardContainers
 import boonai.archivist.repository.KPagedList
@@ -52,6 +53,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.io.ByteArrayInputStream
 import java.util.UUID
 
 interface ModelService {
@@ -298,7 +300,8 @@ class ModelServiceImpl(
 
     override fun publishModel(model: Model, req: ModelPublishRequest): PipelineMod {
         val mod = pipelineModService.findByName(model.moduleName, false)
-        val ops = buildModuleOps(model, req)
+        val version = versionUp(model)
+        val ops = buildModuleOps(model, req, version)
 
         if (mod != null) {
             // Set version number to change checksum
@@ -372,7 +375,7 @@ class ModelServiceImpl(
         }
     }
 
-    fun buildModuleOps(model: Model, req: ModelPublishRequest): List<ModOp> {
+    fun buildModuleOps(model: Model, req: ModelPublishRequest, version: String): List<ModOp> {
         val ops = mutableListOf<ModOp>()
 
         for (depend in model.type.dependencies) {
@@ -399,7 +402,7 @@ class ModelServiceImpl(
                         StandardContainers.ANALYSIS,
                         mutableMapOf(
                             "model_id" to model.id.toString(),
-                            "version" to System.currentTimeMillis()
+                            "version" to version
                         ).plus(req.args),
                         module = model.name
                     )
@@ -436,6 +439,17 @@ class ModelServiceImpl(
             },
             MoreExecutors.directExecutor()
         )
+    }
+
+    fun versionUp(model: Model): String {
+        val version = "${System.currentTimeMillis()}"
+        val versionBytes = version.plus("\n").toByteArray()
+        val versionFile = ProjectStorageSpec(
+            model.getModelVersionStorageLocator("latest"), mapOf(),
+            ByteArrayInputStream(versionBytes), versionBytes.size.toLong()
+        )
+        fileStorageService.store(versionFile)
+        return version
     }
 
     companion object {

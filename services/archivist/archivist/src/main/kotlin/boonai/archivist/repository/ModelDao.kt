@@ -45,6 +45,11 @@ interface ModelJdbcDao {
      * Mark a model as ready.
      */
     fun markAsReady(modelId: UUID, value: Boolean)
+
+    /**
+     * Set the endpoint property on a model.
+     */
+    fun setEndpoint(modelId: UUID, value: String)
 }
 
 @Repository
@@ -52,6 +57,10 @@ class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
 
     override fun markAsReady(modelId: UUID, value: Boolean) {
         jdbc.update("UPDATE model SET bool_trained=? WHERE pk_model=?", value, modelId)
+    }
+
+    override fun setEndpoint(modelId: UUID, value: String) {
+        jdbc.update("UPDATE model SET str_endpoint=? WHERE pk_model=?", value, modelId)
     }
 
     override fun count(filter: ModelFilter): Long {

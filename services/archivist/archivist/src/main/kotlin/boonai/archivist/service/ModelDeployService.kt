@@ -5,9 +5,9 @@ import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.PubSubEvent
+import boonai.archivist.repository.ModelJdbcDao
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.loadGcpCredentials
-import boonai.archivist.util.randomString
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
@@ -18,12 +18,12 @@ import com.google.api.client.http.HttpRequestFactory
 import com.google.api.client.http.HttpResponse
 import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.auth.http.HttpCredentialsAdapter
+import com.google.cloud.ServiceOptions
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.google.pubsub.v1.PubsubMessage
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.util.UUID
 import javax.annotation.PostConstruct
@@ -40,6 +40,7 @@ interface ModelDeployService {
 class ModelDeployServiceImpl(
     val fileStorageService: ProjectStorageService,
     val modelService: ModelService,
+    val modelJdbcDao: ModelJdbcDao,
     val eventBus: EventBus
 
 ) : ModelDeployService {
@@ -67,17 +68,6 @@ class ModelDeployServiceImpl(
             inputStream, 0
         )
         fileStorageService.store(modelFile)
-
-        /**
-         * Store the version identifier.
-         */
-        val version = "${(System.currentTimeMillis() / 1000).toInt()}-${randomString(8)}"
-        val versionBytes = version.plus("\n").toByteArray()
-        val versionFile = ProjectStorageSpec(
-            model.getModelVersionStorageLocator("latest"), mapOf(),
-            ByteArrayInputStream(versionBytes), versionBytes.size.toLong()
-        )
-        fileStorageService.store(versionFile)
 
         // Emit a message to signal for the model to be deployed.
         modelService.postToModelEventTopic(buildDeployPubsubMessage(model))
@@ -120,12 +110,12 @@ class ModelDeployServiceImpl(
             val model = modelService.getModel(modelId)
 
             val endpoint = findCloudRunEndpoint(model)
-            // TODO: update the model.endpoint property, make a specific function
-            // in ModelJdbcDaoImpl for this and don't allow normal users to
-            // update the endpoint.
-
-            // Now make the module available.
-            modelService.publishModel(model, ModelPublishRequest())
+            if (endpoint != null) {
+                modelJdbcDao.setEndpoint(model.id, endpoint)
+                modelService.publishModel(model, ModelPublishRequest())
+            } else {
+                logger.error("The model build ${model.id} completed but no endpoint was found.")
+            }
         }
     }
 
@@ -148,26 +138,25 @@ class ModelDeployServiceImpl(
      */
     fun findCloudRunEndpoint(model: Model): String? {
 
-        // Archivist credentials at "/secrets/gcs/credentials.json" in production.
-        val credsPath = "/Users/chambers/src/zmlp/containers/plugins-analysis/integration_tests/google_integration_tests/gcp-creds.json"
-        var credentials = loadGcpCredentials()
-
-        // This will be: ServiceOptions.getDefaultProjectId()
-        val projectId = "zvi-dev"
+        val projectId = ServiceOptions.getDefaultProjectId()
         val modelId = model.id
         val url = "https://us-central1-run.googleapis.com/apis/serving.knative.dev/v1/namespaces/$projectId/services/$modelId?alt=json"
 
-        // TODO: Does anything have to be closed here?
         val credentialsAdapter = HttpCredentialsAdapter(credentials)
         val requestFactory: HttpRequestFactory = NetHttpTransport().createRequestFactory(credentialsAdapter)
         val request: HttpRequest = requestFactory.buildGetRequest(GenericUrl(url))
         val response: HttpResponse = request.execute()
 
-        val data = Asset(Json.Mapper.readValue(response.content, Json.GENERIC_MAP).toMutableMap())
-        return data.getAttr("status.url", String::class.java)
+        // Closes the stream
+        response.content.use {
+            val data = Asset(Json.Mapper.readValue(it, Json.GENERIC_MAP).toMutableMap())
+            return data.getAttr("status.url", String::class.java)
+        }
     }
 
     companion object {
+
+        val credentials = loadGcpCredentials()
 
         private val logger = LoggerFactory.getLogger(ModelDeployServiceImpl::class.java)
     }

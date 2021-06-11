@@ -20,6 +20,17 @@ class ModelDaoTests : AbstractTest() {
     lateinit var modelJdbcDao: ModelJdbcDao
 
     @Test
+    fun setEndpoint() {
+        val model = modelService.createModel(ModelSpec("foo", ModelType.TF_CLASSIFIER))
+        modelJdbcDao.setEndpoint(model.id, "https://foo/bar")
+
+        var endpoint = jdbc.queryForObject(
+            "SELECT str_endpoint FROM model WHERE pk_model=?", String::class.java, model.id
+        )
+        assertEquals(endpoint, "https://foo/bar")
+    }
+
+    @Test
     fun testMarkAsReady() {
         val model = modelService.createModel(ModelSpec("foo", ModelType.TF_CLASSIFIER))
         modelJdbcDao.markAsReady(model.id, true)
