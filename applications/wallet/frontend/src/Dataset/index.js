@@ -10,6 +10,7 @@ import Tabs from '../Tabs'
 
 import DatasetConcepts from '../DatasetConcepts'
 import ConceptEdit from '../ConceptEdit'
+import DatasetLabels from '../DatasetLabels'
 
 import DatasetDetails from './Details'
 
@@ -41,6 +42,8 @@ const Dataset = () => {
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
             {action === 'edit-concept-success' && 'Concept updated.'}
             {action === 'delete-concept-success' && 'Concept deleted.'}
+            {action === 'remove-asset-success' &&
+              'Asset has been removed from dataset.'}
           </FlashMessage>
         </div>
       )}
@@ -89,6 +92,10 @@ const Dataset = () => {
           ) : (
             <DatasetConcepts />
           ))}
+
+        {pathname === '/[projectId]/datasets/[datasetId]/labels' && (
+          <DatasetLabels />
+        )}
       </SuspenseBoundary>
     </>
   )
