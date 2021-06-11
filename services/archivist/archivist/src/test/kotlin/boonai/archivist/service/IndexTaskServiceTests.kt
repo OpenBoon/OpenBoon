@@ -205,7 +205,7 @@ class IndexTaskServiceTests : AbstractTest() {
 
         val image = getSample(1, type = "image")[0]
         val imageLabels = image.getAttr<List<Map<String, Any>>>("labels") ?: throw RuntimeException("no labels")
-        assertEquals("abc123", imageLabels[0]["dataSetId"])
+        assertEquals("abc123", imageLabels[0]["datasetId"])
         assertEquals("cats", imageLabels[0]["label"])
     }
 }

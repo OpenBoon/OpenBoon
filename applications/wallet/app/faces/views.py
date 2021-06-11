@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from boonsdk import ModelType, DataSetType, Model
+from boonsdk import ModelType, DatasetType, Model
 from boonsdk.client import BoonSdkNotFoundException
 
 from assets.utils import AssetBoxImager
@@ -253,9 +253,9 @@ class FaceViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
         try:
             model = app.models.find_one_model(name=self.model_name)
         except BoonSdkNotFoundException:
-            dataset = app.datasets.create_dataset(self.model_name, DataSetType.FaceRecognition)
+            dataset = app.datasets.create_dataset(self.model_name, DatasetType.FaceRecognition)
             body = {'name': self.model_name,
                     'type': ModelType.FACE_RECOGNITION,
-                    'dataSetId': dataset.id}
+                    'datasetId': dataset.id}
             model = Model(app.client.post("/api/v3/models", body))
         return model

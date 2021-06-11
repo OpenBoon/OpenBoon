@@ -52,7 +52,7 @@ class ModelApp:
         else:
             return self.find_one_model(name=id)
 
-    def find_one_model(self, id=None, name=None, type=None, dataSet=None):
+    def find_one_model(self, id=None, name=None, type=None, dataset=None):
         """
         Find a single Model based on various properties.
 
@@ -60,19 +60,19 @@ class ModelApp:
             id (str): The ID or list of Ids.
             name (str): The Model name or list of names.
             type (str): The Model type or list of types.
-            dataSet(str): DataSets or unique DataSet Ids.
+            dataset(str): Datasets or unique Dataset Ids.
         Returns:
             Model: the matching Model.
         """
         body = {
             'names': as_collection(name),
             'ids': as_collection(id),
-            'dataSetIds': as_id_collection(dataSet),
+            'datasetIds': as_id_collection(dataset),
             'types': as_name_collection(type)
         }
         return Model(self.app.client.post("/api/v3/models/_find_one", body))
 
-    def find_models(self, id=None, name=None, type=None, dataSet=None, limit=None, sort=None):
+    def find_models(self, id=None, name=None, type=None, dataset=None, limit=None, sort=None):
         """
         Find a single Model based on various properties.
 
@@ -80,7 +80,7 @@ class ModelApp:
             id (str): The ID or list of Ids.
             name (str): The model name or list of names.
             type (str): The model type or list of types.
-            dataSet(str): DataSets or unique DataSet Ids.
+            dataset(str): Datasets or unique Dataset Ids.
             limit (int): Limit results to the given size.
             sort (list): An array of properties to sort by. Example: ["name:asc"]
 
@@ -91,7 +91,7 @@ class ModelApp:
         body = {
             'names': as_collection(name),
             'ids': as_collection(id),
-            'dataSetIds': as_id_collection(dataSet),
+            'datasetIds': as_id_collection(dataset),
             'types': as_name_collection(type),
             'sort': sort
         }

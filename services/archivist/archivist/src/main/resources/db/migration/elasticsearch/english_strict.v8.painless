@@ -3,7 +3,7 @@ if (ctx._source !=null) {
          List newLabels = new ArrayList();
          for (Object item: ctx._source.labels) {
             Map existing = (Map) item;
-            existing.put("dataSetId", existing.get("modelId"));
+            existing.put("datasetId", existing.get("modelId"));
             existing.remove("modelId");
             newLabels.add(existing);
          }

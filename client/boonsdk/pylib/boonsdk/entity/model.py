@@ -65,8 +65,8 @@ class Model(BaseEntity):
 
     @property
     def dataset_id(self):
-        """The DataSet unique ID"""
-        return self._data['dataSetId']
+        """The Dataset unique ID"""
+        return self._data['datasetId']
 
     @property
     def module_name(self):
@@ -220,7 +220,7 @@ class Model(BaseEntity):
 
     def asset_search_filter(self, scopes=None, labels=None):
         """
-        Create and return a TrainingSetFilter for filtering Assets by the DataSet assigned
+        Create and return a TrainingSetFilter for filtering Assets by the Dataset assigned
         to this model.
 
         Args:
@@ -231,7 +231,7 @@ class Model(BaseEntity):
             TrainingSetFilter: A preconfigured TrainingSetFilter
         """
         if not self.dataset_id:
-            raise ValueError('This model does not have an attached DataSet')
+            raise ValueError('This model does not have an attached Dataset')
         return TrainingSetFilter(self.dataset_id, scopes=scopes, labels=labels)
 
 

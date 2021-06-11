@@ -1,15 +1,15 @@
 Data Sets
 =========
 
-DataSets are collections of Assets that are used for training Models.
+Datasets are collections of Assets that are used for training Models.
 
-.. autoclass:: boonsdk.app.DataSetApp
+.. autoclass:: boonsdk.app.DatasetApp
     :members:
 
-.. autoclass:: boonsdk.DataSet
+.. autoclass:: boonsdk.Dataset
     :members:
 
-.. autoclass:: boonsdk.DataSetType
+.. autoclass:: boonsdk.DatasetType
     :members:
 
 .. autoclass:: boonsdk.Label

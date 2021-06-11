@@ -122,7 +122,7 @@ class TestDatasetsViewsets:
         dataset_id = 'ed756d9d-0106-1fb2-adab-0242ac12000e'
 
         def mock_response(*args, **kwargs):
-            return {'type': 'dataSet', 'id': 'ed756d9d-0106-1fb2-adab-0242ac12000e', 'op': 'delete', 'success': True}  # noqa
+            return {'type': 'dataset', 'id': 'ed756d9d-0106-1fb2-adab-0242ac12000e', 'op': 'delete', 'success': True}  # noqa
 
         path = reverse('dataset-detail', kwargs={'project_pk': project.id,
                                                  'pk': dataset_id})
@@ -197,7 +197,7 @@ class TestDatasetsViewsets:
         dataset_id = '0db0a87e-42a7-11d5-91ea-fea0e31b3bfe'
 
         def mock_response(*args, **kwargs):
-            return {'list': [{'id': '0db0a87e-42a7-11d5-91ea-fea0e31b3bfe', 'projectId': '1c4e7b80-1ca0-4296-b051-3b8d05947eef', 'dataSetId': '0db0a87e-42a7-11d5-91ea-fea0e31b3bfe', 'type': 'FACE_RECOGNITION', 'name': 'console', 'moduleName': 'zvi-face-recognition', 'fileId': 'models/0db0a87e-42a7-11d5-91ea-fea0e31b3bfe/__TAG__/model.zip', 'trainingJobName': 'Training model: console - [Face Recognition]', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'timeCreated': 1610674842169, 'timeModified': 1610674842169, 'actorCreated': '6909b66f-f163-4661-b481-9f9ded3dfbb9/Admin Console Generated Key - b274724e-17d9-4e15-9aeb-ace0af564d64 - danny@zorroa.com_1c4e7b80-1ca0-4296-b051-3b8d05947eef', 'actorModified': '6909b66f-f163-4661-b481-9f9ded3dfbb9/Admin Console Generated Key - b274724e-17d9-4e15-9aeb-ace0af564d64 - danny@zorroa.com_1c4e7b80-1ca0-4296-b051-3b8d05947eef'}], 'page': {'from': 0, 'size': 50, 'disabled': False, 'totalCount': 1}}  # noqa
+            return {'list': [{'id': '0db0a87e-42a7-11d5-91ea-fea0e31b3bfe', 'projectId': '1c4e7b80-1ca0-4296-b051-3b8d05947eef', 'datasetId': '0db0a87e-42a7-11d5-91ea-fea0e31b3bfe', 'type': 'FACE_RECOGNITION', 'name': 'console', 'moduleName': 'zvi-face-recognition', 'fileId': 'models/0db0a87e-42a7-11d5-91ea-fea0e31b3bfe/__TAG__/model.zip', 'trainingJobName': 'Training model: console - [Face Recognition]', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'timeCreated': 1610674842169, 'timeModified': 1610674842169, 'actorCreated': '6909b66f-f163-4661-b481-9f9ded3dfbb9/Admin Console Generated Key - b274724e-17d9-4e15-9aeb-ace0af564d64 - danny@zorroa.com_1c4e7b80-1ca0-4296-b051-3b8d05947eef', 'actorModified': '6909b66f-f163-4661-b481-9f9ded3dfbb9/Admin Console Generated Key - b274724e-17d9-4e15-9aeb-ace0af564d64 - danny@zorroa.com_1c4e7b80-1ca0-4296-b051-3b8d05947eef'}], 'page': {'from': 0, 'size': 50, 'disabled': False, 'totalCount': 1}}  # noqa
 
         path = reverse('dataset-get-models', kwargs={'project_pk': project.id, 'pk': dataset_id})
         monkeypatch.setattr(BoonClient, 'post', mock_response)

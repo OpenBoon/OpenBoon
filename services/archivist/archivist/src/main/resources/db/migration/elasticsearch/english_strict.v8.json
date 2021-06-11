@@ -136,7 +136,7 @@
               }
             }
           },
-          "dataSetId": {
+          "datasetId": {
             "type": "keyword"
           },
           "scope": {

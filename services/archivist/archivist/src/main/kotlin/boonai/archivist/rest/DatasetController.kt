@@ -1,13 +1,13 @@
 package boonai.archivist.rest
 
-import boonai.archivist.domain.DataSet
-import boonai.archivist.domain.DataSetFilter
-import boonai.archivist.domain.DataSetSpec
-import boonai.archivist.domain.DataSetType
+import boonai.archivist.domain.Dataset
+import boonai.archivist.domain.DatasetFilter
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.GenericBatchUpdateResponse
 import boonai.archivist.domain.UpdateLabelRequest
 import boonai.archivist.repository.KPagedList
-import boonai.archivist.service.DataSetService
+import boonai.archivist.service.DatasetService
 import boonai.archivist.util.HttpUtils
 import io.swagger.annotations.ApiOperation
 import org.springframework.security.access.prepost.PreAuthorize
@@ -22,27 +22,27 @@ import java.util.UUID
 
 @PreAuthorize("hasAuthority('ModelTraining')")
 @RestController
-class DataSetCotroller(
-    val dataSetService: DataSetService
+class DatasetController(
+    val datasetService: DatasetService
 ) {
 
-    @ApiOperation("Create a new DataSet")
+    @ApiOperation("Create a new Dataset")
     @PostMapping(value = ["/api/v3/datasets"])
-    fun create(@RequestBody spec: DataSetSpec): DataSet {
-        return dataSetService.createDataSet(spec)
+    fun create(@RequestBody spec: DatasetSpec): Dataset {
+        return datasetService.createDataset(spec)
     }
 
-    @ApiOperation("Get a DataSet record")
+    @ApiOperation("Get a Dataset record")
     @GetMapping(value = ["/api/v3/datasets/{id}"])
-    fun get(@PathVariable id: UUID): DataSet {
-        return dataSetService.getDataSet(id)
+    fun get(@PathVariable id: UUID): Dataset {
+        return datasetService.getDataset(id)
     }
 
-    @ApiOperation("Delete a DataSet record")
+    @ApiOperation("Delete a Dataset record")
     @DeleteMapping(value = ["/api/v3/datasets/{id}"])
     fun delete(@PathVariable id: UUID): Any {
-        dataSetService.deleteDataSet(dataSetService.getDataSet(id))
-        return HttpUtils.deleted("dataSet", id, true)
+        datasetService.deleteDataset(datasetService.getDataset(id))
+        return HttpUtils.deleted("dataset", id, true)
     }
 
     @ApiOperation("Rename label")
@@ -51,8 +51,8 @@ class DataSetCotroller(
         @PathVariable id: UUID,
         @RequestBody req: UpdateLabelRequest
     ): GenericBatchUpdateResponse {
-        val ds = dataSetService.getDataSet(id)
-        return dataSetService.updateLabel(ds, req.label, req.newLabel)
+        val ds = datasetService.getDataset(id)
+        return datasetService.updateLabel(ds, req.label, req.newLabel)
     }
 
     @ApiOperation("Delete label")
@@ -61,30 +61,30 @@ class DataSetCotroller(
         @PathVariable id: UUID,
         @RequestBody req: UpdateLabelRequest
     ): GenericBatchUpdateResponse {
-        val ds = dataSetService.getDataSet(id)
-        return dataSetService.updateLabel(ds, req.label, null)
+        val ds = datasetService.getDataset(id)
+        return datasetService.updateLabel(ds, req.label, null)
     }
 
     @ApiOperation("Get the labels for the model")
     @GetMapping(value = ["/api/v3/datasets/{id}/_label_counts"])
     fun getLabels(@PathVariable id: UUID): Map<String, Long> {
-        val ds = dataSetService.getDataSet(id)
-        return dataSetService.getLabelCounts(ds)
+        val ds = datasetService.getDataset(id)
+        return datasetService.getLabelCounts(ds)
     }
 
     @PostMapping("/api/v3/datasets/_search")
-    fun find(@RequestBody(required = false) filter: DataSetFilter?): KPagedList<DataSet> {
-        return dataSetService.find(filter ?: DataSetFilter())
+    fun find(@RequestBody(required = false) filter: DatasetFilter?): KPagedList<Dataset> {
+        return datasetService.find(filter ?: DatasetFilter())
     }
 
     @PostMapping("/api/v3/datasets/_find_one")
-    fun findOne(@RequestBody(required = false) filter: DataSetFilter?): DataSet {
-        return dataSetService.findOne(filter ?: DataSetFilter())
+    fun findOne(@RequestBody(required = false) filter: DatasetFilter?): Dataset {
+        return datasetService.findOne(filter ?: DatasetFilter())
     }
 
     @ApiOperation("Get Information about all dataset types.")
     @GetMapping(value = ["/api/v3/datasets/_types"])
     fun getTypes(): Any {
-        return DataSetType.values().map { it.asMap() }
+        return DatasetType.values().map { it.asMap() }
     }
 }
