@@ -54,21 +54,7 @@ class ProjectDeleteDaoTests : AbstractTest() {
 
         projectDeleteDao.deleteProjectRelatedObjects(getProjectId())
 
-        val listOfTables = listOf(
-            "project_quota",
-            "project_quota_time_series",
-            "processor",
-            "module",
-            "credentials",
-            "pipeline",
-            "automl",
-            "model",
-            "job",
-            "datasource",
-            "project"
-
-        )
-        listOfTables.forEach {
+        ProjectDeleteDao.tables.forEach {
             assertEquals(
                 0,
                 jdbc.queryForObject("SELECT COUNT(*) FROM $it where pk_project=?", Int::class.java, getProjectId())

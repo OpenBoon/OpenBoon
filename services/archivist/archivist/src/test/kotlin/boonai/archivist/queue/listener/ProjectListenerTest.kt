@@ -6,6 +6,7 @@ import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.IndexRouteFilter
 import boonai.archivist.queue.PubSubAbstractTest
+import boonai.archivist.repository.ProjectDeleteDao
 import boonai.archivist.security.getProjectId
 import boonai.archivist.storage.ProjectStorageException
 import boonai.archivist.storage.ProjectStorageService
@@ -41,22 +42,8 @@ class ProjectListenerTest : PubSubAbstractTest() {
         allProjectIndex = indexRoutingService.getAll(IndexRouteFilter(projectIds = listOf(getProjectId())))
         assertEquals(0, allProjectIndex.size())
 
-        val listOfTables = listOf(
-            "index_route",
-            "project_quota",
-            "project_quota_time_series",
-            "processor",
-            "module",
-            "credentials",
-            "pipeline",
-            "automl",
-            "model",
-            "job",
-            "datasource",
-            "project"
 
-        )
-        listOfTables.forEach {
+        ProjectDeleteDao.tables.forEach {
             assertEquals(
                 0,
                 jdbc.queryForObject("SELECT COUNT(*) FROM $it where pk_project=?", Int::class.java, getProjectId())
