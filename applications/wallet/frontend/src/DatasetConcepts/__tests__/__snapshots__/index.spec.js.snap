@@ -283,7 +283,7 @@ exports[`<DatasetConcepts /> should render properly with concepts 1`] = `
           <tbody>
             <tr>
               <td>
-                cat
+                tabby
               </td>
               <td>
                 128
@@ -312,7 +312,7 @@ exports[`<DatasetConcepts /> should render properly with concepts 1`] = `
             </tr>
             <tr>
               <td>
-                dog
+                calico
               </td>
               <td>
                 128

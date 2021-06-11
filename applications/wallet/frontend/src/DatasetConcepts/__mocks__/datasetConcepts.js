@@ -1,8 +1,8 @@
 const datasetConcepts = {
   count: 2,
   results: [
-    { label: 'cat', count: 128 },
-    { label: 'dog', count: 128 },
+    { label: 'tabby', count: 128 },
+    { label: 'calico', count: 128 },
   ],
 }
 
