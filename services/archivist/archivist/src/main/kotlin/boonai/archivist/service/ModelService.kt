@@ -44,6 +44,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
+import org.springframework.core.env.Environment
+import org.springframework.core.env.get
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -93,7 +95,8 @@ class ModelServiceImpl(
     val assetSearchService: AssetSearchService,
     val fileStorageService: ProjectStorageService,
     val argValidationService: ArgValidationService,
-    val dataSetService: DataSetService
+    val dataSetService: DataSetService,
+    val environment: Environment
 ) : ModelService {
 
     override fun generateModuleName(spec: ModelSpec): String {
@@ -200,7 +203,8 @@ class ModelServiceImpl(
             mapOf<String, Any?>(
                 "model_id" to model.id.toString(),
                 "post_action" to (request.postAction.name),
-                "tag" to "latest"
+                "tag" to "latest",
+                "training_bucket" to "gs://${environment.getProperty("GCLOUD_PROJECT")}-training"
             )
         )
 
