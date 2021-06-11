@@ -180,8 +180,8 @@ class ModelApp:
                     fp.write(f'{label}\n')
 
         # check the model types.
-        if model.type not in (ModelType.TF_UPLOADED_CLASSIFIER,
-                              ModelType.PYTORCH_UPLOADED_CLASSIFIER):
+        if model.type not in (ModelType.TF_SAVED_MODEL,
+                              ModelType.PYTORCH_MODEL_ARCHIVE):
             raise ValueError(f'Invalid model type for upload: {model.type}')
 
         model_file = tempfile.mkstemp(prefix="model_", suffix=".zip")[1]

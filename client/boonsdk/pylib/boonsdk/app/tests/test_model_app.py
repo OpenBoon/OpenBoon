@@ -23,7 +23,7 @@ class ModelAppTests(unittest.TestCase):
         self.model_data = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'test',
-            'type': 'TF_UPLOADED_CLASSIFIER',
+            'type': 'TF_SAVED_MODEL',
             'fileId': '/abc/123/345/foo.zip'
         }
 
@@ -68,7 +68,7 @@ class ModelAppTests(unittest.TestCase):
         upload_patch.return_value = {'category': 'LabelDetection'}
         model_patch.return_value = Model({
             'id': '12345',
-            'type': 'TF_UPLOADED_CLASSIFIER',
+            'type': 'TF_SAVED_MODEL',
             'name': 'foo'
         })
 
@@ -86,7 +86,7 @@ class ModelAppTests(unittest.TestCase):
         upload_patch.return_value = {'category': 'LabelDetection'}
         model_patch.return_value = Model({
             'id': '12345',
-            'type': 'TF_UPLOADED_CLASSIFIER',
+            'type': 'TF_SAVED_MODEL',
             'name': 'foo'
         })
 
@@ -100,7 +100,7 @@ class ModelAppTests(unittest.TestCase):
         post_patch.return_value = {'category': 'LabelDetection'}
         model_patch.return_value = Model({
             'id': '12345',
-            'type': 'TF_UPLOADED_CLASSIFIER',
+            'type': 'TF_SAVED_MODEL',
             'name': 'foo'
         })
 
@@ -114,7 +114,7 @@ class ModelAppTests(unittest.TestCase):
         post_patch.return_value = {'category': 'LabelDetection'}
         model_patch.return_value = Model({
             'id': '12345',
-            'type': 'PYTORCH_UPLOADED_CLASSIFIER',
+            'type': 'PYTORCH_MODEL_ARCHIVE',
             'name': 'foo'
         })
 

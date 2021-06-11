@@ -92,7 +92,7 @@ class PytorchImageClassifierTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "PYTORCH_UPLOADED_CLASSIFIER",
+                "type": "PYTORCH_MODEL_ARCHIVE",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": self.name,
                 "moduleName": self.name

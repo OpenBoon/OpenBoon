@@ -31,7 +31,7 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "TF_UPLOADED_CLASSIFIER",
+                "type": "TF_SAVED_MODEL",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": name,
                 "moduleName": name
@@ -90,7 +90,7 @@ class TensorflowTransferLearningClassifierTestsVideo(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "TF_UPLOADED_CLASSIFIER",
+                "type": "TF_SAVED_MODEL",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": self.name,
                 "moduleName": self.name
