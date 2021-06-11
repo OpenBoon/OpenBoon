@@ -5,7 +5,7 @@ import ResizeableHandle from '../Resizeable/Handle'
 
 import { MIN_WIDTH, ACTIONS } from './reducer'
 
-const TimelineModulesResizer = ({ settings: { width }, dispatch }) => {
+const TimelineModulesResizer = ({ width, dispatch }) => {
   /* istanbul ignore next */
   const handleMouseMove = ({ difference }) => {
     const newWidth = width - difference
@@ -41,11 +41,7 @@ const TimelineModulesResizer = ({ settings: { width }, dispatch }) => {
 }
 
 TimelineModulesResizer.propTypes = {
-  settings: PropTypes.shape({
-    filter: PropTypes.string.isRequired,
-    width: PropTypes.number.isRequired,
-    timelines: PropTypes.shape({}).isRequired,
-  }).isRequired,
+  width: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired,
 }
 
