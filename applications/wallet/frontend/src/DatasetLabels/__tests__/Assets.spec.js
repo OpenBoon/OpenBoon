@@ -80,7 +80,7 @@ describe('<DatasetLabelsAssets />', () => {
           {
             type: 'label',
             attribute: 'labels.cats',
-            dataSetId: DATASET_ID,
+            datasetId: DATASET_ID,
             values: {
               scope: 'TRAIN',
               labels: ['tabby'],
