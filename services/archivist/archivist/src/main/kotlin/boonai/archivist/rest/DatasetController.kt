@@ -72,6 +72,13 @@ class DatasetController(
         return datasetService.getLabelCounts(ds)
     }
 
+    @ApiOperation("Get the labels for the model")
+    @GetMapping(value = ["/api/v4/datasets/{id}/_label_counts"])
+    fun getLabelsV4(@PathVariable id: UUID): Any {
+        val ds = datasetService.getDataset(id)
+        return datasetService.getLabelCountsV4(ds)
+    }
+
     @PostMapping("/api/v3/datasets/_search")
     fun find(@RequestBody(required = false) filter: DatasetFilter?): KPagedList<Dataset> {
         return datasetService.find(filter ?: DatasetFilter())

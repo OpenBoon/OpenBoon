@@ -93,7 +93,7 @@ class DatasetControllerTests : MockMvcTest() {
 
     @Test
     fun testRenameLabel() {
-        val specs = dataset(dataset)
+        val specs = makeDataSet(dataset)
         assetService.batchCreate(
             BatchCreateAssetsRequest(specs)
         )
@@ -118,7 +118,7 @@ class DatasetControllerTests : MockMvcTest() {
 
     @Test
     fun testDeleteLabel() {
-        val specs = dataset(dataset)
+        val specs = makeDataSet(dataset)
         assetService.batchCreate(
             BatchCreateAssetsRequest(specs)
         )
@@ -206,7 +206,38 @@ class DatasetControllerTests : MockMvcTest() {
             .andReturn()
     }
 
-    fun dataset(ds: Dataset): List<AssetSpec> {
+    @Test
+    fun testGetLabelCountsV4() {
+
+        val specs = makeDataSet(dataset)
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(specs)
+        )
+
+        val rsp = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v4/datasets/${dataset.id}/_label_counts")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.dog.TRAIN",
+                    CoreMatchers.equalTo(1)
+                )
+            )
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.dog.TEST",
+                    CoreMatchers.equalTo(0)
+                )
+            )
+            .andReturn()
+
+        logger.info(rsp.response.contentAsString)
+    }
+
+    fun makeDataSet(ds: Dataset): List<AssetSpec> {
         return listOf(
             AssetSpec("https://i.imgur.com/12abc.jpg", label = ds.makeLabel("beaver")),
             AssetSpec("https://i.imgur.com/abc123.jpg", label = ds.makeLabel("ant")),
