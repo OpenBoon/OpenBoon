@@ -34,6 +34,7 @@ enum class ModelType(
     val dependencies: List<String>,
     val trainable: Boolean,
     val uploadable: Boolean,
+    val enabled: Boolean,
     val fileName: String = "model.zip"
 ) {
     KNN_CLASSIFIER(
@@ -53,6 +54,7 @@ enum class ModelType(
         listOf(),
         true,
         false,
+        true
     ),
     TF_CLASSIFIER(
         "Tensorflow Transfer Learning Classifier",
@@ -70,6 +72,7 @@ enum class ModelType(
         listOf(),
         true,
         false,
+        true
     ),
     FACE_RECOGNITION(
         "Face Recognition",
@@ -84,7 +87,8 @@ enum class ModelType(
         1,
         listOf("boonai-face-detection"),
         true,
-        false
+        false,
+        true
     ),
     GCP_AUTOML_CLASSIFIER(
         "Google AutoML Classifier",
@@ -99,7 +103,8 @@ enum class ModelType(
         10,
         listOf(),
         true,
-        false
+        false,
+        true
     ),
     TF_SAVED_MODEL(
         "Imported Tensorflow Image Classifier",
@@ -114,7 +119,8 @@ enum class ModelType(
         0,
         listOf(),
         false,
-        true
+        true,
+        false
     ),
     PYTORCH_CLASSIFIER(
         "Pytorch Transfer Learning Classifier",
@@ -131,6 +137,7 @@ enum class ModelType(
         10,
         listOf(),
         true,
+        false,
         false
     ),
     PYTORCH_MODEL_ARCHIVE(
@@ -147,6 +154,7 @@ enum class ModelType(
         listOf(),
         false,
         true,
+        false,
         "model.mar"
     );
 

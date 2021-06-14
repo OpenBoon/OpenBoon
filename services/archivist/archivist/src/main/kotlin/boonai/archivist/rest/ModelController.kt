@@ -80,7 +80,7 @@ class ModelController(
     @ApiOperation("Get Information about all model types.")
     @GetMapping(value = ["/api/v3/models/_types"])
     fun getTypes(): Any {
-        return ModelType.values().map { it.asMap() }
+        return ModelType.values().filter { it.enabled }.map { it.asMap() }
     }
 
     @ApiOperation("Search for Models.")

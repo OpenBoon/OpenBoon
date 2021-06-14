@@ -111,6 +111,12 @@ class ModelServiceImpl(
         val actor = getZmlpActor()
         val moduleName = generateModuleName(spec)
 
+        if (!spec.type.enabled) {
+            throw IllegalArgumentException(
+                "This model type is not currently enabled."
+            )
+        }
+
         if (moduleName.trim().isEmpty() || !moduleName.matches(modelNameRegex)) {
             throw IllegalArgumentException(
                 "Model names must be alpha-numeric," +
