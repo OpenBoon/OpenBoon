@@ -6,6 +6,7 @@ import boonai.archivist.domain.DataSetFilter
 import boonai.archivist.domain.DataSetSpec
 import boonai.archivist.domain.DataSetUpdate
 import boonai.archivist.domain.GenericBatchUpdateResponse
+import boonai.archivist.domain.LabelScope
 import boonai.archivist.domain.LabelSet
 import boonai.archivist.repository.DataSetDao
 import boonai.archivist.repository.DataSetJdbcDao
@@ -49,6 +50,7 @@ interface DataSetService {
     fun find(filter: DataSetFilter): KPagedList<DataSet>
 
     fun getLabelCounts(dataSet: DataSet): Map<String, Long>
+    fun getLabelCountsV4(dataSet: DataSet): Map<String, Map<String, Long>>
     fun updateLabel(dataSet: DataSet, label: String, newLabel: String?): GenericBatchUpdateResponse
 
     fun buildTestLabelSearch(labelSet: LabelSet): Map<String, Any>
@@ -129,14 +131,14 @@ class DataSetServiceImpl(
     @Transactional(propagation = Propagation.SUPPORTS)
     override fun getLabelCounts(dataSet: DataSet): Map<String, Long> {
         val rest = indexRoutingService.getProjectRestClient()
-        val modelIdFilter = QueryBuilders.termQuery("labels.dataSetId", dataSet.id.toString())
+        val dsFilter = QueryBuilders.termQuery("labels.dataSetId", dataSet.id.toString())
         val query = QueryBuilders.nestedQuery(
             "labels",
-            modelIdFilter, ScoreMode.None
+            dsFilter, ScoreMode.None
         )
         val agg = AggregationBuilders.nested("nested_labels", "labels")
             .subAggregation(
-                AggregationBuilders.filter("filtered", modelIdFilter)
+                AggregationBuilders.filter("filtered", dsFilter)
                     .subAggregation(
                         AggregationBuilders.terms("labels")
                             .field("labels.label")
@@ -160,6 +162,53 @@ class DataSetServiceImpl(
         val result = LinkedHashMap<String, Long>()
         buckets.buckets.forEach {
             result[it.keyAsString] = it.docCount
+        }
+        return result
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    override fun getLabelCountsV4(dataSet: DataSet): Map<String, Map<String, Long>> {
+        val rest = indexRoutingService.getProjectRestClient()
+        val dsFilter = QueryBuilders.termQuery("labels.dataSetId", dataSet.id.toString())
+        val query = QueryBuilders.nestedQuery(
+            "labels",
+            dsFilter, ScoreMode.None
+        )
+        val agg = AggregationBuilders.nested("nested_labels", "labels")
+            .subAggregation(
+                AggregationBuilders.filter("filtered", dsFilter)
+                    .subAggregation(
+                        AggregationBuilders.terms("labels")
+                            .field("labels.label")
+                            .size(1000)
+                            .order(
+                                BucketOrder.key(true)
+                            ).subAggregation(
+                                AggregationBuilders.terms("scope")
+                                    .field("labels.scope")
+                            )
+                    )
+            )
+
+        val req = rest.newSearchBuilder()
+        req.source.query(query)
+        req.source.aggregation(agg)
+        req.source.size(0)
+        req.source.fetchSource(false)
+
+        val rsp = rest.client.search(req.request, RequestOptions.DEFAULT)
+        val buckets = rsp.aggregations.get<Nested>("nested_labels")
+            .aggregations.get<Filter>("filtered")
+            .aggregations.get<Terms>("labels")
+
+        // Use a LinkedHashMap to maintain sort on the labels.
+        val result = LinkedHashMap<String, MutableMap<String, Long>>()
+        buckets.buckets.forEach {
+            // Zero out possible keys.
+            result[it.keyAsString] = mutableMapOf(LabelScope.TEST.name to 0L, LabelScope.TRAIN.name to 0L)
+            for (scope in it.aggregations.get<Terms>("scope").buckets) {
+                result[it.keyAsString]?.set(scope.keyAsString, scope.docCount)
+            }
         }
         return result
     }
@@ -342,7 +391,7 @@ class DataSetServiceImpl(
             """
             int index = -1;
             for (int i = 0; i < ctx._source['labels'].length; ++i) {
-               if (ctx._source['labels'][i]['modelId'] == params.modelId) {
+               if (ctx._source['labels'][i]['dataSetId'] == params.dataSetId) {
                    index = i;
                    break;
                }
