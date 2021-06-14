@@ -5,8 +5,8 @@ import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.BatchDeleteAssetsRequest
-import boonai.archivist.domain.DataSetSpec
-import boonai.archivist.domain.DataSetType
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.FieldSpec
 import boonai.archivist.domain.Label
 import boonai.archivist.domain.TimelineClipSpec
@@ -15,7 +15,7 @@ import boonai.archivist.domain.TrackSpec
 import boonai.archivist.domain.UpdateAssetLabelsRequest
 import boonai.archivist.service.AssetSearchService
 import boonai.archivist.service.ClipService
-import boonai.archivist.service.DataSetService
+import boonai.archivist.service.DatasetService
 import boonai.archivist.service.FieldService
 import boonai.archivist.service.PipelineModService
 import boonai.archivist.util.bbox
@@ -41,7 +41,7 @@ class AssetControllerTests : MockMvcTest() {
     lateinit var pipelineModService: PipelineModService
 
     @Autowired
-    lateinit var dataSetService: DataSetService
+    lateinit var datasetService: DatasetService
 
     @Autowired
     lateinit var clipService: ClipService
@@ -119,7 +119,7 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdateLabels() {
-        val ds = dataSetService.createDataSet(DataSetSpec("test", DataSetType.Classification))
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
 
@@ -141,7 +141,7 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdateLabelsWithBbox() {
-        val ds = dataSetService.createDataSet(DataSetSpec("test", DataSetType.Classification))
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
 

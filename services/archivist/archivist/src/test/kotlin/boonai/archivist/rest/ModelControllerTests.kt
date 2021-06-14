@@ -1,15 +1,16 @@
 package boonai.archivist.rest
 
 import boonai.archivist.MockMvcTest
-import boonai.archivist.domain.DataSetSpec
-import boonai.archivist.domain.DataSetType
+import boonai.archivist.domain.AutomlSessionSpec
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelPatchRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.ModelUpdateRequest
-import boonai.archivist.service.DataSetService
+import boonai.archivist.service.DatasetService
 import boonai.archivist.service.ModelDeployService
 import boonai.archivist.service.ModelService
 import boonai.archivist.service.PipelineModService
@@ -34,7 +35,7 @@ class ModelControllerTests : MockMvcTest() {
     lateinit var modelDeployServic: ModelDeployService
 
     @Autowired
-    lateinit var dataSetService: DataSetService
+    lateinit var datasetService: DatasetService
 
     @Autowired
     lateinit var pipelineModService: PipelineModService
@@ -133,8 +134,8 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testTrain() {
-        val ds = dataSetService.createDataSet(DataSetSpec("bob", DataSetType.Classification))
-        modelService.patchModel(model.id, ModelPatchRequest(dataSetId = ds.id))
+        val ds = datasetService.createDataset(DatasetSpec("bob", DatasetType.Classification))
+        modelService.patchModel(model.id, ModelPatchRequest(datasetId = ds.id))
 
         val body = mapOf<String, Any>()
         mvc.perform(
@@ -370,6 +371,39 @@ class ModelControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testCreateAutomlSession() {
+
+        val modelSpec = ModelSpec("Dog Breeds 2", ModelType.GCP_AUTOML_CLASSIFIER)
+        val model = modelService.createModel(modelSpec)
+
+        val automlSpec = AutomlSessionSpec(
+            "project/foo/region/us-central/datasets/foo",
+            "a_training_job"
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_automl")
+                .headers(admin())
+                .content(Json.serialize(automlSpec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.automlDataset",
+                    CoreMatchers.equalTo(automlSpec.automlDataset)
+                )
+            )
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.automlTrainingJob",
+                    CoreMatchers.equalTo(automlSpec.automlTrainingJob)
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
     fun testGetType() {
         val module = ModelType.TF_CLASSIFIER
         mvc.perform(
@@ -420,8 +454,8 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testPatch() {
-        val ds = dataSetService.createDataSet(DataSetSpec("stuff", DataSetType.Classification))
-        val patch = ModelPatchRequest(name = "mongo", dataSetId = ds.dataSetId())
+        val ds = datasetService.createDataset(DatasetSpec("stuff", DatasetType.Classification))
+        val patch = ModelPatchRequest(name = "mongo", datasetId = ds.datasetId())
 
         mvc.perform(
             MockMvcRequestBuilders.patch("/api/v3/models/${model.id}")
@@ -436,8 +470,8 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdate() {
-        val ds = dataSetService.createDataSet(DataSetSpec("stuff", DataSetType.Classification))
-        val update = ModelUpdateRequest(name = "mongo", dataSetId = ds.dataSetId())
+        val ds = datasetService.createDataset(DatasetSpec("stuff", DatasetType.Classification))
+        val update = ModelUpdateRequest(name = "mongo", datasetId = ds.datasetId())
 
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v3/models/${model.id}")

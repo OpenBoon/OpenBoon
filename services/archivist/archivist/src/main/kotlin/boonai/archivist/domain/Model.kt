@@ -223,8 +223,8 @@ class ModelSpec(
     @ApiModelProperty("The type of mode")
     val type: ModelType,
 
-    @ApiModelProperty("An associated DataSet")
-    val dataSetId: UUID? = null,
+    @ApiModelProperty("An associated Dataset")
+    val datasetId: UUID? = null,
 
     @ApiModelProperty("A model tag used to generate a PipelineMod name.")
     val moduleName: String? = null,
@@ -241,8 +241,8 @@ class ModelUpdateRequest(
     @ApiModelProperty("Name of the model")
     val name: String,
 
-    @ApiModelProperty("The DataSet the model points to.")
-    val dataSetId: UUID?
+    @ApiModelProperty("The Dataset the model points to.")
+    val datasetId: UUID?
 )
 
 class ModelPatchRequest(
@@ -250,8 +250,8 @@ class ModelPatchRequest(
     @ApiModelProperty("Name of the model")
     val name: String? = null,
 
-    @ApiModelProperty("The DataSet the model points to.")
-    val dataSetId: UUID? = null
+    @ApiModelProperty("The Dataset the model points to.")
+    val datasetId: UUID? = null
 )
 
 @Entity
@@ -269,7 +269,7 @@ class Model(
     val projectId: UUID,
 
     @Column(name = "pk_dataset", nullable = true)
-    var dataSetId: UUID?,
+    var datasetId: UUID?,
 
     @Column(name = "int_type")
     val type: ModelType,
@@ -322,8 +322,8 @@ class Model(
 ) : LabelSet {
 
     @JsonIgnore
-    override fun dataSetId(): UUID? {
-        return dataSetId
+    override fun datasetId(): UUID? {
+        return datasetId
     }
 
     @JsonIgnore
@@ -386,8 +386,8 @@ class ModelFilter(
     @ApiModelProperty("The Model types to match")
     val types: List<ModelType>? = null,
 
-    @ApiModelProperty("The DataSets assigned to model")
-    val dataSetIds: List<UUID>? = null
+    @ApiModelProperty("The Datasets assigned to model")
+    val datasetIds: List<UUID>? = null
 
 ) : KDaoFilter() {
     @JsonIgnore
@@ -415,7 +415,7 @@ class ModelFilter(
             addToValues(it)
         }
 
-        dataSetIds?.let {
+        datasetIds?.let {
             addToWhere(JdbcUtils.inClause("model.pk_dataset", it.size))
             addToValues(it)
         }

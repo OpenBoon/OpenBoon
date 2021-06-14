@@ -4,9 +4,9 @@ import boonai.archivist.AbstractTest
 import boonai.archivist.domain.Asset
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
-import boonai.archivist.domain.DataSet
-import boonai.archivist.domain.DataSetSpec
-import boonai.archivist.domain.DataSetType
+import boonai.archivist.domain.Dataset
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.JobState
 import boonai.archivist.domain.ModOpType
 import boonai.archivist.domain.Model
@@ -45,7 +45,7 @@ class ModelServiceTests : AbstractTest() {
     lateinit var modelDeployService: ModelDeployService
 
     @Autowired
-    lateinit var dataSetService: DataSetService
+    lateinit var datasetService: DatasetService
 
     @Autowired
     lateinit var jobService: JobService
@@ -59,11 +59,11 @@ class ModelServiceTests : AbstractTest() {
     val testSearch =
         """{"query": {"term": { "source.filename": "large-brown-cat.jpg"} } }"""
 
-    fun create(name: String = "test", type: ModelType = ModelType.TF_CLASSIFIER, ds: DataSet? = null): Model {
+    fun create(name: String = "test", type: ModelType = ModelType.TF_CLASSIFIER, ds: Dataset? = null): Model {
         val mspec = ModelSpec(
             name,
             type,
-            dataSetId = ds?.id,
+            datasetId = ds?.id,
             applySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
         return modelService.createModel(mspec)
@@ -109,7 +109,7 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testTrainModel() {
-        val ds = dataSetService.createDataSet(DataSetSpec("frogs", DataSetType.Classification))
+        val ds = datasetService.createDataset(DatasetSpec("frogs", DatasetType.Classification))
         val model1 = create(ds = ds)
         val job = modelService.trainModel(model1, ModelTrainingRequest())
 
@@ -231,7 +231,7 @@ class ModelServiceTests : AbstractTest() {
     @Test
     fun testDeployModelCustomSearch() {
         setupTestAsset()
-        val ds = dataSetService.createDataSet(DataSetSpec("cats", DataSetType.Classification))
+        val ds = datasetService.createDataset(DatasetSpec("cats", DatasetType.Classification))
         val model1 = create(ds = ds)
         modelService.publishModel(model1, ModelPublishRequest())
 
@@ -253,7 +253,7 @@ class ModelServiceTests : AbstractTest() {
 
         val scriptstr = Json.prettyString(script)
         assertTrue("\"match_all\" : { }" in scriptstr)
-        assertTrue("dataSetId" in scriptstr)
+        assertTrue("datasetId" in scriptstr)
     }
 
     fun setupTestAsset(): Asset {

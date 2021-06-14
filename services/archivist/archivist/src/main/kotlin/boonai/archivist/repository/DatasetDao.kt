@@ -1,39 +1,39 @@
 package boonai.archivist.repository
 
-import boonai.archivist.domain.DataSet
-import boonai.archivist.domain.DataSetFilter
-import boonai.archivist.domain.DataSetType
+import boonai.archivist.domain.Dataset
+import boonai.archivist.domain.DatasetFilter
+import boonai.archivist.domain.DatasetType
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface DataSetDao : JpaRepository<DataSet, UUID> {
+interface DatasetDao : JpaRepository<Dataset, UUID> {
 
-    fun getOneByProjectIdAndId(projectId: UUID, id: UUID): DataSet?
-    fun getOneByProjectIdAndName(projectId: UUID, name: String): DataSet?
+    fun getOneByProjectIdAndId(projectId: UUID, id: UUID): Dataset?
+    fun getOneByProjectIdAndName(projectId: UUID, name: String): Dataset?
     fun existsByProjectIdAndId(projectId: UUID, id: UUID): Boolean
 }
 
-interface DataSetJdbcDao {
-    fun count(filter: DataSetFilter): Long
-    fun findOne(filter: DataSetFilter): DataSet
-    fun delete(dataSet: DataSet): Boolean
-    fun find(filter: DataSetFilter): KPagedList<DataSet>
+interface DatasetJdbcDao {
+    fun count(filter: DatasetFilter): Long
+    fun findOne(filter: DatasetFilter): Dataset
+    fun delete(dataset: Dataset): Boolean
+    fun find(filter: DatasetFilter): KPagedList<Dataset>
 }
 
 @Repository
-class DataSetJdbcDaoImpl : AbstractDao(), DataSetJdbcDao {
+class DatasetJdbcDaoImpl : AbstractDao(), DatasetJdbcDao {
 
-    override fun count(filter: DataSetFilter): Long {
+    override fun count(filter: DatasetFilter): Long {
         return jdbc.queryForObject(
             filter.getQuery(COUNT, forCount = true),
             Long::class.java, *filter.getValues(forCount = true)
         )
     }
 
-    override fun findOne(filter: DataSetFilter): DataSet {
+    override fun findOne(filter: DatasetFilter): Dataset {
         filter.apply { page = KPage(0, 1) }
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
@@ -42,22 +42,22 @@ class DataSetJdbcDaoImpl : AbstractDao(), DataSetJdbcDao {
         }
     }
 
-    override fun delete(model: DataSet): Boolean {
+    override fun delete(model: Dataset): Boolean {
         return jdbc.update("DELETE FROM dataset where pk_dataset=?", model.id) == 1
     }
 
-    override fun find(filter: DataSetFilter): KPagedList<DataSet> {
+    override fun find(filter: DatasetFilter): KPagedList<Dataset> {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
     }
 
     private val MAPPER = RowMapper { rs, _ ->
-        DataSet(
+        Dataset(
             rs.getObject("pk_dataset") as UUID,
             rs.getObject("pk_project") as UUID,
             rs.getString("str_name"),
-            DataSetType.values()[rs.getInt("int_type")],
+            DatasetType.values()[rs.getInt("int_type")],
             rs.getString("str_descr"),
             rs.getInt("int_model_count"),
             rs.getLong("time_created"),

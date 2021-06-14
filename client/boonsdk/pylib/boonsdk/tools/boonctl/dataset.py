@@ -4,26 +4,26 @@ app = boonsdk.app_from_env()
 
 
 def add_subparser(subparsers):
-    subparser = subparsers.add_parser("dataset", help='Manage DataSets')
+    subparser = subparsers.add_parser("dataset", help='Manage Datasets')
     commands = subparser.add_subparsers()
 
-    list_cmd = commands.add_parser('list', help='List DataSets')
+    list_cmd = commands.add_parser('list', help='List Datasets')
     list_cmd.set_defaults(func=display_list)
 
-    create_cmd = commands.add_parser('create', help='Create a DataSet')
-    create_cmd.add_argument('name', metavar='NAME', help='The DataSet name')
-    create_cmd.add_argument('type', metavar='TYPE', help='The DataSet type',
+    create_cmd = commands.add_parser('create', help='Create a Dataset')
+    create_cmd.add_argument('name', metavar='NAME', help='The Dataset name')
+    create_cmd.add_argument('type', metavar='TYPE', help='The Dataset type',
                             choices=['classify', 'detect', 'recognize'])
     create_cmd.add_argument('-d', '--descr', metavar='DESCRIPTION', help='A description')
     create_cmd.set_defaults(func=create)
 
-    info_cmd = commands.add_parser('info', help='Get Info about a DataSet')
-    info_cmd.add_argument('name', metavar='NAME', help='The DataSet name or ID.')
+    info_cmd = commands.add_parser('info', help='Get Info about a Dataset')
+    info_cmd.add_argument('name', metavar='NAME', help='The Dataset name or ID.')
     info_cmd.set_defaults(func=info)
 
     label1_cmd = commands.add_parser('keyword-label',
                                      help='Label assets for classification with given keyword')
-    label1_cmd.add_argument('dataset', metavar='DATASET', help='The DataSet ID or name.')
+    label1_cmd.add_argument('dataset', metavar='DATASET', help='The Dataset ID or name.')
     label1_cmd.add_argument('keyword', metavar='KEYWORD', help='The keyword to search for.')
     label1_cmd.add_argument('-l', '--label', metavar='LABEL',
                             help='Override the label to use, defaults to the keyword.')

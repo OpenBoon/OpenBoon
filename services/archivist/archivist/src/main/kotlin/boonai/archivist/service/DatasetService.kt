@@ -1,15 +1,15 @@
 package boonai.archivist.service
 
 import boonai.archivist.clients.EsRestClient
-import boonai.archivist.domain.DataSet
-import boonai.archivist.domain.DataSetFilter
-import boonai.archivist.domain.DataSetSpec
-import boonai.archivist.domain.DataSetUpdate
+import boonai.archivist.domain.Dataset
+import boonai.archivist.domain.DatasetFilter
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetUpdate
 import boonai.archivist.domain.GenericBatchUpdateResponse
 import boonai.archivist.domain.LabelScope
 import boonai.archivist.domain.LabelSet
-import boonai.archivist.repository.DataSetDao
-import boonai.archivist.repository.DataSetJdbcDao
+import boonai.archivist.repository.DatasetDao
+import boonai.archivist.repository.DatasetJdbcDao
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.CoroutineAuthentication
@@ -39,40 +39,38 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
-interface DataSetService {
+interface DatasetService {
 
-    fun createDataSet(spec: DataSetSpec): DataSet
-    fun getDataSet(id: UUID): DataSet
-    fun getDataSet(name: String): DataSet
-    fun updateDataSet(dataSet: DataSet, update: DataSetUpdate)
-    fun deleteDataSet(dataSet: DataSet)
-    fun findOne(filter: DataSetFilter): DataSet
-    fun find(filter: DataSetFilter): KPagedList<DataSet>
-
-    fun getLabelCounts(dataSet: DataSet): Map<String, Long>
-    fun getLabelCountsV4(dataSet: DataSet): Map<String, Map<String, Long>>
-    fun updateLabel(dataSet: DataSet, label: String, newLabel: String?): GenericBatchUpdateResponse
-
+    fun createDataset(spec: DatasetSpec): Dataset
+    fun getDataset(id: UUID): Dataset
+    fun getDataset(name: String): Dataset
+    fun updateDataset(dataset: Dataset, update: DatasetUpdate)
+    fun deleteDataset(dataset: Dataset)
+    fun findOne(filter: DatasetFilter): Dataset
+    fun find(filter: DatasetFilter): KPagedList<Dataset>
+    fun getLabelCounts(dataset: Dataset): Map<String, Long>
+    fun updateLabel(dataset: Dataset, label: String, newLabel: String?): GenericBatchUpdateResponse
+    fun getLabelCountsV4(dataSst: Dataset): Map<String, Map<String, Long>>
     fun buildTestLabelSearch(labelSet: LabelSet): Map<String, Any>
     fun wrapSearchToExcludeTrainingSet(labelSet: LabelSet, search: Map<String, Any>): Map<String, Any>
 }
 
 @Service
 @Transactional
-class DataSetServiceImpl(
-    val dataSetDao: DataSetDao,
-    val dataSetJdbcDao: DataSetJdbcDao,
+class DatasetServiceImpl(
+    val datasetDao: DatasetDao,
+    val datasetJdbcDao: DatasetJdbcDao,
     val indexRoutingService: IndexRoutingService,
     val assetSearchService: AssetSearchService
-) : DataSetService {
+) : DatasetService {
 
-    override fun createDataSet(spec: DataSetSpec): DataSet {
+    override fun createDataset(spec: DatasetSpec): Dataset {
 
         val time = System.currentTimeMillis()
         val id = UUIDGen.uuid1.generate()
         val actor = getZmlpActor()
 
-        val ds = DataSet(
+        val ds = Dataset(
             id,
             actor.projectId,
             spec.name,
@@ -85,53 +83,54 @@ class DataSetServiceImpl(
             actor.toString()
         )
 
-        dataSetDao.saveAndFlush(ds)
+        datasetDao.saveAndFlush(ds)
         return ds
     }
 
     @Transactional(readOnly = true)
-    override fun getDataSet(id: UUID): DataSet {
-        return dataSetDao.getOneByProjectIdAndId(getProjectId(), id)
-            ?: throw EmptyResultDataAccessException("The DataSet $id does not exist", 1)
+    override fun getDataset(id: UUID): Dataset {
+        return datasetDao.getOneByProjectIdAndId(getProjectId(), id)
+            ?: throw EmptyResultDataAccessException("The Dataset $id does not exist", 1)
     }
 
     @Transactional(readOnly = true)
-    override fun getDataSet(name: String): DataSet {
-        return dataSetDao.getOneByProjectIdAndName(getProjectId(), name)
-            ?: throw EmptyResultDataAccessException("The DataSet $name does not exist", 1)
+    override fun getDataset(name: String): Dataset {
+        return datasetDao.getOneByProjectIdAndName(getProjectId(), name)
+            ?: throw EmptyResultDataAccessException("The Dataset $name does not exist", 1)
     }
 
     @Transactional(readOnly = true)
-    override fun find(filter: DataSetFilter): KPagedList<DataSet> {
-        return dataSetJdbcDao.find(filter)
+    override fun find(filter: DatasetFilter): KPagedList<Dataset> {
+        return datasetJdbcDao.find(filter)
     }
 
     @Transactional(readOnly = true)
-    override fun findOne(filter: DataSetFilter): DataSet {
-        return dataSetJdbcDao.findOne(filter)
+    override fun findOne(filter: DatasetFilter): Dataset {
+        return datasetJdbcDao.findOne(filter)
     }
 
-    override fun deleteDataSet(dataSet: DataSet) {
-        dataSetDao.delete(dataSet)
+    override fun deleteDataset(dataset: Dataset) {
+        datasetDao.delete(dataset)
 
         val rest = indexRoutingService.getProjectRestClient()
         GlobalScope.launch(Dispatchers.IO + CoroutineAuthentication(SecurityContextHolder.getContext())) {
-            removeAllLabels(rest, dataSet)
+            removeAllLabels(rest, dataset)
         }
     }
 
-    override fun updateDataSet(dataSet: DataSet, update: DataSetUpdate) {
+    override fun updateDataset(dataset: Dataset, update: DatasetUpdate) {
         // Note you can't change type because different types have
         // different label requirements.
-        dataSet.name = update.name
-        dataSet.timeModified = System.currentTimeMillis()
-        dataSet.actorModified = getZmlpActor().toString()
+        dataset.name = update.name
+        dataset.timeModified = System.currentTimeMillis()
+        dataset.actorModified = getZmlpActor().toString()
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    override fun getLabelCounts(dataSet: DataSet): Map<String, Long> {
+    override fun getLabelCounts(dataset: Dataset): Map<String, Long> {
         val rest = indexRoutingService.getProjectRestClient()
-        val dsFilter = QueryBuilders.termQuery("labels.dataSetId", dataSet.id.toString())
+        val dsFilter = QueryBuilders.termQuery("labels.datasetId", dataset.id.toString())
+
         val query = QueryBuilders.nestedQuery(
             "labels",
             dsFilter, ScoreMode.None
@@ -167,9 +166,9 @@ class DataSetServiceImpl(
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    override fun getLabelCountsV4(dataSet: DataSet): Map<String, Map<String, Long>> {
+    override fun getLabelCountsV4(dataSet: Dataset): Map<String, Map<String, Long>> {
         val rest = indexRoutingService.getProjectRestClient()
-        val dsFilter = QueryBuilders.termQuery("labels.dataSetId", dataSet.id.toString())
+        val dsFilter = QueryBuilders.termQuery("labels.datasetId", dataSet.id.toString())
         val query = QueryBuilders.nestedQuery(
             "labels",
             dsFilter, ScoreMode.None
@@ -214,11 +213,11 @@ class DataSetServiceImpl(
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    override fun updateLabel(dataSet: DataSet, label: String, newLabel: String?): GenericBatchUpdateResponse {
+    override fun updateLabel(dataset: Dataset, label: String, newLabel: String?): GenericBatchUpdateResponse {
         val rest = indexRoutingService.getProjectRestClient()
 
         val innerQuery = QueryBuilders.boolQuery()
-        innerQuery.filter().add(QueryBuilders.termQuery("labels.dataSetId", dataSet.id.toString()))
+        innerQuery.filter().add(QueryBuilders.termQuery("labels.datasetId", dataset.id.toString()))
         innerQuery.filter().add(QueryBuilders.termQuery("labels.label", label))
 
         val query = QueryBuilders.nestedQuery(
@@ -238,7 +237,7 @@ class DataSetServiceImpl(
                 DELETE_LABEL_SCRIPT,
                 mapOf(
                     "label" to label,
-                    "dataSetId" to dataSet.id.toString()
+                    "datasetId" to dataset.id.toString()
                 )
             )
         } else {
@@ -249,7 +248,7 @@ class DataSetServiceImpl(
                 mapOf(
                     "oldLabel" to label,
                     "newLabel" to newLabel,
-                    "dataSetId" to dataSet.id.toString()
+                    "datasetId" to dataset.id.toString()
                 )
             )
         }
@@ -269,7 +268,7 @@ class DataSetServiceImpl(
                             "query" : {
                                 "bool": {
                                     "filter": [
-                                        {"term": { "labels.dataSetId": "${labelSet.dataSetId()}" }},
+                                        {"term": { "labels.datasetId": "${labelSet.datasetId()}" }},
                                         {"term": { "labels.scope": "TEST"}}
                                     ]
                                 }
@@ -297,7 +296,7 @@ class DataSetServiceImpl(
                             "query" : {
                                 "bool": {
                                     "filter": [
-                                        {"term": { "labels.dataSetId": "${lableSet.dataSetId()}" }},
+                                        {"term": { "labels.datasetId": "${lableSet.datasetId()}" }},
                                         {"term": { "labels.scope": "TRAIN"}}
                                     ]
                                 }
@@ -312,11 +311,11 @@ class DataSetServiceImpl(
         return result
     }
 
-    fun removeAllLabels(rest: EsRestClient, dataSet: DataSet) {
+    fun removeAllLabels(rest: EsRestClient, dataset: Dataset) {
 
-        logger.info("Removing all labels for ${dataSet.name}")
+        logger.info("Removing all labels for ${dataset.name}")
         val innerQuery = QueryBuilders.boolQuery()
-        innerQuery.filter().add(QueryBuilders.termQuery("labels.dataSetId", dataSet.id.toString()))
+        innerQuery.filter().add(QueryBuilders.termQuery("labels.datasetId", dataset.id.toString()))
 
         val query = QueryBuilders.nestedQuery("labels", innerQuery, ScoreMode.None)
         val req = rest.newUpdateByQueryRequest()
@@ -329,7 +328,7 @@ class DataSetServiceImpl(
             "painless",
             DELETE_DS_SCRIPT,
             mapOf(
-                "dataSetId" to dataSet.id.toString()
+                "datasetId" to dataset.id.toString()
             )
         )
 
@@ -338,11 +337,11 @@ class DataSetServiceImpl(
             object : ActionListener<BulkByScrollResponse> {
 
                 override fun onFailure(e: java.lang.Exception?) {
-                    logger.error("Failed to remove labels for DataSet: ${dataSet.id}", e)
+                    logger.error("Failed to remove labels for Dataset: ${dataset.id}", e)
                 }
 
                 override fun onResponse(response: BulkByScrollResponse?) {
-                    logger.info("Removed ${response?.updated} labels from DataSet: ${dataSet.id}")
+                    logger.info("Removed ${response?.updated} labels from Dataset: ${dataset.id}")
                 }
             }
         )
@@ -350,7 +349,7 @@ class DataSetServiceImpl(
 
     companion object {
 
-        private val logger = LoggerFactory.getLogger(DataSetServiceImpl::class.java)
+        private val logger = LoggerFactory.getLogger(DatasetServiceImpl::class.java)
 
         /**
          * A painless script which renames a label.
@@ -359,7 +358,7 @@ class DataSetServiceImpl(
             """
             for (int i = 0; i < ctx._source['labels'].length; ++i) {
                if (ctx._source['labels'][i]['label'] == params.oldLabel &&
-                   ctx._source['labels'][i]['dataSetId'] == params.dataSetId) {
+                   ctx._source['labels'][i]['datasetId'] == params.datasetId) {
                        ctx._source['labels'][i]['label'] = params.newLabel;
                        break;
                }
@@ -374,7 +373,7 @@ class DataSetServiceImpl(
             int index = -1;
             for (int i = 0; i < ctx._source['labels'].length; ++i) {
                if (ctx._source['labels'][i]['label'] == params.label &&
-                   ctx._source['labels'][i]['dataSetId'] == params.dataSetId) {
+                   ctx._source['labels'][i]['datasetId'] == params.datasetId) {
                    index = i;
                    break;
                }

@@ -1,7 +1,7 @@
 package boonai.archivist.service
 
 import boonai.archivist.AbstractTest
-import boonai.archivist.domain.DataSet
+import boonai.archivist.domain.Dataset
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelType
@@ -22,11 +22,11 @@ class ModelDeployServiceTests : AbstractTest() {
     val testSearch =
         """{"query": {"term": { "source.filename": "large-brown-cat.jpg"} } }"""
 
-    fun create(name: String = "test", type: ModelType = ModelType.TF_CLASSIFIER, ds: DataSet? = null): Model {
+    fun create(name: String = "test", type: ModelType = ModelType.TF_CLASSIFIER, ds: Dataset? = null): Model {
         val mspec = ModelSpec(
             name,
             type,
-            dataSetId = ds?.id,
+            datasetId = ds?.id,
             applySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
         return modelService.createModel(mspec)
