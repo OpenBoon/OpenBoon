@@ -168,7 +168,7 @@ class DatasetServiceImpl(
     @Transactional(propagation = Propagation.SUPPORTS)
     override fun getLabelCountsV4(dataSet: Dataset): Map<String, Map<String, Long>> {
         val rest = indexRoutingService.getProjectRestClient()
-        val dsFilter = QueryBuilders.termQuery("labels.dataSetId", dataSet.id.toString())
+        val dsFilter = QueryBuilders.termQuery("labels.datasetId", dataSet.id.toString())
         val query = QueryBuilders.nestedQuery(
             "labels",
             dsFilter, ScoreMode.None
