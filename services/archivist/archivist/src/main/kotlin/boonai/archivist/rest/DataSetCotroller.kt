@@ -3,6 +3,7 @@ package boonai.archivist.rest
 import boonai.archivist.domain.DataSet
 import boonai.archivist.domain.DataSetFilter
 import boonai.archivist.domain.DataSetSpec
+import boonai.archivist.domain.DataSetType
 import boonai.archivist.domain.GenericBatchUpdateResponse
 import boonai.archivist.domain.UpdateLabelRequest
 import boonai.archivist.repository.KPagedList
@@ -71,6 +72,13 @@ class DataSetCotroller(
         return dataSetService.getLabelCounts(ds)
     }
 
+    @ApiOperation("Get the labels for the model")
+    @GetMapping(value = ["/api/v4/datasets/{id}/_label_counts"])
+    fun getLabelsV4(@PathVariable id: UUID): Any {
+        val ds = dataSetService.getDataSet(id)
+        return dataSetService.getLabelCountsV4(ds)
+    }
+
     @PostMapping("/api/v3/datasets/_search")
     fun find(@RequestBody(required = false) filter: DataSetFilter?): KPagedList<DataSet> {
         return dataSetService.find(filter ?: DataSetFilter())
@@ -79,5 +87,11 @@ class DataSetCotroller(
     @PostMapping("/api/v3/datasets/_find_one")
     fun findOne(@RequestBody(required = false) filter: DataSetFilter?): DataSet {
         return dataSetService.findOne(filter ?: DataSetFilter())
+    }
+
+    @ApiOperation("Get Information about all dataset types.")
+    @GetMapping(value = ["/api/v3/datasets/_types"])
+    fun getTypes(): Any {
+        return DataSetType.values().map { it.asMap() }
     }
 }

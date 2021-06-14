@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DatasetConceptsMenu /> should render properly 1`] = `
+.emotion-0 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 6px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  margin: -6px;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff!important;
+}
+
+.emotion-2 {
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  right: 0;
+  background-color: #808080;
+  border-radius: 2px;
+  box-shadow: 0 4px 7px 0 #000000;
+  min-width: 200px;
+  font-family: Roboto,Avenir,"sans-serif";
+}
+
+.emotion-2 ul {
+  max-height: 50vh;
+  overflow: scroll;
+  list-style-type: none;
+  padding: 0;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin: 0;
+}
+
+.emotion-2 li {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-3:hover,
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #4a4a4a;
+}
+
+<div
+  className="emotion-0"
+>
+  <button
+    aria-label="Toggle Actions Menu"
+    className="actions emotion-1"
+    onBlur={[Function]}
+    onClick={[Function]}
+    type="button"
+  >
+    <svg
+      data-file-name="kebab.svg"
+      height={20}
+    />
+  </button>
+  <div
+    className="emotion-2"
+  >
+    <div>
+      <ul>
+        <li>
+          <button
+            className="emotion-3"
+            onClick={[Function]}
+            type="button"
+          >
+            Edit
+          </button>
+        </li>
+        <li>
+          <button
+            className="emotion-3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            type="button"
+          >
+            Delete
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;

@@ -43,7 +43,11 @@ def not_a_quota_exception(exp):
     Returns:
         bool: True if not a quota exception.
     """
-    return 'Rate limit' not in str(exp)
+    quota_messages = ['Too Many Requests', 'Rate limit']
+    for message in quota_messages:
+        if message in str(exp):
+            return False
+    return True
 
 
 class AbstractAzureVisionProcessor(AssetProcessor):

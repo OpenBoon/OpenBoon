@@ -16,7 +16,12 @@ import {
 
 const OFFSET = (TICK_WIDTH + constants.borderWidths.regular) / 2
 
-const TimelineRuler = ({ videoRef, rulerRef, length, settings }) => {
+const TimelineRuler = ({
+  videoRef,
+  rulerRef,
+  length,
+  width: settingsWidth,
+}) => {
   return (
     <AutoSizer defaultWidth={500} disableHeight>
       {({ width }) => {
@@ -28,7 +33,7 @@ const TimelineRuler = ({ videoRef, rulerRef, length, settings }) => {
               videoRef.current.pause()
 
               const newPosition =
-                clientX - settings.width + rulerRef.current.scrollLeft
+                clientX - settingsWidth + rulerRef.current.scrollLeft
 
               const newCurrentTime =
                 (newPosition / width) * videoRef.current.duration
@@ -118,9 +123,7 @@ TimelineRuler.propTypes = {
     }),
   }).isRequired,
   length: PropTypes.number.isRequired,
-  settings: PropTypes.shape({
-    width: PropTypes.number.isRequired,
-  }).isRequired,
+  width: PropTypes.number.isRequired,
 }
 
 export default TimelineRuler

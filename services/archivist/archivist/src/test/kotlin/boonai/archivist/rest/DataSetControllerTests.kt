@@ -189,6 +189,54 @@ class DataSetControllerTests : MockMvcTest() {
             .andReturn()
     }
 
+    @Test
+    fun testGetTypes() {
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/datasets/_types")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$[0].name",
+                    CoreMatchers.equalTo("Classification")
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testGetLabelCountsV4() {
+
+        val specs = dataSet(dataSet)
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(specs)
+        )
+
+        val rsp = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v4/datasets/${dataSet.id}/_label_counts")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.dog.TRAIN",
+                    CoreMatchers.equalTo(1)
+                )
+            )
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.dog.TEST",
+                    CoreMatchers.equalTo(0)
+                )
+            )
+            .andReturn()
+
+        logger.info(rsp.response.contentAsString)
+    }
+
     fun dataSet(ds: DataSet): List<AssetSpec> {
         return listOf(
             AssetSpec("https://i.imgur.com/12abc.jpg", label = ds.makeLabel("beaver")),

@@ -19,13 +19,7 @@ describe('<TimelineRuler />', () => {
         videoRef={videoRef}
         rulerRef={rulerRef}
         length={18}
-        settings={{
-          filter: '',
-          highlights: false,
-          width: 200,
-          zoom: 100,
-          timelines: {},
-        }}
+        width={200}
       />,
     )
 

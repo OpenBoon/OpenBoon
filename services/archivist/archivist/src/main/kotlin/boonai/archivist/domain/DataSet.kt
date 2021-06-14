@@ -17,10 +17,30 @@ import javax.persistence.Table
 /**
  * Various DataSet types.
  */
-enum class DataSetType {
-    Classification,
-    Detection,
-    FaceRecognition
+enum class DataSetType(
+    val label: String,
+    val description: String
+) {
+    Classification(
+        "Classification",
+        "Use when classifying the asset."
+    ),
+    Detection(
+        "Detection",
+        "Use when labeling objects within assets."
+    ),
+    FaceRecognition(
+        "Face Recognition",
+        "Use when labeling detected faces."
+    );
+
+    fun asMap(): Map<String, Any> {
+        return mapOf(
+            "name" to name,
+            "label" to label,
+            "description" to description
+        )
+    }
 }
 
 /**
