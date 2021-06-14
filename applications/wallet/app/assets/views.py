@@ -28,6 +28,26 @@ def asset_modifier(request, item):
         item['metadata']['files'] = []
 
 
+def analyze_asset(request, asset_id, modules, index=True):
+    """Does on-the-fly ML analysis on an asset. This function is intended to be used within a
+    DRF view. It expects a request as an arg and returns a Response.
+
+    Args:
+        request (Request): Request passed to a view using this function.
+        asset_id (str): UUID of the asset to analyze.
+        modules (list<str>): List of module names to run on the asset.
+        index (bool): If True the results will be added to the metadata for the asset.
+
+    Returns:
+        Response: Response with asset data ready to be returned by a view..
+    """
+    from assets.views import asset_modifier
+    payload = {'assetId': asset_id, 'modules': modules, 'index': index}
+    asset = request.client.post('/ml/v1/pipelines/apply-modules-to-asset', payload)
+    asset_modifier(request, asset)
+    return Response(AssetSerializer(asset).data)
+
+
 class AssetViewSet(ZmlpListMixin,
                    ZmlpRetrieveMixin,
                    ZmlpDestroyMixin,
@@ -74,6 +94,32 @@ class AssetViewSet(ZmlpListMixin,
         width = int(request.query_params.get('width', 255))
         response_data = {attr.split('.')[-1]: imager.get_attr_with_box_images(attr, width=width)}
         return Response(response_data)
+
+    @action(detail=True, methods=['put', 'patch'])
+    def detect_faces(self, request, project_pk, pk):
+        """Runs face detection analysis on the asset and adds the results to the database."""
+        return analyze_asset(request, pk, ['boonai-face-detection'], index=True)
+
+    @action(detail=True, methods=['put', 'patch'])
+    def analyze(self, request, project_pk, pk):
+        """Runs analysis modules on an asset immediately. Requires a list of analysis module names
+        to be sent in the payload. It also excepts an option bool arg, "index". If "index" is true
+        then the results of the analysis will be added to the metadata of the asset.
+
+        A list of available modules can be gathered from the
+        /api/v1/projects/<ID>>/providers/ endpoint. The new complete metadata for the asset is
+        returned.
+
+        Expected Body:
+
+            {
+                "modules": ["azure-image-description"],
+                "index": true
+            }
+
+        """
+        return analyze_asset(request, pk, request.data.get('modules'),
+                             index=request.data.get('index'))
 
     @action(detail=True, methods=['get'])
     def signed_url(self, request, project_pk, pk):
