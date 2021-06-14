@@ -8,9 +8,11 @@ import boonai.archivist.domain.DataSetSpec
 import boonai.archivist.domain.DataSetType
 import boonai.archivist.domain.DataSetUpdate
 import boonai.archivist.domain.Label
+import boonai.archivist.domain.LabelScope
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.UpdateAssetLabelsRequest
 import boonai.archivist.repository.DataSetDao
+import boonai.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -139,6 +141,36 @@ class DataSetServiceTests : AbstractTest() {
         val keys = counts.keys.toList()
         assertEquals("ant", keys[0])
         assertEquals("zanzibar", keys[3])
+    }
+
+    @Test
+    fun getLabelCountsV4() {
+        val ds1 = create("test1")
+        val ds2 = create("test2")
+
+        val rsp = assetService.batchCreate(
+            BatchCreateAssetsRequest(dataSet(ds1))
+        )
+
+        assetService.updateLabels(
+            UpdateAssetLabelsRequest(
+                mapOf(
+                    rsp.created[0] to listOf(
+                        Label(ds2.id, "house"),
+                    ),
+                    rsp.created[1] to listOf(
+                        Label(ds2.id, "tree", scope = LabelScope.TEST),
+                    )
+                )
+            )
+        )
+        refreshIndex(100)
+
+        val counts = dataSetService.getLabelCountsV4(ds2)
+        Json.prettyPrint(counts)
+        assertEquals(2, counts.size)
+        assertEquals(1, counts["tree"]?.get("TEST"))
+        assertEquals(1, counts["house"]?.get("TRAIN"))
     }
 
     @Test
