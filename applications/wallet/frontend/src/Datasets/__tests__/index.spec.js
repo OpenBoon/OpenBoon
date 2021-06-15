@@ -40,7 +40,10 @@ describe('<Datasets />', () => {
       component.root.findByProps({ children: 'Start Labeling' }).props.onClick()
     })
 
-    expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
+    expect(spy).toHaveBeenCalledWith(
+      'leftOpeningPanelSettings',
+      '{"size":400,"originSize":400,"isOpen":true,"openPanel":"assetLabeling"}',
+    )
 
     expect(spy).toHaveBeenCalledWith(
       `AssetLabelingAdd.${PROJECT_ID}`,

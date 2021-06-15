@@ -16,15 +16,14 @@ import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
 
 import DatasetsRow from './Row'
+import { usePanel, ACTIONS, MIN_WIDTH } from '../Panel/helpers'
 
 const Datasets = () => {
   const {
     query: { projectId, action, datasetId },
   } = useRouter()
 
-  const [, setPanel] = useLocalStorage({
-    key: 'leftOpeningPanel',
-  })
+  const [, setPanel] = usePanel({ openToThe: 'left' })
 
   const [, setDatasetFields] = useLocalStorage({
     key: `AssetLabelingAdd.${projectId}`,
@@ -58,7 +57,10 @@ const Datasets = () => {
             >
               <a
                 onClick={() => {
-                  setPanel({ value: 'assetLabeling' })
+                  setPanel({
+                    type: ACTIONS.OPEN,
+                    payload: { minSize: MIN_WIDTH, openPanel: 'assetLabeling' },
+                  })
 
                   setDatasetFields({
                     datasetId,

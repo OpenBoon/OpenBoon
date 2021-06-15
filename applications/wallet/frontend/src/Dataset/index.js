@@ -29,7 +29,7 @@ const Dataset = () => {
       <Breadcrumbs
         crumbs={[
           {
-            title: 'Custom Datasets',
+            title: 'Datasets',
             href: '/[projectId]/datasets',
             isBeta: true,
           },
