@@ -125,8 +125,7 @@ class DatasetServiceImpl(
         dataset.description = update.description
         dataset.timeModified = System.currentTimeMillis()
         dataset.actorModified = getZmlpActor().toString()
-
-        datasetDao.saveAndFlush(dataset)
+        datasetDao.flush()
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)

@@ -1,16 +1,7 @@
 package boonai.archivist.service
 
 import boonai.archivist.AbstractTest
-import boonai.archivist.domain.AssetSpec
-import boonai.archivist.domain.BatchCreateAssetsRequest
-import boonai.archivist.domain.Dataset
-import boonai.archivist.domain.DatasetSpec
-import boonai.archivist.domain.DatasetType
-import boonai.archivist.domain.DatasetUpdate
-import boonai.archivist.domain.Label
-import boonai.archivist.domain.LabelScope
-import boonai.archivist.domain.Model
-import boonai.archivist.domain.UpdateAssetLabelsRequest
+import boonai.archivist.domain.*
 import boonai.archivist.repository.DatasetDao
 import boonai.common.util.Json
 import org.junit.Test
@@ -18,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+
 
 class DatasetServiceTests : AbstractTest() {
 
@@ -64,7 +56,6 @@ class DatasetServiceTests : AbstractTest() {
 
         datasetService.updateDataset(ds, DatasetUpdate(name = "cars", description = "very nice car"))
 
-        ds = datasetService.getDataset(ds.id)
         assertEquals("very nice car", ds.description)
         assertEquals("cars", ds.name)
     }
