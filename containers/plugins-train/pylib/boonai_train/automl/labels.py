@@ -1,13 +1,16 @@
 import logging
-import tempfile
 import boonsdk
 import uuid
+import shutil
+import os
+import zipfile
+import tempfile
 
 from google.cloud import automl
 from urllib.parse import urlparse
 from boonflow import file_storage
 from boonflow.cloud import get_gcp_project_id, get_google_storage_client
-
+from boonsdk.util import zip_directory
 
 logger = logging.getLogger(__name__)
 
@@ -53,9 +56,71 @@ class AutomlLabelDetectionSession:
 
         self.automl_model = self._train_automl_model(self.automl_dataset)
 
-        self._export_model(self.automl_model)
+        temp_model_url = self._export_model(self.automl_model)
 
         self._delete_train_resources()
+
+        zipped_file = self._download_and_zip_resources(temp_model_url)
+
+        self.upload_model(zipped_file)
+
+    def upload_model(self, zipped_model):
+        # upload model through archivist
+        print(zipped_model)
+
+    def unzip_model_files(self, model_path, file_name):
+
+        """
+        Receives a temp zip file and extract it to a certain folder
+        The Zip file is deleted at the end of the process
+        :param model_path: where the models will be extracted to
+        :param file_name:  zip file name
+        :return:
+        """
+
+        os.chdir(model_path)
+        zip_ref = zipfile.ZipFile(file_name)
+
+        # extract to the model path
+        tmp_dir = tempfile.mkdtemp()
+        zip_ref.extractall(tmp_dir)
+
+        # copying only files
+        for root, dirs, files in os.walk(tmp_dir):
+            for file in files:
+                path_file = os.path.join(root, file)
+                shutil.copyfile(path_file, "{}/{}".format(model_path, file))
+
+        zip_ref.close()
+        os.remove(file_name)
+
+    def _download_and_zip_resources(self, model_url):
+
+        self.emit_status('Download and zipping exported trained files')
+
+        parsed_uri = urlparse(model_url)
+
+        blobs = self.storage_client \
+            .list_blobs(bucket_or_name=parsed_uri.netloc,
+                        prefix=f"{self.model.id}/model/model-export/icn/tflite-{self.display_name}")
+
+        model_blob = None
+        label_blob = None
+        for blob in blobs:
+            if blob.name.endswith('model.tflite'):
+                model_blob = blob
+            if blob.name.endswith('dict.txt'):
+                label_blob = blob
+
+        self.model_file = file_storage.localize_file(model_blob.name)
+        self.label_file = file_storage.localize_file(label_blob.name)
+
+        # copy model and label files to tmp directory and zip it
+        tmp = tempfile.mkdtemp()
+        shutil.copy(self.model_file, tmp)
+        shutil.copy(self.label_file, tmp)
+
+        return zip_directory(tmp)
 
     def _move_asset_to_temp_bucket(self, asset):
 
@@ -73,6 +138,7 @@ class AutomlLabelDetectionSession:
         blob_to = bucket_source.copy_blob(blob_source,
                                           bucket_destination,
                                           f'{self.model.id}/assets/{asset.id}/{uuid.uuid4().hex}')
+
         return f'gs://{bucket_destination.name}/{blob_to.name}'
 
     def _train_automl_model(self, dataset):
@@ -112,8 +178,10 @@ class AutomlLabelDetectionSession:
         return automl_model
 
     def _export_model(self, automl_model):
-        export_model_location = file_storage.projects\
-            .get_directory_location('models', self.model.id)
+        # export_model_location = file_storage.projects\
+        #     .get_directory_location('models', self.model.id)
+
+        export_model_location = f'{self.training_bucket}/{self.model.id}/model/'
 
         gcs_destination = automl.GcsDestination(output_uri_prefix=export_model_location)
         output_config = automl.ModelExportOutputConfig(
@@ -122,6 +190,8 @@ class AutomlLabelDetectionSession:
 
         self.emit_status(f'Exporting Model {self.model.name} to {gcs_destination}')
         self.client.export_model(request=request).result()
+
+        return export_model_location
 
     def _create_automl_dataset(self):
         """
