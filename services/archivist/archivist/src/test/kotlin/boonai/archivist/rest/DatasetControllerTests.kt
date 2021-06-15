@@ -3,11 +3,11 @@ package boonai.archivist.rest
 import boonai.archivist.MockMvcTest
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
-import boonai.archivist.domain.DataSet
-import boonai.archivist.domain.DataSetSpec
-import boonai.archivist.domain.DataSetType
+import boonai.archivist.domain.Dataset
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.UpdateLabelRequest
-import boonai.archivist.service.DataSetService
+import boonai.archivist.service.DatasetService
 import boonai.common.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Before
@@ -18,24 +18,24 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
 
-class DataSetControllerTests : MockMvcTest() {
+class DatasetControllerTests : MockMvcTest() {
 
     @Autowired
-    lateinit var dataSetService: DataSetService
+    lateinit var datasetService: DatasetService
 
-    lateinit var dataSet: DataSet
+    lateinit var dataset: Dataset
 
     @Before
     fun init() {
-        dataSet = dataSetService.createDataSet(DataSetSpec("cats", DataSetType.Classification))
+        dataset = datasetService.createDataset(DatasetSpec("cats", DatasetType.Classification))
     }
 
     @Test
     fun testCreate() {
 
-        val mspec = DataSetSpec(
+        val mspec = DatasetSpec(
             "test",
-            DataSetType.Classification
+            DatasetType.Classification
         )
 
         mvc.perform(
@@ -53,12 +53,12 @@ class DataSetControllerTests : MockMvcTest() {
     @Test
     fun testGet() {
 
-        val mspec = DataSetSpec(
+        val mspec = DatasetSpec(
             "test",
-            DataSetType.Classification
+            DatasetType.Classification
         )
 
-        val ds = dataSetService.createDataSet(mspec)
+        val ds = datasetService.createDataset(mspec)
 
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/datasets/${ds.id}")
@@ -74,12 +74,12 @@ class DataSetControllerTests : MockMvcTest() {
     @Test
     fun testDelete() {
 
-        val mspec = DataSetSpec(
+        val mspec = DatasetSpec(
             "test",
-            DataSetType.Classification
+            DatasetType.Classification
         )
 
-        val ds = dataSetService.createDataSet(mspec)
+        val ds = datasetService.createDataset(mspec)
 
         mvc.perform(
             MockMvcRequestBuilders.delete("/api/v3/datasets/${ds.id}")
@@ -93,7 +93,7 @@ class DataSetControllerTests : MockMvcTest() {
 
     @Test
     fun testRenameLabel() {
-        val specs = dataSet(dataSet)
+        val specs = makeDataSet(dataset)
         assetService.batchCreate(
             BatchCreateAssetsRequest(specs)
         )
@@ -101,7 +101,7 @@ class DataSetControllerTests : MockMvcTest() {
         val body = UpdateLabelRequest("ant", "horse")
 
         mvc.perform(
-            MockMvcRequestBuilders.put("/api/v3/datasets/${dataSet.id}/labels")
+            MockMvcRequestBuilders.put("/api/v3/datasets/${dataset.id}/labels")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(body))
@@ -118,7 +118,7 @@ class DataSetControllerTests : MockMvcTest() {
 
     @Test
     fun testDeleteLabel() {
-        val specs = dataSet(dataSet)
+        val specs = makeDataSet(dataset)
         assetService.batchCreate(
             BatchCreateAssetsRequest(specs)
         )
@@ -126,7 +126,7 @@ class DataSetControllerTests : MockMvcTest() {
         val body = UpdateLabelRequest("ant", "")
 
         mvc.perform(
-            MockMvcRequestBuilders.put("/api/v3/datasets/${dataSet.id}/labels")
+            MockMvcRequestBuilders.put("/api/v3/datasets/${dataset.id}/labels")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(body))
@@ -141,7 +141,7 @@ class DataSetControllerTests : MockMvcTest() {
             .andReturn()
 
         authenticate()
-        val labels = dataSetService.getLabelCounts(dataSet)
+        val labels = datasetService.getLabelCounts(dataset)
         assertEquals(null, labels["ant"])
         assertEquals(3, labels.size)
     }
@@ -151,8 +151,8 @@ class DataSetControllerTests : MockMvcTest() {
         val filter =
             """
             {
-                "names": ["${dataSet.name}"],
-                "ids": ["${dataSet.id}"]
+                "names": ["${dataset.name}"],
+                "ids": ["${dataset.id}"]
             }
             """
         mvc.perform(
@@ -162,8 +162,8 @@ class DataSetControllerTests : MockMvcTest() {
                 .content(filter)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.type", CoreMatchers.equalTo(dataSet.type.name)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(dataSet.name)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.type", CoreMatchers.equalTo(dataset.type.name)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(dataset.name)))
             .andReturn()
     }
 
@@ -173,8 +173,8 @@ class DataSetControllerTests : MockMvcTest() {
         val filter =
             """
             {
-                "names": ["${dataSet.name}"],
-                "ids": ["${dataSet.id}"]
+                "names": ["${dataset.name}"],
+                "ids": ["${dataset.id}"]
             }
             """
         mvc.perform(
@@ -184,8 +184,8 @@ class DataSetControllerTests : MockMvcTest() {
                 .content(filter)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].type", CoreMatchers.equalTo(dataSet.type.name)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name", CoreMatchers.equalTo(dataSet.name)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].type", CoreMatchers.equalTo(dataset.type.name)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name", CoreMatchers.equalTo(dataset.name)))
             .andReturn()
     }
 
@@ -206,7 +206,38 @@ class DataSetControllerTests : MockMvcTest() {
             .andReturn()
     }
 
-    fun dataSet(ds: DataSet): List<AssetSpec> {
+    @Test
+    fun testGetLabelCountsV4() {
+
+        val specs = makeDataSet(dataset)
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(specs)
+        )
+
+        val rsp = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v4/datasets/${dataset.id}/_label_counts")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.dog.TRAIN",
+                    CoreMatchers.equalTo(1)
+                )
+            )
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.dog.TEST",
+                    CoreMatchers.equalTo(0)
+                )
+            )
+            .andReturn()
+
+        logger.info(rsp.response.contentAsString)
+    }
+
+    fun makeDataSet(ds: Dataset): List<AssetSpec> {
         return listOf(
             AssetSpec("https://i.imgur.com/12abc.jpg", label = ds.makeLabel("beaver")),
             AssetSpec("https://i.imgur.com/abc123.jpg", label = ds.makeLabel("ant")),

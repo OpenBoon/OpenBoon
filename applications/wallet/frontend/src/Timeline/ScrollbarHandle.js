@@ -24,6 +24,7 @@ const TimelineScrollbarHandle = ({
   horizontalScroller,
   isLeft,
   dispatch,
+  stopFollowPlayhead,
 }) => {
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
@@ -100,6 +101,8 @@ const TimelineScrollbarHandle = ({
 
   /* istanbul ignore next */
   const handleMouseDown = ({ clientX }) => {
+    stopFollowPlayhead()
+
     setIgnore({ value: true })
 
     origin = clientX
@@ -162,6 +165,7 @@ TimelineScrollbarHandle.propTypes = {
   }).isRequired,
   isLeft: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
+  stopFollowPlayhead: PropTypes.func.isRequired,
 }
 
 export default TimelineScrollbarHandle

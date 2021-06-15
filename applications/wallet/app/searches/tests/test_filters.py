@@ -777,7 +777,7 @@ class TestLabelsFilter(FilterBaseTestCase):
     @pytest.fixture
     def mock_data(self):
         return {'type': LabelFilter.type,
-                'modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}
+                'datasetId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}
 
     @pytest.fixture
     def mock_query_data(self, mock_data):
@@ -797,17 +797,17 @@ class TestLabelsFilter(FilterBaseTestCase):
                     'query': {
                         'bool': {
                             'filter': [
-                                {'term': {'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}}]}}}},  # noqa
+                                {'term': {'labels.datasetId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}}]}}}},  # noqa
             'aggs': {
                 name: {
                     'nested': {
                         'path': 'labels'
                     },
                     'aggs': {
-                        'modelId': {
+                        'datasetId': {
                             'filter': {
                                 'term': {
-                                    'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'
+                                    'labels.datasetId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'
                                 }
                             },
                             'aggs': {
@@ -826,11 +826,11 @@ class TestLabelsFilter(FilterBaseTestCase):
             'size': 0,
             'query': {'nested': {'path': 'labels',
                                  'query': {'bool': {'filter': [{'term': {
-                                     'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}}]}}}},  # noqa
+                                     'labels.datasetId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}}]}}}},  # noqa
             'aggs': {name: {'nested': {'path': 'labels'},
                             'aggs': {
-                                'modelId': {
-                                    'filter': {'term': {'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}},  # noqa
+                                'datasetId': {
+                                    'filter': {'term': {'labels.datasetId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}},  # noqa
                                     'aggs': {f'nested_{name}': {
                                         'terms': {
                                             'field': 'labels.label',
@@ -850,7 +850,7 @@ class TestLabelsFilter(FilterBaseTestCase):
                             'query': {
                                 'bool': {
                                     'filter': [
-                                        {'terms': {'labels.modelId': [
+                                        {'terms': {'labels.datasetId': [
                                             'bc28213f-cf3a-16a2-9f21-0242ac130003']}},
                                         {'terms': {'labels.label': ['Celeste', 'David']}},
                                         {'terms': {'labels.scope': ['TRAIN', 'TEST']}}
@@ -871,7 +871,7 @@ class TestLabelsFilter(FilterBaseTestCase):
                             'query': {
                                 'bool': {
                                     'filter': [
-                                        {'terms': {'labels.modelId': [
+                                        {'terms': {'labels.datasetId': [
                                             'bc28213f-cf3a-16a2-9f21-0242ac130003']}},
                                         {'terms': {'labels.label': ['Celeste', 'David']}},
                                         {'terms': {'labels.scope': ['TRAIN']}}

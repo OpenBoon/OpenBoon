@@ -9,12 +9,12 @@ import { ACTIONS } from './reducer'
 
 const OFFSET = (TICK_WIDTH + constants.borderWidths.regular) / 2
 
-const TimelineFilterTracks = ({ settings, dispatch }) => {
+const TimelineFilterTracks = ({ width, filter, dispatch }) => {
   return (
     <div
       css={{
-        marginLeft: -settings.width,
-        width: settings.width,
+        marginLeft: -width,
+        width,
         paddingRight: OFFSET,
         marginBottom: -spacing.hairline,
         zIndex: zIndex.timeline.tracks,
@@ -23,7 +23,7 @@ const TimelineFilterTracks = ({ settings, dispatch }) => {
       <InputSearch
         aria-label="Filter tracks"
         placeholder="Filter tracks"
-        value={settings.filter}
+        value={filter}
         onChange={({ value }) => {
           dispatch({ type: ACTIONS.UPDATE_FILTER, payload: { value } })
         }}
@@ -41,11 +41,8 @@ const TimelineFilterTracks = ({ settings, dispatch }) => {
 }
 
 TimelineFilterTracks.propTypes = {
-  settings: PropTypes.shape({
-    width: PropTypes.number.isRequired,
-    filter: PropTypes.string.isRequired,
-    timelines: PropTypes.shape({}).isRequired,
-  }).isRequired,
+  width: PropTypes.number.isRequired,
+  filter: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
 }
 

@@ -3,7 +3,7 @@ import TestRenderer, { act } from 'react-test-renderer'
 import DatasetsMenu from '../Menu'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const DATASET_ID = '621bf774-89d9-1244-9596-d6df43f1ede5'
+const DATASET_ID = '4b0b10a8-cec1-155c-b12f-ee2bc8787e06'
 
 describe('<DatasetsMenu />', () => {
   it('should render properly', async () => {

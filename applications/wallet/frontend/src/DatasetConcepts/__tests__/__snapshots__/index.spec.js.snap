@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DatasetsTable /> should render properly with datasets 1`] = `
+exports[`<DatasetConcepts /> should render properly with concepts 1`] = `
 .emotion-0 {
   height: 100%;
   display: -webkit-box;
@@ -127,7 +127,7 @@ exports[`<DatasetsTable /> should render properly with datasets 1`] = `
   width: auto;
 }
 
-.emotion-7:nth-of-type(0) {
+.emotion-7:nth-of-type(1) {
   width: 100%;
 }
 
@@ -153,7 +153,7 @@ exports[`<DatasetsTable /> should render properly with datasets 1`] = `
   width: 1px;
 }
 
-.emotion-13:nth-of-type(0) {
+.emotion-13:nth-of-type(1) {
   width: 100%;
 }
 
@@ -170,20 +170,11 @@ exports[`<DatasetsTable /> should render properly with datasets 1`] = `
 }
 
 .emotion-15 {
-  cursor: pointer;
-}
-
-.emotion-16:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-17 {
   position: relative;
   height: 100%;
 }
 
-.emotion-18 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -215,8 +206,8 @@ exports[`<DatasetsTable /> should render properly with datasets 1`] = `
   margin: -6px;
 }
 
-.emotion-18:hover,
-.emotion-18.focus-visible:focus {
+.emotion-16:hover,
+.emotion-16.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -232,9 +223,9 @@ exports[`<DatasetsTable /> should render properly with datasets 1`] = `
       <h3
         className="emotion-3"
       >
-        Datasets
+        Concepts
         : 
-        4
+        2
       </h3>
     </div>
     <div
@@ -254,7 +245,7 @@ exports[`<DatasetsTable /> should render properly with datasets 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Name
+                  Concept
                 </div>
               </th>
               <th
@@ -263,7 +254,7 @@ exports[`<DatasetsTable /> should render properly with datasets 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Type
+                  Train Labels
                 </div>
               </th>
               <th
@@ -272,7 +263,7 @@ exports[`<DatasetsTable /> should render properly with datasets 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Linked Models
+                  Test Labels
                 </div>
               </th>
               <th
@@ -290,33 +281,23 @@ exports[`<DatasetsTable /> should render properly with datasets 1`] = `
             </tr>
           </thead>
           <tbody>
-            <tr
-              className="emotion-15"
-              onClick={[Function]}
-            >
+            <tr>
               <td>
-                <a
-                  className="emotion-16"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/111d0534-7736-135f-8a62-d29da837913f"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  faces
-                </a>
+                tabby
               </td>
               <td>
-                Face Recognition
+                128
               </td>
               <td>
-                0
+                128
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-15"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-16"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -329,111 +310,23 @@ exports[`<DatasetsTable /> should render properly with datasets 1`] = `
                 </div>
               </td>
             </tr>
-            <tr
-              className="emotion-15"
-              onClick={[Function]}
-            >
+            <tr>
               <td>
-                <a
-                  className="emotion-16"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  cats
-                </a>
+                calico
               </td>
               <td>
-                Classification
+                128
               </td>
               <td>
-                1
+                128
               </td>
               <td>
                 <div
-                  className="emotion-17"
+                  className="emotion-15"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    <svg
-                      data-file-name="kebab.svg"
-                      height={20}
-                    />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-15"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-16"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/1c237c5c-8b64-11eb-882c-a6e78dab3824"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  pets
-                </a>
-              </td>
-              <td>
-                Object Detection
-              </td>
-              <td>
-                2
-              </td>
-              <td>
-                <div
-                  className="emotion-17"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    <svg
-                      data-file-name="kebab.svg"
-                      height={20}
-                    />
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr
-              className="emotion-15"
-              onClick={[Function]}
-            >
-              <td>
-                <a
-                  className="emotion-16"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/4b0b10a9-cec1-155c-b12f-ee2bc8787e06"
-                  onClick={[Function]}
-                  onMouseEnter={[Function]}
-                >
-                  mystery
-                </a>
-              </td>
-              <td>
-                UnknownType
-              </td>
-              <td>
-                0
-              </td>
-              <td>
-                <div
-                  className="emotion-17"
-                >
-                  <button
-                    aria-label="Toggle Actions Menu"
-                    className="actions emotion-18"
+                    className="actions emotion-16"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -460,7 +353,7 @@ exports[`<DatasetsTable /> should render properly with datasets 1`] = `
 </div>
 `;
 
-exports[`<DatasetsTable /> should render properly without datasets 1`] = `
+exports[`<DatasetConcepts /> should render properly with no concepts 1`] = `
 .emotion-0 {
   height: 100%;
   display: -webkit-box;
@@ -595,7 +488,7 @@ exports[`<DatasetsTable /> should render properly without datasets 1`] = `
   width: auto;
 }
 
-.emotion-7:nth-of-type(0) {
+.emotion-7:nth-of-type(1) {
   width: 100%;
 }
 
@@ -621,7 +514,7 @@ exports[`<DatasetsTable /> should render properly without datasets 1`] = `
   width: 1px;
 }
 
-.emotion-13:nth-of-type(0) {
+.emotion-13:nth-of-type(1) {
   width: 100%;
 }
 
@@ -692,7 +585,7 @@ exports[`<DatasetsTable /> should render properly without datasets 1`] = `
       <h3
         className="emotion-3"
       >
-        Datasets
+        Concepts
         : 
         0
       </h3>
@@ -714,7 +607,7 @@ exports[`<DatasetsTable /> should render properly without datasets 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Name
+                  Concept
                 </div>
               </th>
               <th
@@ -723,7 +616,7 @@ exports[`<DatasetsTable /> should render properly without datasets 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Type
+                  Train Labels
                 </div>
               </th>
               <th
@@ -732,7 +625,7 @@ exports[`<DatasetsTable /> should render properly without datasets 1`] = `
                 <div
                   className="emotion-8"
                 >
-                  Linked Models
+                  Test Labels
                 </div>
               </th>
               <th
@@ -766,7 +659,7 @@ exports[`<DatasetsTable /> should render properly without datasets 1`] = `
                       data-file-name="noJobs.svg"
                       width={200}
                     />
-                    There are currently no datasets.
+                    There are currently no concepts for this dataset.
                   </div>
                 </div>
               </td>

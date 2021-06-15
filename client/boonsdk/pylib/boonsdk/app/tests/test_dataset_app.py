@@ -2,14 +2,14 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from boonsdk import BoonClient, ModelType, Model, DataSet
+from boonsdk import BoonClient, ModelType, Model, Dataset
 from .util import get_boon_app
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
-class DataSetAppTests(unittest.TestCase):
+class DatasetAppTests(unittest.TestCase):
 
     def setUp(self):
         # This is not a valid key
@@ -22,7 +22,7 @@ class DataSetAppTests(unittest.TestCase):
         }
 
     def test_make_label(self):
-        ds = DataSet({'id': '12345'})
+        ds = Dataset({'id': '12345'})
         label = ds.make_label('dog', bbox=[0.1, 0.1, 0.5, 0.5], simhash='ABC1234')
         assert 'dog' == label.label
         assert [0.1, 0.1, 0.5, 0.5] == label.bbox
@@ -53,7 +53,7 @@ class DataSetAppTests(unittest.TestCase):
             'cat': 2
         }
         get_patch.return_value = value
-        rsp = self.app.datasets.get_label_counts(Model({'id': 'foo', 'dataSetId': '123'}))
+        rsp = self.app.datasets.get_label_counts(Model({'id': 'foo', 'datasetId': '123'}))
         assert value == rsp
 
     @patch.object(BoonClient, 'get')
@@ -63,7 +63,7 @@ class DataSetAppTests(unittest.TestCase):
             'cat': 2
         }
         get_patch.return_value = value
-        rsp = self.app.datasets.get_label_counts(DataSet(self.ds_data))
+        rsp = self.app.datasets.get_label_counts(Dataset(self.ds_data))
         assert value == rsp
 
     @patch.object(BoonClient, 'put')
@@ -72,7 +72,7 @@ class DataSetAppTests(unittest.TestCase):
             'updated': 1
         }
         put_patch.return_value = value
-        rsp = self.app.datasets.rename_label(DataSet({'id': 'foo'}), 'dog', 'cat')
+        rsp = self.app.datasets.rename_label(Dataset({'id': 'foo'}), 'dog', 'cat')
         assert value == rsp
 
     @patch.object(BoonClient, 'delete')
@@ -81,7 +81,7 @@ class DataSetAppTests(unittest.TestCase):
             'updated': 1
         }
         put_patch.return_value = value
-        rsp = self.app.datasets.delete_label(DataSet({'id': 'foo'}), 'dog')
+        rsp = self.app.datasets.delete_label(Dataset({'id': 'foo'}), 'dog')
         assert value == rsp
 
     def assert_ds(self, ds):

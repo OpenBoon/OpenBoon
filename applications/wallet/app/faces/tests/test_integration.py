@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 from boonsdk import Asset, BoonApp
-from boonsdk.app import AssetApp, JobApp, ModelApp, DataSetApp
+from boonsdk.app import AssetApp, JobApp, ModelApp, DatasetApp
 from boonsdk.client import BoonSdkNotFoundException, BoonClient
 from django.urls import reverse
 from rest_framework import status
@@ -271,8 +271,8 @@ class TestStatus:
 class TestLabels:
 
     @patch.object(FaceViewSet, '_get_model', return_value=SimpleNamespace(dataset_id=1))
-    @patch.object(DataSetApp, 'get_dataset', return_value=Mock())
-    @patch.object(DataSetApp, 'get_label_counts', return_value={'Danny': 3, 'Donna': 2})
+    @patch.object(DatasetApp, 'get_dataset', return_value=Mock())
+    @patch.object(DatasetApp, 'get_label_counts', return_value={'Danny': 3, 'Donna': 2})
     def test_get(self, _, __, ___, login, api_client, project):
         path = reverse('face-labels', kwargs={'project_pk': project.id})
         response = api_client.get(path)
@@ -281,8 +281,8 @@ class TestLabels:
                                              {'label': 'Donna', 'count': 2}]
 
     @patch.object(FaceViewSet, '_get_model', return_value=SimpleNamespace(dataset_id=1))
-    @patch.object(DataSetApp, 'get_dataset', return_value=Mock())
-    @patch.object(DataSetApp, 'get_label_counts', return_value={})
+    @patch.object(DatasetApp, 'get_dataset', return_value=Mock())
+    @patch.object(DatasetApp, 'get_label_counts', return_value={})
     def test_get_no_labels(self, _, __, ___, login, api_client, project):
         path = reverse('face-labels', kwargs={'project_pk': project.id})
         response = api_client.get(path)
@@ -312,7 +312,7 @@ class TestHelpers:
         create_model_mock.assert_not_called()
 
     @patch.object(ModelApp, 'find_one_model', side_effect=BoonSdkNotFoundException(data={}))
-    @patch.object(DataSetApp, 'create_dataset', return_value=SimpleNamespace(id=1))
+    @patch.object(DatasetApp, 'create_dataset', return_value=SimpleNamespace(id=1))
     @patch.object(BoonClient, 'post', return_value={'id': 1})
     def test_get_model_missing(self, _, __, ___, view, app_mock):
         viewset = FaceViewSet()

@@ -3,41 +3,43 @@ package boonai.archivist.service
 import boonai.archivist.AbstractTest
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
-import boonai.archivist.domain.DataSet
-import boonai.archivist.domain.DataSetSpec
-import boonai.archivist.domain.DataSetType
-import boonai.archivist.domain.DataSetUpdate
+import boonai.archivist.domain.Dataset
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetType
+import boonai.archivist.domain.DatasetUpdate
 import boonai.archivist.domain.Label
+import boonai.archivist.domain.LabelScope
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.UpdateAssetLabelsRequest
-import boonai.archivist.repository.DataSetDao
+import boonai.archivist.repository.DatasetDao
+import boonai.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class DataSetServiceTests : AbstractTest() {
+class DatasetServiceTests : AbstractTest() {
 
     @Autowired
-    lateinit var dataSetDao: DataSetDao
+    lateinit var datasetDao: DatasetDao
 
     @Autowired
-    lateinit var dataSetService: DataSetService
+    lateinit var datasetService: DatasetService
 
     @Autowired
     lateinit var assetSearchService: AssetSearchService
 
-    fun create(name: String = "test", type: DataSetType = DataSetType.Classification): DataSet {
-        val mspec = DataSetSpec(
+    fun create(name: String = "test", type: DatasetType = DatasetType.Classification): Dataset {
+        val mspec = DatasetSpec(
             name,
             type,
             "A Test DS"
         )
-        return dataSetService.createDataSet(mspec)
+        return datasetService.createDataset(mspec)
     }
 
-    fun dataSet(ds: DataSet): List<AssetSpec> {
+    fun dataset(ds: Dataset): List<AssetSpec> {
         return listOf(
             AssetSpec("https://i.imgur.com/12abc.jpg", label = ds.makeLabel("beaver")),
             AssetSpec("https://i.imgur.com/abc123.jpg", label = ds.makeLabel("ant")),
@@ -48,60 +50,60 @@ class DataSetServiceTests : AbstractTest() {
 
     @Test
     fun testCreate() {
-        val spec = DataSetSpec("pets", DataSetType.Classification, "TEST")
-        val ds = dataSetService.createDataSet(spec)
+        val spec = DatasetSpec("pets", DatasetType.Classification, "TEST")
+        val ds = datasetService.createDataset(spec)
         assertEquals("pets", ds.name)
-        assertEquals(DataSetType.Classification, ds.type)
+        assertEquals(DatasetType.Classification, ds.type)
         assertEquals("TEST", ds.description)
     }
 
     @Test
     fun testUpdate() {
-        val ds = dataSetService.createDataSet(DataSetSpec("pets", DataSetType.Classification))
-        dataSetService.updateDataSet(ds, DataSetUpdate(name = "cars"))
+        val ds = datasetService.createDataset(DatasetSpec("pets", DatasetType.Classification))
+        datasetService.updateDataset(ds, DatasetUpdate(name = "cars"))
         assertEquals("cars", ds.name)
     }
 
     @Test
     fun testDelete() {
         val ds = create()
-        val specs = dataSet(ds)
+        val specs = dataset(ds)
 
         assetService.batchCreate(BatchCreateAssetsRequest(specs))
         refreshIndex(1000)
-        assertFalse(dataSetService.getLabelCounts(ds).isEmpty())
-        dataSetService.deleteDataSet(ds)
+        assertFalse(datasetService.getLabelCounts(ds).isEmpty())
+        datasetService.deleteDataset(ds)
         Thread.sleep(3000)
-        assertTrue(dataSetService.getLabelCounts(ds).isEmpty())
+        assertTrue(datasetService.getLabelCounts(ds).isEmpty())
     }
 
     @Test
     fun testGet() {
-        val ds = dataSetService.createDataSet(DataSetSpec("pets", DataSetType.Classification))
-        val ds2 = dataSetService.getDataSet(ds.id)
-        val ds3 = dataSetService.getDataSet(ds.name)
+        val ds = datasetService.createDataset(DatasetSpec("pets", DatasetType.Classification))
+        val ds2 = datasetService.getDataset(ds.id)
+        val ds3 = datasetService.getDataset(ds.name)
         assertEquals(ds, ds2)
         assertEquals(ds2, ds3)
     }
 
     @Test
     fun excludeLabeledAssetsFromSearch() {
-        val dataSet = create()
+        val dataset = create()
 
-        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg", label = dataSet.makeLabel("husky"))
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg", label = dataset.makeLabel("husky"))
         val rsp = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
         val asset = assetService.getAsset(rsp.created[0])
         assetService.index(asset.id, asset.document, true)
         refreshIndex()
 
-        val counts = dataSetService.getLabelCounts(dataSet)
+        val counts = datasetService.getLabelCounts(dataset)
         assertEquals(1, counts["husky"])
 
         assertEquals(1, assetSearchService.count(Model.matchAllSearch))
         assertEquals(
             0,
             assetSearchService.count(
-                dataSetService.wrapSearchToExcludeTrainingSet(dataSet, Model.matchAllSearch)
+                datasetService.wrapSearchToExcludeTrainingSet(dataset, Model.matchAllSearch)
             )
         )
     }
@@ -112,7 +114,7 @@ class DataSetServiceTests : AbstractTest() {
         val ds2 = create("test2")
 
         val rsp = assetService.batchCreate(
-            BatchCreateAssetsRequest(dataSet(ds1))
+            BatchCreateAssetsRequest(dataset(ds1))
         )
 
         assetService.updateLabels(
@@ -129,7 +131,7 @@ class DataSetServiceTests : AbstractTest() {
             )
         )
 
-        val counts = dataSetService.getLabelCounts(ds1)
+        val counts = datasetService.getLabelCounts(ds1)
         assertEquals(4, counts.size)
         assertEquals(1, counts["ant"])
         assertEquals(1, counts["horse"])
@@ -142,16 +144,46 @@ class DataSetServiceTests : AbstractTest() {
     }
 
     @Test
+    fun getLabelCountsV4() {
+        val ds1 = create("test1")
+        val ds2 = create("test2")
+
+        val rsp = assetService.batchCreate(
+            BatchCreateAssetsRequest(dataset(ds1))
+        )
+
+        assetService.updateLabels(
+            UpdateAssetLabelsRequest(
+                mapOf(
+                    rsp.created[0] to listOf(
+                        Label(ds2.id, "house"),
+                    ),
+                    rsp.created[1] to listOf(
+                        Label(ds2.id, "tree", scope = LabelScope.TEST),
+                    )
+                )
+            )
+        )
+        refreshIndex(100)
+
+        val counts = datasetService.getLabelCountsV4(ds2)
+        Json.prettyPrint(counts)
+        assertEquals(2, counts.size)
+        assertEquals(1, counts["tree"]?.get("TEST"))
+        assertEquals(1, counts["house"]?.get("TRAIN"))
+    }
+
+    @Test
     fun testRenameLabel() {
         val model = create()
-        val specs = dataSet(model)
+        val specs = dataset(model)
 
         assetService.batchCreate(
             BatchCreateAssetsRequest(specs)
         )
-        dataSetService.updateLabel(model, "beaver", "horse")
+        datasetService.updateLabel(model, "beaver", "horse")
         refreshElastic()
-        val counts = dataSetService.getLabelCounts(model)
+        val counts = datasetService.getLabelCounts(model)
         assertEquals(1, counts["ant"])
         assertEquals(2, counts["horse"])
         assertEquals(null, counts["beaver"])
@@ -161,15 +193,15 @@ class DataSetServiceTests : AbstractTest() {
     @Test
     fun testRenameLabelToNullForDelete() {
         val model = create()
-        val specs = dataSet(model)
+        val specs = dataset(model)
 
         assetService.batchCreate(
             BatchCreateAssetsRequest(specs)
         )
-        dataSetService.updateLabel(model, "horse", null)
+        datasetService.updateLabel(model, "horse", null)
         refreshIndex(1000L)
 
-        val counts = dataSetService.getLabelCounts(model)
+        val counts = datasetService.getLabelCounts(model)
         assertEquals(1, counts["ant"])
         assertEquals(null, counts["horse"])
         assertEquals(1, counts["beaver"])

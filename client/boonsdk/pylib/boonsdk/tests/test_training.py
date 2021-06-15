@@ -27,7 +27,7 @@ class TrainingSetDownloaderTests(unittest.TestCase):
         get_model_patch.return_value = Model({
             'id': '12345',
             'type': 'ZVI_LABEL_DETECTION',
-            'dataSetId': '124423'})
+            'datasetId': '124423'})
 
         get_patch.return_value = {
             'goats': 100,
@@ -60,7 +60,7 @@ class TrainingSetDownloaderTests(unittest.TestCase):
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
         get_ds_patch.return_value = Model({'id': '12345',
                                            'type': 'ZVI_LABEL_DETECTION',
-                                           'dataSetId': 'abc221'})
+                                           'datasetId': 'abc221'})
         get_patch.return_value = {
             'goats': 100,
             'hobbits': 12,

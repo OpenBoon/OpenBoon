@@ -4,7 +4,7 @@ import os
 
 from . import AssetApp, DataSourceApp, ProjectApp, \
     JobApp, ModelApp, AnalysisModuleApp, VideoClipApp, CustomFieldApp, \
-    WebHookApp, DataSetApp
+    WebHookApp, DatasetApp
 from ..client import BoonClient, DEFAULT_SERVER
 
 logger = logging.getLogger(__name__)
@@ -44,8 +44,8 @@ class BoonApp:
         """A ``boonsdk.app.CustomFieldApp`` instance"""
         self.webhooks = WebHookApp(self)
         """A ``boonsdk.app.WebHookApp`` instance"""
-        self.datasets = DataSetApp(self)
-        """A ``boonsdk.app.DataSetApp`` instance"""
+        self.datasets = DatasetApp(self)
+        """A ``boonsdk.app.DatasetApp`` instance"""
 
 
 def app_from_env():

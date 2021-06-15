@@ -45,7 +45,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
-import org.springframework.core.env.get
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -95,7 +94,7 @@ class ModelServiceImpl(
     val assetSearchService: AssetSearchService,
     val fileStorageService: ProjectStorageService,
     val argValidationService: ArgValidationService,
-    val dataSetService: DataSetService,
+    val datasetService: DatasetService,
     val environment: Environment
 ) : ModelService {
 
@@ -127,7 +126,7 @@ class ModelServiceImpl(
         val model = Model(
             id,
             getProjectId(),
-            spec.dataSetId,
+            spec.datasetId,
             spec.type,
             spec.name,
             moduleName,
@@ -156,7 +155,7 @@ class ModelServiceImpl(
     override fun updateModel(id: UUID, update: ModelUpdateRequest): Model {
         val model = getModel(id)
         model.name = update.name
-        model.dataSetId = update.dataSetId
+        model.datasetId = update.datasetId
         model.timeModified = System.currentTimeMillis()
         model.actorModified = getZmlpActor().toString()
         return model
@@ -165,7 +164,7 @@ class ModelServiceImpl(
     override fun patchModel(id: UUID, update: ModelPatchRequest): Model {
         val model = getModel(id)
         update.name?.let { model.name = it }
-        update.dataSetId?.let { model.dataSetId = it }
+        update.datasetId?.let { model.datasetId = it }
         model.timeModified = System.currentTimeMillis()
         model.actorModified = getZmlpActor().toString()
         return model
@@ -193,8 +192,8 @@ class ModelServiceImpl(
             throw IllegalStateException("This model type cannot be trained")
         }
 
-        if (model.dataSetId == null) {
-            throw IllegalStateException("The model must have an assigned DataSet to be trained.")
+        if (model.datasetId == null) {
+            throw IllegalStateException("The model must have an assigned Dataset to be trained.")
         }
 
         val trainArgs = argValidationService.buildArgs(
@@ -227,8 +226,8 @@ class ModelServiceImpl(
 
         val analyzeTrainingSet = req.analyzeTrainingSet ?: model.type.deployOnTrainingSet
 
-        if (!analyzeTrainingSet && model.dataSetId != null) {
-            search = dataSetService.wrapSearchToExcludeTrainingSet(model, search)
+        if (!analyzeTrainingSet && model.datasetId != null) {
+            search = datasetService.wrapSearchToExcludeTrainingSet(model, search)
         }
 
         val count = assetSearchService.count(search)
@@ -264,7 +263,7 @@ class ModelServiceImpl(
 
     override fun testModel(model: Model, req: ModelApplyRequest): ModelApplyResponse {
         val name = "Testing model: ${model.name}"
-        var search = dataSetService.buildTestLabelSearch(model)
+        var search = datasetService.buildTestLabelSearch(model)
 
         val count = assetSearchService.count(search)
         if (count == 0L) {
@@ -273,7 +272,7 @@ class ModelServiceImpl(
 
         // Use global settings to override the model tag.
         val repro = ReprocessAssetSearchRequest(
-            dataSetService.buildTestLabelSearch(model),
+            datasetService.buildTestLabelSearch(model),
             listOf(model.getModuleName()),
             name = name,
             replace = true,

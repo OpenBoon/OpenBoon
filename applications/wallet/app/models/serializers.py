@@ -1,6 +1,12 @@
 from rest_framework import serializers
 
 
+class SimpleModelSerializer(serializers.Serializer):
+    id = serializers.UUIDField(required=False)
+    name = serializers.CharField()
+    type = serializers.CharField()
+
+
 class ModelSerializer(serializers.Serializer):
     id = serializers.UUIDField(required=False)
     name = serializers.CharField()
@@ -17,7 +23,7 @@ class ModelSerializer(serializers.Serializer):
     link = serializers.CharField(required=False)
     projectId = serializers.CharField(required=False)
     ready = serializers.BooleanField(required=False)
-    dataSetId = serializers.CharField(required=False, allow_null=True)
+    datasetId = serializers.CharField(required=False, allow_null=True)
 
 
 class ModelTypeRestrictionsSerializer(serializers.Serializer):
