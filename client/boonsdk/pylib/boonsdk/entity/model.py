@@ -103,43 +103,6 @@ class Model(BaseEntity):
         """
         return self._data['trainingArgs']
 
-    def get_label_search(self, scope=None):
-        """
-        Return a search that can be used to query all assets
-        with labels.
-
-        Args:
-            scope (LabelScope): An optional label scope to filter by.
-
-        Returns:
-            dict: A search to pass to an asset search.
-        """
-        search = {
-            'size': 64,
-            'sort': [
-                '_doc'
-            ],
-            '_source': ['labels', 'files'],
-            'query': {
-                'nested': {
-                    'path': 'labels',
-                    'query': {
-                        'bool': {
-                            'must': [
-                                {'term': {'labels.modelId': self.id}}
-                            ]
-                        }
-                    }
-                }
-            }
-        }
-
-        if scope:
-            must = search['query']['nested']['query']['bool']['must']
-            must.append({'term': {'labels.scope': scope.name}})
-
-        return search
-
     def get_confusion_matrix_search(self, min_score=0.0, max_score=1.0, test_set_only=True):
         """
         Returns a search query with aggregations that can be used to create a confusion

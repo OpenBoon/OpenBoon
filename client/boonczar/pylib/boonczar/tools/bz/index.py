@@ -98,7 +98,8 @@ def migrate_all_projects(args):
     for index in czar.indexes.find_indexes():
         if index.major_version == args.src_ver and index.state == boonczar.IndexState.READY:
             if index.project_id in migrated:
-                print('ERR: project {index.project_name} [{index.project_id}] has already been migrated.')
+                print(f'ERR: project {index.project_name} '
+                      f'[{index.project_id}] has already been migrated.')
                 continue
             print(f'Migrating {index.project_name} to v{args.dst_ver}')
             czar.indexes.migrate_project_index(index.project_id, 'english_strict', args.dst_ver)
