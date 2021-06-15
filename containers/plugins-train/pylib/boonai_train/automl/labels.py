@@ -3,14 +3,12 @@ import boonsdk
 import uuid
 import shutil
 import os
-import zipfile
 import tempfile
 
 from google.cloud import automl
 from urllib.parse import urlparse
 from boonflow import file_storage
 from boonflow.cloud import get_gcp_project_id, get_google_storage_client
-from boonsdk.util import zip_directory
 
 logger = logging.getLogger(__name__)
 

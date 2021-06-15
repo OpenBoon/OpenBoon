@@ -1,13 +1,11 @@
 from numpy import argsort
 from cv2 import imread, resize
-from urllib.parse import urlparse
 
 from boonsdk import app_from_env
 from boonflow import Argument, AssetProcessor
 from boonflow.proxy import get_proxy_level_path
 from boonflow.analysis import LabelDetectionAnalysis
 from boonflow.cloud import get_cached_google_storage_client
-from boonflow import file_storage
 
 import tensorflow as tf
 import os
