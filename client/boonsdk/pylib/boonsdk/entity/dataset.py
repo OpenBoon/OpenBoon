@@ -7,12 +7,12 @@ from ..util import as_id
 __all__ = [
     'LabelScope',
     'Label',
-    'DataSet',
-    'DataSetType'
+    'Dataset',
+    'DatasetType'
 ]
 
 
-class DataSetType(Enum):
+class DatasetType(Enum):
     """
     Types of models that can be Trained.
     """
@@ -25,37 +25,37 @@ class DataSetType(Enum):
     """Recognize faces in an image."""
 
 
-class DataSet(BaseEntity):
+class Dataset(BaseEntity):
 
     def __init__(self, data):
-        super(DataSet, self).__init__(data)
+        super(Dataset, self).__init__(data)
 
     @staticmethod
     def as_id(obj):
         """
-        Extract a DataSet ID from the given object, if one exists.
+        Extract a Dataset ID from the given object, if one exists.
 
         Args:
-            obj (mixed): A DataSet, Model with assigned DataSet, or DataSet unique Id.
+            obj (mixed): A Dataset, Model with assigned Dataset, or Dataset unique Id.
 
         Returns:
-            str: The DataSet id.
+            str: The Dataset id.
         """
         return getattr(obj, 'dataset_id', as_id(obj))
 
     @property
     def name(self):
-        """The name of the DataSet"""
+        """The name of the Dataset"""
         return self._data['name']
 
     @property
     def type(self):
-        """The type of DataSet"""
-        return DataSetType[self._data['type']]
+        """The type of Dataset"""
+        return DatasetType[self._data['type']]
 
     @property
     def model_count(self):
-        """The number of models using this DataSet"""
+        """The number of models using this Dataset"""
         return self._data['modelCount']
 
     @property
@@ -132,7 +132,7 @@ class Label:
         Create a new label.
 
         Args:
-            ds: (DataSet): The DataSet of the label.
+            ds: (Dataset): The Dataset of the label.
             label (str): The label itself.
             bbox (list): A optional list of floats for a bounding box.
             simhash (str): An optional similatity hash.
@@ -155,7 +155,7 @@ class Label:
 
         """
         return {
-            'dataSetId': self.dataset_id,
+            'datasetId': self.dataset_id,
             'label': self.label,
             'bbox': self.bbox,
             'simhash': self.simhash,

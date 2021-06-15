@@ -33,7 +33,7 @@ class AutomlServiceTests : AbstractTest() {
         val automl = create()
 
         assertNull(automl.automlModel)
-        assertEquals("project/foo/region/us-central/datasets/foo", automl.automlDataSet)
+        assertEquals("project/foo/region/us-central/datasets/foo", automl.automlDataset)
         assertEquals("/foo/bar", automl.automlTrainingJob)
     }
 

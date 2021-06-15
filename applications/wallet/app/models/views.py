@@ -66,7 +66,7 @@ def detail_item_modifier(request, item):
 
     # Get the model type restrictions
     model_type = item['type']
-    dataset_id = item.get('dataSetId')
+    dataset_id = item.get('datasetId')
     model_type_info = app.models.get_model_type_info(model_type)
     label_counts = app.datasets.get_label_counts(dataset_id) if dataset_id else []
     min_examples = model_type_info.min_examples

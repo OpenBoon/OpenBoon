@@ -35,7 +35,7 @@ const DatasetLabelsAssets = ({
       {
         type: 'label',
         attribute: `labels.${datasetName}`,
-        dataSetId: datasetId,
+        datasetId,
         values: {
           scope,
           labels: [label],

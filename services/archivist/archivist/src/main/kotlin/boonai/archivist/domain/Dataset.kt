@@ -15,9 +15,9 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 /**
- * Various DataSet types.
+ * Various Dataset types.
  */
-enum class DataSetType(
+enum class DatasetType(
     val label: String,
     val description: String
 ) {
@@ -44,18 +44,18 @@ enum class DataSetType(
 }
 
 /**
- * Properties for a DataSet update.
+ * Properties for a Dataset update.
  */
-class DataSetUpdate(
+class DatasetUpdate(
     val name: String
 )
 
 /**
- * Properties for a new DataSet
+ * Properties for a new Dataset
  */
-class DataSetSpec(
+class DatasetSpec(
     val name: String,
-    val type: DataSetType,
+    val type: DatasetType,
     var description: String = ""
 )
 
@@ -64,28 +64,28 @@ class DataSetSpec(
  * directly or indirectly.
  */
 interface LabelSet {
-    fun dataSetId(): UUID?
+    fun datasetId(): UUID?
 }
 
 @Entity
 @Table(name = "dataset")
-@ApiModel("DataSet", description = "DataSets are groups of Assets.")
-class DataSet(
+@ApiModel("Dataset", description = "Datasets are groups of Assets.")
+class Dataset(
 
     @Id
     @Column(name = "pk_dataset")
-    @ApiModelProperty("The DataSet")
+    @ApiModelProperty("The Dataset")
     val id: UUID,
 
     @Column(name = "pk_project")
     val projectId: UUID,
 
     @Column(name = "str_name")
-    @ApiModelProperty("A name for the DataSet.")
+    @ApiModelProperty("A name for the Dataset.")
     var name: String,
 
     @Column(name = "int_type")
-    val type: DataSetType,
+    val type: DatasetType,
 
     @Column(name = "str_descr")
     val description: String,
@@ -94,24 +94,24 @@ class DataSet(
     val modelCount: Int,
 
     @Column(name = "time_created")
-    @ApiModelProperty("The time the DataSet was created.")
+    @ApiModelProperty("The time the Dataset was created.")
     val timeCreated: Long,
 
     @Column(name = "time_modified")
-    @ApiModelProperty("The last time the DataSet was modified.")
+    @ApiModelProperty("The last time the Dataset was modified.")
     var timeModified: Long,
 
     @Column(name = "actor_created")
-    @ApiModelProperty("The key which created this DataSet")
+    @ApiModelProperty("The key which created this Dataset")
     val actorCreated: String,
 
     @Column(name = "actor_modified")
-    @ApiModelProperty("The key that last made the last modification to this DataSet")
+    @ApiModelProperty("The key that last made the last modification to this Dataset")
     var actorModified: String
 ) : LabelSet {
 
     @JsonIgnore
-    override fun dataSetId(): UUID? {
+    override fun datasetId(): UUID? {
         return id
     }
 
@@ -122,7 +122,7 @@ class DataSet(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is DataSet) return false
+        if (other !is Dataset) return false
 
         if (id != other.id) return false
 
@@ -158,7 +158,7 @@ class UpdateLabelRequest(
 @ApiModel("Label", description = "A Label which denotes a ground truth classification.")
 class Label(
     @ApiModelProperty("The ID of the Model")
-    val dataSetId: UUID,
+    val datasetId: UUID,
     @ApiModelProperty("The label for the Asset")
     val label: String,
     @ApiModelProperty("The scope of the label.")
@@ -184,25 +184,25 @@ class Label(
         if (this === other) return true
         if (other !is Label) return false
 
-        if (dataSetId != other.dataSetId) return false
+        if (datasetId != other.datasetId) return false
         if (bbox != other.bbox) return false
         return true
     }
 
     override fun hashCode(): Int {
-        var result = dataSetId.hashCode()
+        var result = datasetId.hashCode()
         result = 31 * result + (bbox?.hashCode() ?: 0)
         return result
     }
 }
 
-class DataSetFilter(
+class DatasetFilter(
 
     val ids: List<UUID>? = null,
 
     val names: List<String>? = null,
 
-    val types: List<DataSetType>? = null
+    val types: List<DatasetType>? = null
 
 ) : KDaoFilter() {
     @JsonIgnore

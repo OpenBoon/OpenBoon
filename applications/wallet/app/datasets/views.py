@@ -67,7 +67,7 @@ class DatasetsViewSet(ZmlpCreateMixin,
     def get_models(self, request, project_pk, pk):
         """Get the list of used labels and their counts for the given dataset."""
         return self._zmlp_list_from_search_all_pages(request, base_url='/api/v3/models',
-                                                     search_filter={'dataSetIds': [pk]},
+                                                     search_filter={'datasetIds': [pk]},
                                                      serializer_class=SimpleModelSerializer)
 
     @action(methods=['post'], detail=True)

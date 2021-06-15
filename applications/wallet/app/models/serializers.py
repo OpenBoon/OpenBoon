@@ -23,7 +23,7 @@ class ModelSerializer(serializers.Serializer):
     link = serializers.CharField(required=False)
     projectId = serializers.CharField(required=False)
     ready = serializers.BooleanField(required=False)
-    dataSetId = serializers.CharField(required=False, allow_null=True)
+    datasetId = serializers.CharField(required=False, allow_null=True)
 
 
 class ModelTypeRestrictionsSerializer(serializers.Serializer):
