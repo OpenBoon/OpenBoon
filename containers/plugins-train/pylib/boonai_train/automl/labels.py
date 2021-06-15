@@ -60,41 +60,9 @@ class AutomlLabelDetectionSession:
 
         self._delete_train_resources()
 
-        zipped_file = self._download_and_zip_resources(temp_model_url)
+        self._upload_resources(temp_model_url)
 
-        self.upload_model(zipped_file)
-
-    def upload_model(self, zipped_model):
-        # upload model through archivist
-        print(zipped_model)
-
-    def unzip_model_files(self, model_path, file_name):
-
-        """
-        Receives a temp zip file and extract it to a certain folder
-        The Zip file is deleted at the end of the process
-        :param model_path: where the models will be extracted to
-        :param file_name:  zip file name
-        :return:
-        """
-
-        os.chdir(model_path)
-        zip_ref = zipfile.ZipFile(file_name)
-
-        # extract to the model path
-        tmp_dir = tempfile.mkdtemp()
-        zip_ref.extractall(tmp_dir)
-
-        # copying only files
-        for root, dirs, files in os.walk(tmp_dir):
-            for file in files:
-                path_file = os.path.join(root, file)
-                shutil.copyfile(path_file, "{}/{}".format(model_path, file))
-
-        zip_ref.close()
-        os.remove(file_name)
-
-    def _download_and_zip_resources(self, model_url):
+    def _upload_resources(self, model_url):
 
         self.emit_status('Download and zipping exported trained files')
 
@@ -117,10 +85,10 @@ class AutomlLabelDetectionSession:
 
         # copy model and label files to tmp directory and zip it
         tmp = tempfile.mkdtemp()
-        shutil.copy(self.model_file, tmp)
-        shutil.copy(self.label_file, tmp)
+        shutil.copy(self.model_file, os.path.join(tmp, "model.tflite"))
+        shutil.copy(self.label_file, os.path.join(tmp, "labels.txt"))
 
-        return zip_directory(tmp)
+        self.app.models.upload_trained_model(self.model, tmp, None)
 
     def _move_asset_to_temp_bucket(self, asset):
 
@@ -178,8 +146,6 @@ class AutomlLabelDetectionSession:
         return automl_model
 
     def _export_model(self, automl_model):
-        # export_model_location = file_storage.projects\
-        #     .get_directory_location('models', self.model.id)
 
         export_model_location = f'{self.training_bucket}/{self.model.id}/model/'
 

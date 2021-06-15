@@ -2,6 +2,7 @@ from numpy import argsort
 from cv2 import imread, resize
 from urllib.parse import urlparse
 
+from boonsdk import app_from_env
 from boonflow import Argument, AssetProcessor
 from boonflow.proxy import get_proxy_level_path
 from boonflow.analysis import LabelDetectionAnalysis
@@ -9,6 +10,10 @@ from boonflow.cloud import get_cached_google_storage_client
 from boonflow import file_storage
 
 import tensorflow as tf
+import os
+import zipfile
+import tempfile
+import shutil
 
 
 class AutoMLModelClassifier(AssetProcessor):
@@ -18,6 +23,7 @@ class AutoMLModelClassifier(AssetProcessor):
         super(AutoMLModelClassifier, self).__init__()
         self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
 
+        self.app = None
         self.app_model = None
         self.predictions = []
         self.analysis = None
@@ -35,28 +41,47 @@ class AutoMLModelClassifier(AssetProcessor):
         """Init constructor """
         self.app_model = self.app.models.get_model(self.arg_value("model_id"))
         self.display_name = self.app_model.id.replace("-", "")
+        self.app = app_from_env()
 
-        self.download_model()
+        self.__download_model()
         self.__load_interpreters()
 
-    def download_model(self):
-        dir_url = file_storage.projects.get_directory_location('models', self.app_model.id)
-        parsed_uri = urlparse(dir_url)
+    def __download_model(self):
 
-        blobs = self.storage_client \
-            .list_blobs(bucket_or_name=parsed_uri.netloc,
-                        prefix=f"model-export/icn/tflite-{self.display_name}")
+        tmp = tempfile.mkdtemp()
+        tmp_file = os.path.join(tmp, "model.zip")
+        self.app.models.export_trained_model(self.app_model, tmp_file)
 
-        model_blob = None
-        label_blob = None
-        for blob in blobs:
-            if blob.name.endswith('model.tflite'):
-                model_blob = blob
-            if blob.name.endswith('dict.txt'):
-                label_blob = blob
+        self._unzip_model_files(tmp, tmp_file)
 
-        self.model_file = file_storage.localize_file(model_blob.name)
-        self.label_file = file_storage.localize_file(label_blob.name)
+        self.model_file = os.path.join(tmp, "model.tflite")
+        self.label_file = os.path.join(tmp, "labels.txt")
+
+    def _unzip_model_files(self, model_path, file_name):
+
+        """
+        Receives a temp zip file and extract it to a certain folder
+        The Zip file is deleted at the end of the process
+        :param model_path: where the models will be extracted to
+        :param file_name:  zip file name
+        :return:
+        """
+
+        os.chdir(model_path)
+        zip_ref = zipfile.ZipFile(file_name)
+
+        # extract to the model path
+        tmp_dir = tempfile.mkdtemp()
+        zip_ref.extractall(tmp_dir)
+
+        # copying only files
+        for root, dirs, files in os.walk(tmp_dir):
+            for file in files:
+                path_file = os.path.join(root, file)
+                shutil.copyfile(path_file, "{}/{}".format(model_path, file))
+
+        zip_ref.close()
+        os.remove(file_name)
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
