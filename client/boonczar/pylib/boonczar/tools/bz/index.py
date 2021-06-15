@@ -17,13 +17,19 @@ def add_subparser(subparsers):
     list_command.add_argument('-n', metavar='PROJECT_NAME', help='The project name')
     list_command.set_defaults(func=display_list)
 
-    # List Command
+    # Migrate project
     mig_cmd = commands.add_parser('migrate-project', help='Migrate a project index')
     mig_cmd.add_argument('id', metavar='PROJECT_ID', help='The project id')
     mig_cmd.add_argument('version', metavar='VERSION', help='The mapping version', type=int)
     mig_cmd.add_argument('-s', '--size', metavar='SIZE',
                          help='The predicted index size, defaults to same size')
     mig_cmd.set_defaults(func=migrate_project)
+
+    # Migrate all projects
+    mig_all = commands.add_parser('migrate-all', help='Migrate all projects')
+    mig_all.add_argument('src_ver', metavar='SOURCE VERSION', help='The mapping version', type=int)
+    mig_all.add_argument('dst_ver', metavar='DEST VERSION', help='The mapping version', type=int)
+    mig_all.set_defaults(func=migrate_all_projects)
 
     close_cmd = commands.add_parser('close', help='Close an index.')
     close_cmd.add_argument('index', metavar='INDEX', help='The Index id')
@@ -85,3 +91,15 @@ def migrate_project(args):
                                               "english_strict", args.version,
                                               size=size)
     pprint.pprint(task._data)
+
+
+def migrate_all_projects(args):
+    migrated = set()
+    for index in czar.indexes.find_indexes():
+        if index.major_version == args.src_ver and index.state == boonczar.IndexState.READY:
+            if index.project_id in migrated:
+                print('ERR: project {index.project_name} [{index.project_id}] has already been migrated.')
+                continue
+            print(f'Migrating {index.project_name} to v{args.dst_ver}')
+            czar.indexes.migrate_project_index(index.project_id, 'english_strict', args.dst_ver)
+            migrated.add(index.project_id)
