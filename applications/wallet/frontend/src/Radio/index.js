@@ -7,23 +7,26 @@ import RadioIcon from './Icon'
 const Radio = ({ option: { value, label, legend, initialValue }, onClick }) => {
   return (
     <div>
-      <label css={{ display: 'flex' }}>
+      <label
+        css={{ display: 'flex', alignItems: legend ? 'flex-start' : 'center' }}
+      >
         <RadioIcon value={value} isChecked={initialValue} onClick={onClick} />
-        <div
-          css={{
-            paddingLeft: spacing.base,
-            fontWeight: legend
-              ? typography.weight.bold
-              : typography.weight.regular,
-            color: initialValue
-              ? colors.structure.white
-              : colors.structure.steel,
-          }}
-        >
-          {label}
+
+        <div css={{ paddingLeft: spacing.moderate }}>
+          <div
+            css={{
+              fontWeight: legend
+                ? typography.weight.bold
+                : typography.weight.regular,
+              color: colors.structure.white,
+            }}
+          >
+            {label}
+          </div>
+
+          <div css={{ color: colors.structure.zinc }}>{legend}</div>
         </div>
       </label>
-      <div css={{ paddingLeft: spacing.comfy }}>{legend}</div>
     </div>
   )
 }

@@ -14,7 +14,7 @@ import PenSvg from '../Icons/pen.svg'
 import { encode } from '../Filters/helpers'
 import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
-import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../Panel'
+import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../Panel/helpers'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'

@@ -1,29 +1,14 @@
 import PropTypes from 'prop-types'
 
-import { useLocalStorage } from '../LocalStorage/helpers'
-
-import { reducer } from '../Resizeable/reducer'
-
 import Resizeable from '../Resizeable'
 
 import PanelHeader from './Header'
 import PanelContent from './Content'
 
-import { onMouseUp } from './helpers'
-
-export const MIN_WIDTH = 400
+import { MIN_WIDTH, usePanel, onMouseUp } from './helpers'
 
 const Panel = ({ openToThe, children }) => {
-  const [{ openPanel, isOpen }, dispatch] = useLocalStorage({
-    key: `${openToThe}OpeningPanelSettings`,
-    reducer,
-    initialState: {
-      size: MIN_WIDTH,
-      originSize: 0,
-      isOpen: false,
-      openPanel: '',
-    },
-  })
+  const [{ openPanel, isOpen }, dispatch] = usePanel({ openToThe })
 
   const panel = children[openPanel] || {}
 
