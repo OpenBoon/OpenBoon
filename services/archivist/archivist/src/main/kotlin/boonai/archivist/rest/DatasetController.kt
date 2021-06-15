@@ -46,7 +46,7 @@ class DatasetController(
         return HttpUtils.deleted("dataset", id, true)
     }
 
-    @ApiOperation("Get a Dataset record")
+    @ApiOperation("Update a Dataset record")
     @PutMapping(value = ["/api/v3/datasets/{id}"])
     fun put(@PathVariable id: UUID, @RequestBody spec: DatasetUpdate): Any {
         val ds = datasetService.getDataset(id)
