@@ -5,15 +5,10 @@ import datasetConcepts from '../__mocks__/datasetConcepts'
 import DatasetConcepts from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const DATASET_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
+const DATASET_ID = '4b0b10a8-cec1-155c-b12f-ee2bc8787e06'
 
 describe('<DatasetConcepts />', () => {
   it('should render properly with no concepts', () => {
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/datasets/[datasetId]',
-      query: { projectId: PROJECT_ID, datasetId: DATASET_ID },
-    })
-
     require('swr').__setMockUseSWRResponse({
       data: {
         count: 0,
@@ -23,7 +18,27 @@ describe('<DatasetConcepts />', () => {
       },
     })
 
-    const component = TestRenderer.create(<DatasetConcepts />)
+    const component = TestRenderer.create(
+      <DatasetConcepts projectId={PROJECT_ID} datasetId={DATASET_ID} actions />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with concepts and no actions', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('swr').__setMockUseSWRResponse({ data: datasetConcepts })
+
+    const component = TestRenderer.create(
+      <DatasetConcepts
+        projectId={PROJECT_ID}
+        datasetId={DATASET_ID}
+        actions={false}
+      />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -33,14 +48,11 @@ describe('<DatasetConcepts />', () => {
 
     require('next/router').__setMockPushFunction(mockRouterPush)
 
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/datasets/[datasetId]',
-      query: { projectId: PROJECT_ID, datasetId: DATASET_ID },
-    })
-
     require('swr').__setMockUseSWRResponse({ data: datasetConcepts })
 
-    const component = TestRenderer.create(<DatasetConcepts />)
+    const component = TestRenderer.create(
+      <DatasetConcepts projectId={PROJECT_ID} datasetId={DATASET_ID} actions />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 

@@ -8,7 +8,6 @@ import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import ItemTitle from '../Item/Title'
 import ItemList from '../Item/List'
 import ItemSeparator from '../Item/Separator'
-import Tabs from '../Tabs'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 
@@ -94,10 +93,6 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
 
         <ModelMatrixLink projectId={projectId} modelId={modelId} />
       </div>
-
-      <Tabs
-        tabs={[{ title: 'Dataset', href: '/[projectId]/models/[modelId]' }]}
-      />
     </div>
   )
 }

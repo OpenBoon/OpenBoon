@@ -9,7 +9,7 @@ import User from '../../User'
 import DatasetModelsTable from '../Table'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const DATASET_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
+const DATASET_ID = '4b0b10a8-cec1-155c-b12f-ee2bc8787e06'
 
 describe('<DatasetModelsTable />', () => {
   it('should render properly without models', async () => {
