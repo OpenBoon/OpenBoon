@@ -19,7 +19,7 @@ class DatasetSerializer(DatasetDetailSerializer):
 
     def get_concept_count(self, dataset):
         client = self.context['request'].client
-        path = os.path.join(f'/api/v4/datasets/{dataset["id"]}/_label_counts/')
+        path = f'/api/v4/datasets/{dataset["id"]}/_label_counts/'
         label_counts = client.get(path)
         return len(label_counts)
 
