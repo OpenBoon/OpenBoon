@@ -183,15 +183,16 @@ class TestDatasetsViewsets:
     def test_get_labels(self, login, project, api_client, monkeypatch):
 
         def mock_response(*args, **kwargs):
-            return {'Mountains': 8}
+            return {'defective': {'TEST': 403, 'TRAIN': 3758}, 'ok': {'TEST': 212, 'TRAIN': 2875}}
 
         dataset_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
         path = reverse('dataset-get-labels', kwargs={'project_pk': project.id, 'pk': dataset_id})
         monkeypatch.setattr(BoonClient, 'get', mock_response)
         response = api_client.get(path)
         content = check_response(response)
-        assert content == {'count': 1,
-                           'results': [{'label': 'Mountains', 'count': 8}]}
+        assert content == {'count': 2,
+                           'results': [{'label': 'defective', 'trainCount': 3758, 'testCount': 403},
+                                       {'label': 'ok', 'trainCount': 2875, 'testCount': 212}]}
 
     def test_get_models(self, login, project, api_client, monkeypatch):
         dataset_id = '0db0a87e-42a7-11d5-91ea-fea0e31b3bfe'

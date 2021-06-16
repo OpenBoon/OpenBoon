@@ -54,11 +54,13 @@ class DatasetsViewSet(ZmlpCreateMixin,
     @action(methods=['get'], detail=True)
     def get_labels(self, request, project_pk, pk):
         """Get the list of used labels and their counts for the given dataset."""
-        path = f'{self.zmlp_root_api_path}/{pk}/_label_counts'
+        path = f'/api/v4/datasets/{pk}/_label_counts/'
         response = request.client.get(path)
         labels = []
-        for label in response:
-            labels.append({'label': label, 'count': response[label]})
+        for label, counts in response.items():
+            labels.append({'label': label,
+                           'trainCount': counts.get('TRAIN', 0),
+                           'testCount': counts.get('TEST', 0)})
         data = {'count': len(labels),
                 'results': labels}
         return Response(status=status.HTTP_200_OK, data=data)
