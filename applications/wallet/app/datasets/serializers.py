@@ -18,9 +18,8 @@ class DatasetSerializer(DatasetDetailSerializer):
     conceptCount = serializers.SerializerMethodField(method_name='get_concept_count')
 
     def get_concept_count(self, dataset):
-        zmlp_root_api_path = self.context['view'].zmlp_root_api_path
         client = self.context['request'].client
-        path = os.path.join(zmlp_root_api_path, str(dataset['id']), '_label_counts')
+        path = os.path.join(f'/api/v4/datasets/{dataset["id"]}/_label_counts/')
         label_counts = client.get(path)
         return len(label_counts)
 

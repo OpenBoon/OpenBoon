@@ -14,8 +14,7 @@ from datasets.serializers import (DatasetSerializer, RemoveLabelsSerializer,
                                   DatasetTypeSerializer)
 from models.serializers import SimpleModelSerializer
 from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpCreateMixin,
-                               ZmlpDestroyMixin, ZmlpRetrieveMixin,
-                               ListViewType)
+                               ZmlpDestroyMixin, ZmlpRetrieveMixin, ListViewType, ZmlpUpdateMixin)
 from wallet.exceptions import InvalidRequestError
 from wallet.utils import validate_zmlp_data
 
@@ -24,7 +23,7 @@ class DatasetsViewSet(ZmlpCreateMixin,
                       ZmlpListMixin,
                       ZmlpRetrieveMixin,
                       ZmlpDestroyMixin,
-                      # ZmlpUpdateMixin,  # TODO: Put back in once updating Datasets is supported
+                      ZmlpUpdateMixin,
                       BaseProjectViewSet):
 
     zmlp_root_api_path = '/api/v3/datasets'
@@ -43,13 +42,12 @@ class DatasetsViewSet(ZmlpCreateMixin,
             raise InvalidRequestError(detail={'detail': [msg]})
         return super(DatasetsViewSet, self).create(request, project_pk)
 
-    # TODO: Put back in once updating Datasets is supported
-    # def update(self, request, project_pk, pk):
-    #     if request.data.get('projectId') is not None and request.data.get('projectId') != project_pk:
-    #         msg = 'Invalid request. You can only update datasets for the current project context.'
-    #         raise InvalidRequestError(detail={'detail': [msg]})
-    #
-    #     return super(DatasetsViewSet, self).update(request, project_pk, pk)
+    def update(self, request, project_pk, pk):
+        if request.data.get('projectId') is not None and request.data.get('projectId') != project_pk:
+            msg = 'Invalid request. You can only update datasets for the current project context.'
+            raise InvalidRequestError(detail={'detail': [msg]})
+
+        return super(DatasetsViewSet, self).update(request, project_pk, pk)
 
     @action(methods=['get'], detail=True)
     def get_labels(self, request, project_pk, pk):

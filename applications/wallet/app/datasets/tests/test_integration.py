@@ -1,4 +1,5 @@
 from unittest.mock import Mock, patch
+from uuid import uuid4
 
 import pytest
 from boonsdk import LabelScope
@@ -146,15 +147,34 @@ class TestDatasetsViewsets:
         content = check_response(response, status=status.HTTP_404_NOT_FOUND)
         assert content['detail'] == ['Not found.']
 
-    # TODO: Put back in once updating Datasets is supported
-    # def test_update(self, login, api_client, project, monkeypatch):
-    #     pass
-    #
-    # def test_partial_update(self, login, api_client, project, monkeypatch):
-    #     pass
-    #
-    # def test_update_type_not_allowed(self, login, api_client, project, monkeypatch):
-    #     pass
+    def test_update_dataset(self, login, api_client, project, monkeypatch):
+        dataset_id = 'ef965880-4559-10f2-801c-4a8fc1a4e308'
+
+        def mock_put_response(*args, **kwargs):
+            return {'type': 'dataset', 'id': dataset_id, 'op': 'update', 'success': True}  # noqa
+
+        def mock_get_response(*args, **kwargs):
+            return {'defective': {'TEST': 403, 'TRAIN': 3758}, 'ok': {'TEST': 212, 'TRAIN': 2875}}  # noqa
+
+        monkeypatch.setattr(BoonClient, 'put', mock_put_response)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_response)
+        path = reverse('dataset-detail', kwargs={'project_pk': project.id, 'pk': dataset_id})
+        body = {'id': dataset_id, 'projectId': project.id, 'name': 'quality', 'type': 'Classification', 'description': 'A dataset for model training', 'modelCount': 0, 'timeCreated': 1616783169869, 'timeModified': 1623874271586, 'actorCreated': '931fd6fc-6538-48d8-b7f5-cb45613d9503/Admin Console Generated Key - c4dfc976-2df2-47f4-8cd6-ad5b57f1d558 - jbuhler@zorroa.com_6892bd17-8660-49f5-be2a-843d87c47bb3', 'actorModified': '56128e24-9cd4-43c1-860f-4beedec93ef6/danny-dev-delete-me'}
+        response = check_response(api_client.put(path, body))
+        assert response == {'description': 'A dataset for model training',
+                            'id': 'ef965880-4559-10f2-801c-4a8fc1a4e308',
+                            'modelCount': 0,
+                            'name': 'quality',
+                            'projectId': '6abc33f0-4acf-4196-95ff-4cbb7f640a06',
+                            'timeCreated': 1616783169869,
+                            'timeModified': 1623874271586,
+                            'type': 'Classification'}
+
+    def test_update_dataset_bad_project_id(self, login, api_client, project, monkeypatch):
+        dataset_id = 'ef965880-4559-10f2-801c-4a8fc1a4e308'
+        body = {'id': dataset_id, 'projectId': project.id, 'name': 'quality', 'type': 'Classification', 'description': 'A dataset for model training', 'modelCount': 0, 'timeCreated': 1616783169869, 'timeModified': 1623874271586, 'actorCreated': '931fd6fc-6538-48d8-b7f5-cb45613d9503/Admin Console Generated Key - c4dfc976-2df2-47f4-8cd6-ad5b57f1d558 - jbuhler@zorroa.com_6892bd17-8660-49f5-be2a-843d87c47bb3', 'actorModified': '56128e24-9cd4-43c1-860f-4beedec93ef6/danny-dev-delete-me'}
+        path = reverse('dataset-detail', kwargs={'project_pk': str(uuid4()), 'pk': dataset_id})
+        check_response(api_client.put(path, body), status=403)
 
     def test_destroy_label(self, login, project, api_client, monkeypatch):
         def mock_response(*args, **kwargs):
