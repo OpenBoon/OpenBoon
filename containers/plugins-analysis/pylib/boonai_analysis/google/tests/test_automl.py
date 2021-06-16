@@ -1,7 +1,11 @@
 import logging
+import os
+import shutil
 
+from tempfile import mkdtemp
 from pytest import approx
 from unittest.mock import patch
+from shutil import copy
 
 from boonsdk.app import ModelApp
 from boonai_analysis.google import AutoMLModelClassifier
@@ -14,25 +18,36 @@ logging.basicConfig()
 class AutoMLModelClassifierTests(PluginUnitTestCase):
     test_img = test_path("training/test_dsy.jpg")
 
+    @patch('tempfile.mkdtemp')
+    @patch.object(ModelApp, 'export_trained_model')
     @patch("boonflow.cloud.get_google_storage_client")
     @patch("boonflow.file_storage.projects.get_directory_location")
     @patch("boonai_analysis.google.automl.get_proxy_level_path")
     @patch.object(ModelApp, 'find_one_model')
-    @patch.object(ModelApp, "get_model")
+    @patch.object(ModelApp, 'get_model')
     def test_predict(self, model_patch,
                      find_model,
                      proxy_patch,
                      directory_location_patch,
-                     gs_patch):
+                     gs_patch,
+                     export_model_patch,
+                     tmp_dir_patch):
         frame = Frame(TestAsset(self.test_img))
         ml_client = MockAutoMLClient()
-        args = {"model_id": ml_client.id, "automl_model_id": ml_client}
+        args = {"model_id": "123456-789", "automl_model_id": ml_client}
 
+        temp_dir = mkdtemp()
         model_patch.return_value = MockBoonaiModel()
         find_model.return_value = MockBoonaiModel()
         directory_location_patch.return_value = test_path("models/tflite")
         proxy_patch.return_value = self.test_img
         gs_patch.return_value = MockGsClient()
+        export_model_patch.return_value = None
+        tmp_dir_patch.side_effect = [test_path('models/tflite-test'), temp_dir]
+
+        os.mkdir(test_path('models/tflite-test'))
+        copy(test_path('models/tflite/model.zip'),
+             test_path('models/tflite-test/model.zip'))
 
         processor = self.init_processor(AutoMLModelClassifier(), args)
         processor.process(frame)
@@ -41,6 +56,7 @@ class AutoMLModelClassifierTests(PluginUnitTestCase):
             assert result.label == "red_flower"
             assert result.score == approx(0.154, 0.01)
 
+        shutil.rmtree(test_path('models/tflite-test'))
 
 class MockGsClient:
     def list_blobs(self, *args, **kwargs):

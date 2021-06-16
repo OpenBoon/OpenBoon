@@ -37,9 +37,9 @@ class AutoMLModelClassifier(AssetProcessor):
 
     def init(self):
         """Init constructor """
+        self.app = app_from_env()
         self.app_model = self.app.models.get_model(self.arg_value("model_id"))
         self.display_name = self.app_model.id.replace("-", "")
-        self.app = app_from_env()
 
         self.__download_model()
         self.__load_interpreters()
@@ -76,7 +76,7 @@ class AutoMLModelClassifier(AssetProcessor):
         for root, dirs, files in os.walk(tmp_dir):
             for file in files:
                 path_file = os.path.join(root, file)
-                shutil.copyfile(path_file, "{}/{}".format(model_path, file))
+                shutil.copyfile(path_file, os.path.join(model_path, file))
 
         zip_ref.close()
         os.remove(file_name)
