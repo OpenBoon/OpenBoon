@@ -91,7 +91,11 @@ const Dataset = () => {
               label={edit}
             />
           ) : (
-            <DatasetConcepts />
+            <DatasetConcepts
+              projectId={projectId}
+              datasetId={datasetId}
+              actions
+            />
           ))}
 
         {pathname === '/[projectId]/datasets/[datasetId]/labels' && (

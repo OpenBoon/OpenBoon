@@ -2,8 +2,10 @@ import Head from 'next/head'
 
 import Breadcrumbs from '../Breadcrumbs'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
+import Tabs from '../Tabs'
 
 import ModelContent from './Content'
+import ModelDataset from './Dataset'
 
 const Model = () => {
   return (
@@ -21,6 +23,12 @@ const Model = () => {
 
       <SuspenseBoundary role={ROLES.ML_Tools}>
         <ModelContent />
+
+        <Tabs
+          tabs={[{ title: 'Dataset', href: '/[projectId]/models/[modelId]' }]}
+        />
+
+        <ModelDataset />
       </SuspenseBoundary>
     </>
   )

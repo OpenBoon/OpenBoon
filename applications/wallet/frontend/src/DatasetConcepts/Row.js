@@ -5,25 +5,28 @@ import DatasetConceptsMenu from './Menu'
 const DatasetConceptsRow = ({
   projectId,
   datasetId,
-  concept: { label, count },
+  actions,
+  concept: { label, trainCount, testCount },
   revalidate,
 }) => {
   return (
     <tr>
       <td>{label}</td>
 
-      <td>{count}</td>
+      <td>{trainCount}</td>
 
-      <td>{count}</td>
+      <td>{testCount}</td>
 
-      <td>
-        <DatasetConceptsMenu
-          projectId={projectId}
-          datasetId={datasetId}
-          label={label}
-          revalidate={revalidate}
-        />
-      </td>
+      {actions && (
+        <td>
+          <DatasetConceptsMenu
+            projectId={projectId}
+            datasetId={datasetId}
+            label={label}
+            revalidate={revalidate}
+          />
+        </td>
+      )}
     </tr>
   )
 }
@@ -31,9 +34,11 @@ const DatasetConceptsRow = ({
 DatasetConceptsRow.propTypes = {
   projectId: PropTypes.string.isRequired,
   datasetId: PropTypes.string.isRequired,
+  actions: PropTypes.bool.isRequired,
   concept: PropTypes.shape({
     label: PropTypes.string.isRequired,
-    count: PropTypes.number.isRequired,
+    trainCount: PropTypes.number.isRequired,
+    testCount: PropTypes.number.isRequired,
   }).isRequired,
   revalidate: PropTypes.func.isRequired,
 }
