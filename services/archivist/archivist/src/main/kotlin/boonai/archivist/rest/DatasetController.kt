@@ -1,11 +1,12 @@
 package boonai.archivist.rest
 
 import boonai.archivist.domain.Dataset
-import boonai.archivist.domain.DatasetFilter
 import boonai.archivist.domain.DatasetSpec
-import boonai.archivist.domain.DatasetType
-import boonai.archivist.domain.GenericBatchUpdateResponse
+import boonai.archivist.domain.DatasetUpdate
 import boonai.archivist.domain.UpdateLabelRequest
+import boonai.archivist.domain.GenericBatchUpdateResponse
+import boonai.archivist.domain.DatasetFilter
+import boonai.archivist.domain.DatasetType
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.service.DatasetService
 import boonai.archivist.util.HttpUtils
@@ -43,6 +44,14 @@ class DatasetController(
     fun delete(@PathVariable id: UUID): Any {
         datasetService.deleteDataset(datasetService.getDataset(id))
         return HttpUtils.deleted("dataset", id, true)
+    }
+
+    @ApiOperation("Update a Dataset record")
+    @PutMapping(value = ["/api/v3/datasets/{id}"])
+    fun put(@PathVariable id: UUID, @RequestBody spec: DatasetUpdate): Any {
+        val ds = datasetService.getDataset(id)
+        datasetService.updateDataset(ds, spec)
+        return HttpUtils.updated("dataset", id, true)
     }
 
     @ApiOperation("Rename label")

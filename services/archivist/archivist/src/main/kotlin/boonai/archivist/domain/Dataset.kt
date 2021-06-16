@@ -47,7 +47,8 @@ enum class DatasetType(
  * Properties for a Dataset update.
  */
 class DatasetUpdate(
-    val name: String
+    val name: String,
+    val description: String
 )
 
 /**
@@ -88,7 +89,7 @@ class Dataset(
     val type: DatasetType,
 
     @Column(name = "str_descr")
-    val description: String,
+    var description: String,
 
     @Column(name = "int_model_count")
     val modelCount: Int,
