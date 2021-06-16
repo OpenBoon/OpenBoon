@@ -8,7 +8,7 @@ import tempfile
 from google.cloud import automl
 from urllib.parse import urlparse
 from boonflow import file_storage
-from boonflow.cloud import get_gcp_project_id, get_google_storage_client
+from boonflow.cloud import get_gcp_project_id, get_cached_google_storage_client
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +31,8 @@ class AutomlLabelDetectionSession:
 
         self.app = boonsdk.app_from_env()
         self.client = automl.AutoMlClient()
+        self.storage_client = get_cached_google_storage_client()
+
         self.project_location = f"projects/{get_gcp_project_id()}/locations/us-central1"
         # Can only be 32 chars
         self.display_name = self.model.id.replace("-", "")
@@ -88,18 +90,16 @@ class AutomlLabelDetectionSession:
 
         self.app.models.upload_trained_model(self.model, tmp, None)
 
-    def _move_asset_to_temp_bucket(self, asset):
-
+    def _copy_asset_to_temp_bucket(self, asset):
         # get proxy uri
         asset_uri = self._get_img_proxy_uri(asset)
-        storage_client = get_google_storage_client()
 
         parse_source = urlparse(asset_uri)
-        bucket_source = storage_client.get_bucket(parse_source.netloc)
+        bucket_source = self.storage_client.get_bucket(parse_source.netloc)
         blob_source = bucket_source.blob(parse_source.path[1:])
 
         parse_destination = urlparse(self.training_bucket)
-        bucket_destination = storage_client.get_bucket(parse_destination.netloc)
+        bucket_destination = self.storage_client.get_bucket(parse_destination.netloc)
 
         blob_to = bucket_source.copy_blob(blob_source,
                                           bucket_destination,
@@ -221,7 +221,7 @@ class AutomlLabelDetectionSession:
                     test = "TEST"
 
                 # move asset to temp bucket
-                tmp_uri = self._move_asset_to_temp_bucket(asset)
+                tmp_uri = self._copy_asset_to_temp_bucket(asset)
 
                 if tmp_uri:
                     fp.write(f"{test}{tmp_uri},{tag}\n")

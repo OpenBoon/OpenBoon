@@ -4,7 +4,7 @@ from unittest.mock import patch
 from boonsdk import Model
 from boonai_train.automl.labels import AutomlLabelDetectionSession
 from boonflow import file_storage
-from boonflow.testing import PluginUnitTestCase, TestAsset
+from boonflow.testing import PluginUnitTestCase, TestAsset, test_path
 
 logging.basicConfig(level=logging.INFO)
 
@@ -17,12 +17,20 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
             'name': 'unittest-test'
         })
 
+        base = 'model-export_icn_tflite-model_exportable_2-2021-05-28T21_55_41.973132Z_'
+        label_file_name = '%sdict.txt' % base
+        model_file_name = '%smodel.tflite' % base
+        self.model_file = test_path(f"models/tflite/{model_file_name}")
+        self.label_file = test_path(f"models/tflite/{label_file_name}")
+
     @patch("google.cloud.automl.AutoMlClient")
     @patch.object(AutomlLabelDetectionSession, '_create_automl_dataset')
     @patch('boonai_train.automl.labels.get_gcp_project_id')
-    def test_create_automl_dataset(self, get_proj_patch, client_patch, automlclient):
+    @patch("boonflow.cloud.get_google_storage_client")
+    def test_create_automl_dataset(self, gs_patch, get_proj_patch, client_patch, automlclient):
         client_patch.return_value = MockAutoMlDataset()
         get_proj_patch.return_value = MockAutoMlClient()
+        gs_patch.return_value = MockGsClient()
         automlclient.return_value = None
 
         session = AutomlLabelDetectionSession(self.model)
@@ -34,7 +42,9 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
     @patch("google.cloud.automl.AutoMlClient")
     @patch.object(AutomlLabelDetectionSession, '_store_labels_file')
     @patch('boonai_train.automl.labels.get_gcp_project_id')
+    @patch("boonflow.cloud.get_google_storage_client")
     def test_import_labels_into_dataset(self,
+                                        gs_patch,
                                         get_proj_patch,
                                         store_labels_patch,
                                         client_patch,
@@ -43,6 +53,7 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
         store_labels_patch.return_value = "gs://foo/bar/labels.csv"
         client_patch.return_value = MockAutoMlClient
         dataset_patch.return_value = MockAutoMlDataset()
+        gs_patch.return_value = MockGsClient()
 
         session = AutomlLabelDetectionSession(self.model)
         dataset = session._create_automl_dataset()
@@ -51,8 +62,10 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
     @patch("google.cloud.automl.AutoMlClient")
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch('boonai_train.automl.labels.get_gcp_project_id')
-    def test_get_image_uri(self, get_proj_patch, native_uri_patch, client_patch):
+    @patch("boonflow.cloud.get_google_storage_client")
+    def test_get_image_uri(self, gs_patch, get_proj_patch, native_uri_patch, client_patch):
         client_patch.return_value = MockAutoMlClient
+        gs_patch.return_value = MockGsClient()
         get_proj_patch.return_value = "boonai-dev"
         native_uri_patch.return_value = "gs://foo/bar"
         asset = TestAsset('flowers/daisy/5547758_eea9edfd54_n.jpg')
@@ -73,7 +86,9 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
 
     @patch("google.cloud.automl.AutoMlClient")
     @patch('boonai_train.automl.labels.get_gcp_project_id')
-    def test_get_label(self, get_proj_patch, client_patch):
+    @patch("boonflow.cloud.get_google_storage_client")
+    def test_get_label(self, gs_patch, get_proj_patch, client_patch):
+        gs_patch.return_value = MockGsClient()
         client_patch.return_value = MockAutoMlClient
         get_proj_patch.return_value = "boonai-dev"
         asset = TestAsset('flowers/daisy/5547758_eea9edfd54_n.jpg')
@@ -100,11 +115,14 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
     @patch('boonai_train.automl.labels.get_gcp_project_id')
     @patch("google.cloud.automl.AutoMlClient")
     @patch.object(file_storage.projects, 'get_directory_location')
-    def test_export_model(self, directory_loc_patch,
+    @patch("boonflow.cloud.get_google_storage_client")
+    def test_export_model(self, gs_patch,
+                          directory_loc_patch,
                           automl_patch,
                           project_id_patch,
                           emit_status_patch,
                           export_patch):
+        gs_patch.return_value = MockGsClient()
         directory_loc_patch.return_value = 'cloud/location/directory/path'
         automl_patch.return_value = MockAutoMlClient()
         project_id_patch.return_value = "boonai-dev"
@@ -115,26 +133,53 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
         mock_automl = AutomlLabelDetectionSession(self.model)
         mock_automl._export_model(automl_model)
 
-    @patch('google.cloud.storage.Client')
     @patch.object(AutomlLabelDetectionSession, '_get_img_proxy_uri')
     @patch('boonai_train.automl.labels.get_gcp_project_id')
     @patch("google.cloud.automl.AutoMlClient")
+    @patch("boonflow.cloud.get_google_storage_client")
     def test_move_asset_to_temp_bucket(self,
+                                       gs_patch,
                                        automl_patch,
                                        project_id_patch,
-                                       img_proxy_patch,
-                                       gs_client_patch):
-        automl_patch.return_value = MockAutoMlClient
+                                       img_proxy_patch):
+        gs_patch.return_value = MockGsClient()
+        automl_patch.return_value = MockAutoMlClient()
         project_id_patch.return_value = "boonai-dev"
         img_proxy_patch.return_value = "gs://bucket/project/asset"
-        gs_client_patch.return_value = MockGoogleStorageClient
 
         test_asset = TestAsset()
         mock_automl = AutomlLabelDetectionSession(self.model,
                                                   training_bucket='gs://destination-bucket/')
-        copied_url = mock_automl._move_asset_to_temp_bucket(test_asset)
+
+        copied_url = mock_automl._copy_asset_to_temp_bucket(test_asset)
 
         assert copied_url == 'gs://Bucket/copied-value'
+
+    @patch("boonsdk.app.model_app.ModelApp.upload_trained_model")
+    @patch.object(file_storage, 'localize_file')
+    @patch('google.cloud.storage.Client')
+    @patch('boonai_train.automl.labels.get_gcp_project_id')
+    @patch("google.cloud.automl.AutoMlClient")
+    @patch("boonflow.cloud.get_google_storage_client")
+    def test_upload_resources(self,
+                              gs_patch,
+                              automl_patch,
+                              project_id_patch,
+                              gs_client_patch,
+                              file_storage_patch,
+                              upload_trained_model_patch):
+        resource_url = 'gs://zvi-dev-training/model-test/model/export/icn/exported/model.tflite'
+        gs_patch.return_value = MockGsClient()
+        automl_patch.return_value = MockAutoMlClient()
+        gs_client_patch.return_value = MockGsClient()
+        project_id_patch.return_value = "boonai-dev"
+        file_storage_patch.side_effect = [self.model_file, self.label_file]
+        upload_trained_model_patch.return_value = None
+
+        mock_automl = AutomlLabelDetectionSession(self.model,
+                                                  training_bucket='gs://destination-bucket/')
+
+        mock_automl._upload_resources(resource_url)
 
 
 class MockBucket:
@@ -189,9 +234,22 @@ class MockImportDataResult:
         return self
 
 
-class MockGoogleStorageClient:
-    def get_bucket(self):
+class MockGsClient:
+
+    def list_blobs(self, *args, **kwargs):
+        base = 'model-export_icn_tflite-model_exportable_2-2021-05-28T21_55_41.973132Z_'
+        label_file_name = '%sdict.txt' % base
+        model_file_name = '%smodel.tflite' % base
+        return [MockBlob(test_path(f"models/tflite/{model_file_name}")),
+                MockBlob(test_path(f"models/tflite/{label_file_name}"))]
+
+    def get_bucket(self, *args, **kwargs):
         return MockBucket('Bucket')
+
+
+class MockBlob:
+    def __init__(self, name):
+        self.name = name
 
 
 class Result:
