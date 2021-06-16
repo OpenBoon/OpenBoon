@@ -58,6 +58,7 @@ class AutoMLModelClassifierTests(PluginUnitTestCase):
 
         shutil.rmtree(test_path('models/tflite-test'))
 
+
 class MockGsClient:
     def list_blobs(self, *args, **kwargs):
         base = 'model-export_icn_tflite-model_exportable_2-2021-05-28T21_55_41.973132Z_'
