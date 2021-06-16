@@ -193,11 +193,6 @@ class MockBucket:
         return MockBlob('copied-value')
 
 
-class MockBlob:
-    def __init__(self, name):
-        self.name = name
-
-
 class MockAutoMlClient:
 
     def location_path(self, *args):
