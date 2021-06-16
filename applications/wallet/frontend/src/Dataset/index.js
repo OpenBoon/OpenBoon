@@ -11,6 +11,7 @@ import Tabs from '../Tabs'
 import DatasetConcepts from '../DatasetConcepts'
 import ConceptEdit from '../ConceptEdit'
 import DatasetLabels from '../DatasetLabels'
+import DatasetModels from '../DatasetModels'
 
 import DatasetDetails from './Details'
 
@@ -95,6 +96,10 @@ const Dataset = () => {
 
         {pathname === '/[projectId]/datasets/[datasetId]/labels' && (
           <DatasetLabels />
+        )}
+
+        {pathname === '/[projectId]/datasets/[datasetId]/models' && (
+          <DatasetModels />
         )}
       </SuspenseBoundary>
     </>
