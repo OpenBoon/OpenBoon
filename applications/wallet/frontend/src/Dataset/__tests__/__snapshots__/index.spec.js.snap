@@ -102,34 +102,45 @@ Array [
   line-height: 23px;
 }
 
+.emotion-3 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
 <div>
-    <div
-      className="emotion-0"
-    >
-      Dataset Name:
+    <div>
+      <div
+        className="emotion-0"
+      >
+        Dataset
+         Name:
+      </div>
+      <h3
+        className="emotion-1"
+      >
+        cats
+      </h3>
     </div>
-    <h3
-      className="emotion-1"
-    >
-      cats
-    </h3>
     <ul
       className="emotion-2"
     >
       <li>
         <span
-          className="emotion-0"
+          className="emotion-3"
         >
-          Dataset Type:
+          Dataset Type
+          :
         </span>
          
          Classification
       </li>
       <li>
         <span
-          className="emotion-0"
+          className="emotion-3"
         >
-          Description:
+          Description
+          :
         </span>
          
         A dataset for model training
@@ -676,34 +687,45 @@ Array [
   line-height: 23px;
 }
 
+.emotion-3 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
 <div>
-    <div
-      className="emotion-0"
-    >
-      Dataset Name:
+    <div>
+      <div
+        className="emotion-0"
+      >
+        Dataset
+         Name:
+      </div>
+      <h3
+        className="emotion-1"
+      >
+        cats
+      </h3>
     </div>
-    <h3
-      className="emotion-1"
-    >
-      cats
-    </h3>
     <ul
       className="emotion-2"
     >
       <li>
         <span
-          className="emotion-0"
+          className="emotion-3"
         >
-          Dataset Type:
+          Dataset Type
+          :
         </span>
          
          Classification
       </li>
       <li>
         <span
-          className="emotion-0"
+          className="emotion-3"
         >
-          Description:
+          Description
+          :
         </span>
          
         A dataset for model training
@@ -1176,34 +1198,45 @@ Array [
   line-height: 23px;
 }
 
+.emotion-3 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
 <div>
-    <div
-      className="emotion-0"
-    >
-      Dataset Name:
+    <div>
+      <div
+        className="emotion-0"
+      >
+        Dataset
+         Name:
+      </div>
+      <h3
+        className="emotion-1"
+      >
+        cats
+      </h3>
     </div>
-    <h3
-      className="emotion-1"
-    >
-      cats
-    </h3>
     <ul
       className="emotion-2"
     >
       <li>
         <span
-          className="emotion-0"
+          className="emotion-3"
         >
-          Dataset Type:
+          Dataset Type
+          :
         </span>
          
          Classification
       </li>
       <li>
         <span
-          className="emotion-0"
+          className="emotion-3"
         >
-          Description:
+          Description
+          :
         </span>
          
         A dataset for model training
@@ -1371,34 +1404,45 @@ Array [
   line-height: 23px;
 }
 
+.emotion-3 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
 <div>
-    <div
-      className="emotion-0"
-    >
-      Dataset Name:
+    <div>
+      <div
+        className="emotion-0"
+      >
+        Dataset
+         Name:
+      </div>
+      <h3
+        className="emotion-1"
+      >
+        cats
+      </h3>
     </div>
-    <h3
-      className="emotion-1"
-    >
-      cats
-    </h3>
     <ul
       className="emotion-2"
     >
       <li>
         <span
-          className="emotion-0"
+          className="emotion-3"
         >
-          Dataset Type:
+          Dataset Type
+          :
         </span>
          
          Classification
       </li>
       <li>
         <span
-          className="emotion-0"
+          className="emotion-3"
         >
-          Description:
+          Description
+          :
         </span>
          
         A dataset for model training
