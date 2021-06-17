@@ -69,7 +69,6 @@ DatasetLabelsSelection.propTypes = {
   labels: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      count: PropTypes.number.isRequired,
     }).isRequired,
   ).isRequired,
 }

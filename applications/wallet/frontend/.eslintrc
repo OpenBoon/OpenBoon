@@ -14,7 +14,7 @@
     "jsx-a11y/aria-role": ["error", { "ignoreNonDOM": true }],
     "jsx-a11y/label-has-associated-control": [
       "error",
-      { "assert": "either", "controlComponents": ["InputSearch"] }
+      { "assert": "either", "controlComponents": ["InputSearch", "RadioIcon"] }
     ],
     "jsx-a11y/label-has-for": "off",
     "react-hooks/exhaustive-deps": "error",

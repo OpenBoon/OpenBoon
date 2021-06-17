@@ -14,8 +14,7 @@ from datasets.serializers import (DatasetSerializer, RemoveLabelsSerializer,
                                   DatasetTypeSerializer)
 from models.serializers import SimpleModelSerializer
 from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpCreateMixin,
-                               ZmlpDestroyMixin, ZmlpRetrieveMixin,
-                               ListViewType)
+                               ZmlpDestroyMixin, ZmlpRetrieveMixin, ListViewType, ZmlpUpdateMixin)
 from wallet.exceptions import InvalidRequestError
 from wallet.utils import validate_zmlp_data
 
@@ -24,7 +23,7 @@ class DatasetsViewSet(ZmlpCreateMixin,
                       ZmlpListMixin,
                       ZmlpRetrieveMixin,
                       ZmlpDestroyMixin,
-                      # ZmlpUpdateMixin,  # TODO: Put back in once updating Datasets is supported
+                      ZmlpUpdateMixin,
                       BaseProjectViewSet):
 
     zmlp_root_api_path = '/api/v3/datasets'
@@ -43,22 +42,23 @@ class DatasetsViewSet(ZmlpCreateMixin,
             raise InvalidRequestError(detail={'detail': [msg]})
         return super(DatasetsViewSet, self).create(request, project_pk)
 
-    # TODO: Put back in once updating Datasets is supported
-    # def update(self, request, project_pk, pk):
-    #     if request.data.get('projectId') is not None and request.data.get('projectId') != project_pk:
-    #         msg = 'Invalid request. You can only update datasets for the current project context.'
-    #         raise InvalidRequestError(detail={'detail': [msg]})
-    #
-    #     return super(DatasetsViewSet, self).update(request, project_pk, pk)
+    def update(self, request, project_pk, pk):
+        if request.data.get('projectId') is not None and request.data.get('projectId') != project_pk:
+            msg = 'Invalid request. You can only update datasets for the current project context.'
+            raise InvalidRequestError(detail={'detail': [msg]})
+
+        return super(DatasetsViewSet, self).update(request, project_pk, pk)
 
     @action(methods=['get'], detail=True)
     def get_labels(self, request, project_pk, pk):
         """Get the list of used labels and their counts for the given dataset."""
-        path = f'{self.zmlp_root_api_path}/{pk}/_label_counts'
+        path = f'/api/v4/datasets/{pk}/_label_counts/'
         response = request.client.get(path)
         labels = []
-        for label in response:
-            labels.append({'label': label, 'count': response[label]})
+        for label, counts in response.items():
+            labels.append({'label': label,
+                           'trainCount': counts.get('TRAIN', 0),
+                           'testCount': counts.get('TEST', 0)})
         data = {'count': len(labels),
                 'results': labels}
         return Response(status=status.HTTP_200_OK, data=data)

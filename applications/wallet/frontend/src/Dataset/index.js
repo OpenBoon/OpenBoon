@@ -11,6 +11,7 @@ import Tabs from '../Tabs'
 import DatasetConcepts from '../DatasetConcepts'
 import ConceptEdit from '../ConceptEdit'
 import DatasetLabels from '../DatasetLabels'
+import DatasetModels from '../DatasetModels'
 
 import DatasetDetails from './Details'
 
@@ -29,7 +30,7 @@ const Dataset = () => {
       <Breadcrumbs
         crumbs={[
           {
-            title: 'Custom Datasets',
+            title: 'Datasets',
             href: '/[projectId]/datasets',
             isBeta: true,
           },
@@ -90,11 +91,19 @@ const Dataset = () => {
               label={edit}
             />
           ) : (
-            <DatasetConcepts />
+            <DatasetConcepts
+              projectId={projectId}
+              datasetId={datasetId}
+              actions
+            />
           ))}
 
         {pathname === '/[projectId]/datasets/[datasetId]/labels' && (
           <DatasetLabels />
+        )}
+
+        {pathname === '/[projectId]/datasets/[datasetId]/models' && (
+          <DatasetModels />
         )}
       </SuspenseBoundary>
     </>

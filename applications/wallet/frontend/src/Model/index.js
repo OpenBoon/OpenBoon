@@ -1,22 +1,13 @@
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-
-import { spacing } from '../Styles'
 
 import Breadcrumbs from '../Breadcrumbs'
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
+import Tabs from '../Tabs'
 
-import LabelEdit from '../LabelEdit'
-
-import ModelDetails from './Details'
+import ModelContent from './Content'
+import ModelDataset from './Dataset'
 
 const Model = () => {
-  const {
-    pathname,
-    query: { projectId, modelId, edit = '', action },
-  } = useRouter()
-
   return (
     <>
       <Head>
@@ -30,23 +21,14 @@ const Model = () => {
         ]}
       />
 
-      {!!action && (
-        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
-          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            {action === 'edit-label-success' && 'Label updated.'}
-            {action === 'delete-label-success' && 'Label deleted.'}
-            {action === 'remove-asset-success' &&
-              'Asset has been removed from set.'}
-          </FlashMessage>
-        </div>
-      )}
-
       <SuspenseBoundary role={ROLES.ML_Tools}>
-        <ModelDetails key={pathname} />
+        <ModelContent />
 
-        {pathname === '/[projectId]/models/[modelId]' && edit && (
-          <LabelEdit projectId={projectId} modelId={modelId} label={edit} />
-        )}
+        <Tabs
+          tabs={[{ title: 'Dataset', href: '/[projectId]/models/[modelId]' }]}
+        />
+
+        <ModelDataset />
       </SuspenseBoundary>
     </>
   )

@@ -1668,6 +1668,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-13 {
@@ -1704,16 +1708,19 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-16 {
-  padding-left: 8px;
+  padding-left: 12px;
+}
+
+.emotion-17 {
   font-weight: 400;
   color: #ffffff;
 }
 
-.emotion-17 {
-  padding-left: 24px;
+.emotion-18 {
+  color: #b3b3b3;
 }
 
-.emotion-21 {
+.emotion-22 {
   padding: 0;
   -webkit-appearance: none;
   border-radius: 16px;
@@ -1722,7 +1729,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border: 1px solid #808080;
 }
 
-.emotion-22 {
+.emotion-23 {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -1731,13 +1738,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   background-color: none;
 }
 
-.emotion-23 {
-  padding-left: 8px;
-  font-weight: 400;
-  color: #808080;
-}
-
-.emotion-25 {
+.emotion-27 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -1753,17 +1754,17 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   padding-left: 32px;
 }
 
-.emotion-26 {
+.emotion-28 {
   color: #ffffff;
   font-weight: 700;
   padding-right: 16px;
 }
 
-.emotion-27 {
+.emotion-29 {
   padding-right: 24px;
 }
 
-.emotion-28 {
+.emotion-30 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1774,7 +1775,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   align-items: center;
 }
 
-.emotion-29 {
+.emotion-31 {
   text-align: center;
   border-radius: 2px;
   background-color: #252525;
@@ -1784,18 +1785,18 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   width: 52px;
 }
 
-.emotion-29:focus {
+.emotion-31:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-29:hover {
+.emotion-31:hover {
   border: 1px solid #ffffff;
 }
 
-.emotion-32 {
+.emotion-34 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1809,7 +1810,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   overflow: hidden;
 }
 
-.emotion-33 {
+.emotion-35 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1823,7 +1824,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   width: 0%;
 }
 
-.emotion-34 {
+.emotion-36 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1834,7 +1835,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   width: 100%;
 }
 
-.emotion-35 {
+.emotion-37 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1847,7 +1848,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-right: 1px solid #191919;
 }
 
-.emotion-36 {
+.emotion-38 {
   -webkit-writing-mode: vertical-lr;
   -ms-writing-mode: tb;
   writing-mode: vertical-lr;
@@ -1857,21 +1858,21 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   transform: rotate(180deg);
 }
 
-.emotion-37 {
+.emotion-39 {
   font-weight: 700;
   font-size: 17px;
   line-height: 20px;
 }
 
-.emotion-38 {
+.emotion-40 {
   color: #b3b3b3;
 }
 
-.emotion-39 {
+.emotion-41 {
   width: 100%;
 }
 
-.emotion-40 {
+.emotion-42 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1884,7 +1885,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   overflow: hidden;
 }
 
-.emotion-41 {
+.emotion-43 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1892,7 +1893,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   height: 400px;
 }
 
-.emotion-42 {
+.emotion-44 {
   width: 100px;
   padding-left: 16px;
   padding-right: 16px;
@@ -1910,19 +1911,19 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-43 {
+.emotion-45 {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.emotion-44 {
+.emotion-46 {
   color: #b3b3b3;
   padding-left: 4px;
   font-weight: 400;
 }
 
-.emotion-45 {
+.emotion-47 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1933,7 +1934,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   overflow: hidden;
 }
 
-.emotion-46 {
+.emotion-48 {
   color: #191919;
   background-color: #ffffff;
   border-radius: 2px;
@@ -1941,21 +1942,21 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   padding: 12px;
 }
 
-.emotion-47 {
+.emotion-49 {
   padding-bottom: 4px;
 }
 
-.emotion-48 {
+.emotion-50 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #4a4a4a;
 }
 
-.emotion-53 {
+.emotion-55 {
   display: inline;
 }
 
-.emotion-54 {
+.emotion-56 {
   width: 400px;
   height: 400px;
   padding: 0;
@@ -1976,18 +1977,18 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #191919;
 }
 
-.emotion-54:hover {
+.emotion-56:hover {
   border: 4px solid #6088FE;
 }
 
-.emotion-55 {
+.emotion-57 {
   margin: auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.emotion-64 {
+.emotion-66 {
   width: 400px;
   height: 400px;
   padding: 0;
@@ -2008,11 +2009,11 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #191919;
 }
 
-.emotion-64:hover {
+.emotion-66:hover {
   border: 4px solid #6088FE;
 }
 
-.emotion-74 {
+.emotion-76 {
   width: 400px;
   height: 400px;
   padding: 0;
@@ -2033,11 +2034,11 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #ffffff;
 }
 
-.emotion-74:hover {
+.emotion-76:hover {
   border: 4px solid #6088FE;
 }
 
-.emotion-89 {
+.emotion-91 {
   width: 400px;
   height: 400px;
   padding: 0;
@@ -2058,11 +2059,11 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #191919;
 }
 
-.emotion-89:hover {
+.emotion-91:hover {
   border: 4px solid #6088FE;
 }
 
-.emotion-112 {
+.emotion-114 {
   width: 100px;
   padding-left: 16px;
   padding-right: 16px;
@@ -2080,14 +2081,14 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-bottom: 1px solid transparent;
 }
 
-.emotion-146 {
+.emotion-148 {
   position: absolute;
   bottom: 16px;
   right: 16px;
   z-index: 10;
 }
 
-.emotion-147 {
+.emotion-149 {
   opacity: 0;
   position: relative;
   border: 2px solid #808080;
@@ -2097,22 +2098,22 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   grid-template: repeat(3, 1fr)/repeat(3, 1fr);
 }
 
-.emotion-148 {
+.emotion-150 {
   padding-bottom: 100%;
   background-color: rgb(255,255,255);
 }
 
-.emotion-150 {
+.emotion-152 {
   padding-bottom: 100%;
   background-color: rgb(0,39,107);
 }
 
-.emotion-151 {
+.emotion-153 {
   padding-bottom: 100%;
   background-color: rgb(53,171,255);
 }
 
-.emotion-157 {
+.emotion-159 {
   position: absolute;
   border-style: solid;
   border-width: 2px;
@@ -2123,7 +2124,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   height: 50%;
 }
 
-.emotion-158 {
+.emotion-160 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2137,54 +2138,6 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   padding-bottom: 4px;
   padding-left: 8px;
   padding-right: 8px;
-}
-
-.emotion-159 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 0;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  color: #ffffff;
-  padding: 8px;
-  opacity: 1;
-}
-
-.emotion-159:hover {
-  color: #3A5DFF;
-}
-
-.emotion-159[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-160 {
-  background-color: #808080;
-  width: 1px;
-  margin: 8px;
 }
 
 .emotion-161 {
@@ -2216,6 +2169,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  color: #ffffff;
   padding: 8px;
   opacity: 1;
 }
@@ -2228,7 +2182,54 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   color: #808080;
 }
 
+.emotion-162 {
+  background-color: #808080;
+  width: 1px;
+  margin: 8px;
+}
+
 .emotion-163 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  opacity: 1;
+}
+
+.emotion-163:hover {
+  color: #3A5DFF;
+}
+
+.emotion-163[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-165 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2237,7 +2238,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   width: 100%;
 }
 
-.emotion-164 {
+.emotion-166 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2250,7 +2251,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-right: 1px solid transparent;
 }
 
-.emotion-165 {
+.emotion-167 {
   -webkit-writing-mode: vertical-lr;
   -ms-writing-mode: tb;
   writing-mode: vertical-lr;
@@ -2261,7 +2262,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   line-height: 20px;
 }
 
-.emotion-166 {
+.emotion-168 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2269,21 +2270,21 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   width: 800px;
 }
 
-.emotion-167 {
+.emotion-169 {
   padding-left: 16px;
   width: 100px;
   min-width: 100px;
   border-right: 1px solid #191919;
 }
 
-.emotion-168 {
+.emotion-170 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   width: 0%;
 }
 
-.emotion-169 {
+.emotion-171 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2293,7 +2294,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   flex-direction: column;
 }
 
-.emotion-170 {
+.emotion-172 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2305,12 +2306,12 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-171 {
+.emotion-173 {
   position: relative;
   cursor: default;
 }
 
-.emotion-172 {
+.emotion-174 {
   min-width: 8px;
   width: 400px;
   max-width: 400px;
@@ -2323,7 +2324,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-right: 1px solid #191919;
 }
 
-.emotion-177 {
+.emotion-179 {
   padding: 16px;
   text-align: center;
   font-weight: 700;
@@ -2331,7 +2332,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   line-height: 20px;
 }
 
-.emotion-178 {
+.emotion-180 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -2343,7 +2344,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   margin-right: -2px;
 }
 
-.emotion-179 {
+.emotion-181 {
   width: 200px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2354,7 +2355,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   flex-direction: column;
 }
 
-.emotion-180 {
+.emotion-182 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2369,7 +2370,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-left: 1px solid #191919;
 }
 
-.emotion-181 {
+.emotion-183 {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
@@ -2403,26 +2404,26 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-181:hover,
-.emotion-181.focus-visible:focus,
-.emotion-181 .noop {
+.emotion-183:hover,
+.emotion-183.focus-visible:focus,
+.emotion-183 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-181:hover svg,
-.emotion-181.focus-visible:focus svg,
-.emotion-181 .noop svg {
+.emotion-183:hover svg,
+.emotion-183.focus-visible:focus svg,
+.emotion-183 .noop svg {
   opacity: 1;
 }
 
-.emotion-181[aria-disabled=true],
-.emotion-181 .noop {
+.emotion-183[aria-disabled=true],
+.emotion-183 .noop {
   color: #808080;
 }
 
-.emotion-181:hover {
+.emotion-183:hover {
   background-color: #2e2e2e;
 }
 
@@ -2501,14 +2502,18 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                 <div
                   className="emotion-16"
                 >
-                  Normalized
+                  <div
+                    className="emotion-17"
+                  >
+                    Normalized
+                  </div>
+                  <div
+                    className="emotion-18"
+                  >
+                    
+                  </div>
                 </div>
               </label>
-              <div
-                className="emotion-17"
-              >
-                
-              </div>
             </div>
           </div>
           <div
@@ -2522,7 +2527,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                   className="emotion-13"
                 >
                   <input
-                    className="emotion-21"
+                    className="emotion-22"
                     defaultChecked={false}
                     id="absolute"
                     onClick={[Function]}
@@ -2530,41 +2535,45 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                     value="absolute"
                   />
                   <div
-                    className="emotion-22"
+                    className="emotion-23"
                   />
                 </div>
                 <div
-                  className="emotion-23"
+                  className="emotion-16"
                 >
-                  Absolute
+                  <div
+                    className="emotion-17"
+                  >
+                    Absolute
+                  </div>
+                  <div
+                    className="emotion-18"
+                  >
+                    
+                  </div>
                 </div>
               </label>
-              <div
-                className="emotion-17"
-              >
-                
-              </div>
             </div>
           </div>
         </fieldset>
         <div
-          className="emotion-25"
+          className="emotion-27"
         >
           <span
-            className="emotion-26"
+            className="emotion-28"
           >
             Confidence:
           </span>
           <div
-            className="emotion-27"
+            className="emotion-29"
           >
             <label
-              className="emotion-28"
+              className="emotion-30"
             >
               MIN
                 
               <input
-                className="emotion-29"
+                className="emotion-31"
                 onBlur={[Function]}
                 onChange={[Function]}
                 onKeyPress={[Function]}
@@ -2574,12 +2583,12 @@ exports[`<ModelMatrix /> should render properly 2`] = `
             </label>
           </div>
           <label
-            className="emotion-28"
+            className="emotion-30"
           >
             MAX
               
             <input
-              className="emotion-29"
+              className="emotion-31"
               onBlur={[Function]}
               onChange={[Function]}
               onKeyPress={[Function]}
@@ -2591,35 +2600,35 @@ exports[`<ModelMatrix /> should render properly 2`] = `
       </form>
     </div>
     <div
-      className="emotion-32"
+      className="emotion-34"
     >
       <div
-        className="emotion-33"
+        className="emotion-35"
       >
         <div
-          className="emotion-34"
+          className="emotion-36"
         >
           <div
-            className="emotion-35"
+            className="emotion-37"
           >
             <div
-              className="emotion-36"
+              className="emotion-38"
             >
               <span
-                className="emotion-37"
+                className="emotion-39"
               >
                 True Label
               </span>
                
               <span
-                className="emotion-38"
+                className="emotion-40"
               >
                 (Number in Set)
               </span>
             </div>
           </div>
           <div
-            className="emotion-39"
+            className="emotion-41"
           >
             <div
               style={
@@ -2631,22 +2640,22 @@ exports[`<ModelMatrix /> should render properly 2`] = `
               }
             >
               <div
-                className="emotion-40"
+                className="emotion-42"
               >
                 <div
-                  className="emotion-41"
+                  className="emotion-43"
                 >
                   <div
-                    className="emotion-42"
+                    className="emotion-44"
                   >
                     <span
-                      className="emotion-43"
+                      className="emotion-45"
                     >
                       pink
                        
                     </span>
                     <span
-                      className="emotion-44"
+                      className="emotion-46"
                     >
                       (
                       2
@@ -2654,18 +2663,18 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                     </span>
                   </div>
                   <div
-                    className="emotion-45"
+                    className="emotion-47"
                   >
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-46"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -2678,10 +2687,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -2689,10 +2698,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             pink
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -2702,16 +2711,16 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-53"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="pink / pink: 0%"
-                          className="emotion-54"
+                          className="emotion-56"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-55"
+                            className="emotion-57"
                           >
                             0%
                           </div>
@@ -2721,13 +2730,13 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-46"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -2740,10 +2749,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -2751,10 +2760,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             pink
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -2764,16 +2773,16 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-53"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="pink / red: 0%"
-                          className="emotion-64"
+                          className="emotion-66"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-55"
+                            className="emotion-57"
                           >
                             0%
                           </div>
@@ -2783,13 +2792,13 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-46"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -2802,10 +2811,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -2813,10 +2822,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             pink
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -2826,16 +2835,16 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-53"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="pink / yellow: 2%"
-                          className="emotion-74"
+                          className="emotion-76"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-55"
+                            className="emotion-57"
                           >
                             100%
                           </div>
@@ -2845,19 +2854,19 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                   </div>
                 </div>
                 <div
-                  className="emotion-41"
+                  className="emotion-43"
                 >
                   <div
-                    className="emotion-42"
+                    className="emotion-44"
                   >
                     <span
-                      className="emotion-43"
+                      className="emotion-45"
                     >
                       red
                        
                     </span>
                     <span
-                      className="emotion-44"
+                      className="emotion-46"
                     >
                       (
                       2
@@ -2865,18 +2874,18 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                     </span>
                   </div>
                   <div
-                    className="emotion-45"
+                    className="emotion-47"
                   >
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-46"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -2889,10 +2898,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -2900,10 +2909,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             red
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -2913,16 +2922,16 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-53"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="red / pink: 1%"
-                          className="emotion-89"
+                          className="emotion-91"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-55"
+                            className="emotion-57"
                           >
                             50%
                           </div>
@@ -2932,13 +2941,13 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-46"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -2951,10 +2960,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -2962,10 +2971,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             red
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -2975,16 +2984,16 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-53"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="red / red: 1%"
-                          className="emotion-89"
+                          className="emotion-91"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-55"
+                            className="emotion-57"
                           >
                             50%
                           </div>
@@ -2994,13 +3003,13 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-46"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -3013,10 +3022,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -3024,10 +3033,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             red
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -3037,16 +3046,16 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-53"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="red / yellow: 0%"
-                          className="emotion-64"
+                          className="emotion-66"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-55"
+                            className="emotion-57"
                           >
                             0%
                           </div>
@@ -3056,19 +3065,19 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                   </div>
                 </div>
                 <div
-                  className="emotion-41"
+                  className="emotion-43"
                 >
                   <div
-                    className="emotion-112"
+                    className="emotion-114"
                   >
                     <span
-                      className="emotion-43"
+                      className="emotion-45"
                     >
                       yellow
                        
                     </span>
                     <span
-                      className="emotion-44"
+                      className="emotion-46"
                     >
                       (
                       0
@@ -3076,18 +3085,18 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                     </span>
                   </div>
                   <div
-                    className="emotion-45"
+                    className="emotion-47"
                   >
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-46"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -3100,10 +3109,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -3111,10 +3120,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             yellow
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -3124,16 +3133,16 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-53"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="yellow / pink: 0%"
-                          className="emotion-64"
+                          className="emotion-66"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-55"
+                            className="emotion-57"
                           >
                             0%
                           </div>
@@ -3143,13 +3152,13 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-46"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -3162,10 +3171,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -3173,10 +3182,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             yellow
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -3186,16 +3195,16 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-53"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="yellow / red: 0%"
-                          className="emotion-64"
+                          className="emotion-66"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-55"
+                            className="emotion-57"
                           >
                             0%
                           </div>
@@ -3205,13 +3214,13 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-46"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -3224,10 +3233,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -3235,10 +3244,10 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                             yellow
                           </h3>
                           <h3
-                            className="emotion-47"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-48"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -3248,16 +3257,16 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-53"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="yellow / yellow: 0%"
-                          className="emotion-64"
+                          className="emotion-66"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-55"
+                            className="emotion-57"
                           >
                             0%
                           </div>
@@ -3267,48 +3276,48 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                   </div>
                 </div>
                 <div
-                  className="emotion-146"
+                  className="emotion-148"
                 >
                   <div
-                    className="emotion-147"
+                    className="emotion-149"
                   >
                     <div
-                      className="emotion-148"
-                    />
-                    <div
-                      className="emotion-148"
+                      className="emotion-150"
                     />
                     <div
                       className="emotion-150"
                     />
                     <div
-                      className="emotion-151"
+                      className="emotion-152"
                     />
                     <div
-                      className="emotion-151"
+                      className="emotion-153"
                     />
                     <div
-                      className="emotion-148"
+                      className="emotion-153"
                     />
                     <div
-                      className="emotion-148"
+                      className="emotion-150"
                     />
                     <div
-                      className="emotion-148"
+                      className="emotion-150"
                     />
                     <div
-                      className="emotion-148"
+                      className="emotion-150"
                     />
                     <div
-                      className="emotion-157"
+                      className="emotion-150"
+                    />
+                    <div
+                      className="emotion-159"
                     />
                   </div>
                   <div
-                    className="emotion-158"
+                    className="emotion-160"
                   >
                     <button
                       aria-label="Mini map"
-                      className="emotion-159"
+                      className="emotion-161"
                       onClick={[Function]}
                       type="button"
                     >
@@ -3318,11 +3327,11 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                       />
                     </button>
                     <div
-                      className="emotion-160"
+                      className="emotion-162"
                     />
                     <button
                       aria-label="Zoom Out"
-                      className="emotion-161"
+                      className="emotion-163"
                       onClick={[Function]}
                       type="button"
                     >
@@ -3333,7 +3342,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                     </button>
                     <button
                       aria-label="Zoom In"
-                      className="emotion-161"
+                      className="emotion-163"
                       onClick={[Function]}
                       type="button"
                     >
@@ -3349,17 +3358,8 @@ exports[`<ModelMatrix /> should render properly 2`] = `
           </div>
         </div>
         <div
-          className="emotion-163"
+          className="emotion-165"
         >
-          <div
-            className="emotion-164"
-          >
-            <div
-              className="emotion-165"
-            >
-               
-            </div>
-          </div>
           <div
             className="emotion-166"
           >
@@ -3368,54 +3368,63 @@ exports[`<ModelMatrix /> should render properly 2`] = `
             >
                
             </div>
+          </div>
+          <div
+            className="emotion-168"
+          >
             <div
-              className="emotion-168"
+              className="emotion-169"
+            >
+               
+            </div>
+            <div
+              className="emotion-170"
             >
               <div
-                className="emotion-169"
+                className="emotion-171"
               >
                 <div
-                  className="emotion-170"
+                  className="emotion-172"
                 >
                   <div
                     aria-label="Prediction Label: pink"
-                    className="emotion-171"
+                    className="emotion-173"
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
                     <div
-                      className="emotion-172"
+                      className="emotion-174"
                     >
                       pink
                     </div>
                   </div>
                   <div
                     aria-label="Prediction Label: red"
-                    className="emotion-171"
+                    className="emotion-173"
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
                     <div
-                      className="emotion-172"
+                      className="emotion-174"
                     >
                       red
                     </div>
                   </div>
                   <div
                     aria-label="Prediction Label: yellow"
-                    className="emotion-171"
+                    className="emotion-173"
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
                     <div
-                      className="emotion-172"
+                      className="emotion-174"
                     >
                       yellow
                     </div>
                   </div>
                 </div>
                 <div
-                  className="emotion-177"
+                  className="emotion-179"
                 >
                   Predictions
                 </div>
@@ -3437,11 +3446,11 @@ exports[`<ModelMatrix /> should render properly 2`] = `
       >
         <div
           aria-label="Resize horizontally"
-          className="emotion-178"
+          className="emotion-180"
           onMouseDown={[Function]}
         />
         <div
-          className="emotion-179"
+          className="emotion-181"
         >
           <ModelMatrixPreview
             labels={
@@ -3473,11 +3482,11 @@ exports[`<ModelMatrix /> should render properly 2`] = `
         </div>
       </div>
       <div
-        className="emotion-180"
+        className="emotion-182"
       >
         <button
           aria-label="Preview"
-          className="emotion-181"
+          className="emotion-183"
           onClick={[Function]}
           title="Preview"
           type="button"

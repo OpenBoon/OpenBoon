@@ -4,7 +4,7 @@ import assets from '../../Assets/__mocks__/assets'
 
 import matrix from '../__mocks__/matrix'
 
-import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../../Panel'
+import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../../Panel/helpers'
 
 import ModelMatrixPreview from '../Preview'
 

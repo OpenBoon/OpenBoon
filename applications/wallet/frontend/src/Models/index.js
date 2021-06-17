@@ -23,7 +23,7 @@ const Models = () => {
   } = useRouter()
 
   const [, setPanel] = useLocalStorage({
-    key: 'leftOpeningPanel',
+    key: 'leftOpeningPanelSettings',
   })
 
   const [, setModelFields] = useLocalStorage({

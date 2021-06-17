@@ -1,16 +1,16 @@
 package boonai.archivist.service
 
 import boonai.archivist.AbstractTest
-import boonai.archivist.domain.AssetSpec
-import boonai.archivist.domain.BatchCreateAssetsRequest
+import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.Dataset
 import boonai.archivist.domain.DatasetSpec
-import boonai.archivist.domain.DatasetType
+import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.DatasetUpdate
-import boonai.archivist.domain.Label
-import boonai.archivist.domain.LabelScope
+import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.UpdateAssetLabelsRequest
+import boonai.archivist.domain.Label
+import boonai.archivist.domain.LabelScope
 import boonai.archivist.repository.DatasetDao
 import boonai.common.util.Json
 import org.junit.Test
@@ -59,8 +59,12 @@ class DatasetServiceTests : AbstractTest() {
 
     @Test
     fun testUpdate() {
-        val ds = datasetService.createDataset(DatasetSpec("pets", DatasetType.Classification))
-        datasetService.updateDataset(ds, DatasetUpdate(name = "cars"))
+        var ds = datasetService.createDataset(DatasetSpec("pets", DatasetType.Classification))
+        assertEquals("pets", ds.name)
+
+        datasetService.updateDataset(ds, DatasetUpdate(name = "cars", description = "very nice car"))
+
+        assertEquals("very nice car", ds.description)
         assertEquals("cars", ds.name)
     }
 

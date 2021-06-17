@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DatasetModels /> should render properly 1`] = `
+<DatasetModelsTable
+  datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+  modelTypes={
+    Array [
+      Object {
+        "deployOnTrainingSet": true,
+        "description": "Classify images or documents using a KNN classifier.  This type of model generates a single prediction which can be used to quickly organize assets into general groups.The KNN classifier works with just a single image and label.",
+        "label": "Sci-kit Learn KNN Classifier",
+        "minConcepts": 0,
+        "minExamples": 0,
+        "name": "ZVI_KNN_CLASSIFIER",
+        "objective": "Label Detection",
+        "provider": "Zorroa",
+      },
+      Object {
+        "deployOnTrainingSet": false,
+        "description": "Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each.",
+        "label": "Tensorflow CNN Classifier",
+        "minConcepts": 2,
+        "minExamples": 10,
+        "name": "ZVI_LABEL_DETECTION",
+        "objective": "Label Detection",
+        "provider": "Zorroa",
+      },
+      Object {
+        "deployOnTrainingSet": true,
+        "description": "Upload a Tensorflow model to use for image classification.",
+        "label": "Tensorflow2 Keras Image Classifier",
+        "minConcepts": 0,
+        "minExamples": 0,
+        "name": "TF2_IMAGE_CLASSIFIER",
+        "objective": "Label Detection",
+        "provider": "Google",
+      },
+      Object {
+        "deployOnTrainingSet": true,
+        "description": "Utilize Google AutoML to train an image classifier.",
+        "label": "Google AutoML Classifier",
+        "minConcepts": 2,
+        "minExamples": 10,
+        "name": "GCP_LABEL_DETECTION",
+        "objective": "Label Detection",
+        "provider": "Google",
+      },
+    ]
+  }
+  projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+/>
+`;

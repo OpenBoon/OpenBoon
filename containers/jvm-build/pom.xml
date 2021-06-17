@@ -144,7 +144,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.20</version>
+            <version>42.2.22</version>
         </dependency>
 
         <dependency>
@@ -183,7 +183,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>3.6.0</version>
+            <version>3.6.1</version>
         </dependency>
 
         <dependency>
@@ -218,18 +218,18 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.12.3</version>
+            <version>1.12.7</version>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sqs</artifactId>
-            <version>1.12.3</version>
+            <version>1.12.7</version>
         </dependency>
 
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sns</artifactId>
-            <version>1.12.3</version>
+            <version>1.12.7</version>
         </dependency>
         <dependency>
             <groupId>io.minio</groupId>
@@ -337,7 +337,7 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-words</artifactId>
-            <version>21.5</version>
+            <version>21.6</version>
             <classifier>jdk17</classifier>
         </dependency>
 
