@@ -21,7 +21,7 @@ const FilterBuckets = ({
   filter: {
     type,
     attribute,
-    modelId,
+    datasetId,
     values: { labels: l, facets: f, scope = 'all', min = 0.0, max = 1.0 },
     isDisabled,
   },
@@ -58,7 +58,7 @@ const FilterBuckets = ({
               const updatedFilter = getUpdatedFilter({
                 type,
                 attribute,
-                modelId,
+                datasetId,
                 scope,
                 min,
                 max,
@@ -139,7 +139,7 @@ const FilterBuckets = ({
                   const updatedFilter = getUpdatedFilter({
                     type,
                     attribute,
-                    modelId,
+                    datasetId,
                     scope,
                     min,
                     max,

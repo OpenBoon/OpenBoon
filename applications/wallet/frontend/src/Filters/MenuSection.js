@@ -40,7 +40,7 @@ const FiltersMenuSection = ({
         onClick={onClick({
           type: value[0],
           attribute: fullPath,
-          ...(path === 'labels' ? { modelId: attribute } : {}),
+          ...(path === 'labels' ? { datasetId: attribute } : {}),
         })}
       />
     )
