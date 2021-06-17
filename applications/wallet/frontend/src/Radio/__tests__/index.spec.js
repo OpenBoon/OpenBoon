@@ -8,6 +8,7 @@ describe('<Radio />', () => {
   it('should render properly unchecked', () => {
     const component = TestRenderer.create(
       <Radio
+        name="radio"
         option={{
           label: 'Radio',
           value: 'radio',
@@ -24,6 +25,7 @@ describe('<Radio />', () => {
   it('should render properly checked', () => {
     const component = TestRenderer.create(
       <Radio
+        name="radio"
         option={{
           label: 'Radio',
           value: 'radio',

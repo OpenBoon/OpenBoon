@@ -2490,7 +2490,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                   <input
                     className="emotion-14"
                     defaultChecked={true}
-                    id="normalized"
+                    name="View"
                     onClick={[Function]}
                     type="radio"
                     value="normalized"
@@ -2529,7 +2529,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                   <input
                     className="emotion-22"
                     defaultChecked={false}
-                    id="absolute"
+                    name="View"
                     onClick={[Function]}
                     type="radio"
                     value="absolute"
