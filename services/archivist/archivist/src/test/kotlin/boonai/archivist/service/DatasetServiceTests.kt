@@ -74,7 +74,7 @@ class DatasetServiceTests : AbstractTest() {
         val ds = create()
         val specs = dataset(ds)
 
-        assetService.batchCreate(BatchCreateAssetsRequest(specs, state=AssetState.Analyzed))
+        assetService.batchCreate(BatchCreateAssetsRequest(specs, state = AssetState.Analyzed))
         refreshIndex(1000)
         assertFalse(datasetService.getLabelCounts(ds).isEmpty())
         datasetService.deleteDataset(ds)
@@ -119,7 +119,7 @@ class DatasetServiceTests : AbstractTest() {
         val ds2 = create("test2")
 
         val rsp = assetService.batchCreate(
-            BatchCreateAssetsRequest(dataset(ds1), state=AssetState.Analyzed)
+            BatchCreateAssetsRequest(dataset(ds1), state = AssetState.Analyzed)
         )
 
         assetService.updateLabels(
@@ -154,7 +154,7 @@ class DatasetServiceTests : AbstractTest() {
         val ds2 = create("test2")
 
         val rsp = assetService.batchCreate(
-            BatchCreateAssetsRequest(dataset(ds1), state=AssetState.Analyzed)
+            BatchCreateAssetsRequest(dataset(ds1), state = AssetState.Analyzed)
         )
 
         assetService.updateLabels(
@@ -184,7 +184,7 @@ class DatasetServiceTests : AbstractTest() {
         val specs = dataset(model)
 
         assetService.batchCreate(
-            BatchCreateAssetsRequest(specs, state=AssetState.Analyzed)
+            BatchCreateAssetsRequest(specs, state = AssetState.Analyzed)
         )
         datasetService.updateLabel(model, "beaver", "horse")
         refreshElastic()
@@ -201,7 +201,7 @@ class DatasetServiceTests : AbstractTest() {
         val specs = dataset(model)
 
         assetService.batchCreate(
-            BatchCreateAssetsRequest(specs, state=AssetState.Analyzed)
+            BatchCreateAssetsRequest(specs, state = AssetState.Analyzed)
         )
         datasetService.updateLabel(model, "horse", null)
         refreshIndex(1000L)

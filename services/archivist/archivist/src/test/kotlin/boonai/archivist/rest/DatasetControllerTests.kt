@@ -240,7 +240,7 @@ class DatasetControllerTests : MockMvcTest() {
 
         val specs = makeDataSet(dataset)
         assetService.batchCreate(
-            BatchCreateAssetsRequest(specs, state=AssetState.Analyzed)
+            BatchCreateAssetsRequest(specs, state = AssetState.Analyzed)
         )
 
         val rsp = mvc.perform(

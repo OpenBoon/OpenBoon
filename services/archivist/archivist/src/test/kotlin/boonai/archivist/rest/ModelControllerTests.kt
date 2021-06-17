@@ -1,7 +1,6 @@
 package boonai.archivist.rest
 
 import boonai.archivist.MockMvcTest
-import boonai.archivist.domain.AutomlSessionSpec
 import boonai.archivist.domain.DatasetSpec
 import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.Model
