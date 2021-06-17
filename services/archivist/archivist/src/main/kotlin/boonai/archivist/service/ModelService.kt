@@ -205,13 +205,12 @@ class ModelServiceImpl(
         }
 
         val trainArgs = argValidationService.buildArgs(
-            getTrainingArgSchema(model.type), model.trainingArgs
+            getTrainingArgSchema(model.type), model.trainingArgs + (request.trainArgs ?: emptyMap())
         ).plus(
             mapOf<String, Any?>(
                 "model_id" to model.id.toString(),
                 "post_action" to (request.postAction.name),
-                "tag" to "latest",
-                "work_bucket" to "gs://${System.getenv("GCLOUD_PROJECT")}-training/${model.id}"
+                "tag" to "latest"
             )
         )
 
@@ -285,7 +284,7 @@ class ModelServiceImpl(
             name = name,
             replace = true,
             includeStandard = false,
-            settings = mapOf("${model.id}:tag" to req.tag)
+            settings = mapOf("${model.id}:tag" to req.tag, "maxPredictions" to 1)
         )
 
         val jobId = getZmlpActor().getAttr("jobId")

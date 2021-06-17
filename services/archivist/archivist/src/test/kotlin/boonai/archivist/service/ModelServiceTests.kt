@@ -196,7 +196,7 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testCopyModel() {
-        val model = create(type = ModelType.TF_SAVED_MODEL)
+        val model = create(type = ModelType.PYTORCH_MODEL_ARCHIVE)
         val mfp = Paths.get(
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
         )
@@ -209,8 +209,7 @@ class ModelServiceTests : AbstractTest() {
         )
 
         val names = files.map { FileUtils.filename(it) }
-        assertTrue("model-version.txt" in names)
-        assertTrue("model.zip" in names)
+        assertTrue(ModelType.PYTORCH_MODEL_ARCHIVE.fileName in names)
     }
 
     @Test
