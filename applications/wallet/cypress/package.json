@@ -21,10 +21,10 @@
     "proseWrap": "always"
   },
   "dependencies": {
-    "cypress": "7.4.0"
+    "cypress": "7.5.0"
   },
   "devDependencies": {
-    "eslint": "7.27.0",
+    "eslint": "7.28.0",
     "eslint-plugin-cypress": "2.11.3",
     "prettier": "2.3.1"
   }

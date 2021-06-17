@@ -152,7 +152,7 @@ Array [
     className="emotion-0"
   />,
   <DatasetLabelsAssets
-    datasetId="621bf775-89d9-1244-9596-d6df43f1ede5"
+    datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
     datasetName="cats"
     label="tabby"
     page={1}
@@ -304,7 +304,7 @@ Array [
     className="emotion-0"
   />,
   <DatasetLabelsAssets
-    datasetId="621bf775-89d9-1244-9596-d6df43f1ede5"
+    datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
     datasetName="cats"
     label=""
     page={1}

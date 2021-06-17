@@ -60,8 +60,12 @@ class DatasetServiceTests : AbstractTest() {
 
     @Test
     fun testUpdate() {
-        val ds = datasetService.createDataset(DatasetSpec("pets", DatasetType.Classification))
-        datasetService.updateDataset(ds, DatasetUpdate(name = "cars"))
+        var ds = datasetService.createDataset(DatasetSpec("pets", DatasetType.Classification))
+        assertEquals("pets", ds.name)
+
+        datasetService.updateDataset(ds, DatasetUpdate(name = "cars", description = "very nice car"))
+
+        assertEquals("very nice car", ds.description)
         assertEquals("cars", ds.name)
     }
 

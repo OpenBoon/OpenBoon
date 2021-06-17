@@ -9,9 +9,10 @@ import Dataset from '..'
 
 jest.mock('../../Breadcrumbs', () => 'Breadcrumbs')
 jest.mock('../../DatasetLabels', () => 'DatasetLabels')
+jest.mock('../../DatasetModels', () => 'DatasetModels')
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const DATASET_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
+const DATASET_ID = '4b0b10a8-cec1-155c-b12f-ee2bc8787e06'
 
 describe('<Dataset />', () => {
   it('should render properly', () => {
@@ -64,6 +65,26 @@ describe('<Dataset />', () => {
         projectId: PROJECT_ID,
         datasetId: DATASET_ID,
         action: 'remove-asset-success',
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: dataset })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Dataset />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should route properly to models', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/datasets/[datasetId]/models',
+      query: {
+        projectId: PROJECT_ID,
+        datasetId: DATASET_ID,
       },
     })
 

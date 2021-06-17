@@ -76,7 +76,6 @@ metrics-deploy-development:
       changes:
         - "services/metrics/**/*"
 
-
 deploy-qa:
   extends: .deploy
   image: google/cloud-sdk
@@ -85,7 +84,6 @@ deploy-qa:
     SA_JSON: ${QA_SA_JSON}
     DEPLOYMENTS: analyst api-gateway archivist auth-server metrics ml-bbq officer reporter wallet swivel project-reaper
     STATEFUL_SETS: elasticsearch-master elasticsearch-data
-  stage: deploy
   environment:
     name: qa
     url: https://qa.boonai.app/
@@ -98,10 +96,43 @@ deploy-prod:
   variables:
     PROJECT: zvi-prod
     SA_JSON: ${PROD_SA_JSON}
-  stage: deploy
   environment:
     name: prod
     url: https://boonai.app/
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
       when: manual
+
+# Build and deploy the BoonSDK python docs.
+.deploy-boonsdk-docs:
+  image: google/cloud-sdk
+  stage: deploy
+  before_script:
+    - cd client/boonsdk
+    - python3 setup.py install
+    - pip3 install sphinx
+    - cd docs
+    - gcloud auth activate-service-account boonsdk-docs-admin@zorroa-deploy.iam.gserviceaccount.com --key-file=$BOONSDK_DOCS_SA_KEY
+  script:
+    - make html
+    - gsutil cp -r ./build/html/* gs://${BUCKET}/
+  rules:
+    - if: $CI_COMMIT_BRANCH == $BRANCH
+
+deploy-boonsdk-docs-dev:
+  extends: .deploy-boonsdk-docs
+  variables:
+    BUCKET: boonai-python-docs-site-dev
+    BRANCH: dev
+
+deploy-boonsdk-docs-qa:
+  extends: .deploy-boonsdk-docs
+  variables:
+    BUCKET: boonai-python-docs-site-qa
+    BRANCH: qa
+
+deploy-boonsdk-docs-prod:
+  extends: .deploy-boonsdk-docs
+  variables:
+    BUCKET: boonai-python-docs-site-prod
+    BRANCH: master

@@ -123,6 +123,7 @@ class DatasetServiceImpl(
         // Note you can't change type because different types have
         // different label requirements.
         dataset.name = update.name
+        dataset.description = update.description
         dataset.timeModified = System.currentTimeMillis()
         dataset.actorModified = getZmlpActor().toString()
     }
