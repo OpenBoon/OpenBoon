@@ -181,6 +181,24 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
 
         mock_automl._upload_resources(resource_url)
 
+    @patch('boonai_train.automl.labels.get_gcp_project_id')
+    @patch("google.cloud.automl.AutoMlClient")
+    @patch("boonflow.cloud.get_google_storage_client")
+    def test_delete_train_resources(self,
+                                    gs_patch,
+                                    automl_patch,
+                                    project_id_patch
+                                    ):
+        gs_patch.return_value = MockGsClient()
+        automl_patch.return_value = MockAutoMlClient()
+        project_id_patch.return_value = "boonai-dev"
+
+        mock_automl = AutomlLabelDetectionSession(self.model,
+                                                  training_bucket='gs://destination-bucket/')
+        mock_automl.automl_dataset = MockAutoMlDataset()
+
+        mock_automl._delete_train_resources()
+
 
 class MockBucket:
     def __init__(self, name):
@@ -205,6 +223,12 @@ class MockAutoMlClient:
         return MockImportDataResult()
 
     def export_model(self, request=None):
+        return Result()
+
+    def delete_model(self, *args):
+        return Result()
+
+    def delete_dataset(self, *args):
         return Result()
 
 
