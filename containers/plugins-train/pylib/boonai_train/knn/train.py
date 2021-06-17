@@ -7,6 +7,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import pairwise_distances_argmin_min
 from sklearn.neighbors import KNeighborsClassifier
 
+import boonsdk
 from boonflow import ModelTrainer, Argument, file_storage
 
 
@@ -69,10 +70,18 @@ class KnnLabelDetectionTrainer(ModelTrainer):
             kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(x)
             closest, _ = pairwise_distances_argmin_min(kmeans.cluster_centers_, x)
 
+            # Auto-make a DS if needed.
+            if not self.app_model.dataset_id:
+                ds = self.app.datasets.create_dataset(
+                    self.app_model.name + '-dataset',
+                    boonsdk.DatasetType.Classification, description='Auto-label dataset')
+            else:
+                ds = self.app.datasets.get_dataset(self.app_model.dataset_id)
+
             for n, i in enumerate(closest):
                 self.app.assets.update_labels(
                     assets[i].id,
-                    self.app_model.make_label('auto group ' + str(n)))
+                    ds.make_label(f'auto group {n}'))
 
             classifier_hashes = self.classifier_hashes()
 
@@ -129,7 +138,7 @@ class KnnLabelDetectionTrainer(ModelTrainer):
                             'query': {
                                 'bool': {
                                     'must': [
-                                        {'term': {'labels.modelId': self.app_model.id}},
+                                        {'term': {'labels.datasetId': self.app_model.dataset_id}},
                                         {'term': {'labels.scope': 'TRAIN'}},
                                     ]
                                 }
@@ -144,7 +153,7 @@ class KnnLabelDetectionTrainer(ModelTrainer):
         classifier_hashes = []
         for asset in self.app.assets.scroll_search(query):
             for label in asset['labels']:
-                if label['modelId'] == self.app_model.id:
+                if label['datasetId'] == self.app_model.dataset_id:
                     simhash = asset.get_attr('analysis.boonai-image-similarity.simhash')
                     if simhash is None:
                         continue

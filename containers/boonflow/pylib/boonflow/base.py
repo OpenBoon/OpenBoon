@@ -479,8 +479,11 @@ class ModelTrainer(AssetProcessor):
         self.app_model = None
 
     def load_app_model(self):
-        self.logger.info("Fetching model {}".format(self.arg_value('model_id')))
+        self.logger.info("Fetching model {}".format(self.arg_value("model_id")))
         self.app_model = self.app.models.get_model(self.model_id)
+
+    def get_dataset(self, model):
+        return self.app.datasets.get_dataset(model.dataset_id)
 
     def process(self, frame):
         self.train()

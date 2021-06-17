@@ -169,18 +169,20 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
         )
 
         self.logger.info('Training...')
+        epochs = int(self.arg_value('epochs'))
+
         history = self.model.fit(
             train_gen,
-            callbacks=[HaltCallback(), TrainingProgressCallback(self.reactor, self.arg_value('epochs'))],
+            callbacks=[HaltCallback(), TrainingProgressCallback(self.reactor, epochs)],
             validation_data=test_gen,
-            epochs=self.arg_value('epochs')
+            epochs=epochs
         )
 
         self.plot_history(history, "history")
 
         # Number of epochs for fine tuning.
-        fine_tune_at_layer = self.arg_value('fine_tune_at_layer')
-        fine_tune_epochs = self.arg_value('fine_tune_epochs')
+        fine_tune_at_layer = int(self.arg_value('fine_tune_at_layer'))
+        fine_tune_epochs = int(self.arg_value('fine_tune_epochs'))
 
         if fine_tune_epochs <= 0:
             return
@@ -295,7 +297,6 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
                 weights='imagenet', include_top=False, input_shape=shape)
         else:
             raise RuntimeError(f'{base} is not a valid base model type')
-
 
     def build_model(self, base_model):
         base = self.arg_value('base_model')

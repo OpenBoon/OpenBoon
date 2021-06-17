@@ -12,7 +12,7 @@ from .reactor import Reactor
 logger = logging.getLogger(__name__)
 
 
-class BoonDockDaemon(object):
+class BoonDockDaemon:
     """Starts a ZMQ server which allows us to run the processors contained
     in the image on asset metadata.
     """

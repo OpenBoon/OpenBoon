@@ -3,6 +3,7 @@ import logging
 import os
 import random
 import threading
+import socket
 
 import docker
 import zmq
@@ -290,7 +291,7 @@ class ZpsExecutor(object):
             return self.exit_status
 
 
-class DockerContainerWrapper(object):
+class DockerContainerWrapper:
     """
     DockerContainerWrapper wraps a docker Container instance.
 
@@ -299,6 +300,8 @@ class DockerContainerWrapper(object):
         image: (str): the
 
     """
+
+    used_ports = set()
 
     def __init__(self, client, task, image):
         """
@@ -321,7 +324,26 @@ class DockerContainerWrapper(object):
 
         ctx = zmq.Context()
         self.socket = ctx.socket(zmq.PAIR)
-        self.port = random.randint(*CONTAINER_PORT_RANGE)
+        self.port = self._find_port()
+
+    def _find_port(self):
+        def test_port(port):
+            s = socket.socket()
+            address = '127.0.0.1'
+            try:
+                s.connect((address, port))
+                return False
+            except Exception:
+                return True
+            finally:
+                s.close()
+
+        while True:
+            port = random.randint(*CONTAINER_PORT_RANGE)
+            if port not in self.used_ports and test_port(port):
+                self.used_ports.add(port)
+                logger.info(f'Spawning container on port: {port}')
+                return port
 
     def _docker_login(self):
         creds_file = os.environ.get("ANALYST_DOCKER_CREDS_FILE",
@@ -410,11 +432,12 @@ class DockerContainerWrapper(object):
             "ANALYST_THREADS": env.get("ANALYST_THREADS", os.environ.get("ANALYST_THREADS"))
         })
 
-        logger.info("starting container {} vols={} network={} ports={}".format(
-            self.image, volumes, network, ports))
+        logger.info("starting container {} vols={} network={} port={}".format(
+            self.image, volumes, network, self.port))
         command = ["/usr/local/bin/server", "-p", str(self.port)]
         self.container = self.docker_client.containers.run(image, detach=True,
-                                                           environment=env, volumes=volumes,
+                                                           environment=env,
+                                                           volumes=volumes,
                                                            entrypoint=command,
                                                            network=network,
                                                            ports=ports,

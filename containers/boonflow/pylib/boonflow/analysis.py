@@ -100,10 +100,12 @@ class LabelDetectionAnalysis:
     more suitable for ElasticSearch.
 
     """
+    MAX_PREDICTIONS = 32
+    """maximum number of predictions for this analysis"""
 
     def __init__(self,
                  min_score=0.0,
-                 max_predictions=32,
+                 max_predictions=None,
                  collapse_labels=False,
                  save_pred_attrs=True):
         """
@@ -118,7 +120,7 @@ class LabelDetectionAnalysis:
 
         """
         self.min_score = min_score
-        self.max_predictions = max_predictions
+        self.max_predictions = max_predictions or self.MAX_PREDICTIONS
         self.collapse_labels = collapse_labels
         self.save_pred_attrs = save_pred_attrs
 
