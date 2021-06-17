@@ -1,11 +1,8 @@
-import { useReducer } from 'react'
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
+import PropTypes from 'prop-types'
+import Link from 'next/link'
 
 import { spacing } from '../Styles'
 
-import Form from '../Form'
-import FlashMessageErrors from '../FlashMessage/Errors'
 import SectionTitle from '../SectionTitle'
 import SectionSubTitle from '../SectionSubTitle'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
@@ -14,37 +11,20 @@ import Radio from '../Radio'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 
-import { onSubmit } from './helpers'
+import { onNewLink } from './helpers'
 
-const INITIAL_STATE = {
-  name: '',
-  description: '',
-  type: '',
-  isLoading: false,
-  errors: {},
-}
-
-const reducer = (state, action) => ({ ...state, ...action })
-
-const DatasetsAddForm = () => {
-  const {
-    query: { projectId },
-  } = useRouter()
-
-  const {
-    data: { results: datasetTypes },
-  } = useSWR(`/api/v1/projects/${projectId}/datasets/dataset_types/`)
-
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
-
+const ModelLinkNew = ({
+  projectId,
+  modelId,
+  datasetTypes,
+  state,
+  dispatch,
+}) => {
   return (
-    <Form>
-      <FlashMessageErrors
-        errors={state.errors}
-        styles={{ marginTop: -spacing.base, paddingBottom: spacing.comfy }}
-      />
+    <div>
+      <SectionTitle>Select a Dataset Type</SectionTitle>
 
-      <SectionTitle>Dataset Name &amp; Description</SectionTitle>
+      <div css={{ height: spacing.normal }} />
 
       <Input
         autoFocus
@@ -99,17 +79,49 @@ const DatasetsAddForm = () => {
       <div css={{ height: spacing.normal }} />
 
       <ButtonGroup>
+        <Link
+          href="/[projectId]/models/[modelId]"
+          as={`/${projectId}/models/${modelId}`}
+          passHref
+        >
+          <Button variant={BUTTON_VARIANTS.SECONDARY}>Cancel</Button>
+        </Link>
+
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() => onSubmit({ projectId, state, dispatch })}
+          onClick={() => onNewLink({ projectId, modelId, state, dispatch })}
           isDisabled={!state.name || !state.type || state.isLoading}
         >
-          {state.isLoading ? 'Creating...' : 'Create New Dataset'}
+          {state.isLoading ? 'Linking...' : 'Link Dataset'}
         </Button>
       </ButtonGroup>
-    </Form>
+    </div>
   )
 }
 
-export default DatasetsAddForm
+ModelLinkNew.propTypes = {
+  projectId: PropTypes.string.isRequired,
+  modelId: PropTypes.string.isRequired,
+  datasetTypes: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    }).isRequired,
+  ).isRequired,
+  state: PropTypes.shape({
+    datasetId: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    errors: PropTypes.shape({
+      name: PropTypes.string,
+      description: PropTypes.string,
+    }).isRequired,
+    isLoading: PropTypes.bool.isRequired,
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
+}
+
+export default ModelLinkNew

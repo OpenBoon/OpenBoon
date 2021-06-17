@@ -478,7 +478,7 @@ Array [
             <input
               className="emotion-17"
               defaultChecked={false}
-              id="FaceRecognition"
+              name="datasetType"
               onClick={[Function]}
               type="radio"
               value="FaceRecognition"
@@ -517,7 +517,7 @@ Array [
             <input
               className="emotion-17"
               defaultChecked={false}
-              id="Classification"
+              name="datasetType"
               onClick={[Function]}
               type="radio"
               value="Classification"
@@ -556,7 +556,7 @@ Array [
             <input
               className="emotion-17"
               defaultChecked={false}
-              id="ObjectDetection"
+              name="datasetType"
               onClick={[Function]}
               type="radio"
               value="ObjectDetection"
@@ -1097,7 +1097,7 @@ Array [
             <input
               className="emotion-17"
               defaultChecked={false}
-              id="FaceRecognition"
+              name="datasetType"
               onClick={[Function]}
               type="radio"
               value="FaceRecognition"
@@ -1136,7 +1136,7 @@ Array [
             <input
               className="emotion-17"
               defaultChecked={false}
-              id="Classification"
+              name="datasetType"
               onClick={[Function]}
               type="radio"
               value="Classification"
@@ -1175,7 +1175,7 @@ Array [
             <input
               className="emotion-33"
               defaultChecked={true}
-              id="ObjectDetection"
+              name="datasetType"
               onClick={[Function]}
               type="radio"
               value="ObjectDetection"

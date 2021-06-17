@@ -199,7 +199,7 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
             <input
               className="emotion-6"
               defaultChecked={true}
-              id="normalized"
+              name="View"
               onClick={[Function]}
               type="radio"
               value="normalized"
@@ -238,7 +238,7 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
             <input
               className="emotion-14"
               defaultChecked={false}
-              id="absolute"
+              name="View"
               onClick={[Function]}
               type="radio"
               value="absolute"
@@ -508,7 +508,7 @@ exports[`<ModelMatrixControls should render properly 1`] = `
             <input
               className="emotion-6"
               defaultChecked={true}
-              id="normalized"
+              name="View"
               onClick={[Function]}
               type="radio"
               value="normalized"
@@ -547,7 +547,7 @@ exports[`<ModelMatrixControls should render properly 1`] = `
             <input
               className="emotion-14"
               defaultChecked={false}
-              id="absolute"
+              name="View"
               onClick={[Function]}
               type="radio"
               value="absolute"
