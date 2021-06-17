@@ -37,7 +37,7 @@ class DatasetJdbcDaoImpl : AbstractDao(), DatasetJdbcDao {
         filter.apply { page = KPage(0, 1) }
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
-        return throwWhenNotFound("Model not found") {
+        return throwWhenNotFound("DataSet not found") {
             return KPagedList(1L, filter.page, jdbc.query(query, MAPPER, *values))[0]
         }
     }

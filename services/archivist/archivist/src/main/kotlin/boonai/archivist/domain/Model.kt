@@ -104,7 +104,7 @@ enum class ModelType(
         listOf(),
         true,
         false,
-        true
+        false
     ),
     TF_SAVED_MODEL(
         "Imported Tensorflow Image Classifier",
@@ -154,7 +154,7 @@ enum class ModelType(
         listOf(),
         false,
         true,
-        false,
+        true,
         "model.mar"
     );
 
@@ -199,7 +199,10 @@ enum class PostTrainAction {
 class ModelTrainingRequest(
 
     @ApiModelProperty("The action to take after training.")
-    var postAction: PostTrainAction = PostTrainAction.NONE
+    var postAction: PostTrainAction = PostTrainAction.NONE,
+
+    @ApiModelProperty("Override the default model training arguments.")
+    var trainArgs: Map<String, Any>? = null
 )
 
 @ApiModel("ModelApplyRequest", description = "Arguments for applying a model to data.")

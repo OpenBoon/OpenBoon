@@ -34,7 +34,7 @@ class ModelDeployServiceTests : AbstractTest() {
 
     @Test
     fun testAcceptModelFileUploadAndList() {
-        val model = create(type = ModelType.TF_SAVED_MODEL)
+        val model = create(type = ModelType.PYTORCH_MODEL_ARCHIVE)
         val mfp = Paths.get(
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
         )

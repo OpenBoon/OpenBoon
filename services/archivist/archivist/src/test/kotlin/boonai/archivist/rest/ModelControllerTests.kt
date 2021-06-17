@@ -227,7 +227,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testUploadModel() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_SAVED_MODEL)
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.PYTORCH_MODEL_ARCHIVE)
         val model = modelService.createModel(modelSpec)
 
         val mfp = Paths.get(
@@ -246,7 +246,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testApproveLatestModelTag() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_SAVED_MODEL)
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.PYTORCH_MODEL_ARCHIVE)
         val model = modelService.createModel(modelSpec)
         val mfp = Paths.get(
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
@@ -371,39 +371,6 @@ class ModelControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testCreateAutomlSession() {
-
-        val modelSpec = ModelSpec("Dog Breeds 2", ModelType.GCP_AUTOML_CLASSIFIER)
-        val model = modelService.createModel(modelSpec)
-
-        val automlSpec = AutomlSessionSpec(
-            "project/foo/region/us-central/datasets/foo",
-            "a_training_job"
-        )
-
-        mvc.perform(
-            MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_automl")
-                .headers(admin())
-                .content(Json.serialize(automlSpec))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$.automlDataset",
-                    CoreMatchers.equalTo(automlSpec.automlDataset)
-                )
-            )
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$.automlTrainingJob",
-                    CoreMatchers.equalTo(automlSpec.automlTrainingJob)
-                )
-            )
-            .andReturn()
-    }
-
-    @Test
     fun testGetType() {
         val module = ModelType.TF_CLASSIFIER
         mvc.perform(
@@ -428,7 +395,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testGetTags() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_SAVED_MODEL)
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.PYTORCH_MODEL_ARCHIVE)
         val model = modelService.createModel(modelSpec)
 
         val mfp = Paths.get(
