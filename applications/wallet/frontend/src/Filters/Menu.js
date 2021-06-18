@@ -34,19 +34,21 @@ const FiltersMenu = ({
   const [newFilters, setNewFilters] = useState({})
   const [fieldsFilter, setFieldsFilter] = useState('')
 
-  const onClick = ({ type, attribute, modelId }) => (value) => {
-    if (value) {
-      const values = type === 'exists' ? { exists: true } : {}
+  const onClick = ({ type, attribute, datasetId }) => {
+    return (value) => {
+      if (value) {
+        const values = type === 'exists' ? { exists: true } : {}
 
-      setNewFilters((nF) => ({
-        ...nF,
-        [attribute]: { type, attribute, values, modelId },
-      }))
-    } else {
-      setNewFilters((nF) => {
-        const { [attribute]: filterToRemove, ...rest } = nF
-        return rest
-      })
+        setNewFilters((nF) => ({
+          ...nF,
+          [attribute]: { type, attribute, values, datasetId },
+        }))
+      } else {
+        setNewFilters((nF) => {
+          const { [attribute]: filterToRemove, ...rest } = nF
+          return rest
+        })
+      }
     }
   }
 
