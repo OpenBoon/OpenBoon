@@ -49,7 +49,6 @@ class AbstractClarifaiVideoBboxProcessor(AbstractClarifaiVideoProcessor):
 class ClarifaiVideoFaceDetectionProcessor(AbstractClarifaiVideoBboxProcessor):
     """ Clarifai face detection"""
     attribute_name = 'face-detection'
-    model_id = 'f76196b43bbd45c99b4f3cd8e8b40a8a'
     image_client_class = bboxes_images.ClarifaiFaceDetectionProcessor
 
 
