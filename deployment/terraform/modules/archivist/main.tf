@@ -1,3 +1,16 @@
+resource "google_pubsub_topic" "cloud-builds" {
+  name = "cloud-builds"
+}
+
+resource "google_pubsub_topic" "model-events" {
+  name = "model-events"
+}
+
+resource "google_pubsub_subscription" "archivist-cloud-builds" {
+  name  = "archivist-cloud-builds"
+  topic = google_pubsub_topic.cloud-builds.name
+}
+
 ## GCS Buckets and Configuration Files
 resource "google_storage_bucket" "data" {
   lifecycle {
@@ -317,4 +330,3 @@ resource "kubernetes_service" "archivist" {
     type = "ClusterIP"
   }
 }
-

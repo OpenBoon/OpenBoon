@@ -109,7 +109,9 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
 
         args = {
             'model_id': self.model_id,
-            'epochs': 5,
+            'base_model': 'efficientnet-b0',
+            'epochs': 10,
+            'fine_tune_epochs': 10,
             'validation_split': 0.3,
             'tag': 'latest'
         }

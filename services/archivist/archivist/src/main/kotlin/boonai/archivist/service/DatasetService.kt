@@ -1,6 +1,7 @@
 package boonai.archivist.service
 
 import boonai.archivist.clients.EsRestClient
+import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.Dataset
 import boonai.archivist.domain.DatasetFilter
 import boonai.archivist.domain.DatasetSpec
@@ -50,7 +51,7 @@ interface DatasetService {
     fun find(filter: DatasetFilter): KPagedList<Dataset>
     fun getLabelCounts(dataset: Dataset): Map<String, Long>
     fun updateLabel(dataset: Dataset, label: String, newLabel: String?): GenericBatchUpdateResponse
-    fun getLabelCountsV4(dataSst: Dataset): Map<String, Map<String, Long>>
+    fun getLabelCountsV4(dataset: Dataset): Map<String, Map<String, Long>>
     fun buildTestLabelSearch(labelSet: LabelSet): Map<String, Any>
     fun wrapSearchToExcludeTrainingSet(labelSet: LabelSet, search: Map<String, Any>): Map<String, Any>
 }
@@ -132,10 +133,15 @@ class DatasetServiceImpl(
         val rest = indexRoutingService.getProjectRestClient()
         val dsFilter = QueryBuilders.termQuery("labels.datasetId", dataset.id.toString())
 
-        val query = QueryBuilders.nestedQuery(
+        val nestedQuery = QueryBuilders.nestedQuery(
             "labels",
             dsFilter, ScoreMode.None
         )
+
+        val query = QueryBuilders.boolQuery()
+        query.must(nestedQuery)
+        query.must(QueryBuilders.termQuery("system.state", AssetState.Analyzed.name))
+
         val agg = AggregationBuilders.nested("nested_labels", "labels")
             .subAggregation(
                 AggregationBuilders.filter("filtered", dsFilter)
@@ -167,13 +173,19 @@ class DatasetServiceImpl(
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    override fun getLabelCountsV4(dataSet: Dataset): Map<String, Map<String, Long>> {
+    override fun getLabelCountsV4(dataset: Dataset): Map<String, Map<String, Long>> {
         val rest = indexRoutingService.getProjectRestClient()
-        val dsFilter = QueryBuilders.termQuery("labels.datasetId", dataSet.id.toString())
-        val query = QueryBuilders.nestedQuery(
+        val dsFilter = QueryBuilders.termQuery("labels.datasetId", dataset.id.toString())
+
+        val nestedQuery = QueryBuilders.nestedQuery(
             "labels",
             dsFilter, ScoreMode.None
         )
+
+        val query = QueryBuilders.boolQuery()
+        query.must(nestedQuery)
+        query.must(QueryBuilders.termQuery("system.state", AssetState.Analyzed.name))
+
         val agg = AggregationBuilders.nested("nested_labels", "labels")
             .subAggregation(
                 AggregationBuilders.filter("filtered", dsFilter)

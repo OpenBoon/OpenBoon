@@ -1,8 +1,6 @@
 package boonai.archivist.rest
 
 import boonai.archivist.domain.ArgSchema
-import boonai.archivist.domain.AutomlSession
-import boonai.archivist.domain.AutomlSessionSpec
 import boonai.archivist.domain.Job
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
@@ -19,7 +17,7 @@ import boonai.archivist.domain.PipelineMod
 import boonai.archivist.domain.PostTrainAction
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.service.ArgValidationService
-import boonai.archivist.service.AutomlService
+import boonai.archivist.service.ModelDeployService
 import boonai.archivist.service.ModelService
 import boonai.archivist.util.HttpUtils
 import io.swagger.annotations.ApiOperation
@@ -39,7 +37,7 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 class ModelController(
     val modelService: ModelService,
-    val automlService: AutomlService,
+    val modelDeployService: ModelDeployService,
     val argValidationService: ArgValidationService
 ) {
 
@@ -82,7 +80,7 @@ class ModelController(
     @ApiOperation("Get Information about all model types.")
     @GetMapping(value = ["/api/v3/models/_types"])
     fun getTypes(): Any {
-        return ModelType.values().map { it.asMap() }
+        return ModelType.values().filter { it.enabled }.map { it.asMap() }
     }
 
     @ApiOperation("Search for Models.")
@@ -133,7 +131,7 @@ class ModelController(
     @ApiOperation("Get model training argument schema")
     @GetMapping("/api/v3/models/_types/{type}/_training_args")
     fun getTrainingArgumentSchema(@PathVariable type: String): ArgSchema {
-        return modelService.getTrainingArgSchema(ModelType.valueOf(type.toUpperCase()))
+        return modelService.getTrainingArgSchema(ModelType.valueOf(type.uppercase()))
     }
 
     @ApiOperation("Delete a model")
@@ -179,18 +177,7 @@ class ModelController(
     @ApiOperation("Upload the model zip file.")
     @PostMapping(value = ["/api/v3/models/{id}/_upload"])
     fun upload(@ApiParam("ModelId") @PathVariable id: UUID, req: HttpServletRequest): Any {
-        return modelService.publishModelFileUpload(modelService.getModel(id), req.inputStream)
-    }
-
-    @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
-    @ApiOperation("Create an autoML session.")
-    @PostMapping("/api/v3/models/{id}/_automl")
-    fun createAutomlSession(
-        @ApiParam("ModelId") @PathVariable id: UUID,
-        @RequestBody spec: AutomlSessionSpec
-    ): AutomlSession {
-        val model = modelService.getModel(id)
-        return automlService.createSession(model, spec)
+        return modelDeployService.deployUploadedModel(modelService.getModel(id), req.inputStream)
     }
 
     @PutMapping(value = ["/api/v3/models/{id}"])

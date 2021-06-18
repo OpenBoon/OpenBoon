@@ -43,10 +43,12 @@ class TensorflowTransferLearningClassifier(CustomModelProcessor):
         Returns:
             None
         """
+        # This is set for tests only
+        max_preds = self.context.settings.get('maxPredictions')
         proxy_path = get_proxy_level_path(asset, 0)
         predictions = self.predict(proxy_path)
 
-        analysis = LabelDetectionAnalysis(min_score=0.01)
+        analysis = LabelDetectionAnalysis(min_score=0.01, max_predictions=max_preds)
         for label in predictions:
             analysis.add_label_and_score(label[0], label[1])
 

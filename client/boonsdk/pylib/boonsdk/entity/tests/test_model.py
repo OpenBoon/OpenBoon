@@ -5,13 +5,6 @@ from boonsdk import Model
 
 class ModelTests(unittest.TestCase):
 
-    def test_get_label_search(self):
-        ds = Model({'id': '12345'})
-        search = ds.get_label_search()
-        assert search['size'] == 64
-        assert search['sort'] == ['_doc']
-        assert search['_source'] == ['labels', 'files']
-
     def test_get_confusion_matrix_search_knn(self):
         model = Model({'id': '12345',
                        'moduleName': 'knn',

@@ -1,7 +1,6 @@
 package boonai.archivist.repository
 
 import boonai.archivist.AbstractTest
-import boonai.archivist.domain.AutomlSessionSpec
 import boonai.archivist.domain.Category
 import boonai.archivist.domain.DataSourceSpec
 import boonai.archivist.domain.FileType
@@ -9,8 +8,6 @@ import boonai.archivist.domain.IndexRouteFilter
 import boonai.archivist.domain.IndexRouteSpec
 import boonai.archivist.domain.JobSpec
 import boonai.archivist.domain.ModelObjective
-import boonai.archivist.domain.ModelSpec
-import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.PipelineModSpec
 import boonai.archivist.domain.PipelineMode
 import boonai.archivist.domain.PipelineSpec
@@ -18,7 +15,6 @@ import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.Provider
 import boonai.archivist.domain.emptyZpsScript
 import boonai.archivist.security.getProjectId
-import boonai.archivist.service.AutomlService
 import boonai.archivist.service.CredentialsService
 import boonai.archivist.service.DataSourceService
 import boonai.archivist.service.JobService
@@ -48,9 +44,6 @@ class ProjectDaoTests : AbstractTest() {
 
     @Autowired
     lateinit var pipelineModService: PipelineModService
-
-    @Autowired
-    lateinit var automlService: AutomlService
 
     @Autowired
     lateinit var modelService: ModelService
@@ -94,7 +87,6 @@ class ProjectDaoTests : AbstractTest() {
     fun testDeleteProjectRelatedObjects() {
         createJobAndTasks()
         createPipelineAndModule()
-        createAutoMl()
         createDataSource()
 
         val indexRoute = indexRoutingService.findOne(IndexRouteFilter(projectIds = listOf(getProjectId())))
@@ -102,21 +94,7 @@ class ProjectDaoTests : AbstractTest() {
 
         projectDeleteDao.deleteProjectRelatedObjects(getProjectId())
 
-        val listOfTables = listOf(
-            "project_quota",
-            "project_quota_time_series",
-            "processor",
-            "module",
-            "credentials",
-            "pipeline",
-            "automl",
-            "model",
-            "job",
-            "datasource",
-            "project"
-
-        )
-        listOfTables.forEach {
+        ProjectDeleteDao.tables.forEach {
             assertEquals(
                 0,
                 jdbc.queryForObject("SELECT COUNT(*) FROM $it where pk_project=?", Int::class.java, getProjectId())
@@ -165,18 +143,6 @@ class ProjectDaoTests : AbstractTest() {
         pipelineModService.create(modSpec)
         modularSpec.modules = listOf(modSpec.name)
         pipelineService.create(modularSpec)
-    }
-
-    private fun createAutoMl() {
-        val modelSpec = ModelSpec("animals", ModelType.GCP_AUTOML_CLASSIFIER)
-        val model = modelService.createModel(modelSpec)
-
-        val automlSpec = AutomlSessionSpec(
-            "project/foo/region/us-central/datasets/foo",
-            "/foo/bar"
-        )
-
-        automlService.createSession(model, automlSpec)
     }
 
     private fun createDataSource() {

@@ -6,6 +6,7 @@ import boonai.archivist.repository.KDaoFilter
 import boonai.archivist.security.getProjectId
 import boonai.archivist.util.JdbcUtils
 import boonai.common.util.Json
+import com.google.cloud.ServiceOptions
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.annotations.Type
@@ -32,7 +33,9 @@ enum class ModelType(
     val minExamples: Int,
     val dependencies: List<String>,
     val trainable: Boolean,
-    val uploadable: Boolean
+    val uploadable: Boolean,
+    val enabled: Boolean,
+    val fileName: String = "model.zip"
 ) {
     KNN_CLASSIFIER(
         "K-Nearest Neighbors Classifier",
@@ -51,6 +54,7 @@ enum class ModelType(
         listOf(),
         true,
         false,
+        true
     ),
     TF_CLASSIFIER(
         "Tensorflow Transfer Learning Classifier",
@@ -68,6 +72,7 @@ enum class ModelType(
         listOf(),
         true,
         false,
+        true
     ),
     FACE_RECOGNITION(
         "Face Recognition",
@@ -82,7 +87,8 @@ enum class ModelType(
         1,
         listOf("boonai-face-detection"),
         true,
-        false
+        false,
+        true
     ),
     GCP_AUTOML_CLASSIFIER(
         "Google AutoML Classifier",
@@ -97,9 +103,10 @@ enum class ModelType(
         10,
         listOf(),
         true,
+        false,
         false
     ),
-    TF_UPLOADED_CLASSIFIER(
+    TF_SAVED_MODEL(
         "Imported Tensorflow Image Classifier",
         "None",
         "boonai_analysis.custom.TensorflowImageClassifier",
@@ -112,7 +119,8 @@ enum class ModelType(
         0,
         listOf(),
         false,
-        true
+        true,
+        false
     ),
     PYTORCH_CLASSIFIER(
         "Pytorch Transfer Learning Classifier",
@@ -129,14 +137,15 @@ enum class ModelType(
         10,
         listOf(),
         true,
+        false,
         false
     ),
-    PYTORCH_UPLOADED_CLASSIFIER(
-        "Imported Pytorch Image Classifier",
+    PYTORCH_MODEL_ARCHIVE(
+        "A Pytorch Model Archive. image_classifier, image_segmenter, object_detector, or text_classifier. ",
         "None",
-        "boonai_analysis.custom.PytorchImageClassifier",
+        "boonai_analysis.custom.PytorchModelArchive",
         null,
-        "Upload a pre-inained Pytorch model to use for image classification.",
+        "Upload a pre-trained Pytorch Model Archive",
         ModelObjective.LABEL_DETECTION,
         Provider.BOONAI,
         true,
@@ -144,7 +153,9 @@ enum class ModelType(
         0,
         listOf(),
         false,
-        true
+        true,
+        true,
+        "model.mar"
     );
 
     fun asMap(): Map<String, Any> {
@@ -188,7 +199,10 @@ enum class PostTrainAction {
 class ModelTrainingRequest(
 
     @ApiModelProperty("The action to take after training.")
-    var postAction: PostTrainAction = PostTrainAction.NONE
+    var postAction: PostTrainAction = PostTrainAction.NONE,
+
+    @ApiModelProperty("Override the default model training arguments.")
+    var trainArgs: Map<String, Any>? = null
 )
 
 @ApiModel("ModelApplyRequest", description = "Arguments for applying a model to data.")
@@ -279,6 +293,9 @@ class Model(
     @ApiModelProperty("The name of the pipeline module and analysis namespace.")
     val moduleName: String,
 
+    @Column(name = "str_endpoint")
+    val endpoint: String?,
+
     @Column(name = "str_file_id")
     val fileId: String,
 
@@ -320,13 +337,18 @@ class Model(
         return datasetId
     }
 
+    @JsonIgnore
+    fun imageName(): String {
+        return "gcr.io/$GCP_PROJECT/models/$id"
+    }
+
     fun getModelFileLocator(tag: String, name: String): ProjectFileLocator {
         return ProjectFileLocator(
             ProjectStorageEntity.MODELS, id.toString(), tag, name
         )
     }
     fun getModelStorageLocator(tag: String): ProjectFileLocator {
-        return getModelFileLocator(tag, "model.zip")
+        return getModelFileLocator(tag, type.fileName)
     }
 
     fun getModelVersionStorageLocator(tag: String): ProjectFileLocator {
@@ -357,6 +379,9 @@ class Model(
 
     companion object {
         val matchAllSearch = mapOf<String, Any>("query" to mapOf("match_all" to emptyMap<String, Any>()))
+
+        // Need this fo cloud container registry
+        val GCP_PROJECT = ServiceOptions.getDefaultProjectId() ?: "localdev"
     }
 }
 

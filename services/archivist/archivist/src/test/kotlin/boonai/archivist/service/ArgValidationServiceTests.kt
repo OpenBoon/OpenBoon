@@ -20,7 +20,7 @@ class ArgValidationServiceTests : AbstractTest() {
 
     @Test
     fun testLoadArgSchema() {
-        val schema = argValidationService.getArgSchema("models/TF_CLASSIFIER")
+        val schema = argValidationService.getArgSchema("training/TF_CLASSIFIER")
         assertTrue("epochs" in schema.args.keys)
     }
 

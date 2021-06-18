@@ -25,3 +25,10 @@ class DatasetTests(unittest.TestCase):
         assert 'dog' == label.label
         assert [0.1, 0.1, 0.5, 0.5] == label.bbox
         assert 'ABC1234' == label.simhash
+
+    def test_get_label_search(self):
+        ds = Dataset({'id': '12345'})
+        search = ds.get_label_search()
+        assert search['size'] == 64
+        assert search['sort'] == ['_doc']
+        assert search['_source'] == ['labels', 'files']

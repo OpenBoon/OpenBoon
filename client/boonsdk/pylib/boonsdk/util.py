@@ -6,6 +6,16 @@ import zipfile
 import os
 import json
 import datetime
+from enum import Enum
+
+
+def enum_name(en, value, caps=False):
+    if isinstance(value, Enum):
+        return value.name
+    else:
+        if caps:
+            value = value.upper()
+        return en[value].name
 
 
 def is_valid_uuid(val):

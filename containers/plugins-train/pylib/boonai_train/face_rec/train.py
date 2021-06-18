@@ -32,7 +32,7 @@ class KnnFaceRecognitionTrainer(ModelTrainer):
                     'query': {
                         'bool': {
                             'must': [
-                                {'term': {'labels.modelId': self.app_model.id}},
+                                {'term': {'labels.datasetId': self.app_model.dataset_id}},
                                 {'term': {'labels.scope': 'TRAIN'}}
                             ]
                         }
@@ -44,7 +44,7 @@ class KnnFaceRecognitionTrainer(ModelTrainer):
         face_model = []
         for asset in self.app.assets.scroll_search(query):
             for label in asset['labels']:
-                if label['modelId'] == self.app_model.id:
+                if label['datasetId'] == self.app_model.dataset_id:
                     face_model.append({'simhash': label['simhash'], 'label': label['label']})
 
         if not face_model:
