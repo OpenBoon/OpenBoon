@@ -22,6 +22,10 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
 }
 
 .emotion-2 {
@@ -58,20 +62,23 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
 }
 
 .emotion-5 {
-  padding-left: 8px;
+  padding-left: 12px;
+}
+
+.emotion-6 {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-6 {
-  padding-left: 24px;
-}
-
 .emotion-7 {
-  height: 16px;
+  color: #b3b3b3;
 }
 
 .emotion-8 {
+  height: 16px;
+}
+
+.emotion-9 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -105,22 +112,22 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
   width: fit-content;
 }
 
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited,
-.emotion-8 .noop {
+.emotion-9,
+.emotion-9:hover,
+.emotion-9:visited,
+.emotion-9 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-8:hover,
-.emotion-8 .noop {
+.emotion-9:hover,
+.emotion-9 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-8[aria-disabled=true],
-.emotion-8 .noop {
+.emotion-9[aria-disabled=true],
+.emotion-9 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -141,7 +148,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
         <input
           className="emotion-3"
           defaultChecked={true}
-          id="deleteSelected"
+          name="delete"
           onClick={[Function]}
           type="radio"
           value="deleteSelected"
@@ -153,20 +160,24 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
       <div
         className="emotion-5"
       >
-        Delete Selected: 1
+        <div
+          className="emotion-6"
+        >
+          Delete Selected: 1
+        </div>
+        <div
+          className="emotion-7"
+        >
+          Delete the selected asset
+        </div>
       </div>
     </label>
-    <div
-      className="emotion-6"
-    >
-      Delete the selected asset
-    </div>
   </div>
   <div
-    className="emotion-7"
+    className="emotion-8"
   />
   <button
-    className="emotion-8"
+    className="emotion-9"
     onClick={[Function]}
     type="button"
   >

@@ -13,6 +13,7 @@ const TimelineScrollbarThumb = ({
   scrollbarRef,
   scrollbarTrackRef,
   horizontalScroller,
+  stopFollowPlayhead,
 }) => {
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
@@ -21,7 +22,13 @@ const TimelineScrollbarThumb = ({
     const fractionScrolled =
       scrollbarScrollableWidth === 0
         ? 0
-        : (scrollbarOrigin + difference) / scrollbarScrollableWidth
+        : Math.max(
+            0,
+            Math.min(
+              (scrollbarOrigin + difference) / scrollbarScrollableWidth,
+              1,
+            ),
+          )
 
     // the max number of pixels the ruler scroll left
     const rulerScrollableWidth =
@@ -43,6 +50,8 @@ const TimelineScrollbarThumb = ({
 
   /* istanbul ignore next */
   const handleMouseDown = ({ clientX }) => {
+    stopFollowPlayhead()
+
     origin = clientX
     scrollbarOrigin = scrollbarRef.current.offsetLeft
 
@@ -90,6 +99,7 @@ TimelineScrollbarThumb.propTypes = {
   horizontalScroller: PropTypes.shape({
     emit: PropTypes.func.isRequired,
   }).isRequired,
+  stopFollowPlayhead: PropTypes.func.isRequired,
 }
 
 export default TimelineScrollbarThumb

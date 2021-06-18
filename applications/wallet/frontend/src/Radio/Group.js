@@ -31,7 +31,7 @@ const RadioGroup = ({ legend, options, onClick }) => {
 
       {options.map((option) => (
         <div key={option.value} css={{ paddingRight: spacing.comfy }}>
-          <Radio option={option} onClick={onClick} />
+          <Radio name={legend} option={option} onClick={onClick} />
         </div>
       ))}
     </fieldset>

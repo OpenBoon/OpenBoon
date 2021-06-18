@@ -7,8 +7,8 @@ import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.BatchUpdateCustomFieldsRequest
 import boonai.archivist.domain.BatchUploadAssetsRequest
-import boonai.archivist.domain.DataSetSpec
-import boonai.archivist.domain.DataSetType
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.FieldSpec
 import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.InternalTask
@@ -56,7 +56,7 @@ class AssetServiceTests : AbstractTest() {
     lateinit var jobService: JobService
 
     @Autowired
-    lateinit var dataSetService: DataSetService
+    lateinit var datasetService: DatasetService
 
     @Autowired
     lateinit var dispatcherService: DispatcherService
@@ -298,10 +298,10 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testBatchCreateAssetsWithLabel() {
-        val ds = dataSetService.createDataSet(
-            DataSetSpec(
+        val ds = datasetService.createDataset(
+            DatasetSpec(
                 "THB Characters",
-                DataSetType.Classification
+                DatasetType.Classification
             )
         )
 
@@ -824,7 +824,7 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testUpdateLabels() {
-        val ds = dataSetService.createDataSet(DataSetSpec("test", DataSetType.Classification))
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
         )

@@ -1,0 +1,315 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DatasetLabelsContent /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  padding-left: 8px;
+}
+
+.emotion-3 {
+  background-color: #808080;
+  border-radius: 2px;
+  border: none;
+  width: 150px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+.emotion-4 {
+  width: 16px;
+}
+
+.emotion-7 {
+  background-color: #808080;
+  border-radius: 2px;
+  border: none;
+  width: 300px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+<div
+    className="emotion-0"
+  >
+    <label
+      className="emotion-1"
+    >
+      Scope
+      <div
+        className="emotion-2"
+      >
+        <select
+          className="emotion-3"
+          defaultValue="TRAIN"
+          disabled={false}
+          onChange={[Function]}
+        >
+          <option
+            disabled={true}
+            value=""
+          >
+            Select an option...
+          </option>
+          <option
+            value="TRAIN"
+          >
+            Train
+          </option>
+          <option
+            value="TEST"
+          >
+            Test
+          </option>
+        </select>
+      </div>
+    </label>
+    <div
+      className="emotion-4"
+    />
+    <label
+      className="emotion-1"
+    >
+      Label
+      <div
+        className="emotion-2"
+      >
+        <select
+          className="emotion-7"
+          defaultValue="tabby"
+          disabled={false}
+          onChange={[Function]}
+        >
+          <option
+            disabled={true}
+            value=""
+          >
+            Select an option...
+          </option>
+          <option
+            value="tabby"
+          >
+            tabby
+          </option>
+          <option
+            value="calico"
+          >
+            calico
+          </option>
+        </select>
+      </div>
+    </label>
+  </div>,
+  .emotion-0 {
+  height: 16px;
+}
+
+<div
+    className="emotion-0"
+  />,
+  <DatasetLabelsAssets
+    datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+    datasetName="cats"
+    label="tabby"
+    page={1}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    scope="TRAIN"
+  />,
+]
+`;
+
+exports[`<DatasetLabelsContent /> should render properly without labels 1`] = `
+Array [
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  padding-left: 8px;
+}
+
+.emotion-3 {
+  background-color: #808080;
+  border-radius: 2px;
+  border: none;
+  width: 150px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+.emotion-4 {
+  width: 16px;
+}
+
+.emotion-7 {
+  background-color: #808080;
+  border-radius: 2px;
+  border: none;
+  width: 300px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+<div
+    className="emotion-0"
+  >
+    <label
+      className="emotion-1"
+    >
+      Scope
+      <div
+        className="emotion-2"
+      >
+        <select
+          className="emotion-3"
+          defaultValue="TRAIN"
+          disabled={false}
+          onChange={[Function]}
+        >
+          <option
+            disabled={true}
+            value=""
+          >
+            Select an option...
+          </option>
+          <option
+            value="TRAIN"
+          >
+            Train
+          </option>
+          <option
+            value="TEST"
+          >
+            Test
+          </option>
+        </select>
+      </div>
+    </label>
+    <div
+      className="emotion-4"
+    />
+    <label
+      className="emotion-1"
+    >
+      Label
+      <div
+        className="emotion-2"
+      >
+        <select
+          className="emotion-7"
+          defaultValue=""
+          disabled={false}
+          onChange={[Function]}
+        >
+          <option
+            disabled={true}
+            value=""
+          >
+            Select an option...
+          </option>
+        </select>
+      </div>
+    </label>
+  </div>,
+  .emotion-0 {
+  height: 16px;
+}
+
+<div
+    className="emotion-0"
+  />,
+  <DatasetLabelsAssets
+    datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+    datasetName="cats"
+    label=""
+    page={1}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    scope="TRAIN"
+  />,
+]
+`;

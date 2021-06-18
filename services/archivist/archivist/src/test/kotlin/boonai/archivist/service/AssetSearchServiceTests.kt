@@ -4,8 +4,8 @@ import boonai.archivist.AbstractTest
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
-import boonai.archivist.domain.DataSetSpec
-import boonai.archivist.domain.DataSetType
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetType
 import boonai.common.util.Json
 import org.apache.http.util.EntityUtils
 import org.elasticsearch.index.query.QueryBuilders
@@ -23,7 +23,7 @@ class AssetSearchServiceTests : AbstractTest() {
     lateinit var assetSearchService: AssetSearchService
 
     @Autowired
-    lateinit var dataSetService: DataSetService
+    lateinit var datasetService: DatasetService
 
     @Before
     fun setUp() {
@@ -293,13 +293,13 @@ class AssetSearchServiceTests : AbstractTest() {
 
     @Test
     fun textExcludeTrainingSetsFilter() {
-        val mspec = DataSetSpec(
+        val mspec = DatasetSpec(
             "animals",
-            DataSetType.Classification
+            DatasetType.Classification
         )
 
-        val ds = dataSetService.createDataSet(mspec)
-        val dataSet = listOf(
+        val ds = datasetService.createDataset(mspec)
+        val dataset = listOf(
             AssetSpec("https://i.imgur.com/12abc.jpg", label = ds.makeLabel("horse")),
             AssetSpec("https://i.imgur.com/abc123.jpg", label = ds.makeLabel("horse")),
             AssetSpec("https://i.imgur.com/horse.jpg", label = ds.makeLabel("horse")),
@@ -307,7 +307,7 @@ class AssetSearchServiceTests : AbstractTest() {
         )
 
         assetService.batchCreate(
-            BatchCreateAssetsRequest(dataSet, state = AssetState.Analyzed)
+            BatchCreateAssetsRequest(dataset, state = AssetState.Analyzed)
         )
         refreshElastic()
 
@@ -322,13 +322,13 @@ class AssetSearchServiceTests : AbstractTest() {
 
     @Test
     fun textTrainingSetFilter() {
-        val mspec = DataSetSpec(
+        val mspec = DatasetSpec(
             "animals",
-            DataSetType.Classification
+            DatasetType.Classification
         )
 
-        val ds = dataSetService.createDataSet(mspec)
-        val dataSet = listOf(
+        val ds = datasetService.createDataset(mspec)
+        val dataset = listOf(
             AssetSpec("https://i.imgur.com/12abc.jpg", label = ds.makeLabel("cat")),
             AssetSpec("https://i.imgur.com/abc123.jpg", label = ds.makeLabel("horse")),
             AssetSpec("https://i.imgur.com/horse.jpg", label = ds.makeLabel("horse")),
@@ -336,7 +336,7 @@ class AssetSearchServiceTests : AbstractTest() {
         )
 
         assetService.batchCreate(
-            BatchCreateAssetsRequest(dataSet, state = AssetState.Analyzed)
+            BatchCreateAssetsRequest(dataset, state = AssetState.Analyzed)
         )
         refreshElastic()
 
@@ -345,7 +345,7 @@ class AssetSearchServiceTests : AbstractTest() {
                 "size" to 10,
                 "query" to mapOf("match_all" to mapOf<String, Any>()),
                 "training_set" to mapOf(
-                    "dataSetId" to ds.id.toString(),
+                    "datasetId" to ds.id.toString(),
                     "labels" to listOf("horse"),
                     "scopes" to listOf("TRAIN")
                 )

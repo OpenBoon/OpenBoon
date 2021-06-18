@@ -790,15 +790,8 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
         >
           <TimelineFilterTracks
             dispatch={[Function]}
-            settings={
-              Object {
-                "filter": "",
-                "highlights": false,
-                "timelines": Object {},
-                "width": 200,
-                "zoom": 100,
-              }
-            }
+            filter=""
+            width={200}
           />
           <div
             className="emotion-13"
@@ -811,15 +804,6 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 rulerRef={
                   Object {
                     "current": null,
-                  }
-                }
-                settings={
-                  Object {
-                    "filter": "",
-                    "highlights": false,
-                    "timelines": Object {},
-                    "width": 200,
-                    "zoom": 100,
                   }
                 }
                 videoRef={
@@ -835,6 +819,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                     },
                   }
                 }
+                width={200}
               />
             </div>
           </div>
@@ -1778,36 +1763,8 @@ exports[`<Timeline /> should render properly 1`] = `
         >
           <TimelineFilterTracks
             dispatch={[Function]}
-            settings={
-              Object {
-                "filter": "",
-                "highlights": false,
-                "timelines": Object {
-                  "gcp-video-label-detection": Object {
-                    "color": "#d6680b",
-                    "isOpen": false,
-                    "isVisible": true,
-                  },
-                  "gcp-video-logo-detection": Object {
-                    "color": "#00bdc1",
-                    "isOpen": false,
-                    "isVisible": true,
-                  },
-                  "gcp-video-object-detection": Object {
-                    "color": "#ebb52e",
-                    "isOpen": false,
-                    "isVisible": true,
-                  },
-                  "gcp-video-text-detection": Object {
-                    "color": "#a03dc7",
-                    "isOpen": false,
-                    "isVisible": true,
-                  },
-                },
-                "width": 200,
-                "zoom": 100,
-              }
-            }
+            filter=""
+            width={200}
           />
           <div
             className="emotion-18"
@@ -1822,41 +1779,12 @@ exports[`<Timeline /> should render properly 1`] = `
                     "current": null,
                   }
                 }
-                settings={
-                  Object {
-                    "filter": "",
-                    "highlights": false,
-                    "timelines": Object {
-                      "gcp-video-label-detection": Object {
-                        "color": "#d6680b",
-                        "isOpen": false,
-                        "isVisible": true,
-                      },
-                      "gcp-video-logo-detection": Object {
-                        "color": "#00bdc1",
-                        "isOpen": false,
-                        "isVisible": true,
-                      },
-                      "gcp-video-object-detection": Object {
-                        "color": "#ebb52e",
-                        "isOpen": false,
-                        "isVisible": true,
-                      },
-                      "gcp-video-text-detection": Object {
-                        "color": "#a03dc7",
-                        "isOpen": false,
-                        "isVisible": true,
-                      },
-                    },
-                    "width": 200,
-                    "zoom": 100,
-                  }
-                }
                 videoRef={
                   Object {
                     "current": undefined,
                   }
                 }
+                width={200}
               />
             </div>
           </div>
@@ -3550,36 +3478,8 @@ exports[`<Timeline /> should render properly 2`] = `
         >
           <TimelineFilterTracks
             dispatch={[Function]}
-            settings={
-              Object {
-                "filter": "",
-                "highlights": true,
-                "timelines": Object {
-                  "gcp-video-label-detection": Object {
-                    "color": "#d6680b",
-                    "isOpen": false,
-                    "isVisible": true,
-                  },
-                  "gcp-video-logo-detection": Object {
-                    "color": "#00bdc1",
-                    "isOpen": false,
-                    "isVisible": true,
-                  },
-                  "gcp-video-object-detection": Object {
-                    "color": "#ebb52e",
-                    "isOpen": false,
-                    "isVisible": true,
-                  },
-                  "gcp-video-text-detection": Object {
-                    "color": "#a03dc7",
-                    "isOpen": false,
-                    "isVisible": true,
-                  },
-                },
-                "width": 200,
-                "zoom": 100,
-              }
-            }
+            filter=""
+            width={200}
           />
           <div
             className="emotion-18"
@@ -3594,41 +3494,12 @@ exports[`<Timeline /> should render properly 2`] = `
                     "current": null,
                   }
                 }
-                settings={
-                  Object {
-                    "filter": "",
-                    "highlights": true,
-                    "timelines": Object {
-                      "gcp-video-label-detection": Object {
-                        "color": "#d6680b",
-                        "isOpen": false,
-                        "isVisible": true,
-                      },
-                      "gcp-video-logo-detection": Object {
-                        "color": "#00bdc1",
-                        "isOpen": false,
-                        "isVisible": true,
-                      },
-                      "gcp-video-object-detection": Object {
-                        "color": "#ebb52e",
-                        "isOpen": false,
-                        "isVisible": true,
-                      },
-                      "gcp-video-text-detection": Object {
-                        "color": "#a03dc7",
-                        "isOpen": false,
-                        "isVisible": true,
-                      },
-                    },
-                    "width": 200,
-                    "zoom": 100,
-                  }
-                }
                 videoRef={
                   Object {
                     "current": undefined,
                   }
                 }
+                width={200}
               />
             </div>
           </div>

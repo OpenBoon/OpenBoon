@@ -6,6 +6,10 @@ exports[`<Radio /> should render properly checked 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
 }
 
 .emotion-1 {
@@ -42,13 +46,16 @@ exports[`<Radio /> should render properly checked 1`] = `
 }
 
 .emotion-4 {
-  padding-left: 8px;
+  padding-left: 12px;
+}
+
+.emotion-5 {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-5 {
-  padding-left: 24px;
+.emotion-6 {
+  color: #b3b3b3;
 }
 
 <div>
@@ -61,7 +68,7 @@ exports[`<Radio /> should render properly checked 1`] = `
       <input
         className="emotion-2"
         defaultChecked={true}
-        id="radio"
+        name="radio"
         onClick={[Function]}
         type="radio"
         value="radio"
@@ -73,14 +80,18 @@ exports[`<Radio /> should render properly checked 1`] = `
     <div
       className="emotion-4"
     >
-      Radio
+      <div
+        className="emotion-5"
+      >
+        Radio
+      </div>
+      <div
+        className="emotion-6"
+      >
+        radioLegend
+      </div>
     </div>
   </label>
-  <div
-    className="emotion-5"
-  >
-    radioLegend
-  </div>
 </div>
 `;
 
@@ -90,6 +101,10 @@ exports[`<Radio /> should render properly unchecked 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
 }
 
 .emotion-1 {
@@ -126,13 +141,16 @@ exports[`<Radio /> should render properly unchecked 1`] = `
 }
 
 .emotion-4 {
-  padding-left: 8px;
-  font-weight: 700;
-  color: #808080;
+  padding-left: 12px;
 }
 
 .emotion-5 {
-  padding-left: 24px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.emotion-6 {
+  color: #b3b3b3;
 }
 
 <div>
@@ -145,7 +163,7 @@ exports[`<Radio /> should render properly unchecked 1`] = `
       <input
         className="emotion-2"
         defaultChecked={false}
-        id="radio"
+        name="radio"
         onClick={[Function]}
         type="radio"
         value="radio"
@@ -157,13 +175,17 @@ exports[`<Radio /> should render properly unchecked 1`] = `
     <div
       className="emotion-4"
     >
-      Radio
+      <div
+        className="emotion-5"
+      >
+        Radio
+      </div>
+      <div
+        className="emotion-6"
+      >
+        radioLegend
+      </div>
     </div>
   </label>
-  <div
-    className="emotion-5"
-  >
-    radioLegend
-  </div>
 </div>
 `;

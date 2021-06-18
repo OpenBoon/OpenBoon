@@ -1,8 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ModelDetails /> should handle train errors properly 1`] = `
-Array [
-  .emotion-0 {
+exports[`<ModelDetails /> should render properly 1`] = `
+.emotion-0 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-1 {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 30px;
+  padding-bottom: 16px;
+}
+
+.emotion-2 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 23px;
+}
+
+.emotion-3 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-5 {
+  height: 16px;
+}
+
+.emotion-6 {
+  border: none;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -12,97 +47,7 @@ Array [
   justify-content: space-between;
 }
 
-.emotion-1 {
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-bottom: 16px;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #ffb6b2;
-  border-radius: 2px;
-  padding: 12px;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.emotion-4 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
-}
-
-.emotion-4 a {
-  color: #191919;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-  margin-left: 4px;
-}
-
-.emotion-4 a:hover {
-  color: #3A5DFF;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-6 {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: 17px;
-  line-height: 23px;
-}
-
-.emotion-7 {
-  padding-top: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #e3f7e8;
-  border-radius: 2px;
-  padding: 12px;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -111,12 +56,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-10 button,
-.emotion-10 a {
+.emotion-12 button,
+.emotion-12 a {
   margin-right: 16px;
 }
 
-.emotion-11 {
+.emotion-13 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -142,27 +87,27 @@ Array [
   line-height: 19px;
   font-weight: 500;
   border: none;
-  cursor: pointer;
+  cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
 }
 
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited,
-.emotion-11 .noop {
+.emotion-13,
+.emotion-13:hover,
+.emotion-13:visited,
+.emotion-13 .noop {
   background-color: #808080;
 }
 
-.emotion-11:hover,
-.emotion-11 .noop {
+.emotion-13:hover,
+.emotion-13 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-11[aria-disabled=true],
-.emotion-11 .noop {
+.emotion-13[aria-disabled=true],
+.emotion-13 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -225,7 +170,7 @@ Array [
 
 .emotion-17 {
   position: absolute;
-  right: -10px;
+  left: -10px;
   top: 28px;
   color: #191919;
   background-color: #ffffff;
@@ -252,7 +197,7 @@ Array [
   content: ' ';
   position: absolute;
   top: -6px;
-  right: 14px;
+  left: 14px;
   border-bottom: 6px solid #ffffff;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
@@ -275,103 +220,91 @@ Array [
   padding-top: 16px;
 }
 
-<div
-    className="emotion-0"
-  >
+<div>
+  
+  <div>
     <div
+      className="emotion-0"
+    >
+      Model
+       Name:
+    </div>
+    <h3
       className="emotion-1"
     >
-      
-      <div
+      console_face_recognition
+    </h3>
+  </div>
+  <ul
+    className="emotion-2"
+  >
+    <li>
+      <span
+        className="emotion-3"
+      >
+        Model Type
+        :
+      </span>
+       
+      ZVI_FACE_RECOGNITION
+    </li>
+    <li>
+      <span
+        className="emotion-3"
+      >
+        Description
+        :
+      </span>
+       
+    </li>
+  </ul>
+  <div
+    className="emotion-5"
+  />
+  <hr
+    className="emotion-6"
+  />
+  <div
+    className="emotion-5"
+  />
+  <div
+    className="emotion-8"
+  >
+    <div>
+      <ul
         className="emotion-2"
       >
-        <div
-          className="emotion-3"
-        >
-          <svg
-            color="#c92300"
-            data-file-name="warning.svg"
-            height={20}
-          />
-          <div
-            className="emotion-4"
-            role="alert"
+        <li>
+          <span
+            className="emotion-3"
           >
-            Something went wrong. Please try again.
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <ul
-          className="emotion-6"
-        >
-          <li>
-            <strong>
-              Model Name:
-            </strong>
-             
-            console_face_recognition
-          </li>
-          <li>
-            <strong>
-              Model Type:
-            </strong>
-             
-            ZVI_FACE_RECOGNITION
-          </li>
-          <li>
-            <strong>
-              Module Name:
-            </strong>
-             
-            boonai-console_face_recognition-face-recognition
-          </li>
-        </ul>
-      </div>
-      <div
-        className="emotion-7"
-      >
-        <div
-          className="emotion-8"
-        >
-          <svg
-            color="#009f22"
-            data-file-name="checkmark.svg"
-            height={20}
-          />
-          <div
-            className="emotion-4"
-            role="alert"
+            Last Trained
+            :
+          </span>
+           
+          ?
+        </li>
+        <li>
+          <span
+            className="emotion-3"
           >
-            The model is ready to train.
-          </div>
-        </div>
-      </div>
+            Last Applied
+            :
+          </span>
+           
+          ?
+        </li>
+      </ul>
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <button
-          className="emotion-11"
+          aria-disabled={true}
+          className="emotion-13"
           onClick={[Function]}
           type="button"
         >
           Train
-        </button>
-        <button
-          className="emotion-11"
-          onClick={[Function]}
-          type="button"
-        >
-          Train & Apply
-        </button>
-        <button
-          className="emotion-11"
-          onClick={[Function]}
-          type="button"
-        >
-          Delete
         </button>
         <div
           className="emotion-14"
@@ -439,661 +372,20 @@ Array [
       modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
       projectId="76917058-b147-4556-987a-0a0f11e46d9b"
     />
-  </div>,
-  .emotion-0 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-1 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-2 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
-.emotion-3 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #3A5DFF;
-}
-
-<nav
-    className="emotion-0"
-  >
-    <ul
-      className="emotion-1"
-    >
-      <li
-        className="emotion-2"
-      >
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
-          href="/[projectId]/models/[modelId]"
-          passHref={true}
-        >
-          <a
-            className="emotion-3"
-            onClick={[Function]}
-          >
-            View Labels
-          </a>
-        </Link>
-      </li>
-      <li
-        className="emotion-2"
-      >
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/assets"
-          href="/[projectId]/models/[modelId]/assets"
-          passHref={true}
-        >
-          <a
-            className="emotion-5"
-            onClick={[Function]}
-          >
-            Labeled Assets
-          </a>
-        </Link>
-      </li>
-    </ul>
-  </nav>,
-  .emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  padding-bottom: 8px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  -webkit-justify-content: flex-end;
-  justify-content: flex-end;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 8px 16px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited,
-.emotion-2 .noop {
-  background-color: #808080;
-}
-
-.emotion-2:hover,
-.emotion-2 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-2[aria-disabled=true],
-.emotion-2 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-4 {
-  padding-right: 8px;
-}
-
-.emotion-5 {
-  width: 16px;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <Link
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmJvb25haS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-        passHref={true}
-      >
-        <button
-          aria-label="Add Filter in Visualizer"
-          className="emotion-2"
-          onClick={[Function]}
-          type="button"
-        >
-          <div
-            className="emotion-3"
-          >
-            <svg
-              className="emotion-4"
-              data-file-name="filter.svg"
-              height={20}
-            />
-            Add Filter in Visualizer
-          </div>
-        </button>
-      </Link>
-      <div
-        className="emotion-5"
-      />
-      <Link
-        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
-        href="/[projectId]/visualizer"
-        passHref={true}
-      >
-        <button
-          aria-label="Add More Labels"
-          className="emotion-2"
-          onClick={[Function]}
-          type="button"
-        >
-          <div
-            className="emotion-3"
-          >
-            <svg
-              className="emotion-4"
-              data-file-name="pen.svg"
-              height={20}
-            />
-            Add More Labels
-          </div>
-        </button>
-      </Link>
-    </div>
-  </div>,
-  .emotion-0 {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-1 {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-end;
-  -webkit-box-align: flex-end;
-  -ms-flex-align: flex-end;
-  align-items: flex-end;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-  padding-bottom: 16px;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-3 {
-  color: #b3b3b3;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 400;
-}
-
-.emotion-4 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  position: relative;
-}
-
-.emotion-5 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.emotion-6 {
-  height: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  white-space: nowrap;
-}
-
-.emotion-6 tr {
-  background-color: #252525;
-}
-
-.emotion-6 tr:nth-of-type(2n) {
-  background-color: #2e2e2e;
-}
-
-.emotion-6 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-}
-
-.emotion-6 tr:hover .actions {
-  color: #b3b3b3;
-}
-
-.emotion-6 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-6 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
-.emotion-6 td {
-  max-width: calc(100vw / 5);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #e0e0e0;
-  padding: 8px 16px;
-  border: 1px solid transparent;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 td:first-of-type {
-  border-left: 1px solid transparent;
-}
-
-.emotion-6 td:last-of-type {
-  border-right: 1px solid transparent;
-  overflow: visible;
-}
-
-.emotion-7 {
-  text-align: left;
-  white-space: pre-line;
-  vertical-align: bottom;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 0;
-  border-bottom: 1px solid #2e2e2e;
-  width: auto;
-}
-
-.emotion-7:nth-of-type(1) {
-  width: 100%;
-}
-
-.emotion-7:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-8 {
-  padding: 12px 16px;
-}
-
-.emotion-16 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 12px 16px;
-}
-
-.emotion-17 {
-  text-align: left;
-  white-space: pre-line;
-  vertical-align: bottom;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 0;
-  border-bottom: 1px solid #2e2e2e;
-  width: 1px;
-}
-
-.emotion-17:nth-of-type(1) {
-  width: 100%;
-}
-
-.emotion-17:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-19 {
-  height: 100%;
-  pointer-events: none;
-}
-
-.emotion-20 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  text-align: center;
-  color: #808080;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-21 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-size: 18px;
-  line-height: 21px;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <div
-        className="emotion-2"
-      >
-        <h3
-          className="emotion-3"
-        >
-          Labels
-          : 
-          0
-        </h3>
-      </div>
-      <div
-        className="emotion-4"
-      >
-        <div
-          className="emotion-5"
-        >
-          <table
-            className="emotion-6"
-          >
-            <thead>
-              <tr>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-8"
-                  >
-                    Label
-                  </div>
-                </th>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-8"
-                  >
-                    # Required
-                  </div>
-                </th>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-8"
-                  >
-                    # Labeled
-                  </div>
-                </th>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-8"
-                  >
-                    # Remaining
-                  </div>
-                </th>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-16"
-                  >
-                    <svg
-                      data-file-name="checkmark.svg"
-                      height={20}
-                    />
-                  </div>
-                </th>
-                <th
-                  className="emotion-17"
-                >
-                  <div
-                    className="emotion-16"
-                  >
-                    <svg
-                      data-file-name="kebab.svg"
-                      height={20}
-                    />
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                className="emotion-19"
-              >
-                <td
-                  colSpan={6}
-                >
-                  <div
-                    className="emotion-20"
-                  >
-                    <div
-                      className="emotion-21"
-                    >
-                      <svg
-                        data-file-name="noJobs.svg"
-                        width={200}
-                      />
-                      There are currently no labels for this model.
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>,
-]
+  </div>
+</div>
 `;
 
-exports[`<ModelDetails /> should render Labeled Assets properly 1`] = `
-Array [
-  .emotion-0 {
+exports[`<ModelDetails /> should render properly 2`] = `
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
+  padding-bottom: 16px;
 }
 
 .emotion-1 {
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-3 {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: 17px;
-  line-height: 23px;
-}
-
-.emotion-4 {
-  padding-top: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1102,14 +394,14 @@ Array [
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #dbecff;
+  background-color: #ffb6b2;
   border-radius: 2px;
   padding: 12px;
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.emotion-6 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1119,826 +411,54 @@ Array [
   white-space: pre-line;
 }
 
-.emotion-6 a {
+.emotion-2 a {
   color: #191919;
   -webkit-text-decoration: underline;
   text-decoration: underline;
   margin-left: 4px;
 }
 
-.emotion-6 a:hover {
+.emotion-2 a:hover {
   color: #3A5DFF;
 }
 
-.emotion-7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.emotion-7 button,
-.emotion-7 a {
-  margin-right: 16px;
-}
-
-.emotion-8 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited,
-.emotion-8 .noop {
-  background-color: #808080;
-}
-
-.emotion-8:hover,
-.emotion-8 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-8[aria-disabled=true],
-.emotion-8 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-10 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited,
-.emotion-10 .noop {
-  background-color: #808080;
-}
-
-.emotion-10:hover,
-.emotion-10 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-10[aria-disabled=true],
-.emotion-10 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-}
-
-.emotion-11 div {
-  margin-left: 0;
-}
-
-.emotion-11 button {
-  margin-right: 0;
-}
-
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-  margin-left: 8px;
-}
-
-.emotion-12:hover div,
-.emotion-12:focus-within div {
-  visibility: visible;
-  opacity: 1;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-}
-
-.emotion-12:hover button,
-.emotion-12:focus-within button {
-  color: #ffffff;
-}
-
-.emotion-13 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-14 {
-  position: absolute;
-  right: -10px;
-  top: 28px;
-  color: #191919;
-  background-color: #ffffff;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  padding: 12px;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
-  max-width: 400px;
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-  z-index: 1;
-}
-
-.emotion-14:hover {
-  visibility: visible;
-  opacity: 1;
-}
-
-.emotion-15:before {
-  content: ' ';
-  position: absolute;
-  top: -6px;
-  right: 14px;
-  border-bottom: 6px solid #ffffff;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-}
-
-.emotion-16 {
-  font-size: 15px;
-  line-height: 19px;
-  padding: 8px;
-}
-
-.emotion-17 {
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-18 {
-  font-size: 15px;
-  line-height: 19px;
-  padding-top: 16px;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      
-      
-      <div
-        className="emotion-2"
-      >
-        <ul
-          className="emotion-3"
-        >
-          <li>
-            <strong>
-              Model Name:
-            </strong>
-             
-            console_face_recognition
-          </li>
-          <li>
-            <strong>
-              Model Type:
-            </strong>
-             
-            ZVI_FACE_RECOGNITION
-          </li>
-          <li>
-            <strong>
-              Module Name:
-            </strong>
-             
-            boonai-console_face_recognition-face-recognition
-          </li>
-        </ul>
-      </div>
-      <div
-        className="emotion-4"
-      >
-        <div
-          className="emotion-5"
-        >
-          <svg
-            color="#0074f5"
-            data-file-name="information.svg"
-            height={20}
-          />
-          <div
-            className="emotion-6"
-            role="alert"
-          >
-            2
-             more
-             
-            labels are
-             required (min. = 
-            2
-             unique)
-            <br />
-            1
-             more
-             asset needs 
-            to be labeled (min. = 
-            10
-             of each label)
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-7"
-      >
-        <button
-          aria-disabled={true}
-          className="emotion-8"
-          onClick={[Function]}
-          type="button"
-        >
-          Train
-        </button>
-        <button
-          aria-disabled={true}
-          className="emotion-8"
-          onClick={[Function]}
-          type="button"
-        >
-          Train & Apply
-        </button>
-        <button
-          className="emotion-10"
-          onClick={[Function]}
-          type="button"
-        >
-          Delete
-        </button>
-        <div
-          className="emotion-11"
-        >
-          <div
-            className="emotion-12"
-          >
-            <button
-              aria-details="TrainingOptions"
-              aria-label="Training Options"
-              className="emotion-13"
-              type="button"
-            >
-              <svg
-                data-file-name="help.svg"
-                height={20}
-              />
-            </button>
-            <div
-              className="emotion-14"
-              id="TrainingOptions"
-              role="tooltip"
-            >
-              <div
-                className="emotion-15"
-              />
-              <div
-                className="emotion-16"
-              >
-                <h3
-                  className="emotion-17"
-                >
-                  Train Model
-                </h3>
-                Train a model without applying it to your assets.
-                <h3
-                  className="emotion-18"
-                >
-                  Train & Test
-                </h3>
-                Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
-                <h3
-                  className="emotion-18"
-                >
-                  Train & Apply
-                </h3>
-                Train and apply the model to all the assets in the project.
-                <h3
-                  className="emotion-18"
-                >
-                  Delete
-                </h3>
-                Delete a model. This action cannot be undone.
-                <br />
-                <i>
-                  Note: Labels that you added to your assets, either manually or through training, remain attached.
-                </i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <ModelMatrixLink
-      modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
-      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
-    />
-  </div>,
-  .emotion-0 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-1 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-2 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
 .emotion-3 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 0;
   color: #b3b3b3;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  font-family: Roboto Condensed;
   text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #3A5DFF;
-}
-
-.emotion-5 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-<nav
-    className="emotion-0"
-  >
-    <ul
-      className="emotion-1"
-    >
-      <li
-        className="emotion-2"
-      >
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
-          href="/[projectId]/models/[modelId]"
-          passHref={true}
-        >
-          <a
-            className="emotion-3"
-            onClick={[Function]}
-          >
-            View Labels
-          </a>
-        </Link>
-      </li>
-      <li
-        className="emotion-2"
-      >
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/assets"
-          href="/[projectId]/models/[modelId]/assets"
-          passHref={true}
-        >
-          <a
-            className="emotion-5"
-            onClick={[Function]}
-          >
-            Labeled Assets
-          </a>
-        </Link>
-      </li>
-    </ul>
-  </nav>,
-  .emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  padding-bottom: 8px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  color: #b3b3b3;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-3 {
-  padding-left: 8px;
 }
 
 .emotion-4 {
-  background-color: #808080;
-  border-radius: 2px;
-  border: none;
-  width: 150px;
   color: #ffffff;
-  font-size: 15px;
-  line-height: 20px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-  padding-right: 32px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  -webkit-background-position: right 8px top 50%;
-  background-position: right 8px top 50%;
-  -webkit-background-size: 20px;
-  background-size: 20px;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 30px;
+  padding-bottom: 16px;
 }
 
 .emotion-5 {
-  width: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 23px;
+}
+
+.emotion-6 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
 }
 
 .emotion-8 {
-  background-color: #808080;
-  border-radius: 2px;
-  border: none;
-  width: 300px;
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 20px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-  padding-right: 32px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  -webkit-background-position: right 8px top 50%;
-  background-position: right 8px top 50%;
-  -webkit-background-size: 20px;
-  background-size: 20px;
+  height: 16px;
 }
 
 .emotion-9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  -webkit-justify-content: flex-end;
-  justify-content: flex-end;
-}
-
-.emotion-10 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 8px 16px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
   border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited,
-.emotion-10 .noop {
-  background-color: #808080;
-}
-
-.emotion-10:hover,
-.emotion-10 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-10[aria-disabled=true],
-.emotion-10 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
+  border-bottom: 1px solid #4a4a4a;
 }
 
 .emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-12 {
-  padding-right: 8px;
-}
-
-.emotion-13 {
-  width: 16px;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <label
-        className="emotion-2"
-      >
-        Scope
-        <div
-          className="emotion-3"
-        >
-          <select
-            className="emotion-4"
-            defaultValue="Train"
-            disabled={false}
-            onChange={[Function]}
-          >
-            <option
-              disabled={true}
-              value=""
-            >
-              Select an option...
-            </option>
-            <option
-              value="TRAIN"
-            >
-              Train
-            </option>
-            <option
-              value="TEST"
-            >
-              Test
-            </option>
-          </select>
-        </div>
-      </label>
-      <div
-        className="emotion-5"
-      />
-      <label
-        className="emotion-2"
-      >
-        Label
-        <div
-          className="emotion-3"
-        >
-          <select
-            className="emotion-8"
-            defaultValue="cat"
-            disabled={false}
-            onChange={[Function]}
-          >
-            <option
-              disabled={true}
-              value=""
-            >
-              Select an option...
-            </option>
-            <option
-              value="cat"
-            >
-              cat
-            </option>
-            <option
-              value="dog"
-            >
-              dog
-            </option>
-          </select>
-        </div>
-      </label>
-    </div>
-    <div
-      className="emotion-9"
-    >
-      <Link
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmJvb25haS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-        passHref={true}
-      >
-        <button
-          aria-label="Add Filter in Visualizer"
-          className="emotion-10"
-          onClick={[Function]}
-          type="button"
-        >
-          <div
-            className="emotion-11"
-          >
-            <svg
-              className="emotion-12"
-              data-file-name="filter.svg"
-              height={20}
-            />
-            Add Filter in Visualizer
-          </div>
-        </button>
-      </Link>
-      <div
-        className="emotion-13"
-      />
-      <Link
-        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
-        href="/[projectId]/visualizer"
-        passHref={true}
-      >
-        <button
-          aria-label="Add More Labels"
-          className="emotion-10"
-          onClick={[Function]}
-          type="button"
-        >
-          <div
-            className="emotion-11"
-          >
-            <svg
-              className="emotion-12"
-              data-file-name="pen.svg"
-              height={20}
-            />
-            Add More Labels
-          </div>
-        </button>
-      </Link>
-    </div>
-  </div>,
-  <ModelAssets
-    moduleName="boonai-console_face_recognition-face-recognition"
-  />,
-]
-`;
-
-exports[`<ModelDetails /> should render Labeled Assets without assets properly 1`] = `
-Array [
-  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1948,73 +468,7 @@ Array [
   justify-content: space-between;
 }
 
-.emotion-1 {
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-3 {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: 17px;
-  line-height: 23px;
-}
-
-.emotion-4 {
-  padding-top: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #dbecff;
-  border-radius: 2px;
-  padding: 12px;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.emotion-6 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
-}
-
-.emotion-6 a {
-  color: #191919;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-  margin-left: 4px;
-}
-
-.emotion-6 a:hover {
-  color: #3A5DFF;
-}
-
-.emotion-7 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2023,12 +477,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-7 button,
-.emotion-7 a {
+.emotion-15 button,
+.emotion-15 a {
   margin-right: 16px;
 }
 
-.emotion-8 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2059,78 +513,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited,
-.emotion-8 .noop {
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited,
+.emotion-16 .noop {
   background-color: #808080;
 }
 
-.emotion-8:hover,
-.emotion-8 .noop {
+.emotion-16:hover,
+.emotion-16 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-8[aria-disabled=true],
-.emotion-8 .noop {
+.emotion-16[aria-disabled=true],
+.emotion-16 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-10 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited,
-.emotion-10 .noop {
-  background-color: #808080;
-}
-
-.emotion-10:hover,
-.emotion-10 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-10[aria-disabled=true],
-.emotion-10 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-11 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2145,15 +548,15 @@ Array [
   justify-content: center;
 }
 
-.emotion-11 div {
+.emotion-17 div {
   margin-left: 0;
 }
 
-.emotion-11 button {
+.emotion-17 button {
   margin-right: 0;
 }
 
-.emotion-12 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2162,1838 +565,20 @@ Array [
   margin-left: 8px;
 }
 
-.emotion-12:hover div,
-.emotion-12:focus-within div {
+.emotion-18:hover div,
+.emotion-18:focus-within div {
   visibility: visible;
   opacity: 1;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
 }
 
-.emotion-12:hover button,
-.emotion-12:focus-within button {
+.emotion-18:hover button,
+.emotion-18:focus-within button {
   color: #ffffff;
-}
-
-.emotion-13 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-14 {
-  position: absolute;
-  right: -10px;
-  top: 28px;
-  color: #191919;
-  background-color: #ffffff;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  padding: 12px;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
-  max-width: 400px;
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-  z-index: 1;
-}
-
-.emotion-14:hover {
-  visibility: visible;
-  opacity: 1;
-}
-
-.emotion-15:before {
-  content: ' ';
-  position: absolute;
-  top: -6px;
-  right: 14px;
-  border-bottom: 6px solid #ffffff;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-}
-
-.emotion-16 {
-  font-size: 15px;
-  line-height: 19px;
-  padding: 8px;
-}
-
-.emotion-17 {
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-18 {
-  font-size: 15px;
-  line-height: 19px;
-  padding-top: 16px;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      
-      
-      <div
-        className="emotion-2"
-      >
-        <ul
-          className="emotion-3"
-        >
-          <li>
-            <strong>
-              Model Name:
-            </strong>
-             
-            console_face_recognition
-          </li>
-          <li>
-            <strong>
-              Model Type:
-            </strong>
-             
-            ZVI_FACE_RECOGNITION
-          </li>
-          <li>
-            <strong>
-              Module Name:
-            </strong>
-             
-            boonai-console_face_recognition-face-recognition
-          </li>
-        </ul>
-      </div>
-      <div
-        className="emotion-4"
-      >
-        <div
-          className="emotion-5"
-        >
-          <svg
-            color="#0074f5"
-            data-file-name="information.svg"
-            height={20}
-          />
-          <div
-            className="emotion-6"
-            role="alert"
-          >
-            2
-             more
-             
-            labels are
-             required (min. = 
-            2
-             unique)
-            <br />
-            1
-             more
-             asset needs 
-            to be labeled (min. = 
-            10
-             of each label)
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-7"
-      >
-        <button
-          aria-disabled={true}
-          className="emotion-8"
-          onClick={[Function]}
-          type="button"
-        >
-          Train
-        </button>
-        <button
-          aria-disabled={true}
-          className="emotion-8"
-          onClick={[Function]}
-          type="button"
-        >
-          Train & Apply
-        </button>
-        <button
-          className="emotion-10"
-          onClick={[Function]}
-          type="button"
-        >
-          Delete
-        </button>
-        <div
-          className="emotion-11"
-        >
-          <div
-            className="emotion-12"
-          >
-            <button
-              aria-details="TrainingOptions"
-              aria-label="Training Options"
-              className="emotion-13"
-              type="button"
-            >
-              <svg
-                data-file-name="help.svg"
-                height={20}
-              />
-            </button>
-            <div
-              className="emotion-14"
-              id="TrainingOptions"
-              role="tooltip"
-            >
-              <div
-                className="emotion-15"
-              />
-              <div
-                className="emotion-16"
-              >
-                <h3
-                  className="emotion-17"
-                >
-                  Train Model
-                </h3>
-                Train a model without applying it to your assets.
-                <h3
-                  className="emotion-18"
-                >
-                  Train & Test
-                </h3>
-                Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
-                <h3
-                  className="emotion-18"
-                >
-                  Train & Apply
-                </h3>
-                Train and apply the model to all the assets in the project.
-                <h3
-                  className="emotion-18"
-                >
-                  Delete
-                </h3>
-                Delete a model. This action cannot be undone.
-                <br />
-                <i>
-                  Note: Labels that you added to your assets, either manually or through training, remain attached.
-                </i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <ModelMatrixLink
-      modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
-      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
-    />
-  </div>,
-  .emotion-0 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-1 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-2 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
-.emotion-3 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #3A5DFF;
-}
-
-.emotion-5 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-<nav
-    className="emotion-0"
-  >
-    <ul
-      className="emotion-1"
-    >
-      <li
-        className="emotion-2"
-      >
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
-          href="/[projectId]/models/[modelId]"
-          passHref={true}
-        >
-          <a
-            className="emotion-3"
-            onClick={[Function]}
-          >
-            View Labels
-          </a>
-        </Link>
-      </li>
-      <li
-        className="emotion-2"
-      >
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/assets"
-          href="/[projectId]/models/[modelId]/assets"
-          passHref={true}
-        >
-          <a
-            className="emotion-5"
-            onClick={[Function]}
-          >
-            Labeled Assets
-          </a>
-        </Link>
-      </li>
-    </ul>
-  </nav>,
-  .emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  padding-bottom: 8px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  -webkit-justify-content: flex-end;
-  justify-content: flex-end;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 8px 16px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited,
-.emotion-2 .noop {
-  background-color: #808080;
-}
-
-.emotion-2:hover,
-.emotion-2 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-2[aria-disabled=true],
-.emotion-2 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-4 {
-  padding-right: 8px;
-}
-
-.emotion-5 {
-  width: 16px;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <Link
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmJvb25haS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-        passHref={true}
-      >
-        <button
-          aria-label="Add Filter in Visualizer"
-          className="emotion-2"
-          onClick={[Function]}
-          type="button"
-        >
-          <div
-            className="emotion-3"
-          >
-            <svg
-              className="emotion-4"
-              data-file-name="filter.svg"
-              height={20}
-            />
-            Add Filter in Visualizer
-          </div>
-        </button>
-      </Link>
-      <div
-        className="emotion-5"
-      />
-      <Link
-        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
-        href="/[projectId]/visualizer"
-        passHref={true}
-      >
-        <button
-          aria-label="Add More Labels"
-          className="emotion-2"
-          onClick={[Function]}
-          type="button"
-        >
-          <div
-            className="emotion-3"
-          >
-            <svg
-              className="emotion-4"
-              data-file-name="pen.svg"
-              height={20}
-            />
-            Add More Labels
-          </div>
-        </button>
-      </Link>
-    </div>
-  </div>,
-  <ModelAssets
-    moduleName="boonai-console_face_recognition-face-recognition"
-  />,
-]
-`;
-
-exports[`<ModelDetails /> should render properly with less than required labels for training 1`] = `
-Array [
-  .emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-}
-
-.emotion-1 {
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-3 {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: 17px;
-  line-height: 23px;
-}
-
-.emotion-4 {
-  padding-top: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #dbecff;
-  border-radius: 2px;
-  padding: 12px;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.emotion-6 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
-}
-
-.emotion-6 a {
-  color: #191919;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-  margin-left: 4px;
-}
-
-.emotion-6 a:hover {
-  color: #3A5DFF;
-}
-
-.emotion-7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.emotion-7 button,
-.emotion-7 a {
-  margin-right: 16px;
-}
-
-.emotion-8 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited,
-.emotion-8 .noop {
-  background-color: #808080;
-}
-
-.emotion-8:hover,
-.emotion-8 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-8[aria-disabled=true],
-.emotion-8 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-10 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited,
-.emotion-10 .noop {
-  background-color: #808080;
-}
-
-.emotion-10:hover,
-.emotion-10 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-10[aria-disabled=true],
-.emotion-10 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-}
-
-.emotion-11 div {
-  margin-left: 0;
-}
-
-.emotion-11 button {
-  margin-right: 0;
-}
-
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-  margin-left: 8px;
-}
-
-.emotion-12:hover div,
-.emotion-12:focus-within div {
-  visibility: visible;
-  opacity: 1;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-}
-
-.emotion-12:hover button,
-.emotion-12:focus-within button {
-  color: #ffffff;
-}
-
-.emotion-13 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-14 {
-  position: absolute;
-  right: -10px;
-  top: 28px;
-  color: #191919;
-  background-color: #ffffff;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  padding: 12px;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
-  max-width: 400px;
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-  z-index: 1;
-}
-
-.emotion-14:hover {
-  visibility: visible;
-  opacity: 1;
-}
-
-.emotion-15:before {
-  content: ' ';
-  position: absolute;
-  top: -6px;
-  right: 14px;
-  border-bottom: 6px solid #ffffff;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-}
-
-.emotion-16 {
-  font-size: 15px;
-  line-height: 19px;
-  padding: 8px;
-}
-
-.emotion-17 {
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-18 {
-  font-size: 15px;
-  line-height: 19px;
-  padding-top: 16px;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      
-      
-      <div
-        className="emotion-2"
-      >
-        <ul
-          className="emotion-3"
-        >
-          <li>
-            <strong>
-              Model Name:
-            </strong>
-             
-            console_face_recognition
-          </li>
-          <li>
-            <strong>
-              Model Type:
-            </strong>
-             
-            ZVI_FACE_RECOGNITION
-          </li>
-          <li>
-            <strong>
-              Module Name:
-            </strong>
-             
-            boonai-console_face_recognition-face-recognition
-          </li>
-        </ul>
-      </div>
-      <div
-        className="emotion-4"
-      >
-        <div
-          className="emotion-5"
-        >
-          <svg
-            color="#0074f5"
-            data-file-name="information.svg"
-            height={20}
-          />
-          <div
-            className="emotion-6"
-            role="alert"
-          >
-            1
-             more
-             
-            label is
-             required (min. = 
-            2
-             unique)
-            <br />
-            1
-             more
-             asset needs 
-            to be labeled (min. = 
-            10
-             of each label)
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-7"
-      >
-        <button
-          aria-disabled={true}
-          className="emotion-8"
-          onClick={[Function]}
-          type="button"
-        >
-          Train
-        </button>
-        <button
-          aria-disabled={true}
-          className="emotion-8"
-          onClick={[Function]}
-          type="button"
-        >
-          Train & Apply
-        </button>
-        <button
-          className="emotion-10"
-          onClick={[Function]}
-          type="button"
-        >
-          Delete
-        </button>
-        <div
-          className="emotion-11"
-        >
-          <div
-            className="emotion-12"
-          >
-            <button
-              aria-details="TrainingOptions"
-              aria-label="Training Options"
-              className="emotion-13"
-              type="button"
-            >
-              <svg
-                data-file-name="help.svg"
-                height={20}
-              />
-            </button>
-            <div
-              className="emotion-14"
-              id="TrainingOptions"
-              role="tooltip"
-            >
-              <div
-                className="emotion-15"
-              />
-              <div
-                className="emotion-16"
-              >
-                <h3
-                  className="emotion-17"
-                >
-                  Train Model
-                </h3>
-                Train a model without applying it to your assets.
-                <h3
-                  className="emotion-18"
-                >
-                  Train & Test
-                </h3>
-                Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
-                <h3
-                  className="emotion-18"
-                >
-                  Train & Apply
-                </h3>
-                Train and apply the model to all the assets in the project.
-                <h3
-                  className="emotion-18"
-                >
-                  Delete
-                </h3>
-                Delete a model. This action cannot be undone.
-                <br />
-                <i>
-                  Note: Labels that you added to your assets, either manually or through training, remain attached.
-                </i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <ModelMatrixLink
-      modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
-      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
-    />
-  </div>,
-  .emotion-0 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-1 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-2 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
-.emotion-3 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #3A5DFF;
-}
-
-<nav
-    className="emotion-0"
-  >
-    <ul
-      className="emotion-1"
-    >
-      <li
-        className="emotion-2"
-      >
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
-          href="/[projectId]/models/[modelId]"
-          passHref={true}
-        >
-          <a
-            className="emotion-3"
-            onClick={[Function]}
-          >
-            View Labels
-          </a>
-        </Link>
-      </li>
-      <li
-        className="emotion-2"
-      >
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/assets"
-          href="/[projectId]/models/[modelId]/assets"
-          passHref={true}
-        >
-          <a
-            className="emotion-5"
-            onClick={[Function]}
-          >
-            Labeled Assets
-          </a>
-        </Link>
-      </li>
-    </ul>
-  </nav>,
-  .emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  padding-bottom: 8px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  -webkit-justify-content: flex-end;
-  justify-content: flex-end;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 8px 16px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited,
-.emotion-2 .noop {
-  background-color: #808080;
-}
-
-.emotion-2:hover,
-.emotion-2 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-2[aria-disabled=true],
-.emotion-2 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-4 {
-  padding-right: 8px;
-}
-
-.emotion-5 {
-  width: 16px;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <Link
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmJvb25haS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-        passHref={true}
-      >
-        <button
-          aria-label="Add Filter in Visualizer"
-          className="emotion-2"
-          onClick={[Function]}
-          type="button"
-        >
-          <div
-            className="emotion-3"
-          >
-            <svg
-              className="emotion-4"
-              data-file-name="filter.svg"
-              height={20}
-            />
-            Add Filter in Visualizer
-          </div>
-        </button>
-      </Link>
-      <div
-        className="emotion-5"
-      />
-      <Link
-        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
-        href="/[projectId]/visualizer"
-        passHref={true}
-      >
-        <button
-          aria-label="Add More Labels"
-          className="emotion-2"
-          onClick={[Function]}
-          type="button"
-        >
-          <div
-            className="emotion-3"
-          >
-            <svg
-              className="emotion-4"
-              data-file-name="pen.svg"
-              height={20}
-            />
-            Add More Labels
-          </div>
-        </button>
-      </Link>
-    </div>
-  </div>,
-  .emotion-0 {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-1 {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-end;
-  -webkit-box-align: flex-end;
-  -ms-flex-align: flex-end;
-  align-items: flex-end;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-  padding-bottom: 16px;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-3 {
-  color: #b3b3b3;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 400;
-}
-
-.emotion-4 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  position: relative;
-}
-
-.emotion-5 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.emotion-6 {
-  height: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  white-space: nowrap;
-}
-
-.emotion-6 tr {
-  background-color: #252525;
-}
-
-.emotion-6 tr:nth-of-type(2n) {
-  background-color: #2e2e2e;
-}
-
-.emotion-6 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-}
-
-.emotion-6 tr:hover .actions {
-  color: #b3b3b3;
-}
-
-.emotion-6 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-6 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
-.emotion-6 td {
-  max-width: calc(100vw / 5);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #e0e0e0;
-  padding: 8px 16px;
-  border: 1px solid transparent;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 td:first-of-type {
-  border-left: 1px solid transparent;
-}
-
-.emotion-6 td:last-of-type {
-  border-right: 1px solid transparent;
-  overflow: visible;
-}
-
-.emotion-7 {
-  text-align: left;
-  white-space: pre-line;
-  vertical-align: bottom;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 0;
-  border-bottom: 1px solid #2e2e2e;
-  width: auto;
-}
-
-.emotion-7:nth-of-type(1) {
-  width: 100%;
-}
-
-.emotion-7:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-8 {
-  padding: 12px 16px;
-}
-
-.emotion-16 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 12px 16px;
-}
-
-.emotion-17 {
-  text-align: left;
-  white-space: pre-line;
-  vertical-align: bottom;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 0;
-  border-bottom: 1px solid #2e2e2e;
-  width: 1px;
-}
-
-.emotion-17:nth-of-type(1) {
-  width: 100%;
-}
-
-.emotion-17:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
 }
 
 .emotion-19 {
-  height: 100%;
-  pointer-events: none;
-}
-
-.emotion-20 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  text-align: center;
-  color: #808080;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-21 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-size: 18px;
-  line-height: 21px;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <div
-        className="emotion-2"
-      >
-        <h3
-          className="emotion-3"
-        >
-          Labels
-          : 
-          0
-        </h3>
-      </div>
-      <div
-        className="emotion-4"
-      >
-        <div
-          className="emotion-5"
-        >
-          <table
-            className="emotion-6"
-          >
-            <thead>
-              <tr>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-8"
-                  >
-                    Label
-                  </div>
-                </th>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-8"
-                  >
-                    # Required
-                  </div>
-                </th>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-8"
-                  >
-                    # Labeled
-                  </div>
-                </th>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-8"
-                  >
-                    # Remaining
-                  </div>
-                </th>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-16"
-                  >
-                    <svg
-                      data-file-name="checkmark.svg"
-                      height={20}
-                    />
-                  </div>
-                </th>
-                <th
-                  className="emotion-17"
-                >
-                  <div
-                    className="emotion-16"
-                  >
-                    <svg
-                      data-file-name="kebab.svg"
-                      height={20}
-                    />
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                className="emotion-19"
-              >
-                <td
-                  colSpan={6}
-                >
-                  <div
-                    className="emotion-20"
-                  >
-                    <div
-                      className="emotion-21"
-                    >
-                      <svg
-                        data-file-name="noJobs.svg"
-                        width={200}
-                      />
-                      There are currently no labels for this model.
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>,
-]
-`;
-
-exports[`<ModelDetails /> should render properly with less than required labels for training 2`] = `
-Array [
-  .emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-}
-
-.emotion-1 {
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-3 {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: 17px;
-  line-height: 23px;
-}
-
-.emotion-4 {
-  padding-top: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #dbecff;
-  border-radius: 2px;
-  padding: 12px;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.emotion-6 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
-}
-
-.emotion-6 a {
-  color: #191919;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-  margin-left: 4px;
-}
-
-.emotion-6 a:hover {
-  color: #3A5DFF;
-}
-
-.emotion-7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.emotion-7 button,
-.emotion-7 a {
-  margin-right: 16px;
-}
-
-.emotion-8 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited,
-.emotion-8 .noop {
-  background-color: #808080;
-}
-
-.emotion-8:hover,
-.emotion-8 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-8[aria-disabled=true],
-.emotion-8 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-10 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited,
-.emotion-10 .noop {
-  background-color: #808080;
-}
-
-.emotion-10:hover,
-.emotion-10 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-10[aria-disabled=true],
-.emotion-10 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-}
-
-.emotion-11 div {
-  margin-left: 0;
-}
-
-.emotion-11 button {
-  margin-right: 0;
-}
-
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-  margin-left: 8px;
-}
-
-.emotion-12:hover div,
-.emotion-12:focus-within div {
-  visibility: visible;
-  opacity: 1;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-}
-
-.emotion-12:hover button,
-.emotion-12:focus-within button {
-  color: #ffffff;
-}
-
-.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4004,9 +589,9 @@ Array [
   color: #808080;
 }
 
-.emotion-14 {
+.emotion-20 {
   position: absolute;
-  right: -10px;
+  left: -10px;
   top: 28px;
   color: #191919;
   background-color: #ffffff;
@@ -4024,143 +609,152 @@ Array [
   z-index: 1;
 }
 
-.emotion-14:hover {
+.emotion-20:hover {
   visibility: visible;
   opacity: 1;
 }
 
-.emotion-15:before {
+.emotion-21:before {
   content: ' ';
   position: absolute;
   top: -6px;
-  right: 14px;
+  left: 14px;
   border-bottom: 6px solid #ffffff;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
 }
 
-.emotion-16 {
+.emotion-22 {
   font-size: 15px;
   line-height: 19px;
   padding: 8px;
 }
 
-.emotion-17 {
+.emotion-23 {
   font-size: 15px;
   line-height: 19px;
 }
 
-.emotion-18 {
+.emotion-24 {
   font-size: 15px;
   line-height: 19px;
   padding-top: 16px;
 }
 
-<div
+<div>
+  <div
     className="emotion-0"
   >
     <div
       className="emotion-1"
     >
-      
-      
+      <svg
+        color="#c92300"
+        data-file-name="warning.svg"
+        height={20}
+      />
       <div
         className="emotion-2"
+        role="alert"
       >
-        <ul
-          className="emotion-3"
-        >
-          <li>
-            <strong>
-              Model Name:
-            </strong>
-             
-            console_face_recognition
-          </li>
-          <li>
-            <strong>
-              Model Type:
-            </strong>
-             
-            ZVI_FACE_RECOGNITION
-          </li>
-          <li>
-            <strong>
-              Module Name:
-            </strong>
-             
-            boonai-console_face_recognition-face-recognition
-          </li>
-        </ul>
+        Something went wrong. Please try again.
       </div>
-      <div
-        className="emotion-4"
+    </div>
+  </div>
+  <div>
+    <div
+      className="emotion-3"
+    >
+      Model
+       Name:
+    </div>
+    <h3
+      className="emotion-4"
+    >
+      console_face_recognition
+    </h3>
+  </div>
+  <ul
+    className="emotion-5"
+  >
+    <li>
+      <span
+        className="emotion-6"
       >
-        <div
-          className="emotion-5"
-        >
-          <svg
-            color="#0074f5"
-            data-file-name="information.svg"
-            height={20}
-          />
-          <div
+        Model Type
+        :
+      </span>
+       
+      ZVI_FACE_RECOGNITION
+    </li>
+    <li>
+      <span
+        className="emotion-6"
+      >
+        Description
+        :
+      </span>
+       
+    </li>
+  </ul>
+  <div
+    className="emotion-8"
+  />
+  <hr
+    className="emotion-9"
+  />
+  <div
+    className="emotion-8"
+  />
+  <div
+    className="emotion-11"
+  >
+    <div>
+      <ul
+        className="emotion-5"
+      >
+        <li>
+          <span
             className="emotion-6"
-            role="alert"
           >
-            2
-             more
-             
-            labels are
-             required (min. = 
-            2
-             unique)
-            <br />
-            1
-             more
-             asset needs 
-            to be labeled (min. = 
-            10
-             of each label)
-          </div>
-        </div>
-      </div>
+            Last Trained
+            :
+          </span>
+           
+          ?
+        </li>
+        <li>
+          <span
+            className="emotion-6"
+          >
+            Last Applied
+            :
+          </span>
+           
+          ?
+        </li>
+      </ul>
       <div
-        className="emotion-7"
+        className="emotion-15"
       >
         <button
           aria-disabled={true}
-          className="emotion-8"
+          className="emotion-16"
           onClick={[Function]}
           type="button"
         >
           Train
         </button>
-        <button
-          aria-disabled={true}
-          className="emotion-8"
-          onClick={[Function]}
-          type="button"
-        >
-          Train & Apply
-        </button>
-        <button
-          className="emotion-10"
-          onClick={[Function]}
-          type="button"
-        >
-          Delete
-        </button>
         <div
-          className="emotion-11"
+          className="emotion-17"
         >
           <div
-            className="emotion-12"
+            className="emotion-18"
           >
             <button
               aria-details="TrainingOptions"
               aria-label="Training Options"
-              className="emotion-13"
+              className="emotion-19"
               type="button"
             >
               <svg
@@ -4169,36 +763,36 @@ Array [
               />
             </button>
             <div
-              className="emotion-14"
+              className="emotion-20"
               id="TrainingOptions"
               role="tooltip"
             >
               <div
-                className="emotion-15"
+                className="emotion-21"
               />
               <div
-                className="emotion-16"
+                className="emotion-22"
               >
                 <h3
-                  className="emotion-17"
+                  className="emotion-23"
                 >
                   Train Model
                 </h3>
                 Train a model without applying it to your assets.
                 <h3
-                  className="emotion-18"
+                  className="emotion-24"
                 >
                   Train & Test
                 </h3>
                 Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
                 <h3
-                  className="emotion-18"
+                  className="emotion-24"
                 >
                   Train & Apply
                 </h3>
                 Train and apply the model to all the assets in the project.
                 <h3
-                  className="emotion-18"
+                  className="emotion-24"
                 >
                   Delete
                 </h3>
@@ -4217,615 +811,6 @@ Array [
       modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
       projectId="76917058-b147-4556-987a-0a0f11e46d9b"
     />
-  </div>,
-  .emotion-0 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-1 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-2 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
-.emotion-3 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #3A5DFF;
-}
-
-<nav
-    className="emotion-0"
-  >
-    <ul
-      className="emotion-1"
-    >
-      <li
-        className="emotion-2"
-      >
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
-          href="/[projectId]/models/[modelId]"
-          passHref={true}
-        >
-          <a
-            className="emotion-3"
-            onClick={[Function]}
-          >
-            View Labels
-          </a>
-        </Link>
-      </li>
-      <li
-        className="emotion-2"
-      >
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/assets"
-          href="/[projectId]/models/[modelId]/assets"
-          passHref={true}
-        >
-          <a
-            className="emotion-5"
-            onClick={[Function]}
-          >
-            Labeled Assets
-          </a>
-        </Link>
-      </li>
-    </ul>
-  </nav>,
-  .emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  padding-bottom: 8px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  -webkit-justify-content: flex-end;
-  justify-content: flex-end;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 8px 16px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited,
-.emotion-2 .noop {
-  background-color: #808080;
-}
-
-.emotion-2:hover,
-.emotion-2 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-2[aria-disabled=true],
-.emotion-2 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-4 {
-  padding-right: 8px;
-}
-
-.emotion-5 {
-  width: 16px;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <Link
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmJvb25haS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-        passHref={true}
-      >
-        <button
-          aria-label="Add Filter in Visualizer"
-          className="emotion-2"
-          onClick={[Function]}
-          type="button"
-        >
-          <div
-            className="emotion-3"
-          >
-            <svg
-              className="emotion-4"
-              data-file-name="filter.svg"
-              height={20}
-            />
-            Add Filter in Visualizer
-          </div>
-        </button>
-      </Link>
-      <div
-        className="emotion-5"
-      />
-      <Link
-        as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
-        href="/[projectId]/visualizer"
-        passHref={true}
-      >
-        <button
-          aria-label="Add More Labels"
-          className="emotion-2"
-          onClick={[Function]}
-          type="button"
-        >
-          <div
-            className="emotion-3"
-          >
-            <svg
-              className="emotion-4"
-              data-file-name="pen.svg"
-              height={20}
-            />
-            Add More Labels
-          </div>
-        </button>
-      </Link>
-    </div>
-  </div>,
-  .emotion-0 {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-1 {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-end;
-  -webkit-box-align: flex-end;
-  -ms-flex-align: flex-end;
-  align-items: flex-end;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-  padding-bottom: 16px;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-3 {
-  color: #b3b3b3;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 400;
-}
-
-.emotion-4 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  position: relative;
-}
-
-.emotion-5 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.emotion-6 {
-  height: 100%;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  white-space: nowrap;
-}
-
-.emotion-6 tr {
-  background-color: #252525;
-}
-
-.emotion-6 tr:nth-of-type(2n) {
-  background-color: #2e2e2e;
-}
-
-.emotion-6 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-}
-
-.emotion-6 tr:hover .actions {
-  color: #b3b3b3;
-}
-
-.emotion-6 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-6 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
-.emotion-6 td {
-  max-width: calc(100vw / 5);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #e0e0e0;
-  padding: 8px 16px;
-  border: 1px solid transparent;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 td:first-of-type {
-  border-left: 1px solid transparent;
-}
-
-.emotion-6 td:last-of-type {
-  border-right: 1px solid transparent;
-  overflow: visible;
-}
-
-.emotion-7 {
-  text-align: left;
-  white-space: pre-line;
-  vertical-align: bottom;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 0;
-  border-bottom: 1px solid #2e2e2e;
-  width: auto;
-}
-
-.emotion-7:nth-of-type(1) {
-  width: 100%;
-}
-
-.emotion-7:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-8 {
-  padding: 12px 16px;
-}
-
-.emotion-16 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 12px 16px;
-}
-
-.emotion-17 {
-  text-align: left;
-  white-space: pre-line;
-  vertical-align: bottom;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 0;
-  border-bottom: 1px solid #2e2e2e;
-  width: 1px;
-}
-
-.emotion-17:nth-of-type(1) {
-  width: 100%;
-}
-
-.emotion-17:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-19 {
-  height: 100%;
-  pointer-events: none;
-}
-
-.emotion-20 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  text-align: center;
-  color: #808080;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-21 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-size: 18px;
-  line-height: 21px;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <div
-        className="emotion-2"
-      >
-        <h3
-          className="emotion-3"
-        >
-          Labels
-          : 
-          0
-        </h3>
-      </div>
-      <div
-        className="emotion-4"
-      >
-        <div
-          className="emotion-5"
-        >
-          <table
-            className="emotion-6"
-          >
-            <thead>
-              <tr>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-8"
-                  >
-                    Label
-                  </div>
-                </th>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-8"
-                  >
-                    # Required
-                  </div>
-                </th>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-8"
-                  >
-                    # Labeled
-                  </div>
-                </th>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-8"
-                  >
-                    # Remaining
-                  </div>
-                </th>
-                <th
-                  className="emotion-7"
-                >
-                  <div
-                    className="emotion-16"
-                  >
-                    <svg
-                      data-file-name="checkmark.svg"
-                      height={20}
-                    />
-                  </div>
-                </th>
-                <th
-                  className="emotion-17"
-                >
-                  <div
-                    className="emotion-16"
-                  >
-                    <svg
-                      data-file-name="kebab.svg"
-                      height={20}
-                    />
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                className="emotion-19"
-              >
-                <td
-                  colSpan={6}
-                >
-                  <div
-                    className="emotion-20"
-                  >
-                    <div
-                      className="emotion-21"
-                    >
-                      <svg
-                        data-file-name="noJobs.svg"
-                        width={200}
-                      />
-                      There are currently no labels for this model.
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>,
-]
+  </div>
+</div>
 `;

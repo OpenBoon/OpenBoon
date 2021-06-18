@@ -230,7 +230,7 @@ class BaseProjectViewSet(ViewSet):
         else:
             serializer = self.get_serializer(data=items, many=True)
         validate_zmlp_data(serializer)
-        content['list'] = serializer.validated_data
+        content['list'] = serializer.data
         paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(content, request)
         return paginator.get_paginated_response(content['list'])
@@ -286,7 +286,8 @@ class BaseProjectViewSet(ViewSet):
         else:
             serializer = self.get_serializer(data=items, many=True)
         validate_zmlp_data(serializer)
-        return Response({'results': serializer.validated_data})
+        return Response({'count': len(serializer.validated_data),
+                         'results': serializer.validated_data})
 
     def _zmlp_list_from_es(self, request, item_modifier=None, search_filter=None,
                            serializer_class=None, base_url=None, pagination_class=None):

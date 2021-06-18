@@ -15,7 +15,7 @@ enum class AutomlSessionState {
 }
 
 class AutomlSessionSpec(
-    val automlDataSet: String,
+    val automlDataset: String,
     val automlTrainingJob: String
 )
 
@@ -39,7 +39,7 @@ class AutomlSession(
 
     @Column(name = "str_dataset")
     @ApiModelProperty("The ID of the AutoML dataset")
-    val automlDataSet: String,
+    val automlDataset: String,
 
     @Column(name = "str_training_job")
     @ApiModelProperty("The ID of the AutoML model")

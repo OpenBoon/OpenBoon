@@ -10,7 +10,13 @@ import TimelineScrollbarHandle from './ScrollbarHandle'
 
 import { SCROLLBAR_CONTAINER_HEIGHT, getIgnore } from './helpers'
 
-const TimelineScrollbar = ({ rulerRef, width, initialZoom, dispatch }) => {
+const TimelineScrollbar = ({
+  rulerRef,
+  width,
+  initialZoom,
+  dispatch,
+  stopFollowPlayhead,
+}) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const zoom = useMemo(() => initialZoom, [])
 
@@ -21,15 +27,15 @@ const TimelineScrollbar = ({ rulerRef, width, initialZoom, dispatch }) => {
 
   const horizontalScrollerDeregister = horizontalScroller.register({
     eventName: 'scroll',
-    callback: /* istanbul ignore next */ ({
-      node: { scrollLeft, scrollWidth } = {},
-    }) => {
+    callback: /* istanbul ignore next */ ({ scrollX }) => {
       const ignore = getIgnore()
 
-      if (ignore || !scrollbarRef.current || !scrollLeft || !scrollWidth) return
+      if (ignore || !scrollbarRef.current || !rulerRef.current) return
+
+      const scrollWidth = rulerRef?.current?.scrollWidth
 
       /* eslint-disable no-param-reassign */
-      scrollbarRef.current.style.left = `${(scrollLeft / scrollWidth) * 100}%`
+      scrollbarRef.current.style.left = `${(scrollX / scrollWidth) * 100}%`
     },
   })
 
@@ -93,19 +99,24 @@ const TimelineScrollbar = ({ rulerRef, width, initialZoom, dispatch }) => {
               horizontalScroller={horizontalScroller}
               isLeft
               dispatch={dispatch}
+              stopFollowPlayhead={stopFollowPlayhead}
             />
+
             <TimelineScrollbarThumb
               rulerRef={rulerRef}
               scrollbarRef={scrollbarRef}
               scrollbarTrackRef={scrollbarTrackRef}
               horizontalScroller={horizontalScroller}
+              stopFollowPlayhead={stopFollowPlayhead}
             />
+
             <TimelineScrollbarHandle
               scrollbarRef={scrollbarRef}
               scrollbarTrackRef={scrollbarTrackRef}
               horizontalScroller={horizontalScroller}
               isLeft={false}
               dispatch={dispatch}
+              stopFollowPlayhead={stopFollowPlayhead}
             />
           </div>
         </div>
@@ -124,6 +135,7 @@ TimelineScrollbar.propTypes = {
   width: PropTypes.number.isRequired,
   initialZoom: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired,
+  stopFollowPlayhead: PropTypes.func.isRequired,
 }
 
 export default TimelineScrollbar

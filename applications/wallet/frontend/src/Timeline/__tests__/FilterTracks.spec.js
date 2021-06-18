@@ -7,16 +7,7 @@ describe('<TimelineFilterTracks />', () => {
     const mockDispatch = jest.fn()
 
     const component = TestRenderer.create(
-      <TimelineFilterTracks
-        settings={{
-          filter: '',
-          highlights: false,
-          width: 200,
-          zoom: 100,
-          timelines: {},
-        }}
-        dispatch={mockDispatch}
-      />,
+      <TimelineFilterTracks filter="" width={200} dispatch={mockDispatch} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

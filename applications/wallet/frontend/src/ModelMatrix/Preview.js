@@ -9,7 +9,7 @@ import { useLocalStorage } from '../LocalStorage/helpers'
 import FilterSvg from '../Icons/filter.svg'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../Panel'
+import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../Panel/helpers'
 import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
 
 import SuspenseBoundary from '../SuspenseBoundary'

@@ -55,7 +55,7 @@ class AutomlServiceImpl(
             id,
             model.id,
             getProjectId(),
-            spec.automlDataSet,
+            spec.automlDataset,
             spec.automlTrainingJob,
             null,
             null,
@@ -70,7 +70,7 @@ class AutomlServiceImpl(
             LogObject.AUTOML, LogAction.CREATE,
             mapOf(
                 "automlId" to id,
-                "automlDataSet" to spec.automlDataSet,
+                "automlDataset" to spec.automlDataset,
                 "automlTrainingJob" to spec.automlTrainingJob
             )
         )
