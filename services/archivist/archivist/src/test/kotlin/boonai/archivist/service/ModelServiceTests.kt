@@ -42,6 +42,9 @@ class ModelServiceTests : AbstractTest() {
     lateinit var modelService: ModelService
 
     @Autowired
+    lateinit var modelDeployService: ModelDeployService
+
+    @Autowired
     lateinit var datasetService: DatasetService
 
     @Autowired
@@ -193,12 +196,12 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testCopyModel() {
-        val model = create(type = ModelType.TF_UPLOADED_CLASSIFIER)
+        val model = create(type = ModelType.PYTORCH_MODEL_ARCHIVE)
         val mfp = Paths.get(
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
         )
 
-        modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
+        modelDeployService.deployUploadedModel(model, FileInputStream(mfp.toFile()))
         modelService.copyModelTag(model, ModelCopyRequest("latest", "approved"))
 
         val files = fileStorageService.listFiles(
@@ -206,8 +209,7 @@ class ModelServiceTests : AbstractTest() {
         )
 
         val names = files.map { FileUtils.filename(it) }
-        assertTrue("model-version.txt" in names)
-        assertTrue("model.zip" in names)
+        assertTrue(ModelType.PYTORCH_MODEL_ARCHIVE.fileName in names)
     }
 
     @Test
@@ -271,31 +273,6 @@ class ModelServiceTests : AbstractTest() {
         val model = create()
         modelService.deleteModel(model)
         assertNull(pipelineModService.findByName(model.moduleName, false))
-    }
-
-    @Test
-    fun testValidateTModelUpload() {
-        modelService.validateTensorflowModel(
-            Paths.get(
-                "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
-            )
-        )
-    }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun testValidateModelUploadFail() {
-        modelService.validateTensorflowModel(Paths.get("../../../test-data/training/pets.zip"))
-    }
-
-    @Test
-    fun testAcceptModelFileUploadAndList() {
-        val model = create(type = ModelType.TF_UPLOADED_CLASSIFIER)
-        val mfp = Paths.get(
-            "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
-        )
-
-        val module = modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
-        assertEquals("Custom Models", module.category)
     }
 
     @Test

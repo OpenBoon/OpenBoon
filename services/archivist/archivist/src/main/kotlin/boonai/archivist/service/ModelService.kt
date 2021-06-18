@@ -36,10 +36,10 @@ import boonai.archivist.security.getProjectId
 import boonai.archivist.security.getZmlpActor
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.FileUtils
-import boonai.archivist.util.randomString
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
+import com.google.pubsub.v1.PubsubMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -49,15 +49,7 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.io.ByteArrayInputStream
-import java.io.FileInputStream
-import java.io.InputStream
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.StandardCopyOption
 import java.util.UUID
-import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
-import kotlin.streams.toList
 
 interface ModelService {
     fun createModel(spec: ModelSpec): Model
@@ -72,14 +64,12 @@ interface ModelService {
     fun setTrainingArgs(model: Model, args: Map<String, Any>)
     fun patchTrainingArgs(model: Model, patch: Map<String, Any>)
     fun getTrainingArgSchema(type: ModelType): ArgSchema
-    fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod
-    fun validateTensorflowModel(path: Path)
-    fun validatePyTorchModel(path: Path)
     fun generateModuleName(spec: ModelSpec): String
     fun getModelVersions(model: Model): Set<String>
     fun copyModelTag(model: Model, req: ModelCopyRequest)
     fun updateModel(id: UUID, update: ModelUpdateRequest): Model
     fun patchModel(id: UUID, update: ModelPatchRequest): Model
+    fun postToModelEventTopic(msg: PubsubMessage)
 }
 
 @Service
@@ -95,13 +85,16 @@ class ModelServiceImpl(
     val fileStorageService: ProjectStorageService,
     val argValidationService: ArgValidationService,
     val datasetService: DatasetService,
-    val environment: Environment
+    val environment: Environment,
+    val publisherService: PublisherService
 ) : ModelService {
+
+    val topic = "model-events"
 
     override fun generateModuleName(spec: ModelSpec): String {
         return spec.moduleName ?: "${spec.name}"
             .replace(Regex("[\\s\\n\\r\\t]+", RegexOption.MULTILINE), "-")
-            .toLowerCase()
+            .lowercase()
     }
 
     override fun createModel(spec: ModelSpec): Model {
@@ -109,6 +102,12 @@ class ModelServiceImpl(
         val id = UUIDGen.uuid1.generate()
         val actor = getZmlpActor()
         val moduleName = generateModuleName(spec)
+
+        if (!spec.type.enabled) {
+            throw IllegalArgumentException(
+                "This model type is not currently enabled."
+            )
+        }
 
         if (moduleName.trim().isEmpty() || !moduleName.matches(modelNameRegex)) {
             throw IllegalArgumentException(
@@ -118,10 +117,10 @@ class ModelServiceImpl(
         }
 
         val locator = ProjectFileLocator(
-            ProjectStorageEntity.MODELS, id.toString(), "__TAG__", "model.zip"
+            ProjectStorageEntity.MODELS, id.toString(), "__TAG__", spec.type.fileName
         )
 
-        argValidationService.validateArgsUnknownOnly("models/${spec.type.name}", spec.trainingArgs)
+        argValidationService.validateArgsUnknownOnly("training/${spec.type.name}", spec.trainingArgs)
 
         val model = Model(
             id,
@@ -130,6 +129,7 @@ class ModelServiceImpl(
             spec.type,
             spec.name,
             moduleName,
+            null,
             locator.getFileId(),
             "Training model: ${spec.name} - [${spec.type.objective}]",
             false,
@@ -197,7 +197,7 @@ class ModelServiceImpl(
         }
 
         val trainArgs = argValidationService.buildArgs(
-            getTrainingArgSchema(model.type), model.trainingArgs
+            getTrainingArgSchema(model.type), model.trainingArgs + (request.trainArgs ?: emptyMap())
         ).plus(
             mapOf<String, Any?>(
                 "model_id" to model.id.toString(),
@@ -277,7 +277,7 @@ class ModelServiceImpl(
             name = name,
             replace = true,
             includeStandard = false,
-            settings = mapOf("${model.id}:tag" to req.tag)
+            settings = mapOf("${model.id}:tag" to req.tag, "maxPredictions" to 1)
         )
 
         val jobId = getZmlpActor().getAttr("jobId")
@@ -298,7 +298,8 @@ class ModelServiceImpl(
 
     override fun publishModel(model: Model, req: ModelPublishRequest): PipelineMod {
         val mod = pipelineModService.findByName(model.moduleName, false)
-        val ops = buildModuleOps(model, req)
+        val version = versionUp(model)
+        val ops = buildModuleOps(model, req, version)
 
         if (mod != null) {
             // Set version number to change checksum
@@ -313,7 +314,7 @@ class ModelServiceImpl(
         } else {
             val modspec = PipelineModSpec(
                 model.moduleName,
-                "Make predictions with your custom trained '${model.name}' model.",
+                model.type.description,
                 model.type.provider,
                 Category.TRAINED,
                 model.type.objective,
@@ -338,7 +339,7 @@ class ModelServiceImpl(
     }
 
     override fun setTrainingArgs(model: Model, args: Map<String, Any>) {
-        argValidationService.validateArgs("models/${model.type.name}", args)
+        argValidationService.validateArgs("training/${model.type.name}", args)
         model.trainingArgs = args
     }
 
@@ -351,7 +352,7 @@ class ModelServiceImpl(
     }
 
     override fun getTrainingArgSchema(type: ModelType): ArgSchema {
-        return argValidationService.getArgSchema("models/${type.name}")
+        return argValidationService.getArgSchema("training/${type.name}")
     }
 
     override fun deleteModel(model: Model) {
@@ -372,7 +373,7 @@ class ModelServiceImpl(
         }
     }
 
-    fun buildModuleOps(model: Model, req: ModelPublishRequest): List<ModOp> {
+    fun buildModuleOps(model: Model, req: ModelPublishRequest, version: String): List<ModOp> {
         val ops = mutableListOf<ModOp>()
 
         for (depend in model.type.dependencies) {
@@ -399,7 +400,7 @@ class ModelServiceImpl(
                         StandardContainers.ANALYSIS,
                         mutableMapOf(
                             "model_id" to model.id.toString(),
-                            "version" to System.currentTimeMillis()
+                            "version" to version
                         ).plus(req.args),
                         module = model.name
                     )
@@ -410,76 +411,6 @@ class ModelServiceImpl(
         return ops
     }
 
-    override fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod {
-        if (!model.type.uploadable) {
-            throw IllegalArgumentException("The model type ${model.type} does not support uploads")
-        }
-
-        val tmpFile = Files.createTempFile(randomString(32), "model.zip")
-        Files.copy(inputStream, tmpFile, StandardCopyOption.REPLACE_EXISTING)
-
-        try {
-
-            // Now store the model zip
-            val modelFile = ProjectStorageSpec(
-                model.getModelStorageLocator("latest"), mapOf(),
-                FileInputStream(tmpFile.toFile()), Files.size(tmpFile)
-            )
-            fileStorageService.store(modelFile)
-
-            // Now store the version identifier
-            val version = "${(System.currentTimeMillis() / 1000).toInt()}-${UUID.randomUUID()}\n"
-            val versionBytes = version.toByteArray()
-            val versionFile = ProjectStorageSpec(
-                model.getModelVersionStorageLocator("latest"), mapOf(),
-                ByteArrayInputStream(versionBytes), versionBytes.size.toLong()
-            )
-            fileStorageService.store(versionFile)
-
-            // Now we can publish the model.
-            return publishModel(
-                model,
-                ModelPublishRequest(mapOf("version" to System.currentTimeMillis()))
-            )
-        } finally {
-            Files.delete(tmpFile)
-        }
-    }
-
-    fun validateModel(path: Path, allowedFiles: List<Any>) {
-
-        val zipFile = ZipFile(path.toFile())
-        val files = zipFile.stream()
-            .map(ZipEntry::getName)
-            .map { it }.toList()
-
-        if (!files.contains("labels.txt")) {
-            throw IllegalArgumentException("The model zip must contain a labels.txt file")
-        }
-
-        files.forEach { fileName ->
-            var matched = false
-
-            for (pattern in allowedFiles) {
-                if (pattern is Regex) {
-                    if (pattern.matches(fileName)) {
-                        matched = true
-                        break
-                    }
-                } else if (pattern is String) {
-                    if (pattern.toString() == fileName) {
-                        matched = true
-                        break
-                    }
-                }
-            }
-
-            if (!matched) {
-                throw IllegalArgumentException("'$fileName' is not an expected Tensorflow model file.")
-            }
-        }
-    }
-
     override fun getModelVersions(model: Model): Set<String> {
         val files = fileStorageService.listFiles(
             ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString()).getPath()
@@ -487,25 +418,19 @@ class ModelServiceImpl(
         return files.map { it.split("/")[4] }.toSet()
     }
 
-    override fun validateTensorflowModel(path: Path) {
-        val validTensorflowFiles = listOf(
-            "labels.txt",
-            "saved_model.pb",
-            "tfhub_module.pb",
-            "assets/",
-            "variables/",
-            Regex("^variables/variables.data-[\\d]+-of-[\\d]+$"),
-            "variables/variables.index"
-        )
-        validateModel(path, validTensorflowFiles)
+    override fun postToModelEventTopic(msg: PubsubMessage) {
+        publisherService.publish(topic, msg)
     }
 
-    override fun validatePyTorchModel(path: Path) {
-        val validTorchFiles = listOf(
-            "model.pth",
-            "labels.txt"
+    fun versionUp(model: Model): String {
+        val version = "${System.currentTimeMillis()}"
+        val versionBytes = version.plus("\n").toByteArray()
+        val versionFile = ProjectStorageSpec(
+            model.getModelVersionStorageLocator("latest"), mapOf(),
+            ByteArrayInputStream(versionBytes), versionBytes.size.toLong()
         )
-        validateModel(path, validTorchFiles)
+        fileStorageService.store(versionFile)
+        return version
     }
 
     companion object {

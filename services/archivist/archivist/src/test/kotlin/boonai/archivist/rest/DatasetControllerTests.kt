@@ -1,13 +1,14 @@
 package boonai.archivist.rest
 
 import boonai.archivist.MockMvcTest
+import boonai.archivist.domain.AssetSpec
+import boonai.archivist.domain.AssetState
+import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.Dataset
 import boonai.archivist.domain.DatasetSpec
 import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.DatasetUpdate
-import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.UpdateLabelRequest
-import boonai.archivist.domain.AssetSpec
 import boonai.archivist.repository.DatasetDao
 import boonai.archivist.service.DatasetService
 import boonai.common.util.Json
@@ -148,7 +149,7 @@ class DatasetControllerTests : MockMvcTest() {
     fun testDeleteLabel() {
         val specs = makeDataSet(dataset)
         assetService.batchCreate(
-            BatchCreateAssetsRequest(specs)
+            BatchCreateAssetsRequest(specs, state = AssetState.Analyzed)
         )
 
         val body = UpdateLabelRequest("ant", "")
@@ -239,7 +240,7 @@ class DatasetControllerTests : MockMvcTest() {
 
         val specs = makeDataSet(dataset)
         assetService.batchCreate(
-            BatchCreateAssetsRequest(specs)
+            BatchCreateAssetsRequest(specs, state = AssetState.Analyzed)
         )
 
         val rsp = mvc.perform(

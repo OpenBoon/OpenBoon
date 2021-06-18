@@ -4,7 +4,7 @@ import tempfile
 
 from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule, PostTrainAction
 from ..util import as_collection, as_id, \
-    zip_directory, is_valid_uuid, as_name_collection, as_id_collection
+    zip_directory, is_valid_uuid, as_name_collection, as_id_collection, enum_name
 
 logger = logging.getLogger(__name__)
 
@@ -21,20 +21,22 @@ class ModelApp:
     def __init__(self, app):
         self.app = app
 
-    def create_model(self, name, type):
+    def create_model(self, name, type, dataset=None):
         """
         Create and return a new model .
 
         Args:
             name (str): The name of the model.
             type (ModelType): The type of Model, see the ModelType class.
+            dataset (DataSet): An optional DataSet for training or testing the model.
 
         Returns:
             Model: The new model.
         """
         body = {
             "name": name,
-            "type": type.name
+            "type": getattr(type, 'name', str(type)),
+            "datasetId": as_id(dataset)
         }
         return Model(self.app.client.post("/api/v3/models", body))
 
@@ -97,7 +99,7 @@ class ModelApp:
         }
         return self.app.client.iter_paged_results('/api/v3/models/_search', body, limit, Model)
 
-    def train_model(self, model, post_action=PostTrainAction.NONE, **kwargs):
+    def train_model(self, model, post_action=PostTrainAction.NONE, train_args=None):
         """
         Train the given Model by kicking off a model training job.  If a post action is
         specified the training job will expand once training is complete.
@@ -105,17 +107,15 @@ class ModelApp:
         Args:
             model (Model): The Model instance or a unique Model id
             post_action (PostTrainAction): An action to take once the model is trained.
+            train_args (dict): A dictionary of training arg values.
         Returns:
             Job: A model training job.
         """
         model_id = as_id(model)
         body = {}
-
-        if kwargs.get('deploy'):
-            body['postAction'] = PostTrainAction.APPLY.name
-        else:
-            body['postAction'] = str(post_action)
-
+        body['postAction'] = enum_name(PostTrainAction, post_action, True)
+        if train_args:
+            body['trainArgs'] = train_args
         return Job(self.app.client.post('/api/v4/models/{}/_train'.format(model_id), body))
 
     def apply_model(self, model, search=None):
@@ -180,8 +180,8 @@ class ModelApp:
                     fp.write(f'{label}\n')
 
         # check the model types.
-        if model.type not in (ModelType.TF_UPLOADED_CLASSIFIER,
-                              ModelType.PYTORCH_UPLOADED_CLASSIFIER):
+        if model.type not in (ModelType.TF_SAVED_MODEL,
+                              ModelType.PYTORCH_MODEL_ARCHIVE):
             raise ValueError(f'Invalid model type for upload: {model.type}')
 
         model_file = tempfile.mkstemp(prefix="model_", suffix=".zip")[1]
@@ -231,8 +231,13 @@ class ModelApp:
         Returns:
             dict: A dict describing the argument structure.
         """
-        mtype = getattr(model_type, 'type', model_type).name
-        return self.app.client.get(f'/api/v3/models/_types/{mtype}/_training_args')
+        if isinstance(model_type, ModelType):
+            name = model_type.name
+        elif isinstance(model_type, Model):
+            name = model_type.type.name
+        else:
+            name = model_type.upper()
+        return self.app.client.get(f'/api/v3/models/_types/{name}/_training_args')
 
     def get_all_model_type_info(self):
         """

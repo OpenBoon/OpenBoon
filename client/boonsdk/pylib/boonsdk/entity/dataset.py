@@ -109,6 +109,43 @@ class Dataset(BaseEntity):
                      simhash=prediction.get('simhash'),
                      scope=scope)
 
+    def get_label_search(self, scope=None):
+        """
+        Return a search that can be used to query all assets
+        with labels.
+
+        Args:
+            scope (LabelScope): An optional label scope to filter by.
+
+        Returns:
+            dict: A search to pass to an asset search.
+        """
+        search = {
+            'size': 64,
+            'sort': [
+                '_doc'
+            ],
+            '_source': ['labels', 'files'],
+            'query': {
+                'nested': {
+                    'path': 'labels',
+                    'query': {
+                        'bool': {
+                            'must': [
+                                {'term': {'labels.datasetId': self.id}}
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+
+        if scope:
+            must = search['query']['nested']['query']['bool']['must']
+            must.append({'term': {'labels.scope': scope.name}})
+
+        return search
+
 
 class LabelScope(Enum):
     """

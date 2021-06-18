@@ -38,6 +38,7 @@ const AssetDeleteContent = ({
   return (
     <Form style={{ padding: spacing.normal, width: '100%' }}>
       <Radio
+        name="delete"
         option={{
           value: 'deleteSelected',
           label: 'Delete Selected: 1',

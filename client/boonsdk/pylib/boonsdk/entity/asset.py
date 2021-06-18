@@ -554,9 +554,17 @@ class FileTypes:
     """A set of all supported file formats."""
 
     @classmethod
+    def supported(cls, path):
+        try:
+            ext = os.path.splitext(path)[1][1:]
+            return ext in cls.all
+        except Exception:
+            return False
+
+    @classmethod
     def resolve(cls, file_types):
         """
-        Resolve a list of file extenions or types (images, documents, videos) to
+        Resolve a list of file extensions or types (images, documents, videos) to
         a supported list of extensions.
 
         Args:

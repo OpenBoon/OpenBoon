@@ -18,8 +18,8 @@ import { onSubmit } from './helpers'
 
 const INITIAL_STATE = {
   name: '',
-  type: '',
   description: '',
+  type: '',
   isLoading: false,
   errors: {},
 }
@@ -83,6 +83,7 @@ const DatasetsAddForm = () => {
         return (
           <div key={name} css={{ paddingTop: spacing.normal }}>
             <Radio
+              name="datasetType"
               option={{
                 value: name,
                 label,

@@ -68,7 +68,7 @@ exports[`<Radio /> should render properly checked 1`] = `
       <input
         className="emotion-2"
         defaultChecked={true}
-        id="radio"
+        name="radio"
         onClick={[Function]}
         type="radio"
         value="radio"
@@ -163,7 +163,7 @@ exports[`<Radio /> should render properly unchecked 1`] = `
       <input
         className="emotion-2"
         defaultChecked={false}
-        id="radio"
+        name="radio"
         onClick={[Function]}
         type="radio"
         value="radio"
