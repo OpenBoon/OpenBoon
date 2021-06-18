@@ -1,5 +1,5 @@
 #!/bin/bash
 
 docker build . -t boonai/jvm-build
-dockere push boonai/jvm-build
+docker push boonai/jvm-build
 
