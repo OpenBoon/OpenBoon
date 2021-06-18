@@ -7,10 +7,8 @@ import boonai.archivist.domain.WebHook
 import boonai.archivist.domain.WebHookSpec
 import boonai.archivist.repository.ProjectDao
 import boonai.archivist.security.getProjectId
-import boonai.archivist.util.createPubSubPublisher
 import boonai.common.util.Json
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.google.cloud.pubsub.v1.Publisher
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.google.protobuf.ByteString
@@ -21,7 +19,6 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
 import java.util.UUID
 import java.util.concurrent.TimeUnit
-import javax.annotation.PostConstruct
 
 interface WebHookPublisherService {
     fun emitMessage(asset: Asset, hook: WebHook, trigger: TriggerType)
@@ -33,7 +30,8 @@ interface WebHookPublisherService {
 
 @Service
 class WebHookPublisherServiceImpl constructor(
-    val webHookService: WebHookService
+    val webHookService: WebHookService,
+    val publisherService: PublisherService
 ) : WebHookPublisherService {
 
     @Autowired
@@ -42,7 +40,7 @@ class WebHookPublisherServiceImpl constructor(
     @Autowired
     lateinit var projectDao: ProjectDao
 
-    lateinit var publisher: Publisher
+    val topic = "webhooks"
 
     private val webhookCache = CacheBuilder.newBuilder()
         .maximumSize(60)
@@ -55,12 +53,6 @@ class WebHookPublisherServiceImpl constructor(
                 return webHookService.getActiveWebHooks(projectId)
             }
         })
-
-    @PostConstruct
-    fun initialize() {
-        var topicId: String = properties.getString("boonai.webhooks.topic-name")
-        publisher = createPubSubPublisher(topicId)
-    }
 
     override fun handleAssetTriggers(asset: Asset, trigger: TriggerType) {
         for (hook in webhookCache.get(getProjectId())) {
@@ -84,7 +76,7 @@ class WebHookPublisherServiceImpl constructor(
             .putAttributes("url", url)
             .putAttributes("secret_key", key)
             .build()
-        publisher.publish(pubsubMessage)
+        publisherService.publish(topic, pubsubMessage)
     }
 
     override fun testWebHook(wb: WebHook) {

@@ -36,15 +36,9 @@ import boonai.archivist.security.getProjectId
 import boonai.archivist.security.getZmlpActor
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.FileUtils
-import boonai.archivist.util.createPubSubPublisher
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
-import com.google.api.core.ApiFutureCallback
-import com.google.api.core.ApiFutures
-import com.google.api.gax.rpc.ApiException
-import com.google.cloud.pubsub.v1.Publisher
-import com.google.common.util.concurrent.MoreExecutors
 import com.google.pubsub.v1.PubsubMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -89,15 +83,11 @@ class ModelServiceImpl(
     val assetSearchService: AssetSearchService,
     val fileStorageService: ProjectStorageService,
     val argValidationService: ArgValidationService,
-    val datasetService: DatasetService
+    val datasetService: DatasetService,
+    val publisherService: PublisherService
 ) : ModelService {
 
-    private val publisher: Publisher
-    private val topicId = "model-events"
-
-    init {
-        publisher = createPubSubPublisher(topicId)
-    }
+    val topic = "model-events"
 
     override fun generateModuleName(spec: ModelSpec): String {
         return spec.moduleName ?: "${spec.name}"
@@ -426,24 +416,7 @@ class ModelServiceImpl(
     }
 
     override fun postToModelEventTopic(msg: PubsubMessage) {
-        val modelId = msg.attributesMap.getValue("modelId")
-        val future = publisher.publish(msg)
-
-        ApiFutures.addCallback(
-            future,
-            object : ApiFutureCallback<String?> {
-                override fun onFailure(ex: Throwable) {
-                    if (ex is ApiException) {
-                        logger.error("Error publishing model-event for model '$modelId'", ex)
-                    }
-                }
-
-                override fun onSuccess(messageId: String?) {
-                    logger.info("Published model event $modelId")
-                }
-            },
-            MoreExecutors.directExecutor()
-        )
+        publisherService.publish(topic, msg)
     }
 
     fun versionUp(model: Model): String {

@@ -1,5 +1,6 @@
 package boonai.archivist.service
 
+import boonai.archivist.config.ArchivistConfiguration
 import boonai.archivist.domain.PubSubEvent
 import boonai.archivist.util.getPubSubEmulationHost
 import boonai.archivist.util.isPubSubEmulation
@@ -42,6 +43,14 @@ class PubSubSubscriberService(val eventBus: EventBus) : SubscriberService {
 
     @PostConstruct
     fun subscribeToAll() {
+
+        /**
+         * Don't sub on unittetest
+         */
+        if (ArchivistConfiguration.unittest) {
+            return
+        }
+
         /**
          * If we're using PubSub emulation then we gotta setup the test topics.
          */
