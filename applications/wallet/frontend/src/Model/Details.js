@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
+import Link from 'next/link'
 
 import { spacing } from '../Styles'
 
@@ -31,6 +32,7 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
     type,
     unappliedChanges,
     description,
+    runningJobId,
     modelTypeRestrictions: { missingLabels },
   } = model
 
@@ -40,6 +42,21 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
 
   return (
     <div>
+      {runningJobId && (
+        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
+          <FlashMessage variant={FLASH_VARIANTS.PROCESSING}>
+            &quot;{name}&quot; training in progress.{' '}
+            <Link
+              href="/[projectId]/jobs/[jobId]"
+              as={`/${projectId}/jobs/${runningJobId}`}
+              passHref
+            >
+              <a>Check Status</a>
+            </Link>
+          </FlashMessage>
+        </div>
+      )}
+
       {error && (
         <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
           <FlashMessage variant={FLASH_VARIANTS.ERROR}>{error}</FlashMessage>
