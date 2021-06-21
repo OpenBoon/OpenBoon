@@ -80,7 +80,7 @@
     "@reach/combobox": "0.15.1",
     "@reach/listbox": "0.15.0",
     "@reach/skip-nav": "0.15.0",
-    "@sentry/browser": "6.7.0",
+    "@sentry/browser": "6.7.1",
     "@svgr/webpack": "5.5.0",
     "@tippyjs/react": "4.2.5",
     "body-scroll-lock": "3.1.5",
