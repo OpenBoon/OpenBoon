@@ -9,9 +9,6 @@ const {
 } = process.env
 
 module.exports = {
-  future: {
-    webpack5: true,
-  },
   productionBrowserSourceMaps: true,
   reactStrictMode: true,
   env: {
@@ -36,9 +33,15 @@ module.exports = {
       )
     }
 
+    const fileLoaderRule = config.module.rules.find(
+      (rule) => rule.test && rule.test.test('.svg'),
+    )
+
+    fileLoaderRule.exclude = /\.svg$/
+
     config.module.rules.push({
       test: /\.svg$/,
-      use: ['@svgr/webpack'],
+      loader: require.resolve('@svgr/webpack'),
     })
 
     return config
