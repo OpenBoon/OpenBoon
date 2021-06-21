@@ -1,13 +1,17 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { spacing, typography } from '../Styles'
+import { spacing } from '../Styles'
 
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import ItemTitle from '../Item/Title'
+import ItemList from '../Item/List'
+import ItemSeparator from '../Item/Separator'
 import Value, { VARIANTS } from '../Value'
 import ProgressBar from '../ProgressBar'
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 
 import JobMenu from './Menu'
+import JobStatus, { VARIANTS as JOB_STATUS_VARIANTS } from './Status'
 
 const JobDetails = () => {
   const {
@@ -26,34 +30,34 @@ const JobDetails = () => {
 
   return (
     <div>
-      <h3
-        css={{
-          fontSize: typography.size.medium,
-          lineHeight: typography.height.medium,
-          fontWeight: typography.weight.medium,
-          paddingTop: spacing.normal,
-          paddingBottom: spacing.normal,
-        }}
-      >
-        Job: {name}
-      </h3>
-
       {!!action && (
-        <div css={{ display: 'flex' }}>
+        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
           <FlashMessage variant={FLASH_VARIANTS.INFO}>{action}</FlashMessage>
         </div>
       )}
 
+      <div
+        css={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
+        }}
+      >
+        <div>
+          <ItemTitle type="Job" name={name} />
+
+          <ItemList attributes={[['ID', jobId]]} />
+        </div>
+
+        <JobStatus variant={JOB_STATUS_VARIANTS.LARGE} status={status} />
+      </div>
+
+      <div css={{ height: spacing.normal }} />
+
+      <ItemSeparator />
+
       <div css={{ display: 'flex', alignItems: 'center' }}>
         <JobMenu status={status} revalidate={revalidate} />
-
-        <Value legend="ID" variant={VARIANTS.PRIMARY}>
-          {jobId}
-        </Value>
-
-        <Value legend="Status" variant={VARIANTS.PRIMARY}>
-          {status}
-        </Value>
 
         <Value legend="Priority" variant={VARIANTS.PRIMARY}>
           {priority}
@@ -63,7 +67,7 @@ const JobDetails = () => {
           {assetCounts.assetTotalCount}
         </Value>
 
-        <Value legend="Progress" variant={VARIANTS.PRIMARY}>
+        <Value legend="Task Progress" variant={VARIANTS.PRIMARY}>
           <ProgressBar taskCounts={taskCounts} />
         </Value>
       </div>

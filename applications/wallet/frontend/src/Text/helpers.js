@@ -4,5 +4,5 @@ export const capitalizeFirstLetter = ({ word }) => {
 
 // insert a space before each caps
 export const decamelize = ({ word }) => {
-  return word.replace(/([A-Z])/g, ' $1')
+  return word.replace(/([A-Z])/g, ' $1').trim()
 }
