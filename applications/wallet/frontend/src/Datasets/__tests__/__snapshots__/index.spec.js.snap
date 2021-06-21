@@ -1082,7 +1082,7 @@ Array [
                   </Link>
                 </td>
                 <td>
-                   Face Recognition
+                  Face Recognition
                 </td>
                 <td>
                   0
@@ -1124,7 +1124,7 @@ Array [
                   </Link>
                 </td>
                 <td>
-                   Classification
+                  Classification
                 </td>
                 <td>
                   1
@@ -1166,7 +1166,7 @@ Array [
                   </Link>
                 </td>
                 <td>
-                   Object Detection
+                  Object Detection
                 </td>
                 <td>
                   2
@@ -1208,7 +1208,7 @@ Array [
                   </Link>
                 </td>
                 <td>
-                   Unknown Type
+                  Unknown Type
                 </td>
                 <td>
                   0

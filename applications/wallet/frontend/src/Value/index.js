@@ -28,14 +28,15 @@ const Value = ({ variant, legend, children }) => (
   <div css={STYLES[variant].container}>
     <div
       css={{
-        fontWeight: typography.weight.bold,
-        color: colors.structure.white,
+        color: colors.structure.zinc,
+        fontFamily: typography.family.condensed,
+        textTransform: 'uppercase',
         paddingBottom: spacing.small,
       }}
     >
       {legend}:
     </div>
-    <div css={{ color: colors.structure.zinc }}>{children}</div>
+    <div>{children}</div>
   </div>
 )
 
