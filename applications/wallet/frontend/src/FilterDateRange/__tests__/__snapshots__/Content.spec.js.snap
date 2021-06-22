@@ -119,6 +119,12 @@ Array [
   font-style: italic;
 }
 
+.emotion-6::-webkit-datetime-edit-month-field,
+.emotion-6::-webkit-datetime-edit-day-field,
+.emotion-6::-webkit-datetime-edit-year-field {
+  color: #ffffff;
+}
+
 .emotion-7 {
   width: 16px;
   border-bottom: 2px solid white;
@@ -209,7 +215,7 @@ Array [
 ]
 `;
 
-exports[`<FilterDateRangeContent /> should render with file sizes and reset 1`] = `
+exports[`<FilterDateRangeContent /> should render with dates and reset 1`] = `
 Array [
   <FilterReset
     assetId=""
@@ -332,6 +338,12 @@ Array [
 
 .emotion-6::placeholder {
   font-style: italic;
+}
+
+.emotion-6::-webkit-datetime-edit-month-field,
+.emotion-6::-webkit-datetime-edit-day-field,
+.emotion-6::-webkit-datetime-edit-year-field {
+  color: #ffffff;
 }
 
 .emotion-7 {
@@ -424,7 +436,7 @@ Array [
 ]
 `;
 
-exports[`<FilterDateRangeContent /> should render with file sizes and reset 2`] = `
+exports[`<FilterDateRangeContent /> should render with dates and reset 2`] = `
 Array [
   <FilterReset
     assetId=""
@@ -547,6 +559,12 @@ Array [
 
 .emotion-6::placeholder {
   font-style: italic;
+}
+
+.emotion-6::-webkit-datetime-edit-month-field,
+.emotion-6::-webkit-datetime-edit-day-field,
+.emotion-6::-webkit-datetime-edit-year-field {
+  color: #ffffff;
 }
 
 .emotion-7 {
@@ -639,7 +657,7 @@ Array [
 ]
 `;
 
-exports[`<FilterDateRangeContent /> should render with file sizes and reset 3`] = `
+exports[`<FilterDateRangeContent /> should render with dates and reset 3`] = `
 Array [
   <FilterReset
     assetId=""
@@ -762,6 +780,12 @@ Array [
 
 .emotion-6::placeholder {
   font-style: italic;
+}
+
+.emotion-6::-webkit-datetime-edit-month-field,
+.emotion-6::-webkit-datetime-edit-day-field,
+.emotion-6::-webkit-datetime-edit-year-field {
+  color: #ffffff;
 }
 
 .emotion-7 {
@@ -854,7 +878,7 @@ Array [
 ]
 `;
 
-exports[`<FilterDateRangeContent /> should render with file sizes and reset 4`] = `
+exports[`<FilterDateRangeContent /> should render with dates and reset 4`] = `
 Array [
   <FilterReset
     assetId=""
@@ -977,6 +1001,12 @@ Array [
 
 .emotion-6::placeholder {
   font-style: italic;
+}
+
+.emotion-6::-webkit-datetime-edit-month-field,
+.emotion-6::-webkit-datetime-edit-day-field,
+.emotion-6::-webkit-datetime-edit-year-field {
+  color: #ffffff;
 }
 
 .emotion-7 {
@@ -1069,7 +1099,7 @@ Array [
 ]
 `;
 
-exports[`<FilterDateRangeContent /> should render with file sizes and reset 5`] = `
+exports[`<FilterDateRangeContent /> should render with dates and reset 5`] = `
 Array [
   <FilterReset
     assetId=""
@@ -1194,6 +1224,12 @@ Array [
   font-style: italic;
 }
 
+.emotion-6::-webkit-datetime-edit-month-field,
+.emotion-6::-webkit-datetime-edit-day-field,
+.emotion-6::-webkit-datetime-edit-year-field {
+  color: #ffffff;
+}
+
 .emotion-7 {
   width: 16px;
   border-bottom: 2px solid white;
@@ -1229,7 +1265,7 @@ Array [
         step={86400000}
         values={
           Array [
-            1588550400000,
+            1588723200000,
             1591747200000,
           ]
         }
@@ -1284,7 +1320,7 @@ Array [
 ]
 `;
 
-exports[`<FilterDateRangeContent /> should render with file sizes and reset 6`] = `
+exports[`<FilterDateRangeContent /> should render with dates and reset 6`] = `
 Array [
   <FilterReset
     assetId=""
@@ -1409,6 +1445,12 @@ Array [
   font-style: italic;
 }
 
+.emotion-6::-webkit-datetime-edit-month-field,
+.emotion-6::-webkit-datetime-edit-day-field,
+.emotion-6::-webkit-datetime-edit-year-field {
+  color: #ffffff;
+}
+
 .emotion-7 {
   width: 16px;
   border-bottom: 2px solid white;
@@ -1444,8 +1486,8 @@ Array [
         step={86400000}
         values={
           Array [
-            1588550400000,
-            1591747200000,
+            1588723200000,
+            1591574400000,
           ]
         }
       />
@@ -1616,6 +1658,12 @@ Array [
 
 .emotion-6::placeholder {
   font-style: italic;
+}
+
+.emotion-6::-webkit-datetime-edit-month-field,
+.emotion-6::-webkit-datetime-edit-day-field,
+.emotion-6::-webkit-datetime-edit-year-field {
+  color: #ffffff;
 }
 
 .emotion-7 {

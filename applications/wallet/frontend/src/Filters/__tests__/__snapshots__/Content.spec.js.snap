@@ -1619,6 +1619,12 @@ Array [
   font-style: italic;
 }
 
+.emotion-24::-webkit-datetime-edit-month-field,
+.emotion-24::-webkit-datetime-edit-day-field,
+.emotion-24::-webkit-datetime-edit-year-field {
+  color: #ffffff;
+}
+
 .emotion-25 {
   width: 16px;
   border-bottom: 2px solid white;
