@@ -36,6 +36,11 @@ class DatasetsViewSet(ZmlpCreateMixin,
             return DatasetDetailSerializer
         return DatasetSerializer
 
+    @action(methods=['get'], detail=False)
+    def all(self, request, project_pk):
+        """Get all the models available by consuming all the paginated responses."""
+        return self._zmlp_list_from_search_all_pages(request)
+
     def create(self, request, project_pk):
         if request.data.get('projectId') is not None and request.data.get('projectId') != project_pk:
             msg = 'Invalid request. You can only create datasets for the current project context.'
