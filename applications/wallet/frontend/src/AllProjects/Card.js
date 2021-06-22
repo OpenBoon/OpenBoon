@@ -53,7 +53,7 @@ const LINKS = [
   },
 ]
 
-const AccountCard = ({ projectId, name, organizationName }) => {
+const AllProjectsCard = ({ projectId, name, organizationName }) => {
   return (
     <div
       css={{
@@ -160,10 +160,10 @@ const AccountCard = ({ projectId, name, organizationName }) => {
   )
 }
 
-AccountCard.propTypes = {
+AllProjectsCard.propTypes = {
   projectId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   organizationName: PropTypes.string.isRequired,
 }
 
-export default AccountCard
+export default AllProjectsCard

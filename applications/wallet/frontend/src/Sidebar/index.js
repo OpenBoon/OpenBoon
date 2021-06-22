@@ -135,7 +135,7 @@ const Sidebar = forwardRef(
           >
             <SidebarLink projectId={projectId} href="/">
               <DashboardSvg height={constants.icons.regular} />
-              Account Overview
+              All Projects
             </SidebarLink>
 
             {organizations.length > 0 && (

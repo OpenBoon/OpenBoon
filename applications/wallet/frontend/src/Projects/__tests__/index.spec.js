@@ -26,7 +26,7 @@ describe('<Projects />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render Account Overview properly', () => {
+  it('should render All Projects properly', () => {
     require('next/router').__setUseRouter({
       pathname: '/',
     })
@@ -36,7 +36,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="">Account Overview</Projects>,
+      <Projects projectId="">All Projects</Projects>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

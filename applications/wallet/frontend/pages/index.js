@@ -1,3 +1,3 @@
-import Account from '../src/Account'
+import AllProjects from '../src/AllProjects'
 
-export default Account
+export default AllProjects
