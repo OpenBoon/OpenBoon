@@ -9,7 +9,7 @@ jest.mock('../../Filter/Reset', () => 'FilterReset')
 jest.mock('../../Date/helpers')
 
 describe('<FilterDateRangeContent />', () => {
-  it('should render with file sizes and reset', () => {
+  it('should render with dates and reset', () => {
     const filter = {
       type: 'date',
       attribute: 'system.timeCreated',
@@ -69,6 +69,10 @@ describe('<FilterDateRangeContent />', () => {
       component.root
         .findByProps({ value: '2020-05-04' })
         .props.onChange({ target: { value: '2020-05-06' } })
+
+      component.root
+        .findByProps({ value: '2020-05-04' })
+        .props.onBlur({ target: { value: '2020-05-06' } })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -77,9 +81,31 @@ describe('<FilterDateRangeContent />', () => {
       component.root
         .findByProps({ value: '2020-06-10' })
         .props.onChange({ target: { value: '2020-06-08' } })
+
+      component.root
+        .findByProps({ value: '2020-06-10' })
+        .props.onBlur({ target: { value: '2020-06-08' } })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'date',
+          attribute: 'system.timeCreated',
+          values: {
+            min: '2020-05-06T00:00:00.000Z',
+            max: '2020-06-08T23:59:59.000Z',
+          },
+        },
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenLastCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
+    )
   })
 
   it('should not crash if min equals max', () => {
@@ -175,7 +201,7 @@ describe('<FilterDateRangeContent />', () => {
           attribute: 'system.timeCreated',
           values: {
             min: '2020-05-06T00:00:00.000Z',
-            max: '2020-06-10T00:00:00.000Z',
+            max: '2020-06-10T23:59:59.000Z',
           },
         },
       ]),
@@ -250,7 +276,7 @@ describe('<FilterDateRangeContent />', () => {
           attribute: 'system.timeCreated',
           values: {
             min: '2020-05-04T00:00:00.000Z',
-            max: '2020-06-08T00:00:00.000Z',
+            max: '2020-06-08T23:59:59.000Z',
           },
         },
       ]),
