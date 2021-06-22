@@ -3,22 +3,22 @@ import Head from 'next/head'
 import PageTitle from '../PageTitle'
 import SuspenseBoundary from '../SuspenseBoundary'
 
-import AccountContent from './Content'
+import AllProjectsContent from './Content'
 
-const Account = () => {
+const AllProjects = () => {
   return (
     <>
       <Head>
-        <title>Account Overview</title>
+        <title>All Projects</title>
       </Head>
 
-      <PageTitle>Account Overview</PageTitle>
+      <PageTitle>All Projects</PageTitle>
 
       <SuspenseBoundary>
-        <AccountContent />
+        <AllProjectsContent />
       </SuspenseBoundary>
     </>
   )
 }
 
-export default Account
+export default AllProjects

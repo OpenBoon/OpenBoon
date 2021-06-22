@@ -14,7 +14,7 @@ const Project = () => {
 
       <Breadcrumbs
         crumbs={[
-          { title: 'Account Overview', href: '/' },
+          { title: 'All Projects', href: '/' },
           { title: 'Project Dashboard', href: false },
         ]}
       />
