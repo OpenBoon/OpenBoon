@@ -160,7 +160,7 @@ const MetadataPrettyPredictionsContent = ({
                             }}
                             alt={prediction.bbox}
                             title={prediction.bbox}
-                            src={prediction.b64_image}
+                            src={prediction.b64Image}
                           />
                           &nbsp;
                         </td>

@@ -186,6 +186,7 @@ exports[`<FaceLabelingForm /> should render with no data 1`] = `
           ]
         }
         className="emotion-3"
+        src="data:image/png;base64"
         title={
           Array [
             0.38,

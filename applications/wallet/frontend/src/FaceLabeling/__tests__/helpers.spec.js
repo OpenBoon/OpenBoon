@@ -9,7 +9,7 @@ const PREDICTIONS = [
     bbox: [0.38, 0.368, 0.484, 0.584],
     label: 'face1',
     simhash: 'MNONPMMKPLRLONLJMRLNM',
-    b64_image: 'data:image/png;base64',
+    b64Image: 'data:image/png;base64',
   },
 ]
 
@@ -44,8 +44,7 @@ describe('<FaceLabelingForm /> helpers', () => {
           'Content-Type': 'application/json;charset=UTF-8',
           'X-CSRFToken': 'CSRF_TOKEN',
         },
-        body:
-          '{"labels":[{"bbox":[0.38,0.368,0.484,0.584],"simhash":"MNONPMMKPLRLONLJMRLNM","label":"face0"}]}',
+        body: '{"labels":[{"bbox":[0.38,0.368,0.484,0.584],"simhash":"MNONPMMKPLRLONLJMRLNM","label":"face0"}]}',
       })
 
       expect(mockMutate).toHaveBeenCalledTimes(3)
@@ -81,8 +80,7 @@ describe('<FaceLabelingForm /> helpers', () => {
           'Content-Type': 'application/json;charset=UTF-8',
           'X-CSRFToken': 'CSRF_TOKEN',
         },
-        body:
-          '{"labels":[{"bbox":[0.38,0.368,0.484,0.584],"simhash":"MNONPMMKPLRLONLJMRLNM","label":"face0"}]}',
+        body: '{"labels":[{"bbox":[0.38,0.368,0.484,0.584],"simhash":"MNONPMMKPLRLONLJMRLNM","label":"face0"}]}',
       })
 
       expect(mockDispatch).toHaveBeenCalledWith({
@@ -121,8 +119,7 @@ describe('<FaceLabelingForm /> helpers', () => {
           'Content-Type': 'application/json;charset=UTF-8',
           'X-CSRFToken': 'CSRF_TOKEN',
         },
-        body:
-          '{"labels":[{"bbox":[0.38,0.368,0.484,0.584],"simhash":"MNONPMMKPLRLONLJMRLNM","label":"face0"}]}',
+        body: '{"labels":[{"bbox":[0.38,0.368,0.484,0.584],"simhash":"MNONPMMKPLRLONLJMRLNM","label":"face0"}]}',
       })
 
       expect(mockDispatch).toHaveBeenCalledWith({

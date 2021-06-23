@@ -1,12 +1,14 @@
 import os
+from copy import copy
 
-from boonsdk import LabelScope
-from boonsdk.client import BoonSdkNotFoundException
 from django.http import Http404
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from assets.utils import AssetBoxImager, resize_image, get_b64
+from boonsdk import LabelScope
+from boonsdk.client import BoonSdkNotFoundException
 from datasets.serializers import (DatasetSerializer, RemoveLabelsSerializer,
                                   AddLabelsSerializer,
                                   UpdateLabelsSerializer, DestroyLabelSerializer,
@@ -14,7 +16,8 @@ from datasets.serializers import (DatasetSerializer, RemoveLabelsSerializer,
                                   DatasetTypeSerializer)
 from models.serializers import SimpleModelSerializer
 from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpCreateMixin,
-                               ZmlpDestroyMixin, ZmlpRetrieveMixin, ListViewType, ZmlpUpdateMixin)
+                               ZmlpDestroyMixin, ZmlpRetrieveMixin, ListViewType,
+                               ZmlpUpdateMixin)
 from wallet.exceptions import InvalidRequestError
 from wallet.utils import validate_zmlp_data
 
@@ -202,6 +205,87 @@ class DatasetsViewSet(ZmlpCreateMixin,
                                            context=self.get_serializer_context())
         validate_zmlp_data(serializer)
         return Response({'results': serializer.data})
+
+    @action(methods=['get'], detail=True)
+    def label_tool_info(self, request, project_pk, pk):
+        """Returns all the information needed to drive the labeling tool UI in the visualizer.
+        The labeling tool needs to display existing labels in some cases placeholder labels
+        to the user. This action looks at the dataset type and the existing labels and returns
+        all the labels and/or placeholders the label tool should display.
+
+        """
+        def label_filter(_label):
+            return _label['datasetId'] == pk
+
+        def classification_modifier(labels):
+            """If the dataset type is classification we want to add an empty placeholder
+            label if there is not already label for this asset. In addition all labels
+            need to have a b64 thumbnail of the whole asset added.
+
+            """
+            # If there is not a classification label add a placeholder label.
+            response_labels = copy(filtered_labels)
+            if not response_labels:
+                response_labels.append({"scope": "TRAIN",
+                                        "datasetId": pk,
+                                        "label": ""})
+
+            # Add a base64 image of the entire asset for all labels.
+            image = resize_image(box_imager.image, thumbnail_width)
+            base64_image = get_b64(image)
+            for _label in response_labels:
+                _label['b64Image'] = base64_image
+            return response_labels
+
+        def face_recognition_modifier(labels):
+            """If the dataset type is face recognition then we want to add a placeholder
+            for any faces that have been detected where we don't already have a label
+            with the same bbox.
+
+            """
+            response_labels = labels
+            faces = asset.get_attr('analysis.boonai-face-detection.predictions')
+            label_dict = {}
+
+            # Adds placeholder labels for any detected faces.
+            for face in faces:
+                face['label'] = ''
+                face['datasetId'] = pk
+                _label = {'scope': 'TRAIN',
+                          'datasetId': pk,
+                          'label': '',
+                          'bbox': face['bbox'],
+                          'simhash': face['simhash']}
+                label_dict[repr(_label['bbox'])] = _label
+
+            # Add all existing labels and overwrite any of the placeholder labels that
+            # have matching bboxes.
+            for _label in response_labels:
+                label_dict[repr(_label['bbox'])] = _label
+
+            return label_dict.values()
+
+        def do_nothing(labels):
+            """Used anytime no modifications are needed on the labels."""
+            return labels
+
+        label_modifier_funcs = {'Classification': classification_modifier,
+                                'FaceRecognition': face_recognition_modifier}
+
+        dataset = request.client.get(os.path.join(self.zmlp_root_api_path, pk))
+        dataset_type = dataset['type']
+        asset = request.app.assets.get_asset(request.query_params['assetId'])
+        labels = asset.get_attr('labels', [])
+        box_imager = AssetBoxImager(asset, request.client)
+        thumbnail_width = 56
+        filtered_labels = list(filter(label_filter, labels))
+        response_labels = label_modifier_funcs.get(dataset_type, do_nothing)(filtered_labels)
+
+        # Add b64 images to any of the labels that have bboxes.
+        for label in response_labels:
+            box_imager._add_box_images(label, thumbnail_width)
+
+        return Response({'count': len(response_labels), 'results': response_labels})
 
     def _get_dataset(self, app, dataset_id):
         """Gets the dataset for the given ID"""

@@ -1,13 +1,16 @@
+from copy import copy
 from unittest.mock import Mock, patch
 from uuid import uuid4
 
 import pytest
-from boonsdk import LabelScope
-from boonsdk.app import AssetApp
-from boonsdk.client import BoonClient, BoonSdkNotFoundException, BoonSdkSecurityException
 from django.urls import reverse
 from rest_framework import status
 
+import datasets
+from assets.utils import AssetBoxImager
+from boonsdk import LabelScope, Asset
+from boonsdk.app import AssetApp
+from boonsdk.client import BoonClient, BoonSdkNotFoundException, BoonSdkSecurityException
 from datasets.views import DatasetsViewSet
 from wallet.tests.utils import check_response
 
@@ -322,3 +325,91 @@ class TestLabelingEndpoints:
         assert update_labels.call_count == 2
         dataset.make_label.assert_called_with('Mountains', bbox=None,
                                               scope=LabelScope.TEST, simhash=None)
+
+    def test_label_tool_info_classification(self, login, project, api_client, monkeypatch):
+        def mock_get_asset(*args, **kwargs):
+            return asset
+
+        def mock_get_dataset(*args, **kwargs):
+            return {'type': 'Classification'}
+
+        def mock_b64_image(*args, **kwargs):
+            return 'b64-image-str'
+
+        monkeypatch.setattr(AssetApp, 'get_asset', mock_get_asset)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_dataset)
+        monkeypatch.setattr(AssetBoxImager, 'image', lambda *args: None)
+        monkeypatch.setattr(datasets.views, 'get_b64', mock_b64_image)
+        monkeypatch.setattr(datasets.views, 'resize_image', lambda *args: None)
+        dataset_id = '287baa12-8f80-1a31-9273-76fd36c58a09'
+
+        # Asset that has a classification label.
+        asset_data = {'id': dataset_id, 'document': {'labels': [{'datasetId': '287baa12-8f80-1a31-9273-76fd36c58a09', 'scope': 'TRAIN', 'label': 'pretzel', }]}}
+        asset = Asset(asset_data)
+        path = reverse('dataset-label-tool-info', kwargs={'project_pk': project.id,
+                                                          'pk': dataset_id})
+        response = check_response(api_client.get(f'{path}?assetId={asset.id}'))
+        assert response == {'count': 1, 'results': [{'datasetId': '287baa12-8f80-1a31-9273-76fd36c58a09', 'scope': 'TRAIN', 'label': 'pretzel', 'b64Image': 'b64-image-str'}]}
+
+        # Asset that has no labels.
+        asset_data = {'id': dataset_id, 'document': {'labels': []}}
+        asset = Asset(asset_data)
+        response = check_response(api_client.get(f'{path}?assetId={asset.id}'))
+        assert response == {'count': 1, 'results': [{'datasetId': '287baa12-8f80-1a31-9273-76fd36c58a09', 'scope': 'TRAIN', 'label': '', 'b64Image': 'b64-image-str'}]}
+
+    def test_label_tool_info_face_recognition(self, login, project, api_client, monkeypatch):
+        def mock_get_asset(*args, **kwargs):
+            return asset
+
+        def mock_get_dataset(*args, **kwargs):
+            return {'type': 'FaceRecognition'}
+
+        def mock_b64_image(self, label, size):
+            label['b64Image'] = 'b64-image-str'
+
+        monkeypatch.setattr(AssetApp, 'get_asset', mock_get_asset)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_dataset)
+        monkeypatch.setattr(AssetBoxImager, '_add_box_images', mock_b64_image)
+        dataset_id = '287baa12-8f80-1a31-9273-76fd36c58a09'
+
+        # Asset with 1 labeled face detection and 1 unlabeled face detection.
+        asset_data = {'id': 'w1US8zZQfWuYPnEp2tIsIYzZsPJjHhzg','document': {'analysis': {'boonai-face-detection': {'count': 3,'type': 'labels','predictions': [{'score': 0.991,'bbox': [0.297,0.207,0.414,0.474],'label': 'face0','simhash': 'simhash'},{'score': 0.954,'bbox': [0.202,0.83,0.264,0.965],'label': 'face1','simhash': 'simhash'}]}},'labels': [{'datasetId': dataset_id,'scope': 'TRAIN','bbox': [0.297,0.207,0.414,0.474],'label': 'Jack Hodgens','simhash': 'simhash'}]}}  # noqa
+        asset = Asset(asset_data)
+        path = reverse('dataset-label-tool-info', kwargs={'project_pk': project.id, 'pk': dataset_id})
+        response = check_response(api_client.get(f'{path}?assetId={asset.id}'))
+        assert response == {'count': 2, 'results': [{'scope': 'TRAIN', 'bbox': [0.297, 0.207, 0.414, 0.474], 'datasetId': dataset_id, 'b64Image': 'b64-image-str', 'label': 'Jack Hodgens', 'simhash': 'simhash'}, {'scope': 'TRAIN', 'bbox': [0.202, 0.83, 0.264, 0.965], 'datasetId': dataset_id, 'b64Image': 'b64-image-str', 'label': '', 'simhash': 'simhash'}]}
+
+    def test_label_tool_info_detection(self, login, project, api_client, monkeypatch):
+        def mock_get_asset(*args, **kwargs):
+            return asset
+
+        def mock_get_dataset(*args, **kwargs):
+            return {'type': 'Detection'}
+
+        def mock_b64_image(self, label, size):
+            label['b64Image'] = 'b64-image-str'
+
+        monkeypatch.setattr(AssetApp, 'get_asset', mock_get_asset)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_dataset)
+        monkeypatch.setattr(AssetBoxImager, '_add_box_images', mock_b64_image)
+        dataset_id = '287baa12-8f80-1a31-9273-76fd36c58a09'
+
+        # Asset with no detections.
+        asset_data = {'id': 'w1US8zZQfWuYPnEp2tIsIYzZsPJjHhzg', 'document': {'labels': []}}
+        asset = Asset(asset_data)
+        path = reverse('dataset-label-tool-info',
+                       kwargs={'project_pk': project.id, 'pk': dataset_id})
+        response = check_response(api_client.get(f'{path}?assetId={asset.id}'))
+        assert response == {'count': 0, 'results': []}
+
+        # Asset with 1 detection.
+        label = {'datasetId': dataset_id, 'scope': 'TRAIN', 'bbox': [0.297, 0.207, 0.414, 0.474], 'label': 'cup'}
+        asset_data = {'id': 'w1US8zZQfWuYPnEp2tIsIYzZsPJjHhzg',
+                      'document': {'labels': [label]}}
+        asset = Asset(asset_data)
+        path = reverse('dataset-label-tool-info',
+                       kwargs={'project_pk': project.id, 'pk': dataset_id})
+        response = check_response(api_client.get(f'{path}?assetId={asset.id}'))
+        expected_label = copy(label)
+        expected_label['b64Image'] = 'b64-image-str'
+        assert response == {'count': 1, 'results': [expected_label]}
