@@ -100,7 +100,7 @@ const Accordion = ({
             height={constants.icons.regular}
             css={{
               color: colors.structure.steel,
-              transform: isOpen ? 'rotate(-180deg)' : '',
+              transform: isOpen ? '' : 'rotate(-90deg)',
             }}
           />
 
