@@ -11,7 +11,7 @@ class ApiCall(models.Model):
     asset_id = models.CharField(max_length=32)
     asset_path = models.CharField(max_length=255, blank=True, default='')
     image_count = models.IntegerField(blank=True, default=0)
-    video_minutes = models.FloatField(blank=True, default=0.0)
+    video_seconds = models.FloatField(blank=True, default=0.0)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -40,14 +40,17 @@ class ApiCall(models.Model):
                       'gcp-video-text-detection',
                       'clarifai-apparel-detection',
                       'clarifai-celebrity-detection',
+                      'clarifai-demographics-detection',
                       'clarifai-face-detection',
                       'clarifai-food-detection',
                       'clarifai-label-detection',
                       'clarifai-logo-detection',
                       'clarifai-nsfw-detection',
+                      'clarifai-room-types-detection',
                       'clarifai-texture-detection',
                       'clarifai-travel-detection',
                       'clarifai-unsafe-detection',
+                      'clarifai-weapon-detection',
                       'clarifai-wedding-detection',
                       'aws-celebrity-detection',
                       'aws-face-detection',
