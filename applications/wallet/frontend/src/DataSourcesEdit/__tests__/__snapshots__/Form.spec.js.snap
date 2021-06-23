@@ -372,10 +372,6 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 
 .emotion-58 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-59 {
@@ -1887,10 +1883,6 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 
 .emotion-57 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-58 {
