@@ -11,7 +11,8 @@ from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 ConfusionMatrixSerializer)
 from models.utils import ConfusionMatrix
 from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpRetrieveMixin,
-                               ListViewType, ZmlpDestroyMixin, ZmlpCreateMixin)
+                               ListViewType, ZmlpDestroyMixin, ZmlpCreateMixin,
+                               ZmlpUpdateMixin)
 from wallet.utils import validate_zmlp_data
 
 
@@ -79,6 +80,7 @@ def detail_item_modifier(request, item):
 
 class ModelViewSet(ZmlpCreateMixin,
                    ZmlpListMixin,
+                   ZmlpUpdateMixin,
                    ZmlpRetrieveMixin,
                    ZmlpDestroyMixin,
                    BaseProjectViewSet):
