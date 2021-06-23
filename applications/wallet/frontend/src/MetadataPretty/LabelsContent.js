@@ -52,7 +52,7 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
             borderBottom: constants.borders.regular.smoke,
           }}
         >
-          {label.b64_image ? (
+          {label.b64Image ? (
             <img
               css={{
                 maxHeight: BBOX_SIZE,
@@ -61,7 +61,7 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
               }}
               alt={label.bbox}
               title={label.bbox}
-              src={label.b64_image}
+              src={label.b64Image}
             />
           ) : (
             <div

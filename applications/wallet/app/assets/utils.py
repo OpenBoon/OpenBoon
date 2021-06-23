@@ -65,10 +65,8 @@ class AssetBoxImager(object):
                 value = item[key]
                 if key == 'bbox':
                     cropped_image = crop_image_poly(self.image, value, width=width)
-                    retval, buffer = cv2.imencode('.png', cropped_image)
-                    image_str = base64.b64encode(buffer).decode("utf-8")
-                    b64_image = f'data:image/png;base64, {image_str}'
-                    item['b64_image'] = b64_image
+                    b64_image = get_b64(cropped_image)
+                    item['b64Image'] = b64_image
                 else:
                     self._add_box_images(value, width)
         else:
@@ -146,14 +144,43 @@ def crop_image_poly(image, poly, width=256, draw=False, color=(255, 0, 0), thick
         x1 = max(0, v_min[0][0] - thickness)
         x2 = min(xr-1, v_max[0][0] + thickness)
     cropped_image = image_draw[y1:y2, x1:x2]
-    xrc = cropped_image.shape[1]
-    if xrc > 0:
-        scale = width / xrc
-        resized = cv2.resize(cropped_image, (0, 0), fx=scale, fy=scale)
-    else:
-        resized = np.zeros((width, width, 3), np.uint8)
+    resized = resize_image(cropped_image, width)
 
     return resized
+
+
+def resize_image(image, width):
+    """Resizes an opencv image proportionately to the given width.
+
+    Args:
+        image (numpy.ndarray): Opencv image.
+        width (int): Width of the new image in pixels.
+
+    Returns (numpy.ndarray): Opencv image resized to given width.
+
+    """
+    xrc = image.shape[1]
+    if xrc > 0:
+        scale = width / xrc
+        resized = cv2.resize(image, (0, 0), fx=scale, fy=scale)
+    else:
+        resized = np.zeros((width, width, 3), np.uint8)
+    return resized
+
+
+def get_b64(image):
+    """Gets a base64 representation of an opencv image.
+
+    Args:
+        image (numpy.ndarray): Opencv image.
+
+    Returns (str): Base64 string of the image.
+
+    """
+    retval, buffer = cv2.imencode('.png', image)
+    image_str = base64.b64encode(buffer).decode("utf-8")
+    b64_image = f'data:image/png;base64, {image_str}'
+    return b64_image
 
 
 def get_asset_style(item):

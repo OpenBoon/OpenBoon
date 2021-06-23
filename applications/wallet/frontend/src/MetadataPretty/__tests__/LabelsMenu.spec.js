@@ -25,7 +25,7 @@ describe('<MetadataPrettyLabelsMenu />', () => {
           bbox: [0.226, 0.327, 0.697, 0.813],
           label: 'Mark Ruffalo',
           simhash: 'NNLHLINNMQPONMLMJFLMQMKKKM...',
-          b64_image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
+          b64Image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
         }}
         moduleName="boonai-face-recognition"
       />,
@@ -82,7 +82,7 @@ describe('<MetadataPrettyLabelsMenu />', () => {
           bbox: [0.226, 0.327, 0.697, 0.813],
           label: 'Mark Ruffalo',
           simhash: 'NNLHLINNMQPONMLMJFLMQMKKKM...',
-          b64_image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
+          b64Image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
         }}
         moduleName="boonai-face-recognition"
       />,
@@ -121,7 +121,7 @@ describe('<MetadataPrettyLabelsMenu />', () => {
           bbox: [0.226, 0.327, 0.697, 0.813],
           label: 'Mark Ruffalo',
           simhash: 'NNLHLINNMQPONMLMJFLMQMKKKM...',
-          b64_image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
+          b64Image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
         }}
         moduleName="boonai-face-recognition"
       />,
