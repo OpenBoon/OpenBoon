@@ -121,6 +121,24 @@ class BoonClient:
                 self.get_url(path), headers=self.headers(content_type=""),
                 data=f), True)
 
+    def send_data(self, path, data, size=None):
+        """
+        Send a BytesIO or StringIO to the given URI.  Optionally provide
+        the size which is passed on via the content-length header, otheriwse
+        the size will be auto-detected.
+
+        Args:
+            path (path): The URI fragment for the request.
+            data (io.BytesIO): The bytes to send.s
+
+        Returns:
+            dict: A dictionary which can be used to fetch the file.
+        """
+        headers = self.headers(content_type="")
+        headers['Content-Length'] = size or sys.getsizeof(data)
+        return self.__handle_rsp(requests.post(
+            self.get_url(path), headers=headers, data=data), True)
+
     def upload_file(self, path, file, body={}, json_rsp=True):
         """
         Upload a single file and a request to the given endpoint path.
