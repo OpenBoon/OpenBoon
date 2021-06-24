@@ -5,15 +5,15 @@ import mockUser from '../../User/__mocks__/user'
 
 import User from '../../User'
 
-import Account from '..'
+import AllProjects from '..'
 
-describe('<Account />', () => {
+describe('<AllProjects />', () => {
   it('should render properly', () => {
     require('swr').__setMockUseSWRResponse({ data: projects })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
-        <Account />
+        <AllProjects />
       </User>,
     )
 
@@ -39,7 +39,7 @@ describe('<Account />', () => {
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
-        <Account />
+        <AllProjects />
       </User>,
     )
 

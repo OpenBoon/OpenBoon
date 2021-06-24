@@ -17,7 +17,7 @@ describe('<FaceLabelingForm />', () => {
         bbox: [0.38, 0.368, 0.484, 0.584],
         label: 'face1',
         simhash: 'MNONPMMKPLRLONLJMRLNM',
-        b64_image: 'data:image/png;base64',
+        b64Image: 'data:image/png;base64',
       },
     ]
 

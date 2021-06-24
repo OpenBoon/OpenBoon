@@ -15,7 +15,7 @@ import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 
 export const noop = () => {}
 
-const FilterLabel = ({
+const FilterLabelContent = ({
   pathname,
   projectId,
   assetId,
@@ -23,14 +23,14 @@ const FilterLabel = ({
   filter,
   filter: {
     type,
-    modelId,
+    datasetId,
     values: { labels = [], scope = 'all' },
   },
   filterIndex,
 }) => {
   const [searchString, setSearchString] = useState('')
 
-  const encodedFilter = encode({ filters: { type, modelId } })
+  const encodedFilter = encode({ filters: { type, datasetId } })
 
   const { data } = useSWR(
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
@@ -119,7 +119,7 @@ const FilterLabel = ({
   )
 }
 
-FilterLabel.propTypes = {
+FilterLabelContent.propTypes = {
   pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
@@ -128,4 +128,4 @@ FilterLabel.propTypes = {
   filterIndex: PropTypes.number.isRequired,
 }
 
-export default FilterLabel
+export default FilterLabelContent

@@ -9,11 +9,11 @@ import NoProject from '../NoProject'
 import InputSearch, { VARIANTS as INPUT_SEARCH_VARIANTS } from '../Input/Search'
 import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
 
-import AccountCard from './Card'
+import AllProjectsCard from './Card'
 
 const MIN_WIDTH = 400
 
-const AccountContent = () => {
+const AllProjectsContent = () => {
   const {
     data: { results: projects },
   } = useSWR('/api/v1/projects/')
@@ -21,7 +21,7 @@ const AccountContent = () => {
   const [searchString, setSearchString] = useState('')
 
   const [sortBy, setSortBy] = useLocalStorage({
-    key: 'AccountContent.sortBy',
+    key: 'AllProjectsContent.sortBy',
     initialState: 'name',
   })
 
@@ -104,7 +104,7 @@ const AccountContent = () => {
       >
         {sortedFilteredProjects.map(
           ({ id: projectId, name, organizationName }) => (
-            <AccountCard
+            <AllProjectsCard
               key={projectId}
               projectId={projectId}
               name={name}
@@ -117,4 +117,4 @@ const AccountContent = () => {
   )
 }
 
-export default AccountContent
+export default AllProjectsContent

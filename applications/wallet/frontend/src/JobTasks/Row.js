@@ -100,7 +100,6 @@ JobTasksRow.propTypes = {
       assetErrorCount: PropTypes.number.isRequired,
       assetTotalCount: PropTypes.number.isRequired,
     }).isRequired,
-    url: PropTypes.string.isRequired,
   }).isRequired,
 }
 

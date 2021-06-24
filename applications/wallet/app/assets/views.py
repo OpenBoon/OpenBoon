@@ -62,7 +62,7 @@ class AssetViewSet(ZmlpListMixin,
     def box_images(self, request, project_pk, pk):
         """Special action that returns a portion of the Asset's metadata with base64 encoded
         images anywhere it finds a "bbox" key. When a bbox key is found an image that represents
-        that box is generated and added to the metadata next to the "bbox" key as "b64_image".
+        that box is generated and added to the metadata next to the "bbox" key as "b64Image".
         By default the entire "analysis" section is returned but the query param "attr" can be
         used to return a specific section of the metadata.
 

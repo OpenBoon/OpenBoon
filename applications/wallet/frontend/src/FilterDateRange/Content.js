@@ -111,7 +111,12 @@ const FilterDateRangeContent = ({
         updatedFilter: {
           type,
           attribute,
-          values: { min: date.toISOString(), max: dateValues[1].toISOString() },
+          values: {
+            min: date.toISOString().replace(/T\d\d:\d\d:\d\d/, 'T00:00:00'),
+            max: dateValues[1]
+              .toISOString()
+              .replace(/T\d\d:\d\d:\d\d/, 'T23:59:59'),
+          },
         },
         filterIndex,
       },
@@ -147,7 +152,12 @@ const FilterDateRangeContent = ({
         updatedFilter: {
           type,
           attribute,
-          values: { min: dateValues[0].toISOString(), max: date.toISOString() },
+          values: {
+            min: dateValues[0]
+              .toISOString()
+              .replace(/T\d\d:\d\d:\d\d/, 'T00:00:00'),
+            max: date.toISOString().replace(/T\d\d:\d\d:\d\d/, 'T23:59:59'),
+          },
         },
         filterIndex,
       },
@@ -268,6 +278,8 @@ const FilterDateRangeContent = ({
                 '::placeholder': {
                   fontStyle: typography.style.italic,
                 },
+                '::-webkit-datetime-edit-month-field, ::-webkit-datetime-edit-day-field, ::-webkit-datetime-edit-year-field':
+                  { color: colors.structure.white },
               }}
               value={inputMin ? formatDateWithDashes({ date: inputMin }) : ''}
               onChange={({ target: { value } }) => {
@@ -327,6 +339,8 @@ const FilterDateRangeContent = ({
                 '::placeholder': {
                   fontStyle: typography.style.italic,
                 },
+                '::-webkit-datetime-edit-month-field, ::-webkit-datetime-edit-day-field, ::-webkit-datetime-edit-year-field':
+                  { color: colors.structure.white },
               }}
               value={inputMax ? formatDateWithDashes({ date: inputMax }) : ''}
               onChange={({ target: { value } }) => {

@@ -11,3 +11,10 @@ output "data-bucket-name" {
   value = google_storage_bucket.data.name
 }
 
+output "pubsub-topic-name-builds" {
+  value = google_pubsub_topic.cloud-builds.name
+}
+
+output "pubsub-topic-name-models" {
+  value = google_pubsub_topic.model-events.name
+}

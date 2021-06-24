@@ -1,7 +1,9 @@
 from unittest.mock import patch
 
+import pytest
+
 from boonai_analysis.clarifai.util import MockClarifaiPredictionResponse, \
-    RecursiveNamespace
+    RecursiveNamespace, ClarifaiException
 from boonai_analysis.clarifai.video import labels
 from boonflow import Frame
 from boonflow.testing import PluginUnitTestCase, test_path, TestAsset, \
@@ -15,6 +17,18 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         asset = TestAsset(self.video_path)
         asset.set_attr('media.length', 15.0)
         self.frame = Frame(asset)
+
+    @patch("boonai_analysis.clarifai.util.video.save_timeline", return_value={})
+    @patch('boonai_analysis.clarifai.util.proxy.get_video_proxy')
+    @patch.object(labels.ClarifaiVideoLabelDetectionProcessor, '_post_model_outputs')
+    def test_non_quota_exception(self, outputs_patch, proxy_path_patch, __):
+        proxy_path_patch.return_value = self.video_path
+        mock_outputs = RecursiveNamespace(**{'status': {'code': 999}})
+        outputs_patch.return_value = mock_outputs
+        processor = self.init_processor(labels.ClarifaiVideoLabelDetectionProcessor())
+        with pytest.raises(ClarifaiException) as excinfo:
+            processor.process(self.frame)
+        assert excinfo.value.status_code == 999
 
     @patch("boonai_analysis.clarifai.util.video.save_timeline", return_value={})
     @patch('boonai_analysis.clarifai.util.proxy.get_video_proxy')

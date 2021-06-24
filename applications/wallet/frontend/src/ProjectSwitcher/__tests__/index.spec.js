@@ -49,7 +49,7 @@ describe('<ProjectSwitcher />', () => {
   })
 
   it('should render properly with multiple projects by date', () => {
-    localStorage.setItem('AccountContent.sortBy', `"date"`)
+    localStorage.setItem('AllProjectsContent.sortBy', `"date"`)
 
     require('next/router').__setUseRouter({
       asPath: `/${PROJECT_ID}/jobs`,

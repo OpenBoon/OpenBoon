@@ -397,6 +397,10 @@ Array [
 
 .emotion-4 {
   color: #808080;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 
 .emotion-5 {

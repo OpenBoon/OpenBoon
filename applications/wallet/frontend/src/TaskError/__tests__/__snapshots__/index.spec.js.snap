@@ -175,13 +175,10 @@ Array [
 }
 
 .emotion-1 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-2 {
   color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 4px;
 }
 
 <div
@@ -193,9 +190,7 @@ Array [
       Error Message
       :
     </div>
-    <div
-      className="emotion-2"
-    >
+    <div>
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
   </div>,
@@ -377,13 +372,10 @@ Array [
 }
 
 .emotion-3 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-4 {
   color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 4px;
 }
 
 <div
@@ -401,9 +393,7 @@ Array [
           Job ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           85f0d094-0631-104b-a57e-ce490d54f27a
         </div>
       </div>
@@ -416,9 +406,7 @@ Array [
           Task ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           d2bb6ad3-54d0-11ea-9250-32240f207bfa
         </div>
       </div>
@@ -431,9 +419,7 @@ Array [
           Error ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           85f0d09b-0631-104b-a57e-ce490d54f27a
         </div>
       </div>
@@ -446,9 +432,7 @@ Array [
           Host ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           not-implemented
         </div>
       </div>
@@ -463,9 +447,7 @@ Array [
           Phase
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           index
         </div>
       </div>
@@ -478,9 +460,7 @@ Array [
           File Path
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           gs://zorroa-dev-data/image/cat.gif
         </div>
       </div>
@@ -493,9 +473,7 @@ Array [
           Processor
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           unknown
         </div>
       </div>
@@ -508,9 +486,7 @@ Array [
           Time of Error
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           2020-02-21 17:37:49
         </div>
       </div>
@@ -826,13 +802,10 @@ Array [
 }
 
 .emotion-1 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-2 {
   color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 4px;
 }
 
 <div
@@ -844,9 +817,7 @@ Array [
       Error Message
       :
     </div>
-    <div
-      className="emotion-2"
-    >
+    <div>
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
   </div>,
@@ -964,13 +935,10 @@ Array [
 }
 
 .emotion-3 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-4 {
   color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 4px;
 }
 
 <div
@@ -988,9 +956,7 @@ Array [
           Job ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           85f0d094-0631-104b-a57e-ce490d54f27a
         </div>
       </div>
@@ -1003,9 +969,7 @@ Array [
           Task ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           d2bb6ad3-54d0-11ea-9250-32240f207bfa
         </div>
       </div>
@@ -1018,9 +982,7 @@ Array [
           Error ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           85f0d09b-0631-104b-a57e-ce490d54f27a
         </div>
       </div>
@@ -1033,9 +995,7 @@ Array [
           Host ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           not-implemented
         </div>
       </div>
@@ -1050,9 +1010,7 @@ Array [
           Phase
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           index
         </div>
       </div>
@@ -1065,9 +1023,7 @@ Array [
           File Path
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           gs://zorroa-dev-data/image/cat.gif
         </div>
       </div>
@@ -1080,9 +1036,7 @@ Array [
           Processor
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           unknown
         </div>
       </div>
@@ -1095,9 +1049,7 @@ Array [
           Time of Error
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           2020-02-21 17:37:49
         </div>
       </div>
@@ -1451,13 +1403,10 @@ Array [
 }
 
 .emotion-1 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-2 {
   color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 4px;
 }
 
 <div
@@ -1469,9 +1418,7 @@ Array [
       Error Message
       :
     </div>
-    <div
-      className="emotion-2"
-    >
+    <div>
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
   </div>,
@@ -1675,13 +1622,10 @@ Array [
 }
 
 .emotion-3 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-4 {
   color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 4px;
 }
 
 <div
@@ -1699,9 +1643,7 @@ Array [
           Job ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           85f0d094-0631-104b-a57e-ce490d54f27a
         </div>
       </div>
@@ -1714,9 +1656,7 @@ Array [
           Task ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           d2bb6ad3-54d0-11ea-9250-32240f207bfa
         </div>
       </div>
@@ -1729,9 +1669,7 @@ Array [
           Error ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           85f0d09b-0631-104b-a57e-ce490d54f27a
         </div>
       </div>
@@ -1744,9 +1682,7 @@ Array [
           Host ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           not-implemented
         </div>
       </div>
@@ -1761,9 +1697,7 @@ Array [
           Phase
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           index
         </div>
       </div>
@@ -1776,9 +1710,7 @@ Array [
           File Path
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           gs://zorroa-dev-data/image/cat.gif
         </div>
       </div>
@@ -1791,9 +1723,7 @@ Array [
           Processor
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           unknown
         </div>
       </div>
@@ -1806,9 +1736,7 @@ Array [
           Time of Error
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           2020-02-21 17:37:49
         </div>
       </div>
@@ -2162,13 +2090,10 @@ Array [
 }
 
 .emotion-1 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-2 {
   color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 4px;
 }
 
 <div
@@ -2180,9 +2105,7 @@ Array [
       Error Message
       :
     </div>
-    <div
-      className="emotion-2"
-    >
+    <div>
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
   </div>,
@@ -2300,13 +2223,10 @@ Array [
 }
 
 .emotion-3 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-4 {
   color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 4px;
 }
 
 <div
@@ -2324,9 +2244,7 @@ Array [
           Job ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           85f0d094-0631-104b-a57e-ce490d54f27a
         </div>
       </div>
@@ -2339,9 +2257,7 @@ Array [
           Task ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           d2bb6ad3-54d0-11ea-9250-32240f207bfa
         </div>
       </div>
@@ -2354,9 +2270,7 @@ Array [
           Error ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           85f0d09b-0631-104b-a57e-ce490d54f27a
         </div>
       </div>
@@ -2369,9 +2283,7 @@ Array [
           Host ID
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           not-implemented
         </div>
       </div>
@@ -2386,9 +2298,7 @@ Array [
           Phase
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           index
         </div>
       </div>
@@ -2401,9 +2311,7 @@ Array [
           File Path
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           gs://zorroa-dev-data/image/cat.gif
         </div>
       </div>
@@ -2416,9 +2324,7 @@ Array [
           Processor
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           unknown
         </div>
       </div>
@@ -2431,9 +2337,7 @@ Array [
           Time of Error
           :
         </div>
-        <div
-          className="emotion-4"
-        >
+        <div>
           2020-02-21 17:37:49
         </div>
       </div>

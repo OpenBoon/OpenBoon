@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Account /> should render properly 1`] = `
+exports[`<AllProjects /> should render properly 1`] = `
 Array [
   .emotion-0 {
   font-size: 18px;
@@ -21,7 +21,7 @@ Array [
 <h2
     className="emotion-0"
   >
-    Account Overview
+    All Projects
   </h2>,
   .emotion-0 {
   display: -webkit-box;
@@ -955,7 +955,7 @@ Array [
 ]
 `;
 
-exports[`<Account /> should render properly 2`] = `
+exports[`<AllProjects /> should render properly 2`] = `
 Array [
   .emotion-0 {
   font-size: 18px;
@@ -976,7 +976,7 @@ Array [
 <h2
     className="emotion-0"
   >
-    Account Overview
+    All Projects
   </h2>,
   .emotion-0 {
   display: -webkit-box;
@@ -1634,7 +1634,7 @@ Array [
 ]
 `;
 
-exports[`<Account /> should render properly with no projects 1`] = `
+exports[`<AllProjects /> should render properly with no projects 1`] = `
 Array [
   .emotion-0 {
   font-size: 18px;
@@ -1655,7 +1655,7 @@ Array [
 <h2
     className="emotion-0"
   >
-    Account Overview
+    All Projects
   </h2>,
   .emotion-0 {
   -webkit-flex: 1;

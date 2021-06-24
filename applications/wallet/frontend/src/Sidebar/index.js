@@ -11,6 +11,7 @@ import BetaBadge from '../BetaBadge'
 import DashboardSvg from '../Icons/dashboard.svg'
 import DataSourcesSvg from '../Icons/datasources.svg'
 import JobQueueSvg from '../Icons/jobQueue.svg'
+import TagsSvg from '../Icons/tags.svg'
 import ModelsSvg from '../Icons/models.svg'
 import VisualizerSvg from '../Icons/visualizer.svg'
 import WebhooksSvg from '../Icons/webhooks.svg'
@@ -91,6 +92,11 @@ const Sidebar = forwardRef(
               Job Queue
             </SidebarLink>
 
+            <SidebarLink projectId={projectId} href="/[projectId]/datasets">
+              <TagsSvg height={constants.icons.regular} />
+              Datasets
+            </SidebarLink>
+
             <SidebarLink projectId={projectId} href="/[projectId]/models">
               <ModelsSvg height={constants.icons.regular} />
               Custom Models
@@ -129,7 +135,7 @@ const Sidebar = forwardRef(
           >
             <SidebarLink projectId={projectId} href="/">
               <DashboardSvg height={constants.icons.regular} />
-              Account Overview
+              All Projects
             </SidebarLink>
 
             {organizations.length > 0 && (
