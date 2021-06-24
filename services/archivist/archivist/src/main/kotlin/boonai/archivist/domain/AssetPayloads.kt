@@ -170,7 +170,7 @@ class ReprocessAssetSearchResponse(
 )
 class UpdateAssetLabelsRequest(
 
-    @ApiModelProperty("The labels to add.  Supplying a new label for an existing Model overwrites it.")
+    @ApiModelProperty("The labels to add.  Supplying a new label for an existing Dataset overwrites it.")
     val add: Map<String, List<Label>>? = null,
 
     @ApiModelProperty("The labels to remove.")

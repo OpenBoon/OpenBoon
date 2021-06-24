@@ -1,12 +1,11 @@
 package boonai.archivist.domain
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType
 import boonai.archivist.repository.KDaoFilter
 import boonai.archivist.security.getProjectId
 import boonai.archivist.util.JdbcUtils
-import boonai.common.util.Json
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.google.cloud.ServiceOptions
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.annotations.Type
@@ -446,29 +445,6 @@ class ModelFilter(
 object ModelSearch {
 
     val MATCH_ALL = mapOf<String, Any>("query" to mapOf("match_all" to emptyMap<String, Any>()))
-
-    fun getTestSearch(model: Model): Map<String, Any> {
-        return Json.Mapper.readValue(
-            """
-            {
-                "bool": {
-                    "filter": {
-                        "nested" : {
-                            "path": "labels",
-                            "query" : {
-                                "term": { 
-                                    "labels.scope": "${LabelScope.TEST.name}" ,
-                                    "labels.modelId": "${model.id}"
-                                 }
-                            }
-                        }
-                    }
-                }
-            }
-        """,
-            Json.GENERIC_MAP
-        )
-    }
 }
 
 @ApiModel("ModelApplyResponse", description = "The response to applying a model, either for testing or productions")
