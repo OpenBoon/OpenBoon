@@ -1,15 +1,18 @@
 package boonai.archivist.service
 
 import boonai.archivist.AbstractTest
+import boonai.archivist.domain.BoonLibSpec
 import boonai.archivist.domain.BoonLibEntity
 import boonai.archivist.domain.BoonLibEntityType
-import boonai.archivist.domain.BoonLibSpec
+import boonai.archivist.domain.LicenseType
 import boonai.archivist.domain.DatasetSpec
 import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.JobFilter
-import boonai.archivist.domain.LicenseType
+import boonai.archivist.domain.BoonLibFilter
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
 
 class BoonLibServiceTests : AbstractTest() {
@@ -22,6 +25,9 @@ class BoonLibServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var jobService: JobService
+
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
 
     val spec = BoonLibSpec(
         "Test",
@@ -61,6 +67,15 @@ class BoonLibServiceTests : AbstractTest() {
     fun testGetBoonLib() {
         val lib1 = boonLibService.createBoonLib(spec)
         val lib2 = boonLibService.getBoonLib(lib1.id)
+        assertEquals(lib1.id, lib2.id)
+    }
+
+    @Test
+    fun testFindOne() {
+        val lib1 = boonLibService.createBoonLib(spec)
+        entityManager.flush()
+
+        val lib2 = boonLibService.findOneBoonLib(BoonLibFilter(ids = listOf(lib1.id)))
         assertEquals(lib1.id, lib2.id)
     }
 }

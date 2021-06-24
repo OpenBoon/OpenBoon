@@ -4,10 +4,12 @@ import boonai.archivist.domain.BoonLib
 import boonai.archivist.domain.BoonLibImportResponse
 import boonai.archivist.domain.BoonLibSpec
 import boonai.archivist.domain.ProjectToBoonLibCopyRequest
+import boonai.archivist.domain.BoonLibFilter
 import boonai.archivist.service.BoonLibService
 import boonai.archivist.storage.BoonLibStorageService
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.HttpUtils
+import io.swagger.annotations.ApiParam
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -38,6 +40,13 @@ class BoonLibController(
     @ResponseBody
     fun get(@PathVariable id: UUID): BoonLib {
         return boonLibService.getBoonLib(id)
+    }
+
+    @PreAuthorize("hasAuthority('AssetsRead')")
+    @GetMapping(value = ["/api/v3/boonlibs/_findOne"])
+    @ResponseBody
+    fun findOne(@ApiParam("Search filter.") @RequestBody filter: BoonLibFilter): BoonLib {
+        return boonLibService.findOneBoonLib(filter)
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")

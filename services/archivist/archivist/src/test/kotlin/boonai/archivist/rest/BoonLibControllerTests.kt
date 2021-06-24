@@ -1,16 +1,17 @@
 package boonai.archivist.rest
 
 import boonai.archivist.MockMvcTest
-import boonai.archivist.domain.AssetSpec
-import boonai.archivist.domain.AssetState
-import boonai.archivist.domain.BatchCreateAssetsRequest
+import boonai.archivist.domain.BoonLibSpec
 import boonai.archivist.domain.BoonLibEntity
 import boonai.archivist.domain.BoonLibEntityType
-import boonai.archivist.domain.BoonLibSpec
 import boonai.archivist.domain.LicenseType
+import boonai.archivist.domain.BatchCreateAssetsRequest
+import boonai.archivist.domain.AssetSpec
+import boonai.archivist.domain.AssetState
+import boonai.archivist.domain.BoonLibFilter
 import boonai.archivist.domain.ProjectFileLocator
-import boonai.archivist.domain.ProjectStorageCategory
 import boonai.archivist.domain.ProjectStorageEntity
+import boonai.archivist.domain.ProjectStorageCategory
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.ProjectToBoonLibCopyRequest
 import boonai.archivist.service.BoonLibService
@@ -25,6 +26,8 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.io.ByteArrayInputStream
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 class BoonLibControllerTests : MockMvcTest() {
 
@@ -39,6 +42,9 @@ class BoonLibControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var projectStorageService: ProjectStorageService
+
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
 
     val spec = BoonLibSpec(
         "Test",
@@ -143,6 +149,24 @@ class BoonLibControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+    }
+
+    @Test
+    fun testFindOne() {
+        val lib = boonLibService.createBoonLib(spec)
+        val filter = BoonLibFilter(ids = listOf(lib.id))
+        entityManager.flush()
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/boonlibs/_findOne")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(filter))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.description", CoreMatchers.equalTo(spec.description)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(spec.name)))
             .andReturn()
     }
 }

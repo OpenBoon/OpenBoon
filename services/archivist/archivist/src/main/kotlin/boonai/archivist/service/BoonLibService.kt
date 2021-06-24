@@ -1,15 +1,17 @@
 package boonai.archivist.service
 
-import boonai.archivist.domain.BoonLib
 import boonai.archivist.domain.BoonLibSpec
-import boonai.archivist.domain.BoonLibState
-import boonai.archivist.domain.BoonLibEntity
+import boonai.archivist.domain.BoonLib
 import boonai.archivist.domain.BoonLibImportResponse
 import boonai.archivist.domain.Dataset
+import boonai.archivist.domain.BoonLibFilter
+import boonai.archivist.domain.BoonLibEntity
+import boonai.archivist.domain.BoonLibState
+import boonai.archivist.domain.Job
 import boonai.archivist.domain.DatasetSpec
 import boonai.archivist.domain.DatasetType
-import boonai.archivist.domain.Job
 import boonai.archivist.repository.BoonLibDao
+import boonai.archivist.repository.BoonLibJdbcDao
 import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.getZmlpActor
 import boonai.archivist.storage.BoonLibStorageService
@@ -23,11 +25,13 @@ interface BoonLibService {
     fun getBoonLib(id: UUID): BoonLib
     fun importBoonLib(boonlib: BoonLib): BoonLibImportResponse
     fun importBoonLibInto(boonlib: BoonLib, dataset: Dataset): BoonLibImportResponse
+    fun findOneBoonLib(boonLibFilter: BoonLibFilter): BoonLib
 }
 
 @Service
 class BoonLibServiceImpl(
     val boonLibDao: BoonLibDao,
+    val boonLibJdbcDao: BoonLibJdbcDao,
     val datasetService: DatasetService,
     val jobLaunchService: JobLaunchService,
     val boonLibStorageService: BoonLibStorageService
@@ -97,5 +101,9 @@ class BoonLibServiceImpl(
 
     override fun importBoonLibInto(boonlib: BoonLib, dataset: Dataset): BoonLibImportResponse {
         return boonLibStorageService.importAssetsInto(boonlib, dataset)
+    }
+
+    override fun findOneBoonLib(boonLibFilter: BoonLibFilter): BoonLib {
+        return boonLibJdbcDao.findOneBoonLib(boonLibFilter)
     }
 }
