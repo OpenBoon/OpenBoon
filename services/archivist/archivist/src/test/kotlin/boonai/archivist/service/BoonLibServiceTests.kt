@@ -78,4 +78,13 @@ class BoonLibServiceTests : AbstractTest() {
         val lib2 = boonLibService.findOneBoonLib(BoonLibFilter(ids = listOf(lib1.id)))
         assertEquals(lib1.id, lib2.id)
     }
+
+    @Test
+    fun testSearch() {
+        val lib1 = boonLibService.createBoonLib(spec)
+        entityManager.flush()
+
+        val lib2 = boonLibService.findAll(BoonLibFilter(ids = listOf(lib1.id)))
+        assertEquals(lib1.id, lib2[0].id)
+    }
 }

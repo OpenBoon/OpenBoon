@@ -169,4 +169,24 @@ class BoonLibControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(spec.name)))
             .andReturn()
     }
+
+    @Test
+    fun testSearch() {
+        val lib = boonLibService.createBoonLib(spec)
+        val filter = BoonLibFilter(ids = listOf(lib.id))
+        entityManager.flush()
+
+        val perform = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/boonlibs/_search")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(filter))
+        )
+        perform
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].description", CoreMatchers.equalTo(spec.description)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name", CoreMatchers.equalTo(spec.name)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].id", CoreMatchers.equalTo(lib.id.toString())))
+            .andReturn()
+    }
 }

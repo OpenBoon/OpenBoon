@@ -3,9 +3,9 @@ package boonai.archivist.repository
 import boonai.archivist.domain.BoonLib
 import boonai.archivist.domain.BoonLibFilter
 import boonai.archivist.domain.BoonLibEntity
-import boonai.archivist.domain.BoonLibEntityType
 import boonai.archivist.domain.LicenseType
 import boonai.archivist.domain.BoonLibState
+import boonai.archivist.domain.BoonLibEntityType
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -16,6 +16,7 @@ interface BoonLibDao : JpaRepository<BoonLib, UUID>
 
 interface BoonLibJdbcDao {
     fun findOneBoonLib(filter: BoonLibFilter): BoonLib
+    fun findAll(filter: BoonLibFilter?): KPagedList<BoonLib>
 }
 
 @Repository
@@ -25,6 +26,18 @@ class BoonLibJdbcDaoImpl : BoonLibJdbcDao, AbstractDao() {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return jdbc.queryForObject(query, MAPPER, *values)
+    }
+
+    override fun findAll(filter: BoonLibFilter?): KPagedList<BoonLib> {
+        val filter = filter ?: BoonLibFilter()
+        val query = filter.getQuery(GET, false)
+        val values = filter.getValues(false)
+        return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
+    }
+
+    private fun count(filter: BoonLibFilter): Long {
+        val query = filter.getQuery(COUNT, true)
+        return jdbc.queryForObject(query, Long::class.java, *filter.getValues(true))
     }
 }
 
@@ -45,3 +58,5 @@ private val MAPPER = RowMapper { rs, _ ->
         rs.getString("actor_modified")
     )
 }
+
+private const val COUNT = "SELECT COUNT(1) FROM boonlib"

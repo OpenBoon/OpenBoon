@@ -12,6 +12,7 @@ import boonai.archivist.domain.DatasetSpec
 import boonai.archivist.domain.DatasetType
 import boonai.archivist.repository.BoonLibDao
 import boonai.archivist.repository.BoonLibJdbcDao
+import boonai.archivist.repository.KPagedList
 import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.getZmlpActor
 import boonai.archivist.storage.BoonLibStorageService
@@ -26,6 +27,7 @@ interface BoonLibService {
     fun importBoonLib(boonlib: BoonLib): BoonLibImportResponse
     fun importBoonLibInto(boonlib: BoonLib, dataset: Dataset): BoonLibImportResponse
     fun findOneBoonLib(boonLibFilter: BoonLibFilter): BoonLib
+    fun findAll(boonLibFilter: BoonLibFilter): KPagedList<BoonLib>
 }
 
 @Service
@@ -105,5 +107,9 @@ class BoonLibServiceImpl(
 
     override fun findOneBoonLib(boonLibFilter: BoonLibFilter): BoonLib {
         return boonLibJdbcDao.findOneBoonLib(boonLibFilter)
+    }
+
+    override fun findAll(boonLibFilter: BoonLibFilter): KPagedList<BoonLib> {
+        return boonLibJdbcDao.findAll(boonLibFilter)
     }
 }

@@ -52,6 +52,21 @@ class BoonLibDaoTests : AbstractTest() {
         }
     }
 
+    @Test
+    fun testFindAll() {
+        val lib1 = boonLibService.createBoonLib(spec1)
+        val lib2 = boonLibService.createBoonLib(spec2)
+        entityManager.flush()
+
+        val result = boonLibJdbcDao.findAll(BoonLibFilter(entities = listOf(BoonLibEntity.Dataset)))
+        assertEquals(lib2.name, result[0].name)
+        assertEquals(lib1.name, result[1].name)
+
+        val result1 = boonLibJdbcDao.findAll(BoonLibFilter(names = listOf("Test")))
+        assertEquals(lib1.name, result1[0].name)
+        assertEquals(1, result1.size())
+    }
+
     val spec1 = BoonLibSpec(
         "Test",
         BoonLibEntity.Dataset,

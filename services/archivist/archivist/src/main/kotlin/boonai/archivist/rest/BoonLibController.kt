@@ -11,13 +11,14 @@ import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.HttpUtils
 import io.swagger.annotations.ApiParam
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RequestHeader
 import java.util.UUID
 import javax.servlet.http.HttpServletRequest
 
@@ -45,8 +46,21 @@ class BoonLibController(
     @PreAuthorize("hasAuthority('AssetsRead')")
     @GetMapping(value = ["/api/v3/boonlibs/_findOne"])
     @ResponseBody
-    fun findOne(@ApiParam("Search filter.") @RequestBody filter: BoonLibFilter): BoonLib {
+    fun findOne(@ApiParam("Find One.") @RequestBody filter: BoonLibFilter): BoonLib {
         return boonLibService.findOneBoonLib(filter)
+    }
+
+    @PreAuthorize("hasAuthority('AssetsRead')")
+    @GetMapping(value = ["/api/v3/boonlibs/_search"])
+    @ResponseBody
+    fun search(
+        @ApiParam("Search filter.") @RequestBody filter: BoonLibFilter,
+        @ApiParam("Result number to start from.") @RequestParam(value = "from", required = false) from: Int?,
+        @ApiParam("Number of results per page.") @RequestParam(value = "count", required = false) count: Int?
+    ): Any {
+        from?.let { filter.page.from = it }
+        count?.let { filter.page.size = it }
+        return boonLibService.findAll(filter)
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
