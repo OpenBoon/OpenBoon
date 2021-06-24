@@ -148,7 +148,8 @@ interface AssetService {
     fun batchIndex(
         docs: Map<String, MutableMap<String, Any>>,
         setAnalyzed: Boolean = false,
-        refresh: Boolean = false
+        refresh: Boolean = false,
+        create: Boolean = false
     ): BatchIndexResponse
 
     /**
@@ -500,7 +501,8 @@ class AssetServiceImpl : AssetService {
     override fun batchIndex(
         docs: Map<String, MutableMap<String, Any>>,
         setAnalyzed: Boolean,
-        refresh: Boolean
+        refresh: Boolean,
+        create: Boolean
     ): BatchIndexResponse {
         if (docs.isEmpty()) {
             throw IllegalArgumentException("Nothing to batch index.")
@@ -508,7 +510,7 @@ class AssetServiceImpl : AssetService {
 
         val validAssetIds = getValidAssetIds(docs.keys)
         val notFound = docs.keys.minus(validAssetIds)
-        if (notFound.isNotEmpty()) {
+        if (!create && notFound.isNotEmpty()) {
             throw IllegalArgumentException("The asset IDs '$notFound' were not found")
         }
 
@@ -549,6 +551,7 @@ class AssetServiceImpl : AssetService {
                 } else {
                     bulk.add(
                         rest.newIndexRequest(id)
+                            .create(id in notFound)
                             .source(doc)
                             .opType(DocWriteRequest.OpType.INDEX)
                     )

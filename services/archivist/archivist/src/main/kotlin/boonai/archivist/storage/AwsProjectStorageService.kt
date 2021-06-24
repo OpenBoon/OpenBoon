@@ -166,7 +166,6 @@ class AwsProjectStorageService constructor(
     }
 
     override fun copy(src: String, dst: String): Long {
-        logger.info("Copying $src to $dst")
         val req = CopyObjectRequest(properties.bucket, src, properties.bucket, dst)
         val res: CopyObjectResult = s3Client.copyObject(req)
         return res.lastModifiedDate.time

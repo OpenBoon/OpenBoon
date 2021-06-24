@@ -56,6 +56,7 @@ class DatasetServiceTests : AbstractTest() {
         assertEquals("pets", ds.name)
         assertEquals(DatasetType.Classification, ds.type)
         assertEquals("TEST", ds.description)
+        val search = ds.getAssetSearch()
     }
 
     @Test

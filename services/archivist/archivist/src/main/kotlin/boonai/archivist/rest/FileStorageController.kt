@@ -6,6 +6,7 @@ import boonai.archivist.domain.ProjectStorageRequest
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.service.AssetService
 import boonai.archivist.service.ModelService
+import boonai.archivist.storage.BoonLibStorageService
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.FileUtils
 import io.swagger.annotations.ApiOperation
@@ -27,6 +28,7 @@ import java.util.concurrent.TimeUnit
 @RestController
 class FileStorageController(
     val projectStorageService: ProjectStorageService,
+    val boonLibStorageService: BoonLibStorageService,
     val assetService: AssetService,
     val modelService: ModelService
 ) {
@@ -61,8 +63,13 @@ class FileStorageController(
         } else {
             category
         }
-        val locator = getValidLocator(entityType, entityId, cat, name)
-        return projectStorageService.stream(locator)
+
+        return if (entityType == "boonlib") {
+            boonLibStorageService.stream("boonlib/$entityId/$category/$name")
+        } else {
+            val locator = getValidLocator(entityType, entityId, cat, name)
+            projectStorageService.stream(locator)
+        }
     }
 
     @ApiOperation("Stream a file associated with any entity.")
