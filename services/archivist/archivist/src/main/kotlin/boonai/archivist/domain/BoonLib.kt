@@ -1,7 +1,6 @@
 package boonai.archivist.domain
 
 import boonai.archivist.repository.KDaoFilter
-import boonai.archivist.security.getProjectId
 import boonai.archivist.util.JdbcUtils
 import com.fasterxml.jackson.annotation.JsonIgnore
 import io.swagger.annotations.ApiModel

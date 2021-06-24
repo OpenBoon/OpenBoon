@@ -1,7 +1,12 @@
 package boonai.archivist.repository
 
 import boonai.archivist.AbstractTest
-import boonai.archivist.domain.*
+import boonai.archivist.domain.BoonLibFilter
+import boonai.archivist.domain.BoonLibEntity
+import boonai.archivist.domain.BoonLibState
+import boonai.archivist.domain.BoonLibSpec
+import boonai.archivist.domain.BoonLibEntityType
+import boonai.archivist.domain.LicenseType
 import boonai.archivist.service.BoonLibService
 import org.junit.Test
 import org.junit.jupiter.api.assertThrows
