@@ -1,14 +1,16 @@
 package boonai.archivist.rest
 
 import boonai.archivist.MockMvcTest
-import boonai.archivist.domain.BoonLibSpec
 import boonai.archivist.domain.BoonLibEntity
 import boonai.archivist.domain.BoonLibEntityType
-import boonai.archivist.domain.LicenseType
+import boonai.archivist.domain.BoonLibFilter
+import boonai.archivist.domain.BoonLibSpec
+import boonai.archivist.domain.BoonLibState
+import boonai.archivist.domain.BoonLibUpdateSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.AssetState
-import boonai.archivist.domain.BoonLibFilter
+import boonai.archivist.domain.LicenseType
 import boonai.archivist.domain.ProjectFileLocator
 import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageCategory
@@ -65,6 +67,23 @@ class BoonLibControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.description", CoreMatchers.equalTo(spec.description)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(spec.name)))
+            .andReturn()
+    }
+
+    @Test
+    fun testUpdate() {
+        val lib = boonLibService.createBoonLib(spec)
+        val spec = BoonLibUpdateSpec(name = "Updated Name", description = "Updated Description", state = BoonLibState.READY)
+
+        val perform = mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/boonlibs/${lib.id}")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(spec))
+        ).andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.description", CoreMatchers.equalTo(spec.description)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(spec.name)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.state", CoreMatchers.equalTo(spec.state.toString())))
             .andReturn()
     }
 
@@ -181,9 +200,7 @@ class BoonLibControllerTests : MockMvcTest() {
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(filter))
-        )
-        perform
-            .andExpect(MockMvcResultMatchers.status().isOk)
+        ).andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].description", CoreMatchers.equalTo(spec.description)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name", CoreMatchers.equalTo(spec.name)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].id", CoreMatchers.equalTo(lib.id.toString())))

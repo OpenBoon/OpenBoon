@@ -1,14 +1,16 @@
 package boonai.archivist.service
 
 import boonai.archivist.AbstractTest
-import boonai.archivist.domain.BoonLibSpec
 import boonai.archivist.domain.BoonLibEntity
 import boonai.archivist.domain.BoonLibEntityType
-import boonai.archivist.domain.LicenseType
+import boonai.archivist.domain.BoonLibFilter
+import boonai.archivist.domain.BoonLibSpec
+import boonai.archivist.domain.BoonLibState
+import boonai.archivist.domain.BoonLibUpdateSpec
 import boonai.archivist.domain.DatasetSpec
 import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.JobFilter
-import boonai.archivist.domain.BoonLibFilter
+import boonai.archivist.domain.LicenseType
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import javax.persistence.EntityManager
@@ -43,6 +45,22 @@ class BoonLibServiceTests : AbstractTest() {
         assertEquals("Test", lib.name)
         assertEquals("A test lib", lib.description)
         assertEquals(BoonLibEntity.Dataset, lib.entity)
+    }
+
+    @Test
+    fun testUpdate() {
+        val lib = boonLibService.createBoonLib(spec)
+        assertEquals("Test", lib.name)
+        assertEquals("A test lib", lib.description)
+        assertEquals(BoonLibEntity.Dataset, lib.entity)
+
+        val boonLibUpdateSpec =
+            BoonLibUpdateSpec(name = "Updated Name", description = "Updated Description", state = BoonLibState.READY)
+        boonLibService.updateBoonLib(lib, boonLibUpdateSpec)
+
+        assertEquals("Updated Name", lib.name)
+        assertEquals("Updated Description", lib.description)
+        assertEquals(BoonLibState.READY, lib.state)
     }
 
     @Test

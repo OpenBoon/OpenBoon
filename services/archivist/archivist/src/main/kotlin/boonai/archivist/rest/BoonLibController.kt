@@ -4,6 +4,7 @@ import boonai.archivist.domain.BoonLib
 import boonai.archivist.domain.BoonLibImportResponse
 import boonai.archivist.domain.BoonLibSpec
 import boonai.archivist.domain.ProjectToBoonLibCopyRequest
+import boonai.archivist.domain.BoonLibUpdateSpec
 import boonai.archivist.domain.BoonLibFilter
 import boonai.archivist.service.BoonLibService
 import boonai.archivist.storage.BoonLibStorageService
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.PutMapping
 import java.util.UUID
 import javax.servlet.http.HttpServletRequest
 
@@ -34,6 +36,15 @@ class BoonLibController(
     @ResponseBody
     fun create(@RequestBody spec: BoonLibSpec): BoonLib {
         return boonLibService.createBoonLib(spec)
+    }
+
+    @PreAuthorize("hasAuthority('SystemManage')")
+    @PutMapping(value = ["/api/v3/boonlibs/{id}"])
+    @ResponseBody
+    fun update(@PathVariable id: UUID, @RequestBody spec: BoonLibUpdateSpec): BoonLib {
+        val boonLib = boonLibService.getBoonLib(id)
+        boonLibService.updateBoonLib(boonLib, spec)
+        return boonLib
     }
 
     @PreAuthorize("hasAuthority('AssetsRead')")

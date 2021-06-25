@@ -2,13 +2,14 @@ package boonai.archivist.service
 
 import boonai.archivist.domain.BoonLibSpec
 import boonai.archivist.domain.BoonLib
+import boonai.archivist.domain.BoonLibUpdateSpec
 import boonai.archivist.domain.BoonLibImportResponse
 import boonai.archivist.domain.Dataset
 import boonai.archivist.domain.BoonLibFilter
-import boonai.archivist.domain.BoonLibEntity
 import boonai.archivist.domain.BoonLibState
-import boonai.archivist.domain.Job
+import boonai.archivist.domain.BoonLibEntity
 import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.Job
 import boonai.archivist.domain.DatasetType
 import boonai.archivist.repository.BoonLibDao
 import boonai.archivist.repository.BoonLibJdbcDao
@@ -23,6 +24,7 @@ import java.util.UUID
 interface BoonLibService {
 
     fun createBoonLib(spec: BoonLibSpec): BoonLib
+    fun updateBoonLib(boonlib: BoonLib, spec: BoonLibUpdateSpec)
     fun getBoonLib(id: UUID): BoonLib
     fun importBoonLib(boonlib: BoonLib): BoonLibImportResponse
     fun importBoonLibInto(boonlib: BoonLib, dataset: Dataset): BoonLibImportResponse
@@ -76,6 +78,29 @@ class BoonLibServiceImpl(
         }
 
         return item
+    }
+
+    @Transactional
+    override fun updateBoonLib(boonlib: BoonLib, spec: BoonLibUpdateSpec) {
+
+        spec.name?.let {
+            boonlib.name = it
+        }
+
+        spec.description?.let {
+            boonlib.description = it
+        }
+
+        spec.license?.let {
+            boonlib.license = it
+        }
+
+        spec.state?.let {
+            boonlib.state = it
+        }
+
+        boonlib.timeModified = System.currentTimeMillis()
+        boonlib.actorModified = getZmlpActor().toString()
     }
 
     @Transactional(readOnly = true)

@@ -48,6 +48,16 @@ class BoonLibSpec(
 )
 
 /**
+ * Optional properties required to update a BoonLib
+ */
+class BoonLibUpdateSpec(
+    var name: String? = null,
+    var description: String? = null,
+    var license: LicenseType? = null,
+    var state: BoonLibState? = null
+)
+
+/**
  * Properties for importing a BoonLib.
  */
 class BoonLibImportRequest(
@@ -59,6 +69,9 @@ class BoonLibImportResponse(
     val tookMillis: Long
 )
 
+/**
+ *  Filter parameters to search a BoonLib
+ */
 class BoonLibFilter(
 
     val ids: List<UUID>? = null,
