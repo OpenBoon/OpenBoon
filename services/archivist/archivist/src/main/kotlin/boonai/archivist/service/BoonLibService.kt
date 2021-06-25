@@ -130,10 +130,12 @@ class BoonLibServiceImpl(
         return boonLibStorageService.importAssetsInto(boonlib, dataset)
     }
 
+    @Transactional(readOnly = true)
     override fun findOneBoonLib(boonLibFilter: BoonLibFilter): BoonLib {
         return boonLibJdbcDao.findOneBoonLib(boonLibFilter)
     }
 
+    @Transactional(readOnly = true)
     override fun findAll(boonLibFilter: BoonLibFilter): KPagedList<BoonLib> {
         return boonLibJdbcDao.findAll(boonLibFilter)
     }
