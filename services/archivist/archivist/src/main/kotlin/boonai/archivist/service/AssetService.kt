@@ -613,7 +613,7 @@ class AssetServiceImpl : AssetService {
             }
 
             logger.info("Post processing ${postTimelines.size} assets for deep video search.")
-            if (postTimelines.isNotEmpty()) {
+            if (postTimelines.isNotEmpty() and properties.getBoolean("archivist.deep-video-analysis.enabled")) {
                 val jobId = getZmlpActor().getAttr("jobId")
                 if (jobId == null) {
                     logger.warn("There was post timelines to process but not jobId was found.")
