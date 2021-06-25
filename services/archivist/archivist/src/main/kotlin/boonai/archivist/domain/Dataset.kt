@@ -3,6 +3,7 @@ package boonai.archivist.domain
 import boonai.archivist.repository.KDaoFilter
 import boonai.archivist.security.getProjectId
 import boonai.archivist.util.JdbcUtils
+import boonai.common.util.Json
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.core.type.TypeReference
 import io.swagger.annotations.ApiModel
@@ -132,6 +133,33 @@ class Dataset(
 
     override fun hashCode(): Int {
         return id.hashCode()
+    }
+
+    @JsonIgnore
+    fun getAssetSearch(): Map<String, Any> {
+        val json =
+            """
+            {
+                "bool": {
+                    "must": [
+                        {
+                            "nested" : {
+                                "path": "labels",
+                                "query" : {
+                                    "bool": {
+                                        "filter": [
+                                            {"term": { "labels.datasetId": "$id"}}
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            """.trimIndent()
+
+        return mapOf("query" to Json.Mapper.readValue(json, Json.GENERIC_MAP))
     }
 }
 

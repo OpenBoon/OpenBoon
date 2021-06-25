@@ -329,7 +329,7 @@ class DockerContainerWrapper:
     def _find_port(self):
         def test_port(port):
             s = socket.socket()
-            address = '127.0.0.1'
+            address = 'host.docker.internal'
             try:
                 s.connect((address, port))
                 return False

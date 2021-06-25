@@ -1,0 +1,15 @@
+{
+  "description": "Add BoonLibId",
+  "patch": {
+    "properties": {
+      "system": {
+        "dynamic": "strict",
+        "properties": {
+          "boonLibId": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}

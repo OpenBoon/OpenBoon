@@ -1,10 +1,12 @@
 package boonai.archivist.service
 
 import boonai.archivist.domain.Asset
+import boonai.archivist.domain.BoonLib
 import boonai.archivist.domain.Clip
 import boonai.archivist.domain.DataSource
 import boonai.archivist.domain.DataSourceDelete
 import boonai.archivist.domain.DataSourceImportOptions
+import boonai.archivist.domain.Dataset
 import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.Job
 import boonai.archivist.domain.JobPriority
@@ -21,6 +23,11 @@ import org.springframework.stereotype.Component
 import java.util.UUID
 
 interface JobLaunchService {
+
+    /**
+     * Launches a job to export a DS to boonlib.
+     */
+    fun launchBoonLibDatasetExport(dataset: Dataset, boonlib: BoonLib): Job
 
     /**
      * Launches a job to analyze a single Clip.
@@ -244,6 +251,34 @@ class JobLaunchServiceImpl(
         val spec = JobSpec(
             "VideoClip Analysis for Clip: ${clip.id}",
             listOf(script), replace = false, priority = JobPriority.Standard
+        )
+        return jobService.create(spec)
+    }
+
+    override fun launchBoonLibDatasetExport(dataset: Dataset, boonlib: BoonLib): Job {
+        val gen = ProcessorRef(
+            "boonai_core.core.generators.AssetSearchGenerator",
+            StandardContainers.CORE,
+            args = mapOf("search" to dataset.getAssetSearch())
+        )
+
+        val execute = ProcessorRef(
+            "boonai_core.boonlib.dataset.ExportDatasetProcessor",
+            StandardContainers.CORE,
+            args = mapOf("boonlib_id" to boonlib.id, "dataset_id" to dataset.id)
+
+        )
+        val script = ZpsScript(
+            "Exporting Dataset '${dataset.name}' to BoonLib '${boonlib.name}'",
+            listOf(gen), listOf(Asset("boonlib")), listOf(execute),
+            settings = getDefaultJobSettings(index = false), globalArgs = mutableMapOf()
+        )
+        script.setSettting("batchSize", 128)
+        script.setSettting("fileTypes", FileExtResolver.all)
+
+        val spec = JobSpec(
+            "Exporting Dataset '${dataset.name}' to BoonLib '${boonlib.name}'",
+            listOf(script), replace = true, priority = JobPriority.Standard
         )
         return jobService.create(spec)
     }
