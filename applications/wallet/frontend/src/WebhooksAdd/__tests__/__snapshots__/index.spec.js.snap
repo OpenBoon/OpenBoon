@@ -617,6 +617,11 @@ Array [
   margin-right: 16px;
 }
 
+.emotion-67 button:last,
+.emotion-67 a:last {
+  margin-right: 0;
+}
+
 .emotion-68 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -1646,6 +1651,11 @@ Array [
   margin-right: 16px;
 }
 
+.emotion-67 button:last,
+.emotion-67 a:last {
+  margin-right: 0;
+}
+
 .emotion-68 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -2663,6 +2673,11 @@ Array [
 .emotion-65 button,
 .emotion-65 a {
   margin-right: 16px;
+}
+
+.emotion-65 button:last,
+.emotion-65 a:last {
+  margin-right: 0;
 }
 
 .emotion-66 {

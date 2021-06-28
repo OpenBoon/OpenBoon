@@ -97,6 +97,7 @@ const constants = {
   timeline: {
     rulerRowHeight: 44,
   },
+  bbox: 56,
 }
 
 export default constants

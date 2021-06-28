@@ -73,6 +73,11 @@ exports[`<LabelEdit /> should render properly 1`] = `
   margin-right: 16px;
 }
 
+.emotion-6 button:last,
+.emotion-6 a:last {
+  margin-right: 0;
+}
+
 .emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;

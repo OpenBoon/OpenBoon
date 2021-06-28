@@ -285,6 +285,7 @@ Array [
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
+  position: relative;
 }
 
 .emotion-17 {
@@ -334,6 +335,11 @@ Array [
 .emotion-39 button,
 .emotion-39 a {
   margin-right: 16px;
+}
+
+.emotion-39 button:last,
+.emotion-39 a:last {
+  margin-right: 0;
 }
 
 .emotion-40 {
@@ -886,6 +892,7 @@ Array [
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
+  position: relative;
 }
 
 .emotion-17 {
@@ -953,6 +960,11 @@ Array [
 .emotion-39 button,
 .emotion-39 a {
   margin-right: 16px;
+}
+
+.emotion-39 button:last,
+.emotion-39 a:last {
+  margin-right: 0;
 }
 
 .emotion-40 {

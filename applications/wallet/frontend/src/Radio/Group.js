@@ -21,8 +21,8 @@ const RadioGroup = ({ legend, options, onClick }) => {
           padding: 0,
           paddingRight: spacing.normal,
           float: 'left',
-          fontSize: typography.size.medium,
-          lineHeight: typography.height.medium,
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
           fontWeight: typography.weight.medium,
         }}
       >
