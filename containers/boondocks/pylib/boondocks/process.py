@@ -522,10 +522,10 @@ class ProcessorWrapper:
         if len(source_path) > 255:
             # Include starting ellipses as an indicator, favor end of path
             source_path = '...' + source_path[len(source_path)-252:]
-        image_count, video_minutes = self._get_count_and_minutes(asset)
+        image_count, video_seconds = self._get_count_and_seconds(asset)
 
         # Some processors, like gcp-video-intelligence, apply multiple modules at once
-        # and track them in a temporary namespace on the asset. Record analsys for every
+        # and track them in a temporary namespace on the asset. Record analysis for every
         # module added.
         modules = asset.get_attr('tmp.produced_analysis') or [self.ref['module']]
 
@@ -536,7 +536,7 @@ class ProcessorWrapper:
                 'asset_id': asset.id,
                 'asset_path': source_path,
                 'image_count': image_count,
-                'video_minutes': video_minutes,
+                'video_seconds': video_seconds,
             }
             sentry_sdk.set_context('billing_metric', body)
             try:
@@ -558,18 +558,18 @@ class ProcessorWrapper:
                 sentry_sdk.capture_exception(e)
                 logger.debug(msg)
 
-    def _get_count_and_minutes(self, asset):
-        """Helper to return total images and number of video minutes for an asset.
+    def _get_count_and_seconds(self, asset):
+        """Helper to return total images and number of video seconds for an asset.
 
         Determines if the asset is a picture or video, and returns the image count or
-        the total number of video minutes for the asset.
+        the total number of video seconds for the asset.
 
         Args:
-            asset (:obj:`Asset`): The asset to find it's count or video minutes.
+            asset (:obj:`Asset`): The asset to find it's count or video seconds.
 
         Returns:
             (:obj:`tuple`): A two tuple of the number of images, and the number of video
-                minutes.
+                seconds.
         """
         media_type = asset.get_attr('media.type')
         if media_type == 'video':
