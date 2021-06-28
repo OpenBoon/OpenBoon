@@ -9,10 +9,8 @@ import { capitalizeFirstLetter } from '../Text/helpers'
 
 import MetadataPrettyLabelsMenu from './LabelsMenu'
 
-const BBOX_SIZE = 56
-
 const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
-  const attr = `labels&width=${BBOX_SIZE}`
+  const attr = `labels&width=${constants.bbox}`
 
   const {
     data: { labels },
@@ -55,8 +53,8 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
           {label.b64Image ? (
             <img
               css={{
-                maxHeight: BBOX_SIZE,
-                width: BBOX_SIZE,
+                maxHeight: constants.bbox,
+                width: constants.bbox,
                 objectFit: 'contain',
               }}
               alt={label.bbox}
@@ -72,8 +70,8 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
-                minWidth: BBOX_SIZE,
-                minHeight: BBOX_SIZE,
+                minWidth: constants.bbox,
+                minHeight: constants.bbox,
               }}
             >
               N/A

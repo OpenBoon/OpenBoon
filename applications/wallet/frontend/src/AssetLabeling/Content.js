@@ -1,103 +1,118 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
+import Link from 'next/link'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import { useLocalStorage } from '../LocalStorage/helpers'
+import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
+import SuspenseBoundary from '../SuspenseBoundary'
 
-import AssetLabelingAdd from './Add'
-import AssetLabelingList from './List'
+import AssetLabelingForm from './Form'
+
+const INITIAL_STATE = {
+  datasetId: '',
+  datasetType: '',
+  labels: {},
+  isLoading: false,
+  errors: {},
+}
+
+const reducer = (state, action) => ({ ...state, ...action })
 
 const AssetLabelingContent = ({ projectId, assetId }) => {
-  const [reloadKey, setReloadKey] = useState(0)
-  const [error, setError] = useState('')
-
-  const triggerReload = () => {
-    setReloadKey(reloadKey + 1)
-  }
-
   const {
-    data: { results: models },
-  } = useSWR(`/api/v1/projects/${projectId}/models/all/`)
+    data: { results: datasets },
+  } = useSWR(`/api/v1/projects/${projectId}/datasets/all/`)
 
   const {
     data: {
       metadata: {
         source: { filename },
-        labels = [],
       },
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
+
+  const [state, dispatch] = useLocalStorage({
+    key: `AssetLabelingContent.${projectId}`,
+    initialState: INITIAL_STATE,
+    reducer,
+  })
 
   return (
     <>
       <div
         css={{
-          padding: spacing.normal,
+          padding: spacing.base,
+          paddingLeft: spacing.normal,
           borderBottom: constants.borders.regular.smoke,
-          color: colors.signal.sky.base,
+          color: colors.structure.pebble,
         }}
       >
         {filename}
       </div>
 
-      <Accordion
-        variant={ACCORDION_VARIANTS.PANEL}
-        title="Select a model and add a label"
-        actions={
-          <Button
-            variant={BUTTON_VARIANTS.LINK}
-            href={`/${projectId}/models/add`}
-            onClick={(event) => event.stopPropagation()}
+      <div
+        css={{
+          padding: spacing.normal,
+          borderBottom: constants.borders.regular.smoke,
+        }}
+      >
+        <div
+          css={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            fontWeight: typography.weight.medium,
+          }}
+        >
+          <div>Select a dataset</div>
+          <div>
+            <Link href={`/${projectId}/datasets/add`} passHref>
+              <a css={{ color: colors.key.two }}>+ New Data Set</a>
+            </Link>
+          </div>
+        </div>
+
+        <div css={{ height: spacing.base }} />
+
+        <Select
+          key={state.datasetId}
+          label="Dataset:"
+          options={datasets.map(({ id, name }) => ({ value: id, label: name }))}
+          defaultValue={state.datasetId}
+          onChange={({ value }) => {
+            const dataset = datasets.find(({ id }) => id === value)
+
+            const { type: datasetType = '' } = dataset || {}
+
+            dispatch({ datasetId: value, datasetType, labels: {} })
+          }}
+          isRequired={false}
+          variant={SELECT_VARIANTS.COLUMN}
+          style={{ width: '100%', backgroundColor: colors.structure.smoke }}
+        />
+      </div>
+
+      <SuspenseBoundary>
+        {state.datasetId ? (
+          <AssetLabelingForm
+            projectId={projectId}
+            assetId={assetId}
+            state={state}
+            dispatch={dispatch}
+          />
+        ) : (
+          <div
             css={{
-              paddingTop: 0,
-              paddingBottom: 0,
-              marginTop: -spacing.mini,
-              fontWeight: typography.weight.medium,
+              padding: spacing.normal,
+              color: colors.structure.white,
+              fontStyle: typography.style.italic,
             }}
           >
-            Create New Model
-          </Button>
-        }
-        cacheKey="AssetLabeling.Add"
-        isInitiallyOpen
-        isResizeable={false}
-      >
-        <AssetLabelingAdd
-          key={reloadKey}
-          projectId={projectId}
-          assetId={assetId}
-          models={models}
-          labels={labels}
-        />
-      </Accordion>
-
-      <Accordion
-        variant={ACCORDION_VARIANTS.PANEL}
-        title={`Asset Labels: ${labels.length}`}
-        cacheKey="AssetLabelingList"
-        isInitiallyOpen={false}
-        isResizeable={false}
-      >
-        <>
-          {error && (
-            <div css={{ padding: spacing.normal }}>
-              <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-                {error}
-              </FlashMessage>
-            </div>
-          )}
-          <AssetLabelingList
-            models={models}
-            labels={labels}
-            triggerReload={triggerReload}
-            setError={setError}
-          />
-        </>
-      </Accordion>
+            Select a dataset to start labeling assets.
+          </div>
+        )}
+      </SuspenseBoundary>
     </>
   )
 }

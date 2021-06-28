@@ -1654,8 +1654,8 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   padding: 0;
   padding-right: 16px;
   float: left;
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 19px;
   font-weight: 500;
 }
 
@@ -1687,6 +1687,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
+  position: relative;
 }
 
 .emotion-14 {

@@ -13,8 +13,6 @@ import {
   decode,
 } from '../Filters/helpers'
 
-export const BBOX_SIZE = 56
-
 const COLUMNS = ['bbox', 'label', 'content', 'score']
 
 export const FILTER_TYPES = { labels: 'labelConfidence', text: 'textContent' }
@@ -154,8 +152,8 @@ const MetadataPrettyPredictionsContent = ({
                         <td key={column} css={{ display: 'flex' }}>
                           <img
                             css={{
-                              maxHeight: BBOX_SIZE,
-                              width: BBOX_SIZE,
+                              maxHeight: constants.bbox,
+                              width: constants.bbox,
                               objectFit: 'contain',
                             }}
                             alt={prediction.bbox}
