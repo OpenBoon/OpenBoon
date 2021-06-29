@@ -436,7 +436,7 @@ class TestLabelingEndpoints:
         monkeypatch.setattr(AssetBoxImager, '_add_box_images', mock_b64_image)
         dataset_id = '287baa12-8f80-1a31-9273-76fd36c58a09'
 
-        # Asset with 1 labeled face detection and 1 unlabeled face detection.
+        # Asset with no detected faces.
         asset_data = {'id': 'w1US8zZQfWuYPnEp2tIsIYzZsPJjHhzg', 'document': {'analysis': {}}}
         asset = Asset(asset_data)
         path = reverse('dataset-label-tool-info',
