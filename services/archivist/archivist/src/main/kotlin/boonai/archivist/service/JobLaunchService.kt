@@ -269,7 +269,7 @@ class JobLaunchServiceImpl(
 
         )
         val script = ZpsScript(
-            "Exporting Dataset '${dataset.name}' to BoonLib '${boonlib.name}'",
+            "Exporting Dataset '${dataset.name}' to BoonLib '${boonlib.id}'",
             listOf(gen), listOf(Asset("boonlib")), listOf(execute),
             settings = getDefaultJobSettings(index = false), globalArgs = mutableMapOf()
         )
@@ -277,7 +277,7 @@ class JobLaunchServiceImpl(
         script.setSettting("fileTypes", FileExtResolver.all)
 
         val spec = JobSpec(
-            "Exporting Dataset '${dataset.name}' to BoonLib '${boonlib.name}'",
+            "Exporting Dataset '${dataset.name}' to BoonLib '${boonlib.id}'",
             listOf(script), replace = true, priority = JobPriority.Standard
         )
         return jobService.create(spec)

@@ -1,22 +1,17 @@
 package boonai.archivist.storage
 
-import boonai.archivist.domain.Asset
 import boonai.archivist.domain.BoonLib
 import boonai.archivist.domain.BoonLibImportResponse
 import boonai.archivist.domain.Dataset
 import boonai.archivist.domain.ProjectFileLocator
-import boonai.archivist.security.CoroutineAuthentication
 import boonai.archivist.service.AssetService
 import boonai.archivist.service.IndexRoutingService
-import boonai.common.util.Json
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.CopyObjectRequest
 import com.amazonaws.services.s3.model.GetObjectRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
 import com.google.common.base.Stopwatch
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.apache.tika.Tika
 import org.slf4j.LoggerFactory
@@ -26,7 +21,6 @@ import org.springframework.core.io.Resource
 import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
@@ -78,38 +72,23 @@ class AwsBoonLibStorageService(
     }
 
     override fun importAssetsInto(boonLib: BoonLib, dataset: Dataset) = runBlocking {
-        boonLib.checkCompatible(dataset)
         logger.info("Importing BoonLib ${boonLib.name} into dataset ${dataset.name}")
 
-        var batch: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
-        var count = 0
-        val libId = boonLib.id.toString()
-        val dsId = dataset.id.toString()
+        boonLib.checkCompatible(dataset)
+
+        val batcher = BoonLibAssetImporter(boonLib, dataset, assetService)
         val stopWatch = Stopwatch.createStarted()
 
         s3Client.listObjectsV2(properties.bucket, "boonlib/${boonLib.id}/").objectSummaries.forEach {
             if (it.key.endsWith("/asset.json")) {
                 val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, it.key))
                 s3obj.use { obj ->
-                    val json = String(obj.objectContent.readAllBytes()).replace("#__DSID__#", dsId)
-                    val asset = Json.Mapper.readValue(json, Asset::class.java)
-                    asset.setAttr("system.boonLibId", libId)
-                    batch[asset.id] = asset.document
-                }
-                if (batch.size >= 128) {
-                    count += batch.size
-                    launch(Dispatchers.IO + CoroutineAuthentication(SecurityContextHolder.getContext())) {
-                        assetService.batchIndex(batch, setAnalyzed = false, refresh = false, create = true)
-                    }
-                    batch = mutableMapOf()
+                    batcher.addAsset(obj.objectContent.readAllBytes())
                 }
             }
         }
-        if (batch.isNotEmpty()) {
-            count += batch.size
-            assetService.batchIndex(batch, setAnalyzed = false, refresh = true, create = true)
-        }
-        BoonLibImportResponse(count, stopWatch.elapsed(TimeUnit.MILLISECONDS))
+        batcher.close()
+        BoonLibImportResponse(batcher.total, stopWatch.elapsed(TimeUnit.MILLISECONDS))
     }
 
     companion object {

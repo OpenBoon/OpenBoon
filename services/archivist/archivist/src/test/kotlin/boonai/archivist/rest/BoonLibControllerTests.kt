@@ -1,21 +1,23 @@
 package boonai.archivist.rest
 
 import boonai.archivist.MockMvcTest
+import boonai.archivist.domain.AssetSpec
+import boonai.archivist.domain.AssetState
+import boonai.archivist.domain.BatchCreateAssetsRequest
+import boonai.archivist.domain.BoonLib
 import boonai.archivist.domain.BoonLibEntity
-import boonai.archivist.domain.BoonLibEntityType
 import boonai.archivist.domain.BoonLibFilter
 import boonai.archivist.domain.BoonLibSpec
 import boonai.archivist.domain.BoonLibState
 import boonai.archivist.domain.BoonLibUpdateSpec
-import boonai.archivist.domain.BatchCreateAssetsRequest
-import boonai.archivist.domain.AssetSpec
-import boonai.archivist.domain.AssetState
-import boonai.archivist.domain.LicenseType
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.ProjectFileLocator
-import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageCategory
+import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.ProjectToBoonLibCopyRequest
+import boonai.archivist.repository.BoonLibJdbcDao
 import boonai.archivist.service.BoonLibService
 import boonai.archivist.service.DatasetService
 import boonai.archivist.storage.BoonLibStorageService
@@ -45,19 +47,15 @@ class BoonLibControllerTests : MockMvcTest() {
     @Autowired
     lateinit var projectStorageService: ProjectStorageService
 
+    @Autowired
+    lateinit var boonLibJdbcDao: BoonLibJdbcDao
+
     @PersistenceContext
     lateinit var entityManager: EntityManager
 
-    val spec = BoonLibSpec(
-        "Test",
-        BoonLibEntity.Dataset,
-        BoonLibEntityType.Classification,
-        LicenseType.CC0,
-        "A test lib"
-    )
-
     @Test
     fun testCreate() {
+        val spec = makeBoonLibSpec("Test")
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/boonlibs")
                 .headers(admin())
@@ -72,10 +70,10 @@ class BoonLibControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdate() {
-        val lib = boonLibService.createBoonLib(spec)
-        val spec = BoonLibUpdateSpec(name = "Updated Name", description = "Updated Description", state = BoonLibState.READY)
+        val lib = makeBoonLib("Test")
+        val spec = BoonLibUpdateSpec(name = "Updated Name", description = "Updated Description")
 
-        val perform = mvc.perform(
+        mvc.perform(
             MockMvcRequestBuilders.put("/api/v3/boonlibs/${lib.id}")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -83,29 +81,27 @@ class BoonLibControllerTests : MockMvcTest() {
         ).andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.description", CoreMatchers.equalTo(spec.description)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(spec.name)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.state", CoreMatchers.equalTo(spec.state.toString())))
             .andReturn()
     }
 
     @Test
     fun testGet() {
-        val lib = boonLibService.createBoonLib(spec)
+        val lib = makeBoonLib("Test")
 
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/boonlibs/${lib.id}")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(spec))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.description", CoreMatchers.equalTo(spec.description)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(spec.name)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.description", CoreMatchers.equalTo("foo")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("Test")))
             .andReturn()
     }
 
     @Test
     fun testImport() {
-        val lib = boonLibService.createBoonLib(spec)
+        val lib = makeBoonLib("Test")
 
         val req = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
@@ -134,7 +130,7 @@ class BoonLibControllerTests : MockMvcTest() {
     @Test
     fun testUploadFile() {
         job()
-        val lib = boonLibService.createBoonLib(spec)
+        val lib = makeBoonLib("Test")
         // /api/v3/boonlibs/_upload/{libId}/{itemId}/{name}
         val someJson = mapOf("testing" to "123")
         mvc.perform(
@@ -155,7 +151,7 @@ class BoonLibControllerTests : MockMvcTest() {
         val pspec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         val result = projectStorageService.store(pspec)
 
-        val lib = boonLibService.createBoonLib(spec)
+        val lib = makeBoonLib("Test")
         val req = ProjectToBoonLibCopyRequest(mapOf(result.id to "boonlib/${lib.id}/test/bob.txt"))
 
         job()
@@ -173,37 +169,57 @@ class BoonLibControllerTests : MockMvcTest() {
 
     @Test
     fun testFindOne() {
-        val lib = boonLibService.createBoonLib(spec)
+        val lib = makeBoonLib("Test")
+        boonLibJdbcDao.updateBoonLibState(lib.id, BoonLibState.READY)
+
         val filter = BoonLibFilter(ids = listOf(lib.id))
-        entityManager.flush()
 
         mvc.perform(
-            MockMvcRequestBuilders.get("/api/v3/boonlibs/_findOne")
+            MockMvcRequestBuilders.post("/api/v3/boonlibs/_findOne")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(filter))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.description", CoreMatchers.equalTo(spec.description)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(spec.name)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.description", CoreMatchers.equalTo("foo")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("Test")))
             .andReturn()
     }
 
     @Test
     fun testSearch() {
-        val lib = boonLibService.createBoonLib(spec)
-        val filter = BoonLibFilter(ids = listOf(lib.id))
-        entityManager.flush()
+        val lib = makeBoonLib("Test")
+        boonLibJdbcDao.updateBoonLibState(lib.id, BoonLibState.READY)
 
-        val perform = mvc.perform(
-            MockMvcRequestBuilders.get("/api/v3/boonlibs/_search")
+        val filter = BoonLibFilter(ids = listOf(lib.id))
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/boonlibs/_search")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(filter))
         ).andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].description", CoreMatchers.equalTo(spec.description)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name", CoreMatchers.equalTo(spec.name)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].description", CoreMatchers.equalTo("foo")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name", CoreMatchers.equalTo("Test")))
             .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].id", CoreMatchers.equalTo(lib.id.toString())))
             .andReturn()
+    }
+
+    fun makeBoonLib(name: String): BoonLib {
+        val spec = makeBoonLibSpec(name)
+        val item = boonLibService.createBoonLib(spec)
+        entityManager.flush()
+        return item
+    }
+
+    fun makeBoonLibSpec(name: String): BoonLibSpec {
+        val ds = datasetService.createDataset(DatasetSpec(name, DatasetType.Classification, "foo"))
+        val spec = BoonLibSpec(
+            name,
+            "foo",
+            BoonLibEntity.Dataset,
+            ds.id
+        )
+        return spec
     }
 }

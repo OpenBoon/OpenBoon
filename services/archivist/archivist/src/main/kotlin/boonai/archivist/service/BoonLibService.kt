@@ -1,25 +1,31 @@
 package boonai.archivist.service
 
-import boonai.archivist.domain.BoonLibSpec
 import boonai.archivist.domain.BoonLib
-import boonai.archivist.domain.BoonLibUpdateSpec
-import boonai.archivist.domain.BoonLibImportResponse
-import boonai.archivist.domain.Dataset
-import boonai.archivist.domain.BoonLibFilter
-import boonai.archivist.domain.BoonLibState
 import boonai.archivist.domain.BoonLibEntity
+import boonai.archivist.domain.BoonLibFilter
+import boonai.archivist.domain.BoonLibImportResponse
+import boonai.archivist.domain.BoonLibSpec
+import boonai.archivist.domain.BoonLibState
+import boonai.archivist.domain.BoonLibUpdateSpec
+import boonai.archivist.domain.Dataset
 import boonai.archivist.domain.DatasetSpec
-import boonai.archivist.domain.Job
 import boonai.archivist.domain.DatasetType
+import boonai.archivist.domain.Job
+import boonai.archivist.domain.JobState
+import boonai.archivist.domain.JobStateChangeEvent
 import boonai.archivist.repository.BoonLibDao
 import boonai.archivist.repository.BoonLibJdbcDao
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.getZmlpActor
 import boonai.archivist.storage.BoonLibStorageService
+import com.google.common.eventbus.EventBus
+import com.google.common.eventbus.Subscribe
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
+import javax.annotation.PostConstruct
 
 interface BoonLibService {
 
@@ -30,6 +36,7 @@ interface BoonLibService {
     fun importBoonLibInto(boonlib: BoonLib, dataset: Dataset): BoonLibImportResponse
     fun findOneBoonLib(boonLibFilter: BoonLibFilter): BoonLib
     fun findAll(boonLibFilter: BoonLibFilter): KPagedList<BoonLib>
+    fun handleJobStateChangeEvent(event: JobStateChangeEvent)
 }
 
 @Service
@@ -38,14 +45,28 @@ class BoonLibServiceImpl(
     val boonLibJdbcDao: BoonLibJdbcDao,
     val datasetService: DatasetService,
     val jobLaunchService: JobLaunchService,
-    val boonLibStorageService: BoonLibStorageService
+    val boonLibStorageService: BoonLibStorageService,
+    val eventBus: EventBus,
 ) : BoonLibService {
+
+    @PostConstruct
+    fun init() {
+        // Register for event bus
+        eventBus.register(this)
+    }
 
     @Transactional
     override fun createBoonLib(spec: BoonLibSpec): BoonLib {
 
-        if (!spec.entityType.isCompatible(spec.entity)) {
-            throw IllegalArgumentException("The entity is not compatible with the entity type.")
+        val subType = if (spec.entityId != null) {
+            when (spec.entity) {
+                BoonLibEntity.Dataset -> {
+                    val ds = datasetService.getDataset(spec.entityId)
+                    ds.type.name
+                }
+            }
+        } else {
+            "N/A"
         }
 
         val time = System.currentTimeMillis()
@@ -56,10 +77,9 @@ class BoonLibServiceImpl(
             id,
             spec.name,
             spec.entity,
-            spec.entityType,
+            subType,
             spec.description,
-            spec.license,
-            BoonLibState.EMPTY,
+            BoonLibState.PROCESSING,
             time,
             time,
             actor,
@@ -68,12 +88,10 @@ class BoonLibServiceImpl(
 
         boonLibDao.save(item)
 
-        spec?.entityId?.let {
-            when (spec.entity) {
-                BoonLibEntity.Dataset -> {
-                    val ds = datasetService.getDataset(it)
-                    launchExportJob(ds, item)
-                }
+        when (spec.entity) {
+            BoonLibEntity.Dataset -> {
+                val ds = datasetService.getDataset(spec.entityId)
+                launchExportJob(ds, item)
             }
         }
 
@@ -89,14 +107,6 @@ class BoonLibServiceImpl(
 
         spec.description?.let {
             boonlib.description = it
-        }
-
-        spec.license?.let {
-            boonlib.license = it
-        }
-
-        spec.state?.let {
-            boonlib.state = it
         }
 
         boonlib.timeModified = System.currentTimeMillis()
@@ -117,7 +127,7 @@ class BoonLibServiceImpl(
             BoonLibEntity.Dataset -> {
                 val dspec = DatasetSpec(
                     "BoonLib ${boonlib.name}",
-                    DatasetType.Classification,
+                    DatasetType.valueOf(boonlib.entityType),
                     boonlib.description
                 )
                 val ds = datasetService.createDataset(dspec)
@@ -138,5 +148,26 @@ class BoonLibServiceImpl(
     @Transactional(readOnly = true)
     override fun findAll(boonLibFilter: BoonLibFilter): KPagedList<BoonLib> {
         return boonLibJdbcDao.findAll(boonLibFilter)
+    }
+
+    @Subscribe
+    override fun handleJobStateChangeEvent(event: JobStateChangeEvent) {
+        if (event.newState == JobState.Success) {
+            try {
+                JOB_REGEX.matchEntire(event.job.name)?.let {
+                    val id = UUID.fromString(it.groupValues[1])
+                    boonLibJdbcDao.updateBoonLibState(id, BoonLibState.READY)
+                    logger.info("Updating boonlib $id to READY")
+                }
+            } catch (e: Exception) {
+                logger.error("Unable to parse BoonLib job name: ${event.job.name}", e)
+            }
+        }
+    }
+
+    companion object {
+        val JOB_REGEX = Regex("Exporting .*? '.*?' to BoonLib '(.*?)'")
+
+        private val logger = LoggerFactory.getLogger(BoonLibServiceImpl::class.java)
     }
 }

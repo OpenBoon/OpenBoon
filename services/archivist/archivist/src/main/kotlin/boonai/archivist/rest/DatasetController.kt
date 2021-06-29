@@ -1,13 +1,12 @@
 package boonai.archivist.rest
 
-import boonai.archivist.domain.BoonLibImportResponse
 import boonai.archivist.domain.Dataset
-import boonai.archivist.domain.DatasetSpec
-import boonai.archivist.domain.DatasetUpdate
-import boonai.archivist.domain.UpdateLabelRequest
-import boonai.archivist.domain.GenericBatchUpdateResponse
 import boonai.archivist.domain.DatasetFilter
+import boonai.archivist.domain.DatasetSpec
 import boonai.archivist.domain.DatasetType
+import boonai.archivist.domain.DatasetUpdate
+import boonai.archivist.domain.GenericBatchUpdateResponse
+import boonai.archivist.domain.UpdateLabelRequest
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.service.BoonLibService
 import boonai.archivist.service.DatasetService
@@ -40,13 +39,6 @@ class DatasetController(
     @GetMapping(value = ["/api/v3/datasets/{id}"])
     fun get(@PathVariable id: UUID): Dataset {
         return datasetService.getDataset(id)
-    }
-
-    @ApiOperation("Import a BoonLib into this DataSet")
-    @PostMapping(value = ["/api/v3/datasets/{id}/_import/{boonlib}"])
-    fun importBoonLib(@PathVariable id: UUID, @PathVariable boonlib: UUID): BoonLibImportResponse {
-        val lib = boonLibService.getBoonLib(boonlib)
-        return boonLibService.importBoonLibInto(lib, datasetService.getDataset(id))
     }
 
     @ApiOperation("Delete a Dataset record")
