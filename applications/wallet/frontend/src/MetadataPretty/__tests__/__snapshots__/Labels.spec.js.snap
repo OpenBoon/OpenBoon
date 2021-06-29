@@ -86,7 +86,7 @@ exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] 
               "timeCreated": 1594243378141,
               "timeModified": 1594243378141,
               "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
-              "type": "ZVI_FACE_RECOGNITION",
+              "type": "FACE_RECOGNITION",
               "url": "https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-1244-9596-d6df43f1ede5/",
             },
             Object {
@@ -126,7 +126,7 @@ exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] 
               "timeCreated": 1595883344116,
               "timeModified": 1595883344116,
               "trainingJobName": "Training model: Gundam - [Label Detection]",
-              "type": "ZVI_LABEL_DETECTION",
+              "type": "KNN_CLASSIFIER",
               "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83460-6a25-1238-86fa-0242ac150002/",
             },
             Object {
@@ -146,7 +146,7 @@ exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] 
               "timeCreated": 1595888265010,
               "timeModified": 1595888265010,
               "trainingJobName": "Training model: Location - [Label Detection]",
-              "type": "ZVI_LABEL_DETECTION",
+              "type": "TF_CLASSIFIER",
               "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83462-6a25-1238-86fa-0242ac150002/",
             },
           ]
@@ -244,7 +244,7 @@ exports[`<MetadataPrettyLabels /> should render properly on the grid 1`] = `
               "timeCreated": 1594243378141,
               "timeModified": 1594243378141,
               "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
-              "type": "ZVI_FACE_RECOGNITION",
+              "type": "FACE_RECOGNITION",
               "url": "https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-1244-9596-d6df43f1ede5/",
             },
             Object {
@@ -284,7 +284,7 @@ exports[`<MetadataPrettyLabels /> should render properly on the grid 1`] = `
               "timeCreated": 1595883344116,
               "timeModified": 1595883344116,
               "trainingJobName": "Training model: Gundam - [Label Detection]",
-              "type": "ZVI_LABEL_DETECTION",
+              "type": "KNN_CLASSIFIER",
               "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83460-6a25-1238-86fa-0242ac150002/",
             },
             Object {
@@ -304,7 +304,7 @@ exports[`<MetadataPrettyLabels /> should render properly on the grid 1`] = `
               "timeCreated": 1595888265010,
               "timeModified": 1595888265010,
               "trainingJobName": "Training model: Location - [Label Detection]",
-              "type": "ZVI_LABEL_DETECTION",
+              "type": "TF_CLASSIFIER",
               "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83462-6a25-1238-86fa-0242ac150002/",
             },
           ]

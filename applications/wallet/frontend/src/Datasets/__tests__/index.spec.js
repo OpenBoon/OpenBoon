@@ -46,7 +46,7 @@ describe('<Datasets />', () => {
     )
 
     expect(spy).toHaveBeenCalledWith(
-      `AssetLabelingAdd.${PROJECT_ID}`,
+      `AssetLabelingContent.${PROJECT_ID}`,
       `{"datasetId":"${DATASET_ID}","label":"","scope":"TRAIN"}`,
     )
 

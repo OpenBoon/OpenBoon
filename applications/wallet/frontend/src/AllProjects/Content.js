@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import useSWR from 'swr'
 
-import { colors, spacing } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import { useLocalStorage } from '../LocalStorage/helpers'
 
@@ -9,9 +9,21 @@ import NoProject from '../NoProject'
 import InputSearch, { VARIANTS as INPUT_SEARCH_VARIANTS } from '../Input/Search'
 import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
 
-import AllProjectsCard from './Card'
+import AllProjectsCard, { LINKS } from './Card'
 
-const MIN_WIDTH = 400
+const MIN_WIDTH =
+  // container padding
+  spacing.comfy * 2 +
+  // icon size
+  (constants.icons.regular +
+    // icon padding
+    spacing.base * 2 +
+    // icon gap
+    spacing.normal) *
+    // icon count
+    Object.keys(LINKS).length -
+  // off by one gap
+  spacing.normal
 
 const AllProjectsContent = () => {
   const {

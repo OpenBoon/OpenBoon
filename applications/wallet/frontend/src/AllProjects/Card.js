@@ -9,13 +9,14 @@ import Feature, { ENVS } from '../Feature'
 
 import DataSourcesSvg from '../Icons/datasources.svg'
 import JobQueueSvg from '../Icons/jobQueue.svg'
+import TagsSvg from '../Icons/tags.svg'
 import ModelsSvg from '../Icons/models.svg'
 import VisualizerSvg from '../Icons/visualizer.svg'
 import WebhooksSvg from '../Icons/webhooks.svg'
 import KeySvg from '../Icons/key.svg'
 import UsersSvg from '../Icons/users.svg'
 
-const LINKS = [
+export const LINKS = [
   {
     url: 'data-sources',
     title: 'Data Sources',
@@ -25,6 +26,11 @@ const LINKS = [
     url: 'jobs',
     title: 'Job Queue',
     icon: <JobQueueSvg height={constants.icons.regular} />,
+  },
+  {
+    url: 'datasets',
+    title: 'Datasets',
+    icon: <TagsSvg height={constants.icons.regular} />,
   },
   {
     url: 'models',
