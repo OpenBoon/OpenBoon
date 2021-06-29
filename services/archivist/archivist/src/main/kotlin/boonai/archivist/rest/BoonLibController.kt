@@ -55,14 +55,14 @@ class BoonLibController(
     }
 
     @PreAuthorize("hasAuthority('AssetsRead')")
-    @GetMapping(value = ["/api/v3/boonlibs/_findOne"])
+    @PostMapping(value = ["/api/v3/boonlibs/_findOne"])
     @ResponseBody
     fun findOne(@ApiParam("Find One.") @RequestBody filter: BoonLibFilter): BoonLib {
         return boonLibService.findOneBoonLib(filter)
     }
 
     @PreAuthorize("hasAuthority('AssetsRead')")
-    @GetMapping(value = ["/api/v3/boonlibs/_search"])
+    @PostMapping(value = ["/api/v3/boonlibs/_search"])
     @ResponseBody
     fun search(
         @ApiParam("Search filter.") @RequestBody filter: BoonLibFilter,

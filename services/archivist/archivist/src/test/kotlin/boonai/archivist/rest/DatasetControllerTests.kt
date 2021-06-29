@@ -4,14 +4,10 @@ import boonai.archivist.MockMvcTest
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
-import boonai.archivist.domain.BoonLibEntity
-import boonai.archivist.domain.BoonLibEntityType
-import boonai.archivist.domain.BoonLibSpec
 import boonai.archivist.domain.Dataset
 import boonai.archivist.domain.DatasetSpec
 import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.DatasetUpdate
-import boonai.archivist.domain.LicenseType
 import boonai.archivist.domain.UpdateLabelRequest
 import boonai.archivist.repository.DatasetDao
 import boonai.archivist.service.BoonLibService
@@ -25,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.io.ByteArrayInputStream
 import kotlin.test.assertEquals
 
 class DatasetControllerTests : MockMvcTest() {
@@ -277,41 +272,6 @@ class DatasetControllerTests : MockMvcTest() {
             .andReturn()
 
         logger.info(rsp.response.contentAsString)
-    }
-
-    @Test
-    fun testImport() {
-        val libSpec = BoonLibSpec(
-            "Test",
-            BoonLibEntity.Dataset,
-            BoonLibEntityType.Classification,
-            LicenseType.CC0,
-            "A test lib"
-        )
-        val lib = boonLibService.createBoonLib(libSpec)
-
-        val req = BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
-            state = AssetState.Analyzed
-        )
-
-        assetService.batchCreate(req)
-        val asset = getSample(1)[0]
-
-        boonLibStorageService.store(
-            "boonlib/${lib.id}/abc123/asset.json", 320,
-            ByteArrayInputStream(Json.serializeToString(asset).toByteArray())
-        )
-
-        mvc.perform(
-            MockMvcRequestBuilders.post("/api/v3/datasets/${dataset.id}/_import/${lib.id}")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.count", CoreMatchers.equalTo(1)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.tookMillis", CoreMatchers.anything()))
-            .andReturn()
     }
 
     fun makeDataSet(ds: Dataset): List<AssetSpec> {

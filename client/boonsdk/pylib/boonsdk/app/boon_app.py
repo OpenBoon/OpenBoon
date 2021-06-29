@@ -4,7 +4,7 @@ import os
 
 from . import AssetApp, DataSourceApp, ProjectApp, \
     JobApp, ModelApp, AnalysisModuleApp, VideoClipApp, CustomFieldApp, \
-    WebHookApp, DatasetApp
+    WebHookApp, DatasetApp, BoonLibApp
 from ..client import BoonClient, DEFAULT_SERVER
 
 logger = logging.getLogger(__name__)
@@ -45,6 +45,8 @@ class BoonApp:
         self.webhooks = WebHookApp(self)
         """A ``boonsdk.app.WebHookApp`` instance"""
         self.datasets = DatasetApp(self)
+        """A ``boonsdk.app.DatasetApp`` instance"""
+        self.boonlibs = BoonLibApp(self)
         """A ``boonsdk.app.DatasetApp`` instance"""
 
 

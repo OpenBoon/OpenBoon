@@ -2,6 +2,7 @@ from boonsdk.util import as_id
 
 from .index_app import IndexApp
 from .project_app import ProjectApp
+from .boonlib_app import BoonLibApp
 
 __all__ = [
     'BoonCzarApp',
@@ -17,6 +18,7 @@ class BoonCzarApp:
         self.client = app.client
         self.projects = ProjectApp(self, app)
         self.indexes = IndexApp(self, app)
+        self.boonlibs = BoonLibApp(self, app)
 
     def set_project(self, project):
         """

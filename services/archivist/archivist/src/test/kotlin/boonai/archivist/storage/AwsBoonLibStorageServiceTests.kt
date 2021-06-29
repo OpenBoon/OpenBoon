@@ -6,10 +6,8 @@ import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.BoonLibSpec
 import boonai.archivist.domain.BoonLibEntity
-import boonai.archivist.domain.BoonLibEntityType
 import boonai.archivist.domain.DatasetSpec
 import boonai.archivist.domain.DatasetType
-import boonai.archivist.domain.LicenseType
 import boonai.archivist.domain.ProjectFileLocator
 import boonai.archivist.domain.ProjectStorageCategory
 import boonai.archivist.domain.ProjectStorageEntity
@@ -67,10 +65,9 @@ class AwsBoonLibStorageServiceTests : AbstractTest() {
         val lib = boonLibService.createBoonLib(
             BoonLibSpec(
                 "foo2",
+                "test",
                 BoonLibEntity.Dataset,
-                BoonLibEntityType.Classification,
-                LicenseType.CC0,
-                "test"
+                ds.id
             )
         )
 

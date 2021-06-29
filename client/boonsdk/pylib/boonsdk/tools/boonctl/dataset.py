@@ -136,9 +136,8 @@ def import_classification(args):
         ds_label = dataset.make_label(label, scope=boonsdk.LabelScope.TRAIN)
         upload = [boonsdk.FileUpload(os.path.join(lpath, f),
                                      label=ds_label) for f in files[0:train_count]]
-        app.assets.batch_upload_files(upload)
 
         ds_label = dataset.make_label(label, scope=boonsdk.LabelScope.TEST)
-        upload = [boonsdk.FileUpload(os.path.join(lpath, f), label=ds_label)
-                  for f in files[train_count:train_count+test_count]]
+        upload.extend([boonsdk.FileUpload(os.path.join(lpath, f), label=ds_label)
+                       for f in files[train_count:train_count + test_count]])
         app.assets.batch_upload_files(upload)

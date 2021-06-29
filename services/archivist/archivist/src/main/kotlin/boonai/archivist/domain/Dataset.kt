@@ -187,7 +187,7 @@ class UpdateLabelRequest(
 @ApiModel("Label", description = "A Label which denotes a ground truth classification.")
 class Label(
     @ApiModelProperty("The ID of the Model")
-    val datasetId: UUID,
+    var datasetId: UUID,
     @ApiModelProperty("The label for the Asset")
     val label: String,
     @ApiModelProperty("The scope of the label.")

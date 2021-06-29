@@ -2,7 +2,6 @@ package boonai.archivist.service
 
 import boonai.archivist.AbstractTest
 import boonai.archivist.domain.BoonLibEntity
-import boonai.archivist.domain.BoonLibEntityType
 import boonai.archivist.domain.BoonLibFilter
 import boonai.archivist.domain.BoonLibSpec
 import boonai.archivist.domain.BoonLibState
@@ -10,7 +9,11 @@ import boonai.archivist.domain.BoonLibUpdateSpec
 import boonai.archivist.domain.DatasetSpec
 import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.JobFilter
-import boonai.archivist.domain.LicenseType
+import boonai.archivist.domain.JobSpec
+import boonai.archivist.domain.JobState
+import boonai.archivist.domain.JobStateChangeEvent
+import boonai.archivist.domain.emptyZpsScripts
+import boonai.archivist.repository.BoonLibJdbcDao
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import javax.persistence.EntityManager
@@ -23,6 +26,9 @@ class BoonLibServiceTests : AbstractTest() {
     lateinit var boonLibService: BoonLibService
 
     @Autowired
+    lateinit var boonLibJdbcDao: BoonLibJdbcDao
+
+    @Autowired
     lateinit var datasetService: DatasetService
 
     @Autowired
@@ -31,17 +37,9 @@ class BoonLibServiceTests : AbstractTest() {
     @PersistenceContext
     lateinit var entityManager: EntityManager
 
-    val spec = BoonLibSpec(
-        "Test",
-        BoonLibEntity.Dataset,
-        BoonLibEntityType.Classification,
-        LicenseType.CC0,
-        "A test lib"
-    )
-
     @Test
     fun testCreate() {
-        val lib = boonLibService.createBoonLib(spec)
+        val lib = boonLibService.createBoonLib(getSpec())
         assertEquals("Test", lib.name)
         assertEquals("A test lib", lib.description)
         assertEquals(BoonLibEntity.Dataset, lib.entity)
@@ -49,18 +47,20 @@ class BoonLibServiceTests : AbstractTest() {
 
     @Test
     fun testUpdate() {
-        val lib = boonLibService.createBoonLib(spec)
+        val lib = boonLibService.createBoonLib(getSpec())
+        entityManager.flush()
+        boonLibJdbcDao.updateBoonLibState(lib.id, BoonLibState.READY)
+
         assertEquals("Test", lib.name)
         assertEquals("A test lib", lib.description)
         assertEquals(BoonLibEntity.Dataset, lib.entity)
 
         val boonLibUpdateSpec =
-            BoonLibUpdateSpec(name = "Updated Name", description = "Updated Description", state = BoonLibState.READY)
+            BoonLibUpdateSpec(name = "Updated Name", description = "Updated Description")
         boonLibService.updateBoonLib(lib, boonLibUpdateSpec)
 
         assertEquals("Updated Name", lib.name)
         assertEquals("Updated Description", lib.description)
-        assertEquals(BoonLibState.READY, lib.state)
     }
 
     @Test
@@ -69,10 +69,8 @@ class BoonLibServiceTests : AbstractTest() {
 
         val spec = BoonLibSpec(
             "Test",
-            BoonLibEntity.Dataset,
-            BoonLibEntityType.Classification,
-            LicenseType.CC0,
             "A test lib",
+            BoonLibEntity.Dataset,
             ds.id
         )
 
@@ -83,15 +81,16 @@ class BoonLibServiceTests : AbstractTest() {
 
     @Test
     fun testGetBoonLib() {
-        val lib1 = boonLibService.createBoonLib(spec)
+        val lib1 = boonLibService.createBoonLib(getSpec())
         val lib2 = boonLibService.getBoonLib(lib1.id)
         assertEquals(lib1.id, lib2.id)
     }
 
     @Test
     fun testFindOne() {
-        val lib1 = boonLibService.createBoonLib(spec)
+        val lib1 = boonLibService.createBoonLib(getSpec())
         entityManager.flush()
+        boonLibJdbcDao.updateBoonLibState(lib1.id, BoonLibState.READY)
 
         val lib2 = boonLibService.findOneBoonLib(BoonLibFilter(ids = listOf(lib1.id)))
         assertEquals(lib1.id, lib2.id)
@@ -99,10 +98,39 @@ class BoonLibServiceTests : AbstractTest() {
 
     @Test
     fun testSearch() {
-        val lib1 = boonLibService.createBoonLib(spec)
+        val lib1 = boonLibService.createBoonLib(getSpec())
         entityManager.flush()
+        boonLibJdbcDao.updateBoonLibState(lib1.id, BoonLibState.READY)
 
         val lib2 = boonLibService.findAll(BoonLibFilter(ids = listOf(lib1.id)))
         assertEquals(lib1.id, lib2[0].id)
+    }
+
+    @Test
+    fun testHandleJobEvent() {
+        val lib1 = boonLibService.createBoonLib(getSpec())
+
+        val jspec = JobSpec(
+            "Exporting Dataset 'foo' to BoonLib '${lib1.id}'",
+            emptyZpsScripts("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
+
+        val job = jobService.create(jspec)
+
+        val event = JobStateChangeEvent(job, JobState.Success, JobState.InProgress)
+        boonLibService.handleJobStateChangeEvent(event)
+    }
+
+    fun getSpec(): BoonLibSpec {
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+        val spec = BoonLibSpec(
+            "Test",
+            "A test lib",
+            BoonLibEntity.Dataset,
+            ds.id
+        )
+        return spec
     }
 }

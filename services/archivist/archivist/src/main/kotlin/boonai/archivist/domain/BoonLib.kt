@@ -1,7 +1,9 @@
 package boonai.archivist.domain
 
 import boonai.archivist.repository.KDaoFilter
+import boonai.archivist.security.hasPermission
 import boonai.archivist.util.JdbcUtils
+import boonai.common.apikey.Permission
 import com.fasterxml.jackson.annotation.JsonIgnore
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
@@ -15,23 +17,9 @@ enum class BoonLibEntity {
     Dataset
 }
 
-enum class BoonLibEntityType(val entity: BoonLibEntity) {
-    Classification(BoonLibEntity.Dataset),
-    Detection(BoonLibEntity.Dataset),
-    FaceRecognition(BoonLibEntity.Dataset);
-
-    fun isCompatible(entity: BoonLibEntity): Boolean {
-        return this.entity == entity
-    }
-}
-
 enum class BoonLibState {
-    EMPTY,
+    PROCESSING,
     READY
-}
-
-enum class LicenseType(name: String) {
-    CC0("CC0 1.0 Public Domain")
 }
 
 /**
@@ -39,12 +27,9 @@ enum class LicenseType(name: String) {
  */
 class BoonLibSpec(
     var name: String,
-    val entity: BoonLibEntity,
-    val entityType: BoonLibEntityType,
-    var license: LicenseType,
     var description: String,
-    var entityId: UUID? = null
-
+    val entity: BoonLibEntity,
+    val entityId: UUID
 )
 
 /**
@@ -52,9 +37,7 @@ class BoonLibSpec(
  */
 class BoonLibUpdateSpec(
     var name: String? = null,
-    var description: String? = null,
-    var license: LicenseType? = null,
-    var state: BoonLibState? = null
+    var description: String? = null
 )
 
 /**
@@ -64,6 +47,9 @@ class BoonLibImportRequest(
     val boonlibId: UUID
 )
 
+/**
+ * BoonLib import result.
+ */
 class BoonLibImportResponse(
     val count: Int,
     val tookMillis: Long
@@ -77,7 +63,7 @@ class BoonLibFilter(
     val ids: List<UUID>? = null,
     val names: List<String>? = null,
     val entities: List<BoonLibEntity>? = null,
-    val states: List<BoonLibState>? = null
+    val entityTypes: List<String>? = null,
 
 ) : KDaoFilter() {
 
@@ -104,6 +90,11 @@ class BoonLibFilter(
             sort = listOf("timeCreated:desc")
         }
 
+        if (!hasPermission(Permission.SystemManage)) {
+            addToWhere("boonlib.state=?")
+            addToValues(BoonLibState.READY.ordinal)
+        }
+
         ids?.let {
             addToWhere(JdbcUtils.inClause("boonlib.pk_boonlib", it.size))
             addToValues(it)
@@ -119,9 +110,9 @@ class BoonLibFilter(
             addToValues(it.map { s -> s.ordinal })
         }
 
-        states?.let {
-            addToWhere(JdbcUtils.inClause("boonlib.state", it.size))
-            addToValues(it.map { s -> s.ordinal })
+        entityTypes?.let {
+            addToWhere(JdbcUtils.inClause("boonlib.entity_type", it.size))
+            addToValues(it)
         }
     }
 }
@@ -143,13 +134,10 @@ class BoonLib(
     val entity: BoonLibEntity,
 
     @Column(name = "entity_type")
-    val entityType: BoonLibEntityType,
+    val entityType: String,
 
     @Column(name = "descr")
     var description: String,
-
-    @Column(name = "license")
-    var license: LicenseType,
 
     @Column(name = "state")
     var state: BoonLibState,
@@ -169,21 +157,17 @@ class BoonLib(
     @Column(name = "actor_modified")
     var actorModified: String
 ) {
-    fun isCompatible(obj: Any): Boolean {
-        return if (obj is Dataset) {
-            when (entity) {
-                BoonLibEntity.Dataset -> {
-                    obj.type == DatasetType.Classification
-                }
-            }
-        } else {
-            false
-        }
-    }
 
     fun checkCompatible(obj: Any) {
         if (!isCompatible(obj)) {
-            throw IllegalArgumentException("The '$name BoonLib is not compatible with the target object")
+            throw IllegalArgumentException("The object type is not compatible with this BoonLib.")
         }
+    }
+
+    fun isCompatible(obj: Any): Boolean {
+        if (obj is Dataset) {
+            return obj.type.name.lowercase() == entityType.lowercase()
+        }
+        return false
     }
 }
