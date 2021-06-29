@@ -27,10 +27,14 @@ class BoonDockDaemon:
         self.executor = ProcessorExecutor(self.reactor)
 
     def __setup_zmq_socket(self, port):
-        ctx = zmq.Context()
-        socket = ctx.socket(zmq.PAIR)
-        socket.bind("tcp://*:%s" % port)
-        return socket
+        try:
+            ctx = zmq.Context()
+            socket = ctx.socket(zmq.PAIR)
+            socket.bind("tcp://*:%s" % port)
+            return socket
+        except Exception as e:
+            logger.error("Unable to setup ZMQ socket: ", e)
+            sys.exit(1)
 
     def start(self):
         logger.info("Analyst container server listening on port: %d" % self.port)
