@@ -1,13 +1,7 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 
 import { spacing } from '../Styles'
-
-import { useLocalStorage } from '../LocalStorage/helpers'
-import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
 import PageTitle from '../PageTitle'
 import BetaBadge from '../BetaBadge'
@@ -19,22 +13,8 @@ import ModelsContent from './Content'
 
 const Models = () => {
   const {
-    query: { projectId, action, modelId },
+    query: { projectId, action },
   } = useRouter()
-
-  const [, setPanel] = useLocalStorage({
-    key: 'leftOpeningPanelSettings',
-  })
-
-  const [, setModelFields] = useLocalStorage({
-    key: `AssetLabelingAdd.${projectId}`,
-    reducer: (state, a) => ({ ...state, ...a }),
-    initialState: {
-      modelId: modelId || '',
-      label: '',
-      scope: '',
-    },
-  })
 
   return (
     <>
@@ -50,26 +30,7 @@ const Models = () => {
       {action === 'add-model-success' && (
         <div css={{ display: 'flex', paddingTop: spacing.base }}>
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Model created.{' '}
-            <Link
-              href="/[projectId]/visualizer"
-              as={`/${projectId}/visualizer`}
-              passHref
-            >
-              <a
-                onClick={() => {
-                  setPanel({ value: 'assetLabeling' })
-
-                  setModelFields({
-                    modelId,
-                    scope: SCOPE_OPTIONS[0].value,
-                    label: '',
-                  })
-                }}
-              >
-                Start Labeling
-              </a>
-            </Link>
+            Model created.
           </FlashMessage>
         </div>
       )}

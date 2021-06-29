@@ -60,4 +60,25 @@ describe('<DatasetModelsTable />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render properly with an unknown model type', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/datasets/[datasetId]/models',
+      query: { projectId: PROJECT_ID, datasetId: DATASET_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: datasetModels })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <DatasetModelsTable
+          projectId={PROJECT_ID}
+          datasetId={DATASET_ID}
+          modelTypes={[]}
+        />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

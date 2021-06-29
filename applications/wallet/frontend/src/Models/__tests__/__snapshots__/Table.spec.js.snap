@@ -305,7 +305,7 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
                 </a>
               </td>
               <td>
-                ZVI_FACE_RECOGNITION
+                Face Recognition
               </td>
               <td>
                 boonai-console_face_recognition-face-recognition
@@ -383,7 +383,7 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
                 </a>
               </td>
               <td>
-                Tensorflow CNN Classifier
+                K-Nearest Neighbors Classifier
               </td>
               <td>
                 Gundam
@@ -422,7 +422,7 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
                 </a>
               </td>
               <td>
-                Tensorflow CNN Classifier
+                Tensorflow Transfer Learning Classifier
               </td>
               <td>
                 Location

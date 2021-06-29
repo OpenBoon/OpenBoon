@@ -1,4 +1,4 @@
-import TestRenderer, { act } from 'react-test-renderer'
+import TestRenderer from 'react-test-renderer'
 
 import mockUser from '../../User/__mocks__/user'
 import models from '../__mocks__/models'
@@ -15,7 +15,7 @@ jest.mock('next/link', () => 'Link')
 jest.mock('../Table', () => 'ModelsTable')
 
 describe('<Models />', () => {
-  it('should let the user start labeling', async () => {
+  it('should render properly', async () => {
     require('next/router').__setUseRouter({
       pathname: `/[projectId]/models`,
       query: {
@@ -34,25 +34,6 @@ describe('<Models />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
-
-    // eslint-disable-next-line no-proto
-    const spy = jest.spyOn(localStorage.__proto__, 'setItem')
-
-    await act(async () => {
-      component.root.findByProps({ children: 'Start Labeling' }).props.onClick()
-    })
-
-    expect(spy).toHaveBeenCalledWith(
-      'leftOpeningPanelSettings',
-      '"assetLabeling"',
-    )
-
-    expect(spy).toHaveBeenCalledWith(
-      `AssetLabelingAdd.${PROJECT_ID}`,
-      `{"modelId":"${MODEL_ID}","label":"","scope":"TRAIN"}`,
-    )
-
-    spy.mockClear()
   })
 
   it('should let the user know a model was deleted', async () => {

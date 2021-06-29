@@ -14,9 +14,9 @@ import BetaBadge from '../BetaBadge'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
+import { usePanel, ACTIONS, MIN_WIDTH } from '../Panel/helpers'
 
 import DatasetsRow from './Row'
-import { usePanel, ACTIONS, MIN_WIDTH } from '../Panel/helpers'
 
 const Datasets = () => {
   const {
@@ -26,7 +26,7 @@ const Datasets = () => {
   const [, setPanel] = usePanel({ openToThe: 'left' })
 
   const [, setDatasetFields] = useLocalStorage({
-    key: `AssetLabelingAdd.${projectId}`,
+    key: `AssetLabelingContent.${projectId}`,
     reducer: (state, a) => ({ ...state, ...a }),
     initialState: {
       datasetId: datasetId || '',
