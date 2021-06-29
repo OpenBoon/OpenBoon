@@ -35,8 +35,10 @@ const MetadataPrettyPredictions = ({
             aria-label="Add Filter"
             variant={VARIANTS.NEUTRAL}
             style={{
+              fontWeight: 'inherit',
               fontSize: 'inherit',
               lineHeight: 'inherit',
+              color: 'inherit',
             }}
             onClick={() => {
               filterDispatch({

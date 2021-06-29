@@ -212,6 +212,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-12 {

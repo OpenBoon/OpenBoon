@@ -59,6 +59,7 @@ exports[`<Checkbox /> should render properly 1`] = `
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-5 {
@@ -172,7 +173,8 @@ exports[`<Checkbox /> should render properly 2`] = `
 .emotion-4 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
 .emotion-5 {
@@ -286,7 +288,7 @@ exports[`<Checkbox /> should render properly checked and disabled 1`] = `
 .emotion-4 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
   fill: #3A5DFF;
 }
 

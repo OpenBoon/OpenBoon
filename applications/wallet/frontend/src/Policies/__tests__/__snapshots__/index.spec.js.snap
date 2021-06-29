@@ -179,7 +179,8 @@ exports[`<Policies /> should render properly 1`] = `
 .emotion-14 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
 .emotion-15 {

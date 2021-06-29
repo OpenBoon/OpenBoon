@@ -57,7 +57,7 @@ exports[`<CheckboxTableRow /> should render properly 1`] = `
 .emotion-5 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
   fill: #3A5DFF;
 }
 
@@ -198,7 +198,7 @@ exports[`<CheckboxTableRow /> should render properly 2`] = `
 .emotion-5 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
   fill: #3A5DFF;
 }
 

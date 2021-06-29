@@ -58,10 +58,10 @@ const MetadataPrettyPredictionsContent = ({
       >
         <div
           css={{
-            fontFamily: typography.family.mono,
-            fontSize: typography.size.small,
-            lineHeight: typography.height.small,
-            color: colors.structure.white,
+            fontWeight: typography.weight.bold,
+            fontSize: typography.size.regular,
+            lineHeight: typography.height.regular,
+            color: colors.key.two,
             paddingBottom: spacing.normal,
           }}
         >
@@ -70,8 +70,10 @@ const MetadataPrettyPredictionsContent = ({
               aria-label="Add Filter"
               variant={VARIANTS.NEUTRAL}
               style={{
+                fontWeight: 'inherit',
                 fontSize: 'inherit',
                 lineHeight: 'inherit',
+                color: 'inherit',
               }}
               onClick={() => {
                 filterDispatch({
@@ -172,8 +174,10 @@ const MetadataPrettyPredictionsContent = ({
                             aria-label="Add Filter"
                             variant={VARIANTS.NEUTRAL}
                             style={{
+                              fontWeight: 'inherit',
                               fontSize: 'inherit',
                               lineHeight: 'inherit',
+                              color: 'inherit',
                               whiteSpace: 'inherit',
                               textAlign: 'inherit',
                             }}

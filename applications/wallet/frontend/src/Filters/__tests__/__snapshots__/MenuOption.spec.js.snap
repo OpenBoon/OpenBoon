@@ -82,7 +82,7 @@ exports[`<FiltersMenuOption /> should render properly 1`] = `
 .emotion-6 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
   fill: #3A5DFF;
 }
 

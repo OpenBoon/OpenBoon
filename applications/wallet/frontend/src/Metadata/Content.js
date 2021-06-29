@@ -40,9 +40,10 @@ const MetadataContent = ({ projectId, assetId }) => {
     <>
       <div
         css={{
-          padding: spacing.normal,
+          padding: spacing.base,
+          paddingLeft: spacing.normal,
           borderBottom: constants.borders.regular.smoke,
-          color: colors.signal.sky.base,
+          color: colors.structure.pebble,
         }}
       >
         {filename}
@@ -68,8 +69,8 @@ const MetadataContent = ({ projectId, assetId }) => {
         <div
           css={{
             fontFamily: typography.family.condensed,
-            padding: spacing.normal,
-            paddingRight: spacing.base,
+            padding: spacing.base,
+            paddingLeft: spacing.normal,
           }}
         >
           ID
@@ -83,8 +84,7 @@ const MetadataContent = ({ projectId, assetId }) => {
             fontSize: typography.size.small,
             lineHeight: typography.height.small,
             color: colors.structure.pebble,
-            padding: spacing.normal,
-            paddingLeft: spacing.base,
+            padding: spacing.base,
             wordBreak: 'break-all',
           }}
         >

@@ -290,6 +290,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-47 {
@@ -1015,6 +1016,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-44 {
@@ -1742,7 +1744,8 @@ exports[`<CreateAccount /> should render properly when there is no token 2`] = `
 .emotion-46 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
 .emotion-47 {

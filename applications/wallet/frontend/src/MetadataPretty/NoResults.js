@@ -12,14 +12,15 @@ const MetadataPrettyNoResults = ({ name }) => {
           },
           padding: spacing.normal,
           paddingBottom: spacing.base,
-          fontFamily: typography.family.mono,
-          fontSize: typography.size.small,
-          lineHeight: typography.height.small,
-          color: colors.structure.white,
+          fontWeight: typography.weight.bold,
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
+          color: colors.key.two,
         }}
       >
         {name}
       </div>
+
       <div
         css={{
           width: '100%',

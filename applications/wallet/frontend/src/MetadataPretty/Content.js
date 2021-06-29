@@ -27,8 +27,10 @@ const MetadataPrettyContent = ({ path, name, value: { content } }) => {
             aria-label="Add Filter"
             variant={VARIANTS.NEUTRAL}
             style={{
+              fontWeight: 'inherit',
               fontSize: 'inherit',
               lineHeight: 'inherit',
+              color: 'inherit',
             }}
             onClick={() => {
               filterDispatch({
@@ -73,8 +75,10 @@ const MetadataPrettyContent = ({ path, name, value: { content } }) => {
           aria-label="Add Filter"
           variant={VARIANTS.NEUTRAL}
           style={{
+            fontWeight: 'inherit',
             fontSize: 'inherit',
             lineHeight: 'inherit',
+            color: 'inherit',
           }}
           onClick={() => {
             filterDispatch({

@@ -17,9 +17,10 @@ exports[`<Metadata /> should render properly 1`] = `
 exports[`<Metadata /> should render selected asset 1`] = `
 Array [
   .emotion-0 {
-  padding: 16px;
+  padding: 8px;
+  padding-left: 16px;
   border-bottom: 1px solid #3b3b3b;
-  color: #0074f5;
+  color: #e0e0e0;
 }
 
 <div
@@ -54,8 +55,8 @@ Array [
 
 .emotion-1 {
   font-family: Roboto Condensed;
-  padding: 16px;
-  padding-right: 8px;
+  padding: 8px;
+  padding-left: 16px;
 }
 
 .emotion-2 {
@@ -66,8 +67,7 @@ Array [
   font-size: 14px;
   line-height: 18px;
   color: #e0e0e0;
-  padding: 16px;
-  padding-left: 8px;
+  padding: 8px;
   word-break: break-all;
 }
 
@@ -1101,9 +1101,10 @@ Array [
 exports[`<Metadata /> should render selected asset 2`] = `
 Array [
   .emotion-0 {
-  padding: 16px;
+  padding: 8px;
+  padding-left: 16px;
   border-bottom: 1px solid #3b3b3b;
-  color: #0074f5;
+  color: #e0e0e0;
 }
 
 <div
@@ -1138,8 +1139,8 @@ Array [
 
 .emotion-1 {
   font-family: Roboto Condensed;
-  padding: 16px;
-  padding-right: 8px;
+  padding: 8px;
+  padding-left: 16px;
 }
 
 .emotion-2 {
@@ -1150,8 +1151,7 @@ Array [
   font-size: 14px;
   line-height: 18px;
   color: #e0e0e0;
-  padding: 16px;
-  padding-left: 8px;
+  padding: 8px;
   word-break: break-all;
 }
 
