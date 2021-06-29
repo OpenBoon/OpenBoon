@@ -413,3 +413,33 @@ class TestLabelingEndpoints:
         expected_label = copy(label)
         expected_label['b64Image'] = 'b64-image-str'
         assert response == {'count': 1, 'results': [expected_label]}
+
+    def test_label_tool_info_no_query_param(self, login, project, api_client, monkeypatch):
+        dataset_id = '287baa12-8f80-1a31-9273-76fd36c58a09'
+        path = reverse('dataset-label-tool-info',
+                       kwargs={'project_pk': project.id, 'pk': dataset_id})
+        response_content = check_response(api_client.get(path), status=status.HTTP_400_BAD_REQUEST)
+        assert response_content == {'detail': ['An `assetId` query param is required.']}
+
+    def test_label_tool_info_no_faces(self, login, project, api_client, monkeypatch):
+        def mock_get_asset(*args, **kwargs):
+            return asset
+
+        def mock_get_dataset(*args, **kwargs):
+            return {'type': 'FaceRecognition'}
+
+        def mock_b64_image(self, label, size):
+            label['b64Image'] = 'b64-image-str'
+
+        monkeypatch.setattr(AssetApp, 'get_asset', mock_get_asset)
+        monkeypatch.setattr(BoonClient, 'get', mock_get_dataset)
+        monkeypatch.setattr(AssetBoxImager, '_add_box_images', mock_b64_image)
+        dataset_id = '287baa12-8f80-1a31-9273-76fd36c58a09'
+
+        # Asset with 1 labeled face detection and 1 unlabeled face detection.
+        asset_data = {'id': 'w1US8zZQfWuYPnEp2tIsIYzZsPJjHhzg', 'document': {'analysis': {}}}
+        asset = Asset(asset_data)
+        path = reverse('dataset-label-tool-info',
+                       kwargs={'project_pk': project.id, 'pk': dataset_id})
+        response = check_response(api_client.get(f'{path}?assetId={asset.id}'))
+        assert response == {'count': 0, 'results': []}

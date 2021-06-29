@@ -249,7 +249,7 @@ class DatasetsViewSet(ZmlpCreateMixin,
 
             """
             response_labels = labels
-            faces = asset.get_attr('analysis.boonai-face-detection.predictions')
+            faces = asset.get_attr('analysis.boonai-face-detection.predictions', [])
             label_dict = {}
 
             # Adds placeholder labels for any detected faces.
@@ -277,9 +277,13 @@ class DatasetsViewSet(ZmlpCreateMixin,
         label_modifier_funcs = {'Classification': classification_modifier,
                                 'FaceRecognition': face_recognition_modifier}
 
+        asset_id = request.query_params.get('assetId')
+        if asset_id is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST,
+                            data={'detail': ['An `assetId` query param is required.']})
         dataset = request.client.get(os.path.join(self.zmlp_root_api_path, pk))
         dataset_type = dataset['type']
-        asset = request.app.assets.get_asset(request.query_params['assetId'])
+        asset = request.app.assets.get_asset(asset_id)
         labels = asset.get_attr('labels', [])
         box_imager = AssetBoxImager(asset, request.client)
         thumbnail_width = 56
