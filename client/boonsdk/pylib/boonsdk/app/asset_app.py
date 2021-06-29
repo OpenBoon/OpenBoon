@@ -8,7 +8,7 @@ from ..util import as_collection, as_id_collection, as_id
 from ..filters import apply_search_filters
 
 
-class AssetApp(object):
+class AssetApp:
     """Methods for managing Assets"""
 
     def __init__(self, app):
