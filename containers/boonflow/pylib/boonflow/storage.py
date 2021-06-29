@@ -208,6 +208,17 @@ class AssetStorage(object):
         """
         return self.proj_store.get_native_uri(stored_file)
 
+    def get_file_native_uri(self, entity_type, entity_id, category, name):
+        """
+       Provide the location of a file in cloud
+       :param entity_type: Entity type like MODELS, ASSETS..
+       :param entity_id: id of the entity
+       :param category: file category stored in cloud
+       :param name: file name
+       :return: Dictionary containing uri, mediaType
+       """
+        return self.proj_store.get_file_native_uri(entity_type, entity_id, category, name)
+
     def store_file(self, src_path, asset, category, rename=None, attrs=None):
         """
         Add a file to the asset's file list and store into externally
@@ -434,6 +445,27 @@ class ProjectStorage(object):
         """
         return self.app.client.get('/api/v3/files/_locate/{}'
                                    .format(stored_file.id))['uri']
+
+    def get_file_native_uri(self, entity_type, entity_id, category, name):
+        """
+        Provide the location of a file in cloud
+        :param entity_type: Entity type like MODELS, ASSETS..
+        :param entity_id: id of the entity
+        :param category: file category stored in cloud
+        :param name: file name
+        :return: Dictionary containing uri, mediaType
+        """
+        url = f"/api/v3/files/_locate/{entity_type}/{entity_id}/{category}/{name}"
+        return self.app.client.get(url)
+
+    def get_directory_location(self, entity_type, entity_id):
+        """
+        Return a entity folder in cloud
+        :param entity_type: Entity type like MODELS, ASSETS
+        :param entity_id: entity id
+        :return: location URL
+        """
+        return self.app.client.get(f"/api/v3/files/_locate/{entity_type}/{entity_id}")
 
 
 class FileCache(object):

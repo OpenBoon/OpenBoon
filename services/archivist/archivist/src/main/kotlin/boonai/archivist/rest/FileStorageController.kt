@@ -1,9 +1,10 @@
 package boonai.archivist.rest
 
-import boonai.archivist.domain.ProjectFileLocator
+import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageRequest
 import boonai.archivist.domain.ProjectStorageSpec
+import boonai.archivist.domain.ProjectFileLocator
 import boonai.archivist.service.AssetService
 import boonai.archivist.service.ModelService
 import boonai.archivist.storage.BoonLibStorageService
@@ -102,6 +103,19 @@ class FileStorageController(
             "uri" to projectStorageService.getNativeUri(locator),
             "mediaType" to FileUtils.getMediaType(name)
         )
+    }
+
+    @ApiOperation("Get folder location in cloud.", hidden = true)
+    // Only job runners can get this.
+    @PreAuthorize("hasAuthority('SystemProjectDecrypt')")
+    @GetMapping(value = ["/api/v3/files/_locate/{entity}/{entityId}"])
+    @ResponseBody
+    fun getCloudStorageLocation(
+        @PathVariable entity: String,
+        @PathVariable entityId: String,
+    ): Any {
+        val locator = ProjectDirLocator(ProjectStorageEntity.find(entity), entityId)
+        return projectStorageService.getNativeUri(locator)
     }
 
     @ApiOperation("Sign a storage entity for write.")

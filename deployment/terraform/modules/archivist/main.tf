@@ -31,6 +31,27 @@ resource "google_storage_bucket" "data" {
   }
 }
 
+resource "google_storage_bucket" "training" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  name          = "${var.project}-${var.training-bucket-name}"
+  location      = "US-CENTRAL1"
+  retention_policy {
+    retention_period = 604800 # 7 days in seconds
+  }
+  cors {
+    origin = ["*"]
+    method = ["GET"]
+  }
+  versioning {
+    enabled = true
+  }
+  logging {
+    log_bucket = var.log-bucket-name
+  }
+}
+
 ## SQL Instance
 resource "random_string" "sql-password" {
   length  = 16

@@ -1,13 +1,11 @@
 import logging
 import os
 import tempfile
-from unittest import TestCase
-from unittest.mock import patch
-
 import pytest
 
-import boonsdk
-from boonsdk import StoredFile, BoonClient, AnalysisModule, Job, Model
+from unittest import TestCase
+from unittest.mock import patch
+from boonsdk import StoredFile, BoonClient, AnalysisModule, Job, Model, app_from_env
 from boonsdk.app import ModelApp
 from boonflow import storage
 from boonflow.testing import test_data, TestAsset
@@ -19,7 +17,7 @@ class FileCacheTests(TestCase):
 
     def setUp(self):
         os.environ['BOONAI_STORAGE_PIPELINE_URL'] = 'http://localhost:9000'
-        self.lfc = storage.FileCache(boonsdk.app_from_env())
+        self.lfc = storage.FileCache(app_from_env())
 
     def tearDown(self):
         self.lfc.clear()
@@ -27,7 +25,7 @@ class FileCacheTests(TestCase):
     def test_init_with_task_id(self):
         os.environ['BOONAI_TASK_ID'] = '1234abcd5678'
         try:
-            cache = storage.FileCache(boonsdk.app_from_env())
+            cache = storage.FileCache(app_from_env())
             path = cache.localize_uri('https://i.imgur.com/WkomVeG.jpg')
             assert os.environ['BOONAI_TASK_ID'] in path
         finally:
@@ -226,6 +224,25 @@ class TestAssetStorage(TestCase):
         })
         uri = self.fs.assets.get_native_uri(pfile)
         assert 'gs://hulk-hogan' == uri
+
+    @patch.object(BoonClient, 'get')
+    def test_get_file_native_uri(self, get_patch):
+        uri = "https://cloud/bucket/project/project_id/entity/12345/category/filename.zip"
+        media_type = "application/zip"
+        get_patch.return_value = {"uri": uri,
+                                  "mediaType": media_type}
+
+        rsp = self.fs.projects.get_file_native_uri("entity", "12345", "category", "filename.zip")
+        assert rsp["uri"] == uri
+        assert rsp['mediaType'] == media_type
+
+    @patch.object(BoonClient, 'get')
+    def test_get_folder_location(self, get_patch):
+        uri = "https://cloud/bucket/project/0000000/models/123321"
+        get_patch.return_value = {uri}
+
+        rsp = self.fs.projects.get_directory_location('models', '123321')
+        assert rsp == {uri}
 
 
 class TestProjectStorage(TestCase):

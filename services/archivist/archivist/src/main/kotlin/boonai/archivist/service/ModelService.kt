@@ -44,6 +44,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
+import org.springframework.core.env.Environment
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -84,6 +85,7 @@ class ModelServiceImpl(
     val fileStorageService: ProjectStorageService,
     val argValidationService: ArgValidationService,
     val datasetService: DatasetService,
+    val environment: Environment,
     val publisherService: PublisherService
 ) : ModelService {
 
@@ -200,7 +202,8 @@ class ModelServiceImpl(
             mapOf<String, Any?>(
                 "model_id" to model.id.toString(),
                 "post_action" to (request.postAction.name),
-                "tag" to "latest"
+                "tag" to "latest",
+                "training_bucket" to "gs://${environment.getProperty("GCLOUD_PROJECT")}-training"
             )
         )
 

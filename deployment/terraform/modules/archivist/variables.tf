@@ -44,6 +44,10 @@ variable "data-bucket-name" {
   default = "archivist-data"
 }
 
+variable "training-bucket-name" {
+  default = "training"
+}
+
 variable "container-tag" {
   default = "latest"
 }
