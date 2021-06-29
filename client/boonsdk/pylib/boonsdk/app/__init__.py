@@ -9,3 +9,4 @@ from .clip_app import VideoClipApp
 from .field_app import CustomFieldApp
 from .webhook_app import WebHookApp
 from .dataset_app import DatasetApp
+from .boonlib_app import BoonLibApp
