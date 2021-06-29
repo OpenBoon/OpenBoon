@@ -250,6 +250,7 @@ class TestAsset(Asset):
             parsed_uri = urlparse(path)
             ext = os.path.basename(parsed_uri.path).split(".")[-1]
 
+            self.set_attr("source.filename", os.path.basename(path))
             self.set_attr("source.extension", ext)
             self.set_attr("source.mimetype",
                           self.mimetype_lookup.get(ext, "application/octet-stream"))
