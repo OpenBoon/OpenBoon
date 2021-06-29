@@ -8,7 +8,7 @@ describe('Users', function () {
       .type(Cypress.env('PASSWORD'), { log: false })
       .type('{enter}')
 
-    cy.contains('Account Overview')
+    cy.contains('All Projects')
   })
 
   it('can logout', function () {

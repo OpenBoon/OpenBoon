@@ -25,6 +25,7 @@ exports[`<Radio /> should render properly checked 1`] = `
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
+  position: relative;
 }
 
 .emotion-2 {
@@ -120,6 +121,7 @@ exports[`<Radio /> should render properly unchecked 1`] = `
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
+  position: relative;
 }
 
 .emotion-2 {

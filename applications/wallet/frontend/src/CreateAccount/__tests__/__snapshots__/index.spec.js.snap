@@ -324,6 +324,11 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   margin-right: 16px;
 }
 
+.emotion-49 button:last,
+.emotion-49 a:last {
+  margin-right: 0;
+}
+
 .emotion-50 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -1042,6 +1047,11 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 .emotion-46 button,
 .emotion-46 a {
   margin-right: 16px;
+}
+
+.emotion-46 button:last,
+.emotion-46 a:last {
+  margin-right: 0;
 }
 
 .emotion-47 {
@@ -1765,6 +1775,11 @@ exports[`<CreateAccount /> should render properly when there is no token 2`] = `
 .emotion-49 button,
 .emotion-49 a {
   margin-right: 16px;
+}
+
+.emotion-49 button:last,
+.emotion-49 a:last {
+  margin-right: 0;
 }
 
 .emotion-50 {

@@ -12,6 +12,7 @@ const RadioIcon = ({ name, value, isChecked, onClick }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        position: 'relative',
       }}
     >
       <input

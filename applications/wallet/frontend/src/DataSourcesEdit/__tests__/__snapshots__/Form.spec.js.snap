@@ -582,6 +582,11 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   margin-right: 16px;
 }
 
+.emotion-125 button:last,
+.emotion-125 a:last {
+  margin-right: 0;
+}
+
 .emotion-126 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -2100,6 +2105,11 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 .emotion-124 button,
 .emotion-124 a {
   margin-right: 16px;
+}
+
+.emotion-124 button:last,
+.emotion-124 a:last {
+  margin-right: 0;
 }
 
 .emotion-125 {

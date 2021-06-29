@@ -17,7 +17,7 @@ def single_record():
                                   asset_id='GTZ6ppbXYwXO4ssWYcPVaQJsXNC-cVap',
                                   asset_path='gs://bucket/image.jpg',
                                   image_count=1,
-                                  video_minutes=0.0)
+                                  video_seconds=0.0)
 
 
 @pytest.fixture
@@ -31,4 +31,4 @@ def test_set():
                                asset_id=record['asset_id'],
                                asset_path=record['asset_path'],
                                image_count=record['image_count'],
-                               video_minutes=record['video_minutes'])
+                               video_seconds=record['video_seconds'])

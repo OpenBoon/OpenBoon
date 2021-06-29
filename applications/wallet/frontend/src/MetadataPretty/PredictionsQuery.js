@@ -2,12 +2,12 @@ import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import MetadataPrettyPredictionsContent, {
-  BBOX_SIZE,
-} from './PredictionsContent'
+import { constants } from '../Styles'
+
+import MetadataPrettyPredictionsContent from './PredictionsContent'
 
 const MetadataPrettyPredictionsQuery = ({ path, name, type }) => {
-  const attr = `${path}.${name}&width=${BBOX_SIZE}`
+  const attr = `${path}.${name}&width=${constants.bbox}`
 
   const {
     query: { projectId, assetId },

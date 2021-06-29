@@ -127,6 +127,11 @@ exports[`<ModelDetails /> should render properly 1`] = `
   margin-right: 16px;
 }
 
+.emotion-16 button:last,
+.emotion-16 a:last {
+  margin-right: 0;
+}
+
 .emotion-17 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -615,6 +620,11 @@ exports[`<ModelDetails /> should render properly 2`] = `
 .emotion-19 button,
 .emotion-19 a {
   margin-right: 16px;
+}
+
+.emotion-19 button:last,
+.emotion-19 a:last {
+  margin-right: 0;
 }
 
 .emotion-20 {

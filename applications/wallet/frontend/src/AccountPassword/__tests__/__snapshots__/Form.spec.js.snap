@@ -80,6 +80,11 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   margin-right: 16px;
 }
 
+.emotion-17 button:last,
+.emotion-17 a:last {
+  margin-right: 0;
+}
+
 .emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -489,6 +494,11 @@ Array [
   margin-right: 16px;
 }
 
+.emotion-0 button:last,
+.emotion-0 a:last {
+  margin-right: 0;
+}
+
 .emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -632,6 +642,11 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 .emotion-17 button,
 .emotion-17 a {
   margin-right: 16px;
+}
+
+.emotion-17 button:last,
+.emotion-17 a:last {
+  margin-right: 0;
 }
 
 .emotion-18 {
@@ -1040,6 +1055,11 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 .emotion-17 button,
 .emotion-17 a {
   margin-right: 16px;
+}
+
+.emotion-17 button:last,
+.emotion-17 a:last {
+  margin-right: 0;
 }
 
 .emotion-18 {

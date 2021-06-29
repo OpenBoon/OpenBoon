@@ -41,32 +41,25 @@ describe('<ModelsAdd />', () => {
         .props.onChange({ target: { value: '' } })
     })
 
-    // Select valid type
-    act(() => {
-      component.root
-        .findByProps({ label: 'Model Type' })
-        .props.onChange({ value: 'GCP_LABEL_DETECTION' })
-    })
-
-    // Input valid name
-    act(() => {
-      component.root
-        .findByProps({ id: 'name' })
-        .props.onChange({ target: { value: 'My New Model' } })
-    })
-
-    // Input valid module name
-    act(() => {
-      component.root
-        .findByProps({ id: 'moduleName' })
-        .props.onChange({ target: { value: 'my-module-name' } })
-    })
-
     // Input valid name
     act(() => {
       component.root
         .findByProps({ id: 'name' })
         .props.onChange({ target: { value: 'My New Model Really' } })
+    })
+
+    // Input valid description
+    act(() => {
+      component.root
+        .findByProps({ id: 'description' })
+        .props.onChange({ target: { value: 'A cool new description' } })
+    })
+
+    // Select model type
+    act(() => {
+      component.root
+        .findAllByProps({ name: 'modelType' })[0]
+        .props.onClick({ value: 'KNN_CLASSIFIER' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -118,9 +111,9 @@ describe('<ModelsAdd />', () => {
         'X-CSRFToken': 'CSRF_TOKEN',
       },
       body: JSON.stringify({
-        type: 'GCP_LABEL_DETECTION',
-        name: 'My New Model Really',
-        moduleName: 'my-module-name',
+        name: 'my-new-model-really',
+        description: 'A cool new description',
+        type: 'KNN_CLASSIFIER',
       }),
     })
 

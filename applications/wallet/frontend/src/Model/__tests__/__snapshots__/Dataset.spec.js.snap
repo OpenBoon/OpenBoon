@@ -28,6 +28,11 @@ exports[`<ModelDataset /> should render properly without a datasetId 1`] = `
   margin-right: 16px;
 }
 
+.emotion-1 button:last,
+.emotion-1 a:last {
+  margin-right: 0;
+}
+
 .emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;

@@ -1,5 +1,6 @@
 import datetime
 import json
+import math
 from unittest.mock import patch, Mock
 
 import pytest
@@ -84,8 +85,14 @@ class TestViews(object):
             return mock_post_responses.pop()
 
         def mock_get(*args, **kwargs):
-            data = {"tier_1": {"image_count": 12, "video_minutes": 55.8},
-                    "tier_2": {"image_count": 30, "video_minutes": 6.571}}
+            data = {"tier_1": {"image_count": 12,
+                               "video_seconds": 55.8 * 60,
+                               "video_minutes": 55.8,
+                               "video_hours": 55.8 / 60.0},
+                    "tier_2": {"image_count": 30,
+                               "video_seconds": 6.571 * 60,
+                               "video_minutes": 6.571,
+                               "video_hours": 6.571 / 60.0}}
             response = Response()
             response.status_code = 200
             response._content = json.dumps(data).encode('utf-8')
@@ -104,13 +111,19 @@ class TestViews(object):
         assert response['count'] == 1
         assert response['results'][0] == {'id': '6abc33f0-4acf-4196-95ff-4cbb7f640a06',
                                           'mlUsageThisMonth': {'tier1': {'imageCount': 12,
-                                                                         'videoMinutes': 55.8},
+                                                                         'videoSeconds': 55.8 * 60,
+                                                                         'videoMinutes': 55.8,
+                                                                         'videoHours': 55.8 / 60.0},
                                                                'tier2': {'imageCount': 30,
-                                                                         'videoMinutes': 6.571}},
+                                                                         'videoSeconds': 6.571 * 60,
+                                                                         'videoMinutes': 6.571,
+                                                                         'videoHours': 6.571 / 60.0}},
                                           'name': 'Test Project',
                                           'organizationName': 'Test Org',
                                           'totalStorageUsage': {'imageCount': 35,
-                                                                'videoMinutes': 274},
+                                                                'videoSeconds': 16406,
+                                                                'videoMinutes': 274,
+                                                                'videoHours': math.ceil(274 / 60.0)},
                                           'userCount': 1}
 
     def test_org_project_list_many_projects(self, login, zmlp_project_user, api_client,
@@ -127,8 +140,14 @@ class TestViews(object):
             return mock_post_responses[post_number % 2]
 
         def mock_get(*args, **kwargs):
-            data = {"tier_1": {"image_count": 12, "video_minutes": 55.8},
-                    "tier_2": {"image_count": 30, "video_minutes": 6.571}}
+            data = {"tier_1": {"image_count": 12,
+                               "video_seconds": 55.8 * 60,
+                               "video_minutes": 55.8,
+                               "video_hours": 55.8 / 60.0},
+                    "tier_2": {"image_count": 30,
+                               "video_seconds": 6.571 * 60,
+                               "video_minutes": 6.571,
+                               "video_hours": 6.571 / 60.0}}
             response = Response()
             response.status_code = 200
             response._content = json.dumps(data).encode('utf-8')
@@ -161,9 +180,13 @@ class TestViews(object):
         organization.owners.add(zmlp_project_user)
         response = check_response(api_client.get(path))
         assert response['results'][0]['mlUsageThisMonth'] == {'tier1': {'imageCount': -1,
-                                                                        'videoMinutes': -1},
+                                                                        'videoSeconds': -1,
+                                                                        'videoMinutes': -1,
+                                                                        'videoHours': -1},
                                                               'tier2': {'imageCount': -1,
-                                                                        'videoMinutes': -1}}
+                                                                        'videoSeconds': -1,
+                                                                        'videoMinutes': -1,
+                                                                        'videoHours': -1}}
 
     def test_org_project_create(self, login, zmlp_project_user, api_client, organization, monkeypatch):
         monkeypatch.setattr(Project, 'sync_with_zmlp', lambda *args, **kwargs: None)

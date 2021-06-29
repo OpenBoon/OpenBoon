@@ -125,7 +125,7 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
         else:
             usage['image_count'] = response['hits']['total']['value']
 
-        # Get Aggregation for video minutes
+        # Get Aggregation for video seconds, minutes, hours
         query = {
             'track_total_hits': True,
             'query': {
@@ -152,7 +152,9 @@ class Project(UUIDMixin, TimeStampMixin, ActiveMixin):
             logger.warning(msg)
         else:
             video_seconds = response['aggregations']['sum#video_seconds']['value']
+            usage['video_seconds'] = video_seconds
             usage['video_minutes'] = math.ceil(video_seconds / 60)
+            usage['video_hours'] = math.ceil(video_seconds / 60.0 / 60.0)
         return usage
 
 

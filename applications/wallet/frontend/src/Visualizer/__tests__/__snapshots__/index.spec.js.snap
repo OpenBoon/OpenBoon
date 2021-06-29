@@ -441,26 +441,14 @@ exports[`<Visualizer /> should render properly 1`] = `
           />
         </button>
         <button
-          aria-label="Face Recognition Training"
+          aria-label="Dataset Labels"
           className="emotion-3"
           onClick={[Function]}
-          title="Face Recognition Training"
+          title="Dataset Labels"
           type="button"
         >
           <svg
-            data-file-name="faceDetection.svg"
-            height={20}
-          />
-        </button>
-        <button
-          aria-label="Add Labels To Model"
-          className="emotion-3"
-          onClick={[Function]}
-          title="Add Labels To Model"
-          type="button"
-        >
-          <svg
-            data-file-name="pen.svg"
+            data-file-name="tags.svg"
             height={20}
           />
         </button>
@@ -926,26 +914,14 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           />
         </button>
         <button
-          aria-label="Face Recognition Training"
+          aria-label="Dataset Labels"
           className="emotion-3"
           onClick={[Function]}
-          title="Face Recognition Training"
+          title="Dataset Labels"
           type="button"
         >
           <svg
-            data-file-name="faceDetection.svg"
-            height={20}
-          />
-        </button>
-        <button
-          aria-label="Add Labels To Model"
-          className="emotion-3"
-          onClick={[Function]}
-          title="Add Labels To Model"
-          type="button"
-        >
-          <svg
-            data-file-name="pen.svg"
+            data-file-name="tags.svg"
             height={20}
           />
         </button>

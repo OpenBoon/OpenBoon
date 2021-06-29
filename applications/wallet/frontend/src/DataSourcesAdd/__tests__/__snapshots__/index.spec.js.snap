@@ -764,6 +764,11 @@ Array [
   margin-right: 16px;
 }
 
+.emotion-165 button:last,
+.emotion-165 a:last {
+  margin-right: 0;
+}
+
 .emotion-166 {
   -webkit-flex: 0;
   -ms-flex: 0;

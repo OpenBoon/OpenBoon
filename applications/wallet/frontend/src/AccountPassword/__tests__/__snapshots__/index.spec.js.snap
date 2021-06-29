@@ -185,6 +185,11 @@ Array [
   margin-right: 16px;
 }
 
+.emotion-17 button:last,
+.emotion-17 a:last {
+  margin-right: 0;
+}
+
 .emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;

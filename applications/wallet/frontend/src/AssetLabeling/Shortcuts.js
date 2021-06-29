@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-const AssetLabelingShortcuts = ({ onSubmit }) => {
+const AssetLabelingShortcuts = ({ onSave }) => {
   const keydownHandler = useCallback(
     (event) => {
       const {
@@ -12,10 +12,10 @@ const AssetLabelingShortcuts = ({ onSubmit }) => {
       if (['INPUT', 'TEXTAREA'].includes(tagName)) return
 
       if (code === 'KeyS') {
-        onSubmit()
+        onSave()
       }
     },
-    [onSubmit],
+    [onSave],
   )
 
   useEffect(() => {

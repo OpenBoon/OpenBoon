@@ -301,6 +301,11 @@ Array [
   margin-right: 16px;
 }
 
+.emotion-29 button:last,
+.emotion-29 a:last {
+  margin-right: 0;
+}
+
 .emotion-30 {
   -webkit-flex: 0;
   -ms-flex: 0;
