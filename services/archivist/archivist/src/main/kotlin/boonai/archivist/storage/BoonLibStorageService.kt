@@ -75,6 +75,7 @@ class BoonLibAssetImporter(
         asset.setAttr("labels", labels)
         batch[asset.id] = asset.document
 
+        total += 1
         if (batch.size >= BATCH_SIZE) {
             launchBatch()
         }
@@ -96,7 +97,6 @@ class BoonLibAssetImporter(
     fun launchBatch() {
         val batchCopy = copyBatch()
         logger.info("Handing batch of ${batchCopy.size} assets")
-        total += batchCopy.size
         executor.execute {
             withAuth(auth) {
                 assetService.batchIndex(batchCopy, setAnalyzed = false, refresh = false, create = true)
