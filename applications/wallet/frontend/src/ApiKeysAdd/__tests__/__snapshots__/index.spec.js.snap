@@ -294,6 +294,7 @@ Array [
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-14 {
@@ -1734,6 +1735,7 @@ Array [
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-14 {

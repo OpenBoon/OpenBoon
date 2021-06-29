@@ -847,7 +847,8 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
 .emotion-11 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
 .emotion-12 {

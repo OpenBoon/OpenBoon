@@ -271,6 +271,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-32 {
@@ -322,7 +323,8 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
 .emotion-48 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
 .emotion-52 {
@@ -1796,6 +1798,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-31 {
@@ -1847,7 +1850,8 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
 .emotion-47 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
 .emotion-51 {

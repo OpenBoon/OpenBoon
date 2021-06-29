@@ -43,16 +43,20 @@ const MetadataPrettySimilarity = ({ name, value: { simhash }, path }) => {
         css={{
           padding: spacing.normal,
           paddingBottom: spacing.base,
-          fontFamily: typography.family.mono,
-          color: colors.structure.white,
+          fontWeight: typography.weight.bold,
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
+          color: colors.key.two,
         }}
       >
         <Button
           aria-label="Add Filter"
           variant={VARIANTS.NEUTRAL}
           style={{
-            fontSize: typography.size.small,
-            lineHeight: typography.height.small,
+            fontWeight: 'inherit',
+            fontSize: 'inherit',
+            lineHeight: 'inherit',
+            color: 'inherit',
           }}
           onClick={() => {
             filterDispatch({

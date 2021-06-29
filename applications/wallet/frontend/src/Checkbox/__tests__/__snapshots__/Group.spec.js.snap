@@ -88,7 +88,8 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
 .emotion-8 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
 .emotion-9 {
@@ -260,6 +261,7 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-9 {

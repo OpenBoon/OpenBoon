@@ -58,10 +58,10 @@ Array [
   white-space: nowrap;
   font-size: inherit;
   line-height: inherit;
-  font-weight: 500;
+  font-weight: inherit;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: inherit;
   background-color: transparent;
 }
 
@@ -213,10 +213,10 @@ Array [
   .emotion-0 {
   padding: 16px;
   padding-bottom: 8px;
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+  color: #6088FE;
 }
 
 .emotion-0:not(:first-of-type) {
@@ -247,10 +247,10 @@ Array [
   white-space: nowrap;
   font-size: inherit;
   line-height: inherit;
-  font-weight: 500;
+  font-weight: inherit;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: inherit;
   background-color: transparent;
 }
 
@@ -298,10 +298,10 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
 }
 
 .emotion-2 {
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+  color: #6088FE;
   padding-bottom: 16px;
 }
 
@@ -329,10 +329,10 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
   white-space: nowrap;
   font-size: inherit;
   line-height: inherit;
-  font-weight: 500;
+  font-weight: inherit;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: inherit;
   background-color: transparent;
 }
 
@@ -404,10 +404,10 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
   white-space: inherit;
   font-size: inherit;
   line-height: inherit;
-  font-weight: 500;
+  font-weight: inherit;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: inherit;
   background-color: transparent;
   text-align: inherit;
 }
@@ -562,10 +562,10 @@ Array [
 }
 
 .emotion-1 {
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+  color: #6088FE;
   padding-bottom: 16px;
 }
 
@@ -593,10 +593,10 @@ Array [
   white-space: nowrap;
   font-size: inherit;
   line-height: inherit;
-  font-weight: 500;
+  font-weight: inherit;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: inherit;
   background-color: transparent;
 }
 
@@ -655,10 +655,10 @@ Array [
   white-space: inherit;
   font-size: inherit;
   line-height: inherit;
-  font-weight: 500;
+  font-weight: inherit;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: inherit;
   background-color: transparent;
   text-align: inherit;
 }
@@ -891,10 +891,10 @@ Array [
   .emotion-0 {
   padding: 16px;
   padding-bottom: 8px;
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+  color: #6088FE;
 }
 
 .emotion-0:not(:first-of-type) {
@@ -925,10 +925,10 @@ Array [
   white-space: nowrap;
   font-size: inherit;
   line-height: inherit;
-  font-weight: 500;
+  font-weight: inherit;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: inherit;
   background-color: transparent;
 }
 
@@ -1279,8 +1279,10 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
 .emotion-1 {
   padding: 16px;
   padding-bottom: 8px;
-  font-family: Roboto Mono;
-  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+  color: #6088FE;
 }
 
 .emotion-2 {
@@ -1305,12 +1307,12 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   border-radius: 2px;
   padding: 0;
   white-space: nowrap;
-  font-size: 14px;
-  line-height: 18px;
-  font-weight: 500;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: inherit;
   background-color: transparent;
 }
 
@@ -1889,8 +1891,10 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
 .emotion-1 {
   padding: 16px;
   padding-bottom: 8px;
-  font-family: Roboto Mono;
-  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+  color: #6088FE;
 }
 
 .emotion-2 {
@@ -1915,12 +1919,12 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
   border-radius: 2px;
   padding: 0;
   white-space: nowrap;
-  font-size: 14px;
-  line-height: 18px;
-  font-weight: 500;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: inherit;
   background-color: transparent;
 }
 

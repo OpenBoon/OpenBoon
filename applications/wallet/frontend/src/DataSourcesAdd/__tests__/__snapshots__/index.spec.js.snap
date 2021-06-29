@@ -452,7 +452,8 @@ Array [
 .emotion-40 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
 .emotion-41 {
@@ -737,6 +738,7 @@ Array [
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-91 {

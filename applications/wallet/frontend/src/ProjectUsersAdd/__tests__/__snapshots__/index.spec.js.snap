@@ -423,6 +423,7 @@ Array [
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-14 {
@@ -1119,7 +1120,8 @@ Array [
 .emotion-13 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
 .emotion-14 {
@@ -1160,6 +1162,7 @@ Array [
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-33 {
@@ -2409,6 +2412,7 @@ Array [
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-14 {
