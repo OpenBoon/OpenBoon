@@ -58,15 +58,11 @@ class BoonLibServiceImpl(
     @Transactional
     override fun createBoonLib(spec: BoonLibSpec): BoonLib {
 
-        val subType = if (spec.entityId != null) {
-            when (spec.entity) {
-                BoonLibEntity.Dataset -> {
-                    val ds = datasetService.getDataset(spec.entityId)
-                    ds.type.name
-                }
+        val subType = when (spec.entity) {
+            BoonLibEntity.Dataset -> {
+                val ds = datasetService.getDataset(spec.entityId)
+                ds.type.name
             }
-        } else {
-            "N/A"
         }
 
         val time = System.currentTimeMillis()
