@@ -17,7 +17,7 @@ export const onExistingLink = async ({
 
   try {
     await fetcher(`/api/v1/projects/${projectId}/models/${modelId}/`, {
-      method: 'PUT',
+      method: 'PATCH',
       body: JSON.stringify({ datasetId }),
     })
 

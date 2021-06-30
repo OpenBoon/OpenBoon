@@ -1,6 +1,7 @@
 import json
 
 from boonsdk.client import BoonSdkNotFoundException
+from boonsdk.entity import PostTrainAction
 from django.http import Http404, HttpResponse
 from rest_framework import status
 from rest_framework.decorators import action
@@ -12,7 +13,7 @@ from models.serializers import (ModelSerializer, ModelTypeSerializer,
 from models.utils import ConfusionMatrix
 from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpRetrieveMixin,
                                ListViewType, ZmlpDestroyMixin, ZmlpCreateMixin,
-                               ZmlpUpdateMixin)
+                               ZmlpUpdateMixin, ZmlpPartialUpdateMixin)
 from wallet.utils import validate_zmlp_data
 
 
@@ -81,6 +82,7 @@ def detail_item_modifier(request, item):
 class ModelViewSet(ZmlpCreateMixin,
                    ZmlpListMixin,
                    ZmlpUpdateMixin,
+                   ZmlpPartialUpdateMixin,
                    ZmlpRetrieveMixin,
                    ZmlpDestroyMixin,
                    BaseProjectViewSet):
@@ -124,9 +126,19 @@ class ModelViewSet(ZmlpCreateMixin,
         """
         app = request.app
         model = self._get_model(app, pk)
-        deploy = request.data.get('deploy', False)
+        apply = request.data.get('apply', False)
+        test = request.data.get('test', False)
+        if test and apply:
+            return Response(status=status.HTTP_400_BAD_REQUEST,
+                            data={'detail': ['Cannot specify both test and apply, '
+                                             'please pick one.']})
+        post_train_action = PostTrainAction.NONE
+        if apply:
+            post_train_action = PostTrainAction.APPLY
+        if test:
+            post_train_action = PostTrainAction.TEST
 
-        job = app.models.train_model(model, deploy=deploy)
+        job = app.models.train_model(model, post_action=post_train_action)
         return Response(status=status.HTTP_200_OK, data=job._data)
 
     @action(methods=['get'], detail=True)

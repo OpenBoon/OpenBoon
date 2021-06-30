@@ -80,7 +80,7 @@ describe('<ModelLink />', () => {
     )
 
     expect(fetch.mock.calls[0][1]).toEqual({
-      method: 'PUT',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         'X-CSRFToken': 'CSRF_TOKEN',
