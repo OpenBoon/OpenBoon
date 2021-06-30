@@ -47,7 +47,7 @@ describe('<Datasets />', () => {
 
     expect(spy).toHaveBeenCalledWith(
       `AssetLabelingContent.${PROJECT_ID}`,
-      `{"datasetId":"${DATASET_ID}","label":"","scope":"TRAIN"}`,
+      `{"datasetId":"${DATASET_ID}","labels":{},"isLoading":false,"errors":{}}`,
     )
 
     spy.mockClear()

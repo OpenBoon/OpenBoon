@@ -25,6 +25,7 @@ describe('AssetLabelingForm', () => {
       <AssetLabelingForm
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
+        hasFaceDetection
         state={{
           datasetId: DATASET_ID,
           datasetType: 'Classification',
@@ -72,6 +73,7 @@ describe('AssetLabelingForm', () => {
       <AssetLabelingForm
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
+        hasFaceDetection
         state={{
           datasetId: DATASET_ID,
           datasetType: 'Classification',
@@ -107,6 +109,7 @@ describe('AssetLabelingForm', () => {
       <AssetLabelingForm
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
+        hasFaceDetection
         state={{
           datasetId: DATASET_ID,
           datasetType: 'Classification',
@@ -166,6 +169,7 @@ describe('AssetLabelingForm', () => {
       <AssetLabelingForm
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
+        hasFaceDetection
         state={{
           datasetId: DATASET_ID,
           datasetType: 'FaceRecognition',
@@ -209,5 +213,104 @@ describe('AssetLabelingForm', () => {
       errors: {},
       isLoading: true,
     })
+  })
+
+  it("should run face detection when it's missing", async () => {
+    require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
+    })
+
+    const mockDispatch = jest.fn()
+
+    const component = TestRenderer.create(
+      <AssetLabelingForm
+        projectId={PROJECT_ID}
+        assetId={ASSET_ID}
+        hasFaceDetection={false}
+        state={{
+          datasetId: DATASET_ID,
+          datasetType: 'FaceRecognition',
+          isLoading: false,
+          labels: {},
+          errors: {},
+        }}
+        dispatch={mockDispatch}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Run Face Detection
+    act(() => {
+      component.root
+        .findByProps({ children: 'Run Face Detection On This Asset' })
+        .props.onClick()
+    })
+
+    expect(mockDispatch).toHaveBeenLastCalledWith({
+      errors: {},
+      isLoading: true,
+    })
+  })
+
+  it('should render that face detection is running', async () => {
+    require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
+    })
+
+    const mockDispatch = jest.fn()
+
+    const component = TestRenderer.create(
+      <AssetLabelingForm
+        projectId={PROJECT_ID}
+        assetId={ASSET_ID}
+        hasFaceDetection={false}
+        state={{
+          datasetId: DATASET_ID,
+          datasetType: 'FaceRecognition',
+          isLoading: true,
+          labels: {},
+          errors: {},
+        }}
+        dispatch={mockDispatch}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when there are no faces detected', async () => {
+    require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
+    })
+
+    const mockDispatch = jest.fn()
+
+    const component = TestRenderer.create(
+      <AssetLabelingForm
+        projectId={PROJECT_ID}
+        assetId={ASSET_ID}
+        hasFaceDetection
+        state={{
+          datasetId: DATASET_ID,
+          datasetType: 'FaceRecognition',
+          isLoading: false,
+          labels: {},
+          errors: {},
+        }}
+        dispatch={mockDispatch}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

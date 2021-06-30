@@ -12,7 +12,6 @@ import AssetLabelingForm from './Form'
 
 const INITIAL_STATE = {
   datasetId: '',
-  datasetType: '',
   labels: {},
   isLoading: false,
   errors: {},
@@ -29,6 +28,7 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
     data: {
       metadata: {
         source: { filename },
+        analysis: { 'boonai-face-detection': { predictions } = {} } = {},
       },
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
@@ -38,6 +38,10 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
     initialState: INITIAL_STATE,
     reducer,
   })
+
+  const dataset = datasets.find(({ id }) => id === state.datasetId)
+
+  const { type: datasetType = '' } = dataset || {}
 
   return (
     <>
@@ -62,7 +66,7 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
           css={{
             display: 'flex',
             justifyContent: 'space-between',
-            fontWeight: typography.weight.medium,
+            fontWeight: typography.weight.bold,
           }}
         >
           <div>Select a dataset</div>
@@ -81,11 +85,7 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
           options={datasets.map(({ id, name }) => ({ value: id, label: name }))}
           defaultValue={state.datasetId}
           onChange={({ value }) => {
-            const dataset = datasets.find(({ id }) => id === value)
-
-            const { type: datasetType = '' } = dataset || {}
-
-            dispatch({ datasetId: value, datasetType, labels: {} })
+            dispatch({ datasetId: value, labels: {} })
           }}
           isRequired={false}
           variant={SELECT_VARIANTS.COLUMN}
@@ -98,7 +98,8 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
           <AssetLabelingForm
             projectId={projectId}
             assetId={assetId}
-            state={state}
+            hasFaceDetection={!!predictions}
+            state={{ ...state, datasetType }}
             dispatch={dispatch}
           />
         ) : (

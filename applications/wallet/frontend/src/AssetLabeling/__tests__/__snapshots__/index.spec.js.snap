@@ -27,7 +27,7 @@ Array [
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   justify-content: space-between;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .emotion-2 {
@@ -176,7 +176,7 @@ Array [
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   justify-content: space-between;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .emotion-2 {
@@ -287,6 +287,7 @@ Array [
   <AssetLabelingForm
     assetId="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
     dispatch={[Function]}
+    hasFaceDetection={false}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
     state={
       Object {

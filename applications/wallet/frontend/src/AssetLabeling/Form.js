@@ -9,12 +9,24 @@ import ButtonGroup from '../Button/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import { decamelize } from '../Text/helpers'
 
-import { getIsDisabled, getLabelState, onDelete, onSave } from './helpers'
+import {
+  getIsDisabled,
+  getLabelState,
+  onSave,
+  onDelete,
+  onFaceDetect,
+} from './helpers'
 
 import AssetLabelingShortcuts from './Shortcuts'
 import AssetLabelingLabel from './Label'
 
-const AssetLabelingForm = ({ projectId, assetId, state, dispatch }) => {
+const AssetLabelingForm = ({
+  projectId,
+  assetId,
+  hasFaceDetection,
+  state,
+  dispatch,
+}) => {
   const {
     data: { results: labels },
   } = useSWR(
@@ -40,6 +52,95 @@ const AssetLabelingForm = ({ projectId, assetId, state, dispatch }) => {
     })
   }
 
+  if (state.datasetType === 'FaceRecognition' && !hasFaceDetection) {
+    return (
+      <div
+        css={{
+          display: 'flex',
+          flexDirection: 'column',
+          flex: 1,
+          height: '0%',
+          padding: spacing.normal,
+        }}
+      >
+        <FlashMessageErrors
+          errors={state.errors}
+          styles={{ paddingBottom: spacing.normal, div: { flex: 1 } }}
+        />
+
+        <div
+          css={{
+            paddingBottom: spacing.normal,
+            fontWeight: typography.weight.bold,
+          }}
+        >
+          Add {decamelize({ word: state.datasetType })} Labels
+        </div>
+
+        <i css={{ color: colors.structure.zinc }}>
+          Face detection analysis has not been run on this asset. You can add
+          &quot;boonai-face-detection&quot; to the Data Source or you can run it
+          just on this asset by clicking the button below.
+        </i>
+
+        <ButtonGroup>
+          <Button
+            variant={BUTTON_VARIANTS.PRIMARY}
+            onClick={() => {
+              onFaceDetect({
+                projectId,
+                datasetId: state.datasetId,
+                assetId,
+                dispatch,
+              })
+            }}
+            style={{ flex: 1 }}
+          >
+            {state.isLoading
+              ? 'Running...'
+              : 'Run Face Detection On This Asset'}
+          </Button>
+        </ButtonGroup>
+      </div>
+    )
+  }
+
+  if (
+    state.datasetType === 'FaceRecognition' &&
+    hasFaceDetection &&
+    labels.length === 0
+  ) {
+    return (
+      <div
+        css={{
+          display: 'flex',
+          flexDirection: 'column',
+          flex: 1,
+          height: '0%',
+          padding: spacing.normal,
+        }}
+      >
+        <FlashMessageErrors
+          errors={state.errors}
+          styles={{ paddingBottom: spacing.normal, div: { flex: 1 } }}
+        />
+
+        <div
+          css={{
+            paddingBottom: spacing.normal,
+            fontWeight: typography.weight.bold,
+          }}
+        >
+          Add {decamelize({ word: state.datasetType })} Labels
+        </div>
+
+        <i css={{ color: colors.structure.zinc }}>
+          No Faces have been detected in this Asset.
+        </i>
+      </div>
+    )
+  }
+
   return (
     <div
       css={{ display: 'flex', flexDirection: 'column', flex: 1, height: '0%' }}
@@ -49,7 +150,7 @@ const AssetLabelingForm = ({ projectId, assetId, state, dispatch }) => {
       <div
         css={{
           padding: spacing.normal,
-          fontWeight: typography.weight.medium,
+          fontWeight: typography.weight.bold,
         }}
       >
         Add {decamelize({ word: state.datasetType })} Labels
@@ -65,7 +166,7 @@ const AssetLabelingForm = ({ projectId, assetId, state, dispatch }) => {
         >
           <FlashMessageErrors
             errors={state.errors}
-            styles={{ paddingTop: spacing.base, paddingBottom: spacing.comfy }}
+            styles={{ padding: spacing.normal, div: { flex: 1 } }}
           />
 
           {labels.map((label) => {
@@ -127,6 +228,7 @@ const AssetLabelingForm = ({ projectId, assetId, state, dispatch }) => {
 AssetLabelingForm.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
+  hasFaceDetection: PropTypes.bool.isRequired,
   state: PropTypes.shape({
     datasetId: PropTypes.string.isRequired,
     datasetType: PropTypes.string.isRequired,

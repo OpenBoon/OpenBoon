@@ -23,7 +23,15 @@ describe('AssetLabeling', () => {
   })
 
   it('should render properly with an asset selected', async () => {
-    require('swr').__setMockUseSWRResponse({ data: { ...asset, ...datasets } })
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        id: asset.id,
+        metadata: {
+          source: asset.metadata.source,
+        },
+        ...datasets,
+      },
+    })
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
