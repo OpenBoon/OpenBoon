@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { spacing } from '../Styles'
 
 import { useLocalStorage } from '../LocalStorage/helpers'
-import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
 
 import PageTitle from '../PageTitle'
 import BetaBadge from '../BetaBadge'
@@ -29,9 +28,10 @@ const Datasets = () => {
     key: `AssetLabelingContent.${projectId}`,
     reducer: (state, a) => ({ ...state, ...a }),
     initialState: {
-      datasetId: datasetId || '',
-      label: '',
-      scope: '',
+      datasetId: '',
+      labels: {},
+      isLoading: false,
+      errors: {},
     },
   })
 
@@ -62,11 +62,7 @@ const Datasets = () => {
                     payload: { minSize: MIN_WIDTH, openPanel: 'assetLabeling' },
                   })
 
-                  setDatasetFields({
-                    datasetId,
-                    scope: SCOPE_OPTIONS[0].value,
-                    label: '',
-                  })
+                  setDatasetFields({ datasetId, labels: {} })
                 }}
               >
                 Start Labeling

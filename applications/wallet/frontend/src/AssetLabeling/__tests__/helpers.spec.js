@@ -1,4 +1,10 @@
-import { getIsDisabled, getLabelState, onDelete, onSave } from '../helpers'
+import {
+  getIsDisabled,
+  getLabelState,
+  onSave,
+  onDelete,
+  onFaceDetect,
+} from '../helpers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
@@ -117,6 +123,41 @@ describe('<AssetLabeling /> helpers', () => {
           'X-CSRFToken': 'CSRF_TOKEN',
         },
         body: `{"removeLabels":[{"assetId":"${ASSET_ID}","label":"cat","bbox":[0.53,0.113,0.639,0.29]}]}`,
+      })
+
+      expect(mockDispatch).toHaveBeenCalledWith({
+        isLoading: false,
+        errors: { global: 'Something went wrong. Please try again.' },
+      })
+    })
+  })
+
+  describe('onFaceDetect()', () => {
+    it('should handle errors', async () => {
+      const mockDispatch = jest.fn()
+
+      // Mock Failure
+      fetch.mockRejectOnce({ error: 'Invalid' }, { status: 400 })
+
+      await onFaceDetect({
+        projectId: PROJECT_ID,
+        datasetId: DATASET_ID,
+        assetId: ASSET_ID,
+        dispatch: mockDispatch,
+      })
+
+      expect(fetch.mock.calls.length).toEqual(1)
+
+      expect(fetch.mock.calls[0][0]).toEqual(
+        `/api/v1/projects/${PROJECT_ID}/assets/${ASSET_ID}/detect_faces/`,
+      )
+
+      expect(fetch.mock.calls[0][1]).toEqual({
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'X-CSRFToken': 'CSRF_TOKEN',
+        },
       })
 
       expect(mockDispatch).toHaveBeenCalledWith({

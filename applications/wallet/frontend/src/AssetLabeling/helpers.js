@@ -137,3 +137,31 @@ export const onDelete = async ({
     dispatch({ isLoading: false, errors })
   }
 }
+
+export const onFaceDetect = async ({
+  projectId,
+  datasetId,
+  assetId,
+  dispatch,
+}) => {
+  dispatch({ isLoading: true, errors: {} })
+
+  try {
+    await fetcher(
+      `/api/v1/projects/${projectId}/assets/${assetId}/detect_faces/`,
+      { method: 'PATCH' },
+    )
+
+    mutate(`/api/v1/projects/${projectId}/assets/${assetId}/`)
+
+    await mutate(
+      `/api/v1/projects/${projectId}/datasets/${datasetId}/label_tool_info/?assetId=${assetId}`,
+    )
+
+    dispatch({ isLoading: false })
+  } catch (response) {
+    const errors = await parseResponse({ response })
+
+    dispatch({ isLoading: false, errors })
+  }
+}
