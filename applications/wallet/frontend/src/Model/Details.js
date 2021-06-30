@@ -93,7 +93,8 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
               onClick={() =>
                 onTrain({
                   model,
-                  deploy: false,
+                  apply: false,
+                  test: false,
                   projectId,
                   modelId,
                   setError,

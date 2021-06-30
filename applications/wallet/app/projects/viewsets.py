@@ -80,6 +80,11 @@ class ZmlpUpdateMixin(object):
         return self._zmlp_update(request, pk)
 
 
+class ZmlpPartialUpdateMixin(object):
+    def partial_update(self, request, project_pk, pk):
+        return self._zmlp_partial_update(request, pk)
+
+
 class ZmlpDestroyMixin(object):
     def destroy(self, request, project_pk, pk):
         return self._zmlp_destroy(request, pk)
@@ -498,6 +503,26 @@ class BaseProjectViewSet(ViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         response = request.client.put(os.path.join(self.zmlp_root_api_path, pk), serializer.data)
+        if 'success' in response and not response['success']:
+            return Response({'detail': ['There was an issue updating the resource.']}, status=500)
+        return Response(serializer.validated_data)
+
+    def _zmlp_partial_update(self, request, pk):
+        """The result of this method can be returned for the partial update method of a concrete
+        viewset if it just needs to proxy the results of a standard ZMLP endpoint for a single
+        object.
+
+        Args:
+            request (Request): Request the view method was given.
+            pk (str): Primary key of the object to return in the response.
+
+        Returns:
+            Response: DRF Response that can be used directly by viewset action method.
+
+        """
+        serializer = self.get_serializer(data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        response = request.client.patch(os.path.join(self.zmlp_root_api_path, pk), serializer.validated_data)
         if 'success' in response and not response['success']:
             return Response({'detail': ['There was an issue updating the resource.']}, status=500)
         return Response(serializer.validated_data)

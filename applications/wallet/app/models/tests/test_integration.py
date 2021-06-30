@@ -10,6 +10,7 @@ from models.views import ModelViewSet, get_model_type_restrictions
 from wallet.tests.utils import check_response
 from boonsdk import BoonClient, Model
 from boonsdk.app import ModelApp, DatasetApp
+from boonsdk.entity import PostTrainAction
 
 pytestmark = pytest.mark.django_db
 
@@ -207,10 +208,10 @@ class TestModelViewSetActions:
                 train.return_value = Mock(_data={})
                 response = api_client.post(path)
         check_response(response)
-        train.assert_called_once_with(model, deploy=False)
+        train.assert_called_once_with(model, post_action=PostTrainAction.NONE)
         get_model.assert_called_once()
 
-    def test_train_deploy(self, login, project, api_client):
+    def test_train_apply(self, login, project, api_client):
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
         path = reverse('model-train', kwargs={'project_pk': project.id,
                                               'pk': model_id})
@@ -219,10 +220,37 @@ class TestModelViewSetActions:
                 model = Mock()
                 get_model.return_value = model
                 train.return_value = Mock(_data={})
-                response = api_client.post(path, {'deploy': True})
+                response = api_client.post(path, {'apply': True})
         check_response(response)
-        train.assert_called_once_with(model, deploy=True)
+        train.assert_called_once_with(model, post_action=PostTrainAction.APPLY)
         get_model.assert_called_once()
+
+    def test_train_test(self, login, project, api_client):
+        model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+        path = reverse('model-train', kwargs={'project_pk': project.id,
+                                              'pk': model_id})
+        with patch.object(ModelApp, 'train_model') as train:
+            with patch.object(ModelViewSet, '_get_model') as get_model:
+                model = Mock()
+                get_model.return_value = model
+                train.return_value = Mock(_data={})
+                response = api_client.post(path, {'test': True})
+        check_response(response)
+        train.assert_called_once_with(model, post_action=PostTrainAction.TEST)
+        get_model.assert_called_once()
+
+    def test_train_apply_and_test(self, login, project, api_client):
+        model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+        path = reverse('model-train', kwargs={'project_pk': project.id,
+                                              'pk': model_id})
+        with patch.object(ModelApp, 'train_model') as train:
+            with patch.object(ModelViewSet, '_get_model') as get_model:
+                model = Mock()
+                get_model.return_value = model
+                train.return_value = Mock(_data={})
+                response = api_client.post(path, {'test': True, 'apply': True})
+        content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
+        assert content['detail'] == ['Cannot specify both test and apply, please pick one.']
 
     def test_confusion_matrix_actions(self, login, project, api_client, monkeypatch):
         def mock_aggs(*args, **kwargs):

@@ -72,7 +72,7 @@ describe('<ModelDetails />', () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       method: 'POST',
-      body: '{"deploy":false}',
+      body: '{"apply":false,"test":false}',
     })
 
     expect(mockMutate).toHaveBeenCalledWith({
