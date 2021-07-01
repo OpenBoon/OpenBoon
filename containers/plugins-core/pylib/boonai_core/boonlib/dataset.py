@@ -30,7 +30,6 @@ class ExportDatasetProcessor(AssetProcessor):
             return
 
         for label in labels:
-
             if label['datasetId'] == ds_id:
                 new_label = label
                 asset.set_attr("labels", [new_label])
@@ -43,7 +42,7 @@ class ExportDatasetProcessor(AssetProcessor):
 
         # Convert the files
         copies = {}
-        files = asset.get_files(category=['proxy', 'web-proxy'])
+        files = asset.get_files(category=['proxy', 'web-proxy', 'source'])
         for f in files:
             new_id = f'boonlib/{boonlib_id}/{asset.id}/{f.name}'
             copies[f.id] = new_id

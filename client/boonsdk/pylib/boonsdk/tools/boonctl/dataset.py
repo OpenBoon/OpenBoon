@@ -1,3 +1,4 @@
+import sys
 import os.path
 
 import boonsdk
@@ -26,6 +27,7 @@ def add_subparser(subparsers):
     import_cmd.add_argument('path', metavar='PATH', help='The path to the dataset files')
 
     import_cmd.add_argument('-d', '--descr', metavar='DESCRIPTION', help='A description')
+    import_cmd.add_argument('-n', '--name', metavar='NAME', help='Override name of dataset')
     import_cmd.add_argument('-c', '--count', type=int, default=0,
                             help='The number of assets to import per label. Default all.')
     import_cmd.add_argument('-r', '--test-ratio', type=float,
@@ -109,14 +111,32 @@ def import_ds(args):
 
 
 def import_classification(args):
-    ds_name = os.path.basename(args.path)
-    labels = [label for label in os.listdir(args.path) if label.isalnum()]
-    print(f'Detected Name: {ds_name}')
+    if args.name:
+        ds_name = args.name
+    else:
+        ds_name = os.path.basename(args.path)
+
+    if not ds_name:
+        print("Unable to detect name, try using the --name option")
+        sys.exit(1)
+
+    datasets = list(app.datasets.find_datasets(name=ds_name))
+    ds_exists = len(datasets) == 1
+
+    labels = [label for label in os.listdir(args.path) if not label.startswith('.')]
+    if not labels:
+        print("Unable to detect any labels, try modifying your path"),
+        sys.exit(1)
+
+    print(f'Detected Name: {ds_name} (exists: {ds_exists})')
     print(f'Detected Labels: {labels}')
     print("Ok? (ctr-c to abort)")
     _ = input()
 
-    dataset = app.datasets.create_dataset(ds_name, args.type)
+    if not ds_exists:
+        dataset = app.datasets.create_dataset(ds_name, args.type)
+    else:
+        dataset = app.datasets.find_one_dataset(name=ds_name)
 
     for label in labels:
         lpath = os.path.join(args.path, label)
@@ -132,12 +152,18 @@ def import_classification(args):
 
         print(f'Importing {total_file_count} "{label}" '
               f'assets. Train: {train_count} Test: {test_count}')
-
+        job_name = f"Dataset '{ds_name}' import."
         ds_label = dataset.make_label(label, scope=boonsdk.LabelScope.TRAIN)
-        upload = [boonsdk.FileUpload(os.path.join(lpath, f),
-                                     label=ds_label) for f in files[0:train_count]]
+
+        train_files = [f for f in files[0:train_count]]
+        test_files = [f for f in files[train_count:train_count + test_count]]
+
+        for chunk in boonsdk.util.chunked(train_files, 64):
+            upload = [boonsdk.FileUpload(os.path.join(lpath, f), label=ds_label) for f in chunk]
+            app.assets.batch_upload_files(upload, job_name=job_name)
 
         ds_label = dataset.make_label(label, scope=boonsdk.LabelScope.TEST)
-        upload.extend([boonsdk.FileUpload(os.path.join(lpath, f), label=ds_label)
-                       for f in files[train_count:train_count + test_count]])
-        app.assets.batch_upload_files(upload)
+        for chunk in boonsdk.util.chunked(test_files, 64):
+            upload.extend([boonsdk.FileUpload(os.path.join(lpath, f),
+                                              label=ds_label) for f in chunk])
+            app.assets.batch_upload_files(upload, job_name=job_name)

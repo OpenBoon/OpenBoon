@@ -383,7 +383,7 @@ class AssetServiceImpl : AssetService {
             assets.add(asset)
         }
 
-        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, req.credentials)
+        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, req.credentials, req.jobName)
     }
 
     override fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
@@ -412,7 +412,7 @@ class AssetServiceImpl : AssetService {
             asset
         }
 
-        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, request.credentials)
+        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, request.credentials, null)
     }
 
     override fun update(assetId: String, req: UpdateAssetRequest): Response {
@@ -715,7 +715,8 @@ class AssetServiceImpl : AssetService {
         createdAssetIds: Collection<String>,
         existingAssetIds: Collection<String>,
         pipeline: ResolvedPipeline,
-        creds: Set<String>?
+        creds: Set<String>?,
+        jobName: String?
     ): Job? {
 
         // Validate the assets need reprocessing
@@ -729,9 +730,16 @@ class AssetServiceImpl : AssetService {
         return if (finalAssetList.isEmpty()) {
             null
         } else {
+            val merge = jobName != null
             val name = "Analyze ${createdAssetIds.size} created assets, $reprocessAssetCount existing files."
+
             jobLaunchService.launchJob(
-                name, finalAssetList, pipeline, creds = creds, settings = mapOf("index" to true)
+                jobName ?: name,
+                finalAssetList,
+                pipeline,
+                merge = merge,
+                creds = creds,
+                settings = mapOf("index" to true)
             )
         }
     }
@@ -841,7 +849,8 @@ class AssetServiceImpl : AssetService {
         newAssets: List<Asset>,
         existingAssetIds: Collection<String>,
         pipeline: ResolvedPipeline?,
-        creds: Set<String>?
+        creds: Set<String>?,
+        jobName: String?,
     ): BatchCreateAssetsResponse {
 
         val rest = indexRoutingService.getProjectRestClient()
@@ -887,7 +896,7 @@ class AssetServiceImpl : AssetService {
 
         // Launch analysis job.
         val jobId = if (pipeline != null) {
-            createAnalysisJob(created, existingAssetIds, pipeline, creds)?.id
+            createAnalysisJob(created, existingAssetIds, pipeline, creds, jobName)?.id
         } else {
             null
         }
