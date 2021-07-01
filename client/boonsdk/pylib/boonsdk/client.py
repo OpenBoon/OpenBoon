@@ -186,7 +186,7 @@ class BoonClient:
                         ("files", (os.path.basename(f.name), f)))
                 else:
                     post_files.append(
-                        ("files", (os.path.basename(f), open(f, 'rb'))))
+                        ("files", (os.path.basename(f), FileInputStream(f, 'rb'))))
 
             if body is not None:
                 post_files.append(
@@ -547,6 +547,20 @@ class BoonSdkRequestException(BoonClientException):
 
     def __str__(self):
         return "<BoonSdkRequestException msg=%s>" % self.__data["message"]
+
+
+class FileInputStream:
+    """
+    A partially implemented File object which just supports reading the
+    entire file and then closing the file handle.
+    """
+    def __init__(self, filename, mode):
+        self.filename = filename
+        self.mode = mode
+
+    def read(self):
+        with open(self.filename, self.mode) as f:
+            return f.read()
 
 
 class BoonSdkConnectionException(BoonClientException):
