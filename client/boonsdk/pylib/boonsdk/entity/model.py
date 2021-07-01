@@ -138,7 +138,7 @@ class Model(BaseEntity):
                                     "must": [
                                         {
                                             "term": {
-                                                "labels.modelId": self.id
+                                                "labels.datasetId": self.dataset_id
                                             }
                                         }
                                     ]
