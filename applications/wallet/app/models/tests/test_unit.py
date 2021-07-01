@@ -1,5 +1,6 @@
 import cv2
 import numpy
+import pytest
 
 from unittest.mock import patch
 
@@ -426,3 +427,10 @@ def test_filtered_matrix_returns_all_labels(_mock):
                                 'overallAccuracy': 1.0,
                                 'testSetOnly': True,
                                 'isMatrixApplicable': True}
+
+
+def test_confusion_matrix_no_dataset():
+    matrix = ConfusionMatrix(Model({'name': 'test', 'moduleName': 'also-test'}),
+                             None, min_score=0.5, max_score=1.0)
+    with pytest.raises(ValueError):
+        matrix.to_dict()
