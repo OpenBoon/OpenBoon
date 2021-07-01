@@ -110,9 +110,10 @@ class BoonLibControllerTests : MockMvcTest() {
 
         assetService.batchCreate(req)
         val asset = getSample(1)[0]
+        asset.setAttr("labels", listOf(mapOf("label" to "dog")))
 
         boonLibStorageService.store(
-            "boonlib/${lib.id}/abc123/asset.json", 320,
+            "boonlib/${lib.id}/abc123/asset.json", 347,
             ByteArrayInputStream(Json.serializeToString(asset).toByteArray())
         )
 
