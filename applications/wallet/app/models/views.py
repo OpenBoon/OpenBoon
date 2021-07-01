@@ -161,7 +161,7 @@ class ModelViewSet(ZmlpCreateMixin,
                                  test_set_only=test_set_only)
         try:
             response_data = matrix.to_dict()
-        except TypeError:
+        except (ValueError, TypeError):
             response_data = {
                 "name": model.name,
                 "moduleName": model.module_name,

@@ -66,7 +66,10 @@ class Model(BaseEntity):
     @property
     def dataset_id(self):
         """The Dataset unique ID"""
-        return self._data['datasetId']
+        dataset_id = self._data.get('datasetId')
+        if not dataset_id:
+            raise ValueError('This model does not have an attached Dataset.')
+        return dataset_id
 
     @property
     def module_name(self):
@@ -112,6 +115,9 @@ class Model(BaseEntity):
             min_score (float): Minimum confidence score to return results for.
             max_score (float): Maximum confidence score to return results for.
             test_set_only (bool): If True only assets with TEST labels will be evaluated.
+
+        Raises:
+            ValueError: If there is no linked Dataset to build the query with.
 
         Returns:
             dict: A search to pass to an asset search.
@@ -193,8 +199,6 @@ class Model(BaseEntity):
         Returns:
             TrainingSetFilter: A preconfigured TrainingSetFilter
         """
-        if not self.dataset_id:
-            raise ValueError('This model does not have an attached Dataset')
         return TrainingSetFilter(self.dataset_id, scopes=scopes, labels=labels)
 
 
