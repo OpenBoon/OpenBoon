@@ -66,7 +66,10 @@ class Model(BaseEntity):
     @property
     def dataset_id(self):
         """The Dataset unique ID"""
-        return self._data.get('datasetId')
+        dataset_id = self._data.get('datasetId')
+        if not dataset_id:
+            raise ValueError('This model does not have an attached Dataset.')
+        return dataset_id
 
     @property
     def module_name(self):
@@ -120,8 +123,6 @@ class Model(BaseEntity):
             dict: A search to pass to an asset search.
 
         """
-        if not self.dataset_id:
-            raise ValueError('This model does not have an attached Dataset')
         search_query = {
             "size": 0,
             "query": {
@@ -198,8 +199,6 @@ class Model(BaseEntity):
         Returns:
             TrainingSetFilter: A preconfigured TrainingSetFilter
         """
-        if not self.dataset_id:
-            raise ValueError('This model does not have an attached Dataset')
         return TrainingSetFilter(self.dataset_id, scopes=scopes, labels=labels)
 
 
