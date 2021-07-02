@@ -21,7 +21,7 @@ matplotlib
 clarifai-grpc
 pytesseract
 torch==1.8.1
-torchvision
+torchvision==0.9.1
 facenet-pytorch==2.5.2
 boto3
 nameparser
