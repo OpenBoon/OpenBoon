@@ -28,3 +28,4 @@ nameparser
 street-address
 dateparser
 azure-cognitiveservices-vision-computervision==0.7.0
+pillow==8.2.0

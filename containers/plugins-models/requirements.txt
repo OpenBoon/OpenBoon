@@ -3,3 +3,4 @@ opencv-contrib-python-headless
 cvlib
 tensorflow==2.3.3
 google-cloud-automl
+pillow==8.2.0
