@@ -20,11 +20,12 @@ cvlib
 matplotlib
 clarifai-grpc
 pytesseract
-torch
-torchvision
-facenet-pytorch
+torch==1.8.1
+torchvision==0.9.1
+facenet-pytorch==2.5.2
 boto3
 nameparser
 street-address
 dateparser
 azure-cognitiveservices-vision-computervision==0.7.0
+pillow==8.2.0

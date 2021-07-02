@@ -41,7 +41,7 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         args = {
             "model_id": self.model_id,
             "tag": "latest",
-            "input_size": (321, 321)
+            "input_size": (300, 300)
         }
 
         flower_paths = [
