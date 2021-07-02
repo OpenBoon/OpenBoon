@@ -23,6 +23,10 @@ export const onSubmit = async ({
       },
     )
 
+    revalidate({
+      key: `/api/v1/projects/${projectId}/datasets/all/`,
+    })
+
     await revalidate({
       key: `/api/v1/projects/${projectId}/datasets/`,
     })

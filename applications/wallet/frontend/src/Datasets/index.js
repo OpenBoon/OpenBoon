@@ -6,14 +6,13 @@ import Link from 'next/link'
 
 import { spacing } from '../Styles'
 
-import { useLocalStorage } from '../LocalStorage/helpers'
-
 import PageTitle from '../PageTitle'
 import BetaBadge from '../BetaBadge'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
 import { usePanel, ACTIONS, MIN_WIDTH } from '../Panel/helpers'
+import { useLabelTool } from '../AssetLabeling/helpers'
 
 import DatasetsRow from './Row'
 
@@ -24,16 +23,7 @@ const Datasets = () => {
 
   const [, setPanel] = usePanel({ openToThe: 'left' })
 
-  const [, setDatasetFields] = useLocalStorage({
-    key: `AssetLabelingContent.${projectId}`,
-    reducer: (state, a) => ({ ...state, ...a }),
-    initialState: {
-      datasetId: '',
-      labels: {},
-      isLoading: false,
-      errors: {},
-    },
-  })
+  const [, setDatasetFields] = useLabelTool({ projectId })
 
   return (
     <>
@@ -102,6 +92,7 @@ const Datasets = () => {
             projectId={projectId}
             dataset={result}
             revalidate={revalidate}
+            setDatasetFields={setDatasetFields}
           />
         )}
       />

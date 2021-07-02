@@ -10,6 +10,7 @@ const DatasetsRow = ({
   projectId,
   dataset: { id: datasetId, name, type, modelCount },
   revalidate,
+  setDatasetFields,
 }) => {
   return (
     <tr
@@ -38,6 +39,7 @@ const DatasetsRow = ({
           projectId={projectId}
           datasetId={datasetId}
           revalidate={revalidate}
+          setDatasetFields={setDatasetFields}
         />
       </td>
     </tr>
@@ -53,6 +55,7 @@ DatasetsRow.propTypes = {
     modelCount: PropTypes.number.isRequired,
   }).isRequired,
   revalidate: PropTypes.func.isRequired,
+  setDatasetFields: PropTypes.func.isRequired,
 }
 
 export default DatasetsRow
