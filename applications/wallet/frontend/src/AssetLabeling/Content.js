@@ -4,20 +4,12 @@ import Link from 'next/link'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import { useLocalStorage } from '../LocalStorage/helpers'
 import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
 import SuspenseBoundary from '../SuspenseBoundary'
 
+import { useLabelTool } from './helpers'
+
 import AssetLabelingForm from './Form'
-
-const INITIAL_STATE = {
-  datasetId: '',
-  labels: {},
-  isLoading: false,
-  errors: {},
-}
-
-const reducer = (state, action) => ({ ...state, ...action })
 
 const AssetLabelingContent = ({ projectId, assetId }) => {
   const {
@@ -33,11 +25,7 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
-  const [state, dispatch] = useLocalStorage({
-    key: `AssetLabelingContent.${projectId}`,
-    initialState: INITIAL_STATE,
-    reducer,
-  })
+  const [state, dispatch] = useLabelTool({ projectId })
 
   const dataset = datasets.find(({ id }) => id === state.datasetId)
 

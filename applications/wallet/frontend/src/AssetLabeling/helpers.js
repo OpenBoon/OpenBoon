@@ -1,11 +1,29 @@
 import { mutate } from 'swr'
 
+import { useLocalStorage } from '../LocalStorage/helpers'
 import { fetcher, parseResponse } from '../Fetch/helpers'
 
 export const SCOPE_OPTIONS = [
   { value: 'TRAIN', label: 'Train' },
   { value: 'TEST', label: 'Test' },
 ]
+
+const INITIAL_STATE = {
+  datasetId: '',
+  labels: {},
+  isLoading: false,
+  errors: {},
+}
+
+const reducer = (state, action) => ({ ...state, ...action })
+
+export const useLabelTool = ({ projectId }) => {
+  return useLocalStorage({
+    key: `AssetLabelingContent.${projectId}`,
+    initialState: INITIAL_STATE,
+    reducer,
+  })
+}
 
 export const getIsDisabled = ({ assetId, state, labels }) => {
   // Loading

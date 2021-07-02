@@ -31,6 +31,7 @@ const DatasetLabelsContent = ({
       <DatasetLabelsSelection
         projectId={projectId}
         datasetId={datasetId}
+        datasetName={datasetName}
         scope={scope}
         label={label}
         labels={labels}

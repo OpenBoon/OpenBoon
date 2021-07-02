@@ -9,6 +9,7 @@ describe('<DatasetsMenu />', () => {
   it('should render properly', async () => {
     const mockRouterPush = jest.fn()
     const mockRevalidate = jest.fn()
+    const mockDispatch = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
 
@@ -17,6 +18,7 @@ describe('<DatasetsMenu />', () => {
         projectId={PROJECT_ID}
         datasetId={DATASET_ID}
         revalidate={mockRevalidate}
+        setDatasetFields={mockDispatch}
       />,
     )
 
@@ -59,6 +61,8 @@ describe('<DatasetsMenu />', () => {
         .findByProps({ children: 'Delete Permanently' })
         .props.onClick()
     })
+
+    expect(mockDispatch).toHaveBeenCalledWith({ datasetId: '', labels: {} })
 
     expect(mockRevalidate).toHaveBeenCalledWith()
 

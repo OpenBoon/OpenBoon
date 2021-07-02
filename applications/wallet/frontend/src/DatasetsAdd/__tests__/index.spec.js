@@ -91,7 +91,7 @@ describe('<DatasetsAdd />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(fetch.mock.calls.length).toEqual(4)
+    expect(fetch.mock.calls.length).toEqual(5)
 
     expect(fetch.mock.calls[0][0]).toEqual(
       `/api/v1/projects/${PROJECT_ID}/datasets/`,

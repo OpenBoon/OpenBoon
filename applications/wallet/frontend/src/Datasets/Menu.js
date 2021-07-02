@@ -9,7 +9,12 @@ import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 import Modal from '../Modal'
 
-const DatasetsMenu = ({ projectId, datasetId, revalidate }) => {
+const DatasetsMenu = ({
+  projectId,
+  datasetId,
+  revalidate,
+  setDatasetFields,
+}) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -47,6 +52,8 @@ const DatasetsMenu = ({ projectId, datasetId, revalidate }) => {
           onConfirm={async () => {
             setIsDeleting(true)
 
+            setDatasetFields({ datasetId: '', labels: {} })
+
             await fetcher(
               `/api/v1/projects/${projectId}/datasets/${datasetId}/`,
               { method: 'DELETE' },
@@ -69,6 +76,7 @@ DatasetsMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   datasetId: PropTypes.string.isRequired,
   revalidate: PropTypes.func.isRequired,
+  setDatasetFields: PropTypes.func.isRequired,
 }
 
 export default DatasetsMenu
