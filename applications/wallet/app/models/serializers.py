@@ -52,6 +52,7 @@ class ModelTypeSerializer(serializers.Serializer):
 class ConfusionMatrixSerializer(serializers.Serializer):
     name = serializers.CharField()
     moduleName = serializers.CharField()
+    datasetId = serializers.CharField(required=False, allow_null=True)
     labels = serializers.ListField(child=serializers.CharField())
     matrix = serializers.ListField(child=serializers.ListField(child=serializers.IntegerField()))
     maxScore = serializers.FloatField()

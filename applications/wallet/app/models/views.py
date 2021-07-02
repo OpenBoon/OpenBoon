@@ -161,17 +161,18 @@ class ModelViewSet(ZmlpCreateMixin,
                                  test_set_only=test_set_only)
         try:
             response_data = matrix.to_dict()
-        except (ValueError, TypeError):
+        except ValueError:
             response_data = {
                 "name": model.name,
                 "moduleName": model.module_name,
-                "overallAccuracy": 0,
+                "overallAccuracy": 0.0,
                 "labels": [],
                 'minScore': 0.0,
                 'maxScore': 1.0,
                 'testSetOnly': True,
                 "matrix": [],
-                "isMatrixApplicable": False}
+                "isMatrixApplicable": True,
+                "datasetId": None}
         serializer = ConfusionMatrixSerializer(data=response_data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data)
