@@ -183,7 +183,9 @@ def mock_aggs(*args, **kwargs):
 def test_get_confusion_matrix(monkeypatch):
     monkeypatch.setattr(ConfusionMatrix, '_ConfusionMatrix__get_confusion_matrix_aggregations',
                         mock_aggs)
-    matrix = ConfusionMatrix(Model({'name': 'test', 'moduleName': 'also-test'}), None)
+    matrix = ConfusionMatrix(Model({'name': 'test',
+                                    'moduleName': 'also-test',
+                                    'datasetId': '12345'}), None)
     assert matrix.labels == ['Unrecognized', 'airplane', 'automobile', 'bird', 'cat',
                              'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
     assert matrix.accuracy == 0.7446300715990454
@@ -218,7 +220,8 @@ def test_get_confusion_matrix(monkeypatch):
                                 'moduleName': 'also-test',
                                 'overallAccuracy': 0.7446300715990454,
                                 'testSetOnly': True,
-                                'isMatrixApplicable': True}
+                                'isMatrixApplicable': True,
+                                'datasetId': '12345'}
     assert matrix.to_dict(normalize_matrix=True) == {'labels': ['Unrecognized',
                                                                 'airplane',
                                                                 'automobile',
@@ -342,7 +345,8 @@ def test_get_confusion_matrix(monkeypatch):
                                                      'moduleName': 'also-test',
                                                      'overallAccuracy': 0.7446300715990454,
                                                      'testSetOnly': True,
-                                                     'isMatrixApplicable': True}
+                                                     'isMatrixApplicable': True,
+                                                     'datasetId': '12345'}
     thumbnail = ConfusionMatrix(Model({'name': 'test'}), None).create_thumbnail_image()
     npimg = numpy.fromstring(thumbnail.read(), numpy.uint8)
     image = cv2.imdecode(npimg, cv2.IMREAD_UNCHANGED)
@@ -394,7 +398,9 @@ def test_get_dict_from_agg_results():
 @patch.object(ConfusionMatrix, '_ConfusionMatrix__get_confusion_matrix_aggregations')
 def test_filtered_matrix_returns_all_labels(_mock):
     _mock.side_effect = [full_return(), filtered_return()]
-    matrix = ConfusionMatrix(Model({'name': 'test', 'moduleName': 'also-test'}), None,
+    matrix = ConfusionMatrix(Model({'name': 'test',
+                                    'moduleName': 'also-test',
+                                    'datasetId': '12345'}), None,
                              min_score=0.5, max_score=1.0)
     assert matrix.labels == ['Unrecognized', 'airplane', 'automobile', 'bird', 'cat',
                              'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
@@ -426,7 +432,8 @@ def test_filtered_matrix_returns_all_labels(_mock):
                                 'moduleName': 'also-test',
                                 'overallAccuracy': 1.0,
                                 'testSetOnly': True,
-                                'isMatrixApplicable': True}
+                                'isMatrixApplicable': True,
+                                'datasetId': '12345'}
 
 
 def test_confusion_matrix_no_dataset():
