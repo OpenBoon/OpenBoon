@@ -266,6 +266,12 @@ def print_json(obj, indent=2):
     print(json.dumps(obj, cls=BoonSdkJsonEncoder, indent=indent))
 
 
+def chunked(lst, n):
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
+
+
 class BoonSdkJsonEncoder(json.JSONEncoder):
     """
     JSON encoder for with Boon AI specific serialization defaults.

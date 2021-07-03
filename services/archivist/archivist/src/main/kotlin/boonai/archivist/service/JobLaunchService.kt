@@ -9,8 +9,10 @@ import boonai.archivist.domain.DataSourceImportOptions
 import boonai.archivist.domain.Dataset
 import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.Job
+import boonai.archivist.domain.JobFilter
 import boonai.archivist.domain.JobPriority
 import boonai.archivist.domain.JobSpec
+import boonai.archivist.domain.JobState
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ReprocessAssetSearchRequest
 import boonai.archivist.domain.ReprocessAssetSearchResponse
@@ -87,6 +89,7 @@ interface JobLaunchService {
         name: String,
         assets: List<String>,
         pipeline: ResolvedPipeline,
+        merge: Boolean = false,
         settings: Map<String, Any>? = null,
         creds: Set<String>? = null
     ): Job
@@ -207,6 +210,7 @@ class JobLaunchServiceImpl(
         name: String,
         assets: List<String>,
         pipeline: ResolvedPipeline,
+        merge: Boolean,
         settings: Map<String, Any>?,
         creds: Set<String>?
     ): Job {
@@ -219,6 +223,17 @@ class JobLaunchServiceImpl(
             pipeline.execute, settings = mergedSettings, assetIds = assets,
             globalArgs = pipeline.globalArgs
         )
+
+        if (merge) {
+            // Only merge if we can find a job with same name.
+            val jobs = jobService.getAll(JobFilter(names = listOf(name)))
+            if (jobs.list.isNotEmpty()) {
+                jobService.createTask(jobs[0], script)
+                jobService.setJobState(jobs[0], JobState.InProgress, null)
+                return jobs[0]
+            }
+        }
+
         val spec = JobSpec(name, listOf(script), credentials = creds)
         return launchJob(spec)
     }

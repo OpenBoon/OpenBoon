@@ -55,7 +55,10 @@ class BatchUploadAssetsRequest(
     val modules: List<String>? = null,
 
     @ApiModelProperty("A list of available credentials for the analysis job.")
-    val credentials: Set<String>? = null
+    val credentials: Set<String>? = null,
+
+    @ApiModelProperty("Name of job to process uploadss")
+    val jobName: String? = null
 
 ) {
 

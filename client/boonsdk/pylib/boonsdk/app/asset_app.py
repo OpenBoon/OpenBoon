@@ -31,7 +31,7 @@ class AssetApp:
         }
         return self.app.client.post("/api/v3/assets/_batch_create", body)
 
-    def batch_upload_files(self, files, modules=None):
+    def batch_upload_files(self, files, modules=None, job_name=None):
         """
         Batch upload a list of files and return a structure which contains
         an ES bulk response object, a list of failed file paths, a list of created
@@ -48,7 +48,8 @@ class AssetApp:
         file_paths = [f.uri for f in files]
         body = {
             "assets": files,
-            "modules": modules
+            "modules": modules,
+            "jobName": job_name
         }
         return self.app.client.upload_files("/api/v3/assets/_batch_upload",
                                             file_paths, body)
