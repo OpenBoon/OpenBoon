@@ -13,6 +13,7 @@ import boonai.archivist.domain.TimelineClipSpec
 import boonai.archivist.domain.TimelineSpec
 import boonai.archivist.domain.TrackSpec
 import boonai.archivist.domain.UpdateAssetLabelsRequest
+import boonai.archivist.domain.UpdateAssetLabelsRequestV4
 import boonai.archivist.service.AssetSearchService
 import boonai.archivist.service.ClipService
 import boonai.archivist.service.DatasetService
@@ -129,6 +130,28 @@ class AssetControllerTests : MockMvcTest() {
 
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v3/assets/_batch_update_labels")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(req))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.updated", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors", CoreMatchers.equalTo(0)))
+            .andReturn()
+    }
+
+    @Test
+    fun testUpdateLabelsV4() {
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+
+        val req = UpdateAssetLabelsRequestV4(
+            add = mapOf(created.created[0] to ds.makeLabel("cat"))
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v4/assets/_batch_update_labels")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(req))

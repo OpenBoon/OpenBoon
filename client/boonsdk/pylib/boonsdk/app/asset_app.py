@@ -1,6 +1,7 @@
 import os
 import requests
 from collections import namedtuple
+from deprecation import deprecated
 
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job, VideoClip
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery, SearchScroller
@@ -260,6 +261,70 @@ class AssetApp:
         """
         return Asset(self.app.client.get("/api/v3/assets/{}".format(id)))
 
+    def batch_add_labels(self, labels):
+        """
+        Add up to 1000 labels in a single request using a structure
+        of dict[assetId -> Label].  This function allows you to add labels to
+        an arbitrary set of assets.
+
+        Args:
+            labels (dict): A dictionary of AssetId to Label
+
+        Returns:
+            dict: A status dictionary
+        """
+        if not isinstance(labels, dict):
+            raise ValueError("The labels argument must be a dictionary")
+        ids = as_id_collection(list(labels.keys()))
+        body = {
+            'add': dict([(asset_id, labels[asset_id]) for asset_id in ids])
+        }
+        return self.app.client.put("/api/v4/assets/_batch_update_labels", body)
+
+    def batch_remove_labels(self, labels):
+        """
+        Remove up to 1000 labels in a single request using a structure
+        of dict[assetId -> Label]. This function allows you to remove labels
+        to an arbitrary set of assets.
+
+        Args:
+            labels (dict): A dictionary of AssetId to Label
+
+        Returns:
+            dict: A status dictionary
+
+        """
+        if not isinstance(labels, dict):
+            raise ValueError("The labels argument must be a dictionary")
+        ids = as_id_collection(list(labels.keys()))
+        body = {
+            'remove': dict([(a, labels[a]) for a in ids])
+        }
+        return self.app.client.put("/api/v4/assets/_batch_update_labels", body)
+
+    def batch_update_labels(self, assets, add_label=None, remove_label=None):
+        """
+        Add and/or remove a label from an a label from a collection of Assets.
+
+        Args:
+            assets (mixed): An Asset, asset ID, or a list of either type.
+            add_label (Label): A Label or list of Label to add.
+            remove_label (Label): A Label or list of Label to remove.
+        Returns:
+            dict: An request status dict
+
+        """
+        ids = as_id_collection(assets)
+        body = {}
+        if add_label:
+            body['add'] = dict([(a, add_label) for a in ids])
+        if remove_label:
+            body['remove'] = dict([(a, remove_label) for a in ids])
+        if not body:
+            raise ValueError("Must pass at least and add_labels or remove_labels argument")
+        return self.app.client.put("/api/v4/assets/_batch_update_labels", body)
+
+    @deprecated(deprecated_in="1.4", removed_in="1.5", details="Use batch_update_labels() instead")
     def update_labels(self, assets, add_labels=None, remove_labels=None):
         """
         Update the Labels on the given array of assets.

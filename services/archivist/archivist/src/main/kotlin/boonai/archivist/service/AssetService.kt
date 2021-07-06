@@ -32,6 +32,7 @@ import boonai.archivist.domain.ResolvedPipeline
 import boonai.archivist.domain.Task
 import boonai.archivist.domain.TriggerType
 import boonai.archivist.domain.UpdateAssetLabelsRequest
+import boonai.archivist.domain.UpdateAssetLabelsRequestV4
 import boonai.archivist.domain.UpdateAssetRequest
 import boonai.archivist.domain.UpdateAssetsByQueryRequest
 import boonai.archivist.domain.ZpsScript
@@ -208,6 +209,7 @@ interface AssetService {
      * Update the Assets contained in the [UpdateAssetLabelsRequest] with provided [Model] labels.
      */
     fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse
+    fun updateLabelsV4(req: UpdateAssetLabelsRequestV4): BulkResponse
 }
 
 @Service
@@ -1072,9 +1074,6 @@ class AssetServiceImpl : AssetService {
                 datasets.add(it)
             }
         }
-        datasets.forEach {
-            datasetService.markModelsUnready(it)
-        }
 
         // Build a search for assets.
         val rest = indexRoutingService.getProjectRestClient()
@@ -1115,6 +1114,91 @@ class AssetServiceImpl : AssetService {
                 }
             }
         }
+        datasets.forEach {
+            datasetService.markModelsUnready(it)
+        }
+        return result
+    }
+
+    override fun updateLabelsV4(req: UpdateAssetLabelsRequestV4): BulkResponse {
+        val bulkSize = 100
+        val maxAssets = 1000L
+        if (req.add?.size ?: 0 > maxAssets) {
+            throw IllegalArgumentException(
+                "Cannot add labels to more than $maxAssets assets at a time."
+            )
+        }
+
+        if (req.remove?.size ?: 0 > maxAssets) {
+            throw IllegalArgumentException(
+                "Cannot remove labels from more than $maxAssets assets at a time."
+            )
+        }
+
+        // Gather up unique Assets and Model
+        val allAssetIds = (req.add?.keys ?: setOf()) + (req.remove?.keys ?: setOf())
+        val allDataSets = mutableSetOf<UUID>()
+        req.add?.values?.forEach { label ->
+            allDataSets.add(label.datasetId)
+        }
+        req.remove?.values?.forEach { label ->
+            allDataSets.add(label.datasetId)
+        }
+
+        // Validate the datasets we're adding are legit.
+        val projectId = getProjectId()
+        allDataSets.forEach {
+            if (!datasetDao.existsByProjectIdAndId(projectId, it)) {
+                throw IllegalArgumentException("Dataset $it not found")
+            }
+        }
+
+        // Build a search for assets.
+        val rest = indexRoutingService.getProjectRestClient()
+        val builder = rest.newSearchBuilder()
+
+        builder.source.query(QueryBuilders.termsQuery("_id", allAssetIds))
+        builder.source.sort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)
+        builder.source.size(bulkSize)
+        builder.request.scroll(TimeValue(60000))
+        builder.source.fetchSource("labels", null)
+
+        // Build a bulk update.
+        val rsp = rest.client.search(builder.request, RequestOptions.DEFAULT)
+        val bulk = BulkRequest()
+
+        // Need an IMMEDIATE refresh policy or else we could end
+        // up losing labels with subsequent calls.
+        bulk.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+
+        for (asset in AssetIterator(rest.client, rsp, maxAssets)) {
+            val removeLabels = req.remove?.get(asset.id)
+            removeLabels?.let {
+                asset.removeLabel(it)
+            }
+
+            val addLabels = req.add?.get(asset.id)
+            addLabels?.let {
+                asset.addLabel(it)
+            }
+
+            bulk.add(rest.newUpdateRequest(asset.id).doc(asset.document))
+        }
+
+        val result = rest.client.bulk(bulk, RequestOptions.DEFAULT)
+        if (result.hasFailures()) {
+            logger.warn("Some failures occurred during asset labeling operation {}")
+            for (f in result.items) {
+                if (f.isFailed) {
+                    logger.warn("Asset ${f.id} failed to update label ${f.failureMessage}")
+                }
+            }
+        }
+
+        allDataSets.forEach {
+            datasetService.markModelsUnready(it)
+        }
+
         return result
     }
 
