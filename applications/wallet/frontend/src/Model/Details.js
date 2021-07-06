@@ -3,22 +3,27 @@ import PropTypes from 'prop-types'
 import useSWR from 'swr'
 import Link from 'next/link'
 
-import { spacing } from '../Styles'
+import { spacing, constants } from '../Styles'
 
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import ItemTitle from '../Item/Title'
 import ItemList from '../Item/List'
 import ItemSeparator from '../Item/Separator'
+import Menu from '../Menu'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
+
+import KebabSvg from '../Icons/kebab.svg'
 
 import { onTrain } from './helpers'
 
 import ModelMatrixLink from './MatrixLink'
 import ModelTip from './Tip'
+import ModelDeleteModal from './DeleteModal'
 
 const ModelDetails = ({ projectId, modelId, modelTypes }) => {
   const [error, setError] = useState('')
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
 
   const { data: model } = useSWR(
     `/api/v1/projects/${projectId}/models/${modelId}/`,
@@ -62,14 +67,67 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
         </div>
       )}
 
-      <ItemTitle type="Model" name={name} />
+      <div>
+        <div
+          css={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <ItemTitle type="Model" name={name} />
 
-      <ItemList
-        attributes={[
-          ['Model Type', label],
-          ['Description', description],
-        ]}
-      />
+          <Menu
+            open="bottom-left"
+            button={({ onBlur, onClick }) => (
+              <Button
+                aria-label="Toggle Actions Menu"
+                variant={BUTTON_VARIANTS.SECONDARY}
+                onBlur={onBlur}
+                onClick={onClick}
+                style={{
+                  padding: spacing.moderate,
+                  marginBottom: spacing.small,
+                }}
+              >
+                <KebabSvg height={constants.icons.regular} />
+              </Button>
+            )}
+          >
+            {({ onBlur, onClick }) => (
+              <div>
+                <ul>
+                  <li>
+                    <Button
+                      variant={BUTTON_VARIANTS.MENU_ITEM}
+                      onBlur={onBlur}
+                      onClick={async () => {
+                        onClick()
+                        setDeleteModalOpen(true)
+                      }}
+                    >
+                      Delete Model
+                    </Button>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </Menu>
+
+          <ModelDeleteModal
+            projectId={projectId}
+            modelId={modelId}
+            isDeleteModalOpen={isDeleteModalOpen}
+            setDeleteModalOpen={setDeleteModalOpen}
+          />
+        </div>
+
+        <ItemList
+          attributes={[
+            ['Model Type', label],
+            ['Description', description],
+          ]}
+        />
+      </div>
 
       <div css={{ height: spacing.normal }} />
 

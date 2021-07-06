@@ -42,8 +42,6 @@ describe('<Dataset />', () => {
         .props.onClick()
     })
 
-    expect(component.toJSON()).toMatchSnapshot()
-
     // Select Delete
     act(() => {
       component.root.findByProps({ children: 'Delete Dataset' }).props.onClick()
@@ -52,39 +50,6 @@ describe('<Dataset />', () => {
     // Cancel
     act(() => {
       component.root.findByProps({ children: 'Cancel' }).props.onClick()
-    })
-
-    // Open Menu
-    act(() => {
-      component.root
-        .findByProps({ 'aria-label': 'Toggle Actions Menu' })
-        .props.onClick()
-    })
-
-    // Select Delete
-    act(() => {
-      component.root.findByProps({ children: 'Delete Dataset' }).props.onClick()
-    })
-
-    // Confirm
-    await act(async () => {
-      component.root
-        .findByProps({ children: 'Delete Permanently' })
-        .props.onClick()
-    })
-
-    expect(fetch.mock.calls.length).toEqual(1)
-
-    expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/projects/${PROJECT_ID}/datasets/${DATASET_ID}/`,
-    )
-
-    expect(fetch.mock.calls[0][1]).toEqual({
-      headers: {
-        'X-CSRFToken': 'CSRF_TOKEN',
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      method: 'DELETE',
     })
   })
 

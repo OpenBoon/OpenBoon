@@ -8,7 +8,6 @@ const DATASET_ID = '4b0b10a8-cec1-155c-b12f-ee2bc8787e06'
 describe('<DatasetsMenu />', () => {
   it('should render properly', async () => {
     const mockRouterPush = jest.fn()
-    const mockRevalidate = jest.fn()
     const mockDispatch = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
@@ -17,7 +16,6 @@ describe('<DatasetsMenu />', () => {
       <DatasetsMenu
         projectId={PROJECT_ID}
         datasetId={DATASET_ID}
-        revalidate={mockRevalidate}
         setDatasetFields={mockDispatch}
       />,
     )
@@ -64,9 +62,7 @@ describe('<DatasetsMenu />', () => {
 
     expect(mockDispatch).toHaveBeenCalledWith({ datasetId: '', labels: {} })
 
-    expect(mockRevalidate).toHaveBeenCalledWith()
-
-    expect(fetch.mock.calls.length).toEqual(1)
+    expect(fetch.mock.calls.length).toEqual(3)
 
     expect(fetch.mock.calls[0][0]).toEqual(
       `/api/v1/projects/${PROJECT_ID}/datasets/${DATASET_ID}/`,
