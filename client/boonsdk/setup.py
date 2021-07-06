@@ -13,12 +13,13 @@ requirements = [
     "pyOpenSSL",
     "PyJWT>=2.0",
     "backoff",
-    "pytest"
+    "pytest",
+    "deprecation"
 ]
 
 setup(
     name='boonsdk',
-    version="1.3.0",
+    version="1.4.0",
     description='Boon AI SDK',
     url='http://www.boonai.io',
     license='Apache2',

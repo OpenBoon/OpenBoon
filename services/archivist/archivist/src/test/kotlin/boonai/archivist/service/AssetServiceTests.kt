@@ -22,6 +22,7 @@ import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.TaskState
 import boonai.archivist.domain.UpdateAssetLabelsRequest
+import boonai.archivist.domain.UpdateAssetLabelsRequestV4
 import boonai.archivist.domain.UpdateAssetRequest
 import boonai.archivist.domain.emptyZpsScript
 import boonai.archivist.domain.emptyZpsScripts
@@ -838,6 +839,42 @@ class AssetServiceTests : AbstractTest() {
                         Label(ds.id, "cat", simhash = "12345"),
                         Label(ds.id, "cat", simhash = "12345")
                     )
+                )
+            )
+        )
+
+        asset = assetService.getAsset(asset.id)
+        var labels = asset.getAttr("labels", Label.LIST_OF)
+        assertEquals(1, labels?.size)
+        assertEquals("cat", labels?.get(0)?.label)
+        assertEquals("12345", labels?.get(0)?.simhash)
+
+        // Remove a label
+        assetService.updateLabels(
+            UpdateAssetLabelsRequest(
+                null,
+                mapOf(asset.id to listOf(Label(ds.id, "cat")))
+            )
+        )
+
+        asset = assetService.getAsset(asset.id)
+        labels = asset.getAttr("labels", Label.LIST_OF) ?: listOf()
+        assert(labels.isNullOrEmpty())
+    }
+
+    @Test
+    fun testUpdateLabelsV4() {
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
+        )
+        // Add a label.
+        var asset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
+        assetService.updateLabelsV4(
+            UpdateAssetLabelsRequestV4(
+                // Validate adding 2 identical labels only adds 1
+                mapOf(
+                    asset.id to Label(ds.id, "cat", simhash = "12345")
                 )
             )
         )

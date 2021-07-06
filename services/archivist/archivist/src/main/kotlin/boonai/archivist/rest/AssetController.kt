@@ -12,6 +12,7 @@ import boonai.archivist.domain.BatchUploadAssetsRequest
 import boonai.archivist.domain.UpdateAssetLabelsRequest
 import boonai.archivist.domain.ReprocessAssetSearchRequest
 import boonai.archivist.domain.ReprocessAssetSearchResponse
+import boonai.archivist.domain.UpdateAssetLabelsRequestV4
 import boonai.archivist.service.AssetSearchService
 import boonai.archivist.service.AssetService
 import boonai.archivist.service.ClipService
@@ -175,6 +176,18 @@ class AssetController @Autowired constructor(
     @ResponseBody
     fun updateLabels(@RequestBody req: UpdateAssetLabelsRequest): Any {
         val rsp = assetService.updateLabels(req)
+        return RestUtils.batchUpdated(
+            LogObject.ASSET,
+            "_batch_update_labels", rsp.items.count { !it.isFailed }, rsp.items.count { it.isFailed }
+        )
+    }
+
+    @ApiOperation("Delete assets by query.")
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @PutMapping(value = ["/api/v4/assets/_batch_update_labels"])
+    @ResponseBody
+    fun updateLabelsV4(@RequestBody req: UpdateAssetLabelsRequestV4): Any {
+        val rsp = assetService.updateLabelsV4(req)
         return RestUtils.batchUpdated(
             LogObject.ASSET,
             "_batch_update_labels", rsp.items.count { !it.isFailed }, rsp.items.count { it.isFailed }

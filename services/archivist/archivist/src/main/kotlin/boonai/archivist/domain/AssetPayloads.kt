@@ -181,6 +181,19 @@ class UpdateAssetLabelsRequest(
 )
 
 @ApiModel(
+    "UpdateAssetLabelsRequest",
+    description = "Request to add /remove labels"
+)
+class UpdateAssetLabelsRequestV4(
+
+    @ApiModelProperty("The labels to add.  Supplying a new label for an existing Dataset overwrites it.")
+    val add: Map<String, Label>? = null,
+
+    @ApiModelProperty("The labels to remove.")
+    val remove: Map<String, Label>? = null
+)
+
+@ApiModel(
     "BatchDeleteAssetsRequest",
     description = "Response for batch deleting of assets."
 )

@@ -252,12 +252,28 @@ open class Asset(
         setAttr("labels", allLabels)
     }
 
+    fun addLabel(label: Label) {
+        val allLabels = getAttr("labels", Label.SET_OF) ?: mutableSetOf()
+        // Remove the labels first because if the label value
+        // changes then it won't get added.  This basically
+        // replaces a label for an existing tag.
+        allLabels.remove(label)
+        allLabels.add(label)
+        setAttr("labels", allLabels)
+    }
+
     /**
      * Adds the given labels to the asset's document.
      */
     fun removeLabels(labels: Collection<Label>) {
         val allLabels = getAttr("labels", Label.SET_OF) ?: mutableSetOf()
         allLabels.removeAll(labels)
+        setAttr("labels", allLabels)
+    }
+
+    fun removeLabel(label: Label) {
+        val allLabels = getAttr("labels", Label.SET_OF) ?: mutableSetOf()
+        allLabels.remove(label)
         setAttr("labels", allLabels)
     }
 
