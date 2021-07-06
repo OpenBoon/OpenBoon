@@ -25,6 +25,7 @@ const DatasetLabelsAssets = ({
   datasetName,
   scope,
   label,
+  labels,
 }) => {
   const [errors, setErrors] = useState({})
 
@@ -38,7 +39,7 @@ const DatasetLabelsAssets = ({
         datasetId,
         values: {
           scope,
-          labels: [label],
+          labels: label === '#All#' ? labels.map(({ label: l }) => l) : [label],
         },
       },
     ],
@@ -168,6 +169,11 @@ DatasetLabelsAssets.propTypes = {
   datasetName: PropTypes.string.isRequired,
   scope: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  labels: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+    }).isRequired,
+  ).isRequired,
 }
 
 export default DatasetLabelsAssets

@@ -339,6 +339,35 @@ exports[`<DatasetConcepts /> should render properly with concepts 1`] = `
                 </div>
               </td>
             </tr>
+            <tr>
+              <td>
+                grumpy
+              </td>
+              <td>
+                0
+              </td>
+              <td>
+                42
+              </td>
+              <td>
+                <div
+                  className="emotion-15"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="actions emotion-16"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="kebab.svg"
+                      height={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -570,6 +599,17 @@ exports[`<DatasetConcepts /> should render properly with concepts and no actions
               </td>
               <td>
                 64
+              </td>
+            </tr>
+            <tr>
+              <td>
+                grumpy
+              </td>
+              <td>
+                0
+              </td>
+              <td>
+                42
               </td>
             </tr>
           </tbody>

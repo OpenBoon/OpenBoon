@@ -21,10 +21,7 @@ const DatasetLabelsContent = ({
     data: { results: labels = [] },
   } = useSWR(`/api/v1/projects/${projectId}/datasets/${datasetId}/get_labels/`)
 
-  const {
-    scope = SCOPE_OPTIONS[0].value,
-    label = (labels[0] && labels[0].label) || '',
-  } = decode({ query })
+  const { scope = SCOPE_OPTIONS[0].value, label = '#All#' } = decode({ query })
 
   return (
     <>
@@ -47,6 +44,7 @@ const DatasetLabelsContent = ({
           datasetName={datasetName}
           scope={scope}
           label={label}
+          labels={labels}
         />
       </SuspenseBoundary>
     </>

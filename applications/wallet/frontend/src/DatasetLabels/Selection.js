@@ -6,14 +6,16 @@ import { spacing, constants } from '../Styles'
 
 import { usePanel, ACTIONS } from '../Panel/helpers'
 import { encode } from '../Filters/helpers'
+import { capitalizeFirstLetter } from '../Text/helpers'
 import { SCOPE_OPTIONS, useLabelTool } from '../AssetLabeling/helpers'
+import RadioGroup from '../Radio/Group'
 import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import FilterSvg from '../Icons/filter.svg'
 import PenSvg from '../Icons/pen.svg'
 
-const SCOPE_WIDTH = 150
+import { getScopeLabelsCount } from './helpers'
 
 const DatasetLabelsSelection = ({
   projectId,
@@ -47,34 +49,42 @@ const DatasetLabelsSelection = ({
       }}
     >
       <div css={{ display: 'flex' }}>
-        <Select
-          label="Scope"
-          useAria
-          options={SCOPE_OPTIONS}
-          defaultValue={scope}
-          onChange={({ value }) => {
+        <RadioGroup
+          legend="Select Scope"
+          options={SCOPE_OPTIONS.map((option) => ({
+            ...option,
+            legend: '',
+            initialValue: scope === option.value,
+          }))}
+          onClick={({ value }) => {
             Router.push(
               `/${projectId}/datasets/${datasetId}/labels?query=${encode({
                 filters: { scope: value, label },
               })}`,
             )
           }}
-          isRequired={false}
-          variant={SELECT_VARIANTS.ROW}
-          style={{
-            width: SCOPE_WIDTH,
-          }}
         />
 
         <div css={{ width: spacing.normal }} />
 
         <Select
-          label="Label"
+          label="Label:"
           useAria
-          options={labels.reduce(
-            (acc, { label: l }) => [...acc, { label: l, value: l }],
-            [],
-          )}
+          options={labels
+            .filter((l) => {
+              return l.label === label || l[`${scope.toLowerCase()}Count`] > 0
+            })
+            .reduce(
+              (acc, { label: l }) => [...acc, { label: l, value: l }],
+              [
+                {
+                  value: '#All#',
+                  label: `All ${capitalizeFirstLetter({
+                    word: scope.toLowerCase(),
+                  })}ing Labels (${getScopeLabelsCount({ labels, scope })})`,
+                },
+              ],
+            )}
           defaultValue={label}
           onChange={({ value }) => {
             Router.push(

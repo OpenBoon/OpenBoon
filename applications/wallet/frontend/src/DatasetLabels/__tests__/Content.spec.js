@@ -37,20 +37,20 @@ describe('<DatasetLabelsContent />', () => {
     // Select Scope
     act(() => {
       component.root
-        .findByProps({ label: 'Scope' })
-        .props.onChange({ value: 'TEST' })
+        .findByProps({ legend: 'Select Scope' })
+        .props.onClick({ value: 'TEST' })
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith(
       `/${PROJECT_ID}/datasets/${DATASET_ID}/labels?query=${btoa(
-        JSON.stringify({ scope: 'TEST', label: 'tabby' }),
+        JSON.stringify({ scope: 'TEST', label: '#All#' }),
       )}`,
     )
 
     // Select Label
     act(() => {
       component.root
-        .findByProps({ label: 'Label' })
+        .findByProps({ label: 'Label:' })
         .props.onChange({ value: 'calico' })
     })
 

@@ -1,6 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import assets from '../../Assets/__mocks__/assets'
+import datasetConcepts from '../../DatasetConcepts/__mocks__/datasetConcepts'
 
 import { encode } from '../../Filters/helpers'
 
@@ -34,6 +35,7 @@ describe('<DatasetLabelsAssets />', () => {
         datasetName="cats"
         scope="TRAIN"
         label="tabby"
+        labels={[]}
       />,
     )
 
@@ -101,7 +103,8 @@ describe('<DatasetLabelsAssets />', () => {
         page={1}
         datasetName="cats"
         scope="TRAIN"
-        label="tabby"
+        label="#All#"
+        labels={datasetConcepts.results}
       />,
     )
 
