@@ -106,7 +106,13 @@ class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
             rs.getLong("time_created"),
             rs.getLong("time_modified"),
             rs.getString("actor_created"),
-            rs.getString("actor_modified")
+            rs.getString("actor_modified"),
+            rs.getLong("time_last_trained"),
+            rs.getString("actor_last_trained"),
+            rs.getLong("time_last_applied"),
+            rs.getString("actor_last_applied"),
+            rs.getLong("time_last_tested"),
+            rs.getString("actor_last_tested")
         )
     }
 

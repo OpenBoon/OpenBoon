@@ -302,8 +302,8 @@ class Model(
     val trainingJobName: String,
 
     @Column(name = "bool_trained")
-    @ApiModelProperty("True if the model is trained.")
-    val ready: Boolean,
+    @ApiModelProperty("True if the model is trained with latest labels.")
+    var ready: Boolean,
 
     @Type(type = "jsonb")
     @Column(name = "json_apply_search", columnDefinition = "JSON")
@@ -327,7 +327,25 @@ class Model(
 
     @Column(name = "actor_modified")
     @ApiModelProperty("The key that last made the last modification to this Model")
-    var actorModified: String
+    var actorModified: String,
+
+    @Column(name = "time_last_trained")
+    var timeLastTrained: Long?,
+
+    @Column(name = "actor_last_trained")
+    var actorLastTrained: String?,
+
+    @Column(name = "time_last_applied")
+    var timeLastApplied: Long?,
+
+    @Column(name = "actor_last_applied")
+    var actorLastApplied: String?,
+
+    @Column(name = "time_last_tested")
+    var timeLastTested: Long?,
+
+    @Column(name = "actor_last_tested")
+    var actorLastTested: String?
 
 ) : LabelSet {
 

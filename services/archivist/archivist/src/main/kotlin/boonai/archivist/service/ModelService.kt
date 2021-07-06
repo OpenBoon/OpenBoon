@@ -138,7 +138,8 @@ class ModelServiceImpl(
             time,
             time,
             actor.toString(),
-            actor.toString()
+            actor.toString(),
+            null, null, null, null, null, null
         )
 
         logger.event(
@@ -210,11 +211,13 @@ class ModelServiceImpl(
         logger.info("Training model ID ${model.id} $trainArgs")
         logger.info("Launching train job ${model.type.trainProcessor} ${request.postAction}")
 
+        model.actorLastTrained = getZmlpActor().toString()
+        model.timeLastTrained = System.currentTimeMillis()
+
         val processor = ProcessorRef(
             model.type.trainProcessor, "boonai/plugins-train", trainArgs
         )
 
-        modelJdbcDao.markAsReady(model.id, false)
         return jobLaunchService.launchTrainingJob(
             model.trainingJobName, processor, mapOf()
         )
@@ -246,6 +249,9 @@ class ModelServiceImpl(
         )
 
         val jobId = getZmlpActor().getAttr("jobId")
+
+        model.actorLastApplied = getZmlpActor().toString()
+        model.timeLastApplied = System.currentTimeMillis()
 
         return if (jobId == null) {
             val rsp = jobLaunchService.launchJob(repro)
@@ -281,6 +287,9 @@ class ModelServiceImpl(
         )
 
         val jobId = getZmlpActor().getAttr("jobId")
+
+        model.actorLastTested = getZmlpActor().toString()
+        model.timeLastTested = System.currentTimeMillis()
 
         return if (jobId == null) {
             val rsp = jobLaunchService.launchJob(repro)
@@ -322,7 +331,7 @@ class ModelServiceImpl(
                 ops
             )
 
-            modelJdbcDao.markAsReady(model.id, true)
+            model.ready = true
             return pipelineModService.create(modspec)
         }
     }
