@@ -1,6 +1,10 @@
 import json
+import logging
 import os
 import time
+
+import backoff
+from botocore.exceptions import ClientError
 
 from boonai_analysis.aws.awscloud import AwsCloudResources
 from boonai_analysis.aws.util import AwsEnv
@@ -8,6 +12,8 @@ from boonai_analysis.utils.prechecks import Prechecks
 from boonflow import AssetProcessor, FileTypes, BoonEnv, file_storage, proxy, clips
 from boonflow.analysis import LabelDetectionAnalysis
 from boonflow.video import save_timeline
+
+logger = logging.getLogger('aws')
 
 __all__ = [
     'RekognitionLabelDetection',
@@ -17,6 +23,37 @@ __all__ = [
     'BlackFramesVideoDetectProcessor',
     'EndCreditsVideoDetectProcessor'
 ]
+
+
+def not_a_quota_exception(exp):
+    """
+    Returns true if the exception is not a Clarifai quota exception. This ensures the backoff
+    function doesn't sleep on the wrong exceptions.
+
+    Args:
+        exp (Exception): The exception
+
+    Returns:
+        bool: True if not a quota exception.
+    """
+    quota_status_codes = ['LimitExceededException']
+    try:
+        status_code = exp.response['Error']['Code']
+        return status_code not in quota_status_codes
+    except Exception:
+        return True
+
+
+def log_backoff_exception(details):
+    """
+    Log an exception from the backoff library.
+
+    Args:
+        details (dict): The details of the backoff call.
+
+    """
+    logger.warning(
+        'Waiting on quota {wait:0.1f} seconds afters {tries} tries'.format(**details))
 
 
 class AbstractVideoDetectProcessor(AssetProcessor):
@@ -136,6 +173,11 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         timeline = clip_tracker.build_timeline(final_time)
         save_timeline(asset, timeline)
 
+    @backoff.on_exception(backoff.expo,
+                          ClientError,
+                          max_time=3600,
+                          giveup=not_a_quota_exception,
+                          on_backoff=log_backoff_exception)
     def start_detection_analysis(self, asset_id, video, func):
         """
         Start Detection Analysis
