@@ -8,6 +8,7 @@ import boonai.archivist.domain.Dataset
 import boonai.archivist.domain.DatasetSpec
 import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.JobState
+import boonai.archivist.domain.Label
 import boonai.archivist.domain.ModOpType
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
@@ -20,6 +21,7 @@ import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectStorageEntity
+import boonai.archivist.domain.UpdateAssetLabelsRequest
 import boonai.archivist.security.getProjectId
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.FileUtils
@@ -29,6 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import java.io.FileInputStream
 import java.nio.file.Paths
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
@@ -55,6 +59,9 @@ class ModelServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var fileStorageService: ProjectStorageService
+
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
 
     val testSearch =
         """{"query": {"term": { "source.filename": "large-brown-cat.jpg"} } }"""
@@ -112,10 +119,59 @@ class ModelServiceTests : AbstractTest() {
         val ds = datasetService.createDataset(DatasetSpec("frogs", DatasetType.Classification))
         val model1 = create(ds = ds)
         val job = modelService.trainModel(model1, ModelTrainingRequest())
+        entityManager.flush()
 
         assertEquals(model1.trainingJobName, job.name)
         assertEquals(JobState.InProgress, job.state)
         assertEquals(100, job.priority)
+
+        val model = modelService.findOne(ModelFilter(ids = listOf(model1.id)))
+        assertNotNull(model.actorLastTrained)
+        assertNotNull(model.timeLastTrained)
+        assertFalse(model.ready)
+    }
+
+    @Test
+    fun testModelReady() {
+        val ds = datasetService.createDataset(DatasetSpec("frogs", DatasetType.Classification))
+        val model1 = create(ds = ds)
+        val job = modelService.trainModel(model1, ModelTrainingRequest())
+        entityManager.flush()
+
+        assertEquals(model1.trainingJobName, job.name)
+        assertEquals(JobState.InProgress, job.state)
+        assertEquals(100, job.priority)
+
+        modelService.publishModel(model1, ModelPublishRequest())
+        entityManager.flush()
+
+        var model = modelService.findOne(ModelFilter(ids = listOf(model1.id)))
+        assertNotNull(model.actorLastTrained)
+        assertNotNull(model.timeLastTrained)
+        assertTrue(model.ready)
+
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
+        )
+        // Add a label.
+        var asset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
+        assetService.updateLabels(
+            UpdateAssetLabelsRequest(
+                // Validate adding 2 identical labels only adds 1
+                mapOf(
+                    asset.id to listOf(
+                        Label(ds.id, "cat", simhash = "12345"),
+                        Label(ds.id, "cat", simhash = "12345")
+                    )
+                )
+            )
+        )
+        entityManager.flush()
+
+        model = modelService.findOne(ModelFilter(ids = listOf(model1.id)))
+        assertNotNull(model.actorLastTrained)
+        assertNotNull(model.timeLastTrained)
+        assertFalse(model.ready)
     }
 
     @Test(expected = EmptyResultDataAccessException::class)

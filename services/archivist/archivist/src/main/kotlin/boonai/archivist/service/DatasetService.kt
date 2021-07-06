@@ -9,9 +9,11 @@ import boonai.archivist.domain.DatasetUpdate
 import boonai.archivist.domain.GenericBatchUpdateResponse
 import boonai.archivist.domain.LabelScope
 import boonai.archivist.domain.LabelSet
+import boonai.archivist.domain.ModelFilter
 import boonai.archivist.repository.DatasetDao
 import boonai.archivist.repository.DatasetJdbcDao
 import boonai.archivist.repository.KPagedList
+import boonai.archivist.repository.ModelJdbcDao
 import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.CoroutineAuthentication
 import boonai.archivist.security.getProjectId
@@ -54,6 +56,7 @@ interface DatasetService {
     fun getLabelCountsV4(dataset: Dataset): Map<String, Map<String, Long>>
     fun buildTestLabelSearch(labelSet: LabelSet): Map<String, Any>
     fun wrapSearchToExcludeTrainingSet(labelSet: LabelSet, search: Map<String, Any>): Map<String, Any>
+    fun markModelsUnready(dsId: UUID): Int
 }
 
 @Service
@@ -61,6 +64,7 @@ interface DatasetService {
 class DatasetServiceImpl(
     val datasetDao: DatasetDao,
     val datasetJdbcDao: DatasetJdbcDao,
+    val modelJdbcDao: ModelJdbcDao,
     val indexRoutingService: IndexRoutingService,
     val assetSearchService: AssetSearchService
 ) : DatasetService {
@@ -266,6 +270,8 @@ class DatasetServiceImpl(
             )
         }
 
+        markModelsUnready(dataset)
+
         val response: BulkByScrollResponse = rest.client.updateByQuery(req, RequestOptions.DEFAULT)
         return GenericBatchUpdateResponse(response.updated)
     }
@@ -358,6 +364,20 @@ class DatasetServiceImpl(
                 }
             }
         )
+
+        markModelsUnready(dataset)
+    }
+
+    override fun markModelsUnready(dsId: UUID): Int {
+        val models = modelJdbcDao.find(ModelFilter(datasetIds = listOf(dsId)))
+        models.list.forEach {
+            modelJdbcDao.markAsReady(it.id, false)
+        }
+        return models.size()
+    }
+
+    fun markModelsUnready(ds: Dataset): Int {
+        return markModelsUnready(ds.id)
     }
 
     companion object {

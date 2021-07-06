@@ -11,11 +11,14 @@ import boonai.archivist.domain.DatasetUpdate
 import boonai.archivist.domain.Label
 import boonai.archivist.domain.LabelScope
 import boonai.archivist.domain.Model
+import boonai.archivist.domain.ModelSpec
+import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.UpdateAssetLabelsRequest
-import boonai.archivist.repository.DatasetDao
 import boonai.common.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -23,13 +26,16 @@ import kotlin.test.assertTrue
 class DatasetServiceTests : AbstractTest() {
 
     @Autowired
-    lateinit var datasetDao: DatasetDao
+    lateinit var modelService: ModelService
 
     @Autowired
     lateinit var datasetService: DatasetService
 
     @Autowired
     lateinit var assetSearchService: AssetSearchService
+
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
 
     fun create(name: String = "test", type: DatasetType = DatasetType.Classification): Dataset {
         val mspec = DatasetSpec(
@@ -40,7 +46,7 @@ class DatasetServiceTests : AbstractTest() {
         return datasetService.createDataset(mspec)
     }
 
-    fun dataset(ds: Dataset): List<AssetSpec> {
+    fun assets(ds: Dataset): List<AssetSpec> {
         return listOf(
             AssetSpec("https://i.imgur.com/12abc.jpg", label = ds.makeLabel("beaver")),
             AssetSpec("https://i.imgur.com/abc123.jpg", label = ds.makeLabel("ant")),
@@ -73,7 +79,7 @@ class DatasetServiceTests : AbstractTest() {
     @Test
     fun testDelete() {
         val ds = create()
-        val specs = dataset(ds)
+        val specs = assets(ds)
 
         assetService.batchCreate(BatchCreateAssetsRequest(specs, state = AssetState.Analyzed))
         refreshIndex(1000)
@@ -120,7 +126,7 @@ class DatasetServiceTests : AbstractTest() {
         val ds2 = create("test2")
 
         val rsp = assetService.batchCreate(
-            BatchCreateAssetsRequest(dataset(ds1), state = AssetState.Analyzed)
+            BatchCreateAssetsRequest(assets(ds1), state = AssetState.Analyzed)
         )
 
         assetService.updateLabels(
@@ -155,7 +161,7 @@ class DatasetServiceTests : AbstractTest() {
         val ds2 = create("test2")
 
         val rsp = assetService.batchCreate(
-            BatchCreateAssetsRequest(dataset(ds1), state = AssetState.Analyzed)
+            BatchCreateAssetsRequest(assets(ds1), state = AssetState.Analyzed)
         )
 
         assetService.updateLabels(
@@ -182,7 +188,7 @@ class DatasetServiceTests : AbstractTest() {
     @Test
     fun testRenameLabel() {
         val model = create()
-        val specs = dataset(model)
+        val specs = assets(model)
 
         assetService.batchCreate(
             BatchCreateAssetsRequest(specs, state = AssetState.Analyzed)
@@ -198,19 +204,30 @@ class DatasetServiceTests : AbstractTest() {
 
     @Test
     fun testRenameLabelToNullForDelete() {
-        val model = create()
-        val specs = dataset(model)
+        val dataset = create()
+        val specs = assets(dataset)
 
         assetService.batchCreate(
             BatchCreateAssetsRequest(specs, state = AssetState.Analyzed)
         )
-        datasetService.updateLabel(model, "horse", null)
+        datasetService.updateLabel(dataset, "horse", null)
         refreshIndex(1000L)
 
-        val counts = datasetService.getLabelCounts(model)
+        val counts = datasetService.getLabelCounts(dataset)
         assertEquals(1, counts["ant"])
         assertEquals(null, counts["horse"])
         assertEquals(1, counts["beaver"])
         assertEquals(1, counts["zanzibar"])
+    }
+
+    @Test
+    fun testMarkModelsUnready() {
+        val dataset = create()
+
+        val model = modelService.createModel(ModelSpec("foo", ModelType.KNN_CLASSIFIER, datasetId = dataset.id))
+        model.ready = true
+        entityManager.flush()
+
+        assertEquals(1, datasetService.markModelsUnready(dataset.id))
     }
 }

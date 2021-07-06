@@ -36,7 +36,6 @@ import boonai.archivist.domain.UpdateAssetRequest
 import boonai.archivist.domain.UpdateAssetsByQueryRequest
 import boonai.archivist.domain.ZpsScript
 import boonai.archivist.repository.DatasetDao
-import boonai.archivist.repository.ModelJdbcDao
 import boonai.archivist.security.CoroutineAuthentication
 import boonai.archivist.security.getProjectId
 import boonai.archivist.storage.ProjectStorageException
@@ -239,13 +238,13 @@ class AssetServiceImpl : AssetService {
     lateinit var datasetDao: DatasetDao
 
     @Autowired
-    lateinit var modelJdbcDao: ModelJdbcDao
-
-    @Autowired
     lateinit var clipService: ClipService
 
     @Autowired
     lateinit var webHookPublisher: WebHookPublisherService
+
+    @Autowired
+    lateinit var datasetService: DatasetService
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -1074,15 +1073,17 @@ class AssetServiceImpl : AssetService {
 
         // Validate the models we're adding are legit.
         val projectId = getProjectId()
-        val models = mutableSetOf<UUID>()
+        val datasets = mutableSetOf<UUID>()
         addLabels.forEach {
             if (!datasetDao.existsByProjectIdAndId(projectId, it)) {
                 throw IllegalArgumentException("Dataset $it not found")
             } else {
-                models.add(it)
+                datasets.add(it)
             }
         }
-        models.forEach { modelJdbcDao.markAsReady(it, false) }
+        datasets.forEach {
+            datasetService.markModelsUnready(it)
+        }
 
         // Build a search for assets.
         val rest = indexRoutingService.getProjectRestClient()
