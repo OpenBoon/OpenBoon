@@ -30,7 +30,6 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
   const {
     name,
     type,
-    unappliedChanges,
     description,
     runningJobId,
     modelTypeRestrictions: { missingLabels },
@@ -89,7 +88,7 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
 
           <ButtonGroup>
             <Button
-              variant={BUTTON_VARIANTS.SECONDARY}
+              variant={BUTTON_VARIANTS.PRIMARY}
               onClick={() =>
                 onTrain({
                   model,
@@ -100,9 +99,43 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
                   setError,
                 })
               }
-              isDisabled={!unappliedChanges || !!missingLabels}
+              isDisabled={!!missingLabels}
             >
-              Train
+              Train Model
+            </Button>
+
+            <Button
+              variant={BUTTON_VARIANTS.PRIMARY}
+              onClick={() =>
+                onTrain({
+                  model,
+                  apply: false,
+                  test: true,
+                  projectId,
+                  modelId,
+                  setError,
+                })
+              }
+              isDisabled={!!missingLabels}
+            >
+              Train &amp; Test
+            </Button>
+
+            <Button
+              variant={BUTTON_VARIANTS.PRIMARY}
+              onClick={() =>
+                onTrain({
+                  model,
+                  apply: true,
+                  test: false,
+                  projectId,
+                  modelId,
+                  setError,
+                })
+              }
+              isDisabled={!!missingLabels}
+            >
+              Train &amp; Analyze All
             </Button>
 
             <ModelTip />
