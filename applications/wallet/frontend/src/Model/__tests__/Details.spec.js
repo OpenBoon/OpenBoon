@@ -28,7 +28,9 @@ describe('<ModelDetails />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: model })
+    require('swr').__setMockUseSWRResponse({
+      data: { ...model, modelTypeRestrictions: { missingLabels: 0 } },
+    })
 
     const component = TestRenderer.create(
       <ModelDetails
@@ -45,7 +47,16 @@ describe('<ModelDetails />', () => {
 
     await act(async () => {
       component.root
-        .findByProps({ children: 'Train' })
+        .findByProps({ children: 'Train Model', isDisabled: false })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    // Mock Failure
+    fetch.mockResponseOnce(null, { status: 400 })
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Train & Test', isDisabled: false })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
@@ -58,7 +69,7 @@ describe('<ModelDetails />', () => {
 
     await act(async () => {
       component.root
-        .findByProps({ children: 'Train' })
+        .findByProps({ children: 'Train & Analyze All', isDisabled: false })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
@@ -77,6 +88,7 @@ describe('<ModelDetails />', () => {
 
     expect(mockMutate).toHaveBeenCalledWith({
       ...model,
+      modelTypeRestrictions: { missingLabels: 0 },
       runningJobId: JOB_ID,
       ready: true,
     })

@@ -158,7 +158,7 @@ exports[`<ModelDetails /> should render properly 1`] = `
   line-height: 19px;
   font-weight: 500;
   border: none;
-  cursor: not-allowed;
+  cursor: pointer;
   color: #ffffff;
   background-color: transparent;
 }
@@ -167,14 +167,14 @@ exports[`<ModelDetails /> should render properly 1`] = `
 .emotion-17:hover,
 .emotion-17:visited,
 .emotion-17 .noop {
-  background-color: #808080;
+  background-color: #3A5DFF;
 }
 
 .emotion-17:hover,
 .emotion-17 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #b3b3b3;
+  background-color: #6088FE;
 }
 
 .emotion-17[aria-disabled=true],
@@ -183,7 +183,7 @@ exports[`<ModelDetails /> should render properly 1`] = `
   background-color: #808080;
 }
 
-.emotion-18 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -198,15 +198,15 @@ exports[`<ModelDetails /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-18 div {
+.emotion-20 div {
   margin-left: 0;
 }
 
-.emotion-18 button {
+.emotion-20 button {
   margin-right: 0;
 }
 
-.emotion-19 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -215,20 +215,20 @@ exports[`<ModelDetails /> should render properly 1`] = `
   margin-left: 8px;
 }
 
-.emotion-19:hover div,
-.emotion-19:focus-within div {
+.emotion-21:hover div,
+.emotion-21:focus-within div {
   visibility: visible;
   opacity: 1;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
 }
 
-.emotion-19:hover button,
-.emotion-19:focus-within button {
+.emotion-21:hover button,
+.emotion-21:focus-within button {
   color: #ffffff;
 }
 
-.emotion-20 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -239,7 +239,7 @@ exports[`<ModelDetails /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-21 {
+.emotion-23 {
   position: absolute;
   left: -10px;
   top: 28px;
@@ -259,12 +259,12 @@ exports[`<ModelDetails /> should render properly 1`] = `
   z-index: 1;
 }
 
-.emotion-21:hover {
+.emotion-23:hover {
   visibility: visible;
   opacity: 1;
 }
 
-.emotion-22:before {
+.emotion-24:before {
   content: ' ';
   position: absolute;
   top: -6px;
@@ -274,18 +274,18 @@ exports[`<ModelDetails /> should render properly 1`] = `
   border-right: 6px solid transparent;
 }
 
-.emotion-23 {
+.emotion-25 {
   font-size: 15px;
   line-height: 19px;
   padding: 8px;
 }
 
-.emotion-24 {
+.emotion-26 {
   font-size: 15px;
   line-height: 19px;
 }
 
-.emotion-25 {
+.emotion-27 {
   font-size: 15px;
   line-height: 19px;
   padding-top: 16px;
@@ -402,23 +402,36 @@ exports[`<ModelDetails /> should render properly 1`] = `
         className="emotion-16"
       >
         <button
-          aria-disabled={true}
           className="emotion-17"
           onClick={[Function]}
           type="button"
         >
-          Train
+          Train Model
+        </button>
+        <button
+          className="emotion-17"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Test
+        </button>
+        <button
+          className="emotion-17"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Analyze All
         </button>
         <div
-          className="emotion-18"
+          className="emotion-20"
         >
           <div
-            className="emotion-19"
+            className="emotion-21"
           >
             <button
               aria-details="TrainingOptions"
               aria-label="Training Options"
-              className="emotion-20"
+              className="emotion-22"
               type="button"
             >
               <svg
@@ -427,44 +440,34 @@ exports[`<ModelDetails /> should render properly 1`] = `
               />
             </button>
             <div
-              className="emotion-21"
+              className="emotion-23"
               id="TrainingOptions"
               role="tooltip"
             >
               <div
-                className="emotion-22"
+                className="emotion-24"
               />
               <div
-                className="emotion-23"
+                className="emotion-25"
               >
                 <h3
-                  className="emotion-24"
+                  className="emotion-26"
                 >
                   Train Model
                 </h3>
                 Train a model without applying it to your assets.
                 <h3
-                  className="emotion-25"
+                  className="emotion-27"
                 >
                   Train & Test
                 </h3>
                 Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
                 <h3
-                  className="emotion-25"
+                  className="emotion-27"
                 >
-                  Train & Apply
+                  Train & Analyze All
                 </h3>
-                Train and apply the model to all the assets in the project.
-                <h3
-                  className="emotion-25"
-                >
-                  Delete
-                </h3>
-                Delete a model. This action cannot be undone.
-                <br />
-                <i>
-                  Note: Labels that you added to your assets, either manually or through training, remain attached.
-                </i>
+                Train the model and run the model analysis on all project assets.
               </div>
             </div>
           </div>
@@ -653,7 +656,7 @@ exports[`<ModelDetails /> should render properly 2`] = `
   line-height: 19px;
   font-weight: 500;
   border: none;
-  cursor: not-allowed;
+  cursor: pointer;
   color: #ffffff;
   background-color: transparent;
 }
@@ -662,14 +665,14 @@ exports[`<ModelDetails /> should render properly 2`] = `
 .emotion-20:hover,
 .emotion-20:visited,
 .emotion-20 .noop {
-  background-color: #808080;
+  background-color: #3A5DFF;
 }
 
 .emotion-20:hover,
 .emotion-20 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #b3b3b3;
+  background-color: #6088FE;
 }
 
 .emotion-20[aria-disabled=true],
@@ -678,7 +681,7 @@ exports[`<ModelDetails /> should render properly 2`] = `
   background-color: #808080;
 }
 
-.emotion-21 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -693,15 +696,15 @@ exports[`<ModelDetails /> should render properly 2`] = `
   justify-content: center;
 }
 
-.emotion-21 div {
+.emotion-23 div {
   margin-left: 0;
 }
 
-.emotion-21 button {
+.emotion-23 button {
   margin-right: 0;
 }
 
-.emotion-22 {
+.emotion-24 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -710,20 +713,20 @@ exports[`<ModelDetails /> should render properly 2`] = `
   margin-left: 8px;
 }
 
-.emotion-22:hover div,
-.emotion-22:focus-within div {
+.emotion-24:hover div,
+.emotion-24:focus-within div {
   visibility: visible;
   opacity: 1;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
 }
 
-.emotion-22:hover button,
-.emotion-22:focus-within button {
+.emotion-24:hover button,
+.emotion-24:focus-within button {
   color: #ffffff;
 }
 
-.emotion-23 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -734,7 +737,7 @@ exports[`<ModelDetails /> should render properly 2`] = `
   color: #808080;
 }
 
-.emotion-24 {
+.emotion-26 {
   position: absolute;
   left: -10px;
   top: 28px;
@@ -754,12 +757,12 @@ exports[`<ModelDetails /> should render properly 2`] = `
   z-index: 1;
 }
 
-.emotion-24:hover {
+.emotion-26:hover {
   visibility: visible;
   opacity: 1;
 }
 
-.emotion-25:before {
+.emotion-27:before {
   content: ' ';
   position: absolute;
   top: -6px;
@@ -769,18 +772,18 @@ exports[`<ModelDetails /> should render properly 2`] = `
   border-right: 6px solid transparent;
 }
 
-.emotion-26 {
+.emotion-28 {
   font-size: 15px;
   line-height: 19px;
   padding: 8px;
 }
 
-.emotion-27 {
+.emotion-29 {
   font-size: 15px;
   line-height: 19px;
 }
 
-.emotion-28 {
+.emotion-30 {
   font-size: 15px;
   line-height: 19px;
   padding-top: 16px;
@@ -915,23 +918,36 @@ exports[`<ModelDetails /> should render properly 2`] = `
         className="emotion-19"
       >
         <button
-          aria-disabled={true}
           className="emotion-20"
           onClick={[Function]}
           type="button"
         >
-          Train
+          Train Model
+        </button>
+        <button
+          className="emotion-20"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Test
+        </button>
+        <button
+          className="emotion-20"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Analyze All
         </button>
         <div
-          className="emotion-21"
+          className="emotion-23"
         >
           <div
-            className="emotion-22"
+            className="emotion-24"
           >
             <button
               aria-details="TrainingOptions"
               aria-label="Training Options"
-              className="emotion-23"
+              className="emotion-25"
               type="button"
             >
               <svg
@@ -940,44 +956,34 @@ exports[`<ModelDetails /> should render properly 2`] = `
               />
             </button>
             <div
-              className="emotion-24"
+              className="emotion-26"
               id="TrainingOptions"
               role="tooltip"
             >
               <div
-                className="emotion-25"
+                className="emotion-27"
               />
               <div
-                className="emotion-26"
+                className="emotion-28"
               >
                 <h3
-                  className="emotion-27"
+                  className="emotion-29"
                 >
                   Train Model
                 </h3>
                 Train a model without applying it to your assets.
                 <h3
-                  className="emotion-28"
+                  className="emotion-30"
                 >
                   Train & Test
                 </h3>
                 Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
                 <h3
-                  className="emotion-28"
+                  className="emotion-30"
                 >
-                  Train & Apply
+                  Train & Analyze All
                 </h3>
-                Train and apply the model to all the assets in the project.
-                <h3
-                  className="emotion-28"
-                >
-                  Delete
-                </h3>
-                Delete a model. This action cannot be undone.
-                <br />
-                <i>
-                  Note: Labels that you added to your assets, either manually or through training, remain attached.
-                </i>
+                Train the model and run the model analysis on all project assets.
               </div>
             </div>
           </div>

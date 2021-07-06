@@ -26,6 +26,7 @@ const TableContent = ({
   legend,
   refreshKeys,
   refreshButton,
+  options,
 }) => {
   const {
     query: { page = 1, sort, search = '' },
@@ -41,7 +42,7 @@ const TableContent = ({
   const {
     data: { count = 0, results, previous, next },
     mutate: revalidate,
-  } = useSWR(`${url}${queryParam}`)
+  } = useSWR(`${url}${queryParam}`, options)
 
   return (
     <div css={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -189,6 +190,10 @@ const TableContent = ({
   )
 }
 
+TableContent.defaultProps = {
+  options: {},
+}
+
 TableContent.propTypes = {
   url: PropTypes.string.isRequired,
   columns: PropTypes.arrayOf(
@@ -203,6 +208,7 @@ TableContent.propTypes = {
   legend: PropTypes.string.isRequired,
   refreshKeys: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   refreshButton: PropTypes.bool.isRequired,
+  options: PropTypes.shape({}),
 }
 
 export default TableContent

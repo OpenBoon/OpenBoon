@@ -50,24 +50,9 @@ const ModelTip = () => {
               paddingTop: spacing.normal,
             }}
           >
-            Train &amp; Apply
+            Train &amp; Analyze All
           </h3>
-          Train and apply the model to all the assets in the project.
-          <h3
-            css={{
-              fontSize: typography.size.regular,
-              lineHeight: typography.height.regular,
-              paddingTop: spacing.normal,
-            }}
-          >
-            Delete
-          </h3>
-          Delete a model. This action cannot be undone.
-          <br />
-          <i>
-            Note: Labels that you added to your assets, either manually or
-            through training, remain attached.
-          </i>
+          Train the model and run the model analysis on all project assets.
         </div>
       </Toggletip>
     </div>
