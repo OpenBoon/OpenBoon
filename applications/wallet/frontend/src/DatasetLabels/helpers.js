@@ -7,6 +7,17 @@ import {
   revalidate,
 } from '../Fetch/helpers'
 
+export const getScopeLabelsCount = ({ labels, scope }) => {
+  const scopeCount = `${scope.toLowerCase()}Count`
+
+  const count = labels.reduce((acc, label) => {
+    if (label[scopeCount] > 0) return acc + 1
+    return acc
+  }, 0)
+
+  return count
+}
+
 export const onDelete = async ({
   query: { projectId, datasetId, query: q, page },
   assetId,
