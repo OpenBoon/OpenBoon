@@ -1,8 +1,6 @@
 import boonsdk
-import zipfile
-
-from tempfile import mkdtemp
-from os import walk, path
+import utils
+from os import walk, environ, path
 
 # download dataset from: https://www.kaggle.com/jessicali9530/stanford-dogs-dataset
 
@@ -10,12 +8,12 @@ batch_size = 50
 zipped_file_location = path.dirname(path.realpath(__file__))
 zipped_file_name = 'archive.zip'
 test_ratio = 0.1
-images_base_path = '/images/Images/'
+images_base_path = 'images/Images/'
 ds_name = 'Dog-Breeds-Dataset'
 
 
 def import_dog_dataset():
-    base_path = prepare_dataset_folder()
+    base_path = utils.prepare_dataset_folder(images_base_path, zipped_file_location, zipped_file_name)
 
     label_path_dict = {
         'Border_terrier': 'n02093754-Border_terrier',
@@ -149,7 +147,7 @@ def import_dog_dataset():
         for (dirpath, dirnames, filenames) in walk(path.join(base_path, label_path_dict[key])):
             test_count = int(test_ratio * len(filenames)) + 1
 
-            sanitized_label = sanitize_key(key)
+            sanitized_label = utils.sanitize_label(key)
             test_label = ds.make_label(sanitized_label, scope=boonsdk.LabelScope.TEST)
             assets.extend([boonsdk.FileUpload(path.join(dirpath, name),
                                               label=test_label) for name in filenames[0:test_count]])
@@ -158,30 +156,12 @@ def import_dog_dataset():
             assets.extend([boonsdk.FileUpload(path.join(dirpath, name),
                                               label=train_label) for name in filenames[test_count:]])
 
-    total_file_count = len(assets)
-    print(f'Importing {total_file_count} files to {ds_name} dataset '
-          f'Using {test_ratio} as test ratio '
-          f'{test_count} images were reserved to test and '
-          f'{total_file_count - test_count} to train')
+    utils.print_dataset_info(ds_name, len(assets), test_ratio)
 
     assets = [assets[offs:offs + batch_size] for offs in range(0, len(assets), batch_size)]
 
     for batch in assets:
         app.assets.batch_upload_files(batch)
-
-
-def sanitize_key(key):
-    for ch in ['-', '_']:
-        key = key.replace(ch, " ")
-    return key.title()
-
-
-def prepare_dataset_folder():
-    temp_dir = mkdtemp()
-    zipped_file = path.join(zipped_file_location, zipped_file_name)
-    zip_ref = zipfile.ZipFile(zipped_file)
-    zip_ref.extractall(temp_dir)
-    return temp_dir + images_base_path
 
 
 import_dog_dataset()
