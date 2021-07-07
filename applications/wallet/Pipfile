@@ -43,6 +43,7 @@ pyjwt = ">=2.0"
 importlib-metadata = "*"
 django-filter = "*"
 boonsdk = {path = "./../../client/boonsdk"}
+deprecated = "*"
 
 [requires]
 python_version = "3.7"
