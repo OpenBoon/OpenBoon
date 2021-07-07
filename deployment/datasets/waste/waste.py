@@ -17,7 +17,8 @@ images_base_path = 'DATASET/'
 
 
 def import_waste_dataset():
-    base_path = utils.prepare_dataset_folder(images_base_path, zipped_file_location, zipped_file_name)
+    base_path = utils.prepare_dataset_folder \
+        (images_base_path, zipped_file_location, zipped_file_name)
 
     set_base_paths = [path.join(base_path, 'TEST'), path.join(base_path, 'TRAIN')]
 
@@ -41,12 +42,12 @@ def import_waste_dataset():
                 test_count = int(test_ratio * len(filenames)) + 1
 
                 test_label = ds.make_label(key, scope=boonsdk.LabelScope.TEST)
-                assets.extend([boonsdk.FileUpload(path.join(dirpath, name),
-                                                  label=test_label) for name in filenames[0:test_count]])
+                assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=test_label)
+                               for name in filenames[0:test_count]])
 
                 train_label = ds.make_label(key, scope=boonsdk.LabelScope.TRAIN)
-                assets.extend([boonsdk.FileUpload(path.join(dirpath, name),
-                                                  label=train_label) for name in filenames[test_count:]])
+                assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=train_label)
+                               for name in filenames[test_count:]])
 
     utils.print_dataset_info(ds_name, len(assets), test_ratio)
 

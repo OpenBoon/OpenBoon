@@ -13,7 +13,8 @@ ds_name = 'Birds'
 
 
 def import_birds_dataset():
-    base_path = utils.prepare_dataset_folder(images_base_path, zipped_file_location, zipped_file_name)
+    base_path = utils.prepare_dataset_folder \
+        (images_base_path, zipped_file_location, zipped_file_name)
 
     set_base_paths = [path.join(base_path, 'train'), path.join(base_path, 'test'), path.join(base_path, 'valid')]
 
@@ -312,12 +313,12 @@ def import_birds_dataset():
 
                 sanitized_key = utils.sanitize_label(key)
                 test_label = ds.make_label(sanitized_key, scope=boonsdk.LabelScope.TEST)
-                assets.extend([boonsdk.FileUpload(path.join(dirpath, name),
-                                                  label=test_label) for name in filenames[0:test_count]])
+                assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=test_label)
+                               for name in filenames[0:test_count]])
 
                 train_label = ds.make_label(sanitized_key, scope=boonsdk.LabelScope.TRAIN)
-                assets.extend([boonsdk.FileUpload(path.join(dirpath, name),
-                                                  label=train_label) for name in filenames[test_count:]])
+                assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=train_label)
+                               for name in filenames[test_count:]])
 
     utils.print_dataset_info(ds_name, len(assets), test_ratio)
 

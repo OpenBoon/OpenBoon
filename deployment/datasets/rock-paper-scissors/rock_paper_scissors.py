@@ -16,7 +16,8 @@ images_base_path = ''
 
 
 def import_dog_dataset():
-    base_path = utils.prepare_dataset_folder(images_base_path, zipped_file_location, zipped_file_name)
+    base_path = utils.prepare_dataset_folder \
+        (images_base_path, zipped_file_location, zipped_file_name)
 
     label_path_dict = {
         'Rock': 'rock',
@@ -35,12 +36,12 @@ def import_dog_dataset():
 
             sanitized_label = key
             test_label = ds.make_label(sanitized_label, scope=boonsdk.LabelScope.TEST)
-            assets.extend([boonsdk.FileUpload(path.join(dirpath, name),
-                                              label=test_label) for name in filenames[0:test_count]])
+            assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=test_label)
+                           for name in filenames[0:test_count]])
 
             train_label = ds.make_label(sanitized_label, scope=boonsdk.LabelScope.TRAIN)
-            assets.extend([boonsdk.FileUpload(path.join(dirpath, name),
-                                              label=train_label) for name in filenames[test_count:]])
+            assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=train_label)
+                           for name in filenames[test_count:]])
 
     utils.print_dataset_info(ds_name, len(assets), test_ratio)
 

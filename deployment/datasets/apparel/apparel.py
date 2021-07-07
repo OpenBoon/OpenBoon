@@ -58,12 +58,12 @@ def import_apparel_dataset():
                 test_count = int(test_ratio * len(filenames)) + 1
 
                 test_label = ds.make_label(key, scope=boonsdk.LabelScope.TEST)
-                assets.extend([boonsdk.FileUpload(path.join(dirpath, name),
-                                                  label=test_label) for name in filenames[0:test_count]])
+                assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=test_label)
+                               for name in filenames[0:test_count]])
 
                 train_label = ds.make_label(key, scope=boonsdk.LabelScope.TRAIN)
-                assets.extend([boonsdk.FileUpload(path.join(dirpath, name),
-                                                  label=train_label) for name in filenames[test_count:]])
+                assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=train_label)
+                               for name in filenames[test_count:]])
 
     utils.print_dataset_info(ds_name, len(assets), test_ratio)
 

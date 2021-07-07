@@ -17,12 +17,14 @@ images_base_path = ''
 
 
 def import_monkeys_dataset():
-    base_path = utils.prepare_dataset_folder(images_base_path, zipped_file_location, zipped_file_name)
-    set_base_paths = [path.join(base_path, 'training/training'), path.join(base_path, 'validation/validation')]
+    base_path = utils.prepare_dataset_folder \
+        (images_base_path, zipped_file_location, zipped_file_name)
+    set_base_paths = \
+        [path.join(base_path, 'training/training'), path.join(base_path, 'validation/validation')]
 
     lines = []
     with open(path.join(base_path, 'monkey_labels.txt'), 'r') as f_in:
-        lines = [l for l in (line.strip() for line in f_in) if l]
+        lines = [l1 for l1 in (line.strip() for line in f_in) if l1]
 
     label_path_dict = {}
 
@@ -48,12 +50,12 @@ def import_monkeys_dataset():
 
             sanitized_label = utils.sanitize_label(label_path_dict[path.basename(p)][0])
             test_label = ds.make_label(sanitized_label, scope=boonsdk.LabelScope.TEST)
-            assets.extend([boonsdk.FileUpload(path.join(dirpath, name),
-                                              label=test_label) for name in filenames[0:test_count]])
+            assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=test_label)
+                           for name in filenames[0:test_count]])
 
             train_label = ds.make_label(sanitized_label, scope=boonsdk.LabelScope.TRAIN)
-            assets.extend([boonsdk.FileUpload(path.join(dirpath, name),
-                                              label=train_label) for name in filenames[test_count:]])
+            assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=train_label)
+                           for name in filenames[test_count:]])
 
     utils.print_dataset_info(ds_name, len(assets), test_ratio)
 
