@@ -36,6 +36,14 @@ class ModelTypeRestrictionsSerializer(serializers.Serializer):
 class ModelDetailSerializer(ModelSerializer):
     runningJobId = serializers.CharField(required=False, default='', allow_blank=True)
     modelTypeRestrictions = ModelTypeRestrictionsSerializer()
+    timeLastApplied = serializers.IntegerField(required=False)
+    timeLastTested = serializers.IntegerField(required=False)
+    timeLastTrained = serializers.IntegerField(required=False)
+
+
+class ModelUpdateSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    datasetId = serializers.CharField(allow_null=True)
 
 
 class ModelTypeSerializer(serializers.Serializer):

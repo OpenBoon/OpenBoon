@@ -105,7 +105,7 @@ class TestModelViewSetRetrieve:
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
 
         def mock_response(*args, **kwrags):
-            return {'id': model_id, 'projectId': '18e87cfe-23a0-4f62-973d-4e22f0f4b8d8', 'datasetId': 'ebf3e4a6-458f-15d4-a6b1-aab1332fef21', 'type': 'KNN_CLASSIFIER', 'name': 'knn', 'moduleName': 'knn', 'fileId': 'models/ebf3e4a6-458f-15d4-a6b1-aab1332fef21/__TAG__/model.zip', 'trainingJobName': 'Training model: knn - [Label Detection]', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'timeCreated': 1619725616046, 'timeModified': 1619725616046, 'actorCreated': '9250c03e-a167-4cb9-a0fc-2198a1a00779/Admin Console Generated Key - 5f52268e-749c-4141-80b3-2fe4daa4552b - jbuhler@zorroa.com_18e87cfe-23a0-4f62-973d-4e22f0f4b8d8', 'actorModified': '9250c03e-a167-4cb9-a0fc-2198a1a00779/Admin Console Generated Key - 5f52268e-749c-4141-80b3-2fe4daa4552b - jbuhler@zorroa.com_18e87cfe-23a0-4f62-973d-4e22f0f4b8d8'}  # noqa
+            return {'id': model_id, 'projectId': '18e87cfe-23a0-4f62-973d-4e22f0f4b8d8', 'datasetId': 'ebf3e4a6-458f-15d4-a6b1-aab1332fef21', 'type': 'KNN_CLASSIFIER', 'name': 'knn', 'moduleName': 'knn', 'fileId': 'models/ebf3e4a6-458f-15d4-a6b1-aab1332fef21/__TAG__/model.zip', 'trainingJobName': 'Training model: knn - [Label Detection]', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'timeCreated': 1619725616046, 'timeLastTrained': 1619725616046, 'timeLastTested': 1619725616046, 'timeLastApplied': 1619725616046, 'timeModified': 1619725616046, 'actorCreated': '9250c03e-a167-4cb9-a0fc-2198a1a00779/Admin Console Generated Key - 5f52268e-749c-4141-80b3-2fe4daa4552b - jbuhler@zorroa.com_18e87cfe-23a0-4f62-973d-4e22f0f4b8d8', 'actorModified': '9250c03e-a167-4cb9-a0fc-2198a1a00779/Admin Console Generated Key - 5f52268e-749c-4141-80b3-2fe4daa4552b - jbuhler@zorroa.com_18e87cfe-23a0-4f62-973d-4e22f0f4b8d8'}  # noqa
 
         def job_response(*args, **kwargs):
             return []
@@ -127,7 +127,8 @@ class TestModelViewSetRetrieve:
         assert content['id'] == model_id
         model_fields.remove('link')
         model_fields.extend(['runningJobId', 'modelTypeRestrictions'])
-        assert set(model_fields) == set(content.keys())
+        assert (set(model_fields + ['timeLastTrained', 'timeLastApplied', 'timeLastTested']) ==
+                set(content.keys()))
         restrictions = content['modelTypeRestrictions']
         assert restrictions['missingLabels'] == 0
         assert restrictions['missingLabelsOnAssets'] == 1
@@ -146,6 +147,24 @@ class TestModelViewSetDestroy:
         monkeypatch.setattr(BoonClient, 'delete', mock_response)
         response = api_client.delete(path)
         check_response(response)
+
+
+class TestModelViewSetUpdate:
+
+    def test_update(self, login, project, api_client, monkeypatch, model_fields):
+
+        def mock_response(*args, **kwrags):
+            return {'type': 'model', 'id': 'b9c52abf-9914-1020-b9f0-0242ac12000a', 'op': 'delete', 'success': True}  # noqa
+
+        model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+        path = reverse('model-detail', kwargs={'project_pk': project.id,
+                                               'pk': model_id})
+        monkeypatch.setattr(BoonClient, 'put', mock_response)
+        response = api_client.put(path, {'datasetId': None, 'name': 'changed'})
+        check_response(response)
+
+        response = api_client.put(path, {'name': 'changed'})
+        check_response(response, status=400)
 
 
 class TestModelViewSetCreate:

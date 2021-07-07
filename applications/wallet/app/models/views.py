@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 ModelDetailSerializer,
-                                ConfusionMatrixSerializer)
+                                ConfusionMatrixSerializer, ModelUpdateSerializer)
 from models.utils import ConfusionMatrix
 from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpRetrieveMixin,
                                ListViewType, ZmlpDestroyMixin, ZmlpCreateMixin,
@@ -93,9 +93,9 @@ class ModelViewSet(ZmlpCreateMixin,
     retrieve_modifier = staticmethod(detail_item_modifier)
 
     def get_serializer_class(self):
-        if self.action == 'retrieve':
-            return ModelDetailSerializer
-        return self.serializer_class
+        action_map = {'retrieve': ModelDetailSerializer,
+                      'update': ModelUpdateSerializer}
+        return action_map.get(self.action, self.serializer_class)
 
     @action(methods=['get'], detail=False)
     def all(self, request, project_pk):
