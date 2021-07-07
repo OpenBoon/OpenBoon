@@ -4,7 +4,8 @@ opencv-python==4.4.0.46
 matplotlib
 pycocotools
 tqdm
-pillow
+pillow==8.2.0
 pandas
-torch
-torchvision
+torch==1.8.1
+torchvision==0.9.1
+facenet-pytorch==2.5.2

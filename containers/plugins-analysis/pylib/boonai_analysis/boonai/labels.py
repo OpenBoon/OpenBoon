@@ -34,12 +34,14 @@ class ZviLabelDetectionProcessor(AssetProcessor):
 
 
 class EfficientNetImageClassifier:
+    image_size = (300, 300)
+
     def __init__(self):
         self.model = efficientnet.EfficientNetB3(
-            weights='imagenet', input_tensor=Input(shape=(300, 300, 3)))
+            weights='imagenet', input_tensor=Input(shape=self.image_size + (3,)))
         self.model.compile(loss='mse', optimizer='rmsprop')
 
     def predict(self, path):
-        img = load_keras_image(path)
+        img = load_keras_image(path, self.image_size)
         result = self.model.predict(efficientnet.preprocess_input(img))
         return decode_predictions(result)[0]
