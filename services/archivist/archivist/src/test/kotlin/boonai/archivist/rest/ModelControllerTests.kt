@@ -226,7 +226,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testUploadModel() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.PYTORCH_MODEL_ARCHIVE)
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TORCH_MAR_CLASSIFIER)
         val model = modelService.createModel(modelSpec)
 
         val mfp = Paths.get(
@@ -245,7 +245,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testApproveLatestModelTag() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.PYTORCH_MODEL_ARCHIVE)
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TORCH_MAR_CLASSIFIER)
         val model = modelService.createModel(modelSpec)
         val mfp = Paths.get(
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
@@ -394,7 +394,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testGetTags() {
-        val modelSpec = ModelSpec("Dog Breeds2", ModelType.PYTORCH_MODEL_ARCHIVE)
+        val modelSpec = ModelSpec("Dog Breeds2", ModelType.TORCH_MAR_CLASSIFIER)
         val model = modelService.createModel(modelSpec)
 
         val mfp = Paths.get(

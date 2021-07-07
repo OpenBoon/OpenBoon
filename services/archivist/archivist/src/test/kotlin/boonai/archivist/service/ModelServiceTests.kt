@@ -18,6 +18,7 @@ import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.ModelType
+import boonai.archivist.domain.ModelUpdateRequest
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectStorageEntity
@@ -80,6 +81,23 @@ class ModelServiceTests : AbstractTest() {
     fun testCreateModel() {
         val model = create()
         assertModel(model)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testCreateModelBadDataset() {
+        val ds = datasetService.createDataset(DatasetSpec("foo", DatasetType.Detection))
+        create(ds = ds)
+    }
+
+    @Test
+    fun testUpdateModel() {
+        val ds = datasetService.createDataset(DatasetSpec("foo", DatasetType.Classification))
+        val model = create()
+
+        val update = ModelUpdateRequest("bing", ds.id)
+        val umod = modelService.updateModel(model.id, update)
+        assertEquals(ds.id, umod.datasetId)
+        assertEquals("bing", umod.name)
     }
 
     @Test
@@ -252,7 +270,7 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testCopyModel() {
-        val model = create(type = ModelType.PYTORCH_MODEL_ARCHIVE)
+        val model = create(type = ModelType.TORCH_MAR_CLASSIFIER)
         val mfp = Paths.get(
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
         )
@@ -265,7 +283,7 @@ class ModelServiceTests : AbstractTest() {
         )
 
         val names = files.map { FileUtils.filename(it) }
-        assertTrue(ModelType.PYTORCH_MODEL_ARCHIVE.fileName in names)
+        assertTrue(ModelType.TORCH_MAR_CLASSIFIER.fileName in names)
     }
 
     @Test
