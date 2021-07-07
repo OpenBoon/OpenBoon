@@ -1,24 +1,24 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import useSWR, { mutate } from 'swr'
-import Router from 'next/router'
+import useSWR from 'swr'
 
 import { spacing, constants } from '../Styles'
 
 import ItemTitle from '../Item/Title'
 import ItemList from '../Item/List'
 import Menu from '../Menu'
-import Button, { VARIANTS } from '../Button'
-import Modal from '../Modal'
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
-import { fetcher } from '../Fetch/helpers'
 import { decamelize } from '../Text/helpers'
+import { useLabelTool } from '../AssetLabeling/helpers'
 
 import KebabSvg from '../Icons/kebab.svg'
 
+import DatasetDeleteModal from './DeleteModal'
+
 const DatasetDetails = ({ projectId, datasetId }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
+  const [, setDatasetFields] = useLabelTool({ projectId })
 
   const {
     data: { name, type, description },
@@ -39,7 +39,7 @@ const DatasetDetails = ({ projectId, datasetId }) => {
           button={({ onBlur, onClick }) => (
             <Button
               aria-label="Toggle Actions Menu"
-              variant={VARIANTS.SECONDARY}
+              variant={BUTTON_VARIANTS.SECONDARY}
               onBlur={onBlur}
               onClick={onClick}
               style={{ padding: spacing.moderate, marginBottom: spacing.small }}
@@ -53,7 +53,7 @@ const DatasetDetails = ({ projectId, datasetId }) => {
               <ul>
                 <li>
                   <Button
-                    variant={VARIANTS.MENU_ITEM}
+                    variant={BUTTON_VARIANTS.MENU_ITEM}
                     onBlur={onBlur}
                     onClick={async () => {
                       onClick()
@@ -68,31 +68,13 @@ const DatasetDetails = ({ projectId, datasetId }) => {
           )}
         </Menu>
 
-        {isDeleteModalOpen && (
-          <Modal
-            title="Delete Dataset"
-            message="Are you sure you want to delete this dataset? Deleting will remove it from all linked models. Any labels that have been added by the model will remain."
-            action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
-            onCancel={() => {
-              setDeleteModalOpen(false)
-            }}
-            onConfirm={async () => {
-              setIsDeleting(true)
-
-              await fetcher(
-                `/api/v1/projects/${projectId}/datasets/${datasetId}/`,
-                { method: 'DELETE' },
-              )
-
-              await mutate(`/api/v1/projects/${projectId}/datasets/`)
-
-              Router.push(
-                '/[projectId]/datasets/?action=delete-dataset-success',
-                `/${projectId}/datasets/`,
-              )
-            }}
-          />
-        )}
+        <DatasetDeleteModal
+          projectId={projectId}
+          datasetId={datasetId}
+          isDeleteModalOpen={isDeleteModalOpen}
+          setDeleteModalOpen={setDeleteModalOpen}
+          setDatasetFields={setDatasetFields}
+        />
       </div>
 
       <ItemList

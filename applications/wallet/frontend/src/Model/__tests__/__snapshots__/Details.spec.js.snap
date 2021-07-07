@@ -68,42 +68,6 @@ exports[`<ModelDetails /> should render properly 1`] = `
 }
 
 .emotion-4 {
-  color: #b3b3b3;
-  font-family: Roboto Condensed;
-  text-transform: uppercase;
-}
-
-.emotion-5 {
-  color: #ffffff;
-  font-weight: 500;
-  font-size: 21px;
-  line-height: 30px;
-  padding-bottom: 16px;
-}
-
-.emotion-6 {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  line-height: 23px;
-}
-
-.emotion-7 {
-  color: #b3b3b3;
-  font-family: Roboto Condensed;
-  text-transform: uppercase;
-}
-
-.emotion-9 {
-  height: 16px;
-}
-
-.emotion-10 {
-  border: none;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -113,26 +77,26 @@ exports[`<ModelDetails /> should render properly 1`] = `
   justify-content: space-between;
 }
 
-.emotion-16 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 16px;
+.emotion-5 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-6 {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 30px;
   padding-bottom: 16px;
 }
 
-.emotion-16 button,
-.emotion-16 a {
-  margin-right: 16px;
+.emotion-7 {
+  position: relative;
+  height: 100%;
 }
 
-.emotion-16 button:last,
-.emotion-16 a:last {
-  margin-right: 0;
-}
-
-.emotion-17 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -152,7 +116,7 @@ exports[`<ModelDetails /> should render properly 1`] = `
   -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 12px 32px;
+  padding: 12px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
@@ -161,422 +125,27 @@ exports[`<ModelDetails /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  margin-bottom: 4px;
 }
 
-.emotion-17,
-.emotion-17:hover,
-.emotion-17:visited,
-.emotion-17 .noop {
-  background-color: #3A5DFF;
-}
-
-.emotion-17:hover,
-.emotion-17 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #6088FE;
-}
-
-.emotion-17[aria-disabled=true],
-.emotion-17 .noop {
-  color: #2e2e2e;
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited,
+.emotion-8 .noop {
   background-color: #808080;
 }
 
-.emotion-20 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
+.emotion-8:hover,
+.emotion-8 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
 }
 
-.emotion-20 div {
-  margin-left: 0;
-}
-
-.emotion-20 button {
-  margin-right: 0;
-}
-
-.emotion-21 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-  margin-left: 8px;
-}
-
-.emotion-21:hover div,
-.emotion-21:focus-within div {
-  visibility: visible;
-  opacity: 1;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-}
-
-.emotion-21:hover button,
-.emotion-21:focus-within button {
-  color: #ffffff;
-}
-
-.emotion-22 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-23 {
-  position: absolute;
-  left: -10px;
-  top: 28px;
-  color: #191919;
-  background-color: #ffffff;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  padding: 12px;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
-  max-width: 400px;
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-  z-index: 1;
-}
-
-.emotion-23:hover {
-  visibility: visible;
-  opacity: 1;
-}
-
-.emotion-24:before {
-  content: ' ';
-  position: absolute;
-  top: -6px;
-  left: 14px;
-  border-bottom: 6px solid #ffffff;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-}
-
-.emotion-25 {
-  font-size: 15px;
-  line-height: 19px;
-  padding: 8px;
-}
-
-.emotion-26 {
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-27 {
-  font-size: 15px;
-  line-height: 19px;
-  padding-top: 16px;
-}
-
-<div>
-  <div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <svg
-        className="emotion-2"
-        color="#0074f5"
-        data-file-name="generating.svg"
-        height={20}
-      />
-      <div
-        className="emotion-3"
-        role="alert"
-      >
-        "
-        console_face_recognition
-        " training in progress.
-         
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
-          href="/[projectId]/jobs/[jobId]"
-          passHref={true}
-        >
-          <a>
-            Check Status
-          </a>
-        </Link>
-      </div>
-    </div>
-  </div>
-  
-  <div>
-    <div
-      className="emotion-4"
-    >
-      Model
-       Name:
-    </div>
-    <h3
-      className="emotion-5"
-    >
-      console_face_recognition
-    </h3>
-  </div>
-  <ul
-    className="emotion-6"
-  >
-    <li>
-      <span
-        className="emotion-7"
-      >
-        Model Type
-        :
-      </span>
-       
-      ZVI_FACE_RECOGNITION
-    </li>
-    <li>
-      <span
-        className="emotion-7"
-      >
-        Description
-        :
-      </span>
-       
-    </li>
-  </ul>
-  <div
-    className="emotion-9"
-  />
-  <hr
-    className="emotion-10"
-  />
-  <div
-    className="emotion-9"
-  />
-  <div
-    className="emotion-12"
-  >
-    <div>
-      <ul
-        className="emotion-6"
-      >
-        <li>
-          <span
-            className="emotion-7"
-          >
-            Last Trained
-            :
-          </span>
-           
-          ?
-        </li>
-        <li>
-          <span
-            className="emotion-7"
-          >
-            Last Applied
-            :
-          </span>
-           
-          ?
-        </li>
-      </ul>
-      <div
-        className="emotion-16"
-      >
-        <button
-          className="emotion-17"
-          onClick={[Function]}
-          type="button"
-        >
-          Train Model
-        </button>
-        <button
-          className="emotion-17"
-          onClick={[Function]}
-          type="button"
-        >
-          Train & Test
-        </button>
-        <button
-          className="emotion-17"
-          onClick={[Function]}
-          type="button"
-        >
-          Train & Analyze All
-        </button>
-        <div
-          className="emotion-20"
-        >
-          <div
-            className="emotion-21"
-          >
-            <button
-              aria-details="TrainingOptions"
-              aria-label="Training Options"
-              className="emotion-22"
-              type="button"
-            >
-              <svg
-                data-file-name="help.svg"
-                height={20}
-              />
-            </button>
-            <div
-              className="emotion-23"
-              id="TrainingOptions"
-              role="tooltip"
-            >
-              <div
-                className="emotion-24"
-              />
-              <div
-                className="emotion-25"
-              >
-                <h3
-                  className="emotion-26"
-                >
-                  Train Model
-                </h3>
-                Train a model without applying it to your assets.
-                <h3
-                  className="emotion-27"
-                >
-                  Train & Test
-                </h3>
-                Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
-                <h3
-                  className="emotion-27"
-                >
-                  Train & Analyze All
-                </h3>
-                Train the model and run the model analysis on all project assets.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <ModelMatrixLink
-      modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
-      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
-    />
-  </div>
-</div>
-`;
-
-exports[`<ModelDetails /> should render properly 2`] = `
-@keyframes animation-0 {
-  from {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  to {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-.emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-bottom: 16px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #dbecff;
-  border-radius: 2px;
-  padding: 12px;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.emotion-2 {
-  -webkit-animation: animation-0 2s linear infinite;
-  animation: animation-0 2s linear infinite;
-}
-
-.emotion-3 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
-}
-
-.emotion-3 a {
-  color: #191919;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-  margin-left: 4px;
-}
-
-.emotion-3 a:hover {
-  color: #3A5DFF;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #ffb6b2;
-  border-radius: 2px;
-  padding: 12px;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.emotion-7 {
-  color: #b3b3b3;
-  font-family: Roboto Condensed;
-  text-transform: uppercase;
-}
-
-.emotion-8 {
-  color: #ffffff;
-  font-weight: 500;
-  font-size: 21px;
-  line-height: 30px;
-  padding-bottom: 16px;
+.emotion-8[aria-disabled=true],
+.emotion-8 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 .emotion-9 {
@@ -599,16 +168,6 @@ exports[`<ModelDetails /> should render properly 2`] = `
 .emotion-13 {
   border: none;
   border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
 }
 
 .emotion-19 {
@@ -822,61 +381,65 @@ exports[`<ModelDetails /> should render properly 2`] = `
       </div>
     </div>
   </div>
-  <div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-5"
-    >
-      <svg
-        color="#c92300"
-        data-file-name="warning.svg"
-        height={20}
-      />
-      <div
-        className="emotion-3"
-        role="alert"
-      >
-        Something went wrong. Please try again.
-      </div>
-    </div>
-  </div>
+  
   <div>
     <div
-      className="emotion-7"
+      className="emotion-4"
     >
-      Model
-       Name:
+      <div>
+        <div
+          className="emotion-5"
+        >
+          Model
+           Name:
+        </div>
+        <h3
+          className="emotion-6"
+        >
+          console_face_recognition
+        </h3>
+      </div>
+      <div
+        className="emotion-7"
+      >
+        <button
+          aria-label="Toggle Actions Menu"
+          className="emotion-8"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            data-file-name="kebab.svg"
+            height={20}
+          />
+        </button>
+      </div>
     </div>
-    <h3
-      className="emotion-8"
+    <ul
+      className="emotion-9"
     >
-      console_face_recognition
-    </h3>
+      <li>
+        <span
+          className="emotion-10"
+        >
+          Model Type
+          :
+        </span>
+         
+        ZVI_FACE_RECOGNITION
+      </li>
+      <li>
+        <span
+          className="emotion-10"
+        >
+          Description
+          :
+        </span>
+         
+      </li>
+    </ul>
   </div>
-  <ul
-    className="emotion-9"
-  >
-    <li>
-      <span
-        className="emotion-10"
-      >
-        Model Type
-        :
-      </span>
-       
-      ZVI_FACE_RECOGNITION
-    </li>
-    <li>
-      <span
-        className="emotion-10"
-      >
-        Description
-        :
-      </span>
-       
-    </li>
-  </ul>
   <div
     className="emotion-12"
   />
@@ -887,7 +450,7 @@ exports[`<ModelDetails /> should render properly 2`] = `
     className="emotion-12"
   />
   <div
-    className="emotion-15"
+    className="emotion-4"
   >
     <div>
       <ul
@@ -980,6 +543,601 @@ exports[`<ModelDetails /> should render properly 2`] = `
                 Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
                 <h3
                   className="emotion-30"
+                >
+                  Train & Analyze All
+                </h3>
+                Train the model and run the model analysis on all project assets.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ModelMatrixLink
+      modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
+  </div>
+</div>
+`;
+
+exports[`<ModelDetails /> should render properly 2`] = `
+@keyframes animation-0 {
+  from {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #dbecff;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  -webkit-animation: animation-0 2s linear infinite;
+  animation: animation-0 2s linear infinite;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-3 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-3 a:hover {
+  color: #3A5DFF;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-8 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-9 {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 30px;
+  padding-bottom: 16px;
+}
+
+.emotion-10 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-11 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-bottom: 4px;
+}
+
+.emotion-11,
+.emotion-11:hover,
+.emotion-11:visited,
+.emotion-11 .noop {
+  background-color: #808080;
+}
+
+.emotion-11:hover,
+.emotion-11 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-11[aria-disabled=true],
+.emotion-11 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-12 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 23px;
+}
+
+.emotion-13 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-15 {
+  height: 16px;
+}
+
+.emotion-16 {
+  border: none;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-22 button,
+.emotion-22 a {
+  margin-right: 16px;
+}
+
+.emotion-22 button:last,
+.emotion-22 a:last {
+  margin-right: 0;
+}
+
+.emotion-23 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-23,
+.emotion-23:hover,
+.emotion-23:visited,
+.emotion-23 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-23:hover,
+.emotion-23 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-23[aria-disabled=true],
+.emotion-23 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-26 div {
+  margin-left: 0;
+}
+
+.emotion-26 button {
+  margin-right: 0;
+}
+
+.emotion-27 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  margin-left: 8px;
+}
+
+.emotion-27:hover div,
+.emotion-27:focus-within div {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-27:hover button,
+.emotion-27:focus-within button {
+  color: #ffffff;
+}
+
+.emotion-28 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-29 {
+  position: absolute;
+  left: -10px;
+  top: 28px;
+  color: #191919;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 12px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 400px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+  z-index: 1;
+}
+
+.emotion-29:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.emotion-30:before {
+  content: ' ';
+  position: absolute;
+  top: -6px;
+  left: 14px;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.emotion-31 {
+  font-size: 15px;
+  line-height: 19px;
+  padding: 8px;
+}
+
+.emotion-32 {
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-33 {
+  font-size: 15px;
+  line-height: 19px;
+  padding-top: 16px;
+}
+
+<div>
+  <div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        className="emotion-2"
+        color="#0074f5"
+        data-file-name="generating.svg"
+        height={20}
+      />
+      <div
+        className="emotion-3"
+        role="alert"
+      >
+        "
+        console_face_recognition
+        " training in progress.
+         
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
+          href="/[projectId]/jobs/[jobId]"
+          passHref={true}
+        >
+          <a>
+            Check Status
+          </a>
+        </Link>
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-5"
+    >
+      <svg
+        color="#c92300"
+        data-file-name="warning.svg"
+        height={20}
+      />
+      <div
+        className="emotion-3"
+        role="alert"
+      >
+        Something went wrong. Please try again.
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      className="emotion-7"
+    >
+      <div>
+        <div
+          className="emotion-8"
+        >
+          Model
+           Name:
+        </div>
+        <h3
+          className="emotion-9"
+        >
+          console_face_recognition
+        </h3>
+      </div>
+      <div
+        className="emotion-10"
+      >
+        <button
+          aria-label="Toggle Actions Menu"
+          className="emotion-11"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            data-file-name="kebab.svg"
+            height={20}
+          />
+        </button>
+      </div>
+    </div>
+    <ul
+      className="emotion-12"
+    >
+      <li>
+        <span
+          className="emotion-13"
+        >
+          Model Type
+          :
+        </span>
+         
+        ZVI_FACE_RECOGNITION
+      </li>
+      <li>
+        <span
+          className="emotion-13"
+        >
+          Description
+          :
+        </span>
+         
+      </li>
+    </ul>
+  </div>
+  <div
+    className="emotion-15"
+  />
+  <hr
+    className="emotion-16"
+  />
+  <div
+    className="emotion-15"
+  />
+  <div
+    className="emotion-7"
+  >
+    <div>
+      <ul
+        className="emotion-12"
+      >
+        <li>
+          <span
+            className="emotion-13"
+          >
+            Last Trained
+            :
+          </span>
+           
+          ?
+        </li>
+        <li>
+          <span
+            className="emotion-13"
+          >
+            Last Applied
+            :
+          </span>
+           
+          ?
+        </li>
+      </ul>
+      <div
+        className="emotion-22"
+      >
+        <button
+          className="emotion-23"
+          onClick={[Function]}
+          type="button"
+        >
+          Train Model
+        </button>
+        <button
+          className="emotion-23"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Test
+        </button>
+        <button
+          className="emotion-23"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Analyze All
+        </button>
+        <div
+          className="emotion-26"
+        >
+          <div
+            className="emotion-27"
+          >
+            <button
+              aria-details="TrainingOptions"
+              aria-label="Training Options"
+              className="emotion-28"
+              type="button"
+            >
+              <svg
+                data-file-name="help.svg"
+                height={20}
+              />
+            </button>
+            <div
+              className="emotion-29"
+              id="TrainingOptions"
+              role="tooltip"
+            >
+              <div
+                className="emotion-30"
+              />
+              <div
+                className="emotion-31"
+              >
+                <h3
+                  className="emotion-32"
+                >
+                  Train Model
+                </h3>
+                Train a model without applying it to your assets.
+                <h3
+                  className="emotion-33"
+                >
+                  Train & Test
+                </h3>
+                Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
+                <h3
+                  className="emotion-33"
                 >
                   Train & Analyze All
                 </h3>

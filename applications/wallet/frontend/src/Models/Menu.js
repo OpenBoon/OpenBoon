@@ -31,6 +31,7 @@ const ModelsMenu = ({ projectId, modelId }) => {
           </div>
         )}
       </Menu>
+
       <ModelDeleteModal
         projectId={projectId}
         modelId={modelId}
