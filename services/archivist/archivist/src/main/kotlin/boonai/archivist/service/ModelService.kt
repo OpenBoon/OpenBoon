@@ -120,6 +120,10 @@ class ModelServiceImpl(
             ProjectStorageEntity.MODELS, id.toString(), "__TAG__", spec.type.fileName
         )
 
+        spec.datasetId?.let {
+            validateDatasetType(it, spec.type)
+        }
+
         argValidationService.validateArgsUnknownOnly("training/${spec.type.name}", spec.trainingArgs)
 
         val model = Model(
@@ -155,6 +159,10 @@ class ModelServiceImpl(
 
     override fun updateModel(id: UUID, update: ModelUpdateRequest): Model {
         val model = getModel(id)
+        update.datasetId?.let {
+            validateDatasetType(it, model.type)
+        }
+
         model.name = update.name
         model.datasetId = update.datasetId
         model.timeModified = System.currentTimeMillis()
@@ -164,6 +172,9 @@ class ModelServiceImpl(
 
     override fun patchModel(id: UUID, update: ModelPatchRequest): Model {
         val model = getModel(id)
+        update.datasetId?.let {
+            validateDatasetType(it, model.type)
+        }
         update.name?.let { model.name = it }
         update.datasetId?.let { model.datasetId = it }
         model.timeModified = System.currentTimeMillis()
@@ -440,6 +451,13 @@ class ModelServiceImpl(
         )
         fileStorageService.store(versionFile)
         return version
+    }
+
+    fun validateDatasetType(dsId: UUID, mtype: ModelType) {
+        val ds = datasetService.getDataset(dsId)
+        if (ds.type != mtype.datasetType) {
+            throw IllegalArgumentException("Invalid Dataset type for this model type")
+        }
     }
 
     companion object {

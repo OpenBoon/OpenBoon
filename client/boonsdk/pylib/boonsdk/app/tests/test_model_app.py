@@ -114,7 +114,7 @@ class ModelAppTests(unittest.TestCase):
         post_patch.return_value = {'category': 'LabelDetection'}
         model_patch.return_value = Model({
             'id': '12345',
-            'type': 'PYTORCH_MODEL_ARCHIVE',
+            'type': 'TORCH_MAR_CLASSIFIER',
             'name': 'foo'
         })
 
