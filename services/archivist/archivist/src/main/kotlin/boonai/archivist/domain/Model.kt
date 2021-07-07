@@ -193,7 +193,8 @@ enum class ModelType(
             "minConcepts" to minConcepts,
             "minExamples" to minExamples,
             "dependencies" to dependencies,
-            "label" to label
+            "label" to label,
+            "datasetType" to datasetType.name
         )
     }
 }
