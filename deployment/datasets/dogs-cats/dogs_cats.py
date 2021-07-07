@@ -17,8 +17,8 @@ images_base_path = 'dataset/'
 
 
 def import_fruit_dataset():
-    base_path = utils.prepare_dataset_folder \
-        (images_base_path, zipped_file_location, zipped_file_name)
+    base_path = utils.prepare_dataset_folder(
+        images_base_path, zipped_file_location, zipped_file_name)
     set_base_paths = [path.join(base_path, 'training_set'), path.join(base_path, 'test_set')]
     label_path_dict = {
         'Cat': ['cats'],

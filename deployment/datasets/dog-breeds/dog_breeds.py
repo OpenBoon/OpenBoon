@@ -1,6 +1,6 @@
 import boonsdk
 import utils
-from os import walk, environ, path
+from os import walk, path
 
 # download dataset from: https://www.kaggle.com/jessicali9530/stanford-dogs-dataset
 
@@ -16,8 +16,8 @@ images_base_path = 'images/Images/'
 
 
 def import_dog_dataset():
-    base_path = utils.prepare_dataset_folder \
-        (images_base_path, zipped_file_location, zipped_file_name)
+    base_path = utils.prepare_dataset_folder(
+        images_base_path, zipped_file_location, zipped_file_name)
 
     label_path_dict = {
         'Border_terrier': 'n02093754-Border_terrier',

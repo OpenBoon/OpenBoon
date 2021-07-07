@@ -17,8 +17,8 @@ images_base_path = 'DATASET/'
 
 
 def import_waste_dataset():
-    base_path = utils.prepare_dataset_folder \
-        (images_base_path, zipped_file_location, zipped_file_name)
+    base_path = utils.prepare_dataset_folder(
+        images_base_path, zipped_file_location, zipped_file_name)
 
     set_base_paths = [path.join(base_path, 'TEST'), path.join(base_path, 'TRAIN')]
 

@@ -13,10 +13,11 @@ ds_name = 'Birds'
 
 
 def import_birds_dataset():
-    base_path = utils.prepare_dataset_folder \
-        (images_base_path, zipped_file_location, zipped_file_name)
+    base_path = utils.prepare_dataset_folder(
+        images_base_path, zipped_file_location, zipped_file_name)
 
-    set_base_paths = [path.join(base_path, 'train'), path.join(base_path, 'test'), path.join(base_path, 'valid')]
+    set_base_paths = \
+        [path.join(base_path, 'train'), path.join(base_path, 'test'), path.join(base_path, 'valid')]
 
     label_path_dict = {
         'SNOWY OWL': ['SNOWY OWL'],

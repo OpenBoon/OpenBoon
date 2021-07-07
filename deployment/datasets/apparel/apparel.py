@@ -14,7 +14,8 @@ ds_name = 'Apparel'
 
 
 def import_apparel_dataset():
-    base_path = utils.prepare_dataset_folder(images_base_path, zipped_file_location, zipped_file_name)
+    base_path = utils.prepare_dataset_folder(
+        images_base_path, zipped_file_location, zipped_file_name)
 
     label_path_dict = {
         'red_shoes': ['red_shoes'],
