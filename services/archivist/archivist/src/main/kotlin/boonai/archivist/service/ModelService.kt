@@ -12,7 +12,7 @@ import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelApplyResponse
 import boonai.archivist.domain.ModelCopyRequest
 import boonai.archivist.domain.ModelFilter
-import boonai.archivist.domain.ModelPatchRequest
+import boonai.archivist.domain.ModelPatchRequestV2
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelTrainingRequest
@@ -39,6 +39,7 @@ import boonai.archivist.util.FileUtils
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
+import boonai.common.util.Json
 import com.google.pubsub.v1.PubsubMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -68,7 +69,7 @@ interface ModelService {
     fun getModelVersions(model: Model): Set<String>
     fun copyModelTag(model: Model, req: ModelCopyRequest)
     fun updateModel(id: UUID, update: ModelUpdateRequest): Model
-    fun patchModel(id: UUID, update: ModelPatchRequest): Model
+    fun patchModel(id: UUID, update: ModelPatchRequestV2): Model
     fun postToModelEventTopic(msg: PubsubMessage)
 }
 
@@ -170,13 +171,20 @@ class ModelServiceImpl(
         return model
     }
 
-    override fun patchModel(id: UUID, update: ModelPatchRequest): Model {
+    override fun patchModel(id: UUID, update: ModelPatchRequestV2): Model {
         val model = getModel(id)
-        update.datasetId?.let {
-            validateDatasetType(it, model.type)
+
+        if (update.isFieldSet("datasetId")) {
+            update.datasetId?.let {
+                validateDatasetType(it, model.type)
+            }
+            model.datasetId = update.datasetId
         }
-        update.name?.let { model.name = it }
-        update.datasetId?.let { model.datasetId = it }
+
+        if (update.isFieldSet("name")) {
+            update.name?.let { model.name }
+        }
+
         model.timeModified = System.currentTimeMillis()
         model.actorModified = getZmlpActor().toString()
         return model

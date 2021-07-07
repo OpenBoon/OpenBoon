@@ -1,16 +1,22 @@
 package boonai.common.util
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.BeanProperty
+import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.JavaType
+import com.fasterxml.jackson.databind.JsonDeserializer
+import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.deser.ContextualDeserializer
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import java.io.IOException
 import java.text.SimpleDateFormat
 
 inline fun <reified T : Any> ObjectMapper.readValueOrNull(content: String?): T? {
@@ -37,7 +43,7 @@ object Json {
 
     fun configureObjectMapper(mapper: ObjectMapper): ObjectMapper {
         mapper.registerModule(KotlinModule())
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+        //mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
         mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, false)
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)

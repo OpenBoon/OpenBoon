@@ -4,12 +4,16 @@ import boonai.archivist.repository.KDaoFilter
 import boonai.archivist.security.getProjectId
 import boonai.archivist.util.JdbcUtils
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.google.cloud.ServiceOptions
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Optional
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -281,6 +285,31 @@ class ModelUpdateRequest(
     @ApiModelProperty("The Dataset the model points to.")
     val datasetId: UUID?
 )
+
+class ModelPatchRequestV2 {
+
+    @ApiModelProperty("Name of the model")
+    internal var name: String? = null
+
+    @ApiModelProperty("The Dataset the model points to.")
+    internal var datasetId: UUID? = null
+
+    val isSet = mutableSetOf<String>()
+
+    fun setName(name: String) {
+        this.name = name
+        isSet.add("name")
+    }
+
+    fun setDatasetId(ds: UUID?) {
+        this.datasetId = ds
+        isSet.add("datasetId")
+    }
+
+    fun isFieldSet(name: String) : Boolean {
+        return name in isSet
+    }
+}
 
 class ModelPatchRequest(
 

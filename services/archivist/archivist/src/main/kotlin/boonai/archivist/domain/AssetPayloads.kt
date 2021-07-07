@@ -1,6 +1,7 @@
 package boonai.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonInclude
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.web.multipart.MultipartFile
@@ -27,6 +28,7 @@ class UpdateAssetsByQueryRequest(
 )
 
 @ApiModel("Update Asset Request", description = "Request structure to update an Asset.")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 class UpdateAssetRequest(
 
     @ApiModelProperty("Key/value pairs to be updated.")

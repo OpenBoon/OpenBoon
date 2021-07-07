@@ -6,6 +6,7 @@ import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelPatchRequest
+import boonai.archivist.domain.ModelPatchRequestV2
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.ModelUpdateRequest
@@ -24,6 +25,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class ModelControllerTests : MockMvcTest() {
 
@@ -134,7 +137,7 @@ class ModelControllerTests : MockMvcTest() {
     @Test
     fun testTrain() {
         val ds = datasetService.createDataset(DatasetSpec("bob", DatasetType.Classification))
-        modelService.patchModel(model.id, ModelPatchRequest(datasetId = ds.id))
+        modelService.patchModel(model.id, ModelPatchRequestV2().apply { this.setDatasetId(ds.id) })
 
         val body = mapOf<String, Any>()
         mvc.perform(
@@ -433,6 +436,51 @@ class ModelControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
             .andReturn()
     }
+
+    @Test
+    fun testPatchUnsetDataset() {
+        val ds = datasetService.createDataset(DatasetSpec("stuff", DatasetType.Classification))
+        val model = modelService.createModel(ModelSpec("foo", ModelType.KNN_CLASSIFIER, datasetId = ds.id))
+
+        val req = """
+            {"name": "mongo", "datasetId": null }
+        """.trimMargin()
+
+        mvc.perform(
+            MockMvcRequestBuilders.patch("/api/v3/models/${model.id}")
+                .headers(admin())
+                .content(req)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+
+        assertNull(model.datasetId)
+    }
+
+    @Test
+    fun testPatchNoDataset() {
+        val ds = datasetService.createDataset(DatasetSpec("stuff", DatasetType.Classification))
+        val model = modelService.createModel(ModelSpec("foo", ModelType.KNN_CLASSIFIER, datasetId = ds.id))
+
+        val req = """
+            {"name": "mongo"}
+        """.trimMargin()
+
+        mvc.perform(
+            MockMvcRequestBuilders.patch("/api/v3/models/${model.id}")
+                .headers(admin())
+                .content(req)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+
+        assertNotNull(model.datasetId)
+    }
+
 
     @Test
     fun testUpdate() {
