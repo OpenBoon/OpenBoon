@@ -39,6 +39,14 @@ class ModelDetailSerializer(ModelSerializer):
     timeLastApplied = serializers.IntegerField(required=False)
     timeLastTested = serializers.IntegerField(required=False)
     timeLastTrained = serializers.IntegerField(required=False)
+    datasetType = serializers.SerializerMethodField('get_dataset_type')
+
+    def get_dataset_type(self, obj):
+        model_types = self.context['request'].client.get('/api/v3/models/_types')
+        for model_type in model_types:
+            if model_type['name'] == obj['type']:
+                return model_type['datasetType']
+        return ''
 
 
 class ModelUpdateSerializer(serializers.Serializer):
@@ -55,6 +63,7 @@ class ModelTypeSerializer(serializers.Serializer):
     deployOnTrainingSet = serializers.BooleanField()
     minConcepts = serializers.IntegerField()
     minExamples = serializers.IntegerField()
+    datasetType = serializers.CharField()
 
 
 class ConfusionMatrixSerializer(serializers.Serializer):
