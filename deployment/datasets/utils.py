@@ -4,6 +4,14 @@ from os import path, environ
 
 
 def prepare_dataset_folder(images_base_path, zipped_file_location, zipped_file_name):
+
+    # temp
+    environ['BOONAI_SERVER'] = 'http://localhost:8080'
+    # temp
+    environ[
+        'BOONAI_APIKEY'] = 'ewogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiCn0KCg=='
+
+
     temp_dir = mkdtemp()
     zipped_file = path.join(zipped_file_location, zipped_file_name)
     zip_ref = zipfile.ZipFile(zipped_file)

@@ -4,12 +4,15 @@ from os import walk, environ, path
 
 # download dataset from: https://www.kaggle.com/jessicali9530/stanford-dogs-dataset
 
+# UPDATABLE
+ds_name = 'Dog Breeds'
+test_ratio = 0.1
 batch_size = 50
+
+# DO NOT CHANGE
 zipped_file_location = path.dirname(path.realpath(__file__))
 zipped_file_name = 'archive.zip'
-test_ratio = 0.1
 images_base_path = 'images/Images/'
-ds_name = 'Dog-Breeds-Dataset'
 
 
 def import_dog_dataset():

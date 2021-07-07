@@ -5,12 +5,15 @@ from os import walk, path
 
 # download dataset from: https://www.kaggle.com/moltean/fruits
 
+# UPDATABLE
+ds_name = 'Fruits'
 batch_size = 50
+test_ratio = 0.1
+
+# DO NOT CHANGE
 zipped_file_location = path.dirname(path.realpath(__file__))
 zipped_file_name = 'archive.zip'
-test_ratio = 0.1
 images_base_path = 'fruits-360/'
-ds_name = 'fruits'
 
 
 def import_fruit_dataset():

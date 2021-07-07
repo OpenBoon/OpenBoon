@@ -5,12 +5,15 @@ from os import walk, path
 
 # download dataset from: https://www.kaggle.com/crowww/a-large-scale-fish-dataset
 
+# UPDATABLE
+ds_name = 'Fishes'
 batch_size = 50
+test_ratio = 0.1
+
+# DO NOT CHANGE
 zipped_file_location = path.dirname(path.realpath(__file__))
 zipped_file_name = 'archive.zip'
-test_ratio = 0.1
 images_base_path = 'Fish_Dataset/Fish_Dataset/'
-ds_name = 'Fish-Dataset'
 
 
 def import_fish_dataset():

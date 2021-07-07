@@ -9,7 +9,7 @@ zipped_file_location = path.dirname(path.realpath(__file__))
 zipped_file_name = 'archive.zip'
 test_ratio = 0.1
 images_base_path = 'birds_rev2/'
-ds_name = 'birds'
+ds_name = 'Birds'
 
 
 def import_birds_dataset():

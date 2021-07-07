@@ -5,12 +5,15 @@ from os import walk, path
 
 # download dataset from: https://www.kaggle.com/gpiosenka/sports-classification
 
+# UPDATABLE
+ds_name = 'Sports'
+test_ratio = 0.1
 batch_size = 50
+
+# DO NOT CHANGE
 zipped_file_location = path.dirname(path.realpath(__file__))
 zipped_file_name = 'archive.zip'
-test_ratio = 0.1
 images_base_path = ''
-ds_name = 'sports'
 
 
 def import_sports_dataset():

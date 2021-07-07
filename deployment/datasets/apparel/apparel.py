@@ -10,7 +10,7 @@ zipped_file_location = path.dirname(path.realpath(__file__))
 zipped_file_name = 'archive.zip'
 test_ratio = 0.1
 images_base_path = ''
-ds_name = 'apparel'
+ds_name = 'Apparel'
 
 
 def import_apparel_dataset():
