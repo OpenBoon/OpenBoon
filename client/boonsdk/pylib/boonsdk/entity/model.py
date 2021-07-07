@@ -1,6 +1,7 @@
 from enum import Enum
 
 from .base import BaseEntity
+from .dataset import DatasetType
 from ..filters import TrainingSetFilter
 
 __all__ = [
@@ -248,3 +249,8 @@ class ModelTypeInfo:
         model must have before it can be trained.
         """
         return self._data['minExamples']
+
+    @property
+    def dataset_type(self):
+        """The type of Dataset this model needs to operate."""
+        return DatasetType[self._data['datasetType']]

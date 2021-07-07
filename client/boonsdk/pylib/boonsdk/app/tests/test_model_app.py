@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import pytest
 
-from boonsdk import BoonClient, ModelType, Model
+from boonsdk import BoonClient, ModelType, Model, DatasetType
 from boonsdk.app import ModelApp
 from .util import get_boon_app
 
@@ -211,7 +211,8 @@ class ModelAppTests(unittest.TestCase):
             'objective': 'label detection',
             'provider': 'boonai',
             'minConcepts': 1,
-            'minExamples': 1
+            'minExamples': 1,
+            'datasetType': 'Classification'
         }
         get_patch.return_value = [raw]
 
@@ -222,6 +223,7 @@ class ModelAppTests(unittest.TestCase):
         assert props.provider == 'boonai'
         assert props.min_concepts == 1
         assert props.min_examples == 1
+        assert props.dataset_type == DatasetType.Classification
 
     @patch.object(BoonClient, 'get')
     def test_export_trained_model(self, get_patch):
