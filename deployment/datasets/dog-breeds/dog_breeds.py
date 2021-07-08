@@ -5,9 +5,9 @@ from os import walk, path
 # download dataset from: https://www.kaggle.com/jessicali9530/stanford-dogs-dataset
 
 # UPDATABLE
-ds_name = 'Dog Breeds'
-test_ratio = 0.1
-batch_size = 50
+DS_NAME = 'Dog Breeds'
+TEST_RATIO = 0.1
+BATCH_SIZE = 50
 
 # DO NOT CHANGE
 zipped_file_location = path.dirname(path.realpath(__file__))
@@ -145,11 +145,11 @@ def import_dog_dataset():
     app = boonsdk.app_from_env()
     assets = []
 
-    ds = app.datasets.create_dataset(ds_name, boonsdk.DatasetType.Classification)
+    ds = app.datasets.create_dataset(DS_NAME, boonsdk.DatasetType.Classification)
 
     for key in label_path_dict:
         for (dirpath, dirnames, filenames) in walk(path.join(base_path, label_path_dict[key])):
-            test_count = int(test_ratio * len(filenames)) + 1
+            test_count = int(TEST_RATIO * len(filenames)) + 1
 
             sanitized_label = utils.sanitize_label(key)
             test_label = ds.make_label(sanitized_label, scope=boonsdk.LabelScope.TEST)
@@ -160,9 +160,9 @@ def import_dog_dataset():
             assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=train_label)
                            for name in filenames[test_count:]])
 
-    utils.print_dataset_info(ds_name, len(assets), test_ratio)
+    utils.print_dataset_info(DS_NAME, len(assets), TEST_RATIO)
 
-    assets = [assets[offs:offs + batch_size] for offs in range(0, len(assets), batch_size)]
+    assets = [assets[offs:offs + BATCH_SIZE] for offs in range(0, len(assets), BATCH_SIZE)]
 
     for batch in assets:
         app.assets.batch_upload_files(batch)

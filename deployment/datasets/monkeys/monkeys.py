@@ -6,9 +6,9 @@ from os import walk, path
 # download dataset from: https://www.kaggle.com/slothkong/10-monkey-species
 
 # UPDATABLE
-ds_name = 'Monkeys'
-batch_size = 50
-test_ratio = 0.1
+DS_NAME = 'Monkeys'
+BATCH_SIZE = 50
+TEST_RATIO = 0.1
 
 # DO NOT CHANGE
 zipped_file_location = path.dirname(path.realpath(__file__))
@@ -35,7 +35,7 @@ def import_monkeys_dataset():
     app = boonsdk.app_from_env()
     assets = []
 
-    ds = app.datasets.create_dataset(ds_name, boonsdk.DatasetType.Classification)
+    ds = app.datasets.create_dataset(DS_NAME, boonsdk.DatasetType.Classification)
 
     paths = []
     for samples in label_path_dict.keys():
@@ -46,7 +46,7 @@ def import_monkeys_dataset():
         for (dirpath, dirnames, filenames) in walk(p):
             filenames = [file for file in filenames if file.endswith(".jpg")]
 
-            test_count = int(test_ratio * len(filenames)) + 1
+            test_count = int(TEST_RATIO * len(filenames)) + 1
 
             sanitized_label = utils.sanitize_label(label_path_dict[path.basename(p)][0])
             test_label = ds.make_label(sanitized_label, scope=boonsdk.LabelScope.TEST)
@@ -57,9 +57,9 @@ def import_monkeys_dataset():
             assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=train_label)
                            for name in filenames[test_count:]])
 
-    utils.print_dataset_info(ds_name, len(assets), test_ratio)
+    utils.print_dataset_info(DS_NAME, len(assets), TEST_RATIO)
 
-    assets = [assets[offs:offs + batch_size] for offs in range(0, len(assets), batch_size)]
+    assets = [assets[offs:offs + BATCH_SIZE] for offs in range(0, len(assets), BATCH_SIZE)]
 
     for batch in assets:
         app.assets.batch_upload_files(batch)

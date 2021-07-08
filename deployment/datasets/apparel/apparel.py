@@ -5,12 +5,15 @@ from os import walk, path
 
 # download dataset from: https://www.kaggle.com/trolukovich/apparel-images-dataset
 
-batch_size = 50
+# UPDATABLE
+BATCH_SIZE = 50
+TEST_RATIO = 0.1
+DS_NAME = 'Apparel'
+
+# DO NOT CHANGE
 zipped_file_location = path.dirname(path.realpath(__file__))
 zipped_file_name = 'archive.zip'
-test_ratio = 0.1
 images_base_path = ''
-ds_name = 'Apparel'
 
 
 def import_apparel_dataset():
@@ -47,7 +50,7 @@ def import_apparel_dataset():
     app = boonsdk.app_from_env()
     assets = []
 
-    ds = app.datasets.create_dataset(ds_name, boonsdk.DatasetType.Classification)
+    ds = app.datasets.create_dataset(DS_NAME, boonsdk.DatasetType.Classification)
 
     for key in label_path_dict:
         paths = []
@@ -56,7 +59,7 @@ def import_apparel_dataset():
 
         for p in paths:
             for (dirpath, dirnames, filenames) in walk(p):
-                test_count = int(test_ratio * len(filenames)) + 1
+                test_count = int(TEST_RATIO * len(filenames)) + 1
 
                 test_label = ds.make_label(key, scope=boonsdk.LabelScope.TEST)
                 assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=test_label)
@@ -66,9 +69,9 @@ def import_apparel_dataset():
                 assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=train_label)
                                for name in filenames[test_count:]])
 
-    utils.print_dataset_info(ds_name, len(assets), test_ratio)
+    utils.print_dataset_info(DS_NAME, len(assets), TEST_RATIO)
 
-    assets = [assets[offs:offs + batch_size] for offs in range(0, len(assets), batch_size)]
+    assets = [assets[offs:offs + BATCH_SIZE] for offs in range(0, len(assets), BATCH_SIZE)]
 
     for batch in assets:
         app.assets.batch_upload_files(batch)
