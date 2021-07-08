@@ -362,6 +362,21 @@ class TestProjectStorage(TestCase):
         uri = self.fs.projects.get_native_uri(pfile)
         assert 'gs://hulk-hogan' == uri
 
+    @patch.object(BoonClient, 'get')
+    def test_get_signed_native_uri(self, get_patch):
+        get_patch.return_value = {'uri': 'gs://hulk-hogan'}
+        pfile = StoredFile({
+            'name': 'cat.jpg',
+            'category': 'proxy',
+            'attrs': {},
+            'id': 'assets/123456/proxy/cat.jpg'
+        })
+        uri = self.fs.projects.get_signed_native_uri(pfile, 20)
+        assert 'gs://hulk-hogan' == uri
+
+        endpoint = get_patch.call_args[0][0]
+        assert endpoint.endswith("?minutes=20")
+
 
 class ModelStorageTests(TestCase):
 
