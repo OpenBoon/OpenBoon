@@ -184,8 +184,8 @@ exports[`<ModelDetails /> should render properly 1`] = `
   margin-right: 16px;
 }
 
-.emotion-19 button:last,
-.emotion-19 a:last {
+.emotion-19 button:last-child,
+.emotion-19 a:last-child {
   margin-right: 0;
 }
 
@@ -761,8 +761,8 @@ exports[`<ModelDetails /> should render properly 2`] = `
   margin-right: 16px;
 }
 
-.emotion-22 button:last,
-.emotion-22 a:last {
+.emotion-22 button:last-child,
+.emotion-22 a:last-child {
   margin-right: 0;
 }
 

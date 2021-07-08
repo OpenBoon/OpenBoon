@@ -334,8 +334,8 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-105 button:last,
-.emotion-105 a:last {
+.emotion-105 button:last-child,
+.emotion-105 a:last-child {
   margin-right: 0;
 }
 
@@ -1233,8 +1233,8 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-13 button:last,
-.emotion-13 a:last {
+.emotion-13 button:last-child,
+.emotion-13 a:last-child {
   margin-right: 0;
 }
 
@@ -1775,8 +1775,8 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-105 button:last,
-.emotion-105 a:last {
+.emotion-105 button:last-child,
+.emotion-105 a:last-child {
   margin-right: 0;
 }
 
