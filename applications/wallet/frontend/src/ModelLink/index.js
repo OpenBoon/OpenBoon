@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Breadcrumbs from '../Breadcrumbs'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 
-import ModelLinkForm from './Form'
+import ModelLinkContent from './Content'
 
 const Model = () => {
   return (
@@ -21,7 +21,7 @@ const Model = () => {
       />
 
       <SuspenseBoundary role={ROLES.ML_Tools}>
-        <ModelLinkForm />
+        <ModelLinkContent />
       </SuspenseBoundary>
     </>
   )

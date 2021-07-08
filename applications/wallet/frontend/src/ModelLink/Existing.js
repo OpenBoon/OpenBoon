@@ -11,7 +11,13 @@ import ButtonGroup from '../Button/Group'
 
 import { onExistingLink } from './helpers'
 
-const ModelLinkExisting = ({ projectId, modelId, state, dispatch }) => {
+const ModelLinkExisting = ({
+  projectId,
+  modelId,
+  datasetType,
+  state,
+  dispatch,
+}) => {
   const {
     data: { results: datasets },
   } = useSWR(`/api/v1/projects/${projectId}/datasets/`)
@@ -25,7 +31,9 @@ const ModelLinkExisting = ({ projectId, modelId, state, dispatch }) => {
       <Select
         label="Dataset"
         defaultValue=""
-        options={datasets.map(({ id, name }) => ({ value: id, label: name }))}
+        options={datasets
+          .filter(({ type }) => type === datasetType)
+          .map(({ id, name }) => ({ value: id, label: name }))}
         onChange={({ value: datasetId }) => {
           dispatch({ datasetId })
         }}
@@ -66,6 +74,7 @@ const ModelLinkExisting = ({ projectId, modelId, state, dispatch }) => {
 ModelLinkExisting.propTypes = {
   projectId: PropTypes.string.isRequired,
   modelId: PropTypes.string.isRequired,
+  datasetType: PropTypes.string.isRequired,
   state: PropTypes.shape({
     datasetId: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
