@@ -12,19 +12,23 @@
   
 
 ### Kagle Links for Datasets download
-- Apparel
+- Apparel - 11385 Images
 > https://www.kaggle.com/trolukovich/apparel-images-dataset
-- Birds
+- Birds - 42114 Images
 > https://www.kaggle.com/gpiosenka/100-bird-species
-- Dog Breeds
+- Dog Breeds - 20580 Images
 > https://www.kaggle.com/jessicali9530/stanford-dogs-dataset
-- Dogs and Cats
+- Dogs and Cats - 10000 Images
 > https://www.kaggle.com/chetankv/dogs-cats-images
-- Large Scale Fishes
+- Large Scale Fishes - 9000 Images
 > https://www.kaggle.com/crowww/a-large-scale-fish-dataset
-- Fruits
+- Fruits - 89115 Images
 > https://www.kaggle.com/moltean/fruits
-- Monkey Species
+- Monkey Species - 1368 Images
 > https://www.kaggle.com/slothkong/10-monkey-species
-- Rock, Paper and Scissors Gestures
+- Rock, Paper and Scissors Gestures - 2188 Images
 > https://www.kaggle.com/drgfreeman/rockpaperscissors
+- Sports - 11146 Images
+> https://www.kaggle.com/gpiosenka/sports-classification
+- Waste - 25077 Images
+> https://www.kaggle.com/techsash/waste-classification-data
