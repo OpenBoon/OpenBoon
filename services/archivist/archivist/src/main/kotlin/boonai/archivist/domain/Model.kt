@@ -149,7 +149,7 @@ enum class ModelType(
     TORCH_MAR_CLASSIFIER(
         "A Torch Model Archive using the image_classifier handler.",
         "None",
-        "boonai_analysis.custom.TorchModelArchiveClassifier",
+        "boonai_analysis.deployed.mar.TorchModelArchiveClassifier",
         null,
         "Upload a pre-trained Pytorch Model Archive",
         ModelObjective.LABEL_DETECTION,
@@ -344,6 +344,7 @@ class Model(
     @ApiModelProperty("The name of the pipeline module and analysis namespace.")
     val moduleName: String,
 
+    @JsonIgnore
     @Column(name = "str_endpoint")
     val endpoint: String?,
 

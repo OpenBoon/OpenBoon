@@ -80,7 +80,6 @@ def build_and_deploy(spec):
     d = tempfile.mkdtemp()
     try:
         shutil.copytree(tmpl, d, dirs_exist_ok=True)
-        download_model(spec['modelFile'], d)
         submit_build(spec, d)
     finally:
         shutil.rmtree(d)
@@ -98,12 +97,13 @@ def submit_build(spec, path):
     """
     img = spec['image']
     modelId = spec['modelId']
+    modelFile = spec['modelFile']
 
     build = {
         'steps': [
             {
                 'name': 'gcr.io/cloud-builders/docker',
-                'args': ['build', '-t', img, '.']
+                'args': ['build', '-t', img, '--build-arg', f'MODEL_URL={modelFile}', '.']
             },
             {
                 'name': 'gcr.io/cloud-builders/docker',
@@ -145,17 +145,6 @@ def run_cloud_build(build_file, path):
         build_file,
         path
     ])
-
-
-def download_model(src_uri, dst):
-    """
-    Download the model file uploaded by the user.
-
-    Args:
-        src_uri (str): The URI for the model.
-        dst (str): The local path to copy the model into.
-    """
-    subprocess.check_call(['gsutil', 'cp', src_uri, dst])
 
 
 def create_localdev_env(project, sub):

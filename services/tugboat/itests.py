@@ -17,9 +17,9 @@ class ServerIntegrationTests(unittest.TestCase):
 
     def test_build_and_deploy(self):
         spec = {
-            'modelType': 'PYTORCH_MODEL_ARCHIVE',
+            'modelType': 'TORCH_MAR_CLASSIFIER',
             'modelId': 'd96733a8-de94-40c3-baef-92de50eb8398',
-            'modelFile': 'gs://zorroa-dev-data/torch/model.mar',
+            'modelFile': 'https://storage.googleapis.com/zorroa-public/models/resnet-152-batch.mar',
             'image': 'gcr.io/zvi-dev/models/d96733a8-de94-40c3-baef-92de50eb8398'
         }
 
