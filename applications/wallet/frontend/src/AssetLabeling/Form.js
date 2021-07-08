@@ -199,27 +199,31 @@ const AssetLabelingForm = ({
           })}
         </div>
 
-        <ButtonGroup>
-          <Button
-            variant={BUTTON_VARIANTS.SECONDARY}
-            onClick={() => {
-              dispatch({ datasetId: '', labels: {} })
-            }}
-            style={{ flex: 1, marginLeft: spacing.normal }}
-          >
-            Cancel
-          </Button>
+        <div
+          css={{ paddingLeft: spacing.normal, paddingRight: spacing.normal }}
+        >
+          <ButtonGroup>
+            <Button
+              variant={BUTTON_VARIANTS.SECONDARY}
+              onClick={() => {
+                dispatch({ datasetId: '', labels: {} })
+              }}
+              style={{ flex: 1 }}
+            >
+              Cancel
+            </Button>
 
-          <Button
-            type="submit"
-            variant={BUTTON_VARIANTS.PRIMARY}
-            onClick={handleOnSave}
-            isDisabled={getIsDisabled({ assetId, state, labels })}
-            style={{ flex: 1 }}
-          >
-            {state.isLoading ? 'Saving...' : 'Save'}
-          </Button>
-        </ButtonGroup>
+            <Button
+              type="submit"
+              variant={BUTTON_VARIANTS.PRIMARY}
+              onClick={handleOnSave}
+              isDisabled={getIsDisabled({ assetId, state, labels })}
+              style={{ flex: 1 }}
+            >
+              {state.isLoading ? 'Saving...' : 'Save'}
+            </Button>
+          </ButtonGroup>
+        </div>
       </Form>
     </div>
   )

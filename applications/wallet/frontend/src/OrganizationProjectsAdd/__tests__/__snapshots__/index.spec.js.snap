@@ -92,8 +92,8 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-7 button:last,
-.emotion-7 a:last {
+.emotion-7 button:last-child,
+.emotion-7 a:last-child {
   margin-right: 0;
 }
 

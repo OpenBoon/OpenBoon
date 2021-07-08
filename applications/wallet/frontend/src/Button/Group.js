@@ -11,7 +11,7 @@ const ButtonGroup = ({ children }) => {
         'button, a': {
           marginRight: spacing.normal,
         },
-        'button:last, a:last': {
+        'button:last-child, a:last-child': {
           marginRight: 0,
         },
       }}

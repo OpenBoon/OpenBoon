@@ -227,8 +227,8 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-6 button:last,
-.emotion-6 a:last {
+.emotion-6 button:last-child,
+.emotion-6 a:last-child {
   margin-right: 0;
 }
 
@@ -562,8 +562,8 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-6 button:last,
-.emotion-6 a:last {
+.emotion-6 button:last-child,
+.emotion-6 a:last-child {
   margin-right: 0;
 }
 
@@ -864,8 +864,8 @@ exports[`<OrganizationOwnersAdd /> should render properly 3`] = `
   margin-right: 16px;
 }
 
-.emotion-17 button:last,
-.emotion-17 a:last {
+.emotion-17 button:last-child,
+.emotion-17 a:last-child {
   margin-right: 0;
 }
 
@@ -1320,8 +1320,8 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-6 button:last,
-.emotion-6 a:last {
+.emotion-6 button:last-child,
+.emotion-6 a:last-child {
   margin-right: 0;
 }
 

@@ -44,6 +44,11 @@ exports[`AssetLabelingForm should not try to save when there are no changes 1`] 
 }
 
 .emotion-4 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -52,17 +57,17 @@ exports[`AssetLabelingForm should not try to save when there are no changes 1`] 
   padding-bottom: 16px;
 }
 
-.emotion-4 button,
-.emotion-4 a {
+.emotion-5 button,
+.emotion-5 a {
   margin-right: 16px;
 }
 
-.emotion-4 button:last,
-.emotion-4 a:last {
+.emotion-5 button:last-child,
+.emotion-5 a:last-child {
   margin-right: 0;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -91,30 +96,29 @@ exports[`AssetLabelingForm should not try to save when there are no changes 1`] 
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  margin-left: 16px;
 }
 
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited,
-.emotion-5 .noop {
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited,
+.emotion-6 .noop {
   background-color: #808080;
 }
 
-.emotion-5:hover,
-.emotion-5 .noop {
+.emotion-6:hover,
+.emotion-6 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true],
-.emotion-5 .noop {
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-6 {
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -145,22 +149,22 @@ exports[`AssetLabelingForm should not try to save when there are no changes 1`] 
   background-color: transparent;
 }
 
-.emotion-6,
-.emotion-6:hover,
-.emotion-6:visited,
-.emotion-6 .noop {
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-6:hover,
-.emotion-6 .noop {
+.emotion-7:hover,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-6[aria-disabled=true],
-.emotion-6 .noop {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -260,21 +264,25 @@ exports[`AssetLabelingForm should not try to save when there are no changes 1`] 
     <div
       className="emotion-4"
     >
-      <button
+      <div
         className="emotion-5"
-        onClick={[Function]}
-        type="button"
       >
-        Cancel
-      </button>
-      <button
-        aria-disabled={true}
-        className="emotion-6"
-        onClick={[Function]}
-        type="submit"
-      >
-        Save
-      </button>
+        <button
+          className="emotion-6"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          aria-disabled={true}
+          className="emotion-7"
+          onClick={[Function]}
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
     </div>
   </form>
 </div>
@@ -324,6 +332,11 @@ exports[`AssetLabelingForm should render properly when saving 1`] = `
 }
 
 .emotion-4 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -332,17 +345,17 @@ exports[`AssetLabelingForm should render properly when saving 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-4 button,
-.emotion-4 a {
+.emotion-5 button,
+.emotion-5 a {
   margin-right: 16px;
 }
 
-.emotion-4 button:last,
-.emotion-4 a:last {
+.emotion-5 button:last-child,
+.emotion-5 a:last-child {
   margin-right: 0;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -371,30 +384,29 @@ exports[`AssetLabelingForm should render properly when saving 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  margin-left: 16px;
 }
 
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited,
-.emotion-5 .noop {
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited,
+.emotion-6 .noop {
   background-color: #808080;
 }
 
-.emotion-5:hover,
-.emotion-5 .noop {
+.emotion-6:hover,
+.emotion-6 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true],
-.emotion-5 .noop {
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-6 {
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -425,22 +437,22 @@ exports[`AssetLabelingForm should render properly when saving 1`] = `
   background-color: transparent;
 }
 
-.emotion-6,
-.emotion-6:hover,
-.emotion-6:visited,
-.emotion-6 .noop {
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-6:hover,
-.emotion-6 .noop {
+.emotion-7:hover,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-6[aria-disabled=true],
-.emotion-6 .noop {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -540,21 +552,25 @@ exports[`AssetLabelingForm should render properly when saving 1`] = `
     <div
       className="emotion-4"
     >
-      <button
+      <div
         className="emotion-5"
-        onClick={[Function]}
-        type="button"
       >
-        Cancel
-      </button>
-      <button
-        aria-disabled={true}
-        className="emotion-6"
-        onClick={[Function]}
-        type="submit"
-      >
-        Saving...
-      </button>
+        <button
+          className="emotion-6"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          aria-disabled={true}
+          className="emotion-7"
+          onClick={[Function]}
+          type="submit"
+        >
+          Saving...
+        </button>
+      </div>
     </div>
   </form>
 </div>
@@ -642,8 +658,8 @@ exports[`AssetLabelingForm should render that face detection is running 1`] = `
   margin-right: 16px;
 }
 
-.emotion-3 button:last,
-.emotion-3 a:last {
+.emotion-3 button:last-child,
+.emotion-3 a:last-child {
   margin-right: 0;
 }
 
@@ -766,8 +782,8 @@ exports[`AssetLabelingForm should run face detection when it's missing 1`] = `
   margin-right: 16px;
 }
 
-.emotion-3 button:last,
-.emotion-3 a:last {
+.emotion-3 button:last-child,
+.emotion-3 a:last-child {
   margin-right: 0;
 }
 
@@ -895,6 +911,11 @@ exports[`AssetLabelingForm should save properly when there are Classification ch
 }
 
 .emotion-4 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -903,66 +924,14 @@ exports[`AssetLabelingForm should save properly when there are Classification ch
   padding-bottom: 16px;
 }
 
-.emotion-4 button,
-.emotion-4 a {
+.emotion-5 button,
+.emotion-5 a {
   margin-right: 16px;
 }
 
-.emotion-4 button:last,
-.emotion-4 a:last {
+.emotion-5 button:last-child,
+.emotion-5 a:last-child {
   margin-right: 0;
-}
-
-.emotion-5 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  margin-left: 16px;
-}
-
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited,
-.emotion-5 .noop {
-  background-color: #808080;
-}
-
-.emotion-5:hover,
-.emotion-5 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-5[aria-disabled=true],
-.emotion-5 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
 }
 
 .emotion-6 {
@@ -1000,18 +969,69 @@ exports[`AssetLabelingForm should save properly when there are Classification ch
 .emotion-6:hover,
 .emotion-6:visited,
 .emotion-6 .noop {
-  background-color: #3A5DFF;
+  background-color: #808080;
 }
 
 .emotion-6:hover,
 .emotion-6 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #6088FE;
+  background-color: #b3b3b3;
 }
 
 .emotion-6[aria-disabled=true],
 .emotion-6 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1111,20 +1131,24 @@ exports[`AssetLabelingForm should save properly when there are Classification ch
     <div
       className="emotion-4"
     >
-      <button
+      <div
         className="emotion-5"
-        onClick={[Function]}
-        type="button"
       >
-        Cancel
-      </button>
-      <button
-        className="emotion-6"
-        onClick={[Function]}
-        type="submit"
-      >
-        Save
-      </button>
+        <button
+          className="emotion-6"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          className="emotion-7"
+          onClick={[Function]}
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
     </div>
   </form>
 </div>
@@ -1174,6 +1198,11 @@ exports[`AssetLabelingForm should save properly when there are FaceRecognition c
 }
 
 .emotion-4 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1182,66 +1211,14 @@ exports[`AssetLabelingForm should save properly when there are FaceRecognition c
   padding-bottom: 16px;
 }
 
-.emotion-4 button,
-.emotion-4 a {
+.emotion-5 button,
+.emotion-5 a {
   margin-right: 16px;
 }
 
-.emotion-4 button:last,
-.emotion-4 a:last {
+.emotion-5 button:last-child,
+.emotion-5 a:last-child {
   margin-right: 0;
-}
-
-.emotion-5 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  margin-left: 16px;
-}
-
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited,
-.emotion-5 .noop {
-  background-color: #808080;
-}
-
-.emotion-5:hover,
-.emotion-5 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-5[aria-disabled=true],
-.emotion-5 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
 }
 
 .emotion-6 {
@@ -1279,18 +1256,69 @@ exports[`AssetLabelingForm should save properly when there are FaceRecognition c
 .emotion-6:hover,
 .emotion-6:visited,
 .emotion-6 .noop {
-  background-color: #3A5DFF;
+  background-color: #808080;
 }
 
 .emotion-6:hover,
 .emotion-6 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #6088FE;
+  background-color: #b3b3b3;
 }
 
 .emotion-6[aria-disabled=true],
 .emotion-6 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1390,20 +1418,24 @@ exports[`AssetLabelingForm should save properly when there are FaceRecognition c
     <div
       className="emotion-4"
     >
-      <button
+      <div
         className="emotion-5"
-        onClick={[Function]}
-        type="button"
       >
-        Cancel
-      </button>
-      <button
-        className="emotion-6"
-        onClick={[Function]}
-        type="submit"
-      >
-        Save
-      </button>
+        <button
+          className="emotion-6"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          className="emotion-7"
+          onClick={[Function]}
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
     </div>
   </form>
 </div>

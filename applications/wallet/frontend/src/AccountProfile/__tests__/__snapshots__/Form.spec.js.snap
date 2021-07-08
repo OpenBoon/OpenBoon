@@ -286,8 +286,8 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-11 button:last,
-.emotion-11 a:last {
+.emotion-11 button:last-child,
+.emotion-11 a:last-child {
   margin-right: 0;
 }
 

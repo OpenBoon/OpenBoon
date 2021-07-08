@@ -1,13 +1,26 @@
+import { useState } from 'react'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+
+import { spacing } from '../Styles'
 
 import Breadcrumbs from '../Breadcrumbs'
+import FlashMessageErrors from '../FlashMessage/Errors'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 import Tabs from '../Tabs'
 
+import ModelDataset from '../ModelDataset'
+
 import ModelContent from './Content'
-import ModelDataset from './Dataset'
 
 const Model = () => {
+  const [errors, setErrors] = useState({})
+
+  const {
+    query: { action },
+  } = useRouter()
+
   return (
     <>
       <Head>
@@ -21,6 +34,25 @@ const Model = () => {
         ]}
       />
 
+      <FlashMessageErrors
+        errors={errors}
+        styles={{ paddingTop: spacing.base, paddingBottom: spacing.normal }}
+      />
+
+      {action === 'unlink-dataset-success' && (
+        <div
+          css={{
+            display: 'flex',
+            paddingTop: spacing.base,
+            paddingBottom: spacing.normal,
+          }}
+        >
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Dataset unlinked.
+          </FlashMessage>
+        </div>
+      )}
+
       <SuspenseBoundary role={ROLES.ML_Tools}>
         <ModelContent />
 
@@ -28,7 +60,7 @@ const Model = () => {
           tabs={[{ title: 'Dataset', href: '/[projectId]/models/[modelId]' }]}
         />
 
-        <ModelDataset />
+        <ModelDataset setErrors={setErrors} />
       </SuspenseBoundary>
     </>
   )
