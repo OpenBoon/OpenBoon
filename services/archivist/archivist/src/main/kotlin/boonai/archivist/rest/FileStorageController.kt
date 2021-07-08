@@ -83,10 +83,10 @@ class FileStorageController(
         @PathVariable entityId: String,
         @PathVariable category: String,
         @PathVariable name: String,
-        @RequestParam(required = false) minutes: String? = "60"
+        @RequestParam(required = false) minutes: String?
     ): Map <String, Any> {
         val locator = getValidLocator(entityType, entityId, category, name)
-        return projectStorageService.getSignedUrl(locator, false, minutes.toLong(), TimeUnit.MINUTES)
+        return projectStorageService.getSignedUrl(locator, false, minutes?.toLong() ?: 60, TimeUnit.MINUTES)
     }
 
     @ApiOperation("Get get underlying file location.", hidden = true)
