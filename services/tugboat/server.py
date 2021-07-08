@@ -67,7 +67,7 @@ def build_and_deploy(spec):
     logger.info(f'Building {spec}')
     model_type = spec['modelType']
     tmlp_path = os.environ.get('TEMPLATE_PATH', '/app/tmpl')
-    if model_type == 'PYTORCH_MODEL_ARCHIVE':
+    if model_type.startswith('TORCH_'):
         tmpl = f'{tmlp_path}/torch'
     elif model_type == 'TF_SAVED_MODEL':
         tmpl = f'{tmlp_path}/tf'
