@@ -7,7 +7,7 @@ from os import walk, path
 # UPDATABLE
 DS_NAME = 'Dog Breeds'
 TEST_RATIO = 0.1
-BATCH_SIZE = 50
+BATCH_SIZE = 20
 
 # DO NOT CHANGE
 zipped_file_location = path.dirname(path.realpath(__file__))
@@ -162,7 +162,7 @@ def import_dog_dataset():
 
     utils.print_dataset_info(DS_NAME, len(assets), TEST_RATIO)
 
-    assets = [assets[offs:offs + BATCH_SIZE] for offs in range(0, len(assets), BATCH_SIZE)]
+    assets = utils.create_batches(assets, BATCH_SIZE)
 
     for batch in assets:
         app.assets.batch_upload_files(batch)

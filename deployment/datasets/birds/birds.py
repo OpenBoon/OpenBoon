@@ -5,7 +5,7 @@ from os import walk, path
 # download dataset from: https://www.kaggle.com/gpiosenka/100-bird-species
 
 # UPDATABLE
-BATCH_SIZE = 50
+BATCH_SIZE = 20
 TEST_RATIO = 0.1
 DS_NAME = 'Birds'
 
@@ -326,7 +326,7 @@ def import_birds_dataset():
 
     utils.print_dataset_info(DS_NAME, len(assets), TEST_RATIO)
 
-    assets = [assets[offs:offs + BATCH_SIZE] for offs in range(0, len(assets), BATCH_SIZE)]
+    assets = utils.create_batches(assets, BATCH_SIZE)
 
     for batch in assets:
         app.assets.batch_upload_files(batch)
