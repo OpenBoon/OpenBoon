@@ -282,6 +282,31 @@ class ModelUpdateRequest(
     val datasetId: UUID?
 )
 
+class ModelPatchRequestV2 {
+
+    @ApiModelProperty("Name of the model")
+    internal var name: String? = null
+
+    @ApiModelProperty("The Dataset the model points to.")
+    internal var datasetId: UUID? = null
+
+    val isSet = mutableSetOf<String>()
+
+    fun setName(name: String) {
+        this.name = name
+        isSet.add("name")
+    }
+
+    fun setDatasetId(ds: UUID?) {
+        this.datasetId = ds
+        isSet.add("datasetId")
+    }
+
+    fun isFieldSet(name: String): Boolean {
+        return name in isSet
+    }
+}
+
 class ModelPatchRequest(
 
     @ApiModelProperty("Name of the model")

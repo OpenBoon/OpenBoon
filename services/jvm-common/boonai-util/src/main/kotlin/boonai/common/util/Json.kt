@@ -1,6 +1,5 @@
 package boonai.common.util
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.core.type.TypeReference
@@ -37,7 +36,6 @@ object Json {
 
     fun configureObjectMapper(mapper: ObjectMapper): ObjectMapper {
         mapper.registerModule(KotlinModule())
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
         mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, false)
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
