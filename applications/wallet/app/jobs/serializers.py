@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from wallet.fields import NoNullCharField
+
 
 class AssetCountsSerializer(serializers.Serializer):
     assetCreatedCount = serializers.IntegerField(required=True)
@@ -34,7 +36,7 @@ class JobActionsSerializer(serializers.Serializer):
 class JobSerializer(serializers.Serializer):
     id = serializers.UUIDField(required=True)
     projectId = serializers.CharField(default="")
-    dataSourceId = serializers.CharField(default="")
+    dataSourceId = NoNullCharField(default="")
     name = serializers.CharField(required=True)
     state = serializers.CharField(required=True)
     assetCounts = AssetCountsSerializer(required=True)
@@ -89,7 +91,7 @@ class TaskSerializer(serializers.Serializer):
     id = serializers.UUIDField(required=True)
     jobId = serializers.UUIDField(required=True)
     projectId = serializers.CharField(default="")
-    dataSourceId = serializers.UUIDField(default="")
+    dataSourceId = NoNullCharField(default="")
     name = serializers.CharField(required=True)
     state = serializers.CharField(required=True)
     host = serializers.CharField(default='')

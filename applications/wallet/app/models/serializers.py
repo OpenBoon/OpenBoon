@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from wallet.fields import NoNullIntegerField
+
 
 class SimpleModelSerializer(serializers.Serializer):
     id = serializers.UUIDField(required=False)
@@ -36,9 +38,9 @@ class ModelTypeRestrictionsSerializer(serializers.Serializer):
 class ModelDetailSerializer(ModelSerializer):
     runningJobId = serializers.CharField(required=False, default='', allow_blank=True)
     modelTypeRestrictions = ModelTypeRestrictionsSerializer()
-    timeLastApplied = serializers.IntegerField(required=False, allow_null=True)
-    timeLastTested = serializers.IntegerField(required=False, allow_null=True)
-    timeLastTrained = serializers.IntegerField(required=False, allow_null=True)
+    timeLastApplied = NoNullIntegerField(required=False)
+    timeLastTested = NoNullIntegerField(required=False)
+    timeLastTrained = NoNullIntegerField(required=False)
     datasetType = serializers.SerializerMethodField('get_dataset_type')
 
     def get_dataset_type(self, obj):
