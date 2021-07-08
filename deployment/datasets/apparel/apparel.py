@@ -61,11 +61,12 @@ def import_apparel_dataset():
             for (dirpath, dirnames, filenames) in walk(p):
                 test_count = int(TEST_RATIO * len(filenames)) + 1
 
-                test_label = ds.make_label(key, scope=boonsdk.LabelScope.TEST)
+                sanitized_label = utils.sanitize_label(key)
+                test_label = ds.make_label(sanitized_label, scope=boonsdk.LabelScope.TEST)
                 assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=test_label)
                                for name in filenames[0:test_count]])
 
-                train_label = ds.make_label(key, scope=boonsdk.LabelScope.TRAIN)
+                train_label = ds.make_label(sanitized_label, scope=boonsdk.LabelScope.TRAIN)
                 assets.extend([boonsdk.FileUpload(path.join(dirpath, name), label=train_label)
                                for name in filenames[test_count:]])
 
