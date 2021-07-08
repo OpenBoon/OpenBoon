@@ -481,7 +481,6 @@ class ModelControllerTests : MockMvcTest() {
         assertNotNull(model.datasetId)
     }
 
-
     @Test
     fun testUpdate() {
         val ds = datasetService.createDataset(DatasetSpec("stuff", DatasetType.Classification))
