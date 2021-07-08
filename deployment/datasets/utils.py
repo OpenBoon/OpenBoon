@@ -1,6 +1,6 @@
 from tempfile import mkdtemp
 import zipfile
-from os import path, environ
+from os import path
 
 
 def prepare_dataset_folder(images_base_path, zipped_file_location, zipped_file_name):
