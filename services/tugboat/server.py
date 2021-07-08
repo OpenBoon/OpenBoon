@@ -10,9 +10,10 @@ import yaml
 
 import urllib3
 from flask import Flask
+from gevent.pywsgi import WSGIServer
 from google.cloud import pubsub_v1
 
-logger = logging.getLogger('swivel')
+logger = logging.getLogger('tugboat')
 logging.basicConfig(level=logging.INFO)
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -131,6 +132,10 @@ def submit_build(spec, path):
     with open(build_file, 'w') as fp:
         yaml.dump(build, fp)
 
+    run_cloud_build(build_file, path)
+
+
+def run_cloud_build(build_file, path):
     subprocess.check_call([
         'gcloud',
         'builds',
@@ -163,6 +168,7 @@ def create_localdev_env(project, sub):
 
     publisher = pubsub_v1.PublisherClient()
     topic_path = publisher.topic_path(project, 'model-events')
+    logger.info("creating topic " + topic_path)
     publisher.create_topic(request={'name': topic_path})
 
     subscriber = pubsub_v1.SubscriberClient()
@@ -180,6 +186,11 @@ def create_localdev_env(project, sub):
 if __name__ == "__main__":
 
     sub_name = "tugboat-model-events"
+    project_name = os.environ['GCLOUD_PROJECT']
+
+    if 'PUBSUB_EMULATOR_HOST' in os.environ:
+        create_localdev_env(project_name, sub_name)
+
     poller = multiprocessing.Process(multiprocessing.Process(
         target=message_poller, args=(sub_name,)).start())
 
@@ -189,4 +200,5 @@ if __name__ == "__main__":
     flask_log.disabled = True
     app.logger.disabled = True
 
-    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 9393)))
+    server = WSGIServer(('0.0.0.0', int(os.environ.get('PORT', 9393))), app, log=None)
+    server.serve_forever()
