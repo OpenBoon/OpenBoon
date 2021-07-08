@@ -137,7 +137,7 @@ class TestModelViewSetRetrieve:
         assert restrictions['missingLabels'] == 0
         assert restrictions['missingLabelsOnAssets'] == 1
         assert content['datasetType'] == 'Classification'
-        assert content['timeLastTrained'] is None
+        assert content['timeLastTrained'] == 0
 
 
 class TestModelViewSetDestroy:
