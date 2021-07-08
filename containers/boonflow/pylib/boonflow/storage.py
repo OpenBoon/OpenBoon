@@ -184,7 +184,7 @@ class ModelStorage:
         return AnalysisModule(self.app.client.post(f'/api/v3/models/{mid}/_publish'))
 
 
-class AssetStorage(object):
+class AssetStorage:
     """
     AssetStorage provides ability to store and retrieve files related to the asset.  The
     files are stored in cloud storage.  This is mostly a convenience class around
@@ -267,7 +267,7 @@ class AssetStorage(object):
         return result
 
 
-class ProjectStorage(object):
+class ProjectStorage:
     """
     Provides access to Project cloud storage.
     """
@@ -438,13 +438,31 @@ class ProjectStorage(object):
         Return the file's native url (like gs://).
 
         Args:
-            stored_file (StoredFile): A filed stored in the Zorroa backend.
+            stored_file (StoredFile): A filed stored in the BoonAI backend.
         Returns:
             str: The native uri.
 
         """
         return self.app.client.get('/api/v3/files/_locate/{}'
                                    .format(stored_file.id))['uri']
+
+    def get_signed_native_uri(self, stored_file, minutes=None):
+        """
+        Return the file's native url (like gs://).
+
+        Args:
+            stored_file (StoredFile): A filed stored in the BoonAI backend.
+            minutes (int): Optionally set the number of minutes the file should be signed for,
+                otherwise it defaults to whatever the server side default is.
+        Returns:
+            str: The native uri.
+        """
+        if minutes:
+            qstring = f'?minutes={minutes}'
+        else:
+            qstring = ''
+        return self.app.client.get('/api/v3/files/_sign/{}{}'
+                                   .format(stored_file.id, qstring))['uri']
 
     def get_file_native_uri(self, entity_type, entity_id, category, name):
         """
@@ -468,7 +486,7 @@ class ProjectStorage(object):
         return self.app.client.get(f"/api/v3/files/_locate/{entity_type}/{entity_id}")
 
 
-class FileCache(object):
+class FileCache:
     """
     The LocalFileCache provides a temporary place for storing source and
     support files such as thumbnails for processing.
