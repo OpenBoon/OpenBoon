@@ -1,10 +1,8 @@
 import logging
-import os
-import tempfile
 
-from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule, PostTrainAction
+from ..entity import Model, Job, ModelType, ModelTypeInfo, PostTrainAction
 from ..util import as_collection, as_id, \
-    zip_directory, is_valid_uuid, as_name_collection, as_id_collection, enum_name
+    is_valid_uuid, as_name_collection, as_id_collection, enum_name
 
 logger = logging.getLogger(__name__)
 
@@ -164,7 +162,7 @@ class ModelApp:
         model = self.find_one_model(id=mid)
 
         # check the model types.
-        if model.type not in (ModelType.TORCH_MAR_CLASSIFIER,ModelType.TORCH_MAR_DETECTOR):
+        if model.type not in (ModelType.TORCH_MAR_CLASSIFIER, ModelType.TORCH_MAR_DETECTOR):
             raise ValueError(f'Invalid model type for upload: {model.type}')
 
         self.app.client.send_file(f'/api/v3/models/{mid}/_upload', model_path)
