@@ -127,8 +127,10 @@ class ModelDeployServiceImpl(
             .putAttributes("type", "model-upload")
             .putAttributes("modelId", model.id.toString())
             .putAttributes("modelType", model.type.name)
-            .putAttributes("modelFile",
-                fileStorageService.getSignedUrl(loc, false, 24, TimeUnit.HOURS)["uri"].toString())
+            .putAttributes(
+                "modelFile",
+                fileStorageService.getSignedUrl(loc, false, 24, TimeUnit.HOURS)["uri"].toString()
+            )
             .putAttributes("projectId", model.projectId.toString())
             .putAttributes("image", model.imageName())
             .build()
