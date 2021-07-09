@@ -11,9 +11,9 @@ import ModelMatrixEmptyMinimap from '../ModelMatrix/EmptyMinimap'
 const MINIMAP_WIDTH = 130
 const TEXT_WIDTH = 200
 
-const ModelMatrixLink = ({ projectId, modelId }) => {
+const ModelMatrixLink = ({ projectId, model }) => {
   const { data: matrix } = useSWR(
-    `/api/v1/projects/${projectId}/models/${modelId}/confusion_matrix/`,
+    `/api/v1/projects/${projectId}/models/${model.id}/confusion_matrix/`,
   )
 
   if (!matrix.isMatrixApplicable) {
@@ -46,8 +46,38 @@ const ModelMatrixLink = ({ projectId, modelId }) => {
             isMatrixApplicable={matrix.isMatrixApplicable}
           />
         </div>
-        <div css={{ width: TEXT_WIDTH, fontStyle: typography.style.italic }}>
-          To view the matrix, you must add test labels and train the model.
+        <div>
+          <div
+            css={{
+              color: colors.structure.zinc,
+              fontSize: typography.size.regular,
+              lineHeight: typography.height.regular,
+              fontFamily: typography.family.condensed,
+              textTransform: 'uppercase',
+              paddingBottom: spacing.base,
+            }}
+          >
+            Confusion Matrix
+          </div>
+          <div
+            css={{
+              width: TEXT_WIDTH,
+              fontStyle: typography.style.italic,
+              color: colors.structure.steel,
+            }}
+          >
+            {!model.datasetId &&
+              'To view the matrix, you must link a dataset, train the model, and analyze all assets.'}
+
+            {!!model.datasetId &&
+              !model.timeLastTrained &&
+              'To view the matrix, you must train the model, and analyze all assets.'}
+
+            {!!model.datasetId &&
+              !!model.timeLastTrained &&
+              !model.timeLastApplied &&
+              'To view the matrix, you must analyze all assets.'}
+          </div>
         </div>
       </div>
     )
@@ -71,18 +101,27 @@ const ModelMatrixLink = ({ projectId, modelId }) => {
       <div css={{ width: TEXT_WIDTH }}>
         <div
           css={{
-            fontWeight: typography.weight.bold,
+            color: colors.structure.zinc,
+            fontSize: typography.size.regular,
+            lineHeight: typography.height.regular,
+            fontFamily: typography.family.condensed,
+            textTransform: 'uppercase',
             paddingBottom: spacing.normal,
           }}
         >
-          Confusion Matrix <br />
-          Overall Accuracy:{' '}
-          <span css={{ fontWeight: typography.weight.regular }}>
+          <div css={{ paddingBottom: spacing.base }}>Confusion Matrix</div>
+          Accuracy:{' '}
+          <span
+            css={{
+              color: colors.structure.white,
+              fontFamily: typography.family.regular,
+            }}
+          >
             {Math.round(matrix.overallAccuracy * 100)}%
           </span>
         </div>
 
-        <Link href={`/${projectId}/models/${modelId}/matrix`} passHref>
+        <Link href={`/${projectId}/models/${model.id}/matrix`} passHref>
           <Button
             variant={BUTTON_VARIANTS.SECONDARY}
             style={{
@@ -90,7 +129,7 @@ const ModelMatrixLink = ({ projectId, modelId }) => {
               padding: spacing.moderate,
             }}
           >
-            View Matrix
+            View Matrix Details
           </Button>
         </Link>
       </div>
@@ -100,7 +139,12 @@ const ModelMatrixLink = ({ projectId, modelId }) => {
 
 ModelMatrixLink.propTypes = {
   projectId: PropTypes.string.isRequired,
-  modelId: PropTypes.string.isRequired,
+  model: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    datasetId: PropTypes.string,
+    timeLastTrained: PropTypes.number.isRequired,
+    timeLastApplied: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 export default ModelMatrixLink

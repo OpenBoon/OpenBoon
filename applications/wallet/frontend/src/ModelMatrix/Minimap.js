@@ -55,7 +55,10 @@ const ModelMatrixMinimap = ({ matrix, settings, isInteractive }) => {
       css={{
         opacity: settings.isMinimapOpen ? 1 : 0,
         position: 'relative',
-        border: constants.borders.medium.steel,
+        border: isInteractive
+          ? constants.borders.medium.steel
+          : constants.borders.large.steel,
+        padding: isInteractive ? 0 : spacing.hairline,
         borderRadius: constants.borderRadius.small,
         marginBottom: spacing.base,
         display: 'grid',
@@ -77,6 +80,14 @@ const ModelMatrixMinimap = ({ matrix, settings, isInteractive }) => {
               css={{
                 paddingBottom: '100%',
                 backgroundColor: getColor({ percent }),
+                borderRight:
+                  isInteractive || col + 1 === matrix.matrix[index].length
+                    ? 'none'
+                    : constants.borders.regular.coal,
+                borderBottom:
+                  isInteractive || index + 1 === matrix.labels.length
+                    ? 'none'
+                    : constants.borders.regular.coal,
               }}
             />
           )

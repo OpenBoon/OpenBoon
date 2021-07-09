@@ -15,6 +15,35 @@ jest.mock('../MatrixLink', () => 'ModelMatrixLink')
 const noop = () => () => {}
 
 describe('<ModelDetails />', () => {
+  it('should render properly when trained and applied', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...model,
+        timeLastTrained: 1625774562852,
+        timeLastApplied: 1625774664673,
+        modelTypeRestrictions: { missingLabels: 0 },
+      },
+    })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        modelId={MODEL_ID}
+        modelTypes={modelTypes.results}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly', async () => {
     const mockMutate = jest.fn()
 
