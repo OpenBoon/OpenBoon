@@ -55,7 +55,7 @@ resource "google_service_account_key" "tugboat" {
   }
 }
 
-resource "kubernetes_secret" "archivist-sa-key" {
+resource "kubernetes_secret" "tugboat-sa-key" {
   metadata {
     name      = "tugboat-sa-key"
     namespace = var.namespace
