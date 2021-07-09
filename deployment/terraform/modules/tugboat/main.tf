@@ -1,7 +1,7 @@
 
 resource "google_pubsub_subscription" "tugboat-model-events" {
   name  = "tugboat-model-events"
-  topic = pubsub-topic-name-models
+  topic = "model-events"
 }
 
 resource "kubernetes_deployment" "tugboat" {
