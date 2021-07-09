@@ -155,7 +155,7 @@ class AutomlLabelDetectionSessionTests(PluginUnitTestCase):
 
         assert copied_url == 'gs://Bucket/copied-value'
 
-    @patch("boonsdk.app.model_app.ModelApp.upload_trained_model")
+    @patch("boonsdk.app.model_app.ModelApp.upload_pretrained_model")
     @patch.object(file_storage, 'localize_file')
     @patch('google.cloud.storage.Client')
     @patch('boonai_train.automl.labels.get_gcp_project_id')
