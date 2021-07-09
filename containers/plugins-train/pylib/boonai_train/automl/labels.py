@@ -88,7 +88,7 @@ class AutomlLabelDetectionSession:
         shutil.copy(self.model_file, os.path.join(tmp, "model.tflite"))
         shutil.copy(self.label_file, os.path.join(tmp, "labels.txt"))
 
-        self.app.models.upload_trained_model(self.model, tmp, None)
+        self.app.models.upload_pretrained_model(self.model, tmp, None)
 
     def _copy_asset_to_temp_bucket(self, asset):
         # get proxy uri

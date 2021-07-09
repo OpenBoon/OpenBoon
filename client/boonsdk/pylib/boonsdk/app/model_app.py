@@ -1,6 +1,6 @@
 import logging
 
-from ..entity import Model, Job, ModelType, ModelTypeInfo, PostTrainAction
+from ..entity import Model, Job, ModelType, ModelTypeInfo, PostTrainAction, StoredFile
 from ..util import as_collection, as_id, \
     is_valid_uuid, as_name_collection, as_id_collection, enum_name
 
@@ -146,26 +146,27 @@ class ModelApp:
         mid = as_id(model)
         return Job(self.app.client.post(f'/api/v3/models/{mid}/_test', {}))
 
-    def upload_trained_model(self, model, model_path):
+    def upload_pretrained_model(self, model, model_path):
         """
-        Upload a trained model directory to Boon AI.
+        Upload a trained model directory to Boon AI.  The model is not ready to use
+        until it is properlt deployed, which may take a few minutes.
 
         Args:
             model (Model): The model object or it's unique ID.
-            model_path (str): The path to a directory containing the proper files.
+            model_path (str): The path to a ZIP or MAR file containing all files.
 
         Returns:
-            dict: a dict describing the newly published Analysis Module.
+            StoredFile: A Sto
         """
         # Make sure we have the model object so we can check its type
         mid = as_id(model)
         model = self.find_one_model(id=mid)
 
         # check the model types.
-        if model.type not in (ModelType.TORCH_MAR_CLASSIFIER, ModelType.TORCH_MAR_DETECTOR):
-            raise ValueError(f'Invalid model type for upload: {model.type}')
+        if not model.uploadable:
+            raise ValueError(f'The model type {model.type} is not uploadable.')
 
-        self.app.client.send_file(f'/api/v3/models/{mid}/_upload', model_path)
+        return StoredFile(self.app.client.send_file(f'/api/v3/models/{mid}/_upload', model_path))
 
     def export_trained_model(self, model, dst_file, tag='latest'):
         """

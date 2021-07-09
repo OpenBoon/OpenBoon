@@ -1,5 +1,4 @@
 import logging
-import tempfile
 import unittest
 import uuid
 from unittest.mock import patch
@@ -54,73 +53,26 @@ class ModelAppTests(unittest.TestCase):
         model_patch.return_value = Model({
             'id': '12345',
             'type': 'TF_CLASSIFIER',
-            'name': 'foo'
+            'name': 'foo',
+            'uploadable': False
         })
 
-        tmp_dir = tempfile.mkdtemp()
         pytest.raises(ValueError,
-                      self.app.models.upload_trained_model,
-                      '12345', tmp_dir, ["dog", "cat"])
+                      self.app.models.upload_pretrained_model, '12345', "/foo/model.mar")
 
     @patch.object(ModelApp, 'find_one_model')
     @patch.object(BoonClient, 'send_file')
-    def test_upload_trained_model_existing_labels(self, upload_patch, model_patch):
-        upload_patch.return_value = {'category': 'LabelDetection'}
-        model_patch.return_value = Model({
-            'id': '12345',
-            'type': 'TF_SAVED_MODEL',
-            'name': 'foo'
-        })
-
-        tmp_dir = tempfile.mkdtemp()
-        with open(f'{tmp_dir}/labels.txt', "w") as fp:
-            fp.write("cat\n")
-            fp.write("dog\n")
-
-        module = self.app.models.upload_trained_model('12345', tmp_dir, None)
-        assert module.category == 'LabelDetection'
-
-    @patch.object(ModelApp, 'find_one_model')
-    @patch.object(BoonClient, 'send_file')
-    def test_upload_trained_model(self, upload_patch, model_patch):
-        upload_patch.return_value = {'category': 'LabelDetection'}
-        model_patch.return_value = Model({
-            'id': '12345',
-            'type': 'TF_SAVED_MODEL',
-            'name': 'foo'
-        })
-
-        tmp_dir = tempfile.mkdtemp()
-        module = self.app.models.upload_trained_model('12345', tmp_dir, ["dog", "cat"])
-        assert module.category == 'LabelDetection'
-
-    @patch.object(ModelApp, 'find_one_model')
-    @patch.object(BoonClient, 'send_file')
-    def test_upload_trained_model_directory_tf(self, post_patch, model_patch):
-        post_patch.return_value = {'category': 'LabelDetection'}
-        model_patch.return_value = Model({
-            'id': '12345',
-            'type': 'TF_SAVED_MODEL',
-            'name': 'foo'
-        })
-
-        tmp_dir = tempfile.mkdtemp()
-        module = self.app.models.upload_trained_model("12345", tmp_dir, ["dog", "cat"])
-        assert module.category == 'LabelDetection'
-
-    @patch.object(ModelApp, 'find_one_model')
-    @patch.object(BoonClient, 'send_file')
-    def test_upload_trained_model_directory_pth(self, post_patch, model_patch):
-        post_patch.return_value = {'category': 'LabelDetection'}
+    def test_upload_pretrained_model(self, upload_patch, model_patch):
+        upload_patch.return_value = {"id": "models/123/proxy/model.mar"}
         model_patch.return_value = Model({
             'id': '12345',
             'type': 'TORCH_MAR_CLASSIFIER',
-            'name': 'foo'
+            'name': 'foo',
+            'uploadable': True
         })
 
-        tmp_dir = tempfile.mkdtemp()
-        module = self.app.models.upload_trained_model("12345", tmp_dir, ["dog", "cat"])
-        assert module.category == 'LabelDetection'
+        sfile = self.app.models.upload_pretrained_model('12345', "/foo/model.mar")
+        assert "models/123/proxy/model.mar" == sfile.id
 
     @patch.object(BoonClient, 'post')
     def test_find_one_model(self, post_patch):
