@@ -63,7 +63,7 @@ class AssetBoxImager(object):
         elif isinstance(item, dict):
             for key in list(item):
                 value = item[key]
-                if key == 'bbox':
+                if key == 'bbox' and value:
                     cropped_image = crop_image_poly(self.image, value, width=width)
                     b64_image = get_b64(cropped_image)
                     item['b64Image'] = b64_image
