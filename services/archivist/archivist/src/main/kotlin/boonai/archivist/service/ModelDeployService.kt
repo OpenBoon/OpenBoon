@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.io.InputStream
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
 interface ModelDeployService {
@@ -112,7 +113,7 @@ class ModelDeployServiceImpl(
             val endpoint = findCloudRunEndpoint(model)
             if (endpoint != null) {
                 modelJdbcDao.setEndpoint(model.id, endpoint)
-                modelService.publishModel(model, ModelPublishRequest())
+                modelService.publishModel(model, ModelPublishRequest(mapOf("endpoint" to endpoint)))
             } else {
                 logger.error("The model build ${model.id} completed but no endpoint was found.")
             }
@@ -126,7 +127,7 @@ class ModelDeployServiceImpl(
             .putAttributes("type", "model-upload")
             .putAttributes("modelId", model.id.toString())
             .putAttributes("modelType", model.type.name)
-            .putAttributes("modelFile", fileStorageService.getNativeUri(loc))
+            .putAttributes("modelFile", fileStorageService.getSignedUrl(loc, false, 24, TimeUnit.HOURS)["uri"].toString())
             .putAttributes("projectId", model.projectId.toString())
             .putAttributes("image", model.imageName())
             .build()

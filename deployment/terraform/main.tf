@@ -395,6 +395,16 @@ module "swivel" {
   container-tag     = var.container-tag
 }
 
+module "tugboat" {
+  source            = "./modules/tugboat"
+  project           = var.project
+  image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
+  container-tag     = var.container-tag
+  project-number    = var.project-number
+  pubsub-topic      = module.archivist.pubsub-topic-name-models
+}
+
+
 module "project-reaper" {
   source                       = "./modules/project-reaper"
   project                      = var.project
