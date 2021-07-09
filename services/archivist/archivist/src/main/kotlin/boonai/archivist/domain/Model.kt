@@ -4,6 +4,7 @@ import boonai.archivist.repository.KDaoFilter
 import boonai.archivist.security.getProjectId
 import boonai.archivist.util.JdbcUtils
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.google.cloud.ServiceOptions
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType
 import io.swagger.annotations.ApiModel
@@ -282,6 +283,7 @@ class ModelUpdateRequest(
     val datasetId: UUID?
 )
 
+@JsonInclude(JsonInclude.Include.ALWAYS)
 class ModelPatchRequestV2 {
 
     @ApiModelProperty("Name of the model")
