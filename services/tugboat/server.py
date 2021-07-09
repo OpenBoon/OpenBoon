@@ -83,7 +83,7 @@ def build_and_deploy(spec):
     # Then submit the temp dir to be built.
     d = tempfile.mkdtemp()
     build_dir = os.path.join(d, 'build')
-    logger.info(f'copying template to dir ${build_dir}')
+    logger.info(f'copying template to dir {build_dir}')
     try:
         shutil.copytree(tmpl, build_dir)
         submit_build(spec, build_dir)

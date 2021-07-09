@@ -148,14 +148,13 @@ class ModelApp:
         mid = as_id(model)
         return Job(self.app.client.post(f'/api/v3/models/{mid}/_test', {}))
 
-    def upload_trained_model(self, model, model_path, labels):
+    def upload_trained_model(self, model, model_path):
         """
         Upload a trained model directory to Boon AI.
 
         Args:
             model (Model): The model object or it's unique ID.
             model_path (str): The path to a directory containing the proper files.
-            labels (list): A list of labels, optional if you have a labels.txt file.
 
         Returns:
             dict: a dict describing the newly published Analysis Module.
@@ -163,36 +162,12 @@ class ModelApp:
         # Make sure we have the model object so we can check its type
         mid = as_id(model)
         model = self.find_one_model(id=mid)
-        label_path = f'{model_path}/labels.txt'
-        labels_exist = os.path.exists(label_path)
-
-        if not labels and not labels_exist:
-            raise ValueError("You must provide an list of labels or a labels.txt file.")
-
-        if labels:
-            if labels_exist:
-                # delete label file if it exists.
-                # handles exported tf ,odel
-                os.unlink(label_path)
-
-            with open(label_path, 'w') as fp:
-                for label in labels:
-                    fp.write(f'{label}\n')
 
         # check the model types.
-        if model.type not in (ModelType.TF_SAVED_MODEL,
-                              ModelType.TORCH_MAR_CLASSIFIER):
+        if model.type not in (ModelType.TORCH_MAR_CLASSIFIER,ModelType.TORCH_MAR_DETECTOR):
             raise ValueError(f'Invalid model type for upload: {model.type}')
 
-        model_file = tempfile.mkstemp(prefix="model_", suffix=".zip")[1]
-        zip_file_path = zip_directory(model_path, model_file)
-        mid = as_id(model)
-
-        rsp = AnalysisModule(self.app.client.send_file(
-            f'/api/v3/models/{mid}/_upload', zip_file_path))
-
-        os.unlink(zip_file_path)
-        return rsp
+        self.app.client.send_file(f'/api/v3/models/{mid}/_upload', model_path)
 
     def export_trained_model(self, model, dst_file, tag='latest'):
         """

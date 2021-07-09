@@ -12,3 +12,7 @@ variable "container-tag" {
 
 variable "pubsub-topic" {
 }
+
+variable "namespace" {
+  default = "default"
+}
