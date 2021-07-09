@@ -4,10 +4,10 @@ import MetadataPrettyLabelsMenu from '../LabelsMenu'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
-const MODEL_ID = '621bf774-89d9-1244-9596-d6df43f1ede5'
+const DATASET_ID = '4b0b10a8-cec1-155c-b12f-ee2bc8787e06'
 
 describe('<MetadataPrettyLabelsMenu />', () => {
-  it('should add a model/label filter', () => {
+  it('should add a dataset/label filter', () => {
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
@@ -20,14 +20,14 @@ describe('<MetadataPrettyLabelsMenu />', () => {
     const component = TestRenderer.create(
       <MetadataPrettyLabelsMenu
         label={{
-          modelId: MODEL_ID,
+          datasetId: DATASET_ID,
           scope: 'TRAIN',
           bbox: [0.226, 0.327, 0.697, 0.813],
           label: 'Mark Ruffalo',
           simhash: 'NNLHLINNMQPONMLMJFLMQMKKKM...',
           b64Image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
         }}
-        moduleName="boonai-face-recognition"
+        datasetName="boonai-face-recognition"
       />,
     )
 
@@ -43,7 +43,7 @@ describe('<MetadataPrettyLabelsMenu />', () => {
     // Select Add Filter
     act(() => {
       component.root
-        .findByProps({ children: 'Add Model/Label Filter' })
+        .findByProps({ children: 'Add Dataset/Label Filter' })
         .props.onClick()
     })
 
@@ -52,7 +52,7 @@ describe('<MetadataPrettyLabelsMenu />', () => {
         {
           type: 'label',
           attribute: 'labels.boonai-face-recognition',
-          modelId: MODEL_ID,
+          datasetId: DATASET_ID,
           values: { labels: ['Mark Ruffalo'] },
         },
       ]),
@@ -64,7 +64,7 @@ describe('<MetadataPrettyLabelsMenu />', () => {
     )
   })
 
-  it('should copy modelId', async () => {
+  it('should copy datasetId', async () => {
     const mockCopyFn = jest.fn()
 
     window.navigator.clipboard.writeText = mockCopyFn
@@ -77,14 +77,14 @@ describe('<MetadataPrettyLabelsMenu />', () => {
     const component = TestRenderer.create(
       <MetadataPrettyLabelsMenu
         label={{
-          modelId: MODEL_ID,
+          datasetId: DATASET_ID,
           scope: 'TRAIN',
           bbox: [0.226, 0.327, 0.697, 0.813],
           label: 'Mark Ruffalo',
           simhash: 'NNLHLINNMQPONMLMJFLMQMKKKM...',
           b64Image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
         }}
-        moduleName="boonai-face-recognition"
+        datasetName="boonai-face-recognition"
       />,
     )
 
@@ -95,12 +95,14 @@ describe('<MetadataPrettyLabelsMenu />', () => {
         .props.onClick()
     })
 
-    // Select Copy Model ID
+    // Select Copy Dataset ID
     await act(async () => {
-      component.root.findByProps({ children: 'Copy Model ID' }).props.onClick()
+      component.root
+        .findByProps({ children: 'Copy Dataset ID' })
+        .props.onClick()
     })
 
-    expect(mockCopyFn).toHaveBeenCalledWith(MODEL_ID)
+    expect(mockCopyFn).toHaveBeenCalledWith(DATASET_ID)
   })
 
   it('should copy simhash', async () => {
@@ -116,14 +118,14 @@ describe('<MetadataPrettyLabelsMenu />', () => {
     const component = TestRenderer.create(
       <MetadataPrettyLabelsMenu
         label={{
-          modelId: MODEL_ID,
+          datasetId: DATASET_ID,
           scope: 'TRAIN',
           bbox: [0.226, 0.327, 0.697, 0.813],
           label: 'Mark Ruffalo',
           simhash: 'NNLHLINNMQPONMLMJFLMQMKKKM...',
           b64Image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
         }}
-        moduleName="boonai-face-recognition"
+        datasetName="boonai-face-recognition"
       />,
     )
 

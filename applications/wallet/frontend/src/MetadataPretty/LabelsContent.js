@@ -3,13 +3,11 @@ import useSWR from 'swr'
 
 import { constants, spacing, colors, typography } from '../Styles'
 
-import modelShape from '../Model/shape'
-
 import { capitalizeFirstLetter } from '../Text/helpers'
 
 import MetadataPrettyLabelsMenu from './LabelsMenu'
 
-const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
+const MetadataPrettyLabelsContent = ({ projectId, assetId, datasets }) => {
   const attr = `labels&width=${constants.bbox}`
 
   const {
@@ -19,12 +17,12 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
   )
 
   return labels.map((label) => {
-    const { name = '', moduleName = '' } =
-      models.find(({ id }) => id === label.modelId) || {}
+    const { name = '' } =
+      datasets.find(({ id }) => id === label.datasetId) || {}
 
     return (
       <tr
-        key={`${label.modelId}${label.label}`}
+        key={`${label.datasetId}${label.label}`}
         css={{
           fontFamily: typography.family.mono,
           fontSize: typography.size.small,
@@ -80,7 +78,7 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
         </td>
 
         <td
-          title={`Model ID: ${label.modelId}`}
+          title={`Dataset ID: ${label.datasetId}`}
           css={{
             padding: spacing.base,
             paddingLeft: 0,
@@ -121,7 +119,7 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
             verticalAlign: 'top',
           }}
         >
-          <MetadataPrettyLabelsMenu label={label} moduleName={moduleName} />
+          <MetadataPrettyLabelsMenu label={label} datasetName={name} />
         </td>
 
         <td css={{ borderBottom: 'none !important' }} />
@@ -133,7 +131,9 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
 MetadataPrettyLabelsContent.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
-  models: PropTypes.arrayOf(modelShape).isRequired,
+  datasets: PropTypes.arrayOf(
+    PropTypes.shape({ name: PropTypes.string.isRequired }).isRequired,
+  ).isRequired,
 }
 
 export default MetadataPrettyLabelsContent

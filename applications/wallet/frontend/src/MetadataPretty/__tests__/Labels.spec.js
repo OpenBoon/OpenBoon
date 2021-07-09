@@ -1,6 +1,6 @@
 import TestRenderer from 'react-test-renderer'
 
-import models from '../../Models/__mocks__/models'
+import datasets from '../../Datasets/__mocks__/datasets'
 import asset from '../../Asset/__mocks__/asset'
 
 import MetadataPrettyLabels from '../Labels'
@@ -12,7 +12,7 @@ jest.mock('../LabelsContent', () => 'MetadataPrettyLabelsContent')
 
 describe('<MetadataPrettyLabels />', () => {
   it('should render properly on the grid', () => {
-    require('swr').__setMockUseSWRResponse({ data: models })
+    require('swr').__setMockUseSWRResponse({ data: datasets })
 
     require('next/router').__setUseRouter({
       query: { projectId: PROJECT_ID, id: ASSET_ID },
@@ -26,7 +26,7 @@ describe('<MetadataPrettyLabels />', () => {
   })
 
   it('should render properly for a single asset', () => {
-    require('swr').__setMockUseSWRResponse({ data: models })
+    require('swr').__setMockUseSWRResponse({ data: datasets })
 
     require('next/router').__setUseRouter({
       query: { projectId: PROJECT_ID, assetId: ASSET_ID },

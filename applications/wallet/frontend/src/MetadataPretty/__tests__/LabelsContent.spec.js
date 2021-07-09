@@ -1,6 +1,6 @@
 import TestRenderer from 'react-test-renderer'
 
-import models from '../../Models/__mocks__/models'
+import datasets from '../../Datasets/__mocks__/datasets'
 
 import labels from '../__mocks__/labels'
 
@@ -21,14 +21,14 @@ describe('<MetadataPrettyLabelsContent />', () => {
       <MetadataPrettyLabelsContent
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
-        models={models.results}
+        datasets={datasets.results}
       />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly with missing model', () => {
+  it('should render properly with missing dataset', () => {
     require('swr').__setMockUseSWRResponse({ data: labels })
 
     require('next/router').__setUseRouter({
@@ -39,7 +39,7 @@ describe('<MetadataPrettyLabelsContent />', () => {
       <MetadataPrettyLabelsContent
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
-        models={[]}
+        datasets={[]}
       />,
     )
 
