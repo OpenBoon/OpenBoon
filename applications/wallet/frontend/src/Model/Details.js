@@ -13,6 +13,8 @@ import Menu from '../Menu'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 
+import { formatFullDate } from '../Date/helpers'
+
 import KebabSvg from '../Icons/kebab.svg'
 
 import { onTrain } from './helpers'
@@ -38,6 +40,8 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
     description,
     runningJobId,
     modelTypeRestrictions: { missingLabels },
+    timeLastTrained,
+    timeLastApplied,
   } = model
 
   const { label } = modelTypes.find(({ name: n }) => n === type) || {
@@ -139,8 +143,18 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
         <div>
           <ItemList
             attributes={[
-              ['Last Trained', '?'],
-              ['Last Applied', '?'],
+              [
+                'Last Trained',
+                timeLastTrained
+                  ? formatFullDate({ timestamp: timeLastTrained })
+                  : 'Untrained',
+              ],
+              [
+                'Last Analyzed',
+                timeLastApplied
+                  ? formatFullDate({ timestamp: timeLastApplied })
+                  : 'Model Analysis has not been run.',
+              ],
             ]}
           />
 
@@ -200,7 +214,7 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
           </ButtonGroup>
         </div>
 
-        <ModelMatrixLink projectId={projectId} modelId={modelId} />
+        <ModelMatrixLink projectId={projectId} model={model} />
       </div>
     </div>
   )
