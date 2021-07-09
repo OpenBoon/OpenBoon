@@ -8,8 +8,8 @@ import User from '../../User'
 import Model from '..'
 
 jest.mock('../../Breadcrumbs', () => 'Breadcrumbs')
+jest.mock('../../ModelDataset', () => 'ModelDataset')
 jest.mock('../Details', () => 'ModelDetails')
-jest.mock('../Dataset', () => 'ModelDataset')
 jest.mock('../MatrixLink', () => 'ModelMatrixLink')
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
@@ -22,6 +22,7 @@ describe('<Model />', () => {
       query: {
         projectId: PROJECT_ID,
         modelId: MODEL_ID,
+        action: 'unlink-dataset-success',
       },
     })
 

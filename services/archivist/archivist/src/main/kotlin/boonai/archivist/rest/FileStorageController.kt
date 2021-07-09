@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
@@ -81,10 +82,11 @@ class FileStorageController(
         @PathVariable entityType: String,
         @PathVariable entityId: String,
         @PathVariable category: String,
-        @PathVariable name: String
+        @PathVariable name: String,
+        @RequestParam(required = false) minutes: String?
     ): Map <String, Any> {
         val locator = getValidLocator(entityType, entityId, category, name)
-        return projectStorageService.getSignedUrl(locator, false, 60, TimeUnit.MINUTES)
+        return projectStorageService.getSignedUrl(locator, false, minutes?.toLong() ?: 60, TimeUnit.MINUTES)
     }
 
     @ApiOperation("Get get underlying file location.", hidden = true)

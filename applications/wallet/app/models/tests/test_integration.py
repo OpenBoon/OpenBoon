@@ -104,8 +104,12 @@ class TestModelViewSetRetrieve:
     def test_retrieve(self, login, project, api_client, monkeypatch, model_fields):
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
 
+        model_response = {'id': model_id, 'projectId': '18e87cfe-23a0-4f62-973d-4e22f0f4b8d8', 'datasetId': 'ebf3e4a6-458f-15d4-a6b1-aab1332fef21', 'type': 'KNN_CLASSIFIER', 'name': 'knn', 'moduleName': 'knn', 'fileId': 'models/ebf3e4a6-458f-15d4-a6b1-aab1332fef21/__TAG__/model.zip', 'trainingJobName': 'Training model: knn - [Label Detection]', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'timeCreated': 1619725616046, 'timeLastTrained': None, 'timeLastTested': 1619725616046, 'timeLastApplied': 1619725616046, 'timeModified': 1619725616046, 'actorCreated': '9250c03e-a167-4cb9-a0fc-2198a1a00779/Admin Console Generated Key - 5f52268e-749c-4141-80b3-2fe4daa4552b - jbuhler@zorroa.com_18e87cfe-23a0-4f62-973d-4e22f0f4b8d8', 'actorModified': '9250c03e-a167-4cb9-a0fc-2198a1a00779/Admin Console Generated Key - 5f52268e-749c-4141-80b3-2fe4daa4552b - jbuhler@zorroa.com_18e87cfe-23a0-4f62-973d-4e22f0f4b8d8'}  # noqa
+        model_type_response = [{'name': 'KNN_CLASSIFIER', 'description': 'Classify images, documents and video clips using a KNN classifier.  This type of model can work great with just a single labeled example.If no labels are provided, the model automatically generates numbered groups of similar assets. These groups can be renamed and edited in subsequent training passes.', 'objective': 'Label Detection', 'provider': 'Boon AI', 'deployOnTrainingSet': True, 'minConcepts': 0, 'minExamples': 0, 'dependencies': [], 'label': 'K-Nearest Neighbors Classifier', 'datasetType': 'Classification'}, {'name': 'TF_CLASSIFIER', 'description': 'Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each. ', 'objective': 'Label Detection', 'provider': 'Boon AI', 'deployOnTrainingSet': False, 'minConcepts': 2, 'minExamples': 10, 'dependencies': [], 'label': 'Tensorflow Transfer Learning Classifier', 'datasetType': 'Classification'}, {'name': 'FACE_RECOGNITION', 'description': 'Label faces detected by the boonai-face-detection module, and classify them with a KNN model. ', 'objective': 'Face Recognition', 'provider': 'Boon AI', 'deployOnTrainingSet': True, 'minConcepts': 1, 'minExamples': 1, 'dependencies': ['boonai-face-detection'], 'label': 'Face Recognition', 'datasetType': 'FaceRecognition'}, {'name': 'TORCH_MAR_CLASSIFIER', 'description': 'Upload a pre-trained Pytorch Model Archive', 'objective': 'Label Detection', 'provider': 'Boon AI', 'deployOnTrainingSet': True, 'minConcepts': 0, 'minExamples': 0, 'dependencies': [], 'label': 'A Torch Model Archive using the image_classifier handler.', 'datasetType': 'Classification'}, {'name': 'TORCH_MAR_DETECTOR', 'description': 'Upload a pre-trained Pytorch Model Archive', 'objective': 'Label Detection', 'provider': 'Boon AI', 'deployOnTrainingSet': True, 'minConcepts': 0, 'minExamples': 0, 'dependencies': [], 'label': 'A Torch Model Archive using the object_detector handler.', 'datasetType': 'Detection'}]  # noqa
+        mock_get_responses = [model_type_response, model_response]
+
         def mock_response(*args, **kwrags):
-            return {'id': model_id, 'projectId': '18e87cfe-23a0-4f62-973d-4e22f0f4b8d8', 'datasetId': 'ebf3e4a6-458f-15d4-a6b1-aab1332fef21', 'type': 'KNN_CLASSIFIER', 'name': 'knn', 'moduleName': 'knn', 'fileId': 'models/ebf3e4a6-458f-15d4-a6b1-aab1332fef21/__TAG__/model.zip', 'trainingJobName': 'Training model: knn - [Label Detection]', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'timeCreated': 1619725616046, 'timeModified': 1619725616046, 'actorCreated': '9250c03e-a167-4cb9-a0fc-2198a1a00779/Admin Console Generated Key - 5f52268e-749c-4141-80b3-2fe4daa4552b - jbuhler@zorroa.com_18e87cfe-23a0-4f62-973d-4e22f0f4b8d8', 'actorModified': '9250c03e-a167-4cb9-a0fc-2198a1a00779/Admin Console Generated Key - 5f52268e-749c-4141-80b3-2fe4daa4552b - jbuhler@zorroa.com_18e87cfe-23a0-4f62-973d-4e22f0f4b8d8'}  # noqa
+            return mock_get_responses.pop()
 
         def job_response(*args, **kwargs):
             return []
@@ -127,10 +131,13 @@ class TestModelViewSetRetrieve:
         assert content['id'] == model_id
         model_fields.remove('link')
         model_fields.extend(['runningJobId', 'modelTypeRestrictions'])
-        assert set(model_fields) == set(content.keys())
+        assert (set(model_fields + ['timeLastTrained', 'timeLastApplied', 'timeLastTested',
+                                    'datasetType']) == set(content.keys()))
         restrictions = content['modelTypeRestrictions']
         assert restrictions['missingLabels'] == 0
         assert restrictions['missingLabelsOnAssets'] == 1
+        assert content['datasetType'] == 'Classification'
+        assert content['timeLastTrained'] == 0
 
 
 class TestModelViewSetDestroy:
@@ -146,6 +153,24 @@ class TestModelViewSetDestroy:
         monkeypatch.setattr(BoonClient, 'delete', mock_response)
         response = api_client.delete(path)
         check_response(response)
+
+
+class TestModelViewSetUpdate:
+
+    def test_update(self, login, project, api_client, monkeypatch, model_fields):
+
+        def mock_response(*args, **kwrags):
+            return {'type': 'model', 'id': 'b9c52abf-9914-1020-b9f0-0242ac12000a', 'op': 'delete', 'success': True}  # noqa
+
+        model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+        path = reverse('model-detail', kwargs={'project_pk': project.id,
+                                               'pk': model_id})
+        monkeypatch.setattr(BoonClient, 'put', mock_response)
+        response = api_client.put(path, {'datasetId': None, 'name': 'changed'})
+        check_response(response)
+
+        response = api_client.put(path, {'name': 'changed'})
+        check_response(response, status=400)
 
 
 class TestModelViewSetCreate:
@@ -185,16 +210,16 @@ class TestModelViewSetActions:
     def test_model_types(self, login, project, api_client, monkeypatch):
 
         def mock_response(*args, **kwargs):
-            return [{'name': 'ZVI_KNN_CLASSIFIER', 'label': 'Sci-kit Learn KNN Classifier', 'description': 'Classify images or documents using a KNN classifier.  This type of model generates a single prediction which can be used to quickly organize assets into general groups.The KNN classifier works with just a single image and label.', 'objective': 'Label Detection', 'provider': 'Zorroa', 'deployOnTrainingSet': True, 'minConcepts': 1, 'minExamples': 1}, {'name': 'ZVI_LABEL_DETECTION', 'label': 'Tensorflow CNN Classifier', 'description': 'Classify images or documents using a custom trained CNN deep learning algorithm.  This type of model generates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each. ', 'objective': 'Label Detection', 'provider': 'Zorroa', 'deployOnTrainingSet': False, 'minConcepts': 2, 'minExamples': 10}, {'name': 'ZVI_FACE_RECOGNITION', 'label': 'ZVI Face Recognition', 'description': 'Relabel existing ZVI faces using a KNN Face Recognition model.', 'objective': 'Face Recognition', 'provider': 'Zorroa', 'deployOnTrainingSet': True, 'minConcepts': 1, 'minExamples': 1}, {'name': 'GCP_AUTOML_CLASSIFIER', 'label': 'Google AutoML Classifier', 'description': 'Utilize Google AutoML to train an image classifier.', 'objective': 'Label Detection', 'provider': 'Google', 'deployOnTrainingSet': True, 'minConcepts': 2, 'minExamples': 10}]  # noqa
+            return [{'name': 'KNN_CLASSIFIER', 'description': 'Classify images, documents and video clips using a KNN classifier.  This type of model can work great with just a single labeled example.If no labels are provided, the model automatically generates numbered groups of similar assets. These groups can be renamed and edited in subsequent training passes.', 'objective': 'Label Detection', 'provider': 'Boon AI', 'deployOnTrainingSet': True, 'minConcepts': 0, 'minExamples': 0, 'dependencies': [], 'label': 'K-Nearest Neighbors Classifier', 'datasetType': 'Classification'}, {'name': 'TF_CLASSIFIER', 'description': 'Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each. ', 'objective': 'Label Detection', 'provider': 'Boon AI', 'deployOnTrainingSet': False, 'minConcepts': 2, 'minExamples': 10, 'dependencies': [], 'label': 'Tensorflow Transfer Learning Classifier', 'datasetType': 'Classification'}, {'name': 'FACE_RECOGNITION', 'description': 'Label faces detected by the boonai-face-detection module, and classify them with a KNN model. ', 'objective': 'Face Recognition', 'provider': 'Boon AI', 'deployOnTrainingSet': True, 'minConcepts': 1, 'minExamples': 1, 'dependencies': ['boonai-face-detection'], 'label': 'Face Recognition', 'datasetType': 'FaceRecognition'}, {'name': 'TORCH_MAR_CLASSIFIER', 'description': 'Upload a pre-trained Pytorch Model Archive', 'objective': 'Label Detection', 'provider': 'Boon AI', 'deployOnTrainingSet': True, 'minConcepts': 0, 'minExamples': 0, 'dependencies': [], 'label': 'A Torch Model Archive using the image_classifier handler.', 'datasetType': 'Classification'}, {'name': 'TORCH_MAR_DETECTOR', 'description': 'Upload a pre-trained Pytorch Model Archive', 'objective': 'Label Detection', 'provider': 'Boon AI', 'deployOnTrainingSet': True, 'minConcepts': 0, 'minExamples': 0, 'dependencies': [], 'label': 'A Torch Model Archive using the object_detector handler.', 'datasetType': 'Detection'}]  # noqa
 
         path = reverse('model-model-types', kwargs={'project_pk': project.id})
         monkeypatch.setattr(BoonClient, 'get', mock_response)
         response = api_client.get(path)
         content = check_response(response)
         results = content['results']
-        assert len(results) == 3
-        assert results[0]['name'] == 'ZVI_KNN_CLASSIFIER'
-        assert results[0]['label'] == 'Sci-kit Learn KNN Classifier'
+        assert len(results) == 5
+        assert results[0]['name'] == 'KNN_CLASSIFIER'
+        assert results[0]['label'] == 'K-Nearest Neighbors Classifier'
         assert 'ZVI_FACE_RECOGNITION' not in [x['name'] for x in results]
 
     def test_train(self, login, project, api_client):

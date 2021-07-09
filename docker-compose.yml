@@ -67,6 +67,19 @@ services:
     depends_on:
       - pubsub
 
+  tugboat:
+    image: boonai/tugboat:latest
+    ports:
+      - "9393:9393"
+    build:
+      context: services/tugboat
+    environment:
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GCLOUD_PROJECT: localdev
+      PORT: 9393
+    depends_on:
+      - pubsub
+
   eshq:
     image: elastichq/elasticsearch-hq
     ports:

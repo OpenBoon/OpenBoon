@@ -10,9 +10,10 @@ import yaml
 
 import urllib3
 from flask import Flask
+from gevent.pywsgi import WSGIServer
 from google.cloud import pubsub_v1
 
-logger = logging.getLogger('swivel')
+logger = logging.getLogger('tugboat')
 logging.basicConfig(level=logging.INFO)
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -62,47 +63,57 @@ def build_and_deploy(spec):
 
     Args:
         spec (dict): Tne spec for the container.
+
+    Returns:
+        boolean: True on success
     """
     logger.info(f'Building {spec}')
     model_type = spec['modelType']
+
     tmlp_path = os.environ.get('TEMPLATE_PATH', '/app/tmpl')
-    if model_type == 'PYTORCH_MODEL_ARCHIVE':
+    if model_type.startswith('TORCH_'):
         tmpl = f'{tmlp_path}/torch'
     elif model_type == 'TF_SAVED_MODEL':
         tmpl = f'{tmlp_path}/tf'
     else:
         logger.error(f'The model type {model_type} has no template')
-        return
+        return False
 
     # Copy the model and the template into a temp dir.
     # Then submit the temp dir to be built.
     d = tempfile.mkdtemp()
     try:
         shutil.copytree(tmpl, d, dirs_exist_ok=True)
-        download_model(spec['modelFile'], d)
         submit_build(spec, d)
     finally:
         shutil.rmtree(d)
+    return True
 
 
-def submit_build(spec, path):
+def submit_build(spec, build_path):
     """
     Submit a build to google cloud build. The submission is async how the function may
     need time to package up the files.
 
     Args:
         spec (dict): The spec for the build.
-        path (str): The path to the files that make up the build.
+        build_path (str): The path to the files that make up the build.
 
     """
+    build_file = generate_build_file(spec, build_path)
+    run_cloud_build(build_file, build_path)
+
+
+def generate_build_file(spec, build_path):
     img = spec['image']
-    modelId = spec['modelId']
+    model_id = spec['modelId']
+    model_file = spec['modelFile']
 
     build = {
         'steps': [
             {
                 'name': 'gcr.io/cloud-builders/docker',
-                'args': ['build', '-t', img, '.']
+                'args': ['build', '-t', img, '--build-arg', f'MODEL_URL={model_file}', '.']
             },
             {
                 'name': 'gcr.io/cloud-builders/docker',
@@ -111,26 +122,29 @@ def submit_build(spec, path):
             {
                 'name': 'gcr.io/google.com/cloudsdktool/cloud-sdk',
                 'entrypoint': 'gcloud',
-                'args': ['run', 'deploy', modelId, '--image', img,
+                'args': ['run', 'deploy', model_id, '--image', img,
                          '--region', 'us-central1',
                          '--platform', 'managed',
                          '--ingress', 'internal',
                          '--clear-vpc-connector',
                          '--memory=2Gi',
                          '--max-instances', '4',
-                         '--labels', f'model-id={modelId}']
+                         '--labels', f'model-id={model_id}']
             }
         ],
         'images': [
             img
         ],
-        'name': f'model-{modelId}-{time.time()}'
+        'name': f'model-{model_id}-{int(time.time())}'
     }
 
-    build_file = f'{path}/cloudbuild.yaml'
+    build_file = f'{build_path}/cloudbuild.yaml'
     with open(build_file, 'w') as fp:
         yaml.dump(build, fp)
+    return build_file
 
+
+def run_cloud_build(build_file, build_path):
     subprocess.check_call([
         'gcloud',
         'builds',
@@ -138,19 +152,8 @@ def submit_build(spec, path):
         '--async',
         '--config',
         build_file,
-        path
+        build_path
     ])
-
-
-def download_model(src_uri, dst):
-    """
-    Download the model file uploaded by the user.
-
-    Args:
-        src_uri (str): The URI for the model.
-        dst (str): The local path to copy the model into.
-    """
-    subprocess.check_call(['gsutil', 'cp', src_uri, dst])
 
 
 def create_localdev_env(project, sub):
@@ -163,6 +166,7 @@ def create_localdev_env(project, sub):
 
     publisher = pubsub_v1.PublisherClient()
     topic_path = publisher.topic_path(project, 'model-events')
+    logger.info("creating topic " + topic_path)
     publisher.create_topic(request={'name': topic_path})
 
     subscriber = pubsub_v1.SubscriberClient()
@@ -180,6 +184,11 @@ def create_localdev_env(project, sub):
 if __name__ == "__main__":
 
     sub_name = "tugboat-model-events"
+    project_name = os.environ['GCLOUD_PROJECT']
+
+    if 'PUBSUB_EMULATOR_HOST' in os.environ:
+        create_localdev_env(project_name, sub_name)
+
     poller = multiprocessing.Process(multiprocessing.Process(
         target=message_poller, args=(sub_name,)).start())
 
@@ -189,4 +198,5 @@ if __name__ == "__main__":
     flask_log.disabled = True
     app.logger.disabled = True
 
-    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 9393)))
+    server = WSGIServer(('0.0.0.0', int(os.environ.get('PORT', 9393))), app, log=None)
+    server.serve_forever()

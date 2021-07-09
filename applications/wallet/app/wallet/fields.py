@@ -3,6 +3,7 @@ import json
 from django.conf import settings
 from django.db.models import JSONField as DjangoJSONField
 from django.db.models import Field
+from rest_framework import serializers
 
 
 class JSONField(DjangoJSONField):
@@ -38,3 +39,29 @@ if 'sqlite' in settings.DATABASES['default']['ENGINE']:
 
         def value_to_string(self, obj):
             return self.value_from_object(obj)
+
+
+class NoNullIntegerField(serializers.IntegerField):
+    def __init__(self, **kwargs):
+        super(NoNullIntegerField, self).__init__(**kwargs)
+        self.allow_null = True
+        self.allow_blank = True
+
+    def get_value(self, dictionary):
+        value = super(NoNullIntegerField, self).get_value(dictionary)
+        if not value:
+            value = 0
+        return value
+
+
+class NoNullCharField(serializers.CharField):
+    def __init__(self, **kwargs):
+        super(NoNullCharField, self).__init__(**kwargs)
+        self.allow_null = True
+        self.allow_blank = True
+
+    def get_value(self, dictionary):
+        value = super(NoNullCharField, self).get_value(dictionary)
+        if not value:
+            value = ''
+        return value

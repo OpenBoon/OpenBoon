@@ -766,8 +766,8 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-165 button:last,
-.emotion-165 a:last {
+.emotion-165 button:last-child,
+.emotion-165 a:last-child {
   margin-right: 0;
 }
 

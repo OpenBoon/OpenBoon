@@ -1,6 +1,7 @@
 from enum import Enum
 
 from .base import BaseEntity
+from .dataset import DatasetType
 from ..filters import TrainingSetFilter
 
 __all__ = [
@@ -34,8 +35,11 @@ class ModelType(Enum):
     PYTORCH_CLASSIFIER = 5
     """Retrain ResNet50 with your own labels, using Pytorch."""
 
-    PYTORCH_MODEL_ARCHIVE = 6
-    """Provide your own custom Pytorch model"""
+    TORCH_MAR_CLASSIFIER = 6
+    """Provide your own Torch Model Archive using an image classifier handler"""
+
+    TORCH_MAR_DETECTOR = 7
+    """Provide your own Torch Model Archive using an object detector handler"""
 
 
 class PostTrainAction(Enum):
@@ -245,3 +249,8 @@ class ModelTypeInfo:
         model must have before it can be trained.
         """
         return self._data['minExamples']
+
+    @property
+    def dataset_type(self):
+        """The type of Dataset this model needs to operate."""
+        return DatasetType[self._data['datasetType']]

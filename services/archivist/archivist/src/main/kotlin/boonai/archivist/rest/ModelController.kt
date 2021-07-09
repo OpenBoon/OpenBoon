@@ -7,7 +7,7 @@ import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelApplyResponse
 import boonai.archivist.domain.ModelCopyRequest
 import boonai.archivist.domain.ModelFilter
-import boonai.archivist.domain.ModelPatchRequest
+import boonai.archivist.domain.ModelPatchRequestV2
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelTrainingRequest
@@ -187,7 +187,7 @@ class ModelController(
     }
 
     @PatchMapping(value = ["/api/v3/models/{id}"])
-    fun patch(@PathVariable id: UUID, @RequestBody spec: ModelPatchRequest): Any {
+    fun patch(@PathVariable id: UUID, @RequestBody spec: ModelPatchRequestV2): Any {
         modelService.patchModel(id, spec)
         return HttpUtils.updated("Model", id, true)
     }

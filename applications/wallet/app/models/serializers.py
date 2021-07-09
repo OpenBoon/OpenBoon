@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from wallet.fields import NoNullIntegerField
+
 
 class SimpleModelSerializer(serializers.Serializer):
     id = serializers.UUIDField(required=False)
@@ -36,6 +38,22 @@ class ModelTypeRestrictionsSerializer(serializers.Serializer):
 class ModelDetailSerializer(ModelSerializer):
     runningJobId = serializers.CharField(required=False, default='', allow_blank=True)
     modelTypeRestrictions = ModelTypeRestrictionsSerializer()
+    timeLastApplied = NoNullIntegerField(required=False)
+    timeLastTested = NoNullIntegerField(required=False)
+    timeLastTrained = NoNullIntegerField(required=False)
+    datasetType = serializers.SerializerMethodField('get_dataset_type')
+
+    def get_dataset_type(self, obj):
+        model_types = self.context['request'].client.get('/api/v3/models/_types')
+        for model_type in model_types:
+            if model_type['name'] == obj['type']:
+                return model_type['datasetType']
+        return ''
+
+
+class ModelUpdateSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    datasetId = serializers.CharField(allow_null=True)
 
 
 class ModelTypeSerializer(serializers.Serializer):
@@ -47,6 +65,7 @@ class ModelTypeSerializer(serializers.Serializer):
     deployOnTrainingSet = serializers.BooleanField()
     minConcepts = serializers.IntegerField()
     minExamples = serializers.IntegerField()
+    datasetType = serializers.CharField()
 
 
 class ConfusionMatrixSerializer(serializers.Serializer):

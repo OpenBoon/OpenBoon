@@ -1,6 +1,7 @@
 package boonai.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonInclude
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.web.multipart.MultipartFile
@@ -27,6 +28,7 @@ class UpdateAssetsByQueryRequest(
 )
 
 @ApiModel("Update Asset Request", description = "Request structure to update an Asset.")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 class UpdateAssetRequest(
 
     @ApiModelProperty("Key/value pairs to be updated.")
@@ -178,6 +180,19 @@ class UpdateAssetLabelsRequest(
 
     @ApiModelProperty("The labels to remove.")
     val remove: Map<String, List<Label>>? = null
+)
+
+@ApiModel(
+    "UpdateAssetLabelsRequest",
+    description = "Request to add /remove labels"
+)
+class UpdateAssetLabelsRequestV4(
+
+    @ApiModelProperty("The labels to add.  Supplying a new label for an existing Dataset overwrites it.")
+    val add: Map<String, Label>? = null,
+
+    @ApiModelProperty("The labels to remove.")
+    val remove: Map<String, Label>? = null
 )
 
 @ApiModel(

@@ -1,4 +1,5 @@
 import { useReducer } from 'react'
+import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
@@ -13,7 +14,7 @@ import ModelLinkExisting from './Existing'
 import ModelLinkNew from './New'
 
 const SOURCES = [
-  { value: 'EXISTING', label: 'Add Existing Dataset' },
+  { value: 'EXISTING', label: 'Use Existing Dataset' },
   { value: 'NEW', label: 'Create New' },
 ]
 
@@ -29,7 +30,7 @@ const INITIAL_STATE = {
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-const ModelLinkForm = () => {
+const ModelLinkForm = ({ datasetType }) => {
   const {
     query: { projectId, modelId },
   } = useRouter()
@@ -70,6 +71,7 @@ const ModelLinkForm = () => {
         <ModelLinkExisting
           projectId={projectId}
           modelId={modelId}
+          datasetType={datasetType}
           state={state}
           dispatch={dispatch}
         />
@@ -77,6 +79,7 @@ const ModelLinkForm = () => {
         <ModelLinkNew
           projectId={projectId}
           modelId={modelId}
+          datasetType={datasetType}
           datasetTypes={datasetTypes}
           state={state}
           dispatch={dispatch}
@@ -84,6 +87,10 @@ const ModelLinkForm = () => {
       )}
     </Form>
   )
+}
+
+ModelLinkForm.propTypes = {
+  datasetType: PropTypes.string.isRequired,
 }
 
 export default ModelLinkForm

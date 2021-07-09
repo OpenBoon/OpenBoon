@@ -303,8 +303,8 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-29 button:last,
-.emotion-29 a:last {
+.emotion-29 button:last-child,
+.emotion-29 a:last-child {
   margin-right: 0;
 }
 

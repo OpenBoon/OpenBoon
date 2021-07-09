@@ -34,7 +34,8 @@ enum class ModelType(
     val trainable: Boolean,
     val uploadable: Boolean,
     val enabled: Boolean,
-    val fileName: String = "model.zip"
+    val datasetType: DatasetType,
+    val fileName: String = "model.zip",
 ) {
     KNN_CLASSIFIER(
         "K-Nearest Neighbors Classifier",
@@ -53,7 +54,8 @@ enum class ModelType(
         listOf(),
         true,
         false,
-        true
+        true,
+        DatasetType.Classification
     ),
     TF_CLASSIFIER(
         "Tensorflow Transfer Learning Classifier",
@@ -71,7 +73,8 @@ enum class ModelType(
         listOf(),
         true,
         false,
-        true
+        true,
+        DatasetType.Classification
     ),
     FACE_RECOGNITION(
         "Face Recognition",
@@ -87,7 +90,8 @@ enum class ModelType(
         listOf("boonai-face-detection"),
         true,
         false,
-        true
+        true,
+        DatasetType.FaceRecognition
     ),
     GCP_AUTOML_CLASSIFIER(
         "Google AutoML Classifier",
@@ -103,9 +107,10 @@ enum class ModelType(
         listOf(),
         true,
         false,
-        false
+        false,
+        DatasetType.Classification
     ),
-    TF_SAVED_MODEL(
+    TF_SAVED_MODEL_DISABLED(
         "Imported Tensorflow Image Classifier",
         "None",
         "boonai_analysis.custom.TensorflowImageClassifier",
@@ -119,9 +124,10 @@ enum class ModelType(
         listOf(),
         false,
         true,
-        false
+        false,
+        DatasetType.Classification
     ),
-    PYTORCH_CLASSIFIER(
+    PYTORCH_DISABLED(
         "Pytorch Transfer Learning Classifier",
         "boonai_train.pytorch.PytorchTransferLearningTrainer",
         "boonai_analysis.custom.PytorchTransferLearningClassifier",
@@ -137,12 +143,13 @@ enum class ModelType(
         listOf(),
         true,
         false,
-        false
+        false,
+        DatasetType.Classification
     ),
-    PYTORCH_MODEL_ARCHIVE(
-        "A Pytorch Model Archive. image_classifier, image_segmenter, object_detector, or text_classifier. ",
+    TORCH_MAR_CLASSIFIER(
+        "A Torch Model Archive using the image_classifier handler.",
         "None",
-        "boonai_analysis.custom.PytorchModelArchive",
+        "boonai_analysis.deployed.mar.TorchModelArchiveClassifier",
         null,
         "Upload a pre-trained Pytorch Model Archive",
         ModelObjective.LABEL_DETECTION,
@@ -154,6 +161,25 @@ enum class ModelType(
         false,
         true,
         true,
+        DatasetType.Classification,
+        "model.mar"
+    ),
+    TORCH_MAR_DETECTOR(
+        "A Torch Model Archive using the object_detector handler.",
+        "None",
+        "boonai_analysis.custom.TorchModelArchiveDetector",
+        null,
+        "Upload a pre-trained Pytorch Model Archive",
+        ModelObjective.LABEL_DETECTION,
+        Provider.BOONAI,
+        true,
+        0,
+        0,
+        listOf(),
+        false,
+        true,
+        true,
+        DatasetType.Detection,
         "model.mar"
     );
 
@@ -167,7 +193,8 @@ enum class ModelType(
             "minConcepts" to minConcepts,
             "minExamples" to minExamples,
             "dependencies" to dependencies,
-            "label" to label
+            "label" to label,
+            "datasetType" to datasetType.name
         )
     }
 }
@@ -255,6 +282,31 @@ class ModelUpdateRequest(
     val datasetId: UUID?
 )
 
+class ModelPatchRequestV2 {
+
+    @ApiModelProperty("Name of the model")
+    internal var name: String? = null
+
+    @ApiModelProperty("The Dataset the model points to.")
+    internal var datasetId: UUID? = null
+
+    val isSet = mutableSetOf<String>()
+
+    fun setName(name: String) {
+        this.name = name
+        isSet.add("name")
+    }
+
+    fun setDatasetId(ds: UUID?) {
+        this.datasetId = ds
+        isSet.add("datasetId")
+    }
+
+    fun isFieldSet(name: String): Boolean {
+        return name in isSet
+    }
+}
+
 class ModelPatchRequest(
 
     @ApiModelProperty("Name of the model")
@@ -292,6 +344,7 @@ class Model(
     @ApiModelProperty("The name of the pipeline module and analysis namespace.")
     val moduleName: String,
 
+    @JsonIgnore
     @Column(name = "str_endpoint")
     val endpoint: String?,
 

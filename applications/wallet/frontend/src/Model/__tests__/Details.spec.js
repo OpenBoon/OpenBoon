@@ -42,6 +42,23 @@ describe('<ModelDetails />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Open Menu
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Toggle Actions Menu' })
+        .props.onClick()
+    })
+
+    // Select Delete
+    act(() => {
+      component.root.findByProps({ children: 'Delete Model' }).props.onClick()
+    })
+
+    // Cancel
+    act(() => {
+      component.root.findByProps({ children: 'Cancel' }).props.onClick()
+    })
+
     // Mock Failure
     fetch.mockResponseOnce(null, { status: 500 })
 

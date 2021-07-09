@@ -390,7 +390,45 @@ class AssetAppTests(unittest.TestCase):
         }
         label1 = Dataset({"id": "abc123"}).make_label("test1")
         label2 = Dataset({"id": "abc123"}).make_label("test2")
-        rsp = self.app.assets.update_labels(["12345"], add_labels=[label1], remove_labels=[label2])
+        rsp = self.app.assets.update_labels(["12345"],
+                                            add_labels=[label1], remove_labels=[label2])
+        assert put_patch.return_value == rsp
+
+    @patch.object(BoonClient, 'put')
+    def test_batch_update_labels(self, put_patch):
+        put_patch.return_value = {
+            'type': 'asset',
+            'op': '_batch_update_labels',
+            'success': True
+        }
+        label1 = Dataset({"id": "abc123"}).make_label("test1")
+        label2 = Dataset({"id": "abc123"}).make_label("test2")
+        rsp = self.app.assets.batch_update_labels(["12345"],
+                                                  add_label=[label1], remove_label=[label2])
+        assert put_patch.return_value == rsp
+
+    @patch.object(BoonClient, 'put')
+    def test_batch_add_labels(self, put_patch):
+        put_patch.return_value = {
+            'type': 'asset',
+            'op': '_batch_update_labels',
+            'success': True
+        }
+        label1 = Dataset({"id": "abc123"}).make_label("test1")
+        label2 = Dataset({"id": "abc123"}).make_label("test2")
+        rsp = self.app.assets.batch_add_labels({"12345": label1, "abcd": label2})
+        assert put_patch.return_value == rsp
+
+    @patch.object(BoonClient, 'put')
+    def test_batch_remove_labels(self, put_patch):
+        put_patch.return_value = {
+            'type': 'asset',
+            'op': '_batch_update_labels',
+            'success': True
+        }
+        label1 = Dataset({"id": "abc123"}).make_label("test1")
+        label2 = Dataset({"id": "abc123"}).make_label("test2")
+        rsp = self.app.assets.batch_remove_labels({"12345": label1, "abcd": label2})
         assert put_patch.return_value == rsp
 
     @patch.object(BoonClient, 'put')

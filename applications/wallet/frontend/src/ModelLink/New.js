@@ -16,6 +16,7 @@ import { onNewLink } from './helpers'
 const ModelLinkNew = ({
   projectId,
   modelId,
+  datasetType,
   datasetTypes,
   state,
   dispatch,
@@ -59,22 +60,24 @@ const ModelLinkNew = ({
         Models can be associated with it.
       </SectionSubTitle>
 
-      {datasetTypes.map(({ name, label, description }) => {
-        return (
-          <div key={name} css={{ paddingTop: spacing.normal }}>
-            <Radio
-              name="datasetType"
-              option={{
-                value: name,
-                label,
-                legend: description,
-                initialValue: state.type === name,
-              }}
-              onClick={({ value }) => dispatch({ type: value })}
-            />
-          </div>
-        )
-      })}
+      {datasetTypes
+        .filter(({ name }) => name === datasetType)
+        .map(({ name, label, description }) => {
+          return (
+            <div key={name} css={{ paddingTop: spacing.normal }}>
+              <Radio
+                name="datasetType"
+                option={{
+                  value: name,
+                  label,
+                  legend: description,
+                  initialValue: state.type === name,
+                }}
+                onClick={({ value }) => dispatch({ type: value })}
+              />
+            </div>
+          )
+        })}
 
       <div css={{ height: spacing.normal }} />
 
@@ -103,6 +106,7 @@ const ModelLinkNew = ({
 ModelLinkNew.propTypes = {
   projectId: PropTypes.string.isRequired,
   modelId: PropTypes.string.isRequired,
+  datasetType: PropTypes.string.isRequired,
   datasetTypes: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
