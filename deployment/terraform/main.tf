@@ -400,6 +400,8 @@ module "tugboat" {
   project           = var.project
   image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
   container-tag     = var.container-tag
+  project-number    = var.project-number
+  pubsub-topic      = module.archivist.pubsub-topic-name-models
 }
 
 
