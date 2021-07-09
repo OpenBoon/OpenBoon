@@ -344,7 +344,7 @@ class TestLabelingEndpoints:
         dataset_id = '287baa12-8f80-1a31-9273-76fd36c58a09'
 
         # Asset that has a classification label.
-        asset_data = {'id': dataset_id, 'document': {'labels': [{'datasetId': '287baa12-8f80-1a31-9273-76fd36c58a09', 'scope': 'TRAIN', 'label': 'pretzel', }]}}
+        asset_data = {'id': dataset_id, 'document': {'labels': [{'datasetId': '287baa12-8f80-1a31-9273-76fd36c58a09', 'scope': 'TRAIN', 'label': 'pretzel'}]}}
         asset = Asset(asset_data)
         path = reverse('dataset-label-tool-info', kwargs={'project_pk': project.id,
                                                           'pk': dataset_id})
@@ -356,6 +356,16 @@ class TestLabelingEndpoints:
         asset = Asset(asset_data)
         response = check_response(api_client.get(f'{path}?assetId={asset.id}'))
         assert response == {'count': 1, 'results': [{'datasetId': '287baa12-8f80-1a31-9273-76fd36c58a09', 'scope': 'TRAIN', 'label': '', 'b64Image': 'b64-image-str'}]}
+
+        # Asset that has a classification label.
+        asset_data = {'id': dataset_id, 'document': {'labels': [{'datasetId': '287baa12-8f80-1a31-9273-76fd36c58a09', 'scope': 'TRAIN', 'label': 'pretzel', 'bbox': None}]}}
+        asset = Asset(asset_data)
+        path = reverse('dataset-label-tool-info', kwargs={'project_pk': project.id,
+                                                          'pk': dataset_id})
+        response = check_response(api_client.get(f'{path}?assetId={asset.id}'))
+        assert response == {'count': 1, 'results': [
+            {'datasetId': '287baa12-8f80-1a31-9273-76fd36c58a09', 'scope': 'TRAIN',
+             'label': 'pretzel', 'b64Image': 'b64-image-str', 'bbox': None}]}
 
     def test_label_tool_info_face_recognition(self, login, project, api_client, monkeypatch):
         def mock_get_asset(*args, **kwargs):
