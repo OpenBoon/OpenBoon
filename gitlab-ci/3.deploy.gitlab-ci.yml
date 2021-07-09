@@ -20,7 +20,7 @@ boonai-deploy-development:
   variables:
     PROJECT: zvi-dev
     SA_JSON: ${DEV_SA_JSON}
-    DEPLOYMENTS: analyst api-gateway archivist auth-server officer ml-bbq reporter swivel
+    DEPLOYMENTS: analyst api-gateway archivist auth-server officer ml-bbq reporter swivel tugboat
     STATEFUL_SETS: elasticsearch-master elasticsearch-data
   environment:
     name: dev
@@ -82,7 +82,7 @@ deploy-qa:
   variables:
     PROJECT: zvi-qa
     SA_JSON: ${QA_SA_JSON}
-    DEPLOYMENTS: analyst api-gateway archivist auth-server metrics ml-bbq officer reporter wallet swivel project-reaper
+    DEPLOYMENTS: analyst api-gateway archivist auth-server metrics ml-bbq officer reporter wallet swivel project-reaper tugboat
     STATEFUL_SETS: elasticsearch-master elasticsearch-data
   environment:
     name: qa
