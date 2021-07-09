@@ -82,9 +82,11 @@ def build_and_deploy(spec):
     # Copy the model and the template into a temp dir.
     # Then submit the temp dir to be built.
     d = tempfile.mkdtemp()
+    build_dir = os.path.join(d, 'build')
+    logger.info(f'copying template to dir {build_dir}')
     try:
-        shutil.copytree(tmpl, d, dirs_exist_ok=True)
-        submit_build(spec, d)
+        shutil.copytree(tmpl, build_dir)
+        submit_build(spec, build_dir)
     finally:
         shutil.rmtree(d)
     return True

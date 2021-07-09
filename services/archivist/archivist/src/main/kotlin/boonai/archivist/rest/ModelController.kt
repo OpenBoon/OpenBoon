@@ -1,6 +1,7 @@
 package boonai.archivist.rest
 
 import boonai.archivist.domain.ArgSchema
+import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.Job
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
@@ -176,7 +177,7 @@ class ModelController(
 
     @ApiOperation("Upload the model zip file.")
     @PostMapping(value = ["/api/v3/models/{id}/_upload"])
-    fun upload(@ApiParam("ModelId") @PathVariable id: UUID, req: HttpServletRequest): Any {
+    fun upload(@ApiParam("ModelId") @PathVariable id: UUID, req: HttpServletRequest): FileStorage {
         return modelDeployService.deployUploadedModel(modelService.getModel(id), req.inputStream)
     }
 

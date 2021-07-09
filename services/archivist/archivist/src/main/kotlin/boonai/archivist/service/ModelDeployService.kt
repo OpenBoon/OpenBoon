@@ -1,6 +1,7 @@
 package boonai.archivist.service
 
 import boonai.archivist.domain.Asset
+import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ProjectStorageSpec
@@ -34,7 +35,7 @@ interface ModelDeployService {
      * Deploys an uploaded model file to an endpoint.  The model file is uploaded
      * to cloud storage.
      */
-    fun deployUploadedModel(model: Model, inputStream: InputStream)
+    fun deployUploadedModel(model: Model, inputStream: InputStream): FileStorage
 }
 
 @Service
@@ -51,7 +52,7 @@ class ModelDeployServiceImpl(
         eventBus.register(this)
     }
 
-    override fun deployUploadedModel(model: Model, inputStream: InputStream) {
+    override fun deployUploadedModel(model: Model, inputStream: InputStream): FileStorage {
         if (!model.type.uploadable) {
             throw IllegalArgumentException("The model type ${model.type} does not support uploads")
         }
@@ -68,10 +69,12 @@ class ModelDeployServiceImpl(
             model.getModelStorageLocator("latest"), mapOf(),
             inputStream, 0
         )
-        fileStorageService.store(modelFile)
+        val fs = fileStorageService.store(modelFile)
 
         // Emit a message to signal for the model to be deployed.
         modelService.postToModelEventTopic(buildDeployPubsubMessage(model))
+
+        return fs
     }
 
     /**

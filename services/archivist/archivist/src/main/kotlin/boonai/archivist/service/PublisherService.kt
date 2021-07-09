@@ -50,7 +50,7 @@ class PublisherServiceImpl : PublisherService {
             logger.info("Publishing message to topic $topic")
             return
         }
-        if (publishers.containsKey(topic)) {
+        if (!publishers.containsKey(topic)) {
             throw IllegalArgumentException("Invalid pubsub stopic $topic")
         }
         threads.execute {

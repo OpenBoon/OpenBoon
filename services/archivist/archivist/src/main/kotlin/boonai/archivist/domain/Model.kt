@@ -195,7 +195,8 @@ enum class ModelType(
             "minExamples" to minExamples,
             "dependencies" to dependencies,
             "label" to label,
-            "datasetType" to datasetType.name
+            "datasetType" to datasetType.name,
+            "uploadable" to uploadable
         )
     }
 }
@@ -434,6 +435,10 @@ class Model(
         } else {
             "$moduleName:$tag"
         }
+    }
+
+    fun isUploadable(): Boolean {
+        return type.uploadable
     }
 
     override fun equals(other: Any?): Boolean {

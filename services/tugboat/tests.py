@@ -35,7 +35,7 @@ class ServerTests(unittest.TestCase):
         assert len(build['steps']) == 3
 
     @mock.patch('server.submit_build')
-    def test_build_and_deply(self, submit_patch):
+    def test_build_and_deploy(self, submit_patch):
         assert server.build_and_deploy(self.spec)
         spec = submit_patch.call_args[0][0]
         assert spec == self.spec

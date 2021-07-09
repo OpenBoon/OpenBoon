@@ -88,6 +88,11 @@ class Model(BaseEntity):
         return ModelType[self._data['type']]
 
     @property
+    def uploadable(self):
+        """True of the model should be uploaded"""
+        return self._data['uploadable']
+
+    @property
     def file_id(self):
         """The file ID of the trained model"""
         return self._data['fileId']
@@ -254,3 +259,8 @@ class ModelTypeInfo:
     def dataset_type(self):
         """The type of Dataset this model needs to operate."""
         return DatasetType[self._data['datasetType']]
+
+    @property
+    def uploadable(self):
+        """True if the model file must be uploaded"""
+        return self._data['uploadable']
