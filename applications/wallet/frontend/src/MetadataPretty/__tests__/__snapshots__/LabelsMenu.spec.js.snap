@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<MetadataPrettyLabelsMenu /> should add a model/label filter 1`] = `
+exports[`<MetadataPrettyLabelsMenu /> should add a dataset/label filter 1`] = `
 .emotion-0 {
   position: relative;
   height: 100%;
@@ -144,7 +144,7 @@ exports[`<MetadataPrettyLabelsMenu /> should add a model/label filter 1`] = `
             onClick={[Function]}
             type="button"
           >
-            Add Model/Label Filter
+            Add Dataset/Label Filter
           </button>
         </li>
         <li>
@@ -154,7 +154,7 @@ exports[`<MetadataPrettyLabelsMenu /> should add a model/label filter 1`] = `
             onClick={[Function]}
             type="button"
           >
-            Copy Model ID
+            Copy Dataset ID
           </button>
         </li>
         <li>

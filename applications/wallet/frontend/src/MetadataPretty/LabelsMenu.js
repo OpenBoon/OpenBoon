@@ -10,8 +10,8 @@ import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 
 const MetadataPrettyLabelsMenu = ({
-  label: { modelId, label, simhash },
-  moduleName,
+  label: { datasetId, label, simhash },
+  datasetName,
 }) => {
   const {
     pathname,
@@ -38,8 +38,8 @@ const MetadataPrettyLabelsMenu = ({
                       assetId: id || assetId,
                       filter: {
                         type: 'label',
-                        attribute: `labels.${moduleName}`,
-                        modelId,
+                        attribute: `labels.${datasetName}`,
+                        datasetId,
                         values: { labels: [label] },
                       },
                       query,
@@ -47,7 +47,7 @@ const MetadataPrettyLabelsMenu = ({
                   })
                 }}
               >
-                Add Model/Label Filter
+                Add Dataset/Label Filter
               </Button>
             </li>
 
@@ -56,12 +56,12 @@ const MetadataPrettyLabelsMenu = ({
                 variant={VARIANTS.MENU_ITEM}
                 onBlur={onBlur}
                 onClick={async () => {
-                  await navigator.clipboard.writeText(modelId)
+                  await navigator.clipboard.writeText(datasetId)
 
                   onClick()
                 }}
               >
-                Copy Model ID
+                Copy Dataset ID
               </Button>
             </li>
 
@@ -91,9 +91,9 @@ MetadataPrettyLabelsMenu.propTypes = {
   label: PropTypes.shape({
     label: PropTypes.string.isRequired,
     simhash: PropTypes.string,
-    modelId: PropTypes.string.isRequired,
+    datasetId: PropTypes.string.isRequired,
   }).isRequired,
-  moduleName: PropTypes.string.isRequired,
+  datasetName: PropTypes.string.isRequired,
 }
 
 export default MetadataPrettyLabelsMenu

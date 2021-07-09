@@ -116,7 +116,7 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="labels.boonai-console_face_recognition-face-recognition"
+          value="labels.faces"
         />
         <div
           className="emotion-5"
@@ -134,7 +134,7 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
         <span
           className="emotion-8"
         >
-          boonai-console_face_recognition-face-recognition
+          faces
         </span>
       </div>
     </label>
