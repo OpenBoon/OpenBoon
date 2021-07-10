@@ -36,7 +36,14 @@ resource "google_project_iam_custom_role" "tugboat" {
     "remotebuildexecution.blobs.get",
     "pubsub.snapshots.seek",
     "pubsub.subscriptions.consume",
-    "pubsub.topics.attachSubscription"
+    "pubsub.topics.attachSubscription",
+    "storage.buckets.create",
+    "storage.buckets.get",
+    "storage.buckets.update",
+    "storage.objects.create",
+    "storage.objects.delete",
+    "storage.objects.get",
+    "storage.objects.list"
   ]
 }
 

@@ -204,6 +204,6 @@ if __name__ == "__main__":
     app.logger.disabled = True
 
     port = int(os.environ.get('PORT', 9393))
-    logger.info(f'Starting Tugboat on port {port}')
+    logger.info(f'Starting Tugboat on port: {port}')
     server = WSGIServer(('0.0.0.0', port), app, log=None)
     server.serve_forever()
