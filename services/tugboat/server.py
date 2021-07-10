@@ -6,9 +6,9 @@ import shutil
 import subprocess
 import tempfile
 import time
-import yaml
 
 import urllib3
+import yaml
 from flask import Flask
 from gevent.pywsgi import WSGIServer
 from google.cloud import pubsub_v1
@@ -48,6 +48,7 @@ def message_poller(sub):
     subscription_path = subscriber.subscription_path(project_name, sub)
     streaming_pull_future = subscriber.subscribe(subscription_path, callback=callback)
 
+    logger.info(f'Listening to: {sub}')
     while True:
         with subscriber:
             try:
@@ -147,7 +148,7 @@ def generate_build_file(spec, build_path):
 
 
 def run_cloud_build(build_file, build_path):
-    subprocess.check_call([
+    cmd = [
         'gcloud',
         'builds',
         'submit',
@@ -155,7 +156,9 @@ def run_cloud_build(build_file, build_path):
         '--config',
         build_file,
         build_path
-    ])
+    ]
+    logger.info('Running {}'.format(cmd))
+    subprocess.check_call(cmd)
 
 
 def create_localdev_env(project, sub):
