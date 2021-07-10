@@ -110,7 +110,7 @@ resource "kubernetes_deployment" "tugboat" {
       }
       spec {
         node_selector = {
-          type = "default"
+          type = "tugboat"
         }
         image_pull_secrets {
           name = var.image-pull-secret
