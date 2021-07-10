@@ -203,5 +203,7 @@ if __name__ == "__main__":
     flask_log.disabled = True
     app.logger.disabled = True
 
-    server = WSGIServer(('0.0.0.0', int(os.environ.get('PORT', 9393))), app, log=None)
+    port = int(os.environ.get('PORT', 9393))
+    logger.info(f'Starting Tugboat on port {port}')
+    server = WSGIServer(('0.0.0.0', port), app, log=None)
     server.serve_forever()
