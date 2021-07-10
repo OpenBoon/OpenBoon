@@ -137,15 +137,6 @@ resource "kubernetes_deployment" "tugboat" {
             name  = "PORT"
             value = "9393"
           }
-          env {
-            name  = "GOOGLE_APPLICATION_CREDENTIALS"
-            value = "/var/run/secrets/cloud.google.com/credentials.json"
-          }
-          volume_mount {
-            mount_path = "/var/run/secrets/cloud.google.com"
-            name       = "service-account"
-            read_only  = true
-          }
           volume_mount {
             mount_path = "/etc/ssl/certs"
             name       = "certs"
