@@ -60,7 +60,7 @@ resource "google_container_node_pool" "tugboat" {
   node_config {
     preemptible     = true
     machine_type    = "n1-standard-1"
-    service_account = google_service_account.tugboat.name
+    service_account = google_service_account.tugboat.email
     oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
     labels = {
       type = "tugboat"
