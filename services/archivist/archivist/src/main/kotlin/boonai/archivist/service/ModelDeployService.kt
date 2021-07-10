@@ -115,6 +115,7 @@ class ModelDeployServiceImpl(
 
             val endpoint = findCloudRunEndpoint(model)
             if (endpoint != null) {
+                logger.info("Setting ${model.id} endpoint to $endpoint")
                 modelJdbcDao.setEndpoint(model.id, endpoint)
                 modelService.publishModel(model, ModelPublishRequest(mapOf("endpoint" to endpoint)))
             } else {

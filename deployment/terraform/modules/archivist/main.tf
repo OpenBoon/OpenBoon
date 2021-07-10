@@ -86,7 +86,19 @@ resource "google_project_iam_custom_role" "archivist" {
     "storage.objects.create",
     "storage.objects.delete",
     "storage.objects.get",
-    "storage.objects.list"
+    "storage.objects.list",
+    "recommender.locations.get",
+    "recommender.locations.list",
+    "run.configurations.get",
+    "run.configurations.list",
+    "run.locations.list",
+    "run.revisions.get",
+    "run.revisions.list",
+    "run.routes.get",
+    "run.routes.list",
+    "run.services.get",
+    "run.services.getIamPolicy",
+    "run.services.list"
   ]
 }
 
