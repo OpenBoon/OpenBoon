@@ -34,8 +34,6 @@ resource "google_project_iam_custom_role" "tugboat" {
     "cloudbuild.builds.list",
     "cloudbuild.builds.update",
     "remotebuildexecution.blobs.get",
-    "resourcemanager.projects.get",
-    "resourcemanager.projects.list",
     "pubsub.snapshots.seek",
     "pubsub.subscriptions.consume",
     "pubsub.topics.attachSubscription"
