@@ -43,7 +43,8 @@ resource "google_project_iam_custom_role" "tugboat" {
     "storage.objects.create",
     "storage.objects.delete",
     "storage.objects.get",
-    "storage.objects.list"
+    "storage.objects.list",
+    "logging.logEntries.create"
   ]
 }
 

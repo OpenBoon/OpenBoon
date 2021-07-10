@@ -108,6 +108,17 @@ def submit_build(spec, build_path):
 
 
 def generate_build_file(spec, build_path):
+    """
+    Generates a Cloud Build Yaml file.
+
+    Args:
+        spec (dict): The spec from Pub/Sub
+        build_path (str): The path to the docker build directory.
+
+    Returns:
+        str: The path to the build file.
+
+    """
     img = spec['image']
     model_id = spec['modelId']
     model_file = spec['modelFile']
