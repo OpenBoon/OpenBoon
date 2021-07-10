@@ -147,7 +147,7 @@ class ModelDeployServiceImpl(
 
         val projectId = ServiceOptions.getDefaultProjectId()
         val modelId = model.id
-        val url = "https://us-central1-run.googleapis.com/apis/serving.knative.dev/v1/namespaces/$projectId/services/$modelId?alt=json"
+        val url = "https://us-central1-run.googleapis.com/apis/serving.knative.dev/v1/namespaces/$projectId/services/mod-$modelId?alt=json"
 
         val credentialsAdapter = HttpCredentialsAdapter(credentials)
         val requestFactory: HttpRequestFactory = NetHttpTransport().createRequestFactory(credentialsAdapter)

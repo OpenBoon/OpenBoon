@@ -136,7 +136,7 @@ def generate_build_file(spec, build_path):
             {
                 'name': 'gcr.io/google.com/cloudsdktool/cloud-sdk',
                 'entrypoint': 'gcloud',
-                'args': ['run', 'deploy', model_id, '--image', img,
+                'args': ['run', 'deploy', f'mod-{model_id}', '--image', img,
                          '--region', 'us-central1',
                          '--platform', 'managed',
                          '--ingress', 'internal',
