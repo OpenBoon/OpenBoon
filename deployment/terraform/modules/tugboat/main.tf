@@ -15,8 +15,6 @@ resource "google_pubsub_subscription" "tugboat-model-events" {
   topic = var.pubsub-topic
 }
 
-
-## Service Account For Blob Signing
 resource "google_service_account" "tugboat" {
   project      = var.project
   account_id   = "zmlp-tugboat"
@@ -47,30 +45,47 @@ resource "google_project_iam_custom_role" "tugboat" {
   ]
 }
 
+resource "google_container_node_pool" "tugboat" {
+  name               = "tugboat"
+  cluster            = var.container-cluster-name
+  initial_node_count = 1
+  autoscaling {
+    max_node_count = 3
+    min_node_count = 1
+  }
+  management {
+    auto_repair  = true
+    auto_upgrade = true
+  }
+  node_config {
+    preemptible     = true
+    machine_type    = "n1-standard-1"
+    service_account = google_service_account.tugboat.name
+    oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
+    labels = {
+      type = "tugboat"
+    }
+    taint {
+      effect = "NO_SCHEDULE"
+      key    = "tugboat"
+      value  = "false"
+    }
+  }
+  lifecycle {
+    ignore_changes = [
+      initial_node_count,
+      autoscaling[0].min_node_count,
+      autoscaling[0].max_node_count
+    ]
+  }
+}
+
 resource "google_project_iam_member" "tugboat" {
   project    = var.project
   role       = google_project_iam_custom_role.tugboat.id
   member     = "serviceAccount:${google_service_account.tugboat.email}"
   depends_on = [google_project_iam_custom_role.tugboat, google_service_account.tugboat]
 }
-
-resource "google_service_account_key" "tugboat" {
-  service_account_id = google_service_account.tugboat.name
-  keepers = {
-    "created_date" : timestamp()
-  }
-}
-
-resource "kubernetes_secret" "tugboat-sa-key" {
-  metadata {
-    name      = "tugboat-sa-key"
-    namespace = var.namespace
-  }
-  data = {
-    "credentials.json" = base64decode(google_service_account_key.tugboat.private_key)
-  }
-}
-
 
 resource "kubernetes_deployment" "tugboat" {
   provider = kubernetes
@@ -99,11 +114,11 @@ resource "kubernetes_deployment" "tugboat" {
         image_pull_secrets {
           name = var.image-pull-secret
         }
-        volume {
-          name = "service-account"
-          secret {
-            secret_name = "tugboat-sa-key"
-          }
+        toleration {
+          key      = "tugboat"
+          operator = "Equal"
+          value    = "false"
+          effect   = "NoSchedule"
         }
         volume {
           name = "certs"
@@ -122,18 +137,9 @@ resource "kubernetes_deployment" "tugboat" {
             name  = "PORT"
             value = "9393"
           }
-          env {
-            name = "GOOGLE_APPLICATION_CREDENTIALS"
-            value = "/var/run/secrets/cloud.google.com/credentials.json"
-          }
-          volume_mount {
-            mount_path = "/var/run/secrets/cloud.google.com"
-            name = "service-account"
-            read_only  = true
-          }
           volume_mount {
             mount_path = "/etc/ssl/certs"
-            name = "certs"
+            name       = "certs"
           }
           liveness_probe {
             initial_delay_seconds = 120
