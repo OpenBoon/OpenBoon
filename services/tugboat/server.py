@@ -168,7 +168,7 @@ def run_cloud_build(build_file, build_path):
         build_file,
         build_path
     ]
-    logger.info('Running {}'.format(cmd))
+    logger.info('Running: {}'.format(cmd))
     subprocess.check_call(cmd)
 
 

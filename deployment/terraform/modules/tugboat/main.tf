@@ -39,12 +39,29 @@ resource "google_project_iam_custom_role" "tugboat" {
     "pubsub.topics.attachSubscription",
     "storage.buckets.create",
     "storage.buckets.get",
+    "storage.buckets.list",
     "storage.buckets.update",
     "storage.objects.create",
     "storage.objects.delete",
     "storage.objects.get",
     "storage.objects.list",
-    "logging.logEntries.create"
+    "storage.objects.update",
+    "logging.logEntries.create",
+    "artifactregistry.repositories.list",
+    "artifactregistry.repositories.get",
+    "artifactregistry.repositories.downloadArtifacts",
+    "artifactregistry.files.list",
+    "artifactregistry.files.get",
+    "artifactregistry.packages.list",
+    "artifactregistry.packages.get",
+    "artifactregistry.tags.list",
+    "artifactregistry.tags.get",
+    "artifactregistry.versions.list",
+    "artifactregistry.versions.get",
+    "pubsub.topics.create",
+    "pubsub.topics.publish",
+    "source.repos.get",
+    "source.repos.list"
   ]
 }
 
