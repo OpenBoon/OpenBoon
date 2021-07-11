@@ -86,6 +86,7 @@ class PipelineController @Autowired constructor(
         return HttpUtils.deleted("pipelines", id, pipelineService.delete(id))
     }
 
+    @PreAuthorize("hasAuthority('AssetsImport')")
     @ApiOperation("Build a pipeline script to apply the given modules.")
     @PostMapping(value = ["/api/v3/pipelines/resolver/_apply_modules_to_asset"])
     fun resolveApplyModulesScript(@RequestBody req: ApplyModulesToAssetRequest): ZpsScript {
