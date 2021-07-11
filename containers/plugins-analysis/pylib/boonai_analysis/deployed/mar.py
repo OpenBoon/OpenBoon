@@ -46,8 +46,10 @@ class TorchModelArchiveClassifier(CustomModelProcessor):
             list: A list of tuples containing predictions
 
         """
+        full_endpoint = self.arg_value('endpoint') + "/predictions/model1"
+
         with open(path, 'rb') as fp:
-            preds = requests.post(self.arg_value('endpoint'), data=fp).json()
+            preds = requests.post(full_endpoint, data=fp).json()
         return [(k, v) for k, v in preds.items()]
 
     def process_video(self, asset):
