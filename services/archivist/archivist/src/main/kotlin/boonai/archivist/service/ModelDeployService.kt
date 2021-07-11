@@ -6,7 +6,10 @@ import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.PubSubEvent
+import boonai.archivist.repository.ModelDao
 import boonai.archivist.repository.ModelJdbcDao
+import boonai.archivist.security.InternalThreadAuthentication
+import boonai.archivist.security.withAuth
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.loadGcpCredentials
 import boonai.common.service.logging.LogAction
@@ -43,7 +46,8 @@ class ModelDeployServiceImpl(
     val fileStorageService: ProjectStorageService,
     val modelService: ModelService,
     val modelJdbcDao: ModelJdbcDao,
-    val eventBus: EventBus
+    val modelDao: ModelDao,
+    val eventBus: EventBus,
 
 ) : ModelDeployService {
 
@@ -111,13 +115,16 @@ class ModelDeployServiceImpl(
             }
 
             val modelId = UUID.fromString(image.split("/").last())
-            val model = modelService.getModel(modelId)
+            val model = modelDao.getOne(modelId)
 
             val endpoint = findCloudRunEndpoint(model)
             if (endpoint != null) {
-                logger.info("Setting ${model.id} endpoint to $endpoint")
-                modelJdbcDao.setEndpoint(model.id, endpoint)
-                modelService.publishModel(model, ModelPublishRequest(mapOf("endpoint" to endpoint)))
+                val auth = InternalThreadAuthentication(model.projectId)
+                withAuth(auth) {
+                    logger.info("Setting ${model.id} endpoint to $endpoint")
+                    modelJdbcDao.setEndpoint(model.id, endpoint)
+                    modelService.publishModel(model, ModelPublishRequest(mapOf("endpoint" to endpoint)))
+                }
             } else {
                 logger.error("The model build ${model.id} completed but no endpoint was found.")
             }

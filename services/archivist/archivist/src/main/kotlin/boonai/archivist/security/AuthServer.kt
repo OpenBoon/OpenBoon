@@ -18,7 +18,7 @@ object KnownKeys {
      * The background-thread key doesn't actually exist but is an
      * identifier used for running threads tied to a project.
      */
-    val BACKGROUND_THREAD = "support@zorroa.com"
+    val BACKGROUND_THREAD = "support@boonai.io"
 
     /**
      * A special key ID used for when we forge a key for a
