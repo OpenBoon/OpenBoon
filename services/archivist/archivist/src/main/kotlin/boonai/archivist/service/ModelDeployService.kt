@@ -6,6 +6,7 @@ import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.PubSubEvent
+import boonai.archivist.repository.ModelDao
 import boonai.archivist.repository.ModelJdbcDao
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.loadGcpCredentials
@@ -43,7 +44,8 @@ class ModelDeployServiceImpl(
     val fileStorageService: ProjectStorageService,
     val modelService: ModelService,
     val modelJdbcDao: ModelJdbcDao,
-    val eventBus: EventBus
+    val modelDao: ModelDao,
+    val eventBus: EventBus,
 
 ) : ModelDeployService {
 
@@ -111,7 +113,7 @@ class ModelDeployServiceImpl(
             }
 
             val modelId = UUID.fromString(image.split("/").last())
-            val model = modelService.getModel(modelId)
+            val model = modelDao.getOne(modelId)
 
             val endpoint = findCloudRunEndpoint(model)
             if (endpoint != null) {
