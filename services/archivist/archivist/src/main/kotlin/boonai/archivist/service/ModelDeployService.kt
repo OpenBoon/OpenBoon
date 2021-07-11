@@ -47,8 +47,7 @@ class ModelDeployServiceImpl(
     val modelService: ModelService,
     val modelJdbcDao: ModelJdbcDao,
     val modelDao: ModelDao,
-    val eventBus: EventBus,
-
+    val eventBus: EventBus
 ) : ModelDeployService {
 
     @PostConstruct
@@ -115,6 +114,7 @@ class ModelDeployServiceImpl(
             }
 
             val modelId = UUID.fromString(image.split("/").last())
+            logger.info("Deploying uploaded model $modelId")
             val model = modelDao.getOne(modelId)
 
             val endpoint = findCloudRunEndpoint(model)
