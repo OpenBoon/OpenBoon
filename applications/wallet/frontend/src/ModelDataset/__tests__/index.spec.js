@@ -9,6 +9,7 @@ const MODEL_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
 const DATASET_ID = '4b0b10a8-cec1-155c-b12f-ee2bc8787e06'
 
 jest.mock('../../DatasetConcepts', () => 'DatasetConcepts')
+jest.mock('../../ModelLink', () => 'ModelLink')
 jest.mock('../Header', () => 'ModelDatasetHeader')
 
 const noop = () => () => {}

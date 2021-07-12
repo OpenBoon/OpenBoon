@@ -186,7 +186,7 @@ exports[`<ModelLinkForm /> should render properly for Existing 1`] = `
   line-height: 19px;
   font-weight: 500;
   border: none;
-  cursor: pointer;
+  cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
 }
@@ -195,69 +195,18 @@ exports[`<ModelLinkForm /> should render properly for Existing 1`] = `
 .emotion-25:hover,
 .emotion-25:visited,
 .emotion-25 .noop {
-  background-color: #808080;
+  background-color: #3A5DFF;
 }
 
 .emotion-25:hover,
 .emotion-25 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #b3b3b3;
+  background-color: #6088FE;
 }
 
 .emotion-25[aria-disabled=true],
 .emotion-25 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-26 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-26,
-.emotion-26:hover,
-.emotion-26:visited,
-.emotion-26 .noop {
-  background-color: #3A5DFF;
-}
-
-.emotion-26:hover,
-.emotion-26 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #6088FE;
-}
-
-.emotion-26[aria-disabled=true],
-.emotion-26 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -395,17 +344,9 @@ exports[`<ModelLinkForm /> should render properly for Existing 1`] = `
     <div
       className="emotion-24"
     >
-      <a
-        className="emotion-25"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf774-89d9-1244-9596-d6df43f1ede5"
-        onClick={[Function]}
-        onMouseEnter={[Function]}
-      >
-        Cancel
-      </a>
       <button
         aria-disabled={true}
-        className="emotion-26"
+        className="emotion-25"
         onClick={[Function]}
         type="submit"
       >
@@ -611,69 +552,18 @@ exports[`<ModelLinkForm /> should render properly for Existing 2`] = `
 .emotion-25:hover,
 .emotion-25:visited,
 .emotion-25 .noop {
-  background-color: #808080;
+  background-color: #3A5DFF;
 }
 
 .emotion-25:hover,
 .emotion-25 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #b3b3b3;
+  background-color: #6088FE;
 }
 
 .emotion-25[aria-disabled=true],
 .emotion-25 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-26 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-26,
-.emotion-26:hover,
-.emotion-26:visited,
-.emotion-26 .noop {
-  background-color: #3A5DFF;
-}
-
-.emotion-26:hover,
-.emotion-26 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #6088FE;
-}
-
-.emotion-26[aria-disabled=true],
-.emotion-26 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -790,7 +680,7 @@ exports[`<ModelLinkForm /> should render properly for Existing 2`] = `
       >
         <select
           className="emotion-23"
-          defaultValue=""
+          defaultValue="111d0534-7736-135f-8a62-d29da837913f"
           disabled={false}
           onChange={[Function]}
         >
@@ -811,16 +701,8 @@ exports[`<ModelLinkForm /> should render properly for Existing 2`] = `
     <div
       className="emotion-24"
     >
-      <a
-        className="emotion-25"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf774-89d9-1244-9596-d6df43f1ede5"
-        onClick={[Function]}
-        onMouseEnter={[Function]}
-      >
-        Cancel
-      </a>
       <button
-        className="emotion-26"
+        className="emotion-25"
         onClick={[Function]}
         type="submit"
       >
@@ -1097,69 +979,18 @@ exports[`<ModelLinkForm /> should render properly for New 1`] = `
 .emotion-42:hover,
 .emotion-42:visited,
 .emotion-42 .noop {
-  background-color: #808080;
+  background-color: #3A5DFF;
 }
 
 .emotion-42:hover,
 .emotion-42 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #b3b3b3;
+  background-color: #6088FE;
 }
 
 .emotion-42[aria-disabled=true],
 .emotion-42 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
-}
-
-.emotion-43 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-43,
-.emotion-43:hover,
-.emotion-43:visited,
-.emotion-43 .noop {
-  background-color: #3A5DFF;
-}
-
-.emotion-43:hover,
-.emotion-43 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #6088FE;
-}
-
-.emotion-43[aria-disabled=true],
-.emotion-43 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1374,16 +1205,8 @@ exports[`<ModelLinkForm /> should render properly for New 1`] = `
     <div
       className="emotion-41"
     >
-      <a
-        className="emotion-42"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf774-89d9-1244-9596-d6df43f1ede5"
-        onClick={[Function]}
-        onMouseEnter={[Function]}
-      >
-        Cancel
-      </a>
       <button
-        className="emotion-43"
+        className="emotion-42"
         onClick={[Function]}
         type="submit"
       >

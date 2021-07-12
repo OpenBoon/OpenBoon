@@ -22,9 +22,10 @@ const ModelMatrixPreview = ({
   settings: { selectedCell, minScore, maxScore },
   labels,
   moduleName,
+  datasetId,
 }) => {
   const {
-    query: { projectId, modelId },
+    query: { projectId },
   } = useRouter()
 
   const [, setRightOpeningPanel] = useLocalStorage({
@@ -57,7 +58,7 @@ const ModelMatrixPreview = ({
       {
         type: 'label',
         attribute: `labels.${moduleName}`,
-        modelId,
+        datasetId,
         values: {
           labels: [labels[selectedCell[0]]],
           scope: 'test',
@@ -165,6 +166,7 @@ ModelMatrixPreview.propTypes = {
   }).isRequired,
   labels: PropTypes.arrayOf(PropTypes.string).isRequired,
   moduleName: PropTypes.string.isRequired,
+  datasetId: PropTypes.string.isRequired,
 }
 
 export default ModelMatrixPreview

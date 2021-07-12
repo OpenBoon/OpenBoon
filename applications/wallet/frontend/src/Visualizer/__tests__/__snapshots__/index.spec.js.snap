@@ -287,7 +287,14 @@ exports[`<Visualizer /> should render properly 1`] = `
                 "metadata": Object {
                   "analysis": Object {
                     "flower-types": Object {
-                      "score": 0.333,
+                      "count": 1,
+                      "predictions": Array [
+                        Object {
+                          "label": "rose",
+                          "score": 0.153,
+                        },
+                      ],
+                      "type": "labels",
                     },
                   },
                   "source": Object {
@@ -304,7 +311,14 @@ exports[`<Visualizer /> should render properly 1`] = `
                 "metadata": Object {
                   "analysis": Object {
                     "flower-types": Object {
-                      "score": 0.333,
+                      "count": 1,
+                      "predictions": Array [
+                        Object {
+                          "label": "rose",
+                          "score": 0.153,
+                        },
+                      ],
+                      "type": "labels",
                     },
                   },
                   "source": Object {
@@ -321,7 +335,14 @@ exports[`<Visualizer /> should render properly 1`] = `
                 "metadata": Object {
                   "analysis": Object {
                     "flower-types": Object {
-                      "score": 0.333,
+                      "count": 1,
+                      "predictions": Array [
+                        Object {
+                          "label": "rose",
+                          "score": 0.153,
+                        },
+                      ],
+                      "type": "labels",
                     },
                   },
                   "source": Object {
@@ -338,7 +359,14 @@ exports[`<Visualizer /> should render properly 1`] = `
                 "metadata": Object {
                   "analysis": Object {
                     "flower-types": Object {
-                      "score": 0.333,
+                      "count": 1,
+                      "predictions": Array [
+                        Object {
+                          "label": "rose",
+                          "score": 0.153,
+                        },
+                      ],
+                      "type": "labels",
                     },
                   },
                   "source": Object {
@@ -356,7 +384,14 @@ exports[`<Visualizer /> should render properly 1`] = `
                 "metadata": Object {
                   "analysis": Object {
                     "flower-types": Object {
-                      "score": 0.333,
+                      "count": 1,
+                      "predictions": Array [
+                        Object {
+                          "label": "rose",
+                          "score": 0.153,
+                        },
+                      ],
+                      "type": "labels",
                     },
                   },
                   "source": Object {
@@ -760,7 +795,14 @@ exports[`<Visualizer /> should render selected asset 1`] = `
                 "metadata": Object {
                   "analysis": Object {
                     "flower-types": Object {
-                      "score": 0.333,
+                      "count": 1,
+                      "predictions": Array [
+                        Object {
+                          "label": "rose",
+                          "score": 0.153,
+                        },
+                      ],
+                      "type": "labels",
                     },
                   },
                   "source": Object {
@@ -777,7 +819,14 @@ exports[`<Visualizer /> should render selected asset 1`] = `
                 "metadata": Object {
                   "analysis": Object {
                     "flower-types": Object {
-                      "score": 0.333,
+                      "count": 1,
+                      "predictions": Array [
+                        Object {
+                          "label": "rose",
+                          "score": 0.153,
+                        },
+                      ],
+                      "type": "labels",
                     },
                   },
                   "source": Object {
@@ -794,7 +843,14 @@ exports[`<Visualizer /> should render selected asset 1`] = `
                 "metadata": Object {
                   "analysis": Object {
                     "flower-types": Object {
-                      "score": 0.333,
+                      "count": 1,
+                      "predictions": Array [
+                        Object {
+                          "label": "rose",
+                          "score": 0.153,
+                        },
+                      ],
+                      "type": "labels",
                     },
                   },
                   "source": Object {
@@ -811,7 +867,14 @@ exports[`<Visualizer /> should render selected asset 1`] = `
                 "metadata": Object {
                   "analysis": Object {
                     "flower-types": Object {
-                      "score": 0.333,
+                      "count": 1,
+                      "predictions": Array [
+                        Object {
+                          "label": "rose",
+                          "score": 0.153,
+                        },
+                      ],
+                      "type": "labels",
                     },
                   },
                   "source": Object {
@@ -829,7 +892,14 @@ exports[`<Visualizer /> should render selected asset 1`] = `
                 "metadata": Object {
                   "analysis": Object {
                     "flower-types": Object {
-                      "score": 0.333,
+                      "count": 1,
+                      "predictions": Array [
+                        Object {
+                          "label": "rose",
+                          "score": 0.153,
+                        },
+                      ],
+                      "type": "labels",
                     },
                   },
                   "source": Object {

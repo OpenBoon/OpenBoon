@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
-import Link from 'next/link'
 
 import { spacing, colors } from '../Styles'
 
@@ -30,7 +29,7 @@ const ModelLinkExisting = ({
 
       <Select
         label="Dataset"
-        defaultValue=""
+        defaultValue={state.datasetId}
         options={datasets
           .filter(({ type }) => type === datasetType)
           .map(({ id, name }) => ({ value: id, label: name }))}
@@ -43,14 +42,6 @@ const ModelLinkExisting = ({
       />
 
       <ButtonGroup>
-        <Link
-          href="/[projectId]/models/[modelId]"
-          as={`/${projectId}/models/${modelId}`}
-          passHref
-        >
-          <Button variant={BUTTON_VARIANTS.SECONDARY}>Cancel</Button>
-        </Link>
-
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}

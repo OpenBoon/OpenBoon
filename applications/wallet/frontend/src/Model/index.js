@@ -39,7 +39,7 @@ const Model = () => {
         styles={{ paddingTop: spacing.base, paddingBottom: spacing.normal }}
       />
 
-      {action === 'unlink-dataset-success' && (
+      {['link-dataset-success', 'unlink-dataset-success'].includes(action) && (
         <div
           css={{
             display: 'flex',
@@ -48,7 +48,7 @@ const Model = () => {
           }}
         >
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Dataset unlinked.
+            Dataset {action === 'link-dataset-success' ? 'linked' : 'unlinked'}.
           </FlashMessage>
         </div>
       )}

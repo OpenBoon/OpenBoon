@@ -1,29 +1,36 @@
-import Head from 'next/head'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
-import Breadcrumbs from '../Breadcrumbs'
-import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
+import { constants, colors } from '../Styles'
 
-import ModelLinkContent from './Content'
+import ModelLinkForm from './Form'
 
 const Model = () => {
+  const {
+    query: { projectId, modelId },
+  } = useRouter()
+
+  const { data: model } = useSWR(
+    `/api/v1/projects/${projectId}/models/${modelId}/`,
+  )
+
+  const { datasetType } = model
+
   return (
-    <>
-      <Head>
-        <title>Model Details</title>
-      </Head>
+    <div>
+      <div
+        css={{
+          maxWidth: constants.paragraph.maxWidth,
+          color: colors.structure.zinc,
+        }}
+      >
+        Datasets are groups of labels added to assets that are used by the model
+        for training. When using an uploaded, pre-trained model, only the
+        testing labels in the dataset are used.
+      </div>
 
-      <Breadcrumbs
-        crumbs={[
-          { title: 'Custom Models', href: '/[projectId]/models', isBeta: true },
-          { title: 'Model Details', href: '/[projectId]/models/[modelId]' },
-          { title: 'Link Dataset', href: false },
-        ]}
-      />
-
-      <SuspenseBoundary role={ROLES.ML_Tools}>
-        <ModelLinkContent />
-      </SuspenseBoundary>
-    </>
+      <ModelLinkForm datasetType={datasetType} />
+    </div>
   )
 }
 

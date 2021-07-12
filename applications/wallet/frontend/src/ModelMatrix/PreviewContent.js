@@ -115,7 +115,10 @@ const ModelMatrixPreviewContent = ({
         ) : (
           results.map(({ thumbnailUrl, metadata, id }) => {
             const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
-            const confidenceScore = metadata.analysis[moduleName].score
+            const confidenceScore =
+              metadata?.analysis &&
+              metadata?.analysis[moduleName]?.predictions &&
+              metadata?.analysis[moduleName]?.predictions[0]?.score
 
             return (
               <div key={id}>

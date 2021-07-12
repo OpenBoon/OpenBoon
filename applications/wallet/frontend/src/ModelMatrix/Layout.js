@@ -25,7 +25,7 @@ const ACCURACY_WIDTH = 40
 const ModelMatrixLayout = ({
   projectId,
   modelId,
-  matrixDetails: { name, overallAccuracy, labels, moduleName },
+  matrixDetails: { name, overallAccuracy, labels, moduleName, datasetId },
   setMatrixDetails,
 }) => {
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
@@ -69,11 +69,13 @@ const ModelMatrixLayout = ({
               whiteSpace: 'nowrap',
             }}
           >
-            Overall Accuracy:
+            Accuracy:
           </span>
+
           <div css={{ width: ACCURACY_WIDTH }}>{`${Math.round(
             overallAccuracy * 100,
           )}%`}</div>
+
           <ModelMatrixControls
             isNormalized={settings.isNormalized}
             dispatch={dispatch}
@@ -121,6 +123,7 @@ const ModelMatrixLayout = ({
             settings={settings}
             labels={labels}
             moduleName={moduleName}
+            datasetId={datasetId}
           />
         </Resizeable>
 
@@ -172,6 +175,7 @@ ModelMatrixLayout.propTypes = {
     overallAccuracy: PropTypes.number.isRequired,
     labels: PropTypes.arrayOf(PropTypes.string),
     moduleName: PropTypes.string.isRequired,
+    datasetId: PropTypes.string.isRequired,
   }).isRequired,
   setMatrixDetails: PropTypes.func.isRequired,
 }

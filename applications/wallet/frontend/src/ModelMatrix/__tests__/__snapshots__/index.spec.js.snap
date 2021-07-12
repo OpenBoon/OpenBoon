@@ -2476,7 +2476,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
       <span
         className="emotion-6"
       >
-        Overall Accuracy:
+        Accuracy:
       </span>
       <div
         className="emotion-7"
@@ -3472,6 +3472,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
           className="emotion-181"
         >
           <ModelMatrixPreview
+            datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
             labels={
               Array [
                 "pink",

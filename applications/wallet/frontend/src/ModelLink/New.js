@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import Link from 'next/link'
 
 import { spacing } from '../Styles'
 
@@ -82,14 +81,6 @@ const ModelLinkNew = ({
       <div css={{ height: spacing.normal }} />
 
       <ButtonGroup>
-        <Link
-          href="/[projectId]/models/[modelId]"
-          as={`/${projectId}/models/${modelId}`}
-          passHref
-        >
-          <Button variant={BUTTON_VARIANTS.SECONDARY}>Cancel</Button>
-        </Link>
-
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
