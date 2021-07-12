@@ -284,7 +284,8 @@ class TestModelViewSetActions:
                             mock_aggs)
         monkeypatch.setattr(ModelApp, 'get_model', lambda self, pk: Model({'name': 'test',
                                                                            'moduleName': 'also-test',
-                                                                           'datasetId': '12345'}))
+                                                                           'datasetId': '12345',
+                                                                           'ready': True}))
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
 
         # Get the confusion matrix data for a model.
@@ -320,7 +321,8 @@ class TestModelViewSetActions:
                             'overallAccuracy': 0.7446300715990454,
                             'testSetOnly': False,
                             'isMatrixApplicable': True,
-                            'datasetId': '12345'}
+                            'datasetId': '12345',
+                            'unappliedChanges': False}
 
         # Get the confusion matrix thumbnail.
         path = reverse('model-confusion-matrix-thumbnail',
@@ -330,7 +332,9 @@ class TestModelViewSetActions:
 
     def test_confusion_matrix_no_dataset(self, login, project, api_client, monkeypatch):
         monkeypatch.setattr(ModelApp, 'get_model',
-                            lambda self, pk: Model({'name': 'test', 'moduleName': 'also-test'}))
+                            lambda self, pk: Model({'name': 'test',
+                                                    'moduleName': 'also-test',
+                                                    'ready': True}))
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
 
         # Try to get the confusion matrix data for a model that does not have a dataset
@@ -345,4 +349,5 @@ class TestModelViewSetActions:
                             'overallAccuracy': 0.0,
                             'testSetOnly': True,
                             'isMatrixApplicable': True,
-                            'datasetId': None}
+                            'datasetId': None,
+                            'unappliedChanges': False}

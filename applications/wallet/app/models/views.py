@@ -173,6 +173,10 @@ class ModelViewSet(ZmlpCreateMixin,
                 "matrix": [],
                 "isMatrixApplicable": True,
                 "datasetId": None}
+
+        # Set the ready/unapplied changes status
+        response_data['unappliedChanges'] = not model.ready
+
         serializer = ConfusionMatrixSerializer(data=response_data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data)
