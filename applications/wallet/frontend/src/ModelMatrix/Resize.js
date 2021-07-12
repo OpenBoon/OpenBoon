@@ -20,7 +20,12 @@ const ModelMatrixResize = ({ matrix, settings, dispatch }) => {
         zIndex: zIndex.layout.interactive,
       }}
     >
-      <ModelMatrixMinimap matrix={matrix} settings={settings} isInteractive />
+      <ModelMatrixMinimap
+        matrix={matrix}
+        settings={settings}
+        isInteractive
+        isOutOfDate={false}
+      />
 
       <div
         css={{

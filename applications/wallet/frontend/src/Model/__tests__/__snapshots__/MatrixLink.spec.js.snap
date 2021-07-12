@@ -119,7 +119,7 @@ exports[`<ModelMatrixLink /> should render properly when a dataset has not yet b
     <div
       className="emotion-20"
     >
-      To view the matrix, you must link a dataset, train the model, and analyze all assets.
+      To view the matrix you must link the model to a dataset, add test labels, and run the "Test" or "Analyze All" actions.
     </div>
   </div>
 </div>
@@ -139,6 +139,8 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
 }
 
 .emotion-2 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   opacity: 1;
   position: relative;
   border: 4px solid #808080;
@@ -316,14 +318,231 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
       >
         Confusion Matrix
       </div>
-      Accuracy:
-       
-      <span
+      <div>
+        Accuracy:
+         
+        <span
+          className="emotion-15"
+        >
+          60
+          %
+        </span>
+      </div>
+    </div>
+    <a
+      className="emotion-16"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/matrix"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      View Matrix Details
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<ModelMatrixLink /> should render properly when a matrix is out of date 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  width: 130px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+  opacity: 1;
+  position: relative;
+  border: 4px solid #808080;
+  padding: 1px;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  display: grid;
+  grid-template: repeat(3, 1fr)/repeat(3, 1fr);
+}
+
+.emotion-3 {
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+  border-right: 1px solid #191919;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-5 {
+  padding-bottom: 100%;
+  background-color: rgb(0,39,107);
+  border-right: none;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-6 {
+  padding-bottom: 100%;
+  background-color: rgb(53,171,255);
+  border-right: 1px solid #191919;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-8 {
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+  border-right: none;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-9 {
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+  border-right: 1px solid #191919;
+  border-bottom: none;
+}
+
+.emotion-11 {
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+  border-right: none;
+  border-bottom: none;
+}
+
+.emotion-12 {
+  width: 200px;
+}
+
+.emotion-13 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 16px;
+}
+
+.emotion-14 {
+  padding-bottom: 8px;
+}
+
+.emotion-15 {
+  width: 200px;
+  font-style: italic;
+  color: #808080;
+  text-transform: none;
+}
+
+.emotion-16 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+}
+
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited,
+.emotion-16 .noop {
+  background-color: #808080;
+}
+
+.emotion-16:hover,
+.emotion-16 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-16[aria-disabled=true],
+.emotion-16 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-5"
+      />
+      <div
+        className="emotion-6"
+      />
+      <div
+        className="emotion-6"
+      />
+      <div
+        className="emotion-8"
+      />
+      <div
+        className="emotion-9"
+      />
+      <div
+        className="emotion-9"
+      />
+      <div
+        className="emotion-11"
+      />
+    </div>
+  </div>
+  <div
+    className="emotion-12"
+  >
+    <div
+      className="emotion-13"
+    >
+      <div
+        className="emotion-14"
+      >
+        Confusion Matrix
+      </div>
+      <div
         className="emotion-15"
       >
-        60
-        %
-      </span>
+        The matrix is out of date 
+        <br />
+         and not representative.
+      </div>
     </div>
     <a
       className="emotion-16"
@@ -565,7 +784,7 @@ exports[`<ModelMatrixLink /> should render properly when the model has not yet b
     <div
       className="emotion-20"
     >
-      To view the matrix, you must analyze all assets.
+      To view the matrix you must run the "Test" or "Analyze All" actions.
     </div>
   </div>
 </div>
@@ -690,7 +909,7 @@ exports[`<ModelMatrixLink /> should render properly when the model has not yet b
     <div
       className="emotion-20"
     >
-      To view the matrix, you must train the model, and analyze all assets.
+      To view the matrix you must add test labels, and run the "Test" or "Analyze All" actions.
     </div>
   </div>
 </div>
