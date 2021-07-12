@@ -20,7 +20,7 @@ requirements = [
     "azure-storage-blob",
     "opencv-python-headless",
     "opencv-contrib-python-headless",
-    "Pillow",
+    "pillow==8.2.0",
     "pdoc3",
     "requests",
     "xmltodict",

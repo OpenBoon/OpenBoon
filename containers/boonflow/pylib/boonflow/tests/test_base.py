@@ -30,7 +30,7 @@ class TestBaseClasses(TestCase):
         finally:
             del os.environ["BOONAI_CREDENTIALS_TYPES"]
 
-    def test_byte_array_input_stream_pil(self):
+    def test_image_input_stream_pil(self):
         path = testing.test_path("images/set01/toucan.jpg")
         stream = base.ImageInputStream.from_path(path)
 
@@ -38,9 +38,10 @@ class TestBaseClasses(TestCase):
         for i in range(0, 2):
             image = stream.pil_img()
             exif = image.getexif()
-            assert exif[36867] == '2009:11:18 16:04:43'
+            print(exif)
+            assert exif[306] == '2009:12:12 19:48:58'
 
-    def test_byte_array_input_stream_cv(self):
+    def test_image_input_stream_cv(self):
         path = testing.test_path("images/set01/toucan.jpg")
         stream = base.ImageInputStream.from_path(path)
 
