@@ -25,7 +25,8 @@ requirements = [
     "requests",
     "xmltodict",
     "youtube-dl",
-    "flask"
+    "flask",
+    "numpy"
 ]
 
 setup(
