@@ -84,7 +84,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert error["payload"]["fatal"] is False
         assert error["payload"]["phase"] == "execute"
         assert error["payload"]["path"] == "/foo/bing.jpg"
-        assert asset["document"]["metrics"]["pipeline"][0]["error"] == "warning"
+        assert asset["document"]["metrics"]["pipeline"][0]["error"] == "error"
 
     def test_execute_preprocess(self):
         req = {
