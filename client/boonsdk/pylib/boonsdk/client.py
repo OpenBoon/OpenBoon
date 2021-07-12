@@ -153,7 +153,7 @@ class BoonClient:
             dict: The response body of the request.
         """
         try:
-            post_files = [("file", (os.path.basename(file), open(file, 'rb')))]
+            post_files = [("file", (os.path.basename(file), FileInputStream(file, 'rb')))]
             if body is not None:
                 post_files.append(
                     ["body", (None, to_json(body), 'application/json')])
@@ -554,7 +554,7 @@ class FileInputStream:
     A partially implemented File object which just supports reading the
     entire file and then closing the file handle.
     """
-    def __init__(self, filename, mode):
+    def __init__(self, filename, mode='rb'):
         self.filename = filename
         self.mode = mode
 
