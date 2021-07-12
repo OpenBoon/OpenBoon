@@ -9,6 +9,25 @@ const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const DATASET_ID = '4b0b10a8-cec1-155c-b12f-ee2bc8787e06'
 
 describe('<ModelMatrixLink />', () => {
+  it('should render properly when a matrix is out of date', () => {
+    require('swr').__setMockUseSWRResponse({ data: matrix })
+
+    const component = TestRenderer.create(
+      <ModelMatrixLink
+        projectId={PROJECT_ID}
+        model={{
+          ...model,
+          unappliedChanges: true,
+          datasetId: DATASET_ID,
+          timeLastTrained: 1625774562852,
+          timeLastApplied: 1625774664673,
+        }}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly when a matrix exists', () => {
     require('swr').__setMockUseSWRResponse({ data: matrix })
 
@@ -17,6 +36,7 @@ describe('<ModelMatrixLink />', () => {
         projectId={PROJECT_ID}
         model={{
           ...model,
+          unappliedChanges: false,
           datasetId: DATASET_ID,
           timeLastTrained: 1625774562852,
           timeLastApplied: 1625774664673,
@@ -37,6 +57,7 @@ describe('<ModelMatrixLink />', () => {
         projectId={PROJECT_ID}
         model={{
           ...model,
+          unappliedChanges: false,
           datasetId: DATASET_ID,
           timeLastTrained: 1625774562852,
           timeLastApplied: 0,
@@ -57,6 +78,7 @@ describe('<ModelMatrixLink />', () => {
         projectId={PROJECT_ID}
         model={{
           ...model,
+          unappliedChanges: false,
           datasetId: DATASET_ID,
           timeLastTrained: 0,
           timeLastApplied: 0,
@@ -77,6 +99,7 @@ describe('<ModelMatrixLink />', () => {
         projectId={PROJECT_ID}
         model={{
           ...model,
+          unappliedChanges: false,
           datasetId: '',
           timeLastTrained: 0,
           timeLastApplied: 0,
@@ -97,6 +120,7 @@ describe('<ModelMatrixLink />', () => {
         projectId={PROJECT_ID}
         model={{
           ...model,
+          unappliedChanges: false,
           datasetId: '',
           timeLastTrained: 0,
           timeLastApplied: 0,

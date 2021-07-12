@@ -46,7 +46,7 @@ const ModelDataset = ({ setErrors }) => {
   }
 
   return (
-    <div>
+    <div css={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       <ModelDatasetHeader
         projectId={projectId}
         modelId={modelId}

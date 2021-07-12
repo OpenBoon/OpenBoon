@@ -170,7 +170,7 @@ exports[`<ModelDetails /> should render properly 1`] = `
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-19 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -179,17 +179,17 @@ exports[`<ModelDetails /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-19 button,
-.emotion-19 a {
+.emotion-22 button,
+.emotion-22 a {
   margin-right: 16px;
 }
 
-.emotion-19 button:last-child,
-.emotion-19 a:last-child {
+.emotion-22 button:last-child,
+.emotion-22 a:last-child {
   margin-right: 0;
 }
 
-.emotion-20 {
+.emotion-23 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -220,27 +220,27 @@ exports[`<ModelDetails /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-20,
-.emotion-20:hover,
-.emotion-20:visited,
-.emotion-20 .noop {
+.emotion-23,
+.emotion-23:hover,
+.emotion-23:visited,
+.emotion-23 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-20:hover,
-.emotion-20 .noop {
+.emotion-23:hover,
+.emotion-23 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-20[aria-disabled=true],
-.emotion-20 .noop {
+.emotion-23[aria-disabled=true],
+.emotion-23 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-23 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -255,15 +255,15 @@ exports[`<ModelDetails /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-23 div {
+.emotion-26 div {
   margin-left: 0;
 }
 
-.emotion-23 button {
+.emotion-26 button {
   margin-right: 0;
 }
 
-.emotion-24 {
+.emotion-27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -272,20 +272,20 @@ exports[`<ModelDetails /> should render properly 1`] = `
   margin-left: 8px;
 }
 
-.emotion-24:hover div,
-.emotion-24:focus-within div {
+.emotion-27:hover div,
+.emotion-27:focus-within div {
   visibility: visible;
   opacity: 1;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
 }
 
-.emotion-24:hover button,
-.emotion-24:focus-within button {
+.emotion-27:hover button,
+.emotion-27:focus-within button {
   color: #ffffff;
 }
 
-.emotion-25 {
+.emotion-28 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -296,7 +296,7 @@ exports[`<ModelDetails /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-26 {
+.emotion-29 {
   position: absolute;
   left: -10px;
   top: 28px;
@@ -316,12 +316,12 @@ exports[`<ModelDetails /> should render properly 1`] = `
   z-index: 1;
 }
 
-.emotion-26:hover {
+.emotion-29:hover {
   visibility: visible;
   opacity: 1;
 }
 
-.emotion-27:before {
+.emotion-30:before {
   content: ' ';
   position: absolute;
   top: -6px;
@@ -331,18 +331,18 @@ exports[`<ModelDetails /> should render properly 1`] = `
   border-right: 6px solid transparent;
 }
 
-.emotion-28 {
+.emotion-31 {
   font-size: 15px;
   line-height: 19px;
   padding: 8px;
 }
 
-.emotion-29 {
+.emotion-32 {
   font-size: 15px;
   line-height: 19px;
 }
 
-.emotion-30 {
+.emotion-33 {
   font-size: 15px;
   line-height: 19px;
   padding-top: 16px;
@@ -450,6 +450,25 @@ exports[`<ModelDetails /> should render properly 1`] = `
     className="emotion-12"
   />
   <div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#0074f5"
+        data-file-name="information.svg"
+        height={20}
+      />
+      <div
+        className="emotion-3"
+        role="alert"
+      >
+        You must add a dataset below before you can train or apply the model, or view the matrix.
+      </div>
+    </div>
+  </div>
+  <div
     className="emotion-4"
   >
     <div>
@@ -478,39 +497,39 @@ exports[`<ModelDetails /> should render properly 1`] = `
         </li>
       </ul>
       <div
-        className="emotion-19"
+        className="emotion-22"
       >
         <button
-          className="emotion-20"
+          className="emotion-23"
           onClick={[Function]}
           type="button"
         >
           Train Model
         </button>
         <button
-          className="emotion-20"
+          className="emotion-23"
           onClick={[Function]}
           type="button"
         >
           Train & Test
         </button>
         <button
-          className="emotion-20"
+          className="emotion-23"
           onClick={[Function]}
           type="button"
         >
           Train & Analyze All
         </button>
         <div
-          className="emotion-23"
+          className="emotion-26"
         >
           <div
-            className="emotion-24"
+            className="emotion-27"
           >
             <button
               aria-details="TrainingOptions"
               aria-label="Training Options"
-              className="emotion-25"
+              className="emotion-28"
               type="button"
             >
               <svg
@@ -519,30 +538,30 @@ exports[`<ModelDetails /> should render properly 1`] = `
               />
             </button>
             <div
-              className="emotion-26"
+              className="emotion-29"
               id="TrainingOptions"
               role="tooltip"
             >
               <div
-                className="emotion-27"
+                className="emotion-30"
               />
               <div
-                className="emotion-28"
+                className="emotion-31"
               >
                 <h3
-                  className="emotion-29"
+                  className="emotion-32"
                 >
                   Train Model
                 </h3>
                 Train a model without applying it to your assets.
                 <h3
-                  className="emotion-30"
+                  className="emotion-33"
                 >
                   Train & Test
                 </h3>
                 Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
                 <h3
-                  className="emotion-30"
+                  className="emotion-33"
                 >
                   Train & Analyze All
                 </h3>
@@ -770,7 +789,7 @@ exports[`<ModelDetails /> should render properly 2`] = `
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-22 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -779,17 +798,17 @@ exports[`<ModelDetails /> should render properly 2`] = `
   padding-bottom: 16px;
 }
 
-.emotion-22 button,
-.emotion-22 a {
+.emotion-25 button,
+.emotion-25 a {
   margin-right: 16px;
 }
 
-.emotion-22 button:last-child,
-.emotion-22 a:last-child {
+.emotion-25 button:last-child,
+.emotion-25 a:last-child {
   margin-right: 0;
 }
 
-.emotion-23 {
+.emotion-26 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -820,27 +839,27 @@ exports[`<ModelDetails /> should render properly 2`] = `
   background-color: transparent;
 }
 
-.emotion-23,
-.emotion-23:hover,
-.emotion-23:visited,
-.emotion-23 .noop {
+.emotion-26,
+.emotion-26:hover,
+.emotion-26:visited,
+.emotion-26 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-23:hover,
-.emotion-23 .noop {
+.emotion-26:hover,
+.emotion-26 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-23[aria-disabled=true],
-.emotion-23 .noop {
+.emotion-26[aria-disabled=true],
+.emotion-26 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-26 {
+.emotion-29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -855,15 +874,15 @@ exports[`<ModelDetails /> should render properly 2`] = `
   justify-content: center;
 }
 
-.emotion-26 div {
+.emotion-29 div {
   margin-left: 0;
 }
 
-.emotion-26 button {
+.emotion-29 button {
   margin-right: 0;
 }
 
-.emotion-27 {
+.emotion-30 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -872,20 +891,20 @@ exports[`<ModelDetails /> should render properly 2`] = `
   margin-left: 8px;
 }
 
-.emotion-27:hover div,
-.emotion-27:focus-within div {
+.emotion-30:hover div,
+.emotion-30:focus-within div {
   visibility: visible;
   opacity: 1;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
 }
 
-.emotion-27:hover button,
-.emotion-27:focus-within button {
+.emotion-30:hover button,
+.emotion-30:focus-within button {
   color: #ffffff;
 }
 
-.emotion-28 {
+.emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -896,7 +915,7 @@ exports[`<ModelDetails /> should render properly 2`] = `
   color: #808080;
 }
 
-.emotion-29 {
+.emotion-32 {
   position: absolute;
   left: -10px;
   top: 28px;
@@ -916,12 +935,12 @@ exports[`<ModelDetails /> should render properly 2`] = `
   z-index: 1;
 }
 
-.emotion-29:hover {
+.emotion-32:hover {
   visibility: visible;
   opacity: 1;
 }
 
-.emotion-30:before {
+.emotion-33:before {
   content: ' ';
   position: absolute;
   top: -6px;
@@ -931,18 +950,18 @@ exports[`<ModelDetails /> should render properly 2`] = `
   border-right: 6px solid transparent;
 }
 
-.emotion-31 {
+.emotion-34 {
   font-size: 15px;
   line-height: 19px;
   padding: 8px;
 }
 
-.emotion-32 {
+.emotion-35 {
   font-size: 15px;
   line-height: 19px;
 }
 
-.emotion-33 {
+.emotion-36 {
   font-size: 15px;
   line-height: 19px;
   padding-top: 16px;
@@ -1068,6 +1087,25 @@ exports[`<ModelDetails /> should render properly 2`] = `
     className="emotion-15"
   />
   <div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#0074f5"
+        data-file-name="information.svg"
+        height={20}
+      />
+      <div
+        className="emotion-3"
+        role="alert"
+      >
+        You must add a dataset below before you can train or apply the model, or view the matrix.
+      </div>
+    </div>
+  </div>
+  <div
     className="emotion-7"
   >
     <div>
@@ -1096,39 +1134,39 @@ exports[`<ModelDetails /> should render properly 2`] = `
         </li>
       </ul>
       <div
-        className="emotion-22"
+        className="emotion-25"
       >
         <button
-          className="emotion-23"
+          className="emotion-26"
           onClick={[Function]}
           type="button"
         >
           Train Model
         </button>
         <button
-          className="emotion-23"
+          className="emotion-26"
           onClick={[Function]}
           type="button"
         >
           Train & Test
         </button>
         <button
-          className="emotion-23"
+          className="emotion-26"
           onClick={[Function]}
           type="button"
         >
           Train & Analyze All
         </button>
         <div
-          className="emotion-26"
+          className="emotion-29"
         >
           <div
-            className="emotion-27"
+            className="emotion-30"
           >
             <button
               aria-details="TrainingOptions"
               aria-label="Training Options"
-              className="emotion-28"
+              className="emotion-31"
               type="button"
             >
               <svg
@@ -1137,30 +1175,30 @@ exports[`<ModelDetails /> should render properly 2`] = `
               />
             </button>
             <div
-              className="emotion-29"
+              className="emotion-32"
               id="TrainingOptions"
               role="tooltip"
             >
               <div
-                className="emotion-30"
+                className="emotion-33"
               />
               <div
-                className="emotion-31"
+                className="emotion-34"
               >
                 <h3
-                  className="emotion-32"
+                  className="emotion-35"
                 >
                   Train Model
                 </h3>
                 Train a model without applying it to your assets.
                 <h3
-                  className="emotion-33"
+                  className="emotion-36"
                 >
                   Train & Test
                 </h3>
                 Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
                 <h3
-                  className="emotion-33"
+                  className="emotion-36"
                 >
                   Train & Analyze All
                 </h3>
@@ -1372,6 +1410,594 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
   border-bottom: 1px solid #4a4a4a;
 }
 
+.emotion-22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-22 button,
+.emotion-22 a {
+  margin-right: 16px;
+}
+
+.emotion-22 button:last-child,
+.emotion-22 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-23 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-23,
+.emotion-23:hover,
+.emotion-23:visited,
+.emotion-23 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-23:hover,
+.emotion-23 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-23[aria-disabled=true],
+.emotion-23 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-26 div {
+  margin-left: 0;
+}
+
+.emotion-26 button {
+  margin-right: 0;
+}
+
+.emotion-27 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  margin-left: 8px;
+}
+
+.emotion-27:hover div,
+.emotion-27:focus-within div {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-27:hover button,
+.emotion-27:focus-within button {
+  color: #ffffff;
+}
+
+.emotion-28 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-29 {
+  position: absolute;
+  left: -10px;
+  top: 28px;
+  color: #191919;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 12px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 400px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+  z-index: 1;
+}
+
+.emotion-29:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.emotion-30:before {
+  content: ' ';
+  position: absolute;
+  top: -6px;
+  left: 14px;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.emotion-31 {
+  font-size: 15px;
+  line-height: 19px;
+  padding: 8px;
+}
+
+.emotion-32 {
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-33 {
+  font-size: 15px;
+  line-height: 19px;
+  padding-top: 16px;
+}
+
+<div>
+  <div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        className="emotion-2"
+        color="#0074f5"
+        data-file-name="generating.svg"
+        height={20}
+      />
+      <div
+        className="emotion-3"
+        role="alert"
+      >
+        "
+        console_face_recognition
+        " training in progress.
+         
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
+          href="/[projectId]/jobs/[jobId]"
+          passHref={true}
+        >
+          <a>
+            Check Status
+          </a>
+        </Link>
+      </div>
+    </div>
+  </div>
+  
+  <div>
+    <div
+      className="emotion-4"
+    >
+      <div>
+        <div
+          className="emotion-5"
+        >
+          Model
+           Name:
+        </div>
+        <h3
+          className="emotion-6"
+        >
+          console_face_recognition
+        </h3>
+      </div>
+      <div
+        className="emotion-7"
+      >
+        <button
+          aria-label="Toggle Actions Menu"
+          className="emotion-8"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            data-file-name="kebab.svg"
+            height={20}
+          />
+        </button>
+      </div>
+    </div>
+    <ul
+      className="emotion-9"
+    >
+      <li>
+        <span
+          className="emotion-10"
+        >
+          Model Type
+          :
+        </span>
+         
+        ZVI_FACE_RECOGNITION
+      </li>
+      <li>
+        <span
+          className="emotion-10"
+        >
+          Description
+          :
+        </span>
+         
+      </li>
+    </ul>
+  </div>
+  <div
+    className="emotion-12"
+  />
+  <hr
+    className="emotion-13"
+  />
+  <div
+    className="emotion-12"
+  />
+  <div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#0074f5"
+        data-file-name="information.svg"
+        height={20}
+      />
+      <div
+        className="emotion-3"
+        role="alert"
+      >
+        You must add a dataset below before you can train or apply the model, or view the matrix.
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-4"
+  >
+    <div>
+      <ul
+        className="emotion-9"
+      >
+        <li>
+          <span
+            className="emotion-10"
+          >
+            Last Trained
+            :
+          </span>
+           
+          2021-07-08 20:02:42
+        </li>
+        <li>
+          <span
+            className="emotion-10"
+          >
+            Last Analyzed
+            :
+          </span>
+           
+          2021-07-08 20:04:24
+        </li>
+      </ul>
+      <div
+        className="emotion-22"
+      >
+        <button
+          className="emotion-23"
+          onClick={[Function]}
+          type="button"
+        >
+          Train Model
+        </button>
+        <button
+          className="emotion-23"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Test
+        </button>
+        <button
+          className="emotion-23"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Analyze All
+        </button>
+        <div
+          className="emotion-26"
+        >
+          <div
+            className="emotion-27"
+          >
+            <button
+              aria-details="TrainingOptions"
+              aria-label="Training Options"
+              className="emotion-28"
+              type="button"
+            >
+              <svg
+                data-file-name="help.svg"
+                height={20}
+              />
+            </button>
+            <div
+              className="emotion-29"
+              id="TrainingOptions"
+              role="tooltip"
+            >
+              <div
+                className="emotion-30"
+              />
+              <div
+                className="emotion-31"
+              >
+                <h3
+                  className="emotion-32"
+                >
+                  Train Model
+                </h3>
+                Train a model without applying it to your assets.
+                <h3
+                  className="emotion-33"
+                >
+                  Train & Test
+                </h3>
+                Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
+                <h3
+                  className="emotion-33"
+                >
+                  Train & Analyze All
+                </h3>
+                Train the model and run the model analysis on all project assets.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ModelMatrixLink
+      model={
+        Object {
+          "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+          "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+          "deploySearch": Object {
+            "query": Object {
+              "matchAll": Object {},
+            },
+          },
+          "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
+          "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
+          "modelTypeRestrictions": Object {
+            "missingLabels": 0,
+          },
+          "moduleName": "boonai-console_face_recognition-face-recognition",
+          "name": "console_face_recognition",
+          "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+          "timeCreated": 1594243397871,
+          "timeLastApplied": 1625774664673,
+          "timeLastTrained": 1625774562852,
+          "timeModified": 1594243397871,
+          "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
+          "type": "ZVI_FACE_RECOGNITION",
+          "unappliedChanges": true,
+        }
+      }
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
+  </div>
+</div>
+`;
+
+exports[`<ModelDetails /> should render properly with missing labels 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-1 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-2 {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 30px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-bottom: 4px;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
+  background-color: #808080;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-5 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 23px;
+}
+
+.emotion-6 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-8 {
+  height: 16px;
+}
+
+.emotion-9 {
+  border: none;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 16px;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #dbecff;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-13 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-13 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-13 a:hover {
+  color: #3A5DFF;
+}
+
+.emotion-14 {
+  margin: 0;
+}
+
 .emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1417,7 +2043,7 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
   line-height: 19px;
   font-weight: 500;
   border: none;
-  cursor: pointer;
+  cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
 }
@@ -1551,62 +2177,31 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
 }
 
 <div>
-  <div
-    className="emotion-0"
-  >
-    <div
-      className="emotion-1"
-    >
-      <svg
-        className="emotion-2"
-        color="#0074f5"
-        data-file-name="generating.svg"
-        height={20}
-      />
-      <div
-        className="emotion-3"
-        role="alert"
-      >
-        "
-        console_face_recognition
-        " training in progress.
-         
-        <Link
-          as="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
-          href="/[projectId]/jobs/[jobId]"
-          passHref={true}
-        >
-          <a>
-            Check Status
-          </a>
-        </Link>
-      </div>
-    </div>
-  </div>
+  
   
   <div>
     <div
-      className="emotion-4"
+      className="emotion-0"
     >
       <div>
         <div
-          className="emotion-5"
+          className="emotion-1"
         >
           Model
            Name:
         </div>
         <h3
-          className="emotion-6"
+          className="emotion-2"
         >
           console_face_recognition
         </h3>
       </div>
       <div
-        className="emotion-7"
+        className="emotion-3"
       >
         <button
           aria-label="Toggle Actions Menu"
-          className="emotion-8"
+          className="emotion-4"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
@@ -1619,11 +2214,11 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
       </div>
     </div>
     <ul
-      className="emotion-9"
+      className="emotion-5"
     >
       <li>
         <span
-          className="emotion-10"
+          className="emotion-6"
         >
           Model Type
           :
@@ -1633,7 +2228,7 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
       </li>
       <li>
         <span
-          className="emotion-10"
+          className="emotion-6"
         >
           Description
           :
@@ -1643,24 +2238,79 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
     </ul>
   </div>
   <div
-    className="emotion-12"
+    className="emotion-8"
   />
   <hr
-    className="emotion-13"
+    className="emotion-9"
   />
   <div
-    className="emotion-12"
+    className="emotion-8"
   />
   <div
-    className="emotion-4"
+    className="emotion-11"
+  >
+    <div
+      className="emotion-12"
+    >
+      <svg
+        color="#0074f5"
+        data-file-name="information.svg"
+        height={20}
+      />
+      <div
+        className="emotion-13"
+        role="alert"
+      >
+        This type of model requires a larger dataset before it can be trained.
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+          href="/[projectId]/visualizer"
+          passHref={true}
+        >
+          <a
+            onClick={[Function]}
+          >
+            Add More Labels
+          </a>
+        </Link>
+        <br />
+        <ul
+          className="emotion-14"
+        >
+          <li>
+            5
+             more label
+            s
+             (min. =
+             
+            5
+             unique
+            s
+            )
+          </li>
+          <li>
+            5
+             more labeled asset
+            s
+             (min. =
+             
+            5
+             of each label)
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-0"
   >
     <div>
       <ul
-        className="emotion-9"
+        className="emotion-5"
       >
         <li>
           <span
-            className="emotion-10"
+            className="emotion-6"
           >
             Last Trained
             :
@@ -1670,7 +2320,7 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
         </li>
         <li>
           <span
-            className="emotion-10"
+            className="emotion-6"
           >
             Last Analyzed
             :
@@ -1683,6 +2333,7 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
         className="emotion-19"
       >
         <button
+          aria-disabled={true}
           className="emotion-20"
           onClick={[Function]}
           type="button"
@@ -1690,6 +2341,7 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
           Train Model
         </button>
         <button
+          aria-disabled={true}
           className="emotion-20"
           onClick={[Function]}
           type="button"
@@ -1697,6 +2349,7 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
           Train & Test
         </button>
         <button
+          aria-disabled={true}
           className="emotion-20"
           onClick={[Function]}
           type="button"
@@ -1760,6 +2413,564 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
         Object {
           "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
           "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+          "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+          "deploySearch": Object {
+            "query": Object {
+              "matchAll": Object {},
+            },
+          },
+          "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
+          "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
+          "modelTypeRestrictions": Object {
+            "missingLabels": 5,
+            "missingLabelsOnAssets": 5,
+            "requiredAssetsPerLabel": 5,
+            "requiredLabels": 5,
+          },
+          "moduleName": "boonai-console_face_recognition-face-recognition",
+          "name": "console_face_recognition",
+          "runningJobId": "",
+          "timeCreated": 1594243397871,
+          "timeLastApplied": 1625774664673,
+          "timeLastTrained": 1625774562852,
+          "timeModified": 1594243397871,
+          "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
+          "type": "ZVI_FACE_RECOGNITION",
+          "unappliedChanges": true,
+        }
+      }
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
+  </div>
+</div>
+`;
+
+exports[`<ModelDetails /> should render properly with unapplied changes 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-1 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-2 {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 30px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-bottom: 4px;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
+  background-color: #808080;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-5 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 23px;
+}
+
+.emotion-6 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-8 {
+  height: 16px;
+}
+
+.emotion-9 {
+  border: none;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 16px;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #dbecff;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-13 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-13 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-13 a:hover {
+  color: #3A5DFF;
+}
+
+.emotion-18 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-18 button,
+.emotion-18 a {
+  margin-right: 16px;
+}
+
+.emotion-18 button:last-child,
+.emotion-18 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-19 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-19,
+.emotion-19:hover,
+.emotion-19:visited,
+.emotion-19 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-19:hover,
+.emotion-19 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-19[aria-disabled=true],
+.emotion-19 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-22 div {
+  margin-left: 0;
+}
+
+.emotion-22 button {
+  margin-right: 0;
+}
+
+.emotion-23 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  margin-left: 8px;
+}
+
+.emotion-23:hover div,
+.emotion-23:focus-within div {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-23:hover button,
+.emotion-23:focus-within button {
+  color: #ffffff;
+}
+
+.emotion-24 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-25 {
+  position: absolute;
+  left: -10px;
+  top: 28px;
+  color: #191919;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 12px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 400px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+  z-index: 1;
+}
+
+.emotion-25:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.emotion-26:before {
+  content: ' ';
+  position: absolute;
+  top: -6px;
+  left: 14px;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.emotion-27 {
+  font-size: 15px;
+  line-height: 19px;
+  padding: 8px;
+}
+
+.emotion-28 {
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-29 {
+  font-size: 15px;
+  line-height: 19px;
+  padding-top: 16px;
+}
+
+<div>
+  
+  
+  <div>
+    <div
+      className="emotion-0"
+    >
+      <div>
+        <div
+          className="emotion-1"
+        >
+          Model
+           Name:
+        </div>
+        <h3
+          className="emotion-2"
+        >
+          console_face_recognition
+        </h3>
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Toggle Actions Menu"
+          className="emotion-4"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            data-file-name="kebab.svg"
+            height={20}
+          />
+        </button>
+      </div>
+    </div>
+    <ul
+      className="emotion-5"
+    >
+      <li>
+        <span
+          className="emotion-6"
+        >
+          Model Type
+          :
+        </span>
+         
+        ZVI_FACE_RECOGNITION
+      </li>
+      <li>
+        <span
+          className="emotion-6"
+        >
+          Description
+          :
+        </span>
+         
+      </li>
+    </ul>
+  </div>
+  <div
+    className="emotion-8"
+  />
+  <hr
+    className="emotion-9"
+  />
+  <div
+    className="emotion-8"
+  />
+  <div
+    className="emotion-11"
+  >
+    <div
+      className="emotion-12"
+    >
+      <svg
+        color="#0074f5"
+        data-file-name="information.svg"
+        height={20}
+      />
+      <div
+        className="emotion-13"
+        role="alert"
+      >
+        Changes have been made to the dataset since the model was last trained and applied.
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-0"
+  >
+    <div>
+      <ul
+        className="emotion-5"
+      >
+        <li>
+          <span
+            className="emotion-6"
+          >
+            Last Trained
+            :
+          </span>
+           
+          2021-07-08 20:02:42
+        </li>
+        <li>
+          <span
+            className="emotion-6"
+          >
+            Last Analyzed
+            :
+          </span>
+           
+          2021-07-08 20:04:24
+        </li>
+      </ul>
+      <div
+        className="emotion-18"
+      >
+        <button
+          className="emotion-19"
+          onClick={[Function]}
+          type="button"
+        >
+          Train Model
+        </button>
+        <button
+          className="emotion-19"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Test
+        </button>
+        <button
+          className="emotion-19"
+          onClick={[Function]}
+          type="button"
+        >
+          Train & Analyze All
+        </button>
+        <div
+          className="emotion-22"
+        >
+          <div
+            className="emotion-23"
+          >
+            <button
+              aria-details="TrainingOptions"
+              aria-label="Training Options"
+              className="emotion-24"
+              type="button"
+            >
+              <svg
+                data-file-name="help.svg"
+                height={20}
+              />
+            </button>
+            <div
+              className="emotion-25"
+              id="TrainingOptions"
+              role="tooltip"
+            >
+              <div
+                className="emotion-26"
+              />
+              <div
+                className="emotion-27"
+              >
+                <h3
+                  className="emotion-28"
+                >
+                  Train Model
+                </h3>
+                Train a model without applying it to your assets.
+                <h3
+                  className="emotion-29"
+                >
+                  Train & Test
+                </h3>
+                Train and apply the model to your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before applying it to all of your assets.
+                <h3
+                  className="emotion-29"
+                >
+                  Train & Analyze All
+                </h3>
+                Train the model and run the model analysis on all project assets.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ModelMatrixLink
+      model={
+        Object {
+          "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+          "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+          "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
           "deploySearch": Object {
             "query": Object {
               "matchAll": Object {},
@@ -1769,10 +2980,13 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
           "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
           "modelTypeRestrictions": Object {
             "missingLabels": 0,
+            "missingLabelsOnAssets": 0,
+            "requiredAssetsPerLabel": 0,
+            "requiredLabels": 0,
           },
           "moduleName": "boonai-console_face_recognition-face-recognition",
           "name": "console_face_recognition",
-          "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+          "runningJobId": "",
           "timeCreated": 1594243397871,
           "timeLastApplied": 1625774664673,
           "timeLastTrained": 1625774562852,

@@ -7,6 +7,7 @@ import ModelDetails from '../Details'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const MODEL_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
+const DATASET_ID = '4b0b10a8-cec1-155c-b12f-ee2bc8787e06'
 const JOB_ID = '223fd17d-7028-1519-94a8-d2f0132bc0c8'
 
 jest.mock('next/link', () => 'Link')
@@ -30,6 +31,86 @@ describe('<ModelDetails />', () => {
         timeLastTrained: 1625774562852,
         timeLastApplied: 1625774664673,
         modelTypeRestrictions: { missingLabels: 0 },
+      },
+    })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        modelId={MODEL_ID}
+        modelTypes={modelTypes.results}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with missing labels', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...model,
+        datasetId: DATASET_ID,
+        timeLastTrained: 1625774562852,
+        timeLastApplied: 1625774664673,
+        modelTypeRestrictions: {
+          requiredLabels: 5,
+          missingLabels: 5,
+          requiredAssetsPerLabel: 5,
+          missingLabelsOnAssets: 5,
+        },
+        runningJobId: '',
+        unappliedChanges: true,
+      },
+    })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        modelId={MODEL_ID}
+        modelTypes={modelTypes.results}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Add More Labels' })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+  })
+
+  it('should render properly with unapplied changes', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...model,
+        datasetId: DATASET_ID,
+        timeLastTrained: 1625774562852,
+        timeLastApplied: 1625774664673,
+        modelTypeRestrictions: {
+          requiredLabels: 0,
+          missingLabels: 0,
+          requiredAssetsPerLabel: 0,
+          missingLabelsOnAssets: 0,
+        },
+        runningJobId: '',
+        unappliedChanges: true,
       },
     })
 

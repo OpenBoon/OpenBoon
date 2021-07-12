@@ -67,16 +67,16 @@ const ModelMatrixLink = ({ projectId, model }) => {
             }}
           >
             {!model.datasetId &&
-              'To view the matrix, you must link a dataset, train the model, and analyze all assets.'}
+              'To view the matrix you must link the model to a dataset, add test labels, and run the "Test" or "Analyze All" actions.'}
 
             {!!model.datasetId &&
               !model.timeLastTrained &&
-              'To view the matrix, you must train the model, and analyze all assets.'}
+              'To view the matrix you must add test labels, and run the "Test" or "Analyze All" actions.'}
 
             {!!model.datasetId &&
               !!model.timeLastTrained &&
               !model.timeLastApplied &&
-              'To view the matrix, you must analyze all assets.'}
+              'To view the matrix you must run the "Test" or "Analyze All" actions.'}
           </div>
         </div>
       </div>
@@ -96,8 +96,10 @@ const ModelMatrixLink = ({ projectId, model }) => {
             zoom: 1,
           }}
           isInteractive={false}
+          isOutOfDate={model.unappliedChanges}
         />
       </div>
+
       <div css={{ width: TEXT_WIDTH }}>
         <div
           css={{
@@ -110,15 +112,31 @@ const ModelMatrixLink = ({ projectId, model }) => {
           }}
         >
           <div css={{ paddingBottom: spacing.base }}>Confusion Matrix</div>
-          Accuracy:{' '}
-          <span
-            css={{
-              color: colors.structure.white,
-              fontFamily: typography.family.regular,
-            }}
-          >
-            {Math.round(matrix.overallAccuracy * 100)}%
-          </span>
+
+          {model.unappliedChanges ? (
+            <div
+              css={{
+                width: TEXT_WIDTH,
+                fontStyle: typography.style.italic,
+                color: colors.structure.steel,
+                textTransform: 'none',
+              }}
+            >
+              The matrix is out of date <br /> and not representative.
+            </div>
+          ) : (
+            <div>
+              Accuracy:{' '}
+              <span
+                css={{
+                  color: colors.structure.white,
+                  fontFamily: typography.family.regular,
+                }}
+              >
+                {Math.round(matrix.overallAccuracy * 100)}%
+              </span>
+            </div>
+          )}
         </div>
 
         <Link href={`/${projectId}/models/${model.id}/matrix`} passHref>
@@ -142,8 +160,9 @@ ModelMatrixLink.propTypes = {
   model: PropTypes.shape({
     id: PropTypes.string.isRequired,
     datasetId: PropTypes.string,
-    timeLastTrained: PropTypes.number.isRequired,
-    timeLastApplied: PropTypes.number.isRequired,
+    unappliedChanges: PropTypes.bool.isRequired,
+    timeLastTrained: PropTypes.number,
+    timeLastApplied: PropTypes.number,
   }).isRequired,
 }
 

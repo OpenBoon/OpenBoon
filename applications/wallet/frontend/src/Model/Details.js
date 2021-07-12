@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
@@ -14,6 +16,8 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 
 import { formatFullDate } from '../Date/helpers'
+import { usePanel, ACTIONS } from '../Panel/helpers'
+import { useLabelTool } from '../AssetLabeling/helpers'
 
 import KebabSvg from '../Icons/kebab.svg'
 
@@ -26,6 +30,8 @@ import ModelDeleteModal from './DeleteModal'
 const ModelDetails = ({ projectId, modelId, modelTypes }) => {
   const [error, setError] = useState('')
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [, setLeftOpeningPanel] = usePanel({ openToThe: 'left' })
+  const [, setDataSet] = useLabelTool({ projectId })
 
   const { data: model } = useSWR(
     `/api/v1/projects/${projectId}/models/${modelId}/`,
@@ -39,9 +45,16 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
     type,
     description,
     runningJobId,
-    modelTypeRestrictions: { missingLabels },
+    modelTypeRestrictions: {
+      missingLabels,
+      missingLabelsOnAssets,
+      requiredLabels,
+      requiredAssetsPerLabel,
+    },
+    datasetId,
     timeLastTrained,
     timeLastApplied,
+    unappliedChanges,
   } = model
 
   const { label } = modelTypes.find(({ name: n }) => n === type) || {
@@ -138,6 +151,70 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
       <ItemSeparator />
 
       <div css={{ height: spacing.normal }} />
+
+      {!datasetId && (
+        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
+          <FlashMessage variant={FLASH_VARIANTS.INFO}>
+            You must add a dataset below before you can train or apply the
+            model, or view the matrix.
+          </FlashMessage>
+        </div>
+      )}
+
+      {datasetId && (!!missingLabels || !!missingLabelsOnAssets) && (
+        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
+          <FlashMessage variant={FLASH_VARIANTS.INFO}>
+            This type of model requires a larger dataset before it can be
+            trained.
+            <Link
+              href="/[projectId]/visualizer"
+              as={`/${projectId}/visualizer`}
+              passHref
+            >
+              <a
+                onClick={() => {
+                  setLeftOpeningPanel({
+                    type: ACTIONS.OPEN,
+                    payload: { openPanel: 'assetLabeling' },
+                  })
+
+                  setDataSet({ datasetId, labels: {} })
+                }}
+              >
+                Add More Labels
+              </a>
+            </Link>
+            <br />
+            <ul css={{ margin: 0 }}>
+              {!!missingLabels && (
+                <li>
+                  {missingLabels} more label{missingLabels > 1 && 's'} (min. ={' '}
+                  {requiredLabels} unique{requiredLabels > 1 && 's'})
+                </li>
+              )}
+              {!!missingLabelsOnAssets && (
+                <li>
+                  {missingLabelsOnAssets} more labeled asset
+                  {missingLabelsOnAssets > 1 && 's'} (min. ={' '}
+                  {requiredAssetsPerLabel} of each label)
+                </li>
+              )}
+            </ul>
+          </FlashMessage>
+        </div>
+      )}
+
+      {datasetId &&
+        !missingLabels &&
+        !missingLabelsOnAssets &&
+        !!unappliedChanges && (
+          <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
+            <FlashMessage variant={FLASH_VARIANTS.INFO}>
+              Changes have been made to the dataset since the model was last
+              trained and applied.
+            </FlashMessage>
+          </div>
+        )}
 
       <div css={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
