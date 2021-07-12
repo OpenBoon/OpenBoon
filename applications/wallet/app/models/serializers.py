@@ -79,3 +79,4 @@ class ConfusionMatrixSerializer(serializers.Serializer):
     overallAccuracy = serializers.FloatField()
     testSetOnly = serializers.BooleanField()
     isMatrixApplicable = serializers.BooleanField()
+    unappliedChanges = serializers.BooleanField()
