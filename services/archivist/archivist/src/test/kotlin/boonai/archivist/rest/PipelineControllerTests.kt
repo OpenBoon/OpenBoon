@@ -1,7 +1,7 @@
 package boonai.archivist.rest
 
 import boonai.archivist.MockMvcTest
-import boonai.archivist.domain.ApplyModulesToAssetRequest
+import boonai.archivist.domain.BuildZpsScriptRequest
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.Category
@@ -242,7 +242,7 @@ class PipelineControllerTests : MockMvcTest() {
 
         refreshElastic()
         var asset = assetService.getAsset(assetService.batchCreate(create).created[0])
-        val req = ApplyModulesToAssetRequest(
+        val req = BuildZpsScriptRequest(
             asset.id,
             modules = listOf("boonai-face-detection")
         )
