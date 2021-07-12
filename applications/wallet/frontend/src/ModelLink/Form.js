@@ -61,7 +61,9 @@ const ModelLinkForm = ({ datasetType }) => {
                 legend: '',
                 initialValue: state.source === value,
               }}
-              onClick={({ value: source }) => dispatch({ source })}
+              onClick={({ value: source }) => {
+                dispatch({ ...INITIAL_STATE, source })
+              }}
             />
           </div>
         )

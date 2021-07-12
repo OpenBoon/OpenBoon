@@ -2,7 +2,6 @@ import TestRenderer from 'react-test-renderer'
 
 import mockUser from '../../User/__mocks__/user'
 import model from '../../Model/__mocks__/model'
-import modelTypes from '../../ModelTypes/__mocks__/modelTypes'
 
 import User from '../../User'
 
@@ -25,7 +24,7 @@ describe('<ModelLink />', () => {
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: { ...modelTypes, ...model },
+      data: model,
     })
 
     const component = TestRenderer.create(
