@@ -6,7 +6,7 @@ import pytest
 
 from boonsdk.app import ModelApp
 from boonsdk.entity import Model
-from boonflow.base import Frame
+from boonflow.base import Frame, ImageInputStream
 from boonflow.storage import file_storage
 from boonflow.testing import PluginUnitTestCase, TestAsset, test_path
 
@@ -26,7 +26,7 @@ class TorchModelArchiveTests(PluginUnitTestCase):
 
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
-    @patch("boonai_analysis.custom.pytorch.get_proxy_level_path")
+    @patch("boonflow.base.get_proxy_level_path")
     @patch.object(TorchModelArchiveClassifier, "predict")
     def test_image_classifier(self, predict_patch, proxy_patch, file_patch, model_patch):
         name = "custom-flowers-label-detection-tf2-xfer-mobilenet2"
@@ -47,7 +47,7 @@ class TorchModelArchiveTests(PluginUnitTestCase):
         args = {
             "model_id": self.model_id,
             "tag": "latest",
-            "endpoint": "http://127.0.0.1:8080/predictions/resnet_152"
+            "endpoint": "http://127.0.0.1:8080"
         }
 
         path = test_path("training/test_dsy.jpg")
@@ -66,9 +66,49 @@ class TorchModelArchiveTests(PluginUnitTestCase):
 @pytest.mark.skip(reason='dont run automatically')
 class TorchModelArchiveIntegrationTests(PluginUnitTestCase):
 
+    model_id = "model-id-34568"
+
     @patch.object(ModelApp, "get_model")
-    @patch("boonai_analysis.deployed.mar.get_proxy_level_path")
-    def test_image_classsifier(self, proxy_patch, model_patch):
+    def test_image_classsifier_frame_image(self, model_patch):
+        """
+        Should have a resnet152 server deployed locally.
+        https://github.com/pytorch/serve/tree/master/examples/image_classifier/resnet_152_batch
+
+        """
+        name = "custom-flowers-label-detection-tf2-xfer-mobilenet2"
+        model_patch.return_value = Model(
+            {
+                "id": self.model_id,
+                "type": "TORCH_MAR_CLASSIFIER",
+                "fileId": "models/{}/foo/bar".format(self.model_id),
+                "name": name,
+                "moduleName": name
+            }
+        )
+
+        args = {
+            "model_id": self.model_id,
+            "tag": "latest",
+            "endpoint": "http://127.0.0.1:8080",
+            "model": "resnet_152"
+        }
+
+        frame = Frame(TestAsset())
+        path = test_path("images/set01/toucan.jpg")
+        frame.image = ImageInputStream.from_path(path)
+
+        processor = self.init_processor(
+            TorchModelArchiveClassifier(), args
+        )
+        processor.process(frame)
+        analysis = frame.asset.get_analysis(name)
+
+        assert len(analysis['predictions']) == 1
+        assert analysis['predictions'][0]['label'] == 'toucan'
+
+    @patch.object(ModelApp, "get_model")
+    @patch("boonflow.base.get_proxy_level_path")
+    def test_image_classsifier_asset(self, proxy_patch, model_patch):
         """
         Should have a resnet152 server deployed locally.
         https://github.com/pytorch/serve/tree/master/examples/image_classifier/resnet_152_batch
@@ -90,7 +130,8 @@ class TorchModelArchiveIntegrationTests(PluginUnitTestCase):
         args = {
             "model_id": self.model_id,
             "tag": "latest",
-            "endpoint": "http://127.0.0.1:8080/predictions/resnet_152"
+            "endpoint": "http://127.0.0.1:8080",
+            "model": "resnet_152"
         }
 
         frame = Frame(TestAsset(path))
@@ -99,6 +140,7 @@ class TorchModelArchiveIntegrationTests(PluginUnitTestCase):
             TorchModelArchiveClassifier(), args
         )
         processor.process(frame)
+
         analysis = frame.asset.get_analysis(name)
 
         assert len(analysis['predictions']) == 1
