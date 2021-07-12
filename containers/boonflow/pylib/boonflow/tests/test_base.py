@@ -2,9 +2,8 @@ import logging
 import os
 from unittest import TestCase
 
-import flask
-
 import boonflow.base as base
+import boonflow.testing as testing
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -30,10 +29,21 @@ class TestBaseClasses(TestCase):
         finally:
             del os.environ["BOONAI_CREDENTIALS_TYPES"]
 
-    def test_app_istance_from_flask(self):
-        app = flask.Flask("test")
-        request_ctx = app.test_request_context(headers={'Authorization': 'Bearer XXXXX'})
-        request_ctx.push()
+    def test_byte_array_input_stream_pil(self):
+        path = testing.test_path("images/set01/toucan.jpg")
+        stream = base.ImageInputStream.from_path(path)
 
-        sdk = base.app_instance()
-        'Bearer XXXXX' in sdk.client.headers().values()
+        # Should be able to read bytes in twice or more.
+        for i in range(0, 2):
+            image = stream.pil_img()
+            exif = image.getexif()
+            assert exif[36867] == '2009:11:18 16:04:43'
+
+    def test_byte_array_input_stream_cv(self):
+        path = testing.test_path("images/set01/toucan.jpg")
+        stream = base.ImageInputStream.from_path(path)
+
+        # Should be able to read bytes in twice or more.
+        for i in range(0, 2):
+            image = stream.cv_img()
+            assert image.shape == (341, 512, 3)
