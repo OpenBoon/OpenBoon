@@ -77,6 +77,7 @@ def test_apply_to_file(auth_patch, post_patch, client):
         ],
         "assets": [
             {
+                "id": "TRANSIENT"
             }
         ]
     }
@@ -88,3 +89,41 @@ def test_apply_to_file(auth_patch, post_patch, client):
 
     result = rsp.get_json()
     assert result['document']['analysis']['boonai-face-detection']['count'] == 1
+
+
+@mock.patch("mlbbq.modules.check_write_access")
+def test_apply_no_modules(auth_patch, client):
+    image_path = test_path('images/face-recognition/face1.jpg')
+
+    with open(image_path, 'rb') as fp:
+        rsp = client.post("/ml/v1/modules/apply-to-file",
+                          data=fp, content_type='application/octet-stream')
+    assert rsp.status_code == 400
+
+
+@mock.patch.object(BoonClient, 'post')
+@mock.patch("mlbbq.modules.check_write_access")
+def test_apply_to_file_bad_data(auth_patch, post_patch, client):
+    # Unsupported image type
+    image_path = test_path('images/set06/dpx_nuke_16bits_rgba.dpx')
+
+    script = {
+        "execute": [
+            {
+                "className": "boonai_analysis.boonai.ZviFaceDetectionProcessor",
+                "args": {},
+                "image": "boonai/plugins-analysis",
+                "module": "boonai-face-detection"
+            }
+        ],
+        "assets": [
+            {
+                "id": "TRANSIENT"
+            }
+        ]
+    }
+    post_patch.return_value = script
+    with open(image_path, 'rb') as fp:
+        rsp = client.post("/ml/v1/modules/apply-to-file?modules=boonai-face-detection",
+                          data=fp, content_type='application/octet-stream')
+    assert rsp.status_code == 400
