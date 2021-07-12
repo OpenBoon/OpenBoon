@@ -4,6 +4,7 @@ from unittest import TestCase
 
 import boonflow.base as base
 import boonflow.testing as testing
+from boonflow import BoonEnv
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -22,7 +23,7 @@ class TestBaseClasses(TestCase):
     def test_get_available_credentials_types(self):
         os.environ["BOONAI_CREDENTIALS_TYPES"] = "GCP,AWS"
         try:
-            creds = base.BoonEnv.get_available_credentials_types()
+            creds = BoonEnv.get_available_credentials_types()
             assert "GCP" in creds
             assert "AWS" in creds
             assert "AZURE" not in creds
