@@ -15,7 +15,7 @@ describe('<MetadataPrettyLabels />', () => {
     require('swr').__setMockUseSWRResponse({ data: datasets })
 
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
     const component = TestRenderer.create(

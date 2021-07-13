@@ -15,7 +15,7 @@ const MetadataPrettyLabelsMenu = ({
 }) => {
   const {
     pathname,
-    query: { projectId, id, assetId, query },
+    query: { projectId, assetId, query },
   } = useRouter()
 
   return (
@@ -35,7 +35,7 @@ const MetadataPrettyLabelsMenu = ({
                     payload: {
                       pathname,
                       projectId,
-                      assetId: id || assetId,
+                      assetId,
                       filter: {
                         type: 'label',
                         attribute: `labels.${datasetName}`,
