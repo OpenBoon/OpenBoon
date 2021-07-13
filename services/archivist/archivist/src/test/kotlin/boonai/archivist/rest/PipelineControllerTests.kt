@@ -248,7 +248,7 @@ class PipelineControllerTests : MockMvcTest() {
         )
 
         mvc.perform(
-            post("/api/v3/pipelines/resolver/_apply_modules_to_asset")
+            post("/api/v3/pipelines/resolver/_build_script")
                 .headers(admin())
                 .content(Json.serialize(req))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
