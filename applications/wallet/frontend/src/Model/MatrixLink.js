@@ -8,12 +8,22 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ModelMatrixMinimap from '../ModelMatrix/Minimap'
 import ModelMatrixEmptyMinimap from '../ModelMatrix/EmptyMinimap'
 
+import CheckmarkSvg from '../Icons/checkmark.svg'
+
 const MINIMAP_WIDTH = 130
 const TEXT_WIDTH = 200
 
 const ModelMatrixLink = ({ projectId, model }) => {
+  const {
+    id,
+    modelTypeRestrictions: { missingLabels, missingLabelsOnAssets },
+    datasetId,
+    timeLastApplied,
+    unappliedChanges,
+  } = model
+
   const { data: matrix } = useSWR(
-    `/api/v1/projects/${projectId}/models/${model.id}/confusion_matrix/`,
+    `/api/v1/projects/${projectId}/models/${id}/confusion_matrix/`,
   )
 
   if (!matrix.isMatrixApplicable) {
@@ -59,29 +69,77 @@ const ModelMatrixLink = ({ projectId, model }) => {
           >
             Confusion Matrix
           </div>
-          <div
-            css={{
-              width: TEXT_WIDTH,
-              fontStyle: typography.style.italic,
-              color: colors.structure.steel,
-            }}
-          >
-            {!model.datasetId &&
-              'To view the matrix you must link the model to a dataset, add test labels, and run the "Test" or "Analyze All" actions.'}
 
-            {!!model.datasetId &&
-              !model.timeLastTrained &&
-              'To view the matrix you must add test labels, and run the "Test" or "Analyze All" actions.'}
+          <div css={{ width: TEXT_WIDTH }}>
+            To view the matrix:
+            <ul
+              css={{
+                margin: 0,
+                padding: 0,
+                paddingTop: spacing.base,
+                li: {
+                  listStyleType: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  'svg, span': {
+                    paddingRight: spacing.base,
+                  },
+                },
+              }}
+            >
+              <li
+                css={{
+                  color: !datasetId
+                    ? colors.structure.zinc
+                    : colors.structure.white,
+                }}
+              >
+                {!datasetId ? (
+                  <span>—</span>
+                ) : (
+                  <CheckmarkSvg height={14} color={colors.signal.grass.base} />
+                )}
+                add a dataset
+              </li>
 
-            {!!model.datasetId &&
-              !!model.timeLastTrained &&
-              !model.timeLastApplied &&
-              'To view the matrix you must run the "Test" or "Analyze All" actions.'}
+              <li
+                css={{
+                  color:
+                    !datasetId || !!missingLabels || !!missingLabelsOnAssets
+                      ? colors.structure.zinc
+                      : colors.structure.white,
+                }}
+              >
+                {!datasetId || !!missingLabels || !!missingLabelsOnAssets ? (
+                  <span>—</span>
+                ) : (
+                  <CheckmarkSvg height={14} color={colors.signal.grass.base} />
+                )}
+                add test labels to dataset
+              </li>
 
-            {!!model.datasetId &&
-              !!model.timeLastTrained &&
-              !!model.timeLastApplied &&
-              'The matrix will be available once training is complete.'}
+              <li
+                css={{
+                  color:
+                    !datasetId ||
+                    !!missingLabels ||
+                    !!missingLabelsOnAssets ||
+                    !timeLastApplied
+                      ? colors.structure.zinc
+                      : colors.structure.white,
+                }}
+              >
+                {!datasetId ||
+                !!missingLabels ||
+                !!missingLabelsOnAssets ||
+                !timeLastApplied ? (
+                  <span>—</span>
+                ) : (
+                  <CheckmarkSvg height={14} color={colors.signal.grass.base} />
+                )}
+                run &quot;test&quot; or &quot;analyze all&quot;
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -101,7 +159,7 @@ const ModelMatrixLink = ({ projectId, model }) => {
             zoom: 1,
           }}
           isInteractive={false}
-          isOutOfDate={model.unappliedChanges}
+          isOutOfDate={unappliedChanges}
         />
       </div>
 
@@ -118,7 +176,7 @@ const ModelMatrixLink = ({ projectId, model }) => {
         >
           <div css={{ paddingBottom: spacing.base }}>Confusion Matrix</div>
 
-          {model.unappliedChanges ? (
+          {unappliedChanges ? (
             <div
               css={{
                 width: TEXT_WIDTH,
@@ -144,7 +202,7 @@ const ModelMatrixLink = ({ projectId, model }) => {
           )}
         </div>
 
-        <Link href={`/${projectId}/models/${model.id}/matrix`} passHref>
+        <Link href={`/${projectId}/models/${id}/matrix`} passHref>
           <Button
             variant={BUTTON_VARIANTS.SECONDARY}
             style={{
@@ -165,6 +223,10 @@ ModelMatrixLink.propTypes = {
   model: PropTypes.shape({
     id: PropTypes.string.isRequired,
     datasetId: PropTypes.string,
+    modelTypeRestrictions: PropTypes.shape({
+      missingLabels: PropTypes.number.isRequired,
+      missingLabelsOnAssets: PropTypes.number.isRequired,
+    }).isRequired,
     unappliedChanges: PropTypes.bool.isRequired,
     timeLastTrained: PropTypes.number,
     timeLastApplied: PropTypes.number,
