@@ -20,6 +20,41 @@ exports[`<ModelMatrix /> should render properly 1`] = `
 }
 
 .emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 4px;
+  background-color: #191919;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  color: #b3b3b3;
+  font-size: 17px;
+  line-height: 20px;
+}
+
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-3 {
+  margin-right: 8px;
+}
+
+.emotion-4 {
   width: 100%;
   height: 100%;
   display: -webkit-box;
@@ -32,7 +67,206 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   overflow: hidden;
 }
 
-.emotion-2 {
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #191919;
+  font-size: 17px;
+  line-height: 20px;
+  background-color: #252525;
+}
+
+.emotion-6 {
+  font-weight: 700;
+  padding-right: 4px;
+  white-space: nowrap;
+}
+
+.emotion-7 {
+  width: 40px;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 32px;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0;
+  padding-right: 16px;
+  float: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-11 {
+  padding-right: 24px;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  position: relative;
+}
+
+.emotion-14 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ffffff;
+}
+
+.emotion-15 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: #3A5DFF;
+}
+
+.emotion-16 {
+  padding-left: 12px;
+}
+
+.emotion-17 {
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.emotion-18 {
+  color: #b3b3b3;
+}
+
+.emotion-22 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #808080;
+}
+
+.emotion-23 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: none;
+}
+
+.emotion-27 {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 32px;
+}
+
+.emotion-28 {
+  color: #ffffff;
+  font-weight: 700;
+  padding-right: 16px;
+}
+
+.emotion-29 {
+  padding-right: 24px;
+}
+
+.emotion-30 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-31 {
+  text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  padding: 4px;
+  border: 1px solid #4a4a4a;
+  width: 52px;
+}
+
+.emotion-31:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #3A5DFF;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-31:hover {
+  border: 1px solid #ffffff;
+}
+
+.emotion-34 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -46,7 +280,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   overflow: hidden;
 }
 
-.emotion-3 {
+.emotion-35 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -60,7 +294,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   width: 0%;
 }
 
-.emotion-4 {
+.emotion-36 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -71,7 +305,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   width: 100%;
 }
 
-.emotion-5 {
+.emotion-37 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -84,7 +318,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-right: 1px solid #191919;
 }
 
-.emotion-6 {
+.emotion-38 {
   -webkit-writing-mode: vertical-lr;
   -ms-writing-mode: tb;
   writing-mode: vertical-lr;
@@ -94,21 +328,21 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   transform: rotate(180deg);
 }
 
-.emotion-7 {
+.emotion-39 {
   font-weight: 700;
   font-size: 17px;
   line-height: 20px;
 }
 
-.emotion-8 {
+.emotion-40 {
   color: #b3b3b3;
 }
 
-.emotion-9 {
+.emotion-41 {
   width: 100%;
 }
 
-.emotion-10 {
+.emotion-42 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -121,15 +355,17 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   overflow: hidden;
 }
 
-.emotion-11 {
+.emotion-43 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  height: 0;
+  height: 200px;
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
 }
 
-.emotion-12 {
+.emotion-44 {
   width: 100px;
   padding-left: 16px;
   padding-right: 16px;
@@ -147,19 +383,19 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-13 {
+.emotion-45 {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.emotion-14 {
+.emotion-46 {
   color: #b3b3b3;
   padding-left: 4px;
   font-weight: 400;
 }
 
-.emotion-15 {
+.emotion-47 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -170,7 +406,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   overflow: hidden;
 }
 
-.emotion-16 {
+.emotion-48 {
   color: #191919;
   background-color: #ffffff;
   border-radius: 2px;
@@ -178,23 +414,23 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   padding: 12px;
 }
 
-.emotion-17 {
+.emotion-49 {
   padding-bottom: 4px;
 }
 
-.emotion-18 {
+.emotion-50 {
   font-family: Roboto Condensed;
   font-weight: 400;
   color: #4a4a4a;
 }
 
-.emotion-23 {
+.emotion-55 {
   display: inline;
 }
 
-.emotion-24 {
-  width: 0;
-  height: 0;
+.emotion-56 {
+  width: 200px;
+  height: 200px;
   padding: 0;
   display: -webkit-box;
   display: -webkit-flex;
@@ -213,20 +449,20 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #191919;
 }
 
-.emotion-24:hover {
+.emotion-56:hover {
   border: 4px solid #6088FE;
 }
 
-.emotion-25 {
+.emotion-57 {
   margin: auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.emotion-44 {
-  width: 0;
-  height: 0;
+.emotion-76 {
+  width: 200px;
+  height: 200px;
   padding: 0;
   display: -webkit-box;
   display: -webkit-flex;
@@ -245,13 +481,13 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #ffffff;
 }
 
-.emotion-44:hover {
+.emotion-76:hover {
   border: 4px solid #6088FE;
 }
 
-.emotion-59 {
-  width: 0;
-  height: 0;
+.emotion-91 {
+  width: 200px;
+  height: 200px;
   padding: 0;
   display: -webkit-box;
   display: -webkit-flex;
@@ -270,11 +506,11 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   color: #191919;
 }
 
-.emotion-59:hover {
+.emotion-91:hover {
   border: 4px solid #6088FE;
 }
 
-.emotion-82 {
+.emotion-114 {
   width: 100px;
   padding-left: 16px;
   padding-right: 16px;
@@ -292,16 +528,14 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-bottom: 1px solid transparent;
 }
 
-.emotion-116 {
+.emotion-148 {
   position: absolute;
   bottom: 16px;
   right: 16px;
   z-index: 10;
 }
 
-.emotion-117 {
-  -webkit-filter: grayscale(0);
-  filter: grayscale(0);
+.emotion-149 {
   opacity: 1;
   position: relative;
   border: 2px solid #808080;
@@ -312,39 +546,45 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   grid-template: repeat(3, 1fr)/repeat(3, 1fr);
 }
 
-.emotion-118 {
+.emotion-150 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(255,255,255);
   border-right: none;
   border-bottom: none;
 }
 
-.emotion-120 {
+.emotion-152 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(0,39,107);
   border-right: none;
   border-bottom: none;
 }
 
-.emotion-121 {
+.emotion-153 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(53,171,255);
   border-right: none;
   border-bottom: none;
 }
 
-.emotion-127 {
+.emotion-159 {
   position: absolute;
   border-style: solid;
   border-width: 2px;
   border-color: #c92300;
   top: 0;
   left: 0;
-  width: -Infinity%;
+  width: 100%;
   height: 100%;
 }
 
-.emotion-128 {
+.emotion-160 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -360,7 +600,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   padding-right: 8px;
 }
 
-.emotion-129 {
+.emotion-161 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -394,21 +634,21 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   opacity: 1;
 }
 
-.emotion-129:hover {
+.emotion-161:hover {
   color: #3A5DFF;
 }
 
-.emotion-129[aria-disabled=true] {
+.emotion-161[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-130 {
+.emotion-162 {
   background-color: #808080;
   width: 1px;
   margin: 8px;
 }
 
-.emotion-131 {
+.emotion-163 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -441,15 +681,15 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   opacity: 1;
 }
 
-.emotion-131:hover {
+.emotion-163:hover {
   color: #3A5DFF;
 }
 
-.emotion-131[aria-disabled=true] {
+.emotion-163[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-132 {
+.emotion-164 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -482,15 +722,15 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   opacity: 1;
 }
 
-.emotion-132:hover {
+.emotion-164:hover {
   color: #3A5DFF;
 }
 
-.emotion-132[aria-disabled=true] {
+.emotion-164[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-133 {
+.emotion-165 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -499,7 +739,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   width: 100%;
 }
 
-.emotion-134 {
+.emotion-166 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -512,7 +752,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-right: 1px solid transparent;
 }
 
-.emotion-135 {
+.emotion-167 {
   -webkit-writing-mode: vertical-lr;
   -ms-writing-mode: tb;
   writing-mode: vertical-lr;
@@ -523,29 +763,29 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   line-height: 20px;
 }
 
-.emotion-136 {
+.emotion-168 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  width: 0;
+  width: 800px;
 }
 
-.emotion-137 {
+.emotion-169 {
   padding-left: 16px;
   width: 100px;
   min-width: 100px;
   border-right: 1px solid #191919;
 }
 
-.emotion-138 {
+.emotion-170 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   width: 0%;
 }
 
-.emotion-139 {
+.emotion-171 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -555,7 +795,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-140 {
+.emotion-172 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -567,16 +807,16 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-141 {
+.emotion-173 {
   position: relative;
   cursor: default;
 }
 
-.emotion-142 {
+.emotion-174 {
   min-width: 8px;
-  width: 0;
-  max-width: 0;
-  padding: 0;
+  width: 200px;
+  max-width: 200px;
+  padding: 16px;
   padding-top: 16px;
   padding-bottom: 16px;
   overflow: hidden;
@@ -585,7 +825,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-right: 1px solid #191919;
 }
 
-.emotion-147 {
+.emotion-179 {
   padding: 16px;
   text-align: center;
   font-weight: 700;
@@ -593,7 +833,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   line-height: 20px;
 }
 
-.emotion-148 {
+.emotion-180 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -608,7 +848,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-left: 1px solid #191919;
 }
 
-.emotion-149 {
+.emotion-181 {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
@@ -642,67 +882,231 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   border-bottom: 1px solid #191919;
 }
 
-.emotion-149:hover,
-.emotion-149.focus-visible:focus,
-.emotion-149 .noop {
+.emotion-181:hover,
+.emotion-181.focus-visible:focus,
+.emotion-181 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #ffffff;
 }
 
-.emotion-149:hover svg,
-.emotion-149.focus-visible:focus svg,
-.emotion-149 .noop svg {
+.emotion-181:hover svg,
+.emotion-181.focus-visible:focus svg,
+.emotion-181 .noop svg {
   opacity: 1;
 }
 
-.emotion-149[aria-disabled=true],
-.emotion-149 .noop {
+.emotion-181[aria-disabled=true],
+.emotion-181 .noop {
   color: #808080;
 }
 
-.emotion-149:hover {
+.emotion-181:hover {
   background-color: #2e2e2e;
 }
 
 <div
   className="emotion-0"
 >
-  
   <div
     className="emotion-1"
   >
-    
-    <div
+    <a
       className="emotion-2"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      <svg
+        className="emotion-3"
+        data-file-name="back.svg"
+        height={20}
+      />
+      Model Details: 
+      flowers
+    </a>
+  </div>
+  <div
+    className="emotion-4"
+  >
+    <div
+      className="emotion-5"
+    >
+      <span
+        className="emotion-6"
+      >
+        Accuracy:
+      </span>
+      <div
+        className="emotion-7"
+      >
+        60%
+      </div>
+      <form
+        className="emotion-8"
+        method="post"
+        onSubmit={[Function]}
+      >
+        <fieldset
+          className="emotion-9"
+        >
+          <legend
+            className="emotion-10"
+          >
+            View:
+          </legend>
+          <div
+            className="emotion-11"
+          >
+            <div>
+              <label
+                className="emotion-12"
+              >
+                <div
+                  className="emotion-13"
+                >
+                  <input
+                    className="emotion-14"
+                    defaultChecked={true}
+                    name="View"
+                    onClick={[Function]}
+                    type="radio"
+                    value="normalized"
+                  />
+                  <div
+                    className="emotion-15"
+                  />
+                </div>
+                <div
+                  className="emotion-16"
+                >
+                  <div
+                    className="emotion-17"
+                  >
+                    Normalized
+                  </div>
+                  <div
+                    className="emotion-18"
+                  >
+                    
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            className="emotion-11"
+          >
+            <div>
+              <label
+                className="emotion-12"
+              >
+                <div
+                  className="emotion-13"
+                >
+                  <input
+                    className="emotion-22"
+                    defaultChecked={false}
+                    name="View"
+                    onClick={[Function]}
+                    type="radio"
+                    value="absolute"
+                  />
+                  <div
+                    className="emotion-23"
+                  />
+                </div>
+                <div
+                  className="emotion-16"
+                >
+                  <div
+                    className="emotion-17"
+                  >
+                    Absolute
+                  </div>
+                  <div
+                    className="emotion-18"
+                  >
+                    
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </fieldset>
+        <div
+          className="emotion-27"
+        >
+          <span
+            className="emotion-28"
+          >
+            Confidence:
+          </span>
+          <div
+            className="emotion-29"
+          >
+            <label
+              className="emotion-30"
+            >
+              MIN
+                
+              <input
+                className="emotion-31"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onKeyPress={[Function]}
+                type="text"
+                value={0}
+              />
+            </label>
+          </div>
+          <label
+            className="emotion-30"
+          >
+            MAX
+              
+            <input
+              className="emotion-31"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onKeyPress={[Function]}
+              type="text"
+              value={1}
+            />
+          </label>
+        </div>
+      </form>
+    </div>
+    <div
+      className="emotion-34"
     >
       <div
-        className="emotion-3"
+        className="emotion-35"
       >
         <div
-          className="emotion-4"
+          className="emotion-36"
         >
           <div
-            className="emotion-5"
+            className="emotion-37"
           >
             <div
-              className="emotion-6"
+              className="emotion-38"
             >
               <span
-                className="emotion-7"
+                className="emotion-39"
               >
                 True Label
               </span>
                
               <span
-                className="emotion-8"
+                className="emotion-40"
               >
                 (Number in Set)
               </span>
             </div>
           </div>
           <div
-            className="emotion-9"
+            className="emotion-41"
           >
             <div
               style={
@@ -714,22 +1118,22 @@ exports[`<ModelMatrix /> should render properly 1`] = `
               }
             >
               <div
-                className="emotion-10"
+                className="emotion-42"
               >
                 <div
-                  className="emotion-11"
+                  className="emotion-43"
                 >
                   <div
-                    className="emotion-12"
+                    className="emotion-44"
                   >
                     <span
-                      className="emotion-13"
+                      className="emotion-45"
                     >
                       pink
                        
                     </span>
                     <span
-                      className="emotion-14"
+                      className="emotion-46"
                     >
                       (
                       2
@@ -737,18 +1141,18 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                     </span>
                   </div>
                   <div
-                    className="emotion-15"
+                    className="emotion-47"
                   >
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-16"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -761,10 +1165,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -772,10 +1176,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             pink
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -785,16 +1189,16 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-23"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="pink / pink: 0%"
-                          className="emotion-24"
+                          className="emotion-56"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-25"
+                            className="emotion-57"
                           >
                             0%
                           </div>
@@ -804,13 +1208,13 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-16"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -823,10 +1227,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -834,10 +1238,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             pink
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -847,16 +1251,16 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-23"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="pink / red: 0%"
-                          className="emotion-24"
+                          className="emotion-56"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-25"
+                            className="emotion-57"
                           >
                             0%
                           </div>
@@ -866,13 +1270,13 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-16"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -885,10 +1289,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -896,10 +1300,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             pink
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -909,16 +1313,16 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-23"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="pink / yellow: 2%"
-                          className="emotion-44"
+                          className="emotion-76"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-25"
+                            className="emotion-57"
                           >
                             100%
                           </div>
@@ -928,19 +1332,19 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                   </div>
                 </div>
                 <div
-                  className="emotion-11"
+                  className="emotion-43"
                 >
                   <div
-                    className="emotion-12"
+                    className="emotion-44"
                   >
                     <span
-                      className="emotion-13"
+                      className="emotion-45"
                     >
                       red
                        
                     </span>
                     <span
-                      className="emotion-14"
+                      className="emotion-46"
                     >
                       (
                       2
@@ -948,18 +1352,18 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                     </span>
                   </div>
                   <div
-                    className="emotion-15"
+                    className="emotion-47"
                   >
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-16"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -972,10 +1376,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -983,10 +1387,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             red
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -996,16 +1400,16 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-23"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="red / pink: 1%"
-                          className="emotion-59"
+                          className="emotion-91"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-25"
+                            className="emotion-57"
                           >
                             50%
                           </div>
@@ -1015,13 +1419,13 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-16"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -1034,10 +1438,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -1045,10 +1449,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             red
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -1058,16 +1462,16 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-23"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="red / red: 1%"
-                          className="emotion-59"
+                          className="emotion-91"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-25"
+                            className="emotion-57"
                           >
                             50%
                           </div>
@@ -1077,13 +1481,13 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-16"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -1096,10 +1500,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -1107,10 +1511,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             red
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -1120,16 +1524,16 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-23"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="red / yellow: 0%"
-                          className="emotion-24"
+                          className="emotion-56"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-25"
+                            className="emotion-57"
                           >
                             0%
                           </div>
@@ -1139,19 +1543,19 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                   </div>
                 </div>
                 <div
-                  className="emotion-11"
+                  className="emotion-43"
                 >
                   <div
-                    className="emotion-82"
+                    className="emotion-114"
                   >
                     <span
-                      className="emotion-13"
+                      className="emotion-45"
                     >
                       yellow
                        
                     </span>
                     <span
-                      className="emotion-14"
+                      className="emotion-46"
                     >
                       (
                       0
@@ -1159,18 +1563,18 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                     </span>
                   </div>
                   <div
-                    className="emotion-15"
+                    className="emotion-47"
                   >
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-16"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -1183,10 +1587,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -1194,10 +1598,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             yellow
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -1207,16 +1611,16 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-23"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="yellow / pink: 0%"
-                          className="emotion-24"
+                          className="emotion-56"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-25"
+                            className="emotion-57"
                           >
                             0%
                           </div>
@@ -1226,13 +1630,13 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-16"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -1245,10 +1649,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -1256,10 +1660,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             yellow
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -1269,16 +1673,16 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-23"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="yellow / red: 0%"
-                          className="emotion-24"
+                          className="emotion-56"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-25"
+                            className="emotion-57"
                           >
                             0%
                           </div>
@@ -1288,13 +1692,13 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                     <Tippy>
                       <Tooltip>
                         <div
-                          className="emotion-16"
+                          className="emotion-48"
                         >
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Predictions:
                             </span>
@@ -1307,10 +1711,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             %)
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label True:
                             </span>
@@ -1318,10 +1722,10 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                             yellow
                           </h3>
                           <h3
-                            className="emotion-17"
+                            className="emotion-49"
                           >
                             <span
-                              className="emotion-18"
+                              className="emotion-50"
                             >
                               Label Pred:
                             </span>
@@ -1331,16 +1735,16 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                         </div>
                       </Tooltip>
                       <div
-                        className="emotion-23"
+                        className="emotion-55"
                       >
                         <button
                           aria-label="yellow / yellow: 0%"
-                          className="emotion-24"
+                          className="emotion-56"
                           onClick={[Function]}
                           type="button"
                         >
                           <div
-                            className="emotion-25"
+                            className="emotion-57"
                           >
                             0%
                           </div>
@@ -1350,48 +1754,48 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                   </div>
                 </div>
                 <div
-                  className="emotion-116"
+                  className="emotion-148"
                 >
                   <div
-                    className="emotion-117"
+                    className="emotion-149"
                   >
                     <div
-                      className="emotion-118"
+                      className="emotion-150"
                     />
                     <div
-                      className="emotion-118"
+                      className="emotion-150"
                     />
                     <div
-                      className="emotion-120"
+                      className="emotion-152"
                     />
                     <div
-                      className="emotion-121"
+                      className="emotion-153"
                     />
                     <div
-                      className="emotion-121"
+                      className="emotion-153"
                     />
                     <div
-                      className="emotion-118"
+                      className="emotion-150"
                     />
                     <div
-                      className="emotion-118"
+                      className="emotion-150"
                     />
                     <div
-                      className="emotion-118"
+                      className="emotion-150"
                     />
                     <div
-                      className="emotion-118"
+                      className="emotion-150"
                     />
                     <div
-                      className="emotion-127"
+                      className="emotion-159"
                     />
                   </div>
                   <div
-                    className="emotion-128"
+                    className="emotion-160"
                   >
                     <button
                       aria-label="Mini map"
-                      className="emotion-129"
+                      className="emotion-161"
                       onClick={[Function]}
                       type="button"
                     >
@@ -1401,12 +1805,12 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                       />
                     </button>
                     <div
-                      className="emotion-130"
+                      className="emotion-162"
                     />
                     <button
                       aria-disabled={true}
                       aria-label="Zoom Out"
-                      className="emotion-131"
+                      className="emotion-163"
                       onClick={[Function]}
                       type="button"
                     >
@@ -1417,7 +1821,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                     </button>
                     <button
                       aria-label="Zoom In"
-                      className="emotion-132"
+                      className="emotion-164"
                       onClick={[Function]}
                       type="button"
                     >
@@ -1433,73 +1837,73 @@ exports[`<ModelMatrix /> should render properly 1`] = `
           </div>
         </div>
         <div
-          className="emotion-133"
+          className="emotion-165"
         >
           <div
-            className="emotion-134"
+            className="emotion-166"
           >
             <div
-              className="emotion-135"
+              className="emotion-167"
             >
                
             </div>
           </div>
           <div
-            className="emotion-136"
+            className="emotion-168"
           >
             <div
-              className="emotion-137"
+              className="emotion-169"
             >
                
             </div>
             <div
-              className="emotion-138"
+              className="emotion-170"
             >
               <div
-                className="emotion-139"
+                className="emotion-171"
               >
                 <div
-                  className="emotion-140"
+                  className="emotion-172"
                 >
                   <div
                     aria-label="Prediction Label: pink"
-                    className="emotion-141"
+                    className="emotion-173"
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
                     <div
-                      className="emotion-142"
+                      className="emotion-174"
                     >
                       pink
                     </div>
                   </div>
                   <div
                     aria-label="Prediction Label: red"
-                    className="emotion-141"
+                    className="emotion-173"
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
                     <div
-                      className="emotion-142"
+                      className="emotion-174"
                     >
                       red
                     </div>
                   </div>
                   <div
                     aria-label="Prediction Label: yellow"
-                    className="emotion-141"
+                    className="emotion-173"
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                   >
                     <div
-                      className="emotion-142"
+                      className="emotion-174"
                     >
                       yellow
                     </div>
                   </div>
                 </div>
                 <div
-                  className="emotion-147"
+                  className="emotion-179"
                 >
                   Predictions
                 </div>
@@ -1520,11 +1924,11 @@ exports[`<ModelMatrix /> should render properly 1`] = `
         }
       />
       <div
-        className="emotion-148"
+        className="emotion-180"
       >
         <button
           aria-label="Preview"
-          className="emotion-149"
+          className="emotion-181"
           onClick={[Function]}
           title="Preview"
           type="button"
@@ -1901,6 +2305,8 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   display: -ms-flexbox;
   display: flex;
   height: 400px;
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
 }
 
 .emotion-44 {
@@ -2099,8 +2505,6 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-149 {
-  -webkit-filter: grayscale(0);
-  filter: grayscale(0);
   opacity: 0;
   position: relative;
   border: 2px solid #808080;
@@ -2112,6 +2516,8 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-150 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(255,255,255);
   border-right: none;
@@ -2119,6 +2525,8 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-152 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(0,39,107);
   border-right: none;
@@ -2126,6 +2534,8 @@ exports[`<ModelMatrix /> should render properly 2`] = `
 }
 
 .emotion-153 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(53,171,255);
   border-right: none;
@@ -3507,6 +3917,1552 @@ exports[`<ModelMatrix /> should render properly 2`] = `
         <button
           aria-label="Preview"
           className="emotion-183"
+          onClick={[Function]}
+          title="Preview"
+          type="button"
+        >
+          <svg
+            data-file-name="preview.svg"
+            width={20}
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ModelMatrix /> should render properly when out of date 1`] = `
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 100%;
+  margin-left: -32px;
+  margin-right: -32px;
+  margin-bottom: -32px;
+  padding-top: 1px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-1 {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #252525;
+  overflow: hidden;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 0%;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 16px;
+  border-right: 1px solid #191919;
+}
+
+.emotion-6 {
+  -webkit-writing-mode: vertical-lr;
+  -ms-writing-mode: tb;
+  writing-mode: vertical-lr;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.emotion-7 {
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 20px;
+}
+
+.emotion-8 {
+  color: #b3b3b3;
+}
+
+.emotion-9 {
+  width: 100%;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 800px;
+  height: 600px;
+  overflow: hidden;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 0;
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+}
+
+.emotion-12 {
+  width: 100px;
+  padding-left: 16px;
+  padding-right: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  font-weight: 700;
+  border-right: 1px solid #191919;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-13 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.emotion-14 {
+  color: #b3b3b3;
+  padding-left: 4px;
+  font-weight: 400;
+}
+
+.emotion-15 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+}
+
+.emotion-16 {
+  color: #191919;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 12px;
+}
+
+.emotion-17 {
+  padding-bottom: 4px;
+}
+
+.emotion-18 {
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  color: #4a4a4a;
+}
+
+.emotion-23 {
+  display: inline;
+}
+
+.emotion-24 {
+  width: 0;
+  height: 0;
+  padding: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background-color: rgb(255,255,255);
+  border: 4px solid transparent;
+  color: #191919;
+}
+
+.emotion-24:hover {
+  border: 4px solid #6088FE;
+}
+
+.emotion-25 {
+  margin: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.emotion-44 {
+  width: 0;
+  height: 0;
+  padding: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background-color: rgb(0,39,107);
+  border: 4px solid transparent;
+  color: #ffffff;
+}
+
+.emotion-44:hover {
+  border: 4px solid #6088FE;
+}
+
+.emotion-59 {
+  width: 0;
+  height: 0;
+  padding: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background-color: rgb(53,171,255);
+  border: 4px solid transparent;
+  color: #191919;
+}
+
+.emotion-59:hover {
+  border: 4px solid #6088FE;
+}
+
+.emotion-82 {
+  width: 100px;
+  padding-left: 16px;
+  padding-right: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  font-weight: 700;
+  border-right: 1px solid #191919;
+  border-bottom: 1px solid transparent;
+}
+
+.emotion-116 {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  z-index: 10;
+}
+
+.emotion-117 {
+  opacity: 1;
+  position: relative;
+  border: 2px solid #808080;
+  padding: 0;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  display: grid;
+  grid-template: repeat(3, 1fr)/repeat(3, 1fr);
+}
+
+.emotion-118 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+  border-right: none;
+  border-bottom: none;
+}
+
+.emotion-120 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+  padding-bottom: 100%;
+  background-color: rgb(0,39,107);
+  border-right: none;
+  border-bottom: none;
+}
+
+.emotion-121 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+  padding-bottom: 100%;
+  background-color: rgb(53,171,255);
+  border-right: none;
+  border-bottom: none;
+}
+
+.emotion-127 {
+  position: absolute;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #c92300;
+  top: 0;
+  left: 0;
+  width: -Infinity%;
+  height: 100%;
+}
+
+.emotion-128 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 1px solid #4a4a4a;
+  border-radius: 2px;
+  background-color: #252525;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  opacity: 0.8;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-129 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  color: #3A5DFF;
+  padding: 8px;
+  opacity: 1;
+}
+
+.emotion-129:hover {
+  color: #3A5DFF;
+}
+
+.emotion-129[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-130 {
+  background-color: #808080;
+  width: 1px;
+  margin: 8px;
+}
+
+.emotion-131 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  opacity: 1;
+}
+
+.emotion-131:hover {
+  color: #3A5DFF;
+}
+
+.emotion-131[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-132 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  opacity: 1;
+}
+
+.emotion-132:hover {
+  color: #3A5DFF;
+}
+
+.emotion-132[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-133 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-top: 1px solid #191919;
+  width: 100%;
+}
+
+.emotion-134 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 16px;
+  border-right: 1px solid transparent;
+}
+
+.emotion-135 {
+  -webkit-writing-mode: vertical-lr;
+  -ms-writing-mode: tb;
+  writing-mode: vertical-lr;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+  line-height: 20px;
+}
+
+.emotion-136 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 0;
+}
+
+.emotion-137 {
+  padding-left: 16px;
+  width: 100px;
+  min-width: 100px;
+  border-right: 1px solid #191919;
+}
+
+.emotion-138 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  width: 0%;
+}
+
+.emotion-139 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-140 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-141 {
+  position: relative;
+  cursor: default;
+}
+
+.emotion-142 {
+  min-width: 8px;
+  width: 0;
+  max-width: 0;
+  padding: 0;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-right: 1px solid #191919;
+}
+
+.emotion-147 {
+  padding: 16px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 20px;
+}
+
+.emotion-148 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  border-left: 1px solid #191919;
+}
+
+.emotion-149 {
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-149:hover,
+.emotion-149.focus-visible:focus,
+.emotion-149 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-149:hover svg,
+.emotion-149.focus-visible:focus svg,
+.emotion-149 .noop svg {
+  opacity: 1;
+}
+
+.emotion-149[aria-disabled=true],
+.emotion-149 .noop {
+  color: #808080;
+}
+
+.emotion-149:hover {
+  background-color: #2e2e2e;
+}
+
+<div
+  className="emotion-0"
+>
+  
+  <div
+    className="emotion-1"
+  >
+    
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-3"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-5"
+          >
+            <div
+              className="emotion-6"
+            >
+              <span
+                className="emotion-7"
+              >
+                True Label
+              </span>
+               
+              <span
+                className="emotion-8"
+              >
+                (Number in Set)
+              </span>
+            </div>
+          </div>
+          <div
+            className="emotion-9"
+          >
+            <div
+              style={
+                Object {
+                  "height": 0,
+                  "overflow": "visible",
+                  "width": 0,
+                }
+              }
+            >
+              <div
+                className="emotion-10"
+              >
+                <div
+                  className="emotion-11"
+                >
+                  <div
+                    className="emotion-12"
+                  >
+                    <span
+                      className="emotion-13"
+                    >
+                      pink
+                       
+                    </span>
+                    <span
+                      className="emotion-14"
+                    >
+                      (
+                      2
+                      )
+                    </span>
+                  </div>
+                  <div
+                    className="emotion-15"
+                  >
+                    <Tippy>
+                      <Tooltip>
+                        <div
+                          className="emotion-16"
+                        >
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Predictions:
+                            </span>
+                             
+                            0
+                            /
+                            2
+                            (
+                            0
+                            %)
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label True:
+                            </span>
+                             
+                            pink
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label Pred:
+                            </span>
+                             
+                            pink
+                          </h3>
+                        </div>
+                      </Tooltip>
+                      <div
+                        className="emotion-23"
+                      >
+                        <button
+                          aria-label="pink / pink: 0%"
+                          className="emotion-24"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <div
+                            className="emotion-25"
+                          >
+                            0%
+                          </div>
+                        </button>
+                      </div>
+                    </Tippy>
+                    <Tippy>
+                      <Tooltip>
+                        <div
+                          className="emotion-16"
+                        >
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Predictions:
+                            </span>
+                             
+                            0
+                            /
+                            2
+                            (
+                            0
+                            %)
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label True:
+                            </span>
+                             
+                            pink
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label Pred:
+                            </span>
+                             
+                            red
+                          </h3>
+                        </div>
+                      </Tooltip>
+                      <div
+                        className="emotion-23"
+                      >
+                        <button
+                          aria-label="pink / red: 0%"
+                          className="emotion-24"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <div
+                            className="emotion-25"
+                          >
+                            0%
+                          </div>
+                        </button>
+                      </div>
+                    </Tippy>
+                    <Tippy>
+                      <Tooltip>
+                        <div
+                          className="emotion-16"
+                        >
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Predictions:
+                            </span>
+                             
+                            2
+                            /
+                            2
+                            (
+                            100
+                            %)
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label True:
+                            </span>
+                             
+                            pink
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label Pred:
+                            </span>
+                             
+                            yellow
+                          </h3>
+                        </div>
+                      </Tooltip>
+                      <div
+                        className="emotion-23"
+                      >
+                        <button
+                          aria-label="pink / yellow: 2%"
+                          className="emotion-44"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <div
+                            className="emotion-25"
+                          >
+                            100%
+                          </div>
+                        </button>
+                      </div>
+                    </Tippy>
+                  </div>
+                </div>
+                <div
+                  className="emotion-11"
+                >
+                  <div
+                    className="emotion-12"
+                  >
+                    <span
+                      className="emotion-13"
+                    >
+                      red
+                       
+                    </span>
+                    <span
+                      className="emotion-14"
+                    >
+                      (
+                      2
+                      )
+                    </span>
+                  </div>
+                  <div
+                    className="emotion-15"
+                  >
+                    <Tippy>
+                      <Tooltip>
+                        <div
+                          className="emotion-16"
+                        >
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Predictions:
+                            </span>
+                             
+                            1
+                            /
+                            2
+                            (
+                            50
+                            %)
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label True:
+                            </span>
+                             
+                            red
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label Pred:
+                            </span>
+                             
+                            pink
+                          </h3>
+                        </div>
+                      </Tooltip>
+                      <div
+                        className="emotion-23"
+                      >
+                        <button
+                          aria-label="red / pink: 1%"
+                          className="emotion-59"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <div
+                            className="emotion-25"
+                          >
+                            50%
+                          </div>
+                        </button>
+                      </div>
+                    </Tippy>
+                    <Tippy>
+                      <Tooltip>
+                        <div
+                          className="emotion-16"
+                        >
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Predictions:
+                            </span>
+                             
+                            1
+                            /
+                            2
+                            (
+                            50
+                            %)
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label True:
+                            </span>
+                             
+                            red
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label Pred:
+                            </span>
+                             
+                            red
+                          </h3>
+                        </div>
+                      </Tooltip>
+                      <div
+                        className="emotion-23"
+                      >
+                        <button
+                          aria-label="red / red: 1%"
+                          className="emotion-59"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <div
+                            className="emotion-25"
+                          >
+                            50%
+                          </div>
+                        </button>
+                      </div>
+                    </Tippy>
+                    <Tippy>
+                      <Tooltip>
+                        <div
+                          className="emotion-16"
+                        >
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Predictions:
+                            </span>
+                             
+                            0
+                            /
+                            2
+                            (
+                            0
+                            %)
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label True:
+                            </span>
+                             
+                            red
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label Pred:
+                            </span>
+                             
+                            yellow
+                          </h3>
+                        </div>
+                      </Tooltip>
+                      <div
+                        className="emotion-23"
+                      >
+                        <button
+                          aria-label="red / yellow: 0%"
+                          className="emotion-24"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <div
+                            className="emotion-25"
+                          >
+                            0%
+                          </div>
+                        </button>
+                      </div>
+                    </Tippy>
+                  </div>
+                </div>
+                <div
+                  className="emotion-11"
+                >
+                  <div
+                    className="emotion-82"
+                  >
+                    <span
+                      className="emotion-13"
+                    >
+                      yellow
+                       
+                    </span>
+                    <span
+                      className="emotion-14"
+                    >
+                      (
+                      0
+                      )
+                    </span>
+                  </div>
+                  <div
+                    className="emotion-15"
+                  >
+                    <Tippy>
+                      <Tooltip>
+                        <div
+                          className="emotion-16"
+                        >
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Predictions:
+                            </span>
+                             
+                            0
+                            /
+                            0
+                            (
+                            0
+                            %)
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label True:
+                            </span>
+                             
+                            yellow
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label Pred:
+                            </span>
+                             
+                            pink
+                          </h3>
+                        </div>
+                      </Tooltip>
+                      <div
+                        className="emotion-23"
+                      >
+                        <button
+                          aria-label="yellow / pink: 0%"
+                          className="emotion-24"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <div
+                            className="emotion-25"
+                          >
+                            0%
+                          </div>
+                        </button>
+                      </div>
+                    </Tippy>
+                    <Tippy>
+                      <Tooltip>
+                        <div
+                          className="emotion-16"
+                        >
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Predictions:
+                            </span>
+                             
+                            0
+                            /
+                            0
+                            (
+                            0
+                            %)
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label True:
+                            </span>
+                             
+                            yellow
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label Pred:
+                            </span>
+                             
+                            red
+                          </h3>
+                        </div>
+                      </Tooltip>
+                      <div
+                        className="emotion-23"
+                      >
+                        <button
+                          aria-label="yellow / red: 0%"
+                          className="emotion-24"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <div
+                            className="emotion-25"
+                          >
+                            0%
+                          </div>
+                        </button>
+                      </div>
+                    </Tippy>
+                    <Tippy>
+                      <Tooltip>
+                        <div
+                          className="emotion-16"
+                        >
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Predictions:
+                            </span>
+                             
+                            0
+                            /
+                            0
+                            (
+                            0
+                            %)
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label True:
+                            </span>
+                             
+                            yellow
+                          </h3>
+                          <h3
+                            className="emotion-17"
+                          >
+                            <span
+                              className="emotion-18"
+                            >
+                              Label Pred:
+                            </span>
+                             
+                            yellow
+                          </h3>
+                        </div>
+                      </Tooltip>
+                      <div
+                        className="emotion-23"
+                      >
+                        <button
+                          aria-label="yellow / yellow: 0%"
+                          className="emotion-24"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          <div
+                            className="emotion-25"
+                          >
+                            0%
+                          </div>
+                        </button>
+                      </div>
+                    </Tippy>
+                  </div>
+                </div>
+                <div
+                  className="emotion-116"
+                >
+                  <div
+                    className="emotion-117"
+                  >
+                    <div
+                      className="emotion-118"
+                    />
+                    <div
+                      className="emotion-118"
+                    />
+                    <div
+                      className="emotion-120"
+                    />
+                    <div
+                      className="emotion-121"
+                    />
+                    <div
+                      className="emotion-121"
+                    />
+                    <div
+                      className="emotion-118"
+                    />
+                    <div
+                      className="emotion-118"
+                    />
+                    <div
+                      className="emotion-118"
+                    />
+                    <div
+                      className="emotion-118"
+                    />
+                    <div
+                      className="emotion-127"
+                    />
+                  </div>
+                  <div
+                    className="emotion-128"
+                  >
+                    <button
+                      aria-label="Mini map"
+                      className="emotion-129"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="minimap.svg"
+                        height={20}
+                      />
+                    </button>
+                    <div
+                      className="emotion-130"
+                    />
+                    <button
+                      aria-disabled={true}
+                      aria-label="Zoom Out"
+                      className="emotion-131"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="circleMinus.svg"
+                        height={20}
+                      />
+                    </button>
+                    <button
+                      aria-label="Zoom In"
+                      className="emotion-132"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <svg
+                        data-file-name="circlePlus.svg"
+                        height={20}
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-133"
+        >
+          <div
+            className="emotion-134"
+          >
+            <div
+              className="emotion-135"
+            >
+               
+            </div>
+          </div>
+          <div
+            className="emotion-136"
+          >
+            <div
+              className="emotion-137"
+            >
+               
+            </div>
+            <div
+              className="emotion-138"
+            >
+              <div
+                className="emotion-139"
+              >
+                <div
+                  className="emotion-140"
+                >
+                  <div
+                    aria-label="Prediction Label: pink"
+                    className="emotion-141"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    <div
+                      className="emotion-142"
+                    >
+                      pink
+                    </div>
+                  </div>
+                  <div
+                    aria-label="Prediction Label: red"
+                    className="emotion-141"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    <div
+                      className="emotion-142"
+                    >
+                      red
+                    </div>
+                  </div>
+                  <div
+                    aria-label="Prediction Label: yellow"
+                    className="emotion-141"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    <div
+                      className="emotion-142"
+                    >
+                      yellow
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-147"
+                >
+                  Predictions
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        style={
+          Object {
+            "alignItems": "stretch",
+            "display": "flex",
+            "flexDirection": "row",
+            "flexWrap": "nowrap",
+            "height": "100%",
+          }
+        }
+      />
+      <div
+        className="emotion-148"
+      >
+        <button
+          aria-label="Preview"
+          className="emotion-149"
           onClick={[Function]}
           title="Preview"
           type="button"

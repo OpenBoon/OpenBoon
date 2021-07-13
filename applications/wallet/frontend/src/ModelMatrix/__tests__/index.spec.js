@@ -16,6 +16,28 @@ const MODEL_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
 const noop = () => () => {}
 
 describe('<ModelMatrix />', () => {
+  it('should render properly when out of date', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]/matrix',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: { ...matrix, unappliedChanges: true },
+    })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <ModelMatrix />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]/matrix',

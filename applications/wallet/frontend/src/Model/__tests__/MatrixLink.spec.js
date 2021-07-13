@@ -47,6 +47,27 @@ describe('<ModelMatrixLink />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it("should render properly when the model has been applied but the matrix isn't ready", () => {
+    require('swr').__setMockUseSWRResponse({
+      data: { ...matrix, matrix: [] },
+    })
+
+    const component = TestRenderer.create(
+      <ModelMatrixLink
+        projectId={PROJECT_ID}
+        model={{
+          ...model,
+          unappliedChanges: false,
+          datasetId: DATASET_ID,
+          timeLastTrained: 1625774562852,
+          timeLastApplied: 1625774664673,
+        }}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly when the model has not yet been applied', () => {
     require('swr').__setMockUseSWRResponse({
       data: { ...matrix, matrix: [] },

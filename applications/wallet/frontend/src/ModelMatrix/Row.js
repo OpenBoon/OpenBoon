@@ -52,6 +52,7 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
       css={{
         display: 'flex',
         height: cellDimension,
+        filter: `grayscale(${matrix.unappliedChanges ? 1 : 0})`,
       }}
     >
       <div
@@ -190,6 +191,7 @@ ModelMatrixRow.propTypes = {
     overallAccuracy: PropTypes.number.isRequired,
     labels: PropTypes.arrayOf(PropTypes.string).isRequired,
     matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+    unappliedChanges: PropTypes.bool.isRequired,
   }).isRequired,
   settings: PropTypes.shape({
     height: PropTypes.number.isRequired,

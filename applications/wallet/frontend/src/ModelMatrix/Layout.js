@@ -7,6 +7,7 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import { useLocalStorage } from '../LocalStorage/helpers'
 
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Button, { VARIANTS } from '../Button'
 import Resizeable from '../Resizeable'
 import { ACTIONS, reducer as resizeableReducer } from '../Resizeable/reducer'
@@ -25,7 +26,14 @@ const ACCURACY_WIDTH = 40
 const ModelMatrixLayout = ({
   projectId,
   modelId,
-  matrixDetails: { name, overallAccuracy, labels, moduleName, datasetId },
+  matrixDetails: {
+    name,
+    overallAccuracy,
+    labels,
+    moduleName,
+    datasetId,
+    unappliedChanges,
+  },
   setMatrixDetails,
 }) => {
   const [settings, dispatch] = useReducer(reducer, INITIAL_STATE)
@@ -50,6 +58,24 @@ const ModelMatrixLayout = ({
         overflow: 'hidden',
       }}
     >
+      {unappliedChanges && (
+        <div
+          css={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: spacing.normal,
+            borderBottom: constants.borders.regular.coal,
+            backgroundColor: colors.structure.lead,
+          }}
+        >
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+            The matrix is out of date. Changes have been made to the dataset
+            since the model was last applied and the matrix is no longer
+            representive. Apply the model to update the matrix.
+          </FlashMessage>
+        </div>
+      )}
+
       {name && (
         <div
           css={{
@@ -176,6 +202,7 @@ ModelMatrixLayout.propTypes = {
     labels: PropTypes.arrayOf(PropTypes.string),
     moduleName: PropTypes.string.isRequired,
     datasetId: PropTypes.string.isRequired,
+    unappliedChanges: PropTypes.bool.isRequired,
   }).isRequired,
   setMatrixDetails: PropTypes.func.isRequired,
 }
