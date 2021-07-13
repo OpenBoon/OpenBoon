@@ -17,6 +17,7 @@ describe('<ModelMatrixLink />', () => {
         projectId={PROJECT_ID}
         model={{
           ...model,
+          modelTypeRestrictions: { missingLabels: 0, missingLabelsOnAssets: 0 },
           unappliedChanges: true,
           datasetId: DATASET_ID,
           timeLastTrained: 1625774562852,
@@ -36,6 +37,7 @@ describe('<ModelMatrixLink />', () => {
         projectId={PROJECT_ID}
         model={{
           ...model,
+          modelTypeRestrictions: { missingLabels: 0, missingLabelsOnAssets: 0 },
           unappliedChanges: false,
           datasetId: DATASET_ID,
           timeLastTrained: 1625774562852,
@@ -57,6 +59,7 @@ describe('<ModelMatrixLink />', () => {
         projectId={PROJECT_ID}
         model={{
           ...model,
+          modelTypeRestrictions: { missingLabels: 0, missingLabelsOnAssets: 0 },
           unappliedChanges: false,
           datasetId: DATASET_ID,
           timeLastTrained: 1625774562852,
@@ -78,6 +81,7 @@ describe('<ModelMatrixLink />', () => {
         projectId={PROJECT_ID}
         model={{
           ...model,
+          modelTypeRestrictions: { missingLabels: 0, missingLabelsOnAssets: 0 },
           unappliedChanges: false,
           datasetId: DATASET_ID,
           timeLastTrained: 1625774562852,
@@ -89,7 +93,7 @@ describe('<ModelMatrixLink />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly when the model has not yet been trained', () => {
+  it('should render properly when the dataset is missing lables', () => {
     require('swr').__setMockUseSWRResponse({
       data: { ...matrix, matrix: [] },
     })
