@@ -39,15 +39,32 @@ Array [
 }
 
 .emotion-4 {
-  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+}
+
+.emotion-4 label {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-5 {
+  color: #b3b3b3;
+}
+
+.emotion-6 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-6 {
+.emotion-7 {
   background-color: #3b3b3b;
   border-radius: 2px;
   border: none;
@@ -67,6 +84,67 @@ Array [
   background-position: right 8px top 50%;
   -webkit-background-size: 20px;
   background-size: 20px;
+}
+
+.emotion-8 {
+  padding-bottom: 8px;
+}
+
+.emotion-9 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #808080;
+  background-color: transparent;
+  margin-bottom: 4px;
+  margin-right: -12px;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
 }
 
 <div
@@ -92,48 +170,73 @@ Array [
     <div
       className="emotion-3"
     />
-    <label
+    <div
       className="emotion-4"
     >
-      Dataset:
-      <div
+      <label
         className="emotion-5"
       >
-        <select
+        Dataset:
+        <div
           className="emotion-6"
-          defaultValue=""
-          disabled={false}
-          onChange={[Function]}
         >
-          <option
-            disabled={true}
-            value=""
+          <select
+            className="emotion-7"
+            defaultValue=""
+            disabled={false}
+            onChange={[Function]}
           >
-            Select an option...
-          </option>
-          <option
-            value="111d0534-7736-135f-8a62-d29da837913f"
+            <option
+              disabled={true}
+              value=""
+            >
+              Select an option...
+            </option>
+            <option
+              value="111d0534-7736-135f-8a62-d29da837913f"
+            >
+              faces
+            </option>
+            <option
+              value="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+            >
+              cats
+            </option>
+            <option
+              value="1c237c5c-8b64-11eb-882c-a6e78dab3824"
+            >
+              pets
+            </option>
+            <option
+              value="4b0b10a9-cec1-155c-b12f-ee2bc8787e06"
+            >
+              mystery
+            </option>
+          </select>
+        </div>
+      </label>
+      <div
+        className="emotion-8"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-disabled={true}
+            aria-label="Toggle Actions Menu"
+            className="emotion-10"
+            onBlur={[Function]}
+            onClick={[Function]}
+            type="button"
           >
-            faces
-          </option>
-          <option
-            value="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
-          >
-            cats
-          </option>
-          <option
-            value="1c237c5c-8b64-11eb-882c-a6e78dab3824"
-          >
-            pets
-          </option>
-          <option
-            value="4b0b10a9-cec1-155c-b12f-ee2bc8787e06"
-          >
-            mystery
-          </option>
-        </select>
+            <svg
+              data-file-name="kebab.svg"
+              height={20}
+            />
+          </button>
+        </div>
       </div>
-    </label>
+    </div>
   </div>,
   .emotion-0 {
   padding: 16px;
@@ -188,15 +291,32 @@ Array [
 }
 
 .emotion-4 {
-  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+}
+
+.emotion-4 label {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-5 {
+  color: #b3b3b3;
+}
+
+.emotion-6 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-6 {
+.emotion-7 {
   background-color: #3b3b3b;
   border-radius: 2px;
   border: none;
@@ -216,6 +336,67 @@ Array [
   background-position: right 8px top 50%;
   -webkit-background-size: 20px;
   background-size: 20px;
+}
+
+.emotion-8 {
+  padding-bottom: 8px;
+}
+
+.emotion-9 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  margin-bottom: 4px;
+  margin-right: -12px;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
 }
 
 <div
@@ -241,48 +422,72 @@ Array [
     <div
       className="emotion-3"
     />
-    <label
+    <div
       className="emotion-4"
     >
-      Dataset:
-      <div
+      <label
         className="emotion-5"
       >
-        <select
+        Dataset:
+        <div
           className="emotion-6"
-          defaultValue="111d0534-7736-135f-8a62-d29da837913f"
-          disabled={false}
-          onChange={[Function]}
         >
-          <option
-            disabled={true}
-            value=""
+          <select
+            className="emotion-7"
+            defaultValue="111d0534-7736-135f-8a62-d29da837913f"
+            disabled={false}
+            onChange={[Function]}
           >
-            Select an option...
-          </option>
-          <option
-            value="111d0534-7736-135f-8a62-d29da837913f"
+            <option
+              disabled={true}
+              value=""
+            >
+              Select an option...
+            </option>
+            <option
+              value="111d0534-7736-135f-8a62-d29da837913f"
+            >
+              faces
+            </option>
+            <option
+              value="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+            >
+              cats
+            </option>
+            <option
+              value="1c237c5c-8b64-11eb-882c-a6e78dab3824"
+            >
+              pets
+            </option>
+            <option
+              value="4b0b10a9-cec1-155c-b12f-ee2bc8787e06"
+            >
+              mystery
+            </option>
+          </select>
+        </div>
+      </label>
+      <div
+        className="emotion-8"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Toggle Actions Menu"
+            className="emotion-10"
+            onBlur={[Function]}
+            onClick={[Function]}
+            type="button"
           >
-            faces
-          </option>
-          <option
-            value="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
-          >
-            cats
-          </option>
-          <option
-            value="1c237c5c-8b64-11eb-882c-a6e78dab3824"
-          >
-            pets
-          </option>
-          <option
-            value="4b0b10a9-cec1-155c-b12f-ee2bc8787e06"
-          >
-            mystery
-          </option>
-        </select>
+            <svg
+              data-file-name="kebab.svg"
+              height={20}
+            />
+          </button>
+        </div>
       </div>
-    </label>
+    </div>
   </div>,
   <AssetLabelingForm
     assetId="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"

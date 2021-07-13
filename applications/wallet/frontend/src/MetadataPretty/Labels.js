@@ -9,7 +9,7 @@ const COLUMNS = ['bbox', 'dataset name/label', 'scope']
 
 const MetadataPrettyLabels = () => {
   const {
-    query: { projectId, id, assetId },
+    query: { projectId, assetId },
   } = useRouter()
 
   const {
@@ -56,7 +56,7 @@ const MetadataPrettyLabels = () => {
         <tbody>
           <MetadataPrettyLabelsContent
             projectId={projectId}
-            assetId={id || assetId}
+            assetId={assetId}
             datasets={datasets}
           />
         </tbody>

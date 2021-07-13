@@ -21,7 +21,7 @@ const Datasets = () => {
     query: { projectId, action, datasetId },
   } = useRouter()
 
-  const [, setPanel] = usePanel({ openToThe: 'left' })
+  const [, setLeftOpeningPanel] = usePanel({ openToThe: 'left' })
 
   const [, setDatasetFields] = useLabelTool({ projectId })
 
@@ -47,7 +47,7 @@ const Datasets = () => {
             >
               <a
                 onClick={() => {
-                  setPanel({
+                  setLeftOpeningPanel({
                     type: ACTIONS.OPEN,
                     payload: { minSize: MIN_WIDTH, openPanel: 'assetLabeling' },
                   })

@@ -71,7 +71,7 @@ describe('<MetadataPrettyLabelsMenu />', () => {
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
     const component = TestRenderer.create(
@@ -112,7 +112,7 @@ describe('<MetadataPrettyLabelsMenu />', () => {
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
     const component = TestRenderer.create(

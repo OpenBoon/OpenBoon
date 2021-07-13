@@ -23,6 +23,10 @@ describe('AssetLabeling', () => {
   })
 
   it('should render properly with an asset selected', async () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
     require('swr').__setMockUseSWRResponse({
       data: {
         id: asset.id,
@@ -57,5 +61,35 @@ describe('AssetLabeling', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    // Open Menu
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Toggle Actions Menu' })
+        .props.onClick()
+    })
+
+    // Select Add Dataset Filter
+    act(() => {
+      component.root
+        .findByProps({ children: 'Add Dataset Filter' })
+        .props.onClick()
+    })
+
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'label',
+          attribute: 'labels.faces',
+          datasetId: datasets.results[0].id,
+          values: { labels: [] },
+        },
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?assetId=${ASSET_ID}&query=${query}`,
+      `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}&query=${query}`,
+    )
   })
 })
