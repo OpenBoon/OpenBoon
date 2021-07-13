@@ -135,7 +135,7 @@ class BoonClient:
             dict: A dictionary which can be used to fetch the file.
         """
         headers = self.headers(content_type="")
-        headers['Content-Length'] = size or sys.getsizeof(data)
+        headers['Content-Length'] = str(size or sys.getsizeof(data))
         return self.__handle_rsp(requests.post(
             self.get_url(path), headers=headers, data=data), True)
 

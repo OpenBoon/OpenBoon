@@ -470,3 +470,25 @@ class AssetAppTests(unittest.TestCase):
         res = self.app.assets.apply_modules('12345', ['boonai-face-detection'])
         assert '12345' == res.id
         assert "/foo/bar.jpg" == res.uri
+
+    @patch.object(BoonClient, 'send_data')
+    def test_analyze_file(self, post_patch):
+        post_patch.return_value = {
+            'id': 'TRANSIENT',
+            'document': {
+                'analysis': {
+                    'test': {
+                        'predictions': [
+                            {
+                                'label': 'cat',
+                                'score': 0.99
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+
+        with open(get_test_file('images/set01/toucan.jpg'), 'rb') as fp:
+            asset = self.app.assets.analyze_file(fp, ['test'])
+        assert asset.id == 'TRANSIENT'

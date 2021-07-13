@@ -533,7 +533,7 @@ class ProcessorWrapper:
 
         for service in modules:
             body = {
-                'project': BoonEnv.get_project_id(),
+                'project': BoonEnv.get_project_id() or asset.get_attr("system.projectId"),
                 'service': service,
                 'asset_id': asset.id,
                 'asset_path': source_path,
